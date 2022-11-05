@@ -853,8 +853,8 @@ var SQLDataType;
     SQLDataType["NUMBER"] = "NUMBER";
     SQLDataType["STRING"] = "STRING";
 })(SQLDataType || (SQLDataType = {}));
-function getSqlDataType(type) {
-    switch (type) {
+function getSqlDataType(sColumn) {
+    switch (sColumn.type) {
         case 'any':
             return SQLDataType.ANY;
         case 'boolean':
@@ -868,7 +868,7 @@ function getSqlDataType(type) {
         case 'string':
             return SQLDataType.STRING;
         default:
-            throw new Error(`Uknown type: ${type}`);
+            throw new Error(`Uknown type: ${sColumn.type} for column '${sColumn.name}'`);
     }
 }
 
@@ -1527,6 +1527,65 @@ function serializeClass$2(symbol, daoName, entityName) {
 }
 
 /**
+ * Created by Papa on 3/27/2016.
+ */
+class Interface {
+    constructor(path, name) {
+        this.name = name;
+        this.implementedBySet = new Set();
+    }
+}
+class EntityCandidate {
+    constructor(type, path, parentClassName, location, verified, isSuperclass) {
+        this.type = type;
+        this.path = path;
+        this.parentClassName = parentClassName;
+        this.location = location;
+        this.verified = verified;
+        this.isSuperclass = isSuperclass;
+        this.ids = [];
+        if (!type) {
+            return;
+        }
+        console.log(`\tcreating entity: ${type}, parent: ${parentClassName}, isSuperclass: ${isSuperclass}`);
+    }
+    static create(type, path, parentClass, parentImport, isSuperClass) {
+        return new EntityCandidate(type, path, parentClass, parentImport, undefined, isSuperClass);
+    }
+    getIdProperties() {
+        return this.getPropertiesOfType(true);
+    }
+    getNonIdProperties() {
+        return this.getPropertiesOfType(false);
+    }
+    getPropertiesOfType(isId) {
+        return this.docEntry.properties.filter((property, index) => {
+            if (property.isTransient) {
+                return false;
+            }
+            property.index = index;
+            const idDecorators = property.decorators.filter(decorator => {
+                return decorator.name === 'Id';
+            });
+            if (isId) {
+                return !!idDecorators.length;
+            }
+            else {
+                return !idDecorators.length;
+            }
+        });
+    }
+    getTransientProperties() {
+        return this.docEntry.properties.filter((property, index) => {
+            return property.isTransient;
+        });
+    }
+    matches(type, location) {
+        return this.type === type;
+    }
+}
+
+/**
  * Created by Papa on 4/27/2016.
  */
 function resolveRelativeEntityPath(from, //
@@ -2020,12 +2079,16 @@ class DbApplicationBuilder {
 
 class ApplicationLoader {
     constructor() {
+        this.applicationMap = {};
         this.allApplications = [];
         this.dbApplicationBuilder = new DbApplicationBuilder();
         this.dictionary = {
             dbColumnRelationMapByManySide: {},
             dbColumnRelationMapByOneSide: {}
         };
+    }
+    setApplicationMap(applicationMap) {
+        this.applicationMap = applicationMap;
     }
     findAllReferencedJsonApplications() {
         const jsonApplications = [];
@@ -2052,11 +2115,17 @@ class ApplicationLoader {
         return jsonApplications;
     }
     getReferencedApplication(projectName, property) {
+        const knownApplication = this.applicationMap[projectName];
+        if (knownApplication) {
+            return knownApplication;
+        }
         const relatedApplication = this.getJsonApplication(projectName, property);
         if (!relatedApplication) {
             return null;
         }
-        return this.dbApplicationBuilder.buildDbApplicationWithoutReferences(relatedApplication, this.allApplications, this.dictionary);
+        const dbApplication = this.dbApplicationBuilder.buildDbApplicationWithoutReferences(relatedApplication, this.allApplications, this.dictionary);
+        this.applicationMap[projectName] = dbApplication;
+        return dbApplication;
     }
     getJsonApplication(projectName, property) {
         // const pathsToReferencedApplications =
@@ -2106,155 +2175,7 @@ the following decorators to the property definition:
         return JSON.parse(relatedApplicationJson);
     }
 }
-
-/**
- * Created by Papa on 3/27/2016.
- */
-class Interface {
-    constructor(path, name) {
-        this.name = name;
-        this.implementedBySet = new Set();
-    }
-}
-class EntityCandidate {
-    constructor(type, path, parentClassName, location, verified, isSuperclass) {
-        this.type = type;
-        this.path = path;
-        this.parentClassName = parentClassName;
-        this.location = location;
-        this.verified = verified;
-        this.isSuperclass = isSuperclass;
-        this.ids = [];
-        if (!type) {
-            return;
-        }
-        console.log(`\tcreating entity: ${type}, parent: ${parentClassName}, isSuperclass: ${isSuperclass}`);
-    }
-    static create(type, path, parentClass, parentImport, isSuperClass) {
-        return new EntityCandidate(type, path, parentClass, parentImport, undefined, isSuperClass);
-    }
-    getIdProperties() {
-        return this.getPropertiesOfType(true);
-    }
-    getNonIdProperties() {
-        return this.getPropertiesOfType(false);
-    }
-    getPropertiesOfType(isId) {
-        return this.docEntry.properties.filter((property, index) => {
-            if (property.isTransient) {
-                return false;
-            }
-            property.index = index;
-            const idDecorators = property.decorators.filter(decorator => {
-                return decorator.name === 'Id';
-            });
-            if (isId) {
-                return !!idDecorators.length;
-            }
-            else {
-                return !idDecorators.length;
-            }
-        });
-    }
-    getTransientProperties() {
-        return this.docEntry.properties.filter((property, index) => {
-            return property.isTransient;
-        });
-    }
-    matches(type, location) {
-        return this.type === type;
-    }
-}
-
-class ImportManager {
-    static resolveImports(sourceFile, filePath) {
-        const importMapByObjectAsName = {};
-        const importMapByModulePath = {};
-        const fileImports = {
-            importMapByObjectAsName,
-            importMapByModulePath,
-        };
-        for (const anImport of sourceFile.imports) {
-            const path = anImport.text;
-            if (path.endsWith('../')) {
-                throw new Error(`
-Entity file source rule violation:
-		File: ${filePath}
-		
-				Imports ending in a directory are not valid, 
-				please import from a barrel or a file.
-				
-				NOTE: importing from the 'generated' barrel is not currently supported,
-				please import from the specific generated files.
-				
-				NOTE: importing from the '.../index' file is not currently supported,
-				please import from the specific generated files.
-				
-		Import:
-			${path}
-				
-				`);
-            }
-            if (path.endsWith('./generated/generated')) {
-                throw new Error(`
-Entity file source rule violation:
-		File: ${filePath}
-		
-				Importing from the 'generated' barrel is not currently supported,
-				please import from the specific generated files.
-				
-		Import:
-			${path}
-				
-				`);
-            }
-            if (path.endsWith('../index')) {
-                throw new Error(`
-Entity file source rule violation:
-		File: ${filePath}
-		
-				Importing from the '.../index' file is not currently supported,
-				please import from the specific generated files.
-				
-		Import:
-			${path}
-				
-				`);
-            }
-            const isLocal = this.isLocalReference(path);
-            const objectMapByAsName = {};
-            const moduleImport = {
-                fileImports,
-                isLocal,
-                objectMapByAsName,
-                path,
-            };
-            importMapByModulePath[path] = moduleImport;
-            const namedBindings = anImport.parent.importClause.namedBindings;
-            if (!namedBindings || !namedBindings.elements) {
-                continue;
-            }
-            for (const namedBinding of namedBindings.elements) {
-                const asName = namedBinding.name.text;
-                let sourceName = asName;
-                if (namedBinding.propertyName) {
-                    sourceName = namedBinding.propertyName.text;
-                }
-                const importedObject = {
-                    asName,
-                    moduleImport,
-                    sourceName,
-                };
-                objectMapByAsName[asName] = importedObject;
-                importMapByObjectAsName[asName] = moduleImport;
-            }
-        }
-        return fileImports;
-    }
-    static isLocalReference(path) {
-        return path.startsWith('.');
-    }
-}
+const DB_APPLICATION_LOADER = new ApplicationLoader();
 
 function isDecoratedAsEntity(decorators) {
     if (!decorators || !decorators.length) {
@@ -2401,6 +2322,426 @@ function startsWith(target, suffix) {
 }
 
 /**
+ * Created by Papa on 3/27/2016.
+ */
+class EntityCandidateRegistry {
+    constructor() {
+        this.entityCandidateMap = new Map();
+        this.allInterfacesMap = new Map();
+        this.mappedSuperClassMap = {};
+        this.enumMap = new Map();
+    }
+    addCandidate(candidate) {
+        let matchesExisting = this.matchToExistingEntity(candidate);
+        if (!matchesExisting) {
+            this.entityCandidateMap.set(candidate.type, candidate);
+        }
+        else {
+            candidate = this.entityCandidateMap.get(candidate.type);
+        }
+    }
+    async matchVerifiedEntities() {
+        let entityMapByName = {};
+        for (let targetCandidate of this.entityCandidateMap.values()) {
+            entityMapByName[targetCandidate.type] = targetCandidate;
+            if (!targetCandidate.parentClassName || targetCandidate.parentEntity) {
+                continue;
+            }
+            targetCandidate.parentEntity = this.entityCandidateMap.get(targetCandidate.parentClassName);
+            if (targetCandidate.parentEntity) {
+                continue;
+            }
+            let parentType = GLOBAL_CANDIDATES.inheritanceMap[targetCandidate.type];
+            while (parentType) {
+                targetCandidate.parentEntity = this.entityCandidateMap.get(parentType);
+                if (targetCandidate.parentEntity) {
+                    break;
+                }
+                parentType = GLOBAL_CANDIDATES.inheritanceMap[parentType];
+            }
+            if (targetCandidate.parentEntity) {
+                continue;
+            }
+            targetCandidate.parentEntity = await this.getMappedSuperclassFromProject(targetCandidate.docEntry.fileImports, targetCandidate.parentClassName);
+        }
+        let entityInterfaceMap = {};
+        for (let className in entityMapByName) {
+            let entityCandidate = entityMapByName[className];
+            entityCandidate.implementedInterfaceNames.forEach((interfaceName) => {
+                let matchingInterfaces = this.allInterfacesMap.get(interfaceName);
+                if (!matchingInterfaces || !matchingInterfaces.length) {
+                    return;
+                }
+                if (matchingInterfaces.length > 1) {
+                    throw new Error(`Found multiple definitions of interface '${interfaceName}' 
+					implemented by entity '${className}'.  Interfaces implemented by entity 
+					classes must have globally unique names.`);
+                }
+                let anInterface = matchingInterfaces[0];
+                anInterface.implementedBySet.add(entityCandidate);
+                entityInterfaceMap[interfaceName] = anInterface;
+            });
+        }
+        this.classifyEntityProperties(entityInterfaceMap);
+        return entityMapByName;
+    }
+    classifyEntityProperties(entityInterfaceMap) {
+        let classifiedEntitySet = new Set();
+        for (let [candidateType, candidate] of this.entityCandidateMap) {
+            classifiedEntitySet.add(candidate);
+            let properties = candidate.docEntry.properties;
+            if (!properties) {
+                return;
+            }
+            const fileImports = candidate.docEntry.fileImports;
+            properties.forEach((//
+            property //
+            ) => {
+                let type = property.type;
+                if (endsWith(type, '[]')) {
+                    property.isArray = true;
+                    type = type.substr(0, type.length - 2);
+                }
+                else if (startsWith(type, 'Array<')) {
+                    type = type.substr(6, type.length - 1);
+                }
+                property.nonArrayType = type;
+                if (property.isTransient
+                    && startsWith(type, '{') && endsWith(type, '}')) {
+                    property.primitive = 'Json';
+                    return;
+                }
+                property.decorators.filter(decorator => decorator.name === 'Column').forEach(decorator => {
+                    decorator.values.filter(value => value.columnDefinition).forEach(value => {
+                        property.columnDefinition = value.columnDefinition;
+                    });
+                });
+                switch (type) {
+                    case 'boolean':
+                        property.primitive = 'boolean';
+                        break;
+                    case 'number':
+                        property.primitive = 'number';
+                        break;
+                    case 'string':
+                        property.primitive = 'string';
+                        break;
+                    case 'Date':
+                        property.primitive = 'Date';
+                        break;
+                    case 'any':
+                        property.primitive = 'any';
+                        break;
+                }
+                const decorators = property.decorators;
+                if (decorators.some(decorator => decorator.name === 'Json')) {
+                    property.primitive = 'Json';
+                }
+                if (decorators.some(decorator => decorator.name === 'DbAny')) {
+                    property.primitive = 'any';
+                }
+                if (decorators.some(decorator => decorator.name === 'DbBoolean')) {
+                    property.primitive = 'boolean';
+                }
+                if (decorators.some(decorator => decorator.name === 'DbDate')) {
+                    property.primitive = 'Date';
+                }
+                if (decorators.some(decorator => decorator.name === 'DbNumber')) {
+                    property.primitive = 'number';
+                }
+                if (decorators.some(decorator => decorator.name === 'DbString')) {
+                    property.primitive = 'string';
+                }
+                if (property.primitive) {
+                    if (property.isArray) {
+                        throw new Error(`Arrays are currently not supported outside of @OneToMany.
+						Please use any.
+						
+						File:     ${property.ownerEntity.path}
+						Property: ${property.name}
+						`);
+                    }
+                    return;
+                }
+                const objectMapFragments = type.split(':');
+                if (objectMapFragments.length > 1) {
+                    if (!property.isTransient) {
+                        throw new Error(`Non @Transient properties cannot be object maps.`);
+                    }
+                    property.isMap = true;
+                    const objectMapValueFragment = objectMapFragments[objectMapFragments.length - 1];
+                    property.mapValueType = objectMapValueFragment
+                        .replace('}', '')
+                        .replace(';', '')
+                        .trim();
+                    type = property.mapValueType;
+                    property.mapValueIsPrimitive = isPrimitive(type);
+                    const objectMapKeyNameFragment = objectMapFragments[0];
+                    property.mapKeyName = objectMapKeyNameFragment
+                        .replace('{', '')
+                        .replace('[', '')
+                        .trim();
+                    const objectMapKeyTypeFragment = objectMapFragments[1];
+                    property.mapKeyType = objectMapKeyTypeFragment
+                        .replace(']', '')
+                        .trim();
+                }
+                if (!property.mapValueIsPrimitive
+                    && !fileImports.importMapByObjectAsName[type]
+                    && candidateType !== type) {
+                    throw new Error(`Type '${type}' is not an import in ${candidate.path}.` +
+                        `  All type references in entities must must be imported 
+					(needed for DDL hiding).`);
+                }
+                // Do not check transient properties
+                if (property.isTransient) {
+                    return;
+                }
+                const moduleImport = fileImports.importMapByObjectAsName[type];
+                if (moduleImport && !moduleImport.isLocal) {
+                    const projectName = this.getProjectReferenceFromPath(moduleImport.path);
+                    property.fromProject = projectName;
+                    if (!this.getReferencedApplication(projectName, property)) {
+                        throw new Error(`
+						Processing property ${property.ownerEntity.type}.${property.name}
+						Could not find related application in project '${projectName}'
+						if using external primitive types did you forget to add @DbBoolean(), @DbNumber(), @DbDate() or @DbString() decorator to this property?`);
+                    }
+                }
+                else {
+                    let verifiedEntity = this.entityCandidateMap.get(type);
+                    if (verifiedEntity) {
+                        property.entity = verifiedEntity;
+                        return;
+                    }
+                    let anInterface = entityInterfaceMap[type];
+                    if (anInterface) {
+                        this.registerInterface(anInterface, property);
+                        property.entity = anInterface.implementation;
+                    }
+                    else {
+                        if (canBeInterface(type)) {
+                            const entityType = getImplNameFromInterfaceName(type);
+                            verifiedEntity = this.entityCandidateMap.get(entityType);
+                            if (verifiedEntity) {
+                                const externalInterface = new Interface(null, type);
+                                externalInterface.implementation = verifiedEntity;
+                                entityInterfaceMap[type] = externalInterface;
+                                this.registerInterface(externalInterface, property);
+                                property.entity = verifiedEntity;
+                            }
+                            else {
+                                throw new Error(`Did not find project-local Entity type: '${entityType}' (from interface ${type}).
+								Did you forget to decorate it with @Entity()?`);
+                            }
+                        }
+                        else {
+                            throw new Error(`Did not find project-local Entity type: '${type}'.
+							Did you forget to decorate it with @Entity()?`);
+                        }
+                    }
+                }
+            });
+        }
+        return classifiedEntitySet;
+    }
+    getReferencedApplication(projectName, property) {
+        const dbApplication = DB_APPLICATION_LOADER.getReferencedApplication(projectName, property);
+        property.otherApplicationDbEntity = this.getOtherApplicationEntity(projectName, dbApplication, property);
+        return dbApplication;
+    }
+    getProjectReferenceFromPath(path) {
+        const pathFragments = path.split('/');
+        if (path.indexOf('@') === 0) {
+            return pathFragments[0] + '/' + pathFragments[1];
+        }
+        return pathFragments[0];
+    }
+    matchToExistingEntity(entityCandidate) {
+        let existingCandidate = this.entityCandidateMap.get(entityCandidate.type);
+        if (!existingCandidate) {
+            return false;
+        }
+        return true;
+    }
+    async getMappedSuperclassFromProject(fileImports, type) {
+        const moduleImport = fileImports.importMapByObjectAsName[type];
+        if (!moduleImport || moduleImport.isLocal) {
+            return null;
+        }
+        const projectName = this.getProjectReferenceFromPath(moduleImport.path);
+        const projectMappedSuperclasses = this.mappedSuperClassMap[projectName];
+        if (projectMappedSuperclasses) {
+            return projectMappedSuperclasses[type];
+        }
+        // const pathsToReferencedApplications =
+        // this.configuration.airport.node_modulesLinks.pathsToReferencedApplications
+        let relatedMappedSuperclassesProject;
+        // if (pathsToReferencedApplications && pathsToReferencedApplications[projectName]) {
+        // 	let referencedApplicationRelativePath = '../../' +
+        // pathsToReferencedApplications[projectName] for (let i = 0; i < 10; i++) {
+        // referencedApplicationRelativePath = '../' + referencedApplicationRelativePath let
+        // pathToMappedSuperclasses =
+        // getFullPathFromRelativePath(referencedApplicationRelativePath, __filename) if
+        // (fs.existsSync(pathToMappedSuperclasses) &&
+        // fs.lstatSync(pathToMappedSuperclasses).isDirectory()) {
+        // relatedMappedSuperclassesProject = require(pathToMappedSuperclasses) break } } }
+        // else {
+        relatedMappedSuperclassesProject = await import('file://' + process.cwd() + '/node_modules/' + projectName + '/dist/definition/mappedSuperclass.mjs');
+        // }
+        if (!relatedMappedSuperclassesProject) {
+            throw new Error(`Could not find related application project '${projectName}'`);
+        }
+        if (!relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
+            throw new Error(`Could not find related Mapped Superclasses in project '${projectName}'`);
+        }
+        const mappedSuperClassMapForProject = {};
+        for (const mappedSuperclass of relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
+            const entityCandidate = this.deserializeEntityCandidate(mappedSuperclass);
+            mappedSuperClassMapForProject[mappedSuperclass.type] = entityCandidate;
+        }
+        this.mappedSuperClassMap[projectName] = mappedSuperClassMapForProject;
+        return mappedSuperClassMapForProject[type];
+    }
+    deserializeEntityCandidate(serializedEntityCandidate) {
+        const entityCandidate = new EntityCandidate(null, null, null);
+        for (let key in serializedEntityCandidate) {
+            entityCandidate[key] = serializedEntityCandidate[key];
+        }
+        if (entityCandidate.parentEntity) {
+            entityCandidate.parentEntity = this.deserializeEntityCandidate(entityCandidate.parentEntity);
+        }
+        return entityCandidate;
+    }
+    getOtherApplicationEntity(projectName, dbApplication, property) {
+        const type = property.nonArrayType;
+        let otherApplicationDbEntity = dbApplication.currentVersion[0].applicationVersion
+            .entityMapByName[type];
+        if (!otherApplicationDbEntity) {
+            if (canBeInterface(type)) {
+                const relatedImplementationName = getImplNameFromInterfaceName(type);
+                otherApplicationDbEntity = dbApplication.currentVersion[0].applicationVersion
+                    .entityMapByName[relatedImplementationName];
+                if (!otherApplicationDbEntity) {
+                    throw new Error(`Could not find entity '${relatedImplementationName}' 
+					(from interface ${type}) in project '${projectName}'`);
+                }
+            }
+            else {
+                throw new Error(`
+						Processing property ${property.ownerEntity.type}.${property.name}
+						Could not find entity '${type}' in project '${projectName}'
+						if using external primitive types did you forget to add @DbBoolean(), @DbNumber(), @DbDate() or @DbString() decorator to this property?`);
+            }
+        }
+        return otherApplicationDbEntity;
+    }
+    registerInterface(anInterface, property) {
+        if (anInterface.implementedBySet.size > 1) {
+            let implementations = [];
+            for (let entity of anInterface.implementedBySet) {
+                implementations.push(entity.type);
+            }
+            throw new Error(`Interface ${anInterface.name}, is implemented by more than one 
+			entity (${implementations.join(', ')}).  Interfaces used in relations can only be 
+			implemented by one entity.`);
+        }
+        let implementedEntity = anInterface.implementedBySet.values().next().value;
+        property.entity = implementedEntity;
+    }
+}
+
+class ImportManager {
+    static resolveImports(sourceFile, filePath) {
+        const importMapByObjectAsName = {};
+        const importMapByModulePath = {};
+        const fileImports = {
+            importMapByObjectAsName,
+            importMapByModulePath,
+        };
+        for (const anImport of sourceFile.imports) {
+            const path = anImport.text;
+            if (path.endsWith('../')) {
+                throw new Error(`
+Entity file source rule violation:
+		File: ${filePath}
+		
+				Imports ending in a directory are not valid, 
+				please import from a barrel or a file.
+				
+				NOTE: importing from the 'generated' barrel is not currently supported,
+				please import from the specific generated files.
+				
+				NOTE: importing from the '.../index' file is not currently supported,
+				please import from the specific generated files.
+				
+		Import:
+			${path}
+				
+				`);
+            }
+            if (path.endsWith('./generated/generated')) {
+                throw new Error(`
+Entity file source rule violation:
+		File: ${filePath}
+		
+				Importing from the 'generated' barrel is not currently supported,
+				please import from the specific generated files.
+				
+		Import:
+			${path}
+				
+				`);
+            }
+            if (path.endsWith('../index')) {
+                throw new Error(`
+Entity file source rule violation:
+		File: ${filePath}
+		
+				Importing from the '.../index' file is not currently supported,
+				please import from the specific generated files.
+				
+		Import:
+			${path}
+				
+				`);
+            }
+            const isLocal = this.isLocalReference(path);
+            const objectMapByAsName = {};
+            const moduleImport = {
+                fileImports,
+                isLocal,
+                objectMapByAsName,
+                path,
+            };
+            importMapByModulePath[path] = moduleImport;
+            const namedBindings = anImport.parent.importClause.namedBindings;
+            if (!namedBindings || !namedBindings.elements) {
+                continue;
+            }
+            for (const namedBinding of namedBindings.elements) {
+                const asName = namedBinding.name.text;
+                let sourceName = asName;
+                if (namedBinding.propertyName) {
+                    sourceName = namedBinding.propertyName.text;
+                }
+                const importedObject = {
+                    asName,
+                    moduleImport,
+                    sourceName,
+                };
+                objectMapByAsName[asName] = importedObject;
+                importMapByObjectAsName[asName] = moduleImport;
+            }
+        }
+        return fileImports;
+    }
+    static isLocalReference(path) {
+        return path.startsWith('.');
+    }
+}
+
+/**
  * Created by Papa on 3/26/2016.
  */
 class GlobalCandidates {
@@ -2409,7 +2750,7 @@ class GlobalCandidates {
     }
     get registry() {
         if (!this._registry) {
-            this._registry = new EntityCandidateRegistry(globalThis.enumMap);
+            this._registry = new EntityCandidateRegistry();
         }
         return this._registry;
     }
@@ -2487,7 +2828,7 @@ ${path}
         file.hasEnums = true;
         let symbol = globalThis.checker
             .getSymbolAtLocation(node.name);
-        globalThis.enumMap.set(symbol.name, path);
+        GLOBAL_CANDIDATES.registry.enumMap.set(symbol.name, path);
     }
 }
 /** Serialize a symbol into a json object */
@@ -2872,7 +3213,13 @@ export default WhereJoinTableFunction`;
 }
 function convertPropertyAccessExpressionToString(propAccessExrp) {
     let leftHandExrp = propAccessExrp.expression;
-    return `${leftHandExrp.text}.${propAccessExrp.name.text}`;
+    let suffix = '.' + propAccessExrp.name.text;
+    if (leftHandExrp.text) {
+        return `${leftHandExrp.text}${suffix}`;
+    }
+    else {
+        return convertPropertyAccessExpressionToString(leftHandExrp) + suffix;
+    }
 }
 function convertRegExpStringToObject(regExpString) {
     let firstIndexOfSlash = regExpString.indexOf('/');
@@ -2984,7 +3331,6 @@ function serializeClass$1(symbol, decorators, classPath, fileImports, file) {
             property.ownerEntity = entityCandidate;
         });
         GLOBAL_CANDIDATES.registry.addCandidate(entityCandidate);
-        globalThis.processedCandidateRegistry.addCandidate(entityCandidate);
         GLOBAL_CANDIDATES.inheritanceMap[details.name] = parentClassName;
         if (GLOBAL_CANDIDATES.inheritanceMap[parentClassName] == undefined) {
             GLOBAL_CANDIDATES.inheritanceMap[parentClassName] = null;
@@ -3012,346 +3358,6 @@ function serializeSignature(signature) {
         // documentation:
         // tsc.displayPartsToString(signature.getDocumentationComment(undefined))
     };
-}
-
-/**
- * Created by Papa on 3/27/2016.
- */
-class EntityCandidateRegistry {
-    constructor(enumMap) {
-        this.enumMap = enumMap;
-        this.entityCandidateMap = new Map();
-        this.allInterfacesMap = new Map();
-        this.applicationMap = {};
-        this.mappedSuperClassMap = {};
-        this.applicationLoader = new ApplicationLoader();
-    }
-    addCandidate(candidate) {
-        let matchesExisting = this.matchToExistingEntity(candidate);
-        if (!matchesExisting) {
-            this.entityCandidateMap.set(candidate.type, candidate);
-        }
-        else {
-            candidate = this.entityCandidateMap.get(candidate.type);
-        }
-    }
-    async matchVerifiedEntities(//
-    targetCandidateRegistry //
-    ) {
-        let entityMapByName = {};
-        for (let targetCandidate of targetCandidateRegistry.entityCandidateMap.values()) {
-            entityMapByName[targetCandidate.type] = targetCandidate;
-            if (!targetCandidate.parentClassName || targetCandidate.parentEntity) {
-                continue;
-            }
-            targetCandidate.parentEntity = targetCandidateRegistry.entityCandidateMap.get(targetCandidate.parentClassName);
-            if (targetCandidate.parentEntity) {
-                continue;
-            }
-            let parentType = GLOBAL_CANDIDATES.inheritanceMap[targetCandidate.type];
-            while (parentType) {
-                targetCandidate.parentEntity = targetCandidateRegistry.entityCandidateMap.get(parentType);
-                if (targetCandidate.parentEntity) {
-                    break;
-                }
-                parentType = GLOBAL_CANDIDATES.inheritanceMap[parentType];
-            }
-            if (targetCandidate.parentEntity) {
-                continue;
-            }
-            targetCandidate.parentEntity = await this.getMappedSuperclassFromProject(targetCandidate.docEntry.fileImports, targetCandidate.parentClassName);
-        }
-        let entityInterfaceMap = {};
-        for (let className in entityMapByName) {
-            let entityCandidate = entityMapByName[className];
-            entityCandidate.implementedInterfaceNames.forEach((interfaceName) => {
-                let matchingInterfaces = this.allInterfacesMap.get(interfaceName);
-                if (!matchingInterfaces || !matchingInterfaces.length) {
-                    return;
-                }
-                if (matchingInterfaces.length > 1) {
-                    throw new Error(`Found multiple definitions of interface '${interfaceName}' 
-					implemented by entity '${className}'.  Interfaces implemented by entity 
-					classes must have globally unique names.`);
-                }
-                let anInterface = matchingInterfaces[0];
-                anInterface.implementedBySet.add(entityCandidate);
-                entityInterfaceMap[interfaceName] = anInterface;
-            });
-        }
-        this.classifyEntityProperties(entityInterfaceMap);
-        return entityMapByName;
-    }
-    classifyEntityProperties(entityInterfaceMap) {
-        let classifiedEntitySet = new Set();
-        for (let [candidateType, candidate] of this.entityCandidateMap) {
-            classifiedEntitySet.add(candidate);
-            let properties = candidate.docEntry.properties;
-            if (!properties) {
-                return;
-            }
-            const fileImports = candidate.docEntry.fileImports;
-            properties.forEach((//
-            property //
-            ) => {
-                let type = property.type;
-                if (endsWith(type, '[]')) {
-                    property.isArray = true;
-                    type = type.substr(0, type.length - 2);
-                }
-                else if (startsWith(type, 'Array<')) {
-                    type = type.substr(6, type.length - 1);
-                }
-                property.nonArrayType = type;
-                if (property.isTransient
-                    && startsWith(type, '{') && endsWith(type, '}')) {
-                    property.primitive = 'Json';
-                    return;
-                }
-                property.decorators.filter(decorator => decorator.name === 'Column').forEach(decorator => {
-                    decorator.values.filter(value => value.columnDefinition).forEach(value => {
-                        property.columnDefinition = value.columnDefinition;
-                    });
-                });
-                switch (type) {
-                    case 'boolean':
-                        property.primitive = 'boolean';
-                        break;
-                    case 'number':
-                        property.primitive = 'number';
-                        break;
-                    case 'string':
-                        property.primitive = 'string';
-                        break;
-                    case 'Date':
-                        property.primitive = 'Date';
-                        break;
-                    case 'any':
-                        property.primitive = 'any';
-                        break;
-                }
-                const decorators = property.decorators;
-                if (decorators.some(decorator => decorator.name === 'Json')) {
-                    property.primitive = 'Json';
-                }
-                if (decorators.some(decorator => decorator.name === 'DbAny')) {
-                    property.primitive = 'any';
-                }
-                if (decorators.some(decorator => decorator.name === 'DbBoolean')) {
-                    property.primitive = 'boolean';
-                }
-                if (decorators.some(decorator => decorator.name === 'DbDate')) {
-                    property.primitive = 'Date';
-                }
-                if (decorators.some(decorator => decorator.name === 'DbNumber')) {
-                    property.primitive = 'number';
-                }
-                if (decorators.some(decorator => decorator.name === 'DbString')) {
-                    property.primitive = 'string';
-                }
-                if (property.primitive) {
-                    if (property.isArray) {
-                        throw new Error(`Arrays are currently not supported outside of @OneToMany.
-						Please use any.
-						
-						File:     ${property.ownerEntity.path}
-						Property: ${property.name}
-						`);
-                    }
-                    return;
-                }
-                const objectMapFragments = type.split(':');
-                if (objectMapFragments.length > 1) {
-                    if (!property.isTransient) {
-                        throw new Error(`Non @Transient properties cannot be object maps.`);
-                    }
-                    property.isMap = true;
-                    const objectMapValueFragment = objectMapFragments[objectMapFragments.length - 1];
-                    property.mapValueType = objectMapValueFragment
-                        .replace('}', '')
-                        .replace(';', '')
-                        .trim();
-                    type = property.mapValueType;
-                    property.mapValueIsPrimitive = isPrimitive(type);
-                    const objectMapKeyNameFragment = objectMapFragments[0];
-                    property.mapKeyName = objectMapKeyNameFragment
-                        .replace('{', '')
-                        .replace('[', '')
-                        .trim();
-                    const objectMapKeyTypeFragment = objectMapFragments[1];
-                    property.mapKeyType = objectMapKeyTypeFragment
-                        .replace(']', '')
-                        .trim();
-                }
-                if (!property.mapValueIsPrimitive
-                    && !fileImports.importMapByObjectAsName[type]
-                    && candidateType !== type) {
-                    throw new Error(`Type '${type}' is not an import in ${candidate.path}.` +
-                        `  All type references in entities must must be imported 
-					(needed for DDL hiding).`);
-                }
-                // Do not check transient properties
-                if (property.isTransient) {
-                    return;
-                }
-                const moduleImport = fileImports.importMapByObjectAsName[type];
-                if (moduleImport && !moduleImport.isLocal) {
-                    const projectName = this.getProjectReferenceFromPath(moduleImport.path);
-                    property.fromProject = projectName;
-                    if (!this.getReferencedApplication(projectName, property)) {
-                        throw new Error(`
-						Processing property ${property.ownerEntity.type}.${property.name}
-						Could not find related application in project '${projectName}'
-						if using external primitive types did you forget to add @DbBoolean(), @DbNumber(), @DbDate() or @DbString() decorator to this property?`);
-                    }
-                }
-                else {
-                    let verifiedEntity = this.entityCandidateMap.get(type);
-                    if (verifiedEntity) {
-                        property.entity = verifiedEntity;
-                        return;
-                    }
-                    let anInterface = entityInterfaceMap[type];
-                    if (anInterface) {
-                        this.registerInterface(anInterface, property);
-                        property.entity = anInterface.implementation;
-                    }
-                    else {
-                        if (canBeInterface(type)) {
-                            const entityType = getImplNameFromInterfaceName(type);
-                            verifiedEntity = this.entityCandidateMap.get(entityType);
-                            if (verifiedEntity) {
-                                const externalInterface = new Interface(null, type);
-                                externalInterface.implementation = verifiedEntity;
-                                entityInterfaceMap[type] = externalInterface;
-                                this.registerInterface(externalInterface, property);
-                                property.entity = verifiedEntity;
-                            }
-                            else {
-                                throw new Error(`Did not find project-local Entity type: '${entityType}' (from interface ${type}).
-								Did you forget to decorate it with @Entity()?`);
-                            }
-                        }
-                        else {
-                            throw new Error(`Did not find project-local Entity type: '${type}'.
-							Did you forget to decorate it with @Entity()?`);
-                        }
-                    }
-                }
-            });
-        }
-        return classifiedEntitySet;
-    }
-    getReferencedApplication(projectName, property) {
-        const projectApplication = this.applicationMap[projectName];
-        if (projectApplication) {
-            property.otherApplicationDbEntity = this.getOtherApplicationEntity(projectName, projectApplication, property);
-            return projectApplication;
-        }
-        const dbApplication = this.applicationLoader.getReferencedApplication(projectName, property);
-        this.applicationMap[projectName] = dbApplication;
-        property.otherApplicationDbEntity = this.getOtherApplicationEntity(projectName, dbApplication, property);
-        return dbApplication;
-    }
-    getProjectReferenceFromPath(path) {
-        const pathFragments = path.split('/');
-        if (path.indexOf('@') === 0) {
-            return pathFragments[0] + '/' + pathFragments[1];
-        }
-        return pathFragments[0];
-    }
-    matchToExistingEntity(entityCandidate) {
-        let existingCandidate = this.entityCandidateMap.get(entityCandidate.type);
-        if (!existingCandidate) {
-            return false;
-        }
-        return true;
-    }
-    async getMappedSuperclassFromProject(fileImports, type) {
-        const moduleImport = fileImports.importMapByObjectAsName[type];
-        if (!moduleImport || moduleImport.isLocal) {
-            return null;
-        }
-        const projectName = this.getProjectReferenceFromPath(moduleImport.path);
-        const projectMappedSuperclasses = this.mappedSuperClassMap[projectName];
-        if (projectMappedSuperclasses) {
-            return projectMappedSuperclasses[type];
-        }
-        // const pathsToReferencedApplications =
-        // this.configuration.airport.node_modulesLinks.pathsToReferencedApplications
-        let relatedMappedSuperclassesProject;
-        // if (pathsToReferencedApplications && pathsToReferencedApplications[projectName]) {
-        // 	let referencedApplicationRelativePath = '../../' +
-        // pathsToReferencedApplications[projectName] for (let i = 0; i < 10; i++) {
-        // referencedApplicationRelativePath = '../' + referencedApplicationRelativePath let
-        // pathToMappedSuperclasses =
-        // getFullPathFromRelativePath(referencedApplicationRelativePath, __filename) if
-        // (fs.existsSync(pathToMappedSuperclasses) &&
-        // fs.lstatSync(pathToMappedSuperclasses).isDirectory()) {
-        // relatedMappedSuperclassesProject = require(pathToMappedSuperclasses) break } } }
-        // else {
-        relatedMappedSuperclassesProject = await import('file://' + process.cwd() + '/node_modules/' + projectName + '/dist/definition/mappedSuperclass.mjs');
-        // }
-        if (!relatedMappedSuperclassesProject) {
-            throw new Error(`Could not find related application project '${projectName}'`);
-        }
-        if (!relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
-            throw new Error(`Could not find related Mapped Superclasses in project '${projectName}'`);
-        }
-        const mappedSuperClassMapForProject = {};
-        for (const mappedSuperclass of relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
-            const entityCandidate = this.deserializeEntityCandidate(mappedSuperclass);
-            mappedSuperClassMapForProject[mappedSuperclass.type] = entityCandidate;
-        }
-        this.mappedSuperClassMap[projectName] = mappedSuperClassMapForProject;
-        return mappedSuperClassMapForProject[type];
-    }
-    deserializeEntityCandidate(serializedEntityCandidate) {
-        const entityCandidate = new EntityCandidate(null, null, null);
-        for (let key in serializedEntityCandidate) {
-            entityCandidate[key] = serializedEntityCandidate[key];
-        }
-        if (entityCandidate.parentEntity) {
-            entityCandidate.parentEntity = this.deserializeEntityCandidate(entityCandidate.parentEntity);
-        }
-        return entityCandidate;
-    }
-    getOtherApplicationEntity(projectName, dbApplication, property) {
-        const type = property.nonArrayType;
-        let otherApplicationDbEntity = dbApplication.currentVersion[0].applicationVersion
-            .entityMapByName[type];
-        if (!otherApplicationDbEntity) {
-            if (canBeInterface(type)) {
-                const relatedImplementationName = getImplNameFromInterfaceName(type);
-                otherApplicationDbEntity = dbApplication.currentVersion[0].applicationVersion
-                    .entityMapByName[relatedImplementationName];
-                if (!otherApplicationDbEntity) {
-                    throw new Error(`Could not find entity '${relatedImplementationName}' 
-					(from interface ${type}) in project '${projectName}'`);
-                }
-            }
-            else {
-                throw new Error(`
-						Processing property ${property.ownerEntity.type}.${property.name}
-						Could not find entity '${type}' in project '${projectName}'
-						if using external primitive types did you forget to add @DbBoolean(), @DbNumber(), @DbDate() or @DbString() decorator to this property?`);
-            }
-        }
-        return otherApplicationDbEntity;
-    }
-    registerInterface(anInterface, property) {
-        if (anInterface.implementedBySet.size > 1) {
-            let implementations = [];
-            for (let entity of anInterface.implementedBySet) {
-                implementations.push(entity.type);
-            }
-            throw new Error(`Interface ${anInterface.name}, is implemented by more than one 
-			entity (${implementations.join(', ')}).  Interfaces used in relations can only be 
-			implemented by one entity.`);
-        }
-        let implementedEntity = anInterface.implementedBySet.values().next().value;
-        property.entity = implementedEntity;
-    }
 }
 
 const currentApplicationApi = {
@@ -3509,11 +3515,9 @@ class ${className}
     };
 }
 
-const enumMap = new Map();
-globalThis.enumMap = enumMap;
-const additonalFileProcessors = [];
+const additionalFileProcessors = [];
 function addFileProcessor(fileProcessor) {
-    additonalFileProcessors.push(fileProcessor);
+    additionalFileProcessors.push(fileProcessor);
 }
 /** Generate documention for all classes in a set of .ts files */
 async function generateDefinitions(fileNames, options, configuration, applicationMapByProjectName) {
@@ -3522,8 +3526,7 @@ async function generateDefinitions(fileNames, options, configuration, applicatio
     globalThis.checker = program.getTypeChecker();
     // Get the checker, we will use it to find more about classes
     GLOBAL_CANDIDATES.registry.configuration = configuration;
-    GLOBAL_CANDIDATES.registry.applicationMap = applicationMapByProjectName;
-    globalThis.processedCandidateRegistry = new EntityCandidateRegistry(enumMap);
+    DB_APPLICATION_LOADER.setApplicationMap(applicationMapByProjectName);
     // const daoFileMap: { [classPath: string]: DaoFile } = {}
     const sourceFiles = program.getSourceFiles();
     // Visit every sourceFile in the program
@@ -3538,8 +3541,12 @@ async function generateDefinitions(fileNames, options, configuration, applicatio
     }
     // print out the doc
     // fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4));
-    return await GLOBAL_CANDIDATES.registry
-        .matchVerifiedEntities(globalThis.processedCandidateRegistry);
+    const entityCandidateMap = await GLOBAL_CANDIDATES.registry
+        .matchVerifiedEntities();
+    for (const additionalFileProcessor of additionalFileProcessors) {
+        await additionalFileProcessor.finishProcessing();
+    }
+    return entityCandidateMap;
 }
 /** visit nodes finding exported classes */
 function visit(node) {
@@ -3571,7 +3578,7 @@ function visit(node) {
         && path.indexOf(globalThis.configuration.airport.apiDir) > 0) {
         visitApiFile(node, path);
     }
-    for (const fileProcessor of additonalFileProcessors) {
+    for (const fileProcessor of additionalFileProcessors) {
         let normalizedPath = normalizePath(path);
         if (normalizedPath.indexOf(fileProcessor.getDir()) > -1) {
             fileProcessor.process(node, path);
@@ -40345,9 +40352,16 @@ class ${entityCandidate.docEntry.name}
                     if (decorator.values.length) {
                         const columnDecoratorDefs = decorator.values[0];
                         columnName = columnDecoratorDefs.name;
-                        if (!/^[A-Z]/.test(columnName)) {
+                        let columnNameCheckRegExp = /^[A-Z]/;
+                        let errorMessageSuffix = '';
+                        if (this.config.airport.build
+                            && this.config.airport.build.allowLeadingNumbersInColumnNames) {
+                            columnNameCheckRegExp = /^[0-9A-Z]/;
+                            errorMessageSuffix = ' (or a number)';
+                        }
+                        if (!columnNameCheckRegExp.test(columnName)) {
                             throw new Error(`
-Column name does not start with an uppercase letter:
+Column name does not start with an uppercase letter${errorMessageSuffix}:
 
 @Entity()
 class ${entity.name}
@@ -41627,7 +41641,7 @@ class JsonApplicationBuilder {
                         index
                     })),
                     sinceVersion: 1,
-                    type: getSqlDataType(sColumn.type),
+                    type: getSqlDataType(sColumn),
                 };
                 if (sColumn.precision) {
                     jsonColumn.precision = sColumn.precision;
@@ -42604,10 +42618,10 @@ function emitFiles(entityMapByName, configuration, applicationMapByProjectName) 
     const mappedSuperclassBuilder = new MappedSuperclassBuilder(configuration, entityMapByName);
     const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
     fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
-    addOperations(jsonApplication, applicationPath, applicationSourcePath, applicationBuilder).then();
-    for (const fileProcessor of additonalFileProcessors) {
-        fileProcessor.build(pathBuilder);
+    for (const fileProcessor of additionalFileProcessors) {
+        fileProcessor.build(pathBuilder, jsonApplication);
     }
+    addOperations(jsonApplication, applicationPath, applicationSourcePath, applicationBuilder).then();
 }
 async function addOperations(jsonApplication, applicationPath, applicationSourcePath, applicationBuilder) {
     await applicationQueryGenerator.processQueries(entityOperationMap, jsonApplication);
@@ -42801,7 +42815,7 @@ async function generate() {
     let sourceFilePaths = addRootDirPaths(configuration.airport.ddlDir, 'src/ddl', []);
     sourceFilePaths = addRootDirPaths(configuration.airport.daoDir, 'src/dao', sourceFilePaths);
     sourceFilePaths = addRootDirPaths(null, 'src/api', sourceFilePaths);
-    for (const fileProcessor of additonalFileProcessors) {
+    for (const fileProcessor of additionalFileProcessors) {
         sourceFilePaths = addRootDirPaths(null, fileProcessor.getDir(), sourceFilePaths);
     }
     try {
@@ -42816,5 +42830,5 @@ async function generate() {
     console.log('DONE AIRport generation');
 }
 
-export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DaoBuilder, DbApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityInterfaceFileBuilder, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GeneratedSummaryBuilder, GlobalCandidates, IEntityInterfaceBuilder, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpApplicationBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, TokenBuilder, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additonalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
+export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DbApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityInterfaceFileBuilder, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GeneratedSummaryBuilder, GlobalCandidates, IEntityInterfaceBuilder, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpApplicationBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, TokenBuilder, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
 //# sourceMappingURL=index.mjs.map
