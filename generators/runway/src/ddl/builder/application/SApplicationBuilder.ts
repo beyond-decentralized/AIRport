@@ -734,9 +734,18 @@ class ${entityCandidate.docEntry.name}
 					if (decorator.values.length) {
 						const columnDecoratorDefs = decorator.values[0];
 						columnName = columnDecoratorDefs.name;
-						if (!/^[A-Z]/.test(columnName)) {
+
+						let columnNameCheckRegExp = /^[A-Z]/
+						let errorMessageSuffix = ''
+
+						if (this.config.airport.build
+							&& this.config.airport.build.allowLeadingNumbersInColumnNames) {
+							columnNameCheckRegExp = /^[0-9A-Z]/
+							errorMessageSuffix = ' (or a number)'
+						}
+						if (!columnNameCheckRegExp.test(columnName)) {
 							throw new Error(`
-Column name does not start with an uppercase letter:
+Column name does not start with an uppercase letter${errorMessageSuffix}:
 
 @Entity()
 class ${entity.name}

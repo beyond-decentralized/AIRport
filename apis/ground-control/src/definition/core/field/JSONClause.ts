@@ -28,9 +28,12 @@ export enum SQLDataType {
 }
 
 export function getSqlDataType(
-	type: string
+	sColumn: {
+		name: string
+		type: 'any' | 'boolean' | 'Date' | 'number' | 'string' | 'Json'
+	}
 ): SQLDataType {
-	switch (type) {
+	switch (sColumn.type) {
 		case 'any':
 			return SQLDataType.ANY
 		case 'boolean':
@@ -44,7 +47,7 @@ export function getSqlDataType(
 		case 'string':
 			return SQLDataType.STRING
 		default:
-			throw new Error(`Uknown type: ${type}`)
+			throw new Error(`Uknown type: ${sColumn.type} for column '${sColumn.name}'`)
 	}
 }
 

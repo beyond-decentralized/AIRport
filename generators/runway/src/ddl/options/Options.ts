@@ -17,6 +17,9 @@ export interface Configuration {
 			pathToProject: string,
 			// pathsToReferencedApplications: { [projectName: string]: string }
 		},
+		build: {
+			allowLeadingNumbersInColumnNames: boolean
+		},
 		application: string
 	}
 

@@ -118,7 +118,7 @@ export class JsonApplicationBuilder {
 									index
 								})),
 							sinceVersion: 1,
-							type: getSqlDataType(sColumn.type),
+							type: getSqlDataType(sColumn),
 						};
 						if (sColumn.precision) {
 							jsonColumn.precision = sColumn.precision;
