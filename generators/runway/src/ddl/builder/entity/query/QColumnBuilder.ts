@@ -1,7 +1,7 @@
 import {
 	IBuilder,
-}                from '../../Builder'
-import {SColumn} from '../../application/SProperty'
+} from '../../Builder'
+import { SColumn } from '../../application/SProperty'
 import { getQColumnFieldInterface, IQCoreEntityBuilder } from './QCoreEntityBuilder'
 
 /**
@@ -20,7 +20,7 @@ export class QColumnBuilder
 	buildDefinition(): string {
 		let column = this.sColumn
 
-		return `${column.name}: ${column.type};`
+		return `${this.ensureValidName(column.name)}: ${column.type};`
 	}
 
 	build(): string {
@@ -28,12 +28,12 @@ export class QColumnBuilder
 	}
 
 	buildInterfaceDefinition(
-		optional: boolean              = true,
+		optional: boolean = true,
 		forInternalInterfaces: boolean = true
 	): string {
 		const column = this.sColumn
-		const name   = column.name
-		let type     = column.type
+		const name = this.ensureValidName(column.name)
+		let type = column.type
 		if (type === 'Json') {
 			type = 'string'
 		}
@@ -43,6 +43,15 @@ export class QColumnBuilder
 		}
 		return `${name}${optional ? '?' : ''}: ${type}${operableFieldSuffix};`
 
+	}
+
+	private ensureValidName(
+		columnName: string
+	): string {
+		if (/[0-9]/.test(columnName.substring(0, 1))) {
+			return '_' + columnName
+		}
+		return columnName
 	}
 
 }

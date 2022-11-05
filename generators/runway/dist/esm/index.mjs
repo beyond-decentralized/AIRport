@@ -39464,14 +39464,14 @@ class QColumnBuilder {
     }
     buildDefinition() {
         let column = this.sColumn;
-        return `${column.name}: ${column.type};`;
+        return `${this.ensureValidName(column.name)}: ${column.type};`;
     }
     build() {
         throw new Error(`Not Implemented.`);
     }
     buildInterfaceDefinition(optional = true, forInternalInterfaces = true) {
         const column = this.sColumn;
-        const name = column.name;
+        const name = this.ensureValidName(column.name);
         let type = column.type;
         if (type === 'Json') {
             type = 'string';
@@ -39481,6 +39481,12 @@ class QColumnBuilder {
             operableFieldSuffix = ' | ' + getQColumnFieldInterface(column);
         }
         return `${name}${optional ? '?' : ''}: ${type}${operableFieldSuffix};`;
+    }
+    ensureValidName(columnName) {
+        if (/[0-9]/.test(columnName.substring(0, 1))) {
+            return '_' + columnName;
+        }
+        return columnName;
     }
 }
 

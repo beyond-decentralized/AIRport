@@ -2,7 +2,7 @@
   // NOTE: Comments are allowed in all Rush config files :-)
   "rushVersion": "5.34.4",
   "pnpmVersion": "5.9.3",
-  "nodeSupportedVersionRange": ">=16.0.0 <17.0.0",
+  "nodeSupportedVersionRange": ">=16.0.0 <1000.0.0",
   "projectFolderMinDepth": 1,
   "projectFolderMaxDepth": 9,
   "projects": [
