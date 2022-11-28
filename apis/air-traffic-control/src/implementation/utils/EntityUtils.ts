@@ -156,7 +156,41 @@ It must be an Object with the id property.`)
 		}
 	}
 
-	private findActorQEntity() {
+	ensureAllQEntitiesInFromClause(
+		rawQuery: RawQuery
+	): void {
+		const allQEntities: Set<IQEntity> = new Set()
+		for (let fromEntry of rawQuery.FROM) {
+			let qEntity = fromEntry as IQEntityInternal
+			allQEntities.add(qEntity)
+		}
+		for (let fromEntry of rawQuery.FROM) {
+			this.doEnsureAllQEntitiesInFromClause(
+				fromEntry as IQEntityInternal, rawQuery.FROM, allQEntities
+			)
+		}
+	}
+
+	doEnsureAllQEntitiesInFromClause(
+		parentQEntity: IQEntityInternal,
+		fromClause: (IFrom | IEntityRelationFrom)[],
+		allQEntities: Set<IQEntity>
+	): void {
+		if (!parentQEntity.__driver__) {
+			return
+		}
+		if (!allQEntities.has(parentQEntity)) {
+			allQEntities.add(parentQEntity)
+			fromClause.push(parentQEntity)
+		}
+		if (!parentQEntity.__driver__.childQEntities) {
+			return
+		}
+		for (const childQEntity of parentQEntity.__driver__.childQEntities) {
+			this.doEnsureAllQEntitiesInFromClause(
+				childQEntity, fromClause, allQEntities
+			)
+		}
 	}
 
 	// Removes circular dependency at code initialization time

@@ -15,9 +15,14 @@ export interface IEntityUtils {
 	exists(object: any);
 
 	isAppliable(object: any): boolean;
+	
 	getQuery<Q>(
 		query: Q | { (...args: any[]): Q }
 	): Q;
+	
+	ensureAllQEntitiesInFromClause(
+		rawQuery: RawQuery
+	): void
 
 	ensureId<EntitySelect extends IEntitySelectProperties>(
 		rawEntityQuery: RawEntityQuery<EntitySelect>

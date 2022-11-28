@@ -111,7 +111,7 @@ export class AirEntityUtils
             actor: {
                 GUID: actorGUIDFragments.join('-')
             },
-            _actorRecordId: parseInt(idStringFragments[11])
+            _actorRecordId: parseInt(idStringFragments[10])
         }
     }
 

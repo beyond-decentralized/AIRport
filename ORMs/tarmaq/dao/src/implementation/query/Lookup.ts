@@ -68,11 +68,14 @@ export class Lookup
 		context: IQueryContext
 	): Promise<any> {
 		let query: IAbstractQuery;
+		let theRawQuery = this.entityUtils.getRawQuery(rawQuery)
+		this.entityUtils.ensureAllQEntitiesInFromClause(theRawQuery)
+
 		if (QueryClass) {
-			const rawNonEntityQuery = this.entityUtils.getQuery(rawQuery);
+			const rawNonEntityQuery = this.entityUtils.getQuery(theRawQuery);
 			query = new QueryClass(rawNonEntityQuery);
 		} else {
-			query = this.entityUtils.getEntityQuery(rawQuery);
+			query = this.entityUtils.getEntityQuery(theRawQuery);
 		}
 		let queryMethod;
 		if (search) {
