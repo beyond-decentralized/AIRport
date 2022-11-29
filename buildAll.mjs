@@ -21,37 +21,44 @@ const airbridgeDependencyProjectDirectories = [
 ]
 
 const secondStageProjectDescriptors = [
-    {
-        directory: 'schemas/airport-code',
-        isApp: true
-    },
-    {
-        directory: 'schemas/airspace',
-        isApp: true
-    },
-    {
-        directory: 'schemas/travel-document-checkpoint',
-        isApp: true
-    },
-    {
-        directory: 'schemas/holding-pattern',
-        isApp: true
-    },
-    {
-        directory: 'schemas/layover',
-        isApp: true
-    },
+    'schemas/airport-code',
+    // {
+    //     directory: 'schemas/airport-code',
+    //     isApp: true
+    // },
+    'schemas/airspace',
+    // {
+    //     directory: 'schemas/airspace',
+    //     isApp: true
+    // },
+    'schemas/travel-document-checkpoint',
+    // {
+    //     directory: 'schemas/travel-document-checkpoint',
+    //     isApp: true
+    // },
+    'schemas/holding-pattern',
+    // {
+    //     directory: 'schemas/holding-pattern',
+    //     isApp: true
+    // },
+    'schemas/layover',
+    // {
+    //     directory: 'schemas/layover',
+    //     isApp: true
+    // },
     'apis/arrivals-n-departures',
     'apis/terminal-map',
     'engines/tower',
     'libs/fuel-hydrant-system',
-    {
-        directory: 'libs/session-state',
-        isApp: true
-    },
+    'libs/session-state',
+    // {
+    //     directory: 'libs/session-state',
+    //     isApp: true
+    // },
     'libs/blueprint',
     'generators/takeoff',
     'generators/landing',
+    'libs/session-state'
 ]
 
 const airwayDependencyProjectDirectories = [
@@ -115,12 +122,13 @@ async function buildProjects(
     parameters
 ) {
     for (const projectDescriptor of projectsDescriptorsInBuildOrder) {
-        let isApp = false;
+        // let isApp = false;
         let projectDirectory
-        if (projectDescriptor instanceof Object) {
-            projectDirectory = projectDescriptor.directory
-            isApp = projectDescriptor.isApp
-        } else if (typeof projectDescriptor === 'string') {
+        // if (projectDescriptor instanceof Object) {
+        //     projectDirectory = projectDescriptor.directory
+        //     isApp = projectDescriptor.isApp
+        // } else 
+        if (typeof projectDescriptor === 'string') {
             projectDirectory = projectDescriptor
         } else {
             throw `Expecting either object or string as a Project Descriptor.`
@@ -132,9 +140,9 @@ async function buildProjects(
         }
         process.chdir('./' + projectDirectory);
 
-        if (isApp) {
-            await execute('node', ['generate.mjs'], projectDirectory);
-        }
+        // if (isApp) {
+        //     await execute('node', ['generate.mjs'], projectDirectory);
+        // }
 
         await execute(command, parameters, projectDirectory);
 
