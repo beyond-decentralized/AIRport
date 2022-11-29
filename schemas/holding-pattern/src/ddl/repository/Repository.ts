@@ -34,7 +34,8 @@ import {
 	Repository_Immutable,
 	Repository_LocalId,
 	Repository_Name,
-	Repository_Source
+	Repository_Source,
+	Repository_StartUiUrl
 } from "../../types";
 import { FullApplication_Name } from "@airport/ground-control";
 
@@ -81,6 +82,10 @@ export class Repository
 	@Column({ name: "FULL_APPLICATION_NAME", nullable: false })
 	@DbString()
 	fullApplicationName: FullApplication_Name
+
+	@Column({ name: "START_UI_URL", nullable: true })
+	@DbString()
+	startUiUrl: Repository_StartUiUrl
 
 	@ManyToOne()
 	@JoinColumn({

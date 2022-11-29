@@ -6064,7 +6064,7 @@ let AirEntityUtils = class AirEntityUtils {
             actor: {
                 GUID: actorGUIDFragments.join('-')
             },
-            _actorRecordId: parseInt(idStringFragments[11])
+            _actorRecordId: parseInt(idStringFragments[10])
         };
     }
     setId(idString, airEntity) {
@@ -7347,12 +7347,14 @@ let Lookup = class Lookup {
     }
     async lookup(rawQuery, queryResultType, search, one, QueryClass, context) {
         let query;
+        let theRawQuery = this.entityUtils.getRawQuery(rawQuery);
+        this.entityUtils.ensureAllQEntitiesInFromClause(theRawQuery);
         if (QueryClass) {
-            const rawNonEntityQuery = this.entityUtils.getQuery(rawQuery);
+            const rawNonEntityQuery = this.entityUtils.getQuery(theRawQuery);
             query = new QueryClass(rawNonEntityQuery);
         }
         else {
-            query = this.entityUtils.getEntityQuery(rawQuery);
+            query = this.entityUtils.getEntityQuery(theRawQuery);
         }
         let queryMethod;
         if (search) {
@@ -8457,7 +8459,30 @@ It must be an Object with the id property.`);
             qRepository
         };
     }
-    findActorQEntity() {
+    ensureAllQEntitiesInFromClause(rawQuery) {
+        const allQEntities = new Set();
+        for (let fromEntry of rawQuery.FROM) {
+            let qEntity = fromEntry;
+            allQEntities.add(qEntity);
+        }
+        for (let fromEntry of rawQuery.FROM) {
+            this.doEnsureAllQEntitiesInFromClause(fromEntry, rawQuery.FROM, allQEntities);
+        }
+    }
+    doEnsureAllQEntitiesInFromClause(parentQEntity, fromClause, allQEntities) {
+        if (!parentQEntity.__driver__) {
+            return;
+        }
+        if (!allQEntities.has(parentQEntity)) {
+            allQEntities.add(parentQEntity);
+            fromClause.push(parentQEntity);
+        }
+        if (!parentQEntity.__driver__.childQEntities) {
+            return;
+        }
+        for (const childQEntity of parentQEntity.__driver__.childQEntities) {
+            this.doEnsureAllQEntitiesInFromClause(childQEntity, fromClause, allQEntities);
+        }
     }
     // Removes circular dependency at code initialization time
     getRawQuery(rawQuery) {
@@ -14077,6 +14102,10 @@ __decorate$c([
     DbString()
 ], Repository.prototype, "fullApplicationName", void 0);
 __decorate$c([
+    Column(),
+    DbString()
+], Repository.prototype, "startUiUrl", void 0);
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Repository.prototype, "owner", void 0);
@@ -17587,6 +17616,20 @@ const APPLICATION$4 = {
                         {
                             "index": 8,
                             "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "START_UI_URL",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 8
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 9,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -17600,14 +17643,14 @@ const APPLICATION$4 = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 8
+                                    "index": 9
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "STRING"
                         },
                         {
-                            "index": 9,
+                            "index": 10,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -17622,14 +17665,14 @@ const APPLICATION$4 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 10
+                                    "index": 11
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 10,
+                            "index": 11,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -17644,14 +17687,14 @@ const APPLICATION$4 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 11
+                                    "index": 12
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 11,
+                            "index": 12,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -17666,14 +17709,14 @@ const APPLICATION$4 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 12
+                                    "index": 13
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 12,
+                            "index": 13,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -17688,7 +17731,7 @@ const APPLICATION$4 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 13
+                                    "index": 14
                                 }
                             ],
                             "sinceVersion": 1,
@@ -17778,7 +17821,16 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
+                            "columnRef": {
+                                "index": 8
+                            },
                             "index": 8,
+                            "isId": false,
+                            "name": "startUiUrl",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 9,
                             "isId": false,
                             "name": "owner",
                             "relationRef": {
@@ -17787,7 +17839,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 9,
+                            "index": 10,
                             "isId": false,
                             "name": "repositoryTransactionHistory",
                             "relationRef": {
@@ -17796,7 +17848,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 10,
+                            "index": 11,
                             "isId": false,
                             "name": "continent",
                             "relationRef": {
@@ -17805,7 +17857,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 11,
+                            "index": 12,
                             "isId": false,
                             "name": "country",
                             "relationRef": {
@@ -17814,7 +17866,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 12,
+                            "index": 13,
                             "isId": false,
                             "name": "state",
                             "relationRef": {
@@ -17823,7 +17875,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 13,
+                            "index": 14,
                             "isId": false,
                             "name": "metroArea",
                             "relationRef": {
@@ -17832,7 +17884,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 14,
+                            "index": 15,
                             "isId": false,
                             "name": "repositoryApplications",
                             "relationRef": {
@@ -17841,7 +17893,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 15,
+                            "index": 16,
                             "isId": false,
                             "name": "repositoryClients",
                             "relationRef": {
@@ -17850,7 +17902,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 16,
+                            "index": 17,
                             "isId": false,
                             "name": "repositoryDatabases",
                             "relationRef": {
@@ -17859,7 +17911,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 17,
+                            "index": 18,
                             "isId": false,
                             "name": "repositoryTerminals",
                             "relationRef": {
@@ -17868,7 +17920,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 18,
+                            "index": 19,
                             "isId": false,
                             "name": "repositoryTypes",
                             "relationRef": {
@@ -17883,7 +17935,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 8
+                                "index": 9
                             },
                             "relationTableIndex": 4,
                             "relationTableApplication_Index": 0,
@@ -17897,7 +17949,7 @@ const APPLICATION$4 = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 9
+                                "index": 10
                             },
                             "relationTableIndex": 11,
                             "sinceVersion": 1
@@ -17907,7 +17959,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 10
+                                "index": 11
                             },
                             "relationTableIndex": 5,
                             "relationTableApplication_Index": 0,
@@ -17918,7 +17970,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 11
+                                "index": 12
                             },
                             "relationTableIndex": 0,
                             "relationTableApplication_Index": 0,
@@ -17929,7 +17981,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 12
+                                "index": 13
                             },
                             "relationTableIndex": 1,
                             "relationTableApplication_Index": 0,
@@ -17940,7 +17992,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 13
+                                "index": 14
                             },
                             "relationTableIndex": 3,
                             "relationTableApplication_Index": 0,
@@ -17954,7 +18006,7 @@ const APPLICATION$4 = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 14
+                                "index": 15
                             },
                             "relationTableIndex": 8,
                             "sinceVersion": 1
@@ -17967,7 +18019,7 @@ const APPLICATION$4 = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 15
+                                "index": 16
                             },
                             "relationTableIndex": 6,
                             "sinceVersion": 1
@@ -17980,7 +18032,7 @@ const APPLICATION$4 = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 16
+                                "index": 17
                             },
                             "relationTableIndex": 5,
                             "sinceVersion": 1
@@ -17993,7 +18045,7 @@ const APPLICATION$4 = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 17
+                                "index": 18
                             },
                             "relationTableIndex": 7,
                             "sinceVersion": 1
@@ -18006,7 +18058,7 @@ const APPLICATION$4 = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 18
+                                "index": 19
                             },
                             "relationTableIndex": 4,
                             "sinceVersion": 1
@@ -32650,6 +32702,7 @@ already contains a new repository.`);
             repositoryTransactionHistory: [],
             // FIXME: propage the 
             source: 'localhost:9000',
+            startUiUrl: null,
             GUID: v4(),
         };
         return repository;
