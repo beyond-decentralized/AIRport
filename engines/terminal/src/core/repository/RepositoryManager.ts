@@ -114,7 +114,7 @@ already contains a new repository.`)
 			repositoryTransactionHistory: [],
 			// FIXME: propage the 
 			source: 'localhost:9000',
-			startUiUrl: null,
+			uiEntryUri: null,
 			GUID: guidv4(),
 		}
 

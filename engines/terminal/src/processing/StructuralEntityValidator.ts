@@ -163,14 +163,13 @@ hence, it must an existing repository that exists locally.`)
 								}
 							}
 							if (propertyValue) {
-								if (propertyValue) {
-									relatedEntities = [propertyValue]
-								} else if (!isRelationNullable) {
-									throw new Error(`Non-nullable relation ${dbEntity.name}.${dbProperty.name} does not have value assigned`)
-								} else {
-									console.warn(`Probably OK: Nullable @ManyToOne ${dbEntity.name}.${dbProperty.name} does not have anything assigned.`)
-								}
+								relatedEntities = [propertyValue]
+							} else if (!isRelationNullable) {
+								throw new Error(`Non-nullable relation ${dbEntity.name}.${dbProperty.name} does not have value assigned`)
+							} else {
+								console.warn(`Probably OK: Nullable @ManyToOne ${dbEntity.name}.${dbProperty.name} does not have anything assigned.`)
 							}
+
 							break
 						case EntityRelationType.ONE_TO_MANY:
 							relationIsOneToMany = true
@@ -188,7 +187,7 @@ for ${dbEntity.name}.${dbProperty.name}`)
 							relationIsOneToMany, dbProperty, rootRelationRecord, record)
 						context.dbEntity = previousDbEntity
 					}
-				} // if (dbProperty.relation // If is a relation property
+				} // if (dbProperty.relation // else its not a relation property
 				else {
 					const dbColumn = dbProperty.propertyColumns[0].column
 					if (dbProperty.isId) {
@@ -203,14 +202,14 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 						}
 					}
 					this.ensureNonRelationalValue(dbProperty, dbColumn, propertyValue)
-				} // else (dbProperty.relation  // If not a relation property
+				} // else (dbProperty.relation
 			} // for (const dbProperty of dbEntity.properties)
 
 			if (!isPassThrough && !isStub && !isParentSchemaId) {
 				this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity,
 					parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context)
 			}
-		} // for (const record of entities)
+		} // for (const record of records)
 	}
 
 	private ensureRepositoryValidity(

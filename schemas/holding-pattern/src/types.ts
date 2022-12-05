@@ -5,7 +5,7 @@ export type Repository_Immutable = boolean;
 export type Repository_LocalId = number;
 export type Repository_Name = string;
 export type Repository_Source = string;
-export type Repository_StartUiUrl = string;
+export type Repository_UiEntryUri = string;
 
 export interface IRepositoryIdentifier {
     source: Repository_Source;

@@ -125,21 +125,21 @@ export class OperationManager
 				.restoreEntityGraph(verifiedTree, context)
 		}
 		const missingRepositoryRecords: IMissingRepositoryRecord[] = []
-		const topLevelObjectRepositories: IRepository[] = []
+		const topLevelObjectRepositoryHolder: IRepository[] = []
 		this.structuralEntityValidator.validate(entityGraph, [], missingRepositoryRecords,
-			topLevelObjectRepositories, context)
+			topLevelObjectRepositoryHolder, context)
 
 		if (missingRepositoryRecords.length) {
-			if (!topLevelObjectRepositories.length) {
+			if (!topLevelObjectRepositoryHolder.length) {
 				throw new Error(`There are entities without an assigned repository and no top level object
 passed to '...Dao.save(...)' has a repository assigned`);
 			}
-			if (topLevelObjectRepositories.length > 1) {
+			if (topLevelObjectRepositoryHolder.length > 1) {
 				throw new Error(`When there are entities without an assigned repository
 (when passed to '...Dao.save(...)') there may only be one (and same) repository assigned
 in top level objects (that are passed into '...Dao.save(...)')`)
 			}
-			const repository = topLevelObjectRepositories[0]
+			const repository = topLevelObjectRepositoryHolder[0]
 			for (const missingRepositoryRecord of missingRepositoryRecords) {
 				missingRepositoryRecord.record[missingRepositoryRecord.repositoryPropertyName]
 					= repository
