@@ -406,10 +406,10 @@ export class IframeTransactionalConnector
 				return
 		}
 
-		if (message.type === IsolateMessageType.CALL_API) {
-			messageRecord.resolve(message)
-		} else if (message.errorMessage) {
+		if (message.errorMessage) {
 			messageRecord.reject(message.errorMessage)
+		} else if (message.type === IsolateMessageType.CALL_API) {
+			messageRecord.resolve(message)
 		} else {
 			messageRecord.resolve(message.result)
 		}

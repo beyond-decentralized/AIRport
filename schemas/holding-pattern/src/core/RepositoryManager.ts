@@ -23,6 +23,11 @@ export interface IRepositoryManager {
 
 	getUpdateState(repository: IRepository): UpdateState;
 
+	setUiEntryUri(
+        uiEntryUri: string,
+        repository: Repository
+    ): Promise<void>
+
 	setUpdateStateForAll(updateState: UpdateState): void;
 
 	setUpdateState(

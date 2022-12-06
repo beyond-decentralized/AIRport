@@ -77,6 +77,20 @@ already contains a new repository.`)
 		return repository
 	}
 
+	async setUiEntryUri(
+        uiEntryUri: string,
+        repository: Repository
+    ): Promise<void> {
+		const userSession = await this.terminalSessionManager.getUserSession()
+
+		if(userSession.currentActor.application.fullName !== repository.fullApplicationName) {
+			throw new Error(`Only the Application that created a repository may change the uiEntityUri.`);
+		}
+
+		repository.uiEntryUri = uiEntryUri
+        await this.repositoryDao.save(repository)
+    }
+
 	goOffline(): void {
 		throw new Error(`not implemented`)
 	}

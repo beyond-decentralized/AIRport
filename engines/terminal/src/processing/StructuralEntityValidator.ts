@@ -3,6 +3,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
+	DbApplicationUtils,
 	DbColumn,
 	DbEntity,
 	DbProperty,
@@ -27,6 +28,9 @@ export class StructuralEntityValidator
 
 	@Inject()
 	applicationUtils: IApplicationUtils
+
+	@Inject()
+	dbApplicationUtils: DbApplicationUtils
 
 	@Inject()
 	entityStateManager: IEntityStateManager
@@ -162,10 +166,19 @@ hence, it must an existing repository that exists locally.`)
 									// }
 								}
 							}
+							const isActorProperty = dbRelation.relationEntity.applicationVersion.application.fullName ===
+								'airport____at_airport_slash_holding_dash_pattern'
+								&& dbRelation.relationEntity.name === 'Actor'
 							if (propertyValue) {
+								if (isCreate && isActorProperty) {
+									throw new Error(`.actor property must not be populated for new objects`)
+								}
 								relatedEntities = [propertyValue]
 							} else if (!isRelationNullable) {
-								throw new Error(`Non-nullable relation ${dbEntity.name}.${dbProperty.name} does not have value assigned`)
+								// Actor properties must be null when passed in
+								if (!isCreate && !isActorProperty) {
+									throw new Error(`Non-nullable relation ${dbEntity.name}.${dbProperty.name} does not have value assigned`)
+								}
 							} else {
 								console.warn(`Probably OK: Nullable @ManyToOne ${dbEntity.name}.${dbProperty.name} does not have anything assigned.`)
 							}

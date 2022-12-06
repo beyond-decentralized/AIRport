@@ -25,4 +25,12 @@ export class RepositoryApi {
         return await this.repositoryManager.createRepository(repositoryName, arguments[1])
     }
 
+    @Api()
+    async setUiEntryUri(
+        uiEntryUri: string,
+        repository: Repository
+    ): Promise<void> {
+        await this.repositoryManager.setUiEntryUri(uiEntryUri, repository)
+    }
+
 }

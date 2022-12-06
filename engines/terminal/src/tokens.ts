@@ -289,6 +289,7 @@ REPOSITORY_MANAGER.setDependencies({
 
 STRUCTURAL_ENTITY_VALIDATOR.setDependencies({
     applicationUtils: APPLICATION_UTILS,
+    dbApplicationUtils: DB_APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
 })
 
