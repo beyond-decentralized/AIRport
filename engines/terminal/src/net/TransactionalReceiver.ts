@@ -322,8 +322,6 @@ export abstract class TransactionalReceiver {
         isFramework?: boolean
         isStarted: boolean,
     }> {
-        const userSession = await this.terminalSessionManager.getUserSession()
-
         const transactionCredentials: ITransactionCredentials = {
             application: message.application,
             domain: message.domain,
@@ -338,8 +336,7 @@ export abstract class TransactionalReceiver {
                 isStarted: false
             }
         }
-        let actor: Actor = await this.getApiCallActor(message, userSession, context)
-        context.transaction.actor = actor
+        let actor: Actor = await this.getApiCallActor(message, context)
 
         const initiator = context.transaction.initiator
         initiator.application = message.application
@@ -394,40 +391,43 @@ export abstract class TransactionalReceiver {
 
     async getApiCallActor(
         message: ILocalAPIRequest<'FromClientRedirected'>,
-        userSession: IUserSession,
         context: IApiCallContext & ITransactionContext,
     ): Promise<Actor> {
-        if (INTERNAL_DOMAINS.indexOf(message.domain) > -1
-            && context.transaction.parentTransaction) {
-            const actor = context.transaction.parentTransaction.actor
-            userSession.currentActor = actor
+        let actor: Actor
+        const userSession = await this.terminalSessionManager.getUserSession()
+        try {
+            if (INTERNAL_DOMAINS.indexOf(message.domain) > -1
+                && context.transaction.parentTransaction) {
+                actor = context.transaction.parentTransaction.actor
+
+                return actor
+            }
+
+            const terminal = this.terminalStore.getTerminal()
+            actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
+                message.domain,
+                message.application,
+                userSession.userAccount.GUID,
+                terminal.GUID
+            )
+            if (actor) {
+                return actor
+            }
+
+            const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(message.domain, message.application)
+            actor = {
+                application,
+                GUID: guidv4(),
+                terminal: terminal as any,
+                userAccount: userSession.userAccount
+            }
+            await this.actorDao.save(actor, context)
 
             return actor
+        } finally {
+            context.transaction.actor = actor
+            userSession.currentTransaction = context.transaction
         }
-
-        const terminal = this.terminalStore.getTerminal()
-        let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
-            message.domain,
-            message.application,
-            userSession.userAccount.GUID,
-            terminal.GUID
-        )
-        if (actor) {
-            userSession.currentActor = actor
-            return actor
-        }
-
-        const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(message.domain, message.application)
-        actor = {
-            application,
-            GUID: guidv4(),
-            terminal: terminal as any,
-            userAccount: userSession.userAccount
-        }
-        await this.actorDao.save(actor, context)
-        userSession.currentActor = actor
-
-        return actor
     }
 
     protected async endApiCall(
@@ -435,10 +435,15 @@ export abstract class TransactionalReceiver {
         errorMessage: string,
         context: IApiCallContext
     ): Promise<boolean> {
-        if (errorMessage) {
-            return await this.transactionalServer.rollback(credentials, context)
-        } else {
-            return await this.transactionalServer.commit(credentials, context)
+        try {
+            if (errorMessage) {
+                return await this.transactionalServer.rollback(credentials, context)
+            } else {
+                return await this.transactionalServer.commit(credentials, context)
+            }
+        } finally {
+            const userSession = await this.terminalSessionManager.getUserSession()
+            userSession.currentTransaction = context.transaction
         }
     }
 

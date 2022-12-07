@@ -3,12 +3,13 @@ import { IRootTransaction } from "@airport/ground-control"
 import { Actor } from "@airport/holding-pattern/dist/app/bundle"
 import { UserAccount } from "@airport/travel-document-checkpoint/dist/app/bundle"
 import { Subject } from "rxjs"
+import { ITransaction } from "../../../dist/esm"
 import { internalUserState } from "./theUserState"
 
 export interface IUserSession {
-    currentActor: Actor
-    userAccount: UserAccount
     currentRootTransaction: IRootTransaction
+    currentTransaction: ITransaction
+    userAccount: UserAccount
 }
 
 export interface IUserState {

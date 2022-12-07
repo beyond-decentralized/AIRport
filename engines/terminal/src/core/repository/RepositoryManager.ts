@@ -70,7 +70,7 @@ Attempting to create a new repository and Operation Context
 already contains a new repository.`)
 		}
 
-		let repository = await this.createRepositoryRecord(repositoryName, userSession.currentActor, context)
+		let repository = await this.createRepositoryRecord(repositoryName, userSession.currentTransaction.actor, context)
 
 		userSession.currentRootTransaction.newRepository = repository
 
@@ -83,7 +83,7 @@ already contains a new repository.`)
     ): Promise<void> {
 		const userSession = await this.terminalSessionManager.getUserSession()
 
-		if(userSession.currentActor.application.fullName !== repository.fullApplicationName) {
+		if(userSession.currentTransaction.actor.application.fullName !== repository.fullApplicationName) {
 			throw new Error(`Only the Application that created a repository may change the uiEntityUri.`);
 		}
 

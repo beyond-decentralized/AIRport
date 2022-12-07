@@ -31,8 +31,8 @@ export class TerminalSessionManager
 
         const allSessions = this.userStore.getAllSessions()
         let session: IUserSession = {
-            currentActor: null,
             currentRootTransaction: null,
+            currentTransaction: null,
             userAccount
         }
         allSessions.push(session)
