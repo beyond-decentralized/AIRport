@@ -332,7 +332,8 @@ export abstract class TransactionalReceiver {
             transactionId: message.transactionId
         }
 
-        if (!await this.transactionalServer.startTransaction(transactionCredentials, context)) {
+        if (!await this.transactionalServer
+            .startTransaction(transactionCredentials, context)) {
             return {
                 isStarted: false
             }
@@ -396,8 +397,12 @@ export abstract class TransactionalReceiver {
         userSession: IUserSession,
         context: IApiCallContext & ITransactionContext,
     ): Promise<Actor> {
-        if (context.transaction.parentTransaction) {
-            return context.transaction.parentTransaction.actor
+        if (INTERNAL_DOMAINS.indexOf(message.domain) > -1
+            && context.transaction.parentTransaction) {
+            const actor = context.transaction.parentTransaction.actor
+            userSession.currentActor = actor
+
+            return actor
         }
 
         const terminal = this.terminalStore.getTerminal()

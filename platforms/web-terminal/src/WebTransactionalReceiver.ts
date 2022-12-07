@@ -225,14 +225,18 @@ export class WebTransactionalReceiver
 		isFramework?: boolean
 		isStarted: boolean,
 	}> {
-		return await this.startApiCall(message, context, async () => {
+		const messageCopy = {
+			...message
+		}
+		return await this.startApiCall(messageCopy, context, async () => {
 			const fullApplication_Name = this.dbApplicationUtils.
 				getFullApplication_NameFromDomainAndName(
 					message.domain, message.application)
 			const frameWindow = this.getFrameWindow(fullApplication_Name)
 			if (frameWindow) {
+				messageCopy.transactionId = context.transaction.id
 				// Forward the request to the correct application iframe
-				frameWindow.postMessage(message, '*')
+				frameWindow.postMessage(messageCopy, '*')
 			} else {
 				throw new Error(`No Application IFrame found for: ${fullApplication_Name}`)
 			}
@@ -300,7 +304,14 @@ export class WebTransactionalReceiver
 	}> {
 		let payload
 		let errorMessage
+		const messageCopy = {
+			...message,
+			transactionId: context.transaction.id
+		}
+		const internalCredentials = this.terminalStore.getInternalConnector().internalCredentials
+		const priorTransactionId = internalCredentials.transactionId
 		try {
+			internalCredentials.transactionId = context.transaction.id
 			const fullApplication_Name = this.dbApplicationUtils
 				.getFullApplication_NameFromDomainAndName(
 					message.domain, message.application)
@@ -309,7 +320,7 @@ export class WebTransactionalReceiver
 			if (!application) {
 				throw new Error(`Could not find AIRport Framework Application: ${fullApplication_Name}`)
 			}
-			payload = await this.localApiServer.coreHandleRequest(message,
+			payload = await this.localApiServer.coreHandleRequest(messageCopy,
 				application.currentVersion[0].applicationVersion.jsonApplication.versions[0].api, context)
 		} catch (e) {
 			errorMessage = e.message ? e.message : e
@@ -321,11 +332,13 @@ export class WebTransactionalReceiver
 					domain: message.domain,
 					methodName: message.methodName,
 					objectName: message.objectName,
-					transactionId: message.transactionId
+					transactionId: messageCopy.transactionId
 				}, errorMessage, context);
 			} catch (e) {
 				errorMessage = e.message ? e.message : e
 				console.error(e)
+			} finally {
+				internalCredentials.transactionId = priorTransactionId
 			}
 		}
 
