@@ -129,7 +129,10 @@ export class ${apiClass.className} {
                     methodParameters += '        '
                 }
                 methodParameters += parameter
-                let parameterName = parameter.split(':')[0]
+                let parameterName = parameter.split(':')[0].trim()
+                if (parameterName.endsWith('?')) {
+                    parameterName = parameterName.substring(0, parameterName.length - 1)
+                }
                 apiCallParameters += parameterName
                 if (i < apiSignature.parameters.length - 1) {
                     if (apiSignature.parameters.length > 1) {

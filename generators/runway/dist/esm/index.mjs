@@ -32682,13 +32682,13 @@ let RepositoryManager = class RepositoryManager {
 Attempting to create a new repository and Operation Context
 already contains a new repository.`);
         }
-        let repository = await this.createRepositoryRecord(repositoryName, userSession.currentActor, context);
+        let repository = await this.createRepositoryRecord(repositoryName, userSession.currentTransaction.actor, context);
         userSession.currentRootTransaction.newRepository = repository;
         return repository;
     }
     async setUiEntryUri(uiEntryUri, repository) {
         const userSession = await this.terminalSessionManager.getUserSession();
-        if (userSession.currentActor.application.fullName !== repository.fullApplicationName) {
+        if (userSession.currentTransaction.actor.application.fullName !== repository.fullApplicationName) {
             throw new Error(`Only the Application that created a repository may change the uiEntityUri.`);
         }
         repository.uiEntryUri = uiEntryUri;
@@ -33337,7 +33337,6 @@ let TransactionalReceiver = class TransactionalReceiver {
         };
     }
     async startApiCall(message, context, nativeHandleCallback) {
-        const userSession = await this.terminalSessionManager.getUserSession();
         const transactionCredentials = {
             application: message.application,
             domain: message.domain,
@@ -33351,8 +33350,7 @@ let TransactionalReceiver = class TransactionalReceiver {
                 isStarted: false
             };
         }
-        let actor = await this.getApiCallActor(message, userSession, context);
-        context.transaction.actor = actor;
+        let actor = await this.getApiCallActor(message, context);
         const initiator = context.transaction.initiator;
         initiator.application = message.application;
         initiator.domain = message.domain;
@@ -33392,36 +33390,47 @@ let TransactionalReceiver = class TransactionalReceiver {
         };
         await nativeHandleCallback();
     }
-    async getApiCallActor(message, userSession, context) {
-        if (INTERNAL_DOMAINS.indexOf(message.domain) > -1
-            && context.transaction.parentTransaction) {
-            const actor = context.transaction.parentTransaction.actor;
-            userSession.currentActor = actor;
+    async getApiCallActor(message, context) {
+        let actor;
+        const userSession = await this.terminalSessionManager.getUserSession();
+        try {
+            if (INTERNAL_DOMAINS.indexOf(message.domain) > -1
+                && context.transaction.parentTransaction) {
+                actor = context.transaction.parentTransaction.actor;
+                return actor;
+            }
+            const terminal = this.terminalStore.getTerminal();
+            actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(message.domain, message.application, userSession.userAccount.GUID, terminal.GUID);
+            if (actor) {
+                return actor;
+            }
+            const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(message.domain, message.application);
+            actor = {
+                application,
+                GUID: v4(),
+                terminal: terminal,
+                userAccount: userSession.userAccount
+            };
+            await this.actorDao.save(actor, context);
             return actor;
         }
-        const terminal = this.terminalStore.getTerminal();
-        let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(message.domain, message.application, userSession.userAccount.GUID, terminal.GUID);
-        if (actor) {
-            userSession.currentActor = actor;
-            return actor;
+        finally {
+            context.transaction.actor = actor;
+            userSession.currentTransaction = context.transaction;
         }
-        const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(message.domain, message.application);
-        actor = {
-            application,
-            GUID: v4(),
-            terminal: terminal,
-            userAccount: userSession.userAccount
-        };
-        await this.actorDao.save(actor, context);
-        userSession.currentActor = actor;
-        return actor;
     }
     async endApiCall(credentials, errorMessage, context) {
-        if (errorMessage) {
-            return await this.transactionalServer.rollback(credentials, context);
+        try {
+            if (errorMessage) {
+                return await this.transactionalServer.rollback(credentials, context);
+            }
+            else {
+                return await this.transactionalServer.commit(credentials, context);
+            }
         }
-        else {
-            return await this.transactionalServer.commit(credentials, context);
+        finally {
+            const userSession = await this.terminalSessionManager.getUserSession();
+            userSession.currentTransaction = context.transaction;
         }
     }
 };
@@ -36659,8 +36668,8 @@ let TerminalSessionManager = class TerminalSessionManager {
             .addUserAccount(userAccountInfo.username, userAccountInfo.email, userAccountInfo.password);
         const allSessions = this.userStore.getAllSessions();
         let session = {
-            currentActor: null,
             currentRootTransaction: null,
+            currentTransaction: null,
             userAccount
         };
         allSessions.push(session);
@@ -42133,7 +42142,10 @@ export class ${apiClass.className} {
                     methodParameters += '        ';
                 }
                 methodParameters += parameter;
-                let parameterName = parameter.split(':')[0];
+                let parameterName = parameter.split(':')[0].trim();
+                if (parameterName.endsWith('?')) {
+                    parameterName = parameterName.substring(0, parameterName.length - 1);
+                }
                 apiCallParameters += parameterName;
                 if (i < apiSignature.parameters.length - 1) {
                     if (apiSignature.parameters.length > 1) {

@@ -10,7 +10,7 @@ import {
 	ISaveResult,
 	PortableQuery
 } from '@airport/ground-control';
-import { Actor, IActor, IAirEntity } from '@airport/holding-pattern/dist/app/bundle';
+import { IActor, IAirEntity } from '@airport/holding-pattern/dist/app/bundle';
 import { IRepositoryManager } from '@airport/holding-pattern/dist/app/bundle';
 import {
 	ICredentials,
