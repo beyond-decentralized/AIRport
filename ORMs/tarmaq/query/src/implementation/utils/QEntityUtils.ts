@@ -1,5 +1,5 @@
 import { QApp } from "@airport/aviation-communication";
-import { extend, Injected } from "@airport/direction-indicator";
+import { extend, Injected, IOC } from "@airport/direction-indicator";
 import { DbColumn, DbEntity, DbProperty, DbRelation, EntityRelationType, JoinType, SQLDataType } from "@airport/ground-control";
 import { IQEntity, IQEntityInternal } from "../../definition/core/entity/Entity";
 import { IRelationManager } from "../../definition/core/entity/IRelationManager";
@@ -10,16 +10,17 @@ import { IQNumberField } from "../../definition/core/field/NumberField";
 import { IQOperableFieldInternal } from "../../definition/core/field/OperableField";
 import { IQStringField } from "../../definition/core/field/StringField";
 import { IQUntypedField } from "../../definition/core/field/UntypedField";
-import { IQEntityUtils } from "../../definition/core/IQEntityUtils";
+import { IQEntityUtils } from "../../definition/utils/IQEntityUtils";
 import { IApplicationUtils } from "../../definition/utils/IApplicationUtils";
-import { QEntity } from "./entity/Entity";
-import { QAirEntityOneToManyRelation, QOneToManyRelation } from "./entity/OneToManyRelation";
-import { QAirEntityRelation, QRelation } from "./entity/Relation";
-import { QBooleanField } from "./field/BooleanField";
-import { QDateField } from "./field/DateField";
-import { QNumberField } from "./field/NumberField";
-import { QStringField } from "./field/StringField";
-import { QUntypedField } from "./field/UntypedField";
+import { Q_ENTITY_UTILS } from "../../tokens";
+import { QEntity } from "../core/entity/Entity";
+import { QAirEntityOneToManyRelation, QOneToManyRelation } from "../core/entity/OneToManyRelation";
+import { QAirEntityRelation, QRelation } from "../core/entity/Relation";
+import { QBooleanField } from "../core/field/BooleanField";
+import { QDateField } from "../core/field/DateField";
+import { QNumberField } from "../core/field/NumberField";
+import { QStringField } from "../core/field/StringField";
+import { QUntypedField } from "../core/field/UntypedField";
 
 @Injected()
 export class QEntityUtils implements IQEntityUtils {
@@ -95,19 +96,21 @@ export class QEntityUtils implements IQEntityUtils {
                 this, entity, applicationUtils, relationManager,
                 nextChildJoinPosition, dbRelation, joinType)
 
+            const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS)
+
             entity.properties.forEach((
                 property: DbProperty
             ) => {
                 let qFieldOrRelation
 
                 if (property.relation && property.relation.length) {
-                    qFieldOrRelation = this.getQRelation(entity, property,
+                    qFieldOrRelation = qEntityUtils.getQRelation(entity, property,
                         this, allQApps, applicationUtils, relationManager)
                     for (const propertyColumn of property.propertyColumns) {
-                        this.addColumnQField(entity, property, this, propertyColumn.column)
+                        qEntityUtils.addColumnQField(entity, property, this, propertyColumn.column)
                     }
                 } else {
-                    qFieldOrRelation = this.addColumnQField(entity, property, this,
+                    qFieldOrRelation = qEntityUtils.addColumnQField(entity, property, this,
                         property.propertyColumns[0].column)
                 }
                 this[property.name] = qFieldOrRelation
@@ -157,7 +160,9 @@ export class QEntityUtils implements IQEntityUtils {
             (<any>QEntityIdRelation).base.constructor.call(
                 this, relation, qEntity, appliationUtils, relationManager)
 
-            this.getQEntityIdFields(this, entity, qEntity, relation.property)
+            const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS)
+
+            qEntityUtils.getQEntityIdFields(this, entity, qEntity, relation.property)
 
             // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
         }
@@ -217,7 +222,10 @@ export class QEntityUtils implements IQEntityUtils {
         relationEntity.properties.forEach((
             property: DbProperty
         ) => {
-            if (!property.isId) {
+            if (!property.isId && relationEntity.isAirEntity) {
+                // Internal (non-AIR entity) relations may join by non-@Id()
+                // Fields.  For example Repository.parentRepository
+                // & RepositoryReference join across repositories on GUIDs.
                 return
             }
             let qFieldOrRelation
@@ -227,19 +235,30 @@ export class QEntityUtils implements IQEntityUtils {
             if (property.relation && property.relation.length) {
                 const relation = property.relation[0]
                 const relationColumns = relation.manyRelationColumns
+                let hasMatchingColumns = false
                 for (const relationColumn of relationColumns) {
-                    const originalColumn = relationColumnMap.get(relationColumn.manyColumn)
-                    // Remove the mapping of the parent relation
-                    relationColumnMap.delete(relationColumn.manyColumn)
-                    // And replace it with the nested relation
-                    relationColumnMap.set(relationColumn.oneColumn,
-                        originalColumn)
+                    if (relationColumnMap.has(relationColumn.manyColumn)) {
+                        hasMatchingColumns = true
+                        const originalColumn = relationColumnMap.get(relationColumn.manyColumn)
+                        // Remove the mapping of the parent relation
+                        relationColumnMap.delete(relationColumn.manyColumn)
+                        // And replace it with the nested relation
+                        relationColumnMap.set(relationColumn.oneColumn,
+                            originalColumn)
+                    }
                 }
-
+                if (!hasMatchingColumns) {
+                    return
+                }
                 qFieldOrRelation = this.getQEntityIdFields(
                     {}, relation.relationEntity, qEntity,
                     parentProperty, relationColumnMap)
             } else {
+                if (!relationColumnMap.has(property.propertyColumns[0].column)) {
+                    // Only happens in internal (non-AIR entity) relations that do not
+                    // rely on @Id() fields
+                    return
+                }
                 const originalColumn = relationColumnMap.get(property.propertyColumns[0].column)
                 qFieldOrRelation = this.getColumnQField(relationEntity,
                     parentProperty, qEntity as IQEntityInternal, originalColumn)

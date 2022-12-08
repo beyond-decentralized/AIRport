@@ -92,6 +92,7 @@ AIRPORT_DATABASE.setDependencies({
 APPLICATION_UTILS.setDependencies({
 	airportDatabase: AIRPORT_DATABASE,
 	entityStateManager: ENTITY_STATE_MANAGER,
+	qEntityUtils: Q_ENTITY_UTILS,
 	utils: UTILS
 })
 DATABASE_FACADE.setDependencies({

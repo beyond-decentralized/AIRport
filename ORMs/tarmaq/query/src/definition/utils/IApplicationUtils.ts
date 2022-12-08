@@ -11,10 +11,10 @@ import {
 import { QEntityConstructor } from '../../implementation/core/entity/Entity';
 import {
   IEntityIdProperties,
-  IQEntity,
-  IQEntityInternal,
+  IQEntity
 } from '../core/entity/Entity';
 import { IQFieldInternal } from '../core/field/Field';
+import { IQEntityUtils } from './IQEntityUtils';
 
 export interface ManyToOneColumnMapping {
   tableIndex: number;

@@ -20,7 +20,6 @@ import {
 	IdKeysByIdColumnIndex,
 	IEntityIdProperties,
 	IQEntity,
-	IQEntityInternal,
 	IQFieldInternal,
 	isY,
 	QEntityConstructor,

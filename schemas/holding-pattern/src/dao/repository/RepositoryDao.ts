@@ -69,7 +69,7 @@ export class RepositoryDao
 			FROM: [
 				r = Q.Repository
 			],
-			WHERE: r.parentRepository._localId.IS_NULL()
+			WHERE: r.parentRepository.IS_NULL()
 		})
 	}
 

@@ -1,8 +1,8 @@
 import { IEntityQueryDatabaseFacade } from "./definition/core/IEntityQueryDatabaseFacade"
-import { IQEntityUtils } from "./definition/core/IQEntityUtils"
+import { IQEntityUtils } from "./definition/utils/IQEntityUtils"
 import { IEntityUtils } from "./definition/utils/IEntityUtils"
 import { IQueryUtils } from "./definition/utils/IQueryUtils"
-import { QEntityUtils } from "./implementation/core/QEntityUtils"
+import { QEntityUtils } from "./implementation/utils/QEntityUtils"
 import { tarmaqQuery } from "./library"
 
 // Separating core-tokens from tokens removes circular dependencies
