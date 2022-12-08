@@ -279,10 +279,16 @@ export abstract class SQLWhereBase
 				let valueOperation = <JSONValueOperation>operation
 				let lValueSql = this.getFieldValue(
 					valueOperation.l, ClauseType.WHERE_CLAUSE, null, context)
-				let rValueSql = this.getFieldValue(
-					valueOperation.r, ClauseType.WHERE_CLAUSE, null, context)
-				let rValueWithOperator = this.applyOperator(valueOperation.o, rValueSql)
-				whereFragment += `${lValueSql}${rValueWithOperator}`
+				if (valueOperation.o === SqlOperator.IS_NOT_NULL
+					|| valueOperation.o === SqlOperator.IS_NULL) {
+					let operator = this.applyOperator(valueOperation.o, null)
+					whereFragment += `${lValueSql}${operator}`
+				} else {
+					let rValueSql = this.getFieldValue(
+						valueOperation.r, ClauseType.WHERE_CLAUSE, null, context)
+					let rValueWithOperator = this.applyOperator(valueOperation.o, rValueSql)
+					whereFragment += `${lValueSql}${rValueWithOperator}`
+				}
 				break
 			case OperationCategory.FUNCTION:
 				let functionOperation = <JSONFunctionOperation><any>operation

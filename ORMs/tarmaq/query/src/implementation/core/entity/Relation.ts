@@ -50,32 +50,11 @@ QRelation.prototype.LEFT_JOIN = function <IQ extends IQEntityInternal>(): IQ {
 }
 
 QRelation.prototype.IS_NULL = function (): JSONBaseOperation {
-	const dbRelation: DbRelation = this.dbRelation
-	const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS)
-
-	const operations = []
-	for (const propertyColumn of dbRelation.property.propertyColumns) {
-		const columnField = qEntityUtils.getColumnQField(
-			dbRelation.entity,
-			dbRelation.property,
-			this.parentQ,
-			propertyColumn.column)
-		operations.push(columnField.IS_NULL())
-	}
-
-	if (operations.length > 1) {
-		return OR(...operations)
-	}
-
-	return operations[0]
+	return this.nullOrNot(true)
 }
 
 QRelation.prototype.IS_NOT_NULL = function (): JSONBaseOperation {
-	return AND(
-		this.actor._localId.IS_NOT_NULL(),
-		this.repository._localId.IS_NOT_NULL(),
-		this._actorRecordId.IS_NOT_NULL(),
-	)
+	return this.nullOrNot(false)
 }
 
 QRelation.prototype.nullOrNot = function (

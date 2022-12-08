@@ -192,6 +192,10 @@ export class QueryUtils
 				let jsonValueOperation: JSONValueOperation = <JSONValueOperation>jsonOperation
 				jsonValueOperation.l = this.convertLRValue(
 					valueOperation.l, columnAliases)
+				if (operation.o === SqlOperator.IS_NOT_NULL
+					|| operation.o === SqlOperator.IS_NULL) {
+					break
+				}
 				let rValue = valueOperation.r
 				if (rValue instanceof Array) {
 					jsonValueOperation.r = rValue.map((anRValue) => {

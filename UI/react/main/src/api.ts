@@ -40,7 +40,7 @@ async function getRepositoriesAsync(
     showMessage: (message: string, duration: number) => void
 ) {
     try {
-        const repositories = await airportApi.getAllRepositories()
+        const repositories = await airportApi.getRootRepositories()
         setRepositories(repositories)
     } catch (e) {
         console.error(e)

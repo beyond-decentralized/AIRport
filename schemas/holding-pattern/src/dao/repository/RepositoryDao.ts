@@ -26,23 +26,29 @@ import { Repository_GUID, Repository_LocalId, Repository_Source } from '../../ty
 export interface IRepositoryDao
 	extends IBaseRepositoryDao {
 
-	getRepositoryLoadInfo(
-		repositorySource: Repository_Source,
-		repositoryGUID: Repository_GUID,
-		context: IContext
-	): Promise<IRepository>
+	findByGUIDs(
+		repositoryGUIDs: Repository_GUID[],
+	): Promise<IRepository[]>
+
+	findChildRepositories(
+		parentGUID: Repository_GUID
+	): Promise<Repository[]>
+
+	findRootRepositories(): Promise<Repository[]>
 
 	findWithOwnerBy_LocalIds(
 		repositoryIds: Repository_LocalId[]
 	): Promise<IRepository[]>;
 
-	findByGUIDs(
-		repositoryGUIDs: Repository_GUID[],
-	): Promise<IRepository[]>
-
 	findWithOwnerBy_LocalIdIn(
 		repository_localIds: Repository_LocalId[]
 	): Promise<IRepository[]>
+
+	getRepositoryLoadInfo(
+		repositorySource: Repository_Source,
+		repositoryGUID: Repository_GUID,
+		context: IContext
+	): Promise<IRepository>
 
 	insert(
 		repositories: IRepository[],

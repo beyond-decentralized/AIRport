@@ -2,6 +2,7 @@ import { IOC } from "@airport/direction-indicator";
 import { Application, APPLICATION_DAO } from '@airport/airspace/dist/app/bundle';
 import { Repository, REPOSITORY_DAO } from '@airport/holding-pattern/dist/app/bundle';
 import { IUserAccountInfo, TERMINAL_SESSION_MANAGER } from '@airport/terminal-map'
+import { Repository_GUID } from "@airport/holding-pattern";
 
 export class AIRportApi {
 
@@ -11,10 +12,18 @@ export class AIRportApi {
         return await applicationDao.findAll()
     }
 
-    async getAllRepositories(): Promise<Repository[]> {
+    async getRootRepositories(): Promise<Repository[]> {
         const repositoryDao = await IOC.get(REPOSITORY_DAO)
 
-        return await repositoryDao.findAll()
+        return await repositoryDao.findRootRepositories()
+    }
+
+    async getChildRepositories(
+        parentGUID: Repository_GUID
+    ): Promise<Repository[]> {
+        const repositoryDao = await IOC.get(REPOSITORY_DAO)
+
+        return await repositoryDao.findChildRepositories(parentGUID)
     }
 
     async signUp(
