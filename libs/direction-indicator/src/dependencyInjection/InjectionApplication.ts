@@ -64,3 +64,6 @@ export function lib(
 ): IInjectionApplication {
 	return AIRPORT_DOMAIN.app(libraryName)
 }
+
+globalThis.InjectionApplication = InjectionApplication
+globalThis.lib = lib

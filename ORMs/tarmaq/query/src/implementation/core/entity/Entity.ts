@@ -65,7 +65,7 @@ export declare namespace QEntity {
 
 export interface QEntityConstructor<IQE extends IQEntity> {
 
-	new (
+	new(
 		dbEntity: DbEntity,
 		applicationUtils: IApplicationUtils,
 		relationManager: IRelationManager,
@@ -343,3 +343,5 @@ export class QEntityDriver<IQE extends IQEntity = any>
 
 }
 
+globalThis.QEntity = QEntity
+globalThis.QEntityDriver = QEntityDriver

@@ -24,10 +24,5 @@ export * from './Context'
 export * from './extend'
 export * from './tokens'
 
-if (typeof window !== 'undefined') {
-    (window as any).DEPENDENCY_INJECTION = DEPENDENCY_INJECTION;
-    (window as any).lib = lib;
-    (window as any).domain = domain
-}
-
 export const IOC: InversionOfControl = new InversionOfControl();
+globalThis.IOC = IOC

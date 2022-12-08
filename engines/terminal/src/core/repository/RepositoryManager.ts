@@ -78,18 +78,18 @@ already contains a new repository.`)
 	}
 
 	async setUiEntryUri(
-        uiEntryUri: string,
-        repository: Repository
-    ): Promise<void> {
+		uiEntryUri: string,
+		repository: Repository
+	): Promise<void> {
 		const userSession = await this.terminalSessionManager.getUserSession()
 
-		if(userSession.currentTransaction.actor.application.fullName !== repository.fullApplicationName) {
+		if (userSession.currentTransaction.actor.application.fullName !== repository.fullApplicationName) {
 			throw new Error(`Only the Application that created a repository may change the uiEntityUri.`);
 		}
 
 		repository.uiEntryUri = uiEntryUri
-        await this.repositoryDao.save(repository)
-    }
+		await this.repositoryDao.save(repository)
+	}
 
 	goOffline(): void {
 		throw new Error(`not implemented`)
@@ -118,13 +118,14 @@ already contains a new repository.`)
 		const repository: Repository = {
 			_localId: null,
 			ageSuitability: 0,
+			childRepositories: [],
 			createdAt: new Date(),
 			fullApplicationName: actor.application.fullName,
 			immutable: false,
 			name,
 			owner: actor.userAccount as any,
-			// platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
-			// platformConfig: null,
+			parentRepository: null,
+			repositoryReferences: [],
 			repositoryTransactionHistory: [],
 			// FIXME: propage the 
 			source: 'localhost:9000',

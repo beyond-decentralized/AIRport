@@ -3,6 +3,7 @@ import { Inject, Injected } from "@airport/direction-indicator";
 import { IRepositoryManager } from '../../core/RepositoryManager';
 import { RepositoryDao } from "../../dao/dao";
 import { Repository } from "../../ddl/ddl";
+import { Repository_GUID } from '../../types';
 
 @Injected()
 export class RepositoryApi {
@@ -14,8 +15,15 @@ export class RepositoryApi {
     repositoryManager: IRepositoryManager
 
     @Api()
-    async findAll(): Promise<Repository[]> {
-        return await this.repositoryDao.findAll()
+    async findRootRepositories(): Promise<Repository[]> {
+        return await this.repositoryDao.findRootRepositories()
+    }
+
+    @Api()
+    async findChildRepositories(
+        parentGUID: Repository_GUID
+    ): Promise<Repository[]> {
+        return await this.repositoryDao.findChildRepositories(parentGUID)
     }
 
     @Api()

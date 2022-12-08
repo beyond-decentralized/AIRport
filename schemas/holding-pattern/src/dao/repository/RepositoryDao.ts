@@ -10,7 +10,7 @@ import {
 	UserAccount_GUID
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
-	Actor_GUID,
+	Actor_GUID, Repository,
 } from '../../ddl/ddl'
 import {
 	BaseRepositoryDao,
@@ -60,6 +60,34 @@ export type RepositoryIdMap = Map<UserAccount_GUID,
 export class RepositoryDao
 	extends BaseRepositoryDao
 	implements IRepositoryDao {
+
+	async findRootRepositories(): Promise<Repository[]> {
+		let r: QRepository
+
+		return await this._find({
+			SELECT: {},
+			FROM: [
+				r = Q.Repository
+			],
+			WHERE: r.parentRepository._localId.IS_NULL()
+		})
+	}
+
+	async findChildRepositories(
+		parentGUID: Repository_GUID
+	): Promise<Repository[]> {
+		let r: QRepository,
+			pr: QRepository
+
+		return await this._find({
+			SELECT: {},
+			FROM: [
+				r = Q.Repository,
+				pr = r.parentRepository.LEFT_JOIN()
+			],
+			WHERE: pr.GUID.equals(parentGUID)
+		})
+	}
 
 	async getRepositoryLoadInfo(
 		repositorySource: Repository_Source,

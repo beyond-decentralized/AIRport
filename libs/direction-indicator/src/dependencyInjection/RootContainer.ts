@@ -73,3 +73,5 @@ export class RootContainer
 }
 
 export const DEPENDENCY_INJECTION: IRootContainer = new RootContainer();
+globalThis.RootContainer = RootContainer
+globalThis.DEPENDENCY_INJECTION = DEPENDENCY_INJECTION

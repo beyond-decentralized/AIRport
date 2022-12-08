@@ -74,3 +74,5 @@ export function domain(
 }
 
 export const AIRPORT_DOMAIN: IInjectionDomain = domain('airport')
+globalThis.domain = domain
+globalThis.InjectionDomain = InjectionDomain

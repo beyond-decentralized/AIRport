@@ -16,6 +16,10 @@ export interface IQRelation<IQ extends IQEntity> {
 	// Left join on this Many-To-One or One-To-Many relation
 	LEFT_JOIN(): IQ;
 
+	IS_NULL(): JSONLogicalOperation
+
+	IS_NOT_NULL(): JSONLogicalOperation
+
 	/*
 	UPDATE a
 	SET b = 1
@@ -32,10 +36,6 @@ export interface IQAirEntityRelation<Entity, IQ extends IQEntity>
 	// 	entity: Entity | IQEntity | IQAirEntityRelation<Entity, IQ>
 	// 		| AirEntityId | string
 	// ): JSONLogicalOperation
-
-	IS_NULL(): JSONLogicalOperation
-
-	IS_NOT_NULL(): JSONLogicalOperation
 
 }
 

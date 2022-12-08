@@ -10,7 +10,8 @@ import {
 	IApplicationUtils,
 	IFieldUtils,
 	IRelationManager,
-	QUERY_UTILS
+	QUERY_UTILS,
+	Q_ENTITY_UTILS
 } from '@airport/tarmaq-query'
 import {
 	DATABASE_FACADE,
@@ -32,6 +33,8 @@ import { IQMetadataUtils } from './definition/utils/IQMetadataUtils'
 import { RelationManager } from './implementation/RelationManager'
 import { IRepositoryLoader } from './definition/RepositoryLoader'
 import { UTILS } from './core-tokens'
+import { IQApplicationBuilderUtils } from './definition/utils/IQApplicationBuilderUtils'
+import { QApplicationBuilderUtils } from './implementation/utils/QApplicationBuilderUtils'
 
 export const AIRPORT_DATABASE = airTrafficControl.token<IAirportDatabase>({
 	class: null,
@@ -52,6 +55,11 @@ export const FIELD_UTILS = airTrafficControl.token<IFieldUtils>({
 	class: FieldUtils,
 	interface: 'IFieldUtils',
 	token: 'FIELD_UTILS'
+})
+export const Q_APPLICATION_BUILDER_UTILS = airTrafficControl.token<IQApplicationBuilderUtils>({
+	class: QApplicationBuilderUtils,
+	interface: 'IQApplicationBuilderUtils',
+	token: 'Q_APPLICATION_BUILDER_UTILS'
 })
 export const Q_METADATA_UTILS = airTrafficControl.token<IQMetadataUtils>({
 	class: QMetadataUtils,
@@ -76,6 +84,7 @@ AIRPORT_DATABASE.setDependencies({
 	dbApplicationUtils: DB_APPLICATION_UTILS,
 	find: NON_ENTITY_FIND,
 	findOne: NON_ENTITY_FIND_ONE,
+	qApplicationBuilderUtils: Q_APPLICATION_BUILDER_UTILS,
 	relationManager: RELATION_MANAGER,
 	search: NON_ENTITY_SEARCH,
 	searchOne: NON_ENTITY_SEARCH_ONE
@@ -98,6 +107,9 @@ LOOKUP.setDependencies({
 	entityUtils: ENTITY_UTILS,
 	queryFacade: QUERY_FACADE
 })
+Q_APPLICATION_BUILDER_UTILS.setDependencies({
+	qEntityUtils: Q_ENTITY_UTILS
+})
 QUERY_FACADE.setDependencies({
 	fieldUtils: FIELD_UTILS,
 	queryUtils: QUERY_UTILS,
@@ -117,3 +129,12 @@ UPDATE_CACHE_MANAGER.setDependencies({
 	applicationUtils: APPLICATION_UTILS,
 	entityStateManager: ENTITY_STATE_MANAGER,
 })
+
+globalThis.AIRPORT_DATABASE = AIRPORT_DATABASE
+globalThis.APPLICATION_UTILS = APPLICATION_UTILS
+globalThis.DATABASE_STORE = DATABASE_STORE
+globalThis.FIELD_UTILS = FIELD_UTILS
+globalThis.Q_APPLICATION_BUILDER_UTILS = Q_APPLICATION_BUILDER_UTILS
+globalThis.Q_METADATA_UTILS = Q_METADATA_UTILS
+globalThis.RELATION_MANAGER = RELATION_MANAGER
+globalThis.REPOSITORY_LOADER = REPOSITORY_LOADER

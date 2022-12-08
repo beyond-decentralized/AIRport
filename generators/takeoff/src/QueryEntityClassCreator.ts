@@ -1,8 +1,7 @@
 import {
 	IAirportDatabase,
-	orderApplicationsInOrderOfPrecedence,
-	QAppInternal,
-	setQAppEntities
+	IQApplicationBuilderUtils,
+	QAppInternal
 } from '@airport/air-traffic-control'
 import {
 	QApp
@@ -26,13 +25,16 @@ export class QueryEntityClassCreator
 	@Inject()
 	applicationUtils: IApplicationUtils
 
+	qApplicationBuilderUtils: IQApplicationBuilderUtils
+
 	@Inject()
 	relationManager: IRelationManager
 
 	createAll(
 		applications: IApplication[]
 	): void {
-		const applicationsToCreate = orderApplicationsInOrderOfPrecedence(<any>applications)
+		const applicationsToCreate = this.qApplicationBuilderUtils
+			.orderApplicationsInOrderOfPrecedence(<any>applications)
 		applicationsToCreate.map(
 			dbApplication => this.create(dbApplication))
 	}
@@ -55,7 +57,7 @@ export class QueryEntityClassCreator
 			this.airportDatabase.QM[dbApplication.fullName] = qApplication
 		}
 		this.airportDatabase.Q[dbApplication.index] = qApplication
-		setQAppEntities(dbApplication, qApplication,
+		this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication,
 			this.airportDatabase.qApplications,
 			this.applicationUtils, this.relationManager)
 

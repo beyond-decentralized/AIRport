@@ -57,3 +57,5 @@ DATABASE_FACADE.setDependencies({
 })
 
 QUERY_FACADE.setClass(QueryFacade);
+
+globalThis.ENTITY_COPIER = ENTITY_COPIER

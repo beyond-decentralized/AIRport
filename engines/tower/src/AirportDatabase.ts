@@ -3,7 +3,7 @@ import {
 	IDatabaseState,
 	IEntityAccumulator,
 	IEntityRecord,
-	setQAppEntities
+	IQApplicationBuilderUtils
 } from '@airport/air-traffic-control';
 import { QApp } from '@airport/aviation-communication'
 import {
@@ -88,6 +88,9 @@ export class AirportDatabase
 	findOne: INonEntityFindOne
 
 	@Inject()
+	qApplicationBuilderUtils: IQApplicationBuilderUtils
+
+	@Inject()
 	relationManager: IRelationManager
 
 	@Inject()
@@ -140,7 +143,7 @@ export class AirportDatabase
 		if (existingQApp) {
 			const dbApplication = existingQApp.__dbApplication__
 			qApplication.__dbApplication__ = dbApplication
-			setQAppEntities(dbApplication, qApplication, this.qApplications,
+			this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.qApplications,
 				this.appliationUtils, this.relationManager)
 			this.Q[dbApplication.index] = qApplication
 		}

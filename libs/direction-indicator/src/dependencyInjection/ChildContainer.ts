@@ -612,3 +612,4 @@ export class ChildContainer
     }
 
 }
+globalThis.ChildContainer = ChildContainer

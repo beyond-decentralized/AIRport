@@ -21,3 +21,8 @@ export const INTER_APP_API_CLIENT = directionIndicator.token<IInterAppAPIClient>
     interface: 'IInterAppAPIClient',
     token: 'INTER_APP_API_CLIENT'
 })
+globalThis.AUTOPILOT_API_LOADER = AUTOPILOT_API_LOADER
+globalThis.CONTAINER_ACCESSOR = CONTAINER_ACCESSOR
+globalThis.INTER_APP_API_CLIENT = INTER_APP_API_CLIENT
+
+

@@ -1,4 +1,4 @@
-import {
+  import {
 	Column,
 	DbDate,
 	DbNumber,
@@ -38,6 +38,7 @@ import {
 	Repository_UiEntryUri
 } from "../../types";
 import { FullApplication_Name } from "@airport/ground-control";
+import { RepositoryReference } from "./RepositoryReference";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -54,7 +55,7 @@ export class Repository
 	@GeneratedValue()
 	@Id()
 	@DbNumber()
-	_localId: Repository_LocalId
+	_localId: Repository_LocalId = null;
 
 	@Column({ name: "GUID", nullable: false })
 	@DbString()
@@ -95,8 +96,12 @@ export class Repository
 	})
 	owner: UserAccount;
 
-	@OneToMany({ mappedBy: 'repository' })
-	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];
+	@ManyToOne()
+	@JoinColumn({
+		name: 'PARENT_REPOSITORY_GUID',
+		referencedColumnName: 'GUID'
+	})
+	parentRepository: Repository
 
 	@ManyToOne()
 	@JoinColumn({
@@ -125,6 +130,15 @@ export class Repository
 		referencedColumnName: 'METRO_AREA_ID', nullable: true
 	})
 	metroArea?: MetroArea
+
+	@OneToMany({ mappedBy: 'parentRepository' })
+	childRepositories: Repository[] = []
+
+	@OneToMany({ mappedBy: 'referencingRepository' })
+	repositoryReferences: RepositoryReference[] = []
+
+	@OneToMany({ mappedBy: 'repository' })
+	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryApplications?: RepositoryApplication[] = []

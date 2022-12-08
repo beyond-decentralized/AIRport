@@ -1,12 +1,15 @@
-import { extend } from '@airport/direction-indicator'
+import { extend, IOC } from '@airport/direction-indicator'
 import {
 	DbRelation,
 	JoinType,
+	JSONBaseOperation,
 } from '@airport/ground-control'
+import { isN } from '../../../../dist/esm'
 import { IQEntityInternal } from '../../../definition/core/entity/Entity'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { JSONLogicalOperation } from '../../../definition/core/operation/LogicalOperation'
 import { IApplicationUtils } from '../../../definition/utils/IApplicationUtils'
+import { Q_ENTITY_UTILS } from '../../../tokens'
 import { AND, OR } from '../operation/LogicalOperation'
 
 /**
@@ -44,6 +47,64 @@ QRelation.prototype.LEFT_JOIN = function <IQ extends IQEntityInternal>(): IQ {
 	this.parentQ.__driver__.childQEntities.push(newQEntity)
 
 	return newQEntity
+}
+
+QRelation.prototype.IS_NULL = function (): JSONBaseOperation {
+	const dbRelation: DbRelation = this.dbRelation
+	const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS)
+
+	const operations = []
+	for (const propertyColumn of dbRelation.property.propertyColumns) {
+		const columnField = qEntityUtils.getColumnQField(
+			dbRelation.entity,
+			dbRelation.property,
+			this.parentQ,
+			propertyColumn.column)
+		operations.push(columnField.IS_NULL())
+	}
+
+	if (operations.length > 1) {
+		return OR(...operations)
+	}
+
+	return operations[0]
+}
+
+QRelation.prototype.IS_NOT_NULL = function (): JSONBaseOperation {
+	return AND(
+		this.actor._localId.IS_NOT_NULL(),
+		this.repository._localId.IS_NOT_NULL(),
+		this._actorRecordId.IS_NOT_NULL(),
+	)
+}
+
+QRelation.prototype.nullOrNot = function (
+	isNull: boolean
+): JSONBaseOperation {
+	const dbRelation: DbRelation = this.dbRelation
+	const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS)
+
+	const operations = []
+	for (const propertyColumn of dbRelation.property.propertyColumns) {
+		const columnField = qEntityUtils.getColumnQField(
+			dbRelation.entity,
+			dbRelation.property,
+			this.parentQ,
+			propertyColumn.column)
+		operations.push(isNull
+			? columnField.IS_NULL()
+			: columnField.IS_NOT_NULL())
+	}
+
+	if (operations.length > 1) {
+		if (isNull) {
+			return OR(...operations)
+		} else {
+			return AND(...operations)
+		}
+	}
+
+	return operations[0]
 }
 
 QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinType: JoinType): IQ {
@@ -84,20 +145,8 @@ export const qAirEntityRelationMethods = {
 	// ): JSONLogicalOperation {
 	// 	return IOC.getSync(QUERY_UTILS).equals(entity, this)
 	// }
-
-	IS_NULL(): JSONLogicalOperation {
-		return OR(
-			this.actor._localId.IS_NULL(),
-			this.repository._localId.IS_NULL(),
-			this._actorRecordId.IS_NULL(),
-		)
-	},
-	IS_NOT_NULL(): JSONLogicalOperation {
-		return AND(
-			this.actor._localId.IS_NOT_NULL(),
-			this.repository._localId.IS_NOT_NULL(),
-			this._actorRecordId.IS_NOT_NULL(),
-		)
-	}
 }
 extend(QRelation, QAirEntityRelation, qAirEntityRelationMethods)
+
+globalThis.QRelation = QRelation
+globalThis.QAirEntityRelation = QAirEntityRelation
