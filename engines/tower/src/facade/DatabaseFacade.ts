@@ -159,7 +159,7 @@ export class DatabaseFacade
 		if (!entity) {
 			return null
 		}
-		const entityCopy = await this.preSaveOperations(entity, context)
+		const entityCopy = await this.preSaveOperations(entity, context, this.transactionalConnector.internal)
 
 		const saveResult = await this.transactionalConnector.save(entityCopy, context)
 
@@ -177,7 +177,7 @@ export class DatabaseFacade
 		if (!entity) {
 			return null
 		}
-		const entityCopy = await this.preSaveOperations(entity, context)
+		const entityCopy = await this.preSaveOperations(entity, context, this.transactionalConnector.internal)
 
 		const saveResult = await this.transactionalConnector
 			.saveToDestination(repositoryDestination, entityCopy, context)
@@ -191,6 +191,7 @@ export class DatabaseFacade
 	private async preSaveOperations<E>(
 		entity: E,
 		context: IEntityContext,
+		checkGeneratedIds: boolean
 	): Promise<E> {
 		if (!entity) {
 			return null
@@ -199,7 +200,7 @@ export class DatabaseFacade
 		const dbEntity = context.dbEntity;
 		const entityCopy = this.entityCopier
 			.copyEntityForProcessing(entity, dbEntity, this.entityStateManager, context)
-		this.updateCacheManager.setOperationState(entityCopy, dbEntity, new Set())
+		this.updateCacheManager.setOperationState(entityCopy, dbEntity, new Set(), checkGeneratedIds)
 
 		return entityCopy
 	}

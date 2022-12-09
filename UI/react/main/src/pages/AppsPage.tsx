@@ -33,9 +33,9 @@ const AppsPage: React.FC = () => {
         </IonFab>
         {applications.map(application =>
           <IonItem key={application.fullName}>
-            Domain: {application.domain.name}
+            {application.domain.name}
             <br />
-            Name: {application.name}
+            {application.name}
           </IonItem>
         )}
       </IonContent>

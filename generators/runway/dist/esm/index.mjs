@@ -3961,20 +3961,10 @@ QRelation.prototype.LEFT_JOIN = function () {
     return newQEntity;
 };
 QRelation.prototype.IS_NULL = function () {
-    const dbRelation = this.dbRelation;
-    const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS);
-    const operations = [];
-    for (const propertyColumn of dbRelation.property.propertyColumns) {
-        const columnField = qEntityUtils.getColumnQField(dbRelation.entity, dbRelation.property, this.parentQ, propertyColumn.column);
-        operations.push(columnField.IS_NULL());
-    }
-    if (operations.length > 1) {
-        return OR(...operations);
-    }
-    return operations[0];
+    return this.nullOrNot(true);
 };
 QRelation.prototype.IS_NOT_NULL = function () {
-    return AND(this.actor._localId.IS_NOT_NULL(), this.repository._localId.IS_NOT_NULL(), this._actorRecordId.IS_NOT_NULL());
+    return this.nullOrNot(false);
 };
 QRelation.prototype.nullOrNot = function (isNull) {
     const dbRelation = this.dbRelation;
@@ -4561,16 +4551,17 @@ let QEntityUtils = class QEntityUtils {
         // ChildQEntity refers to the constructor
         var ChildQEntity = function (entity, applicationUtils, relationManager, nextChildJoinPosition, dbRelation, joinType) {
             ChildQEntity.base.constructor.call(this, entity, applicationUtils, relationManager, nextChildJoinPosition, dbRelation, joinType);
+            const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS);
             entity.properties.forEach((property) => {
                 let qFieldOrRelation;
                 if (property.relation && property.relation.length) {
-                    qFieldOrRelation = this.getQRelation(entity, property, this, allQApps, applicationUtils, relationManager);
+                    qFieldOrRelation = qEntityUtils.getQRelation(entity, property, this, allQApps, applicationUtils, relationManager);
                     for (const propertyColumn of property.propertyColumns) {
-                        this.addColumnQField(entity, property, this, propertyColumn.column);
+                        qEntityUtils.addColumnQField(entity, property, this, propertyColumn.column);
                     }
                 }
                 else {
-                    qFieldOrRelation = this.addColumnQField(entity, property, this, property.propertyColumns[0].column);
+                    qFieldOrRelation = qEntityUtils.addColumnQField(entity, property, this, property.propertyColumns[0].column);
                 }
                 this[property.name] = qFieldOrRelation;
             });
@@ -4597,7 +4588,8 @@ let QEntityUtils = class QEntityUtils {
     getQEntityIdRelationConstructor(dbEntity) {
         function QEntityIdRelation(entity, relation, qEntity, appliationUtils, relationManager) {
             QEntityIdRelation.base.constructor.call(this, relation, qEntity, appliationUtils, relationManager);
-            this.getQEntityIdFields(this, entity, qEntity, relation.property);
+            const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS);
+            qEntityUtils.getQEntityIdFields(this, entity, qEntity, relation.property);
             // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
         }
         const qEntityIdRelationMethods = {
@@ -4645,7 +4637,10 @@ let QEntityUtils = class QEntityUtils {
             }
         }
         relationEntity.properties.forEach((property) => {
-            if (!property.isId) {
+            if (!property.isId && relationEntity.isAirEntity) {
+                // Internal (non-AIR entity) relations may join by non-@Id()
+                // Fields.  For example Repository.parentRepository
+                // & RepositoryReference join across repositories on GUIDs.
                 return;
             }
             let qFieldOrRelation;
@@ -4653,16 +4648,28 @@ let QEntityUtils = class QEntityUtils {
             if (property.relation && property.relation.length) {
                 const relation = property.relation[0];
                 const relationColumns = relation.manyRelationColumns;
+                let hasMatchingColumns = false;
                 for (const relationColumn of relationColumns) {
-                    const originalColumn = relationColumnMap.get(relationColumn.manyColumn);
-                    // Remove the mapping of the parent relation
-                    relationColumnMap.delete(relationColumn.manyColumn);
-                    // And replace it with the nested relation
-                    relationColumnMap.set(relationColumn.oneColumn, originalColumn);
+                    if (relationColumnMap.has(relationColumn.manyColumn)) {
+                        hasMatchingColumns = true;
+                        const originalColumn = relationColumnMap.get(relationColumn.manyColumn);
+                        // Remove the mapping of the parent relation
+                        relationColumnMap.delete(relationColumn.manyColumn);
+                        // And replace it with the nested relation
+                        relationColumnMap.set(relationColumn.oneColumn, originalColumn);
+                    }
+                }
+                if (!hasMatchingColumns) {
+                    return;
                 }
                 qFieldOrRelation = this.getQEntityIdFields({}, relation.relationEntity, qEntity, parentProperty, relationColumnMap);
             }
             else {
+                if (!relationColumnMap.has(property.propertyColumns[0].column)) {
+                    // Only happens in internal (non-AIR entity) relations that do not
+                    // rely on @Id() fields
+                    return;
+                }
                 const originalColumn = relationColumnMap.get(property.propertyColumns[0].column);
                 qFieldOrRelation = this.getColumnQField(relationEntity, parentProperty, qEntity, originalColumn);
             }
@@ -9016,6 +9023,10 @@ let QueryUtils = class QueryUtils {
                 // etc.)
                 let jsonValueOperation = jsonOperation;
                 jsonValueOperation.l = this.convertLRValue(valueOperation.l, columnAliases);
+                if (operation.o === SqlOperator.IS_NOT_NULL
+                    || operation.o === SqlOperator.IS_NULL) {
+                    break;
+                }
                 let rValue = valueOperation.r;
                 if (rValue instanceof Array) {
                     jsonValueOperation.r = rValue.map((anRValue) => {
@@ -9324,6 +9335,7 @@ AIRPORT_DATABASE.setDependencies({
 APPLICATION_UTILS.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     entityStateManager: ENTITY_STATE_MANAGER,
+    qEntityUtils: Q_ENTITY_UTILS,
     utils: UTILS
 });
 DATABASE_FACADE.setDependencies({
@@ -11921,6 +11933,17 @@ APPLICATION_LOADER.setDependencies({
     terminalStore: TERMINAL_STORE,
     apiRegistry: API_REGISTRY,
 });
+globalThis.APPLICATION_INITIALIZER = APPLICATION_INITIALIZER;
+globalThis.DOMAIN_RETRIEVER = DOMAIN_RETRIEVER;
+globalThis.STORE_DRIVER = STORE_DRIVER;
+globalThis.TERMINAL_SESSION_MANAGER = TERMINAL_SESSION_MANAGER;
+globalThis.TERMINAL_STATE = TERMINAL_STATE;
+globalThis.TERMINAL_STORE = TERMINAL_STORE;
+globalThis.TRANSACTION_MANAGER = TRANSACTION_MANAGER;
+globalThis.TRANSACTIONAL_RECEIVER = TRANSACTIONAL_RECEIVER;
+globalThis.TRANSACTIONAL_SERVER = TRANSACTIONAL_SERVER;
+globalThis.USER_STATE = USER_STATE;
+globalThis.USER_STORE = USER_STORE;
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -14925,7 +14948,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             FROM: [
                 r = Q_airport____at_airport_slash_holding_dash_pattern.Repository
             ],
-            WHERE: r.parentRepository._localId.IS_NULL()
+            WHERE: r.parentRepository.IS_NULL()
         });
     }
     async findChildRepositories(parentGUID) {
@@ -27395,9 +27418,16 @@ let SQLWhereBase = class SQLWhereBase {
             case OperationCategory.UNTYPED:
                 let valueOperation = operation;
                 let lValueSql = this.getFieldValue(valueOperation.l, ClauseType.WHERE_CLAUSE, null, context);
-                let rValueSql = this.getFieldValue(valueOperation.r, ClauseType.WHERE_CLAUSE, null, context);
-                let rValueWithOperator = this.applyOperator(valueOperation.o, rValueSql);
-                whereFragment += `${lValueSql}${rValueWithOperator}`;
+                if (valueOperation.o === SqlOperator.IS_NOT_NULL
+                    || valueOperation.o === SqlOperator.IS_NULL) {
+                    let operator = this.applyOperator(valueOperation.o, null);
+                    whereFragment += `${lValueSql}${operator}`;
+                }
+                else {
+                    let rValueSql = this.getFieldValue(valueOperation.r, ClauseType.WHERE_CLAUSE, null, context);
+                    let rValueWithOperator = this.applyOperator(valueOperation.o, rValueSql);
+                    whereFragment += `${lValueSql}${rValueWithOperator}`;
+                }
                 break;
             case OperationCategory.FUNCTION:
                 let functionOperation = operation;

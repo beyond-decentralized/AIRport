@@ -85,6 +85,8 @@ export interface IAirEntity {
 
 export interface ITransactionalConnector {
 
+	internal: boolean
+
 	callApi(
 		apiInput: ICoreLocalApiRequest
 	): Promise<ILocalAPIResponse>

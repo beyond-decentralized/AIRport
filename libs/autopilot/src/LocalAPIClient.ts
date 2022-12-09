@@ -75,7 +75,7 @@ export class LocalAPIClient
 
         window.addEventListener("message", event => {
             const message: ILocalAPIResponse = event.data
-            if (message.__received__) {
+            if (!(message instanceof Object) || message.__received__) {
                 return
             }
             message.__received__ = true
@@ -131,7 +131,7 @@ export class LocalAPIClient
         args: any[]
     ): Promise<any> {
         while (!await this.isConnectionReady(token)) {
-            await this.wait(100)
+            await this.wait(301)
         }
 
         let serializedParams

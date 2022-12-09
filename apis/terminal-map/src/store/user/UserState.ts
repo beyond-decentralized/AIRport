@@ -1,9 +1,8 @@
 import { Injected } from "@airport/direction-indicator"
 import { IRootTransaction } from "@airport/ground-control"
-import { Actor } from "@airport/holding-pattern/dist/app/bundle"
 import { UserAccount } from "@airport/travel-document-checkpoint/dist/app/bundle"
 import { Subject } from "rxjs"
-import { ITransaction } from "../../../dist/esm"
+import { ITransaction } from "../../transaction/ITransaction"
 import { internalUserState } from "./theUserState"
 
 export interface IUserSession {
@@ -24,5 +23,5 @@ export interface IUserStateContainer {
 @Injected()
 export class UserState
     implements IUserStateContainer {
-        userState = internalUserState
+    userState = internalUserState
 }

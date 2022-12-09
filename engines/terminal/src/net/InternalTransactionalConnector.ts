@@ -29,6 +29,8 @@ export class InternalTransactionalConnector
     @Inject()
     transactionalServer: ITransactionalServer
 
+    internal = true
+
     callApi<Response>(
         _: ILocalAPIRequest
     ): Promise<Response> {

@@ -100,11 +100,12 @@ export class UpdateCacheManager
     setOperationState<E, T = E | E[]>(
         entityCopy: T,
         dbEntity: DbEntity,
-        processedEntities: Set<any>
+        processedEntities: Set<any>,
+        checkGeneratedIds: boolean
     ): void {
         if (entityCopy instanceof Array) {
             for (var i = 0; i < entityCopy.length; i++) {
-                this.setOperationState(entityCopy[i], dbEntity, processedEntities)
+                this.setOperationState(entityCopy[i], dbEntity, processedEntities, checkGeneratedIds)
             }
             return
         }
@@ -265,11 +266,17 @@ export class UpdateCacheManager
             const property = entityCopy[dbProperty.name]
             if (property && dbProperty.relation && dbProperty.relation.length) {
                 this.setOperationState(property, dbProperty.relation[0].relationEntity,
-                    processedEntities);
+                    processedEntities, checkGeneratedIds);
             }
         }
         if (!entityState) {
-            if ((hasId && hasGeneratedIds) || originalValuesObject) {
+            /**
+             * All records coming from Apps will have generated IDs
+             * Internal APIs create non-AirEntity records, which
+             * may not have framework generated Ids.
+             */
+            if ((hasId && (!checkGeneratedIds || hasGeneratedIds))
+                || originalValuesObject) {
                 entityState = EntityState.PASS_THROUGH
             } else {
                 entityState = EntityState.CREATE

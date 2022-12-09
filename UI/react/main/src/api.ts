@@ -28,17 +28,17 @@ async function getApplicationsAsync(
     }
 }
 
-export function getRepositories(
+export function getRootRepositories(
     setRepositories: (repositories: Repository[]) => void,
     showMessage: (message: string, duration: number) => void
 ) {
-    getRepositoriesAsync(setRepositories, showMessage).then()
+    getRootRepositoriesAsync(setRepositories, showMessage).then()
 }
 
-async function getRepositoriesAsync(
+async function getRootRepositoriesAsync(
     setRepositories: (repositories: Repository[]) => void,
     showMessage: (message: string, duration: number) => void
-) {
+): Promise<void> {
     try {
         const repositories = await airportApi.getRootRepositories()
         setRepositories(repositories)

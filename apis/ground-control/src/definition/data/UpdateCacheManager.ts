@@ -11,7 +11,8 @@ export interface IUpdateCacheManager {
     setOperationState<E, T = E | E[]>(
         entityCopy: T,
         dbEntity: DbEntity,
-        processedEntities: Set<any>
+        processedEntities: Set<any>,
+        checkGeneratedIds: boolean
     ): void
 
     afterSaveModifications<E, T = E | E[]>(

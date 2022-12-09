@@ -1,7 +1,7 @@
 import { Api } from "@airport/check-in";
 import { IUserAccount } from "../generated/entity/IUserAccount";
 import { UserAccountDao } from "../dao/UserAccountDao";
-import { Inject, Injected } from "@airport/direction-indicator";
+import { Inject, Injected, IOC } from "@airport/direction-indicator";
 
 @Injected()
 export class UserAccountApi {
@@ -13,6 +13,8 @@ export class UserAccountApi {
     async findUserAccount(
         privateId: string
     ): Promise<IUserAccount> {
+
+
         const userAccounts = await this.userAccountDao.findByGUIDs([privateId])
 
         if (userAccounts.length) {

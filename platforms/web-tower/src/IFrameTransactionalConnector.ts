@@ -87,6 +87,8 @@ export class IframeTransactionalConnector
 	@Inject()
 	terminalStore: ITerminalStore
 
+	internal = false
+
 	async processMessage(
 		message: IIsolateMessageOut<any> | ILocalAPIRequest,
 		origin: string
