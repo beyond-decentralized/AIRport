@@ -71,8 +71,7 @@ export class WebTransactionalReceiver
 	handleClientRequest(
 		message: ILocalAPIRequest
 	): void {
-
-		if (message.__received__) {
+		if (!(message instanceof Object) || message.__received__) {
 			return
 		}
 		message.__received__ = true

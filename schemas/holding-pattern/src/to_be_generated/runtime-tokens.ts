@@ -4,6 +4,7 @@ import { IRecordHistoryOldValueDao, RecordHistoryOldValueDao } from '../dao/hist
 import { IRepositoryTransactionHistoryDao, RepositoryTransactionHistoryDao } from '../dao/history/RepositoryTransactionHistoryDao'
 import { IActorDao, ActorDao } from '../dao/infrastructure/ActorDao'
 import { IRepositoryDao, RepositoryDao } from '../dao/repository/RepositoryDao'
+import { RepositoryNestingDao } from '../dao/repository/RepositoryNestingDao'
 import { IOperationHistoryDuo, OperationHistoryDuo } from '../duo/history/OperationHistoryDuo'
 import { IRecordHistoryDuo, RecordHistoryDuo } from '../duo/history/RecordHistoryDuo'
 import { IRecordHistoryNewValueDuo, RecordHistoryNewValueDuo } from '../duo/history/RecordHistoryNewValueDuo'
@@ -52,6 +53,11 @@ export const REPOSITORY_DAO = holdingPattern.token<IRepositoryDao>({
     class: RepositoryDao,
     interface: 'IRepositoryDao',
     token: 'REPOSITORY_DAO'
+})
+export const REPOSITORY_NESTING_DAO = holdingPattern.token<RepositoryNestingDao>({
+    class: RepositoryNestingDao,
+    interface: 'RepositoryNestingDao',
+    token: 'REPOSITORY_NESTING_DAO'
 })
 export const REPOSITORY_TRANSACTION_HISTORY_DAO = holdingPattern.token<IRepositoryTransactionHistoryDao>({
     class: RepositoryTransactionHistoryDao,

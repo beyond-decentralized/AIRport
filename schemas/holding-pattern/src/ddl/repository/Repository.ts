@@ -1,4 +1,4 @@
-  import {
+import {
 	Column,
 	DbDate,
 	DbNumber,
@@ -38,7 +38,7 @@ import {
 	Repository_UiEntryUri
 } from "../../types";
 import { FullApplication_Name } from "@airport/ground-control";
-import { RepositoryReference } from "./RepositoryReference";
+import { RepositoryNesting } from "./RepositoryNesting";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -132,10 +132,7 @@ export class Repository
 	metroArea?: MetroArea
 
 	@OneToMany({ mappedBy: 'parentRepository' })
-	childRepositories: Repository[] = []
-
-	@OneToMany({ mappedBy: 'referencingRepository' })
-	repositoryReferences: RepositoryReference[] = []
+	nestedRepositories: RepositoryNesting[] = []
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];

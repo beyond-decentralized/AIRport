@@ -16,17 +16,26 @@ export interface IRepositoryManager {
 
 	createRepository(
 		repositoryName: string,
+		parentRepository: Repository,
+		nestingType: string,
 		context: IContext
 	): Promise<Repository>;
+
+	addRepositoryNesting(
+		parentRepository: Repository,
+		childRepository: Repository,
+		nestingType: string,
+		context: IContext
+	): Promise<void>;
 
 	goOffline(): void;
 
 	getUpdateState(repository: IRepository): UpdateState;
 
 	setUiEntryUri(
-        uiEntryUri: string,
-        repository: Repository
-    ): Promise<void>
+		uiEntryUri: string,
+		repository: Repository
+	): Promise<void>
 
 	setUpdateStateForAll(updateState: UpdateState): void;
 

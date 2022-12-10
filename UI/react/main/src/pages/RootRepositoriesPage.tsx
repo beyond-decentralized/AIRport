@@ -3,35 +3,35 @@ import { IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonPage,
 import { refresh } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { getRootRepositories } from '../api';
-import './RepositoriesPage.css';
+import './RootRepositoriesPage.css';
 
 const RepositoriesPage: React.FC = () => {
-  const [repositories, setRepositories] = useState<Repository[]>([])
+  const [rootRepositories, setRootRepositories] = useState<Repository[]>([])
   const [present] = useIonToast()
 
   useEffect(() => {
-    getRootRepositories(setRepositories, present)
+    getRootRepositories(setRootRepositories, present)
   }, [])
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Repositories</IonTitle>
+          <IonTitle>Root Repositories</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Repositories</IonTitle>
+            <IonTitle size="large">Root Repositories</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton onClick={e => getRootRepositories(setRepositories, present)}>
+          <IonFabButton onClick={e => getRootRepositories(setRootRepositories, present)}>
             <IonIcon icon={refresh} />
           </IonFabButton>
         </IonFab>
-        {repositories.map(repository =>
+        {rootRepositories.map(repository =>
           <IonItem key={repository.GUID}>
             {repository.name}
           </IonItem>

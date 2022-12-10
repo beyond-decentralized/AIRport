@@ -2,6 +2,7 @@ import {
 	REPOSITORY_PROPERTY_NAME,
 } from '@airport/air-traffic-control'
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -9,9 +10,11 @@ import {
 	IActor,
 	IRepository,
 	IRepositoryDao,
+	RepositoryNestingDao,
 	IRepositoryManager,
 	QAirEntity,
 	Repository,
+	RepositoryNesting,
 	UpdateState
 } from '@airport/holding-pattern/dist/app/bundle' // default
 // import is reserved for Application use
@@ -51,6 +54,9 @@ export class RepositoryManager
 	repositoryDao: IRepositoryDao
 
 	@Inject()
+	repositoryNestingDao: RepositoryNestingDao
+
+	@Inject()
 	terminalSessionManager: ITerminalSessionManager
 
 	@Inject()
@@ -61,6 +67,8 @@ export class RepositoryManager
 
 	async createRepository(
 		repositoryName: string,
+		parentRepository: Repository,
+		nestingType: string,
 		context: IApiCallContext & ITransactionContext
 	): Promise<Repository> {
 		const userSession = await this.terminalSessionManager.getUserSession()
@@ -70,11 +78,57 @@ Attempting to create a new repository and Operation Context
 already contains a new repository.`)
 		}
 
-		let repository = await this.createRepositoryRecord(repositoryName, userSession.currentTransaction.actor, context)
+		let repository = await this.createRepositoryRecord(
+			repositoryName, parentRepository, userSession.currentTransaction.actor, context)
+
+		if (parentRepository) {
+			await this.doAddRepositoryNesting(
+				parentRepository,
+				repository,
+				nestingType,
+				false,
+				context)
+		}
 
 		userSession.currentRootTransaction.newRepository = repository
 
 		return repository
+	}
+
+	async addRepositoryNesting(
+		parentRepository: Repository,
+		childRepository: Repository,
+		nestingType: string,
+		context: IContext
+	): Promise<void> {
+		await this.doAddRepositoryNesting(
+			parentRepository,
+			childRepository,
+			nestingType,
+			true,
+			context)
+	}
+
+	async doAddRepositoryNesting(
+		parentRepository: Repository,
+		childRepository: Repository,
+		nestingType: string,
+		saveChildRepository: boolean,
+		context: IContext
+	): Promise<void> {
+		childRepository.parentRepository = parentRepository
+
+		const repositoryNesting = new RepositoryNesting()
+		repositoryNesting.parentRepository = parentRepository
+		repositoryNesting.childRepository = childRepository
+		repositoryNesting.nestingType = nestingType
+		parentRepository.nestedRepositories.push(repositoryNesting)
+
+		if (saveChildRepository) {
+			await this.repositoryDao.save(childRepository, context)
+		}
+
+		await this.repositoryNestingDao.save(repositoryNesting, context)
 	}
 
 	async setUiEntryUri(
@@ -118,14 +172,13 @@ already contains a new repository.`)
 		const repository: Repository = {
 			_localId: null,
 			ageSuitability: 0,
-			childRepositories: [],
 			createdAt: new Date(),
 			fullApplicationName: actor.application.fullName,
 			immutable: false,
 			name,
 			owner: actor.userAccount as any,
 			parentRepository: null,
-			repositoryReferences: [],
+			nestedRepositories: [],
 			repositoryTransactionHistory: [],
 			// FIXME: propage the 
 			source: 'localhost:9000',
@@ -138,10 +191,12 @@ already contains a new repository.`)
 
 	private async createRepositoryRecord(
 		name: string,
+		parentRepository: Repository,
 		actor: IActor,
 		context: IApiCallContext & ITransactionContext,
 	): Promise<Repository> {
 		const repository = this.getRepositoryRecord(name, actor)
+		repository.parentRepository = parentRepository
 
 		await this.repositoryDao.save(repository, context)
 
