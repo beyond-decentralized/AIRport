@@ -3431,7 +3431,11 @@ function serializeClass(symbol, className, path) {
                     numApiMethods++;
                     apiObject.operationMap[memberName] = {
                         isAsync: methodDescriptor.isAsync,
-                        parameters: []
+                        parameters: methodDescriptor.parameters.map(text => ({
+                            kind: undefined,
+                            isRest: false,
+                            text
+                        }))
                     };
                     apiClass.apiSignatures.push({
                         isAsync: methodDescriptor.isAsync,
@@ -14193,8 +14197,7 @@ AirEntity = __decorate$c([
 let Repository = class Repository {
     constructor() {
         this._localId = null;
-        this.childRepositories = [];
-        this.repositoryReferences = [];
+        this.nestedRepositories = [];
         this.repositoryTransactionHistory = [];
         this.repositoryApplications = [];
         this.repositoryClients = [];
@@ -14266,10 +14269,7 @@ __decorate$c([
 ], Repository.prototype, "metroArea", void 0);
 __decorate$c([
     OneToMany()
-], Repository.prototype, "childRepositories", void 0);
-__decorate$c([
-    OneToMany()
-], Repository.prototype, "repositoryReferences", void 0);
+], Repository.prototype, "nestedRepositories", void 0);
 __decorate$c([
     OneToMany()
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
@@ -14347,22 +14347,25 @@ RepositoryDatabase = __decorate$c([
 /**
  * Created by Papa on 2/9/2017.
  */
-let RepositoryReference = class RepositoryReference {
+let RepositoryNesting = class RepositoryNesting {
 };
 __decorate$c([
     Id(),
     ManyToOne(),
     JoinColumn()
-], RepositoryReference.prototype, "referencingRepository", void 0);
+], RepositoryNesting.prototype, "parentRepository", void 0);
 __decorate$c([
     Id(),
     ManyToOne(),
     JoinColumn()
-], RepositoryReference.prototype, "referencedRepository", void 0);
-RepositoryReference = __decorate$c([
+], RepositoryNesting.prototype, "childRepository", void 0);
+__decorate$c([
+    Column()
+], RepositoryNesting.prototype, "nestingType", void 0);
+RepositoryNesting = __decorate$c([
     Entity(),
     Table()
-], RepositoryReference);
+], RepositoryNesting);
 
 let RepositoryTerminal = class RepositoryTerminal {
 };
@@ -14409,7 +14412,7 @@ const __constructors__$3 = {
     RepositoryApplication: RepositoryApplication,
     RepositoryClient: RepositoryClient,
     RepositoryDatabase: RepositoryDatabase,
-    RepositoryReference: RepositoryReference,
+    RepositoryNesting: RepositoryNesting,
     RepositoryTerminal: RepositoryTerminal,
     RepositoryTransactionHistory: RepositoryTransactionHistory,
     RepositoryType: RepositoryType,
@@ -14566,7 +14569,7 @@ BaseRepositoryDatabaseDao.Find = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.Search = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryReferenceDao extends SQDIDao$2 {
+class BaseRepositoryNestingDao extends SQDIDao$2 {
     constructor() {
         super(9);
     }
@@ -14577,10 +14580,10 @@ class BaseRepositoryReferenceDao extends SQDIDao$2 {
         return airport____at_airport_slash_holding_dash_pattern_diSet(9);
     }
 }
-BaseRepositoryReferenceDao.Find = new DaoQueryDecorators();
-BaseRepositoryReferenceDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryReferenceDao.Search = new DaoQueryDecorators();
-BaseRepositoryReferenceDao.SearchOne = new DaoQueryDecorators();
+BaseRepositoryNestingDao.Find = new DaoQueryDecorators();
+BaseRepositoryNestingDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryNestingDao.Search = new DaoQueryDecorators();
+BaseRepositoryNestingDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryTerminalDao extends SQDIDao$2 {
     constructor() {
         super(7);
@@ -15076,6 +15079,12 @@ RepositoryDao = __decorate$c([
     Injected()
 ], RepositoryDao);
 
+let RepositoryNestingDao = class RepositoryNestingDao extends BaseRepositoryNestingDao {
+};
+RepositoryNestingDao = __decorate$c([
+    Injected()
+], RepositoryNestingDao);
+
 let OperationHistoryDuo = class OperationHistoryDuo {
     getNewRecord(entityChangeType, dbEntity, actor, repositoryTransactionHistory, systemWideOperationId, rootTransaction) {
         let operationHistory = {
@@ -15275,8 +15284,11 @@ let RepositoryApi = class RepositoryApi {
     async findChildRepositories(parentGUID) {
         return await this.repositoryDao.findChildRepositories(parentGUID);
     }
-    async create(repositoryName) {
-        return await this.repositoryManager.createRepository(repositoryName, arguments[1]);
+    async create(repositoryName, parentRepository, nestingType = null) {
+        return await this.repositoryManager.createRepository(repositoryName, parentRepository, nestingType, arguments[3]);
+    }
+    async addNesting(parentRepository, childRepository, nestingType = null) {
+        await this.repositoryManager.addRepositoryNesting(parentRepository, childRepository, nestingType, arguments[3]);
     }
     async setUiEntryUri(uiEntryUri, repository) {
         await this.repositoryManager.setUiEntryUri(uiEntryUri, repository);
@@ -15297,6 +15309,9 @@ __decorate$c([
 __decorate$c([
     Api()
 ], RepositoryApi.prototype, "create", null);
+__decorate$c([
+    Api()
+], RepositoryApi.prototype, "addNesting", null);
 __decorate$c([
     Api()
 ], RepositoryApi.prototype, "setUiEntryUri", null);
@@ -15343,6 +15358,11 @@ const REPOSITORY_DAO = holdingPattern.token({
     class: RepositoryDao,
     interface: 'IRepositoryDao',
     token: 'REPOSITORY_DAO'
+});
+holdingPattern.token({
+    class: RepositoryNestingDao,
+    interface: 'RepositoryNestingDao',
+    token: 'REPOSITORY_NESTING_DAO'
 });
 const REPOSITORY_TRANSACTION_HISTORY_DAO = holdingPattern.token({
     class: RepositoryTransactionHistoryDao,
@@ -16541,6 +16561,10 @@ const APPLICATION$4 = {
                                 "isAsync": true,
                                 "parameters": []
                             },
+                            "addNesting": {
+                                "isAsync": true,
+                                "parameters": []
+                            },
                             "setUiEntryUri": {
                                 "isAsync": true,
                                 "parameters": []
@@ -17186,7 +17210,7 @@ const APPLICATION$4 = {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
                                     "oneTableIndex": 10,
-                                    "oneRelationIndex": 13,
+                                    "oneRelationIndex": 12,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17295,7 +17319,7 @@ const APPLICATION$4 = {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
                                     "oneTableIndex": 10,
-                                    "oneRelationIndex": 11,
+                                    "oneRelationIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17404,7 +17428,7 @@ const APPLICATION$4 = {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
                                     "oneTableIndex": 10,
-                                    "oneRelationIndex": 10,
+                                    "oneRelationIndex": 9,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17513,7 +17537,7 @@ const APPLICATION$4 = {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
                                     "oneTableIndex": 10,
-                                    "oneRelationIndex": 12,
+                                    "oneRelationIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17644,7 +17668,7 @@ const APPLICATION$4 = {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": null,
                                     "oneTableIndex": 10,
-                                    "oneRelationIndex": 9,
+                                    "oneRelationIndex": 8,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17726,21 +17750,12 @@ const APPLICATION$4 = {
                         {
                             "index": 0,
                             "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneRelationIndex": 7,
-                                    "oneColumnIndex": 1,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REFERENCING_REPOSITORY_GUID",
-                            "notNull": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "NESTING_TYPE",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 0
+                                    "index": 2
                                 }
                             ],
                             "sinceVersion": 1,
@@ -17751,6 +17766,29 @@ const APPLICATION$4 = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 10,
+                                    "oneRelationIndex": 6,
+                                    "oneColumnIndex": 1,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "PARENT_REPOSITORY_GUID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": null,
                                     "oneTableIndex": 10,
@@ -17758,7 +17796,7 @@ const APPLICATION$4 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REFERENCED_REPOSITORY_GUID",
+                            "name": "CHILD_REPOSITORY_GUID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -17771,21 +17809,21 @@ const APPLICATION$4 = {
                     ],
                     "idColumnRefs": [
                         {
-                            "index": 0
+                            "index": 1
                         },
                         {
-                            "index": 1
+                            "index": 2
                         }
                     ],
                     "index": 9,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "RepositoryReference",
+                    "name": "RepositoryNesting",
                     "properties": [
                         {
                             "index": 0,
                             "isId": true,
-                            "name": "referencingRepository",
+                            "name": "parentRepository",
                             "relationRef": {
                                 "index": 0
                             },
@@ -17794,10 +17832,19 @@ const APPLICATION$4 = {
                         {
                             "index": 1,
                             "isId": true,
-                            "name": "referencedRepository",
+                            "name": "childRepository",
                             "relationRef": {
                                 "index": 1
                             },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "nestingType",
                             "sinceVersion": 1
                         }
                     ],
@@ -17825,9 +17872,10 @@ const APPLICATION$4 = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "REPOSITORY_REFERENCE",
+                        "name": "REPOSITORY_NESTINGS",
                         "columnIndexes": []
-                    }
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [
@@ -17987,7 +18035,6 @@ const APPLICATION$4 = {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": null,
                                     "oneTableIndex": 10,
-                                    "oneRelationIndex": 6,
                                     "oneColumnIndex": 1,
                                     "sinceVersion": 1
                                 }
@@ -18239,7 +18286,7 @@ const APPLICATION$4 = {
                         {
                             "index": 15,
                             "isId": false,
-                            "name": "childRepositories",
+                            "name": "nestedRepositories",
                             "relationRef": {
                                 "index": 6
                             },
@@ -18248,7 +18295,7 @@ const APPLICATION$4 = {
                         {
                             "index": 16,
                             "isId": false,
-                            "name": "repositoryReferences",
+                            "name": "repositoryTransactionHistory",
                             "relationRef": {
                                 "index": 7
                             },
@@ -18257,7 +18304,7 @@ const APPLICATION$4 = {
                         {
                             "index": 17,
                             "isId": false,
-                            "name": "repositoryTransactionHistory",
+                            "name": "repositoryApplications",
                             "relationRef": {
                                 "index": 8
                             },
@@ -18266,7 +18313,7 @@ const APPLICATION$4 = {
                         {
                             "index": 18,
                             "isId": false,
-                            "name": "repositoryApplications",
+                            "name": "repositoryClients",
                             "relationRef": {
                                 "index": 9
                             },
@@ -18275,7 +18322,7 @@ const APPLICATION$4 = {
                         {
                             "index": 19,
                             "isId": false,
-                            "name": "repositoryClients",
+                            "name": "repositoryDatabases",
                             "relationRef": {
                                 "index": 10
                             },
@@ -18284,7 +18331,7 @@ const APPLICATION$4 = {
                         {
                             "index": 20,
                             "isId": false,
-                            "name": "repositoryDatabases",
+                            "name": "repositoryTerminals",
                             "relationRef": {
                                 "index": 11
                             },
@@ -18293,18 +18340,9 @@ const APPLICATION$4 = {
                         {
                             "index": 21,
                             "isId": false,
-                            "name": "repositoryTerminals",
-                            "relationRef": {
-                                "index": 12
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 22,
-                            "isId": false,
                             "name": "repositoryTypes",
                             "relationRef": {
-                                "index": 13
+                                "index": 12
                             },
                             "sinceVersion": 1
                         }
@@ -18385,20 +18423,20 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 15
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 9,
                             "sinceVersion": 1
                         },
                         {
                             "index": 7,
                             "isId": false,
                             "oneToManyElems": {
-                                "mappedBy": "referencingRepository"
+                                "mappedBy": "repository"
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
                                 "index": 16
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 12,
                             "sinceVersion": 1
                         },
                         {
@@ -18411,7 +18449,7 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 17
                             },
-                            "relationTableIndex": 12,
+                            "relationTableIndex": 8,
                             "sinceVersion": 1
                         },
                         {
@@ -18424,7 +18462,7 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 18
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 6,
                             "sinceVersion": 1
                         },
                         {
@@ -18437,7 +18475,7 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 19
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -18450,7 +18488,7 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 20
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -18462,19 +18500,6 @@ const APPLICATION$4 = {
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
                                 "index": 21
-                            },
-                            "relationTableIndex": 7,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 13,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "repository"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 22
                             },
                             "relationTableIndex": 4,
                             "sinceVersion": 1
@@ -18673,7 +18698,7 @@ const APPLICATION$4 = {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
                                     "oneTableIndex": 10,
-                                    "oneRelationIndex": 8,
+                                    "oneRelationIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -33088,16 +33113,34 @@ RepositoryLoader = __decorate$3([
 let RepositoryManager = class RepositoryManager {
     async initialize() {
     }
-    async createRepository(repositoryName, context) {
+    async createRepository(repositoryName, parentRepository, nestingType, context) {
         const userSession = await this.terminalSessionManager.getUserSession();
         if (userSession.currentRootTransaction.newRepository) {
             throw new Error(`Cannot create more than one repository per transaction:
 Attempting to create a new repository and Operation Context
 already contains a new repository.`);
         }
-        let repository = await this.createRepositoryRecord(repositoryName, userSession.currentTransaction.actor, context);
+        let repository = await this.createRepositoryRecord(repositoryName, parentRepository, userSession.currentTransaction.actor, context);
+        if (parentRepository) {
+            await this.doAddRepositoryNesting(parentRepository, repository, nestingType, false, context);
+        }
         userSession.currentRootTransaction.newRepository = repository;
         return repository;
+    }
+    async addRepositoryNesting(parentRepository, childRepository, nestingType, context) {
+        await this.doAddRepositoryNesting(parentRepository, childRepository, nestingType, true, context);
+    }
+    async doAddRepositoryNesting(parentRepository, childRepository, nestingType, saveChildRepository, context) {
+        childRepository.parentRepository = parentRepository;
+        const repositoryNesting = new RepositoryNesting();
+        repositoryNesting.parentRepository = parentRepository;
+        repositoryNesting.childRepository = childRepository;
+        repositoryNesting.nestingType = nestingType;
+        parentRepository.nestedRepositories.push(repositoryNesting);
+        if (saveChildRepository) {
+            await this.repositoryDao.save(childRepository, context);
+        }
+        await this.repositoryNestingDao.save(repositoryNesting, context);
     }
     async setUiEntryUri(uiEntryUri, repository) {
         const userSession = await this.terminalSessionManager.getUserSession();
@@ -33123,14 +33166,13 @@ already contains a new repository.`);
         const repository = {
             _localId: null,
             ageSuitability: 0,
-            childRepositories: [],
             createdAt: new Date(),
             fullApplicationName: actor.application.fullName,
             immutable: false,
             name,
             owner: actor.userAccount,
             parentRepository: null,
-            repositoryReferences: [],
+            nestedRepositories: [],
             repositoryTransactionHistory: [],
             // FIXME: propage the 
             source: 'localhost:9000',
@@ -33139,8 +33181,9 @@ already contains a new repository.`);
         };
         return repository;
     }
-    async createRepositoryRecord(name, actor, context) {
+    async createRepositoryRecord(name, parentRepository, actor, context) {
         const repository = this.getRepositoryRecord(name, actor);
+        repository.parentRepository = parentRepository;
         await this.repositoryDao.save(repository, context);
         return repository;
     }
@@ -33190,6 +33233,9 @@ already contains a new repository.`);
 __decorate$3([
     Inject$2()
 ], RepositoryManager.prototype, "repositoryDao", void 0);
+__decorate$3([
+    Inject$2()
+], RepositoryManager.prototype, "repositoryNestingDao", void 0);
 __decorate$3([
     Inject$2()
 ], RepositoryManager.prototype, "terminalSessionManager", void 0);
@@ -33338,6 +33384,9 @@ InternalRecordManager = __decorate$3([
 ], InternalRecordManager);
 
 let InternalTransactionalConnector = class InternalTransactionalConnector {
+    constructor() {
+        this.internal = true;
+    }
     callApi(_) {
         throw new Error(`InternalTransactionalConnector.callApi should never be called.
 Interal Application API requests should be made directly (since
@@ -37961,6 +38010,18 @@ let LocalAPIServer = class LocalAPIServer {
         if (context) {
             [...request.args, context];
         }
+        if (request.args.length > apiOperation.parameters.length) {
+            throw new Error(`
+    Too many parameters passed in to @Api() request
+Domain:      ${request.domain}
+Application: ${request.application}
+@Api()
+${request.objectName}.${request.methodName}
+`);
+        }
+        for (let i = 0; i < apiOperation.parameters.length - request.args.length; i++) {
+            request.args.push(undefined);
+        }
         for (let arg of request.args) {
             this.queryResultsDeserializer.setPropertyDescriptors(arg);
         }
@@ -38231,10 +38292,10 @@ let UpdateCacheManager = class UpdateCacheManager {
             }
         }
     }
-    setOperationState(entityCopy, dbEntity, processedEntities) {
+    setOperationState(entityCopy, dbEntity, processedEntities, checkGeneratedIds) {
         if (entityCopy instanceof Array) {
             for (var i = 0; i < entityCopy.length; i++) {
-                this.setOperationState(entityCopy[i], dbEntity, processedEntities);
+                this.setOperationState(entityCopy[i], dbEntity, processedEntities, checkGeneratedIds);
             }
             return;
         }
@@ -38390,11 +38451,17 @@ let UpdateCacheManager = class UpdateCacheManager {
         for (const dbProperty of dbEntity.properties) {
             const property = entityCopy[dbProperty.name];
             if (property && dbProperty.relation && dbProperty.relation.length) {
-                this.setOperationState(property, dbProperty.relation[0].relationEntity, processedEntities);
+                this.setOperationState(property, dbProperty.relation[0].relationEntity, processedEntities, checkGeneratedIds);
             }
         }
         if (!entityState) {
-            if ((hasId && hasGeneratedIds) || originalValuesObject) {
+            /**
+             * All records coming from Apps will have generated IDs
+             * Internal APIs create non-AirEntity records, which
+             * may not have framework generated Ids.
+             */
+            if ((hasId && (!checkGeneratedIds || hasGeneratedIds))
+                || originalValuesObject) {
                 entityState = EntityState.PASS_THROUGH;
             }
             else {
@@ -38732,7 +38799,7 @@ let DatabaseFacade = class DatabaseFacade {
         if (!entity) {
             return null;
         }
-        const entityCopy = await this.preSaveOperations(entity, context);
+        const entityCopy = await this.preSaveOperations(entity, context, this.transactionalConnector.internal);
         const saveResult = await this.transactionalConnector.save(entityCopy, context);
         this.updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult, new Set());
         return saveResult;
@@ -38741,20 +38808,20 @@ let DatabaseFacade = class DatabaseFacade {
         if (!entity) {
             return null;
         }
-        const entityCopy = await this.preSaveOperations(entity, context);
+        const entityCopy = await this.preSaveOperations(entity, context, this.transactionalConnector.internal);
         const saveResult = await this.transactionalConnector
             .saveToDestination(repositoryDestination, entityCopy, context);
         this.updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult, new Set());
         return saveResult;
     }
-    async preSaveOperations(entity, context) {
+    async preSaveOperations(entity, context, checkGeneratedIds) {
         if (!entity) {
             return null;
         }
         const dbEntity = context.dbEntity;
         const entityCopy = this.entityCopier
             .copyEntityForProcessing(entity, dbEntity, this.entityStateManager, context);
-        this.updateCacheManager.setOperationState(entityCopy, dbEntity, new Set());
+        this.updateCacheManager.setOperationState(entityCopy, dbEntity, new Set(), checkGeneratedIds);
         return entityCopy;
     }
     /**

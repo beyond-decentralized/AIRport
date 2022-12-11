@@ -90,6 +90,19 @@ export class LocalAPIServer
             args = [...request.args, context]
         }
 
+        if (request.args.length > apiOperation.parameters.length) {
+            throw new Error(`
+    Too many parameters passed in to @Api() request
+Domain:      ${request.domain}
+Application: ${request.application}
+@Api()
+${request.objectName}.${request.methodName}
+`)
+        }
+        for (let i = 0; i < apiOperation.parameters.length - request.args.length; i++) {
+            request.args.push(undefined)
+        }
+
         for (let arg of request.args) {
             this.queryResultsDeserializer.setPropertyDescriptors(arg)
         }

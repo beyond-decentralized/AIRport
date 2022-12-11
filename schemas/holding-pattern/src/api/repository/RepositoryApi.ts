@@ -1,5 +1,5 @@
 import { Api } from '@airport/check-in'
-import { IContext, Inject, Injected } from "@airport/direction-indicator";
+import { Inject, Injected } from "@airport/direction-indicator";
 import { IRepositoryManager } from '../../core/RepositoryManager';
 import { RepositoryDao } from "../../dao/dao";
 import { Repository } from "../../ddl/ddl";
@@ -29,7 +29,7 @@ export class RepositoryApi {
     @Api()
     async create(
         repositoryName: string,
-        parentRepository: Repository,
+        parentRepository?: Repository,
         nestingType: string = null
     ): Promise<Repository> {
         return await this.repositoryManager.createRepository(

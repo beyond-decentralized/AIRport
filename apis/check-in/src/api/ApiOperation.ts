@@ -8,6 +8,7 @@ export interface IApiOperation {
 export interface IApiParameter {
     kind: ApiObjectKind
     isRest: boolean // only applies to the last parameter in the API method
+    text: string
 }
 
 export interface IApiTypeUnionParameter

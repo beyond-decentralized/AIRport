@@ -2,7 +2,6 @@ import {
     IApiObject,
     IApplicationApi
 } from '@airport/check-in';
-import { stringify } from 'querystring';
 import * as ts from 'typescript';
 import tsc from 'typescript';
 import { FileImports } from '../../ddl/parser/FileImports';
@@ -120,7 +119,11 @@ function serializeClass(
                     numApiMethods++
                     apiObject.operationMap[memberName] = {
                         isAsync: methodDescriptor.isAsync,
-                        parameters: []
+                        parameters: methodDescriptor.parameters.map(text => ({
+                            kind: undefined,
+                            isRest: false,
+                            text
+                        }))
                     }
                     apiClass.apiSignatures.push({
                         isAsync: methodDescriptor.isAsync,
