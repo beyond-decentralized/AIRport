@@ -55,6 +55,11 @@ export interface IRepositoryDao
 		context: IContext
 	): Promise<void>
 
+	updateUiEntityUri(
+		repositoryGuid: string,
+		uiEntityUri: string
+	): Promise<void>
+
 }
 
 export type RepositoryIdMap = Map<UserAccount_GUID,
@@ -232,6 +237,21 @@ export class RepositoryDao
 			let repository = repositories[i]
 			repository._localId = _localIds[i][0]
 		}
+	}
+
+	async updateUiEntityUri(
+		repositoryGuid: string,
+		uiEntityUri: string
+	): Promise<void> {
+		let r: QRepository;
+
+		await this.db.updateColumnsWhere({
+			UPDATE: r = Q.Repository,
+			SET: {
+				UI_ENTRY_URI: uiEntityUri
+			},
+			WHERE: r.GUID.equals(repositoryGuid)
+		})
 	}
 
 }
