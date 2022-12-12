@@ -26,9 +26,9 @@ export class QEntityRelationBuilder
 		let genericType = ''
 		let entity = this.entity.docEntry.name
 		const [isAirEntity, _] = entityExtendsOrIsAirEntity(this.entity)
-		let parentInterfaceType = 'IQRelation'
+		let parentInterfaceType = 'IQManyToOneInternalRelation'
 		if (isAirEntity) {
-			parentInterfaceType = 'IQAirEntityRelation'
+			parentInterfaceType = 'IQManyToOneAirEntityRelation'
 		}
 		let parentEntityQType = `${parentInterfaceType}<${qName}>`
 		if (isMappedSuperclass) {

@@ -26,7 +26,7 @@ import {
 	IQEntityInternal
 } from '../../../definition/core/entity/Entity'
 import { IJoinFields } from '../../../definition/core/entity/Joins'
-import { IQInternalRelation, IQAirEntityRelation } from '../../../definition/core/entity/Relation'
+import { IQInternalRelation } from '../../../definition/core/entity/Relation'
 import { IQOperableFieldInternal } from '../../../definition/core/field/OperableField'
 import { JSONLogicalOperation } from '../../../definition/core/operation/LogicalOperation'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'

@@ -59,8 +59,8 @@ export class QEntityFileBuilder
       'IQNumberField',
       'IQOneToManyRelation', 'IQStringField',
       'IQUntypedField',
-      'IQEntity', 'IQRelation',
-      'IQAirEntityOneToManyRelation', 'IQAirEntityRelation',
+      'IQEntity', 'IQManyToOneInternalRelation',
+      'IQAirEntityOneToManyRelation', 'IQManyToOneAirEntityRelation',
       'RawDelete', 'RawUpdate'],
       '@airport/tarmaq-query');
     // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);

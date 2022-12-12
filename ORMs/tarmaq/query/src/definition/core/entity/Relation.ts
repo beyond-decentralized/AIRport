@@ -1,6 +1,8 @@
-import { DbRelation } from "@airport/ground-control";
+import { AirEntityId } from "@airport/aviation-communication";
+import { DbRelation, JSONBaseOperation } from "@airport/ground-control";
 import { JSONLogicalOperation } from "../operation/LogicalOperation";
 import {
+	IQAirEntity,
 	IQEntity,
 	IQEntityInternal
 } from './Entity';
@@ -26,16 +28,59 @@ export interface IQRelation<IQ extends IQEntity> {
 	WHERE a.cId =
 	 */
 }
+
 /**
- * A concrete ORM relation on a AirEntity
+ * A Many-to-One ORM relation
+ */
+export interface IQManyToOneInternalRelation<IQ extends IQEntity>
+	extends IQRelation<IQ> {
+
+	equals(
+		entity: string | number
+	): JSONBaseOperation
+
+	IN(
+		entity: (string | number)[]
+	): JSONBaseOperation
+
+}
+
+/**
+ * A ORM relation on a AirEntity
  */
 export interface IQAirEntityRelation<Entity, IQ extends IQEntity>
 	extends IQRelation<IQ> {
 
-	// equals(
-	// 	entity: Entity | IQEntity | IQAirEntityRelation<Entity, IQ>
-	// 		| AirEntityId | string
-	// ): JSONLogicalOperation
+}
+
+/**
+ * A Many-to-One ORM relation on a AirEntity
+ */
+export interface IQManyToOneAirEntityRelation<Entity, IQ extends IQEntity>
+	extends IQAirEntityRelation<Entity, IQ> {
+
+	equals
+	// <
+	// Entity extends IAirEntity
+	// , IQ extends IQEntityInternal
+	// >
+	(
+		entity: Entity | IQAirEntity |
+			// IQAirEntityRelation<Entity, IQ> |
+			AirEntityId | string
+	): JSONLogicalOperation
+
+	IN
+	// <
+	// Entity extends IAirEntity
+	// , IQ extends IQEntityInternal
+	// >
+	(
+		entitiesOrIds: (Entity |
+			// IQAirEntity |
+			// IQAirEntityRelation<Entity, IQ> |
+			AirEntityId | string)[]
+	): JSONLogicalOperation
 
 }
 

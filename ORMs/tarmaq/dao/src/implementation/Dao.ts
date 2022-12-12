@@ -191,7 +191,7 @@ export abstract class Dao<Entity,
 			FROM: [
 				q = this.db.FROM
 			],
-			WHERE: q.in(airEntityIds),
+			WHERE: q.IN(airEntityIds),
 			FOR_UPDATE: forUpdate
 		}, context)
 	}

@@ -15,7 +15,7 @@ import { IApplicationUtils } from "../../definition/utils/IApplicationUtils";
 import { Q_ENTITY_UTILS } from "../../tokens";
 import { QEntity } from "../core/entity/Entity";
 import { QAirEntityOneToManyRelation, QOneToManyRelation } from "../core/entity/OneToManyRelation";
-import { QAirEntityRelation, QRelation } from "../core/entity/Relation";
+import { QManyToOneAirEntityRelation, QManyToOneInternalRelation, QRelation } from "../core/entity/Relation";
 import { QBooleanField } from "../core/field/BooleanField";
 import { QDateField } from "../core/field/DateField";
 import { QNumberField } from "../core/field/NumberField";
@@ -173,9 +173,9 @@ export class QEntityUtils implements IQEntityUtils {
         }
 
         if (dbEntity.isAirEntity) {
-            extend(QAirEntityRelation, QEntityIdRelation, qEntityIdRelationMethods)
+            extend(QManyToOneAirEntityRelation, QEntityIdRelation, qEntityIdRelationMethods)
         } else {
-            extend(QRelation, QEntityIdRelation, qEntityIdRelationMethods)
+            extend(QManyToOneInternalRelation, QEntityIdRelation, qEntityIdRelationMethods)
         }
 
         return <any>QEntityIdRelation

@@ -4000,17 +4000,36 @@ QRelation.prototype.getNewQEntity = function (joinType) {
 function QAirEntityRelation(dbRelation, parentQ, applicationUtils, relationManager) {
     QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, relationManager);
 }
-const qAirEntityRelationMethods = {
-// equals: function <Entity extends IAirEntity, IQ extends IQEntityInternal>(
-// 	entity: Entity | IQAirEntity |
-// 		IQAirEntityRelation<Entity, IQ> | AirEntityId | string
-// ): JSONLogicalOperation {
-// 	return IOC.getSync(QUERY_UTILS).equals(entity, this)
-// }
-};
+const qAirEntityRelationMethods = {};
 extend(QRelation, QAirEntityRelation, qAirEntityRelationMethods);
+function QManyToOneAirEntityRelation(dbRelation, parentQ, applicationUtils, relationManager) {
+    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, relationManager);
+}
+const qManyToOneAirEntityRelationMethods = {
+    equals: function (entity) {
+        return IOC.getSync(QUERY_UTILS).equals(entity, this);
+    },
+    IN: function (entitiesOrIds) {
+        return IOC.getSync(QUERY_UTILS).in(entitiesOrIds, this);
+    }
+};
+extend(QAirEntityRelation, QManyToOneAirEntityRelation, qManyToOneAirEntityRelationMethods);
+function QManyToOneInternalRelation(dbRelation, parentQ, applicationUtils, relationManager) {
+    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, relationManager);
+}
+const qManyToOneInternalRelationMethods = {
+    equals: function (entityId) {
+        return IOC.getSync(QUERY_UTILS).equalsInternal(entityId, this);
+    },
+    IN: function (entityIds) {
+        return IOC.getSync(QUERY_UTILS).inInternal(entityIds, this);
+    }
+};
+extend(QRelation, QManyToOneInternalRelation, qManyToOneInternalRelationMethods);
 globalThis.QRelation = QRelation;
 globalThis.QAirEntityRelation = QAirEntityRelation;
+globalThis.QManyToOneAirEntityRelation = QManyToOneAirEntityRelation;
+globalThis.QManyToOneInternalRelation = QManyToOneInternalRelation;
 
 /**
  * Created by Papa on 10/25/2016.
@@ -4602,10 +4621,10 @@ let QEntityUtils = class QEntityUtils {
         */
         };
         if (dbEntity.isAirEntity) {
-            extend(QAirEntityRelation, QEntityIdRelation, qEntityIdRelationMethods);
+            extend(QManyToOneAirEntityRelation, QEntityIdRelation, qEntityIdRelationMethods);
         }
         else {
-            extend(QRelation, QEntityIdRelation, qEntityIdRelationMethods);
+            extend(QManyToOneInternalRelation, QEntityIdRelation, qEntityIdRelationMethods);
         }
         return QEntityIdRelation;
     }
@@ -7988,7 +8007,7 @@ let Dao = class Dao {
             FROM: [
                 q = this.db.FROM
             ],
-            WHERE: q.in(airEntityIds),
+            WHERE: q.IN(airEntityIds),
             FOR_UPDATE: forUpdate
         }, context);
     }
@@ -8946,7 +8965,7 @@ let QueryUtils = class QueryUtils {
     in(entitiesOrIds, toObject // | IQRelation<IQ>
     ) {
         if (!entitiesOrIds || !entitiesOrIds.length) {
-            throw new Error(`null entity/Id array is passed into 'in' method`);
+            throw new Error(`null entity/Id array is passed into 'IN' method`);
         }
         let entityIds = entitiesOrIds.map(entityOrId => this.validateEntityId(entityOrId));
         const { qActor, qRepository } = this.entityUtils.ensureRepositoryAndActorJoin(toObject);
@@ -8955,6 +8974,32 @@ let QueryUtils = class QueryUtils {
             equalOperations.push(AND(qRepository.GUID.equals(entityId.repository.GUID), qActor.GUID.equals(entityId.actor.GUID), toObject._actorRecordId.equals(entityId._actorRecordId)));
         }
         return OR(...equalOperations);
+    }
+    equalsInternal(entityId, toObject // | IQRelation<IQ>
+    ) {
+        const columnField = this.getGetSingleColumnRelationField(toObject);
+        return columnField.equals(entityId);
+    }
+    inInternal(entityIds, toObject // | IQRelation<IQ>
+    ) {
+        if (!entityIds || !entityIds.length) {
+            throw new Error(`null or empty Id array is passed into 'IN' method`);
+        }
+        const columnField = this.getGetSingleColumnRelationField(toObject);
+        return columnField.IN(entityIds);
+    }
+    getGetSingleColumnRelationField(toObject // | IQRelation<IQ>
+    ) {
+        const qEntity = toObject;
+        if (qEntity.__driver__.dbRelation.manyRelationColumns.length > 1) {
+            throw new Error(`
+Currently IN operation on internal (non AirEntity) entities
+is supported only for single columm relations
+			`);
+        }
+        qEntity.__driver__.dbRelation.property;
+        const relationColumn = qEntity.__driver__.dbRelation.manyRelationColumns[0];
+        return this.qEntityUtils.getColumnQField(qEntity.__driver__.dbEntity, qEntity.__driver__.dbRelation.property, qEntity, relationColumn.manyColumn);
     }
     validateEntityId(entityId) {
         if (typeof entityId === 'string') {
@@ -9066,6 +9111,9 @@ __decorate$j([
 __decorate$j([
     Inject$2()
 ], QueryUtils.prototype, "fieldUtils", void 0);
+__decorate$j([
+    Inject$2()
+], QueryUtils.prototype, "qEntityUtils", void 0);
 __decorate$j([
     Inject$2()
 ], QueryUtils.prototype, "relationManager", void 0);
@@ -14362,6 +14410,9 @@ __decorate$c([
 __decorate$c([
     Column()
 ], RepositoryNesting.prototype, "nestingType", void 0);
+__decorate$c([
+    Column()
+], RepositoryNesting.prototype, "childRepositoryName", void 0);
 RepositoryNesting = __decorate$c([
     Entity(),
     Table()
@@ -15074,12 +15125,33 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             repository._localId = _localIds[i][0];
         }
     }
+    async updateUiEntityUri(repositoryGuid, uiEntityUri) {
+        let r;
+        await this.db.updateColumnsWhere({
+            UPDATE: r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+            SET: {
+                UI_ENTRY_URI: uiEntityUri
+            },
+            WHERE: r.GUID.equals(repositoryGuid)
+        });
+    }
 };
 RepositoryDao = __decorate$c([
     Injected()
 ], RepositoryDao);
 
 let RepositoryNestingDao = class RepositoryNestingDao extends BaseRepositoryNestingDao {
+    async findNestedRepositories(parentGUID) {
+        let rn;
+        return await this._find({
+            SELECT: {},
+            FROM: [
+                rn = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryNesting,
+                rn.childRepository.LEFT_JOIN()
+            ],
+            // WHERE: rn.parentRepository.equals()
+        });
+    }
 };
 RepositoryNestingDao = __decorate$c([
     Injected()
@@ -15359,7 +15431,7 @@ const REPOSITORY_DAO = holdingPattern.token({
     interface: 'IRepositoryDao',
     token: 'REPOSITORY_DAO'
 });
-holdingPattern.token({
+const REPOSITORY_NESTING_DAO = holdingPattern.token({
     class: RepositoryNestingDao,
     interface: 'RepositoryNestingDao',
     token: 'REPOSITORY_NESTING_DAO'
@@ -16555,19 +16627,59 @@ const APPLICATION$4 = {
                             },
                             "findChildRepositories": {
                                 "isAsync": true,
-                                "parameters": []
+                                "parameters": [
+                                    {
+                                        "isRest": false,
+                                        "text": "parentGUID: Repository_GUID"
+                                    }
+                                ]
                             },
                             "create": {
                                 "isAsync": true,
-                                "parameters": []
+                                "parameters": [
+                                    {
+                                        "isRest": false,
+                                        "text": "repositoryName: string"
+                                    },
+                                    {
+                                        "isRest": false,
+                                        "text": "parentRepository?: Repository"
+                                    },
+                                    {
+                                        "isRest": false,
+                                        "text": "nestingType: string = null"
+                                    }
+                                ]
                             },
                             "addNesting": {
                                 "isAsync": true,
-                                "parameters": []
+                                "parameters": [
+                                    {
+                                        "isRest": false,
+                                        "text": "parentRepository: Repository"
+                                    },
+                                    {
+                                        "isRest": false,
+                                        "text": "childRepository: Repository"
+                                    },
+                                    {
+                                        "isRest": false,
+                                        "text": "nestingType: string = null"
+                                    }
+                                ]
                             },
                             "setUiEntryUri": {
                                 "isAsync": true,
-                                "parameters": []
+                                "parameters": [
+                                    {
+                                        "isRest": false,
+                                        "text": "uiEntryUri: string"
+                                    },
+                                    {
+                                        "isRest": false,
+                                        "text": "repository: Repository"
+                                    }
+                                ]
                             }
                         }
                     }
@@ -17764,6 +17876,20 @@ const APPLICATION$4 = {
                         {
                             "index": 1,
                             "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "CHILD_REPOSITORY_NAME",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
@@ -17785,7 +17911,7 @@ const APPLICATION$4 = {
                             "type": "STRING"
                         },
                         {
-                            "index": 2,
+                            "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -17809,10 +17935,10 @@ const APPLICATION$4 = {
                     ],
                     "idColumnRefs": [
                         {
-                            "index": 1
+                            "index": 2
                         },
                         {
-                            "index": 2
+                            "index": 3
                         }
                     ],
                     "index": 9,
@@ -17845,6 +17971,15 @@ const APPLICATION$4 = {
                             "index": 2,
                             "isId": false,
                             "name": "nestingType",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 3,
+                            "isId": false,
+                            "name": "childRepositoryName",
                             "sinceVersion": 1
                         }
                     ],
@@ -22833,7 +22968,12 @@ const APPLICATION$2 = {
                         "operationMap": {
                             "findUserAccount": {
                                 "isAsync": true,
-                                "parameters": []
+                                "parameters": [
+                                    {
+                                        "isRest": false,
+                                        "text": "privateId: string"
+                                    }
+                                ]
                             }
                         }
                     }
@@ -33136,6 +33276,7 @@ already contains a new repository.`);
         repositoryNesting.parentRepository = parentRepository;
         repositoryNesting.childRepository = childRepository;
         repositoryNesting.nestingType = nestingType;
+        repositoryNesting.childRepositoryName = childRepository.name;
         parentRepository.nestedRepositories.push(repositoryNesting);
         if (saveChildRepository) {
             await this.repositoryDao.save(childRepository, context);
@@ -33148,7 +33289,7 @@ already contains a new repository.`);
             throw new Error(`Only the Application that created a repository may change the uiEntityUri.`);
         }
         repository.uiEntryUri = uiEntryUri;
-        await this.repositoryDao.save(repository);
+        await this.repositoryDao.updateUiEntityUri(repository.GUID, uiEntryUri);
     }
     goOffline() {
         throw new Error(`not implemented`);
@@ -37359,6 +37500,7 @@ REPOSITORY_LOADER.setDependencies({
 REPOSITORY_MANAGER.setClass(RepositoryManager);
 REPOSITORY_MANAGER.setDependencies({
     repositoryDao: REPOSITORY_DAO,
+    repositoryNestingDao: REPOSITORY_NESTING_DAO,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TERMINAL_STORE
 });
@@ -41713,9 +41855,9 @@ class QEntityRelationBuilder extends QCoreEntityBuilder {
         let genericType = '';
         let entity = this.entity.docEntry.name;
         const [isAirEntity, _] = entityExtendsOrIsAirEntity(this.entity);
-        let parentInterfaceType = 'IQRelation';
+        let parentInterfaceType = 'IQManyToOneInternalRelation';
         if (isAirEntity) {
-            parentInterfaceType = 'IQAirEntityRelation';
+            parentInterfaceType = 'IQManyToOneAirEntityRelation';
         }
         let parentEntityQType = `${parentInterfaceType}<${qName}>`;
         if (isMappedSuperclass) {
@@ -41778,8 +41920,8 @@ class QEntityFileBuilder extends FileBuilder {
             'IQNumberField',
             'IQOneToManyRelation', 'IQStringField',
             'IQUntypedField',
-            'IQEntity', 'IQRelation',
-            'IQAirEntityOneToManyRelation', 'IQAirEntityRelation',
+            'IQEntity', 'IQManyToOneInternalRelation',
+            'IQAirEntityOneToManyRelation', 'IQManyToOneAirEntityRelation',
             'RawDelete', 'RawUpdate'
         ], '@airport/tarmaq-query');
         // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);

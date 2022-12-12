@@ -9,7 +9,7 @@ import {
 import { IQOperableFieldInternal } from '../field/OperableField'
 import { IFieldColumnAliases } from './Aliases'
 import { IJoinFields } from './Joins'
-import { IQInternalRelation, IQAirEntityRelation } from './Relation'
+import { IQInternalRelation, IQAirEntityRelation, IQManyToOneAirEntityRelation } from './Relation'
 import { JSONLogicalOperation } from '../operation/LogicalOperation'
 import { IRelationManager } from './IRelationManager'
 import { IQueryUtils } from '../../utils/IQueryUtils'
@@ -149,7 +149,7 @@ export interface IQEntity<IQE extends IQEntity<any> = any> {
 			| AirEntityId | string
 	): JSONLogicalOperation;
 
-	in<Entity, IQ extends IQEntityInternal>(
+	IN<Entity, IQ extends IQEntityInternal>(
 		entity: Entity | AirEntityId | string
 	): JSONLogicalOperation;
 
@@ -167,8 +167,8 @@ export interface IQAirEntity<IQE extends IQEntity<any> = any>
 	extends IQEntity<IQE> {
 
 	_actorRecordId: IQNumberEntityField
-	actor: IQAirEntityRelation<any, any>
-	repository: IQAirEntityRelation<any, any>
+	actor: IQManyToOneAirEntityRelation<any, any>
+	repository: IQManyToOneAirEntityRelation<any, any>
 
 }
 

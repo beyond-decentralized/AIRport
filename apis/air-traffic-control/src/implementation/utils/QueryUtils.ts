@@ -21,9 +21,15 @@ import {
 	IFieldColumnAliases,
 	IFieldUtils,
 	IQAirEntity,
-	IQAirEntityRelation,
+	IQBooleanField,
+	IQDateField,
+	IQEntity,
 	IQEntityInternal,
+	IQEntityUtils,
+	IQNumberField,
+	IQStringField,
 	IQueryUtils,
+	IQUntypedField,
 	IRelationManager,
 	JSONLogicalOperation,
 	JSONRawValueOperation,
@@ -44,6 +50,9 @@ export class QueryUtils
 
 	@Inject()
 	fieldUtils: IFieldUtils
+
+	@Inject()
+	qEntityUtils: IQEntityUtils
 
 	@Inject()
 	relationManager: IRelationManager
@@ -89,7 +98,7 @@ export class QueryUtils
 		toObject: IQ // | IQRelation<IQ>
 	): JSONLogicalOperation {
 		if (!entitiesOrIds || !entitiesOrIds.length) {
-			throw new Error(`null entity/Id array is passed into 'in' method`)
+			throw new Error(`null entity/Id array is passed into 'IN' method`)
 		}
 		let entityIds = entitiesOrIds.map(entityOrId =>
 			this.validateEntityId(entityOrId as AirEntityId))
@@ -108,6 +117,54 @@ export class QueryUtils
 		}
 
 		return OR(...equalOperations)
+	}
+
+	equalsInternal<IQ extends IQEntity>(
+		entityId: string | number,
+		toObject: IQ // | IQRelation<IQ>
+	): JSONBaseOperation {
+		const columnField = this.getGetSingleColumnRelationField(
+			toObject)
+
+		return columnField.equals(entityId)
+	}
+
+	inInternal<IQ extends IQEntity>(
+		entityIds: (string | number)[],
+		toObject: IQ // | IQRelation<IQ>
+	): JSONBaseOperation {
+		if (!entityIds || !entityIds.length) {
+			throw new Error(`null or empty Id array is passed into 'IN' method`)
+		}
+
+		const columnField = this.getGetSingleColumnRelationField(
+			toObject)
+
+		return columnField.IN(entityIds as any)
+	}
+
+	getGetSingleColumnRelationField<Entity, IQ extends IQEntity>(
+		toObject: IQ // | IQRelation<IQ>
+	): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField {
+		const qEntity: IQEntityInternal = toObject as any
+
+		if (qEntity.__driver__.dbRelation.manyRelationColumns.length > 1) {
+			throw new Error(`
+Currently IN operation on internal (non AirEntity) entities
+is supported only for single columm relations
+			`)
+		}
+
+		qEntity.__driver__.dbRelation.property
+
+		const relationColumn = qEntity.__driver__.dbRelation.manyRelationColumns[0]
+
+		return this.qEntityUtils.getColumnQField(
+			qEntity.__driver__.dbEntity,
+			qEntity.__driver__.dbRelation.property,
+			qEntity,
+			relationColumn.manyColumn
+		)
 	}
 
 	private validateEntityId(

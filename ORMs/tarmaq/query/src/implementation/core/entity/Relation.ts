@@ -1,15 +1,16 @@
+import { AirEntityId } from '@airport/aviation-communication'
 import { extend, IOC } from '@airport/direction-indicator'
 import {
 	DbRelation,
+	IAirEntity,
 	JoinType,
 	JSONBaseOperation,
 } from '@airport/ground-control'
-import { isN } from '../../../../dist/esm'
-import { IQEntityInternal } from '../../../definition/core/entity/Entity'
+import { IQAirEntity, IQEntityInternal } from '../../../definition/core/entity/Entity'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { JSONLogicalOperation } from '../../../definition/core/operation/LogicalOperation'
 import { IApplicationUtils } from '../../../definition/utils/IApplicationUtils'
-import { Q_ENTITY_UTILS } from '../../../tokens'
+import { QUERY_UTILS, Q_ENTITY_UTILS } from '../../../tokens'
 import { AND, OR } from '../operation/LogicalOperation'
 
 /**
@@ -107,6 +108,7 @@ QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinT
 }
 
 
+
 export function QAirEntityRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
@@ -118,14 +120,73 @@ export function QAirEntityRelation(
 }
 
 export const qAirEntityRelationMethods = {
-	// equals: function <Entity extends IAirEntity, IQ extends IQEntityInternal>(
-	// 	entity: Entity | IQAirEntity |
-	// 		IQAirEntityRelation<Entity, IQ> | AirEntityId | string
-	// ): JSONLogicalOperation {
-	// 	return IOC.getSync(QUERY_UTILS).equals(entity, this)
-	// }
 }
 extend(QRelation, QAirEntityRelation, qAirEntityRelationMethods)
 
+
+
+export function QManyToOneAirEntityRelation(
+	dbRelation: DbRelation,
+	parentQ: IQEntityInternal,
+	applicationUtils: IApplicationUtils,
+	relationManager: IRelationManager,
+) {
+	(<any>QAirEntityRelation).base.constructor.call(
+		this, dbRelation, parentQ, applicationUtils, relationManager)
+}
+
+export const qManyToOneAirEntityRelationMethods = {
+	equals: function <Entity extends IAirEntity, IQ extends IQEntityInternal>(
+		entity: Entity | IQAirEntity |
+			// IQAirEntityRelation<Entity, IQ> |
+			AirEntityId | string
+	): JSONLogicalOperation {
+		return IOC.getSync(QUERY_UTILS).equals(entity, this)
+	},
+	IN: function <Entity extends IAirEntity, IQ extends IQEntityInternal>(
+		entitiesOrIds: (Entity |
+			// IQAirEntity |
+			// IQAirEntityRelation<Entity, IQ> |
+			AirEntityId | string)[]
+	): JSONLogicalOperation {
+		return IOC.getSync(QUERY_UTILS).in(entitiesOrIds, this)
+	}
+}
+extend(QAirEntityRelation, QManyToOneAirEntityRelation, qManyToOneAirEntityRelationMethods)
+
+
+
+export function QManyToOneInternalRelation(
+	dbRelation: DbRelation,
+	parentQ: IQEntityInternal,
+	applicationUtils: IApplicationUtils,
+	relationManager: IRelationManager,
+) {
+	(<any>QAirEntityRelation).base.constructor.call(
+		this, dbRelation, parentQ, applicationUtils, relationManager)
+}
+
+export const qManyToOneInternalRelationMethods = {
+	equals: function
+		// <Entity extends IAirEntity, IQ extends IQEntityInternal>
+		(
+			entityId: string | number
+		): JSONBaseOperation {
+		return IOC.getSync(QUERY_UTILS).equalsInternal(entityId, this)
+	},
+	IN: function
+		// <Entity extends IAirEntity, IQ extends IQEntityInternal>
+		(
+			entityIds: (string | number)[]
+		): JSONBaseOperation {
+		return IOC.getSync(QUERY_UTILS).inInternal(entityIds, this)
+	}
+}
+extend(QRelation, QManyToOneInternalRelation, qManyToOneInternalRelationMethods)
+
+
+
 globalThis.QRelation = QRelation
 globalThis.QAirEntityRelation = QAirEntityRelation
+globalThis.QManyToOneAirEntityRelation = QManyToOneAirEntityRelation
+globalThis.QManyToOneInternalRelation = QManyToOneInternalRelation

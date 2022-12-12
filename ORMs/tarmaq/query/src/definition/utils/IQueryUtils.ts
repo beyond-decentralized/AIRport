@@ -1,8 +1,7 @@
 import { AirEntityId } from "@airport/aviation-communication";
 import { IAirEntity, JSONBaseOperation } from "@airport/ground-control";
 import { IFieldColumnAliases } from "../core/entity/Aliases";
-import { IQAirEntity } from "../core/entity/Entity";
-import { IQAirEntityRelation } from "../core/entity/Relation";
+import { IQAirEntity, IQEntity } from "../core/entity/Entity";
 import { JSONLogicalOperation } from "../core/operation/LogicalOperation";
 
 export interface IQueryUtils {
@@ -22,6 +21,16 @@ export interface IQueryUtils {
 		toObject: IQ
 		// | IQRelation<IQ>
 	): JSONLogicalOperation
+
+	equalsInternal<IQ extends IQEntity>(
+		entityId: string | number,
+		toObject: IQ // | IQRelation<IQ>
+	): JSONBaseOperation
+
+	inInternal<IQ extends IQEntity>(
+		entityIds: (string | number)[],
+		toObject: IQ // | IQRelation<IQ>
+	): JSONBaseOperation
 
 	whereClauseToJSON(
 		whereClause: JSONBaseOperation,
