@@ -122,7 +122,8 @@ already contains a new repository.`)
 		repositoryNesting.parentRepository = parentRepository
 		repositoryNesting.childRepository = childRepository
 		repositoryNesting.nestingType = nestingType
-		parentRepository.nestedRepositories.push(repositoryNesting)
+		repositoryNesting.childRepositoryName = childRepository.name
+		parentRepository.repositoryNestings.push(repositoryNesting)
 
 		if (saveChildRepository) {
 			await this.repositoryDao.save(childRepository, context)
@@ -178,7 +179,7 @@ already contains a new repository.`)
 			name,
 			owner: actor.userAccount as any,
 			parentRepository: null,
-			nestedRepositories: [],
+			repositoryNestings: [],
 			repositoryTransactionHistory: [],
 			// FIXME: propage the 
 			source: 'localhost:9000',

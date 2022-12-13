@@ -18,12 +18,12 @@ export class AIRportApi {
         return await repositoryDao.findRootRepositories()
     }
 
-    async getChildRepositories(
-        parentGUID: Repository_GUID
-    ): Promise<Repository[]> {
+    async getRepository(
+        repositoryGUID: Repository_GUID
+    ): Promise<Repository> {
         const repositoryDao = await IOC.get(REPOSITORY_DAO)
 
-        return await repositoryDao.findChildRepositories(parentGUID)
+        return await repositoryDao.findRepository(repositoryGUID)
     }
 
     async signUp(

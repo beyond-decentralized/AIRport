@@ -4,8 +4,6 @@ dependencies:
   '@capacitor/haptics': 4.0.1
   '@capacitor/keyboard': 4.0.1
   '@capacitor/status-bar': 4.0.1
-  '@ionic/react': 6.2.4_react-dom@17.0.1+react@17.0.2
-  '@ionic/react-router': 6.2.4_55c869af4a2f18a6bfa2d81174e755cb
   '@pmmmwh/react-refresh-webpack-plugin': 0.5.7_1e5167d300f354f21b44cc34def71332
   '@rush-temp/air-traffic-control': 'file:projects/air-traffic-control.tgz'
   '@rush-temp/airport': 'file:projects/airport.tgz'
@@ -2020,6 +2018,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-LDRIwG5plwTHELxQ/j3uEfLJ7YkzJzR1V4QGE+X59aE/l7XoXZyLb1NWFjY7glBbFHGQgSuPFWNhXFkyRBxRFQ==
+  /@ionic/core/6.4.0:
+    dependencies:
+      '@stencil/core': 2.20.0
+      ionicons: 6.0.4
+      tslib: 2.4.0
+    dev: false
+    resolution:
+      integrity: sha512-rWqXX67bWDD5r5Kleacy4dTBIXcB1gX+2Q5AK7LAtmtHUUuJPqGw/bAWE8hGKlF7ehJTyzb5CYV9XDzb8/00Zw==
   /@ionic/react-router/6.2.4_55c869af4a2f18a6bfa2d81174e755cb:
     dependencies:
       '@ionic/react': 6.2.4_react-dom@17.0.1+react@17.0.2
@@ -2036,6 +2042,22 @@ packages:
       react-router-dom: ^5.0.1
     resolution:
       integrity: sha512-KH5bnfCJxPz2b4bHtw/UT2wP/YHhQ+TQU1nvNHfWXFYV4Wf5HKdH0Fzr7pPfCvrGr65ZJDHb9IiKRfbniIlmbA==
+  /@ionic/react-router/6.4.0_55c869af4a2f18a6bfa2d81174e755cb:
+    dependencies:
+      '@ionic/react': 6.4.0_react-dom@17.0.1+react@17.0.2
+      react: 17.0.2
+      react-dom: 17.0.1_react@17.0.2
+      react-router: 5.2.0_react@17.0.2
+      react-router-dom: 5.2.0_react@17.0.2
+      tslib: 2.4.0
+    dev: false
+    peerDependencies:
+      react: '>=16.8.6'
+      react-dom: '>=16.8.6'
+      react-router: ^5.0.1
+      react-router-dom: ^5.0.1
+    resolution:
+      integrity: sha512-AhebRCiS9GQA5aoU3LFoRpl+8kuhJMJTYavbZe/Y62R0vyWabn3KEhtHszjuQLf0iTSWagzIIcjCpjFqMDGb5g==
   /@ionic/react/6.2.4_react-dom@17.0.1+react@17.0.2:
     dependencies:
       '@ionic/core': 6.2.4
@@ -2049,6 +2071,19 @@ packages:
       react-dom: '>=16.8.6'
     resolution:
       integrity: sha512-1TnuIg3NZWXg1Ei9kXx0xemowTNqjZtNFsBaUpsbqpEYM4Z+a89nMYnCc8W0t2Sw3gfu03AzQMwAlaOoIJOSXg==
+  /@ionic/react/6.4.0_react-dom@17.0.1+react@17.0.2:
+    dependencies:
+      '@ionic/core': 6.4.0
+      ionicons: 6.0.3
+      react: 17.0.2
+      react-dom: 17.0.1_react@17.0.2
+      tslib: 2.4.0
+    dev: false
+    peerDependencies:
+      react: '>=16.8.6'
+      react-dom: '>=16.8.6'
+    resolution:
+      integrity: sha512-TgKmIVBR0puqvm2N6PYSdW36ASDwha363oa2MAir6Ir5DAWpXZ9GbG9Wpizh/WDEdRPtdejWFIHJ54MPXOVLAQ==
   /@ionic/utils-array/2.1.5:
     dependencies:
       debug: 4.3.4
@@ -2804,6 +2839,14 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-SGRlHpjV1RyFvzw6jFMVKpLNox9Eds3VvpbpD2SW9CuxdLonHDSFtQks5zmT4zs1Rse9I6kFc2mFK/dHNTalkg==
+  /@stencil/core/2.20.0:
+    dev: false
+    engines:
+      node: '>=12.10.0'
+      npm: '>=6.0.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-ka+eOW+dNteXIfLCRipNbbAlBEQjqJ2fkx3fxzlKgnNHEQMdZiuIjlWt63KzvOJStNeuADdQXo89BB1dC2VRUw==
   /@surma/rollup-plugin-off-main-thread/2.2.3:
     dependencies:
       ejs: 3.1.8
@@ -7175,6 +7218,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-kVOWER991EMqLiVShrCSWKMHkgHZP7XfVdyN6YPMuoO33W7pc5CPNVNfR8OMe/I8rYEbaunyBs6dXNYpR6gGZw==
+  /ionicons/6.0.4:
+    dependencies:
+      '@stencil/core': 2.20.0
+    dev: false
+    resolution:
+      integrity: sha512-uDNOkBo0OVYV+kIhb51g9mb7r3Z0b+78GPZQBsjXuaetNmrB/mNTqN/uFtO+vxL/rQySKjzk8qeKJI5NWL9Ueg==
   /ipaddr.js/1.9.1:
     dev: false
     engines:
@@ -14201,8 +14250,8 @@ packages:
       '@capacitor/haptics': 4.0.1_@capacitor+core@4.1.0
       '@capacitor/keyboard': 4.0.1_@capacitor+core@4.1.0
       '@capacitor/status-bar': 4.0.1_@capacitor+core@4.1.0
-      '@ionic/react': 6.2.4_react-dom@17.0.1+react@17.0.2
-      '@ionic/react-router': 6.2.4_55c869af4a2f18a6bfa2d81174e755cb
+      '@ionic/react': 6.4.0_react-dom@17.0.1+react@17.0.2
+      '@ionic/react-router': 6.4.0_55c869af4a2f18a6bfa2d81174e755cb
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.7_1e5167d300f354f21b44cc34def71332
       '@svgr/webpack': 5.5.0
       '@testing-library/jest-dom': 5.16.5
@@ -14283,7 +14332,7 @@ packages:
     dev: false
     name: '@rush-temp/ui-react-main'
     resolution:
-      integrity: sha512-YsSHlvfPiSSPhCyf52FOslJA2UE0oi8roj1SNfttF+81mibPdwOMk+BoqNdbUoyX5rwT+3iKO1lpAuxWEaesbQ==
+      integrity: sha512-O0+b2CFkQcpH/24kMJsfj/ysNDf1kVkpvRUNQNXYTUwNr7u/oVN1SCLIE9BN7oulUCDU1kyv0r9ilm5awigu8w==
       tarball: 'file:projects/ui-react-main.tgz'
     version: 0.0.0
   'file:projects/ui-svelte-main.tgz_87a149b5c4be6ef201bcb4b7d6649199':
@@ -14400,8 +14449,6 @@ specifiers:
   '@capacitor/haptics': 4.0.1
   '@capacitor/keyboard': 4.0.1
   '@capacitor/status-bar': 4.0.1
-  '@ionic/react': ^6.0.0
-  '@ionic/react-router': ^6.0.0
   '@pmmmwh/react-refresh-webpack-plugin': ^0.5.3
   '@rush-temp/air-traffic-control': 'file:./projects/air-traffic-control.tgz'
   '@rush-temp/airport': 'file:./projects/airport.tgz'

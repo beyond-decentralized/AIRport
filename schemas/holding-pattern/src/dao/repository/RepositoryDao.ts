@@ -17,6 +17,7 @@ import {
 	IBaseRepositoryDao,
 	IRepository,
 	QRepository,
+	QRepositoryNesting,
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
 } from '../../generated/generated'
@@ -30,11 +31,11 @@ export interface IRepositoryDao
 		repositoryGUIDs: Repository_GUID[],
 	): Promise<IRepository[]>
 
-	findChildRepositories(
-		parentGUID: Repository_GUID
-	): Promise<Repository[]>
-
 	findRootRepositories(): Promise<Repository[]>
+
+	findRepository(
+		repositoryGUID: Repository_GUID
+	): Promise<Repository>
 
 	findWithOwnerBy_LocalIds(
 		repositoryIds: Repository_LocalId[]
@@ -73,30 +74,38 @@ export class RepositoryDao
 	implements IRepositoryDao {
 
 	async findRootRepositories(): Promise<Repository[]> {
-		let r: QRepository
+		let r: QRepository,
+			rn: QRepositoryNesting
 
 		return await this._find({
-			SELECT: {},
+			SELECT: {
+				'*': Y,
+				repositoryNestings: {}
+			},
 			FROM: [
-				r = Q.Repository
+				r = Q.Repository,
+				rn = r.repositoryNestings.LEFT_JOIN()
 			],
 			WHERE: r.parentRepository.IS_NULL()
 		})
 	}
 
-	async findChildRepositories(
-		parentGUID: Repository_GUID
-	): Promise<Repository[]> {
+	async findRepository(
+		repositoryGUID: Repository_GUID
+	): Promise<Repository> {
 		let r: QRepository,
-			pr: QRepository
+			rn: QRepositoryNesting
 
-		return await this._find({
-			SELECT: {},
+		return await this._findOne({
+			SELECT: {
+				'*': Y,
+				repositoryNestings: {}
+			},
 			FROM: [
 				r = Q.Repository,
-				pr = r.parentRepository.LEFT_JOIN()
+				rn = r.repositoryNestings.LEFT_JOIN()
 			],
-			WHERE: pr.GUID.equals(parentGUID)
+			WHERE: r.GUID.equals(repositoryGUID)
 		})
 	}
 

@@ -4,4 +4,5 @@ import { BaseRepositoryNestingDao } from "../../generated/baseDaos";
 @Injected()
 export class RepositoryNestingDao
     extends BaseRepositoryNestingDao {
+
 }

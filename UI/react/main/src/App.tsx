@@ -12,7 +12,8 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { apps, briefcase, desktop } from 'ionicons/icons';
 import { AirLoginModal } from '@airport/ui-react-components'
-import RepositoriesPage from './pages/RootRepositoriesPage';
+import RepositoryPage from './pages/RepositoryPage';
+import RootRepositoriesPage from './pages/RootRepositoriesPage';
 import AppsPage from './pages/AppsPage';
 import UIsPage from './pages/UIsPage';
 
@@ -51,8 +52,11 @@ const App: React.FC = () => {
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet>
-            <Route exact path="/repositories">
-              <RepositoriesPage />
+            <Route exact path="/rootRepositories">
+              <RootRepositoriesPage />
+            </Route>
+            <Route exact path="/repository/:repositoryId">
+              <RepositoryPage />
             </Route>
             <Route exact path="/applications">
               <AppsPage />
@@ -61,11 +65,11 @@ const App: React.FC = () => {
               <UIsPage />
             </Route>
             <Route exact path="/">
-              <Redirect to="/repositories" />
+              <Redirect to="/rootRepositories" />
             </Route>
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
-            <IonTabButton tab="repositories" href="/repositories">
+            <IonTabButton tab="repositories" href="/rootRepositories">
               <IonIcon icon={briefcase} />
               <IonLabel>Repositories</IonLabel>
             </IonTabButton>

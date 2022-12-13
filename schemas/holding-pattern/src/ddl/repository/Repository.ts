@@ -132,7 +132,7 @@ export class Repository
 	metroArea?: MetroArea
 
 	@OneToMany({ mappedBy: 'parentRepository' })
-	nestedRepositories: RepositoryNesting[] = []
+	repositoryNestings: RepositoryNesting[] = []
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];

@@ -40,4 +40,8 @@ export class RepositoryNesting {
     @Column({ name: "NESTING_TYPE" })
     nestingType: string
 
+
+    @Column({ name: "CHILD_REPOSITORY_NAME", nullable: false })
+    childRepositoryName: string
+
 }

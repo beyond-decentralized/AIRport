@@ -19,11 +19,10 @@ export class RepositoryApi {
         return await this.repositoryDao.findRootRepositories()
     }
 
-    @Api()
-    async findChildRepositories(
-        parentGUID: Repository_GUID
-    ): Promise<Repository[]> {
-        return await this.repositoryDao.findChildRepositories(parentGUID)
+    async findRepository(
+        repositoryGUID: Repository_GUID
+    ): Promise<Repository> {
+        return await this.repositoryDao.findRepository(repositoryGUID)
     }
 
     @Api()
@@ -40,7 +39,7 @@ export class RepositoryApi {
     async addNesting(
         parentRepository: Repository,
         childRepository: Repository,
-        nestingType: string = null
+        nestingType: string = null,
     ): Promise<void> {
         await this.repositoryManager.addRepositoryNesting(
             parentRepository,
