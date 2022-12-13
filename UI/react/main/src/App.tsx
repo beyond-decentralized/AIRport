@@ -61,7 +61,7 @@ const App: React.FC = () => {
             <Route exact path="/applications">
               <AppsPage />
             </Route>
-            <Route path="/user-interfaces">
+            <Route exact path="/user-interfaces">
               <UIsPage />
             </Route>
             <Route exact path="/">

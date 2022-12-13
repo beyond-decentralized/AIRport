@@ -60,6 +60,7 @@ export function AirLoginModal({
         <IonItem>
             <IonLabel position="stacked">Password</IonLabel>
             <IonInput
+                type="password"
                 value={password}
                 onIonChange={e => setPasswordValue(e.detail.value as string)} />
         </IonItem>
