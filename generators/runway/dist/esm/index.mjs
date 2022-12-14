@@ -227,12 +227,12 @@ globalThis.domain = domain;
 globalThis.InjectionDomain = InjectionDomain;
 
 class DependencyInjectionToken {
+    get dependencyConfiguration() {
+        return this.getInheritedDependencyConfiguration(this.descriptor.class);
+    }
     constructor(application, descriptor) {
         this.application = application;
         this.descriptor = descriptor;
-    }
-    get dependencyConfiguration() {
-        return this.getInheritedDependencyConfiguration(this.descriptor.class);
     }
     getPath() {
         return this.application.domain.name + ':' + this.application.name + ':'
@@ -1543,6 +1543,9 @@ class Interface {
     }
 }
 class EntityCandidate {
+    static create(type, path, parentClass, parentImport, isSuperClass) {
+        return new EntityCandidate(type, path, parentClass, parentImport, undefined, isSuperClass);
+    }
     constructor(type, path, parentClassName, location, verified, isSuperclass) {
         this.type = type;
         this.path = path;
@@ -1555,9 +1558,6 @@ class EntityCandidate {
             return;
         }
         console.log(`\tcreating entity: ${type}, parent: ${parentClassName}, isSuperclass: ${isSuperclass}`);
-    }
-    static create(type, path, parentClass, parentImport, isSuperClass) {
-        return new EntityCandidate(type, path, parentClass, parentImport, undefined, isSuperClass);
     }
     getIdProperties() {
         return this.getPropertiesOfType(true);
@@ -7588,11 +7588,11 @@ function __decorate$k(decorators, target, key, desc) {
 }
 
 class LookupProxy {
-    constructor(dao) {
-        this.dao = dao;
-    }
     ensureContext(context) {
         return doEnsureContext(context);
+    }
+    constructor(dao) {
+        this.dao = dao;
     }
     async lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults) {
         return await this.dao.lookup.lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults);
@@ -7934,6 +7934,11 @@ class FieldsSelect {
  * Created by Papa on 8/26/2017.
  */
 let Dao = class Dao {
+    static BaseSave(config) {
+        return function (target, propertyKey) {
+            // No runtime logic required.
+        };
+    }
     constructor(dbEntityId, Q, internal = false) {
         this.internal = internal;
         const dbEntity = Q.__dbApplication__.currentVersion[0]
@@ -7941,11 +7946,6 @@ let Dao = class Dao {
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
         this.db = new EntityDatabaseFacade(dbEntity, Q, this);
         this.SELECT = new FieldsSelect(dbEntity);
-    }
-    static BaseSave(config) {
-        return function (target, propertyKey) {
-            // No runtime logic required.
-        };
     }
     mapById(entities) {
         const map = new Map();
@@ -9648,14 +9648,14 @@ class SQDIDao$4 extends Dao {
     }
 }
 class BaseSequenceDao extends SQDIDao$4 {
-    constructor() {
-        super(0);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airport_dash_code_diSet(0);
+    }
+    constructor() {
+        super(0);
     }
 }
 BaseSequenceDao.Find = new DaoQueryDecorators();
@@ -9663,14 +9663,14 @@ BaseSequenceDao.FindOne = new DaoQueryDecorators();
 BaseSequenceDao.Search = new DaoQueryDecorators();
 BaseSequenceDao.SearchOne = new DaoQueryDecorators();
 class BaseSystemWideOperationIdDao extends SQDIDao$4 {
-    constructor() {
-        super(1);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airport_dash_code_diSet(1);
+    }
+    constructor() {
+        super(1);
     }
 }
 BaseSystemWideOperationIdDao.Find = new DaoQueryDecorators();
@@ -9678,14 +9678,14 @@ BaseSystemWideOperationIdDao.FindOne = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.Search = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.SearchOne = new DaoQueryDecorators();
 class BaseTerminalRunDao extends SQDIDao$4 {
-    constructor() {
-        super(2);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airport_dash_code_diSet(2);
+    }
+    constructor() {
+        super(2);
     }
 }
 BaseTerminalRunDao.Find = new DaoQueryDecorators();
@@ -10315,14 +10315,14 @@ class SQDIDao$3 extends Dao {
     }
 }
 class BaseApplicationDao extends SQDIDao$3 {
-    constructor() {
-        super(10);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(10);
+    }
+    constructor() {
+        super(10);
     }
 }
 BaseApplicationDao.Find = new DaoQueryDecorators();
@@ -10330,14 +10330,14 @@ BaseApplicationDao.FindOne = new DaoQueryDecorators();
 BaseApplicationDao.Search = new DaoQueryDecorators();
 BaseApplicationDao.SearchOne = new DaoQueryDecorators();
 class BaseApplicationColumnDao extends SQDIDao$3 {
-    constructor() {
-        super(4);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(4);
+    }
+    constructor() {
+        super(4);
     }
 }
 BaseApplicationColumnDao.Find = new DaoQueryDecorators();
@@ -10345,14 +10345,14 @@ BaseApplicationColumnDao.FindOne = new DaoQueryDecorators();
 BaseApplicationColumnDao.Search = new DaoQueryDecorators();
 BaseApplicationColumnDao.SearchOne = new DaoQueryDecorators();
 class BaseApplicationCurrentVersionDao extends SQDIDao$3 {
-    constructor() {
-        super(9);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(9);
+    }
+    constructor() {
+        super(9);
     }
 }
 BaseApplicationCurrentVersionDao.Find = new DaoQueryDecorators();
@@ -10360,14 +10360,14 @@ BaseApplicationCurrentVersionDao.FindOne = new DaoQueryDecorators();
 BaseApplicationCurrentVersionDao.Search = new DaoQueryDecorators();
 BaseApplicationCurrentVersionDao.SearchOne = new DaoQueryDecorators();
 class BaseApplicationEntityDao extends SQDIDao$3 {
-    constructor() {
-        super(6);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(6);
+    }
+    constructor() {
+        super(6);
     }
 }
 BaseApplicationEntityDao.Find = new DaoQueryDecorators();
@@ -10375,14 +10375,14 @@ BaseApplicationEntityDao.FindOne = new DaoQueryDecorators();
 BaseApplicationEntityDao.Search = new DaoQueryDecorators();
 BaseApplicationEntityDao.SearchOne = new DaoQueryDecorators();
 class BaseApplicationOperationDao extends SQDIDao$3 {
-    constructor() {
-        super(5);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(5);
+    }
+    constructor() {
+        super(5);
     }
 }
 BaseApplicationOperationDao.Find = new DaoQueryDecorators();
@@ -10390,14 +10390,14 @@ BaseApplicationOperationDao.FindOne = new DaoQueryDecorators();
 BaseApplicationOperationDao.Search = new DaoQueryDecorators();
 BaseApplicationOperationDao.SearchOne = new DaoQueryDecorators();
 class BaseApplicationPropertyDao extends SQDIDao$3 {
-    constructor() {
-        super(2);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(2);
+    }
+    constructor() {
+        super(2);
     }
 }
 BaseApplicationPropertyDao.Find = new DaoQueryDecorators();
@@ -10405,14 +10405,14 @@ BaseApplicationPropertyDao.FindOne = new DaoQueryDecorators();
 BaseApplicationPropertyDao.Search = new DaoQueryDecorators();
 BaseApplicationPropertyDao.SearchOne = new DaoQueryDecorators();
 class BaseApplicationPropertyColumnDao extends SQDIDao$3 {
-    constructor() {
-        super(3);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(3);
+    }
+    constructor() {
+        super(3);
     }
 }
 BaseApplicationPropertyColumnDao.Find = new DaoQueryDecorators();
@@ -10420,14 +10420,14 @@ BaseApplicationPropertyColumnDao.FindOne = new DaoQueryDecorators();
 BaseApplicationPropertyColumnDao.Search = new DaoQueryDecorators();
 BaseApplicationPropertyColumnDao.SearchOne = new DaoQueryDecorators();
 class BaseApplicationReferenceDao extends SQDIDao$3 {
-    constructor() {
-        super(7);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(7);
+    }
+    constructor() {
+        super(7);
     }
 }
 BaseApplicationReferenceDao.Find = new DaoQueryDecorators();
@@ -10435,14 +10435,14 @@ BaseApplicationReferenceDao.FindOne = new DaoQueryDecorators();
 BaseApplicationReferenceDao.Search = new DaoQueryDecorators();
 BaseApplicationReferenceDao.SearchOne = new DaoQueryDecorators();
 class BaseApplicationRelationDao extends SQDIDao$3 {
-    constructor() {
-        super(1);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(1);
+    }
+    constructor() {
+        super(1);
     }
 }
 BaseApplicationRelationDao.Find = new DaoQueryDecorators();
@@ -10450,14 +10450,14 @@ BaseApplicationRelationDao.FindOne = new DaoQueryDecorators();
 BaseApplicationRelationDao.Search = new DaoQueryDecorators();
 BaseApplicationRelationDao.SearchOne = new DaoQueryDecorators();
 class BaseApplicationRelationColumnDao extends SQDIDao$3 {
-    constructor() {
-        super(0);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(0);
+    }
+    constructor() {
+        super(0);
     }
 }
 BaseApplicationRelationColumnDao.Find = new DaoQueryDecorators();
@@ -10465,14 +10465,14 @@ BaseApplicationRelationColumnDao.FindOne = new DaoQueryDecorators();
 BaseApplicationRelationColumnDao.Search = new DaoQueryDecorators();
 BaseApplicationRelationColumnDao.SearchOne = new DaoQueryDecorators();
 class BaseApplicationVersionDao extends SQDIDao$3 {
-    constructor() {
-        super(8);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(8);
+    }
+    constructor() {
+        super(8);
     }
 }
 BaseApplicationVersionDao.Find = new DaoQueryDecorators();
@@ -10480,14 +10480,14 @@ BaseApplicationVersionDao.FindOne = new DaoQueryDecorators();
 BaseApplicationVersionDao.Search = new DaoQueryDecorators();
 BaseApplicationVersionDao.SearchOne = new DaoQueryDecorators();
 class BaseDomainDao extends SQDIDao$3 {
-    constructor() {
-        super(11);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(11);
+    }
+    constructor() {
+        super(11);
     }
 }
 BaseDomainDao.Find = new DaoQueryDecorators();
@@ -14245,7 +14245,7 @@ AirEntity = __decorate$c([
 let Repository = class Repository {
     constructor() {
         this._localId = null;
-        this.nestedRepositories = [];
+        this.repositoryNestings = [];
         this.repositoryTransactionHistory = [];
         this.repositoryApplications = [];
         this.repositoryClients = [];
@@ -14317,7 +14317,7 @@ __decorate$c([
 ], Repository.prototype, "metroArea", void 0);
 __decorate$c([
     OneToMany()
-], Repository.prototype, "nestedRepositories", void 0);
+], Repository.prototype, "repositoryNestings", void 0);
 __decorate$c([
     OneToMany()
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
@@ -14486,14 +14486,14 @@ class SQDIDao$2 extends Dao {
     }
 }
 class BaseActorDao extends SQDIDao$2 {
-    constructor() {
-        super(0);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(0);
+    }
+    constructor() {
+        super(0);
     }
 }
 BaseActorDao.Find = new DaoQueryDecorators();
@@ -14501,14 +14501,14 @@ BaseActorDao.FindOne = new DaoQueryDecorators();
 BaseActorDao.Search = new DaoQueryDecorators();
 BaseActorDao.SearchOne = new DaoQueryDecorators();
 class BaseOperationHistoryDao extends SQDIDao$2 {
-    constructor() {
-        super(13);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(13);
+    }
+    constructor() {
+        super(13);
     }
 }
 BaseOperationHistoryDao.Find = new DaoQueryDecorators();
@@ -14516,14 +14516,14 @@ BaseOperationHistoryDao.FindOne = new DaoQueryDecorators();
 BaseOperationHistoryDao.Search = new DaoQueryDecorators();
 BaseOperationHistoryDao.SearchOne = new DaoQueryDecorators();
 class BaseRecordHistoryDao extends SQDIDao$2 {
-    constructor() {
-        super(3);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(3);
+    }
+    constructor() {
+        super(3);
     }
 }
 BaseRecordHistoryDao.Find = new DaoQueryDecorators();
@@ -14531,14 +14531,14 @@ BaseRecordHistoryDao.FindOne = new DaoQueryDecorators();
 BaseRecordHistoryDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryDao.SearchOne = new DaoQueryDecorators();
 class BaseRecordHistoryNewValueDao extends SQDIDao$2 {
-    constructor() {
-        super(1);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(1);
+    }
+    constructor() {
+        super(1);
     }
 }
 BaseRecordHistoryNewValueDao.Find = new DaoQueryDecorators();
@@ -14546,14 +14546,14 @@ BaseRecordHistoryNewValueDao.FindOne = new DaoQueryDecorators();
 BaseRecordHistoryNewValueDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryNewValueDao.SearchOne = new DaoQueryDecorators();
 class BaseRecordHistoryOldValueDao extends SQDIDao$2 {
-    constructor() {
-        super(2);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(2);
+    }
+    constructor() {
+        super(2);
     }
 }
 BaseRecordHistoryOldValueDao.Find = new DaoQueryDecorators();
@@ -14561,14 +14561,14 @@ BaseRecordHistoryOldValueDao.FindOne = new DaoQueryDecorators();
 BaseRecordHistoryOldValueDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryOldValueDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryDao extends SQDIDao$2 {
-    constructor() {
-        super(10);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(10);
+    }
+    constructor() {
+        super(10);
     }
 }
 BaseRepositoryDao.Find = new DaoQueryDecorators();
@@ -14576,14 +14576,14 @@ BaseRepositoryDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryDao.Search = new DaoQueryDecorators();
 BaseRepositoryDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryApplicationDao extends SQDIDao$2 {
-    constructor() {
-        super(8);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(8);
+    }
+    constructor() {
+        super(8);
     }
 }
 BaseRepositoryApplicationDao.Find = new DaoQueryDecorators();
@@ -14591,14 +14591,14 @@ BaseRepositoryApplicationDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryApplicationDao.Search = new DaoQueryDecorators();
 BaseRepositoryApplicationDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryClientDao extends SQDIDao$2 {
-    constructor() {
-        super(6);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(6);
+    }
+    constructor() {
+        super(6);
     }
 }
 BaseRepositoryClientDao.Find = new DaoQueryDecorators();
@@ -14606,14 +14606,14 @@ BaseRepositoryClientDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryClientDao.Search = new DaoQueryDecorators();
 BaseRepositoryClientDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryDatabaseDao extends SQDIDao$2 {
-    constructor() {
-        super(5);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(5);
+    }
+    constructor() {
+        super(5);
     }
 }
 BaseRepositoryDatabaseDao.Find = new DaoQueryDecorators();
@@ -14621,14 +14621,14 @@ BaseRepositoryDatabaseDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.Search = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryNestingDao extends SQDIDao$2 {
-    constructor() {
-        super(9);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(9);
+    }
+    constructor() {
+        super(9);
     }
 }
 BaseRepositoryNestingDao.Find = new DaoQueryDecorators();
@@ -14636,14 +14636,14 @@ BaseRepositoryNestingDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryNestingDao.Search = new DaoQueryDecorators();
 BaseRepositoryNestingDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryTerminalDao extends SQDIDao$2 {
-    constructor() {
-        super(7);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(7);
+    }
+    constructor() {
+        super(7);
     }
 }
 BaseRepositoryTerminalDao.Find = new DaoQueryDecorators();
@@ -14651,14 +14651,14 @@ BaseRepositoryTerminalDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryTerminalDao.Search = new DaoQueryDecorators();
 BaseRepositoryTerminalDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryTransactionHistoryDao extends SQDIDao$2 {
-    constructor() {
-        super(12);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(12);
+    }
+    constructor() {
+        super(12);
     }
 }
 BaseRepositoryTransactionHistoryDao.Find = new DaoQueryDecorators();
@@ -14666,14 +14666,14 @@ BaseRepositoryTransactionHistoryDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryTransactionHistoryDao.Search = new DaoQueryDecorators();
 BaseRepositoryTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryTypeDao extends SQDIDao$2 {
-    constructor() {
-        super(4);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(4);
+    }
+    constructor() {
+        super(4);
     }
 }
 BaseRepositoryTypeDao.Find = new DaoQueryDecorators();
@@ -14681,14 +14681,14 @@ BaseRepositoryTypeDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryTypeDao.Search = new DaoQueryDecorators();
 BaseRepositoryTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseTransactionHistoryDao extends SQDIDao$2 {
-    constructor() {
-        super(11);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(11);
+    }
+    constructor() {
+        super(11);
     }
 }
 BaseTransactionHistoryDao.Find = new DaoQueryDecorators();
@@ -14998,22 +14998,29 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
     async findRootRepositories() {
         let r;
         return await this._find({
-            SELECT: {},
+            SELECT: {
+                '*': Y,
+                repositoryNestings: {}
+            },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository
+                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r.repositoryNestings.LEFT_JOIN()
             ],
             WHERE: r.parentRepository.IS_NULL()
         });
     }
-    async findChildRepositories(parentGUID) {
-        let r, pr;
-        return await this._find({
-            SELECT: {},
+    async findRepository(repositoryGUID) {
+        let r;
+        return await this._findOne({
+            SELECT: {
+                '*': Y,
+                repositoryNestings: {}
+            },
             FROM: [
                 r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
-                pr = r.parentRepository.LEFT_JOIN()
+                r.repositoryNestings.LEFT_JOIN()
             ],
-            WHERE: pr.GUID.equals(parentGUID)
+            WHERE: r.GUID.equals(repositoryGUID)
         });
     }
     async getRepositoryLoadInfo(repositorySource, repositoryGUID, context) {
@@ -15141,17 +15148,6 @@ RepositoryDao = __decorate$c([
 ], RepositoryDao);
 
 let RepositoryNestingDao = class RepositoryNestingDao extends BaseRepositoryNestingDao {
-    async findNestedRepositories(parentGUID) {
-        let rn;
-        return await this._find({
-            SELECT: {},
-            FROM: [
-                rn = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryNesting,
-                rn.childRepository.LEFT_JOIN()
-            ],
-            // WHERE: rn.parentRepository.equals()
-        });
-    }
 };
 RepositoryNestingDao = __decorate$c([
     Injected()
@@ -15353,8 +15349,8 @@ let RepositoryApi = class RepositoryApi {
     async findRootRepositories() {
         return await this.repositoryDao.findRootRepositories();
     }
-    async findChildRepositories(parentGUID) {
-        return await this.repositoryDao.findChildRepositories(parentGUID);
+    async findRepository(repositoryGUID) {
+        return await this.repositoryDao.findRepository(repositoryGUID);
     }
     async create(repositoryName, parentRepository, nestingType = null) {
         return await this.repositoryManager.createRepository(repositoryName, parentRepository, nestingType, arguments[3]);
@@ -15375,9 +15371,6 @@ __decorate$c([
 __decorate$c([
     Api()
 ], RepositoryApi.prototype, "findRootRepositories", null);
-__decorate$c([
-    Api()
-], RepositoryApi.prototype, "findChildRepositories", null);
 __decorate$c([
     Api()
 ], RepositoryApi.prototype, "create", null);
@@ -15931,14 +15924,14 @@ class SQDIDao$1 extends Dao {
     }
 }
 class BaseClassificationDao extends SQDIDao$1 {
-    constructor() {
-        super(6);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(6);
+    }
+    constructor() {
+        super(6);
     }
 }
 BaseClassificationDao.Find = new DaoQueryDecorators();
@@ -15946,14 +15939,14 @@ BaseClassificationDao.FindOne = new DaoQueryDecorators();
 BaseClassificationDao.Search = new DaoQueryDecorators();
 BaseClassificationDao.SearchOne = new DaoQueryDecorators();
 class BaseClientDao extends SQDIDao$1 {
-    constructor() {
-        super(10);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(10);
+    }
+    constructor() {
+        super(10);
     }
 }
 BaseClientDao.Find = new DaoQueryDecorators();
@@ -15961,14 +15954,14 @@ BaseClientDao.FindOne = new DaoQueryDecorators();
 BaseClientDao.Search = new DaoQueryDecorators();
 BaseClientDao.SearchOne = new DaoQueryDecorators();
 class BaseClientTypeDao extends SQDIDao$1 {
-    constructor() {
-        super(9);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(9);
+    }
+    constructor() {
+        super(9);
     }
 }
 BaseClientTypeDao.Find = new DaoQueryDecorators();
@@ -15976,14 +15969,14 @@ BaseClientTypeDao.FindOne = new DaoQueryDecorators();
 BaseClientTypeDao.Search = new DaoQueryDecorators();
 BaseClientTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseContinentDao extends SQDIDao$1 {
-    constructor() {
-        super(0);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(0);
+        return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(5);
+    }
+    constructor() {
+        super(5);
     }
 }
 BaseContinentDao.Find = new DaoQueryDecorators();
@@ -15991,14 +15984,14 @@ BaseContinentDao.FindOne = new DaoQueryDecorators();
 BaseContinentDao.Search = new DaoQueryDecorators();
 BaseContinentDao.SearchOne = new DaoQueryDecorators();
 class BaseCountryDao extends SQDIDao$1 {
-    constructor() {
-        super(1);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(1);
+        return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(0);
+    }
+    constructor() {
+        super(0);
     }
 }
 BaseCountryDao.Find = new DaoQueryDecorators();
@@ -16006,14 +15999,14 @@ BaseCountryDao.FindOne = new DaoQueryDecorators();
 BaseCountryDao.Search = new DaoQueryDecorators();
 BaseCountryDao.SearchOne = new DaoQueryDecorators();
 class BaseDatabaseDao extends SQDIDao$1 {
-    constructor() {
-        super(12);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(12);
+    }
+    constructor() {
+        super(12);
     }
 }
 BaseDatabaseDao.Find = new DaoQueryDecorators();
@@ -16021,14 +16014,14 @@ BaseDatabaseDao.FindOne = new DaoQueryDecorators();
 BaseDatabaseDao.Search = new DaoQueryDecorators();
 BaseDatabaseDao.SearchOne = new DaoQueryDecorators();
 class BaseDatabaseTypeDao extends SQDIDao$1 {
-    constructor() {
-        super(11);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(11);
+    }
+    constructor() {
+        super(11);
     }
 }
 BaseDatabaseTypeDao.Find = new DaoQueryDecorators();
@@ -16036,14 +16029,14 @@ BaseDatabaseTypeDao.FindOne = new DaoQueryDecorators();
 BaseDatabaseTypeDao.Search = new DaoQueryDecorators();
 BaseDatabaseTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseMetroAreaDao extends SQDIDao$1 {
-    constructor() {
-        super(4);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(4);
+        return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(3);
+    }
+    constructor() {
+        super(3);
     }
 }
 BaseMetroAreaDao.Find = new DaoQueryDecorators();
@@ -16051,14 +16044,14 @@ BaseMetroAreaDao.FindOne = new DaoQueryDecorators();
 BaseMetroAreaDao.Search = new DaoQueryDecorators();
 BaseMetroAreaDao.SearchOne = new DaoQueryDecorators();
 class BaseMetroAreaStateDao extends SQDIDao$1 {
-    constructor() {
-        super(3);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(3);
+        return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(2);
+    }
+    constructor() {
+        super(2);
     }
 }
 BaseMetroAreaStateDao.Find = new DaoQueryDecorators();
@@ -16066,14 +16059,14 @@ BaseMetroAreaStateDao.FindOne = new DaoQueryDecorators();
 BaseMetroAreaStateDao.Search = new DaoQueryDecorators();
 BaseMetroAreaStateDao.SearchOne = new DaoQueryDecorators();
 class BaseStateDao extends SQDIDao$1 {
-    constructor() {
-        super(2);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(2);
+        return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(1);
+    }
+    constructor() {
+        super(1);
     }
 }
 BaseStateDao.Find = new DaoQueryDecorators();
@@ -16081,14 +16074,14 @@ BaseStateDao.FindOne = new DaoQueryDecorators();
 BaseStateDao.Search = new DaoQueryDecorators();
 BaseStateDao.SearchOne = new DaoQueryDecorators();
 class BaseTerminalDao extends SQDIDao$1 {
-    constructor() {
-        super(14);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(14);
+    }
+    constructor() {
+        super(14);
     }
 }
 BaseTerminalDao.Find = new DaoQueryDecorators();
@@ -16096,14 +16089,14 @@ BaseTerminalDao.FindOne = new DaoQueryDecorators();
 BaseTerminalDao.Search = new DaoQueryDecorators();
 BaseTerminalDao.SearchOne = new DaoQueryDecorators();
 class BaseTerminalTypeDao extends SQDIDao$1 {
-    constructor() {
-        super(13);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(13);
+    }
+    constructor() {
+        super(13);
     }
 }
 BaseTerminalTypeDao.Find = new DaoQueryDecorators();
@@ -16111,14 +16104,14 @@ BaseTerminalTypeDao.FindOne = new DaoQueryDecorators();
 BaseTerminalTypeDao.Search = new DaoQueryDecorators();
 BaseTerminalTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseTypeDao extends SQDIDao$1 {
-    constructor() {
-        super(8);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(8);
+    }
+    constructor() {
+        super(8);
     }
 }
 BaseTypeDao.Find = new DaoQueryDecorators();
@@ -16126,14 +16119,14 @@ BaseTypeDao.FindOne = new DaoQueryDecorators();
 BaseTypeDao.Search = new DaoQueryDecorators();
 BaseTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseTypeClassificationDao extends SQDIDao$1 {
-    constructor() {
-        super(7);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(7);
+    }
+    constructor() {
+        super(7);
     }
 }
 BaseTypeClassificationDao.Find = new DaoQueryDecorators();
@@ -16141,14 +16134,14 @@ BaseTypeClassificationDao.FindOne = new DaoQueryDecorators();
 BaseTypeClassificationDao.Search = new DaoQueryDecorators();
 BaseTypeClassificationDao.SearchOne = new DaoQueryDecorators();
 class BaseUserAccountDao extends SQDIDao$1 {
-    constructor() {
-        super(5);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(5);
+        return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(4);
+    }
+    constructor() {
+        super(4);
     }
 }
 BaseUserAccountDao.Find = new DaoQueryDecorators();
@@ -16625,15 +16618,6 @@ const APPLICATION$4 = {
                                 "isAsync": true,
                                 "parameters": []
                             },
-                            "findChildRepositories": {
-                                "isAsync": true,
-                                "parameters": [
-                                    {
-                                        "isRest": false,
-                                        "text": "parentGUID: Repository_GUID"
-                                    }
-                                ]
-                            },
                             "create": {
                                 "isAsync": true,
                                 "parameters": [
@@ -16723,7 +16707,7 @@ const APPLICATION$4 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": 0,
-                                    "oneTableIndex": 5,
+                                    "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -16847,7 +16831,7 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 4,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -18147,7 +18131,7 @@ const APPLICATION$4 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": 0,
-                                    "oneTableIndex": 5,
+                                    "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -18191,7 +18175,7 @@ const APPLICATION$4 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneApplication_Index": 0,
-                                    "oneTableIndex": 0,
+                                    "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -18213,7 +18197,7 @@ const APPLICATION$4 = {
                                 {
                                     "manyRelationIndex": 3,
                                     "oneApplication_Index": 0,
-                                    "oneTableIndex": 1,
+                                    "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -18235,7 +18219,7 @@ const APPLICATION$4 = {
                                 {
                                     "manyRelationIndex": 4,
                                     "oneApplication_Index": 0,
-                                    "oneTableIndex": 2,
+                                    "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -18257,7 +18241,7 @@ const APPLICATION$4 = {
                                 {
                                     "manyRelationIndex": 5,
                                     "oneApplication_Index": 0,
-                                    "oneTableIndex": 4,
+                                    "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -18421,7 +18405,7 @@ const APPLICATION$4 = {
                         {
                             "index": 15,
                             "isId": false,
-                            "name": "nestedRepositories",
+                            "name": "repositoryNestings",
                             "relationRef": {
                                 "index": 6
                             },
@@ -18490,7 +18474,7 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 9
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 4,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -18511,7 +18495,7 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 11
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 5,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -18522,7 +18506,7 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 12
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 0,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -18533,7 +18517,7 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 13
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 1,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -18544,7 +18528,7 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 14
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 3,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -22984,118 +22968,6 @@ const APPLICATION$2 = {
                     "columns": [
                         {
                             "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "CONTINENT_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "NAME",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 0,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "Continent",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "id",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": false,
-                            "name": "name",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "name": "countries",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "userAccounts",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "continent"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "continent"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 5,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "CONTINENTS",
-                        "columnIndexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "COUNTRY_ID",
@@ -23143,7 +23015,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 0,
+                                    "oneTableIndex": 5,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -23165,7 +23037,7 @@ const APPLICATION$2 = {
                             "index": 0
                         }
                     ],
-                    "index": 1,
+                    "index": 0,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "Country",
@@ -23224,7 +23096,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -23237,7 +23109,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 4,
                             "sinceVersion": 1
                         }
                     ],
@@ -23298,7 +23170,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 1,
+                                    "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -23319,7 +23191,7 @@ const APPLICATION$2 = {
                             "index": 0
                         }
                     ],
-                    "index": 2,
+                    "index": 1,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "State",
@@ -23387,7 +23259,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -23400,7 +23272,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -23413,7 +23285,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 4,
                             "sinceVersion": 1
                         }
                     ],
@@ -23432,7 +23304,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 2,
+                                    "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -23454,7 +23326,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 4,
+                                    "oneTableIndex": 3,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -23479,7 +23351,7 @@ const APPLICATION$2 = {
                             "index": 1
                         }
                     ],
-                    "index": 3,
+                    "index": 2,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "MetroAreaState",
@@ -23511,7 +23383,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -23521,7 +23393,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 3,
                             "sinceVersion": 1
                         }
                     ],
@@ -23568,7 +23440,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 1,
+                                    "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -23589,7 +23461,7 @@ const APPLICATION$2 = {
                             "index": 0
                         }
                     ],
-                    "index": 4,
+                    "index": 3,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "MetroArea",
@@ -23648,7 +23520,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -23661,7 +23533,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 3,
+                            "relationTableIndex": 2,
                             "sinceVersion": 1
                         },
                         {
@@ -23674,7 +23546,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 4,
                             "sinceVersion": 1
                         }
                     ],
@@ -23785,7 +23657,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 0,
+                                    "oneTableIndex": 5,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -23808,7 +23680,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 1,
+                                    "oneTableIndex": 0,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -23831,7 +23703,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 3,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 2,
+                                    "oneTableIndex": 1,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -23854,7 +23726,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 4,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 4,
+                                    "oneTableIndex": 3,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -23876,7 +23748,7 @@ const APPLICATION$2 = {
                             "index": 0
                         }
                     ],
-                    "index": 5,
+                    "index": 4,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "UserAccount",
@@ -23991,7 +23863,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -24001,7 +23873,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -24011,7 +23883,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 8
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -24021,7 +23893,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 9
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 3,
                             "sinceVersion": 1
                         }
                     ],
@@ -24030,6 +23902,118 @@ const APPLICATION$2 = {
                         "columnIndexes": []
                     },
                     "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "CONTINENT_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "NAME",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 5,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "Continent",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "id",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "name",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "countries",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "userAccounts",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "continent"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "continent"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 4,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "CONTINENTS",
+                        "columnIndexes": []
+                    }
                 },
                 {
                     "columns": [
@@ -24455,7 +24439,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 0,
+                                    "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -24477,7 +24461,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 1,
+                                    "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -24499,7 +24483,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 2,
+                                    "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -24521,7 +24505,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 3,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 4,
+                                    "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -24628,7 +24612,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -24638,7 +24622,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -24648,7 +24632,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -24658,7 +24642,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 3,
                             "sinceVersion": 1
                         },
                         {
@@ -24840,7 +24824,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 0,
+                                    "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -24862,7 +24846,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 1,
+                                    "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -24884,7 +24868,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 2,
+                                    "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -24906,7 +24890,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 3,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 4,
+                                    "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -25013,7 +24997,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -25023,7 +25007,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -25033,7 +25017,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -25043,7 +25027,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 3,
                             "sinceVersion": 1
                         },
                         {
@@ -25211,7 +25195,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 5,
+                                    "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -25233,7 +25217,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 0,
+                                    "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -25255,7 +25239,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 1,
+                                    "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -25277,7 +25261,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 3,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 2,
+                                    "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -25299,7 +25283,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 4,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 4,
+                                    "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -25406,7 +25390,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 4,
                             "sinceVersion": 1
                         },
                         {
@@ -25416,7 +25400,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -25426,7 +25410,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -25436,7 +25420,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -25446,7 +25430,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 3,
                             "sinceVersion": 1
                         },
                         {
@@ -25514,6 +25498,337 @@ const APPLICATION$1 = {
                     "columns": [
                         {
                             "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "COLUMNINDEX",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 1,
+                                    "oneRelationIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SYNCHRONIZATION_CONFLICT_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "index": 0,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "SynchronizationConflictValues",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "synchronizationConflict",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 1,
+                            "isId": true,
+                            "name": "columnIndex",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SYNCHRONIZATION_CONFLICT_VALUES",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "SYNCHRONIZATION_CONFLICT_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "TYPE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ACKNOWLEDGED",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": 0,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplication_Index": 0,
+                                    "oneTableIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "OVERWRITTEN_RECORD_HISTORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneApplication_Index": 0,
+                                    "oneTableIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "OVERWRITING_RECORD_HISTORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 1,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "SynchronizationConflict",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "type",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "acknowledged",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "overwrittenRecordHistory",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "name": "overwritingRecordHistory",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
+                            "isId": false,
+                            "name": "values",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 10,
+                            "relationTableApplication_Index": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 3,
+                            "relationTableApplication_Index": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 5
+                            },
+                            "relationTableIndex": 3,
+                            "relationTableApplication_Index": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "synchronizationConflict"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 6
+                            },
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SYNCHRONIZATION_CONFLICT",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "RECORD_UPDATE_STAGE_LID",
@@ -25560,7 +25875,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": 0,
+                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 8,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25582,7 +25897,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 0,
+                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 6,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -25604,7 +25919,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": 1,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25626,7 +25941,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": 1,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25648,7 +25963,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneApplication_Index": 0,
+                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -25670,7 +25985,7 @@ const APPLICATION$1 = {
                             "index": 0
                         }
                     ],
-                    "index": 0,
+                    "index": 2,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RecordUpdateStage",
@@ -25757,7 +26072,7 @@ const APPLICATION$1 = {
                                 "index": 1
                             },
                             "relationTableIndex": 8,
-                            "relationTableApplication_Index": 0,
+                            "relationTableApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -25768,7 +26083,7 @@ const APPLICATION$1 = {
                                 "index": 2
                             },
                             "relationTableIndex": 6,
-                            "relationTableApplication_Index": 0,
+                            "relationTableApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -25779,7 +26094,7 @@ const APPLICATION$1 = {
                                 "index": 3
                             },
                             "relationTableIndex": 10,
-                            "relationTableApplication_Index": 1,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -25790,7 +26105,7 @@ const APPLICATION$1 = {
                                 "index": 4
                             },
                             "relationTableIndex": 0,
-                            "relationTableApplication_Index": 1,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -25801,344 +26116,13 @@ const APPLICATION$1 = {
                                 "index": 6
                             },
                             "relationTableIndex": 4,
-                            "relationTableApplication_Index": 0,
+                            "relationTableApplication_Index": 1,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "RECORD_UPDATE_STAGE",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "COLUMNINDEX",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 2,
-                                    "oneRelationIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SYNCHRONIZATION_CONFLICT_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        }
-                    ],
-                    "index": 1,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "SynchronizationConflictValues",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "synchronizationConflict",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 1,
-                            "isId": true,
-                            "name": "columnIndex",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 2,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SYNCHRONIZATION_CONFLICT_VALUES",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "SYNCHRONIZATION_CONFLICT_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "TYPE",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ACKNOWLEDGED",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "BOOLEAN"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "OVERWRITTEN_RECORD_HISTORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "OVERWRITING_RECORD_HISTORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 2,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "SynchronizationConflict",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_localId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": false,
-                            "name": "type",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "acknowledged",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "overwrittenRecordHistory",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "name": "overwritingRecordHistory",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "name": "values",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 3,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 3,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "synchronizationConflict"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 6
-                            },
-                            "relationTableIndex": 1,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SYNCHRONIZATION_CONFLICT",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -26149,7 +26133,7 @@ const APPLICATION$1 = {
                 {
                     "domain": "airport",
                     "index": 0,
-                    "name": "@airport/airspace",
+                    "name": "@airport/holding-pattern",
                     "sinceVersion": 1,
                     "versions": [
                         {
@@ -26163,7 +26147,7 @@ const APPLICATION$1 = {
                 {
                     "domain": "airport",
                     "index": 1,
-                    "name": "@airport/holding-pattern",
+                    "name": "@airport/airspace",
                     "sinceVersion": 1,
                     "versions": [
                         {
@@ -27659,7 +27643,7 @@ let SQLWhereBase = class SQLWhereBase {
         if (value === null) {
             return false;
         }
-        if (value === undefined || value === '' || value === NaN) {
+        if (value === undefined || value === '' || Number.isNaN(value)) {
             throw new Error(`Invalid query value: ${value}`);
         }
         switch (typeof value) {
@@ -30260,14 +30244,14 @@ class SQDIDao extends Dao {
     }
 }
 class BaseRecordUpdateStageDao extends SQDIDao {
-    constructor() {
-        super(0);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_layover_diSet(0);
+        return airport____at_airport_slash_layover_diSet(2);
+    }
+    constructor() {
+        super(2);
     }
 }
 BaseRecordUpdateStageDao.Find = new DaoQueryDecorators();
@@ -30275,14 +30259,14 @@ BaseRecordUpdateStageDao.FindOne = new DaoQueryDecorators();
 BaseRecordUpdateStageDao.Search = new DaoQueryDecorators();
 BaseRecordUpdateStageDao.SearchOne = new DaoQueryDecorators();
 class BaseSynchronizationConflictDao extends SQDIDao {
-    constructor() {
-        super(2);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_layover_diSet(2);
+        return airport____at_airport_slash_layover_diSet(1);
+    }
+    constructor() {
+        super(1);
     }
 }
 BaseSynchronizationConflictDao.Find = new DaoQueryDecorators();
@@ -30290,14 +30274,14 @@ BaseSynchronizationConflictDao.FindOne = new DaoQueryDecorators();
 BaseSynchronizationConflictDao.Search = new DaoQueryDecorators();
 BaseSynchronizationConflictDao.SearchOne = new DaoQueryDecorators();
 class BaseSynchronizationConflictValuesDao extends SQDIDao {
-    constructor() {
-        super(1);
-    }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_layover_diSet(1);
+        return airport____at_airport_slash_layover_diSet(0);
+    }
+    constructor() {
+        super(0);
     }
 }
 BaseSynchronizationConflictValuesDao.Find = new DaoQueryDecorators();
@@ -33277,7 +33261,7 @@ already contains a new repository.`);
         repositoryNesting.childRepository = childRepository;
         repositoryNesting.nestingType = nestingType;
         repositoryNesting.childRepositoryName = childRepository.name;
-        parentRepository.nestedRepositories.push(repositoryNesting);
+        parentRepository.repositoryNestings.push(repositoryNesting);
         if (saveChildRepository) {
             await this.repositoryDao.save(childRepository, context);
         }
@@ -33313,7 +33297,7 @@ already contains a new repository.`);
             name,
             owner: actor.userAccount,
             parentRepository: null,
-            nestedRepositories: [],
+            repositoryNestings: [],
             repositoryTransactionHistory: [],
             // FIXME: propage the 
             source: 'localhost:9000',

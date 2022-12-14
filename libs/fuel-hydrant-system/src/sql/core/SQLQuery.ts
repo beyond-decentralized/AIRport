@@ -162,7 +162,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 					const matchingRelations = dbRelation.relationEntity.relations.filter(manySideRelation =>
 						manySideRelation.relationEntity._localId == leftDbEntity._localId
 						&& manySideRelation.manyToOneElems
-						&& manySideRelation.manyToOneElems !== true
+						&& manySideRelation.manyToOneElems as any !== true
 						&& (manySideRelation.manyToOneElems as DatabaseManyToOneElements).mappedBy === dbRelation.property.name
 					)
 					if (matchingRelations.length) {

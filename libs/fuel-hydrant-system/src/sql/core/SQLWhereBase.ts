@@ -401,7 +401,7 @@ export abstract class SQLWhereBase
 		if (value === null) {
 			return false
 		}
-		if (value === undefined || value === '' || value === NaN) {
+		if (value === undefined || value === '' || Number.isNaN(value)) {
 			throw new Error(`Invalid query value: ${value}`)
 		}
 		switch (typeof value) {
