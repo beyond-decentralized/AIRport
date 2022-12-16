@@ -183,10 +183,3 @@ export const qManyToOneInternalRelationMethods = {
 	}
 }
 extend(QRelation, QManyToOneInternalRelation, qManyToOneInternalRelationMethods)
-
-
-
-globalThis.QRelation = QRelation
-globalThis.QAirEntityRelation = QAirEntityRelation
-globalThis.QManyToOneAirEntityRelation = QManyToOneAirEntityRelation
-globalThis.QManyToOneInternalRelation = QManyToOneInternalRelation

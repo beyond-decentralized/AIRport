@@ -23,6 +23,3 @@ export const QUERY_UTILS = tarmaqQuery.token<IQueryUtils>({
     interface: 'IQueryUtils',
     token: 'QUERY_UTILS'
 })
-globalThis.ENTITY_UTILS = ENTITY_UTILS
-globalThis.Q_ENTITY_UTILS = Q_ENTITY_UTILS
-globalThis.QUERY_UTILS = QUERY_UTILS

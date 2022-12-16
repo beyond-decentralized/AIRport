@@ -162,7 +162,6 @@ function __decorate$o(decorators, target, key, desc) {
 
 class Container$2 {
 }
-globalThis.Container = Container$2;
 
 const Injected = function () {
     return function (constructor) {
@@ -223,8 +222,6 @@ function domain(domainName) {
     return domain;
 }
 const AIRPORT_DOMAIN = domain('airport');
-globalThis.domain = domain;
-globalThis.InjectionDomain = InjectionDomain;
 
 class DependencyInjectionToken {
     get dependencyConfiguration() {
@@ -308,8 +305,6 @@ class InjectionApplication {
 function lib(libraryName) {
     return AIRPORT_DOMAIN.app(libraryName);
 }
-globalThis.InjectionApplication = InjectionApplication;
-globalThis.lib = lib;
 
 const directionIndicator = lib('direction-indicator');
 const AUTOPILOT_API_LOADER = directionIndicator.token({
@@ -322,14 +317,11 @@ const CONTAINER_ACCESSOR = directionIndicator.token({
     interface: 'IContainerAccessor',
     token: 'CONTAINER_ACCESSOR'
 });
-const INTER_APP_API_CLIENT = directionIndicator.token({
+directionIndicator.token({
     class: null,
     interface: 'IInterAppAPIClient',
     token: 'INTER_APP_API_CLIENT'
 });
-globalThis.AUTOPILOT_API_LOADER = AUTOPILOT_API_LOADER;
-globalThis.CONTAINER_ACCESSOR = CONTAINER_ACCESSOR;
-globalThis.INTER_APP_API_CLIENT = INTER_APP_API_CLIENT;
 
 class ChildContainer extends Container$2 {
     constructor(rootContainer, context) {
@@ -539,7 +531,6 @@ class ChildContainer extends Container$2 {
         }
     }
 }
-globalThis.ChildContainer = ChildContainer;
 
 class RootContainer extends Container$2 {
     constructor() {
@@ -592,8 +583,6 @@ class RootContainer extends Container$2 {
     }
 }
 const DEPENDENCY_INJECTION = new RootContainer();
-globalThis.RootContainer = RootContainer;
-globalThis.DEPENDENCY_INJECTION = DEPENDENCY_INJECTION;
 
 class InversionOfControl {
     async get(...tokens) {
@@ -626,7 +615,6 @@ function extend(base, sub, methods) {
 }
 
 const IOC = new InversionOfControl();
-globalThis.IOC = IOC;
 
 /**
  * Column keys.
@@ -4026,10 +4014,6 @@ const qManyToOneInternalRelationMethods = {
     }
 };
 extend(QRelation, QManyToOneInternalRelation, qManyToOneInternalRelationMethods);
-globalThis.QRelation = QRelation;
-globalThis.QAirEntityRelation = QAirEntityRelation;
-globalThis.QManyToOneAirEntityRelation = QManyToOneAirEntityRelation;
-globalThis.QManyToOneInternalRelation = QManyToOneInternalRelation;
 
 /**
  * Created by Papa on 10/25/2016.
@@ -4724,9 +4708,6 @@ const QUERY_UTILS = tarmaqQuery.token({
     interface: 'IQueryUtils',
     token: 'QUERY_UTILS'
 });
-globalThis.ENTITY_UTILS = ENTITY_UTILS;
-globalThis.Q_ENTITY_UTILS = Q_ENTITY_UTILS;
-globalThis.QUERY_UTILS = QUERY_UTILS;
 
 /**
  * Created by Papa on 10/25/2016.
@@ -4951,8 +4932,6 @@ class QEntityDriver {
         return rootEntity;
     }
 }
-globalThis.QEntity = QEntity;
-globalThis.QEntityDriver = QEntityDriver;
 
 /**
  * Created by Papa on 10/18/2016.
@@ -9425,14 +9404,6 @@ UPDATE_CACHE_MANAGER.setDependencies({
     applicationUtils: APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
 });
-globalThis.AIRPORT_DATABASE = AIRPORT_DATABASE;
-globalThis.APPLICATION_UTILS = APPLICATION_UTILS;
-globalThis.DATABASE_STORE = DATABASE_STORE;
-globalThis.FIELD_UTILS = FIELD_UTILS;
-globalThis.Q_APPLICATION_BUILDER_UTILS = Q_APPLICATION_BUILDER_UTILS;
-globalThis.Q_METADATA_UTILS = Q_METADATA_UTILS;
-globalThis.RELATION_MANAGER = RELATION_MANAGER;
-globalThis.REPOSITORY_LOADER = REPOSITORY_LOADER;
 
 airApi.setQApp = function (qApplication) {
     DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((airportDatabase) => {
@@ -11985,17 +11956,6 @@ APPLICATION_LOADER.setDependencies({
     terminalStore: TERMINAL_STORE,
     apiRegistry: API_REGISTRY,
 });
-globalThis.APPLICATION_INITIALIZER = APPLICATION_INITIALIZER;
-globalThis.DOMAIN_RETRIEVER = DOMAIN_RETRIEVER;
-globalThis.STORE_DRIVER = STORE_DRIVER;
-globalThis.TERMINAL_SESSION_MANAGER = TERMINAL_SESSION_MANAGER;
-globalThis.TERMINAL_STATE = TERMINAL_STATE;
-globalThis.TERMINAL_STORE = TERMINAL_STORE;
-globalThis.TRANSACTION_MANAGER = TRANSACTION_MANAGER;
-globalThis.TRANSACTIONAL_RECEIVER = TRANSACTIONAL_RECEIVER;
-globalThis.TRANSACTIONAL_SERVER = TRANSACTIONAL_SERVER;
-globalThis.USER_STATE = USER_STATE;
-globalThis.USER_STORE = USER_STORE;
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -12441,7 +12401,7 @@ QueryObjectInitializer = __decorate$e([
 ], QueryObjectInitializer);
 
 const takeoff = lib('takeoff');
-const AIRPORT_DATABASE_POPULATOR = takeoff.token({
+takeoff.token({
     class: AirportDatabasePopulator,
     interface: 'IAirportDatabasePopulator',
     token: 'AIRPORT_DATABASE_POPULATOR'
@@ -12493,11 +12453,6 @@ QUERY_OBJECT_INITIALIZER.setDependencies({
     queryEntityClassCreator: QUERY_ENTITY_CLASS_CREATOR,
     terminalStore: TERMINAL_STORE
 });
-globalThis.AIRPORT_DATABASE_POPULATOR = AIRPORT_DATABASE_POPULATOR;
-globalThis.DDL_OBJECT_LINKER = DDL_OBJECT_LINKER;
-globalThis.DDL_OBJECT_RETRIEVER = DDL_OBJECT_RETRIEVER;
-globalThis.QUERY_ENTITY_CLASS_CREATOR = QUERY_ENTITY_CLASS_CREATOR;
-globalThis.QUERY_OBJECT_INITIALIZER = QUERY_OBJECT_INITIALIZER;
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -39243,7 +39198,6 @@ DATABASE_FACADE.setDependencies({
     queryFacade: QUERY_FACADE
 });
 QUERY_FACADE.setClass(QueryFacade);
-globalThis.ENTITY_COPIER = ENTITY_COPIER;
 
 class NoOpApplicationBuilder extends SqlSchemaBuilder {
     async createApplication(jsonApplication, context) {

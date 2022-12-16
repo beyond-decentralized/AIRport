@@ -342,6 +342,3 @@ export class QEntityDriver<IQE extends IQEntity = any>
 	*/
 
 }
-
-globalThis.QEntity = QEntity
-globalThis.QEntityDriver = QEntityDriver
