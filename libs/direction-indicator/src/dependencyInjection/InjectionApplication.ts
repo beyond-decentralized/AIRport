@@ -26,6 +26,17 @@ export interface IInjectionApplication {
 export class InjectionApplication
 	implements IInjectionApplication {
 
+	static getTokenName(
+		className: string
+	): string {
+		let tokenName = className.replace(/[A-Z]/g, c => '_' + c);
+		tokenName = tokenName.replace(/[a-z0-9]*/g, c => c.toUpperCase())
+		if (tokenName.startsWith('_')) {
+			tokenName.substring(1, tokenName.length)
+		}
+		return tokenName
+	}
+
 	static getTokenDescriptor(
 		input: IDependencyInjectionTokenDescriptor | string | { new(): any },
 	): IDependencyInjectionTokenDescriptor {
@@ -46,12 +57,7 @@ export class InjectionApplication
 		}
 
 		if (!descriptor.token) {
-			let token = descriptor.interface.replace(/[A-Z]/g, c => '_' + c);
-			token = token.replace(/[a-z0-9]*/g, c => c.toUpperCase())
-			if (token.startsWith('_')) {
-				token.substring(1, token.length)
-			}
-			descriptor.token = token
+			descriptor.token = InjectionApplication.getTokenName(descriptor.interface)
 		}
 
 		return
