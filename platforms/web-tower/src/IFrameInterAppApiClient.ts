@@ -8,7 +8,7 @@ import {
     ILocalAPIRequest
 } from "@airport/aviation-communication";
 import {
-    IDependencyInjectionToken
+    IFullDITokenDescriptor
 } from "@airport/direction-indicator";
 import {
     ITransactionalConnector
@@ -41,7 +41,7 @@ export class IFrameInterAppPIClient
     transactionalConnector: ITransactionalConnector
 
     async invokeApiMethod<ApiInterface, ReturnValue>(
-        token: IDependencyInjectionToken<ApiInterface>,
+        fullDiDescriptor: IFullDITokenDescriptor,
         methodName: string,
         args: any[]
     ): Promise<ReturnValue> {
@@ -53,11 +53,11 @@ export class IFrameInterAppPIClient
         }
 
         const request: ICoreLocalApiRequest = {
-            application: token.application.name,
+            application: fullDiDescriptor.application.name,
             args: serializedParams,
-            domain: token.application.domain.name,
+            domain: fullDiDescriptor.application.domain.name,
             methodName,
-            objectName: token.descriptor.interface
+            objectName: fullDiDescriptor.descriptor.interface
         }
 
         let response = await this.transactionalConnector.callApi(request)
