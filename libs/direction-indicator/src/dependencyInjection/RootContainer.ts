@@ -1,3 +1,4 @@
+import { addClasses } from "../classes";
 import { Context, ContextType } from "../Context";
 import { ChildContainer } from "./ChildContainer";
 import { Container } from "./Container";
@@ -71,7 +72,13 @@ export class RootContainer
     }
 
 }
+addClasses([RootContainer])
 
-export const DEPENDENCY_INJECTION: IRootContainer = new RootContainer();
-globalThis.RootContainer = RootContainer
-globalThis.DEPENDENCY_INJECTION = DEPENDENCY_INJECTION
+let rootContainer
+if (globalThis.DEPENDENCY_INJECTION) {
+    rootContainer = globalThis.DEPENDENCY_INJECTION
+} else {
+    rootContainer = new RootContainer()
+}
+
+export const DEPENDENCY_INJECTION: IRootContainer = rootContainer;

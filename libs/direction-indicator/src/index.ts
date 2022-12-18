@@ -1,8 +1,6 @@
-import { lib } from './dependencyInjection/InjectionApplication'
-import { domain } from './dependencyInjection/InjectionDomain'
 import { InversionOfControl } from './dependencyInjection/InversionOfControl'
-import { DEPENDENCY_INJECTION } from './dependencyInjection/RootContainer'
 
+export * from './classes'
 export * from './autopilot/IAutopilotApiLoader'
 export * from './autopilot/IApiAutopilot'
 export * from './dependencyInjection/interfaces/IChildContainer'
@@ -24,5 +22,11 @@ export * from './Context'
 export * from './extend'
 export * from './tokens'
 
-export const IOC: InversionOfControl = new InversionOfControl();
-globalThis.IOC = IOC
+let inversionOfControl: InversionOfControl
+if (globalThis.IOC) {
+    inversionOfControl = globalThis.IOC
+} else {
+    inversionOfControl = new InversionOfControl()
+    globalThis.IOC = inversionOfControl
+}
+export const IOC: InversionOfControl = inversionOfControl;

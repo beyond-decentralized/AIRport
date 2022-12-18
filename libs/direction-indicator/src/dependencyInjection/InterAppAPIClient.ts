@@ -1,9 +1,9 @@
-import { IDependencyInjectionToken } from "./Token";
+import { IFullDITokenDescriptor } from "./Token";
 
 export interface IInterAppAPIClient {
 
-    invokeApiMethod<ApiInterface, ReturnValue>(
-        token: IDependencyInjectionToken<ApiInterface>,
+    invokeApiMethod<ReturnValue>(
+        token: IFullDITokenDescriptor,
         methodName: string,
         args: any[]
     ): Promise<ReturnValue>

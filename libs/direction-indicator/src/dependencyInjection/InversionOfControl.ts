@@ -1,3 +1,4 @@
+import { addClasses } from "../classes";
 import { DEPENDENCY_INJECTION } from "./RootContainer";
 import { IDependencyInjectionToken } from "./Token";
 
@@ -327,3 +328,4 @@ export class InversionOfControl {
     }
 
 }
+addClasses([InversionOfControl])

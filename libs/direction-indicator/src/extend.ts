@@ -4,7 +4,7 @@
  * Via:
  * https://stackoverflow.com/questions/6617780/how-to-call-parent-constructor
  */
- export function extend(
+export function extend(
 	base,
 	sub,
 	methods
@@ -20,3 +20,4 @@
 	// so we can define the constructor inline
 	return sub
 }
+globalThis.extend = extend

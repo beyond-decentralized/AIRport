@@ -1,10 +1,12 @@
+import { addClasses } from "../classes";
 import { IInjectionContext } from "../Context";
 import { AUTOPILOT_API_LOADER } from "../tokens";
 import { Container } from "./Container";
+import { InjectionApplication } from "./InjectionApplication";
 import { domain } from "./InjectionDomain";
 import { IChildContainer } from "./interfaces/IChildContainer";
 import { IRootContainer } from "./interfaces/IRootContainer";
-import { IDependencyInjectionToken } from "./Token";
+import { DependencyInjectionToken, IApplicationDescriptor, IDependencyInjectionToken, IFullDITokenDescriptor } from "./Token";
 
 export class ChildContainer
     extends Container
@@ -110,7 +112,7 @@ export class ChildContainer
     }
 
     private doGetCore(
-        tokens: Array<IDependencyInjectionToken<any>>
+        tokens: Array<IDependencyInjectionToken<any> | IFullDITokenDescriptor>
     ): {
         firstDiNotSetClass;
         firstMissingClassToken: IDependencyInjectionToken<any>;
@@ -127,8 +129,12 @@ export class ChildContainer
                 if (!object) {
                     if (!this.rootContainer.isFramework && token.application.autopilot) {
                         object = this.getSync(AUTOPILOT_API_LOADER)
-                            .loadApiAutopilot(token);
+                            .loadApiAutopilot(token as any);
                     } else {
+                        if (!(token instanceof DependencyInjectionToken)) {
+                            throw new Error(`Non-API token lookups must be done
+                            with an instance of a DependencyInjectionToken.`)
+                        }
                         // NOTE: object pooling is not supported, see RootContainer for why
                         // const rootObjectPool = this.rootContainer.objectPoolMap.get(token.descriptor.token);
                         // if (rootObjectPool && rootObjectPool.length) {
@@ -156,11 +162,11 @@ export class ChildContainer
                         if (result instanceof Promise) {
                             result.then(_ => {
                                 object.__initialized__ = true;
-                                console.log(`${token.getPath()} initialized.`);
+                                console.log(`${(token as IDependencyInjectionToken<any>).getPath()} initialized.`);
                             });
                         } else {
                             object.__initialized__ = true;
-                            console.log(`${token.getPath()} initialized.`);
+                            console.log(`${(token as IDependencyInjectionToken<any>).getPath()} initialized.`);
                         }
                     } else {
                         object.__initialized__ = true;
@@ -179,10 +185,16 @@ export class ChildContainer
     manualInject<T>(
         object: T,
         propertyName: string,
-        token: IDependencyInjectionToken<T>
+        application: IApplicationDescriptor,
+        apiObject: any
     ): void {
+        const descriptor = InjectionApplication.getTokenDescriptor(apiObject);
+
         (object as any).__container__ = this
-        this.setDependencyGetter(object, propertyName, token)
+        this.setDependencyGetter(object, propertyName, {
+            application,
+            descriptor
+        })
     }
 
     setDependencyGetters(
@@ -204,7 +216,7 @@ export class ChildContainer
     private setDependencyGetter(
         object: any,
         propertyName: string,
-        dependencyToken: IDependencyInjectionToken<any>
+        dependencyToken: IDependencyInjectionToken<any> | IFullDITokenDescriptor
     ) {
         delete object[propertyName]
         Object.defineProperty(object, propertyName, {
@@ -438,7 +450,7 @@ export class ChildContainer
     }
 
     getSync<A>(
-        tokenA: IDependencyInjectionToken<A>
+        tokenA: IDependencyInjectionToken<A | IFullDITokenDescriptor>
     ): A
     getSync<A, B>(
         tokenA: IDependencyInjectionToken<A>,
@@ -588,7 +600,7 @@ export class ChildContainer
         tokenO: IDependencyInjectionToken<O>
     ): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]
     getSync(
-        ...tokens: Array<IDependencyInjectionToken<any>>
+        ...tokens: Array<IDependencyInjectionToken<any> | IFullDITokenDescriptor>
     ): any {
         const {
             firstDiNotSetClass,
@@ -612,4 +624,4 @@ export class ChildContainer
     }
 
 }
-globalThis.ChildContainer = ChildContainer
+addClasses([ChildContainer])

@@ -1,5 +1,5 @@
 import { IInjectionContext } from "../../Context"
-import { IDependencyInjectionToken } from "../Token"
+import { IApplicationDescriptor, IDependencyInjectionToken } from "../Token"
 import { IContainer } from "./IContainer"
 
 export interface IChildContainer
@@ -11,7 +11,8 @@ export interface IChildContainer
     manualInject<T>(
         object: T,
         propertyName: string,
-        token: IDependencyInjectionToken<T>
+        application: IApplicationDescriptor,
+        apiObject: any
     ): void
 
     get<A>(

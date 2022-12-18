@@ -1,3 +1,4 @@
+import { addClasses } from '../classes'
 import { IInjectionApplication } from './InjectionApplication'
 
 export type IDependencyInjectionTokenName = string
@@ -8,10 +9,23 @@ export interface ITokenDependencyConfiguration {
 
 }
 
+export interface IApplicationDescriptor {
+	autopilot: boolean
+	domain: {
+		name: string
+	}
+	name: string
+}
+
+export interface IFullDITokenDescriptor {
+	application: IApplicationDescriptor
+	descriptor: IDependencyInjectionTokenDescriptor
+}
+
 export interface IDependencyInjectionTokenDescriptor {
-	class: any,
+	class?: any,
 	interface: string,
-	token: string,
+	token?: string,
 	isApi?: boolean
 }
 
@@ -111,6 +125,7 @@ export class DependencyInjectionToken<Injected>
 	}
 
 }
+addClasses([DependencyInjectionToken])
 
 export interface GenericDependencyInjectionError {
 

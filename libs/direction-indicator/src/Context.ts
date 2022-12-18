@@ -1,3 +1,5 @@
+import { addClasses } from "./classes"
+
 export interface IContext {
 	lastOUID?: number
 	repository?: {
@@ -20,6 +22,7 @@ export enum ContextType {
 	DB = 'DB',
 	UI = 'UI'
 }
+globalThis.ContextType = ContextType
 
 export class Context
 	implements IInjectionContext {
@@ -31,3 +34,4 @@ export class Context
 	}
 
 }
+addClasses([Context])

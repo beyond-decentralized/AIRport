@@ -1,3 +1,4 @@
+import { addClasses } from '../classes'
 import { IInjectionDomain, AIRPORT_DOMAIN } from './InjectionDomain'
 import {
 	DependencyInjectionToken,
@@ -16,7 +17,7 @@ export interface IInjectionApplication {
 	getFullName(): string
 
 	token<T = GenericDependencyInjectionError>(
-		descriptor: IDependencyInjectionTokenDescriptor,
+		descriptorOrInterfaceName: IDependencyInjectionTokenDescriptor | string | { new(): any },
 		autopilot?: boolean
 	): IDependencyInjectionToken<T>
 
@@ -24,6 +25,38 @@ export interface IInjectionApplication {
 
 export class InjectionApplication
 	implements IInjectionApplication {
+
+	static getTokenDescriptor(
+		input: IDependencyInjectionTokenDescriptor | string | { new(): any },
+	): IDependencyInjectionTokenDescriptor {
+		let descriptor = input as IDependencyInjectionTokenDescriptor
+		if (typeof input === 'string') {
+			descriptor = {
+				interface: input
+			}
+		} else if (input.constructor) {
+			descriptor = {
+				class: input,
+				interface: input.constructor.name
+			}
+		}
+
+		if (!descriptor.class) {
+			descriptor.class = null;
+		}
+
+		if (!descriptor.token) {
+			let token = descriptor.interface.replace(/[A-Z]/g, c => '_' + c);
+			token = token.replace(/[a-z0-9]*/g, c => c.toUpperCase())
+			if (token.startsWith('_')) {
+				token.substring(1, token.length)
+			}
+			descriptor.token = token
+		}
+
+		return
+
+	}
 
 	public tokenMap: Map<string, IDependencyInjectionToken<any>> = new Map()
 	public autopilot = false
@@ -39,8 +72,10 @@ export class InjectionApplication
 	}
 
 	token<T = GenericDependencyInjectionError>(
-		descriptor: IDependencyInjectionTokenDescriptor,
+		input: IDependencyInjectionTokenDescriptor | string | { new(): any },
 	): IDependencyInjectionToken<T> {
+		const descriptor = InjectionApplication.getTokenDescriptor(input)
+
 		const existingToken = this.tokenMap.get(descriptor.interface)
 
 		if (existingToken) {
@@ -54,10 +89,16 @@ export class InjectionApplication
 
 		this.tokenMap.set(descriptor.interface, diToken)
 
+
+		if (descriptor.class) {
+			diToken.setClass(descriptor.class)
+		}
+
 		return diToken
 	}
 
 }
+addClasses([InjectionApplication])
 
 export function lib(
 	libraryName: string
@@ -65,5 +106,3 @@ export function lib(
 	return AIRPORT_DOMAIN.app(libraryName)
 }
 
-globalThis.InjectionApplication = InjectionApplication
-globalThis.lib = lib

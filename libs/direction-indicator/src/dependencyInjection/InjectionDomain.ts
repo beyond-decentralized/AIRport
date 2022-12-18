@@ -1,3 +1,4 @@
+import { addClasses } from '../classes'
 import {
 	IInjectionApplication,
 	InjectionApplication
@@ -54,14 +55,25 @@ export class InjectionDomain
 	}
 
 }
+addClasses([InjectionDomain])
 
-const DOMAIN_MAP: {
-	[domainName: string]: InjectionDomain
-} = {}
+let injectionDomain: IInjectionDomain
+if (globalThis.AIRPORT_DOMAIN) {
+	injectionDomain = globalThis.AIRPORT_DOMAIN
+} else {
+	injectionDomain = domain('airport')
+	globalThis.AIRPORT_DOMAIN = injectionDomain
+}
+export const AIRPORT_DOMAIN = injectionDomain
+
+if (!globalThis.AIRPORT_DOMAIN_MAP) {
+	globalThis.AIRPORT_DOMAIN_MAP = {}
+}
 
 export function domain(
 	domainName: string
 ): IInjectionDomain {
+	const DOMAIN_MAP = globalThis.AIRPORT_DOMAIN_MAP
 	if (DOMAIN_MAP[domainName]) {
 		return DOMAIN_MAP[domainName]
 	}
@@ -72,7 +84,5 @@ export function domain(
 
 	return domain
 }
-
-export const AIRPORT_DOMAIN: IInjectionDomain = domain('airport')
 globalThis.domain = domain
-globalThis.InjectionDomain = InjectionDomain
+
