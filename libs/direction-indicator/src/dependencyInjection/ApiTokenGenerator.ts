@@ -13,8 +13,12 @@ export class ApiTokenGenerator {
         }
         for (const apiDescriptor of globalThis.AIRPORT_APIS) {
             const appDescriptor = apiDescriptor.application
+            appDescriptor.autopilot = true
             apiDescriptor.tokens = {}
             const app = domain(appDescriptor.domain.name).app(appDescriptor.name)
+            // Currently internal APIS accept both InjectionApplication instance and
+            // it's descriptor, so flip both to autopilot mode
+            app.autopilot = true
             for (const api of apiDescriptor.apis) {
                 let tokenName = InjectionApplication.getTokenName(api.constructor.name)
                 apiDescriptor.tokens[tokenName] = app.token(api)
