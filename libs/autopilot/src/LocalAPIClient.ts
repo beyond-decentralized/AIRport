@@ -2,7 +2,7 @@ import {
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication";
-import { IDependencyInjectionToken, Inject, Injected } from "@airport/direction-indicator";
+import { IFullDITokenDescriptor, Inject, Injected } from "@airport/direction-indicator";
 import {
     IOperationSerializer,
     IQueryResultsDeserializer
@@ -12,7 +12,7 @@ import { v4 as guidv4 } from "uuid";
 export interface ILocalAPIClient {
 
     invokeApiMethod<T = any>(
-        token: IDependencyInjectionToken<T>,
+        fullDIDescriptor: IFullDITokenDescriptor,
         methodName: string,
         args: any[]
     ): Promise<void>
@@ -126,11 +126,11 @@ export class LocalAPIClient
     }
 
     async invokeApiMethod<T>(
-        token: IDependencyInjectionToken<T>,
+        fullDIDescriptor: IFullDITokenDescriptor,
         methodName: string,
         args: any[]
     ): Promise<any> {
-        while (!await this.isConnectionReady(token)) {
+        while (!await this.isConnectionReady(fullDIDescriptor)) {
             await this.wait(301)
         }
 
@@ -143,15 +143,15 @@ export class LocalAPIClient
 
         const request: ILocalAPIRequest = {
             actor: null,
-            application: token.application.name,
+            application: fullDIDescriptor.application.name,
             args: serializedParams,
             category: 'FromClient',
-            domain: token.application.domain.name,
+            domain: fullDIDescriptor.application.domain.name,
             hostDomain: null,
             hostProtocol: null,
             id: guidv4(),
             methodName,
-            objectName: token.descriptor.interface,
+            objectName: fullDIDescriptor.descriptor.interface,
             protocol: window.location.protocol,
         }
 
@@ -202,10 +202,10 @@ export class LocalAPIClient
     }
 
     private async isConnectionReady<T>(
-        token: IDependencyInjectionToken<T>
+        fullDIDescriptor: IFullDITokenDescriptor
     ): Promise<boolean> {
-        const domain = token.application.domain.name
-        const application = token.application.name
+        const domain = fullDIDescriptor.application.domain.name
+        const application = fullDIDescriptor.application.name
         if (this.lastConnectionReadyCheckMap.get(domain)
             && this.lastConnectionReadyCheckMap.get(domain).get(application)) {
             // FIXME: checking every time breaks in inconsistent ways,
