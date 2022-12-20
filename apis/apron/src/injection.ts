@@ -11,3 +11,14 @@ apron.register(ApplicationStore, SelectorManager)
 
 export const APPLICATION_LOADER = apron.token<IApplicationLoader>('ApplicationLoader')
 export const LOCAL_API_SERVER = apron.token<ILocalAPIServer>('LocalAPIServer')
+
+/**
+ * Used by Apps (in App VMs) to set App-specific ApplicationLoader
+ * 
+ * @param applicationLoader Application specific ApplicationLoader
+ */
+export function setApplicationLoader(
+    applicationLoader: IApplicationLoader
+) {
+    APPLICATION_LOADER.setClass(applicationLoader)
+}
