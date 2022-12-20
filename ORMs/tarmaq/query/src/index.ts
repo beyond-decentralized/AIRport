@@ -87,4 +87,4 @@ export * from './implementation/query/facade/UpdateColumns';
 export * from './implementation/query/facade/UpdateProperties';
 export * from './implementation/query/QueryContext';
 export * from './implementation/utils/QEntityUtils';
-export * from './tokens';
+export * from './injection';

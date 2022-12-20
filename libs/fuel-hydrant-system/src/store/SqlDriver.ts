@@ -97,7 +97,7 @@ export abstract class SqlDriver
 	sqlQueryAdapter: ISQLQueryAdaptor
 
 	@Inject()
-	subStatementQueryGenerator: ISubStatementSqlGenerator
+	subStatementSqlGenerator: ISubStatementSqlGenerator
 
 	@Inject()
 	transactionManager: ITransactionManager
@@ -277,7 +277,7 @@ export abstract class SqlDriver
 				this.relationManager,
 				this.sqlQueryAdapter,
 				this,
-				this.subStatementQueryGenerator,
+				this.subStatementSqlGenerator,
 				this.utils,
 				context);
 			let sql = sqlInsertValues.toSQL(context);
@@ -304,7 +304,7 @@ export abstract class SqlDriver
 			this.relationManager,
 			this.sqlQueryAdapter,
 			this,
-			this.subStatementQueryGenerator,
+			this.subStatementSqlGenerator,
 			this.utils,
 			context);
 		let sql = sqlDelete.toSQL(context);
@@ -330,7 +330,7 @@ export abstract class SqlDriver
 			this.relationManager,
 			this.sqlQueryAdapter,
 			this,
-			this.subStatementQueryGenerator,
+			this.subStatementSqlGenerator,
 			this.utils,
 			context);
 		let sql = sqlUpdate.toSQL(internalFragments, context);
@@ -381,7 +381,7 @@ export abstract class SqlDriver
 					this.relationManager,
 					this.sqlQueryAdapter,
 					this,
-					this.subStatementQueryGenerator,
+					this.subStatementSqlGenerator,
 					this.utils,
 					context);
 			case QueryResType.FIELD:
@@ -394,7 +394,7 @@ export abstract class SqlDriver
 					this.relationManager,
 					this.sqlQueryAdapter,
 					this,
-					this.subStatementQueryGenerator,
+					this.subStatementSqlGenerator,
 					this.utils,
 					context);
 			case QueryResType.SHEET:
@@ -407,7 +407,7 @@ export abstract class SqlDriver
 					this.relationManager,
 					this.sqlQueryAdapter,
 					this,
-					this.subStatementQueryGenerator,
+					this.subStatementSqlGenerator,
 					this.utils,
 					context);
 			case QueryResType.TREE:
@@ -420,7 +420,7 @@ export abstract class SqlDriver
 					this.relationManager,
 					this.sqlQueryAdapter,
 					this,
-					this.subStatementQueryGenerator,
+					this.subStatementSqlGenerator,
 					this.utils,
 					context);
 			case QueryResType.RAW:

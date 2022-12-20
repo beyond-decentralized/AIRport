@@ -3,7 +3,7 @@ import { JSONRelationType, JSONViewJoinRelation } from "@airport/ground-control"
 import { IFieldColumnAliases } from "../../../definition/core/entity/Aliases";
 import { IQEntityDriver, IQEntityInternal } from "../../../definition/core/entity/Entity";
 import { RawTreeQuery } from "../../../definition/query/facade/TreeQuery";
-import { ENTITY_UTILS } from "../../../tokens";
+import { ENTITY_UTILS } from "../../../injection";
 import { FieldColumnAliases } from "./Aliases";
 import { QEntity, QEntityDriver } from "./Entity";
 import { IQueryUtils } from "../../../definition/utils/IQueryUtils";

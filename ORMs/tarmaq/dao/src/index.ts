@@ -26,7 +26,7 @@ export * from './implementation/Dao'
 export * from './implementation/DaoQueryDecorators'
 export * from './implementation/EntityDatabaseFacade'
 export * from './implementation/FieldsSelect'
-export * from './tokens'
+export * from './injection'
 
 import { airApi } from '@airport/aviation-communication'
 import { DbApplication, SEQ_GEN } from '@airport/ground-control';

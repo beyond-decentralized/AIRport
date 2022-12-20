@@ -49,7 +49,7 @@ export class WebTransactionalReceiver
 	terminalStore: ITerminalStore
 
 	@Inject()
-	webMessageReciever: IWebMessageReceiver
+	webMessageReceiver: IWebMessageReceiver
 
 	init() {
 		const ownDomain = window.location.hostname
@@ -82,7 +82,7 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		if (this.webMessageReciever.needMessageSerialization()) {
+		if (this.webMessageReceiver.needMessageSerialization()) {
 			throw new Error("Deserialization is not yet implemented.")
 			// FIXME: deserialize message
 		}
@@ -396,10 +396,10 @@ export class WebTransactionalReceiver
 			transactionId: message.transactionId
 		};
 
-		if (this.webMessageReciever.needMessageSerialization()) {
+		if (this.webMessageReceiver.needMessageSerialization()) {
 			// FIXME: serialize message
 		}
-		this.webMessageReciever.sendMessageToClient(connectionIsReadyMessage)
+		this.webMessageReceiver.sendMessageToClient(connectionIsReadyMessage)
 	}
 
 	private hasValidApplicationInfo(
@@ -518,10 +518,10 @@ export class WebTransactionalReceiver
 		}
 
 		// Forward the request to the source client
-		if (this.webMessageReciever.needMessageSerialization()) {
+		if (this.webMessageReceiver.needMessageSerialization()) {
 			// FIXME: serialize message
 		}
-		this.webMessageReciever.sendMessageToClient(message)
+		this.webMessageReceiver.sendMessageToClient(message)
 	}
 
 	private async ensureApplicationIsInstalled(

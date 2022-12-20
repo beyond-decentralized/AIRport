@@ -1,2 +1,2 @@
 export * from './SequenceGenerator'
-export * from './tokens'
+export * from './injection'

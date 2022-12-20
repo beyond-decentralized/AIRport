@@ -16,11 +16,10 @@ import { SynchronizationOutManager } from './synchronization/out/Synchronization
 import { SynchronizationAdapterLoader } from './adapters/SynchronizationAdapterLoader'
 import { SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer'
 import {
-    AIRPORT_DATABASE,
-    UTILS
+    AIRPORT_DATABASE, Utils
 } from '@airport/air-traffic-control'
 import {
-    TERMINAL_STORE,
+    TerminalStore,
     TRANSACTION_MANAGER
 } from '@airport/terminal-map'
 import {
@@ -43,7 +42,7 @@ import {
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter'
 import { SEQUENCE_GENERATOR } from '@airport/ground-control'
 import { DATABASE_FACADE } from '@airport/tarmaq-dao'
-import { CLIENT } from '@airway/client'
+import { Client } from '@airway/client'
 
 const groundTransport = lib('ground-transport')
 
@@ -56,7 +55,7 @@ groundTransport.register(
     DebugSynchronizationAdapter, SynchronizationAdapterLoader
 )
 groundTransport.setDependencies(DebugSynchronizationAdapter, {
-    client: CLIENT
+    client: Client
 })
 groundTransport.setDependencies(Stage1SyncedInDataProcessor, {
     actorDao: ActorDao,
@@ -70,7 +69,7 @@ groundTransport.setDependencies(Stage2SyncedInDataProcessor, {
     airportDatabase: AIRPORT_DATABASE,
     databaseFacade: DATABASE_FACADE,
     recordUpdateStageDao: RecordUpdateStageDao,
-    utils: UTILS
+    utils: Utils
 })
 
 groundTransport.setDependencies(SyncInActorChecker, {
@@ -99,7 +98,7 @@ groundTransport.setDependencies(SyncInChecker, {
 groundTransport.setDependencies(SyncInDataChecker, {
     airportDatabase: AIRPORT_DATABASE,
     sequenceGenerator: SEQUENCE_GENERATOR,
-    terminalStore: TERMINAL_STORE
+    terminalStore: TerminalStore
 })
 
 groundTransport.setDependencies(SyncInRepositoryChecker, {

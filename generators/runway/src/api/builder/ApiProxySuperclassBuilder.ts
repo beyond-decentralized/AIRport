@@ -20,21 +20,25 @@ export class ApiProxySuperclassBuilder
     build(): string {
         return `import { application } from "../../to_be_generated/app-declaration"
 
-        export abstract class ApiProxy<Api> {
+export abstract class ApiProxy<Api> {
         
-            _initialized = false
-            _proxy: Api
-        
-            get proxy(): Api {
-                if (!this._initialized) {
-                    this._initialized = true
-                    globalThis.DEPENDENCY_INJECTION.db().manualInject(this, '_proxy',
-                        application, this)
+    _initialized = false
+    _proxy: Api
+
+    get proxy(): Api {
+        if (!this._initialized) {
+            this._initialized = true
+            globalThis.IOC.getAutopilotApiLoader().loadApiAutopilot({
+                application,
+                descriptor: {
+                    interface: this.constructor.name
                 }
+            })
+        }
         
-                return this._proxy
-            }
+        return this._proxy
+    }
         
-        }`
+}`
     }
 }

@@ -83,7 +83,7 @@ globalThis.domain = domain
 export function app(
 	applicationDescriptor: IApplicationDescriptor
 ): IInjectionApplication {
-	const airDomain = domain(applicationDescriptor.domain.name)
+	const airDomain = globalThis.domain(applicationDescriptor.domain.name)
 
 	return airDomain.app(applicationDescriptor.name)
 }

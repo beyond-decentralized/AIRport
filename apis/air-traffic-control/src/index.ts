@@ -16,17 +16,17 @@ export * from './implementation/DatabaseStore';
 export * from './implementation/RelationManager';
 export * from './implementation/SystemWideOperationIds';
 export * from './implementation/Utils';
-export * from './core-tokens';
-export * from './tokens';
+export * from './coreInjection';
+export * from './injection';
 
 import { airApi, QApp } from '@airport/aviation-communication'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
-import { AIRPORT_DATABASE } from './tokens';
+import { IOC } from '@airport/direction-indicator';
+import { AIRPORT_DATABASE } from './injection';
 
 airApi.setQApp = function (
     qApplication: QApp
 ) {
-    DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((
+    IOC.eventuallyGet(AIRPORT_DATABASE).then((
         airportDatabase,
     ) => {
         airportDatabase.setQApp(qApplication)

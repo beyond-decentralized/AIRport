@@ -6,7 +6,7 @@ import {
 } from '@airport/direction-indicator';
 import {
 	DbApplication,
-	DB_APPLICATION_UTILS,
+	DbApplicationUtils,
 	JsonApplication,
 	JsonApplicationColumn,
 	JsonApplicationEntity,
@@ -24,7 +24,7 @@ export class NoOpApplicationBuilder
 		jsonApplication: JsonApplication,
 		context: IContext,
 	): Promise<void> {
-		const applicationName = IOC.getSync(DB_APPLICATION_UTILS).
+		const applicationName = IOC.getSync(DbApplicationUtils).
 			getFullApplication_Name(jsonApplication);
 		const createApplicationStatement = `CREATE APPLICATION ${applicationName}`;
 
@@ -53,7 +53,7 @@ export class NoOpApplicationBuilder
 	): Promise<any[]> {
 		let allSequences: any[] = [];
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = this.airportDatabase.QM[IOC.getSync(DB_APPLICATION_UTILS).
+			const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
 				getFullApplication_Name(jsonApplication)] as QAppInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
@@ -69,7 +69,7 @@ export class NoOpApplicationBuilder
 	): any[] {
 		let stagedSequences: any[] = [];
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = this.airportDatabase.QM[IOC.getSync(DB_APPLICATION_UTILS).
+			const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
 				getFullApplication_Name(jsonApplication)] as QAppInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));

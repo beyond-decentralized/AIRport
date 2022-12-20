@@ -5,4 +5,4 @@ export * from './serialize/QueryResultsSerializer';
 export * from './AirRequest';
 export * from './RepositorySynchronizationMessage';
 export * from './RequestManager';
-export * from './tokens';
+export * from './injection';

@@ -8,6 +8,10 @@ import { IRootContainer } from "./interfaces/IRootContainer";
 import { IApplicationDescriptor, IDependencyInjectionToken, IFullDITokenDescriptor } from "./interfaces/Token";
 import { DependencyInjectionToken } from "./Token";
 
+/**
+ * A container (at this point) is primarily about maintaining transaction and user
+ * session information through a request into an app (and across multiple apps).
+ */
 export class ChildContainer
     extends Container
     implements IChildContainer {
@@ -16,13 +20,62 @@ export class ChildContainer
     // numPendingInits = 0
     // theObjects: any[]  = []
 
-    objectMap: Map<string, any> = new Map()
+    objectMap: Map<string, Map<string, Map<string, any>>> = new Map()
 
     constructor(
         public rootContainer: IRootContainer,
         public context: IInjectionContext
     ) {
         super();
+    }
+
+    private getToken(
+        token: IDependencyInjectionToken<any> | IFullDITokenDescriptor
+    ) {
+        return globalThis.domain(token.application.domain.name)
+            .getApp(token.application.name)
+            .tokenMap.get(token.descriptor.token)
+    }
+
+    private setToken(
+        token: IDependencyInjectionToken<any>
+    ) {
+        return globalThis.domain(token.application.domain.name)
+            .getApp(token.application.name)
+            .tokenMap.set(token.descriptor.token, token)
+    }
+
+    private getObject(
+        token: IDependencyInjectionToken<any> | IFullDITokenDescriptor
+    ) {
+        let mapForDomain = this.objectMap.get(token.application.domain.name)
+        if (!mapForDomain) {
+            return null;
+        }
+        let mapForApp = mapForDomain.get(token.application.name)
+        if (!mapForApp) {
+            return null
+        }
+
+        return mapForApp.get(token.descriptor.token)
+    }
+
+    private setObject(
+        token: IDependencyInjectionToken<any> | IFullDITokenDescriptor,
+        object: any
+    ) {
+        let mapForDomain = this.objectMap.get(token.application.domain.name)
+        if (!mapForDomain) {
+            mapForDomain = new Map()
+            this.objectMap.set(token.application.domain.name, mapForDomain)
+        }
+        let mapForApp = mapForDomain.get(token.application.name)
+        if (!mapForApp) {
+            mapForApp = new Map()
+            mapForDomain.set(token.application.name, mapForApp)
+        }
+
+        mapForApp.set(token.descriptor.token, object)
     }
 
     private doEventuallyGet(
@@ -116,7 +169,7 @@ export class ChildContainer
 
     private normalizeTokens(
         tokens: Array<IDependencyInjectionToken<any> | IFullDITokenDescriptor | { new(): any }>
-    ): Array<IDependencyInjectionToken<any> | IFullDITokenDescriptor> {
+    ): Array<IDependencyInjectionToken<any>> {
         const normalizedTokens = []
         for (let token of tokens) {
             let prototype = (token as { new(): any }).prototype
@@ -130,14 +183,25 @@ export class ChildContainer
                     }
                 } as IFullDITokenDescriptor
             }
-            normalizedTokens.push(token)
+            let normalizedToken: IDependencyInjectionToken<any> = token as IDependencyInjectionToken<any>
+            if (!(token as IDependencyInjectionToken<any>).dependencyConfiguration) {
+                normalizedToken = this.getToken(token as IFullDITokenDescriptor)
+                if (!normalizedToken) {
+                    const fullTokenDescriptor = token as IFullDITokenDescriptor
+                    const app = globalThis.domain(fullTokenDescriptor.application.domain.name)
+                        .getApp(fullTokenDescriptor.application.name)
+                    normalizedToken = app.token(fullTokenDescriptor.descriptor)
+                    this.setToken(normalizedToken)
+                }
+            }
+            normalizedTokens.push(normalizedToken)
         }
 
         return normalizedTokens
     }
 
     private doGetCore(
-        tokens: Array<IDependencyInjectionToken<any> | IFullDITokenDescriptor>
+        tokens: Array<IDependencyInjectionToken<any>>
     ): {
         firstDiNotSetClass;
         firstMissingClassToken: IDependencyInjectionToken<any>;
@@ -150,7 +214,7 @@ export class ChildContainer
                 if (firstMissingClassToken || firstDiNotSetClass) {
                     return;
                 }
-                let object = this.objectMap.get((token as IFullDITokenDescriptor).descriptor.token)
+                let object = this.getObject(token)
                 if (!object) {
                     if (!(token instanceof DependencyInjectionToken)) {
                         throw new Error(`Non-API token lookups must be done
@@ -176,18 +240,18 @@ export class ChildContainer
                     // }
 
                     object.__container__ = this
-                    this.objectMap.set(token.descriptor.token, object)
+                    this.setObject(token, object)
 
                     if (object.init) {
                         const result = object.init()
                         if (result instanceof Promise) {
                             result.then(_ => {
                                 object.__initialized__ = true;
-                                console.log(`${(token as IDependencyInjectionToken<any>).getPath()} initialized.`);
+                                console.log(`${token.getPath()} initialized.`);
                             });
                         } else {
                             object.__initialized__ = true;
-                            console.log(`${(token as IDependencyInjectionToken<any>).getPath()} initialized.`);
+                            console.log(`${token.getPath()} initialized.`);
                         }
                     } else {
                         object.__initialized__ = true;
@@ -256,14 +320,14 @@ export class ChildContainer
         applicationName: string,
         tokenInterface: string
     ): Promise<any> {
-        const injectionDomain = domain(domainName)
+        const injectionDomain = globalThis.domain(domainName)
         if (!injectionDomain) {
             throw new Error(`Could nof find
 	Domain:
 		${domainName}
 		`)
         }
-        const application = domain(domainName).getApp(applicationName)
+        const application = globalThis.domain(domainName).getApp(applicationName)
         if (!application) {
             throw new Error(`Could not find
 	Domain:

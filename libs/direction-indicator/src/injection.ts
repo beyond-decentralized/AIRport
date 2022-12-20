@@ -2,10 +2,9 @@ import { IAutopilotApiLoader } from "./autopilot/IAutopilotApiLoader";
 import { ContainerAccessor } from "./dependencyInjection/ContainerAccessor";
 import { lib } from "./dependencyInjection/InjectionApplication";
 import { IInterAppAPIClient } from "./dependencyInjection/InterAppAPIClient";
-import { IContainerAccessor } from "./dependencyInjection/interfaces/IContainerAccessor";
 
 const directionIndicator = lib('direction-indicator')
-export const CONTAINER_ACCESSOR = directionIndicator.token<IContainerAccessor>(ContainerAccessor)
+directionIndicator.register(ContainerAccessor)
 
 export const AIR_ENTITY_UTILS = lib('aviation-communication').token('AirEntityUtils')
 globalThis.AIR_ENTITY_UTILS = AIR_ENTITY_UTILS

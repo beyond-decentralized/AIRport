@@ -1,6 +1,6 @@
 export * from './AirportDatabasePopulator'
 export * from './DdlObjectLinker'
 export * from './DdlObjectRetriever'
-export * from './tokens'
+export * from './injection'
 export * from './QueryEntityClassCreator'
 export * from './QueryObjectInitializer'

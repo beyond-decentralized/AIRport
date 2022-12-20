@@ -1,19 +1,15 @@
 import { Utils } from "./implementation/Utils"
 import { QueryUtils } from "./implementation/utils/QueryUtils"
-import { airTrafficControl } from "./library"
 import { ENTITY_UTILS, QUERY_UTILS } from "@airport/tarmaq-query"
-import { IUtils } from "./definition/utils/Utils"
+import { airTrafficControl } from "./injectionLibrary"
 
 // Separating core-tokens from tokens removes circular dependencies
 // at code initialization time
 
-export const UTILS = airTrafficControl.token<IUtils>({
-    class: Utils,
-    interface: 'IUtils',
-    token: 'UTILS'
-})
+airTrafficControl.register(Utils)
 
 ENTITY_UTILS.setDependencies({
-    utils: UTILS
+    utils: Utils
 })
+
 QUERY_UTILS.setClass(QueryUtils)

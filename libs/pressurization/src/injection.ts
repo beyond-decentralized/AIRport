@@ -3,6 +3,8 @@ import { IOperationSerializer, OperationSerializer } from './OperationSerializer
 import { SerializationStateManager } from './SerializationStateManager'
 import { AirEntityUtils } from '@airport/aviation-communication'
 
+// This library is used in UI/Client bundles and does does not include @airport/direction-indicator
+// dependency injection library
 if (globalThis.IOC) {
     globalThis.OPERATION_SERIALIZER.setClass(OperationSerializer)
     globalThis.SERIALIZATION_STATE_MANAGER.setClass(SerializationStateManager)

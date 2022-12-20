@@ -10,7 +10,7 @@ export * from './core/globalScopeUtils'
 export * from './facade/DatabaseFacade'
 export * from './facade/QueryFacade'
 export * from './AirportDatabase'
-export * from './tokens'
+export * from './injection'
 
 export function loadTower(
     applicationName: string

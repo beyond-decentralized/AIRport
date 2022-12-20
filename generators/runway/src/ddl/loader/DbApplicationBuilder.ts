@@ -1,5 +1,5 @@
 import { IOC } from '@airport/direction-indicator';
-import { DB_APPLICATION_UTILS, IDbApplicationBuilder } from '@airport/ground-control';
+import { DbApplicationUtils, IDbApplicationBuilder } from '@airport/ground-control';
 import { ILinkingDictionary } from '@airport/ground-control';
 import {
 	DbEntity,
@@ -70,7 +70,7 @@ export class DbApplicationBuilder
 		const dbApplication: DbApplication = {
 			currentVersion: [dbApplicationCurrentVersion],
 			domain: dbDomain,
-			fullName: IOC.getSync(DB_APPLICATION_UTILS).
+			fullName: IOC.getSync(DbApplicationUtils).
 				getFullApplication_NameFromDomainAndName(dbDomain.name, jsonApplication.name),
 			_localId: null,
 			index: allApplications.length,

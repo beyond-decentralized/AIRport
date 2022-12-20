@@ -23,7 +23,7 @@ export * from './dependencyInjection/RootContainer'
 export * from './dependencyInjection/Token'
 export * from './Context'
 export * from './extend'
-export * from './tokens'
+export * from './injection'
 
 let inversionOfControl: InversionOfControl
 if (globalThis.IOC) {

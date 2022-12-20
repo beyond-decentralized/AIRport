@@ -1,7 +1,7 @@
 import { IOC } from '@airport/direction-indicator'
-import { CROSS_TAB_COMMUNCATOR } from './tokens'
+import { CrossTabCommunicator } from './CrossTabCommunicator'
 
 export * from './CrossTabCommunicator'
-export * from './tokens'
+export * from './injection'
 
-IOC.getSync(CROSS_TAB_COMMUNCATOR)
+IOC.getSync(CrossTabCommunicator)

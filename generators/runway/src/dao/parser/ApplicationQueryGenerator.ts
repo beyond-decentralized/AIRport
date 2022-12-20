@@ -15,10 +15,11 @@ import {
 	QueryParameter,
 	QueryParameterType,
 	QueryResultType,
-	DB_APPLICATION_UTILS,
-	IDbApplicationUtils
+	IDbApplicationUtils,
+	DbApplicationUtils
 } from '@airport/ground-control';
 import {
+	Lookup,
 	QUERY_FACADE
 } from '@airport/tarmaq-dao';
 import {
@@ -37,7 +38,6 @@ import {
 import tsc from 'typescript';
 import { ITempDatabase, TempDatabase } from '../../ddl/loader/temp/TempDatabase';
 import { JsonFormattedQueryWithExpression } from './OperationGenerator';
-import { LOOKUP } from '@airport/tarmaq-dao';
 
 export class ApplicationQueryGenerator {
 
@@ -139,7 +139,7 @@ export class ApplicationQueryGenerator {
 		queryJavascript = queryJavascript.replace(functionStartRegex, '');
 		queryJavascript = queryJavascript.replace(functionEndRegex, '');
 
-		const [airDb, dbApplicationUtils] = await IOC.get(AIRPORT_DATABASE, DB_APPLICATION_UTILS);
+		const [airDb, dbApplicationUtils] = await IOC.get(AIRPORT_DATABASE, DbApplicationUtils);
 		for (const functionName in airDb.functions) {
 			const regex = new RegExp(`\\s*${functionName}\\(`);
 			queryJavascript = queryJavascript
@@ -161,7 +161,7 @@ export class ApplicationQueryGenerator {
 		const rawQuery = queryFunction(...queryFunctionParameters);
 
 		const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(
-			DB_APPLICATION_UTILS, LOOKUP, QUERY_FACADE);
+			DbApplicationUtils, Lookup, QUERY_FACADE);
 		const context = lookup.ensureContext(null);
 		const qApplication: QAppInternal = airDb.QM[dbAppliationUtils.
 			getFullApplication_Name(jsonApplication)];

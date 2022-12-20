@@ -15,7 +15,7 @@ import {
 	ITreeEntity,
 	RawTreeQuery
 } from "../../definition/query/facade/TreeQuery";
-import { ENTITY_UTILS } from '../../tokens';
+import { ENTITY_UTILS } from '../../injection';
 import type { QField } from "./field/Field";
 
 /**

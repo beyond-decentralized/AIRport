@@ -1,28 +1,25 @@
 import { LOCAL_API_SERVER } from "@airport/apron";
 import { lib } from "@airport/direction-indicator";
-import { DB_APPLICATION_UTILS } from "@airport/ground-control";
 import { ActorDao } from '@airport/holding-pattern/dist/app/bundle'
 import { ApplicationDao } from '@airport/airspace/dist/app/bundle'
 import { DatabaseManager, InternalRecordManager } from "@airport/terminal";
-import { APPLICATION_INITIALIZER, DOMAIN_RETRIEVER, TERMINAL_SESSION_MANAGER, TERMINAL_STORE, TRANSACTIONAL_RECEIVER, TRANSACTIONAL_SERVER } from "@airport/terminal-map";
+import { APPLICATION_INITIALIZER, DOMAIN_RETRIEVER, TerminalStore, TERMINAL_SESSION_MANAGER, TRANSACTIONAL_RECEIVER, TRANSACTIONAL_SERVER } from "@airport/terminal-map";
 import { DomainRetriever } from "./DomainRetriever";
 import { WebApplicationInitializer } from "./WebApplicationInitializer";
-import { IWebMessageReceiver, WebMesageReceiver } from "./WebMessageReceiver";
+import { WebMessageReceiver } from "./WebMessageReceiver";
 import { WebTransactionalReceiver } from "./WebTransactionalReceiver";
+import { DbApplicationUtils } from "@airport/ground-control";
 
 const webTerminal = lib('web-terminal')
 
+webTerminal.register(WebMessageReceiver)
+
 DOMAIN_RETRIEVER.setClass(DomainRetriever)
 APPLICATION_INITIALIZER.setClass(WebApplicationInitializer)
-export const WEB_MESSAGE_RECEIVER = webTerminal.token<IWebMessageReceiver>({
-    class: WebMesageReceiver,
-    interface: 'IWebMessageReceiver',
-    token: 'WEB_MESSAGE_RECEIVER'
-})
 APPLICATION_INITIALIZER.setDependencies({
-    terminalStore: TERMINAL_STORE
+    terminalStore: TerminalStore
 })
-WEB_MESSAGE_RECEIVER.setDependencies({
+webTerminal.setDependencies(WebMessageReceiver, {
     transactionalReceiver: TRANSACTIONAL_RECEIVER
 })
 TRANSACTIONAL_RECEIVER.setClass(WebTransactionalReceiver)
@@ -31,11 +28,11 @@ TRANSACTIONAL_RECEIVER.setDependencies({
     applicationDao: ApplicationDao,
     applicationInitializer: APPLICATION_INITIALIZER,
     databaseManager: DatabaseManager,
-    dbApplicationUtils: DB_APPLICATION_UTILS,
+    dbApplicationUtils: DbApplicationUtils,
     localApiServer: LOCAL_API_SERVER,
     internalRecordManager: InternalRecordManager,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
-    terminalStore: TERMINAL_STORE,
+    terminalStore: TerminalStore,
     transactionalServer: TRANSACTIONAL_SERVER,
-    webMessageReciever: WEB_MESSAGE_RECEIVER
+    webMessageReceiver: WebMessageReceiver
 })

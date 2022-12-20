@@ -10,7 +10,8 @@ import { IQAirEntity, IQEntityInternal } from '../../../definition/core/entity/E
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { JSONLogicalOperation } from '../../../definition/core/operation/LogicalOperation'
 import { IApplicationUtils } from '../../../definition/utils/IApplicationUtils'
-import { QUERY_UTILS, Q_ENTITY_UTILS } from '../../../tokens'
+import { QUERY_UTILS } from '../../../injection'
+import { QEntityUtils } from '../../utils/QEntityUtils'
 import { AND, OR } from '../operation/LogicalOperation'
 
 /**
@@ -62,7 +63,7 @@ QRelation.prototype.nullOrNot = function (
 	isNull: boolean
 ): JSONBaseOperation {
 	const dbRelation: DbRelation = this.dbRelation
-	const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS)
+	const qEntityUtils = IOC.getSync(QEntityUtils)
 
 	const operations = []
 	for (const propertyColumn of dbRelation.property.propertyColumns) {

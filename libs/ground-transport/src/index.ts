@@ -20,4 +20,4 @@ export * from './synchronization/in/SyncInUtils';
 export * from './synchronization/in/TwoStageSyncedInDataProcessor';
 export * from './synchronization/out/converter/SyncOutDataSerializer';
 export * from './synchronization/out/SynchronizationOutManager';
-export * from './tokens';
+export * from './injection';

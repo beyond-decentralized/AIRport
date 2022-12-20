@@ -8,6 +8,8 @@ export * from './LocalAPIClient'
 export * from './api/AutopilotApiLoader'
 export * from './UiStateManager'
 
+// This library is used in UI/Client bundles and does does not include @airport/direction-indicator
+// dependency injection library
 if (globalThis.IOC) {
     globalThis.AUTOPILOT_API_LOADER.setClass(AutopilotApiLoader)
     globalThis.AUTOPILOT_API_LOADER.setDependencies({

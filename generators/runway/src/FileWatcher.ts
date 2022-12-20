@@ -1,7 +1,7 @@
 import {
 	DbApplication,
 	ApplicationEntity_LocalId,
-	DB_APPLICATION_UTILS,
+	DbApplicationUtils,
 } from '@airport/ground-control';
 import {
 	JsonApplicationWithApi
@@ -157,7 +157,7 @@ function emitFiles(
 
 	const entityFileReference: { [entityName: string]: string } = {};
 
-	const applicationFullName = IOC.getSync(DB_APPLICATION_UTILS).
+	const applicationFullName = IOC.getSync(DbApplicationUtils).
 		getFullApplication_NameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
 
 	const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');

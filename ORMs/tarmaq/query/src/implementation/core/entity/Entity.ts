@@ -32,7 +32,7 @@ import { JSONLogicalOperation } from '../../../definition/core/operation/Logical
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { JoinFields } from '../Joins'
-import { ENTITY_UTILS, QUERY_UTILS } from '../../../tokens'
+import { ENTITY_UTILS, QUERY_UTILS } from '../../../injection'
 import { IApplicationUtils } from '../../../definition/utils/IApplicationUtils'
 import { OneToManyElements } from '@airport/tarmaq-entity'
 import { IEntityQueryDatabaseFacade } from '../../../definition/core/IEntityQueryDatabaseFacade'

@@ -104,8 +104,13 @@ export class DependencyInjectionToken<Injected>
 	private getInheritedDependencyConfiguration(
 		aClass: any
 	) {
-		const parentClass = Object.getPrototypeOf(aClass)
 		let returnedDependencyConfiguration = {}
+		if (!aClass) {
+			return returnedDependencyConfiguration
+		}
+
+		const parentClass = Object.getPrototypeOf(aClass)
+
 		if (parentClass) {
 			returnedDependencyConfiguration = this.getInheritedDependencyConfiguration(parentClass)
 		}

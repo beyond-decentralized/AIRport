@@ -12,7 +12,6 @@ import { IQStringField } from "../../definition/core/field/StringField";
 import { IQUntypedField } from "../../definition/core/field/UntypedField";
 import { IQEntityUtils } from "../../definition/utils/IQEntityUtils";
 import { IApplicationUtils } from "../../definition/utils/IApplicationUtils";
-import { Q_ENTITY_UTILS } from "../../tokens";
 import { QEntity } from "../core/entity/Entity";
 import { QAirEntityOneToManyRelation, QOneToManyRelation } from "../core/entity/OneToManyRelation";
 import { QManyToOneAirEntityRelation, QManyToOneInternalRelation, QRelation } from "../core/entity/Relation";
@@ -96,7 +95,7 @@ export class QEntityUtils implements IQEntityUtils {
                 this, entity, applicationUtils, relationManager,
                 nextChildJoinPosition, dbRelation, joinType)
 
-            const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS)
+            const qEntityUtils = IOC.getSync(QEntityUtils)
 
             entity.properties.forEach((
                 property: DbProperty
@@ -160,7 +159,7 @@ export class QEntityUtils implements IQEntityUtils {
             (<any>QEntityIdRelation).base.constructor.call(
                 this, relation, qEntity, appliationUtils, relationManager)
 
-            const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS)
+            const qEntityUtils = IOC.getSync(QEntityUtils)
 
             qEntityUtils.getQEntityIdFields(this, entity, qEntity, relation.property)
 

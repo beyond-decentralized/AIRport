@@ -23,7 +23,7 @@ import { RawNonEntityQuery } from '../../../definition/query/facade/NonEntityQue
 import { RawTreeQuery } from '../../../definition/query/facade/TreeQuery'
 import { EntityAliases, } from '../../core/entity/Aliases'
 import { FieldInOrderBy } from '../../core/field/FieldInOrderBy'
-import { ENTITY_UTILS } from '../../../tokens'
+import { ENTITY_UTILS } from '../../../injection'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'

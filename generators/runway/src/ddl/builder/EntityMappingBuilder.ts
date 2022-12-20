@@ -49,10 +49,10 @@ export class EntityMappingBuilder {
 			}).join('\n');
 		return `/* eslint-disable */
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
+import { IOC } from '@airport/direction-indicator';
 ${imports.join('\n')}
 
-DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
+IOC.get(AIRPORT_DATABASE).then(airDb => {
   const accumulator = airDb.getAccumulator('${applicationDomain}', '${applicationName}');
 ${entityDefinitions}
 });

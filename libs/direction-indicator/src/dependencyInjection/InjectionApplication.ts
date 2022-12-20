@@ -20,7 +20,7 @@ export class InjectionApplication
 		let tokenName = className.replace(/[A-Z]/g, c => '_' + c);
 		tokenName = tokenName.replace(/[a-z0-9]*/g, c => c.toUpperCase())
 		if (tokenName.startsWith('_')) {
-			tokenName.substring(1, tokenName.length)
+			tokenName = tokenName.substring(1, tokenName.length)
 		}
 		return tokenName
 	}
@@ -94,11 +94,11 @@ export class InjectionApplication
 	): IDependencyInjectionToken<T> {
 		const descriptor = InjectionApplication.getTokenDescriptor(input)
 
-		const existingToken = this.tokenMap.get(descriptor.interface)
+		const existingToken = this.tokenMap.get(descriptor.token)
 
 		if (existingToken) {
 			if (failOnExistingToken) {
-				throw new Error(`Token with name '${descriptor.interface}' has already been created`)
+				throw new Error(`Token with interface '${descriptor.interface}' has already been created`)
 			} else {
 				return existingToken
 			}
@@ -111,7 +111,7 @@ export class InjectionApplication
 
 		token.setClass(input as { new(): any })
 
-		this.tokenMap.set(descriptor.interface, token)
+		this.tokenMap.set(descriptor.token, token)
 
 		if (descriptor.class) {
 			token.setClass(descriptor.class)

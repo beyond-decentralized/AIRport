@@ -210,7 +210,7 @@ function domain(domainName) {
 }
 globalThis.domain = domain;
 function app(applicationDescriptor) {
-    const airDomain = domain(applicationDescriptor.domain.name);
+    const airDomain = globalThis.domain(applicationDescriptor.domain.name);
     return airDomain.app(applicationDescriptor.name);
 }
 
@@ -293,8 +293,11 @@ class DependencyInjectionToken {
         classWithDescriptor.dependencyConfiguration = this._dependencyConfiguration;
     }
     getInheritedDependencyConfiguration(aClass) {
-        const parentClass = Object.getPrototypeOf(aClass);
         let returnedDependencyConfiguration = {};
+        if (!aClass) {
+            return returnedDependencyConfiguration;
+        }
+        const parentClass = Object.getPrototypeOf(aClass);
         if (parentClass) {
             returnedDependencyConfiguration = this.getInheritedDependencyConfiguration(parentClass);
         }
@@ -318,7 +321,7 @@ class InjectionApplication {
         let tokenName = className.replace(/[A-Z]/g, c => '_' + c);
         tokenName = tokenName.replace(/[a-z0-9]*/g, c => c.toUpperCase());
         if (tokenName.startsWith('_')) {
-            tokenName.substring(1, tokenName.length);
+            tokenName = tokenName.substring(1, tokenName.length);
         }
         return tokenName;
     }
@@ -367,10 +370,10 @@ class InjectionApplication {
     }
     token(input, failOnExistingToken = true) {
         const descriptor = InjectionApplication.getTokenDescriptor(input);
-        const existingToken = this.tokenMap.get(descriptor.interface);
+        const existingToken = this.tokenMap.get(descriptor.token);
         if (existingToken) {
             if (failOnExistingToken) {
-                throw new Error(`Token with name '${descriptor.interface}' has already been created`);
+                throw new Error(`Token with interface '${descriptor.interface}' has already been created`);
             }
             else {
                 return existingToken;
@@ -378,7 +381,7 @@ class InjectionApplication {
         }
         const token = new DependencyInjectionToken(this, descriptor);
         token.setClass(input);
-        this.tokenMap.set(descriptor.interface, token);
+        this.tokenMap.set(descriptor.token, token);
         if (descriptor.class) {
             token.setClass(descriptor.class);
         }
@@ -393,6 +396,10 @@ function lib(libraryName) {
     return AIRPORT_DOMAIN.app(libraryName);
 }
 
+/**
+ * A container (at this point) is primarily about maintaining transaction and user
+ * session information through a request into an app (and across multiple apps).
+ */
 class ChildContainer extends Container$2 {
     constructor(rootContainer, context) {
         super();
@@ -403,6 +410,40 @@ class ChildContainer extends Container$2 {
         // numPendingInits = 0
         // theObjects: any[]  = []
         this.objectMap = new Map();
+    }
+    getToken(token) {
+        return globalThis.domain(token.application.domain.name)
+            .getApp(token.application.name)
+            .tokenMap.get(token.descriptor.token);
+    }
+    setToken(token) {
+        return globalThis.domain(token.application.domain.name)
+            .getApp(token.application.name)
+            .tokenMap.set(token.descriptor.token, token);
+    }
+    getObject(token) {
+        let mapForDomain = this.objectMap.get(token.application.domain.name);
+        if (!mapForDomain) {
+            return null;
+        }
+        let mapForApp = mapForDomain.get(token.application.name);
+        if (!mapForApp) {
+            return null;
+        }
+        return mapForApp.get(token.descriptor.token);
+    }
+    setObject(token, object) {
+        let mapForDomain = this.objectMap.get(token.application.domain.name);
+        if (!mapForDomain) {
+            mapForDomain = new Map();
+            this.objectMap.set(token.application.domain.name, mapForDomain);
+        }
+        let mapForApp = mapForDomain.get(token.application.name);
+        if (!mapForApp) {
+            mapForApp = new Map();
+            mapForDomain.set(token.application.name, mapForApp);
+        }
+        mapForApp.set(token.descriptor.token, object);
     }
     doEventuallyGet(tokens, successCallback, errorCallback) {
         const normalizedTokens = this.normalizeTokens(tokens);
@@ -477,7 +518,18 @@ class ChildContainer extends Container$2 {
                     }
                 };
             }
-            normalizedTokens.push(token);
+            let normalizedToken = token;
+            if (!token.dependencyConfiguration) {
+                normalizedToken = this.getToken(token);
+                if (!normalizedToken) {
+                    const fullTokenDescriptor = token;
+                    const app = globalThis.domain(fullTokenDescriptor.application.domain.name)
+                        .getApp(fullTokenDescriptor.application.name);
+                    normalizedToken = app.token(fullTokenDescriptor.descriptor);
+                    this.setToken(normalizedToken);
+                }
+            }
+            normalizedTokens.push(normalizedToken);
         }
         return normalizedTokens;
     }
@@ -488,7 +540,7 @@ class ChildContainer extends Container$2 {
             if (firstMissingClassToken || firstDiNotSetClass) {
                 return;
             }
-            let object = this.objectMap.get(token.descriptor.token);
+            let object = this.getObject(token);
             if (!object) {
                 if (!(token instanceof DependencyInjectionToken)) {
                     throw new Error(`Non-API token lookups must be done
@@ -513,7 +565,7 @@ class ChildContainer extends Container$2 {
                 this.setDependencyGetters(object, token);
                 // }
                 object.__container__ = this;
-                this.objectMap.set(token.descriptor.token, object);
+                this.setObject(token, object);
                 if (object.init) {
                     const result = object.init();
                     if (result instanceof Promise) {
@@ -569,14 +621,14 @@ class ChildContainer extends Container$2 {
         };
     }
     async getByNames(domainName, applicationName, tokenInterface) {
-        const injectionDomain = domain(domainName);
+        const injectionDomain = globalThis.domain(domainName);
         if (!injectionDomain) {
             throw new Error(`Could nof find
 	Domain:
 		${domainName}
 		`);
         }
-        const application = domain(domainName).getApp(applicationName);
+        const application = globalThis.domain(domainName).getApp(applicationName);
         if (!application) {
             throw new Error(`Could not find
 	Domain:
@@ -737,7 +789,7 @@ ContainerAccessor = __decorate$o([
 ], ContainerAccessor);
 
 const directionIndicator = lib('direction-indicator');
-const CONTAINER_ACCESSOR = directionIndicator.token(ContainerAccessor);
+directionIndicator.register(ContainerAccessor);
 const AIR_ENTITY_UTILS = lib('aviation-communication').token('AirEntityUtils');
 globalThis.AIR_ENTITY_UTILS = AIR_ENTITY_UTILS;
 const pressurization = lib('pressurization');
@@ -1552,33 +1604,13 @@ function setSeqGen(sequenceGenerator) {
 var SEQ_GEN;
 
 const groundControl = lib('ground-control');
-const DB_APPLICATION_UTILS = groundControl.token({
-    class: DbApplicationUtils,
-    interface: 'IDbApplicationUtils',
-    token: 'DB_APPLICATION_UTILS'
-});
-const ENTITY_STATE_MANAGER = groundControl.token({
-    class: null,
-    interface: 'IEntityStateManager',
-    token: 'ENTITY_STATE_MANAGER'
-});
-const SEQUENCE_GENERATOR = groundControl.token({
-    class: null,
-    interface: 'ISequenceGenerator',
-    token: 'SEQUENCE_GENERATOR'
-});
-const TRANSACTIONAL_CONNECTOR = groundControl.token({
-    class: null,
-    interface: 'ITransactionalConnector',
-    token: 'TRANSACTIONAL_CONNECTOR'
-});
-const UPDATE_CACHE_MANAGER = groundControl.token({
-    class: null,
-    interface: 'IUpdateCacheManager',
-    token: 'UPDATE_CACHE_MANAGER'
-});
+groundControl.register(DbApplicationUtils);
+const ENTITY_STATE_MANAGER = groundControl.token('EntityStateManager');
+const SEQUENCE_GENERATOR = groundControl.token('SequenceGenerator');
+const TRANSACTIONAL_CONNECTOR = groundControl.token('TransactionalConnector');
+const UPDATE_CACHE_MANAGER = groundControl.token('UpdateCacheManager');
 TRANSACTIONAL_CONNECTOR.setDependencies({
-    dbApplicationUtils: DB_APPLICATION_UTILS,
+    dbApplicationUtils: DbApplicationUtils,
 });
 
 function forEach$1(collection, callback) {
@@ -1910,7 +1942,7 @@ class DbApplicationBuilder {
         const dbApplication = {
             currentVersion: [dbApplicationCurrentVersion],
             domain: dbDomain,
-            fullName: IOC.getSync(DB_APPLICATION_UTILS).
+            fullName: IOC.getSync(DbApplicationUtils).
                 getFullApplication_NameFromDomainAndName(dbDomain.name, jsonApplication.name),
             _localId: null,
             index: allApplications.length,
@@ -4140,7 +4172,7 @@ QRelation.prototype.IS_NOT_NULL = function () {
 };
 QRelation.prototype.nullOrNot = function (isNull) {
     const dbRelation = this.dbRelation;
-    const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS);
+    const qEntityUtils = IOC.getSync(QEntityUtils);
     const operations = [];
     for (const propertyColumn of dbRelation.property.propertyColumns) {
         const columnField = qEntityUtils.getColumnQField(dbRelation.entity, dbRelation.property, this.parentQ, propertyColumn.column);
@@ -4696,7 +4728,8 @@ class QUntypedField extends QOperableField {
     }
 }
 
-let QEntityUtils = class QEntityUtils {
+var QEntityUtils_1;
+let QEntityUtils = QEntityUtils_1 = class QEntityUtils {
     getColumnQField(entity, property, q, column) {
         switch (column.type) {
             case SQLDataType.ANY:
@@ -4738,7 +4771,7 @@ let QEntityUtils = class QEntityUtils {
         // ChildQEntity refers to the constructor
         var ChildQEntity = function (entity, applicationUtils, relationManager, nextChildJoinPosition, dbRelation, joinType) {
             ChildQEntity.base.constructor.call(this, entity, applicationUtils, relationManager, nextChildJoinPosition, dbRelation, joinType);
-            const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS);
+            const qEntityUtils = IOC.getSync(QEntityUtils_1);
             entity.properties.forEach((property) => {
                 let qFieldOrRelation;
                 if (property.relation && property.relation.length) {
@@ -4775,7 +4808,7 @@ let QEntityUtils = class QEntityUtils {
     getQEntityIdRelationConstructor(dbEntity) {
         function QEntityIdRelation(entity, relation, qEntity, appliationUtils, relationManager) {
             QEntityIdRelation.base.constructor.call(this, relation, qEntity, appliationUtils, relationManager);
-            const qEntityUtils = IOC.getSync(Q_ENTITY_UTILS);
+            const qEntityUtils = IOC.getSync(QEntityUtils_1);
             qEntityUtils.getQEntityIdFields(this, entity, qEntity, relation.property);
             // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
         }
@@ -4865,29 +4898,16 @@ let QEntityUtils = class QEntityUtils {
         return addToObject;
     }
 };
-QEntityUtils = __decorate$m([
+QEntityUtils = QEntityUtils_1 = __decorate$m([
     Injected()
 ], QEntityUtils);
 
 const tarmaqQuery = lib('tarmaq-query');
-
 // Separating core-tokens from tokens removes circular dependencies
 // at code initialization time
-const ENTITY_UTILS = tarmaqQuery.token({
-    class: null,
-    interface: 'IEntityUtils',
-    token: 'ENTITY_UTILS'
-});
-const Q_ENTITY_UTILS = tarmaqQuery.token({
-    class: QEntityUtils,
-    interface: 'IQEntityUtils',
-    token: 'Q_ENTITY_UTILS'
-});
-const QUERY_UTILS = tarmaqQuery.token({
-    class: null,
-    interface: 'IQueryUtils',
-    token: 'QUERY_UTILS'
-});
+tarmaqQuery.register(QEntityUtils);
+const ENTITY_UTILS = tarmaqQuery.token('EntityUtils');
+const QUERY_UTILS = tarmaqQuery.token('QueryUtils');
 
 /**
  * Created by Papa on 10/25/2016.
@@ -7717,6 +7737,8 @@ AirEntityUtils = __decorate$l([
     Injected()
 ], AirEntityUtils);
 
+// This library is used in UI/Client bundles and does does not include @airport/direction-indicator
+// dependency injection library
 globalThis.AIR_ENTITY_UTILS.setClass(AirEntityUtils);
 
 /******************************************************************************
@@ -8268,51 +8290,13 @@ class DaoQueryDecorators {
 }
 
 const tarmaqDao = lib('tarmaq-dao');
-
-const DAO = tarmaqDao.token({
-    class: Dao,
-    interface: 'class Dao',
-    token: 'DAO'
-});
-const DATABASE_FACADE = tarmaqDao.token({
-    class: null,
-    interface: 'IDatabaseFacade',
-    token: 'DATABASE_FACADE'
-});
-const LOOKUP = tarmaqDao.token({
-    class: Lookup,
-    interface: 'ILookup',
-    token: 'LOOKUP'
-});
-const NON_ENTITY_FIND = tarmaqDao.token({
-    class: NonEntityFind,
-    interface: 'INonEntityFind',
-    token: 'NON_ENTITY_FIND'
-});
-const NON_ENTITY_FIND_ONE = tarmaqDao.token({
-    class: NonEntityFindOne,
-    interface: 'INonEntityFindOne',
-    token: 'NON_ENTITY_FIND_ONE'
-});
-const NON_ENTITY_SEARCH = tarmaqDao.token({
-    class: NonEntitySearch,
-    interface: 'INonEntitySearch',
-    token: 'NON_ENTITY_SEARCH'
-});
-const NON_ENTITY_SEARCH_ONE = tarmaqDao.token({
-    class: NonEntitySearchOne,
-    interface: 'INonEntitySearchOne',
-    token: 'NON_ENTITY_SEARCH_ONE'
-});
-const QUERY_FACADE = tarmaqDao.token({
-    class: null,
-    interface: 'IQueryFacade',
-    token: 'QUERY_FACADE'
-});
-DAO.setDependencies({
+tarmaqDao.register(Dao, Lookup, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne);
+const DATABASE_FACADE = tarmaqDao.token('DatabaseFacade');
+const QUERY_FACADE = tarmaqDao.token('QueryFacade');
+tarmaqDao.setDependencies(Dao, {
     databaseFacade: DATABASE_FACADE,
     entityStateManager: ENTITY_STATE_MANAGER,
-    lookup: LOOKUP,
+    lookup: Lookup,
     updateCacheManager: UPDATE_CACHE_MANAGER
 });
 function diSet(dbApplication, dbEntityId // ApplicationEntity_LocalId
@@ -9476,112 +9460,71 @@ const airTrafficControl = lib('air-traffic-control');
 
 // Separating core-tokens from tokens removes circular dependencies
 // at code initialization time
-const UTILS = airTrafficControl.token({
-    class: Utils,
-    interface: 'IUtils',
-    token: 'UTILS'
-});
+airTrafficControl.register(Utils);
 ENTITY_UTILS.setDependencies({
-    utils: UTILS
+    utils: Utils
 });
 QUERY_UTILS.setClass(QueryUtils);
 
-const AIRPORT_DATABASE = airTrafficControl.token({
-    class: null,
-    interface: 'IAirportDatabase',
-    token: 'AIRPORT_DATABASE'
-});
-const APPLICATION_UTILS = airTrafficControl.token({
-    class: ApplicationUtils,
-    interface: 'IApplicationUtils',
-    token: 'APPLICATION_UTILS'
-});
-const DATABASE_STORE = airTrafficControl.token({
-    class: DatabaseStore,
-    interface: 'IDatabaseState',
-    token: 'DATABASE_STORE'
-});
-const FIELD_UTILS = airTrafficControl.token({
-    class: FieldUtils,
-    interface: 'IFieldUtils',
-    token: 'FIELD_UTILS'
-});
-const Q_APPLICATION_BUILDER_UTILS = airTrafficControl.token({
-    class: QApplicationBuilderUtils,
-    interface: 'IQApplicationBuilderUtils',
-    token: 'Q_APPLICATION_BUILDER_UTILS'
-});
-const Q_METADATA_UTILS = airTrafficControl.token({
-    class: QMetadataUtils,
-    interface: 'IQMetadataUtils',
-    token: 'Q_METADATA_UTILS'
-});
-const RELATION_MANAGER = airTrafficControl.token({
-    class: RelationManager,
-    interface: 'IRelationManager',
-    token: 'RELATION_MANAGER'
-});
-const REPOSITORY_LOADER = airTrafficControl.token({
-    class: null,
-    interface: 'IRepositoryLoader',
-    token: 'REPOSITORY_LOADER'
-});
+airTrafficControl.register(ApplicationUtils, DatabaseStore, FieldUtils, QApplicationBuilderUtils, QMetadataUtils, RelationManager);
+const AIRPORT_DATABASE = airTrafficControl.token('AirportDatabase');
+const REPOSITORY_LOADER = airTrafficControl.token('RepositoryLoader');
 AIRPORT_DATABASE.setDependencies({
-    appliationUtils: APPLICATION_UTILS,
+    appliationUtils: ApplicationUtils,
     databaseFacade: DATABASE_FACADE,
-    databaseStore: DATABASE_STORE,
-    dbApplicationUtils: DB_APPLICATION_UTILS,
-    find: NON_ENTITY_FIND,
-    findOne: NON_ENTITY_FIND_ONE,
-    qApplicationBuilderUtils: Q_APPLICATION_BUILDER_UTILS,
-    relationManager: RELATION_MANAGER,
-    search: NON_ENTITY_SEARCH,
-    searchOne: NON_ENTITY_SEARCH_ONE
+    databaseStore: DatabaseStore,
+    dbApplicationUtils: DbApplicationUtils,
+    find: NonEntityFind,
+    findOne: NonEntityFindOne,
+    qApplicationBuilderUtils: QApplicationBuilderUtils,
+    relationManager: RelationManager,
+    search: NonEntitySearch,
+    searchOne: NonEntitySearchOne
 });
-APPLICATION_UTILS.setDependencies({
+airTrafficControl.setDependencies(ApplicationUtils, {
     airportDatabase: AIRPORT_DATABASE,
     entityStateManager: ENTITY_STATE_MANAGER,
-    qEntityUtils: Q_ENTITY_UTILS,
-    utils: UTILS
+    qEntityUtils: QEntityUtils,
+    utils: Utils
 });
 DATABASE_FACADE.setDependencies({
-    applicationUtils: APPLICATION_UTILS,
+    applicationUtils: ApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
     transactionalConnector: TRANSACTIONAL_CONNECTOR,
     updateCacheManager: UPDATE_CACHE_MANAGER
 });
-FIELD_UTILS.setDependencies({
-    relationManager: RELATION_MANAGER
+airTrafficControl.setDependencies(FieldUtils, {
+    relationManager: RelationManager
 });
-LOOKUP.setDependencies({
+airTrafficControl.setDependencies(Lookup, {
     entityUtils: ENTITY_UTILS,
     queryFacade: QUERY_FACADE
 });
-Q_APPLICATION_BUILDER_UTILS.setDependencies({
-    qEntityUtils: Q_ENTITY_UTILS
+airTrafficControl.setDependencies(QApplicationBuilderUtils, {
+    qEntityUtils: QEntityUtils
 });
 QUERY_FACADE.setDependencies({
-    fieldUtils: FIELD_UTILS,
+    fieldUtils: FieldUtils,
     queryUtils: QUERY_UTILS,
-    relationManager: RELATION_MANAGER,
+    relationManager: RelationManager,
     transactionalConnector: TRANSACTIONAL_CONNECTOR
 });
 QUERY_UTILS.setDependencies({
     entityUtils: ENTITY_UTILS,
-    fieldUtils: FIELD_UTILS,
-    relationManager: RELATION_MANAGER,
+    fieldUtils: FieldUtils,
+    relationManager: RelationManager,
     airEntityUtils: AIR_ENTITY_UTILS
 });
-RELATION_MANAGER.setDependencies({
-    applicationUtils: APPLICATION_UTILS
+airTrafficControl.setDependencies(RelationManager, {
+    applicationUtils: ApplicationUtils
 });
 UPDATE_CACHE_MANAGER.setDependencies({
-    applicationUtils: APPLICATION_UTILS,
+    applicationUtils: ApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
 });
 
 airApi.setQApp = function (qApplication) {
-    DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((airportDatabase) => {
+    IOC.eventuallyGet(AIRPORT_DATABASE).then((airportDatabase) => {
         airportDatabase.setQApp(qApplication);
     });
 };
@@ -11636,26 +11579,9 @@ SelectorManager = __decorate$g([
 ], SelectorManager);
 
 const apron = lib('apron');
-const APPLICATION_LOADER = apron.token({
-    class: null,
-    interface: 'IApplicationLoader',
-    token: 'APPLICATION_LOADER'
-});
-const APPLICATION_STORE = apron.token({
-    class: ApplicationStore,
-    interface: 'IApplicationStore',
-    token: 'APPLICATION_STORE'
-});
-const LOCAL_API_SERVER = apron.token({
-    class: null,
-    interface: 'ILocalAPIServer',
-    token: 'LOCAL_API_SERVER'
-});
-const SELECTOR_MANAGER = apron.token({
-    class: SelectorManager,
-    interface: 'ISelectorManager',
-    token: 'SELECTOR_MANAGER'
-});
+apron.register(ApplicationStore, SelectorManager);
+const APPLICATION_LOADER = apron.token('ApplicationLoader');
+const LOCAL_API_SERVER = apron.token('LocalAPIServer');
 
 const Api = function () {
     return function (target, propertyKey, descriptor) {
@@ -11680,18 +11606,10 @@ var ApiObjectKind;
 })(ApiObjectKind || (ApiObjectKind = {}));
 
 const checkIn = lib('check-in');
-const API_REGISTRY = checkIn.token({
-    class: null,
-    interface: 'IApiRegistry',
-    token: 'API_REGISTRY'
-});
-const API_VALIDATOR = checkIn.token({
-    class: null,
-    interface: 'IApiValidator',
-    token: 'API_VALIDATOR'
-});
+const API_REGISTRY = checkIn.token('ApiRegistry');
+const API_VALIDATOR = checkIn.token('ApiValidator');
 API_REGISTRY.setDependencies({
-    containerAccessor: CONTAINER_ACCESSOR
+    containerAccessor: ContainerAccessor
 });
 
 /**
@@ -11999,93 +11917,46 @@ AbstractApplicationLoader = __decorate$f([
 ], AbstractApplicationLoader);
 
 const terminalMap = lib('terminal-map');
-const APPLICATION_INITIALIZER = terminalMap.token({
-    class: null,
-    interface: 'IApplicationInitializer',
-    token: 'APPLICATION_INITIALIZER'
-});
-const DOMAIN_RETRIEVER = terminalMap.token({
-    class: null,
-    interface: 'IDomainRetriever',
-    token: 'DOMAIN_RETRIEVER'
-});
-const STORE_DRIVER = terminalMap.token({
-    class: null,
-    interface: 'IStoreDriver',
-    token: 'STORE_DRIVER'
-});
-const TERMINAL_SESSION_MANAGER = terminalMap.token({
-    class: null,
-    interface: 'ITerminalSessionManager',
-    token: 'TERMINAL_SESSION_MANAGER'
-});
-const TERMINAL_STATE = terminalMap.token({
-    class: TerminalState,
-    interface: 'ITerminalStateContainer',
-    token: 'TERMINAL_STATE'
-});
-const TERMINAL_STORE = terminalMap.token({
-    class: TerminalStore,
-    interface: 'ITerminalStore',
-    token: 'TERMINAL_STORE'
-});
-const TRANSACTION_MANAGER = terminalMap.token({
-    class: null,
-    interface: 'ITransactionManager',
-    token: 'TRANSACTION_MANAGER'
-});
-const TRANSACTIONAL_RECEIVER = terminalMap.token({
-    class: null,
-    interface: 'ITransactionalReceiver',
-    token: 'TRANSACTIONAL_RECEIVER'
-});
-const TRANSACTIONAL_SERVER = terminalMap.token({
-    class: null,
-    interface: 'ITransactionalServer',
-    token: 'TRANSACTIONAL_SERVER'
-});
-const USER_STATE = terminalMap.token({
-    class: UserState,
-    interface: 'IUserStateContainer',
-    token: 'USER_STATE'
-});
-const USER_STORE = terminalMap.token({
-    class: UserStore,
-    interface: 'IUserStore',
-    token: 'USER_STORE'
-});
+terminalMap.register(TerminalState, TerminalStore, UserState, UserStore);
+const APPLICATION_INITIALIZER = terminalMap.token('ApplicationInitializer');
+const DOMAIN_RETRIEVER = terminalMap.token('DomainRetriever');
+const STORE_DRIVER = terminalMap.token('StoreDriver');
+const TERMINAL_SESSION_MANAGER = terminalMap.token('TerminalSessionManager');
+const TRANSACTION_MANAGER = terminalMap.token('TransactionManager');
+const TRANSACTIONAL_RECEIVER = terminalMap.token('TransactionalReceiver');
+const TRANSACTIONAL_SERVER = terminalMap.token('TransactionalServer');
 APPLICATION_INITIALIZER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     sequenceGenerator: SEQUENCE_GENERATOR,
-    terminalStore: TERMINAL_STORE
+    terminalStore: TerminalStore
 });
 DOMAIN_RETRIEVER.setDependencies({
     transactionalConnector: TRANSACTIONAL_CONNECTOR
 });
-TERMINAL_STORE.setDependencies({
-    selectorManager: SELECTOR_MANAGER,
-    terminalState: TERMINAL_STATE
+terminalMap.setDependencies(TerminalStore, {
+    selectorManager: SelectorManager,
+    terminalState: TerminalState
 });
 TRANSACTION_MANAGER.setDependencies({
     storeDriver: STORE_DRIVER,
-    terminalStore: TERMINAL_STORE
+    terminalStore: TerminalStore
 });
 TRANSACTIONAL_RECEIVER.setDependencies({
     applicationInitializer: APPLICATION_INITIALIZER,
-    dbApplicationUtils: DB_APPLICATION_UTILS,
+    dbApplicationUtils: DbApplicationUtils,
 });
 TRANSACTIONAL_SERVER.setDependencies({
-    terminalStore: TERMINAL_STORE,
+    terminalStore: TerminalStore,
     transactionManager: TRANSACTION_MANAGER
 });
-USER_STORE.setDependencies({
-    selectorManager: SELECTOR_MANAGER,
-    userState: USER_STATE
+terminalMap.setDependencies(UserStore, {
+    selectorManager: SelectorManager,
+    userState: UserState
 });
 APPLICATION_LOADER.setClass(AbstractApplicationLoader);
 APPLICATION_LOADER.setDependencies({
     applicationInitializer: APPLICATION_INITIALIZER,
-    terminalStore: TERMINAL_STORE,
+    terminalStore: TerminalStore,
     apiRegistry: API_REGISTRY,
 });
 
@@ -12533,35 +12404,11 @@ QueryObjectInitializer = __decorate$e([
 ], QueryObjectInitializer);
 
 const takeoff = lib('takeoff');
-takeoff.token({
-    class: AirportDatabasePopulator,
-    interface: 'IAirportDatabasePopulator',
-    token: 'AIRPORT_DATABASE_POPULATOR'
+takeoff.register(AirportDatabasePopulator, DdlObjectLinker, DdlObjectRetriever, QueryEntityClassCreator, QueryObjectInitializer);
+takeoff.setDependencies(DdlObjectLinker, {
+    terminalStore: TerminalStore
 });
-const DDL_OBJECT_LINKER = takeoff.token({
-    class: DdlObjectLinker,
-    interface: 'IDdlObjectLinker',
-    token: 'DDL_OBJECT_LINKER'
-});
-const DDL_OBJECT_RETRIEVER = takeoff.token({
-    class: DdlObjectRetriever,
-    interface: 'IDdlObjectRetriever',
-    token: 'DDL_OBJECT_RETRIEVER'
-});
-const QUERY_ENTITY_CLASS_CREATOR = takeoff.token({
-    class: QueryEntityClassCreator,
-    interface: 'IQueryEntityClassCreator',
-    token: 'QUERY_ENTITY_CLASS_CREATOR'
-});
-const QUERY_OBJECT_INITIALIZER = takeoff.token({
-    class: QueryObjectInitializer,
-    interface: 'IQueryObjectInitializer',
-    token: 'QUERY_OBJECT_INITIALIZER'
-});
-DDL_OBJECT_LINKER.setDependencies({
-    terminalStore: TERMINAL_STORE
-});
-DDL_OBJECT_RETRIEVER.setDependencies({
+takeoff.setDependencies(DdlObjectRetriever, {
     applicationColumnDao: ApplicationColumnDao,
     applicationDao: ApplicationDao,
     applicationEntityDao: ApplicationEntityDao,
@@ -12573,17 +12420,17 @@ DDL_OBJECT_RETRIEVER.setDependencies({
     applicationVersionDao: ApplicationVersionDao,
     domainDao: DomainDao
 });
-QUERY_ENTITY_CLASS_CREATOR.setDependencies({
+takeoff.setDependencies(QueryEntityClassCreator, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: APPLICATION_UTILS,
-    qApplicationBuilderUtils: Q_APPLICATION_BUILDER_UTILS,
-    relationManager: RELATION_MANAGER,
+    applicationUtils: ApplicationUtils,
+    qApplicationBuilderUtils: QApplicationBuilderUtils,
+    relationManager: RelationManager,
 });
-QUERY_OBJECT_INITIALIZER.setDependencies({
-    ddlObjectLinker: DDL_OBJECT_LINKER,
-    ddlObjectRetriever: DDL_OBJECT_RETRIEVER,
-    queryEntityClassCreator: QUERY_ENTITY_CLASS_CREATOR,
-    terminalStore: TERMINAL_STORE
+takeoff.setDependencies(QueryObjectInitializer, {
+    ddlObjectLinker: DdlObjectLinker,
+    ddlObjectRetriever: DdlObjectRetriever,
+    queryEntityClassCreator: QueryEntityClassCreator,
+    terminalStore: TerminalStore
 });
 
 /******************************************************************************
@@ -13764,72 +13611,41 @@ ApplicationInitializer = __decorate$d([
 ], ApplicationInitializer);
 
 const landing = lib('landing');
-const ABSTRACT_APPLICATION_INITIALIZER = landing.token({
-    class: ApplicationInitializer,
-    interface: 'class ApplicationInitializer',
-    token: 'ABSTRACT_APPLICATION_INITIALIZER'
-});
-const APPLICATION_BUILDER = landing.token({
-    class: null,
-    interface: 'ISchemaBuilder',
-    token: 'APPLICATION_BUILDER'
-});
-const APPLICATION_CHECKER = landing.token({
-    class: ApplicationChecker,
-    interface: 'IApplicationChecker',
-    token: 'APPLICATION_CHECKER'
-});
-const APPLICATION_COMPOSER = landing.token({
-    class: ApplicationComposer,
-    interface: 'IApplicationComposer',
-    token: 'APPLICATION_COMPOSER'
-});
-const APPLICATION_LOCATOR = landing.token({
-    class: ApplicationLocator,
-    interface: 'IApplicationLocator',
-    token: 'APPLICATION_LOCATOR'
-});
-const APPLICATION_RECORDER = landing.token({
-    class: ApplicationRecorder,
-    interface: 'IApplicationRecorder',
-    token: 'APPLICATION_RECORDER'
-});
-const SQL_SCHEMA_BUILDER = landing.token({
-    class: SqlSchemaBuilder,
-    interface: 'class SqlSchemaBuilder',
-    token: 'SQL_SCHEMA_BUILDER'
-});
-ABSTRACT_APPLICATION_INITIALIZER.setDependencies({
+const tokens = landing.register('ApplicationBuilder', ApplicationInitializer, ApplicationChecker, ApplicationComposer, ApplicationLocator, ApplicationRecorder, SqlSchemaBuilder);
+const APPLICATION_BUILDER = tokens.APPLICATION_BUILDER;
+// Needed as a token in @airport/web-tower (platforms/web-tower)
+tokens.APPLICATION_LOCATOR;
+landing.setDependencies(ApplicationInitializer, {
     airportDatabase: AIRPORT_DATABASE,
     applicationBuilder: APPLICATION_BUILDER,
-    applicationChecker: APPLICATION_CHECKER,
-    applicationComposer: APPLICATION_COMPOSER,
+    applicationChecker: ApplicationChecker,
+    applicationComposer: ApplicationComposer,
     applicationDao: ApplicationDao,
-    applicationLocator: APPLICATION_LOCATOR,
-    applicationRecorder: APPLICATION_RECORDER,
-    dbApplicationUtils: DB_APPLICATION_UTILS,
-    queryObjectInitializer: QUERY_OBJECT_INITIALIZER,
+    applicationLocator: ApplicationLocator,
+    applicationRecorder: ApplicationRecorder,
+    dbApplicationUtils: DbApplicationUtils,
+    queryObjectInitializer: QueryObjectInitializer,
     sequenceGenerator: SEQUENCE_GENERATOR,
-    terminalStore: TERMINAL_STORE,
+    terminalStore: TerminalStore,
     transactionManager: TRANSACTION_MANAGER
 });
 APPLICATION_BUILDER.setDependencies({
     airportDatabase: AIRPORT_DATABASE
 });
-APPLICATION_CHECKER.setDependencies({
+landing.setDependencies(ApplicationChecker, {
     applicationDao: ApplicationDao,
-    dbApplicationUtils: DB_APPLICATION_UTILS
+    dbApplicationUtils: DbApplicationUtils
 });
-APPLICATION_COMPOSER.setDependencies({
-    applicationLocator: APPLICATION_LOCATOR,
-    dbApplicationUtils: DB_APPLICATION_UTILS,
+landing.setDependencies(ApplicationComposer, {
+    applicationLocator: ApplicationLocator,
+    dbApplicationUtils: DbApplicationUtils,
     domainRetriever: DOMAIN_RETRIEVER,
-    terminalStore: TERMINAL_STORE
+    terminalStore: TerminalStore
 });
-APPLICATION_LOCATOR.setDependencies({
-    dbApplicationUtils: DB_APPLICATION_UTILS,
+landing.setDependencies(ApplicationLocator, {
+    dbApplicationUtils: DbApplicationUtils,
 });
-APPLICATION_RECORDER.setDependencies({
+landing.setDependencies(ApplicationRecorder, {
     applicationColumnDao: ApplicationColumnDao,
     applicationDao: ApplicationDao,
     applicationEntityDao: ApplicationEntityDao,
@@ -13843,9 +13659,9 @@ APPLICATION_RECORDER.setDependencies({
     domainDao: DomainDao,
     transactionManager: TRANSACTION_MANAGER
 });
-SQL_SCHEMA_BUILDER.setDependencies({
+landing.setDependencies(SqlSchemaBuilder, {
     airportDatabase: AIRPORT_DATABASE,
-    dbApplicationUtils: DB_APPLICATION_UTILS,
+    dbApplicationUtils: DbApplicationUtils,
     sequenceDao: SEQUENCE_DAO,
     storeDriver: STORE_DRIVER
 });
@@ -26249,31 +26065,638 @@ SessionManager = __decorate$a([
 ], SessionManager);
 
 const arrivalsNDepartures = lib('arrivals-n-departures');
-const REQUEST_MANAGER = arrivalsNDepartures.token({
-    class: RequestManager,
-    interface: 'RequestManager',
-    token: 'REQUEST_MANAGER'
-});
-const OPERATION_DESERIALIZER = arrivalsNDepartures.token({
-    class: null,
-    interface: 'IOperationDeserializer',
-    token: 'OPERATION_DESERIALIZER'
-});
-const QUERY_PARAMETER_DESERIALIZER = arrivalsNDepartures.token({
-    class: null,
-    interface: 'IQueryParameterDeserializer',
-    token: 'QUERY_PARAMETER_DESERIALIZER'
-});
-const QUERY_RESULTS_SERIALIZER = arrivalsNDepartures.token({
-    class: null,
-    interface: 'IQueryResultsSerializer',
-    token: 'QUERY_RESULTS_SERIALIZER'
-});
-arrivalsNDepartures.token({
-    class: SessionManager,
-    interface: 'SessionManager',
-    token: 'SESSION_MANAGER'
-});
+arrivalsNDepartures.register(RequestManager, SessionManager);
+const OPERATION_DESERIALIZER = arrivalsNDepartures.token('OperationDeserializer');
+const QUERY_PARAMETER_DESERIALIZER = arrivalsNDepartures.token('QueryParameterDeserializer');
+const QUERY_RESULTS_SERIALIZER = arrivalsNDepartures.token('QueryResultsSerializer');
+
+var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+var typedi = {};
+
+var Container$1 = {};
+
+var ContainerInstance$1 = {};
+
+var MissingProvidedServiceTypeError$1 = {};
+
+var __extends$2 = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(MissingProvidedServiceTypeError$1, "__esModule", { value: true });
+/**
+ * Thrown when service is registered without type.
+ */
+var MissingProvidedServiceTypeError = /** @class */ (function (_super) {
+    __extends$2(MissingProvidedServiceTypeError, _super);
+    function MissingProvidedServiceTypeError(identifier) {
+        var _this = _super.call(this, "Cannot determine a class of the requesting service \"" + identifier + "\"") || this;
+        _this.name = "ServiceNotFoundError";
+        Object.setPrototypeOf(_this, MissingProvidedServiceTypeError.prototype);
+        return _this;
+    }
+    return MissingProvidedServiceTypeError;
+}(Error));
+MissingProvidedServiceTypeError$1.MissingProvidedServiceTypeError = MissingProvidedServiceTypeError;
+
+var ServiceNotFoundError$1 = {};
+
+var Token$1 = {};
+
+Object.defineProperty(Token$1, "__esModule", { value: true });
+/**
+ * Used to create unique typed service identifier.
+ * Useful when service has only interface, but don't have a class.
+ */
+var Token = /** @class */ (function () {
+    /**
+     * @param name Token name, optional and only used for debugging purposes.
+     */
+    function Token(name) {
+        this.name = name;
+    }
+    return Token;
+}());
+Token$1.Token = Token;
+
+var __extends$1 = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(ServiceNotFoundError$1, "__esModule", { value: true });
+var Token_1$4 = Token$1;
+/**
+ * Thrown when requested service was not found.
+ */
+var ServiceNotFoundError = /** @class */ (function (_super) {
+    __extends$1(ServiceNotFoundError, _super);
+    function ServiceNotFoundError(identifier) {
+        var _this = _super.call(this) || this;
+        _this.name = "ServiceNotFoundError";
+        if (typeof identifier === "string") {
+            _this.message = "Service \"" + identifier + "\" was not found, looks like it was not registered in the container. " +
+                ("Register it by calling Container.set(\"" + identifier + "\", ...) before using service.");
+        }
+        else if (identifier instanceof Token_1$4.Token && identifier.name) {
+            _this.message = "Service \"" + identifier.name + "\" was not found, looks like it was not registered in the container. " +
+                "Register it by calling Container.set before using service.";
+        }
+        else if (identifier instanceof Token_1$4.Token) {
+            _this.message = "Service with a given token was not found, looks like it was not registered in the container. " +
+                "Register it by calling Container.set before using service.";
+        }
+        Object.setPrototypeOf(_this, ServiceNotFoundError.prototype);
+        return _this;
+    }
+    return ServiceNotFoundError;
+}(Error));
+ServiceNotFoundError$1.ServiceNotFoundError = ServiceNotFoundError;
+
+Object.defineProperty(ContainerInstance$1, "__esModule", { value: true });
+var Container_1$3 = Container$1;
+var MissingProvidedServiceTypeError_1 = MissingProvidedServiceTypeError$1;
+var ServiceNotFoundError_1 = ServiceNotFoundError$1;
+var Token_1$3 = Token$1;
+/**
+ * TypeDI can have multiple containers.
+ * One container is ContainerInstance.
+ */
+var ContainerInstance = /** @class */ (function () {
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
+    function ContainerInstance(id) {
+        // -------------------------------------------------------------------------
+        // Private Properties
+        // -------------------------------------------------------------------------
+        /**
+         * All registered services.
+         */
+        this.services = [];
+        this.id = id;
+    }
+    /**
+     * Checks if the service with given name or type is registered service container.
+     * Optionally, parameters can be passed in case if instance is initialized in the container for the first time.
+     */
+    ContainerInstance.prototype.has = function (identifier) {
+        return !!this.findService(identifier);
+    };
+    /**
+     * Retrieves the service with given name or type from the service container.
+     * Optionally, parameters can be passed in case if instance is initialized in the container for the first time.
+     */
+    ContainerInstance.prototype.get = function (identifier) {
+        var globalContainer = Container_1$3.Container.of(undefined);
+        var service = globalContainer.findService(identifier);
+        var scopedService = this.findService(identifier);
+        if (service && service.global === true)
+            return this.getServiceValue(identifier, service);
+        if (scopedService)
+            return this.getServiceValue(identifier, scopedService);
+        if (service && this !== globalContainer) {
+            var clonedService = Object.assign({}, service);
+            clonedService.value = undefined;
+            var value = this.getServiceValue(identifier, clonedService);
+            this.set(identifier, value);
+            return value;
+        }
+        return this.getServiceValue(identifier, service);
+    };
+    /**
+     * Gets all instances registered in the container of the given service identifier.
+     * Used when service defined with multiple: true flag.
+     */
+    ContainerInstance.prototype.getMany = function (id) {
+        var _this = this;
+        return this.filterServices(id).map(function (service) { return _this.getServiceValue(id, service); });
+    };
+    /**
+     * Sets a value for the given type or service name in the container.
+     */
+    ContainerInstance.prototype.set = function (identifierOrServiceMetadata, value) {
+        var _this = this;
+        if (identifierOrServiceMetadata instanceof Array) {
+            identifierOrServiceMetadata.forEach(function (v) { return _this.set(v); });
+            return this;
+        }
+        if (typeof identifierOrServiceMetadata === "string" || identifierOrServiceMetadata instanceof Token_1$3.Token) {
+            return this.set({ id: identifierOrServiceMetadata, value: value });
+        }
+        if (typeof identifierOrServiceMetadata === "object" && identifierOrServiceMetadata.service) {
+            return this.set({ id: identifierOrServiceMetadata.service, value: value });
+        }
+        if (identifierOrServiceMetadata instanceof Function) {
+            return this.set({ type: identifierOrServiceMetadata, id: identifierOrServiceMetadata, value: value });
+        }
+        // const newService: ServiceMetadata<any, any> = arguments.length === 1 && typeof identifierOrServiceMetadata === "object"  && !(identifierOrServiceMetadata instanceof Token) ? identifierOrServiceMetadata : undefined;
+        var newService = identifierOrServiceMetadata;
+        var service = this.findService(newService.id);
+        if (service && service.multiple !== true) {
+            Object.assign(service, newService);
+        }
+        else {
+            this.services.push(newService);
+        }
+        return this;
+    };
+    /**
+     * Removes services with a given service identifiers (tokens or types).
+     */
+    ContainerInstance.prototype.remove = function () {
+        var _this = this;
+        var ids = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            ids[_i] = arguments[_i];
+        }
+        ids.forEach(function (id) {
+            _this.filterServices(id).forEach(function (service) {
+                _this.services.splice(_this.services.indexOf(service), 1);
+            });
+        });
+        return this;
+    };
+    /**
+     * Completely resets the container by removing all previously registered services from it.
+     */
+    ContainerInstance.prototype.reset = function () {
+        this.services = [];
+        return this;
+    };
+    // -------------------------------------------------------------------------
+    // Private Methods
+    // -------------------------------------------------------------------------
+    /**
+     * Filters registered service in the with a given service identifier.
+     */
+    ContainerInstance.prototype.filterServices = function (identifier) {
+        return this.services.filter(function (service) {
+            if (service.id)
+                return service.id === identifier;
+            if (service.type && identifier instanceof Function)
+                return service.type === identifier || identifier.prototype instanceof service.type;
+            return false;
+        });
+    };
+    /**
+     * Finds registered service in the with a given service identifier.
+     */
+    ContainerInstance.prototype.findService = function (identifier) {
+        return this.services.find(function (service) {
+            if (service.id) {
+                if (identifier instanceof Object &&
+                    service.id instanceof Token_1$3.Token &&
+                    identifier.service instanceof Token_1$3.Token) {
+                    return service.id === identifier.service;
+                }
+                return service.id === identifier;
+            }
+            if (service.type && identifier instanceof Function)
+                return service.type === identifier; // todo: not sure why it was here || identifier.prototype instanceof service.type;
+            return false;
+        });
+    };
+    /**
+     * Gets service value.
+     */
+    ContainerInstance.prototype.getServiceValue = function (identifier, service) {
+        var _a;
+        // find if instance of this object already initialized in the container and return it if it is
+        if (service && service.value !== undefined)
+            return service.value;
+        // if named service was requested and its instance was not found plus there is not type to know what to initialize,
+        // this means service was not pre-registered and we throw an exception
+        if ((!service || !service.type) &&
+            (!service || !service.factory) &&
+            (typeof identifier === "string" || identifier instanceof Token_1$3.Token))
+            throw new ServiceNotFoundError_1.ServiceNotFoundError(identifier);
+        // at this point we either have type in service registered, either identifier is a target type
+        var type = undefined;
+        if (service && service.type) {
+            type = service.type;
+        }
+        else if (service && service.id instanceof Function) {
+            type = service.id;
+        }
+        else if (identifier instanceof Function) {
+            type = identifier;
+            // } else if (identifier instanceof Object && (identifier as { service: Token<any> }).service instanceof Token) {
+            //     type = (identifier as { service: Token<any> }).service;
+        }
+        // if service was not found then create a new one and register it
+        if (!service) {
+            if (!type)
+                throw new MissingProvidedServiceTypeError_1.MissingProvidedServiceTypeError(identifier);
+            service = { type: type };
+            this.services.push(service);
+        }
+        // setup constructor parameters for a newly initialized service
+        var paramTypes = type && Reflect && Reflect.getMetadata ? Reflect.getMetadata("design:paramtypes", type) : undefined;
+        var params = paramTypes ? this.initializeParams(type, paramTypes) : [];
+        // if factory is set then use it to create service instance
+        var value;
+        if (service.factory) {
+            // filter out non-service parameters from created service constructor
+            // non-service parameters can be, lets say Car(name: string, isNew: boolean, engine: Engine)
+            // where name and isNew are non-service parameters and engine is a service parameter
+            params = params.filter(function (param) { return param !== undefined; });
+            if (service.factory instanceof Array) {
+                // use special [Type, "create"] syntax to allow factory services
+                // in this case Type instance will be obtained from Container and its method "create" will be called
+                value = (_a = this.get(service.factory[0]))[service.factory[1]].apply(_a, params);
+            }
+            else { // regular factory function
+                value = service.factory.apply(service, params.concat([this]));
+            }
+        }
+        else { // otherwise simply create a new object instance
+            if (!type)
+                throw new MissingProvidedServiceTypeError_1.MissingProvidedServiceTypeError(identifier);
+            params.unshift(null);
+            // "extra feature" - always pass container instance as the last argument to the service function
+            // this allows us to support javascript where we don't have decorators and emitted metadata about dependencies
+            // need to be injected, and user can use provided container to get instances he needs
+            params.push(this);
+            value = new (type.bind.apply(type, params))();
+        }
+        if (service && !service.transient && value)
+            service.value = value;
+        if (type)
+            this.applyPropertyHandlers(type, value);
+        return value;
+    };
+    /**
+     * Initializes all parameter types for a given target service class.
+     */
+    ContainerInstance.prototype.initializeParams = function (type, paramTypes) {
+        var _this = this;
+        return paramTypes.map(function (paramType, index) {
+            var paramHandler = Container_1$3.Container.handlers.find(function (handler) { return handler.object === type && handler.index === index; });
+            if (paramHandler)
+                return paramHandler.value(_this);
+            if (paramType && paramType.name && !_this.isTypePrimitive(paramType.name)) {
+                return _this.get(paramType);
+            }
+            return undefined;
+        });
+    };
+    /**
+     * Checks if given type is primitive (e.g. string, boolean, number, object).
+     */
+    ContainerInstance.prototype.isTypePrimitive = function (param) {
+        return ["string", "boolean", "number", "object"].indexOf(param.toLowerCase()) !== -1;
+    };
+    /**
+     * Applies all registered handlers on a given target class.
+     */
+    ContainerInstance.prototype.applyPropertyHandlers = function (target, instance) {
+        var _this = this;
+        Container_1$3.Container.handlers.forEach(function (handler) {
+            if (typeof handler.index === "number")
+                return;
+            if (handler.object.constructor !== target && !(target.prototype instanceof handler.object.constructor))
+                return;
+            instance[handler.propertyName] = handler.value(_this);
+        });
+    };
+    return ContainerInstance;
+}());
+ContainerInstance$1.ContainerInstance = ContainerInstance;
+
+Object.defineProperty(Container$1, "__esModule", { value: true });
+var ContainerInstance_1 = ContainerInstance$1;
+/**
+ * Service container.
+ */
+var Container = /** @class */ (function () {
+    function Container() {
+    }
+    // -------------------------------------------------------------------------
+    // Public Static Methods
+    // -------------------------------------------------------------------------
+    /**
+     * Gets a separate container instance for the given instance id.
+     */
+    Container.of = function (instanceId) {
+        if (instanceId === undefined)
+            return this.globalInstance;
+        var container = this.instances.find(function (instance) { return instance.id === instanceId; });
+        if (!container) {
+            container = new ContainerInstance_1.ContainerInstance(instanceId);
+            this.instances.push(container);
+        }
+        return container;
+    };
+    /**
+     * Checks if the service with given name or type is registered service container.
+     * Optionally, parameters can be passed in case if instance is initialized in the container for the first time.
+     */
+    Container.has = function (identifier) {
+        return this.globalInstance.has(identifier);
+    };
+    /**
+     * Retrieves the service with given name or type from the service container.
+     * Optionally, parameters can be passed in case if instance is initialized in the container for the first time.
+     */
+    Container.get = function (identifier) {
+        return this.globalInstance.get(identifier);
+    };
+    /**
+     * Gets all instances registered in the container of the given service identifier.
+     * Used when service defined with multiple: true flag.
+     */
+    Container.getMany = function (id) {
+        return this.globalInstance.getMany(id);
+    };
+    /**
+     * Sets a value for the given type or service name in the container.
+     */
+    Container.set = function (identifierOrServiceMetadata, value) {
+        this.globalInstance.set(identifierOrServiceMetadata, value);
+        return this;
+    };
+    /**
+     * Removes services with a given service identifiers (tokens or types).
+     */
+    Container.remove = function () {
+        var _a;
+        var ids = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            ids[_i] = arguments[_i];
+        }
+        (_a = this.globalInstance).remove.apply(_a, ids);
+        return this;
+    };
+    /**
+     * Completely resets the container by removing all previously registered services and handlers from it.
+     */
+    Container.reset = function (containerId) {
+        if (containerId) {
+            var instance = this.instances.find(function (instance) { return instance.id === containerId; });
+            if (instance) {
+                instance.reset();
+                this.instances.splice(this.instances.indexOf(instance), 1);
+            }
+        }
+        else {
+            this.globalInstance.reset();
+            this.instances.forEach(function (instance) { return instance.reset(); });
+        }
+        return this;
+    };
+    /**
+     * Registers a new handler.
+     */
+    Container.registerHandler = function (handler) {
+        this.handlers.push(handler);
+        return this;
+    };
+    /**
+     * Helper method that imports given services.
+     */
+    Container.import = function (services) {
+        return this;
+    };
+    // -------------------------------------------------------------------------
+    // Private Static Properties
+    // -------------------------------------------------------------------------
+    /**
+     * Global container instance.
+     */
+    Container.globalInstance = new ContainerInstance_1.ContainerInstance(undefined);
+    /**
+     * Other containers created using Container.of method.
+     */
+    Container.instances = [];
+    /**
+     * All registered handlers.
+     */
+    Container.handlers = [];
+    return Container;
+}());
+Container$1.Container = Container;
+
+var Service$1 = {};
+
+Object.defineProperty(Service$1, "__esModule", { value: true });
+var Container_1$2 = Container$1;
+var Token_1$2 = Token$1;
+/**
+ * Marks class as a service that can be injected using container.
+ */
+function Service(optionsOrServiceName, maybeFactory) {
+    if (arguments.length === 2 || (optionsOrServiceName instanceof Function)) {
+        var serviceId = { service: new Token_1$2.Token() };
+        var dependencies_1 = arguments.length === 2 ? optionsOrServiceName : [];
+        var factory_1 = arguments.length === 2 ? maybeFactory : optionsOrServiceName;
+        Container_1$2.Container.set({
+            id: serviceId.service,
+            factory: function (container) {
+                var params = dependencies_1.map(function (dependency) { return container.get(dependency); });
+                return factory_1.apply(void 0, params);
+            }
+        });
+        return serviceId;
+    }
+    else {
+        return function (target) {
+            var service = {
+                type: target
+            };
+            if (typeof optionsOrServiceName === "string" || optionsOrServiceName instanceof Token_1$2.Token) {
+                service.id = optionsOrServiceName;
+                service.multiple = optionsOrServiceName.multiple;
+                service.global = optionsOrServiceName.global || false;
+                service.transient = optionsOrServiceName.transient;
+            }
+            else if (optionsOrServiceName) { // ServiceOptions
+                service.id = optionsOrServiceName.id;
+                service.factory = optionsOrServiceName.factory;
+                service.multiple = optionsOrServiceName.multiple;
+                service.global = optionsOrServiceName.global || false;
+                service.transient = optionsOrServiceName.transient;
+            }
+            Container_1$2.Container.set(service);
+        };
+    }
+}
+Service$1.Service = Service;
+
+var Inject$1 = {};
+
+var CannotInjectError$1 = {};
+
+var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(CannotInjectError$1, "__esModule", { value: true });
+/**
+ * Thrown when DI cannot inject value into property decorated by @Inject decorator.
+ */
+var CannotInjectError = /** @class */ (function (_super) {
+    __extends(CannotInjectError, _super);
+    function CannotInjectError(target, propertyName) {
+        var _this = _super.call(this, "Cannot inject value into \"" + target.constructor.name + "." + propertyName + "\". " +
+            "Please make sure you setup reflect-metadata properly and you don't use interfaces without service tokens as injection value.") || this;
+        _this.name = "ServiceNotFoundError";
+        Object.setPrototypeOf(_this, CannotInjectError.prototype);
+        return _this;
+    }
+    return CannotInjectError;
+}(Error));
+CannotInjectError$1.CannotInjectError = CannotInjectError;
+
+Object.defineProperty(Inject$1, "__esModule", { value: true });
+var Container_1$1 = Container$1;
+var Token_1$1 = Token$1;
+var CannotInjectError_1$1 = CannotInjectError$1;
+/**
+ * Injects a service into a class property or constructor parameter.
+ */
+function Inject(typeOrName) {
+    return function (target, propertyName, index) {
+        if (!typeOrName)
+            typeOrName = function () { return Reflect.getMetadata("design:type", target, propertyName); };
+        Container_1$1.Container.registerHandler({
+            object: target,
+            propertyName: propertyName,
+            index: index,
+            value: function (containerInstance) {
+                var identifier;
+                if (typeof typeOrName === "string") {
+                    identifier = typeOrName;
+                }
+                else if (typeOrName instanceof Token_1$1.Token) {
+                    identifier = typeOrName;
+                }
+                else {
+                    identifier = typeOrName();
+                }
+                if (identifier === Object)
+                    throw new CannotInjectError_1$1.CannotInjectError(target, propertyName);
+                return containerInstance.get(identifier);
+            }
+        });
+    };
+}
+Inject$1.Inject = Inject;
+
+var InjectMany$1 = {};
+
+Object.defineProperty(InjectMany$1, "__esModule", { value: true });
+var Container_1 = Container$1;
+var Token_1 = Token$1;
+var CannotInjectError_1 = CannotInjectError$1;
+/**
+ * Injects a service into a class property or constructor parameter.
+ */
+function InjectMany(typeOrName) {
+    return function (target, propertyName, index) {
+        if (!typeOrName)
+            typeOrName = function () { return Reflect.getMetadata("design:type", target, propertyName); };
+        Container_1.Container.registerHandler({
+            object: target,
+            propertyName: propertyName,
+            index: index,
+            value: function (containerInstance) {
+                var identifier;
+                if (typeof typeOrName === "string") {
+                    identifier = typeOrName;
+                }
+                else if (typeOrName instanceof Token_1.Token) {
+                    identifier = typeOrName;
+                }
+                else {
+                    identifier = typeOrName();
+                }
+                if (identifier === Object)
+                    throw new CannotInjectError_1.CannotInjectError(target, propertyName);
+                return containerInstance.getMany(identifier);
+            }
+        });
+    };
+}
+InjectMany$1.InjectMany = InjectMany;
+
+(function (exports) {
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+var Container_1 = Container$1;
+__export(Service$1);
+__export(Inject$1);
+__export(InjectMany$1);
+var Container_2 = Container$1;
+exports.Container = Container_2.Container;
+var ContainerInstance_1 = ContainerInstance$1;
+exports.ContainerInstance = ContainerInstance_1.ContainerInstance;
+var Token_1 = Token$1;
+exports.Token = Token_1.Token;
+exports.default = Container_1.Container;
+
+
+}(typedi));
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -26291,6 +26714,2959 @@ PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 
 function __decorate$9(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+let SynchronizationConflict = class SynchronizationConflict {
+};
+__decorate$9([
+    GeneratedValue(),
+    Id(),
+    DbNumber(),
+    Column()
+], SynchronizationConflict.prototype, "_localId", void 0);
+__decorate$9([
+    DbString()
+], SynchronizationConflict.prototype, "type", void 0);
+__decorate$9([
+    DbBoolean()
+], SynchronizationConflict.prototype, "acknowledged", void 0);
+__decorate$9([
+    ManyToOne(),
+    JoinColumn()
+], SynchronizationConflict.prototype, "repository", void 0);
+__decorate$9([
+    ManyToOne(),
+    JoinColumn()
+], SynchronizationConflict.prototype, "overwrittenRecordHistory", void 0);
+__decorate$9([
+    ManyToOne(),
+    JoinColumn()
+], SynchronizationConflict.prototype, "overwritingRecordHistory", void 0);
+__decorate$9([
+    OneToMany()
+], SynchronizationConflict.prototype, "values", void 0);
+SynchronizationConflict = __decorate$9([
+    Entity(),
+    Table()
+], SynchronizationConflict);
+
+var SynchronizationConflict_Type;
+(function (SynchronizationConflict_Type) {
+    SynchronizationConflict_Type["LOCAL_UPDATE_REMOTELY_DELETED"] = "LOCAL_UPDATE_REMOTELY_DELETED";
+    SynchronizationConflict_Type["REMOTE_CREATE_REMOTELY_DELETED"] = "REMOTE_CREATE_REMOTELY_DELETED";
+    SynchronizationConflict_Type["REMOTE_UPDATE_LOCALLY_DELETED"] = "REMOTE_UPDATE_LOCALLY_DELETED";
+    SynchronizationConflict_Type["REMOTE_UPDATE_LOCALLY_UPDATED"] = "REMOTE_UPDATE_LOCALLY_UPDATED";
+})(SynchronizationConflict_Type || (SynchronizationConflict_Type = {}));
+
+let SynchronizationConflictValues = class SynchronizationConflictValues {
+};
+__decorate$9([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], SynchronizationConflictValues.prototype, "synchronizationConflict", void 0);
+__decorate$9([
+    Id(),
+    DbNumber()
+], SynchronizationConflictValues.prototype, "columnIndex", void 0);
+SynchronizationConflictValues = __decorate$9([
+    Entity(),
+    Table()
+], SynchronizationConflictValues);
+
+var DataOrigin;
+(function (DataOrigin) {
+    DataOrigin["LOCAL"] = "LOCAL";
+    DataOrigin["REMOTE"] = "REMOTE";
+})(DataOrigin || (DataOrigin = {}));
+
+var ApplicationChangeStatus;
+(function (ApplicationChangeStatus) {
+    ApplicationChangeStatus["CHANGE_NEEDED"] = "CHANGE_NEEDED";
+    ApplicationChangeStatus["CHANGE_COMPLETED"] = "CHANGE_COMPLETED";
+})(ApplicationChangeStatus || (ApplicationChangeStatus = {}));
+
+/**
+ * Used to temporarily store updates during application remotely synced updates
+ * to the local terminal.  Values are deleted right after the remote sync updates
+ * are applied.
+ */
+let RecordUpdateStage = class RecordUpdateStage {
+};
+__decorate$9([
+    Id(),
+    GeneratedValue(),
+    Column()
+], RecordUpdateStage.prototype, "_localId", void 0);
+__decorate$9([
+    ManyToOne(),
+    JoinColumn()
+], RecordUpdateStage.prototype, "applicationVersion", void 0);
+__decorate$9([
+    ManyToOne()
+    // FIXME: verify that these records don't make it into serialized
+    // repository ledger (and hence, that using local ids is safe)
+    ,
+    JoinColumn()
+], RecordUpdateStage.prototype, "entity", void 0);
+__decorate$9([
+    ManyToOne(),
+    JoinColumn()
+], RecordUpdateStage.prototype, "repository", void 0);
+__decorate$9([
+    ManyToOne(),
+    JoinColumn()
+], RecordUpdateStage.prototype, "actor", void 0);
+__decorate$9([
+    Column(),
+    DbNumber()
+], RecordUpdateStage.prototype, "_actorRecordId", void 0);
+__decorate$9([
+    ManyToOne()
+    // FIXME: verify that these records don't make it into serialized
+    // repository ledger (and hence, that using local ids is safe)
+    ,
+    JoinColumn()
+], RecordUpdateStage.prototype, "column", void 0);
+__decorate$9([
+    Column()
+], RecordUpdateStage.prototype, "updatedValue", void 0);
+RecordUpdateStage = __decorate$9([
+    Entity(),
+    Table()
+], RecordUpdateStage);
+
+const __constructors__$1 = {
+    RecordUpdateStage: RecordUpdateStage,
+    SynchronizationConflict: SynchronizationConflict,
+    SynchronizationConflictValues: SynchronizationConflictValues
+};
+const Q_airport____at_airport_slash_layover = {
+    __constructors__: __constructors__$1,
+    domain: 'airport',
+    name: '@airport/layover'
+};
+function airport____at_airport_slash_layover_diSet(dbEntityId) {
+    return airApi.dS(Q_airport____at_airport_slash_layover.__dbApplication__, dbEntityId);
+}
+airApi.setQApp(Q_airport____at_airport_slash_layover);
+
+// Application Q object Dependency Injection readiness detection Dao
+class SQDIDao extends Dao {
+    constructor(dbEntityId) {
+        super(dbEntityId, Q_airport____at_airport_slash_layover);
+    }
+}
+class BaseRecordUpdateStageDao extends SQDIDao {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_layover_diSet(0);
+    }
+    constructor() {
+        super(0);
+    }
+}
+BaseRecordUpdateStageDao.Find = new DaoQueryDecorators();
+BaseRecordUpdateStageDao.FindOne = new DaoQueryDecorators();
+BaseRecordUpdateStageDao.Search = new DaoQueryDecorators();
+BaseRecordUpdateStageDao.SearchOne = new DaoQueryDecorators();
+class BaseSynchronizationConflictDao extends SQDIDao {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_layover_diSet(2);
+    }
+    constructor() {
+        super(2);
+    }
+}
+BaseSynchronizationConflictDao.Find = new DaoQueryDecorators();
+BaseSynchronizationConflictDao.FindOne = new DaoQueryDecorators();
+BaseSynchronizationConflictDao.Search = new DaoQueryDecorators();
+BaseSynchronizationConflictDao.SearchOne = new DaoQueryDecorators();
+class BaseSynchronizationConflictValuesDao extends SQDIDao {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_layover_diSet(1);
+    }
+    constructor() {
+        super(1);
+    }
+}
+BaseSynchronizationConflictValuesDao.Find = new DaoQueryDecorators();
+BaseSynchronizationConflictValuesDao.FindOne = new DaoQueryDecorators();
+BaseSynchronizationConflictValuesDao.Search = new DaoQueryDecorators();
+BaseSynchronizationConflictValuesDao.SearchOne = new DaoQueryDecorators();
+
+let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSynchronizationConflictDao {
+    async insert(synchronizationConflicts, context) {
+        let sc;
+        const VALUES = [];
+        for (const synchronizationConflict of synchronizationConflicts) {
+            VALUES.push([
+                synchronizationConflict.type,
+                synchronizationConflict.acknowledged,
+                synchronizationConflict.repository._localId,
+                synchronizationConflict.overwrittenRecordHistory._localId,
+                synchronizationConflict.overwritingRecordHistory._localId
+            ]);
+        }
+        const ids = await this.db.insertValuesGenerateIds({
+            INSERT_INTO: sc = Q_airport____at_airport_slash_layover.SynchronizationConflict,
+            columns: [
+                sc.type,
+                sc.acknowledged,
+                sc.repository._localId,
+                sc.overwrittenRecordHistory._localId,
+                sc.overwritingRecordHistory._localId
+            ],
+            VALUES
+        }, context);
+        for (let i = 0; i < synchronizationConflicts.length; i++) {
+            let synchronizationConflict = synchronizationConflicts[i];
+            synchronizationConflict._localId = ids[i][0];
+        }
+    }
+};
+SynchronizationConflictDao = __decorate$9([
+    Injected()
+], SynchronizationConflictDao);
+
+let SynchronizationConflictValuesDao = class SynchronizationConflictValuesDao extends BaseSynchronizationConflictValuesDao {
+    async insert(synchronizationConflictValues, context) {
+        let scv;
+        const VALUES = [];
+        for (const synchronizationConflictValue of synchronizationConflictValues) {
+            VALUES.push([
+                synchronizationConflictValue.synchronizationConflict._localId,
+                synchronizationConflictValue.columnIndex
+            ]);
+        }
+        await this.db.insertValues({
+            INSERT_INTO: scv = Q_airport____at_airport_slash_layover.SynchronizationConflictValues,
+            columns: [
+                scv.synchronizationConflict._localId,
+                scv.columnIndex
+            ],
+            VALUES
+        }, context);
+    }
+};
+SynchronizationConflictValuesDao = __decorate$9([
+    Injected()
+], SynchronizationConflictValuesDao);
+
+let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
+    async insertValues(values) {
+        const rus = Q_airport____at_airport_slash_layover.RecordUpdateStage;
+        const columns = [
+            rus.applicationVersion._localId,
+            rus.entity._localId,
+            rus.repository._localId,
+            rus.actor._localId,
+            rus._actorRecordId,
+            rus.column._localId,
+            rus.updatedValue
+        ];
+        return await this.db.insertValuesGenerateIds({
+            INSERT_INTO: rus,
+            columns,
+            VALUES: values
+        }, {
+            generateOnSync: true
+        });
+    }
+    async updateEntityWhereIds(applicationIndex, applicationVersionId, tableIndex, idMap, updatedColumnIndexes) {
+        const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
+            .applicationVersion.entities[tableIndex];
+        const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name];
+        const repositoryEquals = [];
+        for (const [repositoryId, idsForRepository] of idMap) {
+            const actorEquals = [];
+            for (const [actorId, idsForActor] of idsForRepository) {
+                actorEquals.push(AND(qEntity[ACTOR_PROPERTY_NAME]._localId.equals(actorId), qEntity[ACTOR_RECORD_ID_PROPERTY_NAME].IN(Array.from(idsForActor))));
+            }
+            repositoryEquals.push(AND(qEntity[REPOSITORY_PROPERTY_NAME]._localId.equals(repositoryId), OR(...actorEquals)));
+        }
+        const setClause = {};
+        for (const columnIndex of updatedColumnIndexes) {
+            const column = dbEntity.columns[columnIndex];
+            let columnRus = Q_airport____at_airport_slash_layover.RecordUpdateStage;
+            let columnSetClause = field({
+                FROM: [
+                    columnRus
+                ],
+                SELECT: columnRus.updatedValue,
+                WHERE: AND(columnRus.applicationVersion._localId.equals(applicationVersionId), columnRus.entity._localId.equals(dbEntity.index), columnRus.repository._localId.equals(qEntity.repository._localId), columnRus.actor._localId.equals(qEntity.actor._localId), columnRus._actorRecordId.equals(qEntity._actorRecordId), columnRus.column._localId.equals(column.index))
+            });
+            setClause[column.name] = columnSetClause;
+        }
+        await this.db.updateColumnsWhere({
+            UPDATE: qEntity,
+            SET: setClause,
+            WHERE: OR(...repositoryEquals)
+        });
+    }
+    async delete( //
+    ) {
+        return await this.db.deleteWhere({
+            DELETE_FROM: Q_airport____at_airport_slash_layover.RecordUpdateStage
+        });
+    }
+};
+__decorate$9([
+    typedi.Inject()
+], RecordUpdateStageDao.prototype, "airportDatabase", void 0);
+RecordUpdateStageDao = __decorate$9([
+    Injected()
+], RecordUpdateStageDao);
+
+const layover = lib('@airport/layover');
+layover.register(RecordUpdateStageDao, SynchronizationConflictDao, SynchronizationConflictValuesDao);
+layover.setDependencies(RecordUpdateStageDao, {
+    airportDatabase: AIRPORT_DATABASE
+});
+
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+function __decorate$8(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+let Client = class Client {
+    constructor() {
+        // encryptionKey = process.env.ENCRYPTION_KEY
+        this.serverLocationProtocol = 'http://';
+    }
+    async getRepositoryTransactions(location, repositoryGUID, sinceSyncTimestamp = null) {
+        try {
+            const response = await this.sendMessage(location + '/read', {
+                repositoryGUID,
+                syncTimestamp: sinceSyncTimestamp
+            });
+            if (response.error) {
+                console.error(response.error);
+                return [];
+            }
+            return response.fragments;
+        }
+        catch (e) {
+            console.error(e);
+            return [];
+        }
+    }
+    async sendRepositoryTransactions(location, repositoryGUID, messages) {
+        try {
+            const response = await this.sendMessage(location + '/write', {
+                messages,
+                repositoryGUID
+            });
+            if (response.error) {
+                console.error(response.error);
+                return 0;
+            }
+            return response.syncTimestamp;
+        }
+        catch (e) {
+            console.error(e);
+            return 0;
+        }
+    }
+    async sendMessage(location, request) {
+        let packagedMessage = JSON.stringify(request);
+        // if (this.encryptionKey) {
+        //     packagedMessage = await encryptString(
+        //         packagedMessage, this.encryptionKey)
+        // }
+        const response = await fetch(this.serverLocationProtocol + location, {
+            method: 'PUT',
+            mode: 'cors',
+            // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            // credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // redirect: 'follow', // manual, *follow, error
+            // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: packagedMessage // body data type must match "Content-Type" header
+        });
+        // let unpackagedMessage = response.text()
+        // if (this.encryptionKey) {
+        //     unpackagedMessage = await decryptString(unpackagedMessage, this.encryptionKey)
+        // }
+        // return JSON.parse(unpackagedMessage)
+        return response.json();
+    }
+};
+Client = __decorate$8([
+    Injected()
+], Client);
+
+// import {
+//     decryptString,
+//     encryptString,
+// } from "string-cipher";
+const client = lib('client');
+client.register(Client);
+
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+function __decorate$7(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
+    async getTransactionsForRepository(repositorySource, repositoryGUID, sinceSyncTimestamp) {
+        const response = await this.client.getRepositoryTransactions(repositorySource, repositoryGUID, sinceSyncTimestamp);
+        const messages = [];
+        // NOTE: syncTimestamp is populated here because file sharing mechanisms
+        // (IPFS) won't be able to modify the messages themselves
+        for (const fragment of response) {
+            if (fragment.repositoryGUID !== repositoryGUID) {
+                console.error(`Got a reponse fragment for repository ${fragment.repositoryGUID}.
+    Expecting message fragments for repository: ${repositoryGUID}`);
+                continue;
+            }
+            for (const message of fragment.messages) {
+                message.syncTimestamp = fragment.syncTimestamp;
+                messages.push(message);
+            }
+        }
+        return messages;
+    }
+    async sendTransactions(repositorySource, messagesByRepository) {
+        let allSent = true;
+        for (const [repositoryGUID, messages] of messagesByRepository) {
+            try {
+                if (!await this.sendTransactionsForRepository(repositorySource, repositoryGUID, messages)) {
+                    allSent = false;
+                }
+            }
+            catch (e) {
+                console.error(e);
+                allSent = false;
+            }
+        }
+        return allSent;
+    }
+    async sendTransactionsForRepository(repositorySource, repositoryGUID, messages) {
+        if (!messages || !messages.length) {
+            return false;
+        }
+        const syncTimestamp = await this.client.sendRepositoryTransactions(repositorySource, repositoryGUID, messages);
+        if (!syncTimestamp) {
+            return false;
+        }
+        for (const message of messages) {
+            message.syncTimestamp = syncTimestamp;
+        }
+        return true;
+    }
+};
+__decorate$7([
+    Inject$2()
+], DebugSynchronizationAdapter.prototype, "client", void 0);
+DebugSynchronizationAdapter = __decorate$7([
+    Injected()
+], DebugSynchronizationAdapter);
+
+let SynchronizationAdapterLoader = class SynchronizationAdapterLoader {
+    async load(synchronizationSource) {
+        switch (synchronizationSource) {
+            case 'IPFS': {
+                throw new Error(`Not Implemented`);
+            }
+            case 'localhost:9000': {
+                return this.debugSynchronizationAdapter;
+            }
+            default:
+                throw new Error(`Unexpected synchronization source: ${synchronizationSource}`);
+        }
+    }
+};
+__decorate$7([
+    Inject$2()
+], SynchronizationAdapterLoader.prototype, "debugSynchronizationAdapter", void 0);
+SynchronizationAdapterLoader = __decorate$7([
+    Injected()
+], SynchronizationAdapterLoader);
+
+let SyncInActorChecker = class SyncInActorChecker {
+    async ensureActors(message, context) {
+        try {
+            let actorGUIDs = [];
+            let messageActorIndexMap = new Map();
+            for (let i = 0; i < message.actors.length; i++) {
+                const actor = message.actors[i];
+                if (typeof actor.GUID !== 'string' || actor.GUID.length !== 36) {
+                    throw new Error(`Invalid 'terminal.GUID'`);
+                }
+                this.checkActorApplication(actor, message);
+                this.checkActorTerminal(actor, message);
+                this.checkActorUserAccount(actor, message);
+                actorGUIDs.push(actor.GUID);
+                messageActorIndexMap.set(actor.GUID, i);
+                // Make sure id field is not in the input
+                delete actor._localId;
+            }
+            const actors = await this.actorDao.findByGUIDs(actorGUIDs);
+            for (const actor of actors) {
+                const messageUserAccountIndex = messageActorIndexMap.get(actor.GUID);
+                message.actors[messageUserAccountIndex] = actor;
+            }
+            const missingActors = message.actors
+                .filter(messageActor => !messageActor._localId);
+            if (missingActors.length) {
+                await this.actorDao.insert(missingActors, context);
+            }
+        }
+        catch (e) {
+            console.error(e);
+            return false;
+        }
+        return true;
+    }
+    checkActorApplication(actor, message) {
+        if (typeof actor.application !== 'number') {
+            throw new Error(`Expecting "in-message index" (number)
+			in 'actor.terminal'`);
+        }
+        const application = message.applications[actor.application];
+        if (!application) {
+            throw new Error(`Did not find actor.application with "in-message index" ${actor.application}`);
+        }
+        actor.application = application;
+    }
+    checkActorTerminal(actor, message) {
+        if (typeof actor.terminal !== 'number') {
+            throw new Error(`Expecting "in-message index" (number)
+			in 'actor.terminal'`);
+        }
+        const terminal = message.terminals[actor.terminal];
+        if (!terminal) {
+            throw new Error(`Did not find actor.terminal with "in-message index" ${actor.terminal}`);
+        }
+        actor.terminal = terminal;
+    }
+    checkActorUserAccount(actor, message) {
+        if (typeof actor.userAccount !== 'number') {
+            throw new Error(`Expecting "in-message index" (number)
+			in 'actor.userAccount'`);
+        }
+        const userAccount = message.userAccounts[actor.userAccount];
+        if (!userAccount) {
+            throw new Error(`Did not find actor.userAccount with "in-message index" ${actor.userAccount}`);
+        }
+        actor.userAccount = userAccount;
+    }
+};
+__decorate$7([
+    Inject$2()
+], SyncInActorChecker.prototype, "actorDao", void 0);
+SyncInActorChecker = __decorate$7([
+    Injected()
+], SyncInActorChecker);
+
+let SyncInApplicationChecker = class SyncInApplicationChecker {
+    async ensureApplications(message, context) {
+        try {
+            let applicationCheckMap = await this.checkApplicationsAndDomains(message, context);
+            for (let i = 0; i < message.applications.length; i++) {
+                let application = message.applications[i];
+                message.applications[i] = applicationCheckMap
+                    .get(application.domain.name).get(application.name)
+                    .application;
+            }
+        }
+        catch (e) {
+            console.error(e);
+            return false;
+        }
+        return true;
+    }
+    async checkApplicationsAndDomains(message, context) {
+        const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(message);
+        const applications = await this.applicationDao
+            .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names);
+        for (let application of applications) {
+            let domainName = application.domain.name;
+            let applicationName = application.name;
+            for (let [_, applicationCheck] of applicationCheckMap.get(domainName)) {
+                if (applicationCheck.applicationName === applicationName) {
+                    let domainCheck = domainCheckMap.get(domainName);
+                    domainCheck.found = true;
+                    domainCheck.domain = application.domain;
+                    applicationCheck.found = true;
+                    applicationCheck.application = application;
+                }
+            }
+        }
+        let domainsToCreate = [];
+        for (let [name, domainCheck] of domainCheckMap) {
+            if (domainCheck.found) {
+                continue;
+            }
+            let domain = {
+                _localId: null,
+                name
+            };
+            domainCheck.domain = domain;
+            domainsToCreate.push(domain);
+        }
+        if (domainsToCreate.length) {
+            await this.domainDao.insert(domainsToCreate);
+        }
+        let applicationsToCreate = [];
+        for (let [domainName, applicationChecksByName] of applicationCheckMap) {
+            for (let [name, applicationCheck] of applicationChecksByName) {
+                if (applicationCheck.found) {
+                    continue;
+                }
+                let domain = domainCheckMap.get(domainName).domain;
+                let application = {
+                    domain,
+                    index: null,
+                    name,
+                    scope: 'private',
+                    status: ApplicationStatus.STUB,
+                    signature: 'localhost'
+                };
+                applicationCheck.application = application;
+                applicationsToCreate.push(application);
+            }
+        }
+        if (applicationsToCreate.length) {
+            await this.applicationDao.insert(applicationsToCreate, context);
+        }
+        return applicationCheckMap;
+    }
+    getNames(message) {
+        if (!message.applications || !(message.applications instanceof Array)) {
+            throw new Error(`Did not find applications in RepositorySynchronizationMessage.`);
+        }
+        const domainCheckMap = new Map();
+        const applicationCheckMap = new Map();
+        for (let application of message.applications) {
+            if (typeof application !== 'object') {
+                throw new Error(`Invalid ApplicationVersion.application`);
+            }
+            if (!application.name || typeof application.name !== 'string') {
+                throw new Error(`Invalid ApplicationVersion.Application.name`);
+            }
+            const domain = application.domain;
+            if (typeof domain !== 'object') {
+                throw new Error(`Invalid ApplicationVersion.Application.Domain`);
+            }
+            if (!domain.name || typeof domain.name !== 'string') {
+                throw new Error(`Invalid ApplicationVersion.Application.Domain.name`);
+            }
+            let applicationChecksForDomain = applicationCheckMap.get(domain.name);
+            if (!applicationChecksForDomain) {
+                applicationChecksForDomain = new Map();
+                applicationCheckMap.set(domain.name, applicationChecksForDomain);
+            }
+            if (!applicationChecksForDomain.has(application.name)) {
+                applicationChecksForDomain.set(application.name, {
+                    applicationName: application.name,
+                });
+            }
+            let domainCheck = domainCheckMap.get(domain.name);
+            if (!domainCheck) {
+                domainCheckMap.set(domain.name, {
+                    domainName: domain.name
+                });
+            }
+        }
+        const domainNames = [];
+        const allApplication_Names = [];
+        for (const [domainName, applicationChecksForDomainMap] of applicationCheckMap) {
+            domainNames.push(domainName);
+            for (let [applicationName, _] of applicationChecksForDomainMap) {
+                allApplication_Names.push(applicationName);
+            }
+        }
+        return {
+            allApplication_Names,
+            domainCheckMap,
+            domainNames,
+            applicationCheckMap
+        };
+    }
+};
+__decorate$7([
+    Inject$2()
+], SyncInApplicationChecker.prototype, "applicationDao", void 0);
+__decorate$7([
+    Inject$2()
+], SyncInApplicationChecker.prototype, "domainDao", void 0);
+SyncInApplicationChecker = __decorate$7([
+    Injected()
+], SyncInApplicationChecker);
+
+let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
+    async ensureApplicationVersions(message, context) {
+        try {
+            let applicationCheckMap = await this.checkVersionsApplicationsDomains(message, context);
+            for (let i = 0; i < message.applicationVersions.length; i++) {
+                const applicationVersion = message.applicationVersions[i];
+                message.applicationVersions[i] = applicationCheckMap
+                    .get(applicationVersion.application.domain.name).get(applicationVersion.application.name)
+                    .applicationVersion;
+            }
+        }
+        catch (e) {
+            console.error(e);
+            return false;
+        }
+        return true;
+    }
+    async checkVersionsApplicationsDomains(message, context) {
+        const { allApplication_Names, domainNames, applicationVersionCheckMap } = this.getNames(message);
+        const applicationVersions = await this.applicationVersionDao.findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names);
+        let lastDomain_Name;
+        let lastApplication_Name;
+        for (let applicationVersion of applicationVersions) {
+            let domainName = applicationVersion.application.domain.name;
+            let applicationName = applicationVersion.application.name;
+            if (lastDomain_Name !== domainName
+                && lastApplication_Name !== applicationName) {
+                let applicationVersionNumber = applicationVersion.integerVersion;
+                for (let [_, applicationCheck] of applicationVersionCheckMap.get(domainName)) {
+                    if (applicationCheck.applicationName === applicationName) {
+                        applicationCheck.found = true;
+                        if (applicationCheck.applicationVersionNumber > applicationVersionNumber) {
+                            throw new Error(`Installed application ${applicationName} for domain ${domainName}
+	is at a lower version ${applicationVersionNumber} than needed in message ${applicationCheck.applicationVersionNumber}.`);
+                        }
+                        applicationCheck.applicationVersion = applicationVersion;
+                    }
+                }
+                lastDomain_Name = domainName;
+                lastApplication_Name = applicationName;
+            }
+        }
+        for (const [domainName, applicationChecks] of applicationVersionCheckMap) {
+            for (let [_, applicationCheck] of applicationChecks) {
+                if (!applicationCheck.found) {
+                    // TODO: download and install the application
+                    throw new Error(`Application ${applicationCheck.applicationName} for domain ${domainName} is not installed.`);
+                }
+            }
+        }
+        return applicationVersionCheckMap;
+    }
+    getNames(message) {
+        if (!message.applicationVersions || !(message.applicationVersions instanceof Array)) {
+            throw new Error(`Did not find applicationVersions in RepositorySynchronizationMessage.`);
+        }
+        const applicationVersionCheckMap = new Map();
+        for (let applicationVersion of message.applicationVersions) {
+            if (!applicationVersion.integerVersion || typeof applicationVersion.integerVersion !== 'number') {
+                throw new Error(`Invalid ApplicationVersion.integerVersion.`);
+            }
+            const application = message.applications[applicationVersion.application];
+            if (typeof application !== 'object') {
+                throw new Error(`Invalid ApplicationVersion.application`);
+            }
+            applicationVersion.application = application;
+            const domain = application.domain;
+            let applicationChecksForDomain = applicationVersionCheckMap.get(domain.name);
+            if (!applicationChecksForDomain) {
+                applicationChecksForDomain = new Map();
+                applicationVersionCheckMap.set(domain.name, applicationChecksForDomain);
+            }
+            if (!applicationChecksForDomain.has(application.name)) {
+                applicationChecksForDomain.set(application.name, {
+                    applicationName: application.name,
+                    applicationVersionNumber: applicationVersion.integerVersion
+                });
+            }
+        }
+        const domainNames = [];
+        const allApplication_Names = [];
+        for (const [domainName, applicationChecksForDomainMap] of applicationVersionCheckMap) {
+            domainNames.push(domainName);
+            for (let [applicationName, _] of applicationChecksForDomainMap) {
+                allApplication_Names.push(applicationName);
+            }
+        }
+        return {
+            allApplication_Names,
+            domainNames,
+            applicationVersionCheckMap
+        };
+    }
+};
+__decorate$7([
+    Inject$2()
+], SyncInApplicationVersionChecker.prototype, "applicationVersionDao", void 0);
+SyncInApplicationVersionChecker = __decorate$7([
+    Injected()
+], SyncInApplicationVersionChecker);
+
+let SyncInChecker = class SyncInChecker {
+    /**
+     * Check the message and load all required auxiliary entities.
+     */
+    async checkMessage(message, context) {
+        // FIXME: replace as many DB lookups as possible with Terminal State lookups
+        if (!await this.syncInUserAccountChecker.ensureUserAccounts(message, context)) {
+            return false;
+        }
+        if (!await this.syncInTerminalChecker.ensureTerminals(message, context)) {
+            return false;
+        }
+        if (!await this.syncInApplicationChecker.ensureApplications(message, context)) {
+            return false;
+        }
+        if (!await this.syncInActorChecker.ensureActors(message, context)) {
+            return false;
+        }
+        if (!await this.syncInRepositoryChecker.ensureRepositories(message, context)) {
+            return false;
+        }
+        if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(message, context)) {
+            return false;
+        }
+        if (!await this.syncInDataChecker.checkData(message, context)) {
+            return false;
+        }
+        return true;
+    }
+};
+__decorate$7([
+    Inject$2()
+], SyncInChecker.prototype, "syncInActorChecker", void 0);
+__decorate$7([
+    Inject$2()
+], SyncInChecker.prototype, "syncInApplicationChecker", void 0);
+__decorate$7([
+    Inject$2()
+], SyncInChecker.prototype, "syncInApplicationVersionChecker", void 0);
+__decorate$7([
+    Inject$2()
+], SyncInChecker.prototype, "syncInDataChecker", void 0);
+__decorate$7([
+    Inject$2()
+], SyncInChecker.prototype, "syncInRepositoryChecker", void 0);
+__decorate$7([
+    Inject$2()
+], SyncInChecker.prototype, "syncInTerminalChecker", void 0);
+__decorate$7([
+    Inject$2()
+], SyncInChecker.prototype, "syncInUserAccountChecker", void 0);
+SyncInChecker = __decorate$7([
+    Injected()
+], SyncInChecker);
+
+let SyncInDataChecker = class SyncInDataChecker {
+    /**
+     * Every dataMessage.data.repoTransHistories array must be sorted before entering
+     * this method.
+     *
+     * @param {IDataToTM[]} dataMessagesWithCompatibleApplications
+     * @returns {DataCheckResults}
+     */
+    async checkData(message, context) {
+        const history = message.history;
+        try {
+            if (!history || typeof history !== 'object') {
+                throw new Error(`Invalid RepositorySynchronizationMessage.history`);
+            }
+            if (typeof history.GUID !== 'string' || history.GUID.length !== 36) {
+                return false;
+            }
+            if (!history.operationHistory || !(history.operationHistory instanceof Array)) {
+                return false;
+            }
+            if (!history.saveTimestamp || typeof history.saveTimestamp !== 'number') {
+                throw new Error(`Invalid RepositorySynchronizationMessage.history.saveTimestamp`);
+            }
+            if (history.transactionHistory) {
+                throw new Error(`RepositorySynchronizationMessage.history.transactionHistory cannot be specified`);
+            }
+            if (history.repositoryTransactionType) {
+                throw new Error(`RepositorySynchronizationMessage.history.repositoryTransactionType cannot be specified`);
+            }
+            if (history.syncTimestamp) {
+                throw new Error(`RepositorySynchronizationMessage.history.syncTimestamp cannot be specified`);
+            }
+            // Repository is already set in SyncInRepositoryChecker
+            history.repositoryTransactionType = RepositoryTransactionType.REMOTE;
+            history.syncTimestamp = message.syncTimestamp;
+            delete history._localId;
+            const applicationEntityMap = await this.populateApplicationEntityMap(message);
+            await this.checkOperationHistories(message, applicationEntityMap, context);
+        }
+        catch (e) {
+            console.error(e);
+            return false;
+        }
+        return true;
+    }
+    async populateApplicationEntityMap(message) {
+        const applicationVersionsByIds = this.terminalStore.getAllApplicationVersionsByIds();
+        const applicationEntityMap = new Map();
+        for (const messageApplicationVersion of message.applicationVersions) {
+            const applicationVersion = applicationVersionsByIds[messageApplicationVersion._localId];
+            for (const applicationEntity of applicationVersion.entities) {
+                let entitiesForDomain = applicationEntityMap.get(applicationVersion.application.domain.name);
+                if (!entitiesForDomain) {
+                    entitiesForDomain = new Map();
+                    applicationEntityMap.set(applicationVersion.application.domain.name, entitiesForDomain);
+                }
+                let entitiesForApplication = entitiesForDomain.get(applicationVersion.application.name);
+                if (!entitiesForApplication) {
+                    entitiesForApplication = new Map();
+                    entitiesForDomain.set(applicationVersion.application.name, entitiesForApplication);
+                }
+                entitiesForApplication.set(applicationEntity.index, applicationEntity);
+            }
+        }
+        return applicationEntityMap;
+    }
+    async checkOperationHistories(message, applicationEntityMap, context) {
+        const history = message.history;
+        if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
+            throw new Error(`Invalid RepositorySynchronizationMessage.history.operationHistory`);
+        }
+        const systemWideOperationIds = getSysWideOpIds(history.operationHistory.length, this.airportDatabase, this.sequenceGenerator);
+        let orderNumber = 0;
+        for (let i = 0; i < history.operationHistory.length; i++) {
+            const operationHistory = history.operationHistory[i];
+            if (typeof operationHistory !== 'object') {
+                throw new Error(`Invalid operationHistory`);
+            }
+            if (operationHistory.orderNumber) {
+                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.orderNumber cannot be specified,
+				the position of orderHistory record determines it's order`);
+            }
+            operationHistory.orderNumber = ++orderNumber;
+            switch (operationHistory.changeType) {
+                case ChangeType.DELETE_ROWS:
+                case ChangeType.INSERT_VALUES:
+                case ChangeType.UPDATE_ROWS:
+                    break;
+                default:
+                    throw new Error(`Invalid operationHistory.changeType: ${operationHistory.changeType}`);
+            }
+            if (typeof operationHistory.entity !== 'object') {
+                throw new Error(`Invalid operationHistory.entity`);
+            }
+            if (typeof operationHistory.entity.applicationVersion !== 'number') {
+                throw new Error(`Expecting "in-message index" (number)
+					in 'operationHistory.entity.applicationVersion'`);
+            }
+            const actor = message.actors[operationHistory.actor];
+            if (!actor) {
+                throw new Error(`Cannot find Actor for "in-message id" RepositorySynchronizationMessage.history.actor`);
+            }
+            operationHistory.actor = actor;
+            const applicationVersion = message.applicationVersions[operationHistory.entity.applicationVersion];
+            if (!applicationVersion) {
+                throw new Error(`Invalid index into message.applicationVersions [${operationHistory.entity.applicationVersion}],
+				in operationHistory.entity.applicationVersion`);
+            }
+            const applicationEntity = applicationEntityMap.get(applicationVersion.application.domain.name)
+                .get(applicationVersion.application.name).get(operationHistory.entity.index);
+            if (!applicationEntity) {
+                throw new Error(`Invalid operationHistory.entity.index: ${operationHistory.entity.index}`);
+            }
+            operationHistory.entity = applicationEntity;
+            if (operationHistory.repositoryTransactionHistory) {
+                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.repositoryTransactionHistory cannot be specified`);
+            }
+            operationHistory.repositoryTransactionHistory = history;
+            if (operationHistory.systemWideOperationId) {
+                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.systemWideOperationId cannot be specified`);
+            }
+            operationHistory.systemWideOperationId = systemWideOperationIds[i];
+            delete operationHistory._localId;
+            let actorIdColumnMapByIndex = new Map();
+            let repositoryIdColumnMapByIndex = new Map();
+            for (const column of operationHistory.entity.columns) {
+                switch (column.name) {
+                    case airEntity.ORIGINAL_ACTOR_ID:
+                        actorIdColumnMapByIndex.set(column.index, column);
+                        column.index;
+                        break;
+                    case airEntity.ORIGINAL_REPOSITORY_ID:
+                        repositoryIdColumnMapByIndex.set(column.index, column);
+                        column.index;
+                        break;
+                }
+                if (/.*_AID_[\d]+$/.test(column.name)
+                    && column.manyRelationColumns.length) {
+                    actorIdColumnMapByIndex.set(column.index, column);
+                }
+                if (/.*_RID_[\d]+$/.test(column.name)
+                    && column.manyRelationColumns.length) {
+                    repositoryIdColumnMapByIndex.set(column.index, column);
+                }
+            }
+            await this.checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message, context);
+        }
+    }
+    async checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message, context) {
+        const recordHistories = operationHistory.recordHistory;
+        if (!(recordHistories instanceof Array) || !recordHistories.length) {
+            throw new Error(`Inalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory`);
+        }
+        for (const recordHistory of recordHistories) {
+            if (!recordHistory._actorRecordId || typeof recordHistory._actorRecordId !== 'number') {
+                throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory._actorRecordId`);
+            }
+            switch (operationHistory.changeType) {
+                case ChangeType.INSERT_VALUES:
+                    if (recordHistory.actor) {
+                        throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.actor
+for ChangeType.INSERT_VALUES`);
+                    }
+                    recordHistory.actor = operationHistory.actor;
+                    break;
+                case ChangeType.DELETE_ROWS:
+                case ChangeType.UPDATE_ROWS: {
+                    // If no actor is present on record level its the same actor that created the repositoryTransactionHistory
+                    if (recordHistory.actor === undefined) {
+                        recordHistory.actor = operationHistory.actor;
+                    }
+                    else {
+                        const actor = message.actors[recordHistory.actor];
+                        if (!actor) {
+                            throw new Error(`Did find Actor for "in-message id" in RepositorySynchronizationMessage.history -> operationHistory.actor`);
+                        }
+                        recordHistory.actor = actor;
+                    }
+                    break;
+                }
+            }
+            if (recordHistory.operationHistory) {
+                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
+            }
+            this.checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context);
+            this.checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context);
+            recordHistory.operationHistory = operationHistory;
+            delete recordHistory._localId;
+        }
+    }
+    checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context) {
+        switch (operationHistory.changeType) {
+            case ChangeType.DELETE_ROWS:
+                if (recordHistory.newValues) {
+                    throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues
+for ChangeType.DELETE_ROWS`);
+                }
+                return;
+            case ChangeType.INSERT_VALUES:
+            case ChangeType.UPDATE_ROWS:
+                if (!(recordHistory.newValues instanceof Array) || !recordHistory.newValues.length) {
+                    throw new Error(`Must specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues
+for ChangeType.INSERT_VALUES|UPDATE_ROWS`);
+                }
+                break;
+        }
+        for (const newValue of recordHistory.newValues) {
+            if (newValue.recordHistory) {
+                throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.recordHistory`);
+            }
+            newValue.recordHistory = recordHistory;
+            if (typeof newValue.columnIndex !== 'number') {
+                throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.columnIndex`);
+            }
+            if (typeof newValue.newValue === undefined) {
+                throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue`);
+            }
+        }
+        for (const newValue of recordHistory.newValues) {
+            const actorIdColumn = actorIdColumnMapByIndex.get(newValue.columnIndex);
+            if (actorIdColumn) {
+                const originalActor = message.actors[newValue.newValue];
+                if (!originalActor) {
+                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
+Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessage.actors[${newValue.newValue}]`);
+                }
+                newValue.newValue = originalActor._localId;
+            }
+            const repositoryIdColumn = repositoryIdColumnMapByIndex.get(newValue.columnIndex);
+            if (repositoryIdColumn) {
+                if (newValue.newValue === -1) {
+                    newValue.newValue = message.history.repository._localId;
+                }
+                else {
+                    const originalRepository = message.referencedRepositories[newValue.newValue];
+                    if (!originalRepository) {
+                        throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
+	Value is for ${repositoryIdColumn.name} and could find RepositorySynchronizationMessage.referencedRepositories[${newValue.newValue}]`);
+                    }
+                    newValue.newValue = originalRepository._localId;
+                }
+            }
+        }
+    }
+    checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context) {
+        switch (operationHistory.changeType) {
+            case ChangeType.DELETE_ROWS:
+            case ChangeType.INSERT_VALUES:
+                if (recordHistory.oldValues) {
+                    throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues
+for ChangeType.DELETE_ROWS|INSERT_VALUES`);
+                }
+                return;
+            case ChangeType.UPDATE_ROWS:
+                if (!(recordHistory.newValues instanceof Array) || !recordHistory.oldValues.length) {
+                    throw new Error(`Must specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues
+for ChangeType.UPDATE_ROWS`);
+                }
+                break;
+        }
+        for (const oldValue of recordHistory.oldValues) {
+            if (oldValue.recordHistory) {
+                throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.recordHistory`);
+            }
+            oldValue.recordHistory = recordHistory;
+            if (typeof oldValue.columnIndex !== 'number') {
+                throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.columnIndex`);
+            }
+            if (typeof oldValue.oldValue === undefined) {
+                throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue`);
+            }
+        }
+        for (const oldValue of recordHistory.oldValues) {
+            const actorIdColumn = actorIdColumnMapByIndex.get(oldValue.columnIndex);
+            if (actorIdColumn) {
+                const originalActor = message.actors[oldValue.oldValue];
+                if (!originalActor) {
+                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
+Value is for ORIGINAL_ACTOR_ID and could find RepositorySynchronizationMessage.actors[${oldValue.oldValue}]`);
+                }
+                oldValue.oldValue = originalActor._localId;
+            }
+            const repositoryIdColumn = repositoryIdColumnMapByIndex.get(oldValue.columnIndex);
+            if (repositoryIdColumn) {
+                const originalRepository = message.referencedRepositories[oldValue.oldValue];
+                if (!originalRepository) {
+                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
+Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${oldValue.oldValue}]`);
+                }
+                oldValue.oldValue = originalRepository._localId;
+            }
+        }
+    }
+};
+__decorate$7([
+    Inject$2()
+], SyncInDataChecker.prototype, "airportDatabase", void 0);
+__decorate$7([
+    Inject$2()
+], SyncInDataChecker.prototype, "sequenceGenerator", void 0);
+__decorate$7([
+    Inject$2()
+], SyncInDataChecker.prototype, "terminalStore", void 0);
+SyncInDataChecker = __decorate$7([
+    Injected()
+], SyncInDataChecker);
+
+let SyncInRepositoryChecker = class SyncInRepositoryChecker {
+    async ensureRepositories(message, context) {
+        try {
+            let repositoryGUIDs = [];
+            let messageRepositoryIndexMap = new Map();
+            for (let i = 0; i < message.referencedRepositories.length; i++) {
+                this.checkRepository(message.referencedRepositories[i], i, repositoryGUIDs, messageRepositoryIndexMap, message);
+            }
+            const history = message.history;
+            if (history.isRepositoryCreation) {
+                if (typeof history.repository !== 'object') {
+                    throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be an object
+	if RepositorySynchronizationMessage.history.isRepositoryCreation === true`);
+                }
+                this.checkRepository(history.repository, null, repositoryGUIDs, messageRepositoryIndexMap, message);
+            }
+            else {
+                if (typeof history.repository !== 'string') {
+                    throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be a string
+	if RepositorySynchronizationMessage.history.isRepositoryCreation === false`);
+                }
+                repositoryGUIDs.push(history.repository);
+            }
+            const repositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs);
+            for (const repository of repositories) {
+                const messageUserAccountIndex = messageRepositoryIndexMap.get(repository.GUID);
+                if (messageUserAccountIndex || messageUserAccountIndex === 0) {
+                    message.referencedRepositories[messageUserAccountIndex] = repository;
+                }
+                else {
+                    // Populating ahead of potential insert is OK, object
+                    // gets modified with required state on an insert
+                    history.repository = repository;
+                }
+            }
+            const missingRepositories = message.referencedRepositories
+                .filter(messageRepository => !messageRepository._localId);
+            if (typeof history.repository !== 'object') {
+                throw new Error(`Repository with GUID ${history.repository} is not
+					present and cannot be synced
+	This RepositorySynchronizationMessage is for an existing repository and that
+	repository must already be loaded in this database for this message to be
+	processed.`);
+            }
+            else if (!history.repository._localId) {
+                missingRepositories.push(history.repository);
+            }
+            if (missingRepositories.length) {
+                await this.repositoryDao.insert(missingRepositories, context);
+            }
+        }
+        catch (e) {
+            console.error(e);
+            return false;
+        }
+        return true;
+    }
+    checkRepository(repository, repositoryIndex, repositoryGUIDs, messageRepositoryIndexMap, message) {
+        if (typeof repository.ageSuitability !== 'number') {
+            throw new Error(`Invalid 'repository.ageSuitability'`);
+        }
+        if (!repository.createdAt || typeof repository.createdAt !== 'string') {
+            throw new Error(`Invalid 'repository.createdAt'`);
+        }
+        repository.createdAt = new Date(repository.createdAt);
+        if (typeof repository.immutable !== 'boolean') {
+            throw new Error(`Invalid 'repository.immutable'`);
+        }
+        if (!repository.source || typeof repository.source !== 'string') {
+            throw new Error(`Invalid 'repository.source'`);
+        }
+        if (typeof repository.GUID !== 'string' || repository.GUID.length !== 36) {
+            throw new Error(`Invalid 'repository.GUID'`);
+        }
+        if (typeof repository.owner !== 'number') {
+            throw new Error(`Expecting "in-message index" (number)
+				in 'repository.owner'`);
+        }
+        const userAccount = message.userAccounts[repository.owner];
+        if (!userAccount) {
+            throw new Error(`Did not find repository.owner (UserAccount) with "in-message index" ${repository.owner}`);
+        }
+        repository.owner = userAccount;
+        repositoryGUIDs.push(repository.GUID);
+        if (typeof repositoryIndex === 'number') {
+            messageRepositoryIndexMap.set(repository.GUID, repositoryIndex);
+        }
+        // Make sure id field is not in the input
+        delete repository._localId;
+    }
+};
+__decorate$7([
+    Inject$2()
+], SyncInRepositoryChecker.prototype, "repositoryDao", void 0);
+SyncInRepositoryChecker = __decorate$7([
+    Injected()
+], SyncInRepositoryChecker);
+
+let SyncInTerminalChecker = class SyncInTerminalChecker {
+    async ensureTerminals(message, context) {
+        try {
+            let terminalGUIDs = [];
+            let messageTerminalIndexMap = new Map();
+            for (let i = 0; i < message.terminals.length; i++) {
+                const terminal = message.terminals[i];
+                if (typeof terminal.owner !== 'number') {
+                    throw new Error(`Expecting "in-message index" (number)
+					in 'terminal.owner' of RepositorySynchronizationMessage.terminals`);
+                }
+                if (typeof terminal.GUID !== 'string' || terminal.GUID.length !== 36) {
+                    throw new Error(`Invalid 'terminal.GUID' in RepositorySynchronizationMessage.terminals`);
+                }
+                if (terminal.isLocal !== undefined) {
+                    throw new Error(`'terminal.isLocal' cannot defined in RepositorySynchronizationMessage.terminals`);
+                }
+                terminal.isLocal = false;
+                const owner = message.userAccounts[terminal.owner];
+                if (!owner) {
+                    throw new Error(`Did not find userAccount for terminal.owner with "in-message index" ${terminal.owner}
+						for RepositorySynchronizationMessage.terminals`);
+                }
+                terminal.owner = owner;
+                terminalGUIDs.push(terminal.GUID);
+                messageTerminalIndexMap.set(terminal.GUID, i);
+            }
+            const terminals = await this.terminalDao.findByGUIDs(terminalGUIDs);
+            const foundTerminalsByGUID = new Map();
+            for (const terminal of terminals) {
+                foundTerminalsByGUID.set(terminal.GUID, terminal);
+                const messageUserAccountIndex = messageTerminalIndexMap.get(terminal.GUID);
+                message.terminals[messageUserAccountIndex] = terminal;
+            }
+            const missingTerminals = message.terminals
+                .filter(messageTerminal => !foundTerminalsByGUID.has(messageTerminal.GUID));
+            if (missingTerminals.length) {
+                await this.addMissingTerminals(missingTerminals, context);
+            }
+        }
+        catch (e) {
+            console.error(e);
+            return false;
+        }
+        return true;
+    }
+    async addMissingTerminals(missingTerminals, context) {
+        for (const terminal of missingTerminals) {
+            terminal.isLocal = false;
+        }
+        await this.terminalDao.insert(missingTerminals, context);
+    }
+};
+__decorate$7([
+    Inject$2()
+], SyncInTerminalChecker.prototype, "terminalDao", void 0);
+SyncInTerminalChecker = __decorate$7([
+    Injected()
+], SyncInTerminalChecker);
+
+let SyncInUserAccountChecker = class SyncInUserAccountChecker {
+    async ensureUserAccounts(message, context) {
+        try {
+            let userAccountGUIDs = [];
+            let messageUserAccountIndexMap = new Map();
+            for (let i = 0; i < message.userAccounts.length; i++) {
+                const userAccount = message.userAccounts[i];
+                if (typeof userAccount.GUID !== 'string' || userAccount.GUID.length !== 36) {
+                    throw new Error(`Invalid 'userAccount.GUID'`);
+                }
+                if (typeof userAccount.username !== 'string' || userAccount.username.length < 3) {
+                    throw new Error(`Invalid 'userAccount.username'`);
+                }
+                userAccountGUIDs.push(userAccount.GUID);
+                messageUserAccountIndexMap.set(userAccount.GUID, i);
+            }
+            const userAccounts = await this.userAccountDao.findByGUIDs(userAccountGUIDs);
+            const foundUserAccountsByGUID = new Map();
+            for (const userAccount of userAccounts) {
+                foundUserAccountsByGUID.set(userAccount.GUID, userAccount);
+                const messageUserAccountIndex = messageUserAccountIndexMap.get(userAccount.GUID);
+                message.userAccounts[messageUserAccountIndex] = userAccount;
+            }
+            const missingUserAccounts = message.userAccounts
+                .filter(messageUserAccount => !foundUserAccountsByGUID.has(messageUserAccount.GUID));
+            if (missingUserAccounts.length) {
+                await this.addMissingUserAccounts(missingUserAccounts, context);
+            }
+        }
+        catch (e) {
+            console.error(e);
+            return false;
+        }
+        return true;
+    }
+    async addMissingUserAccounts(missingUserAccounts, context) {
+        for (const userAccount of missingUserAccounts) {
+            if (!userAccount.username || typeof userAccount.username !== 'string') {
+                throw new Error(`Invalid UserAccount.username ${userAccount.username}`);
+            }
+        }
+        await this.userAccountDao.insert(missingUserAccounts, context);
+    }
+};
+__decorate$7([
+    Inject$2()
+], SyncInUserAccountChecker.prototype, "userAccountDao", void 0);
+SyncInUserAccountChecker = __decorate$7([
+    Injected()
+], SyncInUserAccountChecker);
+
+let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
+    /**
+     * In stage one:
+     *
+     *  1)  Unique create/update/delete statement datastructures are generated
+     *  2)  Synchronization conflict datastructure is generated
+     *
+     * @param {Map<repositoryLocalId, ISyncRepoTransHistory[]>} repositoryTransactionHistoryMapByrepositoryLocalId
+     * @param {Map<Actor_LocalId, IActor>} actorMayById
+     * @returns {Promise<void>}
+     */
+    async performStage1DataProcessing(repositoryTransactionHistoryMapByrepositoryLocalId, actorMayById, context) {
+        await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByrepositoryLocalId);
+        const changedRecordIds = new Map();
+        // query for all local operations on records in a repository (since the earliest
+        // received change time).  Get the
+        // changes by repository _localIds or by the actual tables and records in those tables
+        // that will be updated or deleted.
+        for (const [repositoryLocalId, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByrepositoryLocalId) {
+            const changedRecordsForRepo = {
+                actorRecordIdsByLocalIds: new Map(),
+                firstChangeTime: new Date().getTime() + 10000000000
+            };
+            changedRecordIds.set(repositoryLocalId, changedRecordsForRepo);
+            for (const repoTransHistory of repoTransHistoriesForRepo) {
+                // determine the earliest change time of incoming history records
+                const saveMillis = repoTransHistory.saveTimestamp;
+                if (saveMillis
+                    < changedRecordsForRepo.firstChangeTime) {
+                    changedRecordsForRepo.firstChangeTime = repoTransHistory.saveTimestamp;
+                }
+                for (const operationHistory of repoTransHistory.operationHistory) {
+                    // Collect the Actor related localIds
+                    const idsForEntity = ensureChildJsMap(changedRecordsForRepo.actorRecordIdsByLocalIds, operationHistory.entity._localId);
+                    for (const recordHistory of operationHistory.recordHistory) {
+                        // Collect the Actor related localIds
+                        ensureChildJsSet(idsForEntity, recordHistory.actor._localId)
+                            .add(recordHistory._actorRecordId);
+                        // add a map of new values
+                        const newValueMap = new Map();
+                        recordHistory.newValueMap = newValueMap;
+                        for (const newValue of recordHistory.newValues) {
+                            newValueMap.set(newValue.columnIndex, newValue);
+                        }
+                    }
+                }
+            }
+        }
+        const allRepoTransHistoryMapByRepoId = new Map();
+        const allRemoteRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByrepositoryLocalId);
+        // find local history for the matching repositories and corresponding time period
+        const localRepoTransHistoryMapByrepositoryLocalId = await this.repositoryTransactionHistoryDao
+            .findAllLocalChangesForRecordIds(changedRecordIds);
+        const allLocalRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, localRepoTransHistoryMapByrepositoryLocalId, true);
+        // Find all actors that modified the locally recorded history, which are not already
+        // in the actorMapById collect actors not already in cache
+        const newlyFoundActorSet = new Set();
+        for (const [repositoryLocalId, repositoryTransactionHistoriesForRepository] of localRepoTransHistoryMapByrepositoryLocalId) {
+            for (const repositoryTransactionHistory of repositoryTransactionHistoriesForRepository) {
+                for (const operationHistory of repositoryTransactionHistory.operationHistory) {
+                    const actorId = operationHistory.actor._localId;
+                    if (actorMayById.get(actorId) === undefined) {
+                        newlyFoundActorSet.add(actorId);
+                    }
+                }
+            }
+        }
+        if (newlyFoundActorSet.size) {
+            // cache remaining actors
+            const newActors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(Array.from(newlyFoundActorSet));
+            for (const newActor of newActors) {
+                actorMayById.set(newActor._localId, newActor);
+            }
+        }
+        // sort all repository histories in processing order
+        for (const [repositoryLocalId, repoTransHistoriesForRepository] of allRepoTransHistoryMapByRepoId) {
+            this.repositoryTransactionHistoryDuo
+                .sortRepoTransHistories(repoTransHistoriesForRepository, actorMayById);
+        }
+        const recordCreations = new Map();
+        const recordUpdates = new Map();
+        const recordDeletions = new Map();
+        const syncConflictMapByRepoId = new Map();
+        // FIXME: add code to ensure that remote records coming in are performed only
+        // by the actors that claim the operation AND that the records created are
+        // created only by the actors that perform the operation (actorIds match)
+        for (const [repositoryLocalId, repoTransHistoriesForRepo] of allRepoTransHistoryMapByRepoId) {
+            for (const repoTransHistory of repoTransHistoriesForRepo) {
+                for (const operationHistory of repoTransHistory.operationHistory) {
+                    switch (operationHistory.changeType) {
+                        case ChangeType.INSERT_VALUES:
+                            this.processCreation(repositoryLocalId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, recordDeletions, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId);
+                            break;
+                        case ChangeType.UPDATE_ROWS:
+                            this.processUpdate(repositoryLocalId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId);
+                            break;
+                        case ChangeType.DELETE_ROWS:
+                            this.processDeletion(repositoryLocalId, operationHistory, recordCreations, recordUpdates, recordDeletions, allLocalRecordDeletions);
+                            break;
+                    }
+                }
+            }
+        }
+        return {
+            recordCreations,
+            recordDeletions,
+            recordUpdates,
+            syncConflictMapByRepoId
+        };
+    }
+    async populateSystemWideOperationIds(repositoryTransactionHistoryMapByrepositoryLocalId) {
+        let numSystemWideOperationIds = 0;
+        for (const [_, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByrepositoryLocalId) {
+            for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
+                numSystemWideOperationIds += repositoryTransactionHistory
+                    .operationHistory.length;
+            }
+        }
+        const systemWideOperationIds = await getSysWideOpIds(numSystemWideOperationIds, this.airportDatabase, this.sequenceGenerator);
+        let i = 0;
+        for (const [_, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByrepositoryLocalId) {
+            for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
+                for (const operationHistory of repositoryTransactionHistory.operationHistory) {
+                    operationHistory.systemWideOperationId = systemWideOperationIds[i];
+                    i++;
+                }
+            }
+        }
+    }
+    ensureRecordHistoryLocalId(recordHistory, actorRecordLocalIdSetByActor, _actorRecordId = recordHistory._actorRecordId) {
+        ensureChildJsMap(actorRecordLocalIdSetByActor, recordHistory.actor._localId)
+            .set(_actorRecordId, recordHistory._localId);
+    }
+    getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByRepoId, isLocal = false) {
+        const recordDeletions = new Map();
+        for (const [repositoryLocalId, repoTransHistories] of repositoryTransactionHistoryMapByRepoId) {
+            this.mergeArraysInMap(allRepoTransHistoryMapByRepoId, repositoryLocalId, repoTransHistories);
+            for (const repoTransHistory of repoTransHistories) {
+                repoTransHistory.isLocal = isLocal;
+                for (const operationHistory of repoTransHistory.operationHistory) {
+                    switch (operationHistory.changeType) {
+                        case ChangeType.DELETE_ROWS:
+                            for (const recordHistory of operationHistory.recordHistory) {
+                                this.ensureRecordHistoryLocalId(recordHistory, this.syncInUtils
+                                    .ensureRecordMapForRepoInTable(repositoryLocalId, operationHistory, recordDeletions));
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+        return recordDeletions;
+    }
+    mergeArraysInMap(map, key, array) {
+        let targetArray = map.get(key);
+        if (!targetArray) {
+            targetArray = array;
+        }
+        else {
+            targetArray = targetArray.concat(array);
+        }
+        map.set(key, targetArray);
+    }
+    /*
+    NOTE: local creates are not inputted into this processing.
+     */
+    processCreation(repositoryLocalId, operationHistory, isLocal, recordCreations, recordUpdates, recordDeletions, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId) {
+        const recordUpdatesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, recordUpdates);
+        const recordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, recordDeletions);
+        const allRemoteRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, allRemoteRecordDeletions);
+        const allLocalRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, allLocalRecordDeletions);
+        const insertsForEntityInRepo = this.syncInUtils.ensureRecordMapForRepoInTable(repositoryLocalId, operationHistory, recordCreations);
+        for (const recordHistory of operationHistory.recordHistory) {
+            if (this.getRecord(recordHistory, insertsForEntityInRepo)) {
+                throw new Error(`A record is being created more than once.
+					${this.getRecordInfo(repositoryLocalId, operationHistory, recordHistory)}
+					This is not possible if every remote change is only processed once.
+					`);
+            }
+            if (isLocal) {
+                throw new Error(`Remotely mutated record is being created locally.
+					${this.getRecordInfo(repositoryLocalId, operationHistory, recordHistory)}
+					This is not possible if changes are never sent to originating TMs.
+					`);
+            }
+            if (this.hasRecordId(recordHistory, recordDeletesForRepoInTable)) {
+                throw new Error(`
+				Remotely created record is being deleted remotely before it's been created.
+					${this.getRecordInfo(repositoryLocalId, operationHistory, recordHistory)}
+					This is not possible if all server clocks are synced.
+					`);
+            }
+            if (this.getRecordHistoryLocalId(recordHistory, allLocalRecordDeletesForRepoInTable)) {
+                throw new Error(`Remotely created record is being deleted locally.
+					${this.getRecordInfo(repositoryLocalId, operationHistory, recordHistory)}
+					This is not possible if every remote change is only processed once.
+					`);
+            }
+            const remoteDeleteRecordHistoryLocalId = this.getRecordHistoryLocalId(recordHistory, allRemoteRecordDeletesForRepoInTable);
+            if (remoteDeleteRecordHistoryLocalId) {
+                // remotely created record has been remotely deleted
+                this.addSyncConflict(SynchronizationConflict_Type.REMOTE_CREATE_REMOTELY_DELETED, repositoryLocalId, recordHistory, {
+                    _localId: remoteDeleteRecordHistoryLocalId
+                }, syncConflictMapByRepoId);
+                // If the record has been deleted, do not process the create
+                continue;
+            }
+            const createdRecord = this.ensureColumnValueMap(recordHistory, insertsForEntityInRepo);
+            if (this.getRecord(recordHistory, recordUpdatesForRepoInTable)) {
+                throw new Error(`Remotely created record is being updated BEFORE it is created.
+					${this.getRecordInfo(repositoryLocalId, operationHistory, recordHistory)}
+					This is not possible if all server clocks are synced.
+					`);
+            }
+            // Record the creation of the record
+            for (const newValue of recordHistory.newValues) {
+                createdRecord.set(newValue.columnIndex, newValue.newValue);
+            }
+        }
+    }
+    /*
+    NOTE: local updates to records NOT in incoming changes do not get inputted into
+    this processing.
+     */
+    processUpdate(repositoryLocalId, operationHistory, isLocal, recordCreations, recordUpdates, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId) {
+        const recordCreationsForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, recordCreations);
+        const allRemoteRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, allRemoteRecordDeletions);
+        const allLocalRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, allLocalRecordDeletions);
+        const updatesForEntityInRepo = this.syncInUtils.ensureRecordMapForRepoInTable(repositoryLocalId, operationHistory, recordUpdates);
+        for (const recordHistory of operationHistory.recordHistory) {
+            const localDeleteRecordHistoryLocalId = this.getRecordHistoryLocalId(recordHistory, allLocalRecordDeletesForRepoInTable);
+            if (localDeleteRecordHistoryLocalId) {
+                if (!isLocal) {
+                    // A remote update to a record has been locally deleted
+                    this.addSyncConflict(SynchronizationConflict_Type.REMOTE_UPDATE_LOCALLY_DELETED, repositoryLocalId, recordHistory, {
+                        _localId: localDeleteRecordHistoryLocalId
+                    }, syncConflictMapByRepoId);
+                }
+                // else {a local update to a record has been locally deleted - nothing to do}
+                // If the record has been deleted, do not process the update
+                continue;
+            }
+            const remoteDeleteRecordHistoryLocalId = this.getRecordHistoryLocalId(recordHistory, allRemoteRecordDeletesForRepoInTable);
+            if (remoteDeleteRecordHistoryLocalId) {
+                if (isLocal) {
+                    // A local update for a record that has been deleted remotely
+                    this.addSyncConflict(SynchronizationConflict_Type.LOCAL_UPDATE_REMOTELY_DELETED, repositoryLocalId, recordHistory, {
+                        _localId: remoteDeleteRecordHistoryLocalId
+                    }, syncConflictMapByRepoId);
+                }
+                // else {remote deletions do not cause conflicts for remotely updated records}
+                // If the record has been deleted, do not process the update
+                continue;
+            }
+            // If the record has been created, update the creation record instead
+            let createdRecord = this.getRecord(recordHistory, recordCreationsForRepoInTable);
+            if (createdRecord) {
+                if (isLocal) {
+                    throw new Error(`Remotely created records are being updated locally.
+					${this.getRecordInfo(repositoryLocalId, operationHistory, recordHistory)}
+					This is not possible if every remote change is only processed once.
+					`);
+                }
+                else {
+                    // remotely created record is being updated remotely - normal flow
+                    for (const newValue of recordHistory.newValues) {
+                        createdRecord.set(newValue.columnIndex, newValue.newValue);
+                    }
+                }
+                // No need to record updates, already taken into account in the create
+                continue;
+            }
+            // record update
+            let updatedRecord = this.ensureRecord(recordHistory, updatesForEntityInRepo);
+            let synchronizationConflict;
+            for (const newValue of recordHistory.newValues) {
+                if (isLocal) {
+                    const columnIndex = newValue.columnIndex;
+                    const recordUpdate = updatedRecord.get(columnIndex);
+                    if (recordUpdate) {
+                        // remotely updated record value is being updated locally
+                        if (!synchronizationConflict) {
+                            synchronizationConflict = this.addSyncConflict(SynchronizationConflict_Type.REMOTE_UPDATE_LOCALLY_UPDATED, repositoryLocalId, {
+                                _localId: recordUpdate.recordHistoryLocalId,
+                            }, {
+                                _localId: remoteDeleteRecordHistoryLocalId
+                            }, syncConflictMapByRepoId);
+                            synchronizationConflict.values = [];
+                        }
+                        synchronizationConflict.values.push({
+                            columnIndex,
+                            synchronizationConflict
+                        });
+                        // no need to update since the value is already there
+                        // Remove the update
+                        updatedRecord.delete(newValue.columnIndex);
+                    }
+                }
+                else {
+                    // remotely updated record value is being updated remotely - normal flow
+                    // replace the older update with the newer one
+                    updatedRecord.set(newValue.columnIndex, {
+                        newValue: newValue.newValue,
+                        recordHistoryLocalId: recordHistory._localId
+                    });
+                }
+            }
+        }
+    }
+    /*
+    NOTE: local deletes of records NOT in incoming changes do not get inputted into
+    this processing.
+     */
+    processDeletion(repositoryLocalId, operationHistory, recordCreations, recordUpdates, recordDeletions, allLocalRecordDeletions) {
+        const recordCreationsForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, recordCreations);
+        const recordUpdatesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, recordUpdates);
+        const allLocalRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, allLocalRecordDeletions);
+        const deletesForEntityInRepo = this.syncInUtils.ensureRecordMapForRepoInTable(repositoryLocalId, operationHistory, recordDeletions);
+        for (const recordHistory of operationHistory.recordHistory) {
+            let recordCreationsForActorInRepoInTable = this.getRecordsForActor(recordHistory, recordCreationsForRepoInTable);
+            // If a remotely deleted record was also created remotely
+            if (recordCreationsForActorInRepoInTable
+                && recordCreationsForActorInRepoInTable.get(recordHistory._actorRecordId)) {
+                // remote deletions do not cause conflicts for remotely created records
+                // Remove the creation of the record
+                recordCreationsForActorInRepoInTable.delete(recordHistory._actorRecordId);
+                // No need to record a deletion for a record that was also created (remotely)
+                continue;
+            }
+            let recordUpdatesForActorInRepoInTable = this.getRecordsForActor(recordHistory, recordUpdatesForRepoInTable);
+            // If a remotely deleted record has been updated (remotely)
+            if (recordUpdatesForActorInRepoInTable
+                && recordUpdatesForActorInRepoInTable.get(recordHistory._actorRecordId)) {
+                // remote deletions do not cause conflicts for remotely updated records
+                // Remove record updates for deleted records
+                recordUpdatesForActorInRepoInTable.delete(recordHistory._actorRecordId);
+            }
+            if (this.getRecordHistoryLocalId(recordHistory, allLocalRecordDeletesForRepoInTable)) {
+                // If the record has been deleted locally, no need to add another delete operation
+                continue;
+            }
+            // record deletion
+            ensureChildJsSet(deletesForEntityInRepo, recordHistory.actor._localId)
+                .add(recordHistory._actorRecordId);
+        }
+    }
+    getRecordsForRepoInTable(repositoryLocalId, operationHistory, recordMapByApplicationTableAndRepository) {
+        const recordMapForApplication = recordMapByApplicationTableAndRepository
+            .get(operationHistory.entity.applicationVersion._localId);
+        let recordMapForTable;
+        if (recordMapForApplication) {
+            recordMapForTable = recordMapForApplication.get(operationHistory.entity._localId);
+        }
+        let recordMapForRepoInTable;
+        if (recordMapForTable) {
+            recordMapForRepoInTable = recordMapForTable.get(repositoryLocalId);
+        }
+        return recordMapForRepoInTable;
+    }
+    getRecord(recordHistory, recordMapByActor) {
+        let recordsForActor = this.getRecordsForActor(recordHistory, recordMapByActor);
+        if (!recordsForActor) {
+            return null;
+        }
+        return recordsForActor.get(recordHistory._actorRecordId);
+    }
+    hasRecordId(recordHistory, actorRecordLocalIdSetByActor) {
+        let actorRecordIdsForActor = this.getRecordsForActor(recordHistory, actorRecordLocalIdSetByActor);
+        if (!actorRecordIdsForActor) {
+            return false;
+        }
+        return actorRecordIdsForActor.has(recordHistory._actorRecordId);
+    }
+    getRecordHistoryLocalId(recordHistory, actorRecordLocalIdSetByActor) {
+        let actorRecordIdsForActor = this.getRecordsForActor(recordHistory, actorRecordLocalIdSetByActor);
+        if (!actorRecordIdsForActor) {
+            return null;
+        }
+        return actorRecordIdsForActor.get(recordHistory._actorRecordId);
+    }
+    getRecordsForActor(recordHistory, recordMapByActor) {
+        let recordsForActor;
+        if (recordMapByActor) {
+            recordsForActor = recordMapByActor.get(recordHistory.actor._localId);
+        }
+        return recordsForActor;
+    }
+    getRecordInfo(repositoryLocalId, operationHistory, recordHistory) {
+        return `
+		Application Version ID: ${operationHistory.entity.applicationVersion._localId}
+		Entity ID:         ${operationHistory.entity._localId}
+		Repository ID:     ${repositoryLocalId}
+		Actor ID:          ${recordHistory.actor._localId}
+		Actor Record ID:   ${recordHistory._actorRecordId}
+		`;
+    }
+    addSyncConflict(synchronizationConflictType, repositoryLocalId, overwrittenRecordHistory, overwritingRecordHistory, syncConflictMapByRepoId) {
+        const syncConflict = this.createSynchronizationConflict(synchronizationConflictType, repositoryLocalId, overwrittenRecordHistory, overwritingRecordHistory);
+        ensureChildArray(syncConflictMapByRepoId, repositoryLocalId).push(syncConflict);
+        return syncConflict;
+    }
+    createSynchronizationConflict(synchronizationConflictType, repositoryLocalId, overwrittenRecordHistory, overwritingRecordHistory) {
+        return {
+            _localId: null,
+            overwrittenRecordHistory,
+            overwritingRecordHistory,
+            repository: {
+                _localId: repositoryLocalId
+            },
+            type: synchronizationConflictType
+        };
+    }
+    ensureColumnValueMap(recordHistory, dataMap) {
+        return ensureChildJsMap(ensureChildJsMap(dataMap, recordHistory.actor._localId), recordHistory._actorRecordId);
+    }
+    ensureRecord(recordHistory, recordMapByActor) {
+        return ensureChildJsMap(ensureChildJsMap(recordMapByActor, recordHistory.actor._localId), recordHistory._actorRecordId);
+    }
+};
+__decorate$7([
+    Inject$2()
+], Stage1SyncedInDataProcessor.prototype, "actorDao", void 0);
+__decorate$7([
+    Inject$2()
+], Stage1SyncedInDataProcessor.prototype, "airportDatabase", void 0);
+__decorate$7([
+    Inject$2()
+], Stage1SyncedInDataProcessor.prototype, "repositoryTransactionHistoryDao", void 0);
+__decorate$7([
+    Inject$2()
+], Stage1SyncedInDataProcessor.prototype, "repositoryTransactionHistoryDuo", void 0);
+__decorate$7([
+    Inject$2()
+], Stage1SyncedInDataProcessor.prototype, "sequenceGenerator", void 0);
+__decorate$7([
+    Inject$2()
+], Stage1SyncedInDataProcessor.prototype, "syncInUtils", void 0);
+Stage1SyncedInDataProcessor = __decorate$7([
+    Injected()
+], Stage1SyncedInDataProcessor);
+
+let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
+    async applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap) {
+        const context = {};
+        await this.performCreates(stage1Result.recordCreations, applicationsByApplicationVersion_LocalIdMap, context);
+        await this.performUpdates(stage1Result.recordUpdates, applicationsByApplicationVersion_LocalIdMap, context);
+        await this.performDeletes(stage1Result.recordDeletions, applicationsByApplicationVersion_LocalIdMap, context);
+    }
+    /**
+     * Remote changes come in with ApplicationVersion_LocalIds not Application_Indexes, so it makes
+     * sense to keep this structure.  NOTE: only one version of a given application is
+     * processed at one time:
+     *
+     *  Changes for a application version below the one in this Terminal must first be upgraded.
+     *  Terminal itself must first be upgraded to newer application versions, before changes
+     *  for that application version are processed.
+     *
+     *  To tie in a given ApplicationVersion_LocalId to its Application_Index an additional mapping data
+     *  structure is passed in.
+     */
+    async performCreates(recordCreations, applicationsByApplicationVersion_LocalIdMap, context) {
+        for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
+            for (const [tableIndex, creationInTableMap] of creationInApplicationMap) {
+                const applicationIndex = applicationsByApplicationVersion_LocalIdMap
+                    .get(applicationVersionId).index;
+                const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
+                    .applicationVersion.entities[tableIndex];
+                const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name];
+                const columns = [
+                    qEntity.repository._localId,
+                    qEntity.actor._localId,
+                    qEntity._actorRecordId
+                ];
+                const nonIdColumns = this.getNonIdColumnsInIndexOrder(dbEntity);
+                let creatingColumns = true;
+                let numInserts = 0;
+                const VALUES = [];
+                for (const [repositoryId, creationForRepositoryMap] of creationInTableMap) {
+                    for (const [actorId, creationForActorMap] of creationForRepositoryMap) {
+                        for (const [_actorRecordId, creationOfRowMap] of creationForActorMap) {
+                            const rowValues = [
+                                repositoryId,
+                                actorId,
+                                _actorRecordId
+                            ];
+                            const columnIndexedValues = [];
+                            for (const [columnIndex, columnValue] of creationOfRowMap) {
+                                columnIndexedValues.push([columnIndex, columnValue]);
+                            }
+                            if (columnIndexedValues.length) {
+                                numInserts++;
+                            }
+                            columnIndexedValues.sort((col1IndexAndValue, col2IndexAndValue) => {
+                                return this.utils.compareNumbers(col1IndexAndValue[0], col2IndexAndValue[0]);
+                            });
+                            let currentNonIdColumnArrayIndex = 0;
+                            for (const [columnIndex, columnValue] of columnIndexedValues) {
+                                let nonIdColumn = nonIdColumns[currentNonIdColumnArrayIndex];
+                                while (nonIdColumn.index < columnIndex) {
+                                    if (creatingColumns) {
+                                        columns.push(qEntity.__driver__.allColumns[nonIdColumn.index]);
+                                    }
+                                    rowValues.push(null);
+                                    currentNonIdColumnArrayIndex++;
+                                    nonIdColumn = nonIdColumns[currentNonIdColumnArrayIndex];
+                                }
+                                if (creatingColumns) {
+                                    columns.push(qEntity.__driver__.allColumns[columnIndex]);
+                                }
+                                rowValues.push(columnValue);
+                                currentNonIdColumnArrayIndex++;
+                            }
+                            if (columnIndexedValues.length) {
+                                VALUES.push(rowValues);
+                            }
+                            creatingColumns = false;
+                        }
+                    }
+                }
+                if (numInserts) {
+                    const previousDbEntity = context.dbEntity;
+                    context.dbEntity = qEntity
+                        .__driver__.dbEntity;
+                    try {
+                        await this.databaseFacade.insertValues({
+                            INSERT_INTO: qEntity,
+                            columns,
+                            VALUES
+                        }, context);
+                    }
+                    finally {
+                        context.dbEntity = previousDbEntity;
+                    }
+                }
+            }
+        }
+    }
+    getNonIdColumnsInIndexOrder(dbEntity) {
+        const nonIdColumns = [];
+        for (const column of dbEntity.columns) {
+            switch (column.name) {
+                case airEntity.ACTOR_LID:
+                case airEntity.ACTOR_RECORD_ID:
+                case airEntity.REPOSITORY_LID:
+                    continue;
+            }
+            nonIdColumns.push(column);
+        }
+        nonIdColumns.sort((column1, column2) => {
+            return this.utils.compareNumbers(column1.index, column2.index);
+        });
+        return nonIdColumns;
+    }
+    async performUpdates(recordUpdates, applicationsByApplicationVersion_LocalIdMap, context) {
+        const finalUpdateMap = new Map();
+        const recordUpdateStage = [];
+        // Build the final update data structure
+        for (const [applicationVersionId, applicationUpdateMap] of recordUpdates) {
+            const finalApplicationUpdateMap = ensureChildJsMap(finalUpdateMap, applicationVersionId);
+            for (const [tableIndex, tableUpdateMap] of applicationUpdateMap) {
+                const finalTableUpdateMap = ensureChildJsMap(finalApplicationUpdateMap, tableIndex);
+                for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
+                    for (const [actorId, actorUpdates] of repositoryUpdateMap) {
+                        for (const [_actorRecordId, recordUpdateMap] of actorUpdates) {
+                            const recordKeyMap = this.getRecordKeyMap(recordUpdateMap, finalTableUpdateMap);
+                            ensureChildJsSet(ensureChildJsMap(recordKeyMap, repositoryId), actorId)
+                                .add(_actorRecordId);
+                            for (const [columnIndex, columnUpdate] of recordUpdateMap) {
+                                recordUpdateStage.push([
+                                    applicationVersionId,
+                                    tableIndex,
+                                    repositoryId,
+                                    actorId,
+                                    _actorRecordId,
+                                    columnIndex,
+                                    columnUpdate.newValue
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (!recordUpdateStage.length) {
+            return;
+        }
+        await this.recordUpdateStageDao.insertValues(recordUpdateStage);
+        // Perform the updates
+        for (const [applicationVersionId, updateMapForApplication] of finalUpdateMap) {
+            const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId);
+            for (const [tableIndex, updateMapForTable] of updateMapForApplication) {
+                await this.runUpdatesForTable(application.index, applicationVersionId, tableIndex, updateMapForTable);
+            }
+        }
+        await this.recordUpdateStageDao.delete();
+    }
+    async performDeletes(recordDeletions, applicationsByApplicationVersion_LocalIdMap, context) {
+        for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {
+            const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId);
+            for (const [tableIndex, deletionInTableMap] of deletionInApplicationMap) {
+                const dbEntity = this.airportDatabase.applications[application.index].currentVersion[0]
+                    .applicationVersion.entities[tableIndex];
+                const qEntity = this.airportDatabase.qApplications[application.index][dbEntity.name];
+                let numClauses = 0;
+                let repositoryWhereFragments = [];
+                for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
+                    let actorWhereFragments = [];
+                    for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
+                        numClauses++;
+                        actorWhereFragments.push(AND(qEntity._actorRecordId.IN(Array.from(actorRecordIdSet)), qEntity.actor._localId.equals(actorId)));
+                    }
+                    repositoryWhereFragments.push(AND(qEntity.repository._localId.equals(repositoryId), OR(...actorWhereFragments)));
+                }
+                if (numClauses) {
+                    const previousDbEntity = context.dbEntity;
+                    context.dbEntity = qEntity
+                        .__driver__.dbEntity;
+                    try {
+                        await this.databaseFacade.deleteWhere({
+                            DELETE_FROM: qEntity,
+                            WHERE: OR(...repositoryWhereFragments)
+                        }, context);
+                    }
+                    finally {
+                        context.dbEntity = previousDbEntity;
+                    }
+                }
+            }
+        }
+    }
+    /**
+     * Get the record key map (RecordKeyMap = RepositoryId -> Actor_LocalId
+     * -> AirEntity_ActorRecordId) for the recordUpdateMap (the specified combination
+     * of columns/values being updated)
+     * @param {Map<ApplicationColumn_Index, RecordUpdate>} recordUpdateMap
+     * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap
+     * @returns {RecordKeyMap}
+     */
+    getRecordKeyMap(recordUpdateMap, // combination of columns/values
+    // being updated
+    finalTableUpdateMap) {
+        const updatedColumns = [];
+        for (const columnIndex of recordUpdateMap.keys()) {
+            updatedColumns.push(columnIndex);
+        }
+        // Sort the updated columns by column index, to ensure that all records with the
+        // same combination of updated columns are grouped
+        updatedColumns.sort(this.utils.compareNumbers);
+        // Navigate down the table UpdateKeyMap to find the matching combination of
+        // columns being updated
+        let columnValueUpdate;
+        let updateKeyMap = finalTableUpdateMap;
+        for (const columnIndex of updatedColumns) {
+            columnValueUpdate = updateKeyMap.get(columnIndex);
+            // If no update statements with the specified combination of columns exist yet
+            if (!columnValueUpdate) {
+                columnValueUpdate = {
+                    childColumnUpdateKeyMap: new Map(),
+                    recordKeyMap: new Map(),
+                    updatedColumns: null,
+                };
+                updateKeyMap.set(columnIndex, columnValueUpdate);
+            }
+            // Navigate down
+            updateKeyMap = columnValueUpdate.childColumnUpdateKeyMap;
+        }
+        columnValueUpdate.updatedColumns = updatedColumns;
+        // Return the map of the records for the update statement of the specified combination
+        // of columns/values
+        return columnValueUpdate.recordKeyMap;
+    }
+    /**
+     * Run all updates for a particular table.  One update per updated column combination
+     * is run.
+     *
+     * @param {Application_Index} applicationIndex
+     * @param {ApplicationEntity_TableIndex} tableIndex
+     * @param {ColumnUpdateKeyMap} updateKeyMap
+     * @returns {Promise<void>}
+     */
+    async runUpdatesForTable(applicationIndex, applicationVersionId, tableIndex, updateKeyMap) {
+        for (const columnValueUpdate of updateKeyMap.values()) {
+            const updatedColumns = columnValueUpdate.updatedColumns;
+            if (updatedColumns) {
+                await this.recordUpdateStageDao.updateEntityWhereIds(applicationIndex, applicationVersionId, tableIndex, columnValueUpdate.recordKeyMap, updatedColumns);
+            }
+            // Traverse down into nested column update combinations
+            await this.runUpdatesForTable(applicationIndex, applicationVersionId, tableIndex, columnValueUpdate.childColumnUpdateKeyMap);
+        }
+    }
+};
+__decorate$7([
+    Inject$2()
+], Stage2SyncedInDataProcessor.prototype, "airportDatabase", void 0);
+__decorate$7([
+    Inject$2()
+], Stage2SyncedInDataProcessor.prototype, "databaseFacade", void 0);
+__decorate$7([
+    Inject$2()
+], Stage2SyncedInDataProcessor.prototype, "recordUpdateStageDao", void 0);
+__decorate$7([
+    Inject$2()
+], Stage2SyncedInDataProcessor.prototype, "utils", void 0);
+Stage2SyncedInDataProcessor = __decorate$7([
+    Injected()
+], Stage2SyncedInDataProcessor);
+
+/**
+ * Synchronization in Manager implementation.
+ */
+let SynchronizationInManager = class SynchronizationInManager {
+    async receiveMessages(messageMapByGUID, context) {
+        const syncTimestamp = new Date().getTime();
+        const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
+            .findWhereGUIDsIn([...messageMapByGUID.keys()]);
+        for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
+            messageMapByGUID.delete(existingRepositoryTransactionHistory.GUID);
+        }
+        if (!messageMapByGUID.size) {
+            return;
+        }
+        let messagesToProcess = [];
+        const orderedMessages = this.timeOrderMessages(messageMapByGUID);
+        // Split up messages by type
+        for (const message of orderedMessages) {
+            if (!this.isValidLastChangeTime(syncTimestamp, message.syncTimestamp, 'Sync Timestamp')) {
+                continue;
+            }
+            if (!this.isValidLastChangeTime(message.syncTimestamp, message.history.saveTimestamp, 'Sync Timestamp', 'Save Timestamp')) {
+                continue;
+            }
+            let processMessage = true;
+            await this.transactionManager.transactInternal(async (transaction) => {
+                if (!await this.syncInChecker.checkMessage(message, context)) {
+                    transaction.rollback(null, context);
+                    processMessage = false;
+                    return;
+                }
+            }, null, context);
+            if (processMessage) {
+                messagesToProcess.push(message);
+            }
+        }
+        await this.transactionManager.transactInternal(async (transaction, context) => {
+            transaction.isSync = true;
+            await this.twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction, context);
+        }, null, context);
+    }
+    timeOrderMessages(messageMapByGUID) {
+        const messages = [...messageMapByGUID.values()];
+        messages.sort((message1, message2) => {
+            if (message1.syncTimestamp < message2.syncTimestamp) {
+                return -1;
+            }
+            if (message1.syncTimestamp > message2.syncTimestamp) {
+                return 1;
+            }
+            let history1 = message1.history;
+            let history2 = message2.history;
+            if (history1.saveTimestamp < history2.saveTimestamp) {
+                return -1;
+            }
+            if (history1.saveTimestamp > history2.saveTimestamp) {
+                return 1;
+            }
+            return 0;
+        });
+        return messages;
+    }
+    isValidLastChangeTime(syncTimestamp, remoteTimestamp, remoteFieldName, syncFieldName = 'Reception Time:') {
+        if (syncTimestamp < remoteTimestamp) {
+            console.error(`Message ${syncFieldName} is less than
+			the ${remoteFieldName} in received message:
+				${syncFieldName}:               ${syncTimestamp}
+				${remoteFieldName}:           ${remoteTimestamp}
+			`);
+            return false;
+        }
+        return true;
+    }
+};
+__decorate$7([
+    Inject$2()
+], SynchronizationInManager.prototype, "repositoryTransactionHistoryDao", void 0);
+__decorate$7([
+    Inject$2()
+], SynchronizationInManager.prototype, "syncInChecker", void 0);
+__decorate$7([
+    Inject$2()
+], SynchronizationInManager.prototype, "transactionManager", void 0);
+__decorate$7([
+    Inject$2()
+], SynchronizationInManager.prototype, "twoStageSyncedInDataProcessor", void 0);
+SynchronizationInManager = __decorate$7([
+    Injected()
+], SynchronizationInManager);
+
+/**
+ * Result of comparing to versions of a given application.
+ */
+var ApplicationComparisonResult;
+(function (ApplicationComparisonResult) {
+    // Version specified in the message is lower than it's version in the receiving
+    // Terminal (TM)
+    ApplicationComparisonResult[ApplicationComparisonResult["MESSAGE_APPLICATION_VERSION_IS_LOWER"] = -1] = "MESSAGE_APPLICATION_VERSION_IS_LOWER";
+    // Version of the application used i the message is the same as that in the receiving
+    // Terminal (TM)
+    ApplicationComparisonResult[ApplicationComparisonResult["MESSAGE_APPLICATION_VERSION_IS_EQUAL"] = 0] = "MESSAGE_APPLICATION_VERSION_IS_EQUAL";
+    // Version specified in the message in higher than it's version in the receiving
+    // Terminal (TM)
+    ApplicationComparisonResult[ApplicationComparisonResult["MESSAGE_APPLICATION_VERSION_IS_HIGHER"] = 1] = "MESSAGE_APPLICATION_VERSION_IS_HIGHER";
+})(ApplicationComparisonResult || (ApplicationComparisonResult = {}));
+let SyncInUtils = class SyncInUtils {
+    ensureRecordMapForRepoInTable(repositoryLocalId, operationHistory, recordMapByApplicationTableAndRepository) {
+        return ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion._localId), operationHistory.entity.index), repositoryLocalId);
+    }
+};
+SyncInUtils = __decorate$7([
+    Injected()
+], SyncInUtils);
+
+let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
+    /**
+     * Synchronize the data messages coming to Terminal (new data for this TM)
+     */
+    async syncMessages(messages, transaction, context) {
+        this.aggregateHistoryRecords(messages, transaction);
+        const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersion_LocalIdMap } = await this.getDataStructures(messages);
+        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersion_LocalIdMap, context);
+    }
+    aggregateHistoryRecords(messages, transaction) {
+        const transactionHistory = transaction.transactionHistory;
+        transactionHistory.transactionType = TransactionType.REMOTE_SYNC;
+        // split messages by repository and record actor information
+        for (const message of messages) {
+            const repositoryTransactionHistory = message.history;
+            transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory);
+            repositoryTransactionHistory.repositoryTransactionType = RepositoryTransactionType.REMOTE;
+            transactionHistory.allOperationHistory = transactionHistory
+                .allOperationHistory.concat(repositoryTransactionHistory.operationHistory);
+            repositoryTransactionHistory.operationHistory.forEach((operationHistory) => {
+                transactionHistory.allRecordHistory = transactionHistory
+                    .allRecordHistory.concat(operationHistory.recordHistory);
+                operationHistory.recordHistory.forEach((recordHistory) => {
+                    if (recordHistory.newValues && recordHistory.newValues.length) {
+                        transactionHistory.allRecordHistoryNewValues = transactionHistory
+                            .allRecordHistoryNewValues.concat(recordHistory.newValues);
+                    }
+                    if (recordHistory.oldValues && recordHistory.oldValues.length) {
+                        transactionHistory.allRecordHistoryOldValues = transactionHistory
+                            .allRecordHistoryOldValues.concat(recordHistory.oldValues);
+                    }
+                });
+            });
+        }
+    }
+    async getDataStructures(messages) {
+        const repositoryTransactionHistoryMapByRepositoryId = new Map();
+        const applicationsByApplicationVersion_LocalIdMap = new Map();
+        const actorMapById = new Map();
+        const repoTransHistories = [];
+        for (const message of messages) {
+            repoTransHistories.push(message.history);
+            repositoryTransactionHistoryMapByRepositoryId.set(message.history.repository._localId, repoTransHistories);
+            for (const actor of message.actors) {
+                actorMapById.set(actor._localId, actor);
+            }
+            for (const applicationVersion of message.applicationVersions) {
+                applicationsByApplicationVersion_LocalIdMap.set(applicationVersion._localId, applicationVersion.application);
+            }
+        }
+        for (const [_, repoTransHistories] of repositoryTransactionHistoryMapByRepositoryId) {
+            this.repositoryTransactionHistoryDuo
+                .sortRepoTransHistories(repoTransHistories, actorMapById);
+        }
+        return {
+            actorMapById,
+            repositoryTransactionHistoryMapByRepositoryId,
+            applicationsByApplicationVersion_LocalIdMap
+        };
+    }
+    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersion_LocalIdMap, context) {
+        const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById, context);
+        let allSyncConflicts = [];
+        let allSyncConflictValues = [];
+        for (const [_, synchronizationConflicts] of stage1Result.syncConflictMapByRepoId) {
+            allSyncConflicts = allSyncConflicts.concat(synchronizationConflicts);
+            for (const synchronizationConflict of synchronizationConflicts) {
+                if (synchronizationConflict.values.length) {
+                    allSyncConflictValues = allSyncConflictValues.concat(synchronizationConflict.values);
+                }
+            }
+        }
+        await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap);
+        if (allSyncConflicts.length) {
+            await this.synchronizationConflictDao.insert(allSyncConflicts, context);
+        }
+        if (allSyncConflictValues.length) {
+            await this.synchronizationConflictValuesDao.insert(allSyncConflictValues, context);
+        }
+    }
+};
+__decorate$7([
+    Inject$2()
+], TwoStageSyncedInDataProcessor.prototype, "repositoryTransactionHistoryDuo", void 0);
+__decorate$7([
+    Inject$2()
+], TwoStageSyncedInDataProcessor.prototype, "stage1SyncedInDataProcessor", void 0);
+__decorate$7([
+    Inject$2()
+], TwoStageSyncedInDataProcessor.prototype, "stage2SyncedInDataProcessor", void 0);
+__decorate$7([
+    Inject$2()
+], TwoStageSyncedInDataProcessor.prototype, "synchronizationConflictDao", void 0);
+__decorate$7([
+    Inject$2()
+], TwoStageSyncedInDataProcessor.prototype, "synchronizationConflictValuesDao", void 0);
+TwoStageSyncedInDataProcessor = __decorate$7([
+    Injected()
+], TwoStageSyncedInDataProcessor);
+
+const WITH_ID = {};
+const WITH_RECORD_HISTORY = {};
+const WITH_INDEX = {};
+let SyncOutDataSerializer = class SyncOutDataSerializer {
+    async serialize(repositoryTransactionHistories) {
+        let historiesToSend = [];
+        const messages = [];
+        for (const repositoryTransactionHistory of repositoryTransactionHistories) {
+            if (repositoryTransactionHistory.repositoryTransactionType !== RepositoryTransactionType.LOCAL) {
+                continue;
+            }
+            const message = await this.serializeMessage(repositoryTransactionHistory);
+            historiesToSend.push(repositoryTransactionHistory);
+            messages.push(message);
+        }
+        return {
+            historiesToSend,
+            messages
+        };
+    }
+    async serializeMessage(repositoryTransactionHistory) {
+        const lookups = {
+            actorInMessageIndexesById: new Map(),
+            applicationVersionInMessageIndexesById: new Map(),
+            applicationVersions: [],
+            lastInMessageActorIndex: -1,
+            lastInMessageApplicationVersionIndex: -1,
+            lastInMessageRepositoryIndex: -1,
+            messageRepository: repositoryTransactionHistory.repository,
+            repositoryInMessageIndexesById: new Map()
+        };
+        const inMessageUserAccountLookup = {
+            inMessageIndexesByGUID: new Map(),
+            lastInMessageIndex: -1
+        };
+        const message = {
+            actors: [],
+            applicationVersions: [],
+            applications: [],
+            history: null,
+            // Repositories may reference records in other repositories
+            referencedRepositories: [],
+            userAccounts: [],
+            terminals: []
+        };
+        message.history = this.serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup);
+        // TODO: replace db lookups with TerminalState lookups where possible
+        await this.serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup);
+        const inMessageApplicationLookup = await this.serializeActorsUserAccountsAndTerminals(message, lookups, inMessageUserAccountLookup);
+        await this.serializeApplicationsAndVersions(message, inMessageApplicationLookup, lookups);
+        return message;
+    }
+    async serializeActorsUserAccountsAndTerminals(message, lookups, inMessageUserAccountLookup) {
+        let actorIdsToFindBy = [];
+        for (let actorId of lookups.actorInMessageIndexesById.keys()) {
+            actorIdsToFindBy.push(actorId);
+        }
+        const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy);
+        this.serializeUserAccounts(actors, message, inMessageUserAccountLookup);
+        const terminalInMessageIndexesById = this.serializeTerminals(actors, message, inMessageUserAccountLookup);
+        const inMessageApplicationLookup = {
+            lastInMessageIndex: -1,
+            inMessageIndexesById: new Map()
+        };
+        for (const actor of actors) {
+            const applicationInMessageIndex = this.serializeApplication(actor.application, inMessageApplicationLookup, message);
+            const actorInMessageIndex = lookups.actorInMessageIndexesById.get(actor._localId);
+            message.actors[actorInMessageIndex] = {
+                ...WITH_ID,
+                application: applicationInMessageIndex,
+                terminal: terminalInMessageIndexesById.get(actor.terminal.GUID),
+                userAccount: inMessageUserAccountLookup.inMessageIndexesByGUID.get(actor.userAccount.GUID),
+                GUID: actor.GUID
+            };
+        }
+        return inMessageApplicationLookup;
+    }
+    serializeTerminals(actors, message, inMessageUserAccountLookup) {
+        let lastInMessageTerminalIndex = -1;
+        const terminalInMessageIndexesByGUID = new Map();
+        for (const actor of actors) {
+            let terminal = actor.terminal;
+            if (terminalInMessageIndexesByGUID.has(terminal.GUID)) {
+                continue;
+            }
+            const terminalInMessageIndex = ++lastInMessageTerminalIndex;
+            terminalInMessageIndexesByGUID.set(terminal.GUID, terminalInMessageIndex);
+            message.terminals[terminalInMessageIndex] = {
+                ...WITH_ID,
+                GUID: terminal.GUID,
+                owner: inMessageUserAccountLookup.inMessageIndexesByGUID.get(terminal.owner.GUID)
+            };
+        }
+        return terminalInMessageIndexesByGUID;
+    }
+    serializeUserAccounts(actors, message, inMessageUserAccountLookup) {
+        for (const actor of actors) {
+            this.addUserAccountToMessage(actor.userAccount, message, inMessageUserAccountLookup);
+            this.addUserAccountToMessage(actor.terminal.owner, message, inMessageUserAccountLookup);
+        }
+    }
+    addUserAccountToMessage(userAccount, message, inMessageUserAccountLookup) {
+        let userAccountInMessageIndex = this.getUserAccountInMessageIndex(userAccount, inMessageUserAccountLookup);
+        message.userAccounts[userAccountInMessageIndex] = {
+            ...WITH_ID,
+            username: userAccount.username,
+            GUID: userAccount.GUID
+        };
+        return userAccountInMessageIndex;
+    }
+    getUserAccountInMessageIndex(userAccount, inMessageUserAccountLookup) {
+        if (inMessageUserAccountLookup.inMessageIndexesByGUID.has(userAccount.GUID)) {
+            return inMessageUserAccountLookup.inMessageIndexesByGUID.get(userAccount.GUID);
+        }
+        let userAccountInMessageIndex = ++inMessageUserAccountLookup.lastInMessageIndex;
+        inMessageUserAccountLookup.inMessageIndexesByGUID.set(userAccount.GUID, userAccountInMessageIndex);
+        return userAccountInMessageIndex;
+    }
+    async serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup) {
+        let repositoryIdsToFindBy = [];
+        for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
+            repositoryIdsToFindBy.push(repositoryId);
+        }
+        repositoryIdsToFindBy.push(repositoryTransactionHistory._localId);
+        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(repositoryIdsToFindBy);
+        for (const repository of repositories) {
+            let userAccountInMessageIndex = this.getUserAccountInMessageIndex(repository.owner, inMessageUserAccountLookup);
+            if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
+                const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository._localId);
+                message.referencedRepositories[repositoryInMessageIndex] =
+                    this.serializeRepository(repository, userAccountInMessageIndex);
+            }
+            else {
+                if (typeof message.history.repository !== 'string') {
+                    message.history.repository.owner = userAccountInMessageIndex;
+                    message.history.repository._localId = repository._localId;
+                }
+            }
+        }
+    }
+    serializeApplicationsAndVersions(message, inMessageApplicationLookup, lookups) {
+        for (let i = 0; i < lookups.applicationVersions.length; i++) {
+            const applicationVersion = lookups.applicationVersions[i];
+            const applicationInMessageIndex = this.serializeApplication(applicationVersion.application, inMessageApplicationLookup, message);
+            message.applicationVersions[i] = {
+                ...WITH_ID,
+                application: applicationInMessageIndex,
+                integerVersion: applicationVersion.integerVersion
+            };
+        }
+    }
+    serializeApplication(application, inMessageApplicationLookup, message) {
+        let applicationInMessageIndex;
+        if (inMessageApplicationLookup.inMessageIndexesById.has(application.index)) {
+            applicationInMessageIndex = inMessageApplicationLookup
+                .inMessageIndexesById.get(application.index);
+        }
+        else {
+            applicationInMessageIndex = ++inMessageApplicationLookup.lastInMessageIndex;
+            inMessageApplicationLookup.inMessageIndexesById
+                .set(application.index, applicationInMessageIndex);
+            message.applications[applicationInMessageIndex] = {
+                ...WITH_INDEX,
+                domain: {
+                    ...WITH_ID,
+                    name: application.domain.name
+                },
+                name: application.name
+            };
+        }
+        return applicationInMessageIndex;
+    }
+    serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup) {
+        repositoryTransactionHistory.operationHistory.sort((operationHistory1, operationHistory2) => {
+            if (operationHistory1.orderNumber < operationHistory2.orderNumber) {
+                return -1;
+            }
+            if (operationHistory1.orderNumber > operationHistory2.orderNumber) {
+                return 1;
+            }
+            return 0;
+        });
+        const serializedOperationHistory = [];
+        for (const operationHistory of repositoryTransactionHistory.operationHistory) {
+            serializedOperationHistory.push(this.serializeOperationHistory(operationHistory, lookups));
+        }
+        return {
+            ...WITH_ID,
+            isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
+            repository: this.serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserAccountLookup),
+            operationHistory: serializedOperationHistory,
+            saveTimestamp: repositoryTransactionHistory.saveTimestamp,
+            GUID: repositoryTransactionHistory.GUID
+        };
+    }
+    serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserAccountLookup) {
+        if (repositoryTransactionHistory.isRepositoryCreation) {
+            const repository = repositoryTransactionHistory.repository;
+            let userAccountInMessageIndex = this.addUserAccountToMessage(repository.owner, message, inMessageUserAccountLookup);
+            return this.serializeRepository(repository, userAccountInMessageIndex);
+        }
+        else {
+            // When this repositoryTransactionHistory processed at sync-in 
+            // the repository should already be loaded in the target database
+            // if it's not then it's missing the repositoryTransactionHistory
+            // with isRepositoryCreation === true
+            return repositoryTransactionHistory.repository.GUID;
+        }
+    }
+    serializeOperationHistory(operationHistory, lookups) {
+        const dbEntity = operationHistory.entity;
+        const serializedRecordHistory = [];
+        for (const recordHistory of operationHistory.recordHistory) {
+            serializedRecordHistory.push(this.serializeRecordHistory(operationHistory, recordHistory, dbEntity, lookups));
+        }
+        const entity = operationHistory.entity;
+        // Should be populated - coming from TerminalStore
+        // if (typeof entity !== 'object') {
+        // 	throw new Error(`OperationHistory.entity must be populated`)
+        // }
+        // if (typeof entity.index !== 'number') {
+        // 	throw new Error(`OperationHistory.entity.index must be present`)
+        // }
+        const applicationVersion = entity.applicationVersion;
+        // Should be populated - coming from TerminalStore
+        // if (typeof applicationVersion !== 'object') {
+        // 	throw new Error(`OperationHistory.entity.applicationVersion must be populated`)
+        // }
+        // if (typeof applicationVersion._localId !== 'number') {
+        // 	throw new Error(`OperationHistory.entity.applicationVersion._localId must be present`)
+        // }
+        let applicationVersionInMessageIndex;
+        if (lookups.applicationVersionInMessageIndexesById.has(applicationVersion._localId)) {
+            applicationVersionInMessageIndex = lookups.applicationVersionInMessageIndexesById.get(applicationVersion._localId);
+        }
+        else {
+            applicationVersionInMessageIndex = ++lookups.lastInMessageApplicationVersionIndex;
+            lookups.applicationVersionInMessageIndexesById.set(applicationVersion._localId, applicationVersionInMessageIndex);
+        }
+        lookups.applicationVersions[applicationVersionInMessageIndex] = applicationVersion;
+        return {
+            ...WITH_ID,
+            actor: this.getActorInMessageIndex(operationHistory.actor, lookups),
+            changeType: operationHistory.changeType,
+            entity: {
+                ...WITH_ID,
+                applicationVersion: applicationVersionInMessageIndex,
+                index: operationHistory.entity.index
+            },
+            recordHistory: serializedRecordHistory
+        };
+    }
+    serializeRecordHistory(operationHistory, recordHistory, dbEntity, lookups) {
+        const dbColumMapByIndex = new Map();
+        for (const dbColumn of dbEntity.columns) {
+            dbColumMapByIndex.set(dbColumn.index, dbColumn);
+        }
+        const newValues = [];
+        for (const newValue of recordHistory.newValues) {
+            const dbColumn = dbColumMapByIndex.get(newValue.columnIndex);
+            newValues.push(this.serializeNewValue(newValue, dbColumn, lookups));
+        }
+        const oldValues = [];
+        for (const oldValue of recordHistory.oldValues) {
+            const dbColumn = dbColumMapByIndex.get(oldValue.columnIndex);
+            oldValues.push(this.serializeOldValue(oldValue, dbColumn, lookups));
+        }
+        const actor = recordHistory.actor;
+        // Actor may be null if it's the same actor as for RepositoryTransactionHistory
+        // if (typeof actor !== 'object') {
+        // 	throw new Error(`RecordHistory.actor must be populated`)
+        // }
+        const baseObject = {
+            ...WITH_ID,
+        };
+        if (actor._localId !== operationHistory.actor._localId) {
+            baseObject.actor = this.getActorInMessageIndex(actor, lookups);
+        }
+        if (newValues.length) {
+            baseObject.newValues = newValues;
+        }
+        if (oldValues.length) {
+            baseObject.oldValues = oldValues;
+        }
+        return {
+            ...baseObject,
+            _actorRecordId: recordHistory._actorRecordId,
+        };
+    }
+    getActorInMessageIndex(actor, lookups) {
+        if (!actor) {
+            return null;
+        }
+        return this.getActorInMessageIndexById(actor._localId, lookups);
+    }
+    getActorInMessageIndexById(actorId, lookups) {
+        let actorInMessageIndex;
+        if (lookups.actorInMessageIndexesById.has(actorId)) {
+            actorInMessageIndex = lookups.actorInMessageIndexesById.get(actorId);
+        }
+        else {
+            actorInMessageIndex = ++lookups.lastInMessageActorIndex;
+            lookups.actorInMessageIndexesById.set(actorId, actorInMessageIndex);
+        }
+        return actorInMessageIndex;
+    }
+    serializeNewValue(newValue, dbColumn, lookups) {
+        return this.serializeValue(newValue, dbColumn, lookups, 'newValue');
+    }
+    serializeOldValue(oldValue, dbColumn, lookups) {
+        return this.serializeValue(oldValue, dbColumn, lookups, 'oldValue');
+    }
+    serializeValue(valueRecord, dbColumn, lookups, valueFieldName) {
+        let value = valueRecord[valueFieldName];
+        let serailizedValue = value;
+        switch (dbColumn.name) {
+            case airEntity.ORIGINAL_ACTOR_ID: {
+                serailizedValue = this.getActorInMessageIndexById(value, lookups);
+                break;
+            }
+            case airEntity.ORIGINAL_REPOSITORY_ID: {
+                serailizedValue = this.getSerializedRepositoryId(value, lookups);
+                break;
+            }
+        }
+        if (/.*_AID_[\d]+$/.test(dbColumn.name)
+            && dbColumn.manyRelationColumns.length) {
+            serailizedValue = this.getActorInMessageIndexById(value, lookups);
+        }
+        if (/.*_RID_[\d]+$/.test(dbColumn.name)
+            && dbColumn.manyRelationColumns.length) {
+            serailizedValue = this.getSerializedRepositoryId(value, lookups);
+        }
+        return {
+            ...WITH_RECORD_HISTORY,
+            columnIndex: valueRecord.columnIndex,
+            [valueFieldName]: serailizedValue
+        };
+    }
+    getSerializedRepositoryId(value, lookups) {
+        if (value === lookups.messageRepository._localId) {
+            return -1;
+        }
+        let serailizedValue = lookups.repositoryInMessageIndexesById.get(value);
+        if (serailizedValue === undefined) {
+            lookups.lastInMessageRepositoryIndex++;
+            serailizedValue = lookups.lastInMessageRepositoryIndex;
+            lookups.repositoryInMessageIndexesById.set(value, serailizedValue);
+        }
+        return serailizedValue;
+    }
+    serializeRepository(repository, owner) {
+        return {
+            ...WITH_ID,
+            ageSuitability: repository.ageSuitability,
+            createdAt: repository.createdAt,
+            immutable: repository.immutable,
+            owner,
+            source: repository.source,
+            GUID: repository.GUID
+        };
+    }
+};
+__decorate$7([
+    Inject$2()
+], SyncOutDataSerializer.prototype, "actorDao", void 0);
+__decorate$7([
+    Inject$2()
+], SyncOutDataSerializer.prototype, "repositoryDao", void 0);
+SyncOutDataSerializer = __decorate$7([
+    Injected()
+], SyncOutDataSerializer);
+
+let SynchronizationOutManager = class SynchronizationOutManager {
+    async synchronizeOut(repositoryTransactionHistories) {
+        await this.loadHistoryRepositories(repositoryTransactionHistories);
+        const { historiesToSend, messages } = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories);
+        // await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
+        const groupMessageMap = this.groupMessagesBySourceAndRepository(messages, historiesToSend);
+        for (const [repositorySource, messageMapForSource] of groupMessageMap) {
+            const synchronizationAdapter = await this.synchronizationAdapterLoader.load(repositorySource);
+            await synchronizationAdapter.sendTransactions(repositorySource, messageMapForSource);
+        }
+        await this.updateRepositoryTransactionHistories(messages, historiesToSend);
+    }
+    async loadHistoryRepositories(repositoryTransactionHistories) {
+        const repositoryIdsToLookup = new Set();
+        const repositoryMapById = new Map();
+        for (const repositoryTransactionHistory of repositoryTransactionHistories) {
+            repositoryIdsToLookup.add(repositoryTransactionHistory.repository._localId);
+        }
+        if (!repositoryIdsToLookup.size) {
+            return;
+        }
+        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds([
+            ...repositoryIdsToLookup.values()
+        ]);
+        for (const repository of repositories) {
+            repositoryMapById.set(repository._localId, repository);
+        }
+        for (const repositoryTransactionHistory of repositoryTransactionHistories) {
+            repositoryTransactionHistory.repository =
+                repositoryMapById.get(repositoryTransactionHistory.repository._localId);
+        }
+    }
+    async ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages) {
+        const repositoryIdsToLookup = new Set();
+        const repositoryMapById = new Map();
+        for (const repositoryTransactionHistory of repositoryTransactionHistories) {
+            const repository = repositoryTransactionHistory.repository;
+            if (!repository.source || !repository.GUID) {
+                repositoryIdsToLookup.add(repository._localId);
+            }
+            else {
+                repositoryMapById.set(repository._localId, repository);
+            }
+        }
+        if (!repositoryIdsToLookup.size) {
+            return;
+        }
+        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds([
+            ...repositoryIdsToLookup.values()
+        ]);
+        for (const repository of repositories) {
+            repositoryMapById.set(repository._localId, repository);
+        }
+        for (const message of messages) {
+            const repository = message.history.repository;
+            if (!repository.source || !repository.GUID) {
+                const foundRepository = repositoryMapById.get(repository._localId);
+                repository.source = foundRepository.source;
+                repository.GUID = foundRepository.GUID;
+                delete repository._localId;
+            }
+        }
+    }
+    groupMessagesBySourceAndRepository(messages, historiesToSend) {
+        const groupMessageMap = new Map();
+        for (let i = 0; i < messages.length; i++) {
+            const repository = historiesToSend[i].repository;
+            ensureChildArray(ensureChildJsMap(groupMessageMap, repository.source), repository.GUID).push(messages[i]);
+        }
+        return groupMessageMap;
+    }
+    async updateRepositoryTransactionHistories(messages, repositoryTransactionHistories) {
+        for (let i = 0; i < messages.length; i++) {
+            const message = messages[i];
+            const repositoryTransactionHistory = repositoryTransactionHistories[i];
+            if (message.syncTimestamp) {
+                repositoryTransactionHistory.syncTimestamp = message.syncTimestamp;
+                await this.repositoryTransactionHistoryDao.updateSyncTimestamp(repositoryTransactionHistory);
+            }
+        }
+    }
+};
+__decorate$7([
+    Inject$2()
+], SynchronizationOutManager.prototype, "repositoryDao", void 0);
+__decorate$7([
+    Inject$2()
+], SynchronizationOutManager.prototype, "repositoryTransactionHistoryDao", void 0);
+__decorate$7([
+    Inject$2()
+], SynchronizationOutManager.prototype, "synchronizationAdapterLoader", void 0);
+__decorate$7([
+    Inject$2()
+], SynchronizationOutManager.prototype, "syncOutDataSerializer", void 0);
+SynchronizationOutManager = __decorate$7([
+    Injected()
+], SynchronizationOutManager);
+
+const groundTransport = lib('ground-transport');
+groundTransport.register(Stage1SyncedInDataProcessor, Stage2SyncedInDataProcessor, SyncInActorChecker, SyncInChecker, SyncInDataChecker, SyncInTerminalChecker, SyncInRepositoryChecker, SyncInApplicationChecker, SyncInApplicationVersionChecker, SyncInUserAccountChecker, SyncInUtils, SynchronizationInManager, SynchronizationOutManager, SyncOutDataSerializer, TwoStageSyncedInDataProcessor, DebugSynchronizationAdapter, SynchronizationAdapterLoader);
+groundTransport.setDependencies(DebugSynchronizationAdapter, {
+    client: Client
+});
+groundTransport.setDependencies(Stage1SyncedInDataProcessor, {
+    actorDao: ActorDao,
+    airportDatabase: AIRPORT_DATABASE,
+    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
+    repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
+    sequenceGenerator: SEQUENCE_GENERATOR,
+    syncInUtils: SyncInUtils
+});
+groundTransport.setDependencies(Stage2SyncedInDataProcessor, {
+    airportDatabase: AIRPORT_DATABASE,
+    databaseFacade: DATABASE_FACADE,
+    recordUpdateStageDao: RecordUpdateStageDao,
+    utils: Utils
+});
+groundTransport.setDependencies(SyncInActorChecker, {
+    actorDao: ActorDao,
+});
+groundTransport.setDependencies(SyncInApplicationChecker, {
+    applicationDao: ApplicationDao,
+    domainDao: DomainDao
+});
+groundTransport.setDependencies(SyncInApplicationVersionChecker, {
+    applicationVersionDao: ApplicationVersionDao
+});
+groundTransport.setDependencies(SyncInChecker, {
+    syncInActorChecker: SyncInActorChecker,
+    syncInApplicationChecker: SyncInApplicationChecker,
+    syncInApplicationVersionChecker: SyncInApplicationVersionChecker,
+    syncInDataChecker: SyncInDataChecker,
+    syncInRepositoryChecker: SyncInRepositoryChecker,
+    syncInTerminalChecker: SyncInTerminalChecker,
+    syncInUserAccountChecker: SyncInUserAccountChecker
+});
+groundTransport.setDependencies(SyncInDataChecker, {
+    airportDatabase: AIRPORT_DATABASE,
+    sequenceGenerator: SEQUENCE_GENERATOR,
+    terminalStore: TerminalStore
+});
+groundTransport.setDependencies(SyncInRepositoryChecker, {
+    repositoryDao: RepositoryDao,
+});
+groundTransport.setDependencies(SyncInTerminalChecker, {
+    terminalDao: TerminalDao
+});
+groundTransport.setDependencies(SyncInUserAccountChecker, {
+    userAccountDao: UserAccountDao
+});
+groundTransport.setDependencies(SyncOutDataSerializer, {
+    actorDao: ActorDao,
+    repositoryDao: RepositoryDao,
+});
+groundTransport.setDependencies(SynchronizationAdapterLoader, {
+    debugSynchronizationAdapter: DebugSynchronizationAdapter
+});
+groundTransport.setDependencies(SynchronizationInManager, {
+    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
+    syncInChecker: SyncInChecker,
+    transactionManager: TRANSACTION_MANAGER,
+    twoStageSyncedInDataProcessor: TwoStageSyncedInDataProcessor
+});
+groundTransport.setDependencies(SynchronizationOutManager, {
+    repositoryDao: RepositoryDao,
+    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
+    synchronizationAdapterLoader: SynchronizationAdapterLoader,
+    syncOutDataSerializer: SyncOutDataSerializer
+});
+groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
+    repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
+    stage1SyncedInDataProcessor: Stage1SyncedInDataProcessor,
+    stage2SyncedInDataProcessor: Stage2SyncedInDataProcessor,
+    synchronizationConflictDao: SynchronizationConflictDao,
+    synchronizationConflictValuesDao: SynchronizationConflictValuesDao
+});
+
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+function __decorate$6(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+let SessionStateApi = class SessionStateApi {
+    async getLoggedInUser() {
+        const userSession = await this.terminalSessionManager.getUserSession();
+        const userAccount = userSession.userAccount;
+        return {
+            email: userAccount.email,
+            username: userAccount.username,
+            GUID: userAccount.GUID
+        };
+    }
+};
+__decorate$6([
+    Inject$2()
+], SessionStateApi.prototype, "terminalSessionManager", void 0);
+__decorate$6([
+    Api()
+], SessionStateApi.prototype, "getLoggedInUser", null);
+SessionStateApi = __decorate$6([
+    Injected()
+], SessionStateApi);
+
+const __constructors__ = {};
+const Q_airport____at_airport_slash_session_dash_state = {
+    __constructors__,
+    domain: 'airport',
+    name: '@airport/session-state'
+};
+airApi.setQApp(Q_airport____at_airport_slash_session_dash_state);
+
+const application = {
+    name: '@airport/session-state',
+    domain: {
+        name: 'airport'
+    }
+};
+
+const sessionState = app(application);
+sessionState.register(SessionStateApi);
+sessionState.setDependencies(SessionStateApi, {
+    terminalSessionManager: TERMINAL_SESSION_MANAGER
+});
+
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+function __decorate$5(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -26328,7 +29704,7 @@ let ActiveQueries = class ActiveQueries {
         }, 100);
     }
 };
-ActiveQueries = __decorate$9([
+ActiveQueries = __decorate$5([
     Injected()
 ], ActiveQueries);
 
@@ -26360,26 +29736,17 @@ let ObservableQueryAdapter = class ObservableQueryAdapter {
         return resultsSubject;
     }
 };
-__decorate$9([
+__decorate$5([
     Inject$2()
 ], ObservableQueryAdapter.prototype, "activeQueries", void 0);
-ObservableQueryAdapter = __decorate$9([
+ObservableQueryAdapter = __decorate$5([
     Injected()
 ], ObservableQueryAdapter);
 
 const flightNumber = lib('flight-number');
-const ACTIVE_QUERIES = flightNumber.token({
-    class: ActiveQueries,
-    interface: 'IActiveQueries',
-    token: 'ACTIVE_QUERIES'
-});
-const OBSERVABLE_QUERY_ADAPTER = flightNumber.token({
-    class: ObservableQueryAdapter,
-    interface: 'IObservableQueryAdapter',
-    token: 'OBSERVABLE_QUERY_ADAPTER'
-});
-OBSERVABLE_QUERY_ADAPTER.setDependencies({
-    activeQueries: ACTIVE_QUERIES
+flightNumber.register(ActiveQueries, ObservableQueryAdapter);
+flightNumber.setDependencies(ObservableQueryAdapter, {
+    activeQueries: ActiveQueries
 });
 
 class AbstractEntityOrderByParser {
@@ -27342,7 +30709,7 @@ OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 
-function __decorate$8(decorators, target, key, desc) {
+function __decorate$4(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -27361,16 +30728,16 @@ let ObjectResultParserFactory = class ObjectResultParserFactory {
         }
     }
 };
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], ObjectResultParserFactory.prototype, "applicationUtils", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], ObjectResultParserFactory.prototype, "entityStateManager", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], ObjectResultParserFactory.prototype, "utils", void 0);
-ObjectResultParserFactory = __decorate$8([
+ObjectResultParserFactory = __decorate$4([
     Injected()
 ], ObjectResultParserFactory);
 
@@ -27667,7 +31034,7 @@ let SQLWhereBase = class SQLWhereBase {
         return false;
     }
 };
-SQLWhereBase = __decorate$8([
+SQLWhereBase = __decorate$4([
     Injected()
 ], SQLWhereBase);
 
@@ -28514,34 +31881,34 @@ let SubStatementSqlGenerator = class SubStatementSqlGenerator {
         };
     }
 };
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SubStatementSqlGenerator.prototype, "airportDatabase", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SubStatementSqlGenerator.prototype, "applicationUtils", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SubStatementSqlGenerator.prototype, "entityStateManager", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SubStatementSqlGenerator.prototype, "qMetadataUtils", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SubStatementSqlGenerator.prototype, "qValidator", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SubStatementSqlGenerator.prototype, "relationManager", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SubStatementSqlGenerator.prototype, "sqlQueryAdapter", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SubStatementSqlGenerator.prototype, "storeDriver", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SubStatementSqlGenerator.prototype, "utils", void 0);
-SubStatementSqlGenerator = __decorate$8([
+SubStatementSqlGenerator = __decorate$4([
     Injected()
 ], SubStatementSqlGenerator);
 
@@ -29142,10 +32509,10 @@ let IdGenerator = class IdGenerator {
             .entityMapByName[holdingPatternEntityName];
     }
 };
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], IdGenerator.prototype, "sequenceGenerator", void 0);
-IdGenerator = __decorate$8([
+IdGenerator = __decorate$4([
     Injected()
 ], IdGenerator);
 var CurrentState;
@@ -29241,7 +32608,7 @@ let SqlDriver = class SqlDriver {
             let sqlInsertValues = new SQLInsertValues({
                 ...portableQuery.jsonQuery,
                 V
-            }, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, this.utils, context);
+            }, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             let sql = sqlInsertValues.toSQL(context);
             let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
             numVals += await this.executeNative(sql, parameters, context);
@@ -29250,7 +32617,7 @@ let SqlDriver = class SqlDriver {
     }
     async deleteWhere(portableQuery, context) {
         let fieldMap = new SyncApplicationMap();
-        let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, this.utils, context);
+        let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
         let sql = sqlDelete.toSQL(context);
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
         let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
@@ -29258,7 +32625,7 @@ let SqlDriver = class SqlDriver {
         return numberOfAffectedRecords;
     }
     async updateWhere(portableQuery, internalFragments, context) {
-        let sqlUpdate = new SQLUpdate(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, this.utils, context);
+        let sqlUpdate = new SQLUpdate(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
         let sql = sqlUpdate.toSQL(internalFragments, context);
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
         return await this.executeNative(sql, parameters, context);
@@ -29282,13 +32649,13 @@ let SqlDriver = class SqlDriver {
             case QueryResType.ENTITY_TREE:
                 const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
                     .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
-                return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.objectResultParserFactory, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, this.utils, context);
+                return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.objectResultParserFactory, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.FIELD:
-                return new FieldSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, this.utils, context);
+                return new FieldSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.SHEET:
-                return new SheetSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, this.utils, context);
+                return new SheetSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.TREE:
-                return new TreeSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, this.utils, context);
+                return new TreeSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.RAW:
             default:
                 throw new Error(`Unknown QueryResultType: ${resultType}`);
@@ -29325,46 +32692,46 @@ let SqlDriver = class SqlDriver {
         return doEnsureContext(context);
     }
 };
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SqlDriver.prototype, "activeQueries", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SqlDriver.prototype, "airportDatabase", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SqlDriver.prototype, "applicationUtils", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SqlDriver.prototype, "dbApplicationUtils", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SqlDriver.prototype, "entityStateManager", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SqlDriver.prototype, "objectResultParserFactory", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SqlDriver.prototype, "qMetadataUtils", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SqlDriver.prototype, "qValidator", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SqlDriver.prototype, "relationManager", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SqlDriver.prototype, "sqlQueryAdapter", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
-], SqlDriver.prototype, "subStatementQueryGenerator", void 0);
-__decorate$8([
+], SqlDriver.prototype, "subStatementSqlGenerator", void 0);
+__decorate$4([
     Inject$2()
 ], SqlDriver.prototype, "transactionManager", void 0);
-__decorate$8([
+__decorate$4([
     Inject$2()
 ], SqlDriver.prototype, "utils", void 0);
-SqlDriver = __decorate$8([
+SqlDriver = __decorate$4([
     Injected()
 ], SqlDriver);
 
@@ -29390,3659 +32757,46 @@ let QValidator = class QValidator {
     validateAliasedFieldAccess(fieldAlias) {
     }
 };
-QValidator = __decorate$8([
+QValidator = __decorate$4([
     Injected()
 ], QValidator);
 
 const fuelHydrantSystem = lib('fuel-hydrant-system');
-const SUB_STATEMENT_SQL_GENERATOR = fuelHydrantSystem.token({
-    class: SubStatementSqlGenerator,
-    interface: 'ISubStatementSqlGenerator',
-    token: 'SUB_STATEMENT_SQL_GENERATOR'
-});
-const ID_GENERATOR = fuelHydrantSystem.token({
-    class: IdGenerator,
-    interface: 'IIdGenerator',
-    token: 'ID_GENERATOR'
-});
-const OBJECT_RESULT_PARSER_FACTORY = fuelHydrantSystem.token({
-    class: ObjectResultParserFactory,
-    interface: 'IObjectResultParserFactory',
-    token: 'OBJECT_RESULT_PARSER_FACTORY'
-});
-const Q_VALIDATOR = fuelHydrantSystem.token({
-    class: QValidator,
-    interface: 'IValidator',
-    token: 'Q_VALIDATOR'
-});
-const SQL_QUERY_ADAPTOR = fuelHydrantSystem.token({
-    class: null,
-    interface: 'ISQLQueryAdaptor',
-    token: 'SQL_QUERY_ADAPTOR'
-});
-const ABSTRACT_SQL_DRIVER = fuelHydrantSystem.token({
-    class: SqlDriver,
-    interface: 'class SqlDriver',
-    token: 'ABSTRACT_SQL_DRIVER'
-});
-ID_GENERATOR.setDependencies({
+fuelHydrantSystem.register(SubStatementSqlGenerator, IdGenerator, ObjectResultParserFactory, QValidator, SqlDriver);
+const SQL_QUERY_ADAPTOR = fuelHydrantSystem.token('SQLQueryAdaptor');
+fuelHydrantSystem.setDependencies(IdGenerator, {
     sequenceGenerator: SEQUENCE_GENERATOR
 });
-OBJECT_RESULT_PARSER_FACTORY.setDependencies({
-    applicationUtils: APPLICATION_UTILS,
+fuelHydrantSystem.setDependencies(ObjectResultParserFactory, {
+    applicationUtils: ApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
-    utils: UTILS
+    utils: Utils
 });
-ABSTRACT_SQL_DRIVER.setDependencies({
-    activeQueries: ACTIVE_QUERIES,
+fuelHydrantSystem.setDependencies(SqlDriver, {
+    activeQueries: ActiveQueries,
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: APPLICATION_UTILS,
-    dbApplicationUtils: DB_APPLICATION_UTILS,
+    applicationUtils: ApplicationUtils,
+    dbApplicationUtils: DbApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
-    objectResultParserFactory: OBJECT_RESULT_PARSER_FACTORY,
-    qMetadataUtils: Q_METADATA_UTILS,
-    qValidator: Q_VALIDATOR,
-    relationManager: RELATION_MANAGER,
+    objectResultParserFactory: ObjectResultParserFactory,
+    qMetadataUtils: QMetadataUtils,
+    qValidator: QValidator,
+    relationManager: RelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
-    subStatementQueryGenerator: SUB_STATEMENT_SQL_GENERATOR,
+    subStatementSqlGenerator: SubStatementSqlGenerator,
     transactionManager: TRANSACTION_MANAGER,
-    utils: UTILS
+    utils: Utils
 });
-SUB_STATEMENT_SQL_GENERATOR.setDependencies({
+fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: APPLICATION_UTILS,
+    applicationUtils: ApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
-    qMetadataUtils: Q_METADATA_UTILS,
-    qValidator: Q_VALIDATOR,
-    relationManager: RELATION_MANAGER,
+    qMetadataUtils: QMetadataUtils,
+    qValidator: QValidator,
+    relationManager: RelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     storeDriver: STORE_DRIVER,
-    utils: UTILS
-});
-
-var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-var typedi = {};
-
-var Container$1 = {};
-
-var ContainerInstance$1 = {};
-
-var MissingProvidedServiceTypeError$1 = {};
-
-var __extends$2 = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(MissingProvidedServiceTypeError$1, "__esModule", { value: true });
-/**
- * Thrown when service is registered without type.
- */
-var MissingProvidedServiceTypeError = /** @class */ (function (_super) {
-    __extends$2(MissingProvidedServiceTypeError, _super);
-    function MissingProvidedServiceTypeError(identifier) {
-        var _this = _super.call(this, "Cannot determine a class of the requesting service \"" + identifier + "\"") || this;
-        _this.name = "ServiceNotFoundError";
-        Object.setPrototypeOf(_this, MissingProvidedServiceTypeError.prototype);
-        return _this;
-    }
-    return MissingProvidedServiceTypeError;
-}(Error));
-MissingProvidedServiceTypeError$1.MissingProvidedServiceTypeError = MissingProvidedServiceTypeError;
-
-var ServiceNotFoundError$1 = {};
-
-var Token$1 = {};
-
-Object.defineProperty(Token$1, "__esModule", { value: true });
-/**
- * Used to create unique typed service identifier.
- * Useful when service has only interface, but don't have a class.
- */
-var Token = /** @class */ (function () {
-    /**
-     * @param name Token name, optional and only used for debugging purposes.
-     */
-    function Token(name) {
-        this.name = name;
-    }
-    return Token;
-}());
-Token$1.Token = Token;
-
-var __extends$1 = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(ServiceNotFoundError$1, "__esModule", { value: true });
-var Token_1$4 = Token$1;
-/**
- * Thrown when requested service was not found.
- */
-var ServiceNotFoundError = /** @class */ (function (_super) {
-    __extends$1(ServiceNotFoundError, _super);
-    function ServiceNotFoundError(identifier) {
-        var _this = _super.call(this) || this;
-        _this.name = "ServiceNotFoundError";
-        if (typeof identifier === "string") {
-            _this.message = "Service \"" + identifier + "\" was not found, looks like it was not registered in the container. " +
-                ("Register it by calling Container.set(\"" + identifier + "\", ...) before using service.");
-        }
-        else if (identifier instanceof Token_1$4.Token && identifier.name) {
-            _this.message = "Service \"" + identifier.name + "\" was not found, looks like it was not registered in the container. " +
-                "Register it by calling Container.set before using service.";
-        }
-        else if (identifier instanceof Token_1$4.Token) {
-            _this.message = "Service with a given token was not found, looks like it was not registered in the container. " +
-                "Register it by calling Container.set before using service.";
-        }
-        Object.setPrototypeOf(_this, ServiceNotFoundError.prototype);
-        return _this;
-    }
-    return ServiceNotFoundError;
-}(Error));
-ServiceNotFoundError$1.ServiceNotFoundError = ServiceNotFoundError;
-
-Object.defineProperty(ContainerInstance$1, "__esModule", { value: true });
-var Container_1$3 = Container$1;
-var MissingProvidedServiceTypeError_1 = MissingProvidedServiceTypeError$1;
-var ServiceNotFoundError_1 = ServiceNotFoundError$1;
-var Token_1$3 = Token$1;
-/**
- * TypeDI can have multiple containers.
- * One container is ContainerInstance.
- */
-var ContainerInstance = /** @class */ (function () {
-    // -------------------------------------------------------------------------
-    // Constructor
-    // -------------------------------------------------------------------------
-    function ContainerInstance(id) {
-        // -------------------------------------------------------------------------
-        // Private Properties
-        // -------------------------------------------------------------------------
-        /**
-         * All registered services.
-         */
-        this.services = [];
-        this.id = id;
-    }
-    /**
-     * Checks if the service with given name or type is registered service container.
-     * Optionally, parameters can be passed in case if instance is initialized in the container for the first time.
-     */
-    ContainerInstance.prototype.has = function (identifier) {
-        return !!this.findService(identifier);
-    };
-    /**
-     * Retrieves the service with given name or type from the service container.
-     * Optionally, parameters can be passed in case if instance is initialized in the container for the first time.
-     */
-    ContainerInstance.prototype.get = function (identifier) {
-        var globalContainer = Container_1$3.Container.of(undefined);
-        var service = globalContainer.findService(identifier);
-        var scopedService = this.findService(identifier);
-        if (service && service.global === true)
-            return this.getServiceValue(identifier, service);
-        if (scopedService)
-            return this.getServiceValue(identifier, scopedService);
-        if (service && this !== globalContainer) {
-            var clonedService = Object.assign({}, service);
-            clonedService.value = undefined;
-            var value = this.getServiceValue(identifier, clonedService);
-            this.set(identifier, value);
-            return value;
-        }
-        return this.getServiceValue(identifier, service);
-    };
-    /**
-     * Gets all instances registered in the container of the given service identifier.
-     * Used when service defined with multiple: true flag.
-     */
-    ContainerInstance.prototype.getMany = function (id) {
-        var _this = this;
-        return this.filterServices(id).map(function (service) { return _this.getServiceValue(id, service); });
-    };
-    /**
-     * Sets a value for the given type or service name in the container.
-     */
-    ContainerInstance.prototype.set = function (identifierOrServiceMetadata, value) {
-        var _this = this;
-        if (identifierOrServiceMetadata instanceof Array) {
-            identifierOrServiceMetadata.forEach(function (v) { return _this.set(v); });
-            return this;
-        }
-        if (typeof identifierOrServiceMetadata === "string" || identifierOrServiceMetadata instanceof Token_1$3.Token) {
-            return this.set({ id: identifierOrServiceMetadata, value: value });
-        }
-        if (typeof identifierOrServiceMetadata === "object" && identifierOrServiceMetadata.service) {
-            return this.set({ id: identifierOrServiceMetadata.service, value: value });
-        }
-        if (identifierOrServiceMetadata instanceof Function) {
-            return this.set({ type: identifierOrServiceMetadata, id: identifierOrServiceMetadata, value: value });
-        }
-        // const newService: ServiceMetadata<any, any> = arguments.length === 1 && typeof identifierOrServiceMetadata === "object"  && !(identifierOrServiceMetadata instanceof Token) ? identifierOrServiceMetadata : undefined;
-        var newService = identifierOrServiceMetadata;
-        var service = this.findService(newService.id);
-        if (service && service.multiple !== true) {
-            Object.assign(service, newService);
-        }
-        else {
-            this.services.push(newService);
-        }
-        return this;
-    };
-    /**
-     * Removes services with a given service identifiers (tokens or types).
-     */
-    ContainerInstance.prototype.remove = function () {
-        var _this = this;
-        var ids = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            ids[_i] = arguments[_i];
-        }
-        ids.forEach(function (id) {
-            _this.filterServices(id).forEach(function (service) {
-                _this.services.splice(_this.services.indexOf(service), 1);
-            });
-        });
-        return this;
-    };
-    /**
-     * Completely resets the container by removing all previously registered services from it.
-     */
-    ContainerInstance.prototype.reset = function () {
-        this.services = [];
-        return this;
-    };
-    // -------------------------------------------------------------------------
-    // Private Methods
-    // -------------------------------------------------------------------------
-    /**
-     * Filters registered service in the with a given service identifier.
-     */
-    ContainerInstance.prototype.filterServices = function (identifier) {
-        return this.services.filter(function (service) {
-            if (service.id)
-                return service.id === identifier;
-            if (service.type && identifier instanceof Function)
-                return service.type === identifier || identifier.prototype instanceof service.type;
-            return false;
-        });
-    };
-    /**
-     * Finds registered service in the with a given service identifier.
-     */
-    ContainerInstance.prototype.findService = function (identifier) {
-        return this.services.find(function (service) {
-            if (service.id) {
-                if (identifier instanceof Object &&
-                    service.id instanceof Token_1$3.Token &&
-                    identifier.service instanceof Token_1$3.Token) {
-                    return service.id === identifier.service;
-                }
-                return service.id === identifier;
-            }
-            if (service.type && identifier instanceof Function)
-                return service.type === identifier; // todo: not sure why it was here || identifier.prototype instanceof service.type;
-            return false;
-        });
-    };
-    /**
-     * Gets service value.
-     */
-    ContainerInstance.prototype.getServiceValue = function (identifier, service) {
-        var _a;
-        // find if instance of this object already initialized in the container and return it if it is
-        if (service && service.value !== undefined)
-            return service.value;
-        // if named service was requested and its instance was not found plus there is not type to know what to initialize,
-        // this means service was not pre-registered and we throw an exception
-        if ((!service || !service.type) &&
-            (!service || !service.factory) &&
-            (typeof identifier === "string" || identifier instanceof Token_1$3.Token))
-            throw new ServiceNotFoundError_1.ServiceNotFoundError(identifier);
-        // at this point we either have type in service registered, either identifier is a target type
-        var type = undefined;
-        if (service && service.type) {
-            type = service.type;
-        }
-        else if (service && service.id instanceof Function) {
-            type = service.id;
-        }
-        else if (identifier instanceof Function) {
-            type = identifier;
-            // } else if (identifier instanceof Object && (identifier as { service: Token<any> }).service instanceof Token) {
-            //     type = (identifier as { service: Token<any> }).service;
-        }
-        // if service was not found then create a new one and register it
-        if (!service) {
-            if (!type)
-                throw new MissingProvidedServiceTypeError_1.MissingProvidedServiceTypeError(identifier);
-            service = { type: type };
-            this.services.push(service);
-        }
-        // setup constructor parameters for a newly initialized service
-        var paramTypes = type && Reflect && Reflect.getMetadata ? Reflect.getMetadata("design:paramtypes", type) : undefined;
-        var params = paramTypes ? this.initializeParams(type, paramTypes) : [];
-        // if factory is set then use it to create service instance
-        var value;
-        if (service.factory) {
-            // filter out non-service parameters from created service constructor
-            // non-service parameters can be, lets say Car(name: string, isNew: boolean, engine: Engine)
-            // where name and isNew are non-service parameters and engine is a service parameter
-            params = params.filter(function (param) { return param !== undefined; });
-            if (service.factory instanceof Array) {
-                // use special [Type, "create"] syntax to allow factory services
-                // in this case Type instance will be obtained from Container and its method "create" will be called
-                value = (_a = this.get(service.factory[0]))[service.factory[1]].apply(_a, params);
-            }
-            else { // regular factory function
-                value = service.factory.apply(service, params.concat([this]));
-            }
-        }
-        else { // otherwise simply create a new object instance
-            if (!type)
-                throw new MissingProvidedServiceTypeError_1.MissingProvidedServiceTypeError(identifier);
-            params.unshift(null);
-            // "extra feature" - always pass container instance as the last argument to the service function
-            // this allows us to support javascript where we don't have decorators and emitted metadata about dependencies
-            // need to be injected, and user can use provided container to get instances he needs
-            params.push(this);
-            value = new (type.bind.apply(type, params))();
-        }
-        if (service && !service.transient && value)
-            service.value = value;
-        if (type)
-            this.applyPropertyHandlers(type, value);
-        return value;
-    };
-    /**
-     * Initializes all parameter types for a given target service class.
-     */
-    ContainerInstance.prototype.initializeParams = function (type, paramTypes) {
-        var _this = this;
-        return paramTypes.map(function (paramType, index) {
-            var paramHandler = Container_1$3.Container.handlers.find(function (handler) { return handler.object === type && handler.index === index; });
-            if (paramHandler)
-                return paramHandler.value(_this);
-            if (paramType && paramType.name && !_this.isTypePrimitive(paramType.name)) {
-                return _this.get(paramType);
-            }
-            return undefined;
-        });
-    };
-    /**
-     * Checks if given type is primitive (e.g. string, boolean, number, object).
-     */
-    ContainerInstance.prototype.isTypePrimitive = function (param) {
-        return ["string", "boolean", "number", "object"].indexOf(param.toLowerCase()) !== -1;
-    };
-    /**
-     * Applies all registered handlers on a given target class.
-     */
-    ContainerInstance.prototype.applyPropertyHandlers = function (target, instance) {
-        var _this = this;
-        Container_1$3.Container.handlers.forEach(function (handler) {
-            if (typeof handler.index === "number")
-                return;
-            if (handler.object.constructor !== target && !(target.prototype instanceof handler.object.constructor))
-                return;
-            instance[handler.propertyName] = handler.value(_this);
-        });
-    };
-    return ContainerInstance;
-}());
-ContainerInstance$1.ContainerInstance = ContainerInstance;
-
-Object.defineProperty(Container$1, "__esModule", { value: true });
-var ContainerInstance_1 = ContainerInstance$1;
-/**
- * Service container.
- */
-var Container = /** @class */ (function () {
-    function Container() {
-    }
-    // -------------------------------------------------------------------------
-    // Public Static Methods
-    // -------------------------------------------------------------------------
-    /**
-     * Gets a separate container instance for the given instance id.
-     */
-    Container.of = function (instanceId) {
-        if (instanceId === undefined)
-            return this.globalInstance;
-        var container = this.instances.find(function (instance) { return instance.id === instanceId; });
-        if (!container) {
-            container = new ContainerInstance_1.ContainerInstance(instanceId);
-            this.instances.push(container);
-        }
-        return container;
-    };
-    /**
-     * Checks if the service with given name or type is registered service container.
-     * Optionally, parameters can be passed in case if instance is initialized in the container for the first time.
-     */
-    Container.has = function (identifier) {
-        return this.globalInstance.has(identifier);
-    };
-    /**
-     * Retrieves the service with given name or type from the service container.
-     * Optionally, parameters can be passed in case if instance is initialized in the container for the first time.
-     */
-    Container.get = function (identifier) {
-        return this.globalInstance.get(identifier);
-    };
-    /**
-     * Gets all instances registered in the container of the given service identifier.
-     * Used when service defined with multiple: true flag.
-     */
-    Container.getMany = function (id) {
-        return this.globalInstance.getMany(id);
-    };
-    /**
-     * Sets a value for the given type or service name in the container.
-     */
-    Container.set = function (identifierOrServiceMetadata, value) {
-        this.globalInstance.set(identifierOrServiceMetadata, value);
-        return this;
-    };
-    /**
-     * Removes services with a given service identifiers (tokens or types).
-     */
-    Container.remove = function () {
-        var _a;
-        var ids = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            ids[_i] = arguments[_i];
-        }
-        (_a = this.globalInstance).remove.apply(_a, ids);
-        return this;
-    };
-    /**
-     * Completely resets the container by removing all previously registered services and handlers from it.
-     */
-    Container.reset = function (containerId) {
-        if (containerId) {
-            var instance = this.instances.find(function (instance) { return instance.id === containerId; });
-            if (instance) {
-                instance.reset();
-                this.instances.splice(this.instances.indexOf(instance), 1);
-            }
-        }
-        else {
-            this.globalInstance.reset();
-            this.instances.forEach(function (instance) { return instance.reset(); });
-        }
-        return this;
-    };
-    /**
-     * Registers a new handler.
-     */
-    Container.registerHandler = function (handler) {
-        this.handlers.push(handler);
-        return this;
-    };
-    /**
-     * Helper method that imports given services.
-     */
-    Container.import = function (services) {
-        return this;
-    };
-    // -------------------------------------------------------------------------
-    // Private Static Properties
-    // -------------------------------------------------------------------------
-    /**
-     * Global container instance.
-     */
-    Container.globalInstance = new ContainerInstance_1.ContainerInstance(undefined);
-    /**
-     * Other containers created using Container.of method.
-     */
-    Container.instances = [];
-    /**
-     * All registered handlers.
-     */
-    Container.handlers = [];
-    return Container;
-}());
-Container$1.Container = Container;
-
-var Service$1 = {};
-
-Object.defineProperty(Service$1, "__esModule", { value: true });
-var Container_1$2 = Container$1;
-var Token_1$2 = Token$1;
-/**
- * Marks class as a service that can be injected using container.
- */
-function Service(optionsOrServiceName, maybeFactory) {
-    if (arguments.length === 2 || (optionsOrServiceName instanceof Function)) {
-        var serviceId = { service: new Token_1$2.Token() };
-        var dependencies_1 = arguments.length === 2 ? optionsOrServiceName : [];
-        var factory_1 = arguments.length === 2 ? maybeFactory : optionsOrServiceName;
-        Container_1$2.Container.set({
-            id: serviceId.service,
-            factory: function (container) {
-                var params = dependencies_1.map(function (dependency) { return container.get(dependency); });
-                return factory_1.apply(void 0, params);
-            }
-        });
-        return serviceId;
-    }
-    else {
-        return function (target) {
-            var service = {
-                type: target
-            };
-            if (typeof optionsOrServiceName === "string" || optionsOrServiceName instanceof Token_1$2.Token) {
-                service.id = optionsOrServiceName;
-                service.multiple = optionsOrServiceName.multiple;
-                service.global = optionsOrServiceName.global || false;
-                service.transient = optionsOrServiceName.transient;
-            }
-            else if (optionsOrServiceName) { // ServiceOptions
-                service.id = optionsOrServiceName.id;
-                service.factory = optionsOrServiceName.factory;
-                service.multiple = optionsOrServiceName.multiple;
-                service.global = optionsOrServiceName.global || false;
-                service.transient = optionsOrServiceName.transient;
-            }
-            Container_1$2.Container.set(service);
-        };
-    }
-}
-Service$1.Service = Service;
-
-var Inject$1 = {};
-
-var CannotInjectError$1 = {};
-
-var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(CannotInjectError$1, "__esModule", { value: true });
-/**
- * Thrown when DI cannot inject value into property decorated by @Inject decorator.
- */
-var CannotInjectError = /** @class */ (function (_super) {
-    __extends(CannotInjectError, _super);
-    function CannotInjectError(target, propertyName) {
-        var _this = _super.call(this, "Cannot inject value into \"" + target.constructor.name + "." + propertyName + "\". " +
-            "Please make sure you setup reflect-metadata properly and you don't use interfaces without service tokens as injection value.") || this;
-        _this.name = "ServiceNotFoundError";
-        Object.setPrototypeOf(_this, CannotInjectError.prototype);
-        return _this;
-    }
-    return CannotInjectError;
-}(Error));
-CannotInjectError$1.CannotInjectError = CannotInjectError;
-
-Object.defineProperty(Inject$1, "__esModule", { value: true });
-var Container_1$1 = Container$1;
-var Token_1$1 = Token$1;
-var CannotInjectError_1$1 = CannotInjectError$1;
-/**
- * Injects a service into a class property or constructor parameter.
- */
-function Inject(typeOrName) {
-    return function (target, propertyName, index) {
-        if (!typeOrName)
-            typeOrName = function () { return Reflect.getMetadata("design:type", target, propertyName); };
-        Container_1$1.Container.registerHandler({
-            object: target,
-            propertyName: propertyName,
-            index: index,
-            value: function (containerInstance) {
-                var identifier;
-                if (typeof typeOrName === "string") {
-                    identifier = typeOrName;
-                }
-                else if (typeOrName instanceof Token_1$1.Token) {
-                    identifier = typeOrName;
-                }
-                else {
-                    identifier = typeOrName();
-                }
-                if (identifier === Object)
-                    throw new CannotInjectError_1$1.CannotInjectError(target, propertyName);
-                return containerInstance.get(identifier);
-            }
-        });
-    };
-}
-Inject$1.Inject = Inject;
-
-var InjectMany$1 = {};
-
-Object.defineProperty(InjectMany$1, "__esModule", { value: true });
-var Container_1 = Container$1;
-var Token_1 = Token$1;
-var CannotInjectError_1 = CannotInjectError$1;
-/**
- * Injects a service into a class property or constructor parameter.
- */
-function InjectMany(typeOrName) {
-    return function (target, propertyName, index) {
-        if (!typeOrName)
-            typeOrName = function () { return Reflect.getMetadata("design:type", target, propertyName); };
-        Container_1.Container.registerHandler({
-            object: target,
-            propertyName: propertyName,
-            index: index,
-            value: function (containerInstance) {
-                var identifier;
-                if (typeof typeOrName === "string") {
-                    identifier = typeOrName;
-                }
-                else if (typeOrName instanceof Token_1.Token) {
-                    identifier = typeOrName;
-                }
-                else {
-                    identifier = typeOrName();
-                }
-                if (identifier === Object)
-                    throw new CannotInjectError_1.CannotInjectError(target, propertyName);
-                return containerInstance.getMany(identifier);
-            }
-        });
-    };
-}
-InjectMany$1.InjectMany = InjectMany;
-
-(function (exports) {
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-var Container_1 = Container$1;
-__export(Service$1);
-__export(Inject$1);
-__export(InjectMany$1);
-var Container_2 = Container$1;
-exports.Container = Container_2.Container;
-var ContainerInstance_1 = ContainerInstance$1;
-exports.ContainerInstance = ContainerInstance_1.ContainerInstance;
-var Token_1 = Token$1;
-exports.Token = Token_1.Token;
-exports.default = Container_1.Container;
-
-
-}(typedi));
-
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-
-function __decorate$7(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let SynchronizationConflict = class SynchronizationConflict {
-};
-__decorate$7([
-    GeneratedValue(),
-    Id(),
-    DbNumber(),
-    Column()
-], SynchronizationConflict.prototype, "_localId", void 0);
-__decorate$7([
-    DbString()
-], SynchronizationConflict.prototype, "type", void 0);
-__decorate$7([
-    DbBoolean()
-], SynchronizationConflict.prototype, "acknowledged", void 0);
-__decorate$7([
-    ManyToOne(),
-    JoinColumn()
-], SynchronizationConflict.prototype, "repository", void 0);
-__decorate$7([
-    ManyToOne(),
-    JoinColumn()
-], SynchronizationConflict.prototype, "overwrittenRecordHistory", void 0);
-__decorate$7([
-    ManyToOne(),
-    JoinColumn()
-], SynchronizationConflict.prototype, "overwritingRecordHistory", void 0);
-__decorate$7([
-    OneToMany()
-], SynchronizationConflict.prototype, "values", void 0);
-SynchronizationConflict = __decorate$7([
-    Entity(),
-    Table()
-], SynchronizationConflict);
-
-var SynchronizationConflict_Type;
-(function (SynchronizationConflict_Type) {
-    SynchronizationConflict_Type["LOCAL_UPDATE_REMOTELY_DELETED"] = "LOCAL_UPDATE_REMOTELY_DELETED";
-    SynchronizationConflict_Type["REMOTE_CREATE_REMOTELY_DELETED"] = "REMOTE_CREATE_REMOTELY_DELETED";
-    SynchronizationConflict_Type["REMOTE_UPDATE_LOCALLY_DELETED"] = "REMOTE_UPDATE_LOCALLY_DELETED";
-    SynchronizationConflict_Type["REMOTE_UPDATE_LOCALLY_UPDATED"] = "REMOTE_UPDATE_LOCALLY_UPDATED";
-})(SynchronizationConflict_Type || (SynchronizationConflict_Type = {}));
-
-let SynchronizationConflictValues = class SynchronizationConflictValues {
-};
-__decorate$7([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], SynchronizationConflictValues.prototype, "synchronizationConflict", void 0);
-__decorate$7([
-    Id(),
-    DbNumber()
-], SynchronizationConflictValues.prototype, "columnIndex", void 0);
-SynchronizationConflictValues = __decorate$7([
-    Entity(),
-    Table()
-], SynchronizationConflictValues);
-
-var DataOrigin;
-(function (DataOrigin) {
-    DataOrigin["LOCAL"] = "LOCAL";
-    DataOrigin["REMOTE"] = "REMOTE";
-})(DataOrigin || (DataOrigin = {}));
-
-var ApplicationChangeStatus;
-(function (ApplicationChangeStatus) {
-    ApplicationChangeStatus["CHANGE_NEEDED"] = "CHANGE_NEEDED";
-    ApplicationChangeStatus["CHANGE_COMPLETED"] = "CHANGE_COMPLETED";
-})(ApplicationChangeStatus || (ApplicationChangeStatus = {}));
-
-/**
- * Used to temporarily store updates during application remotely synced updates
- * to the local terminal.  Values are deleted right after the remote sync updates
- * are applied.
- */
-let RecordUpdateStage = class RecordUpdateStage {
-};
-__decorate$7([
-    Id(),
-    GeneratedValue(),
-    Column()
-], RecordUpdateStage.prototype, "_localId", void 0);
-__decorate$7([
-    ManyToOne(),
-    JoinColumn()
-], RecordUpdateStage.prototype, "applicationVersion", void 0);
-__decorate$7([
-    ManyToOne()
-    // FIXME: verify that these records don't make it into serialized
-    // repository ledger (and hence, that using local ids is safe)
-    ,
-    JoinColumn()
-], RecordUpdateStage.prototype, "entity", void 0);
-__decorate$7([
-    ManyToOne(),
-    JoinColumn()
-], RecordUpdateStage.prototype, "repository", void 0);
-__decorate$7([
-    ManyToOne(),
-    JoinColumn()
-], RecordUpdateStage.prototype, "actor", void 0);
-__decorate$7([
-    Column(),
-    DbNumber()
-], RecordUpdateStage.prototype, "_actorRecordId", void 0);
-__decorate$7([
-    ManyToOne()
-    // FIXME: verify that these records don't make it into serialized
-    // repository ledger (and hence, that using local ids is safe)
-    ,
-    JoinColumn()
-], RecordUpdateStage.prototype, "column", void 0);
-__decorate$7([
-    Column()
-], RecordUpdateStage.prototype, "updatedValue", void 0);
-RecordUpdateStage = __decorate$7([
-    Entity(),
-    Table()
-], RecordUpdateStage);
-
-const __constructors__$1 = {
-    RecordUpdateStage: RecordUpdateStage,
-    SynchronizationConflict: SynchronizationConflict,
-    SynchronizationConflictValues: SynchronizationConflictValues
-};
-const Q_airport____at_airport_slash_layover = {
-    __constructors__: __constructors__$1,
-    domain: 'airport',
-    name: '@airport/layover'
-};
-function airport____at_airport_slash_layover_diSet(dbEntityId) {
-    return airApi.dS(Q_airport____at_airport_slash_layover.__dbApplication__, dbEntityId);
-}
-airApi.setQApp(Q_airport____at_airport_slash_layover);
-
-// Application Q object Dependency Injection readiness detection Dao
-class SQDIDao extends Dao {
-    constructor(dbEntityId) {
-        super(dbEntityId, Q_airport____at_airport_slash_layover);
-    }
-}
-class BaseRecordUpdateStageDao extends SQDIDao {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_layover_diSet(0);
-    }
-    constructor() {
-        super(0);
-    }
-}
-BaseRecordUpdateStageDao.Find = new DaoQueryDecorators();
-BaseRecordUpdateStageDao.FindOne = new DaoQueryDecorators();
-BaseRecordUpdateStageDao.Search = new DaoQueryDecorators();
-BaseRecordUpdateStageDao.SearchOne = new DaoQueryDecorators();
-class BaseSynchronizationConflictDao extends SQDIDao {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_layover_diSet(2);
-    }
-    constructor() {
-        super(2);
-    }
-}
-BaseSynchronizationConflictDao.Find = new DaoQueryDecorators();
-BaseSynchronizationConflictDao.FindOne = new DaoQueryDecorators();
-BaseSynchronizationConflictDao.Search = new DaoQueryDecorators();
-BaseSynchronizationConflictDao.SearchOne = new DaoQueryDecorators();
-class BaseSynchronizationConflictValuesDao extends SQDIDao {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_layover_diSet(1);
-    }
-    constructor() {
-        super(1);
-    }
-}
-BaseSynchronizationConflictValuesDao.Find = new DaoQueryDecorators();
-BaseSynchronizationConflictValuesDao.FindOne = new DaoQueryDecorators();
-BaseSynchronizationConflictValuesDao.Search = new DaoQueryDecorators();
-BaseSynchronizationConflictValuesDao.SearchOne = new DaoQueryDecorators();
-
-let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSynchronizationConflictDao {
-    async insert(synchronizationConflicts, context) {
-        let sc;
-        const VALUES = [];
-        for (const synchronizationConflict of synchronizationConflicts) {
-            VALUES.push([
-                synchronizationConflict.type,
-                synchronizationConflict.acknowledged,
-                synchronizationConflict.repository._localId,
-                synchronizationConflict.overwrittenRecordHistory._localId,
-                synchronizationConflict.overwritingRecordHistory._localId
-            ]);
-        }
-        const ids = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sc = Q_airport____at_airport_slash_layover.SynchronizationConflict,
-            columns: [
-                sc.type,
-                sc.acknowledged,
-                sc.repository._localId,
-                sc.overwrittenRecordHistory._localId,
-                sc.overwritingRecordHistory._localId
-            ],
-            VALUES
-        }, context);
-        for (let i = 0; i < synchronizationConflicts.length; i++) {
-            let synchronizationConflict = synchronizationConflicts[i];
-            synchronizationConflict._localId = ids[i][0];
-        }
-    }
-};
-SynchronizationConflictDao = __decorate$7([
-    Injected()
-], SynchronizationConflictDao);
-
-let SynchronizationConflictValuesDao = class SynchronizationConflictValuesDao extends BaseSynchronizationConflictValuesDao {
-    async insert(synchronizationConflictValues, context) {
-        let scv;
-        const VALUES = [];
-        for (const synchronizationConflictValue of synchronizationConflictValues) {
-            VALUES.push([
-                synchronizationConflictValue.synchronizationConflict._localId,
-                synchronizationConflictValue.columnIndex
-            ]);
-        }
-        await this.db.insertValues({
-            INSERT_INTO: scv = Q_airport____at_airport_slash_layover.SynchronizationConflictValues,
-            columns: [
-                scv.synchronizationConflict._localId,
-                scv.columnIndex
-            ],
-            VALUES
-        }, context);
-    }
-};
-SynchronizationConflictValuesDao = __decorate$7([
-    Injected()
-], SynchronizationConflictValuesDao);
-
-let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
-    async insertValues(values) {
-        const rus = Q_airport____at_airport_slash_layover.RecordUpdateStage;
-        const columns = [
-            rus.applicationVersion._localId,
-            rus.entity._localId,
-            rus.repository._localId,
-            rus.actor._localId,
-            rus._actorRecordId,
-            rus.column._localId,
-            rus.updatedValue
-        ];
-        return await this.db.insertValuesGenerateIds({
-            INSERT_INTO: rus,
-            columns,
-            VALUES: values
-        }, {
-            generateOnSync: true
-        });
-    }
-    async updateEntityWhereIds(applicationIndex, applicationVersionId, tableIndex, idMap, updatedColumnIndexes) {
-        const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
-            .applicationVersion.entities[tableIndex];
-        const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name];
-        const repositoryEquals = [];
-        for (const [repositoryId, idsForRepository] of idMap) {
-            const actorEquals = [];
-            for (const [actorId, idsForActor] of idsForRepository) {
-                actorEquals.push(AND(qEntity[ACTOR_PROPERTY_NAME]._localId.equals(actorId), qEntity[ACTOR_RECORD_ID_PROPERTY_NAME].IN(Array.from(idsForActor))));
-            }
-            repositoryEquals.push(AND(qEntity[REPOSITORY_PROPERTY_NAME]._localId.equals(repositoryId), OR(...actorEquals)));
-        }
-        const setClause = {};
-        for (const columnIndex of updatedColumnIndexes) {
-            const column = dbEntity.columns[columnIndex];
-            let columnRus = Q_airport____at_airport_slash_layover.RecordUpdateStage;
-            let columnSetClause = field({
-                FROM: [
-                    columnRus
-                ],
-                SELECT: columnRus.updatedValue,
-                WHERE: AND(columnRus.applicationVersion._localId.equals(applicationVersionId), columnRus.entity._localId.equals(dbEntity.index), columnRus.repository._localId.equals(qEntity.repository._localId), columnRus.actor._localId.equals(qEntity.actor._localId), columnRus._actorRecordId.equals(qEntity._actorRecordId), columnRus.column._localId.equals(column.index))
-            });
-            setClause[column.name] = columnSetClause;
-        }
-        await this.db.updateColumnsWhere({
-            UPDATE: qEntity,
-            SET: setClause,
-            WHERE: OR(...repositoryEquals)
-        });
-    }
-    async delete( //
-    ) {
-        return await this.db.deleteWhere({
-            DELETE_FROM: Q_airport____at_airport_slash_layover.RecordUpdateStage
-        });
-    }
-};
-__decorate$7([
-    typedi.Inject()
-], RecordUpdateStageDao.prototype, "airportDatabase", void 0);
-RecordUpdateStageDao = __decorate$7([
-    Injected()
-], RecordUpdateStageDao);
-
-const layover = lib('@airport/layover');
-layover.register(RecordUpdateStageDao, SynchronizationConflictDao, SynchronizationConflictValuesDao);
-layover.setDependencies(RecordUpdateStageDao, {
-    airportDatabase: AIRPORT_DATABASE
-});
-
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-
-function __decorate$6(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let Client = class Client {
-    constructor() {
-        // encryptionKey = process.env.ENCRYPTION_KEY
-        this.serverLocationProtocol = 'http://';
-    }
-    async getRepositoryTransactions(location, repositoryGUID, sinceSyncTimestamp = null) {
-        try {
-            const response = await this.sendMessage(location + '/read', {
-                repositoryGUID,
-                syncTimestamp: sinceSyncTimestamp
-            });
-            if (response.error) {
-                console.error(response.error);
-                return [];
-            }
-            return response.fragments;
-        }
-        catch (e) {
-            console.error(e);
-            return [];
-        }
-    }
-    async sendRepositoryTransactions(location, repositoryGUID, messages) {
-        try {
-            const response = await this.sendMessage(location + '/write', {
-                messages,
-                repositoryGUID
-            });
-            if (response.error) {
-                console.error(response.error);
-                return 0;
-            }
-            return response.syncTimestamp;
-        }
-        catch (e) {
-            console.error(e);
-            return 0;
-        }
-    }
-    async sendMessage(location, request) {
-        let packagedMessage = JSON.stringify(request);
-        // if (this.encryptionKey) {
-        //     packagedMessage = await encryptString(
-        //         packagedMessage, this.encryptionKey)
-        // }
-        const response = await fetch(this.serverLocationProtocol + location, {
-            method: 'PUT',
-            mode: 'cors',
-            // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            // credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            // redirect: 'follow', // manual, *follow, error
-            // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: packagedMessage // body data type must match "Content-Type" header
-        });
-        // let unpackagedMessage = response.text()
-        // if (this.encryptionKey) {
-        //     unpackagedMessage = await decryptString(unpackagedMessage, this.encryptionKey)
-        // }
-        // return JSON.parse(unpackagedMessage)
-        return response.json();
-    }
-};
-Client = __decorate$6([
-    Injected()
-], Client);
-
-// import {
-//     decryptString,
-//     encryptString,
-// } from "string-cipher";
-const client = lib('client');
-const CLIENT = client.token({
-    class: Client,
-    interface: 'IClient',
-    token: 'IClient'
-});
-
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-
-function __decorate$5(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
-    async getTransactionsForRepository(repositorySource, repositoryGUID, sinceSyncTimestamp) {
-        const response = await this.client.getRepositoryTransactions(repositorySource, repositoryGUID, sinceSyncTimestamp);
-        const messages = [];
-        // NOTE: syncTimestamp is populated here because file sharing mechanisms
-        // (IPFS) won't be able to modify the messages themselves
-        for (const fragment of response) {
-            if (fragment.repositoryGUID !== repositoryGUID) {
-                console.error(`Got a reponse fragment for repository ${fragment.repositoryGUID}.
-    Expecting message fragments for repository: ${repositoryGUID}`);
-                continue;
-            }
-            for (const message of fragment.messages) {
-                message.syncTimestamp = fragment.syncTimestamp;
-                messages.push(message);
-            }
-        }
-        return messages;
-    }
-    async sendTransactions(repositorySource, messagesByRepository) {
-        let allSent = true;
-        for (const [repositoryGUID, messages] of messagesByRepository) {
-            try {
-                if (!await this.sendTransactionsForRepository(repositorySource, repositoryGUID, messages)) {
-                    allSent = false;
-                }
-            }
-            catch (e) {
-                console.error(e);
-                allSent = false;
-            }
-        }
-        return allSent;
-    }
-    async sendTransactionsForRepository(repositorySource, repositoryGUID, messages) {
-        if (!messages || !messages.length) {
-            return false;
-        }
-        const syncTimestamp = await this.client.sendRepositoryTransactions(repositorySource, repositoryGUID, messages);
-        if (!syncTimestamp) {
-            return false;
-        }
-        for (const message of messages) {
-            message.syncTimestamp = syncTimestamp;
-        }
-        return true;
-    }
-};
-__decorate$5([
-    Inject$2()
-], DebugSynchronizationAdapter.prototype, "client", void 0);
-DebugSynchronizationAdapter = __decorate$5([
-    Injected()
-], DebugSynchronizationAdapter);
-
-let SynchronizationAdapterLoader = class SynchronizationAdapterLoader {
-    async load(synchronizationSource) {
-        switch (synchronizationSource) {
-            case 'IPFS': {
-                throw new Error(`Not Implemented`);
-            }
-            case 'localhost:9000': {
-                return this.debugSynchronizationAdapter;
-            }
-            default:
-                throw new Error(`Unexpected synchronization source: ${synchronizationSource}`);
-        }
-    }
-};
-__decorate$5([
-    Inject$2()
-], SynchronizationAdapterLoader.prototype, "debugSynchronizationAdapter", void 0);
-SynchronizationAdapterLoader = __decorate$5([
-    Injected()
-], SynchronizationAdapterLoader);
-
-let SyncInActorChecker = class SyncInActorChecker {
-    async ensureActors(message, context) {
-        try {
-            let actorGUIDs = [];
-            let messageActorIndexMap = new Map();
-            for (let i = 0; i < message.actors.length; i++) {
-                const actor = message.actors[i];
-                if (typeof actor.GUID !== 'string' || actor.GUID.length !== 36) {
-                    throw new Error(`Invalid 'terminal.GUID'`);
-                }
-                this.checkActorApplication(actor, message);
-                this.checkActorTerminal(actor, message);
-                this.checkActorUserAccount(actor, message);
-                actorGUIDs.push(actor.GUID);
-                messageActorIndexMap.set(actor.GUID, i);
-                // Make sure id field is not in the input
-                delete actor._localId;
-            }
-            const actors = await this.actorDao.findByGUIDs(actorGUIDs);
-            for (const actor of actors) {
-                const messageUserAccountIndex = messageActorIndexMap.get(actor.GUID);
-                message.actors[messageUserAccountIndex] = actor;
-            }
-            const missingActors = message.actors
-                .filter(messageActor => !messageActor._localId);
-            if (missingActors.length) {
-                await this.actorDao.insert(missingActors, context);
-            }
-        }
-        catch (e) {
-            console.error(e);
-            return false;
-        }
-        return true;
-    }
-    checkActorApplication(actor, message) {
-        if (typeof actor.application !== 'number') {
-            throw new Error(`Expecting "in-message index" (number)
-			in 'actor.terminal'`);
-        }
-        const application = message.applications[actor.application];
-        if (!application) {
-            throw new Error(`Did not find actor.application with "in-message index" ${actor.application}`);
-        }
-        actor.application = application;
-    }
-    checkActorTerminal(actor, message) {
-        if (typeof actor.terminal !== 'number') {
-            throw new Error(`Expecting "in-message index" (number)
-			in 'actor.terminal'`);
-        }
-        const terminal = message.terminals[actor.terminal];
-        if (!terminal) {
-            throw new Error(`Did not find actor.terminal with "in-message index" ${actor.terminal}`);
-        }
-        actor.terminal = terminal;
-    }
-    checkActorUserAccount(actor, message) {
-        if (typeof actor.userAccount !== 'number') {
-            throw new Error(`Expecting "in-message index" (number)
-			in 'actor.userAccount'`);
-        }
-        const userAccount = message.userAccounts[actor.userAccount];
-        if (!userAccount) {
-            throw new Error(`Did not find actor.userAccount with "in-message index" ${actor.userAccount}`);
-        }
-        actor.userAccount = userAccount;
-    }
-};
-__decorate$5([
-    Inject$2()
-], SyncInActorChecker.prototype, "actorDao", void 0);
-SyncInActorChecker = __decorate$5([
-    Injected()
-], SyncInActorChecker);
-
-let SyncInApplicationChecker = class SyncInApplicationChecker {
-    async ensureApplications(message, context) {
-        try {
-            let applicationCheckMap = await this.checkApplicationsAndDomains(message, context);
-            for (let i = 0; i < message.applications.length; i++) {
-                let application = message.applications[i];
-                message.applications[i] = applicationCheckMap
-                    .get(application.domain.name).get(application.name)
-                    .application;
-            }
-        }
-        catch (e) {
-            console.error(e);
-            return false;
-        }
-        return true;
-    }
-    async checkApplicationsAndDomains(message, context) {
-        const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(message);
-        const applications = await this.applicationDao
-            .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names);
-        for (let application of applications) {
-            let domainName = application.domain.name;
-            let applicationName = application.name;
-            for (let [_, applicationCheck] of applicationCheckMap.get(domainName)) {
-                if (applicationCheck.applicationName === applicationName) {
-                    let domainCheck = domainCheckMap.get(domainName);
-                    domainCheck.found = true;
-                    domainCheck.domain = application.domain;
-                    applicationCheck.found = true;
-                    applicationCheck.application = application;
-                }
-            }
-        }
-        let domainsToCreate = [];
-        for (let [name, domainCheck] of domainCheckMap) {
-            if (domainCheck.found) {
-                continue;
-            }
-            let domain = {
-                _localId: null,
-                name
-            };
-            domainCheck.domain = domain;
-            domainsToCreate.push(domain);
-        }
-        if (domainsToCreate.length) {
-            await this.domainDao.insert(domainsToCreate);
-        }
-        let applicationsToCreate = [];
-        for (let [domainName, applicationChecksByName] of applicationCheckMap) {
-            for (let [name, applicationCheck] of applicationChecksByName) {
-                if (applicationCheck.found) {
-                    continue;
-                }
-                let domain = domainCheckMap.get(domainName).domain;
-                let application = {
-                    domain,
-                    index: null,
-                    name,
-                    scope: 'private',
-                    status: ApplicationStatus.STUB,
-                    signature: 'localhost'
-                };
-                applicationCheck.application = application;
-                applicationsToCreate.push(application);
-            }
-        }
-        if (applicationsToCreate.length) {
-            await this.applicationDao.insert(applicationsToCreate, context);
-        }
-        return applicationCheckMap;
-    }
-    getNames(message) {
-        if (!message.applications || !(message.applications instanceof Array)) {
-            throw new Error(`Did not find applications in RepositorySynchronizationMessage.`);
-        }
-        const domainCheckMap = new Map();
-        const applicationCheckMap = new Map();
-        for (let application of message.applications) {
-            if (typeof application !== 'object') {
-                throw new Error(`Invalid ApplicationVersion.application`);
-            }
-            if (!application.name || typeof application.name !== 'string') {
-                throw new Error(`Invalid ApplicationVersion.Application.name`);
-            }
-            const domain = application.domain;
-            if (typeof domain !== 'object') {
-                throw new Error(`Invalid ApplicationVersion.Application.Domain`);
-            }
-            if (!domain.name || typeof domain.name !== 'string') {
-                throw new Error(`Invalid ApplicationVersion.Application.Domain.name`);
-            }
-            let applicationChecksForDomain = applicationCheckMap.get(domain.name);
-            if (!applicationChecksForDomain) {
-                applicationChecksForDomain = new Map();
-                applicationCheckMap.set(domain.name, applicationChecksForDomain);
-            }
-            if (!applicationChecksForDomain.has(application.name)) {
-                applicationChecksForDomain.set(application.name, {
-                    applicationName: application.name,
-                });
-            }
-            let domainCheck = domainCheckMap.get(domain.name);
-            if (!domainCheck) {
-                domainCheckMap.set(domain.name, {
-                    domainName: domain.name
-                });
-            }
-        }
-        const domainNames = [];
-        const allApplication_Names = [];
-        for (const [domainName, applicationChecksForDomainMap] of applicationCheckMap) {
-            domainNames.push(domainName);
-            for (let [applicationName, _] of applicationChecksForDomainMap) {
-                allApplication_Names.push(applicationName);
-            }
-        }
-        return {
-            allApplication_Names,
-            domainCheckMap,
-            domainNames,
-            applicationCheckMap
-        };
-    }
-};
-__decorate$5([
-    Inject$2()
-], SyncInApplicationChecker.prototype, "applicationDao", void 0);
-__decorate$5([
-    Inject$2()
-], SyncInApplicationChecker.prototype, "domainDao", void 0);
-SyncInApplicationChecker = __decorate$5([
-    Injected()
-], SyncInApplicationChecker);
-
-let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
-    async ensureApplicationVersions(message, context) {
-        try {
-            let applicationCheckMap = await this.checkVersionsApplicationsDomains(message, context);
-            for (let i = 0; i < message.applicationVersions.length; i++) {
-                const applicationVersion = message.applicationVersions[i];
-                message.applicationVersions[i] = applicationCheckMap
-                    .get(applicationVersion.application.domain.name).get(applicationVersion.application.name)
-                    .applicationVersion;
-            }
-        }
-        catch (e) {
-            console.error(e);
-            return false;
-        }
-        return true;
-    }
-    async checkVersionsApplicationsDomains(message, context) {
-        const { allApplication_Names, domainNames, applicationVersionCheckMap } = this.getNames(message);
-        const applicationVersions = await this.applicationVersionDao.findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names);
-        let lastDomain_Name;
-        let lastApplication_Name;
-        for (let applicationVersion of applicationVersions) {
-            let domainName = applicationVersion.application.domain.name;
-            let applicationName = applicationVersion.application.name;
-            if (lastDomain_Name !== domainName
-                && lastApplication_Name !== applicationName) {
-                let applicationVersionNumber = applicationVersion.integerVersion;
-                for (let [_, applicationCheck] of applicationVersionCheckMap.get(domainName)) {
-                    if (applicationCheck.applicationName === applicationName) {
-                        applicationCheck.found = true;
-                        if (applicationCheck.applicationVersionNumber > applicationVersionNumber) {
-                            throw new Error(`Installed application ${applicationName} for domain ${domainName}
-	is at a lower version ${applicationVersionNumber} than needed in message ${applicationCheck.applicationVersionNumber}.`);
-                        }
-                        applicationCheck.applicationVersion = applicationVersion;
-                    }
-                }
-                lastDomain_Name = domainName;
-                lastApplication_Name = applicationName;
-            }
-        }
-        for (const [domainName, applicationChecks] of applicationVersionCheckMap) {
-            for (let [_, applicationCheck] of applicationChecks) {
-                if (!applicationCheck.found) {
-                    // TODO: download and install the application
-                    throw new Error(`Application ${applicationCheck.applicationName} for domain ${domainName} is not installed.`);
-                }
-            }
-        }
-        return applicationVersionCheckMap;
-    }
-    getNames(message) {
-        if (!message.applicationVersions || !(message.applicationVersions instanceof Array)) {
-            throw new Error(`Did not find applicationVersions in RepositorySynchronizationMessage.`);
-        }
-        const applicationVersionCheckMap = new Map();
-        for (let applicationVersion of message.applicationVersions) {
-            if (!applicationVersion.integerVersion || typeof applicationVersion.integerVersion !== 'number') {
-                throw new Error(`Invalid ApplicationVersion.integerVersion.`);
-            }
-            const application = message.applications[applicationVersion.application];
-            if (typeof application !== 'object') {
-                throw new Error(`Invalid ApplicationVersion.application`);
-            }
-            applicationVersion.application = application;
-            const domain = application.domain;
-            let applicationChecksForDomain = applicationVersionCheckMap.get(domain.name);
-            if (!applicationChecksForDomain) {
-                applicationChecksForDomain = new Map();
-                applicationVersionCheckMap.set(domain.name, applicationChecksForDomain);
-            }
-            if (!applicationChecksForDomain.has(application.name)) {
-                applicationChecksForDomain.set(application.name, {
-                    applicationName: application.name,
-                    applicationVersionNumber: applicationVersion.integerVersion
-                });
-            }
-        }
-        const domainNames = [];
-        const allApplication_Names = [];
-        for (const [domainName, applicationChecksForDomainMap] of applicationVersionCheckMap) {
-            domainNames.push(domainName);
-            for (let [applicationName, _] of applicationChecksForDomainMap) {
-                allApplication_Names.push(applicationName);
-            }
-        }
-        return {
-            allApplication_Names,
-            domainNames,
-            applicationVersionCheckMap
-        };
-    }
-};
-__decorate$5([
-    Inject$2()
-], SyncInApplicationVersionChecker.prototype, "applicationVersionDao", void 0);
-SyncInApplicationVersionChecker = __decorate$5([
-    Injected()
-], SyncInApplicationVersionChecker);
-
-let SyncInChecker = class SyncInChecker {
-    /**
-     * Check the message and load all required auxiliary entities.
-     */
-    async checkMessage(message, context) {
-        // FIXME: replace as many DB lookups as possible with Terminal State lookups
-        if (!await this.syncInUserAccountChecker.ensureUserAccounts(message, context)) {
-            return false;
-        }
-        if (!await this.syncInTerminalChecker.ensureTerminals(message, context)) {
-            return false;
-        }
-        if (!await this.syncInApplicationChecker.ensureApplications(message, context)) {
-            return false;
-        }
-        if (!await this.syncInActorChecker.ensureActors(message, context)) {
-            return false;
-        }
-        if (!await this.syncInRepositoryChecker.ensureRepositories(message, context)) {
-            return false;
-        }
-        if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(message, context)) {
-            return false;
-        }
-        if (!await this.syncInDataChecker.checkData(message, context)) {
-            return false;
-        }
-        return true;
-    }
-};
-__decorate$5([
-    Inject$2()
-], SyncInChecker.prototype, "syncInActorChecker", void 0);
-__decorate$5([
-    Inject$2()
-], SyncInChecker.prototype, "syncInApplicationChecker", void 0);
-__decorate$5([
-    Inject$2()
-], SyncInChecker.prototype, "syncInApplicationVersionChecker", void 0);
-__decorate$5([
-    Inject$2()
-], SyncInChecker.prototype, "syncInDataChecker", void 0);
-__decorate$5([
-    Inject$2()
-], SyncInChecker.prototype, "syncInRepositoryChecker", void 0);
-__decorate$5([
-    Inject$2()
-], SyncInChecker.prototype, "syncInTerminalChecker", void 0);
-__decorate$5([
-    Inject$2()
-], SyncInChecker.prototype, "syncInUserAccountChecker", void 0);
-SyncInChecker = __decorate$5([
-    Injected()
-], SyncInChecker);
-
-let SyncInDataChecker = class SyncInDataChecker {
-    /**
-     * Every dataMessage.data.repoTransHistories array must be sorted before entering
-     * this method.
-     *
-     * @param {IDataToTM[]} dataMessagesWithCompatibleApplications
-     * @returns {DataCheckResults}
-     */
-    async checkData(message, context) {
-        const history = message.history;
-        try {
-            if (!history || typeof history !== 'object') {
-                throw new Error(`Invalid RepositorySynchronizationMessage.history`);
-            }
-            if (typeof history.GUID !== 'string' || history.GUID.length !== 36) {
-                return false;
-            }
-            if (!history.operationHistory || !(history.operationHistory instanceof Array)) {
-                return false;
-            }
-            if (!history.saveTimestamp || typeof history.saveTimestamp !== 'number') {
-                throw new Error(`Invalid RepositorySynchronizationMessage.history.saveTimestamp`);
-            }
-            if (history.transactionHistory) {
-                throw new Error(`RepositorySynchronizationMessage.history.transactionHistory cannot be specified`);
-            }
-            if (history.repositoryTransactionType) {
-                throw new Error(`RepositorySynchronizationMessage.history.repositoryTransactionType cannot be specified`);
-            }
-            if (history.syncTimestamp) {
-                throw new Error(`RepositorySynchronizationMessage.history.syncTimestamp cannot be specified`);
-            }
-            // Repository is already set in SyncInRepositoryChecker
-            history.repositoryTransactionType = RepositoryTransactionType.REMOTE;
-            history.syncTimestamp = message.syncTimestamp;
-            delete history._localId;
-            const applicationEntityMap = await this.populateApplicationEntityMap(message);
-            await this.checkOperationHistories(message, applicationEntityMap, context);
-        }
-        catch (e) {
-            console.error(e);
-            return false;
-        }
-        return true;
-    }
-    async populateApplicationEntityMap(message) {
-        const applicationVersionsByIds = this.terminalStore.getAllApplicationVersionsByIds();
-        const applicationEntityMap = new Map();
-        for (const messageApplicationVersion of message.applicationVersions) {
-            const applicationVersion = applicationVersionsByIds[messageApplicationVersion._localId];
-            for (const applicationEntity of applicationVersion.entities) {
-                let entitiesForDomain = applicationEntityMap.get(applicationVersion.application.domain.name);
-                if (!entitiesForDomain) {
-                    entitiesForDomain = new Map();
-                    applicationEntityMap.set(applicationVersion.application.domain.name, entitiesForDomain);
-                }
-                let entitiesForApplication = entitiesForDomain.get(applicationVersion.application.name);
-                if (!entitiesForApplication) {
-                    entitiesForApplication = new Map();
-                    entitiesForDomain.set(applicationVersion.application.name, entitiesForApplication);
-                }
-                entitiesForApplication.set(applicationEntity.index, applicationEntity);
-            }
-        }
-        return applicationEntityMap;
-    }
-    async checkOperationHistories(message, applicationEntityMap, context) {
-        const history = message.history;
-        if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
-            throw new Error(`Invalid RepositorySynchronizationMessage.history.operationHistory`);
-        }
-        const systemWideOperationIds = getSysWideOpIds(history.operationHistory.length, this.airportDatabase, this.sequenceGenerator);
-        let orderNumber = 0;
-        for (let i = 0; i < history.operationHistory.length; i++) {
-            const operationHistory = history.operationHistory[i];
-            if (typeof operationHistory !== 'object') {
-                throw new Error(`Invalid operationHistory`);
-            }
-            if (operationHistory.orderNumber) {
-                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.orderNumber cannot be specified,
-				the position of orderHistory record determines it's order`);
-            }
-            operationHistory.orderNumber = ++orderNumber;
-            switch (operationHistory.changeType) {
-                case ChangeType.DELETE_ROWS:
-                case ChangeType.INSERT_VALUES:
-                case ChangeType.UPDATE_ROWS:
-                    break;
-                default:
-                    throw new Error(`Invalid operationHistory.changeType: ${operationHistory.changeType}`);
-            }
-            if (typeof operationHistory.entity !== 'object') {
-                throw new Error(`Invalid operationHistory.entity`);
-            }
-            if (typeof operationHistory.entity.applicationVersion !== 'number') {
-                throw new Error(`Expecting "in-message index" (number)
-					in 'operationHistory.entity.applicationVersion'`);
-            }
-            const actor = message.actors[operationHistory.actor];
-            if (!actor) {
-                throw new Error(`Cannot find Actor for "in-message id" RepositorySynchronizationMessage.history.actor`);
-            }
-            operationHistory.actor = actor;
-            const applicationVersion = message.applicationVersions[operationHistory.entity.applicationVersion];
-            if (!applicationVersion) {
-                throw new Error(`Invalid index into message.applicationVersions [${operationHistory.entity.applicationVersion}],
-				in operationHistory.entity.applicationVersion`);
-            }
-            const applicationEntity = applicationEntityMap.get(applicationVersion.application.domain.name)
-                .get(applicationVersion.application.name).get(operationHistory.entity.index);
-            if (!applicationEntity) {
-                throw new Error(`Invalid operationHistory.entity.index: ${operationHistory.entity.index}`);
-            }
-            operationHistory.entity = applicationEntity;
-            if (operationHistory.repositoryTransactionHistory) {
-                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.repositoryTransactionHistory cannot be specified`);
-            }
-            operationHistory.repositoryTransactionHistory = history;
-            if (operationHistory.systemWideOperationId) {
-                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.systemWideOperationId cannot be specified`);
-            }
-            operationHistory.systemWideOperationId = systemWideOperationIds[i];
-            delete operationHistory._localId;
-            let actorIdColumnMapByIndex = new Map();
-            let repositoryIdColumnMapByIndex = new Map();
-            for (const column of operationHistory.entity.columns) {
-                switch (column.name) {
-                    case airEntity.ORIGINAL_ACTOR_ID:
-                        actorIdColumnMapByIndex.set(column.index, column);
-                        column.index;
-                        break;
-                    case airEntity.ORIGINAL_REPOSITORY_ID:
-                        repositoryIdColumnMapByIndex.set(column.index, column);
-                        column.index;
-                        break;
-                }
-                if (/.*_AID_[\d]+$/.test(column.name)
-                    && column.manyRelationColumns.length) {
-                    actorIdColumnMapByIndex.set(column.index, column);
-                }
-                if (/.*_RID_[\d]+$/.test(column.name)
-                    && column.manyRelationColumns.length) {
-                    repositoryIdColumnMapByIndex.set(column.index, column);
-                }
-            }
-            await this.checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message, context);
-        }
-    }
-    async checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message, context) {
-        const recordHistories = operationHistory.recordHistory;
-        if (!(recordHistories instanceof Array) || !recordHistories.length) {
-            throw new Error(`Inalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory`);
-        }
-        for (const recordHistory of recordHistories) {
-            if (!recordHistory._actorRecordId || typeof recordHistory._actorRecordId !== 'number') {
-                throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory._actorRecordId`);
-            }
-            switch (operationHistory.changeType) {
-                case ChangeType.INSERT_VALUES:
-                    if (recordHistory.actor) {
-                        throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.actor
-for ChangeType.INSERT_VALUES`);
-                    }
-                    recordHistory.actor = operationHistory.actor;
-                    break;
-                case ChangeType.DELETE_ROWS:
-                case ChangeType.UPDATE_ROWS: {
-                    // If no actor is present on record level its the same actor that created the repositoryTransactionHistory
-                    if (recordHistory.actor === undefined) {
-                        recordHistory.actor = operationHistory.actor;
-                    }
-                    else {
-                        const actor = message.actors[recordHistory.actor];
-                        if (!actor) {
-                            throw new Error(`Did find Actor for "in-message id" in RepositorySynchronizationMessage.history -> operationHistory.actor`);
-                        }
-                        recordHistory.actor = actor;
-                    }
-                    break;
-                }
-            }
-            if (recordHistory.operationHistory) {
-                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
-            }
-            this.checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context);
-            this.checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context);
-            recordHistory.operationHistory = operationHistory;
-            delete recordHistory._localId;
-        }
-    }
-    checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context) {
-        switch (operationHistory.changeType) {
-            case ChangeType.DELETE_ROWS:
-                if (recordHistory.newValues) {
-                    throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues
-for ChangeType.DELETE_ROWS`);
-                }
-                return;
-            case ChangeType.INSERT_VALUES:
-            case ChangeType.UPDATE_ROWS:
-                if (!(recordHistory.newValues instanceof Array) || !recordHistory.newValues.length) {
-                    throw new Error(`Must specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues
-for ChangeType.INSERT_VALUES|UPDATE_ROWS`);
-                }
-                break;
-        }
-        for (const newValue of recordHistory.newValues) {
-            if (newValue.recordHistory) {
-                throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.recordHistory`);
-            }
-            newValue.recordHistory = recordHistory;
-            if (typeof newValue.columnIndex !== 'number') {
-                throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.columnIndex`);
-            }
-            if (typeof newValue.newValue === undefined) {
-                throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue`);
-            }
-        }
-        for (const newValue of recordHistory.newValues) {
-            const actorIdColumn = actorIdColumnMapByIndex.get(newValue.columnIndex);
-            if (actorIdColumn) {
-                const originalActor = message.actors[newValue.newValue];
-                if (!originalActor) {
-                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
-Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessage.actors[${newValue.newValue}]`);
-                }
-                newValue.newValue = originalActor._localId;
-            }
-            const repositoryIdColumn = repositoryIdColumnMapByIndex.get(newValue.columnIndex);
-            if (repositoryIdColumn) {
-                if (newValue.newValue === -1) {
-                    newValue.newValue = message.history.repository._localId;
-                }
-                else {
-                    const originalRepository = message.referencedRepositories[newValue.newValue];
-                    if (!originalRepository) {
-                        throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
-	Value is for ${repositoryIdColumn.name} and could find RepositorySynchronizationMessage.referencedRepositories[${newValue.newValue}]`);
-                    }
-                    newValue.newValue = originalRepository._localId;
-                }
-            }
-        }
-    }
-    checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context) {
-        switch (operationHistory.changeType) {
-            case ChangeType.DELETE_ROWS:
-            case ChangeType.INSERT_VALUES:
-                if (recordHistory.oldValues) {
-                    throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues
-for ChangeType.DELETE_ROWS|INSERT_VALUES`);
-                }
-                return;
-            case ChangeType.UPDATE_ROWS:
-                if (!(recordHistory.newValues instanceof Array) || !recordHistory.oldValues.length) {
-                    throw new Error(`Must specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues
-for ChangeType.UPDATE_ROWS`);
-                }
-                break;
-        }
-        for (const oldValue of recordHistory.oldValues) {
-            if (oldValue.recordHistory) {
-                throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.recordHistory`);
-            }
-            oldValue.recordHistory = recordHistory;
-            if (typeof oldValue.columnIndex !== 'number') {
-                throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.columnIndex`);
-            }
-            if (typeof oldValue.oldValue === undefined) {
-                throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue`);
-            }
-        }
-        for (const oldValue of recordHistory.oldValues) {
-            const actorIdColumn = actorIdColumnMapByIndex.get(oldValue.columnIndex);
-            if (actorIdColumn) {
-                const originalActor = message.actors[oldValue.oldValue];
-                if (!originalActor) {
-                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
-Value is for ORIGINAL_ACTOR_ID and could find RepositorySynchronizationMessage.actors[${oldValue.oldValue}]`);
-                }
-                oldValue.oldValue = originalActor._localId;
-            }
-            const repositoryIdColumn = repositoryIdColumnMapByIndex.get(oldValue.columnIndex);
-            if (repositoryIdColumn) {
-                const originalRepository = message.referencedRepositories[oldValue.oldValue];
-                if (!originalRepository) {
-                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
-Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${oldValue.oldValue}]`);
-                }
-                oldValue.oldValue = originalRepository._localId;
-            }
-        }
-    }
-};
-__decorate$5([
-    Inject$2()
-], SyncInDataChecker.prototype, "airportDatabase", void 0);
-__decorate$5([
-    Inject$2()
-], SyncInDataChecker.prototype, "sequenceGenerator", void 0);
-__decorate$5([
-    Inject$2()
-], SyncInDataChecker.prototype, "terminalStore", void 0);
-SyncInDataChecker = __decorate$5([
-    Injected()
-], SyncInDataChecker);
-
-let SyncInRepositoryChecker = class SyncInRepositoryChecker {
-    async ensureRepositories(message, context) {
-        try {
-            let repositoryGUIDs = [];
-            let messageRepositoryIndexMap = new Map();
-            for (let i = 0; i < message.referencedRepositories.length; i++) {
-                this.checkRepository(message.referencedRepositories[i], i, repositoryGUIDs, messageRepositoryIndexMap, message);
-            }
-            const history = message.history;
-            if (history.isRepositoryCreation) {
-                if (typeof history.repository !== 'object') {
-                    throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be an object
-	if RepositorySynchronizationMessage.history.isRepositoryCreation === true`);
-                }
-                this.checkRepository(history.repository, null, repositoryGUIDs, messageRepositoryIndexMap, message);
-            }
-            else {
-                if (typeof history.repository !== 'string') {
-                    throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be a string
-	if RepositorySynchronizationMessage.history.isRepositoryCreation === false`);
-                }
-                repositoryGUIDs.push(history.repository);
-            }
-            const repositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs);
-            for (const repository of repositories) {
-                const messageUserAccountIndex = messageRepositoryIndexMap.get(repository.GUID);
-                if (messageUserAccountIndex || messageUserAccountIndex === 0) {
-                    message.referencedRepositories[messageUserAccountIndex] = repository;
-                }
-                else {
-                    // Populating ahead of potential insert is OK, object
-                    // gets modified with required state on an insert
-                    history.repository = repository;
-                }
-            }
-            const missingRepositories = message.referencedRepositories
-                .filter(messageRepository => !messageRepository._localId);
-            if (typeof history.repository !== 'object') {
-                throw new Error(`Repository with GUID ${history.repository} is not
-					present and cannot be synced
-	This RepositorySynchronizationMessage is for an existing repository and that
-	repository must already be loaded in this database for this message to be
-	processed.`);
-            }
-            else if (!history.repository._localId) {
-                missingRepositories.push(history.repository);
-            }
-            if (missingRepositories.length) {
-                await this.repositoryDao.insert(missingRepositories, context);
-            }
-        }
-        catch (e) {
-            console.error(e);
-            return false;
-        }
-        return true;
-    }
-    checkRepository(repository, repositoryIndex, repositoryGUIDs, messageRepositoryIndexMap, message) {
-        if (typeof repository.ageSuitability !== 'number') {
-            throw new Error(`Invalid 'repository.ageSuitability'`);
-        }
-        if (!repository.createdAt || typeof repository.createdAt !== 'string') {
-            throw new Error(`Invalid 'repository.createdAt'`);
-        }
-        repository.createdAt = new Date(repository.createdAt);
-        if (typeof repository.immutable !== 'boolean') {
-            throw new Error(`Invalid 'repository.immutable'`);
-        }
-        if (!repository.source || typeof repository.source !== 'string') {
-            throw new Error(`Invalid 'repository.source'`);
-        }
-        if (typeof repository.GUID !== 'string' || repository.GUID.length !== 36) {
-            throw new Error(`Invalid 'repository.GUID'`);
-        }
-        if (typeof repository.owner !== 'number') {
-            throw new Error(`Expecting "in-message index" (number)
-				in 'repository.owner'`);
-        }
-        const userAccount = message.userAccounts[repository.owner];
-        if (!userAccount) {
-            throw new Error(`Did not find repository.owner (UserAccount) with "in-message index" ${repository.owner}`);
-        }
-        repository.owner = userAccount;
-        repositoryGUIDs.push(repository.GUID);
-        if (typeof repositoryIndex === 'number') {
-            messageRepositoryIndexMap.set(repository.GUID, repositoryIndex);
-        }
-        // Make sure id field is not in the input
-        delete repository._localId;
-    }
-};
-__decorate$5([
-    Inject$2()
-], SyncInRepositoryChecker.prototype, "repositoryDao", void 0);
-SyncInRepositoryChecker = __decorate$5([
-    Injected()
-], SyncInRepositoryChecker);
-
-let SyncInTerminalChecker = class SyncInTerminalChecker {
-    async ensureTerminals(message, context) {
-        try {
-            let terminalGUIDs = [];
-            let messageTerminalIndexMap = new Map();
-            for (let i = 0; i < message.terminals.length; i++) {
-                const terminal = message.terminals[i];
-                if (typeof terminal.owner !== 'number') {
-                    throw new Error(`Expecting "in-message index" (number)
-					in 'terminal.owner' of RepositorySynchronizationMessage.terminals`);
-                }
-                if (typeof terminal.GUID !== 'string' || terminal.GUID.length !== 36) {
-                    throw new Error(`Invalid 'terminal.GUID' in RepositorySynchronizationMessage.terminals`);
-                }
-                if (terminal.isLocal !== undefined) {
-                    throw new Error(`'terminal.isLocal' cannot defined in RepositorySynchronizationMessage.terminals`);
-                }
-                terminal.isLocal = false;
-                const owner = message.userAccounts[terminal.owner];
-                if (!owner) {
-                    throw new Error(`Did not find userAccount for terminal.owner with "in-message index" ${terminal.owner}
-						for RepositorySynchronizationMessage.terminals`);
-                }
-                terminal.owner = owner;
-                terminalGUIDs.push(terminal.GUID);
-                messageTerminalIndexMap.set(terminal.GUID, i);
-            }
-            const terminals = await this.terminalDao.findByGUIDs(terminalGUIDs);
-            const foundTerminalsByGUID = new Map();
-            for (const terminal of terminals) {
-                foundTerminalsByGUID.set(terminal.GUID, terminal);
-                const messageUserAccountIndex = messageTerminalIndexMap.get(terminal.GUID);
-                message.terminals[messageUserAccountIndex] = terminal;
-            }
-            const missingTerminals = message.terminals
-                .filter(messageTerminal => !foundTerminalsByGUID.has(messageTerminal.GUID));
-            if (missingTerminals.length) {
-                await this.addMissingTerminals(missingTerminals, context);
-            }
-        }
-        catch (e) {
-            console.error(e);
-            return false;
-        }
-        return true;
-    }
-    async addMissingTerminals(missingTerminals, context) {
-        for (const terminal of missingTerminals) {
-            terminal.isLocal = false;
-        }
-        await this.terminalDao.insert(missingTerminals, context);
-    }
-};
-__decorate$5([
-    Inject$2()
-], SyncInTerminalChecker.prototype, "terminalDao", void 0);
-SyncInTerminalChecker = __decorate$5([
-    Injected()
-], SyncInTerminalChecker);
-
-let SyncInUserAccountChecker = class SyncInUserAccountChecker {
-    async ensureUserAccounts(message, context) {
-        try {
-            let userAccountGUIDs = [];
-            let messageUserAccountIndexMap = new Map();
-            for (let i = 0; i < message.userAccounts.length; i++) {
-                const userAccount = message.userAccounts[i];
-                if (typeof userAccount.GUID !== 'string' || userAccount.GUID.length !== 36) {
-                    throw new Error(`Invalid 'userAccount.GUID'`);
-                }
-                if (typeof userAccount.username !== 'string' || userAccount.username.length < 3) {
-                    throw new Error(`Invalid 'userAccount.username'`);
-                }
-                userAccountGUIDs.push(userAccount.GUID);
-                messageUserAccountIndexMap.set(userAccount.GUID, i);
-            }
-            const userAccounts = await this.userAccountDao.findByGUIDs(userAccountGUIDs);
-            const foundUserAccountsByGUID = new Map();
-            for (const userAccount of userAccounts) {
-                foundUserAccountsByGUID.set(userAccount.GUID, userAccount);
-                const messageUserAccountIndex = messageUserAccountIndexMap.get(userAccount.GUID);
-                message.userAccounts[messageUserAccountIndex] = userAccount;
-            }
-            const missingUserAccounts = message.userAccounts
-                .filter(messageUserAccount => !foundUserAccountsByGUID.has(messageUserAccount.GUID));
-            if (missingUserAccounts.length) {
-                await this.addMissingUserAccounts(missingUserAccounts, context);
-            }
-        }
-        catch (e) {
-            console.error(e);
-            return false;
-        }
-        return true;
-    }
-    async addMissingUserAccounts(missingUserAccounts, context) {
-        for (const userAccount of missingUserAccounts) {
-            if (!userAccount.username || typeof userAccount.username !== 'string') {
-                throw new Error(`Invalid UserAccount.username ${userAccount.username}`);
-            }
-        }
-        await this.userAccountDao.insert(missingUserAccounts, context);
-    }
-};
-__decorate$5([
-    Inject$2()
-], SyncInUserAccountChecker.prototype, "userAccountDao", void 0);
-SyncInUserAccountChecker = __decorate$5([
-    Injected()
-], SyncInUserAccountChecker);
-
-let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
-    /**
-     * In stage one:
-     *
-     *  1)  Unique create/update/delete statement datastructures are generated
-     *  2)  Synchronization conflict datastructure is generated
-     *
-     * @param {Map<repositoryLocalId, ISyncRepoTransHistory[]>} repositoryTransactionHistoryMapByrepositoryLocalId
-     * @param {Map<Actor_LocalId, IActor>} actorMayById
-     * @returns {Promise<void>}
-     */
-    async performStage1DataProcessing(repositoryTransactionHistoryMapByrepositoryLocalId, actorMayById, context) {
-        await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByrepositoryLocalId);
-        const changedRecordIds = new Map();
-        // query for all local operations on records in a repository (since the earliest
-        // received change time).  Get the
-        // changes by repository _localIds or by the actual tables and records in those tables
-        // that will be updated or deleted.
-        for (const [repositoryLocalId, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByrepositoryLocalId) {
-            const changedRecordsForRepo = {
-                actorRecordIdsByLocalIds: new Map(),
-                firstChangeTime: new Date().getTime() + 10000000000
-            };
-            changedRecordIds.set(repositoryLocalId, changedRecordsForRepo);
-            for (const repoTransHistory of repoTransHistoriesForRepo) {
-                // determine the earliest change time of incoming history records
-                const saveMillis = repoTransHistory.saveTimestamp;
-                if (saveMillis
-                    < changedRecordsForRepo.firstChangeTime) {
-                    changedRecordsForRepo.firstChangeTime = repoTransHistory.saveTimestamp;
-                }
-                for (const operationHistory of repoTransHistory.operationHistory) {
-                    // Collect the Actor related localIds
-                    const idsForEntity = ensureChildJsMap(changedRecordsForRepo.actorRecordIdsByLocalIds, operationHistory.entity._localId);
-                    for (const recordHistory of operationHistory.recordHistory) {
-                        // Collect the Actor related localIds
-                        ensureChildJsSet(idsForEntity, recordHistory.actor._localId)
-                            .add(recordHistory._actorRecordId);
-                        // add a map of new values
-                        const newValueMap = new Map();
-                        recordHistory.newValueMap = newValueMap;
-                        for (const newValue of recordHistory.newValues) {
-                            newValueMap.set(newValue.columnIndex, newValue);
-                        }
-                    }
-                }
-            }
-        }
-        const allRepoTransHistoryMapByRepoId = new Map();
-        const allRemoteRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByrepositoryLocalId);
-        // find local history for the matching repositories and corresponding time period
-        const localRepoTransHistoryMapByrepositoryLocalId = await this.repositoryTransactionHistoryDao
-            .findAllLocalChangesForRecordIds(changedRecordIds);
-        const allLocalRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, localRepoTransHistoryMapByrepositoryLocalId, true);
-        // Find all actors that modified the locally recorded history, which are not already
-        // in the actorMapById collect actors not already in cache
-        const newlyFoundActorSet = new Set();
-        for (const [repositoryLocalId, repositoryTransactionHistoriesForRepository] of localRepoTransHistoryMapByrepositoryLocalId) {
-            for (const repositoryTransactionHistory of repositoryTransactionHistoriesForRepository) {
-                for (const operationHistory of repositoryTransactionHistory.operationHistory) {
-                    const actorId = operationHistory.actor._localId;
-                    if (actorMayById.get(actorId) === undefined) {
-                        newlyFoundActorSet.add(actorId);
-                    }
-                }
-            }
-        }
-        if (newlyFoundActorSet.size) {
-            // cache remaining actors
-            const newActors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(Array.from(newlyFoundActorSet));
-            for (const newActor of newActors) {
-                actorMayById.set(newActor._localId, newActor);
-            }
-        }
-        // sort all repository histories in processing order
-        for (const [repositoryLocalId, repoTransHistoriesForRepository] of allRepoTransHistoryMapByRepoId) {
-            this.repositoryTransactionHistoryDuo
-                .sortRepoTransHistories(repoTransHistoriesForRepository, actorMayById);
-        }
-        const recordCreations = new Map();
-        const recordUpdates = new Map();
-        const recordDeletions = new Map();
-        const syncConflictMapByRepoId = new Map();
-        // FIXME: add code to ensure that remote records coming in are performed only
-        // by the actors that claim the operation AND that the records created are
-        // created only by the actors that perform the operation (actorIds match)
-        for (const [repositoryLocalId, repoTransHistoriesForRepo] of allRepoTransHistoryMapByRepoId) {
-            for (const repoTransHistory of repoTransHistoriesForRepo) {
-                for (const operationHistory of repoTransHistory.operationHistory) {
-                    switch (operationHistory.changeType) {
-                        case ChangeType.INSERT_VALUES:
-                            this.processCreation(repositoryLocalId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, recordDeletions, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId);
-                            break;
-                        case ChangeType.UPDATE_ROWS:
-                            this.processUpdate(repositoryLocalId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId);
-                            break;
-                        case ChangeType.DELETE_ROWS:
-                            this.processDeletion(repositoryLocalId, operationHistory, recordCreations, recordUpdates, recordDeletions, allLocalRecordDeletions);
-                            break;
-                    }
-                }
-            }
-        }
-        return {
-            recordCreations,
-            recordDeletions,
-            recordUpdates,
-            syncConflictMapByRepoId
-        };
-    }
-    async populateSystemWideOperationIds(repositoryTransactionHistoryMapByrepositoryLocalId) {
-        let numSystemWideOperationIds = 0;
-        for (const [_, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByrepositoryLocalId) {
-            for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
-                numSystemWideOperationIds += repositoryTransactionHistory
-                    .operationHistory.length;
-            }
-        }
-        const systemWideOperationIds = await getSysWideOpIds(numSystemWideOperationIds, this.airportDatabase, this.sequenceGenerator);
-        let i = 0;
-        for (const [_, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByrepositoryLocalId) {
-            for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
-                for (const operationHistory of repositoryTransactionHistory.operationHistory) {
-                    operationHistory.systemWideOperationId = systemWideOperationIds[i];
-                    i++;
-                }
-            }
-        }
-    }
-    ensureRecordHistoryLocalId(recordHistory, actorRecordLocalIdSetByActor, _actorRecordId = recordHistory._actorRecordId) {
-        ensureChildJsMap(actorRecordLocalIdSetByActor, recordHistory.actor._localId)
-            .set(_actorRecordId, recordHistory._localId);
-    }
-    getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByRepoId, isLocal = false) {
-        const recordDeletions = new Map();
-        for (const [repositoryLocalId, repoTransHistories] of repositoryTransactionHistoryMapByRepoId) {
-            this.mergeArraysInMap(allRepoTransHistoryMapByRepoId, repositoryLocalId, repoTransHistories);
-            for (const repoTransHistory of repoTransHistories) {
-                repoTransHistory.isLocal = isLocal;
-                for (const operationHistory of repoTransHistory.operationHistory) {
-                    switch (operationHistory.changeType) {
-                        case ChangeType.DELETE_ROWS:
-                            for (const recordHistory of operationHistory.recordHistory) {
-                                this.ensureRecordHistoryLocalId(recordHistory, this.syncInUtils
-                                    .ensureRecordMapForRepoInTable(repositoryLocalId, operationHistory, recordDeletions));
-                            }
-                            break;
-                    }
-                }
-            }
-        }
-        return recordDeletions;
-    }
-    mergeArraysInMap(map, key, array) {
-        let targetArray = map.get(key);
-        if (!targetArray) {
-            targetArray = array;
-        }
-        else {
-            targetArray = targetArray.concat(array);
-        }
-        map.set(key, targetArray);
-    }
-    /*
-    NOTE: local creates are not inputted into this processing.
-     */
-    processCreation(repositoryLocalId, operationHistory, isLocal, recordCreations, recordUpdates, recordDeletions, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId) {
-        const recordUpdatesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, recordUpdates);
-        const recordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, recordDeletions);
-        const allRemoteRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, allRemoteRecordDeletions);
-        const allLocalRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, allLocalRecordDeletions);
-        const insertsForEntityInRepo = this.syncInUtils.ensureRecordMapForRepoInTable(repositoryLocalId, operationHistory, recordCreations);
-        for (const recordHistory of operationHistory.recordHistory) {
-            if (this.getRecord(recordHistory, insertsForEntityInRepo)) {
-                throw new Error(`A record is being created more than once.
-					${this.getRecordInfo(repositoryLocalId, operationHistory, recordHistory)}
-					This is not possible if every remote change is only processed once.
-					`);
-            }
-            if (isLocal) {
-                throw new Error(`Remotely mutated record is being created locally.
-					${this.getRecordInfo(repositoryLocalId, operationHistory, recordHistory)}
-					This is not possible if changes are never sent to originating TMs.
-					`);
-            }
-            if (this.hasRecordId(recordHistory, recordDeletesForRepoInTable)) {
-                throw new Error(`
-				Remotely created record is being deleted remotely before it's been created.
-					${this.getRecordInfo(repositoryLocalId, operationHistory, recordHistory)}
-					This is not possible if all server clocks are synced.
-					`);
-            }
-            if (this.getRecordHistoryLocalId(recordHistory, allLocalRecordDeletesForRepoInTable)) {
-                throw new Error(`Remotely created record is being deleted locally.
-					${this.getRecordInfo(repositoryLocalId, operationHistory, recordHistory)}
-					This is not possible if every remote change is only processed once.
-					`);
-            }
-            const remoteDeleteRecordHistoryLocalId = this.getRecordHistoryLocalId(recordHistory, allRemoteRecordDeletesForRepoInTable);
-            if (remoteDeleteRecordHistoryLocalId) {
-                // remotely created record has been remotely deleted
-                this.addSyncConflict(SynchronizationConflict_Type.REMOTE_CREATE_REMOTELY_DELETED, repositoryLocalId, recordHistory, {
-                    _localId: remoteDeleteRecordHistoryLocalId
-                }, syncConflictMapByRepoId);
-                // If the record has been deleted, do not process the create
-                continue;
-            }
-            const createdRecord = this.ensureColumnValueMap(recordHistory, insertsForEntityInRepo);
-            if (this.getRecord(recordHistory, recordUpdatesForRepoInTable)) {
-                throw new Error(`Remotely created record is being updated BEFORE it is created.
-					${this.getRecordInfo(repositoryLocalId, operationHistory, recordHistory)}
-					This is not possible if all server clocks are synced.
-					`);
-            }
-            // Record the creation of the record
-            for (const newValue of recordHistory.newValues) {
-                createdRecord.set(newValue.columnIndex, newValue.newValue);
-            }
-        }
-    }
-    /*
-    NOTE: local updates to records NOT in incoming changes do not get inputted into
-    this processing.
-     */
-    processUpdate(repositoryLocalId, operationHistory, isLocal, recordCreations, recordUpdates, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId) {
-        const recordCreationsForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, recordCreations);
-        const allRemoteRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, allRemoteRecordDeletions);
-        const allLocalRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, allLocalRecordDeletions);
-        const updatesForEntityInRepo = this.syncInUtils.ensureRecordMapForRepoInTable(repositoryLocalId, operationHistory, recordUpdates);
-        for (const recordHistory of operationHistory.recordHistory) {
-            const localDeleteRecordHistoryLocalId = this.getRecordHistoryLocalId(recordHistory, allLocalRecordDeletesForRepoInTable);
-            if (localDeleteRecordHistoryLocalId) {
-                if (!isLocal) {
-                    // A remote update to a record has been locally deleted
-                    this.addSyncConflict(SynchronizationConflict_Type.REMOTE_UPDATE_LOCALLY_DELETED, repositoryLocalId, recordHistory, {
-                        _localId: localDeleteRecordHistoryLocalId
-                    }, syncConflictMapByRepoId);
-                }
-                // else {a local update to a record has been locally deleted - nothing to do}
-                // If the record has been deleted, do not process the update
-                continue;
-            }
-            const remoteDeleteRecordHistoryLocalId = this.getRecordHistoryLocalId(recordHistory, allRemoteRecordDeletesForRepoInTable);
-            if (remoteDeleteRecordHistoryLocalId) {
-                if (isLocal) {
-                    // A local update for a record that has been deleted remotely
-                    this.addSyncConflict(SynchronizationConflict_Type.LOCAL_UPDATE_REMOTELY_DELETED, repositoryLocalId, recordHistory, {
-                        _localId: remoteDeleteRecordHistoryLocalId
-                    }, syncConflictMapByRepoId);
-                }
-                // else {remote deletions do not cause conflicts for remotely updated records}
-                // If the record has been deleted, do not process the update
-                continue;
-            }
-            // If the record has been created, update the creation record instead
-            let createdRecord = this.getRecord(recordHistory, recordCreationsForRepoInTable);
-            if (createdRecord) {
-                if (isLocal) {
-                    throw new Error(`Remotely created records are being updated locally.
-					${this.getRecordInfo(repositoryLocalId, operationHistory, recordHistory)}
-					This is not possible if every remote change is only processed once.
-					`);
-                }
-                else {
-                    // remotely created record is being updated remotely - normal flow
-                    for (const newValue of recordHistory.newValues) {
-                        createdRecord.set(newValue.columnIndex, newValue.newValue);
-                    }
-                }
-                // No need to record updates, already taken into account in the create
-                continue;
-            }
-            // record update
-            let updatedRecord = this.ensureRecord(recordHistory, updatesForEntityInRepo);
-            let synchronizationConflict;
-            for (const newValue of recordHistory.newValues) {
-                if (isLocal) {
-                    const columnIndex = newValue.columnIndex;
-                    const recordUpdate = updatedRecord.get(columnIndex);
-                    if (recordUpdate) {
-                        // remotely updated record value is being updated locally
-                        if (!synchronizationConflict) {
-                            synchronizationConflict = this.addSyncConflict(SynchronizationConflict_Type.REMOTE_UPDATE_LOCALLY_UPDATED, repositoryLocalId, {
-                                _localId: recordUpdate.recordHistoryLocalId,
-                            }, {
-                                _localId: remoteDeleteRecordHistoryLocalId
-                            }, syncConflictMapByRepoId);
-                            synchronizationConflict.values = [];
-                        }
-                        synchronizationConflict.values.push({
-                            columnIndex,
-                            synchronizationConflict
-                        });
-                        // no need to update since the value is already there
-                        // Remove the update
-                        updatedRecord.delete(newValue.columnIndex);
-                    }
-                }
-                else {
-                    // remotely updated record value is being updated remotely - normal flow
-                    // replace the older update with the newer one
-                    updatedRecord.set(newValue.columnIndex, {
-                        newValue: newValue.newValue,
-                        recordHistoryLocalId: recordHistory._localId
-                    });
-                }
-            }
-        }
-    }
-    /*
-    NOTE: local deletes of records NOT in incoming changes do not get inputted into
-    this processing.
-     */
-    processDeletion(repositoryLocalId, operationHistory, recordCreations, recordUpdates, recordDeletions, allLocalRecordDeletions) {
-        const recordCreationsForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, recordCreations);
-        const recordUpdatesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, recordUpdates);
-        const allLocalRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryLocalId, operationHistory, allLocalRecordDeletions);
-        const deletesForEntityInRepo = this.syncInUtils.ensureRecordMapForRepoInTable(repositoryLocalId, operationHistory, recordDeletions);
-        for (const recordHistory of operationHistory.recordHistory) {
-            let recordCreationsForActorInRepoInTable = this.getRecordsForActor(recordHistory, recordCreationsForRepoInTable);
-            // If a remotely deleted record was also created remotely
-            if (recordCreationsForActorInRepoInTable
-                && recordCreationsForActorInRepoInTable.get(recordHistory._actorRecordId)) {
-                // remote deletions do not cause conflicts for remotely created records
-                // Remove the creation of the record
-                recordCreationsForActorInRepoInTable.delete(recordHistory._actorRecordId);
-                // No need to record a deletion for a record that was also created (remotely)
-                continue;
-            }
-            let recordUpdatesForActorInRepoInTable = this.getRecordsForActor(recordHistory, recordUpdatesForRepoInTable);
-            // If a remotely deleted record has been updated (remotely)
-            if (recordUpdatesForActorInRepoInTable
-                && recordUpdatesForActorInRepoInTable.get(recordHistory._actorRecordId)) {
-                // remote deletions do not cause conflicts for remotely updated records
-                // Remove record updates for deleted records
-                recordUpdatesForActorInRepoInTable.delete(recordHistory._actorRecordId);
-            }
-            if (this.getRecordHistoryLocalId(recordHistory, allLocalRecordDeletesForRepoInTable)) {
-                // If the record has been deleted locally, no need to add another delete operation
-                continue;
-            }
-            // record deletion
-            ensureChildJsSet(deletesForEntityInRepo, recordHistory.actor._localId)
-                .add(recordHistory._actorRecordId);
-        }
-    }
-    getRecordsForRepoInTable(repositoryLocalId, operationHistory, recordMapByApplicationTableAndRepository) {
-        const recordMapForApplication = recordMapByApplicationTableAndRepository
-            .get(operationHistory.entity.applicationVersion._localId);
-        let recordMapForTable;
-        if (recordMapForApplication) {
-            recordMapForTable = recordMapForApplication.get(operationHistory.entity._localId);
-        }
-        let recordMapForRepoInTable;
-        if (recordMapForTable) {
-            recordMapForRepoInTable = recordMapForTable.get(repositoryLocalId);
-        }
-        return recordMapForRepoInTable;
-    }
-    getRecord(recordHistory, recordMapByActor) {
-        let recordsForActor = this.getRecordsForActor(recordHistory, recordMapByActor);
-        if (!recordsForActor) {
-            return null;
-        }
-        return recordsForActor.get(recordHistory._actorRecordId);
-    }
-    hasRecordId(recordHistory, actorRecordLocalIdSetByActor) {
-        let actorRecordIdsForActor = this.getRecordsForActor(recordHistory, actorRecordLocalIdSetByActor);
-        if (!actorRecordIdsForActor) {
-            return false;
-        }
-        return actorRecordIdsForActor.has(recordHistory._actorRecordId);
-    }
-    getRecordHistoryLocalId(recordHistory, actorRecordLocalIdSetByActor) {
-        let actorRecordIdsForActor = this.getRecordsForActor(recordHistory, actorRecordLocalIdSetByActor);
-        if (!actorRecordIdsForActor) {
-            return null;
-        }
-        return actorRecordIdsForActor.get(recordHistory._actorRecordId);
-    }
-    getRecordsForActor(recordHistory, recordMapByActor) {
-        let recordsForActor;
-        if (recordMapByActor) {
-            recordsForActor = recordMapByActor.get(recordHistory.actor._localId);
-        }
-        return recordsForActor;
-    }
-    getRecordInfo(repositoryLocalId, operationHistory, recordHistory) {
-        return `
-		Application Version ID: ${operationHistory.entity.applicationVersion._localId}
-		Entity ID:         ${operationHistory.entity._localId}
-		Repository ID:     ${repositoryLocalId}
-		Actor ID:          ${recordHistory.actor._localId}
-		Actor Record ID:   ${recordHistory._actorRecordId}
-		`;
-    }
-    addSyncConflict(synchronizationConflictType, repositoryLocalId, overwrittenRecordHistory, overwritingRecordHistory, syncConflictMapByRepoId) {
-        const syncConflict = this.createSynchronizationConflict(synchronizationConflictType, repositoryLocalId, overwrittenRecordHistory, overwritingRecordHistory);
-        ensureChildArray(syncConflictMapByRepoId, repositoryLocalId).push(syncConflict);
-        return syncConflict;
-    }
-    createSynchronizationConflict(synchronizationConflictType, repositoryLocalId, overwrittenRecordHistory, overwritingRecordHistory) {
-        return {
-            _localId: null,
-            overwrittenRecordHistory,
-            overwritingRecordHistory,
-            repository: {
-                _localId: repositoryLocalId
-            },
-            type: synchronizationConflictType
-        };
-    }
-    ensureColumnValueMap(recordHistory, dataMap) {
-        return ensureChildJsMap(ensureChildJsMap(dataMap, recordHistory.actor._localId), recordHistory._actorRecordId);
-    }
-    ensureRecord(recordHistory, recordMapByActor) {
-        return ensureChildJsMap(ensureChildJsMap(recordMapByActor, recordHistory.actor._localId), recordHistory._actorRecordId);
-    }
-};
-__decorate$5([
-    Inject$2()
-], Stage1SyncedInDataProcessor.prototype, "actorDao", void 0);
-__decorate$5([
-    Inject$2()
-], Stage1SyncedInDataProcessor.prototype, "airportDatabase", void 0);
-__decorate$5([
-    Inject$2()
-], Stage1SyncedInDataProcessor.prototype, "repositoryTransactionHistoryDao", void 0);
-__decorate$5([
-    Inject$2()
-], Stage1SyncedInDataProcessor.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$5([
-    Inject$2()
-], Stage1SyncedInDataProcessor.prototype, "sequenceGenerator", void 0);
-__decorate$5([
-    Inject$2()
-], Stage1SyncedInDataProcessor.prototype, "syncInUtils", void 0);
-Stage1SyncedInDataProcessor = __decorate$5([
-    Injected()
-], Stage1SyncedInDataProcessor);
-
-let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
-    async applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap) {
-        const context = {};
-        await this.performCreates(stage1Result.recordCreations, applicationsByApplicationVersion_LocalIdMap, context);
-        await this.performUpdates(stage1Result.recordUpdates, applicationsByApplicationVersion_LocalIdMap, context);
-        await this.performDeletes(stage1Result.recordDeletions, applicationsByApplicationVersion_LocalIdMap, context);
-    }
-    /**
-     * Remote changes come in with ApplicationVersion_LocalIds not Application_Indexes, so it makes
-     * sense to keep this structure.  NOTE: only one version of a given application is
-     * processed at one time:
-     *
-     *  Changes for a application version below the one in this Terminal must first be upgraded.
-     *  Terminal itself must first be upgraded to newer application versions, before changes
-     *  for that application version are processed.
-     *
-     *  To tie in a given ApplicationVersion_LocalId to its Application_Index an additional mapping data
-     *  structure is passed in.
-     */
-    async performCreates(recordCreations, applicationsByApplicationVersion_LocalIdMap, context) {
-        for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
-            for (const [tableIndex, creationInTableMap] of creationInApplicationMap) {
-                const applicationIndex = applicationsByApplicationVersion_LocalIdMap
-                    .get(applicationVersionId).index;
-                const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
-                    .applicationVersion.entities[tableIndex];
-                const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name];
-                const columns = [
-                    qEntity.repository._localId,
-                    qEntity.actor._localId,
-                    qEntity._actorRecordId
-                ];
-                const nonIdColumns = this.getNonIdColumnsInIndexOrder(dbEntity);
-                let creatingColumns = true;
-                let numInserts = 0;
-                const VALUES = [];
-                for (const [repositoryId, creationForRepositoryMap] of creationInTableMap) {
-                    for (const [actorId, creationForActorMap] of creationForRepositoryMap) {
-                        for (const [_actorRecordId, creationOfRowMap] of creationForActorMap) {
-                            const rowValues = [
-                                repositoryId,
-                                actorId,
-                                _actorRecordId
-                            ];
-                            const columnIndexedValues = [];
-                            for (const [columnIndex, columnValue] of creationOfRowMap) {
-                                columnIndexedValues.push([columnIndex, columnValue]);
-                            }
-                            if (columnIndexedValues.length) {
-                                numInserts++;
-                            }
-                            columnIndexedValues.sort((col1IndexAndValue, col2IndexAndValue) => {
-                                return this.utils.compareNumbers(col1IndexAndValue[0], col2IndexAndValue[0]);
-                            });
-                            let currentNonIdColumnArrayIndex = 0;
-                            for (const [columnIndex, columnValue] of columnIndexedValues) {
-                                let nonIdColumn = nonIdColumns[currentNonIdColumnArrayIndex];
-                                while (nonIdColumn.index < columnIndex) {
-                                    if (creatingColumns) {
-                                        columns.push(qEntity.__driver__.allColumns[nonIdColumn.index]);
-                                    }
-                                    rowValues.push(null);
-                                    currentNonIdColumnArrayIndex++;
-                                    nonIdColumn = nonIdColumns[currentNonIdColumnArrayIndex];
-                                }
-                                if (creatingColumns) {
-                                    columns.push(qEntity.__driver__.allColumns[columnIndex]);
-                                }
-                                rowValues.push(columnValue);
-                                currentNonIdColumnArrayIndex++;
-                            }
-                            if (columnIndexedValues.length) {
-                                VALUES.push(rowValues);
-                            }
-                            creatingColumns = false;
-                        }
-                    }
-                }
-                if (numInserts) {
-                    const previousDbEntity = context.dbEntity;
-                    context.dbEntity = qEntity
-                        .__driver__.dbEntity;
-                    try {
-                        await this.databaseFacade.insertValues({
-                            INSERT_INTO: qEntity,
-                            columns,
-                            VALUES
-                        }, context);
-                    }
-                    finally {
-                        context.dbEntity = previousDbEntity;
-                    }
-                }
-            }
-        }
-    }
-    getNonIdColumnsInIndexOrder(dbEntity) {
-        const nonIdColumns = [];
-        for (const column of dbEntity.columns) {
-            switch (column.name) {
-                case airEntity.ACTOR_LID:
-                case airEntity.ACTOR_RECORD_ID:
-                case airEntity.REPOSITORY_LID:
-                    continue;
-            }
-            nonIdColumns.push(column);
-        }
-        nonIdColumns.sort((column1, column2) => {
-            return this.utils.compareNumbers(column1.index, column2.index);
-        });
-        return nonIdColumns;
-    }
-    async performUpdates(recordUpdates, applicationsByApplicationVersion_LocalIdMap, context) {
-        const finalUpdateMap = new Map();
-        const recordUpdateStage = [];
-        // Build the final update data structure
-        for (const [applicationVersionId, applicationUpdateMap] of recordUpdates) {
-            const finalApplicationUpdateMap = ensureChildJsMap(finalUpdateMap, applicationVersionId);
-            for (const [tableIndex, tableUpdateMap] of applicationUpdateMap) {
-                const finalTableUpdateMap = ensureChildJsMap(finalApplicationUpdateMap, tableIndex);
-                for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
-                    for (const [actorId, actorUpdates] of repositoryUpdateMap) {
-                        for (const [_actorRecordId, recordUpdateMap] of actorUpdates) {
-                            const recordKeyMap = this.getRecordKeyMap(recordUpdateMap, finalTableUpdateMap);
-                            ensureChildJsSet(ensureChildJsMap(recordKeyMap, repositoryId), actorId)
-                                .add(_actorRecordId);
-                            for (const [columnIndex, columnUpdate] of recordUpdateMap) {
-                                recordUpdateStage.push([
-                                    applicationVersionId,
-                                    tableIndex,
-                                    repositoryId,
-                                    actorId,
-                                    _actorRecordId,
-                                    columnIndex,
-                                    columnUpdate.newValue
-                                ]);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if (!recordUpdateStage.length) {
-            return;
-        }
-        await this.recordUpdateStageDao.insertValues(recordUpdateStage);
-        // Perform the updates
-        for (const [applicationVersionId, updateMapForApplication] of finalUpdateMap) {
-            const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId);
-            for (const [tableIndex, updateMapForTable] of updateMapForApplication) {
-                await this.runUpdatesForTable(application.index, applicationVersionId, tableIndex, updateMapForTable);
-            }
-        }
-        await this.recordUpdateStageDao.delete();
-    }
-    async performDeletes(recordDeletions, applicationsByApplicationVersion_LocalIdMap, context) {
-        for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {
-            const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId);
-            for (const [tableIndex, deletionInTableMap] of deletionInApplicationMap) {
-                const dbEntity = this.airportDatabase.applications[application.index].currentVersion[0]
-                    .applicationVersion.entities[tableIndex];
-                const qEntity = this.airportDatabase.qApplications[application.index][dbEntity.name];
-                let numClauses = 0;
-                let repositoryWhereFragments = [];
-                for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
-                    let actorWhereFragments = [];
-                    for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
-                        numClauses++;
-                        actorWhereFragments.push(AND(qEntity._actorRecordId.IN(Array.from(actorRecordIdSet)), qEntity.actor._localId.equals(actorId)));
-                    }
-                    repositoryWhereFragments.push(AND(qEntity.repository._localId.equals(repositoryId), OR(...actorWhereFragments)));
-                }
-                if (numClauses) {
-                    const previousDbEntity = context.dbEntity;
-                    context.dbEntity = qEntity
-                        .__driver__.dbEntity;
-                    try {
-                        await this.databaseFacade.deleteWhere({
-                            DELETE_FROM: qEntity,
-                            WHERE: OR(...repositoryWhereFragments)
-                        }, context);
-                    }
-                    finally {
-                        context.dbEntity = previousDbEntity;
-                    }
-                }
-            }
-        }
-    }
-    /**
-     * Get the record key map (RecordKeyMap = RepositoryId -> Actor_LocalId
-     * -> AirEntity_ActorRecordId) for the recordUpdateMap (the specified combination
-     * of columns/values being updated)
-     * @param {Map<ApplicationColumn_Index, RecordUpdate>} recordUpdateMap
-     * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap
-     * @returns {RecordKeyMap}
-     */
-    getRecordKeyMap(recordUpdateMap, // combination of columns/values
-    // being updated
-    finalTableUpdateMap) {
-        const updatedColumns = [];
-        for (const columnIndex of recordUpdateMap.keys()) {
-            updatedColumns.push(columnIndex);
-        }
-        // Sort the updated columns by column index, to ensure that all records with the
-        // same combination of updated columns are grouped
-        updatedColumns.sort(this.utils.compareNumbers);
-        // Navigate down the table UpdateKeyMap to find the matching combination of
-        // columns being updated
-        let columnValueUpdate;
-        let updateKeyMap = finalTableUpdateMap;
-        for (const columnIndex of updatedColumns) {
-            columnValueUpdate = updateKeyMap.get(columnIndex);
-            // If no update statements with the specified combination of columns exist yet
-            if (!columnValueUpdate) {
-                columnValueUpdate = {
-                    childColumnUpdateKeyMap: new Map(),
-                    recordKeyMap: new Map(),
-                    updatedColumns: null,
-                };
-                updateKeyMap.set(columnIndex, columnValueUpdate);
-            }
-            // Navigate down
-            updateKeyMap = columnValueUpdate.childColumnUpdateKeyMap;
-        }
-        columnValueUpdate.updatedColumns = updatedColumns;
-        // Return the map of the records for the update statement of the specified combination
-        // of columns/values
-        return columnValueUpdate.recordKeyMap;
-    }
-    /**
-     * Run all updates for a particular table.  One update per updated column combination
-     * is run.
-     *
-     * @param {Application_Index} applicationIndex
-     * @param {ApplicationEntity_TableIndex} tableIndex
-     * @param {ColumnUpdateKeyMap} updateKeyMap
-     * @returns {Promise<void>}
-     */
-    async runUpdatesForTable(applicationIndex, applicationVersionId, tableIndex, updateKeyMap) {
-        for (const columnValueUpdate of updateKeyMap.values()) {
-            const updatedColumns = columnValueUpdate.updatedColumns;
-            if (updatedColumns) {
-                await this.recordUpdateStageDao.updateEntityWhereIds(applicationIndex, applicationVersionId, tableIndex, columnValueUpdate.recordKeyMap, updatedColumns);
-            }
-            // Traverse down into nested column update combinations
-            await this.runUpdatesForTable(applicationIndex, applicationVersionId, tableIndex, columnValueUpdate.childColumnUpdateKeyMap);
-        }
-    }
-};
-__decorate$5([
-    Inject$2()
-], Stage2SyncedInDataProcessor.prototype, "airportDatabase", void 0);
-__decorate$5([
-    Inject$2()
-], Stage2SyncedInDataProcessor.prototype, "databaseFacade", void 0);
-__decorate$5([
-    Inject$2()
-], Stage2SyncedInDataProcessor.prototype, "recordUpdateStageDao", void 0);
-__decorate$5([
-    Inject$2()
-], Stage2SyncedInDataProcessor.prototype, "utils", void 0);
-Stage2SyncedInDataProcessor = __decorate$5([
-    Injected()
-], Stage2SyncedInDataProcessor);
-
-/**
- * Synchronization in Manager implementation.
- */
-let SynchronizationInManager = class SynchronizationInManager {
-    async receiveMessages(messageMapByGUID, context) {
-        const syncTimestamp = new Date().getTime();
-        const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
-            .findWhereGUIDsIn([...messageMapByGUID.keys()]);
-        for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
-            messageMapByGUID.delete(existingRepositoryTransactionHistory.GUID);
-        }
-        if (!messageMapByGUID.size) {
-            return;
-        }
-        let messagesToProcess = [];
-        const orderedMessages = this.timeOrderMessages(messageMapByGUID);
-        // Split up messages by type
-        for (const message of orderedMessages) {
-            if (!this.isValidLastChangeTime(syncTimestamp, message.syncTimestamp, 'Sync Timestamp')) {
-                continue;
-            }
-            if (!this.isValidLastChangeTime(message.syncTimestamp, message.history.saveTimestamp, 'Sync Timestamp', 'Save Timestamp')) {
-                continue;
-            }
-            let processMessage = true;
-            await this.transactionManager.transactInternal(async (transaction) => {
-                if (!await this.syncInChecker.checkMessage(message, context)) {
-                    transaction.rollback(null, context);
-                    processMessage = false;
-                    return;
-                }
-            }, null, context);
-            if (processMessage) {
-                messagesToProcess.push(message);
-            }
-        }
-        await this.transactionManager.transactInternal(async (transaction, context) => {
-            transaction.isSync = true;
-            await this.twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction, context);
-        }, null, context);
-    }
-    timeOrderMessages(messageMapByGUID) {
-        const messages = [...messageMapByGUID.values()];
-        messages.sort((message1, message2) => {
-            if (message1.syncTimestamp < message2.syncTimestamp) {
-                return -1;
-            }
-            if (message1.syncTimestamp > message2.syncTimestamp) {
-                return 1;
-            }
-            let history1 = message1.history;
-            let history2 = message2.history;
-            if (history1.saveTimestamp < history2.saveTimestamp) {
-                return -1;
-            }
-            if (history1.saveTimestamp > history2.saveTimestamp) {
-                return 1;
-            }
-            return 0;
-        });
-        return messages;
-    }
-    isValidLastChangeTime(syncTimestamp, remoteTimestamp, remoteFieldName, syncFieldName = 'Reception Time:') {
-        if (syncTimestamp < remoteTimestamp) {
-            console.error(`Message ${syncFieldName} is less than
-			the ${remoteFieldName} in received message:
-				${syncFieldName}:               ${syncTimestamp}
-				${remoteFieldName}:           ${remoteTimestamp}
-			`);
-            return false;
-        }
-        return true;
-    }
-};
-__decorate$5([
-    Inject$2()
-], SynchronizationInManager.prototype, "repositoryTransactionHistoryDao", void 0);
-__decorate$5([
-    Inject$2()
-], SynchronizationInManager.prototype, "syncInChecker", void 0);
-__decorate$5([
-    Inject$2()
-], SynchronizationInManager.prototype, "transactionManager", void 0);
-__decorate$5([
-    Inject$2()
-], SynchronizationInManager.prototype, "twoStageSyncedInDataProcessor", void 0);
-SynchronizationInManager = __decorate$5([
-    Injected()
-], SynchronizationInManager);
-
-/**
- * Result of comparing to versions of a given application.
- */
-var ApplicationComparisonResult;
-(function (ApplicationComparisonResult) {
-    // Version specified in the message is lower than it's version in the receiving
-    // Terminal (TM)
-    ApplicationComparisonResult[ApplicationComparisonResult["MESSAGE_APPLICATION_VERSION_IS_LOWER"] = -1] = "MESSAGE_APPLICATION_VERSION_IS_LOWER";
-    // Version of the application used i the message is the same as that in the receiving
-    // Terminal (TM)
-    ApplicationComparisonResult[ApplicationComparisonResult["MESSAGE_APPLICATION_VERSION_IS_EQUAL"] = 0] = "MESSAGE_APPLICATION_VERSION_IS_EQUAL";
-    // Version specified in the message in higher than it's version in the receiving
-    // Terminal (TM)
-    ApplicationComparisonResult[ApplicationComparisonResult["MESSAGE_APPLICATION_VERSION_IS_HIGHER"] = 1] = "MESSAGE_APPLICATION_VERSION_IS_HIGHER";
-})(ApplicationComparisonResult || (ApplicationComparisonResult = {}));
-let SyncInUtils = class SyncInUtils {
-    ensureRecordMapForRepoInTable(repositoryLocalId, operationHistory, recordMapByApplicationTableAndRepository) {
-        return ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion._localId), operationHistory.entity.index), repositoryLocalId);
-    }
-};
-SyncInUtils = __decorate$5([
-    Injected()
-], SyncInUtils);
-
-let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
-    /**
-     * Synchronize the data messages coming to Terminal (new data for this TM)
-     */
-    async syncMessages(messages, transaction, context) {
-        this.aggregateHistoryRecords(messages, transaction);
-        const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersion_LocalIdMap } = await this.getDataStructures(messages);
-        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersion_LocalIdMap, context);
-    }
-    aggregateHistoryRecords(messages, transaction) {
-        const transactionHistory = transaction.transactionHistory;
-        transactionHistory.transactionType = TransactionType.REMOTE_SYNC;
-        // split messages by repository and record actor information
-        for (const message of messages) {
-            const repositoryTransactionHistory = message.history;
-            transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory);
-            repositoryTransactionHistory.repositoryTransactionType = RepositoryTransactionType.REMOTE;
-            transactionHistory.allOperationHistory = transactionHistory
-                .allOperationHistory.concat(repositoryTransactionHistory.operationHistory);
-            repositoryTransactionHistory.operationHistory.forEach((operationHistory) => {
-                transactionHistory.allRecordHistory = transactionHistory
-                    .allRecordHistory.concat(operationHistory.recordHistory);
-                operationHistory.recordHistory.forEach((recordHistory) => {
-                    if (recordHistory.newValues && recordHistory.newValues.length) {
-                        transactionHistory.allRecordHistoryNewValues = transactionHistory
-                            .allRecordHistoryNewValues.concat(recordHistory.newValues);
-                    }
-                    if (recordHistory.oldValues && recordHistory.oldValues.length) {
-                        transactionHistory.allRecordHistoryOldValues = transactionHistory
-                            .allRecordHistoryOldValues.concat(recordHistory.oldValues);
-                    }
-                });
-            });
-        }
-    }
-    async getDataStructures(messages) {
-        const repositoryTransactionHistoryMapByRepositoryId = new Map();
-        const applicationsByApplicationVersion_LocalIdMap = new Map();
-        const actorMapById = new Map();
-        const repoTransHistories = [];
-        for (const message of messages) {
-            repoTransHistories.push(message.history);
-            repositoryTransactionHistoryMapByRepositoryId.set(message.history.repository._localId, repoTransHistories);
-            for (const actor of message.actors) {
-                actorMapById.set(actor._localId, actor);
-            }
-            for (const applicationVersion of message.applicationVersions) {
-                applicationsByApplicationVersion_LocalIdMap.set(applicationVersion._localId, applicationVersion.application);
-            }
-        }
-        for (const [_, repoTransHistories] of repositoryTransactionHistoryMapByRepositoryId) {
-            this.repositoryTransactionHistoryDuo
-                .sortRepoTransHistories(repoTransHistories, actorMapById);
-        }
-        return {
-            actorMapById,
-            repositoryTransactionHistoryMapByRepositoryId,
-            applicationsByApplicationVersion_LocalIdMap
-        };
-    }
-    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersion_LocalIdMap, context) {
-        const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById, context);
-        let allSyncConflicts = [];
-        let allSyncConflictValues = [];
-        for (const [_, synchronizationConflicts] of stage1Result.syncConflictMapByRepoId) {
-            allSyncConflicts = allSyncConflicts.concat(synchronizationConflicts);
-            for (const synchronizationConflict of synchronizationConflicts) {
-                if (synchronizationConflict.values.length) {
-                    allSyncConflictValues = allSyncConflictValues.concat(synchronizationConflict.values);
-                }
-            }
-        }
-        await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap);
-        if (allSyncConflicts.length) {
-            await this.synchronizationConflictDao.insert(allSyncConflicts, context);
-        }
-        if (allSyncConflictValues.length) {
-            await this.synchronizationConflictValuesDao.insert(allSyncConflictValues, context);
-        }
-    }
-};
-__decorate$5([
-    Inject$2()
-], TwoStageSyncedInDataProcessor.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$5([
-    Inject$2()
-], TwoStageSyncedInDataProcessor.prototype, "stage1SyncedInDataProcessor", void 0);
-__decorate$5([
-    Inject$2()
-], TwoStageSyncedInDataProcessor.prototype, "stage2SyncedInDataProcessor", void 0);
-__decorate$5([
-    Inject$2()
-], TwoStageSyncedInDataProcessor.prototype, "synchronizationConflictDao", void 0);
-__decorate$5([
-    Inject$2()
-], TwoStageSyncedInDataProcessor.prototype, "synchronizationConflictValuesDao", void 0);
-TwoStageSyncedInDataProcessor = __decorate$5([
-    Injected()
-], TwoStageSyncedInDataProcessor);
-
-const WITH_ID = {};
-const WITH_RECORD_HISTORY = {};
-const WITH_INDEX = {};
-let SyncOutDataSerializer = class SyncOutDataSerializer {
-    async serialize(repositoryTransactionHistories) {
-        let historiesToSend = [];
-        const messages = [];
-        for (const repositoryTransactionHistory of repositoryTransactionHistories) {
-            if (repositoryTransactionHistory.repositoryTransactionType !== RepositoryTransactionType.LOCAL) {
-                continue;
-            }
-            const message = await this.serializeMessage(repositoryTransactionHistory);
-            historiesToSend.push(repositoryTransactionHistory);
-            messages.push(message);
-        }
-        return {
-            historiesToSend,
-            messages
-        };
-    }
-    async serializeMessage(repositoryTransactionHistory) {
-        const lookups = {
-            actorInMessageIndexesById: new Map(),
-            applicationVersionInMessageIndexesById: new Map(),
-            applicationVersions: [],
-            lastInMessageActorIndex: -1,
-            lastInMessageApplicationVersionIndex: -1,
-            lastInMessageRepositoryIndex: -1,
-            messageRepository: repositoryTransactionHistory.repository,
-            repositoryInMessageIndexesById: new Map()
-        };
-        const inMessageUserAccountLookup = {
-            inMessageIndexesByGUID: new Map(),
-            lastInMessageIndex: -1
-        };
-        const message = {
-            actors: [],
-            applicationVersions: [],
-            applications: [],
-            history: null,
-            // Repositories may reference records in other repositories
-            referencedRepositories: [],
-            userAccounts: [],
-            terminals: []
-        };
-        message.history = this.serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup);
-        // TODO: replace db lookups with TerminalState lookups where possible
-        await this.serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup);
-        const inMessageApplicationLookup = await this.serializeActorsUserAccountsAndTerminals(message, lookups, inMessageUserAccountLookup);
-        await this.serializeApplicationsAndVersions(message, inMessageApplicationLookup, lookups);
-        return message;
-    }
-    async serializeActorsUserAccountsAndTerminals(message, lookups, inMessageUserAccountLookup) {
-        let actorIdsToFindBy = [];
-        for (let actorId of lookups.actorInMessageIndexesById.keys()) {
-            actorIdsToFindBy.push(actorId);
-        }
-        const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy);
-        this.serializeUserAccounts(actors, message, inMessageUserAccountLookup);
-        const terminalInMessageIndexesById = this.serializeTerminals(actors, message, inMessageUserAccountLookup);
-        const inMessageApplicationLookup = {
-            lastInMessageIndex: -1,
-            inMessageIndexesById: new Map()
-        };
-        for (const actor of actors) {
-            const applicationInMessageIndex = this.serializeApplication(actor.application, inMessageApplicationLookup, message);
-            const actorInMessageIndex = lookups.actorInMessageIndexesById.get(actor._localId);
-            message.actors[actorInMessageIndex] = {
-                ...WITH_ID,
-                application: applicationInMessageIndex,
-                terminal: terminalInMessageIndexesById.get(actor.terminal.GUID),
-                userAccount: inMessageUserAccountLookup.inMessageIndexesByGUID.get(actor.userAccount.GUID),
-                GUID: actor.GUID
-            };
-        }
-        return inMessageApplicationLookup;
-    }
-    serializeTerminals(actors, message, inMessageUserAccountLookup) {
-        let lastInMessageTerminalIndex = -1;
-        const terminalInMessageIndexesByGUID = new Map();
-        for (const actor of actors) {
-            let terminal = actor.terminal;
-            if (terminalInMessageIndexesByGUID.has(terminal.GUID)) {
-                continue;
-            }
-            const terminalInMessageIndex = ++lastInMessageTerminalIndex;
-            terminalInMessageIndexesByGUID.set(terminal.GUID, terminalInMessageIndex);
-            message.terminals[terminalInMessageIndex] = {
-                ...WITH_ID,
-                GUID: terminal.GUID,
-                owner: inMessageUserAccountLookup.inMessageIndexesByGUID.get(terminal.owner.GUID)
-            };
-        }
-        return terminalInMessageIndexesByGUID;
-    }
-    serializeUserAccounts(actors, message, inMessageUserAccountLookup) {
-        for (const actor of actors) {
-            this.addUserAccountToMessage(actor.userAccount, message, inMessageUserAccountLookup);
-            this.addUserAccountToMessage(actor.terminal.owner, message, inMessageUserAccountLookup);
-        }
-    }
-    addUserAccountToMessage(userAccount, message, inMessageUserAccountLookup) {
-        let userAccountInMessageIndex = this.getUserAccountInMessageIndex(userAccount, inMessageUserAccountLookup);
-        message.userAccounts[userAccountInMessageIndex] = {
-            ...WITH_ID,
-            username: userAccount.username,
-            GUID: userAccount.GUID
-        };
-        return userAccountInMessageIndex;
-    }
-    getUserAccountInMessageIndex(userAccount, inMessageUserAccountLookup) {
-        if (inMessageUserAccountLookup.inMessageIndexesByGUID.has(userAccount.GUID)) {
-            return inMessageUserAccountLookup.inMessageIndexesByGUID.get(userAccount.GUID);
-        }
-        let userAccountInMessageIndex = ++inMessageUserAccountLookup.lastInMessageIndex;
-        inMessageUserAccountLookup.inMessageIndexesByGUID.set(userAccount.GUID, userAccountInMessageIndex);
-        return userAccountInMessageIndex;
-    }
-    async serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup) {
-        let repositoryIdsToFindBy = [];
-        for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
-            repositoryIdsToFindBy.push(repositoryId);
-        }
-        repositoryIdsToFindBy.push(repositoryTransactionHistory._localId);
-        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(repositoryIdsToFindBy);
-        for (const repository of repositories) {
-            let userAccountInMessageIndex = this.getUserAccountInMessageIndex(repository.owner, inMessageUserAccountLookup);
-            if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
-                const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository._localId);
-                message.referencedRepositories[repositoryInMessageIndex] =
-                    this.serializeRepository(repository, userAccountInMessageIndex);
-            }
-            else {
-                if (typeof message.history.repository !== 'string') {
-                    message.history.repository.owner = userAccountInMessageIndex;
-                    message.history.repository._localId = repository._localId;
-                }
-            }
-        }
-    }
-    serializeApplicationsAndVersions(message, inMessageApplicationLookup, lookups) {
-        for (let i = 0; i < lookups.applicationVersions.length; i++) {
-            const applicationVersion = lookups.applicationVersions[i];
-            const applicationInMessageIndex = this.serializeApplication(applicationVersion.application, inMessageApplicationLookup, message);
-            message.applicationVersions[i] = {
-                ...WITH_ID,
-                application: applicationInMessageIndex,
-                integerVersion: applicationVersion.integerVersion
-            };
-        }
-    }
-    serializeApplication(application, inMessageApplicationLookup, message) {
-        let applicationInMessageIndex;
-        if (inMessageApplicationLookup.inMessageIndexesById.has(application.index)) {
-            applicationInMessageIndex = inMessageApplicationLookup
-                .inMessageIndexesById.get(application.index);
-        }
-        else {
-            applicationInMessageIndex = ++inMessageApplicationLookup.lastInMessageIndex;
-            inMessageApplicationLookup.inMessageIndexesById
-                .set(application.index, applicationInMessageIndex);
-            message.applications[applicationInMessageIndex] = {
-                ...WITH_INDEX,
-                domain: {
-                    ...WITH_ID,
-                    name: application.domain.name
-                },
-                name: application.name
-            };
-        }
-        return applicationInMessageIndex;
-    }
-    serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup) {
-        repositoryTransactionHistory.operationHistory.sort((operationHistory1, operationHistory2) => {
-            if (operationHistory1.orderNumber < operationHistory2.orderNumber) {
-                return -1;
-            }
-            if (operationHistory1.orderNumber > operationHistory2.orderNumber) {
-                return 1;
-            }
-            return 0;
-        });
-        const serializedOperationHistory = [];
-        for (const operationHistory of repositoryTransactionHistory.operationHistory) {
-            serializedOperationHistory.push(this.serializeOperationHistory(operationHistory, lookups));
-        }
-        return {
-            ...WITH_ID,
-            isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
-            repository: this.serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserAccountLookup),
-            operationHistory: serializedOperationHistory,
-            saveTimestamp: repositoryTransactionHistory.saveTimestamp,
-            GUID: repositoryTransactionHistory.GUID
-        };
-    }
-    serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserAccountLookup) {
-        if (repositoryTransactionHistory.isRepositoryCreation) {
-            const repository = repositoryTransactionHistory.repository;
-            let userAccountInMessageIndex = this.addUserAccountToMessage(repository.owner, message, inMessageUserAccountLookup);
-            return this.serializeRepository(repository, userAccountInMessageIndex);
-        }
-        else {
-            // When this repositoryTransactionHistory processed at sync-in 
-            // the repository should already be loaded in the target database
-            // if it's not then it's missing the repositoryTransactionHistory
-            // with isRepositoryCreation === true
-            return repositoryTransactionHistory.repository.GUID;
-        }
-    }
-    serializeOperationHistory(operationHistory, lookups) {
-        const dbEntity = operationHistory.entity;
-        const serializedRecordHistory = [];
-        for (const recordHistory of operationHistory.recordHistory) {
-            serializedRecordHistory.push(this.serializeRecordHistory(operationHistory, recordHistory, dbEntity, lookups));
-        }
-        const entity = operationHistory.entity;
-        // Should be populated - coming from TerminalStore
-        // if (typeof entity !== 'object') {
-        // 	throw new Error(`OperationHistory.entity must be populated`)
-        // }
-        // if (typeof entity.index !== 'number') {
-        // 	throw new Error(`OperationHistory.entity.index must be present`)
-        // }
-        const applicationVersion = entity.applicationVersion;
-        // Should be populated - coming from TerminalStore
-        // if (typeof applicationVersion !== 'object') {
-        // 	throw new Error(`OperationHistory.entity.applicationVersion must be populated`)
-        // }
-        // if (typeof applicationVersion._localId !== 'number') {
-        // 	throw new Error(`OperationHistory.entity.applicationVersion._localId must be present`)
-        // }
-        let applicationVersionInMessageIndex;
-        if (lookups.applicationVersionInMessageIndexesById.has(applicationVersion._localId)) {
-            applicationVersionInMessageIndex = lookups.applicationVersionInMessageIndexesById.get(applicationVersion._localId);
-        }
-        else {
-            applicationVersionInMessageIndex = ++lookups.lastInMessageApplicationVersionIndex;
-            lookups.applicationVersionInMessageIndexesById.set(applicationVersion._localId, applicationVersionInMessageIndex);
-        }
-        lookups.applicationVersions[applicationVersionInMessageIndex] = applicationVersion;
-        return {
-            ...WITH_ID,
-            actor: this.getActorInMessageIndex(operationHistory.actor, lookups),
-            changeType: operationHistory.changeType,
-            entity: {
-                ...WITH_ID,
-                applicationVersion: applicationVersionInMessageIndex,
-                index: operationHistory.entity.index
-            },
-            recordHistory: serializedRecordHistory
-        };
-    }
-    serializeRecordHistory(operationHistory, recordHistory, dbEntity, lookups) {
-        const dbColumMapByIndex = new Map();
-        for (const dbColumn of dbEntity.columns) {
-            dbColumMapByIndex.set(dbColumn.index, dbColumn);
-        }
-        const newValues = [];
-        for (const newValue of recordHistory.newValues) {
-            const dbColumn = dbColumMapByIndex.get(newValue.columnIndex);
-            newValues.push(this.serializeNewValue(newValue, dbColumn, lookups));
-        }
-        const oldValues = [];
-        for (const oldValue of recordHistory.oldValues) {
-            const dbColumn = dbColumMapByIndex.get(oldValue.columnIndex);
-            oldValues.push(this.serializeOldValue(oldValue, dbColumn, lookups));
-        }
-        const actor = recordHistory.actor;
-        // Actor may be null if it's the same actor as for RepositoryTransactionHistory
-        // if (typeof actor !== 'object') {
-        // 	throw new Error(`RecordHistory.actor must be populated`)
-        // }
-        const baseObject = {
-            ...WITH_ID,
-        };
-        if (actor._localId !== operationHistory.actor._localId) {
-            baseObject.actor = this.getActorInMessageIndex(actor, lookups);
-        }
-        if (newValues.length) {
-            baseObject.newValues = newValues;
-        }
-        if (oldValues.length) {
-            baseObject.oldValues = oldValues;
-        }
-        return {
-            ...baseObject,
-            _actorRecordId: recordHistory._actorRecordId,
-        };
-    }
-    getActorInMessageIndex(actor, lookups) {
-        if (!actor) {
-            return null;
-        }
-        return this.getActorInMessageIndexById(actor._localId, lookups);
-    }
-    getActorInMessageIndexById(actorId, lookups) {
-        let actorInMessageIndex;
-        if (lookups.actorInMessageIndexesById.has(actorId)) {
-            actorInMessageIndex = lookups.actorInMessageIndexesById.get(actorId);
-        }
-        else {
-            actorInMessageIndex = ++lookups.lastInMessageActorIndex;
-            lookups.actorInMessageIndexesById.set(actorId, actorInMessageIndex);
-        }
-        return actorInMessageIndex;
-    }
-    serializeNewValue(newValue, dbColumn, lookups) {
-        return this.serializeValue(newValue, dbColumn, lookups, 'newValue');
-    }
-    serializeOldValue(oldValue, dbColumn, lookups) {
-        return this.serializeValue(oldValue, dbColumn, lookups, 'oldValue');
-    }
-    serializeValue(valueRecord, dbColumn, lookups, valueFieldName) {
-        let value = valueRecord[valueFieldName];
-        let serailizedValue = value;
-        switch (dbColumn.name) {
-            case airEntity.ORIGINAL_ACTOR_ID: {
-                serailizedValue = this.getActorInMessageIndexById(value, lookups);
-                break;
-            }
-            case airEntity.ORIGINAL_REPOSITORY_ID: {
-                serailizedValue = this.getSerializedRepositoryId(value, lookups);
-                break;
-            }
-        }
-        if (/.*_AID_[\d]+$/.test(dbColumn.name)
-            && dbColumn.manyRelationColumns.length) {
-            serailizedValue = this.getActorInMessageIndexById(value, lookups);
-        }
-        if (/.*_RID_[\d]+$/.test(dbColumn.name)
-            && dbColumn.manyRelationColumns.length) {
-            serailizedValue = this.getSerializedRepositoryId(value, lookups);
-        }
-        return {
-            ...WITH_RECORD_HISTORY,
-            columnIndex: valueRecord.columnIndex,
-            [valueFieldName]: serailizedValue
-        };
-    }
-    getSerializedRepositoryId(value, lookups) {
-        if (value === lookups.messageRepository._localId) {
-            return -1;
-        }
-        let serailizedValue = lookups.repositoryInMessageIndexesById.get(value);
-        if (serailizedValue === undefined) {
-            lookups.lastInMessageRepositoryIndex++;
-            serailizedValue = lookups.lastInMessageRepositoryIndex;
-            lookups.repositoryInMessageIndexesById.set(value, serailizedValue);
-        }
-        return serailizedValue;
-    }
-    serializeRepository(repository, owner) {
-        return {
-            ...WITH_ID,
-            ageSuitability: repository.ageSuitability,
-            createdAt: repository.createdAt,
-            immutable: repository.immutable,
-            owner,
-            source: repository.source,
-            GUID: repository.GUID
-        };
-    }
-};
-__decorate$5([
-    Inject$2()
-], SyncOutDataSerializer.prototype, "actorDao", void 0);
-__decorate$5([
-    Inject$2()
-], SyncOutDataSerializer.prototype, "repositoryDao", void 0);
-SyncOutDataSerializer = __decorate$5([
-    Injected()
-], SyncOutDataSerializer);
-
-let SynchronizationOutManager = class SynchronizationOutManager {
-    async synchronizeOut(repositoryTransactionHistories) {
-        await this.loadHistoryRepositories(repositoryTransactionHistories);
-        const { historiesToSend, messages } = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories);
-        // await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
-        const groupMessageMap = this.groupMessagesBySourceAndRepository(messages, historiesToSend);
-        for (const [repositorySource, messageMapForSource] of groupMessageMap) {
-            const synchronizationAdapter = await this.synchronizationAdapterLoader.load(repositorySource);
-            await synchronizationAdapter.sendTransactions(repositorySource, messageMapForSource);
-        }
-        await this.updateRepositoryTransactionHistories(messages, historiesToSend);
-    }
-    async loadHistoryRepositories(repositoryTransactionHistories) {
-        const repositoryIdsToLookup = new Set();
-        const repositoryMapById = new Map();
-        for (const repositoryTransactionHistory of repositoryTransactionHistories) {
-            repositoryIdsToLookup.add(repositoryTransactionHistory.repository._localId);
-        }
-        if (!repositoryIdsToLookup.size) {
-            return;
-        }
-        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds([
-            ...repositoryIdsToLookup.values()
-        ]);
-        for (const repository of repositories) {
-            repositoryMapById.set(repository._localId, repository);
-        }
-        for (const repositoryTransactionHistory of repositoryTransactionHistories) {
-            repositoryTransactionHistory.repository =
-                repositoryMapById.get(repositoryTransactionHistory.repository._localId);
-        }
-    }
-    async ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages) {
-        const repositoryIdsToLookup = new Set();
-        const repositoryMapById = new Map();
-        for (const repositoryTransactionHistory of repositoryTransactionHistories) {
-            const repository = repositoryTransactionHistory.repository;
-            if (!repository.source || !repository.GUID) {
-                repositoryIdsToLookup.add(repository._localId);
-            }
-            else {
-                repositoryMapById.set(repository._localId, repository);
-            }
-        }
-        if (!repositoryIdsToLookup.size) {
-            return;
-        }
-        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds([
-            ...repositoryIdsToLookup.values()
-        ]);
-        for (const repository of repositories) {
-            repositoryMapById.set(repository._localId, repository);
-        }
-        for (const message of messages) {
-            const repository = message.history.repository;
-            if (!repository.source || !repository.GUID) {
-                const foundRepository = repositoryMapById.get(repository._localId);
-                repository.source = foundRepository.source;
-                repository.GUID = foundRepository.GUID;
-                delete repository._localId;
-            }
-        }
-    }
-    groupMessagesBySourceAndRepository(messages, historiesToSend) {
-        const groupMessageMap = new Map();
-        for (let i = 0; i < messages.length; i++) {
-            const repository = historiesToSend[i].repository;
-            ensureChildArray(ensureChildJsMap(groupMessageMap, repository.source), repository.GUID).push(messages[i]);
-        }
-        return groupMessageMap;
-    }
-    async updateRepositoryTransactionHistories(messages, repositoryTransactionHistories) {
-        for (let i = 0; i < messages.length; i++) {
-            const message = messages[i];
-            const repositoryTransactionHistory = repositoryTransactionHistories[i];
-            if (message.syncTimestamp) {
-                repositoryTransactionHistory.syncTimestamp = message.syncTimestamp;
-                await this.repositoryTransactionHistoryDao.updateSyncTimestamp(repositoryTransactionHistory);
-            }
-        }
-    }
-};
-__decorate$5([
-    Inject$2()
-], SynchronizationOutManager.prototype, "repositoryDao", void 0);
-__decorate$5([
-    Inject$2()
-], SynchronizationOutManager.prototype, "repositoryTransactionHistoryDao", void 0);
-__decorate$5([
-    Inject$2()
-], SynchronizationOutManager.prototype, "synchronizationAdapterLoader", void 0);
-__decorate$5([
-    Inject$2()
-], SynchronizationOutManager.prototype, "syncOutDataSerializer", void 0);
-SynchronizationOutManager = __decorate$5([
-    Injected()
-], SynchronizationOutManager);
-
-const groundTransport = lib('ground-transport');
-groundTransport.register(Stage1SyncedInDataProcessor, Stage2SyncedInDataProcessor, SyncInActorChecker, SyncInChecker, SyncInDataChecker, SyncInTerminalChecker, SyncInRepositoryChecker, SyncInApplicationChecker, SyncInApplicationVersionChecker, SyncInUserAccountChecker, SyncInUtils, SynchronizationInManager, SynchronizationOutManager, SyncOutDataSerializer, TwoStageSyncedInDataProcessor, DebugSynchronizationAdapter, SynchronizationAdapterLoader);
-groundTransport.setDependencies(DebugSynchronizationAdapter, {
-    client: CLIENT
-});
-groundTransport.setDependencies(Stage1SyncedInDataProcessor, {
-    actorDao: ActorDao,
-    airportDatabase: AIRPORT_DATABASE,
-    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
-    repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
-    sequenceGenerator: SEQUENCE_GENERATOR,
-    syncInUtils: SyncInUtils
-});
-groundTransport.setDependencies(Stage2SyncedInDataProcessor, {
-    airportDatabase: AIRPORT_DATABASE,
-    databaseFacade: DATABASE_FACADE,
-    recordUpdateStageDao: RecordUpdateStageDao,
-    utils: UTILS
-});
-groundTransport.setDependencies(SyncInActorChecker, {
-    actorDao: ActorDao,
-});
-groundTransport.setDependencies(SyncInApplicationChecker, {
-    applicationDao: ApplicationDao,
-    domainDao: DomainDao
-});
-groundTransport.setDependencies(SyncInApplicationVersionChecker, {
-    applicationVersionDao: ApplicationVersionDao
-});
-groundTransport.setDependencies(SyncInChecker, {
-    syncInActorChecker: SyncInActorChecker,
-    syncInApplicationChecker: SyncInApplicationChecker,
-    syncInApplicationVersionChecker: SyncInApplicationVersionChecker,
-    syncInDataChecker: SyncInDataChecker,
-    syncInRepositoryChecker: SyncInRepositoryChecker,
-    syncInTerminalChecker: SyncInTerminalChecker,
-    syncInUserAccountChecker: SyncInUserAccountChecker
-});
-groundTransport.setDependencies(SyncInDataChecker, {
-    airportDatabase: AIRPORT_DATABASE,
-    sequenceGenerator: SEQUENCE_GENERATOR,
-    terminalStore: TERMINAL_STORE
-});
-groundTransport.setDependencies(SyncInRepositoryChecker, {
-    repositoryDao: RepositoryDao,
-});
-groundTransport.setDependencies(SyncInTerminalChecker, {
-    terminalDao: TerminalDao
-});
-groundTransport.setDependencies(SyncInUserAccountChecker, {
-    userAccountDao: UserAccountDao
-});
-groundTransport.setDependencies(SyncOutDataSerializer, {
-    actorDao: ActorDao,
-    repositoryDao: RepositoryDao,
-});
-groundTransport.setDependencies(SynchronizationAdapterLoader, {
-    debugSynchronizationAdapter: DebugSynchronizationAdapter
-});
-groundTransport.setDependencies(SynchronizationInManager, {
-    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
-    syncInChecker: SyncInChecker,
-    transactionManager: TRANSACTION_MANAGER,
-    twoStageSyncedInDataProcessor: TwoStageSyncedInDataProcessor
-});
-groundTransport.setDependencies(SynchronizationOutManager, {
-    repositoryDao: RepositoryDao,
-    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
-    synchronizationAdapterLoader: SynchronizationAdapterLoader,
-    syncOutDataSerializer: SyncOutDataSerializer
-});
-groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
-    repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
-    stage1SyncedInDataProcessor: Stage1SyncedInDataProcessor,
-    stage2SyncedInDataProcessor: Stage2SyncedInDataProcessor,
-    synchronizationConflictDao: SynchronizationConflictDao,
-    synchronizationConflictValuesDao: SynchronizationConflictValuesDao
-});
-
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-
-function __decorate$4(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let SessionStateApi = class SessionStateApi {
-    async getLoggedInUser() {
-        const userSession = await this.terminalSessionManager.getUserSession();
-        const userAccount = userSession.userAccount;
-        return {
-            email: userAccount.email,
-            username: userAccount.username,
-            GUID: userAccount.GUID
-        };
-    }
-};
-__decorate$4([
-    Inject$2()
-], SessionStateApi.prototype, "terminalSessionManager", void 0);
-__decorate$4([
-    Api()
-], SessionStateApi.prototype, "getLoggedInUser", null);
-SessionStateApi = __decorate$4([
-    Injected()
-], SessionStateApi);
-
-const __constructors__ = {};
-const Q_airport____at_airport_slash_session_dash_state = {
-    __constructors__,
-    domain: 'airport',
-    name: '@airport/session-state'
-};
-airApi.setQApp(Q_airport____at_airport_slash_session_dash_state);
-
-const application = {
-    name: '@airport/session-state',
-    domain: {
-        name: 'airport'
-    }
-};
-
-const sessionState = app(application);
-sessionState.register(SessionStateApi);
-sessionState.setDependencies(SessionStateApi, {
-    terminalSessionManager: TERMINAL_SESSION_MANAGER
+    utils: Utils
 });
 
 /******************************************************************************
@@ -37219,7 +36973,7 @@ const terminal = lib('terminal');
 REPOSITORY_LOADER.setClass(RepositoryLoader);
 TRANSACTIONAL_CONNECTOR.setClass(InternalTransactionalConnector);
 TRANSACTIONAL_CONNECTOR.setDependencies({
-    terminalStore: TERMINAL_STORE,
+    terminalStore: TerminalStore,
     transactionalServer: TRANSACTIONAL_SERVER
 });
 TRANSACTIONAL_SERVER.setClass(TransactionalServer);
@@ -37228,20 +36982,20 @@ QUERY_PARAMETER_DESERIALIZER.setClass(QueryParameterDeserializer);
 QUERY_RESULTS_SERIALIZER.setClass(QueryResultsSerializer);
 terminal.register(AbstractMutationManager, TransactionalReceiver, CascadeGraphVerifier, DatabaseManager, DeleteManager, DependencyGraphResolver, EntityGraphReconstructor, HistoryManager, InsertManager, InternalRecordManager, OnlineManager, OperationManager, QueryManager, StructuralEntityValidator, UpdateManager);
 terminal.setDependencies(AbstractMutationManager, {
-    applicationUtils: APPLICATION_UTILS,
-    fieldUtils: FIELD_UTILS,
+    applicationUtils: ApplicationUtils,
+    fieldUtils: FieldUtils,
     queryUtils: QUERY_UTILS,
-    relationManager: RELATION_MANAGER
+    relationManager: RelationManager
 });
 terminal.setDependencies(TransactionalReceiver, {
-    terminalStore: TERMINAL_STORE,
+    terminalStore: TerminalStore,
     transactionalServer: TRANSACTIONAL_SERVER
 });
 terminal.setDependencies(DatabaseManager, {
     airportDatabase: AIRPORT_DATABASE,
     applicationDao: ApplicationDao,
     applicationInitializer: APPLICATION_INITIALIZER,
-    dbApplicationUtils: DB_APPLICATION_UTILS,
+    dbApplicationUtils: DbApplicationUtils,
     internalRecordManager: InternalRecordManager,
     storeDriver: STORE_DRIVER,
     transactionalServer: TRANSACTIONAL_SERVER,
@@ -37249,13 +37003,13 @@ terminal.setDependencies(DatabaseManager, {
 });
 terminal.setDependencies(DeleteManager, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: APPLICATION_UTILS,
+    applicationUtils: ApplicationUtils,
     historyManager: HistoryManager,
     operationHistoryDuo: OperationHistoryDuo,
     recordHistoryDuo: RecordHistoryDuo,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     sequenceGenerator: SEQUENCE_GENERATOR,
-    utils: UTILS
+    utils: Utils
 });
 terminal.setDependencies(DependencyGraphResolver, {
     entityStateManager: ENTITY_STATE_MANAGER
@@ -37280,7 +37034,7 @@ terminal.setDependencies(InternalRecordManager, {
     domainDao: DomainDao,
     entityStateManager: ENTITY_STATE_MANAGER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
-    terminalStore: TERMINAL_STORE,
+    terminalStore: TerminalStore,
     transactionManager: TRANSACTION_MANAGER
 });
 REPOSITORY_MANAGER.setClass(RepositoryManager);
@@ -37288,7 +37042,7 @@ REPOSITORY_MANAGER.setDependencies({
     repositoryDao: RepositoryDao,
     repositoryNestingDao: RepositoryNestingDao,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
-    terminalStore: TERMINAL_STORE
+    terminalStore: TerminalStore
 });
 terminal.setDependencies(OnlineManager, {
     repositoryDao: RepositoryDao,
@@ -37298,24 +37052,24 @@ terminal.setDependencies(OnlineManager, {
 });
 terminal.setDependencies(OperationManager, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: APPLICATION_UTILS,
+    applicationUtils: ApplicationUtils,
     cascadeGraphVerifier: CascadeGraphVerifier,
     deleteManager: DeleteManager,
     dependencyGraphResolver: DependencyGraphResolver,
     entityGraphReconstructor: EntityGraphReconstructor,
     entityStateManager: ENTITY_STATE_MANAGER,
     insertManager: InsertManager,
-    qMetadataUtils: Q_METADATA_UTILS,
+    qMetadataUtils: QMetadataUtils,
     queryFacade: QUERY_FACADE,
     repositoryManager: RepositoryManager,
     structuralEntityValidator: StructuralEntityValidator,
     updateManager: UpdateManager,
-    utils: UTILS
+    utils: Utils
 });
 terminal.setDependencies(QueryManager, {
     actorDao: ActorDao,
     airportDatabase: AIRPORT_DATABASE,
-    observableQueryAdapter: OBSERVABLE_QUERY_ADAPTER,
+    observableQueryAdapter: ObservableQueryAdapter,
     repositoryDao: RepositoryDao,
     repositoryLoader: REPOSITORY_LOADER,
     storeDriver: STORE_DRIVER
@@ -37326,35 +37080,35 @@ REPOSITORY_LOADER.setDependencies({
     synchronizationInManager: SynchronizationInManager
 });
 terminal.setDependencies(StructuralEntityValidator, {
-    applicationUtils: APPLICATION_UTILS,
-    dbApplicationUtils: DB_APPLICATION_UTILS,
+    applicationUtils: ApplicationUtils,
+    dbApplicationUtils: DbApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
 });
 TERMINAL_SESSION_MANAGER.setClass(TerminalSessionManager);
 TERMINAL_SESSION_MANAGER.setDependencies({
     sessionStateApi: SessionStateApi,
-    terminalStore: TERMINAL_STORE,
+    terminalStore: TerminalStore,
     userAccountManager: UserAccountManager,
-    userStore: USER_STORE
+    userStore: UserStore
 });
 TRANSACTION_MANAGER.setDependencies({
-    activeQueries: ACTIVE_QUERIES,
-    idGenerator: ID_GENERATOR,
+    activeQueries: ActiveQueries,
+    idGenerator: IdGenerator,
     storeDriver: STORE_DRIVER,
     synchronizationOutManager: SynchronizationOutManager,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
-    terminalStore: TERMINAL_STORE,
+    terminalStore: TerminalStore,
     transactionHistoryDuo: TransactionHistoryDuo,
 });
 TRANSACTIONAL_RECEIVER.setDependencies({
     actorDao: ActorDao,
     applicationDao: ApplicationDao,
     databaseManager: DatabaseManager,
-    dbApplicationUtils: DB_APPLICATION_UTILS,
+    dbApplicationUtils: DbApplicationUtils,
     internalRecordManager: InternalRecordManager,
     localApiServer: LOCAL_API_SERVER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
-    terminalStore: TERMINAL_STORE,
+    terminalStore: TerminalStore,
     transactionManager: TRANSACTION_MANAGER,
     transactionalServer: TRANSACTIONAL_SERVER
 });
@@ -37364,20 +37118,20 @@ TRANSACTIONAL_SERVER.setDependencies({
     operationManager: OperationManager,
     queryManager: QueryManager,
     repositoryManager: RepositoryManager,
-    terminalStore: TERMINAL_STORE,
+    terminalStore: TerminalStore,
     transactionManager: TRANSACTION_MANAGER,
     updateManager: UpdateManager
 });
 terminal.setDependencies(UpdateManager, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: APPLICATION_UTILS,
-    fieldUtils: FIELD_UTILS,
+    applicationUtils: ApplicationUtils,
+    fieldUtils: FieldUtils,
     historyManager: HistoryManager,
     operationHistoryDuo: OperationHistoryDuo,
     queryFacade: QUERY_FACADE,
     queryUtils: QUERY_UTILS,
     recordHistoryDuo: RecordHistoryDuo,
-    relationManager: RELATION_MANAGER,
+    relationManager: RelationManager,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     sequenceGenerator: SEQUENCE_GENERATOR,
 });
@@ -37818,6 +37572,8 @@ QueryResultsDeserializer = __decorate$2([
     Injected()
 ], QueryResultsDeserializer);
 
+// This library is used in UI/Client bundles and does does not include @airport/direction-indicator
+// dependency injection library
 if (globalThis.IOC) {
     globalThis.OPERATION_SERIALIZER.setClass(OperationSerializer);
     globalThis.SERIALIZATION_STATE_MANAGER.setClass(SerializationStateManager);
@@ -39039,38 +38795,34 @@ function injectAirportDatabase() {
 }
 
 const tower = lib('tower');
-const ENTITY_COPIER = tower.token({
-    class: EntityCopier,
-    interface: 'IEntityCopier',
-    token: 'ENTITY_COPIER'
-});
+tower.register(EntityCopier);
 AIRPORT_DATABASE.setClass(AirportDatabase);
 ENTITY_STATE_MANAGER.setClass(EntityStateManager);
 API_REGISTRY.setClass(ApiRegistry);
 API_REGISTRY.setDependencies({
-    applicationStore: APPLICATION_STORE,
-    containerAccessor: CONTAINER_ACCESSOR
+    applicationStore: ApplicationStore,
+    containerAccessor: ContainerAccessor
 });
 API_VALIDATOR.setClass(ApiValidator);
 LOCAL_API_SERVER.setClass(LocalAPIServer);
 LOCAL_API_SERVER.setDependencies({
     apiRegistry: API_REGISTRY,
-    applicationStore: APPLICATION_STORE,
+    applicationStore: ApplicationStore,
     queryResultsDeserializer: QUERY_RESULTS_DESERIALIZER,
-    requestManager: REQUEST_MANAGER
+    requestManager: RequestManager
 });
 OPERATION_DESERIALIZER.setClass(OperationDeserializer);
 UPDATE_CACHE_MANAGER.setClass(UpdateCacheManager);
 DATABASE_FACADE.setClass(DatabaseFacade);
 DATABASE_FACADE.setDependencies({
-    entityCopier: ENTITY_COPIER,
+    entityCopier: EntityCopier,
     queryFacade: QUERY_FACADE
 });
 QUERY_FACADE.setClass(QueryFacade);
 
 class NoOpApplicationBuilder extends SqlSchemaBuilder {
     async createApplication(jsonApplication, context) {
-        const applicationName = IOC.getSync(DB_APPLICATION_UTILS).
+        const applicationName = IOC.getSync(DbApplicationUtils).
             getFullApplication_Name(jsonApplication);
         const createApplicationStatement = `CREATE APPLICATION ${applicationName}`;
         await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [], context, false);
@@ -39084,7 +38836,7 @@ class NoOpApplicationBuilder extends SqlSchemaBuilder {
     async buildAllSequences(jsonApplications, context) {
         let allSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = this.airportDatabase.QM[IOC.getSync(DB_APPLICATION_UTILS).
+            const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
                 getFullApplication_Name(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
@@ -39095,7 +38847,7 @@ class NoOpApplicationBuilder extends SqlSchemaBuilder {
     stageSequences(jsonApplications, context) {
         let stagedSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = this.airportDatabase.QM[IOC.getSync(DB_APPLICATION_UTILS).
+            const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
                 getFullApplication_Name(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
@@ -39300,7 +39052,7 @@ SequenceGenerator = __decorate([
 SEQUENCE_GENERATOR.setClass(SequenceGenerator);
 SEQUENCE_GENERATOR.setDependencies({
     sequenceDao: SEQUENCE_DAO,
-    terminalStore: TERMINAL_STORE
+    terminalStore: TerminalStore
 });
 
 class NoOpSequenceGenerator extends SequenceGenerator {
@@ -39447,7 +39199,7 @@ class ApplicationQueryGenerator {
         const functionEndRegex = /\s*\}\);\s*$/;
         queryJavascript = queryJavascript.replace(functionStartRegex, '');
         queryJavascript = queryJavascript.replace(functionEndRegex, '');
-        const [airDb, dbApplicationUtils] = await IOC.get(AIRPORT_DATABASE, DB_APPLICATION_UTILS);
+        const [airDb, dbApplicationUtils] = await IOC.get(AIRPORT_DATABASE, DbApplicationUtils);
         for (const functionName in airDb.functions) {
             const regex = new RegExp(`\\s*${functionName}\\(`);
             queryJavascript = queryJavascript
@@ -39463,7 +39215,7 @@ class ApplicationQueryGenerator {
         const queryFunction = new Function(...functionConstructorParams);
         const [queryFunctionParameters, queryParameters] = this.getQueryFunctionParameters(queryDefinition, jsonApplication, airDb, dbApplicationUtils);
         const rawQuery = queryFunction(...queryFunctionParameters);
-        const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(DB_APPLICATION_UTILS, LOOKUP, QUERY_FACADE);
+        const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(DbApplicationUtils, Lookup, QUERY_FACADE);
         const context = lookup.ensureContext(null);
         const qApplication = airDb.QM[dbAppliationUtils.
             getFullApplication_Name(jsonApplication)];
@@ -41854,10 +41606,10 @@ class EntityMappingBuilder {
         }).join('\n');
         return `/* eslint-disable */
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
+import { IOC } from '@airport/direction-indicator';
 ${imports.join('\n')}
 
-DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
+IOC.get(AIRPORT_DATABASE).then(airDb => {
   const accumulator = airDb.getAccumulator('${applicationDomain}', '${applicationName}');
 ${entityDefinitions}
 });
@@ -42966,22 +42718,26 @@ class ApiProxySuperclassBuilder extends FileBuilder {
     build() {
         return `import { application } from "../../to_be_generated/app-declaration"
 
-        export abstract class ApiProxy<Api> {
+export abstract class ApiProxy<Api> {
         
-            _initialized = false
-            _proxy: Api
-        
-            get proxy(): Api {
-                if (!this._initialized) {
-                    this._initialized = true
-                    globalThis.DEPENDENCY_INJECTION.db().manualInject(this, '_proxy',
-                        application, this)
+    _initialized = false
+    _proxy: Api
+
+    get proxy(): Api {
+        if (!this._initialized) {
+            this._initialized = true
+            globalThis.IOC.getAutopilotApiLoader().loadApiAutopilot({
+                application,
+                descriptor: {
+                    interface: this.constructor.name
                 }
+            })
+        }
         
-                return this._proxy
-            }
+        return this._proxy
+    }
         
-        }`;
+}`;
     }
 }
 
@@ -43074,7 +42830,7 @@ function emitFiles(entityMapByName, configuration, applicationMapByProjectName) 
     const applicationBuilder = new JsonApplicationBuilder(configuration, entityMapByName, applicationString);
     const [jsonApplication, indexedApplication] = applicationBuilder.build(configuration.airport.domain, applicationMapByProjectName, entityOperationMap);
     const entityFileReference = {};
-    const applicationFullName = IOC.getSync(DB_APPLICATION_UTILS).
+    const applicationFullName = IOC.getSync(DbApplicationUtils).
         getFullApplication_NameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
     const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
     const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');

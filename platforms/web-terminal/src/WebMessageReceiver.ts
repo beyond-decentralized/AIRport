@@ -5,7 +5,7 @@ import {
 import { ILocalAPIRequest, ILocalAPIResponse } from "@airport/aviation-communication";
 import { IOC } from "@airport/direction-indicator";
 import { IApiIMI, IIsolateMessage } from "@airport/apron";
-import { ITransactionalReceiver, TERMINAL_STORE } from "@airport/terminal-map";
+import { ITransactionalReceiver, TerminalStore } from "@airport/terminal-map";
 import {
     BroadcastChannel as SoftBroadcastChannel
 } from '../node_modules/broadcast-channel/dist/lib/index.es5';
@@ -22,7 +22,7 @@ export interface IWebMessageReceiver {
 }
 
 @Injected()
-export class WebMesageReceiver
+export class WebMessageReceiver
     implements IWebMessageReceiver {
 
     @Inject()
@@ -79,7 +79,7 @@ export class WebMesageReceiver
 }
 
 export function injectWebReceiver() {
-    const terminalStore = IOC.getSync(TERMINAL_STORE)
+    const terminalStore = IOC.getSync(TerminalStore)
     const webReciever = terminalStore.getWebReceiver()
 
     webReciever.localDomain = 'localhost:31717'
