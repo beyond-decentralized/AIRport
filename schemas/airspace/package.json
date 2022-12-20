@@ -40,6 +40,7 @@
   "scripts": {
     "predev": "node generate.mjs",
     "dev": "rollup -c ./rollup.config.js -w",
+    "prebuild": "node generate.mjs",
     "build": "rollup -c ./rollup.config.js"
   },
   "types": "dist/esm/index.d.ts"

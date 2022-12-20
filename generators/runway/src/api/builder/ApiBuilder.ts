@@ -39,6 +39,12 @@ export class ApiBuilder
             this.addImport([moduleImport.objectMapByAsName[objectAsName]],
                 relativePathToImport)
         }
+
+        const commonTokensFilePath = this.pathBuilder.workingDirPath
+            + '/src/generated/api/ApiProxy'
+        const commonTokensFileRelativePath = resolveRelativePath(
+            this.fullGenerationPath, commonTokensFilePath)
+        this.addImport(['ApiProxy'], commonTokensFileRelativePath)
     }
 
     build(): string {

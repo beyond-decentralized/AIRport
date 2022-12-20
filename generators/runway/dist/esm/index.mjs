@@ -42479,6 +42479,10 @@ class ApiBuilder extends FileBuilder {
             }
             this.addImport([moduleImport.objectMapByAsName[objectAsName]], relativePathToImport);
         }
+        const commonTokensFilePath = this.pathBuilder.workingDirPath
+            + '/src/generated/api/ApiProxy';
+        const commonTokensFileRelativePath = resolveRelativePath(this.fullGenerationPath, commonTokensFilePath);
+        this.addImport(['ApiProxy'], commonTokensFileRelativePath);
     }
     build() {
         let enumAndInterfaceDefinitionCode = '';
@@ -42960,7 +42964,7 @@ class ApiProxySuperclassBuilder extends FileBuilder {
     addImports() {
     }
     build() {
-        return `import { application } from "../../to_be_generated/common-tokens"
+        return `import { application } from "../../to_be_generated/app-declaration"
 
         export abstract class ApiProxy<Api> {
         

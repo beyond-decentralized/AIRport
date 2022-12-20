@@ -18,7 +18,7 @@ export class ApiProxySuperclassBuilder
     }
 
     build(): string {
-        return `import { application } from "../../to_be_generated/common-tokens"
+        return `import { application } from "../../to_be_generated/app-declaration"
 
         export abstract class ApiProxy<Api> {
         
