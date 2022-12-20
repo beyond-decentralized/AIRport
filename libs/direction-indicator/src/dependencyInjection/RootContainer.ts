@@ -10,7 +10,6 @@ export class RootContainer
     extends Container
     implements IRootContainer {
 
-    isFramework = false
     dbContainerMap: Map<string, IChildContainer> = new Map();
     uiContainers: Set<IContainer> = new Set<IContainer>();
 

@@ -490,33 +490,28 @@ class ChildContainer extends Container$2 {
             }
             let object = this.objectMap.get(token.descriptor.token);
             if (!object) {
-                if (!this.rootContainer.isFramework) {
-                    throw new Error(`Autopilot objects properties should not be injected - they are proxied.`);
-                }
-                else {
-                    if (!(token instanceof DependencyInjectionToken)) {
-                        throw new Error(`Non-API token lookups must be done
+                if (!(token instanceof DependencyInjectionToken)) {
+                    throw new Error(`Non-API token lookups must be done
                             with an instance of a DependencyInjectionToken.`);
-                    }
-                    // NOTE: object pooling is not supported, see RootContainer for why
-                    // const rootObjectPool = this.rootContainer.objectPoolMap.get(token.descriptor.token);
-                    // if (rootObjectPool && rootObjectPool.length) {
-                    //     object = rootObjectPool.pop()
-                    // } else {
-                    const aClass = token.descriptor.class;
-                    if (!aClass) {
-                        firstMissingClassToken = token;
-                        return;
-                    }
-                    if (aClass.diSet && !aClass.diSet()) {
-                        firstMissingClassToken = token;
-                        firstDiNotSetClass = aClass;
-                        return;
-                    }
-                    object = new aClass();
-                    this.setDependencyGetters(object, token);
-                    // }
                 }
+                // NOTE: object pooling is not supported, see RootContainer for why
+                // const rootObjectPool = this.rootContainer.objectPoolMap.get(token.descriptor.token);
+                // if (rootObjectPool && rootObjectPool.length) {
+                //     object = rootObjectPool.pop()
+                // } else {
+                const aClass = token.descriptor.class;
+                if (!aClass) {
+                    firstMissingClassToken = token;
+                    return;
+                }
+                if (aClass.diSet && !aClass.diSet()) {
+                    firstMissingClassToken = token;
+                    firstDiNotSetClass = aClass;
+                    return;
+                }
+                object = new aClass();
+                this.setDependencyGetters(object, token);
+                // }
                 object.__container__ = this;
                 this.objectMap.set(token.descriptor.token, object);
                 if (object.init) {
@@ -635,7 +630,6 @@ addClasses([ChildContainer]);
 class RootContainer extends Container$2 {
     constructor() {
         super(...arguments);
-        this.isFramework = false;
         this.dbContainerMap = new Map();
         this.uiContainers = new Set();
     }
@@ -37387,8 +37381,6 @@ terminal.setDependencies(UpdateManager, {
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     sequenceGenerator: SEQUENCE_GENERATOR,
 });
-
-DEPENDENCY_INJECTION.isFramework = true;
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
