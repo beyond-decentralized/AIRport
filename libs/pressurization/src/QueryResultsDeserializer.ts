@@ -1,4 +1,4 @@
-import { AIR_ENTITY_UTILS, IAirEntityUtils } from '@airport/aviation-communication'
+import { IAirEntityUtils } from '@airport/aviation-communication'
 import { IInjected, Inject, Injected } from '@airport/direction-indicator'
 import {
 	ISerializationStateManager,
@@ -275,12 +275,12 @@ export class QueryResultsDeserializer
 			let _this = this as IInjected
 			Object.defineProperty(object, 'id', {
 				get() {
-					return _this.__container__.getSync(AIR_ENTITY_UTILS).encodeId(this)
+					return (_this.__container__.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).encodeId(this)
 				},
 				set(
 					idString: string
 				) {
-					_this.__container__.getSync(AIR_ENTITY_UTILS).setId(idString, this)
+					(_this.__container__.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).setId(idString, this)
 				}
 			});
 		}

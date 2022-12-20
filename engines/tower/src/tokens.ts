@@ -1,6 +1,6 @@
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { API_REGISTRY, API_VALIDATOR } from '@airport/check-in';
-import { CONTAINER_ACCESSOR, lib } from '@airport/direction-indicator'
+import { CONTAINER_ACCESSOR, QUERY_RESULTS_DESERIALIZER, lib } from '@airport/direction-indicator'
 import { ENTITY_STATE_MANAGER, UPDATE_CACHE_MANAGER } from '@airport/ground-control';
 import { APPLICATION_STORE, LOCAL_API_SERVER } from '@airport/apron';
 import { AirportDatabase } from './AirportDatabase';
@@ -15,7 +15,6 @@ import { DatabaseFacade } from './facade/DatabaseFacade';
 import { QueryFacade } from './facade/QueryFacade';
 import { DATABASE_FACADE, QUERY_FACADE } from '@airport/tarmaq-dao';
 import { OPERATION_DESERIALIZER, REQUEST_MANAGER } from '@airport/arrivals-n-departures';
-import { QUERY_RESULTS_DESERIALIZER } from '@airport/pressurization';
 
 const tower = lib('tower')
 

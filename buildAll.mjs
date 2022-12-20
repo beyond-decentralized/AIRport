@@ -57,8 +57,7 @@ const secondStageProjectDescriptors = [
     // },
     'libs/blueprint',
     'generators/takeoff',
-    'generators/landing',
-    'libs/session-state'
+    'generators/landing'
 ]
 
 const airwayDependencyProjectDirectories = [

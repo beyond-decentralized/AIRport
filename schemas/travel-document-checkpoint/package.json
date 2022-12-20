@@ -34,13 +34,13 @@
   "main": "dist/esm/index.mjs",
   "module": "dist/esm/index.mjs",
   "browser": "dist/esm/index.mjs",
+  "app": "dist/app/bundle.mjs",
   "files": [
     "dist"
   ],
   "scripts": {
     "predev": "node generate.mjs",
     "dev": "rollup -c ./rollup.config.js -w",
-    "prebuild": "node generate.mjs",
     "build": "rollup -c ./rollup.config.js"
   },
   "types": "dist/esm/index.d.ts"

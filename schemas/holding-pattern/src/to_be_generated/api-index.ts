@@ -1,3 +1,6 @@
+import { RepositoryApi } from '../generated/api/repository/RepositoryApi';
+import { application } from './app-declaration';
+
 export * from '../types';
 export * from '../ddl/ddl';
 export * from '../generated/qApplication';
@@ -6,5 +9,6 @@ export * from '../generated/vInterfaces';
 export * from '../generated/interfaces';
 export * from '../generated/api/api';
 
-export * from './common-tokens'
-export * from './api-tokens'
+for (let apiStub in [RepositoryApi]) {
+    (apiStub as any).application = application
+}

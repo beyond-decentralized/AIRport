@@ -1,22 +1,14 @@
 import { addClasses } from '../classes'
 import {
-	IInjectionApplication,
+	IInjectionApplication
+} from './interfaces/IInjectionApplication'
+import {
 	InjectionApplication
 } from './InjectionApplication'
+import { IApplicationDescriptor } from './interfaces/Token'
+import { IInjectionDomain } from './interfaces/IInjectionDomain'
 
-export interface IInjectionDomain {
 
-	name: string
-
-	app(
-		applicationName: string
-	): IInjectionApplication
-
-	getApp(
-		applicationName: string
-	): IInjectionApplication
-
-}
 
 export class InjectionDomain
 	implements IInjectionDomain {
@@ -42,6 +34,7 @@ export class InjectionDomain
 		}
 
 		const application = new InjectionApplication(applicationName, this)
+		application.getDomain = domain
 
 		this.applicationMap[applicationName] = application
 
@@ -86,3 +79,12 @@ export function domain(
 }
 globalThis.domain = domain
 
+
+
+export function app(
+	applicationDescriptor: IApplicationDescriptor
+): IInjectionApplication {
+	const airDomain = domain(applicationDescriptor.domain.name)
+
+	return airDomain.app(applicationDescriptor.name)
+}

@@ -30,6 +30,7 @@ import { ApiBuilder } from './api/builder/ApiBuilder';
 import { ApiIndexBuilder } from './api/builder/ApiIndexBuilder';
 import { VEntityFileBuilder } from './ddl/builder/entity/validate/VEntityFileBuilder';
 import { IOC } from '@airport/direction-indicator';
+import { ApiProxySuperclassBuilder } from './api/builder/ApiProxySuperclassBuilder';
 
 /**
  * Created by Papa on 3/30/2016.
@@ -187,6 +188,8 @@ function emitFiles(
 		apiIndexBuilder.addApiFilePath(apiBuilder.fullGenerationPath)
 	}
 	if (numApiFiles) {
+		const apiProxySuperclassBuilder = new ApiProxySuperclassBuilder(pathBuilder)
+		fs.writeFileSync(apiProxySuperclassBuilder.fullGenerationPath, apiProxySuperclassBuilder.build());
 		fs.writeFileSync(apiIndexBuilder.fullGenerationPath, apiIndexBuilder.build());
 	}
 

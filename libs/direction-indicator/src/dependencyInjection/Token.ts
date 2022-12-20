@@ -1,56 +1,17 @@
 import { addClasses } from '../classes'
-import { IInjectionApplication } from './InjectionApplication'
-
-export type IDependencyInjectionTokenName = string
-
-export interface ITokenDependencyConfiguration {
-
-	[propertyName: string]: IDependencyInjectionToken<any>
-
-}
-
-export interface IApplicationDescriptor {
-	autopilot: boolean
-	domain: {
-		name: string
-	}
-	name: string
-}
-
-export interface IFullDITokenDescriptor {
-	application: IApplicationDescriptor
-	descriptor: IDependencyInjectionTokenDescriptor
-}
-
-export interface IDependencyInjectionTokenDescriptor {
-	class?: any,
-	interface: string,
-	token?: string,
-	isApi?: boolean
-}
-
-export interface IDependencyInjectionToken<Injected> {
-
-	application: IInjectionApplication
-	dependencyConfiguration: ITokenDependencyConfiguration
-	descriptor: IDependencyInjectionTokenDescriptor,
-
-	getPath(): string
-
-	setDependencies(
-		dependencyConfiguration: ITokenDependencyConfiguration
-	): void
-
-	setClass(
-		aClass: any
-	): void
-
-	getClass(): any
-
-}
+import { IInjectionApplication } from './interfaces/IInjectionApplication'
+import { IDependencyInjectionToken, IDependencyInjectionTokenDescriptor, IFullDITokenDescriptor, ITokenDependencyConfiguration, ITokenDependencyConfigurationIn } from './interfaces/Token'
 
 export class DependencyInjectionToken<Injected>
 	implements IDependencyInjectionToken<Injected> {
+
+	static getPath<Injected>(
+		tokenOrFullDescriptor: IDependencyInjectionToken<Injected> | IFullDITokenDescriptor
+	): string {
+		return tokenOrFullDescriptor.application.domain.name + ':' + tokenOrFullDescriptor.application.name + ':'
+			+ tokenOrFullDescriptor.descriptor.token
+	}
+
 
 	private _dependencyConfiguration: ITokenDependencyConfiguration
 
@@ -65,20 +26,43 @@ export class DependencyInjectionToken<Injected>
 	}
 
 	getPath(): string {
-		return this.application.domain.name + ':' + this.application.name + ':'
-			+ this.descriptor.token
+		return DependencyInjectionToken.getPath(this)
 	}
 
 	setDependencies(
-		dependencyConfiguration: ITokenDependencyConfiguration
+		dependencyConfiguration: ITokenDependencyConfigurationIn
 	): void {
+		let tokenBasedDependencyConfiguration: ITokenDependencyConfiguration = {}
+		for (let propertyName in dependencyConfiguration) {
+			let dependency = dependencyConfiguration[propertyName]
+			if (dependency.constructor) {
+				let apiClass = dependency as any
+				if (!apiClass.token) {
+					const applicationDescriptor = apiClass.application
+					if (!applicationDescriptor || !applicationDescriptor.name || !applicationDescriptor.domain
+						|| !applicationDescriptor.domain.name) {
+						throw new Error(`Did not find application descriptor on a @Injected() constructor`)
+					}
+					this.application.getDomain(applicationDescriptor.domain.name).app(applicationDescriptor.name)
+						.register(apiClass)
+				}
+				dependency = apiClass.token
+			}
+			tokenBasedDependencyConfiguration[propertyName] = dependency as IDependencyInjectionToken<any>
+
+			if (!(dependency instanceof DependencyInjectionToken)) {
+				throw new Error(`Property dependency is not a DependencyInjectionToken or a @Injected() class
+	Token:    ${this.getPath}
+	Property: ${propertyName}`)
+			}
+		}
 		if (this._dependencyConfiguration) {
 			this._dependencyConfiguration = {
 				...this._dependencyConfiguration,
-				...dependencyConfiguration
+				...tokenBasedDependencyConfiguration
 			}
 		} else {
-			this._dependencyConfiguration = dependencyConfiguration
+			this._dependencyConfiguration = tokenBasedDependencyConfiguration
 		}
 		if (!this.descriptor.class) {
 			return
@@ -126,9 +110,3 @@ export class DependencyInjectionToken<Injected>
 
 }
 addClasses([DependencyInjectionToken])
-
-export interface GenericDependencyInjectionError {
-
-	DependencyInjectionTokenMustBeGenerisizedWithTypeOfInjectedObject(): void
-
-}

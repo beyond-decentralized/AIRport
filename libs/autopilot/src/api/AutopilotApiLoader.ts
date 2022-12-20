@@ -1,24 +1,20 @@
 import {
     IAutopilotApiLoader,
     IFullDITokenDescriptor,
-    IInterAppAPIClient,
-    Inject,
+    APIClient,
     Injected,
-    INTER_APP_API_CLIENT
+    Inject,
 } from '@airport/direction-indicator'
-import { ILocalAPIClient } from '../LocalAPIClient';
 
 @Injected()
 export class AutopilotApiLoader
     implements IAutopilotApiLoader {
 
     @Inject()
-    interAppApiClient: IInterAppAPIClient
-
-    @Inject()
-    localApiClient: ILocalAPIClient
+    apiClient: APIClient
 
     lastCallMillisMap: Map<IFullDITokenDescriptor, Map<string, number>> = new Map()
+
 
     loadApiAutopilot<T>(
         fullDIDescriptor: IFullDITokenDescriptor
@@ -48,13 +44,8 @@ export class AutopilotApiLoader
     please prevent double submission in UI code`)
                     }
                     mapForToken.set(methodName, nowMillis)
-                    if (INTER_APP_API_CLIENT.getClass()) {
-                        return _this.interAppApiClient.invokeApiMethod(
-                            fullDIDescriptor, methodName, args);
-                    } else {
-                        return _this.localApiClient.invokeApiMethod(
-                            fullDIDescriptor, methodName, args);
-                    }
+                    return _this.apiClient.invokeApiMethod(
+                        fullDIDescriptor, methodName, args);
                 };
             }
         }) as T;

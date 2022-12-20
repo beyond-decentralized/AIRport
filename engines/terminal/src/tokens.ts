@@ -7,7 +7,7 @@ import {
     REPOSITORY_LOADER,
     UTILS
 } from '@airport/air-traffic-control'
-import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/airspace/dist/app/bundle'
+import { ApplicationDao, DomainDao } from '@airport/airspace/dist/app/bundle'
 import { QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER } from '@airport/arrivals-n-departures'
 import { TERMINAL_SESSION_MANAGER } from '@airport/terminal-map'
 import { lib } from '@airport/direction-indicator'
@@ -23,37 +23,16 @@ import {
     TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control'
 import {
-    SYNCHRONIZATION_ADAPTER_LOADER,
-    SYNCHRONIZATION_IN_MANAGER,
-    SYNCHRONIZATION_OUT_MANAGER
+    SynchronizationAdapterLoader, SynchronizationInManager, SynchronizationOutManager
 } from '@airport/ground-transport'
 import {
-    ACTOR_DAO,
-    OPERATION_HISTORY_DUO,
-    RECORD_HISTORY_DUO,
-    REPOSITORY_DAO,
-    REPOSITORY_MANAGER,
-    REPOSITORY_NESTING_DAO,
-    REPOSITORY_TRANSACTION_HISTORY_DAO,
-    REPOSITORY_TRANSACTION_HISTORY_DUO,
-    TRANSACTION_HISTORY_DUO
+    ActorDao, OperationHistoryDuo, RecordHistoryDuo, RepositoryDao, RepositoryNestingDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo, REPOSITORY_MANAGER, TransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
-import { SESSION_STATE_API } from '@airport/session-state/dist/app/bundle'
+import { SessionStateApi } from '@airport/session-state/dist/app/bundle'
 import { QUERY_FACADE } from '@airport/tarmaq-dao'
 import { QUERY_UTILS } from '@airport/tarmaq-query'
 import {
     APPLICATION_INITIALIZER,
-    ICascadeGraphVerifier,
-    IDatabaseManager,
-    IDeleteManager,
-    IDependencyGraphResolver,
-    IEntityGraphReconstructor,
-    IHistoryManager,
-    IInsertManager,
-    IOperationManager,
-    IQueryManager,
-    IStructuralEntityValidator,
-    IUpdateManager,
     STORE_DRIVER,
     TERMINAL_STORE,
     TRANSACTIONAL_RECEIVER,
@@ -63,9 +42,9 @@ import {
 } from '@airport/terminal-map'
 import { RepositoryLoader } from './core/repository/RepositoryLoader'
 import { TerminalSessionManager } from './core/TerminalSessionManager'
-import { IInternalRecordManager, InternalRecordManager } from './data/InternalRecordManager'
+import { InternalRecordManager } from './data/InternalRecordManager'
 import { InternalTransactionalConnector } from './net/InternalTransactionalConnector'
-import { IOnlineManager, OnlineManager } from './net/OnlineManager'
+import { OnlineManager } from './net/OnlineManager'
 import { TransactionalReceiver } from './net/TransactionalReceiver'
 import { TransactionalServer } from './net/TransactionalServer'
 import { AbstractMutationManager } from './orchestration/AbstractMutationManager'
@@ -84,7 +63,7 @@ import { StructuralEntityValidator } from './processing/StructuralEntityValidato
 import { QueryParameterDeserializer } from './serialize/QueryParameterDeserializer'
 import { QueryResultsSerializer } from './serialize/QueryResultsSerializer'
 import { RepositoryManager } from './core/repository/RepositoryManager'
-import { USER_ACCOUNT_MANAGER } from '@airport/travel-document-checkpoint/dist/app/bundle'
+import { UserAccountManager } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { LOCAL_API_SERVER } from '@airport/apron'
 
 const terminal = lib('terminal')
@@ -100,196 +79,127 @@ TRANSACTION_MANAGER.setClass(TransactionManager)
 QUERY_PARAMETER_DESERIALIZER.setClass(QueryParameterDeserializer)
 QUERY_RESULTS_SERIALIZER.setClass(QueryResultsSerializer)
 
+terminal.register(
+    AbstractMutationManager, TransactionalReceiver as any, CascadeGraphVerifier,
+    DatabaseManager, DeleteManager, DependencyGraphResolver,
+    EntityGraphReconstructor, HistoryManager, InsertManager,
+    InternalRecordManager, OnlineManager, OperationManager,
+    QueryManager, StructuralEntityValidator, UpdateManager
+)
 
-export const ABSTRACT_MUTATION_MANAGER = terminal.token<AbstractMutationManager>({
-    class: AbstractMutationManager,
-    interface: 'class AbstractMutationManager',
-    token: 'ABSTRACT_MUTATION_MANAGER'
-})
-export const ABSTRACT_TRANSACTIONAL_RECEIVER = terminal.token<TransactionalReceiver>({
-    class: TransactionalReceiver,
-    interface: 'class TransactionalReceiver',
-    token: 'ABSTRACT_TRANSACTIONAL_RECEIVER'
-})
-export const CASCADE_GRAPH_VERIFIER = terminal.token<ICascadeGraphVerifier>({
-    class: CascadeGraphVerifier,
-    interface: 'ICascadeGraphVerifier',
-    token: 'CASCADE_GRAPH_VERIFIER'
-})
-export const DATABASE_MANAGER = terminal.token<IDatabaseManager>({
-    class: DatabaseManager,
-    interface: 'IDatabaseManager',
-    token: 'DATABASE_MANAGER'
-})
-export const DELETE_MANAGER = terminal.token<IDeleteManager>({
-    class: DeleteManager,
-    interface: 'IDeleteManager',
-    token: 'DELETE_MANAGER'
-})
-export const DEPENDENCY_GRAPH_RESOLVER = terminal.token<IDependencyGraphResolver>({
-    class: DependencyGraphResolver,
-    interface: 'IDependencyGraphResolver',
-    token: 'DEPENDENCY_GRAPH_RESOLVER'
-})
-export const ENTITY_GRAPH_RECONSTRUCTOR = terminal.token<IEntityGraphReconstructor>({
-    class: EntityGraphReconstructor,
-    interface: 'IEntityGraphReconstructor',
-    token: 'ENTITY_GRAPH_RECONSTRUCTOR'
-})
-export const HISTORY_MANAGER = terminal.token<IHistoryManager>({
-    class: HistoryManager,
-    interface: 'IHistoryManager',
-    token: 'HISTORY_MANAGER'
-})
-export const INSERT_MANAGER = terminal.token<IInsertManager>({
-    class: InsertManager,
-    interface: 'IInsertManager',
-    token: 'INSERT_MANAGER'
-})
-export const INTERNAL_RECORD_MANAGER = terminal.token<IInternalRecordManager>({
-    class: InternalRecordManager,
-    interface: 'IInternalRecordManager',
-    token: 'INTERNAL_RECORD_MANAGER'
-})
-export const ONLINE_MANAGER = terminal.token<IOnlineManager>({
-    class: OnlineManager,
-    interface: 'IOnlineManager',
-    token: 'ONLINE_MANAGER'
-})
-export const OPERATION_MANAGER = terminal.token<IOperationManager>({
-    class: OperationManager,
-    interface: 'IOperationManager',
-    token: 'OPERATION_MANAGER'
-})
-export const QUERY_MANAGER = terminal.token<IQueryManager>({
-    class: QueryManager,
-    interface: 'IQueryManager',
-    token: 'QUERY_MANAGER'
-})
-export const STRUCTURAL_ENTITY_VALIDATOR = terminal.token<IStructuralEntityValidator>({
-    class: StructuralEntityValidator,
-    interface: 'IStructuralEntityValidator',
-    token: 'STRUCTURAL_ENTITY_VALIDATOR'
-})
-export const UPDATE_MANAGER = terminal.token<IUpdateManager>({
-    class: UpdateManager,
-    interface: 'IUpdateManager',
-    token: 'UPDATE_MANAGER'
-})
-
-ABSTRACT_MUTATION_MANAGER.setDependencies({
+terminal.setDependencies(AbstractMutationManager, {
     applicationUtils: APPLICATION_UTILS,
     fieldUtils: FIELD_UTILS,
     queryUtils: QUERY_UTILS,
     relationManager: RELATION_MANAGER
 })
 
-ABSTRACT_TRANSACTIONAL_RECEIVER.setDependencies({
+terminal.setDependencies(TransactionalReceiver as any, {
     terminalStore: TERMINAL_STORE,
     transactionalServer: TRANSACTIONAL_SERVER
 })
 
-DATABASE_MANAGER.setDependencies({
+terminal.setDependencies(DatabaseManager, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationDao: APPLICATION_DAO,
+    applicationDao: ApplicationDao,
     applicationInitializer: APPLICATION_INITIALIZER,
     dbApplicationUtils: DB_APPLICATION_UTILS,
-    internalRecordManager: INTERNAL_RECORD_MANAGER,
+    internalRecordManager: InternalRecordManager,
     storeDriver: STORE_DRIVER,
     transactionalServer: TRANSACTIONAL_SERVER,
     transactionManager: TRANSACTION_MANAGER
 })
 
-DELETE_MANAGER.setDependencies({
+terminal.setDependencies(DeleteManager, {
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: APPLICATION_UTILS,
-    historyManager: HISTORY_MANAGER,
-    operationHistoryDuo: OPERATION_HISTORY_DUO,
-    recordHistoryDuo: RECORD_HISTORY_DUO,
-    repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
+    historyManager: HistoryManager,
+    operationHistoryDuo: OperationHistoryDuo,
+    recordHistoryDuo: RecordHistoryDuo,
+    repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     sequenceGenerator: SEQUENCE_GENERATOR,
     utils: UTILS
 })
 
-DEPENDENCY_GRAPH_RESOLVER.setDependencies({
+terminal.setDependencies(DependencyGraphResolver, {
     entityStateManager: ENTITY_STATE_MANAGER
 })
 
-ENTITY_GRAPH_RECONSTRUCTOR.setDependencies({
+terminal.setDependencies(EntityGraphReconstructor, {
     entityStateManager: ENTITY_STATE_MANAGER
 })
 
-HISTORY_MANAGER.setDependencies({
-    transactionHistoryDuo: TRANSACTION_HISTORY_DUO,
+terminal.setDependencies(HistoryManager, {
+    transactionHistoryDuo: TransactionHistoryDuo,
 })
 
-INSERT_MANAGER.setDependencies({
+terminal.setDependencies(InsertManager, {
     airportDatabase: AIRPORT_DATABASE,
-    historyManager: HISTORY_MANAGER,
-    operationHistoryDuo: OPERATION_HISTORY_DUO,
-    recordHistoryDuo: RECORD_HISTORY_DUO,
-    repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
+    historyManager: InsertManager,
+    operationHistoryDuo: OperationHistoryDuo,
+    recordHistoryDuo: RecordHistoryDuo,
+    repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     sequenceGenerator: SEQUENCE_GENERATOR
 })
 
-INTERNAL_RECORD_MANAGER.setDependencies({
-    actorDao: ACTOR_DAO,
-    applicationDao: APPLICATION_DAO,
-    domainDao: DOMAIN_DAO,
+terminal.setDependencies(InternalRecordManager, {
+    actorDao: ActorDao,
+    applicationDao: ApplicationDao,
+    domainDao: DomainDao,
     entityStateManager: ENTITY_STATE_MANAGER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TERMINAL_STORE,
     transactionManager: TRANSACTION_MANAGER
 })
 
-ONLINE_MANAGER.setDependencies({
-    repositoryDao: REPOSITORY_DAO,
-    repositoryManager: REPOSITORY_MANAGER,
-    repositoryTransactionHistoryDao: REPOSITORY_TRANSACTION_HISTORY_DAO,
+terminal.setDependencies(OnlineManager, {
+    repositoryDao: RepositoryDao,
+    repositoryManager: RepositoryManager,
+    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
     transactionManager: TRANSACTION_MANAGER
 })
 
-OPERATION_MANAGER.setDependencies({
+terminal.setDependencies(OperationManager, {
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: APPLICATION_UTILS,
-    cascadeGraphVerifier: CASCADE_GRAPH_VERIFIER,
-    deleteManager: DELETE_MANAGER,
-    dependencyGraphResolver: DEPENDENCY_GRAPH_RESOLVER,
-    entityGraphReconstructor: ENTITY_GRAPH_RECONSTRUCTOR,
+    cascadeGraphVerifier: CascadeGraphVerifier,
+    deleteManager: DeleteManager,
+    dependencyGraphResolver: DependencyGraphResolver,
+    entityGraphReconstructor: EntityGraphReconstructor,
     entityStateManager: ENTITY_STATE_MANAGER,
-    insertManager: INSERT_MANAGER,
+    insertManager: InsertManager,
     qMetadataUtils: Q_METADATA_UTILS,
     queryFacade: QUERY_FACADE,
-    repositoryManager: REPOSITORY_MANAGER,
-    structuralEntityValidator: STRUCTURAL_ENTITY_VALIDATOR,
-    updateManager: UPDATE_MANAGER,
+    repositoryManager: RepositoryManager,
+    structuralEntityValidator: StructuralEntityValidator,
+    updateManager: UpdateManager,
     utils: UTILS
 })
 
-QUERY_MANAGER.setDependencies({
-    actorDao: ACTOR_DAO,
+terminal.setDependencies(QueryManager, {
+    actorDao: ActorDao,
     airportDatabase: AIRPORT_DATABASE,
     observableQueryAdapter: OBSERVABLE_QUERY_ADAPTER,
-    repositoryDao: REPOSITORY_DAO,
+    repositoryDao: RepositoryDao,
     repositoryLoader: REPOSITORY_LOADER,
     storeDriver: STORE_DRIVER
 })
 
 REPOSITORY_LOADER.setDependencies({
-    repositoryDao: REPOSITORY_DAO,
-    synchronizationAdapterLoader: SYNCHRONIZATION_ADAPTER_LOADER,
-    synchronizationInManager: SYNCHRONIZATION_IN_MANAGER
+    repositoryDao: RepositoryDao,
+    synchronizationAdapterLoader: SynchronizationAdapterLoader,
+    synchronizationInManager: SynchronizationInManager
 })
 
 REPOSITORY_MANAGER.setClass(RepositoryManager)
 REPOSITORY_MANAGER.setDependencies({
-    repositoryDao: REPOSITORY_DAO,
-    repositoryNestingDao: REPOSITORY_NESTING_DAO,
+    repositoryDao: RepositoryDao,
+    repositoryNestingDao: RepositoryNestingDao,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TERMINAL_STORE
 })
 
-STRUCTURAL_ENTITY_VALIDATOR.setDependencies({
+terminal.setDependencies(StructuralEntityValidator, {
     applicationUtils: APPLICATION_UTILS,
     dbApplicationUtils: DB_APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
@@ -297,9 +207,9 @@ STRUCTURAL_ENTITY_VALIDATOR.setDependencies({
 
 TERMINAL_SESSION_MANAGER.setClass(TerminalSessionManager)
 TERMINAL_SESSION_MANAGER.setDependencies({
-    sessionStateApi: SESSION_STATE_API,
+    sessionStateApi: SessionStateApi,
     terminalStore: TERMINAL_STORE,
-    userAccountManager: USER_ACCOUNT_MANAGER,
+    userAccountManager: UserAccountManager,
     userStore: USER_STORE
 })
 
@@ -307,18 +217,18 @@ TRANSACTION_MANAGER.setDependencies({
     activeQueries: ACTIVE_QUERIES,
     idGenerator: ID_GENERATOR,
     storeDriver: STORE_DRIVER,
-    synchronizationOutManager: SYNCHRONIZATION_OUT_MANAGER,
+    synchronizationOutManager: SynchronizationOutManager,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TERMINAL_STORE,
-    transactionHistoryDuo: TRANSACTION_HISTORY_DUO,
+    transactionHistoryDuo: TransactionHistoryDuo,
 })
 
 TRANSACTIONAL_RECEIVER.setDependencies({
-    actorDao: ACTOR_DAO,
-    applicationDao: APPLICATION_DAO,
-    databaseManager: DATABASE_MANAGER,
+    actorDao: ActorDao,
+    applicationDao: ApplicationDao,
+    databaseManager: DatabaseManager,
     dbApplicationUtils: DB_APPLICATION_UTILS,
-    internalRecordManager: INTERNAL_RECORD_MANAGER,
+    internalRecordManager: InternalRecordManager,
     localApiServer: LOCAL_API_SERVER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TERMINAL_STORE,
@@ -327,27 +237,27 @@ TRANSACTIONAL_RECEIVER.setDependencies({
 })
 
 TRANSACTIONAL_SERVER.setDependencies({
-    deleteManager: DELETE_MANAGER,
-    insertManager: INSERT_MANAGER,
-    operationManager: OPERATION_MANAGER,
-    queryManager: QUERY_MANAGER,
-    repositoryManager: REPOSITORY_MANAGER,
+    deleteManager: DeleteManager,
+    insertManager: InsertManager,
+    operationManager: OperationManager,
+    queryManager: QueryManager,
+    repositoryManager: RepositoryManager,
     terminalStore: TERMINAL_STORE,
     transactionManager: TRANSACTION_MANAGER,
-    updateManager: UPDATE_MANAGER
+    updateManager: UpdateManager
 })
 
 
-UPDATE_MANAGER.setDependencies({
+terminal.setDependencies(UpdateManager, {
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: APPLICATION_UTILS,
     fieldUtils: FIELD_UTILS,
-    historyManager: HISTORY_MANAGER,
-    operationHistoryDuo: OPERATION_HISTORY_DUO,
+    historyManager: HistoryManager,
+    operationHistoryDuo: OperationHistoryDuo,
     queryFacade: QUERY_FACADE,
     queryUtils: QUERY_UTILS,
-    recordHistoryDuo: RECORD_HISTORY_DUO,
+    recordHistoryDuo: RecordHistoryDuo,
     relationManager: RELATION_MANAGER,
-    repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
+    repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     sequenceGenerator: SEQUENCE_GENERATOR,
 })

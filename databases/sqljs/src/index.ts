@@ -1,6 +1,6 @@
 import { IOC } from '@airport/direction-indicator';
 import { injectSequenceGenerator } from '@airport/sequence';
-import { DATABASE_MANAGER } from '@airport/terminal';
+import { DatabaseManager } from '@airport/terminal';
 
 export * from './SqlJsDriver'
 export * from './SqlJsQueryAdaptor'
@@ -12,7 +12,7 @@ injectSequenceGenerator()
 export async function startDb(
 	domainName: string
 ) {
-	const dbManager = await IOC.get(DATABASE_MANAGER);
+	const dbManager = await IOC.get(DatabaseManager);
 	await dbManager.initWithDb(domainName, {});
 }
 

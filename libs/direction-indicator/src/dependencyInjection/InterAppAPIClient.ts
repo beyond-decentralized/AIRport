@@ -1,6 +1,8 @@
-import { IFullDITokenDescriptor } from "./Token";
+import { APIClient } from "../autopilot/IAutopilotApiLoader";
+import { IFullDITokenDescriptor } from "./interfaces/Token";
 
-export interface IInterAppAPIClient {
+export interface IInterAppAPIClient
+    extends APIClient {
 
     invokeApiMethod<ReturnValue>(
         token: IFullDITokenDescriptor,

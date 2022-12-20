@@ -1,4 +1,4 @@
-import { AIR_ENTITY_UTILS } from '@airport/aviation-communication'
+import { AIR_ENTITY_UTILS } from '@airport/direction-indicator'
 import {
 	DB_APPLICATION_UTILS,
 	ENTITY_STATE_MANAGER,

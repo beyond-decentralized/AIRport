@@ -1,21 +1,20 @@
 import { lib } from '@airport/direction-indicator'
-import { ISyncInActorChecker, SyncInActorChecker } from './synchronization/in/checker/SyncInActorChecker'
-import { ISyncInChecker, SyncInChecker } from './synchronization/in/checker/SyncInChecker'
-import { ISyncInDataChecker, SyncInDataChecker } from './synchronization/in/checker/SyncInDataChecker'
-import { ISyncInRepositoryChecker, SyncInRepositoryChecker } from './synchronization/in/checker/SyncInRepositoryChecker'
-import { ISyncInApplicationChecker, SyncInApplicationChecker } from './synchronization/in/checker/SyncInApplicationChecker'
-import { ISyncInApplicationVersionChecker, SyncInApplicationVersionChecker } from './synchronization/in/checker/SyncInApplicationVersionChecker'
-import { ISyncInTerminalChecker, SyncInTerminalChecker } from './synchronization/in/checker/SyncInTerminalChecker'
-import { ISyncInUserAccountChecker, SyncInUserAccountChecker } from './synchronization/in/checker/SyncInUserAccountChecker'
-import { IStage1SyncedInDataProcessor, Stage1SyncedInDataProcessor } from './synchronization/in/Stage1SyncedInDataProcessor'
-import { IStage2SyncedInDataProcessor, Stage2SyncedInDataProcessor } from './synchronization/in/Stage2SyncedInDataProcessor'
-import { ISynchronizationInManager, SynchronizationInManager } from './synchronization/in/SynchronizationInManager'
-import { ISyncInUtils, SyncInUtils } from './synchronization/in/SyncInUtils'
-import { ITwoStageSyncedInDataProcessor, TwoStageSyncedInDataProcessor } from './synchronization/in/TwoStageSyncedInDataProcessor'
-import { ISynchronizationOutManager, SynchronizationOutManager } from './synchronization/out/SynchronizationOutManager'
-import { ISynchronizationAdapter } from './adapters/ISynchronizationAdapter'
-import { ISynchronizationAdapterLoader, SynchronizationAdapterLoader } from './adapters/SynchronizationAdapterLoader'
-import { ISyncOutDataSerializer, SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer'
+import { SyncInActorChecker } from './synchronization/in/checker/SyncInActorChecker'
+import { SyncInChecker } from './synchronization/in/checker/SyncInChecker'
+import { SyncInDataChecker } from './synchronization/in/checker/SyncInDataChecker'
+import { SyncInRepositoryChecker } from './synchronization/in/checker/SyncInRepositoryChecker'
+import { SyncInApplicationChecker } from './synchronization/in/checker/SyncInApplicationChecker'
+import { SyncInApplicationVersionChecker } from './synchronization/in/checker/SyncInApplicationVersionChecker'
+import { SyncInTerminalChecker } from './synchronization/in/checker/SyncInTerminalChecker'
+import { SyncInUserAccountChecker } from './synchronization/in/checker/SyncInUserAccountChecker'
+import { Stage1SyncedInDataProcessor } from './synchronization/in/Stage1SyncedInDataProcessor'
+import { Stage2SyncedInDataProcessor } from './synchronization/in/Stage2SyncedInDataProcessor'
+import { SynchronizationInManager } from './synchronization/in/SynchronizationInManager'
+import { SyncInUtils } from './synchronization/in/SyncInUtils'
+import { TwoStageSyncedInDataProcessor } from './synchronization/in/TwoStageSyncedInDataProcessor'
+import { SynchronizationOutManager } from './synchronization/out/SynchronizationOutManager'
+import { SynchronizationAdapterLoader } from './adapters/SynchronizationAdapterLoader'
+import { SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer'
 import {
     AIRPORT_DATABASE,
     UTILS
@@ -25,24 +24,21 @@ import {
     TRANSACTION_MANAGER
 } from '@airport/terminal-map'
 import {
-    TERMINAL_DAO,
-    USER_ACCOUNT_DAO
+    TerminalDao,
+    UserAccountDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
-    APPLICATION_DAO,
-    APPLICATION_VERSION_DAO,
-    DOMAIN_DAO
+    ApplicationDao,
+    ApplicationVersionDao,
+    DomainDao
 } from '@airport/airspace/dist/app/bundle'
 import {
-    ACTOR_DAO,
-    REPOSITORY_DAO,
-    REPOSITORY_TRANSACTION_HISTORY_DAO,
-    REPOSITORY_TRANSACTION_HISTORY_DUO
+    ActorDao,
+    RepositoryDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
-    RECORD_UPDATE_STAGE_DAO,
-    SYNCHRONIZATION_CONFLICT_DAO,
-    SYNCHRONIZATION_CONFLICT_VALUES_DAO
+    RecordUpdateStageDao,
+    SynchronizationConflictDao, SynchronizationConflictValuesDao
 } from '@airport/layover'
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter'
 import { SEQUENCE_GENERATOR } from '@airport/ground-control'
@@ -51,180 +47,100 @@ import { CLIENT } from '@airway/client'
 
 const groundTransport = lib('ground-transport')
 
-export const STAGE1_SYNCED_IN_DATA_PROCESSOR = groundTransport.token<IStage1SyncedInDataProcessor>({
-    class: Stage1SyncedInDataProcessor,
-    interface: 'IStage1SyncedInDataProcessor',
-    token: 'STAGE1_SYNCED_IN_DATA_PROCESSOR'
-})
-export const STAGE2_SYNCED_IN_DATA_PROCESSOR = groundTransport.token<IStage2SyncedInDataProcessor>({
-    class: Stage2SyncedInDataProcessor,
-    interface: 'IStage2SyncedInDataProcessor',
-    token: 'STAGE2_SYNCED_IN_DATA_PROCESSOR'
-})
-export const SYNC_IN_ACTOR_CHECKER = groundTransport.token<ISyncInActorChecker>({
-    class: SyncInActorChecker,
-    interface: 'ISyncInActorChecker',
-    token: 'SYNC_IN_ACTOR_CHECKER'
-})
-export const SYNC_IN_CHECKER = groundTransport.token<ISyncInChecker>({
-    class: SyncInChecker,
-    interface: 'ISyncInChecker',
-    token: 'SYNC_IN_CHECKER'
-})
-export const SYNC_IN_DATA_CHECKER = groundTransport.token<ISyncInDataChecker>({
-    class: SyncInDataChecker,
-    interface: 'ISyncInDataChecker',
-    token: 'SYNC_IN_DATA_CHECKER'
-})
-export const SYNC_IN_TERMINAL_CHECKER = groundTransport.token<ISyncInTerminalChecker>({
-    class: SyncInTerminalChecker,
-    interface: 'ISyncInTerminalChecker',
-    token: 'SYNC_IN_TERMINAL_CHECKER'
-})
-export const SYNC_IN_REPOSITORY_CHECKER = groundTransport.token<ISyncInRepositoryChecker>({
-    class: SyncInRepositoryChecker,
-    interface: 'ISyncInRepositoryChecker',
-    token: 'SYNC_IN_REPOSITORY_CHECKER'
-})
-export const SYNC_IN_APPLICATION_CHECKER = groundTransport.token<ISyncInApplicationChecker>({
-    class: SyncInApplicationChecker,
-    interface: 'ISyncInApplicationChecker',
-    token: 'SYNC_IN_APPLICATION_CHECKER'
-})
-export const SYNC_IN_APPLICATION_VERSION_CHECKER = groundTransport.token<ISyncInApplicationVersionChecker>({
-    class: SyncInApplicationVersionChecker,
-    interface: 'ISyncInApplicationVersionChecker',
-    token: 'SYNC_IN_APPLICATION_VERSION_CHECKER'
-})
-export const SYNC_IN_USER_ACCOUNT_CHECKER = groundTransport.token<ISyncInUserAccountChecker>({
-    class: SyncInUserAccountChecker,
-    interface: 'ISyncInUserAccountChecker',
-    token: 'SYNC_IN_USER_ACCOUNT_CHECKER'
-})
-export const SYNC_IN_UTILS = groundTransport.token<ISyncInUtils>({
-    class: SyncInUtils,
-    interface: 'ISyncInUtils',
-    token: 'SYNC_IN_UTILS'
-})
-export const SYNCHRONIZATION_IN_MANAGER = groundTransport.token<ISynchronizationInManager>({
-    class: SynchronizationInManager,
-    interface: 'ISynchronizationInManager',
-    token: 'SYNCHRONIZATION_IN_MANAGER'
-})
-export const SYNCHRONIZATION_OUT_MANAGER = groundTransport.token<ISynchronizationOutManager>({
-    class: SynchronizationOutManager,
-    interface: 'ISynchronizationOutManager',
-    token: 'SYNCHRONIZATION_OUT_MANAGER'
-})
-export const SYNC_OUT_DATA_SERIALIZER = groundTransport.token<ISyncOutDataSerializer>({
-    class: SyncOutDataSerializer,
-    interface: 'ISyncOutDataSerializer',
-    token: 'SYNC_OUT_DATA_SERIALIZER'
-})
-export const TWO_STAGE_SYNCED_IN_DATA_PROCESSOR = groundTransport.token<ITwoStageSyncedInDataProcessor>({
-    class: TwoStageSyncedInDataProcessor,
-    interface: 'ITwoStageSyncedInDataProcessor',
-    token: 'TWO_STAGE_SYNCED_IN_DATA_PROCESSOR'
-})
-export const DEBUG_SYNCHRONIZATION_ADAPTER = groundTransport.token<ISynchronizationAdapter>({
-    class: DebugSynchronizationAdapter,
-    interface: 'ISynchronizationAdapter',
-    token: 'DEBUG_SYNCHRONIZATION_ADAPTER'
-})
-export const SYNCHRONIZATION_ADAPTER_LOADER = groundTransport.token<ISynchronizationAdapterLoader>({
-    class: SynchronizationAdapterLoader,
-    interface: 'ISynchronizationAdapterLoader',
-    token: 'SYNCHRONIZATION_ADAPTER_LOADER'
-})
-
-DEBUG_SYNCHRONIZATION_ADAPTER.setDependencies({
+groundTransport.register(
+    Stage1SyncedInDataProcessor, Stage2SyncedInDataProcessor, SyncInActorChecker,
+    SyncInChecker, SyncInDataChecker, SyncInTerminalChecker,
+    SyncInRepositoryChecker, SyncInApplicationChecker, SyncInApplicationVersionChecker,
+    SyncInUserAccountChecker, SyncInUtils, SynchronizationInManager,
+    SynchronizationOutManager, SyncOutDataSerializer, TwoStageSyncedInDataProcessor,
+    DebugSynchronizationAdapter, SynchronizationAdapterLoader
+)
+groundTransport.setDependencies(DebugSynchronizationAdapter, {
     client: CLIENT
 })
-
-STAGE1_SYNCED_IN_DATA_PROCESSOR.setDependencies({
-    actorDao: ACTOR_DAO,
+groundTransport.setDependencies(Stage1SyncedInDataProcessor, {
+    actorDao: ActorDao,
     airportDatabase: AIRPORT_DATABASE,
-    repositoryTransactionHistoryDao: REPOSITORY_TRANSACTION_HISTORY_DAO,
-    repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
+    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
+    repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     sequenceGenerator: SEQUENCE_GENERATOR,
-    syncInUtils: SYNC_IN_UTILS
+    syncInUtils: SyncInUtils
 })
-
-STAGE2_SYNCED_IN_DATA_PROCESSOR.setDependencies({
+groundTransport.setDependencies(Stage2SyncedInDataProcessor, {
     airportDatabase: AIRPORT_DATABASE,
     databaseFacade: DATABASE_FACADE,
-    recordUpdateStageDao: RECORD_UPDATE_STAGE_DAO,
+    recordUpdateStageDao: RecordUpdateStageDao,
     utils: UTILS
 })
 
-SYNC_IN_ACTOR_CHECKER.setDependencies({
-    actorDao: ACTOR_DAO,
+groundTransport.setDependencies(SyncInActorChecker, {
+    actorDao: ActorDao,
 })
 
-SYNC_IN_APPLICATION_CHECKER.setDependencies({
-    applicationDao: APPLICATION_DAO,
-    domainDao: DOMAIN_DAO
+groundTransport.setDependencies(SyncInApplicationChecker, {
+    applicationDao: ApplicationDao,
+    domainDao: DomainDao
 })
 
-SYNC_IN_APPLICATION_VERSION_CHECKER.setDependencies({
-    applicationVersionDao: APPLICATION_VERSION_DAO
+groundTransport.setDependencies(SyncInApplicationVersionChecker, {
+    applicationVersionDao: ApplicationVersionDao
 })
 
-SYNC_IN_CHECKER.setDependencies({
-    syncInActorChecker: SYNC_IN_ACTOR_CHECKER,
-    syncInApplicationChecker: SYNC_IN_APPLICATION_CHECKER,
-    syncInApplicationVersionChecker: SYNC_IN_APPLICATION_VERSION_CHECKER,
-    syncInDataChecker: SYNC_IN_DATA_CHECKER,
-    syncInRepositoryChecker: SYNC_IN_REPOSITORY_CHECKER,
-    syncInTerminalChecker: SYNC_IN_TERMINAL_CHECKER,
-    syncInUserAccountChecker: SYNC_IN_USER_ACCOUNT_CHECKER
+groundTransport.setDependencies(SyncInChecker, {
+    syncInActorChecker: SyncInActorChecker,
+    syncInApplicationChecker: SyncInApplicationChecker,
+    syncInApplicationVersionChecker: SyncInApplicationVersionChecker,
+    syncInDataChecker: SyncInDataChecker,
+    syncInRepositoryChecker: SyncInRepositoryChecker,
+    syncInTerminalChecker: SyncInTerminalChecker,
+    syncInUserAccountChecker: SyncInUserAccountChecker
 })
 
-SYNC_IN_DATA_CHECKER.setDependencies({
+groundTransport.setDependencies(SyncInDataChecker, {
     airportDatabase: AIRPORT_DATABASE,
     sequenceGenerator: SEQUENCE_GENERATOR,
     terminalStore: TERMINAL_STORE
 })
 
-SYNC_IN_REPOSITORY_CHECKER.setDependencies({
-    repositoryDao: REPOSITORY_DAO,
+groundTransport.setDependencies(SyncInRepositoryChecker, {
+    repositoryDao: RepositoryDao,
 })
 
-SYNC_IN_TERMINAL_CHECKER.setDependencies({
-    terminalDao: TERMINAL_DAO
+groundTransport.setDependencies(SyncInTerminalChecker, {
+    terminalDao: TerminalDao
 })
 
-SYNC_IN_USER_ACCOUNT_CHECKER.setDependencies({
-    userAccountDao: USER_ACCOUNT_DAO
+groundTransport.setDependencies(SyncInUserAccountChecker, {
+    userAccountDao: UserAccountDao
 })
 
-SYNC_OUT_DATA_SERIALIZER.setDependencies({
-    actorDao: ACTOR_DAO,
-    repositoryDao: REPOSITORY_DAO,
+groundTransport.setDependencies(SyncOutDataSerializer, {
+    actorDao: ActorDao,
+    repositoryDao: RepositoryDao,
 })
 
-SYNCHRONIZATION_ADAPTER_LOADER.setDependencies({
-    debugSynchronizationAdapter: DEBUG_SYNCHRONIZATION_ADAPTER
+groundTransport.setDependencies(SynchronizationAdapterLoader, {
+    debugSynchronizationAdapter: DebugSynchronizationAdapter
 })
 
-SYNCHRONIZATION_IN_MANAGER.setDependencies({
-    repositoryTransactionHistoryDao: REPOSITORY_TRANSACTION_HISTORY_DAO,
-    syncInChecker: SYNC_IN_CHECKER,
+groundTransport.setDependencies(SynchronizationInManager, {
+    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
+    syncInChecker: SyncInChecker,
     transactionManager: TRANSACTION_MANAGER,
-    twoStageSyncedInDataProcessor: TWO_STAGE_SYNCED_IN_DATA_PROCESSOR
+    twoStageSyncedInDataProcessor: TwoStageSyncedInDataProcessor
 })
 
-SYNCHRONIZATION_OUT_MANAGER.setDependencies({
-    repositoryDao: REPOSITORY_DAO,
-    repositoryTransactionHistoryDao: REPOSITORY_TRANSACTION_HISTORY_DAO,
-    synchronizationAdapterLoader: SYNCHRONIZATION_ADAPTER_LOADER,
-    syncOutDataSerializer: SYNC_OUT_DATA_SERIALIZER
+groundTransport.setDependencies(SynchronizationOutManager, {
+    repositoryDao: RepositoryDao,
+    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
+    synchronizationAdapterLoader: SynchronizationAdapterLoader,
+    syncOutDataSerializer: SyncOutDataSerializer
 })
 
-TWO_STAGE_SYNCED_IN_DATA_PROCESSOR.setDependencies({
-    repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
-    stage1SyncedInDataProcessor: STAGE1_SYNCED_IN_DATA_PROCESSOR,
-    stage2SyncedInDataProcessor: STAGE2_SYNCED_IN_DATA_PROCESSOR,
-    synchronizationConflictDao: SYNCHRONIZATION_CONFLICT_DAO,
-    synchronizationConflictValuesDao: SYNCHRONIZATION_CONFLICT_VALUES_DAO
+groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
+    repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
+    stage1SyncedInDataProcessor: Stage1SyncedInDataProcessor,
+    stage2SyncedInDataProcessor: Stage2SyncedInDataProcessor,
+    synchronizationConflictDao: SynchronizationConflictDao,
+    synchronizationConflictValuesDao: SynchronizationConflictValuesDao
 })

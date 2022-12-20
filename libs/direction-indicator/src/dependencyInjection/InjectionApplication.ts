@@ -1,27 +1,15 @@
 import { addClasses } from '../classes'
-import { IInjectionDomain, AIRPORT_DOMAIN } from './InjectionDomain'
+import { IInjectionDomain } from './interfaces/IInjectionDomain'
+import { AIRPORT_DOMAIN } from './InjectionDomain'
 import {
-	DependencyInjectionToken,
 	GenericDependencyInjectionError,
 	IDependencyInjectionToken,
 	IDependencyInjectionTokenDescriptor
+} from './interfaces/Token'
+import {
+	DependencyInjectionToken
 } from './Token'
-
-export interface IInjectionApplication {
-
-	autopilot: boolean
-	name: string
-	domain: IInjectionDomain
-	tokenMap: Map<string, IDependencyInjectionToken<any>>
-
-	getFullName(): string
-
-	token<T = GenericDependencyInjectionError>(
-		descriptorOrInterfaceName: IDependencyInjectionTokenDescriptor | string | { new(): any },
-		autopilot?: boolean
-	): IDependencyInjectionToken<T>
-
-}
+import { IInjectionApplication } from './interfaces/IInjectionApplication'
 
 export class InjectionApplication
 	implements IInjectionApplication {
@@ -65,7 +53,6 @@ export class InjectionApplication
 	}
 
 	public tokenMap: Map<string, IDependencyInjectionToken<any>> = new Map()
-	public autopilot = false
 
 	constructor(
 		public name: string,
@@ -73,19 +60,49 @@ export class InjectionApplication
 	) {
 	}
 
+	register(
+		...injectedClassesOrInterfaceNames: ({ new(): any } | 'string')[]
+	): {
+		[tokenName: string]: IDependencyInjectionToken<any>
+	} {
+		let tokensObject = {}
+		for (let injectedClassOrInterfaceName of injectedClassesOrInterfaceNames) {
+			const token = this.token(injectedClassOrInterfaceName);
+			if (injectedClassOrInterfaceName.constructor) {
+				(injectedClassOrInterfaceName as any).token = token
+			}
+			tokensObject[token.descriptor.token] = token
+		}
+		return tokensObject
+	}
+
+	setDependencies(
+		injectedClass: { new(): any },
+		denendencyDescriptor: { [propertyName: string]: { new(): any } }
+	): void {
+		(injectedClass as any).token.setDependencies(denendencyDescriptor)
+	}
+
+
+
 	getFullName(): string {
 		return `${this.domain.name}/${this.name}`;
 	}
 
 	token<T = GenericDependencyInjectionError>(
 		input: IDependencyInjectionTokenDescriptor | string | { new(): any },
+		failOnExistingToken = true
 	): IDependencyInjectionToken<T> {
 		const descriptor = InjectionApplication.getTokenDescriptor(input)
 
 		const existingToken = this.tokenMap.get(descriptor.interface)
 
 		if (existingToken) {
-			throw new Error(`Token with name '${descriptor.interface}' has already been created`)
+			if (failOnExistingToken) {
+				throw new Error(`Token with name '${descriptor.interface}' has already been created`)
+			} else {
+				return existingToken
+			}
 		}
 
 		const diToken = new DependencyInjectionToken(
@@ -101,6 +118,12 @@ export class InjectionApplication
 		}
 
 		return diToken
+	}
+
+	getDomain(
+		domainName: string
+	): IInjectionDomain {
+		return null
 	}
 
 }

@@ -1,16 +1,16 @@
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control'
 import { SEQUENCE_DAO } from '@airport/airport-code/dist/esm/index'
 import {
-    APPLICATION_COLUMN_DAO,
-    APPLICATION_DAO,
-    APPLICATION_ENTITY_DAO,
-    APPLICATION_PROPERTY_COLUMN_DAO,
-    APPLICATION_PROPERTY_DAO,
-    APPLICATION_REFERENCE_DAO,
-    APPLICATION_RELATION_COLUMN_DAO,
-    APPLICATION_RELATION_DAO,
-    APPLICATION_VERSION_DAO,
-    DOMAIN_DAO
+    ApplicationColumnDao,
+    ApplicationDao,
+    ApplicationEntityDao,
+    ApplicationPropertyColumnDao,
+    ApplicationPropertyDao,
+    ApplicationReferenceDao,
+    ApplicationRelationColumnDao,
+    ApplicationRelationDao,
+    ApplicationVersionDao,
+    DomainDao
 } from '@airport/airspace/dist/app/bundle'
 import { lib } from '@airport/direction-indicator'
 import {
@@ -76,7 +76,7 @@ ABSTRACT_APPLICATION_INITIALIZER.setDependencies({
     applicationBuilder: APPLICATION_BUILDER,
     applicationChecker: APPLICATION_CHECKER,
     applicationComposer: APPLICATION_COMPOSER,
-    applicationDao: APPLICATION_DAO,
+    applicationDao: ApplicationDao,
     applicationLocator: APPLICATION_LOCATOR,
     applicationRecorder: APPLICATION_RECORDER,
     dbApplicationUtils: DB_APPLICATION_UTILS,
@@ -91,7 +91,7 @@ APPLICATION_BUILDER.setDependencies({
 })
 
 APPLICATION_CHECKER.setDependencies({
-    applicationDao: APPLICATION_DAO,
+    applicationDao: ApplicationDao,
     dbApplicationUtils: DB_APPLICATION_UTILS
 })
 
@@ -107,17 +107,17 @@ APPLICATION_LOCATOR.setDependencies({
 })
 
 APPLICATION_RECORDER.setDependencies({
-    applicationColumnDao: APPLICATION_COLUMN_DAO,
-    applicationDao: APPLICATION_DAO,
-    applicationEntityDao: APPLICATION_ENTITY_DAO,
-    applicationPropertyColumnDao: APPLICATION_PROPERTY_COLUMN_DAO,
-    applicationPropertyDao: APPLICATION_PROPERTY_DAO,
-    applicationRecorder: APPLICATION_RECORDER,
-    applicationReferenceDao: APPLICATION_REFERENCE_DAO,
-    applicationRelationColumnDao: APPLICATION_RELATION_COLUMN_DAO,
-    applicationRelationDao: APPLICATION_RELATION_DAO,
-    applicationVersionDao: APPLICATION_VERSION_DAO,
-    domainDao: DOMAIN_DAO,
+    applicationColumnDao: ApplicationColumnDao,
+    applicationDao: ApplicationDao,
+    applicationEntityDao: ApplicationEntityDao,
+    applicationPropertyColumnDao: ApplicationPropertyColumnDao,
+    applicationPropertyDao: ApplicationPropertyDao,
+    applicationRecorder: ApplicationRecorder,
+    applicationReferenceDao: ApplicationReferenceDao,
+    applicationRelationColumnDao: ApplicationRelationColumnDao,
+    applicationRelationDao: ApplicationRelationDao,
+    applicationVersionDao: ApplicationVersionDao,
+    domainDao: DomainDao,
     transactionManager: TRANSACTION_MANAGER
 })
 

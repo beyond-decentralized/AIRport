@@ -1,7 +1,6 @@
-import { INTER_APP_API_CLIENT } from '@airport/direction-indicator'
+import { API_CLIENT } from '@airport/direction-indicator'
 import { DB_APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR } from "@airport/ground-control";
 import { APPLICATION_LOCATOR } from "@airport/landing";
-import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER } from "@airport/pressurization";
 import {
     APPLICATION_LOADER,
     APPLICATION_STORE,
@@ -17,13 +16,13 @@ import { IframeTransactionalConnector } from "./IFrameTransactionalConnector";
 DOMAIN_RETRIEVER.setClass(DomainRetriever)
 APPLICATION_INITIALIZER.setClass(IFrameApplicationInitializer)
 APPLICATION_LOCATOR.setClass(IFrameApplicationLocator)
-INTER_APP_API_CLIENT.setClass(IFrameInterAppPIClient)
+API_CLIENT.setClass(IFrameInterAppPIClient)
 APPLICATION_LOCATOR.setDependencies({
     transactionalConnector: TRANSACTIONAL_CONNECTOR
 })
-INTER_APP_API_CLIENT.setDependencies({
-    operationSerializer: OPERATION_SERIALIZER,
-    queryResultsDeserializer: QUERY_RESULTS_DESERIALIZER,
+API_CLIENT.setDependencies({
+    operationSerializer: globalThis.OPERATION_SERIALIZER,
+    queryResultsDeserializer: globalThis.QUERY_RESULTS_DESERIALIZER,
     transactionalConnector: TRANSACTIONAL_CONNECTOR
 })
 TRANSACTIONAL_CONNECTOR.setClass(IframeTransactionalConnector)

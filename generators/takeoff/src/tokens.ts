@@ -1,5 +1,16 @@
 import { AIRPORT_DATABASE, APPLICATION_UTILS, Q_APPLICATION_BUILDER_UTILS, RELATION_MANAGER } from '@airport/air-traffic-control'
-import { APPLICATION_COLUMN_DAO, APPLICATION_DAO, APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_COLUMN_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_REFERENCE_DAO, APPLICATION_RELATION_COLUMN_DAO, APPLICATION_RELATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace/dist/app/bundle'
+import {
+    ApplicationColumnDao,
+    ApplicationDao,
+    ApplicationEntityDao,
+    ApplicationPropertyColumnDao,
+    ApplicationPropertyDao,
+    ApplicationReferenceDao,
+    ApplicationRelationColumnDao,
+    ApplicationRelationDao,
+    ApplicationVersionDao,
+    DomainDao
+} from '@airport/airspace/dist/app/bundle'
 import { lib } from '@airport/direction-indicator'
 import { IDdlObjectLinker, IQueryEntityClassCreator, IQueryObjectInitializer, TERMINAL_STORE } from '@airport/terminal-map'
 import { AirportDatabasePopulator, IAirportDatabasePopulator } from './AirportDatabasePopulator'
@@ -41,16 +52,16 @@ DDL_OBJECT_LINKER.setDependencies({
 })
 
 DDL_OBJECT_RETRIEVER.setDependencies({
-    applicationColumnDao: APPLICATION_COLUMN_DAO,
-    applicationDao: APPLICATION_DAO,
-    applicationEntityDao: APPLICATION_ENTITY_DAO,
-    applicationPropertyColumnDao: APPLICATION_PROPERTY_COLUMN_DAO,
-    applicationPropertyDao: APPLICATION_PROPERTY_DAO,
-    applicationReferenceDao: APPLICATION_REFERENCE_DAO,
-    applicationRelationColumnDao: APPLICATION_RELATION_COLUMN_DAO,
-    applicationRelationDao: APPLICATION_RELATION_DAO,
-    applicationVersionDao: APPLICATION_VERSION_DAO,
-    domainDao: DOMAIN_DAO
+    applicationColumnDao: ApplicationColumnDao,
+    applicationDao: ApplicationDao,
+    applicationEntityDao: ApplicationEntityDao,
+    applicationPropertyColumnDao: ApplicationPropertyColumnDao,
+    applicationPropertyDao: ApplicationPropertyDao,
+    applicationReferenceDao: ApplicationReferenceDao,
+    applicationRelationColumnDao: ApplicationRelationColumnDao,
+    applicationRelationDao: ApplicationRelationDao,
+    applicationVersionDao: ApplicationVersionDao,
+    domainDao: DomainDao
 })
 
 QUERY_ENTITY_CLASS_CREATOR.setDependencies({

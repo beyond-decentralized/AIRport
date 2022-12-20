@@ -2,14 +2,15 @@ import {
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication";
-import { IFullDITokenDescriptor, Inject, Injected } from "@airport/direction-indicator";
+import { IFullDITokenDescriptor, Inject, Injected, APIClient } from "@airport/direction-indicator";
 import {
     IOperationSerializer,
     IQueryResultsDeserializer
 } from "@airport/pressurization";
 import { v4 as guidv4 } from "uuid";
 
-export interface ILocalAPIClient {
+export interface ILocalAPIClient
+    extends APIClient {
 
     invokeApiMethod<T = any>(
         fullDIDescriptor: IFullDITokenDescriptor,

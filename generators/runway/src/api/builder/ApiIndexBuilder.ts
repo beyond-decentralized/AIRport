@@ -37,9 +37,9 @@ export class ApiIndexBuilder
 `
         }
         return `${exports}
-import { loadAutopilot } from '@airport/autopilot'
+// import { loadAutopilot } from '@airport/autopilot'
        
-loadAutopilot()
+// loadAutopilot()
 `
     }
 }

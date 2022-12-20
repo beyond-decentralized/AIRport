@@ -3,7 +3,6 @@ import { getFullPathFromRelativePath, resolveRelativePath } from "../../resolve/
 import { IBuilder } from "../../ddl/builder/Builder";
 import { FileBuilder } from "../../ddl/builder/entity/FileBuilder";
 import { PathBuilder } from "../../ddl/builder/PathBuilder";
-import { TokenBuilder } from "../../ddl/builder/TokenBuilder";
 
 export class ApiBuilder
     extends FileBuilder
@@ -25,12 +24,6 @@ export class ApiBuilder
     }
 
     addImports() {
-        this.addImport([
-            'DEPENDENCY_INJECTION',
-            'Inject',
-            'Injected'
-        ], '@airport/direction-indicator');
-
         for (const objectAsName in this.apiFile.imports.importMapByObjectAsName) {
             const moduleImport = this.apiFile.imports
                 .importMapByObjectAsName[objectAsName]
@@ -56,19 +49,10 @@ ${enumOrInterfaceCode}`
         }
 
         let apiClassDefinitionCode = ''
-
-        let tokenNames = []
         for (let apiClass of this.apiFile.apiClasses) {
-            const tokenName = TokenBuilder.getTokenNameFromClassName(apiClass.className)
-            tokenNames.push(tokenName)
-            apiClassDefinitionCode += this.buildClassDefinition(apiClass, tokenName)
+            apiClassDefinitionCode += this.buildClassDefinition(apiClass)
         }
 
-        const commonTokensFilePath = this.pathBuilder.workingDirPath
-            + '/src/to_be_generated/common-tokens'
-        const commonTokensFileRelativePath = resolveRelativePath(
-            this.fullGenerationPath, commonTokensFilePath)
-        this.addImport(tokenNames, commonTokensFileRelativePath)
         const imports = this.buildImports();
 
         return `${imports}
@@ -77,36 +61,29 @@ ${apiClassDefinitionCode}`
     }
 
     private buildClassDefinition(
-        apiClass: IApiClass,
-        tokenName: string
+        apiClass: IApiClass
     ) {
-        let proxyName = apiClass.className
-        proxyName = proxyName[0].toLowerCase() + proxyName.substring(1)
 
         return `
 // An API stub for other Applications and UIs to use
-@Injected()
-export class ${apiClass.className} {
+// @Injected() is implied but not specified to avoid @airport/direction-indicator
+// dependency in UI API stub (eventually, once it's @airport/autopilot is cleaned
+// up)
+// @Injected()
+export class ${apiClass.className} extends ApiProxy<${apiClass.className}> {
         
-    @Inject()
-    ${proxyName}: ${apiClass.className}
-
-    constructor() {
-        DEPENDENCY_INJECTION.db().manualInject(this, '${proxyName}', ${tokenName})
-    }
-            ${this.buildApiMethodStubFragment(apiClass, proxyName)}
+            ${this.buildApiMethodStubFragment(apiClass)}
 }
 `
     }
 
     private buildApiMethodStubFragment(
-        apiClass: IApiClass,
-        apiObjectName: string
+        apiClass: IApiClass
     ): string {
         let methodStubFragment = ''
         for (const apiSignature of apiClass.apiSignatures) {
             methodStubFragment += `
-    ${this.buildApiMethodStub(apiObjectName, apiSignature)}
+    ${this.buildApiMethodStub(apiSignature)}
 `
         }
 
@@ -114,7 +91,6 @@ export class ${apiClass.className} {
     }
 
     private buildApiMethodStub(
-        apiObjectName: string,
         apiSignature: IApiSignature
     ): string {
         const asyncPrefix = apiSignature.isAsync ? 'async ' : ''
@@ -158,7 +134,7 @@ export class ${apiClass.className} {
         }
 
         return `${asyncPrefix} ${apiSignature.name}(${methodParameters}): ${apiSignature.returnType} {
-        ${returnPrefix}await this.${apiObjectName}.${apiSignature.name}(${apiCallParameters})
+        ${returnPrefix}await this.proxy.${apiSignature.name}(${apiCallParameters})
     }`
     }
 }

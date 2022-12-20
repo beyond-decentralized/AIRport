@@ -16,7 +16,7 @@ export default [
         output: {
             sourcemap: true,
             format: 'esm',
-            file: 'dist/app/bundle.mjs'
+            file: packageJson.app
         },
         plugins: [
             peerDepsExternal(),

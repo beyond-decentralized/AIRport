@@ -1,32 +1,40 @@
-import { lib } from '@airport/direction-indicator'
 import { IQueryResultsDeserializer, QueryResultsDeserializer } from './QueryResultsDeserializer'
 import { IOperationSerializer, OperationSerializer } from './OperationSerializer'
-import { ISerializationStateManager, SerializationStateManager } from './SerializationStateManager'
-import { AIR_ENTITY_UTILS } from '@airport/aviation-communication'
+import { SerializationStateManager } from './SerializationStateManager'
+import { AirEntityUtils } from '@airport/aviation-communication'
 
-const pressurization = lib('pressurization')
+if (globalThis.IOC) {
+    globalThis.OPERATION_SERIALIZER.setClass(OperationSerializer)
+    globalThis.SERIALIZATION_STATE_MANAGER.setClass(SerializationStateManager)
+    globalThis.QUERY_RESULTS_DESERIALIZER.setClass(QueryResultsDeserializer)
 
-export const OPERATION_SERIALIZER = pressurization.token<IOperationSerializer>({
-    class: OperationSerializer,
-    interface: 'IOperationSerializer',
-    token: 'OPERATION_SERIALIZER'
-})
-export const QUERY_RESULTS_DESERIALIZER = pressurization.token<IQueryResultsDeserializer>({
-    class: QueryResultsDeserializer,
-    interface: 'IQueryResultsDeserializer',
-    token: 'QUERY_RESULTS_DESERIALIZER'
-})
-export const SERIALIZATION_STATE_MANAGER = pressurization.token<ISerializationStateManager>({
-    class: SerializationStateManager,
-    interface: 'ISerializationStateManager',
-    token: 'SERIALIZATION_STATE_MANAGER'
-})
+    globalThis.OPERATION_SERIALIZER.setDependencies({
+        serializationStateManager: globalThis.SERIALIZATION_STATE_MANAGER
+    })
+    globalThis.QUERY_RESULTS_DESERIALIZER.setDependencies({
+        airEntityUtils: globalThis.AIR_ENTITY_UTILS,
+        serializationStateManager: globalThis.SERIALIZATION_STATE_MANAGER
+    })
+}
 
-OPERATION_SERIALIZER.setDependencies({
-    serializationStateManager: SERIALIZATION_STATE_MANAGER
-})
+export function loadUiPressurisation(): {
+    operationSerializer: IOperationSerializer,
+    queryResultsDeserializer: IQueryResultsDeserializer,
+} {
+    if (globalThis.IOC) {
+        return
+    }
 
-QUERY_RESULTS_DESERIALIZER.setDependencies({
-    airEntityUtils: AIR_ENTITY_UTILS,
-    serializationStateManager: SERIALIZATION_STATE_MANAGER
-})
+    const queryResultsDeserializer = new QueryResultsDeserializer()
+    const operationSerializer = new OperationSerializer()
+    const serializationStateManager = new SerializationStateManager()
+
+    queryResultsDeserializer.airEntityUtils = new AirEntityUtils()
+    queryResultsDeserializer.serializationStateManager = serializationStateManager
+    operationSerializer.serializationStateManager = serializationStateManager
+
+    return {
+        queryResultsDeserializer,
+        operationSerializer,
+    }
+}
