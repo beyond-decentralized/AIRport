@@ -135,7 +135,7 @@ terminal.setDependencies(HistoryManager, {
 
 terminal.setDependencies(InsertManager, {
     airportDatabase: AIRPORT_DATABASE,
-    historyManager: InsertManager,
+    historyManager: HistoryManager,
     operationHistoryDuo: OperationHistoryDuo,
     recordHistoryDuo: RecordHistoryDuo,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
@@ -150,6 +150,14 @@ terminal.setDependencies(InternalRecordManager, {
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TERMINAL_STORE,
     transactionManager: TRANSACTION_MANAGER
+})
+
+REPOSITORY_MANAGER.setClass(RepositoryManager)
+REPOSITORY_MANAGER.setDependencies({
+    repositoryDao: RepositoryDao,
+    repositoryNestingDao: RepositoryNestingDao,
+    terminalSessionManager: TERMINAL_SESSION_MANAGER,
+    terminalStore: TERMINAL_STORE
 })
 
 terminal.setDependencies(OnlineManager, {
@@ -189,14 +197,6 @@ REPOSITORY_LOADER.setDependencies({
     repositoryDao: RepositoryDao,
     synchronizationAdapterLoader: SynchronizationAdapterLoader,
     synchronizationInManager: SynchronizationInManager
-})
-
-REPOSITORY_MANAGER.setClass(RepositoryManager)
-REPOSITORY_MANAGER.setDependencies({
-    repositoryDao: RepositoryDao,
-    repositoryNestingDao: RepositoryNestingDao,
-    terminalSessionManager: TERMINAL_SESSION_MANAGER,
-    terminalStore: TERMINAL_STORE
 })
 
 terminal.setDependencies(StructuralEntityValidator, {
@@ -246,7 +246,6 @@ TRANSACTIONAL_SERVER.setDependencies({
     transactionManager: TRANSACTION_MANAGER,
     updateManager: UpdateManager
 })
-
 
 terminal.setDependencies(UpdateManager, {
     airportDatabase: AIRPORT_DATABASE,

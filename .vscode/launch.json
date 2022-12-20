@@ -16,7 +16,9 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\libs\\session-state",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         },
         {
             "type": "pwa-node",
@@ -30,7 +32,9 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}/libs/session-state",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         },
         {
             "type": "pwa-node",
@@ -44,7 +48,9 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\travel-document-checkpoint",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         },
         {
             "type": "pwa-node",
@@ -58,8 +64,11 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}/schemas/travel-document-checkpoint",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         },
+        {
             "type": "pwa-node",
             "request": "launch",
             "name": "airport-code-dos",
@@ -71,7 +80,9 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\airport-code",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         },
         {
             "type": "pwa-node",
@@ -85,7 +96,9 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}/schemas/airport-code",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         },
         {
             "type": "pwa-node",
@@ -99,7 +112,9 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\airspace",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         },
         {
             "type": "pwa-node",
@@ -113,7 +128,9 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}/schemas/airspace",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         },
         {
             "type": "pwa-node",
@@ -127,7 +144,9 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\travel-document-checkpoint",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         },
         {
             "type": "pwa-node",
@@ -141,7 +160,9 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}/schemas/travel-document-checkpoint",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         },
         {
             "type": "pwa-node",
@@ -155,7 +176,10 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\holding-pattern",
-            "runtimeArgs": ["--experimental-specifier-resolution=node", "--preserve-symlinks"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node",
+                "--preserve-symlinks"
+            ]
         },
         {
             "type": "pwa-node",
@@ -169,7 +193,10 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}/schemas/holding-pattern",
-            "runtimeArgs": ["--experimental-specifier-resolution=node", "--preserve-symlinks"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node",
+                "--preserve-symlinks"
+            ]
         },
         {
             "type": "pwa-node",
@@ -183,7 +210,9 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\layover",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         },
         {
             "type": "pwa-node",
@@ -197,7 +226,9 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}/schemas/layover",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         },
         {
             "type": "pwa-node",

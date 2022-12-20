@@ -35,7 +35,8 @@ export class DependencyInjectionToken<Injected>
 		let tokenBasedDependencyConfiguration: ITokenDependencyConfiguration = {}
 		for (let propertyName in dependencyConfiguration) {
 			let dependency = dependencyConfiguration[propertyName]
-			if (dependency.constructor) {
+			let prototype = (dependency as { new(): any }).prototype
+			if (prototype && prototype.constructor) {
 				let apiClass = dependency as any
 				if (!apiClass.token) {
 					const applicationDescriptor = apiClass.application
@@ -79,10 +80,25 @@ export class DependencyInjectionToken<Injected>
 
 
 	setClass(
-		aClass: any
+		aClass: { new(): any }
 	): void {
+		let prototype = aClass.prototype
+		if (!prototype || !prototype.constructor) {
+			return
+		}
+
+		let classWithDescriptor = aClass as any
+
+		classWithDescriptor.application = {
+			domain: {
+				name: this.application.domain.name
+			},
+			name: this.application.name
+		};
+		classWithDescriptor.token = this
+
 		this.descriptor.class = aClass
-		aClass.dependencyConfiguration = this._dependencyConfiguration
+		classWithDescriptor.dependencyConfiguration = this._dependencyConfiguration
 	}
 
 	private getInheritedDependencyConfiguration(

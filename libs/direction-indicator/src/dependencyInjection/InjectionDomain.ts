@@ -59,13 +59,12 @@ if (globalThis.AIRPORT_DOMAIN) {
 }
 export const AIRPORT_DOMAIN = injectionDomain
 
-if (!globalThis.AIRPORT_DOMAIN_MAP) {
-	globalThis.AIRPORT_DOMAIN_MAP = {}
-}
-
 export function domain(
 	domainName: string
 ): IInjectionDomain {
+	if (!globalThis.AIRPORT_DOMAIN_MAP) {
+		globalThis.AIRPORT_DOMAIN_MAP = {}
+	}
 	const DOMAIN_MAP = globalThis.AIRPORT_DOMAIN_MAP
 	if (DOMAIN_MAP[domainName]) {
 		return DOMAIN_MAP[domainName]

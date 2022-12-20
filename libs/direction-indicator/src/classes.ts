@@ -8,7 +8,7 @@ export function addClasses(
 ) {
     const container = globalThis.CLASSES
     for (const clazz of classes) {
-        let className = clazz.constructor.name
+        let className = clazz.prototype.constructor.name
         // if (!container[className]) {
         //     container[className] = []
         // } else {

@@ -33,10 +33,13 @@ export class InjectionApplication
 			descriptor = {
 				interface: input
 			}
-		} else if (input.constructor) {
-			descriptor = {
-				class: input,
-				interface: input.constructor.name
+		} else {
+			let prototype = (input as { new(): any }).prototype
+			if (prototype && prototype.constructor) {
+				descriptor = {
+					class: input,
+					interface: prototype.constructor.name
+				}
 			}
 		}
 
@@ -48,8 +51,7 @@ export class InjectionApplication
 			descriptor.token = InjectionApplication.getTokenName(descriptor.interface)
 		}
 
-		return
-
+		return descriptor
 	}
 
 	public tokenMap: Map<string, IDependencyInjectionToken<any>> = new Map()
@@ -68,9 +70,6 @@ export class InjectionApplication
 		let tokensObject = {}
 		for (let injectedClassOrInterfaceName of injectedClassesOrInterfaceNames) {
 			const token = this.token(injectedClassOrInterfaceName);
-			if (injectedClassOrInterfaceName.constructor) {
-				(injectedClassOrInterfaceName as any).token = token
-			}
 			tokensObject[token.descriptor.token] = token
 		}
 		return tokensObject
@@ -105,19 +104,20 @@ export class InjectionApplication
 			}
 		}
 
-		const diToken = new DependencyInjectionToken(
+		const token = new DependencyInjectionToken(
 			this,
 			descriptor
 		)
 
-		this.tokenMap.set(descriptor.interface, diToken)
+		token.setClass(input as { new(): any })
 
+		this.tokenMap.set(descriptor.interface, token)
 
 		if (descriptor.class) {
-			diToken.setClass(descriptor.class)
+			token.setClass(descriptor.class)
 		}
 
-		return diToken
+		return token
 	}
 
 	getDomain(

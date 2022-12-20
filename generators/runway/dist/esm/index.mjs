@@ -133,7 +133,7 @@ if (!globalThis.CLASSES) {
 function addClasses(classes) {
     const container = globalThis.CLASSES;
     for (const clazz of classes) {
-        let className = clazz.constructor.name;
+        let className = clazz.prototype.constructor.name;
         // if (!container[className]) {
         //     container[className] = []
         // } else {
@@ -196,10 +196,10 @@ else {
     globalThis.AIRPORT_DOMAIN = injectionDomain;
 }
 const AIRPORT_DOMAIN = injectionDomain;
-if (!globalThis.AIRPORT_DOMAIN_MAP) {
-    globalThis.AIRPORT_DOMAIN_MAP = {};
-}
 function domain(domainName) {
+    if (!globalThis.AIRPORT_DOMAIN_MAP) {
+        globalThis.AIRPORT_DOMAIN_MAP = {};
+    }
     const DOMAIN_MAP = globalThis.AIRPORT_DOMAIN_MAP;
     if (DOMAIN_MAP[domainName]) {
         return DOMAIN_MAP[domainName];
@@ -233,7 +233,8 @@ class DependencyInjectionToken {
         let tokenBasedDependencyConfiguration = {};
         for (let propertyName in dependencyConfiguration) {
             let dependency = dependencyConfiguration[propertyName];
-            if (dependency.constructor) {
+            let prototype = dependency.prototype;
+            if (prototype && prototype.constructor) {
                 let apiClass = dependency;
                 if (!apiClass.token) {
                     const applicationDescriptor = apiClass.application;
@@ -276,8 +277,20 @@ class DependencyInjectionToken {
         }
     }
     setClass(aClass) {
+        let prototype = aClass.prototype;
+        if (!prototype || !prototype.constructor) {
+            return;
+        }
+        let classWithDescriptor = aClass;
+        classWithDescriptor.application = {
+            domain: {
+                name: this.application.domain.name
+            },
+            name: this.application.name
+        };
+        classWithDescriptor.token = this;
         this.descriptor.class = aClass;
-        aClass.dependencyConfiguration = this._dependencyConfiguration;
+        classWithDescriptor.dependencyConfiguration = this._dependencyConfiguration;
     }
     getInheritedDependencyConfiguration(aClass) {
         const parentClass = Object.getPrototypeOf(aClass);
@@ -316,11 +329,14 @@ class InjectionApplication {
                 interface: input
             };
         }
-        else if (input.constructor) {
-            descriptor = {
-                class: input,
-                interface: input.constructor.name
-            };
+        else {
+            let prototype = input.prototype;
+            if (prototype && prototype.constructor) {
+                descriptor = {
+                    class: input,
+                    interface: prototype.constructor.name
+                };
+            }
         }
         if (!descriptor.class) {
             descriptor.class = null;
@@ -328,7 +344,7 @@ class InjectionApplication {
         if (!descriptor.token) {
             descriptor.token = InjectionApplication.getTokenName(descriptor.interface);
         }
-        return;
+        return descriptor;
     }
     constructor(name, domain) {
         this.name = name;
@@ -339,9 +355,6 @@ class InjectionApplication {
         let tokensObject = {};
         for (let injectedClassOrInterfaceName of injectedClassesOrInterfaceNames) {
             const token = this.token(injectedClassOrInterfaceName);
-            if (injectedClassOrInterfaceName.constructor) {
-                injectedClassOrInterfaceName.token = token;
-            }
             tokensObject[token.descriptor.token] = token;
         }
         return tokensObject;
@@ -363,12 +376,13 @@ class InjectionApplication {
                 return existingToken;
             }
         }
-        const diToken = new DependencyInjectionToken(this, descriptor);
-        this.tokenMap.set(descriptor.interface, diToken);
+        const token = new DependencyInjectionToken(this, descriptor);
+        token.setClass(input);
+        this.tokenMap.set(descriptor.interface, token);
         if (descriptor.class) {
-            diToken.setClass(descriptor.class);
+            token.setClass(descriptor.class);
         }
-        return diToken;
+        return token;
     }
     getDomain(domainName) {
         return null;
@@ -452,13 +466,14 @@ class ChildContainer extends Container$2 {
     normalizeTokens(tokens) {
         const normalizedTokens = [];
         for (let token of tokens) {
-            if (token.constructor) {
+            let prototype = token.prototype;
+            if (prototype && prototype.constructor) {
                 token = {
                     application: token.application,
                     descriptor: {
                         class: token,
-                        interface: token.constructor.name,
-                        token: InjectionApplication.getTokenName(token.constructor.name)
+                        interface: prototype.constructor.name,
+                        token: InjectionApplication.getTokenName(prototype.constructor.name)
                     }
                 };
             }
@@ -472,14 +487,6 @@ class ChildContainer extends Container$2 {
         const objects = tokens.map(token => {
             if (firstMissingClassToken || firstDiNotSetClass) {
                 return;
-            }
-            if (token.constructor) {
-                token = {
-                    application: token.application,
-                    descriptor: {
-                        interface: token.constructor.name
-                    }
-                };
             }
             let object = this.objectMap.get(token.descriptor.token);
             if (!object) {
@@ -37267,7 +37274,7 @@ terminal.setDependencies(HistoryManager, {
 });
 terminal.setDependencies(InsertManager, {
     airportDatabase: AIRPORT_DATABASE,
-    historyManager: InsertManager,
+    historyManager: HistoryManager,
     operationHistoryDuo: OperationHistoryDuo,
     recordHistoryDuo: RecordHistoryDuo,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
@@ -37281,6 +37288,13 @@ terminal.setDependencies(InternalRecordManager, {
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TERMINAL_STORE,
     transactionManager: TRANSACTION_MANAGER
+});
+REPOSITORY_MANAGER.setClass(RepositoryManager);
+REPOSITORY_MANAGER.setDependencies({
+    repositoryDao: RepositoryDao,
+    repositoryNestingDao: RepositoryNestingDao,
+    terminalSessionManager: TERMINAL_SESSION_MANAGER,
+    terminalStore: TERMINAL_STORE
 });
 terminal.setDependencies(OnlineManager, {
     repositoryDao: RepositoryDao,
@@ -37316,13 +37330,6 @@ REPOSITORY_LOADER.setDependencies({
     repositoryDao: RepositoryDao,
     synchronizationAdapterLoader: SynchronizationAdapterLoader,
     synchronizationInManager: SynchronizationInManager
-});
-REPOSITORY_MANAGER.setClass(RepositoryManager);
-REPOSITORY_MANAGER.setDependencies({
-    repositoryDao: RepositoryDao,
-    repositoryNestingDao: RepositoryNestingDao,
-    terminalSessionManager: TERMINAL_SESSION_MANAGER,
-    terminalStore: TERMINAL_STORE
 });
 terminal.setDependencies(StructuralEntityValidator, {
     applicationUtils: APPLICATION_UTILS,

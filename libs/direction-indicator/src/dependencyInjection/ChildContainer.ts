@@ -119,13 +119,14 @@ export class ChildContainer
     ): Array<IDependencyInjectionToken<any> | IFullDITokenDescriptor> {
         const normalizedTokens = []
         for (let token of tokens) {
-            if (token.constructor) {
+            let prototype = (token as { new(): any }).prototype
+            if (prototype && prototype.constructor) {
                 token = {
                     application: (token as IFullDITokenDescriptor).application,
                     descriptor: {
                         class: token,
-                        interface: token.constructor.name,
-                        token: InjectionApplication.getTokenName(token.constructor.name)
+                        interface: prototype.constructor.name,
+                        token: InjectionApplication.getTokenName(prototype.constructor.name)
                     }
                 } as IFullDITokenDescriptor
             }
@@ -148,14 +149,6 @@ export class ChildContainer
             token => {
                 if (firstMissingClassToken || firstDiNotSetClass) {
                     return;
-                }
-                if (token.constructor) {
-                    token = {
-                        application: (token as IFullDITokenDescriptor).application,
-                        descriptor: {
-                            interface: token.constructor.name
-                        }
-                    } as IFullDITokenDescriptor
                 }
                 let object = this.objectMap.get((token as IFullDITokenDescriptor).descriptor.token)
                 if (!object) {
