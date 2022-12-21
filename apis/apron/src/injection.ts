@@ -18,7 +18,7 @@ export const LOCAL_API_SERVER = apron.token<ILocalAPIServer>('LocalAPIServer')
  * @param applicationLoader Application specific ApplicationLoader
  */
 export function setApplicationLoader(
-    applicationLoader: IApplicationLoader
+    applicationLoader: { new(): IApplicationLoader }
 ) {
     APPLICATION_LOADER.setClass(applicationLoader)
 }
