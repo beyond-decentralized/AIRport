@@ -9,6 +9,6 @@ export * from '../generated/vInterfaces';
 export * from '../generated/interfaces';
 export * from '../generated/api/api';
 
-for (let apiStub in [RepositoryApi]) {
+for (let apiStub of [RepositoryApi]) {
     (apiStub as any).application = application
 }

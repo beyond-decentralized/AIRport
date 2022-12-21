@@ -8,6 +8,6 @@ export * from '../generated/qApplication';
 // export * from '../generated/vInterfaces';
 // export * from '../generated/interfaces';
 
-for (let apiStub in [SessionStateApi]) {
+for (let apiStub of [SessionStateApi]) {
     (apiStub as any).application = application
 }

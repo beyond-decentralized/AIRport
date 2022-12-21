@@ -9,7 +9,7 @@ export * from '../generated/qInterfaces';
 export * from '../generated/vInterfaces';
 export * from '../generated/interfaces';
 
-for (let apiStub in [
+for (let apiStub of [
     UserAccountApi
 ]) {
     (apiStub as any).application = application

@@ -140,7 +140,7 @@ export class AirportDatabase
 		const fullApplication_Name = this.dbApplicationUtils
 			.getFullApplication_Name(qApplication)
 		const existingQApp = this.QM[fullApplication_Name]
-		if (existingQApp) {
+		if (existingQApp && existingQApp.__dbApplication__) {
 			const dbApplication = existingQApp.__dbApplication__
 			qApplication.__dbApplication__ = dbApplication
 			this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.qApplications,

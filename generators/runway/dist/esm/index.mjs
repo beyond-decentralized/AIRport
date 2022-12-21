@@ -160,9 +160,9 @@ class Context {
 }
 addClasses([Context]);
 
-class Container$2 {
+class Container {
 }
-addClasses([Container$2]);
+addClasses([Container]);
 
 class InjectionDomain {
     constructor(name) {
@@ -400,7 +400,7 @@ function lib(libraryName) {
  * A container (at this point) is primarily about maintaining transaction and user
  * session information through a request into an app (and across multiple apps).
  */
-class ChildContainer extends Container$2 {
+class ChildContainer extends Container {
     constructor(rootContainer, context) {
         super();
         this.rootContainer = rootContainer;
@@ -679,7 +679,7 @@ class ChildContainer extends Container$2 {
 }
 addClasses([ChildContainer]);
 
-class RootContainer extends Container$2 {
+class RootContainer extends Container {
     constructor() {
         super(...arguments);
         this.dbContainerMap = new Map();
@@ -744,7 +744,7 @@ class ContainerAccessor {
         if (!iocContainer) {
             throw new Error('"container" is not set on injectable object.');
         }
-        if (!(iocContainer instanceof Container$2)) {
+        if (!(iocContainer instanceof Container)) {
             throw new Error('"container" property of injectable is not an' +
                 'instance of @airport/direction-indicator Container');
         }
@@ -6366,7 +6366,7 @@ var extendStatics = function(d, b) {
     return extendStatics(d, b);
 };
 
-function __extends$3(d, b) {
+function __extends(d, b) {
     if (typeof b !== "function" && b !== null)
         throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
@@ -6698,7 +6698,7 @@ function errorContext(cb) {
 }
 
 var Subscriber = (function (_super) {
-    __extends$3(Subscriber, _super);
+    __extends(Subscriber, _super);
     function Subscriber(destination) {
         var _this = _super.call(this) || this;
         _this.isStopped = false;
@@ -6765,7 +6765,7 @@ var Subscriber = (function (_super) {
     return Subscriber;
 }(Subscription));
 var SafeSubscriber = (function (_super) {
-    __extends$3(SafeSubscriber, _super);
+    __extends(SafeSubscriber, _super);
     function SafeSubscriber(observerOrNext, error, complete) {
         var _this = _super.call(this) || this;
         var next;
@@ -6949,7 +6949,7 @@ function operate(init) {
 }
 
 var OperatorSubscriber = (function (_super) {
-    __extends$3(OperatorSubscriber, _super);
+    __extends(OperatorSubscriber, _super);
     function OperatorSubscriber(destination, onNext, onComplete, onError, onFinalize) {
         var _this = _super.call(this, destination) || this;
         _this.onFinalize = onFinalize;
@@ -7009,7 +7009,7 @@ var ObjectUnsubscribedError = createErrorClass(function (_super) {
 });
 
 var Subject = (function (_super) {
-    __extends$3(Subject, _super);
+    __extends(Subject, _super);
     function Subject() {
         var _this = _super.call(this) || this;
         _this.closed = false;
@@ -7126,7 +7126,7 @@ var Subject = (function (_super) {
     return Subject;
 }(Observable));
 var AnonymousSubject = (function (_super) {
-    __extends$3(AnonymousSubject, _super);
+    __extends(AnonymousSubject, _super);
     function AnonymousSubject(destination, source) {
         var _this = _super.call(this) || this;
         _this.destination = destination;
@@ -7153,7 +7153,7 @@ var AnonymousSubject = (function (_super) {
 }(Subject));
 
 var BehaviorSubject = (function (_super) {
-    __extends$3(BehaviorSubject, _super);
+    __extends(BehaviorSubject, _super);
     function BehaviorSubject(_value) {
         var _this = _super.call(this) || this;
         _this._value = _value;
@@ -9275,13 +9275,6 @@ airApi.setQApp = function (qApplication) {
     });
 };
 
-var ConstraintMode;
-(function (ConstraintMode) {
-    ConstraintMode["CONSTRAINT"] = "CONSTRAINT";
-    ConstraintMode["NO_CONSTRAINT"] = "NO_CONSTRAINT";
-    ConstraintMode["PROVIDER_DEFAULT"] = "PROVIDER_DEFAULT";
-})(ConstraintMode || (ConstraintMode = {}));
-
 class Sequence {
 }
 
@@ -9297,13 +9290,13 @@ class SystemWideOperationId {
 class TerminalRun {
 }
 
-const __constructors__$5 = {
+const __constructors__$6 = {
     Sequence: Sequence,
     SystemWideOperationId: SystemWideOperationId,
     TerminalRun: TerminalRun
 };
 const Q_airport____at_airport_slash_airport_dash_code = {
-    __constructors__: __constructors__$5,
+    __constructors__: __constructors__$6,
     domain: 'airport',
     name: '@airport/airport-code'
 };
@@ -9502,7 +9495,7 @@ class ApplicationVersion {
     }
 }
 
-const __constructors__$4 = {
+const __constructors__$5 = {
     Application: Application,
     ApplicationColumn: ApplicationColumn,
     ApplicationCurrentVersion: ApplicationCurrentVersion,
@@ -9518,7 +9511,7 @@ const __constructors__$4 = {
     VersionedApplicationObject: VersionedApplicationObject
 };
 const Q_airport____at_airport_slash_airspace = {
-    __constructors__: __constructors__$4,
+    __constructors__: __constructors__$5,
     domain: 'airport',
     name: '@airport/airspace'
 };
@@ -10547,14 +10540,14 @@ class ApplicationVersionDao extends BaseApplicationVersionDao {
     }
 }
 
-const application$3 = {
+const application$4 = {
     name: '@airport/airspace',
     domain: {
         name: 'airport'
     }
 };
 
-const airspace = app(application$3);
+const airspace = app(application$4);
 airspace.register(DomainDao, ApplicationColumnDao, ApplicationDao, ApplicationEntityDao, ApplicationPropertyColumnDao, ApplicationPropertyDao, ApplicationReferenceDao, ApplicationRelationColumnDao, ApplicationRelationDao, ApplicationVersionDao);
 airspace.setDependencies(ApplicationDao, {
     airportDatabase: AIRPORT_DATABASE
@@ -12520,13 +12513,13 @@ var UpdateState;
 /**
  * Marks a group of mutation history changes.
  */
-class OperationHistory {
+class OperationHistory$1 {
     constructor() {
         this.recordHistory = [];
     }
 }
 
-class RecordHistory {
+class RecordHistory$1 {
     constructor() {
         this.newValues = [];
         this.oldValues = [];
@@ -12541,7 +12534,7 @@ class RecordHistory {
  * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
  * also be required.
  */
-class RecordHistoryNewValue {
+class RecordHistoryNewValue$1 {
 }
 
 /**
@@ -12552,19 +12545,19 @@ class RecordHistoryNewValue {
  * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
  * also be required.
  */
-class RecordHistoryOldValue {
+class RecordHistoryOldValue$1 {
 }
 
-var RepositoryTransactionType;
+var RepositoryTransactionType$1;
 (function (RepositoryTransactionType) {
     RepositoryTransactionType["LOCAL"] = "LOCAL";
     RepositoryTransactionType["REMOTE"] = "REMOTE";
     RepositoryTransactionType["REMOTE_REFERENCE"] = "REMOTE_REFERENCE";
-})(RepositoryTransactionType || (RepositoryTransactionType = {}));
+})(RepositoryTransactionType$1 || (RepositoryTransactionType$1 = {}));
 
-class RepositoryTransactionHistory {
+class RepositoryTransactionHistory$1 {
     constructor(data) {
-        this.repositoryTransactionType = RepositoryTransactionType.LOCAL;
+        this.repositoryTransactionType = RepositoryTransactionType$1.LOCAL;
         this.operationHistory = [];
         if (!data) {
             return;
@@ -12577,7 +12570,7 @@ class RepositoryTransactionHistory {
     }
 }
 
-class TransactionHistory {
+class TransactionHistory$1 {
     constructor() {
         this.repositoryTransactionHistories = [];
         this.repositoryTransactionHistoryMap = {};
@@ -12589,13 +12582,13 @@ class TransactionHistory {
     }
 }
 
-class Actor {
+class Actor$1 {
 }
 
 /**
  * Created by Papa on 2/9/2017.
  */
-class Repository {
+class Repository$1 {
     constructor() {
         this._localId = null;
         this.repositoryNestings = [];
@@ -12608,59 +12601,59 @@ class Repository {
     }
 }
 
-class RepositoryApplication {
+class RepositoryApplication$1 {
 }
 
-class RepositoryClient {
+class RepositoryClient$1 {
 }
 
-class RepositoryDatabase {
+class RepositoryDatabase$1 {
 }
 
 /**
  * Created by Papa on 2/9/2017.
  */
-class RepositoryNesting {
+class RepositoryNesting$1 {
 }
 
-class RepositoryTerminal {
+class RepositoryTerminal$1 {
 }
 
-class RepositoryType {
+class RepositoryType$1 {
 }
 
-const __constructors__$3 = {
-    Actor: Actor,
-    OperationHistory: OperationHistory,
-    RecordHistory: RecordHistory,
-    RecordHistoryNewValue: RecordHistoryNewValue,
-    RecordHistoryOldValue: RecordHistoryOldValue,
-    Repository: Repository,
-    RepositoryApplication: RepositoryApplication,
-    RepositoryClient: RepositoryClient,
-    RepositoryDatabase: RepositoryDatabase,
-    RepositoryNesting: RepositoryNesting,
-    RepositoryTerminal: RepositoryTerminal,
-    RepositoryTransactionHistory: RepositoryTransactionHistory,
-    RepositoryType: RepositoryType,
-    TransactionHistory: TransactionHistory
+const __constructors__$4 = {
+    Actor: Actor$1,
+    OperationHistory: OperationHistory$1,
+    RecordHistory: RecordHistory$1,
+    RecordHistoryNewValue: RecordHistoryNewValue$1,
+    RecordHistoryOldValue: RecordHistoryOldValue$1,
+    Repository: Repository$1,
+    RepositoryApplication: RepositoryApplication$1,
+    RepositoryClient: RepositoryClient$1,
+    RepositoryDatabase: RepositoryDatabase$1,
+    RepositoryNesting: RepositoryNesting$1,
+    RepositoryTerminal: RepositoryTerminal$1,
+    RepositoryTransactionHistory: RepositoryTransactionHistory$1,
+    RepositoryType: RepositoryType$1,
+    TransactionHistory: TransactionHistory$1
 };
-const Q_airport____at_airport_slash_holding_dash_pattern = {
-    __constructors__: __constructors__$3,
+const Q_airport____at_airport_slash_holding_dash_pattern$1 = {
+    __constructors__: __constructors__$4,
     domain: 'airport',
     name: '@airport/holding-pattern'
 };
 function airport____at_airport_slash_holding_dash_pattern_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_holding_dash_pattern.__dbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
-    globalThis.airApi.setQApp(Q_airport____at_airport_slash_holding_dash_pattern);
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_holding_dash_pattern$1);
 }
 
 // Application Q object Dependency Injection readiness detection Dao
 class SQDIDao$2 extends Dao {
     constructor(dbEntityId) {
-        super(dbEntityId, Q_airport____at_airport_slash_holding_dash_pattern);
+        super(dbEntityId, Q_airport____at_airport_slash_holding_dash_pattern$1);
     }
 }
 class BaseActorDao extends SQDIDao$2 {
@@ -12880,7 +12873,7 @@ class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                rhnv = Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryNewValue
+                rhnv = Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistoryNewValue
             ],
             WHERE: rhnv.recordHistory._localId.IN(RecordHistory_LocalIds)
         });
@@ -12893,7 +12886,7 @@ class RecordHistoryOldValueDao extends BaseRecordHistoryOldValueDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                rhov = Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryOldValue
+                rhov = Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistoryOldValue
             ],
             WHERE: rhov.recordHistory._localId.IN(RecordHistory_LocalIds)
         });
@@ -12922,14 +12915,14 @@ class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDa
                 GUID: Y
             },
             FROM: [
-                rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory
+                rth = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryTransactionHistory
             ],
             WHERE: rth.GUID.IN(GUIDs)
         });
     }
     async findAllLocalChangesForRecordIds(changedRecordIds) {
         const repositoryTransactionHistoryMapByRepositoryId = new Map();
-        const rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory;
+        const rth = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryTransactionHistory;
         const th = rth.transactionHistory.INNER_JOIN();
         const oh = rth.operationHistory.LEFT_JOIN();
         const ae = oh.entity.LEFT_JOIN();
@@ -13008,7 +13001,7 @@ class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDa
     async updateSyncTimestamp(repositoryTransactionHistory) {
         let rth;
         await this.db.updateWhere({
-            UPDATE: rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory,
+            UPDATE: rth = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryTransactionHistory,
             SET: {
                 syncTimestamp: repositoryTransactionHistory.syncTimestamp
             },
@@ -13054,7 +13047,7 @@ class ActorDao extends BaseActorDao {
                 GUID: Y
             },
             FROM: [
-                act = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
+                act = Q_airport____at_airport_slash_holding_dash_pattern$1.Actor,
                 application = act.application.LEFT_JOIN(),
                 domain = application.domain.LEFT_JOIN(),
                 terminal = act.terminal.LEFT_JOIN(),
@@ -13068,7 +13061,7 @@ class ActorDao extends BaseActorDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                a = Q_airport____at_airport_slash_holding_dash_pattern.Actor
+                a = Q_airport____at_airport_slash_holding_dash_pattern$1.Actor
             ],
             WHERE: a.GUID.IN(actorGUIDs)
         });
@@ -13085,7 +13078,7 @@ class ActorDao extends BaseActorDao {
                 }
             },
             FROM: [
-                a = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
+                a = Q_airport____at_airport_slash_holding_dash_pattern$1.Actor,
                 u = a.userAccount.LEFT_JOIN(),
                 u.continent.LEFT_JOIN(),
                 u.country.LEFT_JOIN(),
@@ -13105,7 +13098,7 @@ class ActorDao extends BaseActorDao {
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: a = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
+            INSERT_INTO: a = Q_airport____at_airport_slash_holding_dash_pattern$1.Actor,
             columns: [
                 a.GUID,
                 a.application.index,
@@ -13148,7 +13141,7 @@ class ActorDao extends BaseActorDao {
                 }
             },
             FROM: [
-                a = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
+                a = Q_airport____at_airport_slash_holding_dash_pattern$1.Actor,
                 ap = a.application.LEFT_JOIN(),
                 ap.domain.LEFT_JOIN(),
                 t = a.terminal.LEFT_JOIN(),
@@ -13169,7 +13162,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 repositoryNestings: {}
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
                 r.repositoryNestings.LEFT_JOIN()
             ],
             WHERE: r.parentRepository.IS_NULL()
@@ -13183,7 +13176,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 repositoryNestings: {}
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
                 r.repositoryNestings.LEFT_JOIN()
             ],
             WHERE: r.GUID.equals(repositoryGUID)
@@ -13201,7 +13194,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 }
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
                 rth = r.repositoryTransactionHistory.INNER_JOIN(),
                 th = rth.transactionHistory.INNER_JOIN()
             ],
@@ -13222,7 +13215,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 GUID
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository
             ],
             WHERE: r._localId.IN(repositoryIds)
         });
@@ -13238,7 +13231,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 }
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
                 r.owner.INNER_JOIN()
             ],
             WHERE: r._localId.IN(repositoryIds)
@@ -13256,7 +13249,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 }
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
                 r.owner.INNER_JOIN()
             ],
             WHERE: r._localId.IN(repository_localIds)
@@ -13267,7 +13260,7 @@ class RepositoryDao extends BaseRepositoryDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository
             ],
             WHERE: r.GUID.IN(repositoryGUIDs)
         });
@@ -13282,7 +13275,7 @@ class RepositoryDao extends BaseRepositoryDao {
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+            INSERT_INTO: r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
             columns: [
                 r.createdAt,
                 r.GUID,
@@ -13301,7 +13294,7 @@ class RepositoryDao extends BaseRepositoryDao {
     async updateUiEntityUri(repositoryGuid, uiEntityUri) {
         let r;
         await this.db.updateColumnsWhere({
-            UPDATE: r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+            UPDATE: r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
             SET: {
                 UI_ENTRY_URI: uiEntityUri
             },
@@ -13350,7 +13343,7 @@ class OperationHistoryDuo {
 
 class RecordHistoryDuo {
     getNewRecord(actorId, _actorRecordId) {
-        const recordHistory = new RecordHistory();
+        const recordHistory = new RecordHistory$1();
         recordHistory._actorRecordId = _actorRecordId;
         recordHistory.actor = {
             _localId: actorId
@@ -13383,7 +13376,7 @@ class RecordHistoryDuo {
 
 class RecordHistoryNewValueDuo {
     getNewRecord(recordHistory, dbColumn, newValue) {
-        const recordHistoryNewValue = new RecordHistoryNewValue();
+        const recordHistoryNewValue = new RecordHistoryNewValue$1();
         recordHistoryNewValue.columnIndex = dbColumn.index;
         recordHistoryNewValue.recordHistory = recordHistory;
         recordHistoryNewValue.newValue = newValue;
@@ -13393,7 +13386,7 @@ class RecordHistoryNewValueDuo {
 
 class RecordHistoryOldValueDuo {
     getNewRecord(recordHistory, dbColumn, oldValue) {
-        const recordHistoryOldValue = new RecordHistoryOldValue();
+        const recordHistoryOldValue = new RecordHistoryOldValue$1();
         recordHistoryOldValue.columnIndex = dbColumn.index;
         recordHistoryOldValue.recordHistory = recordHistory;
         recordHistoryOldValue.oldValue = oldValue;
@@ -13403,12 +13396,12 @@ class RecordHistoryOldValueDuo {
 
 class RepositoryTransactionHistoryDuo {
     getNewRecord(repositoryId, isRepositoryCreation) {
-        let repositoryTransactionHistory = new RepositoryTransactionHistory();
+        let repositoryTransactionHistory = new RepositoryTransactionHistory$1();
         let saveTimestamp = new Date().getTime();
         repositoryTransactionHistory.saveTimestamp = saveTimestamp;
         repositoryTransactionHistory.GUID = v4();
         repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation;
-        repositoryTransactionHistory.repository = new Repository();
+        repositoryTransactionHistory.repository = new Repository$1();
         repositoryTransactionHistory.repository._localId = repositoryId;
         return repositoryTransactionHistory;
     }
@@ -13456,7 +13449,7 @@ class RepositoryTransactionHistoryDuo {
 
 class TransactionHistoryDuo {
     getNewRecord(transactionType = TransactionType.LOCAL) {
-        let transaction = new TransactionHistory();
+        let transaction = new TransactionHistory$1();
         transaction.transactionType = TransactionType.LOCAL;
         return transaction;
     }
@@ -13472,7 +13465,7 @@ class TransactionHistoryDuo {
     }
 }
 
-class RepositoryApi {
+class RepositoryApi$1 {
     async findRootRepositories() {
         return await this.repositoryDao.findRootRepositories();
     }
@@ -13490,20 +13483,20 @@ class RepositoryApi {
     }
 }
 
-const application$2 = {
+const application$3 = {
     name: '@airport/holding-pattern',
     domain: {
         name: 'airport'
     }
 };
 
-const holdingPattern = app(application$2);
+const holdingPattern = app(application$3);
 const REPOSITORY_MANAGER = holdingPattern.token('RepositoryManager');
-holdingPattern.register(ActorDao, OperationHistoryDuo, RecordHistoryDuo, RecordHistoryNewValueDao, RecordHistoryNewValueDuo, RecordHistoryOldValueDao, RecordHistoryOldValueDuo, RepositoryDao, RepositoryNestingDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo, TransactionHistoryDuo, RepositoryApi);
+holdingPattern.register(ActorDao, OperationHistoryDuo, RecordHistoryDuo, RecordHistoryNewValueDao, RecordHistoryNewValueDuo, RecordHistoryOldValueDao, RecordHistoryOldValueDuo, RepositoryDao, RepositoryNestingDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo, TransactionHistoryDuo, RepositoryApi$1);
 holdingPattern.setDependencies(OperationHistoryDuo, {
     recordHistoryDuo: RecordHistoryDuo,
 });
-holdingPattern.setDependencies(RepositoryApi, {
+holdingPattern.setDependencies(RepositoryApi$1, {
     repositoryDao: RepositoryDao,
     repositoryManager: REPOSITORY_MANAGER,
 });
@@ -13614,7 +13607,7 @@ class TypeClassification {
 class UserAccount {
 }
 
-const __constructors__$2 = {
+const __constructors__$3 = {
     Classification: Classification,
     Client: Client$1,
     ClientType: ClientType,
@@ -13632,7 +13625,7 @@ const __constructors__$2 = {
     UserAccount: UserAccount
 };
 const Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint = {
-    __constructors__: __constructors__$2,
+    __constructors__: __constructors__$3,
     domain: 'airport',
     name: '@airport/travel-document-checkpoint'
 };
@@ -13956,14 +13949,14 @@ class UserAccountDao extends BaseUserAccountDao {
     }
 }
 
-const application$1 = {
+const application$2 = {
     name: '@airport/travel-document-checkpoint',
     domain: {
         name: 'airport'
     }
 };
 
-const travelDocumentCheckpoint = app(application$1);
+const travelDocumentCheckpoint = app(application$2);
 travelDocumentCheckpoint.register(TerminalDao, UserAccountApi, UserAccountDao, UserAccountManager);
 travelDocumentCheckpoint.setDependencies(UserAccountApi, {
     userAccountDao: UserAccountDao
@@ -23886,634 +23879,6 @@ const OPERATION_DESERIALIZER = arrivalsNDepartures.token('OperationDeserializer'
 const QUERY_PARAMETER_DESERIALIZER = arrivalsNDepartures.token('QueryParameterDeserializer');
 const QUERY_RESULTS_SERIALIZER = arrivalsNDepartures.token('QueryResultsSerializer');
 
-var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-var typedi = {};
-
-var Container$1 = {};
-
-var ContainerInstance$1 = {};
-
-var MissingProvidedServiceTypeError$1 = {};
-
-var __extends$2 = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(MissingProvidedServiceTypeError$1, "__esModule", { value: true });
-/**
- * Thrown when service is registered without type.
- */
-var MissingProvidedServiceTypeError = /** @class */ (function (_super) {
-    __extends$2(MissingProvidedServiceTypeError, _super);
-    function MissingProvidedServiceTypeError(identifier) {
-        var _this = _super.call(this, "Cannot determine a class of the requesting service \"" + identifier + "\"") || this;
-        _this.name = "ServiceNotFoundError";
-        Object.setPrototypeOf(_this, MissingProvidedServiceTypeError.prototype);
-        return _this;
-    }
-    return MissingProvidedServiceTypeError;
-}(Error));
-MissingProvidedServiceTypeError$1.MissingProvidedServiceTypeError = MissingProvidedServiceTypeError;
-
-var ServiceNotFoundError$1 = {};
-
-var Token$1 = {};
-
-Object.defineProperty(Token$1, "__esModule", { value: true });
-/**
- * Used to create unique typed service identifier.
- * Useful when service has only interface, but don't have a class.
- */
-var Token = /** @class */ (function () {
-    /**
-     * @param name Token name, optional and only used for debugging purposes.
-     */
-    function Token(name) {
-        this.name = name;
-    }
-    return Token;
-}());
-Token$1.Token = Token;
-
-var __extends$1 = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(ServiceNotFoundError$1, "__esModule", { value: true });
-var Token_1$4 = Token$1;
-/**
- * Thrown when requested service was not found.
- */
-var ServiceNotFoundError = /** @class */ (function (_super) {
-    __extends$1(ServiceNotFoundError, _super);
-    function ServiceNotFoundError(identifier) {
-        var _this = _super.call(this) || this;
-        _this.name = "ServiceNotFoundError";
-        if (typeof identifier === "string") {
-            _this.message = "Service \"" + identifier + "\" was not found, looks like it was not registered in the container. " +
-                ("Register it by calling Container.set(\"" + identifier + "\", ...) before using service.");
-        }
-        else if (identifier instanceof Token_1$4.Token && identifier.name) {
-            _this.message = "Service \"" + identifier.name + "\" was not found, looks like it was not registered in the container. " +
-                "Register it by calling Container.set before using service.";
-        }
-        else if (identifier instanceof Token_1$4.Token) {
-            _this.message = "Service with a given token was not found, looks like it was not registered in the container. " +
-                "Register it by calling Container.set before using service.";
-        }
-        Object.setPrototypeOf(_this, ServiceNotFoundError.prototype);
-        return _this;
-    }
-    return ServiceNotFoundError;
-}(Error));
-ServiceNotFoundError$1.ServiceNotFoundError = ServiceNotFoundError;
-
-Object.defineProperty(ContainerInstance$1, "__esModule", { value: true });
-var Container_1$3 = Container$1;
-var MissingProvidedServiceTypeError_1 = MissingProvidedServiceTypeError$1;
-var ServiceNotFoundError_1 = ServiceNotFoundError$1;
-var Token_1$3 = Token$1;
-/**
- * TypeDI can have multiple containers.
- * One container is ContainerInstance.
- */
-var ContainerInstance = /** @class */ (function () {
-    // -------------------------------------------------------------------------
-    // Constructor
-    // -------------------------------------------------------------------------
-    function ContainerInstance(id) {
-        // -------------------------------------------------------------------------
-        // Private Properties
-        // -------------------------------------------------------------------------
-        /**
-         * All registered services.
-         */
-        this.services = [];
-        this.id = id;
-    }
-    /**
-     * Checks if the service with given name or type is registered service container.
-     * Optionally, parameters can be passed in case if instance is initialized in the container for the first time.
-     */
-    ContainerInstance.prototype.has = function (identifier) {
-        return !!this.findService(identifier);
-    };
-    /**
-     * Retrieves the service with given name or type from the service container.
-     * Optionally, parameters can be passed in case if instance is initialized in the container for the first time.
-     */
-    ContainerInstance.prototype.get = function (identifier) {
-        var globalContainer = Container_1$3.Container.of(undefined);
-        var service = globalContainer.findService(identifier);
-        var scopedService = this.findService(identifier);
-        if (service && service.global === true)
-            return this.getServiceValue(identifier, service);
-        if (scopedService)
-            return this.getServiceValue(identifier, scopedService);
-        if (service && this !== globalContainer) {
-            var clonedService = Object.assign({}, service);
-            clonedService.value = undefined;
-            var value = this.getServiceValue(identifier, clonedService);
-            this.set(identifier, value);
-            return value;
-        }
-        return this.getServiceValue(identifier, service);
-    };
-    /**
-     * Gets all instances registered in the container of the given service identifier.
-     * Used when service defined with multiple: true flag.
-     */
-    ContainerInstance.prototype.getMany = function (id) {
-        var _this = this;
-        return this.filterServices(id).map(function (service) { return _this.getServiceValue(id, service); });
-    };
-    /**
-     * Sets a value for the given type or service name in the container.
-     */
-    ContainerInstance.prototype.set = function (identifierOrServiceMetadata, value) {
-        var _this = this;
-        if (identifierOrServiceMetadata instanceof Array) {
-            identifierOrServiceMetadata.forEach(function (v) { return _this.set(v); });
-            return this;
-        }
-        if (typeof identifierOrServiceMetadata === "string" || identifierOrServiceMetadata instanceof Token_1$3.Token) {
-            return this.set({ id: identifierOrServiceMetadata, value: value });
-        }
-        if (typeof identifierOrServiceMetadata === "object" && identifierOrServiceMetadata.service) {
-            return this.set({ id: identifierOrServiceMetadata.service, value: value });
-        }
-        if (identifierOrServiceMetadata instanceof Function) {
-            return this.set({ type: identifierOrServiceMetadata, id: identifierOrServiceMetadata, value: value });
-        }
-        // const newService: ServiceMetadata<any, any> = arguments.length === 1 && typeof identifierOrServiceMetadata === "object"  && !(identifierOrServiceMetadata instanceof Token) ? identifierOrServiceMetadata : undefined;
-        var newService = identifierOrServiceMetadata;
-        var service = this.findService(newService.id);
-        if (service && service.multiple !== true) {
-            Object.assign(service, newService);
-        }
-        else {
-            this.services.push(newService);
-        }
-        return this;
-    };
-    /**
-     * Removes services with a given service identifiers (tokens or types).
-     */
-    ContainerInstance.prototype.remove = function () {
-        var _this = this;
-        var ids = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            ids[_i] = arguments[_i];
-        }
-        ids.forEach(function (id) {
-            _this.filterServices(id).forEach(function (service) {
-                _this.services.splice(_this.services.indexOf(service), 1);
-            });
-        });
-        return this;
-    };
-    /**
-     * Completely resets the container by removing all previously registered services from it.
-     */
-    ContainerInstance.prototype.reset = function () {
-        this.services = [];
-        return this;
-    };
-    // -------------------------------------------------------------------------
-    // Private Methods
-    // -------------------------------------------------------------------------
-    /**
-     * Filters registered service in the with a given service identifier.
-     */
-    ContainerInstance.prototype.filterServices = function (identifier) {
-        return this.services.filter(function (service) {
-            if (service.id)
-                return service.id === identifier;
-            if (service.type && identifier instanceof Function)
-                return service.type === identifier || identifier.prototype instanceof service.type;
-            return false;
-        });
-    };
-    /**
-     * Finds registered service in the with a given service identifier.
-     */
-    ContainerInstance.prototype.findService = function (identifier) {
-        return this.services.find(function (service) {
-            if (service.id) {
-                if (identifier instanceof Object &&
-                    service.id instanceof Token_1$3.Token &&
-                    identifier.service instanceof Token_1$3.Token) {
-                    return service.id === identifier.service;
-                }
-                return service.id === identifier;
-            }
-            if (service.type && identifier instanceof Function)
-                return service.type === identifier; // todo: not sure why it was here || identifier.prototype instanceof service.type;
-            return false;
-        });
-    };
-    /**
-     * Gets service value.
-     */
-    ContainerInstance.prototype.getServiceValue = function (identifier, service) {
-        var _a;
-        // find if instance of this object already initialized in the container and return it if it is
-        if (service && service.value !== undefined)
-            return service.value;
-        // if named service was requested and its instance was not found plus there is not type to know what to initialize,
-        // this means service was not pre-registered and we throw an exception
-        if ((!service || !service.type) &&
-            (!service || !service.factory) &&
-            (typeof identifier === "string" || identifier instanceof Token_1$3.Token))
-            throw new ServiceNotFoundError_1.ServiceNotFoundError(identifier);
-        // at this point we either have type in service registered, either identifier is a target type
-        var type = undefined;
-        if (service && service.type) {
-            type = service.type;
-        }
-        else if (service && service.id instanceof Function) {
-            type = service.id;
-        }
-        else if (identifier instanceof Function) {
-            type = identifier;
-            // } else if (identifier instanceof Object && (identifier as { service: Token<any> }).service instanceof Token) {
-            //     type = (identifier as { service: Token<any> }).service;
-        }
-        // if service was not found then create a new one and register it
-        if (!service) {
-            if (!type)
-                throw new MissingProvidedServiceTypeError_1.MissingProvidedServiceTypeError(identifier);
-            service = { type: type };
-            this.services.push(service);
-        }
-        // setup constructor parameters for a newly initialized service
-        var paramTypes = type && Reflect && Reflect.getMetadata ? Reflect.getMetadata("design:paramtypes", type) : undefined;
-        var params = paramTypes ? this.initializeParams(type, paramTypes) : [];
-        // if factory is set then use it to create service instance
-        var value;
-        if (service.factory) {
-            // filter out non-service parameters from created service constructor
-            // non-service parameters can be, lets say Car(name: string, isNew: boolean, engine: Engine)
-            // where name and isNew are non-service parameters and engine is a service parameter
-            params = params.filter(function (param) { return param !== undefined; });
-            if (service.factory instanceof Array) {
-                // use special [Type, "create"] syntax to allow factory services
-                // in this case Type instance will be obtained from Container and its method "create" will be called
-                value = (_a = this.get(service.factory[0]))[service.factory[1]].apply(_a, params);
-            }
-            else { // regular factory function
-                value = service.factory.apply(service, params.concat([this]));
-            }
-        }
-        else { // otherwise simply create a new object instance
-            if (!type)
-                throw new MissingProvidedServiceTypeError_1.MissingProvidedServiceTypeError(identifier);
-            params.unshift(null);
-            // "extra feature" - always pass container instance as the last argument to the service function
-            // this allows us to support javascript where we don't have decorators and emitted metadata about dependencies
-            // need to be injected, and user can use provided container to get instances he needs
-            params.push(this);
-            value = new (type.bind.apply(type, params))();
-        }
-        if (service && !service.transient && value)
-            service.value = value;
-        if (type)
-            this.applyPropertyHandlers(type, value);
-        return value;
-    };
-    /**
-     * Initializes all parameter types for a given target service class.
-     */
-    ContainerInstance.prototype.initializeParams = function (type, paramTypes) {
-        var _this = this;
-        return paramTypes.map(function (paramType, index) {
-            var paramHandler = Container_1$3.Container.handlers.find(function (handler) { return handler.object === type && handler.index === index; });
-            if (paramHandler)
-                return paramHandler.value(_this);
-            if (paramType && paramType.name && !_this.isTypePrimitive(paramType.name)) {
-                return _this.get(paramType);
-            }
-            return undefined;
-        });
-    };
-    /**
-     * Checks if given type is primitive (e.g. string, boolean, number, object).
-     */
-    ContainerInstance.prototype.isTypePrimitive = function (param) {
-        return ["string", "boolean", "number", "object"].indexOf(param.toLowerCase()) !== -1;
-    };
-    /**
-     * Applies all registered handlers on a given target class.
-     */
-    ContainerInstance.prototype.applyPropertyHandlers = function (target, instance) {
-        var _this = this;
-        Container_1$3.Container.handlers.forEach(function (handler) {
-            if (typeof handler.index === "number")
-                return;
-            if (handler.object.constructor !== target && !(target.prototype instanceof handler.object.constructor))
-                return;
-            instance[handler.propertyName] = handler.value(_this);
-        });
-    };
-    return ContainerInstance;
-}());
-ContainerInstance$1.ContainerInstance = ContainerInstance;
-
-Object.defineProperty(Container$1, "__esModule", { value: true });
-var ContainerInstance_1 = ContainerInstance$1;
-/**
- * Service container.
- */
-var Container = /** @class */ (function () {
-    function Container() {
-    }
-    // -------------------------------------------------------------------------
-    // Public Static Methods
-    // -------------------------------------------------------------------------
-    /**
-     * Gets a separate container instance for the given instance id.
-     */
-    Container.of = function (instanceId) {
-        if (instanceId === undefined)
-            return this.globalInstance;
-        var container = this.instances.find(function (instance) { return instance.id === instanceId; });
-        if (!container) {
-            container = new ContainerInstance_1.ContainerInstance(instanceId);
-            this.instances.push(container);
-        }
-        return container;
-    };
-    /**
-     * Checks if the service with given name or type is registered service container.
-     * Optionally, parameters can be passed in case if instance is initialized in the container for the first time.
-     */
-    Container.has = function (identifier) {
-        return this.globalInstance.has(identifier);
-    };
-    /**
-     * Retrieves the service with given name or type from the service container.
-     * Optionally, parameters can be passed in case if instance is initialized in the container for the first time.
-     */
-    Container.get = function (identifier) {
-        return this.globalInstance.get(identifier);
-    };
-    /**
-     * Gets all instances registered in the container of the given service identifier.
-     * Used when service defined with multiple: true flag.
-     */
-    Container.getMany = function (id) {
-        return this.globalInstance.getMany(id);
-    };
-    /**
-     * Sets a value for the given type or service name in the container.
-     */
-    Container.set = function (identifierOrServiceMetadata, value) {
-        this.globalInstance.set(identifierOrServiceMetadata, value);
-        return this;
-    };
-    /**
-     * Removes services with a given service identifiers (tokens or types).
-     */
-    Container.remove = function () {
-        var _a;
-        var ids = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            ids[_i] = arguments[_i];
-        }
-        (_a = this.globalInstance).remove.apply(_a, ids);
-        return this;
-    };
-    /**
-     * Completely resets the container by removing all previously registered services and handlers from it.
-     */
-    Container.reset = function (containerId) {
-        if (containerId) {
-            var instance = this.instances.find(function (instance) { return instance.id === containerId; });
-            if (instance) {
-                instance.reset();
-                this.instances.splice(this.instances.indexOf(instance), 1);
-            }
-        }
-        else {
-            this.globalInstance.reset();
-            this.instances.forEach(function (instance) { return instance.reset(); });
-        }
-        return this;
-    };
-    /**
-     * Registers a new handler.
-     */
-    Container.registerHandler = function (handler) {
-        this.handlers.push(handler);
-        return this;
-    };
-    /**
-     * Helper method that imports given services.
-     */
-    Container.import = function (services) {
-        return this;
-    };
-    // -------------------------------------------------------------------------
-    // Private Static Properties
-    // -------------------------------------------------------------------------
-    /**
-     * Global container instance.
-     */
-    Container.globalInstance = new ContainerInstance_1.ContainerInstance(undefined);
-    /**
-     * Other containers created using Container.of method.
-     */
-    Container.instances = [];
-    /**
-     * All registered handlers.
-     */
-    Container.handlers = [];
-    return Container;
-}());
-Container$1.Container = Container;
-
-var Service$1 = {};
-
-Object.defineProperty(Service$1, "__esModule", { value: true });
-var Container_1$2 = Container$1;
-var Token_1$2 = Token$1;
-/**
- * Marks class as a service that can be injected using container.
- */
-function Service(optionsOrServiceName, maybeFactory) {
-    if (arguments.length === 2 || (optionsOrServiceName instanceof Function)) {
-        var serviceId = { service: new Token_1$2.Token() };
-        var dependencies_1 = arguments.length === 2 ? optionsOrServiceName : [];
-        var factory_1 = arguments.length === 2 ? maybeFactory : optionsOrServiceName;
-        Container_1$2.Container.set({
-            id: serviceId.service,
-            factory: function (container) {
-                var params = dependencies_1.map(function (dependency) { return container.get(dependency); });
-                return factory_1.apply(void 0, params);
-            }
-        });
-        return serviceId;
-    }
-    else {
-        return function (target) {
-            var service = {
-                type: target
-            };
-            if (typeof optionsOrServiceName === "string" || optionsOrServiceName instanceof Token_1$2.Token) {
-                service.id = optionsOrServiceName;
-                service.multiple = optionsOrServiceName.multiple;
-                service.global = optionsOrServiceName.global || false;
-                service.transient = optionsOrServiceName.transient;
-            }
-            else if (optionsOrServiceName) { // ServiceOptions
-                service.id = optionsOrServiceName.id;
-                service.factory = optionsOrServiceName.factory;
-                service.multiple = optionsOrServiceName.multiple;
-                service.global = optionsOrServiceName.global || false;
-                service.transient = optionsOrServiceName.transient;
-            }
-            Container_1$2.Container.set(service);
-        };
-    }
-}
-Service$1.Service = Service;
-
-var Inject$1 = {};
-
-var CannotInjectError$1 = {};
-
-var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(CannotInjectError$1, "__esModule", { value: true });
-/**
- * Thrown when DI cannot inject value into property decorated by @Inject decorator.
- */
-var CannotInjectError = /** @class */ (function (_super) {
-    __extends(CannotInjectError, _super);
-    function CannotInjectError(target, propertyName) {
-        var _this = _super.call(this, "Cannot inject value into \"" + target.constructor.name + "." + propertyName + "\". " +
-            "Please make sure you setup reflect-metadata properly and you don't use interfaces without service tokens as injection value.") || this;
-        _this.name = "ServiceNotFoundError";
-        Object.setPrototypeOf(_this, CannotInjectError.prototype);
-        return _this;
-    }
-    return CannotInjectError;
-}(Error));
-CannotInjectError$1.CannotInjectError = CannotInjectError;
-
-Object.defineProperty(Inject$1, "__esModule", { value: true });
-var Container_1$1 = Container$1;
-var Token_1$1 = Token$1;
-var CannotInjectError_1$1 = CannotInjectError$1;
-/**
- * Injects a service into a class property or constructor parameter.
- */
-function Inject(typeOrName) {
-    return function (target, propertyName, index) {
-        if (!typeOrName)
-            typeOrName = function () { return Reflect.getMetadata("design:type", target, propertyName); };
-        Container_1$1.Container.registerHandler({
-            object: target,
-            propertyName: propertyName,
-            index: index,
-            value: function (containerInstance) {
-                var identifier;
-                if (typeof typeOrName === "string") {
-                    identifier = typeOrName;
-                }
-                else if (typeOrName instanceof Token_1$1.Token) {
-                    identifier = typeOrName;
-                }
-                else {
-                    identifier = typeOrName();
-                }
-                if (identifier === Object)
-                    throw new CannotInjectError_1$1.CannotInjectError(target, propertyName);
-                return containerInstance.get(identifier);
-            }
-        });
-    };
-}
-Inject$1.Inject = Inject;
-
-var InjectMany$1 = {};
-
-Object.defineProperty(InjectMany$1, "__esModule", { value: true });
-var Container_1 = Container$1;
-var Token_1 = Token$1;
-var CannotInjectError_1 = CannotInjectError$1;
-/**
- * Injects a service into a class property or constructor parameter.
- */
-function InjectMany(typeOrName) {
-    return function (target, propertyName, index) {
-        if (!typeOrName)
-            typeOrName = function () { return Reflect.getMetadata("design:type", target, propertyName); };
-        Container_1.Container.registerHandler({
-            object: target,
-            propertyName: propertyName,
-            index: index,
-            value: function (containerInstance) {
-                var identifier;
-                if (typeof typeOrName === "string") {
-                    identifier = typeOrName;
-                }
-                else if (typeOrName instanceof Token_1.Token) {
-                    identifier = typeOrName;
-                }
-                else {
-                    identifier = typeOrName();
-                }
-                if (identifier === Object)
-                    throw new CannotInjectError_1.CannotInjectError(target, propertyName);
-                return containerInstance.getMany(identifier);
-            }
-        });
-    };
-}
-InjectMany$1.InjectMany = InjectMany;
-
-(function (exports) {
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-var Container_1 = Container$1;
-__export(Service$1);
-__export(Inject$1);
-__export(InjectMany$1);
-var Container_2 = Container$1;
-exports.Container = Container_2.Container;
-var ContainerInstance_1 = ContainerInstance$1;
-exports.ContainerInstance = ContainerInstance_1.ContainerInstance;
-var Token_1 = Token$1;
-exports.Token = Token_1.Token;
-exports.default = Container_1.Container;
-
-
-}(typedi));
-
 class SynchronizationConflict {
 }
 
@@ -24548,13 +23913,13 @@ var ApplicationChangeStatus;
 class RecordUpdateStage {
 }
 
-const __constructors__$1 = {
+const __constructors__$2 = {
     RecordUpdateStage: RecordUpdateStage,
     SynchronizationConflict: SynchronizationConflict,
     SynchronizationConflictValues: SynchronizationConflictValues
 };
 const Q_airport____at_airport_slash_layover = {
-    __constructors__: __constructors__$1,
+    __constructors__: __constructors__$2,
     domain: 'airport',
     name: '@airport/layover'
 };
@@ -24733,6 +24098,192 @@ layover.register(RecordUpdateStageDao, SynchronizationConflictDao, Synchronizati
 layover.setDependencies(RecordUpdateStageDao, {
     airportDatabase: AIRPORT_DATABASE
 });
+
+const application$1 = {
+    name: '@airport/holding-pattern',
+    domain: {
+        name: 'airport'
+    }
+};
+
+class ApiProxy {
+    constructor() {
+        this._initialized = false;
+    }
+    get proxy() {
+        if (!this._initialized) {
+            this._initialized = true;
+            globalThis.IOC.getAutopilotApiLoader().loadApiAutopilot({
+                application: application$1,
+                descriptor: {
+                    interface: this.constructor.name
+                }
+            });
+        }
+        return this._proxy;
+    }
+}
+
+// An API stub for other Applications and UIs to use
+// @Injected() is implied but not specified to avoid @airport/direction-indicator
+// dependency in UI API stub (eventually, once it's @airport/autopilot is cleaned
+// up)
+// @Injected()
+class RepositoryApi extends ApiProxy {
+    async findRootRepositories() {
+        return await this.proxy.findRootRepositories();
+    }
+    async create(repositoryName, parentRepository, nestingType = null) {
+        return await this.proxy.create(repositoryName, parentRepository, nestingType);
+    }
+    async addNesting(parentRepository, childRepository, nestingType = null) {
+        await this.proxy.addNesting(parentRepository, childRepository, nestingType);
+    }
+    async setUiEntryUri(uiEntryUri, repository) {
+        await this.proxy.setUiEntryUri(uiEntryUri, repository);
+    }
+}
+
+/**
+ * Marks a group of mutation history changes.
+ */
+class OperationHistory {
+    constructor() {
+        this.recordHistory = [];
+    }
+}
+
+class RecordHistory {
+    constructor() {
+        this.newValues = [];
+        this.oldValues = [];
+    }
+}
+
+/**
+ * Currently, syncing databases are always SqLite dbs.  This means
+ * we don't need to store types for values.  If a need arises type
+ * specific FieldChange classes can always be added.  Having
+ * VARCHAR and NUMBER should suffice for other db implementations.
+ * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
+ * also be required.
+ */
+class RecordHistoryNewValue {
+}
+
+/**
+ * Currently, syncing databases are always SqLite dbs.  This means
+ * we don't need to store types for values.  If a need arises type
+ * specific FieldChange classes can always be added.  Having
+ * VARCHAR and NUMBER should suffice for other db implementations.
+ * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
+ * also be required.
+ */
+class RecordHistoryOldValue {
+}
+
+var RepositoryTransactionType;
+(function (RepositoryTransactionType) {
+    RepositoryTransactionType["LOCAL"] = "LOCAL";
+    RepositoryTransactionType["REMOTE"] = "REMOTE";
+    RepositoryTransactionType["REMOTE_REFERENCE"] = "REMOTE_REFERENCE";
+})(RepositoryTransactionType || (RepositoryTransactionType = {}));
+
+class RepositoryTransactionHistory {
+    constructor(data) {
+        this.repositoryTransactionType = RepositoryTransactionType.LOCAL;
+        this.operationHistory = [];
+        if (!data) {
+            return;
+        }
+        this._localId = data._localId;
+        this.transactionHistory = data.transactionHistory;
+        this.repository = data.repository;
+        this.saveTimestamp = data.saveTimestamp;
+        this.operationHistory = data.operationHistory;
+    }
+}
+
+class TransactionHistory {
+    constructor() {
+        this.repositoryTransactionHistories = [];
+        this.repositoryTransactionHistoryMap = {};
+        this.applicationMap = new globalThis.SyncApplicationMap();
+        this.allOperationHistory = [];
+        this.allRecordHistory = [];
+        this.allRecordHistoryNewValues = [];
+        this.allRecordHistoryOldValues = [];
+    }
+}
+
+class Actor {
+}
+
+/**
+ * Created by Papa on 2/9/2017.
+ */
+class Repository {
+    constructor() {
+        this._localId = null;
+        this.repositoryNestings = [];
+        this.repositoryTransactionHistory = [];
+        this.repositoryApplications = [];
+        this.repositoryClients = [];
+        this.repositoryDatabases = [];
+        this.repositoryTerminals = [];
+        this.repositoryTypes = [];
+    }
+}
+
+class RepositoryApplication {
+}
+
+class RepositoryClient {
+}
+
+class RepositoryDatabase {
+}
+
+/**
+ * Created by Papa on 2/9/2017.
+ */
+class RepositoryNesting {
+}
+
+class RepositoryTerminal {
+}
+
+class RepositoryType {
+}
+
+const __constructors__$1 = {
+    Actor: Actor,
+    OperationHistory: OperationHistory,
+    RecordHistory: RecordHistory,
+    RecordHistoryNewValue: RecordHistoryNewValue,
+    RecordHistoryOldValue: RecordHistoryOldValue,
+    Repository: Repository,
+    RepositoryApplication: RepositoryApplication,
+    RepositoryClient: RepositoryClient,
+    RepositoryDatabase: RepositoryDatabase,
+    RepositoryNesting: RepositoryNesting,
+    RepositoryTerminal: RepositoryTerminal,
+    RepositoryTransactionHistory: RepositoryTransactionHistory,
+    RepositoryType: RepositoryType,
+    TransactionHistory: TransactionHistory
+};
+const Q_airport____at_airport_slash_holding_dash_pattern = {
+    __constructors__: __constructors__$1,
+    domain: 'airport',
+    name: '@airport/holding-pattern'
+};
+if (globalThis.airApi) {
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_holding_dash_pattern);
+}
+
+for (let apiStub of [RepositoryApi]) {
+    apiStub.application = application$1;
+}
 
 class Client {
     constructor() {
@@ -25227,7 +24778,7 @@ class SyncInDataChecker {
                 throw new Error(`RepositorySynchronizationMessage.history.syncTimestamp cannot be specified`);
             }
             // Repository is already set in SyncInRepositoryChecker
-            history.repositoryTransactionType = RepositoryTransactionType.REMOTE;
+            history.repositoryTransactionType = RepositoryTransactionType$1.REMOTE;
             history.syncTimestamp = message.syncTimestamp;
             delete history._localId;
             const applicationEntityMap = await this.populateApplicationEntityMap(message);
@@ -26463,7 +26014,7 @@ class TwoStageSyncedInDataProcessor {
         for (const message of messages) {
             const repositoryTransactionHistory = message.history;
             transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory);
-            repositoryTransactionHistory.repositoryTransactionType = RepositoryTransactionType.REMOTE;
+            repositoryTransactionHistory.repositoryTransactionType = RepositoryTransactionType$1.REMOTE;
             transactionHistory.allOperationHistory = transactionHistory
                 .allOperationHistory.concat(repositoryTransactionHistory.operationHistory);
             repositoryTransactionHistory.operationHistory.forEach((operationHistory) => {
@@ -26537,7 +26088,7 @@ class SyncOutDataSerializer {
         let historiesToSend = [];
         const messages = [];
         for (const repositoryTransactionHistory of repositoryTransactionHistories) {
-            if (repositoryTransactionHistory.repositoryTransactionType !== RepositoryTransactionType.LOCAL) {
+            if (repositoryTransactionHistory.repositoryTransactionType !== RepositoryTransactionType$1.LOCAL) {
                 continue;
             }
             const message = await this.serializeMessage(repositoryTransactionHistory);
@@ -29811,7 +29362,7 @@ class IdGenerator {
         });
     }
     doPopulateTransactionHistory_LocalIdColumns(resolve) {
-        if (Q_airport____at_airport_slash_holding_dash_pattern.__dbApplication__ && Q_airport____at_airport_slash_holding_dash_pattern.__dbApplication__.currentVersion) {
+        if (Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__ && Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__.currentVersion) {
             const transactionHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
             const repoTransHistoryDbEntity = this.getHoldingPatternDbEntity('RepositoryTransactionHistory');
             const operationHistoryDbEntity = this.getHoldingPatternDbEntity('OperationHistory');
@@ -29846,7 +29397,7 @@ class IdGenerator {
     async generateEntityIds() {
     }
     getHoldingPatternDbEntity(holdingPatternEntityName) {
-        return Q_airport____at_airport_slash_holding_dash_pattern.__dbApplication__.currentVersion[0].applicationVersion
+        return Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__.currentVersion[0].applicationVersion
             .entityMapByName[holdingPatternEntityName];
     }
 }
@@ -30177,7 +29728,7 @@ already contains a new repository.`);
     }
     async doAddRepositoryNesting(parentRepository, childRepository, nestingType, saveChildRepository, context) {
         childRepository.parentRepository = parentRepository;
-        const repositoryNesting = new RepositoryNesting();
+        const repositoryNesting = new RepositoryNesting$1();
         repositoryNesting.parentRepository = parentRepository;
         repositoryNesting.childRepository = childRepository;
         repositoryNesting.nestingType = nestingType;
@@ -30327,7 +29878,7 @@ class InternalRecordManager {
             terminal.owner = userAccount;
             terminal.isLocal = true;
             terminal.GUID = v4();
-            const actor = new Actor();
+            const actor = new Actor$1();
             actor.userAccount = userAccount;
             actor.terminal = terminal;
             actor.GUID = v4();
@@ -31143,7 +30694,7 @@ class DatabaseManager {
     }
     async initNoDb(context, ...applications) {
         this.airportDatabase.load();
-        this.transactionalServer.tempActor = new Actor();
+        this.transactionalServer.tempActor = new Actor$1();
         await this.installStarterApplication(true, false, context);
         await this.applicationInitializer.stage(applications, context);
         this.transactionalServer.tempActor = null;
@@ -31151,7 +30702,7 @@ class DatabaseManager {
     }
     async initWithDb(domainName, context) {
         this.airportDatabase.load();
-        this.transactionalServer.tempActor = new Actor();
+        this.transactionalServer.tempActor = new Actor$1();
         await this.transactionManager.transactInternal(async (_transaction, context) => {
             const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
                 .getFullApplication_Name(BLUEPRINT[0]), 'PACKAGES', context);
@@ -31185,7 +30736,7 @@ class DatabaseManager {
                 applicationsToCreate.push(jsonApplication);
             }
         }
-        this.transactionalServer.tempActor = new Actor();
+        this.transactionalServer.tempActor = new Actor$1();
         await this.applicationInitializer.initialize(applicationsToCreate, context, true, true);
         this.transactionalServer.tempActor = null;
     }
@@ -32264,32 +31815,32 @@ ${callHerarchy}
         }
         let applicationMap = transactionHistory.applicationMap;
         const transactionHistoryIds = await this.idGenerator.generateTransactionHistory_LocalIds(transactionHistory.repositoryTransactionHistories.length, transactionHistory.allOperationHistory.length, transactionHistory.allRecordHistory.length);
-        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.TransactionHistory.__driver__.dbEntity, true);
+        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern$1.TransactionHistory.__driver__.dbEntity, true);
         transactionHistory._localId = transactionHistoryIds.transactionHistory_LocalId;
-        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.TransactionHistory, [transactionHistory], context);
-        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory.__driver__.dbEntity, true);
+        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern$1.TransactionHistory, [transactionHistory], context);
+        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryTransactionHistory.__driver__.dbEntity, true);
         transactionHistory.repositoryTransactionHistories.forEach((repositoryTransactionHistory, index) => {
             repositoryTransactionHistory._localId = transactionHistoryIds.repositoryHistory_LocalIds[index];
             repositoryTransactionHistory.transactionHistory = transactionHistory;
         });
-        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories, context);
-        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.OperationHistory.__driver__.dbEntity, true);
+        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories, context);
+        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern$1.OperationHistory.__driver__.dbEntity, true);
         transactionHistory.allOperationHistory.forEach((operationHistory, index) => {
             operationHistory._localId = transactionHistoryIds.operationHistory_LocalIds[index];
         });
-        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.OperationHistory, transactionHistory.allOperationHistory, context);
-        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RecordHistory.__driver__.dbEntity, true);
+        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern$1.OperationHistory, transactionHistory.allOperationHistory, context);
+        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistory.__driver__.dbEntity, true);
         transactionHistory.allRecordHistory.forEach((recordHistory, index) => {
             recordHistory._localId = transactionHistoryIds.recordHistory_LocalIds[index];
         });
-        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.RecordHistory, transactionHistory.allRecordHistory, context);
+        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistory, transactionHistory.allRecordHistory, context);
         if (transactionHistory.allRecordHistoryNewValues.length) {
-            applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryNewValue.__driver__.dbEntity, true);
-            await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues, context);
+            applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistoryNewValue.__driver__.dbEntity, true);
+            await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues, context);
         }
         if (transactionHistory.allRecordHistoryOldValues.length) {
-            applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryOldValue.__driver__.dbEntity, true);
-            await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues, context);
+            applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistoryOldValue.__driver__.dbEntity, true);
+            await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues, context);
         }
         return true;
     }
@@ -35421,7 +34972,7 @@ class AirportDatabase {
         const fullApplication_Name = this.dbApplicationUtils
             .getFullApplication_Name(qApplication);
         const existingQApp = this.QM[fullApplication_Name];
-        if (existingQApp) {
+        if (existingQApp && existingQApp.__dbApplication__) {
             const dbApplication = existingQApp.__dbApplication__;
             qApplication.__dbApplication__ = dbApplication;
             this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.qApplications, this.appliationUtils, this.relationManager);
