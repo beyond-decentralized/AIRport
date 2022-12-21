@@ -1,0 +1,29 @@
+{
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "src/declarations"
+  ],
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "noErrorTruncation": false,
+    "incremental": true,
+    "lib": [
+      "esnext"
+    ],
+    "target": "es2015",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "strict": true,
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "preserveSymlinks": true
+  }
+}
