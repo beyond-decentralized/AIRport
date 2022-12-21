@@ -9730,7 +9730,9 @@ const Q_airport____at_airport_slash_airport_dash_code = {
 function airport____at_airport_slash_airport_dash_code_diSet(dbEntityId) {
     return globalThis.airApi.dS(Q_airport____at_airport_slash_airport_dash_code.__dbApplication__, dbEntityId);
 }
-globalThis.airApi.setQApp(Q_airport____at_airport_slash_airport_dash_code);
+if (globalThis.airApi) {
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_airport_dash_code);
+}
 
 // Application Q object Dependency Injection readiness detection Dao
 class SQDIDao$4 extends Dao {
@@ -10397,7 +10399,9 @@ const Q_airport____at_airport_slash_airspace = {
 function airport____at_airport_slash_airspace_diSet(dbEntityId) {
     return globalThis.airApi.dS(Q_airport____at_airport_slash_airspace.__dbApplication__, dbEntityId);
 }
-globalThis.airApi.setQApp(Q_airport____at_airport_slash_airspace);
+if (globalThis.airApi) {
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_airspace);
+}
 
 // Application Q object Dependency Injection readiness detection Dao
 class SQDIDao$3 extends Dao {
@@ -14288,7 +14292,9 @@ const Q_airport____at_airport_slash_holding_dash_pattern = {
 function airport____at_airport_slash_holding_dash_pattern_diSet(dbEntityId) {
     return globalThis.airApi.dS(Q_airport____at_airport_slash_holding_dash_pattern.__dbApplication__, dbEntityId);
 }
-globalThis.airApi.setQApp(Q_airport____at_airport_slash_holding_dash_pattern);
+if (globalThis.airApi) {
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_holding_dash_pattern);
+}
 
 // Application Q object Dependency Injection readiness detection Dao
 class SQDIDao$2 extends Dao {
@@ -15712,7 +15718,9 @@ const Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint = {
 function airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(dbEntityId) {
     return globalThis.airApi.dS(Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.__dbApplication__, dbEntityId);
 }
-globalThis.airApi.setQApp(Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint);
+if (globalThis.airApi) {
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint);
+}
 
 // Application Q object Dependency Injection readiness detection Dao
 class SQDIDao$1 extends Dao {
@@ -26774,7 +26782,9 @@ const Q_airport____at_airport_slash_layover = {
 function airport____at_airport_slash_layover_diSet(dbEntityId) {
     return globalThis.airApi.dS(Q_airport____at_airport_slash_layover.__dbApplication__, dbEntityId);
 }
-globalThis.airApi.setQApp(Q_airport____at_airport_slash_layover);
+if (globalThis.airApi) {
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_layover);
+}
 
 // Application Q object Dependency Injection readiness detection Dao
 class SQDIDao extends Dao {
@@ -29557,7 +29567,9 @@ const Q_airport____at_airport_slash_session_dash_state = {
     domain: 'airport',
     name: '@airport/session-state'
 };
-globalThis.airApi.setQApp(Q_airport____at_airport_slash_session_dash_state);
+if (globalThis.airApi) {
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_session_dash_state);
+}
 
 const application = {
     name: '@airport/session-state',
@@ -41778,8 +41790,9 @@ export function ${this.applicationFullName}_diSet(
 ): boolean {
 	return globalThis.airApi.dS(Q_${this.applicationFullName}.__dbApplication__, dbEntityId)
 }
-
-globalThis.airApi.setQApp(Q_${this.applicationFullName})
+if (globalThis.airApi) {
+  globalThis.airApi.setQApp(Q_${this.applicationFullName})
+}
 `;
         // export function duoDiSet(
         // 	dbEntityId: number

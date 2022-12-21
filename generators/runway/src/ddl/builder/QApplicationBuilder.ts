@@ -137,8 +137,9 @@ export function ${this.applicationFullName}_diSet(
 ): boolean {
 	return globalThis.airApi.dS(Q_${this.applicationFullName}.__dbApplication__, dbEntityId)
 }
-
-globalThis.airApi.setQApp(Q_${this.applicationFullName})
+if (globalThis.airApi) {
+  globalThis.airApi.setQApp(Q_${this.applicationFullName})
+}
 `;
 
     // export function duoDiSet(
