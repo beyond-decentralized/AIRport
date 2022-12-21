@@ -15,7 +15,7 @@ import {
 } from '@airport/ground-control';
 import { ITerminalStore, ITransactionalServer } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
-import { IAirEntity } from '@airport/holding-pattern/dist/app/bundle';
+import { IAirEntity } from '@airport/final-approach';
 import { IQueryContext } from '@airport/tarmaq-query';
 import { IEntityContext } from '@airport/tarmaq-entity';
 

@@ -31,7 +31,6 @@ import {
 } from '@airport/ground-control'
 import {
 	IActor,
-	AirEntity_SystemWideOperationId,
 	SystemWideOperationId
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
@@ -247,7 +246,7 @@ export class UpdateManager
 	private async addNewValueHistory(
 		jsonUpdate: JsonUpdate<any>,
 		recordHistoryMapByRecordId: RecordHistoryMap,
-		systemWideOperationId: AirEntity_SystemWideOperationId,
+		systemWideOperationId: SystemWideOperationId,
 		repositorySheetSelectInfo: RepositorySheetSelectInfo,
 		errorPrefix: string,
 		transaction: ITransaction,

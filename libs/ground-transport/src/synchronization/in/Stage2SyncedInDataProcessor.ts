@@ -20,7 +20,7 @@ import {
 } from '@airport/ground-control'
 import {
 	Actor_LocalId,
-	AirEntity_ActorRecordId,
+	ActorRecordId,
 	Repository_LocalId
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
@@ -60,7 +60,7 @@ interface ColumnUpdateKeyMap
 }
 
 interface RecordKeyMap
-	extends Map<Repository_LocalId, Map<Actor_LocalId, Set<AirEntity_ActorRecordId>>> {
+	extends Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>> {
 }
 
 type ColumnIndexAndValue = [ApplicationColumn_Index, any];
@@ -111,7 +111,7 @@ export class Stage2SyncedInDataProcessor
 	async performCreates(
 		recordCreations: Map<ApplicationVersion_LocalId,
 			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
-				Map<AirEntity_ActorRecordId, Map<ApplicationColumn_Index, any>>>>>>,
+				Map<ActorRecordId, Map<ApplicationColumn_Index, any>>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
 		context: IOperationContext
 	): Promise<void> {
@@ -222,7 +222,7 @@ export class Stage2SyncedInDataProcessor
 	async performUpdates(
 		recordUpdates: Map<ApplicationVersion_LocalId,
 			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
-				Map<AirEntity_ActorRecordId, Map<ApplicationColumn_Index, RecordUpdate>>>>>>,
+				Map<ActorRecordId, Map<ApplicationColumn_Index, RecordUpdate>>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
 		context: IOperationContext
 	): Promise<void> {
@@ -282,7 +282,7 @@ export class Stage2SyncedInDataProcessor
 	async performDeletes(
 		recordDeletions: Map<ApplicationVersion_LocalId,
 			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
-				Set<AirEntity_ActorRecordId>>>>>,
+				Set<ActorRecordId>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
 		context: IOperationContext
 	): Promise<void> {
@@ -330,7 +330,7 @@ export class Stage2SyncedInDataProcessor
 
 	/**
 	 * Get the record key map (RecordKeyMap = RepositoryId -> Actor_LocalId
-	 * -> AirEntity_ActorRecordId) for the recordUpdateMap (the specified combination
+	 * -> ActorRecordId) for the recordUpdateMap (the specified combination
 	 * of columns/values being updated)
 	 * @param {Map<ApplicationColumn_Index, RecordUpdate>} recordUpdateMap
 	 * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap

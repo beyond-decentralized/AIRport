@@ -10,8 +10,8 @@ import {
 	ISaveResult,
 	PortableQuery
 } from '@airport/ground-control';
-import { IActor, IAirEntity } from '@airport/holding-pattern/dist/app/bundle';
-import { IRepositoryManager } from '@airport/holding-pattern/dist/app/bundle';
+import { IAirEntity } from '@airport/final-approach';
+import { IActor, IRepositoryManager } from '@airport/holding-pattern/dist/app/bundle';
 import {
 	ICredentials,
 	IOperationContext,
@@ -366,11 +366,11 @@ export class TransactionalServer
 		}
 		const transaction = this.terminalStore.getTransactionManager()
 			.transactionInProgressMap.get(credentials.transactionId)
-		if(!transaction) {
+		if (!transaction) {
 			throw new Error('Could not find transaction by Id: ' + credentials.transactionId)
 		}
 		const actor = transaction.actor
-		if(!actor) {
+		if (!actor) {
 			throw new Error('No actor associated with transaction Id: ' + credentials.transactionId)
 		}
 

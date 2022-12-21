@@ -15,9 +15,9 @@ import {
 	IRecordHistoryNewValue,
 	IRepositoryTransactionHistory,
 	RecordHistory_LocalId,
-	AirEntity_ActorRecordId,
+	ActorRecordId,
 	Repository_LocalId
-} from '@airport/holding-pattern/dist/app/bundle'
+} from '@airport/holding-pattern'
 import {
 	ISynchronizationConflict
 } from '@airport/layover'
@@ -82,13 +82,13 @@ export interface ISyncInUtils {
 export interface Stage1SyncedInDataProcessingResult {
 	recordCreations: Map<ApplicationVersion_LocalId,
 		Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
-			Map<AirEntity_ActorRecordId, Map<ApplicationColumn_Index, any>>>>>>,
+			Map<ActorRecordId, Map<ApplicationColumn_Index, any>>>>>>,
 	recordDeletions: Map<ApplicationVersion_LocalId,
 		Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
-			Set<AirEntity_ActorRecordId>>>>>,
+			Set<ActorRecordId>>>>>,
 	recordUpdates: Map<ApplicationVersion_LocalId,
 		Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
-			Map<AirEntity_ActorRecordId, Map<ApplicationColumn_Index, RecordUpdate>>>>>>,
+			Map<ActorRecordId, Map<ApplicationColumn_Index, RecordUpdate>>>>>>,
 	syncConflictMapByRepoId: Map<Repository_LocalId, ISynchronizationConflict[]>
 }
 

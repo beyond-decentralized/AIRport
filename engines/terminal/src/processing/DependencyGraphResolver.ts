@@ -8,7 +8,7 @@ import {
 	EntityRelationType,
 	IEntityStateManager
 } from '@airport/ground-control'
-import { IAirEntity } from '@airport/holding-pattern/dist/app/bundle'
+import { IAirEntity } from '@airport/final-approach'
 import {
 	IDependencyGraphNode,
 	IDependencyGraphResolver,

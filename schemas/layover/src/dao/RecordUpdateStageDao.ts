@@ -15,9 +15,9 @@ import {
 import {
 	Actor_LocalId,
 	RecordHistory_ActorRecordId,
-	AirEntity_ActorRecordId,
+	ActorRecordId,
 	Repository_LocalId
-} from '@airport/holding-pattern/dist/app/bundle'
+} from '@airport/holding-pattern'
 import {
 	AND,
 	field,
@@ -54,7 +54,7 @@ export interface IRecordUpdateStageDao
 		applicationIndex: Application_Index,
 		applicationVersionId: ApplicationVersion_LocalId,
 		tableIndex: ApplicationEntity_TableIndex,
-		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<AirEntity_ActorRecordId>>>,
+		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>,
 		updatedColumnIndexes: ApplicationColumn_Index[]
 	): Promise<void>;
 
@@ -101,7 +101,7 @@ export class RecordUpdateStageDao
 		applicationIndex: Application_Index,
 		applicationVersionId: ApplicationVersion_LocalId,
 		tableIndex: ApplicationEntity_TableIndex,
-		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<AirEntity_ActorRecordId>>>,
+		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>,
 		updatedColumnIndexes: ApplicationColumn_Index[]
 	): Promise<void> {
 		const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]

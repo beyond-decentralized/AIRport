@@ -3,7 +3,7 @@ import { DbColumn } from '@airport/ground-control'
 import {
 	Actor_LocalId,
 	RecordHistory,
-	AirEntity_ActorRecordId
+	ActorRecordId
 } from '../../ddl/ddl'
 import {
 	IRecordHistory,
@@ -18,7 +18,7 @@ export interface IRecordHistoryDuo {
 
 	getNewRecord(
 		actorId: Actor_LocalId,
-		_actorRecordId: AirEntity_ActorRecordId
+		_actorRecordId: ActorRecordId
 	): IRecordHistory;
 
 	addNewValue(
@@ -47,7 +47,7 @@ export class RecordHistoryDuo
 
 	getNewRecord(
 		actorId: Actor_LocalId,
-		_actorRecordId: AirEntity_ActorRecordId
+		_actorRecordId: ActorRecordId
 	): IRecordHistory {
 		const recordHistory = new RecordHistory()
 

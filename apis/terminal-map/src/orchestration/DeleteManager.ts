@@ -7,9 +7,11 @@ import {
 import { IContext } from "@airport/direction-indicator";
 import type {
     IActor,
-    AirEntity,
     Repository_LocalId
-} from "@airport/holding-pattern/dist/app/bundle";
+} from "@airport/holding-pattern";
+import type {
+    AirEntity
+} from "@airport/final-approach";
 import { ITransaction } from "../transaction/ITransaction";
 
 export interface IDeleteManager {

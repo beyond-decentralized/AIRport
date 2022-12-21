@@ -1,4 +1,4 @@
-import { IAirEntity } from "@airport/holding-pattern/dist/app/bundle";
+import { IAirEntity } from "@airport/final-approach";
 import { IOperationNode } from "./DependencyGraphNode";
 import { IOperationContext } from "./OperationContext";
 

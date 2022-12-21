@@ -12,11 +12,13 @@ import {
 	IRepositoryDao,
 	RepositoryNestingDao,
 	IRepositoryManager,
-	QAirEntity,
 	Repository,
 	RepositoryNesting,
 	UpdateState
 } from '@airport/holding-pattern/dist/app/bundle' // default
+import {
+	QAirEntity
+} from '@airport/final-approach' // default
 // import is reserved for Application use
 import {
 	AND,

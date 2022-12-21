@@ -1501,6 +1501,7 @@ class SyncApplicationMap extends ApplicationMap {
         return false;
     }
 }
+globalThis.SyncApplicationMap = SyncApplicationMap;
 
 var BlockSyncStatus;
 (function (BlockSyncStatus) {
@@ -13979,7 +13980,7 @@ let TransactionHistory = class TransactionHistory {
     constructor() {
         this.repositoryTransactionHistories = [];
         this.repositoryTransactionHistoryMap = {};
-        this.applicationMap = new SyncApplicationMap();
+        this.applicationMap = new globalThis.SyncApplicationMap();
         this.allOperationHistory = [];
         this.allRecordHistory = [];
         this.allRecordHistoryNewValues = [];
@@ -14049,86 +14050,6 @@ __decorate$c([
 Actor = __decorate$c([
     Entity()
 ], Actor);
-
-let AirEntity = class AirEntity {
-    constructor(entityGUID) {
-        this.ageSuitability = 0;
-        this.createdAt = new Date();
-        // Currently TypeScript does not support optional getters/setters
-        // this is a workaround
-        delete this.id;
-        Object.defineProperty(this, 'id', {
-            get() {
-                return IOC.getSync(globalThis.AIR_ENTITY_UTILS).encodeId(this);
-            },
-            set(idString) {
-                IOC.getSync(globalThis.AIR_ENTITY_UTILS).setId(idString, this);
-            }
-        });
-        delete this.isNew;
-        Object.defineProperty(this, 'isNew', {
-            get() {
-                return !!this._actorRecordId;
-            }
-        });
-        delete this.createdBy;
-        Object.defineProperty(this, 'createdBy', {
-            get() {
-                return this.actor.userAccount;
-            }
-        });
-        this.id = entityGUID;
-    }
-};
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], AirEntity.prototype, "repository", void 0);
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], AirEntity.prototype, "actor", void 0);
-__decorate$c([
-    Id(),
-    Column(),
-    GeneratedValue()
-], AirEntity.prototype, "_actorRecordId", void 0);
-__decorate$c([
-    Column(),
-    DbNumber()
-], AirEntity.prototype, "ageSuitability", void 0);
-__decorate$c([
-    Column(),
-    DbDate()
-], AirEntity.prototype, "createdAt", void 0);
-__decorate$c([
-    Column()
-], AirEntity.prototype, "systemWideOperationId", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], AirEntity.prototype, "originalRepository", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], AirEntity.prototype, "originalActor", void 0);
-__decorate$c([
-    Column()
-], AirEntity.prototype, "originalActorRecordId", void 0);
-__decorate$c([
-    Transient()
-], AirEntity.prototype, "createdBy", void 0);
-__decorate$c([
-    Transient()
-], AirEntity.prototype, "isNew", void 0);
-__decorate$c([
-    Transient()
-], AirEntity.prototype, "id", void 0);
-AirEntity = __decorate$c([
-    MappedSuperclass()
-], AirEntity);
 
 /**
  * Created by Papa on 2/9/2017.
@@ -14345,7 +14266,6 @@ RepositoryType = __decorate$c([
 
 const __constructors__$3 = {
     Actor: Actor,
-    AirEntity: AirEntity,
     OperationHistory: OperationHistory,
     RecordHistory: RecordHistory,
     RecordHistoryNewValue: RecordHistoryNewValue,
@@ -28749,7 +28669,7 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
     }
     /**
      * Get the record key map (RecordKeyMap = RepositoryId -> Actor_LocalId
-     * -> AirEntity_ActorRecordId) for the recordUpdateMap (the specified combination
+     * -> ActorRecordId) for the recordUpdateMap (the specified combination
      * of columns/values being updated)
      * @param {Map<ApplicationColumn_Index, RecordUpdate>} recordUpdateMap
      * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap

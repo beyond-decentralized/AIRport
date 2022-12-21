@@ -3,7 +3,7 @@ import {
 	ISaveResult,
 	PortableQuery
 } from '@airport/ground-control'
-import { IAirEntity } from '@airport/holding-pattern/dist/app/bundle'
+import { IAirEntity } from '@airport/final-approach'
 import { IEntityContext } from '@airport/tarmaq-entity'
 import { Observable } from 'rxjs'
 import { IQueryOperationContext } from '..'

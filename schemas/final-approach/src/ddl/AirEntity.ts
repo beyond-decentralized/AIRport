@@ -9,17 +9,15 @@ import {
 	MappedSuperclass,
 	Transient
 } from '@airport/tarmaq-entity'
-import { Actor } from '../infrastructure/Actor'
-import { SystemWideOperationId } from '../common'
-import { Repository } from './Repository'
-import { UserAccount } from '@airport/travel-document-checkpoint/dist/app/bundle'
+import { Actor, Repository } from '@airport/holding-pattern'
+import { UserAccount } from '@airport/travel-document-checkpoint'
 import { IAirEntityUtils } from '@airport/aviation-communication'
 
 /**
  * Created by Papa on 2/17/2017.
  */
 export type AirEntity_ActorRecordId = number
-export type AirEntity_SystemWideOperationId = SystemWideOperationId
+export type AirEntity_SystemWideOperationId = number
 
 @MappedSuperclass()
 export abstract class AirEntity {

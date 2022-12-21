@@ -1,24 +1,28 @@
 {
-  "name": "@airport/terminal-map",
+  "name": "@airport/final-approach",
   "version": "0.0.1",
+  "airport": {
+    "domain": "airport",
+    "application": "@airport/final-approach"
+  },
   "peerDependencies": {
+    "@airbridge/validate": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
-    "@airport/airport-code": "0.0.1",
+    "@airport/autopilot": "0.0.1",
     "@airport/aviation-communication": "0.0.1",
     "@airport/check-in": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
-    "@airport/final-approach": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
-    "@airport/layover": "0.0.1",
-    "@airport/apron": "0.0.1",
+    "@airport/travel-document-checkpoint": "0.0.1",
     "@airport/airspace": "0.0.1",
+    "@airport/tarmaq-dao": "0.0.1",
     "@airport/tarmaq-entity": "0.0.1",
     "@airport/tarmaq-query": "0.0.1",
-    "@airport/travel-document-checkpoint": "0.0.1",
-    "rxjs": "~7.4.0"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@airport/runway": "0.0.1",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "rollup-plugin-typescript2": "0.33.0",
@@ -31,11 +35,15 @@
   },
   "main": "dist/esm/index.mjs",
   "module": "dist/esm/index.mjs",
+  "browser": "dist/esm/index.mjs",
+  "app": "dist/app/bundle.mjs",
   "files": [
     "dist"
   ],
   "scripts": {
+    "predev": "node generate.mjs",
     "dev": "rollup -c ./rollup.config.js -w",
+    "prebuild": "node generate.mjs",
     "build": "rollup -c ./rollup.config.js"
   },
   "types": "dist/esm/index.d.ts"

@@ -11,6 +11,7 @@
     "@airport/blueprint": "0.0.1",
     "@airport/check-in": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
+    "@airport/final-approach": "0.0.1",
     "@airport/flight-number": "0.0.1",
     "@airport/fuel-hydrant-system": "0.0.1",
     "@airport/ground-control": "0.0.1",

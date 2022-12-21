@@ -30,7 +30,8 @@ import {
 	JSONValueOperation,
 	PortableQuery
 } from '@airport/ground-control'
-import { IActor, IAirEntity } from '@airport/holding-pattern/dist/app/bundle'
+import { IAirEntity } from '@airport/final-approach'
+import { IActor } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	ICascadeGraphVerifier,
 	IDeleteManager,
