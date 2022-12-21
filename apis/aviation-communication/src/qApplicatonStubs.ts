@@ -11,6 +11,7 @@ export const airApi = {
         dbEntityId: number
     ): boolean { return true }
 }
+globalThis.airApi = airApi
 
 export interface QApp {
     __dbApplication__?

@@ -7640,6 +7640,7 @@ const airApi = {
     dS: function (__dbApplication__, dbEntityId) { return true; },
     ddS: function (__dbApplication__, dbEntityId) { return true; }
 };
+globalThis.airApi = airApi;
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -41829,13 +41830,11 @@ class QApplicationBuilder {
         // 	${daoDefinitions}
         // }
         return `import {
-    airApi,
     QApp
 } from '@airport/aviation-communication'
 import {
-    DbApplication,
-    ApplicationEntity_LocalId,
-}                      from '@airport/ground-control';
+    DbApplication
+} from '@airport/ground-control';
 ${qEntityImports}
 ${entityImports}
 
@@ -41859,17 +41858,17 @@ export const Q_${this.applicationFullName}: ${this.applicationFullName}_LocalQAp
 export default Q_${this.applicationFullName}
 
 export function ${this.applicationFullName}_diSet(
-	dbEntityId: ApplicationEntity_LocalId
+	dbEntityId: number
 ): boolean {
-	return airApi.dS(Q_${this.applicationFullName}.__dbApplication__, dbEntityId)
+	return globalThis.airApi.dS(Q_${this.applicationFullName}.__dbApplication__, dbEntityId)
 }
 
-airApi.setQApp(Q_${this.applicationFullName})
+globalThis.airApi.setQApp(Q_${this.applicationFullName})
 `;
         // export function duoDiSet(
-        // 	dbEntityId: ApplicationEntity_LocalId
+        // 	dbEntityId: number
         // ): boolean {
-        // 	return airApi.ddS(Q.__dbApplication__, dbEntityId)
+        // 	return globalThis.airApi.ddS(Q.__dbApplication__, dbEntityId)
         // }
     }
 }
