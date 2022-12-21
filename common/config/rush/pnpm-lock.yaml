@@ -45,6 +45,7 @@ dependencies:
   '@rush-temp/tarmaq-dao': 'file:projects/tarmaq-dao.tgz'
   '@rush-temp/tarmaq-entity': 'file:projects/tarmaq-entity.tgz'
   '@rush-temp/tarmaq-query': 'file:projects/tarmaq-query.tgz'
+  '@rush-temp/taxiway': 'file:projects/taxiway.tgz'
   '@rush-temp/terminal': 'file:projects/terminal.tgz'
   '@rush-temp/terminal-map': 'file:projects/terminal-map.tgz'
   '@rush-temp/tower': 'file:projects/tower.tgz'
@@ -3022,6 +3023,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-VkhBbVo2+2oozlkdHXLrb3zjsRkpdnaU2bXmX8Wgle3PUi569eLRaHGlgETQHR7lLL1w7GiG3h9SnePhxNDecw==
+  /@types/node/18.11.17:
+    dev: false
+    resolution:
+      integrity: sha512-HJSUJmni4BeDHhfzn6nF0sVmd1SMezP7/4F0Lq+aXzmp2xm9O7WXrUtHW/CHlYVtZUbByEvWidHqRtcJXGF2Ng==
   /@types/node/18.7.14:
     dev: false
     resolution:
@@ -13235,7 +13240,7 @@ packages:
     dev: false
     name: '@rush-temp/runway'
     resolution:
-      integrity: sha512-xJ/pTJ7f1frpgLrUcubgRuXdn5pPiF/AJEZCAOqE81D9bPO6fh1deuWbk7gg4QVt3GcDnov6bsBZPiiSUaX+Fw==
+      integrity: sha512-Cya5tNNS23ioEksm+Td8PAjnS8Bcx8SsZ9A+dqVYl283Xwx+pt6lCC1L/ENsR4J7o5JMeD4/w30i4wpMJB6j7A==
       tarball: 'file:projects/runway.tgz'
     version: 0.0.0
   'file:projects/sequence.tgz':
@@ -13415,6 +13420,24 @@ packages:
       integrity: sha512-Ff796uA2/wjd2AodwRbC+g9sPkVK/70Lq1uszSVizsA0JGXzXWe2NvEMbtkC+kOGq3B/yoqgZHWZbfWhv8+L8w==
       tarball: 'file:projects/tarmaq-query.tgz'
     version: 0.0.0
+  'file:projects/taxiway.tgz':
+    dependencies:
+      '@rollup/plugin-commonjs': 21.1.0_rollup@2.79.1
+      '@rollup/plugin-node-resolve': 13.3.0_rollup@2.79.1
+      '@types/node': 18.11.17
+      rollup: 2.79.1
+      rollup-plugin-dts: 4.2.3_rollup@2.79.1+typescript@4.9.4
+      rollup-plugin-peer-deps-external: 2.2.4_rollup@2.79.1
+      rollup-plugin-terser: 7.0.2_rollup@2.79.1
+      rollup-plugin-typescript2: 0.33.0_rollup@2.79.1+typescript@4.9.4
+      tslib: 2.4.1
+      typescript: 4.9.4
+    dev: false
+    name: '@rush-temp/taxiway'
+    resolution:
+      integrity: sha512-2g/IvGDzohuN7DI796BvOi7z6RKRNqssqAWAIBnluA5h2b4TxppY6w+UJRnMaCoPFVN0yE2ZcvMlFg3dk30lEg==
+      tarball: 'file:projects/taxiway.tgz'
+    version: 0.0.0
   'file:projects/terminal-map.tgz':
     dependencies:
       '@rollup/plugin-commonjs': 21.1.0_rollup@2.79.1
@@ -13430,7 +13453,7 @@ packages:
     dev: false
     name: '@rush-temp/terminal-map'
     resolution:
-      integrity: sha512-F/I+UgWMhHHw88of6lbyuTuS/To/U7rIU3ODdSOmlYJ4lYDTGLuBFNP8pObyy9IpL/W0k9Iq1H+Tw6wMuQIsCQ==
+      integrity: sha512-YHUXKt5O86DyeExI73W3lDAvj/wY5A864xfcRIVexp6+0eI0EvAmHNFAmegmgQLC/6hJBbCXO+nOUhuwI8fajg==
       tarball: 'file:projects/terminal-map.tgz'
     version: 0.0.0
   'file:projects/terminal.tgz':
@@ -13450,7 +13473,7 @@ packages:
     dev: false
     name: '@rush-temp/terminal'
     resolution:
-      integrity: sha512-ErI2ymoJeGzQboL4zJ0gxSTHZTzB8NgOjRW8OMUn9nWQHJ5YfWuiFvPx99EBzj+xBYO7qdk78BK9WNXwTeL4dw==
+      integrity: sha512-GEaa4PNmmBFQRGzfaIzau03B63Mb6AUbYbW2+jdZoah12OYQpkQ8upwOrbqGdspu2BfzqRqluMb+uKLcDSgTfA==
       tarball: 'file:projects/terminal.tgz'
     version: 0.0.0
   'file:projects/tower.tgz':
@@ -13468,7 +13491,7 @@ packages:
     dev: false
     name: '@rush-temp/tower'
     resolution:
-      integrity: sha512-JBt5D1Op2U4f6Rdx+KIFdjwbHaRCmd9w7llDWozE4r9nUHiTP5MHVxYVxArU/JpYprceplZy7DsCUqZD4G2QLA==
+      integrity: sha512-ETndwIKjzZ9GTXrGyX6gBAmrSbPmcchPH1TvIyy7MIu7kQK5VeqBSaDdRecGAZS1aAVnRjXHsMrUkLv4/d1moA==
       tarball: 'file:projects/tower.tgz'
     version: 0.0.0
   'file:projects/travel-document-checkpoint.tgz':
@@ -13793,6 +13816,7 @@ specifiers:
   '@rush-temp/tarmaq-dao': 'file:./projects/tarmaq-dao.tgz'
   '@rush-temp/tarmaq-entity': 'file:./projects/tarmaq-entity.tgz'
   '@rush-temp/tarmaq-query': 'file:./projects/tarmaq-query.tgz'
+  '@rush-temp/taxiway': 'file:./projects/taxiway.tgz'
   '@rush-temp/terminal': 'file:./projects/terminal.tgz'
   '@rush-temp/terminal-map': 'file:./projects/terminal-map.tgz'
   '@rush-temp/tower': 'file:./projects/tower.tgz'

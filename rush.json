@@ -101,6 +101,11 @@
       "projectFolder": "generators/takeoff",
       "shouldPublish": true
     },
+    {
+      "packageName": "@airport/taxiway",
+      "projectFolder": "generators/taxiway",
+      "shouldPublish": true
+    },
     // "libs" folder (alphabetical order)
     {
       "packageName": "@airport/autopilot",

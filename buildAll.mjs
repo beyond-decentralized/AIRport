@@ -13,7 +13,8 @@ const firstStageProjectDirectoriesInBuildOrder = [
     'libs/pressurization',
     'libs/vhf-radio',
     'libs/autopilot',
-    'libs/flight-number'
+    'libs/flight-number',
+    'generators/taxiway'
 ]
 
 const airbridgeDependencyProjectDirectories = [
@@ -41,6 +42,7 @@ const secondStageProjectDescriptors = [
     //     directory: 'schemas/holding-pattern',
     //     isApp: true
     // },
+    'schemas/final-approach',
     'schemas/layover',
     // {
     //     directory: 'schemas/layover',
