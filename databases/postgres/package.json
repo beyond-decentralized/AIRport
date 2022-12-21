@@ -16,8 +16,20 @@
     "pg-connection-string": "latest"
   },
   "devDependencies": {
+    "@airport/taxiway": "0.0.1",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
     "@types/node": "^16.10.7",
-    "@types/pg": "latest"
+    "@types/pg": "latest",
+    "rollup-plugin-typescript2": "0.33.0",
+    "rollup": "^2.60.0",
+    "rollup-plugin-dts": "^4.0.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2",
+    "ts-node": "^10.9.1",
+    "ts-patch": "^2.1.0",
+    "typescript": "^4.5.2",
+    "tslib": "^2.0.0"
   },
   "main": "lib/index.js",
   "name": "@airport/postgres",

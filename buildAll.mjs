@@ -1,6 +1,7 @@
 import { spawn } from 'child_process';
 
 const firstStageProjectDirectoriesInBuildOrder = [
+    'generators/taxiway',
     'libs/direction-indicator',
     'apis/aviation-communication',
     'apis/ground-control',
@@ -13,8 +14,7 @@ const firstStageProjectDirectoriesInBuildOrder = [
     'libs/pressurization',
     'libs/vhf-radio',
     'libs/autopilot',
-    'libs/flight-number',
-    'generators/taxiway'
+    'libs/flight-number'
 ]
 
 const airbridgeDependencyProjectDirectories = [
@@ -105,6 +105,7 @@ async function buildPeerFramework(
     if (runRushUpdate) {
         await wireInDependencies(frameworkDirectoryName)
     }
+    await execute('npm', ['run', 'build'], '.');
     await buildProjects(projectDescriptorsInBuildOrder, 'npm', ['run', 'build']);
 }
 

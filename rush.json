@@ -196,6 +196,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/airspace",
+      "projectFolder": "schemas/airspace",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/final-approach",
       "projectFolder": "schemas/final-approach",
       "shouldPublish": true
@@ -208,11 +213,6 @@
     {
       "packageName": "@airport/layover",
       "projectFolder": "schemas/layover",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/airspace",
-      "projectFolder": "schemas/airspace",
       "shouldPublish": true
     },
     {
