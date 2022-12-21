@@ -1,8 +1,8 @@
-import {DbEntity}      from "../../definition/application/Entity";
-import {ApplicationMap}     from "../query/ApplicationMap";
-import {TableMap}      from "../query/TableMap";
-import {SyncColumnMap} from "./SyncColumnMap";
-import {SyncTableMap}  from "./SyncTableMap";
+import { DbEntity } from "../../definition/application/Entity";
+import { ApplicationMap } from "../query/ApplicationMap";
+import { TableMap } from "../query/TableMap";
+import { SyncColumnMap } from "./SyncColumnMap";
+import { SyncTableMap } from "./SyncTableMap";
 
 export class SyncApplicationMap extends ApplicationMap {
 
@@ -34,3 +34,5 @@ export class SyncApplicationMap extends ApplicationMap {
 	}
 
 }
+
+globalThis.SyncApplicationMap = SyncApplicationMap

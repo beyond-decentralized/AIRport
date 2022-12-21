@@ -1,4 +1,4 @@
-import { SessionStateApi } from '../../dist/esm';
+import { SessionStateApi } from '../generated/api/api';
 import { application } from './app-declaration';
 
 export * from '../generated/api/api'

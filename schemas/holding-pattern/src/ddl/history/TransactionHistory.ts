@@ -51,7 +51,7 @@ export class TransactionHistory
 	repositoryTransactionHistoryMap: { [repositoryId: number]: IRepositoryTransactionHistory } = {}
 
 	@Transient()
-	applicationMap: SyncApplicationMap = new SyncApplicationMap()
+	applicationMap: SyncApplicationMap = new globalThis.SyncApplicationMap()
 
 	@Transient()
 	allOperationHistory: IOperationHistory[] = []

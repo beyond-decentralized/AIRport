@@ -13,7 +13,6 @@ import { Actor } from '../infrastructure/Actor'
 import { SystemWideOperationId } from '../common'
 import { Repository } from './Repository'
 import { UserAccount } from '@airport/travel-document-checkpoint/dist/app/bundle'
-import { IOC } from '@airport/direction-indicator'
 import { IAirEntityUtils } from '@airport/aviation-communication'
 
 /**
@@ -33,12 +32,12 @@ export abstract class AirEntity {
 		delete this.id
 		Object.defineProperty(this, 'id', {
 			get() {
-				return (IOC.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).encodeId(this)
+				return (globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).encodeId(this)
 			},
 			set(
 				idString: string
 			) {
-				(IOC.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).setId(idString, this)
+				(globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).setId(idString, this)
 			}
 		});
 		delete this.isNew
