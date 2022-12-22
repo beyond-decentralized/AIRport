@@ -44,6 +44,8 @@ export function loadUiAutopilot() {
     apiClient.operationSerializer = operationSerializer
     apiClient.queryResultsDeserializer = queryResultsDeserializer
 
+    apiClient.init()
+
     globalThis.IOC = {
         getAutopilotApiLoader() {
             return autopilotApiLoader
