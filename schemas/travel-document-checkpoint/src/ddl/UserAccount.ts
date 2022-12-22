@@ -7,7 +7,7 @@ import {
 	JoinColumn,
 	ManyToOne,
 } from '@airport/tarmaq-entity'
-import { Domain } from '@airport/airspace'
+import { Domain } from '@airport/airspace/dist/app/bundle'
 import { Country } from './locality/Country'
 import { Continent } from './locality/Continent'
 import { MetroArea } from './locality/MetroArea'

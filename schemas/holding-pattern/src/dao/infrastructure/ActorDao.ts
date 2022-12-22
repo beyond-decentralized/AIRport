@@ -12,7 +12,7 @@ import {
 import {
 	QApplication,
 	QDomain
-} from '@airport/airspace'
+} from '@airport/airspace/dist/app/bundle'
 import {
 	QTerminal,
 	QUserAccount,

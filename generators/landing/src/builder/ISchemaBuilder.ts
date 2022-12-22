@@ -2,7 +2,7 @@ import { ISequence } from '@airport/airport-code'
 import { IContext } from '@airport/direction-indicator';
 import { JsonApplication } from '@airport/ground-control'
 import { JsonApplicationWithLastIds } from '@airport/apron';
-import { IApplication } from '@airport/airspace';
+import { IApplication } from '@airport/airspace/dist/app/bundle';
 
 export interface ISchemaBuilder {
 

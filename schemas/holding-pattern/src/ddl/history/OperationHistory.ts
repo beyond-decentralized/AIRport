@@ -12,7 +12,7 @@ import {
 	Table
 } from '@airport/tarmaq-entity'
 import { ChangeType } from '@airport/ground-control'
-import { IApplicationEntity } from '@airport/airspace'
+import { IApplicationEntity } from '@airport/airspace/dist/app/bundle'
 import { SystemWideOperationId } from '../common'
 import { RecordHistory } from './RecordHistory'
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory'

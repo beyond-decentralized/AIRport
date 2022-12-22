@@ -8,7 +8,7 @@ import {
 import {
 	IDomain,
 	IApplication
-} from '@airport/airspace';
+} from '@airport/airspace/dist/app/bundle';
 import { IDdlObjectRetriever } from './DdlObjectRetriever';
 import {
 	Inject,

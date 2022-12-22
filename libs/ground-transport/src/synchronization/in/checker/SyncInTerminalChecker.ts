@@ -8,9 +8,9 @@ import {
 } from '@airport/arrivals-n-departures'
 import {
 	ITerminal,
-	ITerminalDao
+	ITerminalDao,
+	Terminal_GUID
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
-import { Terminal_GUID } from '@airport/travel-document-checkpoint'
 
 export interface ISyncInTerminalChecker {
 

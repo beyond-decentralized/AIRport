@@ -5,7 +5,7 @@ import { IActor } from '@airport/holding-pattern/dist/app/bundle'
 import type {
 	IDomain,
 	IApplication
-} from '@airport/airspace'
+} from '@airport/airspace/dist/app/bundle'
 import type { ITerminal } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
 	IPendingTransaction,

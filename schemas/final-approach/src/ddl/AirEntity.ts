@@ -9,8 +9,8 @@ import {
 	MappedSuperclass,
 	Transient
 } from '@airport/tarmaq-entity'
-import { Actor, Repository } from '@airport/holding-pattern'
-import { UserAccount } from '@airport/travel-document-checkpoint'
+import { Actor, Repository } from '@airport/holding-pattern/dist/app/bundle'
+import { UserAccount } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { IAirEntityUtils } from '@airport/aviation-communication'
 
 /**

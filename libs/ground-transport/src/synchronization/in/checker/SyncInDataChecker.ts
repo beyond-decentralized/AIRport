@@ -9,7 +9,7 @@ import {
 import {
 	IApplicationEntity,
 	IApplicationColumn
-} from '@airport/airspace'
+} from '@airport/airspace/dist/app/bundle'
 import { getSysWideOpIds, IAirportDatabase } from '@airport/air-traffic-control'
 import {
 	IContext,

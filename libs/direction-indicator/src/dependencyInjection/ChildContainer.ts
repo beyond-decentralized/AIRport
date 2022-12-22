@@ -2,7 +2,6 @@ import { addClasses } from "../classes";
 import { IInjectionContext } from "../Context";
 import { Container } from "./Container";
 import { InjectionApplication } from "./InjectionApplication";
-import { domain } from "./InjectionDomain";
 import { IChildContainer } from "./interfaces/IChildContainer";
 import { IRootContainer } from "./interfaces/IRootContainer";
 import { IApplicationDescriptor, IDependencyInjectionToken, IFullDITokenDescriptor } from "./interfaces/Token";

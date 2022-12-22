@@ -5,7 +5,7 @@ This the example Application has two entities:
 Task:
 
 ```ts
-import { AirEntity } from '@airport/holding-pattern'
+import { AirEntity } from '@airport/final-approach'
 import { Column, Entity } from '@airport/tarmaq-entity'
 
 @Entity()

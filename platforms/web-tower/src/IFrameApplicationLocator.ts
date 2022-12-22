@@ -1,6 +1,6 @@
 import { ApplicationLocator } from '@airport/landing'
 import { ITerminalStore } from '@airport/terminal-map'
-import { IApplicationVersion } from '@airport/airspace'
+import { IApplicationVersion } from '@airport/airspace/dist/app/bundle'
 import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
 import {
 	Inject,

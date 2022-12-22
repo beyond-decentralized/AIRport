@@ -29,7 +29,7 @@ import {
 import { IWebApplicationInitializer } from './WebApplicationInitializer'
 import { IWebMessageReceiver } from './WebMessageReceiver'
 import { IDbApplicationUtils, INTERNAL_DOMAINS } from '@airport/ground-control'
-import { IApplication } from '@airport/airspace'
+import { IApplication } from '@airport/airspace/dist/app/bundle'
 
 @Injected()
 export class WebTransactionalReceiver

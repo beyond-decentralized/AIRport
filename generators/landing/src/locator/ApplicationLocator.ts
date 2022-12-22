@@ -5,7 +5,7 @@ import {
 import {
 	ITerminalStore
 } from '@airport/terminal-map'
-import { IApplicationVersion } from '@airport/airspace'
+import { IApplicationVersion } from '@airport/airspace/dist/app/bundle'
 import {
 	Inject,
 	Injected

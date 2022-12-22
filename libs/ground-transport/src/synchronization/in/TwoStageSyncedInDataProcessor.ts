@@ -22,7 +22,7 @@ import {
 import {
 	ITransaction
 } from '@airport/terminal-map'
-import { IApplication } from '@airport/airspace'
+import { IApplication } from '@airport/airspace/dist/app/bundle'
 import { ISyncRepoTransHistory } from './SyncInUtils'
 import { IStage1SyncedInDataProcessor } from './Stage1SyncedInDataProcessor'
 import { IStage2SyncedInDataProcessor } from './Stage2SyncedInDataProcessor'

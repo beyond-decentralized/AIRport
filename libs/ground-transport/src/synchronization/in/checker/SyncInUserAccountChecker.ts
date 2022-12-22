@@ -6,9 +6,9 @@ import {
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	IUserAccount,
-	IUserAccountDao
+	IUserAccountDao,
+	UserAccount_GUID
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
-import { UserAccount_GUID } from '@airport/travel-document-checkpoint';
 
 export interface ISyncInUserAccountChecker {
 

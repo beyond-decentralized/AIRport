@@ -5,13 +5,12 @@ import {
 	IApplicationEntity,
 	IApplicationRelation,
 	IApplicationVersion
-} from '@airport/airspace';
+} from '@airport/airspace/dist/app/bundle';
 import {
 	IMemoizedSelector,
 	ISelectorManager,
 	LastIds
 } from '@airport/apron';
-import { ILocalAPIRequest } from '@airport/aviation-communication';
 import {
 	Inject,
 	Injected

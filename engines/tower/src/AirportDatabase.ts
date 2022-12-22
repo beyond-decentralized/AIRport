@@ -146,8 +146,8 @@ export class AirportDatabase
 				qApplication.__dbApplication__ = dbApplication
 				this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.qApplications,
 					this.appliationUtils, this.relationManager)
+				this.Q[dbApplication.index] = qApplication
 			}
-			this.Q[dbApplication.index] = qApplication
 		}
 		this.QM[fullApplication_Name] = qApplication
 	}

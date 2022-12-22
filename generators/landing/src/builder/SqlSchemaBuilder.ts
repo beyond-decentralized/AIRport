@@ -19,7 +19,7 @@ import { JsonApplicationWithLastIds } from '@airport/apron';
 import {
   IStoreDriver
 } from '@airport/terminal-map'
-import { IApplication } from '@airport/airspace';
+import { IApplication } from '@airport/airspace/dist/app/bundle';
 import { ISchemaBuilder } from './ISchemaBuilder';
 
 @Injected()

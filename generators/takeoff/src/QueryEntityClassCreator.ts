@@ -10,7 +10,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { IApplication } from '@airport/airspace'
+import { IApplication } from '@airport/airspace/dist/app/bundle'
 import { DbApplication } from '@airport/ground-control'
 import { IQueryEntityClassCreator } from '@airport/terminal-map'
 import { IApplicationUtils, IRelationManager } from '@airport/tarmaq-query'

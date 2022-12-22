@@ -17,7 +17,7 @@ import {
 	RecordHistory_LocalId,
 	ActorRecordId,
 	Repository_LocalId
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern/dist/app/bundle'
 import {
 	ISynchronizationConflict
 } from '@airport/layover'

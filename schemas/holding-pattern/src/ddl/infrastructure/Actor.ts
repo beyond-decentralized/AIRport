@@ -12,7 +12,7 @@ import {
 	Terminal,
 	UserAccount
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
-import { Application } from '@airport/airspace';
+import { Application } from '@airport/airspace/dist/app/bundle';
 
 export type Actor_LocalId = number;
 export type Actor_GUID = string;

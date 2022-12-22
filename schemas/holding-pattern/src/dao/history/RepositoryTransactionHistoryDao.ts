@@ -26,7 +26,7 @@ import {
 	QTransactionHistory,
 } from '../../generated/generated'
 import Q from '../../generated/qApplication'
-import { QApplicationEntity, QApplicationVersion } from '@airport/airspace'
+import { QApplicationEntity, QApplicationVersion } from '@airport/airspace/dist/app/bundle'
 import { Injected } from '@airport/direction-indicator'
 import { Repository_LocalId } from '../../types'
 

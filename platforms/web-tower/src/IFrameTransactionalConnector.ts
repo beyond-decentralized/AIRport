@@ -1,4 +1,4 @@
-import { IApplicationVersion } from '@airport/airspace'
+import { IApplicationVersion } from '@airport/airspace/dist/app/bundle'
 import {
 	IAddRepositoryIMI,
 	IGetLatestApplicationVersionByApplication_NameIMI,
