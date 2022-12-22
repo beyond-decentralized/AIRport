@@ -1,13 +1,30 @@
 {
-    "search.exclude": {
-        "**/dist": true
-    },
-    "files.exclude": {
-        ".github": true,
-        ".history": true,
-        ".vscode": true,
-        "**/.idea": true,
-        "**/.rush": true,
-        "common": true
-    }
+  // Configure glob patterns for excluding files and folders in fulltext searches and quick open. Inherits all glob patterns from the `files.exclude` setting.
+  "search.exclude": {
+    ".git": true,
+    ".history": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/generated": true
+  },
+  // Controls whether to use global `.gitignore` and `.ignore` files when searching for files. Requires `search.useIgnoreFiles` to be enabled.
+  "search.useGlobalIgnoreFiles": true,
+  // Controls whether to use `.gitignore` and `.ignore` files when searching for files.
+  "search.useIgnoreFiles": true,
+  // Controls whether to use `.gitignore` and `.ignore` files in parent directories when searching for files. Requires `search.useIgnoreFiles` to be enabled.
+  "search.useParentIgnoreFiles": true,
+  // Controls whether to follow symlinks while searching.
+  "search.followSymlinks": false,
+  "files.exclude": {
+    ".git": true,
+    ".github": true,
+    ".history": true,
+    ".vscode": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/generated": true,
+    "**/.idea": true,
+    "**/.rush": true,
+    "common": true
+  }
 }
