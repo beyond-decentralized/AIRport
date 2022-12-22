@@ -1,4 +1,5 @@
 
+import { AirEntityUtils } from '@airport/aviation-communication'
 import { loadUiPressurisation } from '@airport/pressurization'
 import { AutopilotApiLoader } from './api/AutopilotApiLoader'
 import { LocalAPIClient } from './LocalAPIClient'
@@ -31,6 +32,7 @@ export function loadUiAutopilot() {
     if (globalThis.IOC) {
         return
     }
+    const airEntityUtils = new AirEntityUtils()
     const autopilotApiLoader = new AutopilotApiLoader()
     const apiClient = new LocalAPIClient()
     autopilotApiLoader.apiClient = apiClient
@@ -45,6 +47,9 @@ export function loadUiAutopilot() {
     globalThis.IOC = {
         getAutopilotApiLoader() {
             return autopilotApiLoader
+        },
+        getSync() {
+            return airEntityUtils
         }
     }
 }
