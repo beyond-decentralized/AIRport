@@ -22,6 +22,7 @@ const airbridgeDependencyProjectDirectories = [
 ]
 
 const secondStageProjectDescriptors = [
+    'schemas/final-approach',
     'schemas/airport-code',
     // {
     //     directory: 'schemas/airport-code',
@@ -42,7 +43,6 @@ const secondStageProjectDescriptors = [
     //     directory: 'schemas/holding-pattern',
     //     isApp: true
     // },
-    'schemas/final-approach',
     'schemas/layover',
     // {
     //     directory: 'schemas/layover',

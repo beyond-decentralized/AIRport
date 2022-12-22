@@ -37821,7 +37821,7 @@ class QApplicationBuilder {
         // const daoDefinitions = this.entityNames.map(
         // 	entityName => `${entityName}: IBase${entityName}Dao;`
         // ).join('\n\t\t');
-        const constructorDefinitions = this.entityNames.map(entityName => `${entityName}: ${entityName}`).join(',\n\t');
+        const constructorDefinitions = this.entityNames.map(entityName => `${entityName}`).join(',\n\t');
         const qEntityImports = this.entityNames.map(entityName => 
         // FIXME: this is a temporary hack to get Svelte to compile, revisit later
         // `import { ${entityName} } from '${this.ddlPathMapByEntityName[entityName]}';
@@ -38259,10 +38259,11 @@ class ApiBuilder extends FileBuilder {
             }
             this.addImport([moduleImport.objectMapByAsName[objectAsName]], relativePathToImport);
         }
-        const commonTokensFilePath = this.pathBuilder.workingDirPath
-            + '/src/generated/api/ApiProxy';
-        const commonTokensFileRelativePath = resolveRelativePath(this.fullGenerationPath, commonTokensFilePath);
-        this.addImport(['ApiProxy'], commonTokensFileRelativePath);
+        this.addImport(['ApiProxy'], '@airport/final-approach');
+        const appDeclarationFilePath = this.pathBuilder.workingDirPath
+            + '/src/to_be_generated/app-declaration';
+        const appDeclarationFileRelativePath = resolveRelativePath(this.fullGenerationPath, appDeclarationFilePath);
+        this.addImport(['application'], appDeclarationFileRelativePath);
     }
     build() {
         let enumAndInterfaceDefinitionCode = '';
@@ -38287,6 +38288,10 @@ ${apiClassDefinitionCode}`;
 // up)
 // @Injected()
 export class ${apiClass.className} extends ApiProxy<${apiClass.className}> {
+
+    constructor() {
+        super(application)
+    }
         
             ${this.buildApiMethodStubFragment(apiClass)}
 }
@@ -38735,40 +38740,6 @@ ${interfaceSource}
     }
 }
 
-class ApiProxySuperclassBuilder extends FileBuilder {
-    constructor(pathBuilder) {
-        super(null, null, pathBuilder, null);
-        this.fullGenerationPath = pathBuilder.fullGeneratedDirPath
-            + `/api/ApiProxy.ts`;
-    }
-    addImports() {
-    }
-    build() {
-        return `import { application } from "../../to_be_generated/app-declaration"
-
-export abstract class ApiProxy<Api> {
-        
-    _initialized = false
-    _proxy: Api
-
-    get proxy(): Api {
-        if (!this._initialized) {
-            this._initialized = true
-            globalThis.IOC.getAutopilotApiLoader().loadApiAutopilot({
-                application,
-                descriptor: {
-                    interface: this.constructor.name
-                }
-            })
-        }
-        
-        return this._proxy
-    }
-        
-}`;
-    }
-}
-
 /**
  * Created by Papa on 3/30/2016.
  */
@@ -38882,8 +38853,6 @@ function emitFiles(entityMapByName, configuration, applicationMapByProjectName) 
         apiIndexBuilder.addApiFilePath(apiBuilder.fullGenerationPath);
     }
     if (numApiFiles) {
-        const apiProxySuperclassBuilder = new ApiProxySuperclassBuilder(pathBuilder);
-        fs.writeFileSync(apiProxySuperclassBuilder.fullGenerationPath, apiProxySuperclassBuilder.build());
         fs.writeFileSync(apiIndexBuilder.fullGenerationPath, apiIndexBuilder.build());
     }
     for (const entityName in entityMapByName) {

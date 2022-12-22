@@ -13,6 +13,7 @@
     "@airport/aviation-communication": "0.0.1",
     "@airport/check-in": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
+    "@airport/final-approach": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
     "@airport/airspace": "0.0.1",

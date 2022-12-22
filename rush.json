@@ -171,12 +171,12 @@
     // "platforms" folder (alphabetical order)
     {
       "packageName": "@airport/api",
-      "projectFolder": "../AIRport/platforms/api",
+      "projectFolder": "platforms/api",
       "shouldPublish": true
     },
     {
       "packageName": "@airport/server",
-      "projectFolder": "../AIRport/platforms/server",
+      "projectFolder": "platforms/server",
       "shouldPublish": true
     },
     {

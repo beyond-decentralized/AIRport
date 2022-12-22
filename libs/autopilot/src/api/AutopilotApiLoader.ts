@@ -1,17 +1,17 @@
 import {
     IAutopilotApiLoader,
     IFullDITokenDescriptor,
-    APIClient,
     Injected,
     Inject,
 } from '@airport/direction-indicator'
+import { ILocalAPIClient } from '../LocalAPIClient'
 
 @Injected()
 export class AutopilotApiLoader
     implements IAutopilotApiLoader {
 
     @Inject()
-    apiClient: APIClient
+    apiClient: ILocalAPIClient
 
     lastCallMillisMap: Map<IFullDITokenDescriptor, Map<string, number>> = new Map()
 

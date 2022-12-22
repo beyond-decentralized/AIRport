@@ -40,11 +40,13 @@ export class ApiBuilder
                 relativePathToImport)
         }
 
-        const commonTokensFilePath = this.pathBuilder.workingDirPath
-            + '/src/generated/api/ApiProxy'
-        const commonTokensFileRelativePath = resolveRelativePath(
-            this.fullGenerationPath, commonTokensFilePath)
-        this.addImport(['ApiProxy'], commonTokensFileRelativePath)
+        this.addImport(['ApiProxy'], '@airport/final-approach')
+
+        const appDeclarationFilePath = this.pathBuilder.workingDirPath
+            + '/src/to_be_generated/app-declaration'
+        const appDeclarationFileRelativePath = resolveRelativePath(
+            this.fullGenerationPath, appDeclarationFilePath)
+        this.addImport(['application'], appDeclarationFileRelativePath)
     }
 
     build(): string {
@@ -77,6 +79,10 @@ ${apiClassDefinitionCode}`
 // up)
 // @Injected()
 export class ${apiClass.className} extends ApiProxy<${apiClass.className}> {
+
+    constructor() {
+        super(application)
+    }
         
             ${this.buildApiMethodStubFragment(apiClass)}
 }

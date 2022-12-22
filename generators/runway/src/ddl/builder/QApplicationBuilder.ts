@@ -61,7 +61,7 @@ export class QApplicationBuilder
     // ).join('\n\t\t');
     const constructorDefinitions = this.entityNames.map(
       entityName =>
-        `${entityName}: ${entityName}`,
+        `${entityName}`,
     ).join(',\n\t');
 
     const qEntityImports = this.entityNames.map(
