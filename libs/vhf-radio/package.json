@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "@airport/aviation-communication": "0.0.1",
-    "@airport/direction-indicator": "0.0.1",
     "@airport/pressurization": "0.0.1",
     "broadcast-channel": "^4.9.0"
   },
