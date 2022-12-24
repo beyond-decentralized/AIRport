@@ -18,7 +18,7 @@ export default function (program: ts.Program, pluginOptions: any) {
                     if (ts.isCallExpression(decorator.expression)) {
                         const exp = decorator.expression as ts.CallExpression;
                         const decoratorName = exp.expression.getText();
-                        console.log(`Found decorator: ${decoratorName}`);
+                        // console.log(`Found decorator: ${decoratorName}`);
                         if (decoratorsToExclude.includes(decoratorName)) {
                             removedNodes.push(node);
                             return undefined as any;
