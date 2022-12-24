@@ -40,9 +40,9 @@ const tokens = landing.register(
     ApplicationLocator, ApplicationRecorder, SqlSchemaBuilder as any,
 )
 
-export const APPLICATION_BUILDER = tokens.APPLICATION_BUILDER
+export const APPLICATION_BUILDER = tokens.ApplicationBuilder
 // Needed as a token in @airport/web-tower (platforms/web-tower)
-export const APPLICATION_LOCATOR = tokens.APPLICATION_LOCATOR
+export const APPLICATION_LOCATOR = tokens.ApplicationLocator
 
 
 landing.setDependencies(ApplicationInitializer as any, {

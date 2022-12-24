@@ -14,17 +14,6 @@ import { IInjectionApplication } from './interfaces/IInjectionApplication'
 export class InjectionApplication
 	implements IInjectionApplication {
 
-	static getTokenName(
-		className: string
-	): string {
-		let tokenName = className.replace(/[A-Z]/g, c => '_' + c);
-		tokenName = tokenName.replace(/[a-z0-9]*/g, c => c.toUpperCase())
-		if (tokenName.startsWith('_')) {
-			tokenName = tokenName.substring(1, tokenName.length)
-		}
-		return tokenName
-	}
-
 	static getTokenDescriptor(
 		input: IDependencyInjectionTokenDescriptor | string | { new(): any },
 	): IDependencyInjectionTokenDescriptor {
@@ -47,10 +36,6 @@ export class InjectionApplication
 			descriptor.class = null;
 		}
 
-		if (!descriptor.token) {
-			descriptor.token = InjectionApplication.getTokenName(descriptor.interface)
-		}
-
 		return descriptor
 	}
 
@@ -70,7 +55,7 @@ export class InjectionApplication
 		let tokensObject = {}
 		for (let injectedClassOrInterfaceName of injectedClassesOrInterfaceNames) {
 			const token = this.token(injectedClassOrInterfaceName);
-			tokensObject[token.descriptor.token] = token
+			tokensObject[token.descriptor.interface] = token
 		}
 		return tokensObject
 	}
@@ -94,7 +79,7 @@ export class InjectionApplication
 	): IDependencyInjectionToken<T> {
 		const descriptor = InjectionApplication.getTokenDescriptor(input)
 
-		const existingToken = this.tokenMap.get(descriptor.token)
+		const existingToken = this.tokenMap.get(descriptor.interface)
 
 		if (existingToken) {
 			if (failOnExistingToken) {
@@ -111,7 +96,7 @@ export class InjectionApplication
 
 		token.setClass(input as { new(): any })
 
-		this.tokenMap.set(descriptor.token, token)
+		this.tokenMap.set(descriptor.interface, token)
 
 		if (descriptor.class) {
 			token.setClass(descriptor.class)

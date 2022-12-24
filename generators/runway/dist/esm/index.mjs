@@ -217,7 +217,7 @@ function app(applicationDescriptor) {
 class DependencyInjectionToken {
     static getPath(tokenOrFullDescriptor) {
         return tokenOrFullDescriptor.application.domain.name + ':' + tokenOrFullDescriptor.application.name + ':'
-            + tokenOrFullDescriptor.descriptor.token;
+            + tokenOrFullDescriptor.descriptor.interface;
     }
     get dependencyConfiguration() {
         return this.getInheritedDependencyConfiguration(this.descriptor.class);
@@ -317,14 +317,6 @@ class DependencyInjectionToken {
 addClasses([DependencyInjectionToken]);
 
 class InjectionApplication {
-    static getTokenName(className) {
-        let tokenName = className.replace(/[A-Z]/g, c => '_' + c);
-        tokenName = tokenName.replace(/[a-z0-9]*/g, c => c.toUpperCase());
-        if (tokenName.startsWith('_')) {
-            tokenName = tokenName.substring(1, tokenName.length);
-        }
-        return tokenName;
-    }
     static getTokenDescriptor(input) {
         let descriptor = input;
         if (typeof input === 'string') {
@@ -344,9 +336,6 @@ class InjectionApplication {
         if (!descriptor.class) {
             descriptor.class = null;
         }
-        if (!descriptor.token) {
-            descriptor.token = InjectionApplication.getTokenName(descriptor.interface);
-        }
         return descriptor;
     }
     constructor(name, domain) {
@@ -358,7 +347,7 @@ class InjectionApplication {
         let tokensObject = {};
         for (let injectedClassOrInterfaceName of injectedClassesOrInterfaceNames) {
             const token = this.token(injectedClassOrInterfaceName);
-            tokensObject[token.descriptor.token] = token;
+            tokensObject[token.descriptor.interface] = token;
         }
         return tokensObject;
     }
@@ -370,7 +359,7 @@ class InjectionApplication {
     }
     token(input, failOnExistingToken = true) {
         const descriptor = InjectionApplication.getTokenDescriptor(input);
-        const existingToken = this.tokenMap.get(descriptor.token);
+        const existingToken = this.tokenMap.get(descriptor.interface);
         if (existingToken) {
             if (failOnExistingToken) {
                 throw new Error(`Token with interface '${descriptor.interface}' has already been created`);
@@ -381,7 +370,7 @@ class InjectionApplication {
         }
         const token = new DependencyInjectionToken(this, descriptor);
         token.setClass(input);
-        this.tokenMap.set(descriptor.token, token);
+        this.tokenMap.set(descriptor.interface, token);
         if (descriptor.class) {
             token.setClass(descriptor.class);
         }
@@ -414,12 +403,12 @@ class ChildContainer extends Container {
     getToken(token) {
         return globalThis.domain(token.application.domain.name)
             .getApp(token.application.name)
-            .tokenMap.get(token.descriptor.token);
+            .tokenMap.get(token.descriptor.interface);
     }
     setToken(token) {
         return globalThis.domain(token.application.domain.name)
             .getApp(token.application.name)
-            .tokenMap.set(token.descriptor.token, token);
+            .tokenMap.set(token.descriptor.interface, token);
     }
     getObject(token) {
         let mapForDomain = this.objectMap.get(token.application.domain.name);
@@ -430,7 +419,7 @@ class ChildContainer extends Container {
         if (!mapForApp) {
             return null;
         }
-        return mapForApp.get(token.descriptor.token);
+        return mapForApp.get(token.descriptor.interface);
     }
     setObject(token, object) {
         let mapForDomain = this.objectMap.get(token.application.domain.name);
@@ -443,7 +432,7 @@ class ChildContainer extends Container {
             mapForApp = new Map();
             mapForDomain.set(token.application.name, mapForApp);
         }
-        mapForApp.set(token.descriptor.token, object);
+        mapForApp.set(token.descriptor.interface, object);
     }
     doEventuallyGet(tokens, successCallback, errorCallback) {
         const normalizedTokens = this.normalizeTokens(tokens);
@@ -513,8 +502,7 @@ class ChildContainer extends Container {
                     application: token.application,
                     descriptor: {
                         class: token,
-                        interface: prototype.constructor.name,
-                        token: InjectionApplication.getTokenName(prototype.constructor.name)
+                        interface: prototype.constructor.name
                     }
                 };
             }
@@ -547,7 +535,7 @@ class ChildContainer extends Container {
                             with an instance of a DependencyInjectionToken.`);
                 }
                 // NOTE: object pooling is not supported, see RootContainer for why
-                // const rootObjectPool = this.rootContainer.objectPoolMap.get(token.descriptor.token);
+                // const rootObjectPool = this.rootContainer.objectPoolMap.get(token.descriptor.interface);
                 // if (rootObjectPool && rootObjectPool.length) {
                 //     object = rootObjectPool.pop()
                 // } else {
@@ -12377,9 +12365,9 @@ class ApplicationInitializer {
 
 const landing = lib('landing');
 const tokens = landing.register('ApplicationBuilder', ApplicationInitializer, ApplicationChecker, ApplicationComposer, ApplicationLocator, ApplicationRecorder, SqlSchemaBuilder);
-const APPLICATION_BUILDER = tokens.APPLICATION_BUILDER;
+const APPLICATION_BUILDER = tokens.ApplicationBuilder;
 // Needed as a token in @airport/web-tower (platforms/web-tower)
-tokens.APPLICATION_LOCATOR;
+tokens.ApplicationLocator;
 landing.setDependencies(ApplicationInitializer, {
     airportDatabase: AIRPORT_DATABASE,
     applicationBuilder: APPLICATION_BUILDER,
@@ -38982,7 +38970,11 @@ entityProperty //
     }
 }
 
-class TokenBuilder extends FileBuilder {
+/**
+ * A builder for generating injection.ts
+ *
+ */
+class InjectionFileBuilder extends FileBuilder {
     static getTokenNameFromClassName(className) {
         let tokenName = '';
         for (let i = 0; i < className.length; i++) {
@@ -39007,7 +38999,7 @@ class TokenBuilder extends FileBuilder {
     }
     build() {
         this.buildImports();
-        return `/* eslint-disable */`;
+        throw new Error(`Not Implemented, yet.`);
     }
 }
 
@@ -39140,5 +39132,5 @@ async function generate() {
     console.log('DONE AIRport generation');
 }
 
-export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DbApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityInterfaceFileBuilder, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GeneratedSummaryBuilder, GlobalCandidates, IEntityInterfaceBuilder, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpApplicationBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, TokenBuilder, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
+export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DbApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityInterfaceFileBuilder, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GeneratedSummaryBuilder, GlobalCandidates, IEntityInterfaceBuilder, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, InjectionFileBuilder, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpApplicationBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
 //# sourceMappingURL=index.mjs.map

@@ -9,7 +9,7 @@ export class DependencyInjectionToken<Injected>
 		tokenOrFullDescriptor: IDependencyInjectionToken<Injected> | IFullDITokenDescriptor
 	): string {
 		return tokenOrFullDescriptor.application.domain.name + ':' + tokenOrFullDescriptor.application.name + ':'
-			+ tokenOrFullDescriptor.descriptor.token
+			+ tokenOrFullDescriptor.descriptor.interface
 	}
 
 

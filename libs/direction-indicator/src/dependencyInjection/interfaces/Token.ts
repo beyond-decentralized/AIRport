@@ -29,7 +29,6 @@ export interface IFullDITokenDescriptor {
 export interface IDependencyInjectionTokenDescriptor {
     class?: any,
     interface: string,
-    token?: string,
     isApi?: boolean
 }
 

@@ -33,7 +33,7 @@ export class ChildContainer
     ) {
         return globalThis.domain(token.application.domain.name)
             .getApp(token.application.name)
-            .tokenMap.get(token.descriptor.token)
+            .tokenMap.get(token.descriptor.interface)
     }
 
     private setToken(
@@ -41,7 +41,7 @@ export class ChildContainer
     ) {
         return globalThis.domain(token.application.domain.name)
             .getApp(token.application.name)
-            .tokenMap.set(token.descriptor.token, token)
+            .tokenMap.set(token.descriptor.interface, token)
     }
 
     private getObject(
@@ -56,7 +56,7 @@ export class ChildContainer
             return null
         }
 
-        return mapForApp.get(token.descriptor.token)
+        return mapForApp.get(token.descriptor.interface)
     }
 
     private setObject(
@@ -74,7 +74,7 @@ export class ChildContainer
             mapForDomain.set(token.application.name, mapForApp)
         }
 
-        mapForApp.set(token.descriptor.token, object)
+        mapForApp.set(token.descriptor.interface, object)
     }
 
     private doEventuallyGet(
@@ -177,8 +177,7 @@ export class ChildContainer
                     application: (token as IFullDITokenDescriptor).application,
                     descriptor: {
                         class: token,
-                        interface: prototype.constructor.name,
-                        token: InjectionApplication.getTokenName(prototype.constructor.name)
+                        interface: prototype.constructor.name
                     }
                 } as IFullDITokenDescriptor
             }
@@ -220,7 +219,7 @@ export class ChildContainer
                             with an instance of a DependencyInjectionToken.`)
                     }
                     // NOTE: object pooling is not supported, see RootContainer for why
-                    // const rootObjectPool = this.rootContainer.objectPoolMap.get(token.descriptor.token);
+                    // const rootObjectPool = this.rootContainer.objectPoolMap.get(token.descriptor.interface);
                     // if (rootObjectPool && rootObjectPool.length) {
                     //     object = rootObjectPool.pop()
                     // } else {

@@ -2,7 +2,11 @@ import { IBuilder } from "./Builder";
 import { FileBuilder } from "./entity/FileBuilder";
 import { PathBuilder } from "./PathBuilder";
 
-export class TokenBuilder
+/**
+ * A builder for generating injection.ts
+ * 
+ */
+export class InjectionFileBuilder
     extends FileBuilder
     implements IBuilder {
 
@@ -40,6 +44,6 @@ export class TokenBuilder
     build(): string {
         const imports = this.buildImports();
 
-        return `/* eslint-disable */`
+        throw new Error(`Not Implemented, yet.`)
     }
 }
