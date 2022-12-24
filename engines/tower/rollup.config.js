@@ -1,9 +1,9 @@
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from "rollup-plugin-typescript2";
-import dts from "rollup-plugin-dts";
 import { terser } from 'rollup-plugin-terser';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import copy from 'rollup-plugin-copy';
 
 // const production = !process.env.ROLLUP_WATCH;
 const production = false;
@@ -31,7 +31,12 @@ export default [
                 sourceMap: !production,
                 inlineSources: !production
             }),
-            production && terser()
+            production && terser(),
+            copy({
+                targets: [
+                    { src: 'artifacts/index.html', dest: 'dist' }
+                ]
+            })
         ],
         watch: {
             clearScreen: false
