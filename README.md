@@ -17,6 +17,10 @@ writes the Transaction Log entries back to data hosts.
 *  Access to database is allowed only from App logic that runs in
  domain-sanboxed IFrames (inside AIRport tab).
 
+## Build instructions
+
+Check out [AIRroot](https://github.com/beyond-decentralized/AIRroot) for framework build instructions.
+
 ## Entity Definitions
 
 ```typescript
