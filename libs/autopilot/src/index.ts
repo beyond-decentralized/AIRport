@@ -32,6 +32,7 @@ export function loadUiAutopilot() {
     if (globalThis.IOC) {
         return
     }
+
     const airEntityUtils = new AirEntityUtils()
     const autopilotApiLoader = new AutopilotApiLoader()
     const apiClient = new LocalAPIClient()

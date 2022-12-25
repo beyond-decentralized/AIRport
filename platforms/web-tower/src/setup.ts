@@ -1,4 +1,5 @@
 import { IIsolateMessageOut } from '@airport/apron'
+import { loadAutopilot } from '@airport/autopilot'
 import { ILocalAPIRequest } from '@airport/aviation-communication'
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
@@ -35,6 +36,7 @@ async function loadTransactionalConnector() {
 export function loadIframe(
     applicationName: string
 ) {
+    loadAutopilot()
     loadTower(applicationName)
     loadTransactionalConnector().then()
 }
