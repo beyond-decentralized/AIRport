@@ -1,12 +1,19 @@
 {
     "name": "airport",
     "version": "0.0.1",
-    "devDependencies": {
-      "ts-node": "^10.9.1",
-      "ts-patch": "^2.1.0",
-      "typescript": "^4.5.2"
+    "description": "Beyond decentralized App development framework",
+    "license": "MIT & Apache 2.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/beyond-decentralized/AIRport.git"
     },
-    "scripts": {
-        "build": "ts-patch install -s"
-    }
+    "keywords": [
+        "Autonomous Interdependent Repositories",
+        "AIRport"
+    ],
+    "author": "Artem <Artem.V.Shamsutdinov@beyond-decentralized.world> (https://beyond-decentralized.world/)",
+    "bugs": {
+        "url": "https://github.com/beyond-decentralized/AIRport/issues"
+    },
+    "homepage": "https://github.com/beyond-decentralized/AIRport#readme"
 }
