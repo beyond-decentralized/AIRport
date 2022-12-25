@@ -9281,9 +9281,9 @@ class TerminalRun {
 }
 
 const __constructors__$5 = {
-    Sequence: Sequence,
-    SystemWideOperationId: SystemWideOperationId,
-    TerminalRun: TerminalRun
+    Sequence,
+    SystemWideOperationId,
+    TerminalRun
 };
 const Q_airport____at_airport_slash_airport_dash_code = {
     __constructors__: __constructors__$5,
@@ -9378,16 +9378,7 @@ class SequenceDao extends BaseSequenceDao {
 }
 
 const airportCode = lib('@airport/airport-code');
-const SEQUENCE_DAO = airportCode.token({
-    class: SequenceDao,
-    interface: 'ISequenceDao',
-    token: 'SEQUENCE_DAO'
-});
-airportCode.token({
-    class: TerminalRunDao,
-    interface: 'ITerminalRunDao',
-    token: 'TERMINAL_RUN_DAO'
-});
+airportCode.register(SequenceDao, TerminalRunDao);
 
 class Domain {
 }
@@ -9486,19 +9477,19 @@ class ApplicationVersion {
 }
 
 const __constructors__$4 = {
-    Application: Application,
-    ApplicationColumn: ApplicationColumn,
-    ApplicationCurrentVersion: ApplicationCurrentVersion,
-    ApplicationEntity: ApplicationEntity,
-    ApplicationOperation: ApplicationOperation,
-    ApplicationProperty: ApplicationProperty,
-    ApplicationPropertyColumn: ApplicationPropertyColumn,
-    ApplicationReference: ApplicationReference,
-    ApplicationRelation: ApplicationRelation,
-    ApplicationRelationColumn: ApplicationRelationColumn,
-    ApplicationVersion: ApplicationVersion,
-    Domain: Domain,
-    VersionedApplicationObject: VersionedApplicationObject
+    Application,
+    ApplicationColumn,
+    ApplicationCurrentVersion,
+    ApplicationEntity,
+    ApplicationOperation,
+    ApplicationProperty,
+    ApplicationPropertyColumn,
+    ApplicationReference,
+    ApplicationRelation,
+    ApplicationRelationColumn,
+    ApplicationVersion,
+    Domain,
+    VersionedApplicationObject
 };
 const Q_airport____at_airport_slash_airspace = {
     __constructors__: __constructors__$4,
@@ -12415,7 +12406,7 @@ landing.setDependencies(ApplicationRecorder, {
 landing.setDependencies(SqlSchemaBuilder, {
     airportDatabase: AIRPORT_DATABASE,
     dbApplicationUtils: DbApplicationUtils,
-    sequenceDao: SEQUENCE_DAO,
+    sequenceDao: SequenceDao,
     storeDriver: STORE_DRIVER
 });
 
@@ -12613,20 +12604,20 @@ class RepositoryType {
 }
 
 const __constructors__$3 = {
-    Actor: Actor,
-    OperationHistory: OperationHistory,
-    RecordHistory: RecordHistory,
-    RecordHistoryNewValue: RecordHistoryNewValue,
-    RecordHistoryOldValue: RecordHistoryOldValue,
-    Repository: Repository,
-    RepositoryApplication: RepositoryApplication,
-    RepositoryClient: RepositoryClient,
-    RepositoryDatabase: RepositoryDatabase,
-    RepositoryNesting: RepositoryNesting,
-    RepositoryTerminal: RepositoryTerminal,
-    RepositoryTransactionHistory: RepositoryTransactionHistory,
-    RepositoryType: RepositoryType,
-    TransactionHistory: TransactionHistory
+    Actor,
+    OperationHistory,
+    RecordHistory,
+    RecordHistoryNewValue,
+    RecordHistoryOldValue,
+    Repository,
+    RepositoryApplication,
+    RepositoryClient,
+    RepositoryDatabase,
+    RepositoryNesting,
+    RepositoryTerminal,
+    RepositoryTransactionHistory,
+    RepositoryType,
+    TransactionHistory
 };
 const Q_airport____at_airport_slash_holding_dash_pattern = {
     __constructors__: __constructors__$3,
@@ -13598,21 +13589,21 @@ class UserAccount {
 }
 
 const __constructors__$2 = {
-    Classification: Classification,
+    Classification,
     Client: Client$1,
-    ClientType: ClientType,
-    Continent: Continent,
-    Country: Country,
-    Database: Database,
-    DatabaseType: DatabaseType,
-    MetroArea: MetroArea,
-    MetroAreaState: MetroAreaState,
-    State: State,
-    Terminal: Terminal,
-    TerminalType: TerminalType,
-    Type: Type,
-    TypeClassification: TypeClassification,
-    UserAccount: UserAccount
+    ClientType,
+    Continent,
+    Country,
+    Database,
+    DatabaseType,
+    MetroArea,
+    MetroAreaState,
+    State,
+    Terminal,
+    TerminalType,
+    Type,
+    TypeClassification,
+    UserAccount
 };
 const Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint = {
     __constructors__: __constructors__$2,
@@ -23904,9 +23895,9 @@ class RecordUpdateStage {
 }
 
 const __constructors__$1 = {
-    RecordUpdateStage: RecordUpdateStage,
-    SynchronizationConflict: SynchronizationConflict,
-    SynchronizationConflictValues: SynchronizationConflictValues
+    RecordUpdateStage,
+    SynchronizationConflict,
+    SynchronizationConflictValues
 };
 const Q_airport____at_airport_slash_layover = {
     __constructors__: __constructors__$1,
@@ -35068,7 +35059,7 @@ class SequenceGenerator {
 
 SEQUENCE_GENERATOR.setClass(SequenceGenerator);
 SEQUENCE_GENERATOR.setDependencies({
-    sequenceDao: SEQUENCE_DAO,
+    sequenceDao: SequenceDao,
     terminalStore: TerminalStore
 });
 

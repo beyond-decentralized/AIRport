@@ -1,5 +1,5 @@
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control'
-import { SEQUENCE_DAO } from '@airport/airport-code/dist/esm/index'
+import { SequenceDao } from '@airport/airport-code/dist/esm/index'
 import {
     ApplicationColumnDao,
     ApplicationDao,
@@ -98,6 +98,6 @@ landing.setDependencies(ApplicationRecorder, {
 landing.setDependencies(SqlSchemaBuilder as any, {
     airportDatabase: AIRPORT_DATABASE,
     dbApplicationUtils: DbApplicationUtils,
-    sequenceDao: SEQUENCE_DAO,
+    sequenceDao: SequenceDao,
     storeDriver: STORE_DRIVER
 })
