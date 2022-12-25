@@ -275,12 +275,24 @@ export class QueryResultsDeserializer
 			let _this = this as IInjected
 			Object.defineProperty(object, 'id', {
 				get() {
-					return (_this.__container__.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).encodeId(this)
+					let container = _this.__container__
+					// In UI mode this.__container__ won't be set since depenceny injection library
+					// is not loaded and objects are wired in manually in @airport/autopilot 
+					if (!container) {
+						container = globalThis.IOC
+					}
+					return (container.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).encodeId(this)
 				},
 				set(
 					idString: string
 				) {
-					(_this.__container__.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).setId(idString, this)
+					let container = _this.__container__
+					// In UI mode this.__container__ won't be set since depenceny injection library
+					// is not loaded and objects are wired in manually in @airport/autopilot 
+					if (!container) {
+						container = globalThis.IOC
+					}
+					return (container.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).setId(idString, this)
 				}
 			});
 		}

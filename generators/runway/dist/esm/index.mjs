@@ -33713,10 +33713,22 @@ class QueryResultsDeserializer {
             let _this = this;
             Object.defineProperty(object, 'id', {
                 get() {
-                    return _this.__container__.getSync(globalThis.AIR_ENTITY_UTILS).encodeId(this);
+                    let container = _this.__container__;
+                    // In UI mode this.__container__ won't be set since depenceny injection library
+                    // is not loaded and objects are wired in manually in @airport/autopilot 
+                    if (!container) {
+                        container = globalThis.IOC;
+                    }
+                    return container.getSync(globalThis.AIR_ENTITY_UTILS).encodeId(this);
                 },
                 set(idString) {
-                    _this.__container__.getSync(globalThis.AIR_ENTITY_UTILS).setId(idString, this);
+                    let container = _this.__container__;
+                    // In UI mode this.__container__ won't be set since depenceny injection library
+                    // is not loaded and objects are wired in manually in @airport/autopilot 
+                    if (!container) {
+                        container = globalThis.IOC;
+                    }
+                    return container.getSync(globalThis.AIR_ENTITY_UTILS).setId(idString, this);
                 }
             });
         }
