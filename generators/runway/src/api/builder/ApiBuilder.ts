@@ -40,7 +40,7 @@ export class ApiBuilder
                 relativePathToImport)
         }
 
-        this.addImport(['ApiProxy'], '@airport/final-approach')
+        this.addImport(['ApiProxy'], '@airport/airgate')
 
         const appDeclarationFilePath = this.pathBuilder.workingDirPath
             + '/src/to_be_generated/app-declaration'

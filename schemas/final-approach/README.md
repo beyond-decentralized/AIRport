@@ -9,6 +9,5 @@ AIRport Apps.
 
 ## Description
 
-Currently contains
-*   AirEntity - the super class for all AIRport entities
-*   ApiProxy - the super class for all AIRport @Api() proxies
+Currently contains AirEntity - the super class for all AIRport entities.  It is it's own library to reduce code included in API stubs of AIR Apps.  It is a schema due to AirEntity being a
+superclass of actual entities and thus aneed for a descriptor.

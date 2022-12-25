@@ -8,6 +8,7 @@
   "peerDependencies": {
     "@airbridge/validate": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
+    "@airport/airgate": "0.0.1",
     "@airport/airspace": "0.0.1",
     "@airport/autopilot": "0.0.1",
     "@airport/aviation-communication": "0.0.1",
@@ -47,7 +48,6 @@
   "scripts": {
     "predev": "node generate.mjs",
     "dev": "rollup -c ./rollup.config.js -w",
-    "prebuild": "node generate.mjs",
     "build": "rollup -c ./rollup.config.js"
   },
   "types": "dist/esm/index.d.ts"

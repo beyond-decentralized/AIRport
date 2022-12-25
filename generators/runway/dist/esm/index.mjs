@@ -38250,7 +38250,7 @@ class ApiBuilder extends FileBuilder {
             }
             this.addImport([moduleImport.objectMapByAsName[objectAsName]], relativePathToImport);
         }
-        this.addImport(['ApiProxy'], '@airport/final-approach');
+        this.addImport(['ApiProxy'], '@airport/airgate');
         const appDeclarationFilePath = this.pathBuilder.workingDirPath
             + '/src/to_be_generated/app-declaration';
         const appDeclarationFileRelativePath = resolveRelativePath(this.fullGenerationPath, appDeclarationFilePath);
