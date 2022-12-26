@@ -1,13 +1,13 @@
-import { DomainDao, IDomainDao } from '../dao/DomainDao'
-import { ApplicationColumnDao, IApplicationColumnDao } from '../dao/ApplicationColumnDao';
-import { ApplicationDao, IApplicationDao } from '../dao/ApplicationDao';
-import { ApplicationEntityDao, IApplicationEntityDao } from '../dao/ApplicationEntityDao';
-import { ApplicationPropertyColumnDao, IApplicationPropertyColumnDao } from '../dao/ApplicationPropertyColumnDao';
-import { ApplicationPropertyDao, IApplicationPropertyDao } from '../dao/ApplicationPropertyDao';
-import { ApplicationReferenceDao, IApplicationReferenceDao } from '../dao/ApplicationReferenceDao';
-import { ApplicationRelationColumnDao, IApplicationRelationColumnDao } from '../dao/ApplicationRelationColumnDao';
-import { ApplicationRelationDao, IApplicationRelationDao } from '../dao/ApplicationRelationDao';
-import { ApplicationVersionDao, IApplicationVersionDao } from '../dao/ApplicationVersionDao';
+import { DomainDao } from '../dao/DomainDao'
+import { ApplicationColumnDao } from '../dao/ApplicationColumnDao';
+import { ApplicationDao } from '../dao/ApplicationDao';
+import { ApplicationEntityDao } from '../dao/ApplicationEntityDao';
+import { ApplicationPropertyColumnDao } from '../dao/ApplicationPropertyColumnDao';
+import { ApplicationPropertyDao } from '../dao/ApplicationPropertyDao';
+import { ApplicationReferenceDao } from '../dao/ApplicationReferenceDao';
+import { ApplicationRelationColumnDao } from '../dao/ApplicationRelationColumnDao';
+import { ApplicationRelationDao } from '../dao/ApplicationRelationDao';
+import { ApplicationVersionDao } from '../dao/ApplicationVersionDao';
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { app } from '@airport/direction-indicator';
 import { application } from './app-declaration';
