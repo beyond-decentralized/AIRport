@@ -8,11 +8,6 @@ checking every time but that breaks in inconsistent ways.  The way to do it is t
 just check at the time of reception of the API request and delay it if the app that
 is being called is not initialized.
 
-## Artifact Generation
-many artifacts for current applications need to be generated automatically.  These include:
-
-src/to_be_generated
-
 ## Make table missing FROM join error developer friendly
 
 Right now if you write a query and forget to add a table in the FROM for the entities you

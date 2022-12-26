@@ -25,7 +25,6 @@ files that still need to be refactored:
 apis\air-traffic-control\src\impl\core\Joins.ts
 apis\air-traffic-control\src\impl\core\entity\Entity.ts
 apis\air-traffic-control\src\impl\query\api\Lookup.ts
-apis\air-traffic-control\src\impl\utils\qApplicationBuilderUtils.ts
 apis\air-traffic-control\src\lingo\query\facade\Query.ts
 apis\ground-control\src\impl\utils\DatastructureUtils.ts
 apis\ground-control\src\lingo\core\field\JSONClause.ts
