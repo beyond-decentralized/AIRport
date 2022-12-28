@@ -20,8 +20,6 @@
     ".github": true,
     ".history": true,
     ".vscode": true,
-    "**/node_modules": true,
-    "**/dist": true,
     "**/generated": true,
     "**/.idea": true,
     "**/.rush": true,
