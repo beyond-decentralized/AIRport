@@ -24,9 +24,9 @@ import {
 	RepositoryTransactionType,
 	Repository_LocalId
 } from "@airport/holding-pattern/dist/app/bundle";
-import { 
-	IUserAccount, 
-	Terminal_GUID, 
+import {
+	IUserAccount,
+	Terminal_GUID,
 	UserAccount_GUID
 } from "@airport/travel-document-checkpoint/dist/app/bundle";
 
@@ -529,11 +529,11 @@ export class SyncOutDataSerializer
 		let value = valueRecord[valueFieldName]
 		let serailizedValue = value
 		switch (dbColumn.name) {
-			case airEntity.ORIGINAL_ACTOR_ID: {
+			case airEntity.SOURCE_ACTOR_ID: {
 				serailizedValue = this.getActorInMessageIndexById(value, lookups)
 				break
 			}
-			case airEntity.ORIGINAL_REPOSITORY_ID: {
+			case airEntity.SOURCE_REPOSITORY_ID: {
 				serailizedValue = this.getSerializedRepositoryId(value, lookups)
 				break
 			}

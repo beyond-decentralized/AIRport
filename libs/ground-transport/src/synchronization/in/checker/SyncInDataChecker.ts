@@ -193,19 +193,19 @@ export class SyncInDataChecker
 
 			delete operationHistory._localId
 
-			let originalRepositoryColumnIndex: ApplicationColumn_Index
-			let originalActorColumnIndex: ApplicationColumn_Index
+			let sourceRepositoryColumnIndex: ApplicationColumn_Index
+			let sourceActorColumnIndex: ApplicationColumn_Index
 			let actorIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn> = new Map()
 			let repositoryIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn> = new Map()
 			for (const column of operationHistory.entity.columns) {
 				switch (column.name) {
-					case airEntity.ORIGINAL_ACTOR_ID:
+					case airEntity.SOURCE_ACTOR_ID:
 						actorIdColumnMapByIndex.set(column.index, column)
-						originalActorColumnIndex = column.index
+						sourceActorColumnIndex = column.index
 						break
-					case airEntity.ORIGINAL_REPOSITORY_ID:
+					case airEntity.SOURCE_REPOSITORY_ID:
 						repositoryIdColumnMapByIndex.set(column.index, column)
-						originalRepositoryColumnIndex = column.index
+						sourceRepositoryColumnIndex = column.index
 						break
 				}
 				if (/.*_AID_[\d]+$/.test(column.name)
@@ -317,24 +317,24 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS`)
 		for (const newValue of recordHistory.newValues) {
 			const actorIdColumn = actorIdColumnMapByIndex.get(newValue.columnIndex)
 			if (actorIdColumn) {
-				const originalActor = message.actors[newValue.newValue]
-				if (!originalActor) {
+				const sourceActor = message.actors[newValue.newValue]
+				if (!sourceActor) {
 					throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
 Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessage.actors[${newValue.newValue}]`)
 				}
-				newValue.newValue = originalActor._localId
+				newValue.newValue = sourceActor._localId
 			}
 			const repositoryIdColumn = repositoryIdColumnMapByIndex.get(newValue.columnIndex)
 			if (repositoryIdColumn) {
 				if (newValue.newValue === -1) {
 					newValue.newValue = message.history.repository._localId
 				} else {
-					const originalRepository = message.referencedRepositories[newValue.newValue]
-					if (!originalRepository) {
+					const sourceRepository = message.referencedRepositories[newValue.newValue]
+					if (!sourceRepository) {
 						throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
 	Value is for ${repositoryIdColumn.name} and could find RepositorySynchronizationMessage.referencedRepositories[${newValue.newValue}]`)
 					}
-					newValue.newValue = originalRepository._localId
+					newValue.newValue = sourceRepository._localId
 				}
 			}
 		}
@@ -379,21 +379,21 @@ for ChangeType.UPDATE_ROWS`)
 		for (const oldValue of recordHistory.oldValues) {
 			const actorIdColumn = actorIdColumnMapByIndex.get(oldValue.columnIndex)
 			if (actorIdColumn) {
-				const originalActor = message.actors[oldValue.oldValue]
-				if (!originalActor) {
+				const sourceActor = message.actors[oldValue.oldValue]
+				if (!sourceActor) {
 					throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
-Value is for ORIGINAL_ACTOR_ID and could find RepositorySynchronizationMessage.actors[${oldValue.oldValue}]`)
+Value is for SOURCE_ACTOR_ID and could find RepositorySynchronizationMessage.actors[${oldValue.oldValue}]`)
 				}
-				oldValue.oldValue = originalActor._localId
+				oldValue.oldValue = sourceActor._localId
 			}
 			const repositoryIdColumn = repositoryIdColumnMapByIndex.get(oldValue.columnIndex)
 			if (repositoryIdColumn) {
-				const originalRepository = message.referencedRepositories[oldValue.oldValue]
-				if (!originalRepository) {
+				const sourceRepository = message.referencedRepositories[oldValue.oldValue]
+				if (!sourceRepository) {
 					throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
-Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${oldValue.oldValue}]`)
+Value is for SOURCE_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${oldValue.oldValue}]`)
 				}
-				oldValue.oldValue = originalRepository._localId
+				oldValue.oldValue = sourceRepository._localId
 			}
 		}
 	}

@@ -13,12 +13,12 @@ export const INTERNAL_DOMAINS = [INTERNAL_DOMAIN, INTERNAL_APP_DOMAIN]
 
 export interface IRootTransaction {
 	numberOfOperations: number
-    // Only one new repository can be created at at time
-    newRepository?: IRepository
+	// Only one new repository can be created at at time
+	newRepository?: IRepository
 }
 
 export interface IActor {
-	
+
 	// Id Properties
 	_localId?: number;
 
@@ -33,11 +33,11 @@ export interface IActor {
 	// Transient Properties
 
 	// Public Methods
-	
+
 }
 
 export interface IRepository {
-	
+
 	// Id Properties
 	_localId: number;
 
@@ -56,7 +56,7 @@ export interface IRepository {
 	// Transient Properties
 
 	// Public Methods
-	
+
 }
 
 export interface IAirEntity {
@@ -71,11 +71,11 @@ export interface IAirEntity {
 	ageSuitability?: number;
 	createdAt?: Date;
 	systemWideOperationId?: number;
-	originalActorRecordId?: number;
+	sourceActorRecordId?: number;
 
 	// Non-Id Relations
-	originalRepository?: IRepository;
-	originalActor?: IActor;
+	sourceRepository?: IRepository;
+	sourceActor?: IActor;
 
 	// Transient Properties
 	id?: string

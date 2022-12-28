@@ -94,24 +94,24 @@ export abstract class AirEntity {
 
 	// A record may actually be copied from another repository
 	// via a @ManytoOne dependency.  If that is the case
-	// the link to the original repository ID is saved
+	// the link to the source repository ID is saved
 	// here
 	@ManyToOne()
 	@JoinColumn({
-		name: 'ORIGINAL_REPOSITORY_LID',
+		name: 'SOURCE_REPOSITORY_LID',
 		referencedColumnName: 'REPOSITORY_LID'
 	})
-	originalRepository?: Repository
+	sourceRepository?: Repository
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'ORIGINAL_ACTOR_LID',
+		name: 'SOURCE_ACTOR_LID',
 		referencedColumnName: 'ACTOR_LID'
 	})
-	originalActor?: Actor
+	sourceActor?: Actor
 
-	@Column({ name: 'ORIGINAL_ACTOR_RECORD_ID' })
-	originalActorRecordId?: AirEntity_ActorRecordId
+	@Column({ name: 'SOURCE_ACTOR_RECORD_ID' })
+	sourceActorRecordId?: AirEntity_ActorRecordId
 
 	/*
 	 *A transient convenience property to get the username of the

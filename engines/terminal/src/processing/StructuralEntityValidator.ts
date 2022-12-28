@@ -244,11 +244,11 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 			if (newRepositoryNeeded && originalValues && originalValues.repository
 				&& originalValues.actor && originalValues._actorRecordId) {
 				const airEntity = record as unknown as IAirEntity
-				airEntity.originalRepository = originalValues.repository
-				this.entityStateManager.markAsStub(airEntity.originalRepository)
-				airEntity.originalActor = originalValues.actor
-				this.entityStateManager.markAsStub(airEntity.originalActor)
-				airEntity.originalActorRecordId = originalValues._actorRecordId
+				airEntity.sourceRepository = originalValues.repository
+				this.entityStateManager.markAsStub(airEntity.sourceRepository)
+				airEntity.sourceActor = originalValues.actor
+				this.entityStateManager.markAsStub(airEntity.sourceActor)
+				airEntity.sourceActorRecordId = originalValues._actorRecordId
 			}
 			return
 		}
@@ -290,13 +290,13 @@ is being assigned to repository _localId ${airEntity.repository._localId} (GUID:
 		}
 
 		// If it doesn't then it is a reference to another repository - switch
-		// the record to the parent repository and set the originalRepositoryValue
-		airEntity.originalRepository = airEntity.repository
+		// the record to the parent repository and set the sourceRepositoryValue
+		airEntity.sourceRepository = airEntity.repository
 		airEntity.repository = rootRelationRecord.repository
 
-		// Aslo set originalActor and originalActorRecordId to look up the original record
-		airEntity.originalActor = airEntity.actor
-		airEntity.originalActorRecordId = airEntity._actorRecordId
+		// Aslo set sourceActor and sourceActorRecordId to look up the original record
+		airEntity.sourceActor = airEntity.actor
+		airEntity.sourceActorRecordId = airEntity._actorRecordId
 
 		// reset 'actor' and clear '_actorRecordId' to prevents unique constraint
 		// violation if multiple databases flip to the same exact record (independently)
