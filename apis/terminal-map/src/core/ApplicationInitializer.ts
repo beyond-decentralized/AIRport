@@ -7,7 +7,8 @@ export interface IApplicationInitializer {
         jsonApplications: JsonApplicationWithLastIds[],
         context: IContext,
         checkDependencies: boolean,
-        loadExistingApplications: boolean
+        loadExistingApplications: boolean,
+        areFeatureApps: boolean
     ): Promise<void>
 
     initializeForAIRportApp(

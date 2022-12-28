@@ -129,7 +129,7 @@ export class DatabaseManager
 
 		(this.transactionalServer as any).tempActor = new Actor();
 		await this.applicationInitializer.initialize(
-			applicationsToCreate, context, true, true);
+			applicationsToCreate, context, true, true, true);
 
 		(this.transactionalServer as any).tempActor = null;
 	}
@@ -146,7 +146,7 @@ export class DatabaseManager
 			await this.applicationInitializer.hydrate(blueprintFile.BLUEPRINT as any, context);
 		} else {
 			await this.applicationInitializer.initialize(blueprintFile.BLUEPRINT as any,
-				context, false, false);
+				context, false, false, false);
 		}
 	}
 }

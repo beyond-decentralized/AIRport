@@ -10,6 +10,7 @@ export interface ISchemaBuilder {
 		jsonApplication: JsonApplication,
 		existingApplicationMap: Map<string, IApplication>,
 		newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>,
+		isFeatureApp: boolean,
 		context: IContext,
 	): Promise<void>
 

@@ -167,7 +167,7 @@ export class SqLiteApplicationBuilder
   ): string {
     // TODO: investigate adding foreign key support for SqLite.
     // Right now there is no alter table command and it has to be baked
-    // into the CREATE TALBE command, though techniques for getting
+    // into the CREATE TABLE command, though techniques for getting
     // around this do exist:
     // https://stackoverflow.com/questions/1884818/how-do-i-add-a-foreign-key-to-an-existing-sqlite-table
     return null;

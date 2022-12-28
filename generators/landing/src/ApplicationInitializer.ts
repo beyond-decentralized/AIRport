@@ -110,7 +110,8 @@ export abstract class ApplicationInitializer
 		jsonApplications: JsonApplicationWithLastIds[],
 		context: IContext,
 		checkDependencies: boolean,
-		loadExistingApplications: boolean
+		loadExistingApplications: boolean,
+		areFeatureApps: boolean
 	): Promise<void> {
 		const applicationsWithValidDependencies = await this.
 			getApplicationsWithValidDependencies(jsonApplications, checkDependencies)
@@ -142,7 +143,8 @@ export abstract class ApplicationInitializer
 			if (!existingApplication) {
 				checkedApplicationsWithValidDependencies.push(jsonApplication)
 				await this.applicationBuilder.build(
-					jsonApplication, existingApplicationMap, newJsonApplicationMap, context);
+					jsonApplication, existingApplicationMap, newJsonApplicationMap,
+					areFeatureApps, context);
 			}
 		}
 
