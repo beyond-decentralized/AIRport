@@ -25,9 +25,9 @@ import {
     TRANSACTION_MANAGER
 } from '@airport/terminal-map'
 import { ApplicationInitializer } from './ApplicationInitializer'
-import { ISchemaBuilder } from './builder/ISchemaBuilder'
 import { SqlSchemaBuilder } from './builder/SqlSchemaBuilder'
 import { ApplicationChecker } from './checker/ApplicationChecker'
+import { ApplicationReferenceChecker } from './checker/ApplicationReferenceChecker'
 import { ApplicationLocator } from './locator/ApplicationLocator'
 import { ApplicationComposer } from './recorder/ApplicationComposer'
 import { ApplicationRecorder } from './recorder/ApplicationRecorder'
@@ -35,9 +35,9 @@ import { ApplicationRecorder } from './recorder/ApplicationRecorder'
 const landing = lib('landing')
 
 const tokens = landing.register(
-    'ApplicationBuilder',
-    ApplicationInitializer as any, ApplicationChecker, ApplicationComposer,
-    ApplicationLocator, ApplicationRecorder, SqlSchemaBuilder as any,
+    'ApplicationBuilder', ApplicationInitializer as any, ApplicationChecker,
+    ApplicationComposer, ApplicationLocator, ApplicationRecorder,
+    ApplicationReferenceChecker, SqlSchemaBuilder as any,
 )
 
 export const APPLICATION_BUILDER = tokens.ApplicationBuilder
@@ -95,8 +95,14 @@ landing.setDependencies(ApplicationRecorder, {
     transactionManager: TRANSACTION_MANAGER
 })
 
+landing.setDependencies(ApplicationReferenceChecker, {
+    applicationLocator: ApplicationLocator
+})
+
 landing.setDependencies(SqlSchemaBuilder as any, {
     airportDatabase: AIRPORT_DATABASE,
+    applicationLocator: ApplicationLocator,
+    applicationReferenceChecker: ApplicationReferenceChecker,
     dbApplicationUtils: DbApplicationUtils,
     sequenceDao: SequenceDao,
     storeDriver: STORE_DRIVER

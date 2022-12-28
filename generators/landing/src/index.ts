@@ -1,6 +1,7 @@
 export * from './builder/ISchemaBuilder'
 export * from './builder/SqlSchemaBuilder'
 export * from './checker/ApplicationChecker'
+export * from './checker/ApplicationReferenceChecker'
 export * from './locator/ApplicationLocator'
 export * from './recorder/ApplicationComposer'
 export * from './recorder/ApplicationRecorder'

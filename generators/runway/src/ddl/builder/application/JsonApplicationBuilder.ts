@@ -3,7 +3,6 @@ import {
 	AJsonPropertyIndexConfiguration,
 	ApplicationColumn_Index,
 	DatabaseIndexConfiguration,
-	DatabaseObjectConfiguration,
 	DatabaseOneToManyElements,
 	DbEntity,
 	DbApplication,

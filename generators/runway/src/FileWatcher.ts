@@ -30,6 +30,7 @@ import { ApiBuilder } from './api/builder/ApiBuilder';
 import { ApiIndexBuilder } from './api/builder/ApiIndexBuilder';
 import { VEntityFileBuilder } from './ddl/builder/entity/validate/VEntityFileBuilder';
 import { IOC } from '@airport/direction-indicator';
+import { JsonApplicationChecker } from './ddl/builder/application/JsonApplicationChecker';
 
 /**
  * Created by Papa on 3/30/2016.
@@ -153,6 +154,10 @@ function emitFiles(
 		applicationBuilder.build(configuration.airport.domain,
 			applicationMapByProjectName,
 			entityOperationMap);
+
+	const applicationChecker = new JsonApplicationChecker()
+
+	applicationChecker.checkFrameworkReferences(jsonApplication, indexedApplication)
 
 	const entityFileReference: { [entityName: string]: string } = {};
 

@@ -1,6 +1,7 @@
 import {
 	IDbApplicationUtils,
-	JsonApplication
+	JsonApplication,
+	JsonApplicationVersion
 } from '@airport/ground-control'
 import {
 	ITerminalStore
@@ -22,6 +23,10 @@ export interface IApplicationLocator {
 		fullApplication_Name: string,
 		terminalStore: ITerminalStore,
 	): Promise<IApplicationVersion>
+
+	getCurrentJsonApplicationVersion(
+		jsonApplication: JsonApplication
+	): JsonApplicationVersion
 
 }
 
@@ -66,6 +71,12 @@ export class ApplicationLocator
 	): Promise<IApplicationVersion> {
 		return terminalStore.getLatestApplicationVersionMapByFullApplication_Name()
 			.get(fullApplication_Name)
+	}
+
+	getCurrentJsonApplicationVersion(
+		jsonApplication: JsonApplication
+	): JsonApplicationVersion {
+		return jsonApplication.versions[jsonApplication.versions.length - 1]
 	}
 
 }

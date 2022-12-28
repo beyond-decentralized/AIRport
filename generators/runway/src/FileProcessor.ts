@@ -3,7 +3,6 @@ import * as ts from 'typescript'
 import { visitDaoFile } from './dao/parser/OperationGenerator'
 import { Configuration } from './ddl/options/Options'
 import { EntityCandidate } from './ddl/parser/EntityCandidate'
-import { EntityCandidateRegistry } from './ddl/parser/EntityCandidateRegistry'
 import {
 	GLOBAL_CANDIDATES,
 	visitEntityFile

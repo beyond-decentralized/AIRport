@@ -909,9 +909,9 @@ var airEntity;
     airEntity.FOREIGN_KEY = 'REPOSITORY_LID';
     airEntity.LOCAL_ENTITY_NAME = 'LocalAirEntity';
     airEntity.REPOSITORY_LID = 'REPOSITORY_LID';
-    airEntity.ORIGINAL_ACTOR_ID = 'ORIGINAL_ACTOR_LID';
-    airEntity.ORIGINAL_ACTOR_RECORD_ID = 'ORIGINAL_ACTOR_RECORD_ID';
-    airEntity.ORIGINAL_REPOSITORY_ID = 'ORIGINAL_REPOSITORY_LID';
+    airEntity.SOURCE_ACTOR_ID = 'SOURCE_ACTOR_LID';
+    airEntity.SOURCE_ACTOR_RECORD_ID = 'SOURCE_ACTOR_RECORD_ID';
+    airEntity.SOURCE_REPOSITORY_ID = 'SOURCE_REPOSITORY_LID';
     airEntity.SYS_WIDE_OP_ID_APPLICATION = 'airport____at_airport_slash_airport_dash_code';
     airEntity.SYS_WIDE_OP_ID_ENTITY = 'SystemWideOperationId';
     airEntity.systemWideOperationId = 'systemWideOperationId';
@@ -2508,9 +2508,10 @@ class EntityCandidateRegistry {
                     return;
                 }
                 if (matchingInterfaces.length > 1) {
-                    throw new Error(`Found multiple definitions of interface '${interfaceName}' 
-					implemented by entity '${className}'.  Interfaces implemented by entity 
-					classes must have globally unique names.`);
+                    throw new Error(`
+Found multiple definitions of interface '${interfaceName}' 
+implemented by entity '${className}'.  Interfaces implemented by entity 
+classes must have globally unique names.`);
                 }
                 let anInterface = matchingInterfaces[0];
                 anInterface.implementedBySet.add(entityCandidate);
@@ -2589,19 +2590,21 @@ class EntityCandidateRegistry {
                 }
                 if (property.primitive) {
                     if (property.isArray) {
-                        throw new Error(`Arrays are currently not supported outside of @OneToMany.
-						Please use any.
+                        throw new Error(`
+Arrays are currently not supported outside of @OneToMany.
+Please use @Any().
 						
-						File:     ${property.ownerEntity.path}
-						Property: ${property.name}
-						`);
+File:     ${property.ownerEntity.path}
+Property: ${property.name}
+`);
                     }
                     return;
                 }
                 const objectMapFragments = type.split(':');
                 if (objectMapFragments.length > 1) {
                     if (!property.isTransient) {
-                        throw new Error(`Non @Transient properties cannot be object maps.`);
+                        throw new Error(`
+Non @Transient properties cannot be object maps.`);
                     }
                     property.isMap = true;
                     const objectMapValueFragment = objectMapFragments[objectMapFragments.length - 1];
@@ -2624,9 +2627,10 @@ class EntityCandidateRegistry {
                 if (!property.mapValueIsPrimitive
                     && !fileImports.importMapByObjectAsName[type]
                     && candidateType !== type) {
-                    throw new Error(`Type '${type}' is not an import in ${candidate.path}.` +
-                        `  All type references in entities must must be imported 
-					(needed for DDL hiding).`);
+                    throw new Error(`
+Type '${type}' is not an import in ${candidate.path}.
+All type references in entities must must be imported 
+(needed for DDL hiding).`);
                 }
                 // Do not check transient properties
                 if (property.isTransient) {
@@ -2638,9 +2642,10 @@ class EntityCandidateRegistry {
                     property.fromProject = projectName;
                     if (!this.getReferencedApplication(projectName, property)) {
                         throw new Error(`
-						Processing property ${property.ownerEntity.type}.${property.name}
-						Could not find related application in project '${projectName}'
-						if using external primitive types did you forget to add @DbBoolean(), @DbNumber(), @DbDate() or @DbString() decorator to this property?`);
+Processing property ${property.ownerEntity.type}.${property.name}
+Could not find related application in project '${projectName}'
+if using external primitive types did you forget to add @DbBoolean(),
+@DbNumber(), @DbDate() or @DbString() decorator to this property?`);
                     }
                 }
                 else {
@@ -2666,13 +2671,15 @@ class EntityCandidateRegistry {
                                 property.entity = verifiedEntity;
                             }
                             else {
-                                throw new Error(`Did not find project-local Entity type: '${entityType}' (from interface ${type}).
-								Did you forget to decorate it with @Entity()?`);
+                                throw new Error(`
+Did not find project-local Entity type: '${entityType}' (from interface ${type}).
+Did you forget to decorate it with @Entity()?`);
                             }
                         }
                         else {
-                            throw new Error(`Did not find project-local Entity type: '${type}'.
-							Did you forget to decorate it with @Entity()?`);
+                            throw new Error(`
+Did not find project-local Entity type: '${type}'.
+Did you forget to decorate it with @Entity()?`);
                         }
                     }
                 }
@@ -2725,10 +2732,12 @@ class EntityCandidateRegistry {
         relatedMappedSuperclassesProject = await import('file://' + process.cwd() + '/node_modules/' + projectName + '/dist/definition/mappedSuperclass.mjs');
         // }
         if (!relatedMappedSuperclassesProject) {
-            throw new Error(`Could not find related application project '${projectName}'`);
+            throw new Error(`
+Could not find related application project '${projectName}'`);
         }
         if (!relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
-            throw new Error(`Could not find related Mapped Superclasses in project '${projectName}'`);
+            throw new Error(`
+Could not find related Mapped Superclasses in project '${projectName}'`);
         }
         const mappedSuperClassMapForProject = {};
         for (const mappedSuperclass of relatedMappedSuperclassesProject.MAPPED_SUPERCLASS) {
@@ -2758,15 +2767,16 @@ class EntityCandidateRegistry {
                 otherApplicationDbEntity = dbApplication.currentVersion[0].applicationVersion
                     .entityMapByName[relatedImplementationName];
                 if (!otherApplicationDbEntity) {
-                    throw new Error(`Could not find entity '${relatedImplementationName}' 
-					(from interface ${type}) in project '${projectName}'`);
+                    throw new Error(`
+Could not find entity '${relatedImplementationName}' 
+(from interface ${type}) in project '${projectName}'`);
                 }
             }
             else {
                 throw new Error(`
-						Processing property ${property.ownerEntity.type}.${property.name}
-						Could not find entity '${type}' in project '${projectName}'
-						if using external primitive types did you forget to add @DbBoolean(), @DbNumber(), @DbDate() or @DbString() decorator to this property?`);
+Processing property ${property.ownerEntity.type}.${property.name}
+Could not find entity '${type}' in project '${projectName}'
+if using external primitive types did you forget to add @DbBoolean(), @DbNumber(), @DbDate() or @DbString() decorator to this property?`);
             }
         }
         return otherApplicationDbEntity;
@@ -2777,9 +2787,10 @@ class EntityCandidateRegistry {
             for (let entity of anInterface.implementedBySet) {
                 implementations.push(entity.type);
             }
-            throw new Error(`Interface ${anInterface.name}, is implemented by more than one 
-			entity (${implementations.join(', ')}).  Interfaces used in relations can only be 
-			implemented by one entity.`);
+            throw new Error(`
+Interface ${anInterface.name}, is implemented by more than one 
+entity (${implementations.join(', ')}).  Interfaces used in relations can only be 
+implemented by one entity.`);
         }
         let implementedEntity = anInterface.implementedBySet.values().next().value;
         property.entity = implementedEntity;
@@ -11320,15 +11331,20 @@ takeoff.setDependencies(QueryObjectInitializer, {
 });
 
 class SqlSchemaBuilder {
-    async build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context) {
+    async build(jsonApplication, existingApplicationMap, newJsonApplicationMap, isFeatureApp, context) {
         await this.createApplication(jsonApplication, context);
-        for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
+        const jsonApplicationVersion = this.applicationLocator
+            .getCurrentJsonApplicationVersion(jsonApplication);
+        for (const jsonEntity of jsonApplicationVersion.entities) {
             await this.buildTable(jsonApplication, jsonEntity, existingApplicationMap, context);
         }
         const relatedJsonApplicationMap = new Map();
-        for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
+        for (const jsonEntity of jsonApplicationVersion.entities) {
             await this.buildForeignKeys(jsonApplication, jsonEntity, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap, context);
         }
+        this.applicationReferenceChecker.checkFrameworkReferences(jsonApplication, (jsonApplication, jsonApplicationVersion, jsonRelation) => {
+            return this.getRelationInfo(jsonApplication, jsonApplicationVersion, jsonRelation, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap);
+        });
     }
     async buildTable(jsonApplication, jsonEntity, existingApplicationMap, context) {
         const primaryKeyColumnNames = [];
@@ -11373,49 +11389,59 @@ class SqlSchemaBuilder {
         }
         //
     }
+    getRelationInfo(jsonApplication, jsonApplicationVersion, jsonRelation, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap) {
+        let relatedJsonApplication;
+        let relatedJsonEntity;
+        if (jsonRelation.relationTableApplication_Index
+            || jsonRelation.relationTableApplication_Index === 0) {
+            const referencedApplication = jsonApplicationVersion
+                .referencedApplications[jsonRelation.relationTableApplication_Index];
+            let relatedFullApplication_Name = this.dbApplicationUtils
+                .getFullApplication_NameFromDomainAndName(referencedApplication.domain, referencedApplication.name);
+            relatedJsonApplication = relatedJsonApplicationMap.get(relatedFullApplication_Name);
+            if (!relatedJsonApplication) {
+                const relatedApplication = existingApplicationMap.get(relatedFullApplication_Name);
+                if (relatedApplication) {
+                    // FIXME: this should be looked up though currentVersion - make sure it's populated
+                    // relatedJsonApplication = relatedApplication.currentVersion[0].applicationVersion.jsonApplication
+                    relatedJsonApplication = relatedApplication.versions[0].jsonApplication;
+                }
+                else {
+                    relatedJsonApplication = newJsonApplicationMap.get(relatedFullApplication_Name);
+                }
+                if (!relatedJsonApplication) {
+                    throw new Error(`Could not find related application ${relatedFullApplication_Name}
+          in either existing applications or newly installing applications.`);
+                }
+                relatedJsonApplicationMap.set(relatedFullApplication_Name, relatedJsonApplication);
+            }
+            const relatedApplicationVersion = relatedJsonApplication
+                .versions[relatedJsonApplication.versions.length - 1];
+            relatedJsonEntity = relatedApplicationVersion.entities[jsonRelation.relationTableIndex];
+        }
+        else {
+            relatedJsonApplication = jsonApplication;
+            relatedJsonEntity = jsonApplicationVersion.entities[jsonRelation.relationTableIndex];
+        }
+        return {
+            relatedJsonApplication,
+            relatedJsonEntity
+        };
+    }
+    getApplicationVersion(jsonApplication) {
+        return jsonApplication.versions[jsonApplication.versions.length - 1];
+    }
     async buildForeignKeys(jsonApplication, jsonEntity, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap, context) {
         if (!jsonEntity.relations || !jsonEntity.relations.length) {
             return;
         }
-        const applicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
+        const applicationVersion = this.getApplicationVersion(jsonApplication);
         const tableName = this.storeDriver.getTableName(jsonApplication, jsonEntity, context);
         for (const jsonRelation of jsonEntity.relations) {
             if (jsonRelation.relationType !== EntityRelationType.MANY_TO_ONE) {
                 continue;
             }
-            let relatedJsonApplication;
-            let relatedJsonEntity;
-            if (jsonRelation.relationTableApplication_Index
-                || jsonRelation.relationTableApplication_Index === 0) {
-                const referencedApplication = applicationVersion
-                    .referencedApplications[jsonRelation.relationTableApplication_Index];
-                let relatedFullApplication_Name = this.dbApplicationUtils
-                    .getFullApplication_NameFromDomainAndName(referencedApplication.domain, referencedApplication.name);
-                relatedJsonApplication = relatedJsonApplicationMap.get(relatedFullApplication_Name);
-                if (!relatedJsonApplication) {
-                    const relatedApplication = existingApplicationMap.get(relatedFullApplication_Name);
-                    if (relatedApplication) {
-                        // FIXME: this should be looked up though currentVersion - make sure it's populated
-                        // relatedJsonApplication = relatedApplication.currentVersion[0].applicationVersion.jsonApplication
-                        relatedJsonApplication = relatedApplication.versions[0].jsonApplication;
-                    }
-                    else {
-                        relatedJsonApplication = newJsonApplicationMap.get(relatedFullApplication_Name);
-                    }
-                    if (!relatedJsonApplication) {
-                        throw new Error(`Could not find related application ${relatedFullApplication_Name}
-            in either existing applications or newly installing applications.`);
-                    }
-                    relatedJsonApplicationMap.set(relatedFullApplication_Name, relatedJsonApplication);
-                }
-                const relatedApplicationVersion = relatedJsonApplication
-                    .versions[relatedJsonApplication.versions.length - 1];
-                relatedJsonEntity = relatedApplicationVersion.entities[jsonRelation.relationTableIndex];
-            }
-            else {
-                relatedJsonApplication = jsonApplication;
-                relatedJsonEntity = applicationVersion.entities[jsonRelation.relationTableIndex];
-            }
+            const { relatedJsonApplication, relatedJsonEntity } = this.getRelationInfo(jsonApplication, applicationVersion, jsonRelation, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap);
             let foreignKeyColumnNames = [];
             for (const jsonColumn of jsonEntity.columns) {
                 for (const propertyRef of jsonColumn.propertyRefs) {
@@ -11586,6 +11612,126 @@ class ApplicationChecker {
     }
 }
 
+class ApplicationReferenceChecker {
+    constructor() {
+        this.applicationEntityDescriptors = [{
+                application: '@airport/holding-pattern',
+                entities: [{
+                        entity: 'Actor',
+                        relations: [{
+                                column: 'ACTOR_LID',
+                                property: 'actor'
+                            }, {
+                                column: 'ACTOR_LID',
+                                property: 'sourceActor'
+                            }, {
+                                column: 'GUID'
+                            }]
+                    }, {
+                        entity: 'Repository',
+                        relations: [{
+                                column: 'REPOSITORY_LID',
+                                property: 'repository'
+                            }, {
+                                column: 'REPOSITORY_LID',
+                                property: 'sourceRepository'
+                            }, {
+                                column: 'GUID'
+                            }]
+                    }]
+            }, {
+                application: '@airport/travel-document-checkpoint',
+                entities: [{
+                        entity: 'UserAccount',
+                        relations: [{
+                                column: 'GUID'
+                            }]
+                    }]
+            }
+        ];
+    }
+    checkFrameworkReferences(jsonApplication, getRelationInfo) {
+        if (jsonApplication.domain === 'airport') {
+            return;
+        }
+        const applicationVersion = this.applicationLocator.getCurrentJsonApplicationVersion(jsonApplication);
+        for (const jsonEntity of applicationVersion.entities) {
+            for (const jsonColumn of jsonEntity.columns) {
+                // If it's not a many relation, include it in the generated columns
+                if (!jsonColumn.manyRelationColumnRefs
+                    || !jsonColumn.manyRelationColumnRefs.length) {
+                    continue;
+                }
+                const relations = this.getRelationsFromColumn(jsonEntity, jsonColumn);
+                for (let jsonRelation of relations) {
+                    const { relatedJsonApplication, relatedJsonEntity } = getRelationInfo(jsonApplication, applicationVersion, jsonRelation);
+                    this.isRelationToAFrameworkEntity(relatedJsonApplication, relatedJsonEntity, jsonApplication, jsonEntity, jsonEntity.properties[jsonRelation.propertyRef.index], jsonColumn);
+                }
+            }
+        }
+    }
+    getRelationsFromColumn(jsonEntity, jsonColumn) {
+        let relationSet = new Set();
+        for (let propertyRef of jsonColumn.propertyRefs) {
+            let property = jsonEntity.properties[propertyRef.index];
+            if (property.relationRef) {
+                let relation = jsonEntity.relations[property.relationRef.index];
+                if (!relationSet.has(relation)) {
+                    relationSet.add(relation);
+                }
+            }
+        }
+        return Array.from(relationSet.values());
+    }
+    isRelationToAFrameworkEntity(relatedJsonApplication, relatedJsonEntity, jsonApplication, jsonEntity, jsonProperty, jsonColumn) {
+        const domain = relatedJsonApplication.domain;
+        if ((typeof domain === 'string' && domain !== 'airport')
+            || (typeof domain === 'object' && domain.name !== 'airport')) {
+            return false;
+        }
+        let foundValidFrameworkRelation = false;
+        VALID_FRAMEWORK_RELATION_SEARCH: for (const applicationEntityDescriptor of this.applicationEntityDescriptors) {
+            if (relatedJsonApplication.name !== applicationEntityDescriptor.application) {
+                continue;
+            }
+            for (const entityDescriptor of applicationEntityDescriptor.entities) {
+                if (relatedJsonEntity.name !== entityDescriptor.entity) {
+                    continue;
+                }
+                for (const relationDescriptor of entityDescriptor.relations) {
+                    if (relationDescriptor.property && jsonProperty.name !== relationDescriptor.property) {
+                        continue;
+                    }
+                    // All non @Id AIR entity references 
+                    const manyRelationColumnRef = jsonColumn.manyRelationColumnRefs[0];
+                    const relatedColumn = relatedJsonEntity.columns[manyRelationColumnRef.oneColumnIndex];
+                    if (relatedColumn.name !== relationDescriptor.column) {
+                        continue;
+                    }
+                    foundValidFrameworkRelation = true;
+                    break VALID_FRAMEWORK_RELATION_SEARCH;
+                }
+            }
+        }
+        if (!foundValidFrameworkRelation) {
+            throw new Error(`Found an invalid reference to an internal schema:
+Referencing:
+  Domain:   ${typeof relatedJsonApplication.domain === 'string' ? relatedJsonApplication.domain : relatedJsonApplication.domain}
+  App:      ${relatedJsonApplication.name}
+  Entity:   ${relatedJsonEntity.name}
+
+From:
+  Domain:   ${jsonApplication.domain}
+  App:      ${jsonApplication.name}
+  Entity:   ${jsonEntity.name}
+  Property: ${jsonProperty.name}
+          
+          `);
+        }
+        return true;
+    }
+}
+
 class ApplicationLocator {
     // private terminalStore: ITerminalStore
     locateExistingApplicationVersionRecord(jsonApplication, terminalStore) {
@@ -11607,6 +11753,9 @@ class ApplicationLocator {
     async locateLatestApplicationVersionByApplication_Name(fullApplication_Name, terminalStore) {
         return terminalStore.getLatestApplicationVersionMapByFullApplication_Name()
             .get(fullApplication_Name);
+    }
+    getCurrentJsonApplicationVersion(jsonApplication) {
+        return jsonApplication.versions[jsonApplication.versions.length - 1];
     }
 }
 
@@ -12241,7 +12390,7 @@ class ApplicationInitializer {
      * Reload existing install - hydrate all applications
      * Reload exiting App - nothing to do
      */
-    async initialize(jsonApplications, context, checkDependencies, loadExistingApplications) {
+    async initialize(jsonApplications, context, checkDependencies, loadExistingApplications, areFeatureApps) {
         const applicationsWithValidDependencies = await this.
             getApplicationsWithValidDependencies(jsonApplications, checkDependencies);
         const existingApplicationMap = new Map();
@@ -12269,7 +12418,7 @@ class ApplicationInitializer {
                 getFullApplication_Name(jsonApplication));
             if (!existingApplication) {
                 checkedApplicationsWithValidDependencies.push(jsonApplication);
-                await this.applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context);
+                await this.applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, areFeatureApps, context);
             }
         }
         const allDdlObjects = await this.applicationComposer.compose(checkedApplicationsWithValidDependencies, {
@@ -12355,7 +12504,7 @@ class ApplicationInitializer {
 }
 
 const landing = lib('landing');
-const tokens = landing.register('ApplicationBuilder', ApplicationInitializer, ApplicationChecker, ApplicationComposer, ApplicationLocator, ApplicationRecorder, SqlSchemaBuilder);
+const tokens = landing.register('ApplicationBuilder', ApplicationInitializer, ApplicationChecker, ApplicationComposer, ApplicationLocator, ApplicationRecorder, ApplicationReferenceChecker, SqlSchemaBuilder);
 const APPLICATION_BUILDER = tokens.ApplicationBuilder;
 // Needed as a token in @airport/web-tower (platforms/web-tower)
 tokens.ApplicationLocator;
@@ -12403,8 +12552,13 @@ landing.setDependencies(ApplicationRecorder, {
     domainDao: DomainDao,
     transactionManager: TRANSACTION_MANAGER
 });
+landing.setDependencies(ApplicationReferenceChecker, {
+    applicationLocator: ApplicationLocator
+});
 landing.setDependencies(SqlSchemaBuilder, {
     airportDatabase: AIRPORT_DATABASE,
+    applicationLocator: ApplicationLocator,
+    applicationReferenceChecker: ApplicationReferenceChecker,
     dbApplicationUtils: DbApplicationUtils,
     sequenceDao: SequenceDao,
     storeDriver: STORE_DRIVER
@@ -24667,11 +24821,11 @@ class SyncInDataChecker {
             let repositoryIdColumnMapByIndex = new Map();
             for (const column of operationHistory.entity.columns) {
                 switch (column.name) {
-                    case airEntity.ORIGINAL_ACTOR_ID:
+                    case airEntity.SOURCE_ACTOR_ID:
                         actorIdColumnMapByIndex.set(column.index, column);
                         column.index;
                         break;
-                    case airEntity.ORIGINAL_REPOSITORY_ID:
+                    case airEntity.SOURCE_REPOSITORY_ID:
                         repositoryIdColumnMapByIndex.set(column.index, column);
                         column.index;
                         break;
@@ -24761,12 +24915,12 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS`);
         for (const newValue of recordHistory.newValues) {
             const actorIdColumn = actorIdColumnMapByIndex.get(newValue.columnIndex);
             if (actorIdColumn) {
-                const originalActor = message.actors[newValue.newValue];
-                if (!originalActor) {
+                const sourceActor = message.actors[newValue.newValue];
+                if (!sourceActor) {
                     throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
 Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessage.actors[${newValue.newValue}]`);
                 }
-                newValue.newValue = originalActor._localId;
+                newValue.newValue = sourceActor._localId;
             }
             const repositoryIdColumn = repositoryIdColumnMapByIndex.get(newValue.columnIndex);
             if (repositoryIdColumn) {
@@ -24774,12 +24928,12 @@ Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessa
                     newValue.newValue = message.history.repository._localId;
                 }
                 else {
-                    const originalRepository = message.referencedRepositories[newValue.newValue];
-                    if (!originalRepository) {
+                    const sourceRepository = message.referencedRepositories[newValue.newValue];
+                    if (!sourceRepository) {
                         throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
 	Value is for ${repositoryIdColumn.name} and could find RepositorySynchronizationMessage.referencedRepositories[${newValue.newValue}]`);
                     }
-                    newValue.newValue = originalRepository._localId;
+                    newValue.newValue = sourceRepository._localId;
                 }
             }
         }
@@ -24815,21 +24969,21 @@ for ChangeType.UPDATE_ROWS`);
         for (const oldValue of recordHistory.oldValues) {
             const actorIdColumn = actorIdColumnMapByIndex.get(oldValue.columnIndex);
             if (actorIdColumn) {
-                const originalActor = message.actors[oldValue.oldValue];
-                if (!originalActor) {
+                const sourceActor = message.actors[oldValue.oldValue];
+                if (!sourceActor) {
                     throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
-Value is for ORIGINAL_ACTOR_ID and could find RepositorySynchronizationMessage.actors[${oldValue.oldValue}]`);
+Value is for SOURCE_ACTOR_ID and could find RepositorySynchronizationMessage.actors[${oldValue.oldValue}]`);
                 }
-                oldValue.oldValue = originalActor._localId;
+                oldValue.oldValue = sourceActor._localId;
             }
             const repositoryIdColumn = repositoryIdColumnMapByIndex.get(oldValue.columnIndex);
             if (repositoryIdColumn) {
-                const originalRepository = message.referencedRepositories[oldValue.oldValue];
-                if (!originalRepository) {
+                const sourceRepository = message.referencedRepositories[oldValue.oldValue];
+                if (!sourceRepository) {
                     throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
-Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${oldValue.oldValue}]`);
+Value is for SOURCE_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${oldValue.oldValue}]`);
                 }
-                oldValue.oldValue = originalRepository._localId;
+                oldValue.oldValue = sourceRepository._localId;
             }
         }
     }
@@ -26191,11 +26345,11 @@ class SyncOutDataSerializer {
         let value = valueRecord[valueFieldName];
         let serailizedValue = value;
         switch (dbColumn.name) {
-            case airEntity.ORIGINAL_ACTOR_ID: {
+            case airEntity.SOURCE_ACTOR_ID: {
                 serailizedValue = this.getActorInMessageIndexById(value, lookups);
                 break;
             }
-            case airEntity.ORIGINAL_REPOSITORY_ID: {
+            case airEntity.SOURCE_REPOSITORY_ID: {
                 serailizedValue = this.getSerializedRepositoryId(value, lookups);
                 break;
             }
@@ -30532,7 +30686,7 @@ class DatabaseManager {
             }
         }
         this.transactionalServer.tempActor = new Actor();
-        await this.applicationInitializer.initialize(applicationsToCreate, context, true, true);
+        await this.applicationInitializer.initialize(applicationsToCreate, context, true, true, true);
         this.transactionalServer.tempActor = null;
     }
     async installStarterApplication(stage, hydrate, context) {
@@ -30544,7 +30698,7 @@ class DatabaseManager {
             await this.applicationInitializer.hydrate(blueprintFile.BLUEPRINT, context);
         }
         else {
-            await this.applicationInitializer.initialize(blueprintFile.BLUEPRINT, context, false, false);
+            await this.applicationInitializer.initialize(blueprintFile.BLUEPRINT, context, false, false, false);
         }
     }
 }
@@ -32811,11 +32965,11 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
             if (newRepositoryNeeded && originalValues && originalValues.repository
                 && originalValues.actor && originalValues._actorRecordId) {
                 const airEntity = record;
-                airEntity.originalRepository = originalValues.repository;
-                this.entityStateManager.markAsStub(airEntity.originalRepository);
-                airEntity.originalActor = originalValues.actor;
-                this.entityStateManager.markAsStub(airEntity.originalActor);
-                airEntity.originalActorRecordId = originalValues._actorRecordId;
+                airEntity.sourceRepository = originalValues.repository;
+                this.entityStateManager.markAsStub(airEntity.sourceRepository);
+                airEntity.sourceActor = originalValues.actor;
+                this.entityStateManager.markAsStub(airEntity.sourceActor);
+                airEntity.sourceActorRecordId = originalValues._actorRecordId;
             }
             return;
         }
@@ -32854,12 +33008,12 @@ is being assigned to repository _localId ${airEntity.repository._localId} (GUID:
 	Otherwise, did you mean to set this record's repository to the same one as the referencing record?`);
         }
         // If it doesn't then it is a reference to another repository - switch
-        // the record to the parent repository and set the originalRepositoryValue
-        airEntity.originalRepository = airEntity.repository;
+        // the record to the parent repository and set the sourceRepositoryValue
+        airEntity.sourceRepository = airEntity.repository;
         airEntity.repository = rootRelationRecord.repository;
-        // Aslo set originalActor and originalActorRecordId to look up the original record
-        airEntity.originalActor = airEntity.actor;
-        airEntity.originalActorRecordId = airEntity._actorRecordId;
+        // Aslo set sourceActor and sourceActorRecordId to look up the original record
+        airEntity.sourceActor = airEntity.actor;
+        airEntity.sourceActorRecordId = airEntity._actorRecordId;
         // reset 'actor' and clear '_actorRecordId' to prevents unique constraint
         // violation if multiple databases flip to the same exact record (independently)
         airEntity.actor = context.actor;
@@ -38731,6 +38885,39 @@ ${interfaceSource}
     }
 }
 
+class JsonApplicationChecker {
+    constructor() {
+        this.applicationReferenceChecker = new ApplicationReferenceChecker();
+        this.applicationReferenceChecker.applicationLocator = new ApplicationLocator();
+    }
+    checkFrameworkReferences(jsonApplication, indexedApplication) {
+        this.applicationReferenceChecker.checkFrameworkReferences(jsonApplication, (jsonApplication, jsonApplicationVersion, jsonRelation) => {
+            let relatedJsonApplication;
+            let relatedJsonEntity;
+            if (jsonRelation.relationTableApplication_Index
+                || jsonRelation.relationTableApplication_Index === 0) {
+                const referencedApplication = jsonApplicationVersion
+                    .referencedApplications[jsonRelation.relationTableApplication_Index];
+                // References are by name only since they are loaded from source by name
+                // thus a given Applicaiton shouldn't be referencing two other applications
+                // with the same names
+                relatedJsonApplication = indexedApplication.referencedApplicationsByName[referencedApplication.name].dbApplication;
+                const relatedApplicationVersion = relatedJsonApplication
+                    .versions[relatedJsonApplication.versions.length - 1];
+                relatedJsonEntity = relatedApplicationVersion.entities[jsonRelation.relationTableIndex];
+            }
+            else {
+                relatedJsonApplication = jsonApplication;
+                relatedJsonEntity = jsonApplicationVersion.entities[jsonRelation.relationTableIndex];
+            }
+            return {
+                relatedJsonApplication,
+                relatedJsonEntity
+            };
+        });
+    }
+}
+
 /**
  * Created by Papa on 3/30/2016.
  */
@@ -38819,6 +39006,8 @@ function emitFiles(entityMapByName, configuration, applicationMapByProjectName) 
     }
     const applicationBuilder = new JsonApplicationBuilder(configuration, entityMapByName, applicationString);
     const [jsonApplication, indexedApplication] = applicationBuilder.build(configuration.airport.domain, applicationMapByProjectName, entityOperationMap);
+    const applicationChecker = new JsonApplicationChecker();
+    applicationChecker.checkFrameworkReferences(jsonApplication, indexedApplication);
     const entityFileReference = {};
     const applicationFullName = IOC.getSync(DbApplicationUtils).
         getFullApplication_NameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
@@ -39130,7 +39319,7 @@ async function generate() {
     }
     catch (e) {
         console.log('ERROR in AIRport generation:');
-        console.log(e);
+        throw e;
     }
     console.log('DONE AIRport generation');
 }
