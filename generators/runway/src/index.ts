@@ -63,7 +63,7 @@ export async function generate(): Promise<void> {
 
 	const configuration = readConfiguration(process.cwd(), process.argv);
 	globalThis.configuration = configuration;
-	
+
 	let sourceFilePaths = addRootDirPaths(
 		configuration.airport.ddlDir, 'src/ddl', []
 	)
@@ -73,8 +73,8 @@ export async function generate(): Promise<void> {
 	sourceFilePaths = addRootDirPaths(
 		null, 'src/api', sourceFilePaths
 	)
-	
-	for(const fileProcessor of additionalFileProcessors) {
+
+	for (const fileProcessor of additionalFileProcessors) {
 		sourceFilePaths = addRootDirPaths(null, fileProcessor.getDir(), sourceFilePaths)
 	}
 
@@ -88,7 +88,7 @@ export async function generate(): Promise<void> {
 		)
 	} catch (e) {
 		console.log('ERROR in AIRport generation:')
-		console.log(e)
+		throw e
 	}
 
 	console.log('DONE AIRport generation')
