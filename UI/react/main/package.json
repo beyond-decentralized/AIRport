@@ -97,7 +97,7 @@
     "sql.js": "^1.7.0"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start": "HTTPS=true node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'"
   },
