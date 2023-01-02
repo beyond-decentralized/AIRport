@@ -1,8 +1,0 @@
-{
-  "name": "AIRport-web-ui",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react",
-  "id": "59d4c870"
-}
