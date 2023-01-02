@@ -14,6 +14,7 @@ import { RepositoryTransactionHistoryDuo } from '../duo/history/RepositoryTransa
 import { TransactionHistoryDuo } from '../duo/history/TransactionHistoryDuo'
 import { application } from './app-declaration'
 import { IRepositoryManager } from '../core/RepositoryManager'
+import { RepositoryMemberDao } from './runtime-index'
 
 export const holdingPattern = app(application)
 
@@ -23,7 +24,7 @@ holdingPattern.register(
     ActorDao, OperationHistoryDuo, RecordHistoryDuo,
     RecordHistoryNewValueDao, RecordHistoryNewValueDuo,
     RecordHistoryOldValueDao, RecordHistoryOldValueDuo,
-    RepositoryDao, RepositoryNestingDao,
+    RepositoryDao, RepositoryMemberDao, RepositoryNestingDao,
     RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo,
     TransactionHistoryDuo, RepositoryApi
 )

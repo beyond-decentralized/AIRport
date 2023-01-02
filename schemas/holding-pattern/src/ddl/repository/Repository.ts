@@ -39,6 +39,7 @@ import {
 } from "../../types";
 import { FullApplication_Name } from "@airport/ground-control";
 import { RepositoryNesting } from "./RepositoryNesting";
+import { RepositoryMember } from "./RepositoryMember";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -57,14 +58,6 @@ export class Repository
 	@DbNumber()
 	_localId: Repository_LocalId = null;
 
-	@Column({ name: "GUID", nullable: false })
-	@DbString()
-	GUID: Repository_GUID
-
-	@Column({ name: "NAME", nullable: false })
-	@DbString()
-	name: Repository_Name
-
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
 	ageSuitability: Repository_AgeSuitability
@@ -73,16 +66,24 @@ export class Repository
 	@DbDate()
 	createdAt: Repository_CreatedAt
 
+	@Column({ name: "FULL_APPLICATION_NAME", nullable: false })
+	@DbString()
+	fullApplicationName: FullApplication_Name
+
+	@Column({ name: "GUID", nullable: false })
+	@DbString()
+	GUID: Repository_GUID
+
 	@Column({ name: "IMMUTABLE", nullable: false })
 	immutable: Repository_Immutable
+
+	@Column({ name: "NAME", nullable: false })
+	@DbString()
+	name: Repository_Name
 
 	@Column({ name: "SOURCE", nullable: false })
 	@DbString()
 	source: Repository_Source
-
-	@Column({ name: "FULL_APPLICATION_NAME", nullable: false })
-	@DbString()
-	fullApplicationName: FullApplication_Name
 
 	@Column({ name: "UI_ENTRY_URI", nullable: true })
 	@DbString()
@@ -130,6 +131,9 @@ export class Repository
 		referencedColumnName: 'METRO_AREA_ID', nullable: true
 	})
 	metroArea?: MetroArea
+
+	@OneToMany({ mappedBy: 'repository' })
+	repositoryMembers: RepositoryMember[] = []
 
 	@OneToMany({ mappedBy: 'parentRepository' })
 	repositoryNestings: RepositoryNesting[] = []
