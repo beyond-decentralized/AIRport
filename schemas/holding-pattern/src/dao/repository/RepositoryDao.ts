@@ -79,11 +79,20 @@ export class RepositoryDao
 
 		return await this._find({
 			SELECT: {
+				_localId: Y,
+				ageSuitability: Y,
+				createdAt: Y,
+				GUID: Y,
+				owner: {
+					username: Y,
+				},
 				'*': Y,
-				repositoryNestings: {}
+				repositoryNestings: {},
+				uiEntryUri: Y
 			},
 			FROM: [
 				r = Q.Repository,
+				r.owner.INNER_JOIN(),
 				rn = r.repositoryNestings.LEFT_JOIN()
 			],
 			WHERE: r.parentRepository.IS_NULL()
@@ -98,11 +107,20 @@ export class RepositoryDao
 
 		return await this._findOne({
 			SELECT: {
+				_localId: Y,
+				ageSuitability: Y,
+				createdAt: Y,
+				GUID: Y,
+				owner: {
+					username: Y,
+				},
 				'*': Y,
-				repositoryNestings: {}
+				repositoryNestings: {},
+				uiEntryUri: Y
 			},
 			FROM: [
 				r = Q.Repository,
+				r.owner.INNER_JOIN(),
 				rn = r.repositoryNestings.LEFT_JOIN()
 			],
 			WHERE: r.GUID.equals(repositoryGUID)
@@ -148,14 +166,17 @@ export class RepositoryDao
 		return await this.db.find.tree({
 			SELECT: {
 				_localId,
+				ageSuitability: Y,
+				createdAt: Y,
+				GUID,
 				owner: {
 					GUID
 				},
-				createdAt: Y,
-				GUID
+				uiEntryUri: Y
 			},
 			FROM: [
-				r = Q.Repository
+				r = Q.Repository,
+				r.owner.INNER_JOIN()
 			],
 			WHERE: r._localId.IN(repositoryIds)
 		})
@@ -167,11 +188,15 @@ export class RepositoryDao
 		let r: QRepository
 		return await this.db.find.tree({
 			SELECT: {
-				'*': Y,
+				_localId: Y,
+				ageSuitability: Y,
+				createdAt: Y,
+				GUID: Y,
 				owner: {
 					GUID: Y,
 					username: Y
-				}
+				},
+				uiEntryUri: Y
 			},
 			FROM: [
 				r = Q.Repository,
@@ -189,12 +214,16 @@ export class RepositoryDao
 			o: QUserAccount
 		return await this.db.find.graph({
 			SELECT: {
-				'*': Y,
+				_localId: Y,
+				ageSuitability: Y,
+				createdAt: Y,
+				GUID: Y,
 				owner: {
 					GUID: Y,
 					ranking: Y,
 					username: Y
-				}
+				},
+				uiEntryUri: Y
 			},
 			FROM: [
 				r = Q.Repository,
@@ -210,7 +239,14 @@ export class RepositoryDao
 	): Promise<IRepository[]> {
 		let r: QRepository
 		return await this.db.find.tree({
-			SELECT: {},
+			SELECT: {
+				_localId: Y,
+				ageSuitability: Y,
+				createdAt: Y,
+				GUID: Y,
+				'*': Y,
+				uiEntryUri: Y
+			},
 			FROM: [
 				r = Q.Repository
 			],
