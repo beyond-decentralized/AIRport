@@ -181,6 +181,7 @@ already contains a new repository.`)
 			name,
 			owner: actor.userAccount as any,
 			parentRepository: null,
+			repositoryMembers: [],
 			repositoryNestings: [],
 			repositoryTransactionHistory: [],
 			// FIXME: propage the 
