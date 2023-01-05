@@ -7,70 +7,6 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "session-state dos",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\libs\\session-state\\generate.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\libs\\session-state",
-            "runtimeArgs": [
-                "--experimental-specifier-resolution=node"
-            ]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "session-state sh",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/libs/session-state/generate.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}/libs/session-state",
-            "runtimeArgs": [
-                "--experimental-specifier-resolution=node"
-            ]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "travel-document-checkpoint-dos",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\generate.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\travel-document-checkpoint",
-            "runtimeArgs": [
-                "--experimental-specifier-resolution=node"
-            ]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "travel-document-checkpoint-sh",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/schemas/travel-document-checkpoint/generate.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}/schemas/travel-document-checkpoint",
-            "runtimeArgs": [
-                "--experimental-specifier-resolution=node"
-            ]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
             "name": "airport-code-dos",
             "skipFiles": [
                 "<node_internals>/**"
@@ -135,33 +71,35 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "travel-document-checkpoint-dos",
+            "name": "flight-recorder-dos",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\generate.mjs",
+            "program": "${workspaceFolder}\\schemas\\flight-recorder\\generate.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
-            "cwd": "${workspaceFolder}\\schemas\\travel-document-checkpoint",
+            "cwd": "${workspaceFolder}\\schemas\\flight-recorder",
             "runtimeArgs": [
-                "--experimental-specifier-resolution=node"
+                "--experimental-specifier-resolution=node",
+                "--preserve-symlinks"
             ]
         },
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "travel-document-checkpoint-sh",
+            "name": "flight-recorder-sh",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/schemas/travel-document-checkpoint/generate.mjs",
+            "program": "${workspaceFolder}/schemas/flight-recorder/generate.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
-            "cwd": "${workspaceFolder}/schemas/travel-document-checkpoint",
+            "cwd": "${workspaceFolder}/schemas/flight-recorder",
             "runtimeArgs": [
-                "--experimental-specifier-resolution=node"
+                "--experimental-specifier-resolution=node",
+                "--preserve-symlinks"
             ]
         },
         {
@@ -201,6 +139,32 @@
         {
             "type": "pwa-node",
             "request": "launch",
+            "name": "in-memory-server-dos",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\nonhub\\in-memory-server\\lib\\server.js",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\nonhub\\in-memory-server"
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "in-memory-server-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/nonhub/in-memory-server/lib/server.js",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/nonhub/in-memory-server"
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
             "name": "layover-dos",
             "skipFiles": [
                 "<node_internals>/**"
@@ -233,28 +197,66 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "in-memory-server-dos",
+            "name": "session-state dos",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\nonhub\\in-memory-server\\lib\\server.js",
+            "program": "${workspaceFolder}\\libs\\session-state\\generate.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
-            "cwd": "${workspaceFolder}\\nonhub\\in-memory-server"
+            "cwd": "${workspaceFolder}\\libs\\session-state",
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         },
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "in-memory-server-sh",
+            "name": "session-state sh",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/nonhub/in-memory-server/lib/server.js",
+            "program": "${workspaceFolder}/libs/session-state/generate.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
-            "cwd": "${workspaceFolder}/nonhub/in-memory-server"
+            "cwd": "${workspaceFolder}/libs/session-state",
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "travel-document-checkpoint-dos",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\schemas\\travel-document-checkpoint",
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "travel-document-checkpoint-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/schemas/travel-document-checkpoint/generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/schemas/travel-document-checkpoint",
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node"
+            ]
         }
     ]
 }

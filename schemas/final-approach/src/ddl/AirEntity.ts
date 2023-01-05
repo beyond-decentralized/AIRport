@@ -55,13 +55,9 @@ export abstract class AirEntity {
 	}
 
 	@Id()
-	@ManyToOne()
-	@JoinColumn({
-		name: 'REPOSITORY_LID',
-		referencedColumnName: 'REPOSITORY_LID',
-		nullable: false
-	})
-	repository?: Repository
+	@Column({ name: 'ACTOR_RECORD_ID', nullable: false })
+	@GeneratedValue()
+	_actorRecordId?: AirEntity_ActorRecordId
 
 	@Id()
 	@ManyToOne()
@@ -73,13 +69,19 @@ export abstract class AirEntity {
 	actor?: Actor
 
 	@Id()
-	@Column({ name: 'ACTOR_RECORD_ID', nullable: false })
-	@GeneratedValue()
-	_actorRecordId?: AirEntity_ActorRecordId
+	@ManyToOne()
+	@JoinColumn({
+		name: 'REPOSITORY_LID',
+		referencedColumnName: 'REPOSITORY_LID',
+		nullable: false
+	})
+	repository?: Repository
 
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
 	ageSuitability?: number = 0
+
+	copied?: boolean
 
 	@Column({ name: 'CREATED_AT', nullable: false })
 	@DbDate()
@@ -91,27 +93,6 @@ export abstract class AirEntity {
 	// a marker to find the new values after the update (and before saving them to history).
 	@Column({ name: 'SYSTEM_WIDE_OPERATION_LID', nullable: false })
 	systemWideOperationId?: AirEntity_SystemWideOperationId
-
-	// A record may actually be copied from another repository
-	// via a @ManytoOne dependency.  If that is the case
-	// the link to the source repository ID is saved
-	// here
-	@ManyToOne()
-	@JoinColumn({
-		name: 'SOURCE_REPOSITORY_LID',
-		referencedColumnName: 'REPOSITORY_LID'
-	})
-	sourceRepository?: Repository
-
-	@ManyToOne()
-	@JoinColumn({
-		name: 'SOURCE_ACTOR_LID',
-		referencedColumnName: 'ACTOR_LID'
-	})
-	sourceActor?: Actor
-
-	@Column({ name: 'SOURCE_ACTOR_RECORD_ID' })
-	sourceActorRecordId?: AirEntity_ActorRecordId
 
 	/*
 	 *A transient convenience property to get the username of the

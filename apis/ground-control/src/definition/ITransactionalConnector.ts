@@ -75,6 +75,7 @@ export interface IAirEntity {
 
 	// Non-Id Properties
 	ageSuitability?: number;
+	copied?: boolean;
 	createdAt?: Date;
 	systemWideOperationId?: number;
 	sourceActorRecordId?: number;
