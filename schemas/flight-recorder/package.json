@@ -1,20 +1,23 @@
 {
-  "name": "@airport/travel-document-checkpoint",
+  "name": "@airport/flight-recorder",
   "version": "0.0.1",
   "airport": {
     "domain": "airport",
-    "application": "@airport/travel-document-checkpoint"
+    "application": "@airport/flight-recorder"
   },
   "peerDependencies": {
+    "@airbridge/validate": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
     "@airport/airgate": "0.0.1",
-    "@airbridge/validate": "0.0.1",
-    "@airport/airspace": "0.0.1",
     "@airport/autopilot": "0.0.1",
     "@airport/aviation-communication": "0.0.1",
     "@airport/check-in": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
+    "@airport/final-approach": "0.0.1",
     "@airport/ground-control": "0.0.1",
+    "@airport/holding-pattern": "0.0.1",
+    "@airport/travel-document-checkpoint": "0.0.1",
+    "@airport/airspace": "0.0.1",
     "@airport/tarmaq-dao": "0.0.1",
     "@airport/tarmaq-entity": "0.0.1",
     "@airport/tarmaq-query": "0.0.1",

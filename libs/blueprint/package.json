@@ -5,6 +5,7 @@
     "@airbridge/keyring": "0.0.1",
     "@airport/airport-code": "0.0.1",
     "@airport/airspace": "0.0.1",
+    "@airport/flight-recorder": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
     "@airport/layover": "0.0.1",
     "@airport/session-state": "0.0.1",

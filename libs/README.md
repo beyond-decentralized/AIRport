@@ -2,8 +2,8 @@
 
 Various internal/external facing libraries.
 
-[airbridge](./airbridge)
-FUTURE WORK: Query adapter for multi-AIRport app server scenarios.
+[airgate](./airgate)
+Runtime dependencies needed for App client bundles (currently only ApiProxy).
 
 [autopilot](./autopilot)
 A thin shim to make @Api() calls from Clients and Apps.

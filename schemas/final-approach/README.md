@@ -9,5 +9,7 @@ AIRport Apps.
 
 ## Description
 
-Currently contains AirEntity - the super class for all AIRport entities.  It is it's own library to reduce code included in API stubs of AIR Apps.  It is a schema due to AirEntity being a
-superclass of actual entities and thus aneed for a descriptor.
+Currently contains AirEntity - the super class for all AIRport entities. 
+It is it's own library to reduce code included in API stubs of AIR Apps.
+It is a schema due to AirEntity being a superclass of actual entities 
+and thus a need for an App descriptor (required by superclasses).

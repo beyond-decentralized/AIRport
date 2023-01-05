@@ -10,4 +10,6 @@ Airgate contains the API Proxy needed by AIR App client libraries.
 
 Contains the ApiProxy superclass extended by all API stubs.
 It is it's own library to reduce code included in API stubs
-of AIR Apps.
+of AIR Apps.  It is separate from [@airport/final-approach](../schemas/final-approach)
+because it is is not needed by lazy-loaded UI
+bundles, which include @airport/final-approach.
