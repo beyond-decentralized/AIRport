@@ -1,14 +1,29 @@
-import { Inject, Injected } from '@airport/direction-indicator';
+import { IContext, Inject, Injected } from '@airport/direction-indicator';
 import { ITerminalSessionManager, IUserAccountInfo, IUserSession, TerminalStore, UserStore } from '@airport/terminal-map'
 import { IUserAccountManager } from '@airport/travel-document-checkpoint/dist/app/bundle';
 import { SessionStateApi } from '@airport/session-state/dist/app/bundle'
+import { IKeyRingManager } from '@airbridge/keyring/dist/app/bundle';
+import { IKeyUtils } from '@airport/ground-control';
+import { TransactionManager } from '../orchestration/TransactionManager';
 
 @Injected()
 export class TerminalSessionManager
     implements ITerminalSessionManager {
 
     @Inject()
+    keyRingManager: IKeyRingManager
+
+    @Inject()
+    keyUtils: IKeyUtils
+
+    @Inject()
+    sessionStateApi: SessionStateApi
+
+    @Inject()
     terminalStore: TerminalStore
+
+    @Inject()
+    transactionManager: TransactionManager
 
     @Inject()
     userAccountManager: IUserAccountManager
@@ -16,34 +31,50 @@ export class TerminalSessionManager
     @Inject()
     userStore: UserStore
 
-    @Inject()
-    sessionStateApi: SessionStateApi
-
     async signUp(
-        userAccountInfo: IUserAccountInfo
+        userAccountInfo: IUserAccountInfo,
+        context: IContext
     ): Promise<void> {
         if (this.terminalStore.getIsServer()) {
             throw new Error('Implement');
         }
-        const { userAccount } = await this.userAccountManager
-            .addUserAccount(userAccountInfo.username, userAccountInfo.email,
-                userAccountInfo.password)
 
         const allSessions = this.userStore.getAllSessions()
         let session: IUserSession = {
             currentRootTransaction: null,
             currentTransaction: null,
-            userAccount
+            keyRing: null,
+            userAccount: null
         }
         allSessions.push(session)
 
-        const sessionMapByEmail = this.userStore.getSessionMapByEmail()
-        sessionMapByEmail.set(userAccount.email, session)
+        await this.transactionManager.transactInternal(async (
+            _transaction,
+            context
+        ) => {
+            const signingKey = await this.keyUtils.getSigningKey(521)
 
-        this.userStore.state.next({
-            allSessions,
-            sessionMapByEmail
-        })
+            const { userAccount } = await this.userAccountManager
+                .addUserAccount(userAccountInfo.username, userAccountInfo.email,
+                    signingKey.public, context)
+            session.userAccount = userAccount
+
+            // TODO: replace with passed in key
+            const userPrivateKey = await this.keyUtils.getEncryptionKey()
+
+            const keyRing = await this.keyRingManager.getKeyRing(
+                userPrivateKey, signingKey.private, context)
+
+            session.keyRing = keyRing
+
+            const sessionMapByEmail = this.userStore.getSessionMapByEmail()
+            sessionMapByEmail.set(userAccount.email, session)
+
+            this.userStore.state.next({
+                allSessions,
+                sessionMapByEmail
+            })
+        }, null, context as any)
     }
 
     async login(
@@ -54,7 +85,7 @@ export class TerminalSessionManager
 
     async getUserSession(
         // FIXME: add the actual request object, may be platform specific
-        requestObject?: any
+        context?: IContext
     ): Promise<IUserSession> {
         let session: IUserSession
         if (this.terminalStore.getIsServer()) {

@@ -4,7 +4,6 @@ import {
 } from '@airport/ground-control';
 import { ITransaction } from '../transaction/ITransaction';
 import { ICredentials, ITransactionCredentials } from '../Credentials';
-import { IStoreDriver } from '../core/data/StoreDriver';
 
 export interface IApiCallContext
 	extends IContext {

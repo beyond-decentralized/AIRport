@@ -28,11 +28,10 @@ export class UserAccount {
 
 	@Column({ name: "EMAIL" })
 	@DbString()
-	email: UserAccount_Email
+	email?: UserAccount_Email
 
-	@Column({ name: "PASSWORD_HASH" })
-	@DbString()
-	passwordHash?: UserAccount_PasswordHash
+	@Column({ name: 'PUBLIC_META_SIGNING_KEY', nullable: false })
+	publicMetaSigningKey?: string
 
 	@Column({ name: "RANKING" })
 	@DbNumber()
@@ -40,7 +39,7 @@ export class UserAccount {
 
 	@Column({ name: "USERNAME" })
 	@DbString()
-	username: UserAccount_Username;
+	username?: UserAccount_Username;
 
 	@ManyToOne()
 	@JoinColumn({

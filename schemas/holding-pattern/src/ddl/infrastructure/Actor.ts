@@ -36,7 +36,7 @@ export class Actor {
 		referencedColumnName: 'GUID',
 		nullable: false
 	})
-	userAccount: UserAccount
+	userAccount?: UserAccount
 
 	@ManyToOne()
 	@JoinColumn({

@@ -2,6 +2,7 @@
   "name": "@airport/terminal",
   "version": "0.0.1",
   "peerDependencies": {
+    "@airbridge/keyring": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
     "@airport/airport-code": "0.0.1",
     "@airport/airspace": "0.0.1",

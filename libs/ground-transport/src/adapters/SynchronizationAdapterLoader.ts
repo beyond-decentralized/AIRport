@@ -1,6 +1,6 @@
 import {
-	Inject,
-	Injected
+    Inject,
+    Injected
 } from '@airport/direction-indicator'
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
 
@@ -26,7 +26,7 @@ export class SynchronizationAdapterLoader
             case 'IPFS': {
                 throw new Error(`Not Implemented`)
             }
-            case 'localhost:9000': {
+            case 'DEVSERVR': {
                 return this.debugSynchronizationAdapter
             }
             default:

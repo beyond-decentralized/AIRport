@@ -223,8 +223,8 @@ export class QEntityUtils implements IQEntityUtils {
         ) => {
             if (!property.isId && relationEntity.isAirEntity) {
                 // Internal (non-AIR entity) relations may join by non-@Id()
-                // Fields.  For example Repository.parentRepository
-                // & RepositoryReference join across repositories on GUIDs.
+                // Fields.  For example RepositoryReference join across 
+                // repositories on GUIDs.
                 return
             }
             let qFieldOrRelation

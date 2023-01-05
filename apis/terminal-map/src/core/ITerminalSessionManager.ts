@@ -1,3 +1,4 @@
+import { IContext } from "@airport/direction-indicator";
 import { IUserSession } from "../store/user/UserState";
 
 export interface IUserAccountInfo {
@@ -9,7 +10,8 @@ export interface IUserAccountInfo {
 export interface ITerminalSessionManager {
 
     signUp(
-        userAccount: IUserAccountInfo
+        userAccount: IUserAccountInfo,
+        context: IContext
     ): Promise<void>
 
     login(
@@ -17,8 +19,8 @@ export interface ITerminalSessionManager {
     ): Promise<void>
 
     getUserSession(
-        // FIXME: add the actual request object, may be platform specific
-        requestObject?: any
+        // FIXME: in multi-user setting check the request object, may be platform specific
+        context: IContext
     ): Promise<IUserSession>
 
 }

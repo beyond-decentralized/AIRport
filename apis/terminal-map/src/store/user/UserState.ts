@@ -1,3 +1,4 @@
+import { IKeyRing } from "@airbridge/data-model"
 import { Injected } from "@airport/direction-indicator"
 import { IRootTransaction } from "@airport/ground-control"
 import { UserAccount } from "@airport/travel-document-checkpoint/dist/app/bundle"
@@ -8,6 +9,7 @@ import { internalUserState } from "./theUserState"
 export interface IUserSession {
     currentRootTransaction: IRootTransaction
     currentTransaction: ITransaction
+    keyRing: IKeyRing
     userAccount: UserAccount
 }
 

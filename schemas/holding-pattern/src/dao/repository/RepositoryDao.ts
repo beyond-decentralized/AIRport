@@ -17,7 +17,6 @@ import {
 	IBaseRepositoryDao,
 	IRepository,
 	QRepository,
-	QRepositoryNesting,
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
 } from '../../generated/generated'
@@ -74,8 +73,7 @@ export class RepositoryDao
 	implements IRepositoryDao {
 
 	async findRootRepositories(): Promise<Repository[]> {
-		let r: QRepository,
-			rn: QRepositoryNesting
+		let r: QRepository
 
 		return await this._find({
 			SELECT: {
@@ -87,23 +85,19 @@ export class RepositoryDao
 					username: Y,
 				},
 				'*': Y,
-				repositoryNestings: {},
 				uiEntryUri: Y
 			},
 			FROM: [
 				r = Q.Repository,
-				r.owner.INNER_JOIN(),
-				rn = r.repositoryNestings.LEFT_JOIN()
-			],
-			WHERE: r.parentRepository.IS_NULL()
+				r.owner.INNER_JOIN()
+			]
 		})
 	}
 
 	async findRepository(
 		repositoryGUID: Repository_GUID
 	): Promise<Repository> {
-		let r: QRepository,
-			rn: QRepositoryNesting
+		let r: QRepository
 
 		return await this._findOne({
 			SELECT: {
@@ -115,13 +109,11 @@ export class RepositoryDao
 					username: Y,
 				},
 				'*': Y,
-				repositoryNestings: {},
 				uiEntryUri: Y
 			},
 			FROM: [
 				r = Q.Repository,
-				r.owner.INNER_JOIN(),
-				rn = r.repositoryNestings.LEFT_JOIN()
+				r.owner.INNER_JOIN()
 			],
 			WHERE: r.GUID.equals(repositoryGUID)
 		})

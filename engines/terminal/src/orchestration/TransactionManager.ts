@@ -12,7 +12,6 @@ import {
 import {
 	INTERNAL_APP,
 	INTERNAL_DOMAIN,
-	INTERNAL_DOMAINS,
 	IRootTransaction
 } from '@airport/ground-control';
 import { ISynchronizationOutManager } from '@airport/ground-transport';
@@ -22,7 +21,6 @@ import {
 } from '@airport/holding-pattern/dist/app/bundle';
 import { IQEntityInternal } from '@airport/tarmaq-query';
 import {
-	ICredentials,
 	IStoreDriver,
 	ITerminalSessionManager,
 	ITerminalStore,
@@ -93,7 +91,7 @@ export class TransactionManager
 		credentials: ITransactionCredentials,
 		context: ITransactionContext
 	): Promise<void> {
-		if(!credentials) {
+		if (!credentials) {
 			credentials = {
 				application: INTERNAL_APP,
 				domain: INTERNAL_DOMAIN,
@@ -195,7 +193,7 @@ Only one concurrent transaction is allowed per application.`)
 			// one repository at a time.  APIs exposed externally will never be top
 			// level transactions
 			if (INTERNAL_DOMAIN !== credentials.domain) {
-				const userSession = await this.terminalSessionManager.getUserSession()
+				const userSession = await this.terminalSessionManager.getUserSession(context)
 				userSession.currentRootTransaction = rootTransaction
 			}
 		}
@@ -232,7 +230,7 @@ Only one concurrent transaction is allowed per application.`)
 		const transactionCleared = await this.clearTransaction(
 			transaction, parentTransaction, credentials, context)
 		if (!parentTransaction) {
-			await this.clearUserSessionRootTransaction(transaction)
+			await this.clearUserSessionRootTransaction(transaction, context)
 		}
 		if (transactionCleared) {
 			await this.resumeParentOrPendingTransaction(parentTransaction, context)
@@ -321,7 +319,7 @@ parent transactions.
 				}
 			}
 			if (!parentTransaction) {
-				await this.clearUserSessionRootTransaction(transaction)
+				await this.clearUserSessionRootTransaction(transaction, context)
 			}
 		} finally {
 			if (await this.clearTransaction(
@@ -335,16 +333,17 @@ parent transactions.
 	}
 
 	private async clearUserSessionRootTransaction(
-		transaction: ITransaction
+		transaction: ITransaction,
+		context: IContext
 	): Promise<void> {
-			// Internal calls don't maintain rootTransaction and can create more than
-			// one repository at a time.  APIs exposed externally will never be top
-			// level transactions
+		// Internal calls don't maintain rootTransaction and can create more than
+		// one repository at a time.  APIs exposed externally will never be top
+		// level transactions
 		if (INTERNAL_DOMAIN === transaction.credentials.domain) {
 			return
 		}
 
-		const userSession = await this.terminalSessionManager.getUserSession()
+		const userSession = await this.terminalSessionManager.getUserSession(context)
 		userSession.currentRootTransaction = null
 	}
 

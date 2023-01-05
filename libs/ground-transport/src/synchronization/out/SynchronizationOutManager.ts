@@ -136,8 +136,9 @@ export class SynchronizationOutManager
 
 		for (let i = 0; i < messages.length; i++) {
 			const repository = historiesToSend[i].repository
+			const source = repository.GUID.substring(0, 8)
 			ensureChildArray(
-				ensureChildJsMap(groupMessageMap, repository.source),
+				ensureChildJsMap(groupMessageMap, source),
 				repository.GUID).push(messages[i])
 		}
 

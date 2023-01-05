@@ -11,7 +11,7 @@ export class SessionStateApi {
 
     @Api()
     async getLoggedInUser(): Promise<UserAccount> {
-        const userSession = await this.terminalSessionManager.getUserSession()
+        const userSession = await this.terminalSessionManager.getUserSession({})
         const userAccount = userSession.userAccount
 
         return {

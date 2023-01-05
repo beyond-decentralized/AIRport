@@ -13,7 +13,7 @@ export default {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: '../../UI/react/main/public/client/build/bundle.js'
+		file: '../../../AIRbridge/UI/react/main/public/client/build/bundle.js'
 	},
 	plugins: [
 		peerDepsExternal(),

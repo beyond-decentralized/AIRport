@@ -38,7 +38,6 @@ import {
 	Repository_UiEntryUri
 } from "../../types";
 import { FullApplication_Name } from "@airport/ground-control";
-import { RepositoryNesting } from "./RepositoryNesting";
 import { RepositoryMember } from "./RepositoryMember";
 
 /**
@@ -60,34 +59,34 @@ export class Repository
 
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
-	ageSuitability: Repository_AgeSuitability
+	ageSuitability?: Repository_AgeSuitability
 
 	@Column({ name: "CREATED_AT", nullable: false })
 	@DbDate()
-	createdAt: Repository_CreatedAt
+	createdAt?: Repository_CreatedAt
 
 	@Column({ name: "FULL_APPLICATION_NAME", nullable: false })
 	@DbString()
-	fullApplicationName: FullApplication_Name
+	fullApplicationName?: FullApplication_Name
 
 	@Column({ name: "GUID", nullable: false })
 	@DbString()
-	GUID: Repository_GUID
+	GUID?: Repository_GUID
 
 	@Column({ name: "IMMUTABLE", nullable: false })
-	immutable: Repository_Immutable
+	immutable?: Repository_Immutable
 
 	@Column({ name: "NAME", nullable: false })
 	@DbString()
-	name: Repository_Name
+	name?: Repository_Name
 
 	@Column({ name: "SOURCE", nullable: false })
 	@DbString()
-	source: Repository_Source
+	source?: Repository_Source
 
 	@Column({ name: "UI_ENTRY_URI", nullable: true })
 	@DbString()
-	uiEntryUri: Repository_UiEntryUri
+	uiEntryUri?: Repository_UiEntryUri
 
 	@ManyToOne()
 	@JoinColumn({
@@ -95,14 +94,7 @@ export class Repository
 		referencedColumnName: 'GUID',
 		nullable: false
 	})
-	owner: UserAccount;
-
-	@ManyToOne()
-	@JoinColumn({
-		name: 'PARENT_REPOSITORY_GUID',
-		referencedColumnName: 'GUID'
-	})
-	parentRepository: Repository
+	owner?: UserAccount;
 
 	@ManyToOne()
 	@JoinColumn({
@@ -133,13 +125,10 @@ export class Repository
 	metroArea?: MetroArea
 
 	@OneToMany({ mappedBy: 'repository' })
-	repositoryMembers: RepositoryMember[] = []
-
-	@OneToMany({ mappedBy: 'parentRepository' })
-	repositoryNestings: RepositoryNesting[] = []
+	repositoryMembers?: RepositoryMember[] = []
 
 	@OneToMany({ mappedBy: 'repository' })
-	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];
+	repositoryTransactionHistory?: RepositoryTransactionHistory[] = [];
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryApplications?: RepositoryApplication[] = []

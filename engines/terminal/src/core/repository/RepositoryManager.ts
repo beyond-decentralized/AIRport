@@ -7,18 +7,20 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IActor,
 	IRepository,
 	IRepositoryDao,
-	RepositoryNestingDao,
 	IRepositoryManager,
 	Repository,
-	RepositoryNesting,
-	UpdateState
+	UpdateState,
+	RepositoryMember,
+	RepositoryMemberDao
 } from '@airport/holding-pattern/dist/app/bundle' // default
 import {
 	QAirEntity
 } from '@airport/final-approach' // default
+import {
+	IKeyRingManager
+} from '@airbridge/keyring/dist/app/bundle'
 // import is reserved for Application use
 import {
 	AND,
@@ -34,6 +36,8 @@ import {
 	ITerminalSessionManager, ITerminalStore, ITransactionContext,
 } from '@airport/terminal-map'
 import { v4 as guidv4 } from "uuid";
+import { INTERNAL_DOMAIN } from '@airport/ground-control'
+import { IUserAccount, UserAccount } from '@airport/travel-document-checkpoint'
 
 /**
  * Created by Papa on 2/12/2017.
@@ -53,10 +57,13 @@ export class RepositoryManager
 	implements IRepositoryManager {
 
 	@Inject()
+	keyRingManager: IKeyRingManager
+
+	@Inject()
 	repositoryDao: IRepositoryDao
 
 	@Inject()
-	repositoryNestingDao: RepositoryNestingDao
+	repositoryMemberDao: RepositoryMemberDao
 
 	@Inject()
 	terminalSessionManager: ITerminalSessionManager
@@ -64,81 +71,111 @@ export class RepositoryManager
 	@Inject()
 	terminalStore: ITerminalStore
 
-	async initialize(): Promise<void> {
-	}
-
 	async createRepository(
 		repositoryName: string,
-		parentRepository: Repository,
-		nestingType: string,
 		context: IApiCallContext & ITransactionContext
 	): Promise<Repository> {
-		const userSession = await this.terminalSessionManager.getUserSession()
-		if (userSession.currentRootTransaction.newRepository) {
+		const userSession = await this.terminalSessionManager.getUserSession(context)
+		if (!userSession) {
+			throw new Error('No User Session present')
+		}
+
+		let isInternalDomain = INTERNAL_DOMAIN === context.transaction.credentials.domain
+		if (!isInternalDomain && userSession.currentRootTransaction.newRepository) {
 			throw new Error(`Cannot create more than one repository per transaction:
 Attempting to create a new repository and Operation Context
 already contains a new repository.`)
 		}
 
-		let repository = await this.createRepositoryRecord(
-			repositoryName, parentRepository, userSession.currentTransaction.actor, context)
+		const userAccount = isInternalDomain
+			? userSession.userAccount
+			: userSession.currentTransaction.actor.userAccount
 
-		if (parentRepository) {
-			await this.doAddRepositoryNesting(
-				parentRepository,
-				repository,
-				nestingType,
-				false,
-				context)
+		const repositoryGUID = context.newRepositoryGUID
+			? context.newRepositoryGUID
+			: "DEVSERVR_" + guidv4()
+
+		let repositoryMember: RepositoryMember = null
+		if (context.addRepositoryToKeyRing) {
+			const newRepositoryKeyResult = await this.keyRingManager.addRepositoryKey(
+				repositoryGUID,
+				repositoryName,
+				context
+			)
+
+			repositoryMember = this.getRepositoryMember(
+				userAccount,
+				newRepositoryKeyResult.memberGUID,
+				newRepositoryKeyResult.publicSigningKey
+			)
 		}
 
-		userSession.currentRootTransaction.newRepository = repository
+		let repository = await this.createRepositoryRecord(
+			repositoryName,
+			repositoryGUID,
+			repositoryMember,
+			userAccount,
+			isInternalDomain
+				? context.applicationFullName
+				: userSession.currentTransaction.actor.application.fullName,
+			context)
+
+		if (!isInternalDomain) {
+			userSession.currentRootTransaction.newRepository = repository
+		}
 
 		return repository
 	}
 
-	async addRepositoryNesting(
-		parentRepository: Repository,
-		childRepository: Repository,
-		nestingType: string,
+	async addRepositoryToKeyRing(
+		repository: Repository,
 		context: IContext
 	): Promise<void> {
-		await this.doAddRepositoryNesting(
-			parentRepository,
-			childRepository,
-			nestingType,
-			true,
-			context)
-	}
-
-	async doAddRepositoryNesting(
-		parentRepository: Repository,
-		childRepository: Repository,
-		nestingType: string,
-		saveChildRepository: boolean,
-		context: IContext
-	): Promise<void> {
-		childRepository.parentRepository = parentRepository
-
-		const repositoryNesting = new RepositoryNesting()
-		repositoryNesting.parentRepository = parentRepository
-		repositoryNesting.childRepository = childRepository
-		repositoryNesting.nestingType = nestingType
-		repositoryNesting.childRepositoryName = childRepository.name
-		parentRepository.repositoryNestings.push(repositoryNesting)
-
-		if (saveChildRepository) {
-			await this.repositoryDao.save(childRepository, context)
+		const userSession = await this.terminalSessionManager.getUserSession(context)
+		if (!userSession) {
+			throw new Error(`No User Session found`)
+		}
+		const userAccount = userSession.userAccount
+		if (!userAccount) {
+			throw new Error(`No User Account found in User Session`)
 		}
 
-		await this.repositoryNestingDao.save(repositoryNesting, context)
+		const newRepositoryKeyResult = await this.keyRingManager.addRepositoryKey(
+			repository.GUID,
+			repository.name,
+			context
+		)
+
+		const repositoryMember = this.getRepositoryMember(
+			userAccount,
+			newRepositoryKeyResult.memberGUID,
+			newRepositoryKeyResult.publicSigningKey
+		)
+
+		await this.repositoryMemberDao.save(repositoryMember)
+	}
+
+	private getRepositoryMember(
+		userAccount: UserAccount,
+		GUID: string,
+		publicSigningKey: string
+	): RepositoryMember {
+		const repositoryMember = new RepositoryMember()
+		repositoryMember.GUID = GUID
+		repositoryMember.isAdministrator = true
+		repositoryMember.canWrite = true
+		repositoryMember.userAccount = userAccount
+		repositoryMember.publicSigningKey = publicSigningKey
+
+		return repositoryMember
 	}
 
 	async setUiEntryUri(
 		uiEntryUri: string,
-		repository: Repository
+		repository: Repository,
+		context: IContext
 	): Promise<void> {
-		const userSession = await this.terminalSessionManager.getUserSession()
+		const userSession = await this.terminalSessionManager.getUserSession(context)
 
 		if (userSession.currentTransaction.actor.application.fullName !== repository.fullApplicationName) {
 			throw new Error(`Only the Application that created a repository may change the uiEntityUri.`);
@@ -168,40 +205,33 @@ already contains a new repository.`)
 	}
 
 
-	private getRepositoryRecord(
+	private async createRepositoryRecord(
 		name: string,
-		actor: IActor
-	): Repository {
+		GUID: string,
+		repositoryMember: RepositoryMember,
+		userAccount: IUserAccount,
+		applicationFullName: string,
+		context: IApiCallContext & ITransactionContext,
+	): Promise<Repository> {
 		const repository: Repository = {
 			_localId: null,
 			ageSuitability: 0,
 			createdAt: new Date(),
-			fullApplicationName: actor.application.fullName,
+			fullApplicationName: applicationFullName,
 			immutable: false,
 			name,
-			owner: actor.userAccount as any,
-			parentRepository: null,
+			owner: userAccount as any,
 			repositoryMembers: [],
-			repositoryNestings: [],
 			repositoryTransactionHistory: [],
 			// FIXME: propage the 
-			source: 'localhost:9000',
+			source: 'DEVSERVR',
 			uiEntryUri: null,
-			GUID: guidv4(),
+			GUID,
 		}
-
-		return repository
-	}
-
-	private async createRepositoryRecord(
-		name: string,
-		parentRepository: Repository,
-		actor: IActor,
-		context: IApiCallContext & ITransactionContext,
-	): Promise<Repository> {
-		const repository = this.getRepositoryRecord(name, actor)
-		repository.parentRepository = parentRepository
-
+		if (repositoryMember) {
+			repositoryMember.repository = repository
+			repository.repositoryMembers.push(repositoryMember)
+		}
 		await this.repositoryDao.save(repository, context)
 
 		return repository

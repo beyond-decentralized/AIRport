@@ -1,6 +1,6 @@
 import {
-	Inject,
-	Injected
+    Inject,
+    Injected
 } from '@airport/direction-indicator'
 import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponseFragment } from "@airport/arrivals-n-departures";
 import {
@@ -22,9 +22,10 @@ export class DebugSynchronizationAdapter
         repositoryGUID: Repository_GUID,
         sinceSyncTimestamp?: number
     ): Promise<RepositorySynchronizationMessage[]> {
+        const location = this.getLocation(repositorySource)
         const response: RepositorySynchronizationReadResponseFragment[]
             = await this.client.getRepositoryTransactions(
-                repositorySource, repositoryGUID, sinceSyncTimestamp)
+                location, repositoryGUID, sinceSyncTimestamp)
 
         const messages: RepositorySynchronizationMessage[] = []
 
@@ -74,8 +75,9 @@ export class DebugSynchronizationAdapter
             return false
         }
 
+        const location = this.getLocation(repositorySource)
         const syncTimestamp = await this.client.sendRepositoryTransactions(
-            repositorySource, repositoryGUID, messages)
+            location, repositoryGUID, messages)
 
         if (!syncTimestamp) {
             return false
@@ -86,6 +88,16 @@ export class DebugSynchronizationAdapter
         }
 
         return true
+    }
+
+    private getLocation(
+        repositorySource: Repository_Source
+    ): string {
+        if (repositorySource !== 'DEVSERVR') {
+            throw new Error(`DebugSynchronizationAdapter only supports DEVSERVR source`)
+        }
+
+        return 'localhost:9000'
     }
 
 }

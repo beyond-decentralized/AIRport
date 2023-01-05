@@ -27,25 +27,10 @@ export class RepositoryApi {
 
     @Api()
     async create(
-        repositoryName: string,
-        parentRepository?: Repository,
-        nestingType: string = null
+        repositoryName: string
     ): Promise<Repository> {
         return await this.repositoryManager.createRepository(
-            repositoryName, parentRepository, nestingType, arguments[3])
-    }
-
-    @Api()
-    async addNesting(
-        parentRepository: Repository,
-        childRepository: Repository,
-        nestingType: string = null,
-    ): Promise<void> {
-        await this.repositoryManager.addRepositoryNesting(
-            parentRepository,
-            childRepository,
-            nestingType,
-            arguments[3]);
+            repositoryName, arguments[1])
     }
 
     @Api()
@@ -53,7 +38,7 @@ export class RepositoryApi {
         uiEntryUri: string,
         repository: Repository
     ): Promise<void> {
-        await this.repositoryManager.setUiEntryUri(uiEntryUri, repository)
+        await this.repositoryManager.setUiEntryUri(uiEntryUri, repository, {})
     }
 
 }

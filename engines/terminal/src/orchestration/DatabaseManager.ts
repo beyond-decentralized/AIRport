@@ -9,7 +9,7 @@ import {
 	IContext
 } from '@airport/direction-indicator';
 import {
-	FullApplication_Name, IDbApplicationUtils,
+	FullApplication_Name, IDbApplicationUtils, JsonApplication,
 } from '@airport/ground-control';
 import {
 	Actor,
@@ -85,14 +85,15 @@ export class DatabaseManager
 			_transaction,
 			context
 		) => {
+			const firstApp: JsonApplication = BLUEPRINT[0] as any
 			const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
-				.getFullApplication_Name(BLUEPRINT[0]),
+				.getFullApplication_Name(firstApp),
 				'PACKAGES', context);
 
 			await this.installStarterApplication(false, hydrate, context);
 
 			if (!hydrate) {
-				await this.internalRecordManager.initTerminal(domainName, context)
+				await this.internalRecordManager.initTerminal(firstApp, context)
 			}
 
 			(this.transactionalServer as any).tempActor = null;
@@ -139,13 +140,14 @@ export class DatabaseManager
 		hydrate: boolean,
 		context: IContext,
 	) {
-		const blueprintFile = await import('@airport/blueprint');
+		const schemasDefinitions = await import('@airport/blueprint')
+		const schemas = schemasDefinitions.BLUEPRINT as any
 		if (stage) {
-			await this.applicationInitializer.stage(blueprintFile.BLUEPRINT as any, context);
+			await this.applicationInitializer.stage(schemas, context);
 		} else if (hydrate) {
-			await this.applicationInitializer.hydrate(blueprintFile.BLUEPRINT as any, context);
+			await this.applicationInitializer.hydrate(schemas, context);
 		} else {
-			await this.applicationInitializer.initialize(blueprintFile.BLUEPRINT as any,
+			await this.applicationInitializer.initialize(schemas,
 				context, false, false, false);
 		}
 	}

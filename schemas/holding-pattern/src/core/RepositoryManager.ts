@@ -12,21 +12,15 @@ import { IContext } from '@airport/direction-indicator';
 
 export interface IRepositoryManager {
 
-	initialize(): Promise<void>;
-
 	createRepository(
 		repositoryName: string,
-		parentRepository: Repository,
-		nestingType: string,
 		context: IContext
-	): Promise<Repository>;
+	): Promise<Repository>
 
-	addRepositoryNesting(
-		parentRepository: Repository,
-		childRepository: Repository,
-		nestingType: string,
+	addRepositoryToKeyRing(
+		repository: Repository,
 		context: IContext
-	): Promise<void>;
+	): Promise<void>
 
 	goOffline(): void;
 
@@ -34,7 +28,8 @@ export interface IRepositoryManager {
 
 	setUiEntryUri(
 		uiEntryUri: string,
-		repository: Repository
+		repository: Repository,
+		context: IContext
 	): Promise<void>
 
 	setUpdateStateForAll(updateState: UpdateState): void;

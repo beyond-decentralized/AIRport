@@ -2,8 +2,8 @@ import {
     IContext
 } from "@airport/direction-indicator";
 import {
-    Domain_Name,
-    IEntityStateManager
+    IEntityStateManager,
+    JsonApplication
 } from "@airport/ground-control";
 import {
     Actor,
@@ -37,7 +37,7 @@ export interface IInternalRecordManager {
     ): Promise<void>
 
     initTerminal(
-        domainName: Domain_Name,
+        firstApp: JsonApplication,
         context: IContext
     ): Promise<void>
 
@@ -90,7 +90,7 @@ export class InternalRecordManager
 
             const frameworkActor = this.terminalStore.getFrameworkActor()
             // TODO: add request object
-            const userSession = await this.terminalSessionManager.getUserSession()
+            const userSession = await this.terminalSessionManager.getUserSession(context)
 
             let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
                 application.domain, application.name, userSession.userAccount.GUID, frameworkActor.terminal.GUID)
@@ -125,7 +125,7 @@ export class InternalRecordManager
     }
 
     async initTerminal(
-        domainName: Domain_Name,
+        firstApp: JsonApplication,
         context: IContext
     ): Promise<void> {
         await this.transactionManager.transactInternal(async (
@@ -134,13 +134,18 @@ export class InternalRecordManager
             const userAccount = new UserAccount();
             userAccount.GUID = 'AIRport-internal-' + guidv4();
             userAccount.username = "internalUserAccount";
+            userAccount.publicMetaSigningKey = "not needed";
 
             const terminal = new Terminal();
             terminal.owner = userAccount;
             terminal.isLocal = true;
             terminal.GUID = guidv4();
 
+            const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(
+                firstApp.domain, firstApp.name)
+
             const actor = new Actor();
+            actor.application = application;
             actor.userAccount = userAccount;
             actor.terminal = terminal;
             actor.GUID = guidv4();

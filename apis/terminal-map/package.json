@@ -2,6 +2,7 @@
   "name": "@airport/terminal-map",
   "version": "0.0.1",
   "peerDependencies": {
+    "@airbridge/data-model": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
     "@airport/airport-code": "0.0.1",
     "@airport/aviation-communication": "0.0.1",

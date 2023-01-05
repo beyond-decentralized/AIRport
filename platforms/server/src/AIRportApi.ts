@@ -34,7 +34,7 @@ export class AIRportApi {
 
         switch (action) {
             case 'signUp':
-                await terminalSessionManager.signUp(userAccountInfo).then()
+                await terminalSessionManager.signUp(userAccountInfo, {}).then()
                 break
             default:
                 throw new Error(`Unsupported user action: ${action}`)

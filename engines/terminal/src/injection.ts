@@ -14,6 +14,7 @@ import { lib } from '@airport/direction-indicator'
 import {
     DbApplicationUtils,
     ENTITY_STATE_MANAGER,
+    KeyUtils,
     SEQUENCE_GENERATOR,
     TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control'
@@ -27,7 +28,7 @@ import {
     OperationHistoryDuo,
     RecordHistoryDuo,
     RepositoryDao,
-    RepositoryNestingDao,
+    RepositoryMemberDao,
     RepositoryTransactionHistoryDao,
     RepositoryTransactionHistoryDuo,
     REPOSITORY_MANAGER,
@@ -70,6 +71,7 @@ import { UserAccountManager } from '@airport/travel-document-checkpoint/dist/app
 import { LOCAL_API_SERVER } from '@airport/apron'
 import { IdGenerator } from '@airport/fuel-hydrant-system'
 import { ActiveQueries, ObservableQueryAdapter } from '@airport/flight-number'
+import { KeyRingManager } from '@airbridge/keyring/dist/app/bundle'
 
 const terminal = lib('terminal')
 
@@ -159,8 +161,9 @@ terminal.setDependencies(InternalRecordManager, {
 
 REPOSITORY_MANAGER.setClass(RepositoryManager)
 REPOSITORY_MANAGER.setDependencies({
+    keyRingManager: KeyRingManager,
     repositoryDao: RepositoryDao,
-    repositoryNestingDao: RepositoryNestingDao,
+    repositoryMemberDao: RepositoryMemberDao,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TerminalStore
 })
@@ -212,8 +215,11 @@ terminal.setDependencies(StructuralEntityValidator, {
 
 TERMINAL_SESSION_MANAGER.setClass(TerminalSessionManager)
 TERMINAL_SESSION_MANAGER.setDependencies({
+    keyRingManager: KeyRingManager,
+    keyUtils: KeyUtils,
     sessionStateApi: SessionStateApi,
     terminalStore: TerminalStore,
+    transactionManager: TransactionManager,
     userAccountManager: UserAccountManager,
     userStore: UserStore
 })
