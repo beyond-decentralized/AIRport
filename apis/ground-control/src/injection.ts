@@ -4,10 +4,11 @@ import { ISequenceGenerator } from './implementation/SequenceGenerator';
 import { IEntityStateManager } from './definition/core/operation/EntityStateManager';
 import { ITransactionalConnector } from './definition/ITransactionalConnector';
 import { IUpdateCacheManager } from './definition/data/UpdateCacheManager';
+import { KeyUtils } from './implementation/utils/KeyUtils';
 
 const groundControl = lib('ground-control')
 
-groundControl.register(DbApplicationUtils)
+groundControl.register(DbApplicationUtils, KeyUtils)
 
 export const ENTITY_STATE_MANAGER = groundControl.token<IEntityStateManager>('EntityStateManager')
 export const SEQUENCE_GENERATOR = groundControl.token<ISequenceGenerator>('SequenceGenerator')
