@@ -4,7 +4,7 @@ import {
 	JsonApplication,
 	JsonApplication_Name,
 	Application_Name,
-	FullApplication_Name,
+	Application_FullName,
 	IDbApplicationUtils,
 } from '@airport/ground-control'
 import {
@@ -195,13 +195,13 @@ export class ApplicationChecker
 	private async findExistingApplications(
 		allReferencedApplicationMap: Map<Domain_Name, Map<JsonApplication_Name, JsonApplication>>
 	): Promise<ExistingApplicationInfo> {
-		const fullApplication_Names: FullApplication_Name[] = []
-		const coreDomainAndApplication_NamesByApplication_Name: Map<FullApplication_Name, CoreDomainAndApplication_Names> = new Map()
+		const fullApplication_Names: Application_FullName[] = []
+		const coreDomainAndApplication_NamesByApplication_Name: Map<Application_FullName, CoreDomainAndApplication_Names> = new Map()
 
 		for (const [domainName, allReferencedApplicationsForDomain] of allReferencedApplicationMap) {
 			for (const [coreApplication_Name, referencedApplication] of allReferencedApplicationsForDomain) {
 				const fullApplication_Name = this.dbApplicationUtils.
-					getFullApplication_Name(referencedApplication)
+					getApplication_FullName(referencedApplication)
 				fullApplication_Names.push(fullApplication_Name)
 				coreDomainAndApplication_NamesByApplication_Name.set(fullApplication_Name, {
 					domain: domainName,
@@ -210,7 +210,7 @@ export class ApplicationChecker
 			}
 		}
 
-		let existingApplicationMapByName: Map<FullApplication_Name, IApplication>
+		let existingApplicationMapByName: Map<Application_FullName, IApplication>
 		if (!fullApplication_Names.length) {
 			existingApplicationMapByName = new Map()
 		} else {

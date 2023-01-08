@@ -32,7 +32,7 @@ export class PostgreApplicationBuilder
 		context: IContext,
 	): Promise<void> {
 		const fullApplication_Name = this.dbApplicationUtils.
-			getFullApplication_Name(jsonApplication)
+			getApplication_FullName(jsonApplication)
 		const createApplicationStatement = `CREATE SCHEMA ${fullApplication_Name}`
 
 		await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [],
@@ -88,7 +88,7 @@ export class PostgreApplicationBuilder
 		let allSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
 			const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
-				getFullApplication_Name(jsonApplication)] as QAppInternal
+				getApplication_FullName(jsonApplication)] as QAppInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}
@@ -108,7 +108,7 @@ export class PostgreApplicationBuilder
 		let stagedSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
 			const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
-				getFullApplication_Name(jsonApplication)] as QAppInternal
+				getApplication_FullName(jsonApplication)] as QAppInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}

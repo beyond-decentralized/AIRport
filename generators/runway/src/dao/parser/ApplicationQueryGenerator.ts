@@ -164,7 +164,7 @@ export class ApplicationQueryGenerator {
 			DbApplicationUtils, Lookup, QUERY_FACADE);
 		const context = lookup.ensureContext(null);
 		const qApplication: QAppInternal = airDb.QM[dbAppliationUtils.
-			getFullApplication_Name(jsonApplication)];
+			getApplication_FullName(jsonApplication)];
 		const dbApplicationVersion = qApplication.__dbApplication__
 			.versions[qApplication.__dbApplication__.versions.length - 1];
 		context.dbEntity = dbApplicationVersion.entityMapByName[entityName];
@@ -257,7 +257,7 @@ export class ApplicationQueryGenerator {
 					break;
 				case QueryInputKind.Q:
 					Q = airDb.QM[dbApplicationUtils.
-						getFullApplication_Name(jsonApplication)];
+						getApplication_FullName(jsonApplication)];
 					queryFunctionParameters.push(Q);
 					break;
 				case QueryInputKind.QENTITY:

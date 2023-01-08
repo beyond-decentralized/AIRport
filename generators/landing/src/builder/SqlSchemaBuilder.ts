@@ -171,25 +171,25 @@ export abstract class SqlSchemaBuilder
       || jsonRelation.relationTableApplication_Index === 0) {
       const referencedApplication = jsonApplicationVersion
         .referencedApplications[jsonRelation.relationTableApplication_Index]
-      let relatedFullApplication_Name = this.dbApplicationUtils
-        .getFullApplication_NameFromDomainAndName(
+      let relatedApplication_FullName = this.dbApplicationUtils
+        .getApplication_FullNameFromDomainAndName(
           referencedApplication.domain, referencedApplication.name
         )
-      relatedJsonApplication = relatedJsonApplicationMap.get(relatedFullApplication_Name)
+      relatedJsonApplication = relatedJsonApplicationMap.get(relatedApplication_FullName)
       if (!relatedJsonApplication) {
-        const relatedApplication = existingApplicationMap.get(relatedFullApplication_Name)
+        const relatedApplication = existingApplicationMap.get(relatedApplication_FullName)
         if (relatedApplication) {
           // FIXME: this should be looked up though currentVersion - make sure it's populated
           // relatedJsonApplication = relatedApplication.currentVersion[0].applicationVersion.jsonApplication
           relatedJsonApplication = relatedApplication.versions[0].jsonApplication
         } else {
-          relatedJsonApplication = newJsonApplicationMap.get(relatedFullApplication_Name)
+          relatedJsonApplication = newJsonApplicationMap.get(relatedApplication_FullName)
         }
         if (!relatedJsonApplication) {
-          throw new Error(`Could not find related application ${relatedFullApplication_Name}
+          throw new Error(`Could not find related application ${relatedApplication_FullName}
           in either existing applications or newly installing applications.`)
         }
-        relatedJsonApplicationMap.set(relatedFullApplication_Name, relatedJsonApplication)
+        relatedJsonApplicationMap.set(relatedApplication_FullName, relatedJsonApplication)
       }
       const relatedApplicationVersion: JsonApplicationVersion = relatedJsonApplication
         .versions[relatedJsonApplication.versions.length - 1]

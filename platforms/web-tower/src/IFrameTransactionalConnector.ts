@@ -51,7 +51,7 @@ import { v4 as guidv4 } from "uuid";
 export interface IIframeTransactionalConnector
 	extends ITransactionalConnector {
 
-	getLatestApplicationVersionMapByFullApplication_Name(
+	getLatestApplicationVersionMapByApplication_FullName(
 		applicationName: string
 	): Promise<IApplicationVersion>
 
@@ -131,7 +131,7 @@ export class IframeTransactionalConnector
 				|| !message.application
 				// And if own domain is a direct sub-domain of the message's domain
 				|| ownDomain !== this.dbApplicationUtils.
-					getFullApplication_Name({
+					getApplication_FullName({
 						domain: message.domain,
 						name: message.application,
 					}) + domainSuffix) {
@@ -342,7 +342,7 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	async getLatestApplicationVersionMapByFullApplication_Name(
+	async getLatestApplicationVersionMapByApplication_FullName(
 		fullApplication_Name: string
 	): Promise<IApplicationVersion> {
 		return await this.sendMessageNoWait<IGetLatestApplicationVersionByApplication_NameIMI, IApplicationVersion>({
@@ -511,7 +511,7 @@ export class IframeTransactionalConnector
 				window.parent.postMessage({
 					...this.getCoreFields(),
 					fullApplication_Name: this.dbApplicationUtils.
-						getFullApplication_Name(
+						getApplication_FullName(
 							this.applicationLoader.getApplication()),
 					type: IsolateMessageType.APP_INITIALIZED
 				}, this.applicationStore.state.hostServer)

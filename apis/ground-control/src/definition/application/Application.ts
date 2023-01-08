@@ -12,7 +12,7 @@ export type ApplicationPackage_LocalId = number;
 export type Database_Index = number;
 export type Domain_LocalId = number;
 export type Domain_Name = string;
-export type FullApplication_Name = string; // Domain & Application Names
+export type Application_FullName = string; // Domain & Application Names
 export type JsonApplication_Name = string;
 export type Application_Index = number;
 // NOTE: Application_Name contains Domain_Name as a prefix DOMAIN_NAME___APPLICATION_NAME
@@ -87,7 +87,7 @@ export interface DbApplication
 
 	name: Application_Name;
 
-	fullName: FullApplication_Name
+	fullName: Application_FullName
 
 	scope: Application_Scope;
 

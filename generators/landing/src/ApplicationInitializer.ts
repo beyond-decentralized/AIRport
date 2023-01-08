@@ -10,10 +10,11 @@ import {
 } from '@airport/direction-indicator';
 import {
 	DbApplication,
-	FullApplication_Name,
+	Application_FullName,
 	IDbApplicationUtils,
 	ISequenceGenerator,
-	JsonApplication
+	JsonApplication,
+	IAppTrackerUtils
 } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/apron';
 import {
@@ -57,6 +58,9 @@ export abstract class ApplicationInitializer
 
 	@Inject()
 	applicationRecorder: IApplicationRecorder
+
+	@Inject()
+	appTrackerUtils: IAppTrackerUtils
 
 	@Inject()
 	dbApplicationUtils: IDbApplicationUtils
@@ -116,7 +120,7 @@ export abstract class ApplicationInitializer
 		const applicationsWithValidDependencies = await this.
 			getApplicationsWithValidDependencies(jsonApplications, checkDependencies)
 
-		const existingApplicationMap: Map<FullApplication_Name, IApplication> = new Map()
+		const existingApplicationMap: Map<Application_FullName, IApplication> = new Map()
 		if (loadExistingApplications) {
 			const applications = await this.applicationDao.findAllWithJson()
 			for (const application of applications) {
@@ -127,19 +131,19 @@ export abstract class ApplicationInitializer
 		const newJsonApplicationMap: Map<string, JsonApplicationWithLastIds> = new Map()
 		for (const jsonApplication of jsonApplications) {
 			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-				getFullApplication_Name(jsonApplication))
+				getApplication_FullName(jsonApplication))
 			if (existingApplication) {
 				jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds
 			} else {
 				newJsonApplicationMap.set(this.dbApplicationUtils.
-					getFullApplication_Name(jsonApplication), jsonApplication);
+					getApplication_FullName(jsonApplication), jsonApplication);
 			}
 		}
 
 		let checkedApplicationsWithValidDependencies = []
 		for (const jsonApplication of applicationsWithValidDependencies) {
 			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-				getFullApplication_Name(jsonApplication))
+				getApplication_FullName(jsonApplication))
 			if (!existingApplication) {
 				checkedApplicationsWithValidDependencies.push(jsonApplication)
 				await this.applicationBuilder.build(
@@ -172,6 +176,76 @@ export abstract class ApplicationInitializer
 		}, null, context)
 
 	}
+
+	async isApplicationIsInstalled(
+		domain: string,
+		fullApplication_Name: string
+	): Promise<boolean> {
+		if (!fullApplication_Name) {
+			return false
+		}
+
+		if (this.appTrackerUtils.isInternalDomain(domain)) {
+			return true
+		}
+
+		return !!this.terminalStore.getApplicationInitializer()
+			.applicationWindowMap.get(fullApplication_Name)
+	}
+
+	async ensureApplicationIsInstalled(
+		domainName: string,
+		applicationName: string
+	): Promise<boolean> {
+		const isInternalDomain = await this.appTrackerUtils
+			.isInternalDomain(domainName)
+		if (isInternalDomain) {
+			return true
+		}
+
+		const fullApplication_Name = this.dbApplicationUtils.
+			getApplication_FullNameFromDomainAndName(
+				domainName, applicationName)
+
+		const applicationInitializing = this.terminalStore.getApplicationInitializer()
+			.initializingApplicationMap.get(fullApplication_Name)
+		if (applicationInitializing) {
+			return false
+		}
+
+		const isApplicationLoaded = this.isAppLoaded(fullApplication_Name)
+
+		if (!isApplicationLoaded) {
+			this.terminalStore.getApplicationInitializer()
+				.initializingApplicationMap.set(fullApplication_Name, true)
+			await this.nativeInitializeApplication(domainName,
+				applicationName, fullApplication_Name)
+		}
+
+		return true
+	}
+
+	async installApplication(
+		domainName: string,
+		applicationName: string
+	): Promise<void> {
+		let appIsInstalled = false
+		do {
+			appIsInstalled = await this.ensureApplicationIsInstalled(
+				domainName, applicationName)
+			if (!appIsInstalled) {
+				await new Promise<void>(resolve => {
+					setTimeout(_ => {
+						resolve()
+					}, 100)
+				})
+			}
+		} while (!appIsInstalled)
+	}
+
+	protected abstract isAppLoaded(
+		fullApplication_Name: string
+	): Promise<boolean>
 
 	async initializeForAIRportApp(
 		jsonApplication: JsonApplicationWithLastIds
@@ -260,7 +334,7 @@ export abstract class ApplicationInitializer
 				for (let i = 0; i < applicationReferenceCheckResults.neededDependencies.length; i++) {
 					const neededDependency = applicationReferenceCheckResults.neededDependencies[i]
 					const fullApplication_Name = this.dbApplicationUtils.
-						getFullApplication_Name(neededDependency)
+						getApplication_FullName(neededDependency)
 
 					await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name,
 						fullApplication_Name)

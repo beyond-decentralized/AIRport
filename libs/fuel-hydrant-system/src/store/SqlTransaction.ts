@@ -6,8 +6,7 @@ import {
     Application_Name,
     DbEntity,
     Domain_Name,
-    FullApplication_Name,
-    IActor,
+    Application_FullName,
     InternalFragments,
     JsonQuery,
     PortableQuery,
@@ -103,7 +102,7 @@ export abstract class SqlTransaction
                 name: Domain_Name
             };
             name: Application_Name;
-            fullName?: FullApplication_Name;
+            fullName?: Application_FullName;
         },
         table: {
             name: string, tableConfig?: {

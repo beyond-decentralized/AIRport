@@ -1,10 +1,11 @@
 import { Injected } from '@airport/direction-indicator';
+import { Application_FullName } from '../../definition/application/Application';
 import { ApplicationColumn_Name } from '../../definition/application/Property';
 
 @Injected()
 export class DbApplicationUtils {
 
-	getFullApplication_Name({
+	getApplication_FullName({
 		domain,
 		name,
 	}: {
@@ -12,7 +13,7 @@ export class DbApplicationUtils {
 			name: string
 		},
 		name: string
-	}): string {
+	}): Application_FullName {
 		if ((domain as {
 			name: string
 		}).name) {
@@ -21,13 +22,13 @@ export class DbApplicationUtils {
 			}).name;
 		}
 
-		return this.getFullApplication_NameFromDomainAndName(domain as string, name);
+		return this.getApplication_FullNameFromDomainAndName(domain as string, name);
 	}
 
-	getFullApplication_NameFromDomainAndName(
+	getApplication_FullNameFromDomainAndName(
 		domainName: string,
 		applicationName: string,
-	): string {
+	): Application_FullName {
 		if (domainName.indexOf('___') > -1) {
 			throw new Error('Domain Name cannot contain "___" (3 consecutive underscores) in it.');
 		}

@@ -25,7 +25,7 @@ export class NoOpApplicationBuilder
 		context: IContext,
 	): Promise<void> {
 		const applicationName = IOC.getSync(DbApplicationUtils).
-			getFullApplication_Name(jsonApplication);
+			getApplication_FullName(jsonApplication);
 		const createApplicationStatement = `CREATE APPLICATION ${applicationName}`;
 
 		await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [],
@@ -54,7 +54,7 @@ export class NoOpApplicationBuilder
 		let allSequences: any[] = [];
 		for (const jsonApplication of jsonApplications) {
 			const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
-				getFullApplication_Name(jsonApplication)] as QAppInternal;
+				getApplication_FullName(jsonApplication)] as QAppInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
 			}
@@ -70,7 +70,7 @@ export class NoOpApplicationBuilder
 		let stagedSequences: any[] = [];
 		for (const jsonApplication of jsonApplications) {
 			const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
-				getFullApplication_Name(jsonApplication)] as QAppInternal;
+				getApplication_FullName(jsonApplication)] as QAppInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
 			}

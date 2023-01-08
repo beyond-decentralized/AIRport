@@ -11,8 +11,7 @@ import {
 } from '@airport/tarmaq-entity';
 import {
 	Application_Index,
-	FullApplication_Name,
-	Application_Scope,
+	Application_FullName,
 	ApplicationStatus,
 	Application_Name
 } from '@airport/ground-control';
@@ -31,36 +30,37 @@ export class Application {
 	@Column({ name: 'APPLICATION_INDEX', nullable: false })
 	index: Application_Index;
 
+	@Column({ name: 'GUID', nullable: false })
 	GUID?: string
 
 	@Column({ name: 'SCOPE', nullable: false })
 	@DbString()
-	scope: string // Application_Scope;
+	scope?: string // Application_Scope;
 
 	@Column({ name: 'APPLICATION_NAME', nullable: false })
 	@DbString()
-	name: Application_Name;
+	name?: Application_Name;
 
 	@Column({ name: 'FULL_APPLICATION_NAME', nullable: false })
 	@DbString()
-	fullName: FullApplication_Name;
+	fullName?: Application_FullName;
 
 	@Column({ name: 'STATUS', nullable: false })
 	@DbString()
-	status: ApplicationStatus;
+	status?: ApplicationStatus;
 
 	@Column({ name: 'SIGNATURE', nullable: false })
 	@DbString()
-	signature: string;
+	signature?: string;
 
 	@ManyToOne()
 	@JoinColumn({ name: 'DOMAIN_LID', referencedColumnName: 'DOMAIN_LID', nullable: false })
-	domain: Domain;
+	domain?: Domain;
 
 	@OneToMany({ mappedBy: 'application' })
-	versions: ApplicationVersion[] = [];
+	versions?: ApplicationVersion[] = [];
 
 	@OneToMany({ mappedBy: 'application' })
-	currentVersion: ApplicationCurrentVersion[] = [];
+	currentVersion?: ApplicationCurrentVersion[] = [];
 
 }

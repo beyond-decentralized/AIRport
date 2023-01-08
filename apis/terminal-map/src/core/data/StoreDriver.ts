@@ -3,7 +3,7 @@ import {
 	Application_Name,
 	DbEntity,
 	Domain_Name,
-	FullApplication_Name,
+	Application_FullName,
 	IStoreOperator,
 	JsonQuery,
 	StoreType
@@ -48,7 +48,7 @@ export interface IStoreDriver
 		application: {
 			domain: Domain_Name | {
 				name: Domain_Name
-			}; name: Application_Name; fullName?: FullApplication_Name;
+			}; name: Application_Name; fullName?: Application_FullName;
 		},
 		table: {
 			name: string, tableConfig?: {

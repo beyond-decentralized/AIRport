@@ -19,7 +19,7 @@ export class IFrameApplicationLocator
         terminalStore: ITerminalStore,
     ): Promise<IApplicationVersion> {
         let applicationVersion = terminalStore
-            .getLatestApplicationVersionMapByFullApplication_Name()
+            .getLatestApplicationVersionMapByApplication_FullName()
             .get(fullApplication_Name)
 
         if (applicationVersion) {
@@ -27,6 +27,6 @@ export class IFrameApplicationLocator
         }
 
         return await this.transactionalConnector
-            .getLatestApplicationVersionMapByFullApplication_Name(fullApplication_Name)
+            .getLatestApplicationVersionMapByApplication_FullName(fullApplication_Name)
     }
 }

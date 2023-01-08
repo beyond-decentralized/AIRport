@@ -1,8 +1,9 @@
+import { Application_FullName } from "../application/Application"
 import { ApplicationColumn_Name } from "../application/Property"
 
 export interface IDbApplicationUtils {
 
-    getFullApplication_Name({
+    getApplication_FullName({
         domain,
         name,
     }: {
@@ -10,12 +11,12 @@ export interface IDbApplicationUtils {
             name: string
         },
         name: string
-    }): string
+    }): Application_FullName
 
-    getFullApplication_NameFromDomainAndName(
+    getApplication_FullNameFromDomainAndName(
         domainName: string,
         applicationName: string,
-    ): string
+    ): Application_FullName
 
     getSequenceName(
         prefixedTableName: string,

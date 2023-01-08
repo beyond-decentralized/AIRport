@@ -49,7 +49,7 @@ export class ApplicationLocator
 			return null
 		}
 		const fullApplication_Name = this.dbApplicationUtils.
-			getFullApplication_NameFromDomainAndName(
+			getApplication_FullNameFromDomainAndName(
 				jsonApplication.domain,
 				jsonApplication.name
 			)
@@ -69,7 +69,7 @@ export class ApplicationLocator
 		fullApplication_Name: string,
 		terminalStore: ITerminalStore,
 	): Promise<IApplicationVersion> {
-		return terminalStore.getLatestApplicationVersionMapByFullApplication_Name()
+		return terminalStore.getLatestApplicationVersionMapByApplication_FullName()
 			.get(fullApplication_Name)
 	}
 

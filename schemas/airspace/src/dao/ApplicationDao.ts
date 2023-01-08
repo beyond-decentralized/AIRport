@@ -13,7 +13,7 @@ import {
 	Application_Name,
 	ApplicationStatus,
 	ApplicationVersion_LocalId,
-	FullApplication_Name
+	Application_FullName
 } from '@airport/ground-control'
 import {
 	BaseApplicationDao,
@@ -63,8 +63,8 @@ export interface IApplicationDao
 	): Promise<void>;
 
 	findMapByFullNames(
-		fullApplication_Names: FullApplication_Name[]
-	): Promise<Map<FullApplication_Name, IApplication>>
+		fullApplication_Names: Application_FullName[]
+	): Promise<Map<Application_FullName, IApplication>>
 
 	findByDomain_NamesAndApplication_Names(
 		domainNames: string[],
@@ -298,9 +298,9 @@ export class ApplicationDao
 	}
 
 	async findMapByFullNames(
-		fullApplication_Names: FullApplication_Name[]
-	): Promise<Map<FullApplication_Name, IApplication>> {
-		const mapByFullName: Map<FullApplication_Name, IApplication> = new Map()
+		fullApplication_Names: Application_FullName[]
+	): Promise<Map<Application_FullName, IApplication>> {
+		const mapByFullName: Map<Application_FullName, IApplication> = new Map()
 
 		let s: QApplication
 

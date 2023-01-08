@@ -15,7 +15,7 @@ import {
 	DbApplication,
 	DbEntity,
 	Domain_Name,
-	FullApplication_Name,
+	Application_FullName,
 	IDbApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
@@ -132,7 +132,7 @@ export abstract class SqlDriver
 				name: Domain_Name
 			};
 			name: Application_Name;
-			fullName?: FullApplication_Name;
+			fullName?: Application_FullName;
 		},
 		table: {
 			name: string, tableConfig?: {
@@ -149,7 +149,7 @@ export abstract class SqlDriver
 		if ((application as DbApplication).fullName) {
 			fullApplication_Name = (application as DbApplication).fullName;
 		} else {
-			fullApplication_Name = this.dbApplicationUtils.getFullApplication_Name(application);
+			fullApplication_Name = this.dbApplicationUtils.getApplication_FullName(application);
 		}
 		return this.composeTableName(fullApplication_Name, theTableName, context);
 	}

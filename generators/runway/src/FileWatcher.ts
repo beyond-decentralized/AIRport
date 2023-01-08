@@ -162,7 +162,7 @@ function emitFiles(
 	const entityFileReference: { [entityName: string]: string } = {};
 
 	const applicationFullName = IOC.getSync(DbApplicationUtils).
-		getFullApplication_NameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
+		getApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
 
 	const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
 	const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');

@@ -9,7 +9,7 @@ import {
 	IContext
 } from '@airport/direction-indicator';
 import {
-	FullApplication_Name, IDbApplicationUtils, JsonApplication,
+	Application_FullName, IDbApplicationUtils, JsonApplication,
 } from '@airport/ground-control';
 import {
 	Actor,
@@ -87,7 +87,7 @@ export class DatabaseManager
 		) => {
 			const firstApp: JsonApplication = BLUEPRINT[0] as any
 			const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
-				.getFullApplication_Name(firstApp),
+				.getApplication_FullName(firstApp),
 				'PACKAGES', context);
 
 			await this.installStarterApplication(false, hydrate, context);
@@ -112,7 +112,7 @@ export class DatabaseManager
 		jsonApplications?: JsonApplicationWithLastIds[]
 	): Promise<void> {
 		const applications = await this.applicationDao.findAllWithJson()
-		const existingApplicationMap: Map<FullApplication_Name, IApplication> = new Map()
+		const existingApplicationMap: Map<Application_FullName, IApplication> = new Map()
 		for (const application of applications) {
 			existingApplicationMap.set(application.fullName, application)
 		}
@@ -120,7 +120,7 @@ export class DatabaseManager
 		const applicationsToCreate: JsonApplicationWithLastIds[] = []
 		for (const jsonApplication of jsonApplications) {
 			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils
-				.getFullApplication_Name(jsonApplication))
+				.getApplication_FullName(jsonApplication))
 			if (existingApplication) {
 				jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds
 			} else {
