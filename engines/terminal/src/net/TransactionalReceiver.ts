@@ -10,9 +10,8 @@ import {
     IContext,
 } from '@airport/direction-indicator';
 import {
-    IDbApplicationUtils,
-    INTERNAL_DOMAIN,
-    INTERNAL_DOMAINS
+    IAppTrackerUtils,
+    IDbApplicationUtils
 } from '@airport/ground-control';
 import {
     IApiIMI,
@@ -57,6 +56,9 @@ export abstract class TransactionalReceiver {
     applicationDao: ApplicationDao
 
     @Inject()
+    appTrackerUtils: IAppTrackerUtils
+
+    @Inject()
     databaseManager: IDatabaseManager
 
     @Inject()
@@ -83,8 +85,10 @@ export abstract class TransactionalReceiver {
         let result: any
         let errorMessage
         try {
-            if (INTERNAL_DOMAIN === message.domain) {
-                throw new Error(`Internal domain cannot be used in external calls`)
+            const isInternalDomain = await this.appTrackerUtils
+                .isInternalDomain(message.domain)
+            if (isInternalDomain) {
+                throw new Error(`Internal domains cannot be used in external calls`)
             }
             let credentials: ITransactionCredentials = {
                 application: message.application,
@@ -137,10 +141,10 @@ export abstract class TransactionalReceiver {
                 let initConnectionMessage: IInitConnectionIMI = message as any
                 const application: JsonApplicationWithLastIds = initConnectionMessage.jsonApplication
                 const fullApplication_Name = this.dbApplicationUtils.
-                    getFullApplication_Name(application)
-                const messageFullApplication_Name = this.dbApplicationUtils.
-                    getFullApplication_NameFromDomainAndName(message.domain, message.application)
-                if (fullApplication_Name !== messageFullApplication_Name) {
+                    getApplication_FullName(application)
+                const messageApplication_FullName = this.dbApplicationUtils.
+                    getApplication_FullNameFromDomainAndName(message.domain, message.application)
+                if (fullApplication_Name !== messageApplication_FullName) {
                     theResult = null
                     break
                 }
@@ -171,7 +175,7 @@ export abstract class TransactionalReceiver {
                     theResult
                 }
             case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
-                theResult = this.terminalStore.getLatestApplicationVersionMapByFullApplication_Name()
+                theResult = this.terminalStore.getLatestApplicationVersionMapByApplication_FullName()
                     .get((message as any as IGetLatestApplicationVersionByApplication_NameIMI).fullApplication_Name)
                 break
             }
@@ -346,7 +350,10 @@ export abstract class TransactionalReceiver {
 
         let isFramework = true
         try {
-            if (INTERNAL_DOMAINS.indexOf(message.domain) === -1) {
+
+            const isInternalDomain = await this.appTrackerUtils
+                .isInternalDomain(message.domain)
+            if (!isInternalDomain) {
                 isFramework = false
                 await this.doNativeHandleCallback(
                     message, actor, context, nativeHandleCallback)
@@ -396,7 +403,9 @@ export abstract class TransactionalReceiver {
         let actor: Actor
         const userSession = await this.terminalSessionManager.getUserSession(context)
         try {
-            if (INTERNAL_DOMAINS.indexOf(message.domain) > -1
+            const isInternalDomain = await this.appTrackerUtils
+                .isInternalDomain(message.domain)
+            if (isInternalDomain
                 && context.transaction.parentTransaction) {
                 actor = context.transaction.parentTransaction.actor
 

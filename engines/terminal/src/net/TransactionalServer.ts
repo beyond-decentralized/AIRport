@@ -6,7 +6,7 @@ import {
 	IContext
 } from '@airport/direction-indicator';
 import {
-	INTERNAL_DOMAIN,
+	IAppTrackerUtils,
 	ISaveResult,
 	PortableQuery
 } from '@airport/ground-control';
@@ -63,6 +63,9 @@ export interface InternalPortableQuery
 @Injected()
 export class TransactionalServer
 	implements ITransactionalServer {
+
+	@Inject()
+	appTrackerUtils: IAppTrackerUtils
 
 	@Inject()
 	deleteManager: IDeleteManager
@@ -361,7 +364,7 @@ export class TransactionalServer
 		if (this.tempActor) {
 			return this.tempActor;
 		}
-		if (INTERNAL_DOMAIN === credentials.domain) {
+		if (this.appTrackerUtils.isInternalDomain(credentials.domain)) {
 			return this.terminalStore.getFrameworkActor()
 		}
 		const transaction = this.terminalStore.getTransactionManager()

@@ -1,6 +1,7 @@
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control'
 import { lib } from '@airport/direction-indicator'
 import {
+    AppTrackerUtils,
     DbApplicationUtils,
     SEQUENCE_GENERATOR,
     TRANSACTIONAL_CONNECTOR
@@ -40,6 +41,10 @@ APPLICATION_INITIALIZER.setDependencies({
 
 DOMAIN_RETRIEVER.setDependencies({
     transactionalConnector: TRANSACTIONAL_CONNECTOR
+})
+
+terminalMap.setDependencies(TerminalState, {
+    appTrackerUtils: AppTrackerUtils
 })
 
 terminalMap.setDependencies(TerminalStore, {

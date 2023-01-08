@@ -33,11 +33,13 @@ import {
 } from '@airport/tarmaq-query'
 import {
 	IApiCallContext,
-	ITerminalSessionManager, ITerminalStore, ITransactionContext,
+	ITerminalSessionManager,
+	ITerminalStore,
+	ITransactionContext,
 } from '@airport/terminal-map'
 import { v4 as guidv4 } from "uuid";
-import { INTERNAL_DOMAIN } from '@airport/ground-control'
 import { IUserAccount, UserAccount } from '@airport/travel-document-checkpoint'
+import { IAppTrackerUtils } from '@airport/ground-control'
 
 /**
  * Created by Papa on 2/12/2017.
@@ -55,6 +57,9 @@ export interface EntityRepoQueryData {
 @Injected()
 export class RepositoryManager
 	implements IRepositoryManager {
+
+	@Inject()
+	appTrackerUtils: IAppTrackerUtils
 
 	@Inject()
 	keyRingManager: IKeyRingManager
@@ -80,7 +85,8 @@ export class RepositoryManager
 			throw new Error('No User Session present')
 		}
 
-		let isInternalDomain = INTERNAL_DOMAIN === context.transaction.credentials.domain
+		let isInternalDomain = this.appTrackerUtils
+			.isInternalDomain(context.transaction.credentials.domain)
 		if (!isInternalDomain && userSession.currentRootTransaction.newRepository) {
 			throw new Error(`Cannot create more than one repository per transaction:
 Attempting to create a new repository and Operation Context

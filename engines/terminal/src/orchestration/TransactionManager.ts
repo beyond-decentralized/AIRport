@@ -10,8 +10,7 @@ import {
 	IIdGenerator, SQLQuery,
 } from '@airport/fuel-hydrant-system';
 import {
-	INTERNAL_APP,
-	INTERNAL_DOMAIN,
+	IAppTrackerUtils,
 	IRootTransaction
 } from '@airport/ground-control';
 import { ISynchronizationOutManager } from '@airport/ground-transport';
@@ -41,6 +40,9 @@ export class TransactionManager
 
 	@Inject()
 	activeQueries: IActiveQueries<SQLQuery<any>>
+
+	@Inject()
+	appTrackerUtils: IAppTrackerUtils
 
 	@Inject()
 	idGenerator: IIdGenerator
@@ -93,8 +95,8 @@ export class TransactionManager
 	): Promise<void> {
 		if (!credentials) {
 			credentials = {
-				application: INTERNAL_APP,
-				domain: INTERNAL_DOMAIN,
+				application: this.appTrackerUtils.getInternalApp(),
+				domain: this.appTrackerUtils.getInternalDomain(),
 				methodName: null,
 				objectName: null
 			}
@@ -192,7 +194,7 @@ Only one concurrent transaction is allowed per application.`)
 			// Internal calls don't maintain rootTransaction and can create more than
 			// one repository at a time.  APIs exposed externally will never be top
 			// level transactions
-			if (INTERNAL_DOMAIN !== credentials.domain) {
+			if (this.appTrackerUtils.isInternalDomain(credentials.domain)) {
 				const userSession = await this.terminalSessionManager.getUserSession(context)
 				userSession.currentRootTransaction = rootTransaction
 			}
@@ -339,7 +341,7 @@ parent transactions.
 		// Internal calls don't maintain rootTransaction and can create more than
 		// one repository at a time.  APIs exposed externally will never be top
 		// level transactions
-		if (INTERNAL_DOMAIN === transaction.credentials.domain) {
+		if (this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)) {
 			return
 		}
 
@@ -381,7 +383,7 @@ parent transactions.
 		transaction: ITransaction,
 		credentials: ITransactionCredentials
 	): void {
-		if (INTERNAL_DOMAIN === credentials.domain) {
+		if (this.appTrackerUtils.isInternalDomain(credentials.domain)) {
 			return
 		}
 		do {

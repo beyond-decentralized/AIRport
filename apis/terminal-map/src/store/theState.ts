@@ -3,14 +3,11 @@
  * in one non-reloadable BehaviorSubject.
  */
 
-import { INTERNAL_DOMAIN } from "@airport/ground-control";
 import {
-    BehaviorSubject,
-    Subject
+    BehaviorSubject
 } from "rxjs";
-import { ITerminalState } from "./TerminalState";
 
-export const internalTerminalState: Subject<ITerminalState> = new BehaviorSubject({
+globalThis.internalTerminalState = new BehaviorSubject({
     applicationActors: [],
     applicationInitializer: {
         applicationWindowMap: new Map(),
@@ -24,7 +21,7 @@ export const internalTerminalState: Subject<ITerminalState> = new BehaviorSubjec
         dbName: '',
         internalCredentials: {
             application: null,
-            domain: INTERNAL_DOMAIN,
+            domain: null,
             methodName: null,
             objectName: null
         },

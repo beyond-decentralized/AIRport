@@ -14,6 +14,7 @@ import {
 } from '@airport/airspace/dist/app/bundle'
 import { lib } from '@airport/direction-indicator'
 import {
+    AppTrackerUtils,
     DbApplicationUtils,
     SEQUENCE_GENERATOR
 } from '@airport/ground-control'
@@ -53,6 +54,7 @@ landing.setDependencies(ApplicationInitializer as any, {
     applicationDao: ApplicationDao,
     applicationLocator: ApplicationLocator,
     applicationRecorder: ApplicationRecorder,
+    appTrackerUtils: AppTrackerUtils,
     dbApplicationUtils: DbApplicationUtils,
     queryObjectInitializer: QueryObjectInitializer,
     sequenceGenerator: SEQUENCE_GENERATOR,

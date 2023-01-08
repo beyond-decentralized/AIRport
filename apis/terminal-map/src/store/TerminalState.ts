@@ -1,6 +1,6 @@
 import { ISequence } from '@airport/airport-code'
 import { IMessageInRecord, LastIds } from '@airport/apron'
-import { Injected } from '@airport/direction-indicator'
+import { Inject, Injected } from '@airport/direction-indicator'
 import { IActor } from '@airport/holding-pattern/dist/app/bundle'
 import type {
 	IDomain,
@@ -10,15 +10,14 @@ import type { ITerminal } from '@airport/travel-document-checkpoint/dist/app/bun
 import {
 	IPendingTransaction,
 } from './TerminalStore'
-import { internalTerminalState } from './theState'
 import { Subject, Subscription } from 'rxjs'
 import { ITransaction } from '../transaction/ITransaction'
 import { ITransactionCredentials } from '../Credentials'
-import { FullApplication_Name } from '@airport/ground-control'
+import { Application_FullName, IAppTrackerUtils } from '@airport/ground-control'
 
 export interface IReceiverState {
-	initializingApps: Set<FullApplication_Name>
-	initializedApps: Set<FullApplication_Name>
+	initializingApps: Set<Application_FullName>
+	initializedApps: Set<Application_FullName>
 }
 
 export interface IWebReceiverState {
@@ -52,14 +51,14 @@ export interface ISequenceGeneratorState {
 }
 
 export interface IApplicationInitializerState {
-	applicationWindowMap: Map<FullApplication_Name, Window>
-	initializingApplicationMap: Map<FullApplication_Name, boolean>
+	applicationWindowMap: Map<Application_FullName, Window>
+	initializingApplicationMap: Map<Application_FullName, boolean>
 }
 
 export interface ITerminalState {
 	applicationActors: IActor[]
 	applicationInitializer: IApplicationInitializerState
-	applicationMapByFullName: Map<FullApplication_Name, IApplication>
+	applicationMapByFullName: Map<Application_FullName, IApplication>
 	applications: IApplication[]
 	domains: IDomain[]
 	frameworkActor: IActor
@@ -81,5 +80,29 @@ export interface ITerminalStateContainer {
 @Injected()
 export class TerminalState
 	implements ITerminalStateContainer {
-	terminalState = internalTerminalState
+
+	@Inject()
+	appTrackerUtils: IAppTrackerUtils
+
+	terminalState: Subject<ITerminalState>
+
+	init(): void {
+		this.terminalState = globalThis.internalTerminalState
+		let subscription = this.terminalState.subscribe((theState) => {
+			setTimeout(() => {
+				this.terminalState.next({
+					...theState,
+					internalConnector: {
+						...theState.internalConnector,
+						internalCredentials: {
+							...theState.internalConnector.internalCredentials,
+							domain: this.appTrackerUtils.getInternalDomain()
+						}
+					}
+				})
+				subscription.unsubscribe()
+			}, 10)
+		})
+	}
+
 }
