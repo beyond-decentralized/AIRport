@@ -15,6 +15,21 @@ export interface IApplicationInitializer {
         jsonApplication: JsonApplicationWithLastIds
     ): Promise<void>
 
+    isApplicationIsInstalled(
+        domain: string,
+        fullApplication_Name: string
+    ): Promise<boolean>
+
+    ensureApplicationIsInstalled(
+        domainName: string,
+        applicationName: string
+    ): Promise<boolean>
+
+    installApplication(
+        domainName: string,
+        applicationName: string
+    ): Promise<void>
+
     hydrate(
         jsonApplications: JsonApplicationWithLastIds[],
         context: IContext,

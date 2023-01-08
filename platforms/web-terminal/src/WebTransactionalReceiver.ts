@@ -28,7 +28,7 @@ import {
 } from 'rxjs/operators'
 import { IWebApplicationInitializer } from './WebApplicationInitializer'
 import { IWebMessageReceiver } from './WebMessageReceiver'
-import { IDbApplicationUtils, INTERNAL_DOMAINS } from '@airport/ground-control'
+import { IDbApplicationUtils } from '@airport/ground-control'
 import { IApplication } from '@airport/airspace/dist/app/bundle'
 
 @Injected()
@@ -229,7 +229,7 @@ export class WebTransactionalReceiver
 		}
 		return await this.startApiCall(messageCopy, context, async () => {
 			const fullApplication_Name = this.dbApplicationUtils.
-				getFullApplication_NameFromDomainAndName(
+				getApplication_FullNameFromDomainAndName(
 					message.domain, message.application)
 			const frameWindow = this.getFrameWindow(fullApplication_Name)
 			if (frameWindow) {
@@ -312,7 +312,7 @@ export class WebTransactionalReceiver
 		try {
 			internalCredentials.transactionId = context.transaction.id
 			const fullApplication_Name = this.dbApplicationUtils
-				.getFullApplication_NameFromDomainAndName(
+				.getApplication_FullNameFromDomainAndName(
 					message.domain, message.application)
 			const application: IApplication = this.terminalStore
 				.getApplicationMapByFullName().get(fullApplication_Name)
@@ -350,31 +350,11 @@ export class WebTransactionalReceiver
 	private async ensureConnectionIsReady(
 		message: ILocalAPIRequest
 	): Promise<void> {
-		if (INTERNAL_DOMAINS.indexOf(message.domain) > -1) {
+		const applicationIsInstalled = await this.applicationInitializer.ensureApplicationIsInstalled(message.domain, message.application)
+
+		if (applicationIsInstalled) {
 			this.sendConnectionReadyMessage(message)
-			return
 		}
-
-		const fullApplication_Name = this.dbApplicationUtils.
-			getFullApplication_NameFromDomainAndName(
-				message.domain, message.application)
-
-		const applicationInitializing = this.terminalStore.getApplicationInitializer()
-			.initializingApplicationMap.get(fullApplication_Name)
-		if (applicationInitializing) {
-			return
-		}
-
-		const applicationWindow = this.terminalStore.getApplicationInitializer()
-			.applicationWindowMap.get(fullApplication_Name)
-
-		if (!applicationWindow) {
-			this.terminalStore.getApplicationInitializer()
-				.initializingApplicationMap.set(fullApplication_Name, true)
-			await this.applicationInitializer.nativeInitializeApplication(message.domain,
-				message.application, fullApplication_Name)
-		}
-		this.sendConnectionReadyMessage(message)
 	}
 
 	private sendConnectionReadyMessage(
@@ -424,7 +404,7 @@ export class WebTransactionalReceiver
 		}
 
 		const fullApplication_Name = this.dbApplicationUtils.
-			getFullApplication_NameFromDomainAndName(
+			getApplication_FullNameFromDomainAndName(
 				message.domain, message.application)
 
 		let numPendingMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplication_Name)
@@ -439,8 +419,8 @@ export class WebTransactionalReceiver
 		webReciever.pendingHostCounts.set(message.domain, numPendingMessagesFromHost + 1)
 		webReciever.pendingApplicationCounts.set(fullApplication_Name, numPendingMessagesForApplication + 1)
 
-		if (!await this.ensureApplicationIsInstalled(message.domain,
-			fullApplication_Name)) {
+		if (!await this.applicationInitializer.isApplicationIsInstalled(
+			message.domain, fullApplication_Name)) {
 			this.relyToClientWithError(message, `Application is not installed`)
 			return
 		}
@@ -504,7 +484,7 @@ export class WebTransactionalReceiver
 		message: ILocalAPIResponse
 	) {
 		const fullApplication_Name = this.dbApplicationUtils.
-			getFullApplication_NameFromDomainAndName(
+			getApplication_FullNameFromDomainAndName(
 				message.domain, message.application)
 		const webReciever = this.terminalStore.getWebReceiver()
 
@@ -524,22 +504,6 @@ export class WebTransactionalReceiver
 		this.webMessageReceiver.sendMessageToClient(message)
 	}
 
-	private async ensureApplicationIsInstalled(
-		domain: string,
-		fullApplication_Name: string
-	): Promise<boolean> {
-		if (!fullApplication_Name) {
-			return false
-		}
-
-		if (INTERNAL_DOMAINS.indexOf(domain) > -1) {
-			return true
-		}
-
-		return !!this.terminalStore.getApplicationInitializer()
-			.applicationWindowMap.get(fullApplication_Name)
-	}
-
 	private async messageIsFromValidApp(
 		message: IIsolateMessage | ILocalAPIResponse,
 		messageOrigin: string
@@ -555,7 +519,7 @@ export class WebTransactionalReceiver
 		const webReciever = this.terminalStore.getWebReceiver()
 
 		const fullApplication_Name = this.dbApplicationUtils.
-			getFullApplication_NameFromDomainAndName(
+			getApplication_FullNameFromDomainAndName(
 				message.domain, message.application)
 		// Only accept requests from https protocol
 		if (!messageOrigin.startsWith("https")
@@ -595,7 +559,7 @@ export class WebTransactionalReceiver
 		const webReciever = this.terminalStore.getWebReceiver()
 
 		const fullApplication_Name = this.dbApplicationUtils.
-			getFullApplication_NameFromDomainAndName(
+			getApplication_FullNameFromDomainAndName(
 				message.domain, message.application)
 		switch (message.type) {
 			case IsolateMessageType.SEARCH_UNSUBSCRIBE:

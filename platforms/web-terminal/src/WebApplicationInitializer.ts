@@ -2,7 +2,7 @@ import {
     Inject,
     Injected
 } from '@airport/direction-indicator'
-import { FullApplication_Name } from "@airport/ground-control";
+import { Application_FullName } from "@airport/ground-control";
 import { ApplicationInitializer } from "@airport/landing";
 import {
     IApplicationInitializer,
@@ -12,9 +12,9 @@ import {
 export interface IWebApplicationInitializer
     extends IApplicationInitializer {
 
-    applicationWindowMap: Map<FullApplication_Name, Window>
+    applicationWindowMap: Map<Application_FullName, Window>
 
-    initializingApplicationMap: Map<FullApplication_Name, boolean>
+    initializingApplicationMap: Map<Application_FullName, boolean>
 
 }
 
@@ -58,6 +58,13 @@ export class WebApplicationInitializer
             .applicationWindowMap.set(fullApplication_Name, appIframe.contentWindow)
         this.terminalStore.getApplicationInitializer()
             .initializingApplicationMap.set(fullApplication_Name, false)
+    }
+
+	protected async isAppLoaded(
+		fullApplication_Name: string
+	): Promise<boolean> {
+        return !!this.terminalStore.getApplicationInitializer()
+        .applicationWindowMap.get(fullApplication_Name)
     }
 }
 
