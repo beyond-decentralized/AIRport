@@ -23,7 +23,8 @@ export class Domain {
 	_localId: Domain_LocalId
 
 	@DbString()
-	name: Domain_Name
+	@Column({ name: 'NAME', nullable: false })
+	name?: Domain_Name
 
 	@OneToMany({ mappedBy: 'domain' })
 	applications: Application[]
