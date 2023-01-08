@@ -28,7 +28,7 @@ export * from './implementation/EntityDatabaseFacade'
 export * from './implementation/FieldsSelect'
 export * from './injection'
 
-import { airApi } from '@airport/aviation-communication'
+import { loadGlobalAirApi } from '@airport/aviation-communication'
 import { DbApplication, SEQ_GEN } from '@airport/ground-control';
 
 let inAppMode = false
@@ -66,5 +66,7 @@ export function duoDiSet(
         .applicationVersion.entities[dbEntityId] as any as boolean;
 }
 
-airApi.dS = diSet
-airApi.ddS = duoDiSet
+loadGlobalAirApi()
+
+globalThis.airApi.dS = diSet
+globalThis.airApi.ddS = duoDiSet

@@ -19,11 +19,11 @@ export * from './implementation/Utils';
 export * from './coreInjection';
 export * from './injection';
 
-import { airApi, QApp } from '@airport/aviation-communication'
+import { QApp } from '@airport/aviation-communication'
 import { IOC } from '@airport/direction-indicator';
 import { AIRPORT_DATABASE } from './injection';
 
-airApi.setQApp = function (
+globalThis.airApi.setQApp = function (
     qApplication: QApp
 ) {
     IOC.eventuallyGet(AIRPORT_DATABASE).then((
