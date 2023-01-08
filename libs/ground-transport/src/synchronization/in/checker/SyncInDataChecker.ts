@@ -4,7 +4,8 @@ import {
 	ApplicationColumn_Index,
 	airEntity,
 	ApplicationEntity_TableIndex,
-	ISequenceGenerator
+	ISequenceGenerator,
+	IAppTrackerUtils,
 } from '@airport/ground-control'
 import {
 	IApplicationEntity,
@@ -23,12 +24,20 @@ import {
 } from '@airport/holding-pattern/dist/app/bundle'
 import { ITerminalStore } from '@airport/terminal-map'
 
+export interface IDataCheckResult {
+	// Delay processing of ledger tables because it might require
+	// loading of additional Apps
+	forDelayedProcessing?: IOperationHistory[]
+	forImmediateProcessing?: IOperationHistory[]
+	isValid?: boolean
+}
+
 export interface ISyncInDataChecker {
 
 	checkData(
 		message: RepositorySynchronizationMessage,
 		context: IContext
-	): Promise<boolean>
+	): Promise<IDataCheckResult>
 
 }
 
@@ -36,9 +45,11 @@ export interface ISyncInDataChecker {
 export class SyncInDataChecker
 	implements ISyncInDataChecker {
 
-
 	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
+	appTrackerUtils: IAppTrackerUtils
 
 	@Inject()
 	sequenceGenerator: ISequenceGenerator
@@ -56,17 +67,22 @@ export class SyncInDataChecker
 	async checkData(
 		message: RepositorySynchronizationMessage,
 		context: IContext
-	): Promise<boolean> {
+	): Promise<IDataCheckResult> {
 		const history = message.history
+		let dataCheckResult: IDataCheckResult
 		try {
 			if (!history || typeof history !== 'object') {
 				throw new Error(`Invalid RepositorySynchronizationMessage.history`)
 			}
 			if (typeof history.GUID !== 'string' || history.GUID.length !== 36) {
-				return false
+				return {
+					isValid: false
+				}
 			}
 			if (!history.operationHistory || !(history.operationHistory instanceof Array)) {
-				return false
+				return {
+					isValid: false
+				}
 			}
 			if (!history.saveTimestamp || typeof history.saveTimestamp !== 'number') {
 				throw new Error(`Invalid RepositorySynchronizationMessage.history.saveTimestamp`)
@@ -88,13 +104,20 @@ export class SyncInDataChecker
 
 			const applicationEntityMap = await this.populateApplicationEntityMap(message)
 
-			await this.checkOperationHistories(message, applicationEntityMap, context)
+			dataCheckResult = await this.checkOperationHistories(
+				message, applicationEntityMap, context)
 		} catch (e) {
 			console.error(e)
-			return false
+
+			return {
+				isValid: false
+			}
 		}
 
-		return true
+		return {
+			...dataCheckResult,
+			isValid: true
+		}
 	}
 
 	private async populateApplicationEntityMap(
@@ -126,7 +149,9 @@ export class SyncInDataChecker
 		message: RepositorySynchronizationMessage,
 		applicationEntityMap: Map<string, Map<string, Map<ApplicationEntity_TableIndex, IApplicationEntity>>>,
 		context: IContext
-	): Promise<void> {
+	): Promise<IDataCheckResult> {
+		const forImmediateProcessing: IOperationHistory[] = []
+		const forDelayedProcessing: IOperationHistory[] = []
 		const history = message.history
 		if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
 			throw new Error(`Invalid RepositorySynchronizationMessage.history.operationHistory`)
@@ -193,19 +218,29 @@ export class SyncInDataChecker
 
 			delete operationHistory._localId
 
-			let sourceRepositoryColumnIndex: ApplicationColumn_Index
-			let sourceActorColumnIndex: ApplicationColumn_Index
 			let actorIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn> = new Map()
+			let referencedRelationIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn> = new Map()
 			let repositoryIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn> = new Map()
+			let isInternalDomain = this.appTrackerUtils.isInternalDomain(applicationVersion.application.domain.name)
+			let delayOperationHistoryProcessing = false
 			for (const column of operationHistory.entity.columns) {
 				switch (column.name) {
-					case airEntity.SOURCE_ACTOR_ID:
+					case airEntity.COPY_ACTOR_LID:
+					case airEntity.MANY_SIDE_ACTOR_LID:
+					case airEntity.ONE_SIDE_ACTOR_LID:
 						actorIdColumnMapByIndex.set(column.index, column)
-						sourceActorColumnIndex = column.index
 						break
-					case airEntity.SOURCE_REPOSITORY_ID:
+					case airEntity.COPY_REPOSITORY_LID:
+					case airEntity.MANY_SIDE_REPOSITORY_LID:
+					case airEntity.ONE_SIDE_REPOSITORY_LID:
 						repositoryIdColumnMapByIndex.set(column.index, column)
-						sourceRepositoryColumnIndex = column.index
+						break
+					case airEntity.MANY_SIDE_APPLICATION_RELATION_LID:
+					case airEntity.ONE_SIDE_APPLICATION_RELATION_LID:
+						referencedRelationIdColumnMapByIndex.set(column.index, column)
+						if (isInternalDomain) {
+							delayOperationHistoryProcessing = true
+						}
 						break
 				}
 				if (/.*_AID_[\d]+$/.test(column.name)
@@ -218,8 +253,19 @@ export class SyncInDataChecker
 				}
 			}
 
+			if (delayOperationHistoryProcessing) {
+				forDelayedProcessing.push(operationHistory)
+			} else {
+				forImmediateProcessing.push(operationHistory)
+			}
+
 			await this.checkRecordHistories(operationHistory,
-				actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message, context)
+				actorIdColumnMapByIndex, repositoryIdColumnMapByIndex,
+				referencedRelationIdColumnMapByIndex, message, context)
+		}
+		return {
+			forImmediateProcessing,
+			forDelayedProcessing
 		}
 	}
 
@@ -227,6 +273,7 @@ export class SyncInDataChecker
 		operationHistory: IOperationHistory,
 		actorIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
 		repositoryIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
+		referencedRelationIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
 		message: RepositorySynchronizationMessage,
 		context: IContext
 	): Promise<void> {
@@ -268,9 +315,11 @@ for ChangeType.INSERT_VALUES`)
 			}
 
 			this.checkNewValues(recordHistory, actorIdColumnMapByIndex,
-				repositoryIdColumnMapByIndex, operationHistory, message, context)
+				repositoryIdColumnMapByIndex, referencedRelationIdColumnMapByIndex,
+				operationHistory, message, context)
 			this.checkOldValues(recordHistory, actorIdColumnMapByIndex,
-				repositoryIdColumnMapByIndex, operationHistory, message, context)
+				repositoryIdColumnMapByIndex, referencedRelationIdColumnMapByIndex,
+				operationHistory, message, context)
 
 			recordHistory.operationHistory = operationHistory
 
@@ -282,6 +331,7 @@ for ChangeType.INSERT_VALUES`)
 		recordHistory: IRecordHistory,
 		actorIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
 		repositoryIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
+		referencedRelationIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
 		operationHistory: IOperationHistory,
 		message: RepositorySynchronizationMessage,
 		context: IContext
@@ -324,6 +374,7 @@ Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessa
 				}
 				newValue.newValue = sourceActor._localId
 			}
+
 			const repositoryIdColumn = repositoryIdColumnMapByIndex.get(newValue.columnIndex)
 			if (repositoryIdColumn) {
 				if (newValue.newValue === -1) {
@@ -332,10 +383,20 @@ Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessa
 					const sourceRepository = message.referencedRepositories[newValue.newValue]
 					if (!sourceRepository) {
 						throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
-	Value is for ${repositoryIdColumn.name} and could find RepositorySynchronizationMessage.referencedRepositories[${newValue.newValue}]`)
+Value is for ${repositoryIdColumn.name} and could find RepositorySynchronizationMessage.referencedRepositories[${newValue.newValue}]`)
 					}
 					newValue.newValue = sourceRepository._localId
 				}
+			}
+
+			const relationIdColumn = referencedRelationIdColumnMapByIndex.get(newValue.columnIndex)
+			if (relationIdColumn) {
+				const sourceRelation = message.referencedApplicationRelations[newValue.newValue]
+				if (!sourceRelation) {
+					throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
+Value is for ${relationIdColumn.name} and could find RepositorySynchronizationMessage.referencedApplicationRelations[${newValue.newValue}]`)
+				}
+				newValue.newValue = sourceRelation._localId
 			}
 		}
 	}
@@ -344,6 +405,7 @@ Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessa
 		recordHistory: IRecordHistory,
 		actorIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
 		repositoryIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
+		referencedRelationIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
 		operationHistory: IOperationHistory,
 		message: RepositorySynchronizationMessage,
 		context: IContext
@@ -382,18 +444,29 @@ for ChangeType.UPDATE_ROWS`)
 				const sourceActor = message.actors[oldValue.oldValue]
 				if (!sourceActor) {
 					throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
-Value is for SOURCE_ACTOR_ID and could find RepositorySynchronizationMessage.actors[${oldValue.oldValue}]`)
+Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessage.actors[${oldValue.oldValue}]`)
 				}
 				oldValue.oldValue = sourceActor._localId
 			}
+
 			const repositoryIdColumn = repositoryIdColumnMapByIndex.get(oldValue.columnIndex)
 			if (repositoryIdColumn) {
 				const sourceRepository = message.referencedRepositories[oldValue.oldValue]
 				if (!sourceRepository) {
 					throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
-Value is for SOURCE_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${oldValue.oldValue}]`)
+Value is for ${repositoryIdColumn.name} and could find RepositorySynchronizationMessage.referencedRepositories[${oldValue.oldValue}]`)
 				}
 				oldValue.oldValue = sourceRepository._localId
+			}
+
+			const relationIdColumn = referencedRelationIdColumnMapByIndex.get(oldValue.columnIndex)
+			if (relationIdColumn) {
+				const sourceRelation = message.referencedApplicationRelations[oldValue.oldValue]
+				if (!sourceRelation) {
+					throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
+Value is for ${relationIdColumn.name} and could find RepositorySynchronizationMessage.referencedApplicationRelations[${oldValue.oldValue}]`)
+				}
+				oldValue.oldValue = sourceRelation._localId
 			}
 		}
 	}

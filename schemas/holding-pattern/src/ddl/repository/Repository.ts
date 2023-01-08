@@ -37,7 +37,7 @@ import {
 	Repository_Source,
 	Repository_UiEntryUri
 } from "../../types";
-import { FullApplication_Name } from "@airport/ground-control";
+import { Application_FullName } from "@airport/ground-control";
 import { RepositoryMember } from "./RepositoryMember";
 
 /**
@@ -67,7 +67,7 @@ export class Repository
 
 	@Column({ name: "FULL_APPLICATION_NAME", nullable: false })
 	@DbString()
-	fullApplicationName?: FullApplication_Name
+	fullApplicationName?: Application_FullName
 
 	@Column({ name: "GUID", nullable: false })
 	@DbString()
@@ -87,6 +87,9 @@ export class Repository
 	@Column({ name: "UI_ENTRY_URI", nullable: true })
 	@DbString()
 	uiEntryUri?: Repository_UiEntryUri
+
+	@Column({ name: 'ARE_DEPENDENCIES_LOADED', nullable: false })
+	areDependenciesLoaded?: boolean = false
 
 	@ManyToOne()
 	@JoinColumn({

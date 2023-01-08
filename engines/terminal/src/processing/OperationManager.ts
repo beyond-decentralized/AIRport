@@ -125,10 +125,15 @@ export class OperationManager
 			entityGraph = this.entityGraphReconstructor
 				.restoreEntityGraph(verifiedTree, context)
 		}
+		const validationContext = {
+			...context,
+			copiedRecordLedgers: [],
+			crossRepositoryRelationLedgers: []
+		}
 		const missingRepositoryRecords: IMissingRepositoryRecord[] = []
 		const topLevelObjectRepositoryHolder: IRepository[] = []
 		this.structuralEntityValidator.validate(entityGraph, [], missingRepositoryRecords,
-			topLevelObjectRepositoryHolder, context)
+			topLevelObjectRepositoryHolder, validationContext)
 
 		if (missingRepositoryRecords.length) {
 			if (!topLevelObjectRepositoryHolder.length) {
@@ -201,6 +206,21 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 					saveResult, context)
 			}
 		}
+
+		const flightRecorderDbApp = this.airportDatabase.applications.filter(
+			dbApplication => dbApplication.domain.name === 'airport'
+				&& dbApplication.name === '@airport/flight-recorder'
+		)[0]
+		// context.dbEntity = flightRecorderDbApp.currentVersion[0].applicationVersion.entityMapByName['CopiedRecordLedger']
+		// await this.internalCreate(
+		// 	validationContext.copiedRecordLedgers, actor, transaction, rootTransaction,
+		// 	saveResult, context, true)
+
+		context.dbEntity = flightRecorderDbApp.currentVersion[0].applicationVersion.entityMapByName['CrossRepositoryRelationLedger']
+		await this.internalCreate(
+			validationContext.crossRepositoryRelationLedgers, actor, transaction, rootTransaction,
+			saveResult, context, true)
+
 		context.dbEntity = rootDbEntity
 
 		return saveResult

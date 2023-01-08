@@ -5,14 +5,16 @@ import { Column, Entity, JoinColumn, ManyToOne, Table } from "@airport/tarmaq-en
 
 @Entity()
 @Table({ name: 'COPIED_RECORD_LEDGER' })
-export class CopiedRecordLedger extends AirEntity {
+export class CopiedRecordLedger
+    extends AirEntity {
 
     @ManyToOne()
     @JoinColumn({
         name: 'COPY_APPLICATION_ENTITY_LID',
-        referencedColumnName: 'APPLICATION_ENTITY_LID'
+        referencedColumnName: 'APPLICATION_ENTITY_LID',
+        nullable: false
     })
-    copyEntity: ApplicationEntity
+    copyAppEntity: ApplicationEntity
 
     @Column({ name: 'COPY_ACTOR_RECORD_ID' })
     copyActorRecordId: number
@@ -20,17 +22,17 @@ export class CopiedRecordLedger extends AirEntity {
     @ManyToOne()
     @JoinColumn({
         name: 'COPY_ACTOR_LID',
-        referencedColumnName: 'ACTOR_LID'
+        referencedColumnName: 'ACTOR_LID',
+        nullable: false
     })
     copyActor: Actor
 
     @ManyToOne()
     @JoinColumn({
         name: 'COPY_REPOSITORY_LID',
-        referencedColumnName: 'REPOSITORY_LID'
+        referencedColumnName: 'REPOSITORY_LID',
+        nullable: false
     })
     copyRepository: Repository
-
-    replaced: boolean
 
 }

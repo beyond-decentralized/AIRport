@@ -3,10 +3,12 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
-import {IRepositoryTransactionHistoryDao } from '@airport/holding-pattern/dist/app/bundle'
+import { IRepositoryTransactionHistoryDao } from '@airport/holding-pattern/dist/app/bundle'
 import { ITransactionContext, ITransactionManager } from '@airport/terminal-map'
 import { ISyncInChecker } from './checker/SyncInChecker'
 import { ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
+import { IDataCheckResult } from './checker/SyncInDataChecker'
+import { ISyncInApplicationVersionChecker } from './checker/SyncInApplicationVersionChecker'
 
 /**
  * The manager for synchronizing data coming in  to Terminal (TM)
@@ -29,6 +31,9 @@ export class SynchronizationInManager
 
 	@Inject()
 	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
+
+	@Inject()
+	syncInApplicationVersionChecker: ISyncInApplicationVersionChecker
 
 	@Inject()
 	syncInChecker: ISyncInChecker
@@ -55,9 +60,10 @@ export class SynchronizationInManager
 			return
 		}
 
-		let messagesToProcess: RepositorySynchronizationMessage[] = []
-
 		const orderedMessages = this.timeOrderMessages(messageMapByGUID)
+
+		const immediateProcessingMessages: RepositorySynchronizationMessage[] = []
+		const delayedProcessingMessages: RepositorySynchronizationMessage[] = []
 
 		// Split up messages by type
 		for (const message of orderedMessages) {
@@ -73,23 +79,59 @@ export class SynchronizationInManager
 			}
 
 			let processMessage = true
+			let dataCheckResult: IDataCheckResult
 			await this.transactionManager.transactInternal(async (transaction) => {
-				if (!await this.syncInChecker.checkMessage(message, context)) {
+				dataCheckResult = await this.syncInChecker.checkMessage(message, context)
+				if (!dataCheckResult.isValid) {
 					transaction.rollback(null, context)
 					processMessage = false
 					return
 				}
 			}, null, context)
 			if (processMessage) {
-				messagesToProcess.push(message)
+				immediateProcessingMessages.push({
+					...message,
+					history: {
+						...message.history,
+						operationHistory: dataCheckResult.forImmediateProcessing
+					}
+				})
+				if (dataCheckResult.forDelayedProcessing.length) {
+					delayedProcessingMessages.push({
+						...message,
+						history: {
+							...message.history,
+							operationHistory: dataCheckResult.forDelayedProcessing
+						}
+					})
+				}
 			}
 		}
-
-
 		await this.transactionManager.transactInternal(async (transaction, context) => {
 			transaction.isSync = true
-			await this.twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction, context)
+			await this.twoStageSyncedInDataProcessor.syncMessages(immediateProcessingMessages, transaction, context)
 		}, null, context)
+
+
+		const delayedProcessingMessagesWithValidApps: RepositorySynchronizationMessage[] = []
+		for (const message of delayedProcessingMessages) {
+			// Possibly load (remotely) and install new apps - delayed processing
+			// messages deal with other repositories that might include data from
+			// other apps - other repositories might be referencing records in
+			// the synched repositories (which may not be aware of the apps the
+			// other repositories where created with)
+			if (await this.syncInApplicationVersionChecker.ensureApplicationVersions(
+				message.referencedApplicationVersions, message.applications, context)) {
+				delayedProcessingMessagesWithValidApps.push(message)
+			}
+		}
+		if (delayedProcessingMessagesWithValidApps.length) {
+			await this.transactionManager.transactInternal(async (transaction, context) => {
+				transaction.isSync = true
+				await this.twoStageSyncedInDataProcessor.syncMessages(
+					delayedProcessingMessagesWithValidApps, transaction, context)
+			}, null, context)
+		}
 	}
 
 	private timeOrderMessages(

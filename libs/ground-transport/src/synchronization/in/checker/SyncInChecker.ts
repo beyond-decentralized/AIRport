@@ -4,7 +4,7 @@ import {
 import { ISyncInApplicationVersionChecker } from './SyncInApplicationVersionChecker';
 import { ISyncInActorChecker } from './SyncInActorChecker';
 import { ISyncInApplicationChecker } from './SyncInApplicationChecker';
-import { ISyncInDataChecker } from './SyncInDataChecker';
+import { IDataCheckResult, ISyncInDataChecker } from './SyncInDataChecker';
 import { ISyncInRepositoryChecker } from './SyncInRepositoryChecker';
 import { ISyncInTerminalChecker } from './SyncInTerminalChecker';
 import { ISyncInUserAccountChecker } from './SyncInUserAccountChecker';
@@ -19,7 +19,7 @@ export interface ISyncInChecker {
 	checkMessage(
 		message: RepositorySynchronizationMessage,
 		context: IContext
-	): Promise<boolean>;
+	): Promise<IDataCheckResult>;
 
 }
 
@@ -54,32 +54,42 @@ export class SyncInChecker
 	async checkMessage(
 		message: RepositorySynchronizationMessage,
 		context: IContext
-	): Promise<boolean> {
+	): Promise<IDataCheckResult> {
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
 
 		if (! await this.syncInUserAccountChecker.ensureUserAccounts(message, context)) {
-			return false
+			return {
+				isValid: false
+			}
 		}
 		if (! await this.syncInTerminalChecker.ensureTerminals(message, context)) {
-			return false
+			return {
+				isValid: false
+			}
 		}
 		if (! await this.syncInApplicationChecker.ensureApplications(message, context)) {
-			return false
+			return {
+				isValid: false
+			}
 		}
 		if (! await this.syncInActorChecker.ensureActors(message, context)) {
-			return false
+			return {
+				isValid: false
+			}
 		}
 		if (! await this.syncInRepositoryChecker.ensureRepositories(message, context)) {
-			return false
+			return {
+				isValid: false
+			}
 		}
-		if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(message, context)) {
-			return false
-		}
-		if (!await this.syncInDataChecker.checkData(message, context)) {
-			return false
+		if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(
+			message.applicationVersions, message.applications, context)) {
+			return {
+				isValid: false
+			}
 		}
 
-		return true
+		return await this.syncInDataChecker.checkData(message, context)
 	}
 
 }

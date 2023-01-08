@@ -9,15 +9,23 @@ import type {
 } from "@airport/travel-document-checkpoint/dist/app/bundle";
 import {
 	IApplication,
+	IApplicationRelation,
 	IApplicationVersion
 } from "@airport/airspace";
 
+export type ReferencedApplicationVersion_InMessageIndex = number
+export type ReferencedApplicationRelation_InMessageIndex = number
+export type ReferencedRepository_InMessageIndex = number
+
+
 export interface RepositorySynchronizationMessage {
 	actors: IActor[]
-	applicationVersions: IApplicationVersion[]
 	applications: IApplication[]
+	applicationVersions: IApplicationVersion[]
 	history: IRepositoryTransactionHistory
 	// Repositories may reference records in other repositories
+	referencedApplicationRelations: IApplicationRelation[]
+	referencedApplicationVersions: IApplicationVersion[]
 	referencedRepositories: IRepository[]
 	syncTimestamp?: number
 	terminals: ITerminal[]

@@ -1,13 +1,18 @@
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	ApplicationProperty_LocalId,
+	ApplicationRelation_LocalId,
 	undefinedToNull
 } from '@airport/ground-control'
+import { Y } from '@airport/tarmaq-query'
 import {
 	BaseApplicationRelationDao,
 	IBaseApplicationRelationDao,
 	IApplicationRelation,
 	QApplicationRelation,
+	QApplicationEntity,
+	QApplicationVersion,
+	QApplication,
 } from '../generated/generated'
 import Q from '../generated/qApplication'
 
@@ -16,6 +21,10 @@ export interface IApplicationRelationDao
 
 	findAllForProperties(
 		propertyIds: ApplicationProperty_LocalId[]
+	): Promise<IApplicationRelation[]>
+
+	findAllByLocalIdsWithApplications(
+		localIds: ApplicationRelation_LocalId[]
 	): Promise<IApplicationRelation[]>
 
 	insert(
@@ -41,6 +50,40 @@ export class ApplicationRelationDao
 				r = Q.ApplicationRelation
 			],
 			WHERE: r.property._localId.IN(propertyIds)
+		})
+	}
+
+	async findAllByLocalIdsWithApplications(
+		localIds: ApplicationRelation_LocalId[]
+	): Promise<IApplicationRelation[]> {
+		let r: QApplicationRelation,
+			e: QApplicationEntity,
+			av: QApplicationVersion,
+			a: QApplication
+
+		return this.db.find.tree({
+			SELECT: {
+				_localId: Y,
+				entity: {
+					applicationVersion: {
+						application: {
+							domain: {
+								name: Y
+							},
+							name: Y
+						},
+						integerVersion: Y
+					}
+				}
+			},
+			FROM: [
+				r = Q.ApplicationRelation,
+				e = r.entity.LEFT_JOIN(),
+				av = e.applicationVersion.LEFT_JOIN(),
+				a = av.application.LEFT_JOIN(),
+				a.domain.LEFT_JOIN()
+			],
+			WHERE: r._localId.IN(localIds)
 		})
 	}
 

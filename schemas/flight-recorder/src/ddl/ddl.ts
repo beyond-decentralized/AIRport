@@ -1,3 +1,3 @@
 export * from './CopiedRecordLedger'
-export * from './ManyToOneLedger'
-export * from './OneToManyLedger'
+export * from './LocalCopyReplacementLedger'
+export * from './CrossRepositoryRelationLedger'

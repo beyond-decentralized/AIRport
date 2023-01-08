@@ -12,6 +12,7 @@ import { QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER } from '@airport
 import { TerminalStore, TERMINAL_SESSION_MANAGER, UserStore } from '@airport/terminal-map'
 import { lib } from '@airport/direction-indicator'
 import {
+    AppTrackerUtils,
     DbApplicationUtils,
     ENTITY_STATE_MANAGER,
     KeyUtils,
@@ -72,6 +73,7 @@ import { LOCAL_API_SERVER } from '@airport/apron'
 import { IdGenerator } from '@airport/fuel-hydrant-system'
 import { ActiveQueries, ObservableQueryAdapter } from '@airport/flight-number'
 import { KeyRingManager } from '@airbridge/keyring/dist/app/bundle'
+import { CrossRepositoryRelationManager } from '@airport/flight-recorder/dist/app/bundle'
 
 const terminal = lib('terminal')
 
@@ -102,6 +104,7 @@ terminal.setDependencies(AbstractMutationManager, {
 })
 
 terminal.setDependencies(TransactionalReceiver as any, {
+    appTrackerUtils: AppTrackerUtils,
     terminalStore: TerminalStore,
     transactionalServer: TRANSACTIONAL_SERVER
 })
@@ -209,6 +212,7 @@ REPOSITORY_LOADER.setDependencies({
 
 terminal.setDependencies(StructuralEntityValidator, {
     applicationUtils: ApplicationUtils,
+    crossRepositoryRelationManager: CrossRepositoryRelationManager,
     dbApplicationUtils: DbApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
 })
@@ -226,6 +230,7 @@ TERMINAL_SESSION_MANAGER.setDependencies({
 
 TRANSACTION_MANAGER.setDependencies({
     activeQueries: ActiveQueries,
+    appTrackerUtils: AppTrackerUtils,
     idGenerator: IdGenerator,
     storeDriver: STORE_DRIVER,
     synchronizationOutManager: SynchronizationOutManager,
@@ -248,6 +253,7 @@ TRANSACTIONAL_RECEIVER.setDependencies({
 })
 
 TRANSACTIONAL_SERVER.setDependencies({
+    appTrackerUtils: AppTrackerUtils,
     deleteManager: DeleteManager,
     insertManager: InsertManager,
     operationManager: OperationManager,

@@ -19,6 +19,7 @@ import {
     AIRPORT_DATABASE, Utils
 } from '@airport/air-traffic-control'
 import {
+    APPLICATION_INITIALIZER,
     TerminalStore,
     TRANSACTION_MANAGER
 } from '@airport/terminal-map'
@@ -28,6 +29,7 @@ import {
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
     ApplicationDao,
+    ApplicationRelationDao,
     ApplicationVersionDao,
     DomainDao
 } from '@airport/airspace/dist/app/bundle'
@@ -40,7 +42,7 @@ import {
     SynchronizationConflictDao, SynchronizationConflictValuesDao
 } from '@airport/layover'
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter'
-import { SEQUENCE_GENERATOR } from '@airport/ground-control'
+import { AppTrackerUtils, DbApplicationUtils, SEQUENCE_GENERATOR } from '@airport/ground-control'
 import { DATABASE_FACADE } from '@airport/tarmaq-dao'
 import { Client } from '@airway/client'
 
@@ -82,7 +84,8 @@ groundTransport.setDependencies(SyncInApplicationChecker, {
 })
 
 groundTransport.setDependencies(SyncInApplicationVersionChecker, {
-    applicationVersionDao: ApplicationVersionDao
+    applicationVersionDao: ApplicationVersionDao,
+    applicationInitializer: APPLICATION_INITIALIZER
 })
 
 groundTransport.setDependencies(SyncInChecker, {
@@ -97,6 +100,7 @@ groundTransport.setDependencies(SyncInChecker, {
 
 groundTransport.setDependencies(SyncInDataChecker, {
     airportDatabase: AIRPORT_DATABASE,
+    appTrackerUtils: AppTrackerUtils,
     sequenceGenerator: SEQUENCE_GENERATOR,
     terminalStore: TerminalStore
 })
@@ -115,6 +119,8 @@ groundTransport.setDependencies(SyncInUserAccountChecker, {
 
 groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
+    applicationRelationDao: ApplicationRelationDao,
+    dbApplicationUtils: DbApplicationUtils,
     repositoryDao: RepositoryDao,
 })
 
@@ -124,6 +130,7 @@ groundTransport.setDependencies(SynchronizationAdapterLoader, {
 
 groundTransport.setDependencies(SynchronizationInManager, {
     repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
+    syncInApplicationVersionChecker: SyncInApplicationVersionChecker,
     syncInChecker: SyncInChecker,
     transactionManager: TRANSACTION_MANAGER,
     twoStageSyncedInDataProcessor: TwoStageSyncedInDataProcessor

@@ -8,6 +8,8 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
+import { IApplicationInitializer, ITransactionalReceiver } from '@airport/terminal-map'
+import { IApplication } from '@airport/airspace'
 
 export interface IApplicationVersionCheckRecord {
 	found?: boolean
@@ -19,7 +21,8 @@ export interface IApplicationVersionCheckRecord {
 export interface ISyncInApplicationVersionChecker {
 
 	ensureApplicationVersions(
-		message: RepositorySynchronizationMessage,
+		inMessageApplicationVersions: IApplicationVersion[],
+		inMessageApplications: IApplication[],
 		context: IContext
 	): Promise<boolean>;
 
@@ -32,16 +35,22 @@ export class SyncInApplicationVersionChecker
 	@Inject()
 	applicationVersionDao: IApplicationVersionDao
 
+	@Inject()
+	applicationInitializer: IApplicationInitializer
+
 	async ensureApplicationVersions(
-		message: RepositorySynchronizationMessage,
+		// message: RepositorySynchronizationMessage,
+		inMessageApplicationVersions: IApplicationVersion[],
+		inMessageApplications: IApplication[],
 		context: IContext
 	): Promise<boolean> {
 		try {
-			let applicationCheckMap = await this.checkVersionsApplicationsDomains(message, context);
+			let applicationCheckMap = await this.checkVersionsApplicationsDomains(
+				inMessageApplicationVersions, inMessageApplications, context);
 
-			for (let i = 0; i < message.applicationVersions.length; i++) {
-				const applicationVersion = message.applicationVersions[i]
-				message.applicationVersions[i] = applicationCheckMap
+			for (let i = 0; i < inMessageApplicationVersions.length; i++) {
+				const applicationVersion = inMessageApplicationVersions[i]
+				inMessageApplicationVersions[i] = applicationCheckMap
 					.get(applicationVersion.application.domain.name).get(applicationVersion.application.name)
 					.applicationVersion
 			}
@@ -54,16 +63,18 @@ export class SyncInApplicationVersionChecker
 	}
 
 	private async checkVersionsApplicationsDomains(
-		message: RepositorySynchronizationMessage,
+		inMessageApplicationVersions: IApplicationVersion[],
+		inMessageApplications: IApplication[],
 		context: IContext
 	): Promise<Map<string, Map<string, IApplicationVersionCheckRecord>>> {
-		const { allApplication_Names, domainNames, applicationVersionCheckMap } = this.getNames(message)
+		const { allApplication_Names, domainNames, applicationVersionCheckMap } = this
+			.getNames(inMessageApplicationVersions, inMessageApplications)
 
-		const applicationVersions = await this.applicationVersionDao.findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names)
+		const existingApplicationVersions = await this.applicationVersionDao.findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names)
 
 		let lastDomain_Name
 		let lastApplication_Name
-		for (let applicationVersion of applicationVersions) {
+		for (let applicationVersion of existingApplicationVersions) {
 			let domainName = applicationVersion.application.domain.name
 			let applicationName = applicationVersion.application.name
 			if (lastDomain_Name !== domainName
@@ -88,9 +99,8 @@ export class SyncInApplicationVersionChecker
 		for (const [domainName, applicationChecks] of applicationVersionCheckMap) {
 			for (let [_, applicationCheck] of applicationChecks) {
 				if (!applicationCheck.found) {
-					// TODO: download and install the application
-					throw new Error(
-						`Application ${applicationCheck.applicationName} for domain ${domainName} is not installed.`)
+					await this.applicationInitializer.installApplication(
+						domainName, applicationCheck.applicationName)
 				}
 			}
 		}
@@ -99,23 +109,24 @@ export class SyncInApplicationVersionChecker
 	}
 
 	private getNames(
-		message: RepositorySynchronizationMessage
+		inMessageApplicationVersions: IApplicationVersion[],
+		inMessageApplications: IApplication[]
 	): {
 		allApplication_Names: string[],
 		domainNames: string[],
 		applicationVersionCheckMap: Map<string, Map<string, IApplicationVersionCheckRecord>>
 	} {
-		if (!message.applicationVersions || !(message.applicationVersions instanceof Array)) {
+		if (!inMessageApplicationVersions || !(inMessageApplicationVersions instanceof Array)) {
 			throw new Error(`Did not find applicationVersions in RepositorySynchronizationMessage.`)
 		}
 
 		const applicationVersionCheckMap: Map<string, Map<string, IApplicationVersionCheckRecord>> = new Map()
 
-		for (let applicationVersion of message.applicationVersions) {
+		for (let applicationVersion of inMessageApplicationVersions) {
 			if (!applicationVersion.integerVersion || typeof applicationVersion.integerVersion !== 'number') {
 				throw new Error(`Invalid ApplicationVersion.integerVersion.`)
 			}
-			const application = message.applications[applicationVersion.application as any]
+			const application = inMessageApplications[applicationVersion.application as any]
 			if (typeof application !== 'object') {
 				throw new Error(`Invalid ApplicationVersion.application`)
 			}

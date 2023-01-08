@@ -8,12 +8,11 @@ import {
 	DbEntity,
 	DbProperty,
 	EntityRelationType,
-	EntityState,
 	IEntityStateManager,
 	IRepository,
 	SQLDataType
 } from '@airport/ground-control'
-import { IAirEntity } from '@airport/final-approach'
+import { AirEntity } from '@airport/final-approach'
 import { IApplicationUtils } from '@airport/tarmaq-query'
 import {
 	IMissingRepositoryRecord,
@@ -21,6 +20,9 @@ import {
 	IStructuralEntityValidator,
 	ITransactionContext
 } from '@airport/terminal-map'
+import {
+	ICrossRepositoryRelationManager
+} from '@airport/flight-recorder/dist/app/bundle'
 
 @Injected()
 export class StructuralEntityValidator
@@ -28,6 +30,9 @@ export class StructuralEntityValidator
 
 	@Inject()
 	applicationUtils: IApplicationUtils
+
+	@Inject()
+	crossRepositoryRelationManager: ICrossRepositoryRelationManager
 
 	@Inject()
 	dbApplicationUtils: DbApplicationUtils
@@ -47,7 +52,6 @@ export class StructuralEntityValidator
 		rootRelationRecord = null,
 		parentRelationRecord = null
 	): void {
-
 		const dbEntity = context.dbEntity
 		if (!dbEntity.idColumns.length) {
 			throw new Error(
@@ -195,6 +199,7 @@ for ${dbEntity.name}.${dbProperty.name}`)
 					if (relatedEntities && relatedEntities.length) {
 						const previousDbEntity = context.dbEntity
 						context.dbEntity = dbRelation.relationEntity
+
 						this.validate(relatedEntities, operatedOnEntityIndicator,
 							missingRepositoryRecords, topLevelObjectRepositories, context, depth + 1,
 							relationIsOneToMany, dbProperty, rootRelationRecord, record)
@@ -220,7 +225,7 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 
 			if (!isPassThrough && !isStub && !isParentSchemaId) {
 				this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity,
-					parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context)
+					parentRelationProperty, isCreate, newRepositoryNeeded, context)
 			}
 		} // for (const record of records)
 	}
@@ -232,26 +237,32 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 		dbEntity: DbEntity,
 		parentRelationProperty: DbProperty,
 		isCreate: boolean,
-		fromOneToMany: boolean,
 		newRepositoryNeeded: boolean,
 		context: IOperationContext
 	): void {
 		if (!dbEntity.isAirEntity) {
 			return
 		}
+
+		const airEntity = record as unknown as AirEntity
 		if (!parentRelationRecord) {
-			const originalValues = this.entityStateManager.getOriginalValues(record)
-			if (newRepositoryNeeded && originalValues && originalValues.repository
-				&& originalValues.actor && originalValues._actorRecordId) {
-				const airEntity = record as unknown as IAirEntity
-				airEntity.sourceRepository = originalValues.repository
-				this.entityStateManager.markAsStub(airEntity.sourceRepository)
-				airEntity.sourceActor = originalValues.actor
-				this.entityStateManager.markAsStub(airEntity.sourceActor)
-				airEntity.sourceActorRecordId = originalValues._actorRecordId
+			if (newRepositoryNeeded) {
+				throw new Error(`
+Invalid condition - entity that is root in the passed in object graph does not have a repository assigned
+`)
 			}
+			// const originalValues = this.entityStateManager.getOriginalValues(record)
+			// if (newRepositoryNeeded && originalValues && originalValues.repository
+			// 	&& originalValues.actor && originalValues._actorRecordId) {
+			// 	airEntity.sourceRepository = originalValues.repository
+			// 	this.entityStateManager.markAsStub(airEntity.sourceRepository)
+			// 	airEntity.sourceActor = originalValues.actor
+			// 	this.entityStateManager.markAsStub(airEntity.sourceActor)
+			// 	airEntity.sourceActorRecordId = originalValues._actorRecordId
+			// }
 			return
 		}
+
 		// If a new repository is created for this record
 		if (newRepositoryNeeded) {
 			// 			throw new Error(`Error creating a new repository in a nested record:
@@ -260,6 +271,7 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 			// ->
 			// When creating a new repository the top level record should be of the newly created repository.
 			// `)
+
 			// no further checks needed
 			return
 		}
@@ -269,7 +281,6 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 		// 	return
 		// }
 
-		let airEntity = record as unknown as IAirEntity
 		// If the repositories of parent record and child record match
 		if (rootRelationRecord.repository._localId === airEntity.repository._localId) {
 			// no further checks needed
@@ -289,23 +300,30 @@ is being assigned to repository _localId ${airEntity.repository._localId} (GUID:
 	Otherwise, did you mean to set this record's repository to the same one as the referencing record?`)
 		}
 
+		// If this record is the entry point into the copied object tree (of records from other repository(s))
+		if (!airEntity.copied) {
+			const {
+				manySideRepositoryLedger,
+				oneSideRepositoryLedger
+			} = this.crossRepositoryRelationManager.addRecords(
+				parentRelationProperty.relation[0], parentRelationRecord, airEntity)
+			context.crossRepositoryRelationLedgers.push(manySideRepositoryLedger)
+			context.crossRepositoryRelationLedgers.push(oneSideRepositoryLedger)
+		}
+
 		// If it doesn't then it is a reference to another repository - switch
 		// the record to the parent repository and set the sourceRepositoryValue
-		airEntity.sourceRepository = airEntity.repository
-		airEntity.repository = rootRelationRecord.repository
-
-		// Aslo set sourceActor and sourceActorRecordId to look up the original record
-		airEntity.sourceActor = airEntity.actor
-		airEntity.sourceActorRecordId = airEntity._actorRecordId
+		// airEntity.repository = rootRelationRecord.repository
+		airEntity.copied = true
 
 		// reset 'actor' and clear '_actorRecordId' to prevents unique constraint
 		// violation if multiple databases flip to the same exact record (independently)
-		airEntity.actor = context.actor
-		delete airEntity._actorRecordId
+		// airEntity.actor = context.actor as Actor
+		// delete airEntity._actorRecordId
 
 		// Flip the state of this record to EntityState.CREATE this record now
 		// has to be created in the referencing repository
-		airEntity[this.entityStateManager.getStateFieldName()] = EntityState.CREATE
+		// airEntity[this.entityStateManager.getStateFieldName()] = EntityState.CREATE
 
 		// NOTE: If the child record is not provided and it's an optional
 		// @ManyToOne() it will be treated as if no record is there.  That is

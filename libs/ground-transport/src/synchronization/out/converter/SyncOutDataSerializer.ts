@@ -9,7 +9,14 @@ import {
 	IApplicationVersion
 } from "@airport/airspace";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { Application_LocalId, ApplicationColumn_Index, airEntity } from "@airport/ground-control";
+import {
+	Application_LocalId,
+	ApplicationColumn_Index,
+	airEntity,
+	ApplicationRelation_LocalId,
+	IDbApplicationUtils,
+	ApplicationVersion_LocalId
+} from "@airport/ground-control";
 import {
 	Actor_LocalId,
 	IActor,
@@ -29,6 +36,7 @@ import {
 	Terminal_GUID,
 	UserAccount_GUID
 } from "@airport/travel-document-checkpoint/dist/app/bundle";
+import { IApplicationRelationDao } from '@airport/airspace/dist/app/bundle';
 
 export interface ISyncOutDataSerializer {
 
@@ -57,13 +65,19 @@ export const WITH_INDEX: IWithIndex = {} as any
 
 export interface InMessageLookupStructures {
 	actorInMessageIndexesById: Map<Actor_LocalId, number>
-	applicationVersionInMessageIndexesById: Map<Actor_LocalId, number>
+	applicationVersionInMessageIndexesById: Map<ApplicationVersion_LocalId, number>
 	applicationVersions: IApplicationVersion[]
 	lastInMessageActorIndex: number
+	lastInMessageReferencedApplicationRelationIndex: number
 	lastInMessageApplicationVersionIndex: number
+	lastInMessageReferencedApplicationRelation: number
+	lastInMessageReferencedApplicationVersionIndex: number
 	lastInMessageRepositoryIndex: number
-	messageRepository: IRepository
+	referencedApplicationRelationIndexesById: Map<ApplicationRelation_LocalId, number>
+	referencedApplicationVersionInMessageIndexesById: Map<ApplicationVersion_LocalId, number>
+	referencedApplicationVersions: IApplicationVersion[]
 	repositoryInMessageIndexesById: Map<Repository_LocalId, number>
+	messageRepository: IRepository
 }
 
 export interface InMessageApplicationLookup {
@@ -81,6 +95,12 @@ export class SyncOutDataSerializer
 
 	@Inject()
 	actorDao: IActorDao
+
+	@Inject()
+	applicationRelationDao: IApplicationRelationDao
+
+	@Inject()
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	repositoryDao: IRepositoryDao
@@ -114,12 +134,18 @@ export class SyncOutDataSerializer
 	): Promise<RepositorySynchronizationMessage> {
 		const lookups: InMessageLookupStructures = {
 			actorInMessageIndexesById: new Map(),
+			referencedApplicationRelationIndexesById: new Map(),
 			applicationVersionInMessageIndexesById: new Map(),
 			applicationVersions: [],
 			lastInMessageActorIndex: -1,
+			lastInMessageReferencedApplicationRelationIndex: -1,
 			lastInMessageApplicationVersionIndex: -1,
+			lastInMessageReferencedApplicationRelation: -1,
+			lastInMessageReferencedApplicationVersionIndex: -1,
 			lastInMessageRepositoryIndex: -1,
 			messageRepository: repositoryTransactionHistory.repository,
+			referencedApplicationVersionInMessageIndexesById: new Map(),
+			referencedApplicationVersions: [],
 			repositoryInMessageIndexesById: new Map()
 		}
 		const inMessageUserAccountLookup: InMessageUserAccountLookup = {
@@ -133,6 +159,8 @@ export class SyncOutDataSerializer
 			applications: [],
 			history: null,
 			// Repositories may reference records in other repositories
+			referencedApplicationVersions: [],
+			referencedApplicationRelations: [],
 			referencedRepositories: [],
 			userAccounts: [],
 			terminals: []
@@ -146,7 +174,10 @@ export class SyncOutDataSerializer
 		const inMessageApplicationLookup = await this.serializeActorsUserAccountsAndTerminals(
 			message, lookups, inMessageUserAccountLookup)
 		await this.serializeApplicationsAndVersions(message,
-			inMessageApplicationLookup, lookups)
+			inMessageApplicationLookup, lookups.applicationVersions, message.applicationVersions)
+		await this.serializeReferencedApplicationProperties(message, lookups)
+		await this.serializeApplicationsAndVersions(message,
+			inMessageApplicationLookup, lookups.referencedApplicationVersions, message.referencedApplicationVersions)
 
 		return message
 	}
@@ -279,17 +310,54 @@ export class SyncOutDataSerializer
 		}
 	}
 
+	private async serializeReferencedApplicationProperties(
+		message: RepositorySynchronizationMessage,
+		lookups: InMessageLookupStructures
+	): Promise<void> {
+		let applicationRelationIdsToFindBy: ApplicationRelation_LocalId[] = []
+		for (let repositoryId of lookups.referencedApplicationRelationIndexesById.keys()) {
+			applicationRelationIdsToFindBy.push(repositoryId)
+		}
+
+		const applicationRelations = await this.applicationRelationDao
+			.findAllByLocalIdsWithApplications(applicationRelationIdsToFindBy)
+
+		for (const applicationRelation of applicationRelations) {
+			const referencedApplicationVersion = applicationRelation.entity.applicationVersion
+
+			let referencedApplicationVersionInMessageIndex
+			if (lookups.referencedApplicationVersionInMessageIndexesById.has(referencedApplicationVersion._localId)) {
+				referencedApplicationVersionInMessageIndex = lookups.referencedApplicationVersionInMessageIndexesById.get(referencedApplicationVersion._localId)
+			} else {
+				referencedApplicationVersionInMessageIndex = ++lookups.lastInMessageReferencedApplicationVersionIndex
+				lookups.referencedApplicationVersionInMessageIndexesById.set(referencedApplicationVersion._localId, referencedApplicationVersionInMessageIndex)
+			}
+			lookups.referencedApplicationVersions[referencedApplicationVersionInMessageIndex] = referencedApplicationVersion
+
+			message.referencedApplicationRelations.push({
+				...WITH_ID,
+				index: applicationRelation.index,
+				entity: {
+					...WITH_ID,
+					index: applicationRelation.entity.index,
+					applicationVersion: referencedApplicationVersionInMessageIndex
+				}
+			})
+		}
+	}
+
 	private serializeApplicationsAndVersions(
 		message: RepositorySynchronizationMessage,
-		inMessageApplicationLookup: InMessageApplicationLookup,
-		lookups: InMessageLookupStructures
+		applicationLookup: InMessageApplicationLookup,
+		lookupVersions: IApplicationVersion[],
+		finalApplicationVersions: IApplicationVersion[]
 	): void {
-		for (let i = 0; i < lookups.applicationVersions.length; i++) {
-			const applicationVersion = lookups.applicationVersions[i]
+		for (let i = 0; i < lookupVersions.length; i++) {
+			const applicationVersion = lookupVersions[i]
 			const applicationInMessageIndex = this.serializeApplication(
-				applicationVersion.application, inMessageApplicationLookup, message)
+				applicationVersion.application, applicationLookup, message)
 
-			message.applicationVersions[i] = {
+			finalApplicationVersions[i] = {
 				...WITH_ID,
 				application: applicationInMessageIndex as any,
 				integerVersion: applicationVersion.integerVersion
@@ -299,16 +367,16 @@ export class SyncOutDataSerializer
 
 	private serializeApplication(
 		application: IApplication,
-		inMessageApplicationLookup: InMessageApplicationLookup,
+		applicationLookup: InMessageApplicationLookup,
 		message: RepositorySynchronizationMessage
 	): number {
 		let applicationInMessageIndex
-		if (inMessageApplicationLookup.inMessageIndexesById.has(application.index)) {
-			applicationInMessageIndex = inMessageApplicationLookup
+		if (applicationLookup.inMessageIndexesById.has(application.index)) {
+			applicationInMessageIndex = applicationLookup
 				.inMessageIndexesById.get(application.index)
 		} else {
-			applicationInMessageIndex = ++inMessageApplicationLookup.lastInMessageIndex
-			inMessageApplicationLookup.inMessageIndexesById
+			applicationInMessageIndex = ++applicationLookup.lastInMessageIndex
+			applicationLookup.inMessageIndexesById
 				.set(application.index, applicationInMessageIndex)
 			message.applications[applicationInMessageIndex] = {
 				...WITH_INDEX,
@@ -529,14 +597,26 @@ export class SyncOutDataSerializer
 		let value = valueRecord[valueFieldName]
 		let serailizedValue = value
 		switch (dbColumn.name) {
-			case airEntity.SOURCE_ACTOR_ID: {
-				serailizedValue = this.getActorInMessageIndexById(value, lookups)
-				break
-			}
-			case airEntity.SOURCE_REPOSITORY_ID: {
-				serailizedValue = this.getSerializedRepositoryId(value, lookups)
-				break
-			}
+			case airEntity.COPY_ACTOR_LID:
+			case airEntity.MANY_SIDE_ACTOR_LID:
+			case airEntity.ONE_SIDE_ACTOR_LID:
+				{
+					serailizedValue = this.getActorInMessageIndexById(value, lookups)
+					break
+				}
+			case airEntity.COPY_REPOSITORY_LID:
+			case airEntity.MANY_SIDE_REPOSITORY_LID:
+			case airEntity.ONE_SIDE_REPOSITORY_LID:
+				{
+					serailizedValue = this.getSerializedRepositoryId(value, lookups)
+					break
+				}
+			case airEntity.MANY_SIDE_APPLICATION_RELATION_LID:
+			case airEntity.ONE_SIDE_APPLICATION_RELATION_LID:
+				{
+					serailizedValue = this.getSerializedReferencedApplicationRelationId(value, lookups)
+					break
+				}
 		}
 		if (/.*_AID_[\d]+$/.test(dbColumn.name)
 			&& dbColumn.manyRelationColumns.length) {
@@ -567,6 +647,19 @@ export class SyncOutDataSerializer
 			lookups.lastInMessageRepositoryIndex++
 			serailizedValue = lookups.lastInMessageRepositoryIndex
 			lookups.repositoryInMessageIndexesById.set(value, serailizedValue)
+		}
+		return serailizedValue
+	}
+
+	private getSerializedReferencedApplicationRelationId(
+		value: number,
+		lookups: InMessageLookupStructures
+	) {
+		let serailizedValue = lookups.referencedApplicationRelationIndexesById.get(value)
+		if (serailizedValue === undefined) {
+			lookups.lastInMessageReferencedApplicationRelationIndex++
+			serailizedValue = lookups.lastInMessageReferencedApplicationRelationIndex
+			lookups.referencedApplicationRelationIndexesById.set(value, serailizedValue)
 		}
 		return serailizedValue
 	}
