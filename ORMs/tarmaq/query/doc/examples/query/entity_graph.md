@@ -120,9 +120,9 @@ class GoalDao extends BaseGoalDao {
 			],
 			WHERE: g.goalId.equals(goalId),
 			ORDER_BY: [
-				g.goalId.asc(),
-				g.dueDate.desc(),
-				t.taskId.asc()
+				g.goalId.ASC(),
+				g.dueDate.DESC(),
+				t.taskId.ASC()
 			]
 		})
 	};

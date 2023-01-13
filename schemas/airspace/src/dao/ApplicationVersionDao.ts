@@ -9,6 +9,7 @@ import {
 	QApplicationVersion
 } from '../generated/generated'
 import Q from '../generated/qApplication'
+import { Application_Name, Domain_Name } from '@airport/ground-control'
 
 export interface IApplicationVersionDao
 	extends IBaseApplicationVersionDao {
@@ -52,28 +53,28 @@ export class ApplicationVersionDao
 	*/
 
 	async findAllActiveOrderByApplication_IndexAndId(): Promise<IApplicationVersion[]> {
-		let sv: QApplicationVersion
-		// let s: QApp
+		let av: QApplicationVersion,
+			a: QApplication
 
 		return await this.db.find.tree({
 			FROM: [
-				sv = Q.ApplicationVersion,
-				// s = sv.application.INNER_JOIN()
+				av = Q.ApplicationVersion,
+				a = av.application.INNER_JOIN()
 			],
 			SELECT: {},
 			ORDER_BY: [
-				sv.application.index.asc(),
-				sv._localId.desc()
+				a.index.ASC(),
+				av._localId.DESC()
 			]
 		})
 	}
 
 	async findByDomain_NamesAndApplication_Names(
-		domainNames: string[],
-		applicationNames: string[]
+		domainNames: Domain_Name[],
+		applicationNames: Application_Name[]
 	): Promise<IApplicationVersion[]> {
-		let sv: QApplicationVersion
-		let s: QApplication
+		let av: QApplicationVersion
+		let a: QApplication
 		let d: QDomain
 
 		return await this.db.find.tree({
@@ -89,14 +90,18 @@ export class ApplicationVersionDao
 				}
 			},
 			FROM: [
-				sv = Q.ApplicationVersion,
-				s = sv.application.INNER_JOIN(),
-				d = s.domain.INNER_JOIN()
+				av = Q.ApplicationVersion,
+				a = av.application.INNER_JOIN(),
+				d = a.domain.INNER_JOIN()
 			],
 			WHERE: AND(
 				d.name.IN(domainNames),
-				s.name.IN(applicationNames)
-			)
+				a.name.IN(applicationNames)
+			),
+			ORDER_BY: [
+				d.name.DESC(),
+				a.name.DESC()
+			]
 		})
 	}
 

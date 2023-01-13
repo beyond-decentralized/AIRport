@@ -98,11 +98,11 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		return jsonField;
 	}
 
-	asc(): IFieldInOrderBy<IQF> {
+	ASC(): IFieldInOrderBy<IQF> {
 		return new FieldInOrderBy<IQF>(this, SortOrder.ASCENDING);
 	}
 
-	desc(): IFieldInOrderBy<IQF> {
+	DESC(): IFieldInOrderBy<IQF> {
 		return new FieldInOrderBy<IQF>(this, SortOrder.DESCENDING);
 	}
 

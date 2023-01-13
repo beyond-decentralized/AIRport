@@ -14,12 +14,12 @@ export interface IQOrderableField<IQF extends IQOrderableField<IQF>> {
 	/**
 	 * Order by this field in ascending IQOrderableField.
 	 */
-	asc(): IFieldInOrderBy<IQF>;
+	ASC(): IFieldInOrderBy<IQF>;
 
 	/**
 	 * Order by this field in descending IQOrderableField.
 	 */
-	desc(): IFieldInOrderBy<IQF>;
+	DESC(): IFieldInOrderBy<IQF>;
 }
 
 export interface IQFieldInternal<IQF extends IQOrderableField<IQF>>

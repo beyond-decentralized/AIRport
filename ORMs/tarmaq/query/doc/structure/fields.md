@@ -7,7 +7,7 @@ of fields is to define SQL operators.
 
 Fields are also used in SELECT clause of non-Entity queries.
 
-asc() & desc() methods of Fields are used in ORDER BY clause
+ASC() & DESC() methods of Fields are used in ORDER BY clause
 
 Fields, along w/ relations are the main building blocks of Query Objects.
 
