@@ -38,7 +38,6 @@ import {
 	Repository_UiEntryUri
 } from "../../types";
 import { Application_FullName } from "@airport/ground-control";
-import { RepositoryMember } from "./RepositoryMember";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -126,9 +125,6 @@ export class Repository
 		referencedColumnName: 'METRO_AREA_ID', nullable: true
 	})
 	metroArea?: MetroArea
-
-	@OneToMany({ mappedBy: 'repository' })
-	repositoryMembers?: RepositoryMember[] = []
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryTransactionHistory?: RepositoryTransactionHistory[] = [];

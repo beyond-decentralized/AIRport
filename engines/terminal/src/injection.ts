@@ -32,7 +32,6 @@ import {
     OperationHistoryDuo,
     RecordHistoryDuo,
     RepositoryDao,
-    RepositoryMemberDao,
     RepositoryTransactionHistoryDao,
     RepositoryTransactionHistoryDuo,
     REPOSITORY_MANAGER,
@@ -75,7 +74,7 @@ import { UserAccountManager } from '@airport/travel-document-checkpoint/dist/app
 import { LOCAL_API_SERVER } from '@airport/apron'
 import { IdGenerator } from '@airport/fuel-hydrant-system'
 import { ActiveQueries, ObservableQueryAdapter } from '@airport/flight-number'
-import { KeyRingManager } from '@airbridge/keyring/dist/app/bundle'
+import { KeyRingManager, RepositoryMemberDao } from '@airbridge/keyring/dist/app/bundle'
 import { CrossRepositoryRelationManager } from '@airport/flight-recorder/dist/app/bundle'
 
 const terminal = lib('terminal')
@@ -138,12 +137,12 @@ terminal.setDependencies(DeleteManager, {
 
 terminal.setDependencies(DependencyGraphResolver, {
     datastructureUtils: DatastructureUtils,
-	dictionary: Dictionary,
+    dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER
 })
 
 terminal.setDependencies(EntityGraphReconstructor, {
-	appTrackerUtils: AppTrackerUtils,
+    appTrackerUtils: AppTrackerUtils,
     entityStateManager: ENTITY_STATE_MANAGER
 })
 
@@ -174,7 +173,7 @@ terminal.setDependencies(InternalRecordManager, {
 
 REPOSITORY_MANAGER.setClass(RepositoryManager)
 REPOSITORY_MANAGER.setDependencies({
-	dictionary: Dictionary,
+    dictionary: Dictionary,
     keyRingManager: KeyRingManager,
     repositoryDao: RepositoryDao,
     repositoryMemberDao: RepositoryMemberDao,
@@ -210,7 +209,7 @@ terminal.setDependencies(QueryManager, {
     actorDao: ActorDao,
     airportDatabase: AIRPORT_DATABASE,
     datastructureUtils: DatastructureUtils,
-	dictionary: Dictionary,
+    dictionary: Dictionary,
     observableQueryAdapter: ObservableQueryAdapter,
     repositoryDao: RepositoryDao,
     repositoryLoader: REPOSITORY_LOADER,
@@ -227,7 +226,7 @@ terminal.setDependencies(StructuralEntityValidator, {
     applicationUtils: ApplicationUtils,
     crossRepositoryRelationManager: CrossRepositoryRelationManager,
     dbApplicationUtils: DbApplicationUtils,
-	dictionary: Dictionary,
+    dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
 })
 

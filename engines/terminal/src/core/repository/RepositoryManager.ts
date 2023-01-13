@@ -8,9 +8,7 @@ import {
 	IRepositoryDao,
 	IRepositoryManager,
 	Repository,
-	UpdateState,
-	RepositoryMember,
-	RepositoryMemberDao
+	UpdateState
 } from '@airport/holding-pattern/dist/app/bundle' // default
 import {
 	QAirEntity
@@ -35,8 +33,9 @@ import {
 	ITransactionContext,
 } from '@airport/terminal-map'
 import { v4 as guidv4 } from "uuid";
-import { IUserAccount, UserAccount } from '@airport/travel-document-checkpoint'
+import { IUserAccount } from '@airport/travel-document-checkpoint'
 import { Dictionary, IAppTrackerUtils } from '@airport/ground-control'
+import { RepositoryMember } from '@airbridge/keyring'
 
 /**
  * Created by Papa on 2/12/2017.
@@ -68,9 +67,6 @@ export class RepositoryManager
 	repositoryDao: IRepositoryDao
 
 	@Inject()
-	repositoryMemberDao: RepositoryMemberDao
-
-	@Inject()
 	terminalSessionManager: ITerminalSessionManager
 
 	@Inject()
@@ -99,32 +95,28 @@ already contains a new repository.`)
 
 		const repositoryGUID = context.newRepositoryGUID
 			? context.newRepositoryGUID
-			: "DEVSERVR_" + guidv4()
-
-		let repositoryMember: RepositoryMember = null
-		if (context.addRepositoryToKeyRing) {
-			const newRepositoryKeyResult = await this.keyRingManager.addRepositoryKey(
-				repositoryGUID,
-				repositoryName,
-				context
-			)
-
-			repositoryMember = this.getRepositoryMember(
-				userAccount,
-				newRepositoryKeyResult.memberGUID,
-				newRepositoryKeyResult.publicSigningKey
-			)
-		}
+			: 'DEVSERVR_' + guidv4()
 
 		let repository = await this.createRepositoryRecord(
 			repositoryName,
 			repositoryGUID,
-			repositoryMember,
 			userAccount,
 			isInternalDomain
 				? context.applicationFullName
 				: userSession.currentTransaction.actor.application.fullName,
 			context)
+
+		if (!context.forKeyRingRepository) {
+			await this.keyRingManager.createRepositoryMember(
+				repository,
+				userAccount,
+				true,
+				true,
+				true,
+				true,
+				context
+			)
+		}
 
 		if (!isInternalDomain) {
 			userSession.currentRootTransaction.newRepository = repository
@@ -145,35 +137,6 @@ already contains a new repository.`)
 		if (!userAccount) {
 			throw new Error(`No User Account found in User Session`)
 		}
-
-		const newRepositoryKeyResult = await this.keyRingManager.addRepositoryKey(
-			repository.GUID,
-			repository.name,
-			context
-		)
-
-		const repositoryMember = this.getRepositoryMember(
-			userAccount,
-			newRepositoryKeyResult.memberGUID,
-			newRepositoryKeyResult.publicSigningKey
-		)
-
-		await this.repositoryMemberDao.save(repositoryMember)
-	}
-
-	private getRepositoryMember(
-		userAccount: UserAccount,
-		GUID: string,
-		publicSigningKey: string
-	): RepositoryMember {
-		const repositoryMember = new RepositoryMember()
-		repositoryMember.GUID = GUID
-		repositoryMember.isAdministrator = true
-		repositoryMember.canWrite = true
-		repositoryMember.userAccount = userAccount
-		repositoryMember.publicSigningKey = publicSigningKey
-
-		return repositoryMember
 	}
 
 	async setUiEntryUri(
@@ -214,7 +177,6 @@ already contains a new repository.`)
 	private async createRepositoryRecord(
 		name: string,
 		GUID: string,
-		repositoryMember: RepositoryMember,
 		userAccount: IUserAccount,
 		applicationFullName: string,
 		context: IApiCallContext & ITransactionContext,
@@ -227,17 +189,13 @@ already contains a new repository.`)
 			immutable: false,
 			name,
 			owner: userAccount as any,
-			repositoryMembers: [],
 			repositoryTransactionHistory: [],
 			// FIXME: propage the 
 			source: 'DEVSERVR',
 			uiEntryUri: null,
 			GUID,
 		}
-		if (repositoryMember) {
-			repositoryMember.repository = repository
-			repository.repositoryMembers.push(repositoryMember)
-		}
+
 		await this.repositoryDao.save(repository, context)
 
 		return repository

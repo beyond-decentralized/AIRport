@@ -26,7 +26,7 @@ export class Task extends AirEntity {
 and Goal:
 
 ```ts
-import { AirEntity } from '@airport/holding-pattern/dist/app/bundle'
+import { AirEntity } from '@airport/final-approach'
 import { Column, Entity } from '@airport/tarmaq-entity'
 
 @Entity()
