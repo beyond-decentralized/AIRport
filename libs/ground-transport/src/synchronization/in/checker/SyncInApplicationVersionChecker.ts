@@ -1,4 +1,3 @@
-import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	IApplicationVersion,
 	IApplicationVersionDao
@@ -8,8 +7,9 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { IApplicationInitializer, ITransactionalReceiver } from '@airport/terminal-map'
+import { IApplicationInitializer } from '@airport/terminal-map'
 import { IApplication } from '@airport/airspace'
+import { Application_Name, Domain_Name } from '@airport/ground-control'
 
 export interface IApplicationVersionCheckRecord {
 	found?: boolean
@@ -24,7 +24,7 @@ export interface ISyncInApplicationVersionChecker {
 		inMessageApplicationVersions: IApplicationVersion[],
 		inMessageApplications: IApplication[],
 		context: IContext
-	): Promise<boolean>;
+	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>>;
 
 }
 
@@ -43,9 +43,10 @@ export class SyncInApplicationVersionChecker
 		inMessageApplicationVersions: IApplicationVersion[],
 		inMessageApplications: IApplication[],
 		context: IContext
-	): Promise<boolean> {
+	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>> {
+		let applicationCheckMap
 		try {
-			let applicationCheckMap = await this.checkVersionsApplicationsDomains(
+			applicationCheckMap = await this.checkVersionsApplicationsDomains(
 				inMessageApplicationVersions, inMessageApplications, context);
 
 			for (let i = 0; i < inMessageApplicationVersions.length; i++) {
@@ -56,32 +57,66 @@ export class SyncInApplicationVersionChecker
 			}
 		} catch (e) {
 			console.error(e)
-			return false
+			return null
 		}
 
-		return true
+		return applicationCheckMap
 	}
 
 	private async checkVersionsApplicationsDomains(
 		inMessageApplicationVersions: IApplicationVersion[],
 		inMessageApplications: IApplication[],
 		context: IContext
-	): Promise<Map<string, Map<string, IApplicationVersionCheckRecord>>> {
-		const { allApplication_Names, domainNames, applicationVersionCheckMap } = this
+	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>> {
+		const { allApplicationNames: allApplication_Names, domainNames, applicationVersionCheckMap } = this
 			.getNames(inMessageApplicationVersions, inMessageApplications)
 
-		const existingApplicationVersions = await this.applicationVersionDao.findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names)
+		await this.setApplicationVersions(
+			domainNames,
+			allApplication_Names,
+			applicationVersionCheckMap
+		)
 
-		let lastDomain_Name
-		let lastApplication_Name
+		const domainWithNewApp_NameSet: Set<Domain_Name> = new Set()
+		const newApplicationNameSet: Set<Application_Name> = new Set()
+		for (const [domainName, applicationChecks] of applicationVersionCheckMap) {
+			for (let [_, applicationCheck] of applicationChecks) {
+				if (!applicationCheck.found) {
+					domainWithNewApp_NameSet.add(domainName)
+					newApplicationNameSet.add(applicationCheck.applicationName)
+					await this.applicationInitializer.installApplication(
+						domainName, applicationCheck.applicationName)
+				}
+			}
+		}
+
+		await this.setApplicationVersions(
+			Array.from(domainWithNewApp_NameSet),
+			Array.from(newApplicationNameSet),
+			applicationVersionCheckMap
+		)
+
+		return applicationVersionCheckMap
+	}
+
+	async setApplicationVersions(
+		domainNames: Domain_Name[],
+		allApplication_Names: Application_Name[],
+		applicationVersionCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>
+	): Promise<void> {
+		const existingApplicationVersions = await this.applicationVersionDao
+			.findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names)
+
+		let lastDomainName
+		let lastApplicationName
 		for (let applicationVersion of existingApplicationVersions) {
-			let domainName = applicationVersion.application.domain.name
-			let applicationName = applicationVersion.application.name
-			if (lastDomain_Name !== domainName
-				&& lastApplication_Name !== applicationName) {
-				let applicationVersionNumber = applicationVersion.integerVersion
+			const domainName = applicationVersion.application.domain.name
+			const applicationName = applicationVersion.application.name
+			if (lastDomainName !== domainName && lastApplicationName !== applicationName) {
+				const applicationVersionNumber = applicationVersion.integerVersion
 
-				for (let [_, applicationCheck] of applicationVersionCheckMap.get(domainName)) {
+				const applicationVersionCheckMapForDomain = applicationVersionCheckMap.get(domainName);
+				for (let [_, applicationCheck] of applicationVersionCheckMapForDomain) {
 					if (applicationCheck.applicationName === applicationName) {
 						applicationCheck.found = true
 						if (applicationCheck.applicationVersionNumber > applicationVersionNumber) {
@@ -91,36 +126,26 @@ export class SyncInApplicationVersionChecker
 						applicationCheck.applicationVersion = applicationVersion
 					}
 				}
-				lastDomain_Name = domainName
-				lastApplication_Name = applicationName
+
+				lastDomainName = domainName
+				lastApplicationName = applicationName
 			}
 		}
-
-		for (const [domainName, applicationChecks] of applicationVersionCheckMap) {
-			for (let [_, applicationCheck] of applicationChecks) {
-				if (!applicationCheck.found) {
-					await this.applicationInitializer.installApplication(
-						domainName, applicationCheck.applicationName)
-				}
-			}
-		}
-
-		return applicationVersionCheckMap
 	}
 
 	private getNames(
 		inMessageApplicationVersions: IApplicationVersion[],
 		inMessageApplications: IApplication[]
 	): {
-		allApplication_Names: string[],
-		domainNames: string[],
-		applicationVersionCheckMap: Map<string, Map<string, IApplicationVersionCheckRecord>>
+		allApplicationNames: Application_Name[],
+		domainNames: Domain_Name[],
+		applicationVersionCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>
 	} {
 		if (!inMessageApplicationVersions || !(inMessageApplicationVersions instanceof Array)) {
 			throw new Error(`Did not find applicationVersions in RepositorySynchronizationMessage.`)
 		}
 
-		const applicationVersionCheckMap: Map<string, Map<string, IApplicationVersionCheckRecord>> = new Map()
+		const applicationVersionCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>> = new Map()
 
 		for (let applicationVersion of inMessageApplicationVersions) {
 			if (!applicationVersion.integerVersion || typeof applicationVersion.integerVersion !== 'number') {
@@ -141,22 +166,23 @@ export class SyncInApplicationVersionChecker
 			if (!applicationChecksForDomain.has(application.name)) {
 				applicationChecksForDomain.set(application.name, {
 					applicationName: application.name,
-					applicationVersionNumber: applicationVersion.integerVersion
+					applicationVersionNumber: applicationVersion.integerVersion,
+					found: false
 				})
 			}
 		}
 
 		const domainNames = []
-		const allApplication_Names = []
+		const allApplicationNames = []
 		for (const [domainName, applicationChecksForDomainMap] of applicationVersionCheckMap) {
 			domainNames.push(domainName)
 			for (let [applicationName, _] of applicationChecksForDomainMap) {
-				allApplication_Names.push(applicationName)
+				allApplicationNames.push(applicationName)
 			}
 		}
 
 		return {
-			allApplication_Names,
+			allApplicationNames: allApplicationNames,
 			domainNames,
 			applicationVersionCheckMap
 		}

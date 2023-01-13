@@ -35,6 +35,9 @@ export class SyncInUserAccountChecker
 			let messageUserAccountIndexMap: Map<string, number> = new Map()
 			for (let i = 0; i < message.userAccounts.length; i++) {
 				const userAccount = message.userAccounts[i]
+				if (typeof userAccount._localId !== 'undefined') {
+					throw new Error(`'userAccount._localId' cannot be specified`)
+				}
 				if (typeof userAccount.GUID !== 'string' || userAccount.GUID.length !== 36) {
 					throw new Error(`Invalid 'userAccount.GUID'`)
 				}

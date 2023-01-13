@@ -81,7 +81,7 @@ export abstract class AirEntity {
 	@DbNumber()
 	ageSuitability?: number = 0
 
-	// FIXME: when records are copied, make this a column
+	// TODO: if and when records are copied, make this a column
 	// @Column({ name: 'COPIED', nullable: false })
 	@Transient()
 	copied?: boolean = false

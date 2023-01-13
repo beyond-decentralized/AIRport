@@ -1,3 +1,3 @@
 export * from './CopiedRecordLedgerDao'
-export * from './CrossRepositoryRelationLedger'
+export * from './CrossRepositoryRelationLedgerDao'
 export * from './LocalCopyReplacementLedgerDao'

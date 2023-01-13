@@ -125,6 +125,9 @@ export class SyncInRepositoryChecker
 			throw new Error(`Expecting "in-message index" (number)
 				in 'repository.owner'`)
 		}
+		if (typeof repository.areDependenciesLoaded !== 'undefined') {
+			throw new Error(`Invalid 'repository.areDependenciesLoaded' is a local-only field`)
+		}
 		const userAccount = message.userAccounts[repository.owner as any]
 		if (!userAccount) {
 			throw new Error(

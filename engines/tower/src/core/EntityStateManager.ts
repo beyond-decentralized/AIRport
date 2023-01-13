@@ -104,8 +104,8 @@ export class EntityStateManager
 		entity: T,
 		dbEntity: DbEntity
 	): IEntityStateAsFlags {
-		let isCreate, isDelete, isParentSchemaId, isPassThrough, isResult,
-			isResultDate, isResultJson, isStub, isUpdate
+		let isCreate, isDelete, isParentSchemaId, isPassThrough,
+			isResultDate, isStub, isUpdate
 		const entityState = this.getEntityState(entity)
 		switch (entityState) {
 			case EntityState.CREATE:

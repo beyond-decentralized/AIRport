@@ -151,13 +151,13 @@ export abstract class SqlDriver
 			: application.domain.name
 		const actorApplication = context.transaction.actor.application
 		if (!this.appTrackerUtils.isInternalDomain(actorApplication.domain.name)) {
-			const haveNoPermissionsToAccesTable = this.appTrackerUtils.isNoExternalPermissionsEntity(
+			const entityHasExternalAccessPermissions = this.appTrackerUtils.entityHasExternalAccessPermissions(
 				domainName,
 				application.name,
 				applicationIntegerVersion,
 				table.name
 			);
-			if (haveNoPermissionsToAccesTable) {
+			if (!entityHasExternalAccessPermissions) {
 				throw new Error(`
 Domain:          ${actorApplication.domain.name}
 Application:     ${actorApplication.name}

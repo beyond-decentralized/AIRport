@@ -1,4 +1,5 @@
 import { Injected } from "@airport/direction-indicator"
+import { AirEntity } from "@airport/final-approach"
 import { DbRelation } from "@airport/ground-control"
 import { CopiedRecordLedger } from "../ddl/CopiedRecordLedger"
 import { CrossRepositoryRelationLedger } from "../ddl/CrossRepositoryRelationLedger"
@@ -58,17 +59,13 @@ export class CrossRepositoryRelationManager
         }
 
         const oneSideRepositoryLedger = this.getLedger(
-            manySideRelation,
-            manySideEntity,
             oneSideRelation,
-            copiedEntity
+            manySideEntity
         );
         oneSideRepositoryLedger.repository = copiedEntity.repository
 
         const manySideRepositoryLedger = this.getLedger(
             manySideRelation,
-            manySideEntity,
-            oneSideRelation,
             copiedEntity
         );
         manySideRepositoryLedger.repository = manySideEntity.repository
@@ -79,21 +76,13 @@ export class CrossRepositoryRelationManager
         }
     }
 
-    private getLedger(
-        manySideRelation: DbRelation,
-        manySideEntity,
-        oneSideRelation: DbRelation,
-        oneSideEntity,
+    private getLedger<E extends AirEntity>(
+        relation: DbRelation,
+        relatedEntity: E
     ): CrossRepositoryRelationLedger {
         const crossRepositoryRelationLedger = new CrossRepositoryRelationLedger()
-        crossRepositoryRelationLedger.oneSideRelation = oneSideRelation as any
-        crossRepositoryRelationLedger.oneSideActorRecordId = oneSideEntity._actorRecordId
-        crossRepositoryRelationLedger.oneSideActor = oneSideEntity.actor
-        crossRepositoryRelationLedger.oneSideRepository = oneSideEntity.repository
-        crossRepositoryRelationLedger.manySideRelation = manySideRelation as any
-        crossRepositoryRelationLedger.manySideActorRecordId = manySideEntity._actorRecordId
-        crossRepositoryRelationLedger.manySideActor = manySideEntity.actor
-        crossRepositoryRelationLedger.manySideRepository = manySideEntity.repository
+        crossRepositoryRelationLedger.relation = relation as any
+        crossRepositoryRelationLedger.relatedRepository = relatedEntity.repository
 
         return crossRepositoryRelationLedger
     }

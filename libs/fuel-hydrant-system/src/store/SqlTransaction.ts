@@ -104,6 +104,7 @@ export abstract class SqlTransaction
             name: Application_Name;
             fullName?: Application_FullName;
         },
+        applicationIntegerVersion: number,
         table: {
             name: string, tableConfig?: {
                 name?: string
@@ -111,7 +112,8 @@ export abstract class SqlTransaction
         },
         context: IContext,
     ): string {
-        return this.driver.getTableName(application, table, context)
+        return this.driver.getTableName(
+            application, applicationIntegerVersion, table, context)
     }
 
     async initialize(

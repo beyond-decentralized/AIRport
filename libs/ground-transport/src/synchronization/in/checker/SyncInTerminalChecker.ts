@@ -37,6 +37,9 @@ export class SyncInTerminalChecker
 			let messageTerminalIndexMap: Map<string, number> = new Map()
 			for (let i = 0; i < message.terminals.length; i++) {
 				const terminal = message.terminals[i]
+				if (typeof terminal._localId !== 'undefined') {
+					throw new Error(`'terminal._localId' cannot be specified`)
+				}
 				if (typeof terminal.owner !== 'number') {
 					throw new Error(`Expecting "in-message index" (number)
 					in 'terminal.owner' of RepositorySynchronizationMessage.terminals`)
@@ -63,8 +66,8 @@ export class SyncInTerminalChecker
 			const foundTerminalsByGUID: Map<Terminal_GUID, ITerminal> = new Map()
 			for (const terminal of terminals) {
 				foundTerminalsByGUID.set(terminal.GUID, terminal)
-				const messageUserAccountIndex = messageTerminalIndexMap.get(terminal.GUID)
-				message.terminals[messageUserAccountIndex] = terminal
+				const messageTerminalIndex = messageTerminalIndexMap.get(terminal.GUID)
+				message.terminals[messageTerminalIndex] = terminal
 			}
 
 			const missingTerminals = message.terminals

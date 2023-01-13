@@ -112,6 +112,7 @@ export class SynchronizationInManager
 			await this.twoStageSyncedInDataProcessor.syncMessages(immediateProcessingMessages, transaction, context)
 		}, null, context)
 
+		await this.wait(2000)
 
 		const delayedProcessingMessagesWithValidApps: RepositorySynchronizationMessage[] = []
 		for (const message of delayedProcessingMessages) {
@@ -120,9 +121,15 @@ export class SynchronizationInManager
 			// other apps - other repositories might be referencing records in
 			// the synched repositories (which may not be aware of the apps the
 			// other repositories where created with)
-			if (await this.syncInApplicationVersionChecker.ensureApplicationVersions(
-				message.referencedApplicationVersions, message.applications, context)) {
+			const applicationCheckMap = await this.syncInApplicationVersionChecker.ensureApplicationVersions(
+				message.referencedApplicationVersions, message.applications, context
+			)
+			if (applicationCheckMap) {
+				await this.syncInChecker.checkReferencedApplicationRelations(
+					message, applicationCheckMap, context
+				)
 				delayedProcessingMessagesWithValidApps.push(message)
+
 			}
 		}
 		if (delayedProcessingMessagesWithValidApps.length) {
@@ -132,6 +139,16 @@ export class SynchronizationInManager
 					delayedProcessingMessagesWithValidApps, transaction, context)
 			}, null, context)
 		}
+	}
+
+	private wait(
+		milliseconds: number
+	): Promise<void> {
+		return new Promise(resolve => {
+			setTimeout(_ => {
+				resolve()
+			}, milliseconds)
+		})
 	}
 
 	private timeOrderMessages(
