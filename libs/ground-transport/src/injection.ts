@@ -18,6 +18,7 @@ import { SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDa
 import {
     AIRPORT_DATABASE,
     ApplicationUtils,
+    REPOSITORY_LOADER,
     SystemWideOperationIdUtils,
     Utils
 } from '@airport/air-traffic-control'
@@ -155,6 +156,7 @@ groundTransport.setDependencies(SynchronizationAdapterLoader, {
 })
 
 groundTransport.setDependencies(SynchronizationInManager, {
+    repositoryLoader: REPOSITORY_LOADER,
     repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
     syncInApplicationVersionChecker: SyncInApplicationVersionChecker,
     syncInChecker: SyncInChecker,

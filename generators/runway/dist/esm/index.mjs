@@ -28107,32 +28107,13 @@ class SynchronizationInManager {
             await this.twoStageSyncedInDataProcessor.syncMessages(immediateProcessingMessages, transaction, context);
         }, null, context);
         await this.wait(2000);
-        const delayedProcessingMessagesWithValidApps = [];
-        for (const message of delayedProcessingMessages) {
-            // Possibly load (remotely) and install new apps - delayed processing
-            // messages deal with other repositories that might include data from
-            // other apps - other repositories might be referencing records in
-            // the synched repositories (which may not be aware of the apps the
-            // other repositories where created with)
-            const applicationCheckMap = await this.syncInApplicationVersionChecker.ensureApplicationVersions(message.referencedApplicationVersions, message.applications, context);
-            if (applicationCheckMap) {
-                await this.syncInChecker.checkReferencedApplicationRelations(message, applicationCheckMap, context);
-                delayedProcessingMessagesWithValidApps.push(message);
-            }
+        await this.processDelayedMessages(delayedProcessingMessages, context);
+        if (!context.doNotLoadReferences) {
+            await this.loadReferencedRepositories([
+                ...immediateProcessingMessages,
+                ...delayedProcessingMessages
+            ], context);
         }
-        if (delayedProcessingMessagesWithValidApps.length) {
-            await this.transactionManager.transactInternal(async (transaction, context) => {
-                transaction.isSync = true;
-                await this.twoStageSyncedInDataProcessor.syncMessages(delayedProcessingMessagesWithValidApps, transaction, context);
-            }, null, context);
-        }
-    }
-    wait(milliseconds) {
-        return new Promise(resolve => {
-            setTimeout(_ => {
-                resolve();
-            }, milliseconds);
-        });
     }
     timeOrderMessages(messageMapByGUID) {
         const messages = [...messageMapByGUID.values()];
@@ -28165,6 +28146,50 @@ class SynchronizationInManager {
             return false;
         }
         return true;
+    }
+    wait(milliseconds) {
+        return new Promise(resolve => {
+            setTimeout(_ => {
+                resolve();
+            }, milliseconds);
+        });
+    }
+    async processDelayedMessages(delayedProcessingMessages, context) {
+        const delayedProcessingMessagesWithValidApps = [];
+        for (const message of delayedProcessingMessages) {
+            // Possibly load (remotely) and install new apps - delayed processing
+            // messages deal with other repositories that might include data from
+            // other apps - other repositories might be referencing records in
+            // the synched repositories (which may not be aware of the apps the
+            // other repositories where created with)
+            const applicationCheckMap = await this.syncInApplicationVersionChecker.ensureApplicationVersions(message.referencedApplicationVersions, message.applications, context);
+            if (applicationCheckMap) {
+                await this.syncInChecker.checkReferencedApplicationRelations(message, applicationCheckMap, context);
+                delayedProcessingMessagesWithValidApps.push(message);
+            }
+        }
+        if (delayedProcessingMessagesWithValidApps.length) {
+            await this.transactionManager.transactInternal(async (transaction, context) => {
+                transaction.isSync = true;
+                await this.twoStageSyncedInDataProcessor.syncMessages(delayedProcessingMessagesWithValidApps, transaction, context);
+            }, null, context);
+        }
+    }
+    async loadReferencedRepositories(messages, context) {
+        const repositoryMapByGUID = new Map();
+        for (const message of messages) {
+            for (const repository of message.referencedRepositories) {
+                if (!repositoryMapByGUID.has(repository.GUID)) {
+                    repositoryMapByGUID.set(repository.GUID, repository);
+                }
+            }
+        }
+        for (const repository of repositoryMapByGUID.values()) {
+            await this.repositoryLoader.loadRepository(repository.source, repository.GUID, {
+                ...context,
+                doNotLoadReferences: true
+            });
+        }
     }
 }
 
@@ -28874,6 +28899,7 @@ groundTransport.setDependencies(SynchronizationAdapterLoader, {
     debugSynchronizationAdapter: DebugSynchronizationAdapter
 });
 groundTransport.setDependencies(SynchronizationInManager, {
+    repositoryLoader: REPOSITORY_LOADER,
     repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
     syncInApplicationVersionChecker: SyncInApplicationVersionChecker,
     syncInChecker: SyncInChecker,

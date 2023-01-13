@@ -9,6 +9,8 @@ import { ISyncInChecker } from './checker/SyncInChecker'
 import { ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
 import { IDataCheckResult } from './checker/SyncInDataChecker'
 import { ISyncInApplicationVersionChecker } from './checker/SyncInApplicationVersionChecker'
+import { IRepositoryLoader } from '@airport/air-traffic-control'
+import { IRepository, Repository_GUID } from '@airport/holding-pattern'
 
 /**
  * The manager for synchronizing data coming in  to Terminal (TM)
@@ -22,12 +24,20 @@ export interface ISynchronizationInManager {
 
 }
 
+export interface ISyncTransactionContext
+	extends ITransactionContext {
+	doNotLoadReferences: boolean
+}
+
 /**
  * Synchronization in Manager implementation.
  */
 @Injected()
 export class SynchronizationInManager
 	implements ISynchronizationInManager {
+
+	@Inject()
+	repositoryLoader: IRepositoryLoader
 
 	@Inject()
 	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
@@ -46,7 +56,7 @@ export class SynchronizationInManager
 
 	async receiveMessages(
 		messageMapByGUID: Map<string, RepositorySynchronizationMessage>,
-		context: ITransactionContext
+		context: ISyncTransactionContext
 	): Promise<void> {
 		const syncTimestamp = new Date().getTime()
 
@@ -114,41 +124,14 @@ export class SynchronizationInManager
 
 		await this.wait(2000)
 
-		const delayedProcessingMessagesWithValidApps: RepositorySynchronizationMessage[] = []
-		for (const message of delayedProcessingMessages) {
-			// Possibly load (remotely) and install new apps - delayed processing
-			// messages deal with other repositories that might include data from
-			// other apps - other repositories might be referencing records in
-			// the synched repositories (which may not be aware of the apps the
-			// other repositories where created with)
-			const applicationCheckMap = await this.syncInApplicationVersionChecker.ensureApplicationVersions(
-				message.referencedApplicationVersions, message.applications, context
-			)
-			if (applicationCheckMap) {
-				await this.syncInChecker.checkReferencedApplicationRelations(
-					message, applicationCheckMap, context
-				)
-				delayedProcessingMessagesWithValidApps.push(message)
+		await this.processDelayedMessages(delayedProcessingMessages, context)
 
-			}
+		if (!context.doNotLoadReferences) {
+			await this.loadReferencedRepositories([
+				...immediateProcessingMessages,
+				...delayedProcessingMessages
+			], context)
 		}
-		if (delayedProcessingMessagesWithValidApps.length) {
-			await this.transactionManager.transactInternal(async (transaction, context) => {
-				transaction.isSync = true
-				await this.twoStageSyncedInDataProcessor.syncMessages(
-					delayedProcessingMessagesWithValidApps, transaction, context)
-			}, null, context)
-		}
-	}
-
-	private wait(
-		milliseconds: number
-	): Promise<void> {
-		return new Promise(resolve => {
-			setTimeout(_ => {
-				resolve()
-			}, milliseconds)
-		})
 	}
 
 	private timeOrderMessages(
@@ -195,6 +178,71 @@ export class SynchronizationInManager
 		}
 
 		return true
+	}
+
+	private wait(
+		milliseconds: number
+	): Promise<void> {
+		return new Promise(resolve => {
+			setTimeout(_ => {
+				resolve()
+			}, milliseconds)
+		})
+	}
+
+	private async processDelayedMessages(
+		delayedProcessingMessages: RepositorySynchronizationMessage[],
+		context: ITransactionContext
+	): Promise<void> {
+		const delayedProcessingMessagesWithValidApps: RepositorySynchronizationMessage[] = []
+		for (const message of delayedProcessingMessages) {
+			// Possibly load (remotely) and install new apps - delayed processing
+			// messages deal with other repositories that might include data from
+			// other apps - other repositories might be referencing records in
+			// the synched repositories (which may not be aware of the apps the
+			// other repositories where created with)
+			const applicationCheckMap = await this.syncInApplicationVersionChecker.ensureApplicationVersions(
+				message.referencedApplicationVersions, message.applications, context
+			)
+			if (applicationCheckMap) {
+				await this.syncInChecker.checkReferencedApplicationRelations(
+					message, applicationCheckMap, context
+				)
+				delayedProcessingMessagesWithValidApps.push(message)
+
+			}
+		}
+		if (delayedProcessingMessagesWithValidApps.length) {
+			await this.transactionManager.transactInternal(async (transaction, context) => {
+				transaction.isSync = true
+				await this.twoStageSyncedInDataProcessor.syncMessages(
+					delayedProcessingMessagesWithValidApps, transaction, context)
+			}, null, context)
+		}
+	}
+
+	private async loadReferencedRepositories(
+		messages: RepositorySynchronizationMessage[],
+		context: ISyncTransactionContext
+	): Promise<void> {
+		const repositoryMapByGUID: Map<Repository_GUID, IRepository> = new Map()
+		for (const message of messages) {
+			for (const repository of message.referencedRepositories) {
+				if (!repositoryMapByGUID.has(repository.GUID)) {
+					repositoryMapByGUID.set(repository.GUID, repository)
+				}
+			}
+		}
+		for (const repository of repositoryMapByGUID.values()) {
+			await this.repositoryLoader.loadRepository(
+				repository.source,
+				repository.GUID,
+				{
+					...context,
+					doNotLoadReferences: true
+				}
+			)
+		}
 	}
 
 }
