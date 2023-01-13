@@ -8,12 +8,12 @@ import {
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import {
 	Domain_Name,
-	ensureChildJsMap,
 	Application_Index,
 	Application_Name,
 	ApplicationStatus,
 	ApplicationVersion_LocalId,
-	Application_FullName
+	Application_FullName,
+	IDatastructureUtils
 } from '@airport/ground-control'
 import {
 	BaseApplicationDao,
@@ -94,6 +94,9 @@ export class ApplicationDao
 
 	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
+	datastructureUtils: IDatastructureUtils
 
 	async findAllActive()
 		: Promise<IApplication[]> {
@@ -274,7 +277,7 @@ export class ApplicationDao
 		})
 
 		for (const applicationLookupRecord of applicationLookupRecords) {
-			ensureChildJsMap(
+			this.datastructureUtils.ensureChildJsMap(
 				maxVersionedMapByApplicationAndDomain_Names, applicationLookupRecord.domain.name)
 				.set(applicationLookupRecord.name, applicationLookupRecord)
 		}

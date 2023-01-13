@@ -50,6 +50,7 @@ export interface IStoreDriver
 				name: Domain_Name
 			}; name: Application_Name; fullName?: Application_FullName;
 		},
+		applicationIntegerVersion: number,
 		table: {
 			name: string, tableConfig?: {
 				name?: string

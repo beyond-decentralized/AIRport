@@ -1,6 +1,5 @@
 import { JsonApplicationWithApi } from "@airport/check-in";
-import { JsonApplication, JsonApplicationRelation, JsonApplicationVersion } from "@airport/ground-control";
-import { ApplicationLocator, ApplicationReferenceChecker, IApplicationReferenceChecker } from "@airport/landing";
+import { ApplicationReferenceUtils, AppTrackerUtils, Dictionary, JsonApplication, JsonApplicationRelation, JsonApplicationVersion } from "@airport/ground-control";
 import { SIndexedApplication } from "./SApplication";
 
 export interface IJsonApplicationChecker {
@@ -15,11 +14,12 @@ export interface IJsonApplicationChecker {
 export class JsonApplicationChecker
     implements IJsonApplicationChecker {
 
-    applicationReferenceChecker: IApplicationReferenceChecker
+    applicationReferenceChecker: ApplicationReferenceUtils
 
     constructor() {
-        this.applicationReferenceChecker = new ApplicationReferenceChecker()
-        this.applicationReferenceChecker.applicationLocator = new ApplicationLocator()
+        this.applicationReferenceChecker = new ApplicationReferenceUtils()
+        this.applicationReferenceChecker.appTrackerUtils = new AppTrackerUtils();
+        (this.applicationReferenceChecker.appTrackerUtils as AppTrackerUtils).dictionary = new Dictionary()
     }
 
     checkFrameworkReferences(

@@ -71,13 +71,25 @@ export interface IApplicationUtils {
     dbEntity: DbEntity
   ): any;
 
+  getOneSideEntityOfManyRelationColumn(
+    dbColumn: DbColumn
+  ): DbEntity
+
   isIdEmpty(idValue: any): boolean;
 
   isEmpty(value: any): boolean;
 
   isRelationColumn(
     dbColumn: DbColumn,
-  ): boolean;
+  ): boolean
+
+  isManyRelationColumn(
+    dbColumn: DbColumn
+  ): boolean
+
+  isOneRelationColumn(
+    dbColumn: DbColumn
+  ): boolean
 
   isActorId(
     columnName: string

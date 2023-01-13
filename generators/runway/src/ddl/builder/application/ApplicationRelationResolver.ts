@@ -1,8 +1,8 @@
 import {
 	DbColumn,
 	DbEntity,
+	Dictionary,
 	EntityRelationType,
-	airEntity,
 	SQLDataType
 } from '@airport/ground-control'
 import { SIndexedEntity } from './SEntity'
@@ -14,13 +14,15 @@ import { SIndexedApplication } from './SApplication'
 
 export class ApplicationRelationResolver {
 
+	dictionary = new Dictionary()
+
 	resolveAllRelationLinks(
 		indexedApplication: SIndexedApplication,
 	): void {
 		for (const entityName in indexedApplication.entityMapByName) {
 			const indexedEntity = indexedApplication.entityMapByName[entityName]
 			if (indexedEntity.entity.isAirEntity) {
-				if (indexedEntity.idColumns[0].name !== airEntity.FOREIGN_KEY) {
+				if (indexedEntity.idColumns[0].name !== this.dictionary.AirEntity.columns.REPOSITORY_LID) {
 					throw new Error(`@Id Column at index 0, must be 'REPOSITORY_LID'`)
 				}
 			}

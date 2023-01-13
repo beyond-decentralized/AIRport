@@ -1,7 +1,5 @@
 import {
-	DbEntity,
-	ensureChildArray,
-	ensureChildMap
+	DbEntity, IDatastructureUtils
 } from '@airport/ground-control'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import { ManyToOneStubReference } from './GraphMtoMapper'
@@ -37,6 +35,11 @@ export class GraphOtmMapper {
 		[otmEntityId: string]: any
 	}[][] = []
 
+	constructor(
+		private datastructureUtils: IDatastructureUtils
+	) {
+	}
+
 	addMtoReference(
 		mtoStubReference: ManyToOneStubReference,
 		mtoEntityId: string | number,
@@ -52,8 +55,9 @@ export class GraphOtmMapper {
 
 		let mtoEntityReferenceMapForEntity: {
 			[otmReferenceId: string]: { [otmProperty: string]: Array<any> }
-		} = ensureChildMap(
-			ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.applicationVersion.application.index),
+		} = this.datastructureUtils.ensureChildMap(
+			this.datastructureUtils.ensureChildArray(
+				this.mtoEntityReferenceMap, otmDbEntity.applicationVersion.application.index),
 			otmDbEntity.index
 		)
 
@@ -80,8 +84,9 @@ export class GraphOtmMapper {
 		const otmDbEntity = otmStubReference.otmDbEntity
 		let mtoEntityReferenceMapForEntity: {
 			[otmEntityId: string]: any
-		} = ensureChildMap(
-			ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.applicationVersion.application.index),
+		} = this.datastructureUtils.ensureChildMap(
+			this.datastructureUtils.ensureChildArray(
+				this.otmEntityReferenceMap, otmDbEntity.applicationVersion.application.index),
 			otmDbEntity.index
 		)
 
@@ -151,3 +156,4 @@ export class GraphOtmMapper {
 		}
 	}
 }
+globalThis.GraphOtmMapper = GraphOtmMapper

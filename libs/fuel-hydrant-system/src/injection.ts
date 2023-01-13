@@ -10,7 +10,7 @@ import { IdGenerator } from './store/IdGenerator'
 import { QValidator } from './validation/Validator'
 import { SqlDriver } from './store/SqlDriver'
 import { STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/terminal-map'
-import { DbApplicationUtils, ENTITY_STATE_MANAGER, SEQUENCE_GENERATOR } from '@airport/ground-control'
+import { AppTrackerUtils, DatastructureUtils, DbApplicationUtils, ENTITY_STATE_MANAGER, SEQUENCE_GENERATOR } from '@airport/ground-control'
 import {
     AIRPORT_DATABASE, ApplicationUtils, QMetadataUtils, RelationManager, Utils
 } from '@airport/air-traffic-control'
@@ -21,7 +21,7 @@ const fuelHydrantSystem = lib('fuel-hydrant-system')
 fuelHydrantSystem.register(
     SubStatementSqlGenerator, IdGenerator, ObjectResultParserFactory,
     QValidator, SqlDriver as any
-    )
+)
 
 export const SQL_QUERY_ADAPTOR = fuelHydrantSystem.token<ISQLQueryAdaptor>('SQLQueryAdaptor')
 
@@ -31,6 +31,7 @@ fuelHydrantSystem.setDependencies(IdGenerator, {
 
 fuelHydrantSystem.setDependencies(ObjectResultParserFactory, {
     applicationUtils: ApplicationUtils,
+    datastructureUtils: DatastructureUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
     utils: Utils
 })
@@ -39,6 +40,7 @@ fuelHydrantSystem.setDependencies(SqlDriver as any, {
     activeQueries: ActiveQueries,
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: ApplicationUtils,
+    appTrackerUtils: AppTrackerUtils,
     dbApplicationUtils: DbApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
     objectResultParserFactory: ObjectResultParserFactory,

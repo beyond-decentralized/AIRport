@@ -2,6 +2,7 @@ import { AIRPORT_DATABASE } from '@airport/air-traffic-control'
 import { lib } from '@airport/direction-indicator'
 import {
     AppTrackerUtils,
+    DatastructureUtils,
     DbApplicationUtils,
     SEQUENCE_GENERATOR,
     TRANSACTIONAL_CONNECTOR
@@ -48,6 +49,7 @@ terminalMap.setDependencies(TerminalState, {
 })
 
 terminalMap.setDependencies(TerminalStore, {
+    datastructureUtils: DatastructureUtils,
     selectorManager: SelectorManager,
     terminalState: TerminalState
 })

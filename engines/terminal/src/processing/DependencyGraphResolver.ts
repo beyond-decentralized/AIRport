@@ -1,11 +1,11 @@
-import { ACTOR_PROPERTY_NAME, REPOSITORY_PROPERTY_NAME } from '@airport/air-traffic-control'
 import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
 import {
-	ensureChildArray,
+	Dictionary,
 	EntityRelationType,
+	IDatastructureUtils,
 	IEntityStateManager
 } from '@airport/ground-control'
 import { IAirEntity } from '@airport/final-approach'
@@ -26,6 +26,12 @@ import {
 @Injected()
 export class DependencyGraphResolver
 	implements IDependencyGraphResolver {
+
+	@Inject()
+	datastructureUtils: IDatastructureUtils
+
+	@Inject()
+	dictionary: Dictionary
 
 	@Inject()
 	entityStateManager: IEntityStateManager
@@ -157,8 +163,8 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 
 						// TODO: see if there is a cleaner way to escape nested Actor and Repository records
 						if (dbEntity.isAirEntity && (
-							dbProperty.name === REPOSITORY_PROPERTY_NAME
-							|| dbProperty.name === ACTOR_PROPERTY_NAME)
+							this.dictionary.isActor(dbRelation.relationEntity)
+							|| this.dictionary.isRepository(dbRelation.relationEntity))
 							&& !propertyValue[this.entityStateManager.getStateFieldName()]) {
 							continue
 						}
@@ -312,8 +318,8 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 
 		for (const node of orderedDependencies) {
 			const dbEntity = node.dbEntity
-			const applicationOperationNodes = ensureChildArray(operationsByApplication_Index,
-				dbEntity.applicationVersion.application.index)
+			const applicationOperationNodes = this.datastructureUtils.ensureChildArray(
+				operationsByApplication_Index, dbEntity.applicationVersion.application.index)
 
 			let entityOperations = applicationOperationNodes[dbEntity.index]
 			if (!entityOperations) {

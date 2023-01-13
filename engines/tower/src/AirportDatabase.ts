@@ -3,7 +3,8 @@ import {
 	IDatabaseState,
 	IEntityAccumulator,
 	IEntityRecord,
-	IQApplicationBuilderUtils
+	IQApplicationBuilderUtils,
+	QAppInternal
 } from '@airport/air-traffic-control';
 import { QApp } from '@airport/aviation-communication'
 import {
@@ -12,6 +13,9 @@ import {
 } from '@airport/direction-indicator'
 import {
 	DbApplication,
+	DbApplicationVersion,
+	DbEntity,
+	Dictionary,
 	IDbApplicationUtils,
 	ISaveResult,
 } from '@airport/ground-control';
@@ -79,6 +83,9 @@ export class AirportDatabase
 	databaseStore: IDatabaseState
 
 	@Inject()
+	dictionary: Dictionary
+
+	@Inject()
 	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
@@ -131,7 +138,32 @@ export class AirportDatabase
 	}
 
 	async load(): Promise<any> {
-		// Just calling this method, loads the AirpotDatabase object
+		// Calling this method loads the AirpotDatabase object
+		// ('this.airportDatabase' statement by itself creates the object,
+		// (without the '.load() call) but '.load()' is more intuitive)
+	}
+
+	getCurrentDbApplicationVersion(
+		domainName: string,
+		applicationName: string
+	): DbApplicationVersion {
+		const applicationFullName = this.dbApplicationUtils
+			.getApplication_FullNameFromDomainAndName(domainName, applicationName)
+		return (this.QM[applicationFullName] as QAppInternal)
+			.__dbApplication__.currentVersion[0].applicationVersion
+	}
+
+	getDbEntity(
+		domainName: string,
+		applicationName: string,
+		entityName: string
+	): DbEntity {
+		const dbApplicationVersion = this.getCurrentDbApplicationVersion(
+			domainName,
+			applicationName
+		)
+
+		return dbApplicationVersion.entityMapByName[entityName]
 	}
 
 	setQApp(

@@ -4,8 +4,7 @@ import {
 } from '@airport/direction-indicator'
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
-	ensureChildArray,
-	ensureChildJsMap
+	IDatastructureUtils
 } from '@airport/ground-control'
 import {
 	IRepository,
@@ -30,6 +29,9 @@ export interface ISynchronizationOutManager {
 @Injected()
 export class SynchronizationOutManager
 	implements ISynchronizationOutManager {
+
+	@Inject()
+	datastructureUtils: IDatastructureUtils
 
 	@Inject()
 	repositoryDao: IRepositoryDao
@@ -137,8 +139,8 @@ export class SynchronizationOutManager
 		for (let i = 0; i < messages.length; i++) {
 			const repository = historiesToSend[i].repository
 			const source = repository.GUID.substring(0, 8)
-			ensureChildArray(
-				ensureChildJsMap(groupMessageMap, source),
+			this.datastructureUtils.ensureChildArray(
+				this.datastructureUtils.ensureChildJsMap(groupMessageMap, source),
 				repository.GUID).push(messages[i])
 		}
 

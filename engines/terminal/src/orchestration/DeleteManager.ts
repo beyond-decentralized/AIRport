@@ -1,6 +1,6 @@
 import {
-	getSysWideOpId,
 	IAirportDatabase,
+	ISystemWideOperationIdUtils,
 	IUtils
 } from '@airport/air-traffic-control'
 import {
@@ -12,16 +12,14 @@ import {
 	DbColumn,
 	DbEntity,
 	DbProperty,
-	ensureChildArray,
-	ensureChildJsMap,
+	Dictionary,
 	EntityRelationType,
+	IDatastructureUtils,
 	IRootTransaction,
 	JsonDelete,
 	JsonEntityQuery,
 	PortableQuery,
 	QueryResultType,
-	airEntity,
-	ISequenceGenerator,
 } from '@airport/ground-control'
 import {
 	IActor,
@@ -53,6 +51,12 @@ export class DeleteManager
 	applicationUtils: IApplicationUtils
 
 	@Inject()
+	datastructureUtils: IDatastructureUtils
+
+	@Inject()
+	dictionary: Dictionary
+
+	@Inject()
 	historyManager: IHistoryManager
 
 	@Inject()
@@ -65,7 +69,7 @@ export class DeleteManager
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 
 	@Inject()
-	sequenceGenerator: ISequenceGenerator
+	systemWideOperationIdUtils: ISystemWideOperationIdUtils
 
 	@Inject()
 	utils: IUtils
@@ -129,11 +133,14 @@ export class DeleteManager
 		repositoryIdSet.add(repositoryId)
 
 		const recordsToDeleteForApplication
-			= ensureChildJsMap(recordsToDelete, dbEntity.applicationVersion.application.index)
+			= this.datastructureUtils.ensureChildJsMap(
+				recordsToDelete, dbEntity.applicationVersion.application.index)
 		const recordsToDeleteForTable
-			= ensureChildJsMap(recordsToDeleteForApplication, dbEntity.index)
+			= this.datastructureUtils.ensureChildJsMap(
+				recordsToDeleteForApplication, dbEntity.index)
 		const recordsToDeleteForRepository
-			= ensureChildArray(recordsToDeleteForTable, repositoryId)
+			= this.datastructureUtils.ensureChildArray(
+				recordsToDeleteForTable, repositoryId)
 
 		const recordToDelete = {}
 		// FIXME: implement
@@ -228,7 +235,7 @@ export class DeleteManager
 					.applicationVersion.entities[entityIndex]
 
 				if (!systemWideOperationId) {
-					systemWideOperationId = await getSysWideOpId(this.airportDatabase, this.sequenceGenerator)
+					systemWideOperationId = await this.systemWideOperationIdUtils.getSysWideOpId()
 				}
 
 				for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
@@ -259,8 +266,8 @@ export class DeleteManager
 											switch (dbColumn.name) {
 												// Do not add Actor or Repository the are recorded
 												// at record history level
-												case airEntity.ACTOR_LID:
-												case airEntity.REPOSITORY_LID:
+												case this.dictionary.AirEntity.columns.ACTOR_LID:
+												case this.dictionary.AirEntity.columns.REPOSITORY_LID:
 													break;
 												default:
 													this.recordHistoryDuo.addOldValue(recordHistory, dbColumn,

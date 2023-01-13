@@ -1,5 +1,5 @@
 import { IOC } from '@airport/direction-indicator';
-import { DbApplicationUtils, IDbApplicationBuilder } from '@airport/ground-control';
+import { DatastructureUtils, DbApplicationUtils, IDbApplicationBuilder } from '@airport/ground-control';
 import { ILinkingDictionary } from '@airport/ground-control';
 import {
 	DbEntity,
@@ -13,6 +13,7 @@ import {
 	JsonApplicationRelation
 } from '@airport/ground-control';
 import {
+	ApplicationStatus,
 	DbDomain,
 	DbApplication,
 	DbApplicationCurrentVersion,
@@ -20,11 +21,11 @@ import {
 	DbApplicationVersion,
 	JsonApplication,
 } from '@airport/ground-control';
-import { ApplicationStatus } from '@airport/ground-control';
-import { ensureChildMap } from '@airport/ground-control';
 
 export class DbApplicationBuilder
 	implements IDbApplicationBuilder {
+
+	datastructureUtils = new DatastructureUtils()
 
 	buildDbApplicationWithoutReferences(
 		jsonApplication: JsonApplication,
@@ -467,11 +468,11 @@ export class DbApplicationBuilder
 				const oneRelationIndex = relationColumnRef.oneRelationIndex;
 				const oneColumnIndex = relationColumnRef.oneColumnIndex;
 
-				const manyRelationColumnMap = ensureChildMap(
-					ensureChildMap(
-						ensureChildMap(
-							ensureChildMap(dictionary.dbColumnRelationMapByManySide,
-								manyApplication.domain),
+				const manyRelationColumnMap = this.datastructureUtils.ensureChildMap(
+					this.datastructureUtils.ensureChildMap(
+						this.datastructureUtils.ensureChildMap(
+							this.datastructureUtils.ensureChildMap(
+								dictionary.dbColumnRelationMapByManySide, manyApplication.domain),
 							manyApplication.name),
 						manyTableIndex),
 					manyRelationIndex);

@@ -1,8 +1,8 @@
-import { Injected } from '@airport/direction-indicator'
+import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	DbEntity,
+	Dictionary,
 	JSONBaseOperation,
-	airEntity
 } from '@airport/ground-control'
 import { IQEntityInternal, IQOperableFieldInternal } from '@airport/tarmaq-query'
 import { IAirportDatabase } from '../../definition/AirportDatabase'
@@ -11,6 +11,9 @@ import { IQMetadataUtils } from '../../definition/utils/IQMetadataUtils'
 @Injected()
 export class QMetadataUtils
 	implements IQMetadataUtils {
+
+	@Inject()
+	dictionary: Dictionary
 
 	getAllColumns(
 		qEntity: IQEntityInternal
@@ -33,7 +36,7 @@ export class QMetadataUtils
 			}
 			if (qEntity.__driver__.dbEntity.isAirEntity) {
 				switch (qField.dbColumn.name) {
-					case airEntity.SYSTEM_WIDE_OPERATION_ID:
+					case this.dictionary.AirEntity.columns.SYSTEM_WIDE_OPERATION_LID:
 						return false
 				}
 			}

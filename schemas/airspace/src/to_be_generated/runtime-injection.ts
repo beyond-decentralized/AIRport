@@ -11,6 +11,7 @@ import { ApplicationVersionDao } from '../dao/ApplicationVersionDao';
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { app } from '@airport/direction-indicator';
 import { application } from './app-declaration';
+import { DatastructureUtils } from '@airport/ground-control';
 
 export const airspace = app(application);
 
@@ -21,6 +22,11 @@ airspace.register(
     ApplicationVersionDao
 )
 
+airspace.setDependencies(ApplicationColumnDao, {
+    datastructureUtils: DatastructureUtils
+})
+
 airspace.setDependencies(ApplicationDao, {
-    airportDatabase: AIRPORT_DATABASE
+    airportDatabase: AIRPORT_DATABASE,
+    datastructureUtils: DatastructureUtils
 })

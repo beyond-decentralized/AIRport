@@ -1,7 +1,4 @@
 import {
-	REPOSITORY_PROPERTY_NAME,
-} from '@airport/air-traffic-control'
-import {
 	IContext,
 	Inject,
 	Injected
@@ -39,7 +36,7 @@ import {
 } from '@airport/terminal-map'
 import { v4 as guidv4 } from "uuid";
 import { IUserAccount, UserAccount } from '@airport/travel-document-checkpoint'
-import { IAppTrackerUtils } from '@airport/ground-control'
+import { Dictionary, IAppTrackerUtils } from '@airport/ground-control'
 
 /**
  * Created by Papa on 2/12/2017.
@@ -60,6 +57,9 @@ export class RepositoryManager
 
 	@Inject()
 	appTrackerUtils: IAppTrackerUtils
+
+	@Inject()
+	dictionary: Dictionary
 
 	@Inject()
 	keyRingManager: IKeyRingManager
@@ -252,17 +252,18 @@ already contains a new repository.`)
 			return rawInsertValues
 		}
 
+		const repositoryPropertyName = this.dictionary.AirEntity.properties.repository
 		let columns = rawInsertValues.columns.slice()
 		if (columns.some((
 			column: IQOperableFieldInternal<any, any, any, any>,
-			index
+			_index
 		) => {
-			// return column.fieldName === REPOSITORY_PROPERTY_NAME
-			return column.dbProperty.name === REPOSITORY_PROPERTY_NAME
+			// return column.fieldName === repositoryPropertyName
+			return column.dbProperty.name === repositoryPropertyName
 		})) {
 			return rawInsertValues
 		}
-		columns.push(qEntity[REPOSITORY_PROPERTY_NAME])
+		columns.push(qEntity[repositoryPropertyName])
 
 		let VALUES = rawInsertValues.VALUES.slice()
 		for (let i = 0; i < VALUES.length; i++) {

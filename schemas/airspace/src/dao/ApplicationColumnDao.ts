@@ -1,7 +1,6 @@
-import { IContext, Injected } from '@airport/direction-indicator';
+import { IContext, Inject, Injected } from '@airport/direction-indicator';
 import {
-	ApplicationEntity_LocalId,
-	undefinedToNull
+	ApplicationEntity_LocalId, IDatastructureUtils
 } from '@airport/ground-control'
 import {
 	BaseApplicationColumnDao,
@@ -30,6 +29,9 @@ export class ApplicationColumnDao
 	extends BaseApplicationColumnDao
 	implements IApplicationColumnDao {
 
+	@Inject()
+	datastructureUtils: IDatastructureUtils
+
 	async findAllForEntities(
 		entityIds: ApplicationEntity_LocalId[]
 	): Promise<IApplicationColumn[]> {
@@ -53,13 +55,13 @@ export class ApplicationColumnDao
 		for (const applicationColumn of applicationColumns) {
 			VALUES.push([
 				applicationColumn._localId, applicationColumn.index,
-				undefinedToNull(applicationColumn.idIndex),
+				this.datastructureUtils.undefinedToNull(applicationColumn.idIndex),
 				applicationColumn.isGenerated,
-				undefinedToNull(applicationColumn.allocationSize),
+				this.datastructureUtils.undefinedToNull(applicationColumn.allocationSize),
 				applicationColumn.name,
 				applicationColumn.notNull,
-				undefinedToNull(applicationColumn.precision),
-				undefinedToNull(applicationColumn.scale),
+				this.datastructureUtils.undefinedToNull(applicationColumn.precision),
+				this.datastructureUtils.undefinedToNull(applicationColumn.scale),
 				applicationColumn.type,
 				applicationColumn.entity._localId,
 				applicationColumn.deprecatedSinceVersion ? applicationColumn.deprecatedSinceVersion._localId : null,

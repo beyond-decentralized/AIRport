@@ -32,10 +32,10 @@ import {
 	SQLDataType,
 	StoreType,
 	SyncApplicationMap,
+	IAppTrackerUtils,
 } from '@airport/ground-control';
 import {
 	IStoreDriver,
-	ITerminalStore,
 	ITransaction,
 	ITransactionContext,
 	ITransactionManager
@@ -74,6 +74,9 @@ export abstract class SqlDriver
 
 	@Inject()
 	applicationUtils: IApplicationUtils
+
+	@Inject()
+	appTrackerUtils: IAppTrackerUtils
 
 	@Inject()
 	dbApplicationUtils: IDbApplicationUtils
@@ -118,7 +121,8 @@ export abstract class SqlDriver
 		dbEntity: DbEntity,
 		context: IFuelHydrantContext,
 	): string {
-		return this.getTableName(dbEntity.applicationVersion.application, dbEntity, context);
+		return this.getTableName(dbEntity.applicationVersion.application,
+			dbEntity.applicationVersion.integerVersion, dbEntity, context);
 	}
 
 	abstract getSelectQuerySuffix(
@@ -134,6 +138,7 @@ export abstract class SqlDriver
 			name: Application_Name;
 			fullName?: Application_FullName;
 		},
+		applicationIntegerVersion: number,
 		table: {
 			name: string, tableConfig?: {
 				name?: string
@@ -141,6 +146,31 @@ export abstract class SqlDriver
 		},
 		context: IFuelHydrantContext,
 	): string {
+		const domainName = typeof application.domain === 'string'
+			? application.domain
+			: application.domain.name
+		const actorApplication = context.transaction.actor.application
+		if (!this.appTrackerUtils.isInternalDomain(actorApplication.domain.name)) {
+			const haveNoPermissionsToAccesTable = this.appTrackerUtils.isNoExternalPermissionsEntity(
+				domainName,
+				application.name,
+				applicationIntegerVersion,
+				table.name
+			);
+			if (haveNoPermissionsToAccesTable) {
+				throw new Error(`
+Domain:          ${actorApplication.domain.name}
+Application:     ${actorApplication.name}
+
+has no permissions to access:
+
+Domain:          ${domainName}
+Application:     ${application.name},
+Integer Version: ${applicationIntegerVersion}
+Entity:          ${table.name}
+`)
+			}
+		}
 		let theTableName = table.name;
 		if (table.tableConfig && table.tableConfig.name) {
 			theTableName = table.tableConfig.name;

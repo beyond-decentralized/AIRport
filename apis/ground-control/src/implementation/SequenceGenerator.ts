@@ -26,6 +26,14 @@ export interface ISequenceGenerator {
         numSequencesNeeded: number[]
     ): Promise<number[][]>
 
+    generateSequenceNumbersForColumn(
+        domainName: string,
+        applicationName: string,
+        entityName: string,
+        columnName: string,
+        numSequencesNeeded: number
+    ): Promise<number[]>
+
     initialize(
         context: IContext,
         sequences?: DbSequence[]
@@ -37,11 +45,3 @@ export interface ISequenceGenerator {
     ): Promise<void>
 
 }
-
-export function setSeqGen(
-    sequenceGenerator: ISequenceGenerator
-) {
-    SEQ_GEN = sequenceGenerator;
-}
-
-export var SEQ_GEN: ISequenceGenerator;

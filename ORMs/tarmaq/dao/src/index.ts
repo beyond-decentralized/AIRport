@@ -29,21 +29,13 @@ export * from './implementation/FieldsSelect'
 export * from './injection'
 
 import { loadGlobalAirApi } from '@airport/aviation-communication'
-import { DbApplication, SEQ_GEN } from '@airport/ground-control';
-
-let inAppMode = false
-
-export function setAppMode(
-    appMode: boolean
-) {
-    inAppMode = appMode
-}
+import { DbApplication } from '@airport/ground-control';
 
 export function diSet(
     dbApplication: DbApplication,
     dbEntityId: number // ApplicationEntity_LocalId
 ): boolean {
-    if ((!inAppMode && !SEQ_GEN)
+    if ((!globalThis.inAppMode && !globalThis.SEQ_GEN)
         || !dbApplication) {
         return false;
     }
@@ -51,11 +43,11 @@ export function diSet(
     const dbEntity = dbApplication.currentVersion[0]
         .applicationVersion.entities[dbEntityId];
 
-    if (inAppMode) {
+    if (globalThis.inAppMode) {
         return !!dbEntity
     }
 
-    return SEQ_GEN.exists(dbEntity);
+    return globalThis.SEQ_GEN.exists(dbEntity);
 }
 
 export function duoDiSet(

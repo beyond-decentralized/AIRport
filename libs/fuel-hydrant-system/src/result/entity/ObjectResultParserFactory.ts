@@ -7,6 +7,7 @@ import {
 } from '@airport/direction-indicator'
 import {
 	DbEntity,
+	IDatastructureUtils,
 	IEntityStateManager,
 	QueryResultType
 } from '@airport/ground-control'
@@ -36,6 +37,9 @@ export class ObjectResultParserFactory
 	applicationUtils: IApplicationUtils
 
 	@Inject()
+	datastructureUtils: IDatastructureUtils
+
+	@Inject()
 	entityStateManager: IEntityStateManager
 
 	@Inject()
@@ -48,8 +52,8 @@ export class ObjectResultParserFactory
 	): IEntityResultParser {
 		switch (queryResultType) {
 			case QueryResultType.ENTITY_GRAPH:
-				return new EntityGraphResultParser(config, rootDbEntity,
-					this.applicationUtils, this.entityStateManager, this.utils)
+				return new EntityGraphResultParser(config, this.datastructureUtils,
+					rootDbEntity, this.applicationUtils, this.entityStateManager, this.utils)
 			case QueryResultType.ENTITY_TREE:
 				return new EntityTreeResultParser(
 					this.applicationUtils, this.entityStateManager, this.utils)

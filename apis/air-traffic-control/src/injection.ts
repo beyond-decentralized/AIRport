@@ -1,7 +1,9 @@
-import { AIR_ENTITY_UTILS, lib } from '@airport/direction-indicator'
+import { AIR_ENTITY_UTILS } from '@airport/direction-indicator'
 import {
 	DbApplicationUtils,
+	Dictionary,
 	ENTITY_STATE_MANAGER,
+	SEQUENCE_GENERATOR,
 	TRANSACTIONAL_CONNECTOR,
 	UPDATE_CACHE_MANAGER
 } from '@airport/ground-control'
@@ -29,10 +31,12 @@ import { IRepositoryLoader } from './definition/RepositoryLoader'
 import { QApplicationBuilderUtils } from './implementation/utils/QApplicationBuilderUtils'
 import { airTrafficControl } from './injectionLibrary'
 import { Utils } from './implementation/Utils'
+import { SystemWideOperationIdUtils } from './implementation/utils/SystemWideOperationIdUtils'
 
 airTrafficControl.register(
 	ApplicationUtils, DatabaseStore, FieldUtils,
 	QApplicationBuilderUtils, QMetadataUtils, RelationManager,
+	SystemWideOperationIdUtils
 )
 
 export const AIRPORT_DATABASE = airTrafficControl.token<IAirportDatabase>('AirportDatabase')
@@ -42,6 +46,7 @@ AIRPORT_DATABASE.setDependencies({
 	appliationUtils: ApplicationUtils,
 	databaseFacade: DATABASE_FACADE,
 	databaseStore: DatabaseStore,
+	dictionary: Dictionary,
 	dbApplicationUtils: DbApplicationUtils,
 	find: NonEntityFind,
 	findOne: NonEntityFindOne,
@@ -52,6 +57,7 @@ AIRPORT_DATABASE.setDependencies({
 })
 airTrafficControl.setDependencies(ApplicationUtils, {
 	airportDatabase: AIRPORT_DATABASE,
+	dictionary: Dictionary,
 	entityStateManager: ENTITY_STATE_MANAGER,
 	qEntityUtils: QEntityUtils,
 	utils: Utils
@@ -72,6 +78,9 @@ airTrafficControl.setDependencies(Lookup, {
 airTrafficControl.setDependencies(QApplicationBuilderUtils, {
 	qEntityUtils: QEntityUtils
 })
+airTrafficControl.setDependencies(QMetadataUtils, {
+	dictionary: Dictionary
+})
 QUERY_FACADE.setDependencies({
 	fieldUtils: FieldUtils,
 	queryUtils: QUERY_UTILS,
@@ -86,6 +95,10 @@ QUERY_UTILS.setDependencies({
 })
 airTrafficControl.setDependencies(RelationManager, {
 	applicationUtils: ApplicationUtils
+})
+airTrafficControl.setDependencies(SystemWideOperationIdUtils, {
+	dictionary: Dictionary,
+	sequenceGenerator: SEQUENCE_GENERATOR,
 })
 UPDATE_CACHE_MANAGER.setDependencies({
 	applicationUtils: ApplicationUtils,

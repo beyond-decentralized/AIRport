@@ -14,7 +14,9 @@ import {
 } from '@airport/airspace/dist/app/bundle'
 import { lib } from '@airport/direction-indicator'
 import {
+    ApplicationReferenceUtils,
     AppTrackerUtils,
+    DatastructureUtils,
     DbApplicationUtils,
     SEQUENCE_GENERATOR
 } from '@airport/ground-control'
@@ -28,7 +30,6 @@ import {
 import { ApplicationInitializer } from './ApplicationInitializer'
 import { SqlSchemaBuilder } from './builder/SqlSchemaBuilder'
 import { ApplicationChecker } from './checker/ApplicationChecker'
-import { ApplicationReferenceChecker } from './checker/ApplicationReferenceChecker'
 import { ApplicationLocator } from './locator/ApplicationLocator'
 import { ApplicationComposer } from './recorder/ApplicationComposer'
 import { ApplicationRecorder } from './recorder/ApplicationRecorder'
@@ -38,7 +39,7 @@ const landing = lib('landing')
 const tokens = landing.register(
     'ApplicationBuilder', ApplicationInitializer as any, ApplicationChecker,
     ApplicationComposer, ApplicationLocator, ApplicationRecorder,
-    ApplicationReferenceChecker, SqlSchemaBuilder as any,
+    SqlSchemaBuilder as any,
 )
 
 export const APPLICATION_BUILDER = tokens.ApplicationBuilder
@@ -68,11 +69,13 @@ APPLICATION_BUILDER.setDependencies({
 
 landing.setDependencies(ApplicationChecker, {
     applicationDao: ApplicationDao,
+    datastructureUtils: DatastructureUtils,
     dbApplicationUtils: DbApplicationUtils
 })
 
 landing.setDependencies(ApplicationComposer, {
     applicationLocator: ApplicationLocator,
+    datastructureUtils: DatastructureUtils,
     dbApplicationUtils: DbApplicationUtils,
     domainRetriever: DOMAIN_RETRIEVER,
     terminalStore: TerminalStore
@@ -97,14 +100,9 @@ landing.setDependencies(ApplicationRecorder, {
     transactionManager: TRANSACTION_MANAGER
 })
 
-landing.setDependencies(ApplicationReferenceChecker, {
-    applicationLocator: ApplicationLocator
-})
-
 landing.setDependencies(SqlSchemaBuilder as any, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationLocator: ApplicationLocator,
-    applicationReferenceChecker: ApplicationReferenceChecker,
+    applicationReferenceUtils: ApplicationReferenceUtils,
     dbApplicationUtils: DbApplicationUtils,
     sequenceDao: SequenceDao,
     storeDriver: STORE_DRIVER

@@ -1,9 +1,6 @@
 import {
-	ACTOR_PROPERTY_NAME,
 	IAirportDatabase,
-	IRepositoryLoader,
-	REPOSITORY_PROPERTY_NAME,
-	USER_ACCOUNT_PROPERTY_NAME
+	IRepositoryLoader
 } from '@airport/air-traffic-control'
 import {
 	IContext,
@@ -13,10 +10,11 @@ import {
 import { IObservableQueryAdapter } from '@airport/flight-number'
 import {
 	DbEntity,
-	DbProperty,
-	ensureChildArray,
+	DbRelation,
+	Dictionary,
 	EntityRelationType,
 	IActor,
+	IDatastructureUtils,
 	InternalFragments,
 	PortableQuery, QueryResultType
 } from '@airport/ground-control'
@@ -29,19 +27,6 @@ import {
 } from '@airport/terminal-map'
 import { Observable } from 'rxjs'
 
-interface StoreDriverObservableMethod<E> {
-	(
-		portableQuery: PortableQuery,
-		internalFragments: InternalFragments,
-		context: IContext,
-		cachedSqlQueryId?: number,
-	): Promise<E>
-}
-
-interface IFormatter {
-	(data: string, toUpper: boolean): string;
-};
-
 @Injected()
 export class QueryManager
 	implements IQueryManager {
@@ -51,6 +36,12 @@ export class QueryManager
 
 	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
+	dictionary: Dictionary
+
+	@Inject()
+	datastructureUtils: IDatastructureUtils
 
 	@Inject()
 	observableQueryAdapter: IObservableQueryAdapter
@@ -206,7 +197,7 @@ export class QueryManager
 					let relatedEntities = propertyValue
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
-							if (this.processRepositoryOrActor(entity, dbProperty, propertyValue,
+							if (this.processRepositoryOrActor(entity, dbRelation, propertyValue,
 								entityMapByRepositoryLocalId, entityMapByActorRecordId,
 								actorsToRetrieveUserAccountForByLocalId)) {
 								continue
@@ -231,24 +222,20 @@ export class QueryManager
 
 	private processRepositoryOrActor(
 		entity: any,
-		dbProperty: DbProperty,
+		dbRelation: DbRelation,
 		propertyValue: any,
 		entityMapByRepositoryLocalId: Map<Repository_LocalId, any[]>,
 		entityMapByActorLocalId: Map<Actor_LocalId, any[]>,
 		actorsToRetrieveUserAccountForByLocalId: Map<Actor_LocalId, IActor>
 	): boolean {
-		let isActor = true
-		switch (dbProperty.name) {
-			case ACTOR_PROPERTY_NAME:
-				break
-			case REPOSITORY_PROPERTY_NAME:
-				isActor = false
-				break
-			default:
+		let isActor = this.dictionary.isActor(dbRelation.relationEntity)
+		if (!isActor) {
+			if (!this.dictionary.isRepository(dbRelation.relationEntity)) {
 				return false
+			}
 		}
 
-		if (!propertyValue._localId) {
+		if (!propertyValue[this.dictionary.column._localId]) {
 			throw new Error(`Actor entity does not have a _localId`)
 		}
 
@@ -256,17 +243,17 @@ export class QueryManager
 			if (!isActor) {
 				return true
 			}
-			if (!propertyValue[USER_ACCOUNT_PROPERTY_NAME]) {
+			if (!propertyValue[this.dictionary.Actor.properties.userAccount]) {
 				actorsToRetrieveUserAccountForByLocalId.set(propertyValue._localId, propertyValue)
 			}
 			return true
 		}
 
 		if (isActor) {
-			ensureChildArray(entityMapByActorLocalId, propertyValue._localId)
+			this.datastructureUtils.ensureChildArray(entityMapByActorLocalId, propertyValue._localId)
 				.push(entity)
 		} else {
-			ensureChildArray(entityMapByRepositoryLocalId, propertyValue._localId)
+			this.datastructureUtils.ensureChildArray(entityMapByRepositoryLocalId, propertyValue._localId)
 				.push(entity)
 		}
 

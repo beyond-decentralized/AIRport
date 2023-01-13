@@ -1,6 +1,7 @@
 
 export * from './definition/utils/IQMetadataUtils'
 export * from './definition/utils/IQApplicationBuilderUtils';
+export * from './definition/utils/ISystemWideOperationIdUtils';
 export * from './definition/utils/Utils'
 export * from './definition/AirportDatabase'
 export * from './definition/DatabaseState'
@@ -14,7 +15,7 @@ export * from './implementation/utils/QueryUtils';
 export * from './implementation/databaseState';
 export * from './implementation/DatabaseStore';
 export * from './implementation/RelationManager';
-export * from './implementation/SystemWideOperationIds';
+export * from './implementation/utils/SystemWideOperationIdUtils';
 export * from './implementation/Utils';
 export * from './coreInjection';
 export * from './injection';

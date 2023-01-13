@@ -1,8 +1,8 @@
-import { IContext, Injected } from '@airport/direction-indicator'
+import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import {
 	ApplicationProperty_LocalId,
 	ApplicationRelation_LocalId,
-	undefinedToNull
+	IDatastructureUtils
 } from '@airport/ground-control'
 import { Y } from '@airport/tarmaq-query'
 import {
@@ -38,6 +38,9 @@ export interface IApplicationRelationDao
 export class ApplicationRelationDao
 	extends BaseApplicationRelationDao
 	implements IApplicationRelationDao {
+
+	@Inject()
+	datastructureUtils: IDatastructureUtils
 
 	async findAllForProperties(
 		propertyIds: ApplicationProperty_LocalId[]
@@ -97,9 +100,9 @@ export class ApplicationRelationDao
 			VALUES.push([
 				applicationRelation._localId, applicationRelation.index,
 				applicationRelation.property._localId,
-				undefinedToNull(applicationRelation.foreignKey),
-				undefinedToNull(applicationRelation.manyToOneElems),
-				undefinedToNull(applicationRelation.oneToManyElems),
+				this.datastructureUtils.undefinedToNull(applicationRelation.foreignKey),
+				this.datastructureUtils.undefinedToNull(applicationRelation.manyToOneElems),
+				this.datastructureUtils.undefinedToNull(applicationRelation.oneToManyElems),
 				applicationRelation.relationType, applicationRelation.isId,
 				applicationRelation.entity._localId, applicationRelation.relationEntity._localId,
 				applicationRelation.deprecatedSinceVersion ? applicationRelation.deprecatedSinceVersion._localId : null,

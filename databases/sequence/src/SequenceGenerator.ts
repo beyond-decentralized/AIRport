@@ -5,9 +5,7 @@ import {
 import {
 	DbColumn,
 	DbEntity,
-	ensureChildArray,
 	ISequenceGenerator,
-	setSeqGen,
 } from '@airport/ground-control';
 import {
 	IContext,
@@ -15,6 +13,8 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import { ITerminalStore } from '@airport/terminal-map';
+import { IAirportDatabase } from '@airport/air-traffic-control';
+import { IDatastructureUtils } from '@airport/ground-control';
 
 /**
  * Assumptions: 7/4/2019
@@ -37,6 +37,12 @@ import { ITerminalStore } from '@airport/terminal-map';
 @Injected()
 export class SequenceGenerator
 	implements ISequenceGenerator {
+
+	@Inject()
+	airportDatabase: IAirportDatabase
+
+	@Inject()
+	datastructureUtils: IDatastructureUtils
 
 	@Inject()
 	sequenceDao: ISequenceDao
@@ -100,7 +106,7 @@ export class SequenceGenerator
 
 		await this.sequenceDao.incrementCurrentValues(context);
 
-		setSeqGen(this);
+		globalThis.SEQ_GEN = this;
 	}
 
 	async tempInitialize(
@@ -109,7 +115,7 @@ export class SequenceGenerator
 	): Promise<void> {
 		this.addSequences(sequences);
 
-		setSeqGen(this);
+		globalThis.SEQ_GEN = this;
 	}
 
 	async generateSequenceNumbers(
@@ -129,6 +135,30 @@ export class SequenceGenerator
 		}
 	}
 
+	async generateSequenceNumbersForColumn(
+		domainName: string,
+		applicationName: string,
+		entityName: string,
+		columnName: string,
+		numSequencesNeeded: number
+	): Promise<number[]> {
+		if (!numSequencesNeeded) {
+			return []
+		}
+
+		const dbEntity = this.airportDatabase.getDbEntity(
+			domainName,
+			applicationName,
+			entityName
+		)
+		const dbColumn = dbEntity.columnMap[columnName]
+
+		const sequencesWrapper = await this.generateSequenceNumbers(
+			[dbColumn], [numSequencesNeeded])
+
+		return sequencesWrapper[0]
+	}
+
 	/**
 	 * Keeping return value as number[][] in case we ever revert back
 	 * to SequenceBlock-like solution
@@ -145,7 +175,7 @@ export class SequenceGenerator
 			const dbColumn = dbColumns[i];
 
 			let numColumnSequencesNeeded = numSequencesNeeded[i];
-			const columnNumbers = ensureChildArray(sequentialNumbers, i);
+			const columnNumbers = this.datastructureUtils.ensureChildArray(sequentialNumbers, i);
 
 			const dbEntity = dbColumn.propertyColumns[0].property.entity;
 			const application = dbEntity.applicationVersion.application;
@@ -210,12 +240,12 @@ export class SequenceGenerator
 		sequences: ISequence[]
 	): void {
 		for (const sequence of sequences) {
-			ensureChildArray(
-				ensureChildArray(this.sequences, sequence.applicationIndex),
+			this.datastructureUtils.ensureChildArray(
+				this.datastructureUtils.ensureChildArray(this.sequences, sequence.applicationIndex),
 				sequence.tableIndex)[sequence.columnIndex] = sequence;
 			sequence.currentValue += sequence.incrementBy;
-			ensureChildArray(
-				ensureChildArray(this.sequenceBlocks, sequence.applicationIndex),
+			this.datastructureUtils.ensureChildArray(
+				this.datastructureUtils.ensureChildArray(this.sequenceBlocks, sequence.applicationIndex),
 				sequence.tableIndex)[sequence.columnIndex] = sequence.incrementBy;
 		}
 	}

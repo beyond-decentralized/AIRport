@@ -1,8 +1,5 @@
 import {
-	ACTOR_PROPERTY_NAME,
-	ACTOR_RECORD_ID_PROPERTY_NAME,
-	IAirportDatabase,
-	REPOSITORY_PROPERTY_NAME
+	IAirportDatabase
 } from '@airport/air-traffic-control'
 import { Injected } from '@airport/direction-indicator';
 import {
@@ -10,7 +7,8 @@ import {
 	JSONBaseOperation,
 	Application_Index,
 	ApplicationVersion_LocalId,
-	ApplicationEntity_TableIndex
+	ApplicationEntity_TableIndex,
+	Dictionary
 } from '@airport/ground-control'
 import {
 	Actor_LocalId,
@@ -71,6 +69,9 @@ export class RecordUpdateStageDao
 	@Inject()
 	airportDatabase: IAirportDatabase
 
+	@Inject()
+	dictionary: Dictionary
+
 	async insertValues(
 		values: RecordUpdateStageValues[]
 	): Promise<number[][]> {
@@ -109,16 +110,17 @@ export class RecordUpdateStageDao
 		const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name]
 
 		const repositoryEquals: JSONBaseOperation[] = []
+		const AirEntity = this.dictionary.AirEntity
 		for (const [repositoryId, idsForRepository] of idMap) {
 			const actorEquals: JSONBaseOperation[] = []
 			for (const [actorId, idsForActor] of idsForRepository) {
 				actorEquals.push(AND(
-					qEntity[ACTOR_PROPERTY_NAME]._localId.equals(actorId),
-					qEntity[ACTOR_RECORD_ID_PROPERTY_NAME].IN(Array.from(idsForActor))
+					qEntity[AirEntity.properties.actor]._localId.equals(actorId),
+					qEntity[AirEntity.properties._actorRecordId].IN(Array.from(idsForActor))
 				))
 			}
 			repositoryEquals.push(AND(
-				qEntity[REPOSITORY_PROPERTY_NAME]._localId.equals(repositoryId),
+				qEntity[AirEntity.properties.repository]._localId.equals(repositoryId),
 				OR(...actorEquals)
 			))
 		}

@@ -3,9 +3,8 @@ import {
 } from '@airport/air-traffic-control'
 import {
 	DbEntity,
-	ensureChildArray,
-	ensureChildMap,
 	EntityRelationType,
+	IDatastructureUtils,
 	IEntityStateManager,
 	SQLDataType
 } from '@airport/ground-control'
@@ -55,14 +54,15 @@ export class EntityGraphResultParser
 
 	constructor(
 		private config: GraphQueryConfiguration,
+		private datastructureUtils: IDatastructureUtils,
 		private rootDbEntity: DbEntity,
 		applicationUtils: IApplicationUtils,
 		entityStateManager: IEntityStateManager,
-		utils: IUtils
+		utils: IUtils,
 	) {
 		super(applicationUtils, entityStateManager, utils)
-		this.otmMapper = new GraphOtmMapper()
-		this.mtoMapper = new GraphMtoMapper()
+		this.otmMapper = new globalThis.GraphOtmMapper(datastructureUtils)
+		this.mtoMapper = new globalThis.GraphMtoMapper(datastructureUtils)
 	}
 
 	addEntity(
@@ -259,8 +259,8 @@ export class EntityGraphResultParser
 		}
 		let entityMapForName: {
 			[entityId: string]: any
-		} = ensureChildMap(
-			ensureChildArray(this.entityMapByApplicationAndTableIndexes, dbEntity.applicationVersion.application.index),
+		} = this.datastructureUtils.ensureChildMap(
+			this.datastructureUtils.ensureChildArray(this.entityMapByApplicationAndTableIndexes, dbEntity.applicationVersion.application.index),
 			dbEntity.index
 		)
 

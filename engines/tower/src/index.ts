@@ -1,4 +1,3 @@
-import { setAppMode } from '@airport/tarmaq-dao'
 export * from './core/api/ApiRegistry'
 export * from './core/api/ApiValidator'
 export * from './core/api/LocalApiServer'
@@ -15,6 +14,6 @@ export * from './injection'
 export function loadTower(
     applicationName: string
 ) {
-    setAppMode(true)
+    globalThis.inAppMode = true
     console.log('@airport/tower is loaded for Application: ' + applicationName);
 }

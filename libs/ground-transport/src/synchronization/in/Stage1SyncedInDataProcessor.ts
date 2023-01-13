@@ -1,4 +1,7 @@
-import { getSysWideOpIds, IAirportDatabase } from '@airport/air-traffic-control'
+import {
+	IAirportDatabase,
+	ISystemWideOperationIdUtils,
+} from '@airport/air-traffic-control'
 import {
 	IContext,
 	Inject,
@@ -7,13 +10,10 @@ import {
 import {
 	ChangeType,
 	ApplicationColumn_Index,
-	ensureChildArray,
-	ensureChildJsMap,
-	ensureChildJsSet,
 	ApplicationEntity_LocalId,
 	ApplicationVersion_LocalId,
 	ApplicationEntity_TableIndex,
-	ISequenceGenerator
+	IDatastructureUtils
 } from '@airport/ground-control'
 import {
 	Actor_LocalId,
@@ -67,16 +67,19 @@ export class Stage1SyncedInDataProcessor
 	airportDatabase: IAirportDatabase
 
 	@Inject()
+	datastructureUtils: IDatastructureUtils
+
+	@Inject()
 	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
 
 	@Inject()
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 
 	@Inject()
-	sequenceGenerator: ISequenceGenerator
+	syncInUtils: ISyncInUtils
 
 	@Inject()
-	syncInUtils: ISyncInUtils
+	systemWideOperationIdUtils: ISystemWideOperationIdUtils
 
 	/**
 	 * In stage one:
@@ -120,11 +123,11 @@ export class Stage1SyncedInDataProcessor
 				for (const operationHistory of repoTransHistory.operationHistory) {
 					// Collect the Actor related localIds
 					const idsForEntity: Map<Actor_LocalId, Set<RecordHistory_ActorRecordId>>
-						= ensureChildJsMap(changedRecordsForRepo.actorRecordIdsByLocalIds,
+						= this.datastructureUtils.ensureChildJsMap(changedRecordsForRepo.actorRecordIdsByLocalIds,
 							operationHistory.entity._localId)
 					for (const recordHistory of operationHistory.recordHistory) {
 						// Collect the Actor related localIds
-						ensureChildJsSet(idsForEntity, recordHistory.actor._localId)
+						this.datastructureUtils.ensureChildJsSet(idsForEntity, recordHistory.actor._localId)
 							.add(recordHistory._actorRecordId)
 						// add a map of new values
 						const newValueMap = new Map()
@@ -242,8 +245,8 @@ export class Stage1SyncedInDataProcessor
 					.operationHistory.length
 			}
 		}
-		const systemWideOperationIds = await getSysWideOpIds(
-			numSystemWideOperationIds, this.airportDatabase, this.sequenceGenerator)
+		const systemWideOperationIds = await this.systemWideOperationIdUtils
+			.getSysWideOpIds(numSystemWideOperationIds)
 
 		let i = 0
 		for (const [_, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByrepositoryLocalId) {
@@ -261,7 +264,7 @@ export class Stage1SyncedInDataProcessor
 		actorRecordLocalIdSetByActor: Map<Actor_LocalId, Map<ActorRecordId, RecordHistory_LocalId>>,
 		_actorRecordId: ActorRecordId = recordHistory._actorRecordId
 	): void {
-		ensureChildJsMap(
+		this.datastructureUtils.ensureChildJsMap(
 			actorRecordLocalIdSetByActor, recordHistory.actor._localId)
 			.set(_actorRecordId, recordHistory._localId)
 	}
@@ -608,7 +611,7 @@ export class Stage1SyncedInDataProcessor
 			}
 
 			// record deletion
-			ensureChildJsSet(deletesForEntityInRepo, recordHistory.actor._localId)
+			this.datastructureUtils.ensureChildJsSet(deletesForEntityInRepo, recordHistory.actor._localId)
 				.add(recordHistory._actorRecordId)
 		}
 	}
@@ -708,7 +711,8 @@ export class Stage1SyncedInDataProcessor
 			overwrittenRecordHistory,
 			overwritingRecordHistory
 		)
-		ensureChildArray(syncConflictMapByRepoId, repositoryLocalId).push(syncConflict)
+		this.datastructureUtils.ensureChildArray(
+			syncConflictMapByRepoId, repositoryLocalId).push(syncConflict)
 
 		return syncConflict
 	}
@@ -734,8 +738,8 @@ export class Stage1SyncedInDataProcessor
 		recordHistory: IRecordHistory,
 		dataMap: Map<Actor_LocalId, Map<ActorRecordId, Map<ApplicationColumn_Index, any>>>
 	): Map<ApplicationColumn_Index, any> {
-		return <any>ensureChildJsMap(
-			ensureChildJsMap(
+		return <any>this.datastructureUtils.ensureChildJsMap(
+			this.datastructureUtils.ensureChildJsMap(
 				dataMap,
 				recordHistory.actor._localId),
 			recordHistory._actorRecordId)
@@ -746,8 +750,8 @@ export class Stage1SyncedInDataProcessor
 		recordMapByActor:
 			Map<Actor_LocalId, Map<ActorRecordId, Map<ApplicationColumn_Index, any>>>
 	): Map<ApplicationColumn_Index, any> {
-		return <any>ensureChildJsMap(
-			ensureChildJsMap(
+		return <any>this.datastructureUtils.ensureChildJsMap(
+			this.datastructureUtils.ensureChildJsMap(
 				recordMapByActor, recordHistory.actor._localId),
 			recordHistory._actorRecordId)
 	}

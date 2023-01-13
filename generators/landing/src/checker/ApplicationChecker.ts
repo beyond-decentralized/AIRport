@@ -1,11 +1,11 @@
 import {
 	Domain_Name,
-	ensureChildJsMap,
 	JsonApplication,
 	JsonApplication_Name,
 	Application_Name,
 	Application_FullName,
 	IDbApplicationUtils,
+	IDatastructureUtils,
 } from '@airport/ground-control'
 import {
 	IApplication,
@@ -56,6 +56,9 @@ export class ApplicationChecker
 	applicationDao: IApplicationDao
 
 	@Inject()
+	datastructureUtils: IDatastructureUtils
+
+	@Inject()
 	dbApplicationUtils: IDbApplicationUtils
 
 	async check(
@@ -92,15 +95,15 @@ export class ApplicationChecker
 
 		for (const jsonApplication of jsonApplications) {
 			const lastJsonApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1]
-			const referencedApplicationMapForApplication = ensureChildJsMap(
-				ensureChildJsMap(
+			const referencedApplicationMapForApplication = this.datastructureUtils.ensureChildJsMap(
+				this.datastructureUtils.ensureChildJsMap(
 					referencedApplicationMapByApplication, jsonApplication.domain
 				), jsonApplication.name)
 			for (const jsonReferencedApplication of lastJsonApplicationVersion.referencedApplications) {
-				ensureChildJsMap(
+				this.datastructureUtils.ensureChildJsMap(
 					allReferencedApplicationMap, jsonReferencedApplication.domain
 				).set(jsonReferencedApplication.name, jsonReferencedApplication)
-				ensureChildJsMap(
+				this.datastructureUtils.ensureChildJsMap(
 					referencedApplicationMapForApplication, jsonReferencedApplication.domain
 				).set(jsonReferencedApplication.name, jsonReferencedApplication)
 			}

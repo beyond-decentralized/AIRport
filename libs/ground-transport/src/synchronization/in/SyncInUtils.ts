@@ -1,12 +1,13 @@
 import {
+	Inject,
 	Injected
 } from '@airport/direction-indicator'
 import {
 	ApplicationColumn_Index,
-	ensureChildJsMap,
 	ApplicationEntity_LocalId,
 	Application_Index,
-	ApplicationVersion_LocalId
+	ApplicationVersion_LocalId,
+	IDatastructureUtils
 } from '@airport/ground-control'
 import {
 	Actor_LocalId,
@@ -96,15 +97,18 @@ export interface Stage1SyncedInDataProcessingResult {
 export class SyncInUtils
 	implements ISyncInUtils {
 
+	@Inject()
+	datastructureUtils: IDatastructureUtils
+
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
 		repositoryLocalId: Repository_LocalId,
 		operationHistory: IOperationHistory,
 		recordMapByApplicationTableAndRepository: Map<ApplicationVersion_LocalId,
 			Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<CI, V>>>>
 	): Map<CI, V> {
-		return <any>ensureChildJsMap(
-			ensureChildJsMap(
-				ensureChildJsMap(
+		return <any>this.datastructureUtils.ensureChildJsMap(
+			this.datastructureUtils.ensureChildJsMap(
+				this.datastructureUtils.ensureChildJsMap(
 					recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion._localId),
 				operationHistory.entity.index), repositoryLocalId)
 	}

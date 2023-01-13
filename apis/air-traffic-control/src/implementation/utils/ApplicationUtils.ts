@@ -4,8 +4,8 @@ import {
 	DbEntity,
 	DbProperty,
 	DbRelation,
+	Dictionary,
 	EntityRelationType,
-	airEntity,
 	Application_Index,
 	ApplicationEntity_TableIndex,
 	IEntityStateManager
@@ -46,6 +46,9 @@ export class ApplicationUtils
 	airportDatabase: IAirportDatabase
 
 	@Inject()
+	dictionary: Dictionary
+
+	@Inject()
 	entityStateManager: IEntityStateManager
 
 	@Inject()
@@ -62,19 +65,19 @@ export class ApplicationUtils
 	isActorId(
 		columnName: string
 	): boolean {
-		return columnName === airEntity.ACTOR_LID
+		return columnName === this.dictionary.AirEntity.columns.ACTOR_LID
 	}
 
 	isActorRecordId(
 		columnName: string
 	): boolean {
-		return columnName === airEntity.ACTOR_RECORD_ID
+		return columnName === this.dictionary.AirEntity.columns.ACTOR_RECORD_ID
 	}
 
 	isRepositoryId(
 		columnName: string
 	): boolean {
-		return columnName === airEntity.REPOSITORY_LID
+		return columnName === this.dictionary.AirEntity.columns.REPOSITORY_LID
 	}
 
 	doCascade(
@@ -149,6 +152,12 @@ export class ApplicationUtils
 		dbColumn: DbColumn
 	): boolean {
 		return !!(dbColumn.oneRelationColumns && dbColumn.oneRelationColumns.length)
+	}
+
+	getOneSideEntityOfManyRelationColumn(
+		dbColumn: DbColumn
+	): DbEntity {
+		return dbColumn.manyRelationColumns[0].oneColumn.entity
 	}
 
 	getIdKey(
@@ -377,17 +386,19 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 
 			const inQueryColumnIndex = selectClause.length - 1
 
+			const AirEntity = this.dictionary.AirEntity
+
 			switch (dbColumn.name) {
-				case airEntity.ACTOR_LID:
+				case AirEntity.columns.ACTOR_LID:
 					actorIdColumnIndex = inQueryColumnIndex
 					break
-				case airEntity.ACTOR_RECORD_ID:
+				case AirEntity.columns.ACTOR_RECORD_ID:
 					actorRecordIdColumnIndex = inQueryColumnIndex
 					break
-				case airEntity.REPOSITORY_LID:
+				case AirEntity.columns.REPOSITORY_LID:
 					repositoryIdColumnIndex = inQueryColumnIndex
 					break
-				case airEntity.SYSTEM_WIDE_OPERATION_ID:
+				case AirEntity.columns.SYSTEM_WIDE_OPERATION_LID:
 					if (nonIdColumnSet) {
 						throw new Error(errorPrefix +
 							`Cannot update 'systemWideOperationId' of Repository Entities.`)

@@ -1,6 +1,6 @@
 import {
-	getSysWideOpId,
 	IAirportDatabase,
+	ISystemWideOperationIdUtils
 } from '@airport/air-traffic-control'
 import {
 	IApplicationUtils,
@@ -18,16 +18,14 @@ import {
 	ChangeType,
 	ApplicationColumn_Index,
 	DbColumn,
-	ensureChildArray,
-	ensureChildMap,
+	Dictionary,
 	InternalFragments,
 	IRootTransaction,
 	JsonSheetQuery,
 	JsonUpdate,
 	PortableQuery,
 	QueryResultType,
-	airEntity,
-	ISequenceGenerator,
+	IDatastructureUtils,
 } from '@airport/ground-control'
 import {
 	IActor,
@@ -58,6 +56,12 @@ export class UpdateManager
 	applicationUtils: IApplicationUtils
 
 	@Inject()
+	datastructureUtils: IDatastructureUtils
+
+	@Inject()
+	dictionary: Dictionary
+
+	@Inject()
 	fieldUtils: IFieldUtils
 
 	@Inject()
@@ -82,7 +86,7 @@ export class UpdateManager
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 
 	@Inject()
-	sequenceGenerator: ISequenceGenerator
+	systemWideOperationIdUtils: ISystemWideOperationIdUtils
 
 	async updateValues(
 		portableQuery: PortableQuery,
@@ -106,8 +110,8 @@ export class UpdateManager
 		let systemWideOperationId: SystemWideOperationId
 		if (!dbEntity.isLocal && !transaction.isSync) {
 
-			systemWideOperationId = await getSysWideOpId(
-				this.airportDatabase, this.sequenceGenerator);
+			systemWideOperationId = await this.systemWideOperationIdUtils
+				.getSysWideOpId();
 
 			// TODO: For entity queries an additional query really shouldn't be needed
 			// Specifically for entity queries, we got the new values, just record them
@@ -217,7 +221,7 @@ export class UpdateManager
 				const actorId = recordToUpdate[
 					getSheetSelectFromSetClauseResult.actorIdColumnIndex]
 				const recordHistoryMapForActor =
-					ensureChildMap(recordHistoryMapForRepository, actorId)
+					this.datastructureUtils.ensureChildMap(recordHistoryMapForRepository, actorId)
 
 				const _actorRecordId = recordToUpdate[
 					getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex]
@@ -260,7 +264,8 @@ export class UpdateManager
 				qEntity
 			],
 			SELECT: [],
-			WHERE: qEntity[airEntity.systemWideOperationId]
+			WHERE: qEntity[this.dictionary.AirEntity.properties
+				.systemWideOperationId]
 				.equals(systemWideOperationId)
 		})
 
@@ -340,7 +345,7 @@ export class UpdateManager
 			const repositoryId = recordToUpdate[repositorySheetSelectInfo.repositoryIdColumnIndex]
 			repositoryIdSet.add(repositoryId)
 			const recordsForRepositoryId =
-				ensureChildArray(recordsByRepositoryId, repositoryId)
+			this.datastructureUtils.ensureChildArray(recordsByRepositoryId, repositoryId)
 			recordsForRepositoryId.push(recordToUpdate)
 		}
 

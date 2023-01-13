@@ -1,6 +1,6 @@
 import { Inject, Injected } from '@airport/direction-indicator'
+import { Dictionary } from '@airport/ground-control'
 import { EntityQuery, ENTITY_UTILS, IEntityAliases, IEntityRelationFrom, IEntitySelectProperties, IEntityUtils, IFrom, IQEntity, IQEntityDriver, IQEntityInternal, IQTree, IQuery, ITreeEntity, QEntity, QField, QOperableField, QTree, QTreeDriver, RawEntityQuery, RawQuery, RawTreeQuery, TreeQuery, Y } from '@airport/tarmaq-query'
-import { ACTOR_PROPERTY_NAME, REPOSITORY_PROPERTY_NAME } from '../../definition/AirportDatabase'
 import { IUtils } from '../../definition/utils/Utils'
 
 /**
@@ -9,6 +9,9 @@ import { IUtils } from '../../definition/utils/Utils'
 @Injected()
 export class EntityUtils
 	implements IEntityUtils {
+
+	@Inject()
+	dictionary: Dictionary
 
 	@Inject()
 	utils: IUtils
@@ -133,11 +136,11 @@ It must be an Object with the id property.`)
 		let repositoryJoinFound = false
 		let actorJoinFound = false
 		for (const childQEntity of qEntity.__driver__.childQEntities) {
-			if (childQEntity.__driver__.dbRelation.property.name === ACTOR_PROPERTY_NAME) {
+			const relationEntity = childQEntity.__driver__.dbRelation.relationEntity
+			if (this.dictionary.isActor(relationEntity)) {
 				actorJoinFound = true
 				qActor = childQEntity
-			}
-			if (childQEntity.__driver__.dbRelation.property.name === REPOSITORY_PROPERTY_NAME) {
+			} else if (this.dictionary.isRepository(relationEntity)) {
 				repositoryJoinFound = true
 				qRepository = childQEntity
 			}

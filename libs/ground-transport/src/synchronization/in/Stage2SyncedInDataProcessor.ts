@@ -8,15 +8,14 @@ import {
 } from '@airport/direction-indicator'
 import {
 	ApplicationColumn_Index,
-	ensureChildJsMap,
-	ensureChildJsSet,
 	JSONBaseOperation,
 	Application_Index,
 	ApplicationVersion_LocalId,
 	ApplicationEntity_TableIndex,
-	airEntity,
 	DbColumn,
-	DbEntity
+	DbEntity,
+	Dictionary,
+	IDatastructureUtils
 } from '@airport/ground-control'
 import {
 	Actor_LocalId,
@@ -74,6 +73,12 @@ export class Stage2SyncedInDataProcessor
 
 	@Inject()
 	databaseFacade: IDatabaseFacade
+
+	@Inject()
+	datastructureUtils: IDatastructureUtils
+
+	@Inject()
+	dictionary: Dictionary
 
 	@Inject()
 	recordUpdateStageDao: IRecordUpdateStageDao
@@ -200,11 +205,12 @@ export class Stage2SyncedInDataProcessor
 		dbEntity: DbEntity
 	): DbColumn[] {
 		const nonIdColumns = []
+		const airEntityColumns = this.dictionary.AirEntity.columns
 		for (const column of dbEntity.columns) {
 			switch (column.name) {
-				case airEntity.ACTOR_LID:
-				case airEntity.ACTOR_RECORD_ID:
-				case airEntity.REPOSITORY_LID:
+				case airEntityColumns.ACTOR_LID:
+				case airEntityColumns.ACTOR_RECORD_ID:
+				case airEntityColumns.REPOSITORY_LID:
 					continue
 			}
 			nonIdColumns.push(column)
@@ -233,15 +239,18 @@ export class Stage2SyncedInDataProcessor
 		// Build the final update data structure
 		for (const [applicationVersionId, applicationUpdateMap] of recordUpdates) {
 			const finalApplicationUpdateMap
-				= ensureChildJsMap(finalUpdateMap, applicationVersionId)
+				= this.datastructureUtils.ensureChildJsMap(
+					finalUpdateMap, applicationVersionId)
 			for (const [tableIndex, tableUpdateMap] of applicationUpdateMap) {
-				const finalTableUpdateMap = ensureChildJsMap(finalApplicationUpdateMap, tableIndex)
+				const finalTableUpdateMap = this.datastructureUtils.ensureChildJsMap(
+					finalApplicationUpdateMap, tableIndex)
 				for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
 					for (const [actorId, actorUpdates] of repositoryUpdateMap) {
 						for (const [_actorRecordId, recordUpdateMap] of actorUpdates) {
 							const recordKeyMap = this.getRecordKeyMap(recordUpdateMap, finalTableUpdateMap)
-							ensureChildJsSet(
-								ensureChildJsMap(recordKeyMap, repositoryId),
+							this.datastructureUtils.ensureChildJsSet(
+								this.datastructureUtils.ensureChildJsMap(
+									recordKeyMap, repositoryId),
 								actorId)
 								.add(_actorRecordId)
 							for (const [columnIndex, columnUpdate] of recordUpdateMap) {

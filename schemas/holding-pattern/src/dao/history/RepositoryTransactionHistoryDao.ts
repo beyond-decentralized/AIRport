@@ -5,8 +5,8 @@ import {
 	Y
 } from '@airport/tarmaq-query'
 import {
-	ensureChildArray,
 	ApplicationEntity_LocalId,
+	IDatastructureUtils,
 	JSONBaseOperation,
 	TransactionType
 } from '@airport/ground-control'
@@ -17,7 +17,6 @@ import {
 } from '../../ddl/ddl'
 import {
 	BaseRepositoryTransactionHistoryDao,
-	IOperationHistory,
 	IRepositoryTransactionHistory,
 	QOperationHistory,
 	QRecordHistory,
@@ -27,7 +26,7 @@ import {
 } from '../../generated/generated'
 import Q from '../../generated/qApplication'
 import { QApplicationEntity, QApplicationVersion } from '@airport/airspace/dist/app/bundle'
-import { Injected } from '@airport/direction-indicator'
+import { Inject, Injected } from '@airport/direction-indicator'
 import { Repository_LocalId } from '../../types'
 
 export interface IRepositoryTransactionHistoryDao {
@@ -55,6 +54,10 @@ export interface IChangedRecordIdsForRepository {
 export class RepositoryTransactionHistoryDao
 	extends BaseRepositoryTransactionHistoryDao
 	implements IRepositoryTransactionHistoryDao {
+
+	@Inject()
+	datastructureUtils: IDatastructureUtils
+
 	/*
 	async clearContentsWhereIdsIn(
 		repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[]
@@ -165,12 +168,12 @@ export class RepositoryTransactionHistoryDao
 				OR(...repositoryEquals)
 			),
 			// ORDER_BY: [
-			// 	rth.repository._localId.asc()
+			// 	rth.repository._localId.ASC()
 			// ]
 		})
 
 		for (const repoTransHistory of repoTransHistories) {
-			ensureChildArray(
+			this.datastructureUtils.ensureChildArray(
 				repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository._localId)
 				.push(repoTransHistory)
 			repoTransHistory.operationHistory.sort((

@@ -16,7 +16,10 @@ import { SynchronizationOutManager } from './synchronization/out/Synchronization
 import { SynchronizationAdapterLoader } from './adapters/SynchronizationAdapterLoader'
 import { SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer'
 import {
-    AIRPORT_DATABASE, Utils
+    AIRPORT_DATABASE,
+    ApplicationUtils,
+    SystemWideOperationIdUtils,
+    Utils
 } from '@airport/air-traffic-control'
 import {
     APPLICATION_INITIALIZER,
@@ -35,14 +38,23 @@ import {
 } from '@airport/airspace/dist/app/bundle'
 import {
     ActorDao,
-    RepositoryDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo
+    RepositoryDao,
+    RepositoryTransactionHistoryDao,
+    RepositoryTransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
     RecordUpdateStageDao,
-    SynchronizationConflictDao, SynchronizationConflictValuesDao
+    SynchronizationConflictDao,
+    SynchronizationConflictValuesDao
 } from '@airport/layover'
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter'
-import { AppTrackerUtils, DbApplicationUtils, SEQUENCE_GENERATOR } from '@airport/ground-control'
+import {
+    AppTrackerUtils,
+    DatastructureUtils,
+    DbApplicationUtils,
+    Dictionary,
+    SEQUENCE_GENERATOR
+} from '@airport/ground-control'
 import { DATABASE_FACADE } from '@airport/tarmaq-dao'
 import { Client } from '@airway/client'
 
@@ -62,14 +74,18 @@ groundTransport.setDependencies(DebugSynchronizationAdapter, {
 groundTransport.setDependencies(Stage1SyncedInDataProcessor, {
     actorDao: ActorDao,
     airportDatabase: AIRPORT_DATABASE,
+    datastructureUtils: DatastructureUtils,
     repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     sequenceGenerator: SEQUENCE_GENERATOR,
-    syncInUtils: SyncInUtils
+    syncInUtils: SyncInUtils,
+    systemWideOperationIdUtils: SystemWideOperationIdUtils,
 })
 groundTransport.setDependencies(Stage2SyncedInDataProcessor, {
     airportDatabase: AIRPORT_DATABASE,
     databaseFacade: DATABASE_FACADE,
+    datastructureUtils: DatastructureUtils,
+    dictionary: Dictionary,
     recordUpdateStageDao: RecordUpdateStageDao,
     utils: Utils
 })
@@ -89,19 +105,23 @@ groundTransport.setDependencies(SyncInApplicationVersionChecker, {
 })
 
 groundTransport.setDependencies(SyncInChecker, {
+    datastructureUtils: DatastructureUtils,
     syncInActorChecker: SyncInActorChecker,
     syncInApplicationChecker: SyncInApplicationChecker,
     syncInApplicationVersionChecker: SyncInApplicationVersionChecker,
     syncInDataChecker: SyncInDataChecker,
     syncInRepositoryChecker: SyncInRepositoryChecker,
     syncInTerminalChecker: SyncInTerminalChecker,
-    syncInUserAccountChecker: SyncInUserAccountChecker
+    syncInUserAccountChecker: SyncInUserAccountChecker,
+    terminalStore: TerminalStore
 })
 
 groundTransport.setDependencies(SyncInDataChecker, {
     airportDatabase: AIRPORT_DATABASE,
     appTrackerUtils: AppTrackerUtils,
-    sequenceGenerator: SEQUENCE_GENERATOR,
+    datastructureUtils: DatastructureUtils,
+    dictionary: Dictionary,
+    systemWideOperationIdUtils: SystemWideOperationIdUtils,
     terminalStore: TerminalStore
 })
 
@@ -117,10 +137,16 @@ groundTransport.setDependencies(SyncInUserAccountChecker, {
     userAccountDao: UserAccountDao
 })
 
+groundTransport.setDependencies(SyncInUtils, {
+    datastructureUtils: DatastructureUtils
+})
+
 groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
     applicationRelationDao: ApplicationRelationDao,
+    applicationUtils: ApplicationUtils,
     dbApplicationUtils: DbApplicationUtils,
+    dictionary: Dictionary,
     repositoryDao: RepositoryDao,
 })
 
@@ -137,6 +163,7 @@ groundTransport.setDependencies(SynchronizationInManager, {
 })
 
 groundTransport.setDependencies(SynchronizationOutManager, {
+    datastructureUtils: DatastructureUtils,
     repositoryDao: RepositoryDao,
     repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
     synchronizationAdapterLoader: SynchronizationAdapterLoader,

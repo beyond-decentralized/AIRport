@@ -1,7 +1,5 @@
 import {
-	DbEntity,
-	ensureChildArray,
-	ensureChildMap
+	DbEntity, IDatastructureUtils
 } from '@airport/ground-control'
 
 /**
@@ -18,6 +16,11 @@ export interface ManyToOneStubReference {
 
 // For MtO mapping in bridged queries
 export class GraphMtoMapper {
+
+	constructor(
+		private datastructureUtils: IDatastructureUtils
+	) {
+	}
 
 	// Map of all objects that have a given MtO reference
 	// [] MtO reference Application Entity Index
@@ -38,11 +41,13 @@ export class GraphMtoMapper {
 		const mtoDbEntity = mtoStubReference.mtoDbEntity
 		let mtoEntitiesForTypeMap: {
 			[mtoEntityId: string]: { [mtoPropertyName: string]: ManyToOneStubReference }
-		} = ensureChildMap(
-			ensureChildArray(this.mtoStubReferenceMap, mtoDbEntity.applicationVersion.application.index),
+		} = this.datastructureUtils.ensureChildMap(
+			this.datastructureUtils.ensureChildArray(
+				this.mtoStubReferenceMap, mtoDbEntity.applicationVersion.application.index),
 			mtoDbEntity.index
 		)
-		let mtosForEntity = ensureChildMap(mtoEntitiesForTypeMap, mtoEntityIdValue)
+		let mtosForEntity = this.datastructureUtils.ensureChildMap(
+			mtoEntitiesForTypeMap, mtoEntityIdValue)
 
 		mtosForEntity[mtoStubReference.mtoRelationField] = mtoStubReference
 	}
@@ -79,3 +84,4 @@ export class GraphMtoMapper {
 	}
 
 }
+globalThis.GraphMtoMapper = GraphMtoMapper

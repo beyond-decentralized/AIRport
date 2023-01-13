@@ -18,10 +18,10 @@ import {
 import {
 	Application_Signature,
 	Domain_Name,
-	ensureChildJsMap,
 	JsonApplication_Name,
 	Application_Name,
-	Application_FullName
+	Application_FullName,
+	IDatastructureUtils
 } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern/dist/app/bundle';
 import { Subject } from 'rxjs';
@@ -106,6 +106,9 @@ export class TerminalStore
 	implements ITerminalStore {
 
 	@Inject()
+	datastructureUtils: IDatastructureUtils
+
+	@Inject()
 	selectorManager: ISelectorManager
 
 	@Inject()
@@ -173,8 +176,8 @@ export class TerminalStore
 			applicationActors => {
 				const applicationActorsByDomainAndApplication_Names: Map<Domain_Name, Map<Application_Name, IActor[]>> = new Map()
 				for (const applicationActor of applicationActors) {
-					const applicationActorMapForDomain = ensureChildJsMap(applicationActorsByDomainAndApplication_Names,
-						applicationActor.application.domain.name)
+					const applicationActorMapForDomain = this.datastructureUtils.ensureChildJsMap(
+						applicationActorsByDomainAndApplication_Names, applicationActor.application.domain.name)
 					let actorsForApplication = applicationActorMapForDomain
 						.get(applicationActor.application.name)
 					if (!actorsForApplication) {
@@ -209,7 +212,8 @@ export class TerminalStore
 				const latestApplicationVersionMapByNames: Map<Domain_Name, Map<Application_Name, IApplicationVersion>> = new Map();
 
 				for (const domain of domains) {
-					const mapForDomain = ensureChildJsMap(latestApplicationVersionMapByNames, domain.name);
+					const mapForDomain = this.datastructureUtils.ensureChildJsMap(
+						latestApplicationVersionMapByNames, domain.name);
 					for (const application of domain.applications) {
 						mapForDomain.set(application.name, application.currentVersion[0].applicationVersion);
 					}

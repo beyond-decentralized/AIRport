@@ -7,6 +7,7 @@ import {
 import { ISequence, ISequenceDao } from '@airport/airport-code';
 import {
   EntityRelationType,
+  IApplicationReferenceUtils,
   IDbApplicationUtils,
   JsonApplication,
   JsonApplicationColumn,
@@ -22,8 +23,6 @@ import {
 } from '@airport/terminal-map'
 import { IApplication } from '@airport/airspace/dist/app/bundle';
 import { ISchemaBuilder } from './ISchemaBuilder';
-import { IApplicationReferenceChecker } from '../checker/ApplicationReferenceChecker';
-import { IApplicationLocator } from '../locator/ApplicationLocator';
 
 @Injected()
 export abstract class SqlSchemaBuilder
@@ -33,10 +32,7 @@ export abstract class SqlSchemaBuilder
   airportDatabase: IAirportDatabase
 
   @Inject()
-  applicationLocator: IApplicationLocator
-
-  @Inject()
-  applicationReferenceChecker: IApplicationReferenceChecker
+  applicationReferenceUtils: IApplicationReferenceUtils
 
   @Inject()
   dbApplicationUtils: IDbApplicationUtils
@@ -56,21 +52,23 @@ export abstract class SqlSchemaBuilder
   ): Promise<void> {
     await this.createApplication(jsonApplication, context);
 
-    const jsonApplicationVersion = this.applicationLocator
+    const jsonApplicationVersion = this.applicationReferenceUtils
       .getCurrentJsonApplicationVersion(jsonApplication)
 
     for (const jsonEntity of jsonApplicationVersion.entities) {
-      await this.buildTable(jsonApplication, jsonEntity, existingApplicationMap, context);
+      await this.buildTable(jsonApplication, jsonApplicationVersion,
+        jsonEntity, existingApplicationMap, context);
     }
 
     const relatedJsonApplicationMap: Map<string, JsonApplication> = new Map()
 
     for (const jsonEntity of jsonApplicationVersion.entities) {
-      await this.buildForeignKeys(jsonApplication, jsonEntity, existingApplicationMap,
+      await this.buildForeignKeys(jsonApplication, jsonApplicationVersion,
+        jsonEntity, existingApplicationMap,
         newJsonApplicationMap, relatedJsonApplicationMap, context);
     }
 
-    this.applicationReferenceChecker.checkFrameworkReferences(
+    this.applicationReferenceUtils.checkFrameworkReferences(
       jsonApplication,
       (
         jsonApplication: JsonApplication,
@@ -92,6 +90,7 @@ export abstract class SqlSchemaBuilder
 
   async buildTable(
     jsonApplication: JsonApplication,
+    jsonApplicationVersion: JsonApplicationVersion,
     jsonEntity: JsonApplicationEntity,
     existingApplicationMap: Map<string, IApplication>,
     context: IContext,
@@ -111,7 +110,8 @@ export abstract class SqlSchemaBuilder
 
     const createTableSuffix = this.getCreateTableSuffix(jsonApplication, jsonEntity);
 
-    const tableName = this.storeDriver.getTableName(jsonApplication, jsonEntity, context);
+    const tableName = this.storeDriver.getTableName(jsonApplication,
+      jsonApplicationVersion.integerVersion, jsonEntity, context);
 
     let primaryKeySubStatement = ``;
     if (primaryKeyColumnNames.length) {
@@ -213,6 +213,7 @@ export abstract class SqlSchemaBuilder
 
   async buildForeignKeys(
     jsonApplication: JsonApplication,
+    jsonApplicationVersion: JsonApplicationVersion,
     jsonEntity: JsonApplicationEntity,
     existingApplicationMap: Map<string, IApplication>,
     newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>,
@@ -225,7 +226,7 @@ export abstract class SqlSchemaBuilder
 
     const applicationVersion = this.getApplicationVersion(jsonApplication);
     const tableName = this.storeDriver.getTableName(
-      jsonApplication, jsonEntity, context);
+      jsonApplication, jsonApplicationVersion.integerVersion, jsonEntity, context);
 
     for (const jsonRelation of jsonEntity.relations) {
       if (jsonRelation.relationType !== EntityRelationType.MANY_TO_ONE) {
@@ -249,7 +250,7 @@ export abstract class SqlSchemaBuilder
       }
 
       const referencedTableName = this.storeDriver
-        .getTableName(relatedJsonApplication, relatedJsonEntity, context);
+        .getTableName(relatedJsonApplication, applicationVersion.integerVersion, relatedJsonEntity, context);
       let referencedColumnNames = []
       for (const relatedIdColumnRef of relatedJsonEntity.idColumnRefs) {
         referencedColumnNames.push(relatedJsonEntity.columns[relatedIdColumnRef.index].name)

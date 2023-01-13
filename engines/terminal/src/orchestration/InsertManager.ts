@@ -1,6 +1,6 @@
 import {
-	getSysWideOpId,
-	IAirportDatabase
+	IAirportDatabase,
+	ISystemWideOperationIdUtils,
 } from '@airport/air-traffic-control'
 import {
 	Inject,
@@ -10,10 +10,10 @@ import {
 	ChangeType,
 	DbColumn,
 	DbEntity,
+	Dictionary,
 	IRootTransaction,
 	JsonInsertValues,
 	PortableQuery,
-	airEntity,
 	ISequenceGenerator,
 } from '@airport/ground-control'
 import {
@@ -46,6 +46,9 @@ export class InsertManager
 	airportDatabase: IAirportDatabase
 
 	@Inject()
+	dictionary: Dictionary
+
+	@Inject()
 	historyManager: IHistoryManager
 
 	@Inject()
@@ -56,6 +59,9 @@ export class InsertManager
 
 	@Inject()
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
+
+	@Inject()
+	systemWideOperationIdUtils: ISystemWideOperationIdUtils
 
 	@Inject()
 	sequenceGenerator: ISequenceGenerator
@@ -167,15 +173,15 @@ appears more than once in the Columns clause`)
 
 		let systemWideOperationId: SystemWideOperationId
 		if (!dbEntity.isLocal) {
-			systemWideOperationId = await getSysWideOpId(this.airportDatabase, this.sequenceGenerator)
+			systemWideOperationId = await this.systemWideOperationIdUtils
+				.getSysWideOpId()
 		}
 
 		if ((!transaction.isSync || context.generateOnSync) && ensureGeneratedValues) {
 			_localIds = await this.ensureGeneratedValues(
 				dbEntity, insertValues, actor,
 				columnsToPopulate, generatedColumns,
-				systemWideOperationId, errorPrefix,
-				this.sequenceGenerator)
+				systemWideOperationId, errorPrefix)
 		}
 
 		if (!dbEntity.isLocal && !transaction.isSync) {
@@ -222,8 +228,7 @@ appears more than once in the Columns clause`)
 		columnsToPopulate: ColumnsToPopulate,
 		generatedColumns: DbColumn[],
 		systemWideOperationId: SystemWideOperationId,
-		errorPrefix: string,
-		sequenceGenerator: ISequenceGenerator
+		errorPrefix: string
 	): Promise<Record_LocalId[] | Record_LocalId[][]> {
 		const values = jsonInsertValues.V
 		const idColumns = dbEntity.idColumns
@@ -333,7 +338,7 @@ appears more than once in the Columns clause`)
 		// (thus reducing storage requirements in SqLite)
 		const numSequencesNeeded = generatedColumns.map(
 			_ => values.length)
-		const generatedSequenceValues = await sequenceGenerator.generateSequenceNumbers(
+		const generatedSequenceValues = await this.sequenceGenerator.generateSequenceNumbers(
 			generatedColumns, numSequencesNeeded)
 
 		generatedColumns.forEach((
@@ -400,10 +405,11 @@ appears more than once in the Columns clause`)
 		transaction: ITransaction,
 		context: IOperationContext
 	): ColumnsToPopulate {
-		const actorIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_LID]
-		const actorRecordIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_RECORD_ID]
-		const repositoryIdColumn = dbEntity.idColumnMap[airEntity.REPOSITORY_LID]
-		const sysWideOperationIdColumn = dbEntity.columnMap[airEntity.SYSTEM_WIDE_OPERATION_ID]
+		const airEntityColumns = this.dictionary.AirEntity.columns
+		const actorIdColumn = dbEntity.idColumnMap[airEntityColumns.ACTOR_LID]
+		const actorRecordIdColumn = dbEntity.idColumnMap[airEntityColumns.ACTOR_RECORD_ID]
+		const repositoryIdColumn = dbEntity.idColumnMap[airEntityColumns.REPOSITORY_LID]
+		const sysWideOperationIdColumn = dbEntity.columnMap[airEntityColumns.SYSTEM_WIDE_OPERATION_LID]
 
 		let repositoryIdColumnQueryIndex
 
@@ -535,9 +541,10 @@ and cannot have NULL values.`)
 		let operationsByRepo: IOperationHistory[] = []
 		let repoTransHistories: IRepositoryTransactionHistory[] = []
 
-		const repositoryIdIndex = dbEntity.columnMap[airEntity.REPOSITORY_LID].index
-		const actorIdIndex = dbEntity.columnMap[airEntity.ACTOR_LID].index
-		const actorRecordIdIndex = dbEntity.columnMap[airEntity.ACTOR_RECORD_ID].index
+		const airEntityColumns = this.dictionary.AirEntity.columns
+		const repositoryIdIndex = dbEntity.columnMap[airEntityColumns.REPOSITORY_LID].index
+		const actorIdIndex = dbEntity.columnMap[airEntityColumns.ACTOR_LID].index
+		const actorRecordIdIndex = dbEntity.columnMap[airEntityColumns.ACTOR_RECORD_ID].index
 
 		let repositoryIdColumnNumber
 		let actorIdColumnNumber

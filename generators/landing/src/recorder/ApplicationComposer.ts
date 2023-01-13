@@ -1,12 +1,11 @@
 import {
 	ApplicationStatus,
 	Domain_Name,
-	ensureChildArray,
-	ensureChildJsSet,
 	Application_FullName,
 	IDbApplicationUtils,
 	ApplicationColumn_IdIndex,
 	JsonApplication,
+	IDatastructureUtils,
 } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/apron';
 import {
@@ -55,6 +54,9 @@ export class ApplicationComposer
 
 	@Inject()
 	applicationLocator: IApplicationLocator
+
+	@Inject()
+	datastructureUtils: IDatastructureUtils
 
 	@Inject()
 	dbApplicationUtils: IDbApplicationUtils
@@ -430,9 +432,9 @@ export class ApplicationComposer
 			const lastJsonApplicationVersion
 				= jsonApplication.versions[jsonApplication.versions.length - 1];
 			const applicationReferences: IApplicationReference[]
-				= ensureChildArray(newApplicationReferenceMap, applicationName);
+				= this.datastructureUtils.ensureChildArray(newApplicationReferenceMap, applicationName);
 			const applicationReferenceLookup: Set<number>
-				= ensureChildJsSet(newApplicationReferenceLookup, applicationName);
+				= this.datastructureUtils.ensureChildJsSet(newApplicationReferenceLookup, applicationName);
 
 			for (const jsonReferencedApplication of lastJsonApplicationVersion.referencedApplications) {
 				const referencedApplication_FullName = this.dbApplicationUtils.
@@ -522,7 +524,7 @@ export class ApplicationComposer
 		const jsonEntities = currentApplicationVersion.entities;
 		const entities = newEntitiesMapByApplication_Name.get(applicationName);
 		const propertiesByEntityIndex
-			= ensureChildArray(newPropertiesMap, applicationName);
+			= this.datastructureUtils.ensureChildArray(newPropertiesMap, applicationName);
 		jsonEntities.forEach((
 			jsonEntity,
 			tableIndex
@@ -567,7 +569,7 @@ export class ApplicationComposer
 		const propertiesByEntityIndex
 			= newPropertiesMap.get(applicationName);
 		const relationsByEntityIndex
-			= ensureChildArray(newRelationsMap, applicationName);
+			= this.datastructureUtils.ensureChildArray(newRelationsMap, applicationName);
 		const referencesForApplication = newApplicationReferenceMap.get(applicationName);
 
 		for (let tableIndex = 0; tableIndex < jsonEntities.length; tableIndex++) {

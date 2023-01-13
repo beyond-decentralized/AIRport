@@ -3,10 +3,8 @@ import {
 	DatabaseManyToOneElements,
 	DatabaseOneToManyElements,
 	DbApplication,
+	Dictionary,
 	EntityRelationType,
-	file,
-	property,
-	airEntity,
 } from '@airport/ground-control';
 import {
 	canBeInterface,
@@ -34,6 +32,8 @@ import {
 } from './SApplication';
 
 export class SApplicationBuilder {
+
+	dictionary = new Dictionary()
 
 	constructor(
 		private config: Configuration,
@@ -110,12 +110,13 @@ export class SApplicationBuilder {
 
 		entity.numIdColumns = 3;
 
+		const airEntityColumns = this.dictionary.AirEntity.columns
 		switch (columnName) {
-			case airEntity.REPOSITORY_LID:
+			case airEntityColumns.REPOSITORY_LID:
 				return 0;
-			case airEntity.ACTOR_LID:
+			case airEntityColumns.ACTOR_LID:
 				return 1;
-			case airEntity.ACTOR_RECORD_ID:
+			case airEntityColumns.ACTOR_RECORD_ID:
 				return 2;
 			default:
 				throw new Error(
@@ -149,6 +150,7 @@ export class SApplicationBuilder {
 	): SEntity {
 		let foundEntityDecorator = false;
 		let tableConfig;
+		const file = this.dictionary.file
 		for (const decorator of entityCandidate.docEntry.decorators) {
 			switch (decorator.name) {
 				case file.ENTITY: {
@@ -368,6 +370,7 @@ class ${entityCandidate.docEntry.name}
 		// let joinFunctionWithOperator = SqlOperator.AND
 		let relationType: EntityRelationType;
 		for (const decorator of aProperty.decorators) {
+			const property = this.dictionary.property
 			switch (decorator.name) {
 				case property.ID:
 					isId = true;
@@ -541,9 +544,10 @@ class ${entityCandidate.docEntry.name}
 
 					const notNull = isManyToOnePropertyNotNull(aProperty);
 
+					const airEntityColumns = this.dictionary.AirEntity.columns
 					const relationColumnReferences = [
-						airEntity.REPOSITORY_LID, airEntity.ACTOR_LID,
-						airEntity.ACTOR_RECORD_ID];
+						airEntityColumns.REPOSITORY_LID, airEntityColumns.ACTOR_LID,
+						airEntityColumns.ACTOR_RECORD_ID];
 
 					let numExistingReferenceToTable = relatedTableMap.get(relatedTableName)
 
@@ -725,7 +729,7 @@ class ${entityCandidate.docEntry.name}
 		let scale = null;
 		for (const decorator of aProperty.decorators) {
 			switch (decorator.name) {
-				case property.COLUMN:
+				case this.dictionary.property.COLUMN:
 					if (columnDefined) {
 						throw new Error(`@Column is defined more than once
 						 for ${entity.name}.${aProperty.name}`);
@@ -981,7 +985,7 @@ export function entityExtendsAirEntity( //
 	return entityExtendsOrIsAirEntity(entityCandidate.parentEntity)
 }
 
-
+const dictionary = new Dictionary()
 
 export function entityExtendsOrIsAirEntity( //
 	entityCandidate: EntityCandidate //
@@ -989,12 +993,12 @@ export function entityExtendsOrIsAirEntity( //
 	if (!entityCandidate) {
 		return [false, true];
 	}
-	if (entityCandidate.docEntry.name === airEntity.ENTITY_NAME) {
+	if (entityCandidate.docEntry.name === dictionary.AirEntity.name) {
 		return [true, false];
 	}
-	if (entityCandidate.docEntry.name === airEntity.LOCAL_ENTITY_NAME) {
-		return [true, true];
-	}
+	// if (entityCandidate.docEntry.name === airEntityColumns.LOCAL_ENTITY_NAME) {
+	// 	return [true, true];
+	// }
 	return entityExtendsOrIsAirEntity(entityCandidate.parentEntity);
 }
 
