@@ -5,6 +5,7 @@ import {
 import {
 	DbProperty,
 	EntityRelationType,
+	IAppTrackerUtils,
 	IEntityStateManager
 } from '@airport/ground-control'
 import {
@@ -19,6 +20,9 @@ import {
 @Injected()
 export class EntityGraphReconstructor
 	implements IEntityGraphReconstructor {
+
+	@Inject()
+	appTrackerUtils: IAppTrackerUtils
 
 	@Inject()
 	entityStateManager: IEntityStateManager
@@ -82,12 +86,12 @@ export class EntityGraphReconstructor
 
 			let entityCopy: any = {}
 			entityCopy[this.entityStateManager.getUniqueIdFieldName()]
-					= operationUniqueId
+				= operationUniqueId
 			entityCopy[this.entityStateManager.getStateFieldName()]
-					= this.entityStateManager.getEntityState(entity)
+				= this.entityStateManager.getEntityState(entity)
 			this.entityStateManager.copyEntityState(entity, entityCopy)
 			entitiesByOperationIndex[operationUniqueId]
-					= entityCopy
+				= entityCopy
 
 			if (isParentEntity) {
 				this.entityStateManager.markAsOfParentSchema(entityCopy)
@@ -121,7 +125,7 @@ for ${dbEntity.name}.${dbProperty.name}`)
 					const previousDbEntity = context.dbEntity
 					const previousDbApplication = previousDbEntity.applicationVersion.application
 					const propertyDbApplication = dbRelation.relationEntity.applicationVersion.application
-					if (propertyDbApplication.domain.name !== 'air'
+					if (!this.appTrackerUtils.isInternalDomain(propertyDbApplication.domain.name)
 						&& previousDbApplication.fullName !== propertyDbApplication.fullName) {
 						// If a child entity is in a different application it won't be processed
 						// the calling application should call the API of the other application
@@ -138,7 +142,7 @@ for ${dbEntity.name}.${dbProperty.name}`)
 								const operationUniqueId = this.entityStateManager
 									.getOperationUniqueId(propertyCopyValueEntry)
 								if (!entitiesByOperationIndex[operationUniqueId]) {
-								this.checkPropertyParentEntityStatus(propertyCopyValueEntry)
+									this.checkPropertyParentEntityStatus(propertyCopyValueEntry)
 								}
 							}
 						}
