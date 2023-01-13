@@ -3,6 +3,7 @@ import {
 	DbNumber,
 	DbString,
 	Entity,
+	GeneratedValue,
 	Id,
 	JoinColumn,
 	ManyToOne,
@@ -13,6 +14,7 @@ import { Continent } from './locality/Continent'
 import { MetroArea } from './locality/MetroArea'
 import { State } from './locality/State'
 
+export type UserAccount_LocalId = number;
 export type UserAccount_GUID = string;
 export type UserAccount_Email = string;
 export type UserAccount_PasswordHash = string;
@@ -22,7 +24,12 @@ export type UserAccount_Username = string;
 export class UserAccount {
 
 	@Id()
-	@Column({ name: "GUID", nullable: false })
+	@GeneratedValue()
+	@DbNumber()
+	@Column({ name: 'USER_ACCOUNT_LID', nullable: false })
+	_localId?: UserAccount_LocalId
+
+	@Column({ name: "USER_ACCOUNT_GUID", nullable: false })
 	@DbString()
 	GUID?: UserAccount_GUID;
 

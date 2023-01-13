@@ -1,8 +1,10 @@
 import {
 	Column,
 	DbBoolean,
+	DbNumber,
 	DbString,
 	Entity,
+	GeneratedValue,
 	Id,
 	JoinColumn,
 	ManyToOne,
@@ -16,6 +18,7 @@ import { State } from '../locality/State'
 import { UserAccount } from '../UserAccount'
 import { TerminalType } from './TerminalType'
 
+export type Terminal_LocalId = number;
 export type Terminal_IsLocal = boolean;
 export type Terminal_GUID = string;
 
@@ -30,14 +33,19 @@ export type Terminal_GUID = string;
 export class Terminal {
 
 	@Id()
-	@Column({ name: 'GUID', nullable: false })
+	@GeneratedValue()
+	@Column({ name: 'TERMINAL_LID', nullable: false })
+	@DbNumber()
+	_localId?: Terminal_LocalId
+
+	@Column({ name: 'TERMINAL_GUID', nullable: false })
 	@DbString()
 	GUID: Terminal_GUID
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'OWNER_USER_ACCOUNT_GUID',
-		referencedColumnName: 'GUID', nullable: true
+		name: 'OWNER_USER_ACCOUNT_LID',
+		referencedColumnName: 'USER_ACCOUNT_LID', nullable: true
 	})
 	owner?: UserAccount
 

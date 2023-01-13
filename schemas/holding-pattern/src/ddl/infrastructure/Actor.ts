@@ -32,16 +32,16 @@ export class Actor {
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'USER_ACCOUNT_GUID',
-		referencedColumnName: 'GUID',
+		name: 'USER_ACCOUNT_LID',
+		referencedColumnName: 'USER_ACCOUNT_LID',
 		nullable: false
 	})
 	userAccount?: UserAccount
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'TERMINAL_GUID',
-		referencedColumnName: 'GUID',
+		name: 'TERMINAL_LID',
+		referencedColumnName: 'TERMINAL_LID',
 		nullable: false
 	})
 	terminal?: Terminal

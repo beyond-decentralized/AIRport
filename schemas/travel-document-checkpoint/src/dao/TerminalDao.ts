@@ -1,5 +1,5 @@
 import { AND } from '@airport/tarmaq-query'
-import { IContext, Injected } from '@airport/direction-indicator';
+import { IContext, Inject, Injected } from '@airport/direction-indicator';
 import {
 	Terminal_GUID
 } from '../ddl/ddl'
@@ -7,10 +7,13 @@ import {
 	BaseTerminalDao,
 	IBaseTerminalDao,
 	ITerminal,
-	QTerminal
+	QTerminal,
+	QUserAccount
 } from '../generated/generated'
 import Q from '../generated/qApplication'
 import { UserAccount_GUID } from '../ddl/ddl'
+import { IAirportDatabase } from '@airport/air-traffic-control';
+import { Dictionary, ISequenceGenerator } from '@airport/ground-control';
 
 export interface ITerminalDao
 	extends IBaseTerminalDao {
@@ -36,18 +39,29 @@ export class TerminalDao
 	extends BaseTerminalDao
 	implements ITerminalDao {
 
+	@Inject()
+	airportDatabase: IAirportDatabase
+
+	@Inject()
+	dictionary: Dictionary
+
+	@Inject()
+	sequenceGenerator: ISequenceGenerator
+
 	async findByOwnerIdsAndGUIDs(
 		ownerGuids: UserAccount_GUID[],
 		GUIDs: Terminal_GUID[]
 	): Promise<ITerminal[]> {
-		let t: QTerminal
+		let t: QTerminal,
+			ua: QUserAccount
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				t = Q.Terminal
+				t = Q.Terminal,
+				ua = t.owner.LEFT_JOIN()
 			],
 			WHERE: AND(
-				t.owner.GUID.IN(ownerGuids),
+				ua.GUID.IN(ownerGuids),
 				t.GUID.IN(GUIDs)
 			)
 		})
@@ -70,18 +84,34 @@ export class TerminalDao
 		terminals: ITerminal[],
 		context: IContext
 	): Promise<void> {
-		let t: QTerminal;
+		const airport = this.dictionary.airport
+		const Terminal = this.dictionary.Terminal
+		const terminalLids = await this.sequenceGenerator
+			.generateSequenceNumbersForColumn(
+				airport.DOMAIN_NAME,
+				airport.apps.TRAVEL_DOCUMENT_CHECKPOINT.name,
+				Terminal.name,
+				Terminal.columns.TERMINAL_LID,
+				terminals.length
+			);
+
 		const VALUES = []
-		for (const terminal of terminals) {
+		for (let i = 0; i < terminals.length; i++) {
+			const terminal = terminals[i]
+			terminal._localId = terminalLids[i]
 			VALUES.push([
-				terminal.GUID, terminal.owner.GUID, false,
+				terminalLids[i], terminal.GUID, terminal.owner._localId, false
 			])
 		}
+
+		let t: QTerminal;
+
 		await this.db.insertValues({
 			INSERT_INTO: t = Q.Terminal,
 			columns: [
+				t._localId,
 				t.GUID,
-				t.owner.GUID,
+				t.owner._localId,
 				t.isLocal
 			],
 			VALUES

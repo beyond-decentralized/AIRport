@@ -18,8 +18,8 @@ export class TerminalType {
     @Id()
     @ManyToOne()
     @JoinColumn({
-        name: 'TERMINAL_GUID',
-        referencedColumnName: 'GUID'
+        name: 'TERMINAL_LID',
+        referencedColumnName: 'TERMINAL_LID'
     })
     terminal: Terminal
 

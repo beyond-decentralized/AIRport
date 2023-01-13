@@ -6,8 +6,7 @@ import {
 	Table
 } from "@airport/tarmaq-entity";
 import {
-	Terminal,
-	Type
+	Terminal
 } from "@airport/travel-document-checkpoint/dist/app/bundle";
 import { Repository } from "./Repository";
 
@@ -28,8 +27,8 @@ export class RepositoryTerminal {
 	@Id()
 	@ManyToOne()
 	@JoinColumn({
-		name: 'TERMINAL_GUID',
-		referencedColumnName: 'GUID'
+		name: 'TERMINAL_LID',
+		referencedColumnName: 'TERMINAL_LID'
 	})
 	terminal: Terminal
 

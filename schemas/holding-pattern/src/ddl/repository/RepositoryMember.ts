@@ -1,6 +1,8 @@
 import {
     Column,
+    DbNumber,
     Entity,
+    GeneratedValue,
     Id,
     JoinColumn,
     ManyToOne,
@@ -11,35 +13,47 @@ import {
 } from "@airport/travel-document-checkpoint/dist/app/bundle";
 import { Repository } from "./Repository";
 
+export type RepositoryMember_LocalId = number
+export type RepopsitoryMember_GUID = string
+
 @Entity()
 @Table({ name: 'REPOSITORY_MEMBER' })
 export class RepositoryMember {
 
     @Id()
-    @Column({ name: 'GUID', nullable: false })
-    GUID: string
+    @GeneratedValue()
+    @DbNumber()
+    @Column({ name: 'REPOSITORY_MEMBER_LID', nullable: false })
+    localId: RepositoryMember_LocalId
 
-    @Column({ name: 'IS_ADMINISTRATOR' })
-    isAdministrator: boolean
+    @Column({ name: 'REPOSITORY_MEMBER_GUID', nullable: false })
+    GUID: RepopsitoryMember_GUID
 
-    @Column({ name: 'CAN_WRITE' })
-    canWrite: boolean
+    @Column({ name: 'IS_OWNER', nullable: false })
+    isOwner?: boolean = false
+
+    @Column({ name: 'IS_ADMINISTRATOR', nullable: false })
+    isAdministrator?: boolean = false
+
+    @Column({ name: 'CAN_WRITE', nullable: false })
+    canWrite?: boolean = true
+
+    // Can be null for read-only permissions
+    @Column({ name: 'PUBLIC_SIGNING_KEY' })
+    publicSigningKey?: string
 
     @ManyToOne()
     @JoinColumn({
-        name: 'USER_ACCOUNT_GUID',
-        referencedColumnName: 'GUID',
+        name: 'USER_ACCOUNT_LID',
+        referencedColumnName: 'USER_ACCOUNT_LID',
         nullable: false
     })
     userAccount: UserAccount
 
-    @Column({ name: 'PUBLIC_SIGNING_KEY', nullable: false })
-    publicSigningKey: string
-
     @ManyToOne()
     @JoinColumn({
-        name: 'REPOSITORY_GUID',
-        referencedColumnName: 'GUID',
+        name: 'REPOSITORY_LID',
+        referencedColumnName: 'REPOSITORY_LID',
         nullable: false
     })
     repository: Repository

@@ -255,7 +255,7 @@ export class RepositoryDao
 		for (const repository of repositories) {
 			VALUES.push([
 				repository.createdAt, repository.GUID, repository.ageSuitability,
-				repository.source, repository.immutable, repository.owner.GUID,
+				repository.source, repository.immutable, repository.owner._localId,
 			])
 		}
 		const _localIds = await this.db.insertValuesGenerateIds({
@@ -266,7 +266,7 @@ export class RepositoryDao
 				r.ageSuitability,
 				r.source,
 				r.immutable,
-				r.owner.GUID
+				r.owner._localId
 			],
 			VALUES
 		}, context)
