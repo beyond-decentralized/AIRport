@@ -814,125 +814,253 @@ const IOC = inversionOfControl;
 /**
  * Column keys.
  */
-var column;
-(function (column) {
-    /**
-     * Name property of the column.
-     * @type {string}
-     */
-    column.NAME = 'name';
-    (function (type) {
-        type.ANY = 'any';
-        type.BOOLEAN = 'boolean';
-        type.DATE = 'Date';
-        type.NUMBER = 'number';
-        type.STRING = 'string';
-    })(column.type || (column.type = {}));
-})(column || (column = {}));
-/**
- * File level keys.
- */
-var file;
-(function (file) {
-    file.ENTITY = 'Entity';
-    file.TABLE = 'Table';
-})(file || (file = {}));
-/**
- * Entity configuration keys.
- */
-var entity;
-(function (entity) {
-    entity.DATABASES = 'databases';
-})(entity || (entity = {}));
-/**
- * Foreign Key configuration keys.
- */
-var foreignkey;
-(function (foreignkey) {
-    foreignkey.DEFINITION = 'foreignKeyDefinition';
-    foreignkey.NAME = 'name';
-    foreignkey.VALUE = 'value';
-})(foreignkey || (foreignkey = {}));
-/**
- * Index configuration keys.
- */
-var index$1;
-(function (index) {
-    index.COLUMN_LIST = 'columnList';
-    index.NAME = 'name';
-    index.UNIQUE = 'unique';
-})(index$1 || (index$1 = {}));
-/**
- * JoinColumn configuration keys.
- */
-var joincolumn;
-(function (joincolumn) {
-    joincolumn.FOREIGN_KEY = 'foreignKey';
-    joincolumn.REFERENCED_COLUMN_NAME = 'referencedColumnName';
-    joincolumn.VALUE = 'value';
-})(joincolumn || (joincolumn = {}));
-/**
- * Property annotation keys.
- */
-var property;
-(function (property) {
-    property.COLUMN = 'Column';
-    property.ENUM_TYPE = 'Enum';
-    property.ID = 'Id';
-    property.JOIN_COLUMN = 'JoinColumn';
-    property.JOIN_COLUMNS = 'JoinColumns';
-    property.JSON_TYPE = 'Json';
-    property.MANY_TO_ONE = 'ManyToOne';
-    property.ONE_TO_MANY = 'OneToMany';
-    // R_JOIN_COLUMN(s) are not needed since Repository relations are now
-    // standardized - simple (@ManyToOne) and (@OneToMany) suffice.
-    // export const R_JOIN_COLUMN    = 'RJoinColumn';
-    // export const R_JOIN_COLUMNS   = 'RJoinColumns';
-    property.SUB_QUERY = 'SubQuery';
-    // export const WHERE_JOIN_TABLE = 'WhereJoinTable';
-})(property || (property = {}));
-/**
- * OneToMany configuration keys.
- */
-var onetomany;
-(function (onetomany) {
-    onetomany.MAPPED_BY = 'mappedBy';
-})(onetomany || (onetomany = {}));
-/**
- * Table configuration keys.
- */
-var table;
-(function (table) {
-    table.INDEXES = 'indexes';
-    table.NAME = 'name';
-    table.PRIMARY_KEY = 'primaryKey';
-    table.APPLICATION = 'application';
-})(table || (table = {}));
-/**
- * Name of the RepositoryId column
- * @type {string}
- */
-var airEntity;
-(function (airEntity) {
-    airEntity.ACTOR_LID = 'ACTOR_LID';
-    airEntity.ACTOR_RECORD_ID = 'ACTOR_RECORD_ID';
-    airEntity.COPY_ACTOR_LID = 'COPY_ACTOR_LID';
-    airEntity.COPY_REPOSITORY_LID = 'COPY_REPOSITORY_LID';
-    airEntity.ONE_SIDE_APPLICATION_RELATION_LID = 'ONE_SIDE_APPLICATION_RELATION_LID';
-    airEntity.MANY_SIDE_APPLICATION_RELATION_LID = 'MANY_SIDE_APPLICATION_RELATION_LID';
-    airEntity.ONE_SIDE_ACTOR_LID = 'ONE_SIDE_ACTOR_LID';
-    airEntity.ONE_SIDE_REPOSITORY_LID = 'ONE_SIDE_REPOSITORY_LID';
-    airEntity.MANY_SIDE_ACTOR_LID = 'MANY_SIDE_ACTOR_LID';
-    airEntity.MANY_SIDE_REPOSITORY_LID = 'MANY_SIDE_REPOSITORY_LID';
-    airEntity.ENTITY_NAME = 'AirEntity';
-    airEntity.FOREIGN_KEY = 'REPOSITORY_LID';
-    airEntity.LOCAL_ENTITY_NAME = 'LocalAirEntity';
-    airEntity.REPOSITORY_LID = 'REPOSITORY_LID';
-    airEntity.SYS_WIDE_OP_ID_APPLICATION = 'airport____at_airport_slash_airport_dash_code';
-    airEntity.SYS_WIDE_OP_ID_ENTITY = 'SystemWideOperationId';
-    airEntity.systemWideOperationId = 'systemWideOperationId';
-    airEntity.SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_LID';
-})(airEntity || (airEntity = {}));
+class Dictionary {
+    constructor() {
+        this.airbridge = {
+            DOMAIN_NAME: 'airbridge'
+        };
+        this.airport = {
+            DOMAIN_NAME: 'airport',
+            apps: {
+                AIRPORT_CODE: {
+                    name: '@airport/airport-code',
+                    entities: {
+                        SystemWideOperationId: {
+                            name: 'SystemWideOperationId',
+                            columns: {
+                                SYSTEM_WIDE_OPERATION_LID: 'SYSTEM_WIDE_OPERATION_LID'
+                            },
+                            properties: {
+                                systemWideOperationId: 'systemWideOperationId'
+                            }
+                        }
+                    }
+                },
+                AIRSPACE: {
+                    name: '@airport/airspace',
+                    entities: {
+                        ApplicationRelation: {
+                            name: 'ApplicationRelation'
+                        }
+                    }
+                },
+                FINAL_APPROACH: {
+                    name: '@airport/final-approach',
+                    entities: {
+                        AirEntity: {
+                            name: 'AirEntity',
+                            columns: {
+                                ACTOR_LID: 'ACTOR_LID',
+                                ACTOR_RECORD_ID: 'ACTOR_RECORD_ID',
+                                REPOSITORY_LID: 'REPOSITORY_LID',
+                                SYSTEM_WIDE_OPERATION_LID: 'SYSTEM_WIDE_OPERATION_LID'
+                            },
+                            properties: {
+                                _actorRecordId: '_actorRecordId',
+                                _localId: '_localId',
+                                actor: 'actor',
+                                repository: 'repository',
+                                systemWideOperationId: 'systemWideOperationId'
+                            }
+                        }
+                    }
+                },
+                /*
+                FLIGHT_RECORDER: {
+                    name: '@airport/flight-recorder',
+                    entities: {
+                        CopiedRecordLedger: {
+                            name: 'CopiedRecordLedger',
+                            columns: {
+                                COPY_ACTOR_LID: 'COPY_ACTOR_LID',
+                                COPY_REPOSITORY_LID: 'COPY_REPOSITORY_LID',
+                            }
+                        },
+                        CrossRepositoryRelationLedger: {
+                            name: 'CrossRepositoryRelationLedger',
+                            columns: {
+                                RELATION_LID: 'MANY_SIDE_APPLICATION_RELATION_LID',
+                                RELATED_REPOSITORY_LID: 'MANY_SIDE_REPOSITORY_LID',
+                            }
+                        }
+                    }
+                },
+                */
+                HOLDING_PATTERN: {
+                    name: '@airport/holding-pattern',
+                    entities: {
+                        Actor: {
+                            name: 'Actor',
+                            columns: {
+                                ACTOR_LID: 'ACTOR_LID',
+                                USER_ACCOUNT_LID: 'USER_ACCOUNT_LID'
+                            },
+                            properties: {
+                                userAccount: 'userAccount'
+                            }
+                        },
+                        Repository: {
+                            name: 'Repository',
+                            columns: {
+                                REPOSITORY_LID: 'REPOSITORY_LID'
+                            },
+                        }
+                    }
+                },
+                TRAVEL_DOCUMENT_CHECKPOINT: {
+                    name: '@airport/travel-document-checkpoint',
+                    entities: {
+                        Terminal: {
+                            name: 'Terminal',
+                            columns: {
+                                TERMINAL_LID: 'TERMINAL_LID'
+                            }
+                        },
+                        UserAccount: {
+                            name: 'UserAccount',
+                            columns: {
+                                USER_ACCOUNT_LID: 'USER_ACCOUNT_LID'
+                            },
+                            properties: {
+                                userAccount: 'userAccount'
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        this.airway = {
+            DOMAIN_NAME: 'airway'
+        };
+        this.INTERNAL_APP = '@airport/terminal';
+        this.INTERNAL_DOMAIN = 'internal://domain';
+        this.Actor = this.airport.apps.HOLDING_PATTERN.entities.Actor;
+        this.AirEntity = this.airport.apps.FINAL_APPROACH.entities.AirEntity;
+        this.ApplicationRelation = this.airport.apps.AIRSPACE.entities.ApplicationRelation;
+        // CopiedRecordLedger = this.airport.apps.FLIGHT_RECORDER.entities.CopiedRecordLedger
+        // CrossRepositoryRelationLedger = this.airport.apps.FLIGHT_RECORDER.entities.CrossRepositoryRelationLedger
+        this.Repository = this.airport.apps.HOLDING_PATTERN.entities.Repository;
+        this.SystemWideOperationId = this.airport.apps.AIRPORT_CODE.entities.SystemWideOperationId;
+        this.Terminal = this.airport.apps.TRAVEL_DOCUMENT_CHECKPOINT.entities.Terminal;
+        this.UserAccount = this.airport.apps.TRAVEL_DOCUMENT_CHECKPOINT.entities.UserAccount;
+        this.column = {
+            /**
+             * Name property of the column.
+             * @type {string}
+             */
+            NAME: 'name',
+            /**
+             * Column data types.
+             */
+            type: {
+                ANY: 'any',
+                BOOLEAN: 'boolean',
+                DATE: 'Date',
+                NUMBER: 'number',
+                STRING: 'string',
+            },
+            _localId: '_localId'
+        };
+        /**
+         * Entity configuration keys.
+         */
+        this.entity = {
+            DATABASES: 'databases'
+        };
+        /**
+         * File level keys.
+         */
+        this.file = {
+            ENTITY: 'Entity',
+            TABLE: 'Table'
+        };
+        /**
+         * Foreign Key configuration keys.
+         */
+        this.foreignkey = {
+            DEFINITION: 'foreignKeyDefinition',
+            NAME: 'name',
+            VALUE: 'value'
+        };
+        /**
+         * Index configuration keys.
+         */
+        this.index = {
+            COLUMN_LIST: 'columnList',
+            NAME: 'name',
+            UNIQUE: 'unique'
+        };
+        /**
+         * JoinColumn configuration keys.
+         */
+        this.joincolumn = {
+            FOREIGN_KEY: 'foreignKey',
+            REFERENCED_COLUMN_NAME: 'referencedColumnName',
+            VALUE: 'value'
+        };
+        /**
+         * OneToMany configuration keys.
+         */
+        this.onetomany = {
+            MAPPED_BY: 'mappedBy'
+        };
+        /**
+         * Property annotation keys.
+         */
+        this.property = {
+            COLUMN: 'Column',
+            ENUM_TYPE: 'Enum',
+            ID: 'Id',
+            JOIN_COLUMN: 'JoinColumn',
+            JOIN_COLUMNS: 'JoinColumns',
+            JSON_TYPE: 'Json',
+            MANY_TO_ONE: 'ManyToOne',
+            ONE_TO_MANY: 'OneToMany',
+            // R_JOIN_COLUMN(s) are not needed since Repository relations are now
+            // standardized - simple (@ManyToOne) and (@OneToMany) suffice.
+            // R_JOIN_COLUMN   : 'RJoinColumn';
+            // R_JOIN_COLUMNS  : 'RJoinColumns';
+            SUB_QUERY: 'SubQuery',
+            // WHERE_JOIN_TABLE: 'WhereJoinTable';
+        };
+        /**
+         * Table configuration keys.
+         */
+        this.table = {
+            INDEXES: 'indexes',
+            NAME: 'name',
+            PRIMARY_KEY: 'primaryKey',
+            APPLICATION: 'application'
+        };
+        this.userAccount = {
+            USER_ACCOUNT_LID: 'USER_ACCOUNT_LID'
+        };
+        this.terminal = {
+            TERMINAL_LID: 'TERMINAL_LID'
+        };
+    }
+    isActor(dbEntity) {
+        return this.isEntityType(dbEntity, this.airport.apps.HOLDING_PATTERN, this.Actor);
+    }
+    isApplicationRelation(dbEntity) {
+        return this.isEntityType(dbEntity, this.airport.apps.AIRSPACE, this.ApplicationRelation);
+    }
+    isRepository(dbEntity) {
+        return this.isEntityType(dbEntity, this.airport.apps.HOLDING_PATTERN, this.Repository);
+    }
+    isTerminal(dbEntity) {
+        return this.isEntityType(dbEntity, this.airport.apps.TRAVEL_DOCUMENT_CHECKPOINT, this.Terminal);
+    }
+    isUserAccount(dbEntity) {
+        return this.isEntityType(dbEntity, this.airport.apps.TRAVEL_DOCUMENT_CHECKPOINT, this.UserAccount);
+    }
+    isEntityType(dbEntity, application, entity) {
+        const dbApplication = dbEntity.applicationVersion.application;
+        return dbApplication.domain.name === this.airport.DOMAIN_NAME
+            && dbApplication.name === application.name
+            && dbEntity.name === entity.name;
+    }
+}
 
 /**
  * SQL Join contentType.
@@ -1481,83 +1609,213 @@ var TerminalSyncStatus;
 })(TerminalSyncStatus || (TerminalSyncStatus = {}));
 
 class AppTrackerUtils {
-    constructor() {
-        this.INTERNAL_APP = '@airport/terminal';
-        this.INTERNAL_DOMAIN = 'internal://domain';
-        this.INTERNAL_APP_DOMAIN = 'airport';
-        this.INTERNAL_BRIDGE_DOMAIN = 'airbridge';
-        this.INTERNAL_DOMAINS = [
-            this.INTERNAL_DOMAIN,
-            this.INTERNAL_APP_DOMAIN,
-            this.INTERNAL_BRIDGE_DOMAIN
-        ];
+    get EXTERNAL_ACCESS_ENTITIES() {
+        if (this._EXTERNAL_ACCESS_ENTITIES) {
+            return this._EXTERNAL_ACCESS_ENTITIES;
+        }
+        const apps = this.dictionary.airport.apps;
+        const Actor = this.dictionary.Actor;
+        const Repository = this.dictionary.Repository;
+        const UserAccount = this.dictionary.UserAccount;
+        // Serialization check rules must be added for every new entity in this list
+        this._EXTERNAL_ACCESS_ENTITIES = [{
+                domainName: this.dictionary.airport.DOMAIN_NAME,
+                applicationPermissions: [{
+                        applicationName: apps.TRAVEL_DOCUMENT_CHECKPOINT.name,
+                        versionPermissions: [{
+                                entities: [{
+                                        name: UserAccount.name,
+                                        columnNames: [
+                                            UserAccount.columns.USER_ACCOUNT_LID
+                                        ]
+                                    }]
+                            }]
+                    },
+                    {
+                        applicationName: apps.HOLDING_PATTERN.name,
+                        versionPermissions: [{
+                                entities: [{
+                                        name: Actor.name,
+                                        columnNames: [
+                                            Actor.columns.ACTOR_LID
+                                        ]
+                                    },
+                                    {
+                                        name: Repository.name,
+                                        columnNames: [
+                                            Repository.columns.REPOSITORY_LID
+                                        ]
+                                    }]
+                            }]
+                    }]
+            }];
+        return this._EXTERNAL_ACCESS_ENTITIES;
     }
     getInternalApp() {
-        return this.INTERNAL_APP;
+        return this.dictionary.INTERNAL_APP;
     }
     getInternalDomain() {
-        return this.INTERNAL_DOMAIN;
+        return this.dictionary.INTERNAL_DOMAIN;
     }
     async isInternalDomain(domainName) {
-        return this.INTERNAL_DOMAINS.indexOf(domainName) > -1;
+        return [
+            this.dictionary.airbridge.DOMAIN_NAME,
+            this.dictionary.airport.DOMAIN_NAME,
+            this.dictionary.airway.DOMAIN_NAME,
+            this.dictionary.INTERNAL_DOMAIN
+        ].indexOf(domainName) > -1;
+    }
+    entityHasExternalAccessPermissions(checkedDomainName, checkedApplicationName, checkedApplicationIntegerVersion, checkedEntityName, checkedColumnName) {
+        for (const domainPermissions of this.EXTERNAL_ACCESS_ENTITIES) {
+            if (domainPermissions.domainName !== checkedDomainName) {
+                continue;
+            }
+            for (const applicationPermissions of domainPermissions.applicationPermissions) {
+                if (applicationPermissions.applicationName !== checkedApplicationName) {
+                    continue;
+                }
+                for (const versionPermissions of applicationPermissions.versionPermissions) {
+                    if (versionPermissions.integerVersion === checkedApplicationIntegerVersion
+                        || (versionPermissions.sinceIntegerVersion
+                            && versionPermissions.sinceIntegerVersion <= checkedApplicationIntegerVersion)
+                        || (versionPermissions.beforeIntegerVersion
+                            && versionPermissions.beforeIntegerVersion > checkedApplicationIntegerVersion)) {
+                        for (const entity of versionPermissions.entities) {
+                            if (entity.name !== checkedEntityName) {
+                                continue;
+                            }
+                            if (!checkedColumnName) {
+                                return true;
+                            }
+                            return entity.columnNames.includes(checkedColumnName);
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
 
-function ensureChildArray(parentContainer, index) {
-    let childArray;
-    if (parentContainer instanceof Map) {
-        childArray = parentContainer.get(index);
+class ApplicationReferenceUtils {
+    getCurrentJsonApplicationVersion(jsonApplication) {
+        return jsonApplication.versions[jsonApplication.versions.length - 1];
     }
-    else {
-        childArray = parentContainer[index];
+    checkFrameworkReferences(jsonApplication, getRelationInfo) {
+        if (this.appTrackerUtils.isInternalDomain(jsonApplication.domain)) {
+            return;
+        }
+        const applicationVersion = this.getCurrentJsonApplicationVersion(jsonApplication);
+        for (const jsonEntity of applicationVersion.entities) {
+            for (const jsonColumn of jsonEntity.columns) {
+                // If it's not a many relation, include it in the generated columns
+                if (!jsonColumn.manyRelationColumnRefs
+                    || !jsonColumn.manyRelationColumnRefs.length) {
+                    continue;
+                }
+                const relations = this.getRelationsFromColumn(jsonEntity, jsonColumn);
+                for (let jsonRelation of relations) {
+                    const { relatedJsonApplication, relatedJsonEntity } = getRelationInfo(jsonApplication, applicationVersion, jsonRelation);
+                    this.isRelationToAFrameworkEntity(relatedJsonApplication, relatedJsonEntity, jsonApplication, jsonEntity, jsonEntity.properties[jsonRelation.propertyRef.index], jsonColumn);
+                }
+            }
+        }
     }
-    if (!childArray) {
-        childArray = [];
+    getRelationsFromColumn(jsonEntity, jsonColumn) {
+        let relationSet = new Set();
+        for (let propertyRef of jsonColumn.propertyRefs) {
+            let property = jsonEntity.properties[propertyRef.index];
+            if (property.relationRef) {
+                let relation = jsonEntity.relations[property.relationRef.index];
+                if (!relationSet.has(relation)) {
+                    relationSet.add(relation);
+                }
+            }
+        }
+        return Array.from(relationSet.values());
+    }
+    isRelationToAFrameworkEntity(relatedJsonApplication, relatedJsonEntity, jsonApplication, jsonEntity, jsonProperty, jsonColumn) {
+        const domain = relatedJsonApplication.domain;
+        const domainName = typeof domain === 'string' ? domain : domain.name;
+        // All non @Id AIR entity references 
+        const manyRelationColumnRef = jsonColumn.manyRelationColumnRefs[0];
+        const relatedColumn = relatedJsonEntity.columns[manyRelationColumnRef.oneColumnIndex];
+        if (!this.appTrackerUtils.entityHasExternalAccessPermissions(domainName, relatedJsonApplication.name, relatedJsonApplication.versions[0].integerVersion, relatedJsonEntity.name, relatedColumn.name)) {
+            throw new Error(`Found an invalid reference to an internal schema:
+Referencing:
+  Domain:   ${typeof relatedJsonApplication.domain === 'string' ? relatedJsonApplication.domain : relatedJsonApplication.domain.name}
+  App:      ${relatedJsonApplication.name}
+  Entity:   ${relatedJsonEntity.name}
+
+From:
+  Domain:   ${jsonApplication.domain}
+  App:      ${jsonApplication.name}
+  Entity:   ${jsonEntity.name}
+  Property: ${jsonProperty.name}
+          
+          `);
+        }
+        return true;
+    }
+}
+
+class DatastructureUtils {
+    ensureChildArray(parentContainer, index) {
+        let childArray;
         if (parentContainer instanceof Map) {
-            parentContainer.set(index, childArray);
+            childArray = parentContainer.get(index);
         }
         else {
-            parentContainer[index] = childArray;
+            childArray = parentContainer[index];
         }
-    }
-    return childArray;
-}
-function ensureChildMap(parentContainer, index) {
-    let childObject;
-    if (parentContainer instanceof Map) {
-        childObject = parentContainer.get(index);
-        if (!childObject) {
-            childObject = {};
-            parentContainer.set(index, childObject);
+        if (!childArray) {
+            childArray = [];
+            if (parentContainer instanceof Map) {
+                parentContainer.set(index, childArray);
+            }
+            else {
+                parentContainer[index] = childArray;
+            }
         }
+        return childArray;
     }
-    else {
-        childObject = parentContainer[index];
-        if (!childObject) {
-            childObject = {};
-            parentContainer[index] = childObject;
+    ensureChildMap(parentContainer, index) {
+        let childObject;
+        if (parentContainer instanceof Map) {
+            childObject = parentContainer.get(index);
+            if (!childObject) {
+                childObject = {};
+                parentContainer.set(index, childObject);
+            }
         }
+        else {
+            childObject = parentContainer[index];
+            if (!childObject) {
+                childObject = {};
+                parentContainer[index] = childObject;
+            }
+        }
+        return childObject;
     }
-    return childObject;
-}
-function ensureChildJsMap(parentContainer, index) {
-    let childMap = parentContainer.get(index);
-    if (!childMap) {
-        childMap = new Map();
-        parentContainer.set(index, childMap);
+    ensureChildJsMap(parentContainer, index) {
+        let childMap = parentContainer.get(index);
+        if (!childMap) {
+            childMap = new Map();
+            parentContainer.set(index, childMap);
+        }
+        return childMap;
     }
-    return childMap;
-}
-function ensureChildJsSet(parentContainer, index) {
-    let childSet = parentContainer.get(index);
-    if (!childSet) {
-        childSet = new Set();
-        parentContainer.set(index, childSet);
+    ensureChildJsSet(parentContainer, index) {
+        let childSet = parentContainer.get(index);
+        if (!childSet) {
+            childSet = new Set();
+            parentContainer.set(index, childSet);
+        }
+        return childSet;
     }
-    return childSet;
-}
-function undefinedToNull(value) {
-    return value === undefined ? null : value;
+    undefinedToNull(value) {
+        return value === undefined ? null : value;
+    }
 }
 
 class KeyUtils {
@@ -1639,17 +1897,18 @@ class KeyUtils {
     }
 }
 
-function setSeqGen(sequenceGenerator) {
-    SEQ_GEN = sequenceGenerator;
-}
-var SEQ_GEN;
-
 const groundControl = lib('ground-control');
-groundControl.register(AppTrackerUtils, DbApplicationUtils, KeyUtils);
+groundControl.register(ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, Dictionary, KeyUtils);
 const ENTITY_STATE_MANAGER = groundControl.token('EntityStateManager');
 const SEQUENCE_GENERATOR = groundControl.token('SequenceGenerator');
 const TRANSACTIONAL_CONNECTOR = groundControl.token('TransactionalConnector');
 const UPDATE_CACHE_MANAGER = groundControl.token('UpdateCacheManager');
+groundControl.setDependencies(ApplicationReferenceUtils, {
+    appTrackerUtils: AppTrackerUtils
+});
+groundControl.setDependencies(AppTrackerUtils, {
+    dictionary: Dictionary
+});
 TRANSACTIONAL_CONNECTOR.setDependencies({
     dbApplicationUtils: DbApplicationUtils,
 });
@@ -1945,6 +2204,9 @@ function getImplNameFromInterfaceName(interfaceName) {
 }
 
 class DbApplicationBuilder {
+    constructor() {
+        this.datastructureUtils = new DatastructureUtils();
+    }
     buildDbApplicationWithoutReferences(jsonApplication, allApplications, dictionary) {
         const entities = [];
         const entityMapByName = {};
@@ -2291,7 +2553,7 @@ class DbApplicationBuilder {
             const oneTableIndex = relationColumnRef.oneTableIndex;
             const oneRelationIndex = relationColumnRef.oneRelationIndex;
             const oneColumnIndex = relationColumnRef.oneColumnIndex;
-            const manyRelationColumnMap = ensureChildMap(ensureChildMap(ensureChildMap(ensureChildMap(dictionary.dbColumnRelationMapByManySide, manyApplication.domain), manyApplication.name), manyTableIndex), manyRelationIndex);
+            const manyRelationColumnMap = this.datastructureUtils.ensureChildMap(this.datastructureUtils.ensureChildMap(this.datastructureUtils.ensureChildMap(this.datastructureUtils.ensureChildMap(dictionary.dbColumnRelationMapByManySide, manyApplication.domain), manyApplication.name), manyTableIndex), manyRelationIndex);
             manyRelationColumnMap[manyColumnIndex] = {
                 domain: oneApplication.domain,
                 applicationName: oneApplication.name,
@@ -4377,10 +4639,10 @@ class QField {
         }
         return jsonField;
     }
-    asc() {
+    ASC() {
         return new FieldInOrderBy(this, SortOrder.ASCENDING);
     }
-    desc() {
+    DESC() {
         return new FieldInOrderBy(this, SortOrder.DESCENDING);
     }
     addSubQuery(subQuery) {
@@ -8247,15 +8509,19 @@ tarmaqDao.setDependencies(Dao, {
     lookup: Lookup,
     updateCacheManager: UPDATE_CACHE_MANAGER
 });
+
 function diSet(dbApplication, dbEntityId // ApplicationEntity_LocalId
 ) {
-    if ((!SEQ_GEN)
+    if ((!globalThis.inAppMode && !globalThis.SEQ_GEN)
         || !dbApplication) {
         return false;
     }
     const dbEntity = dbApplication.currentVersion[0]
         .applicationVersion.entities[dbEntityId];
-    return SEQ_GEN.exists(dbEntity);
+    if (globalThis.inAppMode) {
+        return !!dbEntity;
+    }
+    return globalThis.SEQ_GEN.exists(dbEntity);
 }
 function duoDiSet(dbApplication, dbEntityId) {
     return dbApplication && dbApplication.currentVersion[0]
@@ -8265,24 +8531,19 @@ loadGlobalAirApi();
 globalThis.airApi.dS = diSet;
 globalThis.airApi.ddS = duoDiSet;
 
-const ACTOR_PROPERTY_NAME = 'actor';
-const ACTOR_RECORD_ID_PROPERTY_NAME = '_actorRecordId';
-const REPOSITORY_PROPERTY_NAME = 'repository';
-const USER_ACCOUNT_PROPERTY_NAME = 'userAccount';
-
 class ApplicationUtils {
     getDbEntity(applicationIndex, tableIndex) {
         return this.airportDatabase.applications[applicationIndex].currentVersion[0]
             .applicationVersion.entities[tableIndex];
     }
     isActorId(columnName) {
-        return columnName === airEntity.ACTOR_LID;
+        return columnName === this.dictionary.AirEntity.columns.ACTOR_LID;
     }
     isActorRecordId(columnName) {
-        return columnName === airEntity.ACTOR_RECORD_ID;
+        return columnName === this.dictionary.AirEntity.columns.ACTOR_RECORD_ID;
     }
     isRepositoryId(columnName) {
-        return columnName === airEntity.REPOSITORY_LID;
+        return columnName === this.dictionary.AirEntity.columns.REPOSITORY_LID;
     }
     doCascade(dbRelation, crudOperation) {
         if (dbRelation.relationType !== EntityRelationType.ONE_TO_MANY) {
@@ -8331,6 +8592,9 @@ class ApplicationUtils {
     }
     isOneRelationColumn(dbColumn) {
         return !!(dbColumn.oneRelationColumns && dbColumn.oneRelationColumns.length);
+    }
+    getOneSideEntityOfManyRelationColumn(dbColumn) {
+        return dbColumn.manyRelationColumns[0].oneColumn.entity;
     }
     getIdKey(entityObject, dbEntity, failOnNoId = true, 
     // noIdValueCallback: {
@@ -8474,17 +8738,18 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
                 // entitySelectClause[dbColumn.index] = null;
             }
             const inQueryColumnIndex = selectClause.length - 1;
+            const AirEntity = this.dictionary.AirEntity;
             switch (dbColumn.name) {
-                case airEntity.ACTOR_LID:
+                case AirEntity.columns.ACTOR_LID:
                     actorIdColumnIndex = inQueryColumnIndex;
                     break;
-                case airEntity.ACTOR_RECORD_ID:
+                case AirEntity.columns.ACTOR_RECORD_ID:
                     actorRecordIdColumnIndex = inQueryColumnIndex;
                     break;
-                case airEntity.REPOSITORY_LID:
+                case AirEntity.columns.REPOSITORY_LID:
                     repositoryIdColumnIndex = inQueryColumnIndex;
                     break;
-                case airEntity.SYSTEM_WIDE_OPERATION_ID:
+                case AirEntity.columns.SYSTEM_WIDE_OPERATION_LID:
                     if (nonIdColumnSet) {
                         throw new Error(errorPrefix +
                             `Cannot update 'systemWideOperationId' of Repository Entities.`);
@@ -8748,11 +9013,12 @@ It must be an Object with the id property.`);
         let repositoryJoinFound = false;
         let actorJoinFound = false;
         for (const childQEntity of qEntity.__driver__.childQEntities) {
-            if (childQEntity.__driver__.dbRelation.property.name === ACTOR_PROPERTY_NAME) {
+            const relationEntity = childQEntity.__driver__.dbRelation.relationEntity;
+            if (this.dictionary.isActor(relationEntity)) {
                 actorJoinFound = true;
                 qActor = childQEntity;
             }
-            if (childQEntity.__driver__.dbRelation.property.name === REPOSITORY_PROPERTY_NAME) {
+            else if (this.dictionary.isRepository(relationEntity)) {
                 repositoryJoinFound = true;
                 qRepository = childQEntity;
             }
@@ -8956,7 +9222,7 @@ class QMetadataUtils {
             }
             if (qEntity.__driver__.dbEntity.isAirEntity) {
                 switch (qField.dbColumn.name) {
-                    case airEntity.SYSTEM_WIDE_OPERATION_ID:
+                    case this.dictionary.AirEntity.columns.SYSTEM_WIDE_OPERATION_LID:
                         return false;
                 }
             }
@@ -9230,21 +9496,17 @@ class RelationManager {
     }
 }
 
-async function getSysWideOpId(airDb, sequenceGenerator) {
-    const sequences = await getSysWideOpIds(1, airDb, sequenceGenerator);
-    return sequences[0];
-}
-async function getSysWideOpIds(numSequencesNeeded, airportDatabase, sequenceGenerator) {
-    if (!numSequencesNeeded) {
-        return [];
+class SystemWideOperationIdUtils {
+    async getSysWideOpId() {
+        const sequences = await this.getSysWideOpIds(1);
+        return sequences[0];
     }
-    const sysWideOpIdGeneratedColumn = airportDatabase.QM[airEntity.SYS_WIDE_OP_ID_APPLICATION]
-        .__dbApplication__.currentVersion[0].applicationVersion
-        .entityMapByName[airEntity.SYS_WIDE_OP_ID_ENTITY]
-        .columnMap['SYSTEM_WIDE_OPERATION_LID'];
-    const generatedNumWrapper = await sequenceGenerator
-        .generateSequenceNumbers([sysWideOpIdGeneratedColumn], [numSequencesNeeded]);
-    return generatedNumWrapper[0];
+    async getSysWideOpIds(numSequencesNeeded) {
+        const airport = this.dictionary.airport;
+        const SystemWideOperationId = this.dictionary.SystemWideOperationId;
+        return await this.sequenceGenerator
+            .generateSequenceNumbersForColumn(airport.DOMAIN_NAME, airport.apps.AIRPORT_CODE.name, SystemWideOperationId.name, SystemWideOperationId.columns.SYSTEM_WIDE_OPERATION_LID, numSequencesNeeded);
+    }
 }
 
 class Utils {
@@ -9325,17 +9587,19 @@ const airTrafficControl = lib('air-traffic-control');
 // at code initialization time
 airTrafficControl.register(Utils);
 ENTITY_UTILS.setDependencies({
+    dictionary: Dictionary,
     utils: Utils
 });
 QUERY_UTILS.setClass(QueryUtils);
 
-airTrafficControl.register(ApplicationUtils, DatabaseStore, FieldUtils, QApplicationBuilderUtils, QMetadataUtils, RelationManager);
+airTrafficControl.register(ApplicationUtils, DatabaseStore, FieldUtils, QApplicationBuilderUtils, QMetadataUtils, RelationManager, SystemWideOperationIdUtils);
 const AIRPORT_DATABASE = airTrafficControl.token('AirportDatabase');
 const REPOSITORY_LOADER = airTrafficControl.token('RepositoryLoader');
 AIRPORT_DATABASE.setDependencies({
     appliationUtils: ApplicationUtils,
     databaseFacade: DATABASE_FACADE,
     databaseStore: DatabaseStore,
+    dictionary: Dictionary,
     dbApplicationUtils: DbApplicationUtils,
     find: NonEntityFind,
     findOne: NonEntityFindOne,
@@ -9346,6 +9610,7 @@ AIRPORT_DATABASE.setDependencies({
 });
 airTrafficControl.setDependencies(ApplicationUtils, {
     airportDatabase: AIRPORT_DATABASE,
+    dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
     qEntityUtils: QEntityUtils,
     utils: Utils
@@ -9366,6 +9631,9 @@ airTrafficControl.setDependencies(Lookup, {
 airTrafficControl.setDependencies(QApplicationBuilderUtils, {
     qEntityUtils: QEntityUtils
 });
+airTrafficControl.setDependencies(QMetadataUtils, {
+    dictionary: Dictionary
+});
 QUERY_FACADE.setDependencies({
     fieldUtils: FieldUtils,
     queryUtils: QUERY_UTILS,
@@ -9380,6 +9648,10 @@ QUERY_UTILS.setDependencies({
 });
 airTrafficControl.setDependencies(RelationManager, {
     applicationUtils: ApplicationUtils
+});
+airTrafficControl.setDependencies(SystemWideOperationIdUtils, {
+    dictionary: Dictionary,
+    sequenceGenerator: SEQUENCE_GENERATOR,
 });
 UPDATE_CACHE_MANAGER.setDependencies({
     applicationUtils: ApplicationUtils,
@@ -9935,13 +10207,13 @@ class ApplicationColumnDao extends BaseApplicationColumnDao {
         for (const applicationColumn of applicationColumns) {
             VALUES.push([
                 applicationColumn._localId, applicationColumn.index,
-                undefinedToNull(applicationColumn.idIndex),
+                this.datastructureUtils.undefinedToNull(applicationColumn.idIndex),
                 applicationColumn.isGenerated,
-                undefinedToNull(applicationColumn.allocationSize),
+                this.datastructureUtils.undefinedToNull(applicationColumn.allocationSize),
                 applicationColumn.name,
                 applicationColumn.notNull,
-                undefinedToNull(applicationColumn.precision),
-                undefinedToNull(applicationColumn.scale),
+                this.datastructureUtils.undefinedToNull(applicationColumn.precision),
+                this.datastructureUtils.undefinedToNull(applicationColumn.scale),
                 applicationColumn.type,
                 applicationColumn.entity._localId,
                 applicationColumn.deprecatedSinceVersion ? applicationColumn.deprecatedSinceVersion._localId : null,
@@ -10123,7 +10395,7 @@ class ApplicationDao extends BaseApplicationDao {
             ]
         });
         for (const applicationLookupRecord of applicationLookupRecords) {
-            ensureChildJsMap(maxVersionedMapByApplicationAndDomain_Names, applicationLookupRecord.domain.name)
+            this.datastructureUtils.ensureChildJsMap(maxVersionedMapByApplicationAndDomain_Names, applicationLookupRecord.domain.name)
                 .set(applicationLookupRecord.name, applicationLookupRecord);
         }
         return maxVersionedMapByApplicationAndDomain_Names;
@@ -10484,9 +10756,9 @@ class ApplicationRelationDao extends BaseApplicationRelationDao {
             VALUES.push([
                 applicationRelation._localId, applicationRelation.index,
                 applicationRelation.property._localId,
-                undefinedToNull(applicationRelation.foreignKey),
-                undefinedToNull(applicationRelation.manyToOneElems),
-                undefinedToNull(applicationRelation.oneToManyElems),
+                this.datastructureUtils.undefinedToNull(applicationRelation.foreignKey),
+                this.datastructureUtils.undefinedToNull(applicationRelation.manyToOneElems),
+                this.datastructureUtils.undefinedToNull(applicationRelation.oneToManyElems),
                 applicationRelation.relationType, applicationRelation.isId,
                 applicationRelation.entity._localId, applicationRelation.relationEntity._localId,
                 applicationRelation.deprecatedSinceVersion ? applicationRelation.deprecatedSinceVersion._localId : null,
@@ -10536,23 +10808,22 @@ class ApplicationVersionDao extends BaseApplicationVersionDao {
     }
     */
     async findAllActiveOrderByApplication_IndexAndId() {
-        let sv;
-        // let s: QApp
+        let av, a;
         return await this.db.find.tree({
             FROM: [
-                sv = Q_airport____at_airport_slash_airspace.ApplicationVersion,
-                // s = sv.application.INNER_JOIN()
+                av = Q_airport____at_airport_slash_airspace.ApplicationVersion,
+                a = av.application.INNER_JOIN()
             ],
             SELECT: {},
             ORDER_BY: [
-                sv.application.index.asc(),
-                sv._localId.desc()
+                a.index.ASC(),
+                av._localId.DESC()
             ]
         });
     }
     async findByDomain_NamesAndApplication_Names(domainNames, applicationNames) {
-        let sv;
-        let s;
+        let av;
+        let a;
         let d;
         return await this.db.find.tree({
             SELECT: {
@@ -10567,11 +10838,15 @@ class ApplicationVersionDao extends BaseApplicationVersionDao {
                 }
             },
             FROM: [
-                sv = Q_airport____at_airport_slash_airspace.ApplicationVersion,
-                s = sv.application.INNER_JOIN(),
-                d = s.domain.INNER_JOIN()
+                av = Q_airport____at_airport_slash_airspace.ApplicationVersion,
+                a = av.application.INNER_JOIN(),
+                d = a.domain.INNER_JOIN()
             ],
-            WHERE: AND(d.name.IN(domainNames), s.name.IN(applicationNames))
+            WHERE: AND(d.name.IN(domainNames), a.name.IN(applicationNames)),
+            ORDER_BY: [
+                d.name.DESC(),
+                a.name.DESC()
+            ]
         });
     }
     /*
@@ -10684,8 +10959,12 @@ const application$5 = {
 
 const airspace = app(application$5);
 airspace.register(DomainDao, ApplicationColumnDao, ApplicationDao, ApplicationEntityDao, ApplicationPropertyColumnDao, ApplicationPropertyDao, ApplicationReferenceDao, ApplicationRelationColumnDao, ApplicationRelationDao, ApplicationVersionDao);
+airspace.setDependencies(ApplicationColumnDao, {
+    datastructureUtils: DatastructureUtils
+});
 airspace.setDependencies(ApplicationDao, {
-    airportDatabase: AIRPORT_DATABASE
+    airportDatabase: AIRPORT_DATABASE,
+    datastructureUtils: DatastructureUtils
 });
 
 var IsolateMessageType;
@@ -10845,7 +11124,7 @@ class TerminalStore {
         this.getApplicationActorMapByDomainAndApplication_Names = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
             const applicationActorsByDomainAndApplication_Names = new Map();
             for (const applicationActor of applicationActors) {
-                const applicationActorMapForDomain = ensureChildJsMap(applicationActorsByDomainAndApplication_Names, applicationActor.application.domain.name);
+                const applicationActorMapForDomain = this.datastructureUtils.ensureChildJsMap(applicationActorsByDomainAndApplication_Names, applicationActor.application.domain.name);
                 let actorsForApplication = applicationActorMapForDomain
                     .get(applicationActor.application.name);
                 if (!actorsForApplication) {
@@ -10871,7 +11150,7 @@ class TerminalStore {
         this.getLatestApplicationVersionMapByNames = this.selectorManager.createSelector(this.getDomains, domains => {
             const latestApplicationVersionMapByNames = new Map();
             for (const domain of domains) {
-                const mapForDomain = ensureChildJsMap(latestApplicationVersionMapByNames, domain.name);
+                const mapForDomain = this.datastructureUtils.ensureChildJsMap(latestApplicationVersionMapByNames, domain.name);
                 for (const application of domain.applications) {
                     mapForDomain.set(application.name, application.currentVersion[0].applicationVersion);
                 }
@@ -11086,6 +11365,7 @@ terminalMap.setDependencies(TerminalState, {
     appTrackerUtils: AppTrackerUtils
 });
 terminalMap.setDependencies(TerminalStore, {
+    datastructureUtils: DatastructureUtils,
     selectorManager: SelectorManager,
     terminalState: TerminalState
 });
@@ -11494,20 +11774,20 @@ takeoff.setDependencies(QueryObjectInitializer, {
 class SqlSchemaBuilder {
     async build(jsonApplication, existingApplicationMap, newJsonApplicationMap, isFeatureApp, context) {
         await this.createApplication(jsonApplication, context);
-        const jsonApplicationVersion = this.applicationLocator
+        const jsonApplicationVersion = this.applicationReferenceUtils
             .getCurrentJsonApplicationVersion(jsonApplication);
         for (const jsonEntity of jsonApplicationVersion.entities) {
-            await this.buildTable(jsonApplication, jsonEntity, existingApplicationMap, context);
+            await this.buildTable(jsonApplication, jsonApplicationVersion, jsonEntity, existingApplicationMap, context);
         }
         const relatedJsonApplicationMap = new Map();
         for (const jsonEntity of jsonApplicationVersion.entities) {
-            await this.buildForeignKeys(jsonApplication, jsonEntity, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap, context);
+            await this.buildForeignKeys(jsonApplication, jsonApplicationVersion, jsonEntity, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap, context);
         }
-        this.applicationReferenceChecker.checkFrameworkReferences(jsonApplication, (jsonApplication, jsonApplicationVersion, jsonRelation) => {
+        this.applicationReferenceUtils.checkFrameworkReferences(jsonApplication, (jsonApplication, jsonApplicationVersion, jsonRelation) => {
             return this.getRelationInfo(jsonApplication, jsonApplicationVersion, jsonRelation, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap);
         });
     }
-    async buildTable(jsonApplication, jsonEntity, existingApplicationMap, context) {
+    async buildTable(jsonApplication, jsonApplicationVersion, jsonEntity, existingApplicationMap, context) {
         const primaryKeyColumnNames = [];
         const tableColumnsDdl = jsonEntity.columns.map((jsonColumn) => {
             let columnDdl = `${jsonColumn.name} ${this.getColumnSuffix(jsonApplication, jsonEntity, jsonColumn)}`;
@@ -11517,7 +11797,7 @@ class SqlSchemaBuilder {
             return columnDdl;
         });
         const createTableSuffix = this.getCreateTableSuffix(jsonApplication, jsonEntity);
-        const tableName = this.storeDriver.getTableName(jsonApplication, jsonEntity, context);
+        const tableName = this.storeDriver.getTableName(jsonApplication, jsonApplicationVersion.integerVersion, jsonEntity, context);
         let primaryKeySubStatement = ``;
         if (primaryKeyColumnNames.length) {
             primaryKeySubStatement = this.getPrimaryKeyStatement(primaryKeyColumnNames);
@@ -11592,12 +11872,12 @@ class SqlSchemaBuilder {
     getApplicationVersion(jsonApplication) {
         return jsonApplication.versions[jsonApplication.versions.length - 1];
     }
-    async buildForeignKeys(jsonApplication, jsonEntity, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap, context) {
+    async buildForeignKeys(jsonApplication, jsonApplicationVersion, jsonEntity, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap, context) {
         if (!jsonEntity.relations || !jsonEntity.relations.length) {
             return;
         }
         const applicationVersion = this.getApplicationVersion(jsonApplication);
-        const tableName = this.storeDriver.getTableName(jsonApplication, jsonEntity, context);
+        const tableName = this.storeDriver.getTableName(jsonApplication, jsonApplicationVersion.integerVersion, jsonEntity, context);
         for (const jsonRelation of jsonEntity.relations) {
             if (jsonRelation.relationType !== EntityRelationType.MANY_TO_ONE) {
                 continue;
@@ -11613,7 +11893,7 @@ class SqlSchemaBuilder {
                 }
             }
             const referencedTableName = this.storeDriver
-                .getTableName(relatedJsonApplication, relatedJsonEntity, context);
+                .getTableName(relatedJsonApplication, applicationVersion.integerVersion, relatedJsonEntity, context);
             let referencedColumnNames = [];
             for (const relatedIdColumnRef of relatedJsonEntity.idColumnRefs) {
                 referencedColumnNames.push(relatedJsonEntity.columns[relatedIdColumnRef.index].name);
@@ -11670,10 +11950,10 @@ class ApplicationChecker {
         const referencedApplicationMapByApplication = new Map();
         for (const jsonApplication of jsonApplications) {
             const lastJsonApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
-            const referencedApplicationMapForApplication = ensureChildJsMap(ensureChildJsMap(referencedApplicationMapByApplication, jsonApplication.domain), jsonApplication.name);
+            const referencedApplicationMapForApplication = this.datastructureUtils.ensureChildJsMap(this.datastructureUtils.ensureChildJsMap(referencedApplicationMapByApplication, jsonApplication.domain), jsonApplication.name);
             for (const jsonReferencedApplication of lastJsonApplicationVersion.referencedApplications) {
-                ensureChildJsMap(allReferencedApplicationMap, jsonReferencedApplication.domain).set(jsonReferencedApplication.name, jsonReferencedApplication);
-                ensureChildJsMap(referencedApplicationMapForApplication, jsonReferencedApplication.domain).set(jsonReferencedApplication.name, jsonReferencedApplication);
+                this.datastructureUtils.ensureChildJsMap(allReferencedApplicationMap, jsonReferencedApplication.domain).set(jsonReferencedApplication.name, jsonReferencedApplication);
+                this.datastructureUtils.ensureChildJsMap(referencedApplicationMapForApplication, jsonReferencedApplication.domain).set(jsonReferencedApplication.name, jsonReferencedApplication);
             }
         }
         this.pruneInGroupReferences(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication);
@@ -11773,126 +12053,6 @@ class ApplicationChecker {
     }
 }
 
-class ApplicationReferenceChecker {
-    constructor() {
-        this.applicationEntityDescriptors = [{
-                application: '@airport/holding-pattern',
-                entities: [{
-                        entity: 'Actor',
-                        relations: [{
-                                column: 'ACTOR_LID',
-                                property: 'actor'
-                            }, {
-                                column: 'ACTOR_LID',
-                                property: 'sourceActor'
-                            }, {
-                                column: 'GUID'
-                            }]
-                    }, {
-                        entity: 'Repository',
-                        relations: [{
-                                column: 'REPOSITORY_LID',
-                                property: 'repository'
-                            }, {
-                                column: 'REPOSITORY_LID',
-                                property: 'sourceRepository'
-                            }, {
-                                column: 'GUID'
-                            }]
-                    }]
-            }, {
-                application: '@airport/travel-document-checkpoint',
-                entities: [{
-                        entity: 'UserAccount',
-                        relations: [{
-                                column: 'GUID'
-                            }]
-                    }]
-            }
-        ];
-    }
-    checkFrameworkReferences(jsonApplication, getRelationInfo) {
-        if (jsonApplication.domain === 'airport') {
-            return;
-        }
-        const applicationVersion = this.applicationLocator.getCurrentJsonApplicationVersion(jsonApplication);
-        for (const jsonEntity of applicationVersion.entities) {
-            for (const jsonColumn of jsonEntity.columns) {
-                // If it's not a many relation, include it in the generated columns
-                if (!jsonColumn.manyRelationColumnRefs
-                    || !jsonColumn.manyRelationColumnRefs.length) {
-                    continue;
-                }
-                const relations = this.getRelationsFromColumn(jsonEntity, jsonColumn);
-                for (let jsonRelation of relations) {
-                    const { relatedJsonApplication, relatedJsonEntity } = getRelationInfo(jsonApplication, applicationVersion, jsonRelation);
-                    this.isRelationToAFrameworkEntity(relatedJsonApplication, relatedJsonEntity, jsonApplication, jsonEntity, jsonEntity.properties[jsonRelation.propertyRef.index], jsonColumn);
-                }
-            }
-        }
-    }
-    getRelationsFromColumn(jsonEntity, jsonColumn) {
-        let relationSet = new Set();
-        for (let propertyRef of jsonColumn.propertyRefs) {
-            let property = jsonEntity.properties[propertyRef.index];
-            if (property.relationRef) {
-                let relation = jsonEntity.relations[property.relationRef.index];
-                if (!relationSet.has(relation)) {
-                    relationSet.add(relation);
-                }
-            }
-        }
-        return Array.from(relationSet.values());
-    }
-    isRelationToAFrameworkEntity(relatedJsonApplication, relatedJsonEntity, jsonApplication, jsonEntity, jsonProperty, jsonColumn) {
-        const domain = relatedJsonApplication.domain;
-        if ((typeof domain === 'string' && domain !== 'airport')
-            || (typeof domain === 'object' && domain.name !== 'airport')) {
-            return false;
-        }
-        let foundValidFrameworkRelation = false;
-        VALID_FRAMEWORK_RELATION_SEARCH: for (const applicationEntityDescriptor of this.applicationEntityDescriptors) {
-            if (relatedJsonApplication.name !== applicationEntityDescriptor.application) {
-                continue;
-            }
-            for (const entityDescriptor of applicationEntityDescriptor.entities) {
-                if (relatedJsonEntity.name !== entityDescriptor.entity) {
-                    continue;
-                }
-                for (const relationDescriptor of entityDescriptor.relations) {
-                    if (relationDescriptor.property && jsonProperty.name !== relationDescriptor.property) {
-                        continue;
-                    }
-                    // All non @Id AIR entity references 
-                    const manyRelationColumnRef = jsonColumn.manyRelationColumnRefs[0];
-                    const relatedColumn = relatedJsonEntity.columns[manyRelationColumnRef.oneColumnIndex];
-                    if (relatedColumn.name !== relationDescriptor.column) {
-                        continue;
-                    }
-                    foundValidFrameworkRelation = true;
-                    break VALID_FRAMEWORK_RELATION_SEARCH;
-                }
-            }
-        }
-        if (!foundValidFrameworkRelation) {
-            throw new Error(`Found an invalid reference to an internal schema:
-Referencing:
-  Domain:   ${typeof relatedJsonApplication.domain === 'string' ? relatedJsonApplication.domain : relatedJsonApplication.domain}
-  App:      ${relatedJsonApplication.name}
-  Entity:   ${relatedJsonEntity.name}
-
-From:
-  Domain:   ${jsonApplication.domain}
-  App:      ${jsonApplication.name}
-  Entity:   ${jsonEntity.name}
-  Property: ${jsonProperty.name}
-          
-          `);
-        }
-        return true;
-    }
-}
-
 class ApplicationLocator {
     // private terminalStore: ITerminalStore
     locateExistingApplicationVersionRecord(jsonApplication, terminalStore) {
@@ -11914,9 +12074,6 @@ class ApplicationLocator {
     async locateLatestApplicationVersionByApplication_Name(fullApplication_Name, terminalStore) {
         return terminalStore.getLatestApplicationVersionMapByApplication_FullName()
             .get(fullApplication_Name);
-    }
-    getCurrentJsonApplicationVersion(jsonApplication) {
-        return jsonApplication.versions[jsonApplication.versions.length - 1];
     }
 }
 
@@ -12198,8 +12355,8 @@ class ApplicationComposer {
             const application = ownApplicationVersion.application;
             const jsonApplication = jsonApplicationMapByName.get(application.fullName);
             const lastJsonApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
-            const applicationReferences = ensureChildArray(newApplicationReferenceMap, applicationName);
-            const applicationReferenceLookup = ensureChildJsSet(newApplicationReferenceLookup, applicationName);
+            const applicationReferences = this.datastructureUtils.ensureChildArray(newApplicationReferenceMap, applicationName);
+            const applicationReferenceLookup = this.datastructureUtils.ensureChildJsSet(newApplicationReferenceLookup, applicationName);
             for (const jsonReferencedApplication of lastJsonApplicationVersion.referencedApplications) {
                 const referencedApplication_FullName = this.dbApplicationUtils.
                     getApplication_FullName(jsonReferencedApplication);
@@ -12273,7 +12430,7 @@ class ApplicationComposer {
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
         const jsonEntities = currentApplicationVersion.entities;
         const entities = newEntitiesMapByApplication_Name.get(applicationName);
-        const propertiesByEntityIndex = ensureChildArray(newPropertiesMap, applicationName);
+        const propertiesByEntityIndex = this.datastructureUtils.ensureChildArray(newPropertiesMap, applicationName);
         jsonEntities.forEach((jsonEntity, tableIndex) => {
             const entity = entities[tableIndex];
             const propertiesForEntity = [];
@@ -12301,7 +12458,7 @@ class ApplicationComposer {
         const jsonEntities = currentApplicationVersion.entities;
         const entitiesForApplication = newEntitiesMapByApplication_Name.get(applicationName);
         const propertiesByEntityIndex = newPropertiesMap.get(applicationName);
-        const relationsByEntityIndex = ensureChildArray(newRelationsMap, applicationName);
+        const relationsByEntityIndex = this.datastructureUtils.ensureChildArray(newRelationsMap, applicationName);
         const referencesForApplication = newApplicationReferenceMap.get(applicationName);
         for (let tableIndex = 0; tableIndex < jsonEntities.length; tableIndex++) {
             const jsonEntity = jsonEntities[tableIndex];
@@ -12709,7 +12866,7 @@ class ApplicationInitializer {
 }
 
 const landing = lib('landing');
-const tokens = landing.register('ApplicationBuilder', ApplicationInitializer, ApplicationChecker, ApplicationComposer, ApplicationLocator, ApplicationRecorder, ApplicationReferenceChecker, SqlSchemaBuilder);
+const tokens = landing.register('ApplicationBuilder', ApplicationInitializer, ApplicationChecker, ApplicationComposer, ApplicationLocator, ApplicationRecorder, SqlSchemaBuilder);
 const APPLICATION_BUILDER = tokens.ApplicationBuilder;
 // Needed as a token in @airport/web-tower (platforms/web-tower)
 tokens.ApplicationLocator;
@@ -12733,10 +12890,12 @@ APPLICATION_BUILDER.setDependencies({
 });
 landing.setDependencies(ApplicationChecker, {
     applicationDao: ApplicationDao,
+    datastructureUtils: DatastructureUtils,
     dbApplicationUtils: DbApplicationUtils
 });
 landing.setDependencies(ApplicationComposer, {
     applicationLocator: ApplicationLocator,
+    datastructureUtils: DatastructureUtils,
     dbApplicationUtils: DbApplicationUtils,
     domainRetriever: DOMAIN_RETRIEVER,
     terminalStore: TerminalStore
@@ -12758,13 +12917,9 @@ landing.setDependencies(ApplicationRecorder, {
     domainDao: DomainDao,
     transactionManager: TRANSACTION_MANAGER
 });
-landing.setDependencies(ApplicationReferenceChecker, {
-    applicationLocator: ApplicationLocator
-});
 landing.setDependencies(SqlSchemaBuilder, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationLocator: ApplicationLocator,
-    applicationReferenceChecker: ApplicationReferenceChecker,
+    applicationReferenceUtils: ApplicationReferenceUtils,
     dbApplicationUtils: DbApplicationUtils,
     sequenceDao: SequenceDao,
     storeDriver: STORE_DRIVER
@@ -12953,6 +13108,11 @@ class RepositoryDatabase {
 }
 
 class RepositoryMember {
+    constructor() {
+        this.isOwner = false;
+        this.isAdministrator = false;
+        this.canWrite = true;
+    }
 }
 
 class RepositoryTerminal {
@@ -13319,11 +13479,11 @@ class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDa
             ],
             WHERE: AND(th.transactionType.equals(TransactionType.LOCAL), OR(...repositoryEquals)),
             // ORDER_BY: [
-            // 	rth.repository._localId.asc()
+            // 	rth.repository._localId.ASC()
             // ]
         });
         for (const repoTransHistory of repoTransHistories) {
-            ensureChildArray(repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository._localId)
+            this.datastructureUtils.ensureChildArray(repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository._localId)
                 .push(repoTransHistory);
             repoTransHistory.operationHistory.sort((rth1, rth2) => {
                 if (rth1.orderNumber < rth2.orderNumber) {
@@ -13352,17 +13512,6 @@ class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDa
 class ActorDao extends BaseActorDao {
     async findWithDetailsAndGlobalIdsByIds(actorIds) {
         return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a._localId.IN(actorIds));
-    }
-    async findMapsWithDetailsByGlobalIds(actorGUIDs, userAccountGUIDs, terminalGUIDs, actorMap, actorMapById) {
-        const actors = await this.findWithDetailsByGlobalIds(actorGUIDs, userAccountGUIDs, terminalGUIDs);
-        for (const actor of actors) {
-            ensureChildJsMap(actorMap, actor.userAccount.GUID)
-                .set(actor.terminal.GUID, actor);
-            actorMapById.set(actor._localId, actor);
-        }
-    }
-    async findWithDetailsByGlobalIds(actorGUIDs, userAccountGUIDs, terminalGUIDs) {
-        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => AND(a.GUID.IN(actorGUIDs), a.terminal.GUID.IN(terminalGUIDs), a.userAccount.GUID.IN(userAccountGUIDs)));
     }
     async findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(domainName, applicationName, userAccountGUID, terminalGUID) {
         let act;
@@ -13433,7 +13582,7 @@ class ActorDao extends BaseActorDao {
         for (const actor of actors) {
             VALUES.push([
                 actor.GUID, actor.application.index,
-                actor.userAccount.GUID, actor.terminal.GUID
+                actor.userAccount._localId, actor.terminal._localId
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
@@ -13441,8 +13590,8 @@ class ActorDao extends BaseActorDao {
             columns: [
                 a.GUID,
                 a.application.index,
-                a.userAccount.GUID,
-                a.terminal.GUID
+                a.userAccount._localId,
+                a.terminal._localId
             ],
             VALUES
         }, context);
@@ -13455,6 +13604,7 @@ class ActorDao extends BaseActorDao {
         let a;
         let ap;
         let t;
+        const _localId = Y;
         const username = Y;
         const GUID = Y;
         return await this.db.find.tree({
@@ -13468,13 +13618,14 @@ class ActorDao extends BaseActorDao {
                     }
                 },
                 terminal: {
-                    GUID,
+                    _localId: GUID,
                     owner: {
                         username,
                         GUID,
                     }
                 },
                 userAccount: {
+                    _localId,
                     username,
                     GUID,
                 }
@@ -13641,7 +13792,7 @@ class RepositoryDao extends BaseRepositoryDao {
         for (const repository of repositories) {
             VALUES.push([
                 repository.createdAt, repository.GUID, repository.ageSuitability,
-                repository.source, repository.immutable, repository.owner.GUID,
+                repository.source, repository.immutable, repository.owner._localId,
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
@@ -13652,7 +13803,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 r.ageSuitability,
                 r.source,
                 r.immutable,
-                r.owner.GUID
+                r.owner._localId
             ],
             VALUES
         }, context);
@@ -13860,6 +14011,9 @@ const application$4 = {
 const holdingPattern = app(application$4);
 const REPOSITORY_MANAGER = holdingPattern.token('RepositoryManager');
 holdingPattern.register(ActorDao, OperationHistoryDuo, RecordHistoryDuo, RecordHistoryNewValueDao, RecordHistoryNewValueDuo, RecordHistoryOldValueDao, RecordHistoryOldValueDuo, RepositoryDao, RepositoryMemberDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo, TransactionHistoryDuo, RepositoryApi);
+holdingPattern.setDependencies(ActorDao, {
+    datastructureUtils: DatastructureUtils
+});
 holdingPattern.setDependencies(OperationHistoryDuo, {
     recordHistoryDuo: RecordHistoryDuo,
 });
@@ -13870,6 +14024,9 @@ holdingPattern.setDependencies(RepositoryApi, {
 holdingPattern.setDependencies(RecordHistoryDuo, {
     recordHistoryNewValueDuo: RecordHistoryNewValueDuo,
     recordHistoryOldValueDuo: RecordHistoryOldValueDuo,
+});
+holdingPattern.setDependencies(RepositoryTransactionHistoryDao, {
+    datastructureUtils: DatastructureUtils
 });
 holdingPattern.setDependencies(RepositoryTransactionHistoryDuo, {
     operationHistoryDuo: OperationHistoryDuo,
@@ -14221,13 +14378,14 @@ BaseUserAccountDao.SearchOne = new DaoQueryDecorators();
 
 class TerminalDao extends BaseTerminalDao {
     async findByOwnerIdsAndGUIDs(ownerGuids, GUIDs) {
-        let t;
+        let t, ua;
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                t = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.Terminal
+                t = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.Terminal,
+                ua = t.owner.LEFT_JOIN()
             ],
-            WHERE: AND(t.owner.GUID.IN(ownerGuids), t.GUID.IN(GUIDs))
+            WHERE: AND(ua.GUID.IN(ownerGuids), t.GUID.IN(GUIDs))
         });
     }
     async findByGUIDs(GUIDs) {
@@ -14241,18 +14399,25 @@ class TerminalDao extends BaseTerminalDao {
         });
     }
     async insert(terminals, context) {
-        let t;
+        const airport = this.dictionary.airport;
+        const Terminal = this.dictionary.Terminal;
+        const terminalLids = await this.sequenceGenerator
+            .generateSequenceNumbersForColumn(airport.DOMAIN_NAME, airport.apps.TRAVEL_DOCUMENT_CHECKPOINT.name, Terminal.name, Terminal.columns.TERMINAL_LID, terminals.length);
         const VALUES = [];
-        for (const terminal of terminals) {
+        for (let i = 0; i < terminals.length; i++) {
+            const terminal = terminals[i];
+            terminal._localId = terminalLids[i];
             VALUES.push([
-                terminal.GUID, terminal.owner.GUID, false,
+                terminalLids[i], terminal.GUID, terminal.owner._localId, false
             ]);
         }
+        let t;
         await this.db.insertValues({
             INSERT_INTO: t = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.Terminal,
             columns: [
+                t._localId,
                 t.GUID,
-                t.owner.GUID,
+                t.owner._localId,
                 t.isLocal
             ],
             VALUES
@@ -14282,16 +14447,23 @@ class UserAccountDao extends BaseUserAccountDao {
         });
     }
     async insert(userAccounts, context) {
-        let u;
+        const airport = this.dictionary.airport;
+        const UserAccount = this.dictionary.UserAccount;
+        const userAccountLids = await this.sequenceGenerator
+            .generateSequenceNumbersForColumn(airport.DOMAIN_NAME, airport.apps.TRAVEL_DOCUMENT_CHECKPOINT.name, UserAccount.name, UserAccount.columns.USER_ACCOUNT_LID, userAccounts.length);
         const VALUES = [];
-        for (const userAccount of userAccounts) {
+        for (let i = 0; i < userAccounts.length; i++) {
+            const userAccount = userAccounts[i];
+            userAccount._localId = userAccountLids[i];
             VALUES.push([
-                userAccount.GUID, userAccount.username
+                userAccountLids[i], userAccount.GUID, userAccount.username
             ]);
         }
+        let u;
         await this.db.insertValues({
             INSERT_INTO: u = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.UserAccount,
             columns: [
+                u._localId,
                 u.GUID,
                 u.username
             ],
@@ -14309,8 +14481,18 @@ const application$3 = {
 
 const travelDocumentCheckpoint = app(application$3);
 travelDocumentCheckpoint.register(TerminalDao, UserAccountApi, UserAccountDao, UserAccountManager);
+travelDocumentCheckpoint.setDependencies(TerminalDao, {
+    airportDatabase: AIRPORT_DATABASE,
+    dictionary: Dictionary,
+    sequenceGenerator: SEQUENCE_GENERATOR
+});
 travelDocumentCheckpoint.setDependencies(UserAccountApi, {
     userAccountDao: UserAccountDao
+});
+travelDocumentCheckpoint.setDependencies(UserAccountDao, {
+    airportDatabase: AIRPORT_DATABASE,
+    dictionary: Dictionary,
+    sequenceGenerator: SEQUENCE_GENERATOR
 });
 travelDocumentCheckpoint.setDependencies(UserAccountManager, {
     userAccountDao: UserAccountDao
@@ -14699,7 +14881,7 @@ const APPLICATION$6 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "USER_ACCOUNT_GUID",
+                            "name": "USER_ACCOUNT_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -14707,7 +14889,7 @@ const APPLICATION$6 = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         },
                         {
                             "index": 3,
@@ -14721,7 +14903,7 @@ const APPLICATION$6 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "TERMINAL_GUID",
+                            "name": "TERMINAL_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -14729,7 +14911,7 @@ const APPLICATION$6 = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         },
                         {
                             "index": 4,
@@ -15647,7 +15829,7 @@ const APPLICATION$6 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "TERMINAL_GUID",
+                            "name": "TERMINAL_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -15655,7 +15837,7 @@ const APPLICATION$6 = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         }
                     ],
                     "idColumnRefs": [
@@ -15832,9 +16014,9 @@ const APPLICATION$6 = {
                     "columns": [
                         {
                             "index": 0,
-                            "isGenerated": false,
+                            "isGenerated": true,
                             "manyRelationColumnRefs": [],
-                            "name": "GUID",
+                            "name": "REPOSITORY_MEMBER_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -15842,28 +16024,28 @@ const APPLICATION$6 = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         },
                         {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "IS_ADMINISTRATOR",
-                            "notNull": false,
+                            "name": "REPOSITORY_MEMBER_GUID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "BOOLEAN"
+                            "type": "STRING"
                         },
                         {
                             "index": 2,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "CAN_WRITE",
-                            "notNull": false,
+                            "name": "IS_OWNER",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
@@ -15876,7 +16058,21 @@ const APPLICATION$6 = {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "PUBLIC_SIGNING_KEY",
+                            "name": "IS_ADMINISTRATOR",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "CAN_WRITE",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -15884,10 +16080,24 @@ const APPLICATION$6 = {
                                 }
                             ],
                             "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "PUBLIC_SIGNING_KEY",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
                             "type": "STRING"
                         },
                         {
-                            "index": 4,
+                            "index": 6,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -15898,18 +16108,18 @@ const APPLICATION$6 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "USER_ACCOUNT_GUID",
+                            "name": "USER_ACCOUNT_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 3
+                                    "index": 6
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         },
                         {
-                            "index": 5,
+                            "index": 7,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -15925,7 +16135,7 @@ const APPLICATION$6 = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 5
+                                    "index": 7
                                 }
                             ],
                             "sinceVersion": 1,
@@ -15948,7 +16158,7 @@ const APPLICATION$6 = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "GUID",
+                            "name": "localId",
                             "sinceVersion": 1
                         },
                         {
@@ -15957,7 +16167,7 @@ const APPLICATION$6 = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "isAdministrator",
+                            "name": "GUID",
                             "sinceVersion": 1
                         },
                         {
@@ -15966,11 +16176,38 @@ const APPLICATION$6 = {
                             },
                             "index": 2,
                             "isId": false,
+                            "name": "isOwner",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 3
+                            },
+                            "index": 3,
+                            "isId": false,
+                            "name": "isAdministrator",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 4
+                            },
+                            "index": 4,
+                            "isId": false,
                             "name": "canWrite",
                             "sinceVersion": 1
                         },
                         {
-                            "index": 3,
+                            "columnRef": {
+                                "index": 5
+                            },
+                            "index": 5,
+                            "isId": false,
+                            "name": "publicSigningKey",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
                             "isId": false,
                             "name": "userAccount",
                             "relationRef": {
@@ -15979,16 +16216,7 @@ const APPLICATION$6 = {
                             "sinceVersion": 1
                         },
                         {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 4,
-                            "isId": false,
-                            "name": "publicSigningKey",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
+                            "index": 7,
                             "isId": false,
                             "name": "repository",
                             "relationRef": {
@@ -16003,7 +16231,7 @@ const APPLICATION$6 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 3
+                                "index": 6
                             },
                             "relationTableIndex": 5,
                             "relationTableApplication_Index": 0,
@@ -16014,7 +16242,7 @@ const APPLICATION$6 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 5
+                                "index": 7
                             },
                             "relationTableIndex": 10,
                             "sinceVersion": 1
@@ -16181,7 +16409,7 @@ const APPLICATION$6 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "OWNER_USER_ACCOUNT_GUID",
+                            "name": "OWNER_USER_ACCOUNT_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -16189,7 +16417,7 @@ const APPLICATION$6 = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         },
                         {
                             "index": 11,
@@ -21685,9 +21913,9 @@ const APPLICATION$4 = {
                     "columns": [
                         {
                             "index": 0,
-                            "isGenerated": false,
+                            "isGenerated": true,
                             "manyRelationColumnRefs": [],
-                            "name": "GUID",
+                            "name": "USER_ACCOUNT_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -21695,14 +21923,14 @@ const APPLICATION$4 = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         },
                         {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "EMAIL",
-                            "notNull": false,
+                            "name": "USER_ACCOUNT_GUID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 1
@@ -21715,8 +21943,8 @@ const APPLICATION$4 = {
                             "index": 2,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "PUBLIC_META_SIGNING_KEY",
-                            "notNull": true,
+                            "name": "EMAIL",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 2
@@ -21729,21 +21957,21 @@ const APPLICATION$4 = {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "RANKING",
-                            "notNull": false,
+                            "name": "PUBLIC_META_SIGNING_KEY",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 3
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "NUMBER"
+                            "type": "STRING"
                         },
                         {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "USERNAME",
+                            "name": "RANKING",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -21751,10 +21979,24 @@ const APPLICATION$4 = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         },
                         {
                             "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "USERNAME",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 6,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -21769,14 +22011,14 @@ const APPLICATION$4 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 5
+                                    "index": 6
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 6,
+                            "index": 7,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -21792,14 +22034,14 @@ const APPLICATION$4 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 6
+                                    "index": 7
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 7,
+                            "index": 8,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -21815,14 +22057,14 @@ const APPLICATION$4 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 7
+                                    "index": 8
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 8,
+                            "index": 9,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -21838,14 +22080,14 @@ const APPLICATION$4 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 8
+                                    "index": 9
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 9,
+                            "index": 10,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -21861,7 +22103,7 @@ const APPLICATION$4 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 9
+                                    "index": 10
                                 }
                             ],
                             "sinceVersion": 1,
@@ -21884,7 +22126,7 @@ const APPLICATION$4 = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "GUID",
+                            "name": "_localId",
                             "sinceVersion": 1
                         },
                         {
@@ -21893,7 +22135,7 @@ const APPLICATION$4 = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "email",
+                            "name": "GUID",
                             "sinceVersion": 1
                         },
                         {
@@ -21902,7 +22144,7 @@ const APPLICATION$4 = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "publicMetaSigningKey",
+                            "name": "email",
                             "sinceVersion": 1
                         },
                         {
@@ -21911,7 +22153,7 @@ const APPLICATION$4 = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "ranking",
+                            "name": "publicMetaSigningKey",
                             "sinceVersion": 1
                         },
                         {
@@ -21920,11 +22162,20 @@ const APPLICATION$4 = {
                             },
                             "index": 4,
                             "isId": false,
+                            "name": "ranking",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 5
+                            },
+                            "index": 5,
+                            "isId": false,
                             "name": "username",
                             "sinceVersion": 1
                         },
                         {
-                            "index": 5,
+                            "index": 6,
                             "isId": false,
                             "name": "domain",
                             "relationRef": {
@@ -21933,7 +22184,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 6,
+                            "index": 7,
                             "isId": false,
                             "name": "continent",
                             "relationRef": {
@@ -21942,7 +22193,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 7,
+                            "index": 8,
                             "isId": false,
                             "name": "country",
                             "relationRef": {
@@ -21951,7 +22202,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 8,
+                            "index": 9,
                             "isId": false,
                             "name": "state",
                             "relationRef": {
@@ -21960,7 +22211,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 9,
+                            "index": 10,
                             "isId": false,
                             "name": "metroArea",
                             "relationRef": {
@@ -21975,7 +22226,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 5
+                                "index": 6
                             },
                             "relationTableIndex": 11,
                             "relationTableApplication_Index": 0,
@@ -21986,7 +22237,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 6
+                                "index": 7
                             },
                             "relationTableIndex": 0,
                             "sinceVersion": 1
@@ -21996,7 +22247,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 7
+                                "index": 8
                             },
                             "relationTableIndex": 1,
                             "sinceVersion": 1
@@ -22006,7 +22257,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 8
+                                "index": 9
                             },
                             "relationTableIndex": 2,
                             "sinceVersion": 1
@@ -22016,7 +22267,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 9
+                                "index": 10
                             },
                             "relationTableIndex": 4,
                             "sinceVersion": 1
@@ -23078,7 +23329,7 @@ const APPLICATION$4 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "TERMINAL_GUID",
+                            "name": "TERMINAL_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -23086,7 +23337,7 @@ const APPLICATION$4 = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         },
                         {
                             "index": 1,
@@ -23175,9 +23426,9 @@ const APPLICATION$4 = {
                     "columns": [
                         {
                             "index": 0,
-                            "isGenerated": false,
+                            "isGenerated": true,
                             "manyRelationColumnRefs": [],
-                            "name": "GUID",
+                            "name": "TERMINAL_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -23185,24 +23436,38 @@ const APPLICATION$4 = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         },
                         {
                             "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "TERMINAL_GUID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 2,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "IS_LOCAL",
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 2
+                                    "index": 3
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "BOOLEAN"
                         },
                         {
-                            "index": 2,
+                            "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -23213,18 +23478,18 @@ const APPLICATION$4 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "OWNER_USER_ACCOUNT_GUID",
+                            "name": "OWNER_USER_ACCOUNT_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 1
+                                    "index": 2
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         },
                         {
-                            "index": 3,
+                            "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -23239,14 +23504,14 @@ const APPLICATION$4 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 3
+                                    "index": 4
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 4,
+                            "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -23261,14 +23526,14 @@ const APPLICATION$4 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 4
+                                    "index": 5
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 5,
+                            "index": 6,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -23283,14 +23548,14 @@ const APPLICATION$4 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 5
+                                    "index": 6
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 6,
+                            "index": 7,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -23305,7 +23570,7 @@ const APPLICATION$4 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 6
+                                    "index": 7
                                 }
                             ],
                             "sinceVersion": 1,
@@ -23328,11 +23593,20 @@ const APPLICATION$4 = {
                             },
                             "index": 0,
                             "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
                             "name": "GUID",
                             "sinceVersion": 1
                         },
                         {
-                            "index": 1,
+                            "index": 2,
                             "isId": false,
                             "name": "owner",
                             "relationRef": {
@@ -23342,15 +23616,15 @@ const APPLICATION$4 = {
                         },
                         {
                             "columnRef": {
-                                "index": 1
+                                "index": 2
                             },
-                            "index": 2,
+                            "index": 3,
                             "isId": false,
                             "name": "isLocal",
                             "sinceVersion": 1
                         },
                         {
-                            "index": 3,
+                            "index": 4,
                             "isId": false,
                             "name": "continent",
                             "relationRef": {
@@ -23359,7 +23633,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 4,
+                            "index": 5,
                             "isId": false,
                             "name": "country",
                             "relationRef": {
@@ -23368,7 +23642,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 5,
+                            "index": 6,
                             "isId": false,
                             "name": "state",
                             "relationRef": {
@@ -23377,7 +23651,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 6,
+                            "index": 7,
                             "isId": false,
                             "name": "metroArea",
                             "relationRef": {
@@ -23386,7 +23660,7 @@ const APPLICATION$4 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 7,
+                            "index": 8,
                             "isId": false,
                             "name": "terminalTypes",
                             "relationRef": {
@@ -23401,7 +23675,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 1
+                                "index": 2
                             },
                             "relationTableIndex": 5,
                             "sinceVersion": 1
@@ -23411,7 +23685,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 3
+                                "index": 4
                             },
                             "relationTableIndex": 0,
                             "sinceVersion": 1
@@ -23421,7 +23695,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 4
+                                "index": 5
                             },
                             "relationTableIndex": 1,
                             "sinceVersion": 1
@@ -23431,7 +23705,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 5
+                                "index": 6
                             },
                             "relationTableIndex": 2,
                             "sinceVersion": 1
@@ -23441,7 +23715,7 @@ const APPLICATION$4 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 6
+                                "index": 7
                             },
                             "relationTableIndex": 4,
                             "sinceVersion": 1
@@ -23454,7 +23728,7 @@ const APPLICATION$4 = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 7
+                                "index": 8
                             },
                             "relationTableIndex": 13,
                             "sinceVersion": 1
@@ -23465,7 +23739,7 @@ const APPLICATION$4 = {
                         "name": "TERMINALS",
                         "propertyIndexes": [
                             {
-                                "propertyIndex": 0,
+                                "propertyIndex": 1,
                                 "unique": true
                             }
                         ]
@@ -24676,34 +24950,6 @@ const APPLICATION$1 = {
                         {
                             "index": 6,
                             "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ONE_SIDE_ACTOR_RECORD_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 7,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "MANY_SIDE_ACTOR_RECORD_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 11
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 8,
-                            "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
@@ -24724,110 +24970,22 @@ const APPLICATION$1 = {
                             "type": "NUMBER"
                         },
                         {
-                            "index": 9,
+                            "index": 7,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
                                     "oneApplication_Index": 1,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ONE_SIDE_ACTOR_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 8
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 10,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 4,
-                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "ONE_SIDE_REPOSITORY_LID",
+                            "name": "RELATION_REPOSITORY_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 9
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 11,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 5,
-                                    "oneApplication_Index": 0,
-                                    "oneTableIndex": 1,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "MANY_SIDE_APPLICATION_RELATION_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 10
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 12,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 6,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "MANY_SIDE_ACTOR_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 12
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 13,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 7,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "MANY_SIDE_REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 13
+                                    "index": 7
                                 }
                             ],
                             "sinceVersion": 1,
@@ -24907,72 +25065,18 @@ const APPLICATION$1 = {
                         {
                             "index": 6,
                             "isId": false,
-                            "name": "oneSideRelation",
+                            "name": "relation",
                             "relationRef": {
                                 "index": 2
                             },
                             "sinceVersion": 1
                         },
                         {
-                            "columnRef": {
-                                "index": 6
-                            },
                             "index": 7,
                             "isId": false,
-                            "name": "oneSideActorRecordId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 8,
-                            "isId": false,
-                            "name": "oneSideActor",
+                            "name": "relatedRepository",
                             "relationRef": {
                                 "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 9,
-                            "isId": false,
-                            "name": "oneSideRepository",
-                            "relationRef": {
-                                "index": 4
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 10,
-                            "isId": false,
-                            "name": "manySideRelation",
-                            "relationRef": {
-                                "index": 5
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 7
-                            },
-                            "index": 11,
-                            "isId": false,
-                            "name": "manySideActorRecordId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 12,
-                            "isId": false,
-                            "name": "manySideActor",
-                            "relationRef": {
-                                "index": 6
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 13,
-                            "isId": false,
-                            "name": "manySideRepository",
-                            "relationRef": {
-                                "index": 7
                             },
                             "sinceVersion": 1
                         }
@@ -25016,51 +25120,7 @@ const APPLICATION$1 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 8
-                            },
-                            "relationTableIndex": 0,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 9
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 10
-                            },
-                            "relationTableIndex": 1,
-                            "relationTableApplication_Index": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 12
-                            },
-                            "relationTableIndex": 0,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 7,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 13
+                                "index": 7
                             },
                             "relationTableIndex": 10,
                             "relationTableApplication_Index": 1,
@@ -26149,12 +26209,13 @@ class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
             .applicationVersion.entities[tableIndex];
         const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name];
         const repositoryEquals = [];
+        const AirEntity = this.dictionary.AirEntity;
         for (const [repositoryId, idsForRepository] of idMap) {
             const actorEquals = [];
             for (const [actorId, idsForActor] of idsForRepository) {
-                actorEquals.push(AND(qEntity[ACTOR_PROPERTY_NAME]._localId.equals(actorId), qEntity[ACTOR_RECORD_ID_PROPERTY_NAME].IN(Array.from(idsForActor))));
+                actorEquals.push(AND(qEntity[AirEntity.properties.actor]._localId.equals(actorId), qEntity[AirEntity.properties._actorRecordId].IN(Array.from(idsForActor))));
             }
-            repositoryEquals.push(AND(qEntity[REPOSITORY_PROPERTY_NAME]._localId.equals(repositoryId), OR(...actorEquals)));
+            repositoryEquals.push(AND(qEntity[AirEntity.properties.repository]._localId.equals(repositoryId), OR(...actorEquals)));
         }
         const setClause = {};
         for (const columnIndex of updatedColumnIndexes) {
@@ -26186,7 +26247,8 @@ class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
 const layover = lib('@airport/layover');
 layover.register(RecordUpdateStageDao, SynchronizationConflictDao, SynchronizationConflictValuesDao);
 layover.setDependencies(RecordUpdateStageDao, {
-    airportDatabase: AIRPORT_DATABASE
+    airportDatabase: AIRPORT_DATABASE,
+    dictionary: Dictionary
 });
 
 class Client {
@@ -26535,8 +26597,9 @@ class SyncInApplicationVersionChecker {
     async ensureApplicationVersions(
     // message: RepositorySynchronizationMessage,
     inMessageApplicationVersions, inMessageApplications, context) {
+        let applicationCheckMap;
         try {
-            let applicationCheckMap = await this.checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications, context);
+            applicationCheckMap = await this.checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications, context);
             for (let i = 0; i < inMessageApplicationVersions.length; i++) {
                 const applicationVersion = inMessageApplicationVersions[i];
                 inMessageApplicationVersions[i] = applicationCheckMap
@@ -26546,23 +26609,40 @@ class SyncInApplicationVersionChecker {
         }
         catch (e) {
             console.error(e);
-            return false;
+            return null;
         }
-        return true;
+        return applicationCheckMap;
     }
     async checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications, context) {
-        const { allApplication_Names, domainNames, applicationVersionCheckMap } = this
+        const { allApplicationNames: allApplication_Names, domainNames, applicationVersionCheckMap } = this
             .getNames(inMessageApplicationVersions, inMessageApplications);
-        const existingApplicationVersions = await this.applicationVersionDao.findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names);
-        let lastDomain_Name;
-        let lastApplication_Name;
+        await this.setApplicationVersions(domainNames, allApplication_Names, applicationVersionCheckMap);
+        const domainWithNewApp_NameSet = new Set();
+        const newApplicationNameSet = new Set();
+        for (const [domainName, applicationChecks] of applicationVersionCheckMap) {
+            for (let [_, applicationCheck] of applicationChecks) {
+                if (!applicationCheck.found) {
+                    domainWithNewApp_NameSet.add(domainName);
+                    newApplicationNameSet.add(applicationCheck.applicationName);
+                    await this.applicationInitializer.installApplication(domainName, applicationCheck.applicationName);
+                }
+            }
+        }
+        await this.setApplicationVersions(Array.from(domainWithNewApp_NameSet), Array.from(newApplicationNameSet), applicationVersionCheckMap);
+        return applicationVersionCheckMap;
+    }
+    async setApplicationVersions(domainNames, allApplication_Names, applicationVersionCheckMap) {
+        const existingApplicationVersions = await this.applicationVersionDao
+            .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names);
+        let lastDomainName;
+        let lastApplicationName;
         for (let applicationVersion of existingApplicationVersions) {
-            let domainName = applicationVersion.application.domain.name;
-            let applicationName = applicationVersion.application.name;
-            if (lastDomain_Name !== domainName
-                && lastApplication_Name !== applicationName) {
-                let applicationVersionNumber = applicationVersion.integerVersion;
-                for (let [_, applicationCheck] of applicationVersionCheckMap.get(domainName)) {
+            const domainName = applicationVersion.application.domain.name;
+            const applicationName = applicationVersion.application.name;
+            if (lastDomainName !== domainName && lastApplicationName !== applicationName) {
+                const applicationVersionNumber = applicationVersion.integerVersion;
+                const applicationVersionCheckMapForDomain = applicationVersionCheckMap.get(domainName);
+                for (let [_, applicationCheck] of applicationVersionCheckMapForDomain) {
                     if (applicationCheck.applicationName === applicationName) {
                         applicationCheck.found = true;
                         if (applicationCheck.applicationVersionNumber > applicationVersionNumber) {
@@ -26572,18 +26652,10 @@ class SyncInApplicationVersionChecker {
                         applicationCheck.applicationVersion = applicationVersion;
                     }
                 }
-                lastDomain_Name = domainName;
-                lastApplication_Name = applicationName;
+                lastDomainName = domainName;
+                lastApplicationName = applicationName;
             }
         }
-        for (const [domainName, applicationChecks] of applicationVersionCheckMap) {
-            for (let [_, applicationCheck] of applicationChecks) {
-                if (!applicationCheck.found) {
-                    await this.applicationInitializer.installApplication(domainName, applicationCheck.applicationName);
-                }
-            }
-        }
-        return applicationVersionCheckMap;
     }
     getNames(inMessageApplicationVersions, inMessageApplications) {
         if (!inMessageApplicationVersions || !(inMessageApplicationVersions instanceof Array)) {
@@ -26608,20 +26680,21 @@ class SyncInApplicationVersionChecker {
             if (!applicationChecksForDomain.has(application.name)) {
                 applicationChecksForDomain.set(application.name, {
                     applicationName: application.name,
-                    applicationVersionNumber: applicationVersion.integerVersion
+                    applicationVersionNumber: applicationVersion.integerVersion,
+                    found: false
                 });
             }
         }
         const domainNames = [];
-        const allApplication_Names = [];
+        const allApplicationNames = [];
         for (const [domainName, applicationChecksForDomainMap] of applicationVersionCheckMap) {
             domainNames.push(domainName);
             for (let [applicationName, _] of applicationChecksForDomainMap) {
-                allApplication_Names.push(applicationName);
+                allApplicationNames.push(applicationName);
             }
         }
         return {
-            allApplication_Names,
+            allApplicationNames: allApplicationNames,
             domainNames,
             applicationVersionCheckMap
         };
@@ -26666,6 +26739,61 @@ class SyncInChecker {
         }
         return await this.syncInDataChecker.checkData(message, context);
     }
+    async checkReferencedApplicationRelations(message, _context) {
+        // TODO: check referencedApplicationRelations
+        message.referencedApplicationVersions;
+        const applicationEntityMap = await this.syncInDataChecker.populateApplicationEntityMap(message.referencedApplicationVersions);
+        const applicationRelationMap = new Map();
+        for (let i = 0; i < message.referencedApplicationRelations.length; i++) {
+            const referencedRelation = message.referencedApplicationRelations[i];
+            if (typeof referencedRelation !== 'object') {
+                throw new Error(`Invalid referencedApplicationRelations[${i}] objectg`);
+            }
+            if (typeof referencedRelation.index !== 'number') {
+                throw new Error(`Expecting "index" (number)
+					in 'referencedApplicationRelations[${i}].index'`);
+            }
+            const referencedEntity = referencedRelation.entity;
+            if (typeof referencedEntity !== 'object') {
+                throw new Error(`Invalid referencedApplicationRelations[${i}].entity`);
+            }
+            if (typeof referencedEntity.applicationVersion !== 'number') {
+                throw new Error(`Expecting "in-message index" (number)
+					in 'referencedApplicationRelations[${i}].entity.applicationVersion'`);
+            }
+            if (typeof referencedEntity.index !== 'number') {
+                throw new Error(`Expecting "index" (number)
+					in 'referencedApplicationRelations[${i}].entity.index'`);
+            }
+            const messageApplicationVersion = message
+                .referencedApplicationVersions[referencedEntity.applicationVersion];
+            if (!messageApplicationVersion) {
+                throw new Error(`No Application Version with in-message index ${referencedEntity.applicationVersion}.
+Declared in 'referencedApplicationRelations[${i}].entity.applicationVersion'`);
+            }
+            const applicationEntity = applicationEntityMap.get(messageApplicationVersion.application.domain.name)
+                .get(messageApplicationVersion.application.name).get(referencedEntity.index);
+            if (!applicationEntity) {
+                throw new Error(`Invalid referencedApplicationRelations[${i}].entity.index: ${referencedEntity.index}`);
+            }
+            const applicationRelationsForEntityMap = this.datastructureUtils.ensureChildJsMap(applicationRelationMap, applicationEntity._localId);
+            let applicationRelation = applicationRelationsForEntityMap.get(referencedRelation.index);
+            if (applicationRelation) {
+                throw new Error(`referencedApplicationRelations[${i}].index: ${referencedRelation.index} is defined more than once`);
+            }
+            for (const relation of applicationEntity.relations) {
+                if (relation.index === referencedRelation.index) {
+                    applicationRelation = relation;
+                    break;
+                }
+            }
+            if (!applicationRelation) {
+                throw new Error(`Invalid referencedApplicationRelations[${i}].index: ${referencedRelation.index}`);
+            }
+            applicationRelationsForEntityMap.set(referencedRelation.index, applicationRelation);
+            message.referencedApplicationRelations[i] = applicationRelation;
+        }
+    }
 }
 
 class SyncInDataChecker {
@@ -26709,7 +26837,7 @@ class SyncInDataChecker {
             history.repositoryTransactionType = RepositoryTransactionType.REMOTE;
             history.syncTimestamp = message.syncTimestamp;
             delete history._localId;
-            const applicationEntityMap = await this.populateApplicationEntityMap(message);
+            const applicationEntityMap = await this.populateApplicationEntityMap(message.applicationVersions);
             dataCheckResult = await this.checkOperationHistories(message, applicationEntityMap, context);
         }
         catch (e) {
@@ -26723,22 +26851,13 @@ class SyncInDataChecker {
             isValid: true
         };
     }
-    async populateApplicationEntityMap(message) {
+    async populateApplicationEntityMap(messageApplicationVersions) {
         const applicationVersionsByIds = this.terminalStore.getAllApplicationVersionsByIds();
         const applicationEntityMap = new Map();
-        for (const messageApplicationVersion of message.applicationVersions) {
+        for (const messageApplicationVersion of messageApplicationVersions) {
             const applicationVersion = applicationVersionsByIds[messageApplicationVersion._localId];
             for (const applicationEntity of applicationVersion.entities) {
-                let entitiesForDomain = applicationEntityMap.get(applicationVersion.application.domain.name);
-                if (!entitiesForDomain) {
-                    entitiesForDomain = new Map();
-                    applicationEntityMap.set(applicationVersion.application.domain.name, entitiesForDomain);
-                }
-                let entitiesForApplication = entitiesForDomain.get(applicationVersion.application.name);
-                if (!entitiesForApplication) {
-                    entitiesForApplication = new Map();
-                    entitiesForDomain.set(applicationVersion.application.name, entitiesForApplication);
-                }
+                const entitiesForApplication = this.datastructureUtils.ensureChildJsMap(this.datastructureUtils.ensureChildJsMap(applicationEntityMap, applicationVersion.application.domain.name), applicationVersion.application.name);
                 entitiesForApplication.set(applicationEntity.index, applicationEntity);
             }
         }
@@ -26749,18 +26868,18 @@ class SyncInDataChecker {
         const forDelayedProcessing = [];
         const history = message.history;
         if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
-            throw new Error(`Invalid RepositorySynchronizationMessage.history.operationHistory`);
+            throw new Error(`Invalid RepositorySynchronizationMessage.history.operationHistory Array`);
         }
-        const systemWideOperationIds = getSysWideOpIds(history.operationHistory.length, this.airportDatabase, this.sequenceGenerator);
+        const systemWideOperationIds = this.systemWideOperationIdUtils.getSysWideOpIds(history.operationHistory.length);
         let orderNumber = 0;
         for (let i = 0; i < history.operationHistory.length; i++) {
             const operationHistory = history.operationHistory[i];
             if (typeof operationHistory !== 'object') {
-                throw new Error(`Invalid operationHistory`);
+                throw new Error(`Invalid operationHistory[${i}]`);
             }
             if (operationHistory.orderNumber) {
-                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.orderNumber cannot be specified,
-				the position of orderHistory record determines it's order`);
+                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory[${i}].orderNumber cannot be specified,
+the position of orderHistory record determines it's order`);
             }
             operationHistory.orderNumber = ++orderNumber;
             switch (operationHistory.changeType) {
@@ -26769,88 +26888,80 @@ class SyncInDataChecker {
                 case ChangeType.UPDATE_ROWS:
                     break;
                 default:
-                    throw new Error(`Invalid operationHistory.changeType: ${operationHistory.changeType}`);
+                    throw new Error(`Invalid operationHistory[${i}].changeType: ${operationHistory.changeType}`);
             }
             if (typeof operationHistory.entity !== 'object') {
-                throw new Error(`Invalid operationHistory.entity`);
+                throw new Error(`Invalid operationHistory[${i}].entity`);
             }
             if (typeof operationHistory.entity.applicationVersion !== 'number') {
                 throw new Error(`Expecting "in-message index" (number)
-					in 'operationHistory.entity.applicationVersion'`);
+					in 'operationHistory[${i}].entity.applicationVersion'`);
             }
             const actor = message.actors[operationHistory.actor];
             if (!actor) {
-                throw new Error(`Cannot find Actor for "in-message id" RepositorySynchronizationMessage.history.actor`);
+                throw new Error(`Cannot find Actor for "in-message id"
+RepositorySynchronizationMessage.history.operationHistory[${i}].actor`);
             }
             operationHistory.actor = actor;
             const applicationVersion = message.applicationVersions[operationHistory.entity.applicationVersion];
             if (!applicationVersion) {
                 throw new Error(`Invalid index into message.applicationVersions [${operationHistory.entity.applicationVersion}],
-				in operationHistory.entity.applicationVersion`);
+				in operationHistory[${i}].entity.applicationVersion`);
             }
             const applicationEntity = applicationEntityMap.get(applicationVersion.application.domain.name)
                 .get(applicationVersion.application.name).get(operationHistory.entity.index);
             if (!applicationEntity) {
-                throw new Error(`Invalid operationHistory.entity.index: ${operationHistory.entity.index}`);
+                throw new Error(`Invalid operationHistory[${i}].entity.index: ${operationHistory.entity.index}`);
             }
             operationHistory.entity = applicationEntity;
             if (operationHistory.repositoryTransactionHistory) {
-                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.repositoryTransactionHistory cannot be specified`);
+                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory[${i}].repositoryTransactionHistory cannot be specified`);
             }
             operationHistory.repositoryTransactionHistory = history;
             if (operationHistory.systemWideOperationId) {
-                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.systemWideOperationId cannot be specified`);
+                throw new Error(`RepositorySynchronizationMessage.history -> operationHistory[${i}].systemWideOperationId cannot be specified`);
             }
             operationHistory.systemWideOperationId = systemWideOperationIds[i];
             delete operationHistory._localId;
-            let actorIdColumnMapByIndex = new Map();
-            let referencedRelationIdColumnMapByIndex = new Map();
-            let repositoryIdColumnMapByIndex = new Map();
-            let isInternalDomain = this.appTrackerUtils.isInternalDomain(applicationVersion.application.domain.name);
-            let delayOperationHistoryProcessing = false;
-            for (const column of operationHistory.entity.columns) {
-                switch (column.name) {
-                    case airEntity.COPY_ACTOR_LID:
-                    case airEntity.MANY_SIDE_ACTOR_LID:
-                    case airEntity.ONE_SIDE_ACTOR_LID:
-                        actorIdColumnMapByIndex.set(column.index, column);
-                        break;
-                    case airEntity.COPY_REPOSITORY_LID:
-                    case airEntity.MANY_SIDE_REPOSITORY_LID:
-                    case airEntity.ONE_SIDE_REPOSITORY_LID:
-                        repositoryIdColumnMapByIndex.set(column.index, column);
-                        break;
-                    case airEntity.MANY_SIDE_APPLICATION_RELATION_LID:
-                    case airEntity.ONE_SIDE_APPLICATION_RELATION_LID:
-                        referencedRelationIdColumnMapByIndex.set(column.index, column);
-                        if (isInternalDomain) {
-                            delayOperationHistoryProcessing = true;
-                        }
-                        break;
-                }
-                if (/.*_AID_[\d]+$/.test(column.name)
-                    && column.manyRelationColumns.length) {
-                    actorIdColumnMapByIndex.set(column.index, column);
-                }
-                if (/.*_RID_[\d]+$/.test(column.name)
-                    && column.manyRelationColumns.length) {
-                    repositoryIdColumnMapByIndex.set(column.index, column);
+            const entityColumnMapsByIndex = {
+                actorIds: new Map(),
+                referencedRelationIds: new Map(),
+                repositoryIds: new Map(),
+                terminalIds: new Map(),
+                userAccountIds: new Map()
+            };
+            for (const dbColumn of operationHistory.entity.columns) {
+                if (this.applicationUtils.isManyRelationColumn(dbColumn)) {
+                    const oneSideDbEntity = this.applicationUtils
+                        .getOneSideEntityOfManyRelationColumn(dbColumn);
+                    if (this.dictionary.isActor(oneSideDbEntity)) {
+                        entityColumnMapsByIndex.actorIds.set(dbColumn.index, dbColumn);
+                    }
+                    else if (this.dictionary.isRepository(oneSideDbEntity)) {
+                        entityColumnMapsByIndex.repositoryIds.set(dbColumn.index, dbColumn);
+                    }
+                    else if (this.dictionary.isTerminal(oneSideDbEntity)) {
+                        entityColumnMapsByIndex.terminalIds.set(dbColumn.index, dbColumn);
+                    }
+                    else if (this.dictionary.isUserAccount(oneSideDbEntity)) {
+                        entityColumnMapsByIndex.userAccountIds.set(dbColumn.index, dbColumn);
+                    }
+                    else if (this.dictionary.isApplicationRelation(oneSideDbEntity)) {
+                        entityColumnMapsByIndex.referencedRelationIds.set(dbColumn.index, dbColumn);
+                    }
                 }
             }
-            if (delayOperationHistoryProcessing) {
-                forDelayedProcessing.push(operationHistory);
-            }
-            else {
+            {
                 forImmediateProcessing.push(operationHistory);
             }
-            await this.checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, referencedRelationIdColumnMapByIndex, message, context);
+            await this.checkRecordHistories(operationHistory, entityColumnMapsByIndex, message, context);
         }
         return {
             forImmediateProcessing,
             forDelayedProcessing
         };
     }
-    async checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, referencedRelationIdColumnMapByIndex, message, context) {
+    async checkRecordHistories(operationHistory, entityColumnMapsByIndex, message, context) {
         const recordHistories = operationHistory.recordHistory;
         if (!(recordHistories instanceof Array) || !recordHistories.length) {
             throw new Error(`Inalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory`);
@@ -26886,13 +26997,13 @@ for ChangeType.INSERT_VALUES`);
             if (recordHistory.operationHistory) {
                 throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
             }
-            this.checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, referencedRelationIdColumnMapByIndex, operationHistory, message, context);
-            this.checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, referencedRelationIdColumnMapByIndex, operationHistory, message, context);
+            this.checkNewValues(recordHistory, entityColumnMapsByIndex, operationHistory, message, context);
+            this.checkOldValues(recordHistory, entityColumnMapsByIndex, operationHistory, message, context);
             recordHistory.operationHistory = operationHistory;
             delete recordHistory._localId;
         }
     }
-    checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, referencedRelationIdColumnMapByIndex, operationHistory, message, context) {
+    checkNewValues(recordHistory, entityColumnMapsByIndex, operationHistory, message, context) {
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
                 if (recordHistory.newValues) {
@@ -26921,41 +27032,14 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS`);
             }
         }
         for (const newValue of recordHistory.newValues) {
-            const actorIdColumn = actorIdColumnMapByIndex.get(newValue.columnIndex);
-            if (actorIdColumn) {
-                const sourceActor = message.actors[newValue.newValue];
-                if (!sourceActor) {
-                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
-Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessage.actors[${newValue.newValue}]`);
-                }
-                newValue.newValue = sourceActor._localId;
-            }
-            const repositoryIdColumn = repositoryIdColumnMapByIndex.get(newValue.columnIndex);
-            if (repositoryIdColumn) {
-                if (newValue.newValue === -1) {
-                    newValue.newValue = message.history.repository._localId;
-                }
-                else {
-                    const sourceRepository = message.referencedRepositories[newValue.newValue];
-                    if (!sourceRepository) {
-                        throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
-Value is for ${repositoryIdColumn.name} and could find RepositorySynchronizationMessage.referencedRepositories[${newValue.newValue}]`);
-                    }
-                    newValue.newValue = sourceRepository._localId;
-                }
-            }
-            const relationIdColumn = referencedRelationIdColumnMapByIndex.get(newValue.columnIndex);
-            if (relationIdColumn) {
-                const sourceRelation = message.referencedApplicationRelations[newValue.newValue];
-                if (!sourceRelation) {
-                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
-Value is for ${relationIdColumn.name} and could find RepositorySynchronizationMessage.referencedApplicationRelations[${newValue.newValue}]`);
-                }
-                newValue.newValue = sourceRelation._localId;
-            }
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.actorIds, message.actors, 'actors');
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.referencedRelationIds, message.referencedApplicationRelations, 'referencedApplicationRelations');
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.repositoryIds, message.referencedRepositories, 'referencedRepositories');
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.terminalIds, message.terminals, 'terminals');
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.userAccountIds, message.userAccounts, 'userAccounts');
         }
     }
-    checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, referencedRelationIdColumnMapByIndex, operationHistory, message, context) {
+    checkOldValues(recordHistory, entityColumnMapsByIndex, operationHistory, message, context) {
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
             case ChangeType.INSERT_VALUES:
@@ -26984,33 +27068,28 @@ for ChangeType.UPDATE_ROWS`);
             }
         }
         for (const oldValue of recordHistory.oldValues) {
-            const actorIdColumn = actorIdColumnMapByIndex.get(oldValue.columnIndex);
-            if (actorIdColumn) {
-                const sourceActor = message.actors[oldValue.oldValue];
-                if (!sourceActor) {
-                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
-Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessage.actors[${oldValue.oldValue}]`);
-                }
-                oldValue.oldValue = sourceActor._localId;
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.actorIds, message.actors, 'actors');
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.repositoryIds, message.referencedRepositories, 'referencedRepositories');
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.referencedRelationIds, message.referencedApplicationRelations, 'referencedApplicationRelations');
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.terminalIds, message.terminals, 'terminals');
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.userAccountIds, message.userAccounts, 'userAccounts');
+        }
+    }
+    checkRelatedObjectInNewValue(newValue, entityIdColumnMapByIndex, entityArrayByInMessageIndex, inMessageEntityArrayName) {
+        this.checkRelatedObject(newValue, 'newValue', entityIdColumnMapByIndex, entityArrayByInMessageIndex, inMessageEntityArrayName);
+    }
+    checkRelatedObjectInOldValue(oldValue, entityIdColumnMapByIndex, entityArrayByInMessageIndex, inMessageEntityArrayName) {
+        this.checkRelatedObject(oldValue, 'oldValue', entityIdColumnMapByIndex, entityArrayByInMessageIndex, inMessageEntityArrayName);
+    }
+    checkRelatedObject(value, valueColumnName, entityIdColumnMapByIndex, entityArrayByInMessageIndex, inMessageEntityArrayName) {
+        const relationIdColumn = entityIdColumnMapByIndex.get(value.columnIndex);
+        if (relationIdColumn) {
+            const sourceEntity = entityArrayByInMessageIndex[value[valueColumnName]];
+            if (!sourceEntity) {
+                throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
+Value is for ${relationIdColumn.name} and could find RepositorySynchronizationMessage.${inMessageEntityArrayName}[${value[valueColumnName]}]`);
             }
-            const repositoryIdColumn = repositoryIdColumnMapByIndex.get(oldValue.columnIndex);
-            if (repositoryIdColumn) {
-                const sourceRepository = message.referencedRepositories[oldValue.oldValue];
-                if (!sourceRepository) {
-                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
-Value is for ${repositoryIdColumn.name} and could find RepositorySynchronizationMessage.referencedRepositories[${oldValue.oldValue}]`);
-                }
-                oldValue.oldValue = sourceRepository._localId;
-            }
-            const relationIdColumn = referencedRelationIdColumnMapByIndex.get(oldValue.columnIndex);
-            if (relationIdColumn) {
-                const sourceRelation = message.referencedApplicationRelations[oldValue.oldValue];
-                if (!sourceRelation) {
-                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
-Value is for ${relationIdColumn.name} and could find RepositorySynchronizationMessage.referencedApplicationRelations[${oldValue.oldValue}]`);
-                }
-                oldValue.oldValue = sourceRelation._localId;
-            }
+            value[valueColumnName] = sourceEntity._localId;
         }
     }
 }
@@ -27093,6 +27172,9 @@ class SyncInRepositoryChecker {
             throw new Error(`Expecting "in-message index" (number)
 				in 'repository.owner'`);
         }
+        if (typeof repository.areDependenciesLoaded !== 'undefined') {
+            throw new Error(`Invalid 'repository.areDependenciesLoaded' is a local-only field`);
+        }
         const userAccount = message.userAccounts[repository.owner];
         if (!userAccount) {
             throw new Error(`Did not find repository.owner (UserAccount) with "in-message index" ${repository.owner}`);
@@ -27105,6 +27187,8 @@ class SyncInRepositoryChecker {
         // Make sure id field is not in the input
         delete repository._localId;
     }
+    checkRepositoryMembers() {
+    }
 }
 
 class SyncInTerminalChecker {
@@ -27114,6 +27198,9 @@ class SyncInTerminalChecker {
             let messageTerminalIndexMap = new Map();
             for (let i = 0; i < message.terminals.length; i++) {
                 const terminal = message.terminals[i];
+                if (typeof terminal._localId !== 'undefined') {
+                    throw new Error(`'terminal._localId' cannot be specified`);
+                }
                 if (typeof terminal.owner !== 'number') {
                     throw new Error(`Expecting "in-message index" (number)
 					in 'terminal.owner' of RepositorySynchronizationMessage.terminals`);
@@ -27138,8 +27225,8 @@ class SyncInTerminalChecker {
             const foundTerminalsByGUID = new Map();
             for (const terminal of terminals) {
                 foundTerminalsByGUID.set(terminal.GUID, terminal);
-                const messageUserAccountIndex = messageTerminalIndexMap.get(terminal.GUID);
-                message.terminals[messageUserAccountIndex] = terminal;
+                const messageTerminalIndex = messageTerminalIndexMap.get(terminal.GUID);
+                message.terminals[messageTerminalIndex] = terminal;
             }
             const missingTerminals = message.terminals
                 .filter(messageTerminal => !foundTerminalsByGUID.has(messageTerminal.GUID));
@@ -27168,6 +27255,9 @@ class SyncInUserAccountChecker {
             let messageUserAccountIndexMap = new Map();
             for (let i = 0; i < message.userAccounts.length; i++) {
                 const userAccount = message.userAccounts[i];
+                if (typeof userAccount._localId !== 'undefined') {
+                    throw new Error(`'userAccount._localId' cannot be specified`);
+                }
                 if (typeof userAccount.GUID !== 'string' || userAccount.GUID.length !== 36) {
                     throw new Error(`Invalid 'userAccount.GUID'`);
                 }
@@ -27239,10 +27329,10 @@ class Stage1SyncedInDataProcessor {
                 }
                 for (const operationHistory of repoTransHistory.operationHistory) {
                     // Collect the Actor related localIds
-                    const idsForEntity = ensureChildJsMap(changedRecordsForRepo.actorRecordIdsByLocalIds, operationHistory.entity._localId);
+                    const idsForEntity = this.datastructureUtils.ensureChildJsMap(changedRecordsForRepo.actorRecordIdsByLocalIds, operationHistory.entity._localId);
                     for (const recordHistory of operationHistory.recordHistory) {
                         // Collect the Actor related localIds
-                        ensureChildJsSet(idsForEntity, recordHistory.actor._localId)
+                        this.datastructureUtils.ensureChildJsSet(idsForEntity, recordHistory.actor._localId)
                             .add(recordHistory._actorRecordId);
                         // add a map of new values
                         const newValueMap = new Map();
@@ -27324,7 +27414,8 @@ class Stage1SyncedInDataProcessor {
                     .operationHistory.length;
             }
         }
-        const systemWideOperationIds = await getSysWideOpIds(numSystemWideOperationIds, this.airportDatabase, this.sequenceGenerator);
+        const systemWideOperationIds = await this.systemWideOperationIdUtils
+            .getSysWideOpIds(numSystemWideOperationIds);
         let i = 0;
         for (const [_, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByrepositoryLocalId) {
             for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
@@ -27336,7 +27427,7 @@ class Stage1SyncedInDataProcessor {
         }
     }
     ensureRecordHistoryLocalId(recordHistory, actorRecordLocalIdSetByActor, _actorRecordId = recordHistory._actorRecordId) {
-        ensureChildJsMap(actorRecordLocalIdSetByActor, recordHistory.actor._localId)
+        this.datastructureUtils.ensureChildJsMap(actorRecordLocalIdSetByActor, recordHistory.actor._localId)
             .set(_actorRecordId, recordHistory._localId);
     }
     getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByRepoId, isLocal = false) {
@@ -27548,7 +27639,7 @@ class Stage1SyncedInDataProcessor {
                 continue;
             }
             // record deletion
-            ensureChildJsSet(deletesForEntityInRepo, recordHistory.actor._localId)
+            this.datastructureUtils.ensureChildJsSet(deletesForEntityInRepo, recordHistory.actor._localId)
                 .add(recordHistory._actorRecordId);
         }
     }
@@ -27604,7 +27695,7 @@ class Stage1SyncedInDataProcessor {
     }
     addSyncConflict(synchronizationConflictType, repositoryLocalId, overwrittenRecordHistory, overwritingRecordHistory, syncConflictMapByRepoId) {
         const syncConflict = this.createSynchronizationConflict(synchronizationConflictType, repositoryLocalId, overwrittenRecordHistory, overwritingRecordHistory);
-        ensureChildArray(syncConflictMapByRepoId, repositoryLocalId).push(syncConflict);
+        this.datastructureUtils.ensureChildArray(syncConflictMapByRepoId, repositoryLocalId).push(syncConflict);
         return syncConflict;
     }
     createSynchronizationConflict(synchronizationConflictType, repositoryLocalId, overwrittenRecordHistory, overwritingRecordHistory) {
@@ -27619,10 +27710,10 @@ class Stage1SyncedInDataProcessor {
         };
     }
     ensureColumnValueMap(recordHistory, dataMap) {
-        return ensureChildJsMap(ensureChildJsMap(dataMap, recordHistory.actor._localId), recordHistory._actorRecordId);
+        return this.datastructureUtils.ensureChildJsMap(this.datastructureUtils.ensureChildJsMap(dataMap, recordHistory.actor._localId), recordHistory._actorRecordId);
     }
     ensureRecord(recordHistory, recordMapByActor) {
-        return ensureChildJsMap(ensureChildJsMap(recordMapByActor, recordHistory.actor._localId), recordHistory._actorRecordId);
+        return this.datastructureUtils.ensureChildJsMap(this.datastructureUtils.ensureChildJsMap(recordMapByActor, recordHistory.actor._localId), recordHistory._actorRecordId);
     }
 }
 
@@ -27724,11 +27815,12 @@ class Stage2SyncedInDataProcessor {
     }
     getNonIdColumnsInIndexOrder(dbEntity) {
         const nonIdColumns = [];
+        const airEntityColumns = this.dictionary.AirEntity.columns;
         for (const column of dbEntity.columns) {
             switch (column.name) {
-                case airEntity.ACTOR_LID:
-                case airEntity.ACTOR_RECORD_ID:
-                case airEntity.REPOSITORY_LID:
+                case airEntityColumns.ACTOR_LID:
+                case airEntityColumns.ACTOR_RECORD_ID:
+                case airEntityColumns.REPOSITORY_LID:
                     continue;
             }
             nonIdColumns.push(column);
@@ -27743,14 +27835,14 @@ class Stage2SyncedInDataProcessor {
         const recordUpdateStage = [];
         // Build the final update data structure
         for (const [applicationVersionId, applicationUpdateMap] of recordUpdates) {
-            const finalApplicationUpdateMap = ensureChildJsMap(finalUpdateMap, applicationVersionId);
+            const finalApplicationUpdateMap = this.datastructureUtils.ensureChildJsMap(finalUpdateMap, applicationVersionId);
             for (const [tableIndex, tableUpdateMap] of applicationUpdateMap) {
-                const finalTableUpdateMap = ensureChildJsMap(finalApplicationUpdateMap, tableIndex);
+                const finalTableUpdateMap = this.datastructureUtils.ensureChildJsMap(finalApplicationUpdateMap, tableIndex);
                 for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
                     for (const [actorId, actorUpdates] of repositoryUpdateMap) {
                         for (const [_actorRecordId, recordUpdateMap] of actorUpdates) {
                             const recordKeyMap = this.getRecordKeyMap(recordUpdateMap, finalTableUpdateMap);
-                            ensureChildJsSet(ensureChildJsMap(recordKeyMap, repositoryId), actorId)
+                            this.datastructureUtils.ensureChildJsSet(this.datastructureUtils.ensureChildJsMap(recordKeyMap, repositoryId), actorId)
                                 .add(_actorRecordId);
                             for (const [columnIndex, columnUpdate] of recordUpdateMap) {
                                 recordUpdateStage.push([
@@ -27935,6 +28027,7 @@ class SynchronizationInManager {
             transaction.isSync = true;
             await this.twoStageSyncedInDataProcessor.syncMessages(immediateProcessingMessages, transaction, context);
         }, null, context);
+        await this.wait(2000);
         const delayedProcessingMessagesWithValidApps = [];
         for (const message of delayedProcessingMessages) {
             // Possibly load (remotely) and install new apps - delayed processing
@@ -27942,7 +28035,9 @@ class SynchronizationInManager {
             // other apps - other repositories might be referencing records in
             // the synched repositories (which may not be aware of the apps the
             // other repositories where created with)
-            if (await this.syncInApplicationVersionChecker.ensureApplicationVersions(message.referencedApplicationVersions, message.applications, context)) {
+            const applicationCheckMap = await this.syncInApplicationVersionChecker.ensureApplicationVersions(message.referencedApplicationVersions, message.applications, context);
+            if (applicationCheckMap) {
+                await this.syncInChecker.checkReferencedApplicationRelations(message, applicationCheckMap, context);
                 delayedProcessingMessagesWithValidApps.push(message);
             }
         }
@@ -27952,6 +28047,13 @@ class SynchronizationInManager {
                 await this.twoStageSyncedInDataProcessor.syncMessages(delayedProcessingMessagesWithValidApps, transaction, context);
             }, null, context);
         }
+    }
+    wait(milliseconds) {
+        return new Promise(resolve => {
+            setTimeout(_ => {
+                resolve();
+            }, milliseconds);
+        });
     }
     timeOrderMessages(messageMapByGUID) {
         const messages = [...messageMapByGUID.values()];
@@ -28004,7 +28106,7 @@ var ApplicationComparisonResult;
 })(ApplicationComparisonResult || (ApplicationComparisonResult = {}));
 class SyncInUtils {
     ensureRecordMapForRepoInTable(repositoryLocalId, operationHistory, recordMapByApplicationTableAndRepository) {
-        return ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion._localId), operationHistory.entity.index), repositoryLocalId);
+        return this.datastructureUtils.ensureChildJsMap(this.datastructureUtils.ensureChildJsMap(this.datastructureUtils.ensureChildJsMap(recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion._localId), operationHistory.entity.index), repositoryLocalId);
     }
 }
 
@@ -28090,10 +28192,12 @@ class TwoStageSyncedInDataProcessor {
     }
 }
 
-const WITH_ID = {};
-const WITH_RECORD_HISTORY = {};
-const WITH_INDEX = {};
 class SyncOutDataSerializer {
+    constructor() {
+        this.WITH_ID = {};
+        this.WITH_RECORD_HISTORY = {};
+        this.WITH_INDEX = {};
+    }
     async serialize(repositoryTransactionHistories) {
         let historiesToSend = [];
         const messages = [];
@@ -28125,11 +28229,15 @@ class SyncOutDataSerializer {
             messageRepository: repositoryTransactionHistory.repository,
             referencedApplicationVersionInMessageIndexesById: new Map(),
             referencedApplicationVersions: [],
-            repositoryInMessageIndexesById: new Map()
-        };
-        const inMessageUserAccountLookup = {
-            inMessageIndexesByGUID: new Map(),
-            lastInMessageIndex: -1
+            repositoryInMessageIndexesById: new Map(),
+            terminalLookup: {
+                inMessageIndexesByGUID: new Map(),
+                lastInMessageIndex: -1
+            },
+            userAccountLookup: {
+                inMessageIndexesByGUID: new Map(),
+                lastInMessageIndex: -1
+            }
         };
         const message = {
             actors: [],
@@ -28143,23 +28251,23 @@ class SyncOutDataSerializer {
             userAccounts: [],
             terminals: []
         };
-        message.history = this.serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup);
+        message.history = this.serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups);
         // TODO: replace db lookups with TerminalState lookups where possible
-        await this.serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup);
-        const inMessageApplicationLookup = await this.serializeActorsUserAccountsAndTerminals(message, lookups, inMessageUserAccountLookup);
+        await this.serializeRepositories(repositoryTransactionHistory, message, lookups);
+        const inMessageApplicationLookup = await this.serializeActorsUserAccountsAndTerminals(message, lookups);
         await this.serializeApplicationsAndVersions(message, inMessageApplicationLookup, lookups.applicationVersions, message.applicationVersions);
         await this.serializeReferencedApplicationProperties(message, lookups);
         await this.serializeApplicationsAndVersions(message, inMessageApplicationLookup, lookups.referencedApplicationVersions, message.referencedApplicationVersions);
         return message;
     }
-    async serializeActorsUserAccountsAndTerminals(message, lookups, inMessageUserAccountLookup) {
+    async serializeActorsUserAccountsAndTerminals(message, lookups) {
         let actorIdsToFindBy = [];
         for (let actorId of lookups.actorInMessageIndexesById.keys()) {
             actorIdsToFindBy.push(actorId);
         }
         const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy);
-        this.serializeUserAccounts(actors, message, inMessageUserAccountLookup);
-        const terminalInMessageIndexesById = this.serializeTerminals(actors, message, inMessageUserAccountLookup);
+        this.serializeUserAccounts(actors, message, lookups.userAccountLookup);
+        this.serializeActorTerminals(actors, message, lookups.terminalLookup, lookups.userAccountLookup);
         const inMessageApplicationLookup = {
             lastInMessageIndex: -1,
             inMessageIndexesById: new Map()
@@ -28168,32 +28276,19 @@ class SyncOutDataSerializer {
             const applicationInMessageIndex = this.serializeApplication(actor.application, inMessageApplicationLookup, message);
             const actorInMessageIndex = lookups.actorInMessageIndexesById.get(actor._localId);
             message.actors[actorInMessageIndex] = {
-                ...WITH_ID,
+                ...this.WITH_ID,
                 application: applicationInMessageIndex,
-                terminal: terminalInMessageIndexesById.get(actor.terminal.GUID),
-                userAccount: inMessageUserAccountLookup.inMessageIndexesByGUID.get(actor.userAccount.GUID),
+                terminal: lookups.terminalLookup.inMessageIndexesByGUID.get(actor.terminal.GUID),
+                userAccount: lookups.userAccountLookup.inMessageIndexesByGUID.get(actor.userAccount.GUID),
                 GUID: actor.GUID
             };
         }
         return inMessageApplicationLookup;
     }
-    serializeTerminals(actors, message, inMessageUserAccountLookup) {
-        let lastInMessageTerminalIndex = -1;
-        const terminalInMessageIndexesByGUID = new Map();
+    serializeActorTerminals(actors, message, inMessageTerminalLookup, inMessageUserAccountLookup) {
         for (const actor of actors) {
-            let terminal = actor.terminal;
-            if (terminalInMessageIndexesByGUID.has(terminal.GUID)) {
-                continue;
-            }
-            const terminalInMessageIndex = ++lastInMessageTerminalIndex;
-            terminalInMessageIndexesByGUID.set(terminal.GUID, terminalInMessageIndex);
-            message.terminals[terminalInMessageIndex] = {
-                ...WITH_ID,
-                GUID: terminal.GUID,
-                owner: inMessageUserAccountLookup.inMessageIndexesByGUID.get(terminal.owner.GUID)
-            };
+            this.addTerminalToMessage(actor.terminal, message, inMessageTerminalLookup, inMessageUserAccountLookup);
         }
-        return terminalInMessageIndexesByGUID;
     }
     serializeUserAccounts(actors, message, inMessageUserAccountLookup) {
         for (const actor of actors) {
@@ -28202,12 +28297,15 @@ class SyncOutDataSerializer {
         }
     }
     addUserAccountToMessage(userAccount, message, inMessageUserAccountLookup) {
+        const userAccountAlreadyAdded = inMessageUserAccountLookup.inMessageIndexesByGUID.has(userAccount.GUID);
         let userAccountInMessageIndex = this.getUserAccountInMessageIndex(userAccount, inMessageUserAccountLookup);
-        message.userAccounts[userAccountInMessageIndex] = {
-            ...WITH_ID,
-            username: userAccount.username,
-            GUID: userAccount.GUID
-        };
+        if (!userAccountAlreadyAdded) {
+            message.userAccounts[userAccountInMessageIndex] = {
+                ...this.WITH_ID,
+                username: userAccount.username,
+                GUID: userAccount.GUID
+            };
+        }
         return userAccountInMessageIndex;
     }
     getUserAccountInMessageIndex(userAccount, inMessageUserAccountLookup) {
@@ -28218,7 +28316,28 @@ class SyncOutDataSerializer {
         inMessageUserAccountLookup.inMessageIndexesByGUID.set(userAccount.GUID, userAccountInMessageIndex);
         return userAccountInMessageIndex;
     }
-    async serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup) {
+    addTerminalToMessage(terminal, message, inMessageTerminalLookup, inMessageUserAccountLookup) {
+        const terminalAlreadyAdded = inMessageTerminalLookup
+            .inMessageIndexesByGUID.has(terminal.GUID);
+        let terminalInMessageIndex = this.getTerminalInMessageIndex(terminal, inMessageTerminalLookup);
+        if (!terminalAlreadyAdded) {
+            message.terminals[terminalInMessageIndex] = {
+                ...this.WITH_ID,
+                GUID: terminal.GUID,
+                owner: inMessageUserAccountLookup.inMessageIndexesByGUID.get(terminal.owner.GUID)
+            };
+        }
+        return terminalInMessageIndex;
+    }
+    getTerminalInMessageIndex(userAccount, inMessageTerminalLookup) {
+        if (inMessageTerminalLookup.inMessageIndexesByGUID.has(userAccount.GUID)) {
+            return inMessageTerminalLookup.inMessageIndexesByGUID.get(userAccount.GUID);
+        }
+        let terminalInMessageIndex = ++inMessageTerminalLookup.lastInMessageIndex;
+        inMessageTerminalLookup.inMessageIndexesByGUID.set(userAccount.GUID, terminalInMessageIndex);
+        return terminalInMessageIndex;
+    }
+    async serializeRepositories(repositoryTransactionHistory, message, lookups) {
         let repositoryIdsToFindBy = [];
         for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
             repositoryIdsToFindBy.push(repositoryId);
@@ -28226,7 +28345,7 @@ class SyncOutDataSerializer {
         repositoryIdsToFindBy.push(repositoryTransactionHistory._localId);
         const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(repositoryIdsToFindBy);
         for (const repository of repositories) {
-            let userAccountInMessageIndex = this.getUserAccountInMessageIndex(repository.owner, inMessageUserAccountLookup);
+            let userAccountInMessageIndex = this.getUserAccountInMessageIndex(repository.owner, lookups.userAccountLookup);
             if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
                 const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository._localId);
                 message.referencedRepositories[repositoryInMessageIndex] =
@@ -28242,8 +28361,8 @@ class SyncOutDataSerializer {
     }
     async serializeReferencedApplicationProperties(message, lookups) {
         let applicationRelationIdsToFindBy = [];
-        for (let repositoryId of lookups.referencedApplicationRelationIndexesById.keys()) {
-            applicationRelationIdsToFindBy.push(repositoryId);
+        for (let applicationRelationLocalId of lookups.referencedApplicationRelationIndexesById.keys()) {
+            applicationRelationIdsToFindBy.push(applicationRelationLocalId);
         }
         const applicationRelations = await this.applicationRelationDao
             .findAllByLocalIdsWithApplications(applicationRelationIdsToFindBy);
@@ -28259,10 +28378,10 @@ class SyncOutDataSerializer {
             }
             lookups.referencedApplicationVersions[referencedApplicationVersionInMessageIndex] = referencedApplicationVersion;
             message.referencedApplicationRelations.push({
-                ...WITH_ID,
+                ...this.WITH_ID,
                 index: applicationRelation.index,
                 entity: {
-                    ...WITH_ID,
+                    ...this.WITH_ID,
                     index: applicationRelation.entity.index,
                     applicationVersion: referencedApplicationVersionInMessageIndex
                 }
@@ -28274,7 +28393,7 @@ class SyncOutDataSerializer {
             const applicationVersion = lookupVersions[i];
             const applicationInMessageIndex = this.serializeApplication(applicationVersion.application, applicationLookup, message);
             finalApplicationVersions[i] = {
-                ...WITH_ID,
+                ...this.WITH_ID,
                 application: applicationInMessageIndex,
                 integerVersion: applicationVersion.integerVersion
             };
@@ -28291,9 +28410,9 @@ class SyncOutDataSerializer {
             applicationLookup.inMessageIndexesById
                 .set(application.index, applicationInMessageIndex);
             message.applications[applicationInMessageIndex] = {
-                ...WITH_INDEX,
+                ...this.WITH_INDEX,
                 domain: {
-                    ...WITH_ID,
+                    ...this.WITH_ID,
                     name: application.domain.name
                 },
                 name: application.name
@@ -28301,7 +28420,7 @@ class SyncOutDataSerializer {
         }
         return applicationInMessageIndex;
     }
-    serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup) {
+    serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups) {
         repositoryTransactionHistory.operationHistory.sort((operationHistory1, operationHistory2) => {
             if (operationHistory1.orderNumber < operationHistory2.orderNumber) {
                 return -1;
@@ -28313,12 +28432,12 @@ class SyncOutDataSerializer {
         });
         const serializedOperationHistory = [];
         for (const operationHistory of repositoryTransactionHistory.operationHistory) {
-            serializedOperationHistory.push(this.serializeOperationHistory(operationHistory, lookups));
+            serializedOperationHistory.push(this.serializeOperationHistory(operationHistory, message, lookups));
         }
         return {
-            ...WITH_ID,
+            ...this.WITH_ID,
             isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
-            repository: this.serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserAccountLookup),
+            repository: this.serializeHistoryRepository(repositoryTransactionHistory, message, lookups.userAccountLookup),
             operationHistory: serializedOperationHistory,
             saveTimestamp: repositoryTransactionHistory.saveTimestamp,
             GUID: repositoryTransactionHistory.GUID
@@ -28338,11 +28457,11 @@ class SyncOutDataSerializer {
             return repositoryTransactionHistory.repository.GUID;
         }
     }
-    serializeOperationHistory(operationHistory, lookups) {
+    serializeOperationHistory(operationHistory, message, lookups) {
         const dbEntity = operationHistory.entity;
         const serializedRecordHistory = [];
         for (const recordHistory of operationHistory.recordHistory) {
-            serializedRecordHistory.push(this.serializeRecordHistory(operationHistory, recordHistory, dbEntity, lookups));
+            serializedRecordHistory.push(this.serializeRecordHistory(operationHistory, recordHistory, dbEntity, message, lookups));
         }
         const entity = operationHistory.entity;
         // Should be populated - coming from TerminalStore
@@ -28370,18 +28489,18 @@ class SyncOutDataSerializer {
         }
         lookups.applicationVersions[applicationVersionInMessageIndex] = applicationVersion;
         return {
-            ...WITH_ID,
+            ...this.WITH_ID,
             actor: this.getActorInMessageIndex(operationHistory.actor, lookups),
             changeType: operationHistory.changeType,
             entity: {
-                ...WITH_ID,
+                ...this.WITH_ID,
                 applicationVersion: applicationVersionInMessageIndex,
                 index: operationHistory.entity.index
             },
             recordHistory: serializedRecordHistory
         };
     }
-    serializeRecordHistory(operationHistory, recordHistory, dbEntity, lookups) {
+    serializeRecordHistory(operationHistory, recordHistory, dbEntity, message, lookups) {
         const dbColumMapByIndex = new Map();
         for (const dbColumn of dbEntity.columns) {
             dbColumMapByIndex.set(dbColumn.index, dbColumn);
@@ -28389,12 +28508,12 @@ class SyncOutDataSerializer {
         const newValues = [];
         for (const newValue of recordHistory.newValues) {
             const dbColumn = dbColumMapByIndex.get(newValue.columnIndex);
-            newValues.push(this.serializeNewValue(newValue, dbColumn, lookups));
+            newValues.push(this.serializeNewValue(newValue, dbColumn, message, lookups));
         }
         const oldValues = [];
         for (const oldValue of recordHistory.oldValues) {
             const dbColumn = dbColumMapByIndex.get(oldValue.columnIndex);
-            oldValues.push(this.serializeOldValue(oldValue, dbColumn, lookups));
+            oldValues.push(this.serializeOldValue(oldValue, dbColumn, message, lookups));
         }
         const actor = recordHistory.actor;
         // Actor may be null if it's the same actor as for RepositoryTransactionHistory
@@ -28402,7 +28521,7 @@ class SyncOutDataSerializer {
         // 	throw new Error(`RecordHistory.actor must be populated`)
         // }
         const baseObject = {
-            ...WITH_ID,
+            ...this.WITH_ID,
         };
         if (actor._localId !== operationHistory.actor._localId) {
             baseObject.actor = this.getActorInMessageIndex(actor, lookups);
@@ -28435,36 +28554,35 @@ class SyncOutDataSerializer {
         }
         return actorInMessageIndex;
     }
-    serializeNewValue(newValue, dbColumn, lookups) {
-        return this.serializeValue(newValue, dbColumn, lookups, 'newValue');
+    serializeNewValue(newValue, dbColumn, message, lookups) {
+        return this.serializeValue(newValue, dbColumn, message, lookups, 'newValue');
     }
-    serializeOldValue(oldValue, dbColumn, lookups) {
-        return this.serializeValue(oldValue, dbColumn, lookups, 'oldValue');
+    serializeOldValue(oldValue, dbColumn, message, lookups) {
+        return this.serializeValue(oldValue, dbColumn, message, lookups, 'oldValue');
     }
-    serializeValue(valueRecord, dbColumn, lookups, valueFieldName) {
+    serializeValue(valueRecord, dbColumn, message, lookups, valueFieldName) {
         let value = valueRecord[valueFieldName];
         let serailizedValue = value;
-        switch (dbColumn.name) {
-            case airEntity.COPY_ACTOR_LID:
-            case airEntity.MANY_SIDE_ACTOR_LID:
-            case airEntity.ONE_SIDE_ACTOR_LID:
-                {
-                    serailizedValue = this.getActorInMessageIndexById(value, lookups);
-                    break;
-                }
-            case airEntity.COPY_REPOSITORY_LID:
-            case airEntity.MANY_SIDE_REPOSITORY_LID:
-            case airEntity.ONE_SIDE_REPOSITORY_LID:
-                {
-                    serailizedValue = this.getSerializedRepositoryId(value, lookups);
-                    break;
-                }
-            case airEntity.MANY_SIDE_APPLICATION_RELATION_LID:
-            case airEntity.ONE_SIDE_APPLICATION_RELATION_LID:
-                {
-                    serailizedValue = this.getSerializedReferencedApplicationRelationId(value, lookups);
-                    break;
-                }
+        if (this.applicationUtils.isManyRelationColumn(dbColumn)) {
+            const oneSideDbEntity = this.applicationUtils
+                .getOneSideEntityOfManyRelationColumn(dbColumn);
+            if (this.dictionary.isActor(oneSideDbEntity)) {
+                serailizedValue = this.getActorInMessageIndexById(value, lookups);
+            }
+            else if (this.dictionary.isRepository(oneSideDbEntity)) {
+                serailizedValue = this.getSerializedRepositoryId(value, lookups);
+            }
+            else if (this.dictionary.isTerminal(oneSideDbEntity)) {
+                const terminalInMessageIndex = this.addTerminalToMessage(value, message, lookups.terminalLookup, lookups.userAccountLookup);
+                serailizedValue = terminalInMessageIndex;
+            }
+            else if (this.dictionary.isUserAccount(oneSideDbEntity)) {
+                const userAccountInMessageIndex = this.addUserAccountToMessage(value, message, lookups.userAccountLookup);
+                serailizedValue = userAccountInMessageIndex;
+            }
+            else if (this.dictionary.isApplicationRelation(oneSideDbEntity)) {
+                serailizedValue = this.getSerializedReferencedApplicationRelationId(value, lookups);
+            }
         }
         if (/.*_AID_[\d]+$/.test(dbColumn.name)
             && dbColumn.manyRelationColumns.length) {
@@ -28475,35 +28593,37 @@ class SyncOutDataSerializer {
             serailizedValue = this.getSerializedRepositoryId(value, lookups);
         }
         return {
-            ...WITH_RECORD_HISTORY,
+            ...this.WITH_RECORD_HISTORY,
             columnIndex: valueRecord.columnIndex,
             [valueFieldName]: serailizedValue
         };
     }
-    getSerializedRepositoryId(value, lookups) {
-        if (value === lookups.messageRepository._localId) {
+    getSerializedRepositoryId(repositoryLocalId, lookups) {
+        if (repositoryLocalId === lookups.messageRepository._localId) {
             return -1;
         }
-        let serailizedValue = lookups.repositoryInMessageIndexesById.get(value);
+        let serailizedValue = lookups.repositoryInMessageIndexesById.get(repositoryLocalId);
         if (serailizedValue === undefined) {
             lookups.lastInMessageRepositoryIndex++;
             serailizedValue = lookups.lastInMessageRepositoryIndex;
-            lookups.repositoryInMessageIndexesById.set(value, serailizedValue);
+            lookups.repositoryInMessageIndexesById.set(repositoryLocalId, serailizedValue);
         }
         return serailizedValue;
     }
-    getSerializedReferencedApplicationRelationId(value, lookups) {
-        let serailizedValue = lookups.referencedApplicationRelationIndexesById.get(value);
+    getSerializedReferencedApplicationRelationId(applicationRelationLocalId, lookups) {
+        let serailizedValue = lookups.referencedApplicationRelationIndexesById
+            .get(applicationRelationLocalId);
         if (serailizedValue === undefined) {
             lookups.lastInMessageReferencedApplicationRelationIndex++;
             serailizedValue = lookups.lastInMessageReferencedApplicationRelationIndex;
-            lookups.referencedApplicationRelationIndexesById.set(value, serailizedValue);
+            lookups.referencedApplicationRelationIndexesById
+                .set(applicationRelationLocalId, serailizedValue);
         }
         return serailizedValue;
     }
     serializeRepository(repository, owner) {
         return {
-            ...WITH_ID,
+            ...this.WITH_ID,
             ageSuitability: repository.ageSuitability,
             createdAt: repository.createdAt,
             immutable: repository.immutable,
@@ -28582,7 +28702,7 @@ class SynchronizationOutManager {
         for (let i = 0; i < messages.length; i++) {
             const repository = historiesToSend[i].repository;
             const source = repository.GUID.substring(0, 8);
-            ensureChildArray(ensureChildJsMap(groupMessageMap, source), repository.GUID).push(messages[i]);
+            this.datastructureUtils.ensureChildArray(this.datastructureUtils.ensureChildJsMap(groupMessageMap, source), repository.GUID).push(messages[i]);
         }
         return groupMessageMap;
     }
@@ -28606,14 +28726,18 @@ groundTransport.setDependencies(DebugSynchronizationAdapter, {
 groundTransport.setDependencies(Stage1SyncedInDataProcessor, {
     actorDao: ActorDao,
     airportDatabase: AIRPORT_DATABASE,
+    datastructureUtils: DatastructureUtils,
     repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     sequenceGenerator: SEQUENCE_GENERATOR,
-    syncInUtils: SyncInUtils
+    syncInUtils: SyncInUtils,
+    systemWideOperationIdUtils: SystemWideOperationIdUtils,
 });
 groundTransport.setDependencies(Stage2SyncedInDataProcessor, {
     airportDatabase: AIRPORT_DATABASE,
     databaseFacade: DATABASE_FACADE,
+    datastructureUtils: DatastructureUtils,
+    dictionary: Dictionary,
     recordUpdateStageDao: RecordUpdateStageDao,
     utils: Utils
 });
@@ -28629,18 +28753,22 @@ groundTransport.setDependencies(SyncInApplicationVersionChecker, {
     applicationInitializer: APPLICATION_INITIALIZER
 });
 groundTransport.setDependencies(SyncInChecker, {
+    datastructureUtils: DatastructureUtils,
     syncInActorChecker: SyncInActorChecker,
     syncInApplicationChecker: SyncInApplicationChecker,
     syncInApplicationVersionChecker: SyncInApplicationVersionChecker,
     syncInDataChecker: SyncInDataChecker,
     syncInRepositoryChecker: SyncInRepositoryChecker,
     syncInTerminalChecker: SyncInTerminalChecker,
-    syncInUserAccountChecker: SyncInUserAccountChecker
+    syncInUserAccountChecker: SyncInUserAccountChecker,
+    terminalStore: TerminalStore
 });
 groundTransport.setDependencies(SyncInDataChecker, {
     airportDatabase: AIRPORT_DATABASE,
     appTrackerUtils: AppTrackerUtils,
-    sequenceGenerator: SEQUENCE_GENERATOR,
+    datastructureUtils: DatastructureUtils,
+    dictionary: Dictionary,
+    systemWideOperationIdUtils: SystemWideOperationIdUtils,
     terminalStore: TerminalStore
 });
 groundTransport.setDependencies(SyncInRepositoryChecker, {
@@ -28652,10 +28780,15 @@ groundTransport.setDependencies(SyncInTerminalChecker, {
 groundTransport.setDependencies(SyncInUserAccountChecker, {
     userAccountDao: UserAccountDao
 });
+groundTransport.setDependencies(SyncInUtils, {
+    datastructureUtils: DatastructureUtils
+});
 groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
     applicationRelationDao: ApplicationRelationDao,
+    applicationUtils: ApplicationUtils,
     dbApplicationUtils: DbApplicationUtils,
+    dictionary: Dictionary,
     repositoryDao: RepositoryDao,
 });
 groundTransport.setDependencies(SynchronizationAdapterLoader, {
@@ -28669,6 +28802,7 @@ groundTransport.setDependencies(SynchronizationInManager, {
     twoStageSyncedInDataProcessor: TwoStageSyncedInDataProcessor
 });
 groundTransport.setDependencies(SynchronizationOutManager, {
+    datastructureUtils: DatastructureUtils,
     repositoryDao: RepositoryDao,
     repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
     synchronizationAdapterLoader: SynchronizationAdapterLoader,
@@ -29091,148 +29225,6 @@ class MappedOrderByParser {
         });
     }
 }
-
-// For MtO mapping in bridged queries
-class GraphMtoMapper {
-    constructor() {
-        // Map of all objects that have a given MtO reference
-        // [] MtO reference Application Entity Index
-        // [] MtO reference Entity Index
-        this.mtoStubReferenceMap = [];
-    }
-    addMtoReference(mtoStubReference, mtoEntityIdValue) {
-        const mtoDbEntity = mtoStubReference.mtoDbEntity;
-        let mtoEntitiesForTypeMap = ensureChildMap(ensureChildArray(this.mtoStubReferenceMap, mtoDbEntity.applicationVersion.application.index), mtoDbEntity.index);
-        let mtosForEntity = ensureChildMap(mtoEntitiesForTypeMap, mtoEntityIdValue);
-        mtosForEntity[mtoStubReference.mtoRelationField] = mtoStubReference;
-    }
-    populateMtos(entityMap) {
-        for (const applicationIndex in this.mtoStubReferenceMap) {
-            const mtoEntitiesForApplicationMap = this.mtoStubReferenceMap[applicationIndex];
-            for (const entityIndex in mtoEntitiesForApplicationMap) {
-                const mtoEntitiesForTypeMap = mtoEntitiesForApplicationMap[entityIndex];
-                for (let mtoEntityId in mtoEntitiesForTypeMap) {
-                    let mtosForEntity = mtoEntitiesForTypeMap[mtoEntityId];
-                    for (let mtoPropertyName in mtosForEntity) {
-                        let mtoStubReference = mtosForEntity[mtoPropertyName];
-                        let otmDbEntity = mtoStubReference.otmDbEntity;
-                        if (!entityMap[otmDbEntity.applicationVersion.application.index]) {
-                            continue;
-                        }
-                        let otmEntitiesForTypeMap = entityMap[otmDbEntity.applicationVersion.application.index][otmDbEntity.index];
-                        if (!otmEntitiesForTypeMap) {
-                            continue;
-                        }
-                        let otmEntity = otmEntitiesForTypeMap[mtoStubReference.otmEntityId];
-                        if (!otmEntity) {
-                            continue;
-                        }
-                        mtoStubReference.mtoParentObject[mtoStubReference.mtoRelationField] = otmEntity;
-                    }
-                }
-            }
-        }
-    }
-}
-
-// For OtM mapping in bridged queries
-class GraphOtmMapper {
-    constructor() {
-        // Map of MtO referred objects by OtM references
-        // [] OTM Reference Entity Application Index
-        // [] OTM Reference Entity Index
-        this.mtoEntityReferenceMap = [];
-        // Map of objects with OtM references by
-        // [] OtM reference Application Entity Index
-        // [] OtM reference Entity Index
-        this.otmEntityReferenceMap = [];
-    }
-    addMtoReference(mtoStubReference, mtoEntityId, dbEntity, context) {
-        // If the @OneToMany({ mappedBy: ... }) is missing, there is nothing to map to
-        if (!mtoStubReference.otmEntityField) {
-            return;
-        }
-        // Add into mtoEntityReferenceMap
-        const otmDbEntity = mtoStubReference.otmDbEntity;
-        let mtoEntityReferenceMapForEntity = ensureChildMap(ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.applicationVersion.application.index), otmDbEntity.index);
-        let mapForOtmEntity = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId];
-        if (!mapForOtmEntity) {
-            mapForOtmEntity = {};
-            mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId] = mapForOtmEntity;
-        }
-        let mtoCollection = mapForOtmEntity[mtoStubReference.otmEntityField];
-        if (!mtoCollection) {
-            mtoCollection = [];
-            mapForOtmEntity[mtoStubReference.otmEntityField]
-                = mtoCollection;
-        }
-        mtoCollection.push(mtoStubReference.mtoParentObject);
-    }
-    addOtmReference(otmStubReference, otmEntityIdValue) {
-        // Add into otoEntityReferenceMap
-        const otmDbEntity = otmStubReference.otmDbEntity;
-        let mtoEntityReferenceMapForEntity = ensureChildMap(ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.applicationVersion.application.index), otmDbEntity.index);
-        let otmRecordByPropertyName = mtoEntityReferenceMapForEntity[otmEntityIdValue];
-        if (!otmRecordByPropertyName) {
-            otmRecordByPropertyName = {};
-            mtoEntityReferenceMapForEntity[otmEntityIdValue] = otmRecordByPropertyName;
-        }
-        otmRecordByPropertyName[otmStubReference.otmPropertyName] = otmStubReference.otmObject;
-    }
-    populateOtms(entityMap) {
-        for (const applicationIndex in this.mtoEntityReferenceMap) {
-            const mtoEntityReferenceMapForApplication = this.mtoEntityReferenceMap[applicationIndex];
-            for (const entityIndex in mtoEntityReferenceMapForApplication) {
-                const mtoEntityReferenceMapForEntity = mtoEntityReferenceMapForApplication[entityIndex];
-                // If there are no entities of this type in query results, just keep the stubs
-                if (!entityMap[applicationIndex]) {
-                    continue;
-                }
-                let entityOfTypeMap = entityMap[applicationIndex][entityIndex];
-                // If there are no entities of this type in query results, just keep the stubs
-                if (!entityOfTypeMap) {
-                    continue;
-                }
-                // If there are no OTM for this type in query results, no mapping needs to happen
-                if (!this.otmEntityReferenceMap[applicationIndex]) {
-                    continue;
-                }
-                let entityWithOtmMap = this.otmEntityReferenceMap[applicationIndex][entityIndex];
-                // If there are no OTM for this type in query results, no mapping needs to happen
-                if (!entityWithOtmMap) {
-                    continue;
-                }
-                for (let otmEntityId in mtoEntityReferenceMapForEntity) {
-                    let referencedEntitiesByPropertyMap = mtoEntityReferenceMapForEntity[otmEntityId];
-                    let otmRecordByPropertyName = entityWithOtmMap[otmEntityId];
-                    // If there are no OtMs for this entity, no mapping needs to happen
-                    if (!otmRecordByPropertyName) {
-                        continue;
-                    }
-                    for (let otmProperty in referencedEntitiesByPropertyMap) {
-                        let otmEntity = otmRecordByPropertyName[otmProperty];
-                        // If OtM entity doesn't have this collection, no mapping needs to happen
-                        if (!otmEntity) {
-                            continue;
-                        }
-                        let referencedEntityArray = referencedEntitiesByPropertyMap[otmProperty];
-                        let otmCollection = otmEntity[otmProperty];
-                        // If @OneToMany isn't set yet
-                        if (!otmCollection) {
-                            otmEntity[otmProperty] = referencedEntityArray;
-                        }
-                        else {
-                            for (let referencedEntity of referencedEntityArray) {
-                                otmCollection.push(referencedEntity);
-                            }
-                        }
-                        otmRecordByPropertyName[otmProperty] = otmEntity[otmProperty].slice();
-                    }
-                }
-            }
-        }
-    }
-}
 class AbstractObjectResultParser {
     constructor(applicationUtils, entityStateManager, utils) {
         this.applicationUtils = applicationUtils;
@@ -29284,9 +29276,10 @@ class AbstractObjectResultParser {
  * inter-connected graph (where possible).
  */
 class EntityGraphResultParser extends AbstractObjectResultParser {
-    constructor(config, rootDbEntity, applicationUtils, entityStateManager, utils) {
+    constructor(config, datastructureUtils, rootDbEntity, applicationUtils, entityStateManager, utils) {
         super(applicationUtils, entityStateManager, utils);
         this.config = config;
+        this.datastructureUtils = datastructureUtils;
         this.rootDbEntity = rootDbEntity;
         // Keys can only be strings or numbers | TODO: change to JS Maps, if needed
         this.entityMapByApplicationAndTableIndexes = [];
@@ -29295,8 +29288,8 @@ class EntityGraphResultParser extends AbstractObjectResultParser {
         this.mtoStubBuffer = [];
         // Used in ENTITY_FLATTENED queries
         this.currentResultRow = [];
-        this.otmMapper = new GraphOtmMapper();
-        this.mtoMapper = new GraphMtoMapper();
+        this.otmMapper = new globalThis.GraphOtmMapper(datastructureUtils);
+        this.mtoMapper = new globalThis.GraphMtoMapper(datastructureUtils);
     }
     addEntity(entityAlias, dbEntity, context) {
         return this.applicationUtils.getNewEntity(dbEntity);
@@ -29392,7 +29385,7 @@ class EntityGraphResultParser extends AbstractObjectResultParser {
             throw new Error(`Entity ID not specified for entity 
 			'${dbEntity.applicationVersion.application.name}.${dbEntity.name}'.`);
         }
-        let entityMapForName = ensureChildMap(ensureChildArray(this.entityMapByApplicationAndTableIndexes, dbEntity.applicationVersion.application.index), dbEntity.index);
+        let entityMapForName = this.datastructureUtils.ensureChildMap(this.datastructureUtils.ensureChildArray(this.entityMapByApplicationAndTableIndexes, dbEntity.applicationVersion.application.index), dbEntity.index);
         let existingEntity = entityMapForName[idValue];
         let currentEntity = this.mergeEntities(existingEntity, resultObject, dbEntity, selectClauseFragment, context);
         entityMapForName[idValue] = currentEntity;
@@ -29729,11 +29722,157 @@ class EntityTreeResultParser extends TreeResultParser {
     }
 }
 
+// For MtO mapping in bridged queries
+class GraphMtoMapper {
+    constructor(datastructureUtils) {
+        this.datastructureUtils = datastructureUtils;
+        // Map of all objects that have a given MtO reference
+        // [] MtO reference Application Entity Index
+        // [] MtO reference Entity Index
+        this.mtoStubReferenceMap = [];
+    }
+    addMtoReference(mtoStubReference, mtoEntityIdValue) {
+        const mtoDbEntity = mtoStubReference.mtoDbEntity;
+        let mtoEntitiesForTypeMap = this.datastructureUtils.ensureChildMap(this.datastructureUtils.ensureChildArray(this.mtoStubReferenceMap, mtoDbEntity.applicationVersion.application.index), mtoDbEntity.index);
+        let mtosForEntity = this.datastructureUtils.ensureChildMap(mtoEntitiesForTypeMap, mtoEntityIdValue);
+        mtosForEntity[mtoStubReference.mtoRelationField] = mtoStubReference;
+    }
+    populateMtos(entityMap) {
+        for (const applicationIndex in this.mtoStubReferenceMap) {
+            const mtoEntitiesForApplicationMap = this.mtoStubReferenceMap[applicationIndex];
+            for (const entityIndex in mtoEntitiesForApplicationMap) {
+                const mtoEntitiesForTypeMap = mtoEntitiesForApplicationMap[entityIndex];
+                for (let mtoEntityId in mtoEntitiesForTypeMap) {
+                    let mtosForEntity = mtoEntitiesForTypeMap[mtoEntityId];
+                    for (let mtoPropertyName in mtosForEntity) {
+                        let mtoStubReference = mtosForEntity[mtoPropertyName];
+                        let otmDbEntity = mtoStubReference.otmDbEntity;
+                        if (!entityMap[otmDbEntity.applicationVersion.application.index]) {
+                            continue;
+                        }
+                        let otmEntitiesForTypeMap = entityMap[otmDbEntity.applicationVersion.application.index][otmDbEntity.index];
+                        if (!otmEntitiesForTypeMap) {
+                            continue;
+                        }
+                        let otmEntity = otmEntitiesForTypeMap[mtoStubReference.otmEntityId];
+                        if (!otmEntity) {
+                            continue;
+                        }
+                        mtoStubReference.mtoParentObject[mtoStubReference.mtoRelationField] = otmEntity;
+                    }
+                }
+            }
+        }
+    }
+}
+globalThis.GraphMtoMapper = GraphMtoMapper;
+
+// For OtM mapping in bridged queries
+class GraphOtmMapper {
+    constructor(datastructureUtils) {
+        this.datastructureUtils = datastructureUtils;
+        // Map of MtO referred objects by OtM references
+        // [] OTM Reference Entity Application Index
+        // [] OTM Reference Entity Index
+        this.mtoEntityReferenceMap = [];
+        // Map of objects with OtM references by
+        // [] OtM reference Application Entity Index
+        // [] OtM reference Entity Index
+        this.otmEntityReferenceMap = [];
+    }
+    addMtoReference(mtoStubReference, mtoEntityId, dbEntity, context) {
+        // If the @OneToMany({ mappedBy: ... }) is missing, there is nothing to map to
+        if (!mtoStubReference.otmEntityField) {
+            return;
+        }
+        // Add into mtoEntityReferenceMap
+        const otmDbEntity = mtoStubReference.otmDbEntity;
+        let mtoEntityReferenceMapForEntity = this.datastructureUtils.ensureChildMap(this.datastructureUtils.ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.applicationVersion.application.index), otmDbEntity.index);
+        let mapForOtmEntity = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId];
+        if (!mapForOtmEntity) {
+            mapForOtmEntity = {};
+            mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId] = mapForOtmEntity;
+        }
+        let mtoCollection = mapForOtmEntity[mtoStubReference.otmEntityField];
+        if (!mtoCollection) {
+            mtoCollection = [];
+            mapForOtmEntity[mtoStubReference.otmEntityField]
+                = mtoCollection;
+        }
+        mtoCollection.push(mtoStubReference.mtoParentObject);
+    }
+    addOtmReference(otmStubReference, otmEntityIdValue) {
+        // Add into otoEntityReferenceMap
+        const otmDbEntity = otmStubReference.otmDbEntity;
+        let mtoEntityReferenceMapForEntity = this.datastructureUtils.ensureChildMap(this.datastructureUtils.ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.applicationVersion.application.index), otmDbEntity.index);
+        let otmRecordByPropertyName = mtoEntityReferenceMapForEntity[otmEntityIdValue];
+        if (!otmRecordByPropertyName) {
+            otmRecordByPropertyName = {};
+            mtoEntityReferenceMapForEntity[otmEntityIdValue] = otmRecordByPropertyName;
+        }
+        otmRecordByPropertyName[otmStubReference.otmPropertyName] = otmStubReference.otmObject;
+    }
+    populateOtms(entityMap) {
+        for (const applicationIndex in this.mtoEntityReferenceMap) {
+            const mtoEntityReferenceMapForApplication = this.mtoEntityReferenceMap[applicationIndex];
+            for (const entityIndex in mtoEntityReferenceMapForApplication) {
+                const mtoEntityReferenceMapForEntity = mtoEntityReferenceMapForApplication[entityIndex];
+                // If there are no entities of this type in query results, just keep the stubs
+                if (!entityMap[applicationIndex]) {
+                    continue;
+                }
+                let entityOfTypeMap = entityMap[applicationIndex][entityIndex];
+                // If there are no entities of this type in query results, just keep the stubs
+                if (!entityOfTypeMap) {
+                    continue;
+                }
+                // If there are no OTM for this type in query results, no mapping needs to happen
+                if (!this.otmEntityReferenceMap[applicationIndex]) {
+                    continue;
+                }
+                let entityWithOtmMap = this.otmEntityReferenceMap[applicationIndex][entityIndex];
+                // If there are no OTM for this type in query results, no mapping needs to happen
+                if (!entityWithOtmMap) {
+                    continue;
+                }
+                for (let otmEntityId in mtoEntityReferenceMapForEntity) {
+                    let referencedEntitiesByPropertyMap = mtoEntityReferenceMapForEntity[otmEntityId];
+                    let otmRecordByPropertyName = entityWithOtmMap[otmEntityId];
+                    // If there are no OtMs for this entity, no mapping needs to happen
+                    if (!otmRecordByPropertyName) {
+                        continue;
+                    }
+                    for (let otmProperty in referencedEntitiesByPropertyMap) {
+                        let otmEntity = otmRecordByPropertyName[otmProperty];
+                        // If OtM entity doesn't have this collection, no mapping needs to happen
+                        if (!otmEntity) {
+                            continue;
+                        }
+                        let referencedEntityArray = referencedEntitiesByPropertyMap[otmProperty];
+                        let otmCollection = otmEntity[otmProperty];
+                        // If @OneToMany isn't set yet
+                        if (!otmCollection) {
+                            otmEntity[otmProperty] = referencedEntityArray;
+                        }
+                        else {
+                            for (let referencedEntity of referencedEntityArray) {
+                                otmCollection.push(referencedEntity);
+                            }
+                        }
+                        otmRecordByPropertyName[otmProperty] = otmEntity[otmProperty].slice();
+                    }
+                }
+            }
+        }
+    }
+}
+globalThis.GraphOtmMapper = GraphOtmMapper;
+
 class ObjectResultParserFactory {
     getObjectResultParser(queryResultType, config, rootDbEntity) {
         switch (queryResultType) {
             case QueryResultType.ENTITY_GRAPH:
-                return new EntityGraphResultParser(config, rootDbEntity, this.applicationUtils, this.entityStateManager, this.utils);
+                return new EntityGraphResultParser(config, this.datastructureUtils, rootDbEntity, this.applicationUtils, this.entityStateManager, this.utils);
             case QueryResultType.ENTITY_TREE:
                 return new EntityTreeResultParser(this.applicationUtils, this.entityStateManager, this.utils);
             default:
@@ -31492,9 +31631,29 @@ class SqlDriver {
         return true;
     }
     getEntityTableName(dbEntity, context) {
-        return this.getTableName(dbEntity.applicationVersion.application, dbEntity, context);
+        return this.getTableName(dbEntity.applicationVersion.application, dbEntity.applicationVersion.integerVersion, dbEntity, context);
     }
-    getTableName(application, table, context) {
+    getTableName(application, applicationIntegerVersion, table, context) {
+        const domainName = typeof application.domain === 'string'
+            ? application.domain
+            : application.domain.name;
+        const actorApplication = context.transaction.actor.application;
+        if (!this.appTrackerUtils.isInternalDomain(actorApplication.domain.name)) {
+            const entityHasExternalAccessPermissions = this.appTrackerUtils.entityHasExternalAccessPermissions(domainName, application.name, applicationIntegerVersion, table.name);
+            if (!entityHasExternalAccessPermissions) {
+                throw new Error(`
+Domain:          ${actorApplication.domain.name}
+Application:     ${actorApplication.name}
+
+has no permissions to access:
+
+Domain:          ${domainName}
+Application:     ${application.name},
+Integer Version: ${applicationIntegerVersion}
+Entity:          ${table.name}
+`);
+            }
+        }
         let theTableName = table.name;
         if (table.tableConfig && table.tableConfig.name) {
             theTableName = table.tableConfig.name;
@@ -31686,6 +31845,7 @@ fuelHydrantSystem.setDependencies(IdGenerator, {
 });
 fuelHydrantSystem.setDependencies(ObjectResultParserFactory, {
     applicationUtils: ApplicationUtils,
+    datastructureUtils: DatastructureUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
     utils: Utils
 });
@@ -31693,6 +31853,7 @@ fuelHydrantSystem.setDependencies(SqlDriver, {
     activeQueries: ActiveQueries,
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: ApplicationUtils,
+    appTrackerUtils: AppTrackerUtils,
     dbApplicationUtils: DbApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
     objectResultParserFactory: ObjectResultParserFactory,
@@ -31719,7 +31880,7 @@ fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
 class AirEntity {
     constructor(entityGUID) {
         this.ageSuitability = 0;
-        // FIXME: when records are copied, make this a column
+        // TODO: if and when records are copied, make this a column
         // @Column({ name: 'COPIED', nullable: false })
         this.copied = false;
         this.createdAt = new Date();
@@ -32150,25 +32311,19 @@ class CrossRepositoryRelationManager {
                 break;
             }
         }
-        const oneSideRepositoryLedger = this.getLedger(manySideRelation, manySideEntity, oneSideRelation, copiedEntity);
+        const oneSideRepositoryLedger = this.getLedger(oneSideRelation, manySideEntity);
         oneSideRepositoryLedger.repository = copiedEntity.repository;
-        const manySideRepositoryLedger = this.getLedger(manySideRelation, manySideEntity, oneSideRelation, copiedEntity);
+        const manySideRepositoryLedger = this.getLedger(manySideRelation, copiedEntity);
         manySideRepositoryLedger.repository = manySideEntity.repository;
         return {
             manySideRepositoryLedger,
             oneSideRepositoryLedger
         };
     }
-    getLedger(manySideRelation, manySideEntity, oneSideRelation, oneSideEntity) {
+    getLedger(relation, relatedEntity) {
         const crossRepositoryRelationLedger = new CrossRepositoryRelationLedger();
-        crossRepositoryRelationLedger.oneSideRelation = oneSideRelation;
-        crossRepositoryRelationLedger.oneSideActorRecordId = oneSideEntity._actorRecordId;
-        crossRepositoryRelationLedger.oneSideActor = oneSideEntity.actor;
-        crossRepositoryRelationLedger.oneSideRepository = oneSideEntity.repository;
-        crossRepositoryRelationLedger.manySideRelation = manySideRelation;
-        crossRepositoryRelationLedger.manySideActorRecordId = manySideEntity._actorRecordId;
-        crossRepositoryRelationLedger.manySideActor = manySideEntity.actor;
-        crossRepositoryRelationLedger.manySideRepository = manySideEntity.repository;
+        crossRepositoryRelationLedger.relation = relation;
+        crossRepositoryRelationLedger.relatedRepository = relatedEntity.repository;
         return crossRepositoryRelationLedger;
     }
 }
@@ -32351,14 +32506,15 @@ already contains a new repository.`);
         if (!qEntity.__driver__.dbEntity.isAirEntity) {
             return rawInsertValues;
         }
+        const repositoryPropertyName = this.dictionary.AirEntity.properties.repository;
         let columns = rawInsertValues.columns.slice();
-        if (columns.some((column, index) => {
-            // return column.fieldName === REPOSITORY_PROPERTY_NAME
-            return column.dbProperty.name === REPOSITORY_PROPERTY_NAME;
+        if (columns.some((column, _index) => {
+            // return column.fieldName === repositoryPropertyName
+            return column.dbProperty.name === repositoryPropertyName;
         })) {
             return rawInsertValues;
         }
-        columns.push(qEntity[REPOSITORY_PROPERTY_NAME]);
+        columns.push(qEntity[repositoryPropertyName]);
         let VALUES = rawInsertValues.VALUES.slice();
         for (let i = 0; i < VALUES.length; i++) {
             let row = VALUES[i].slice();
@@ -33364,9 +33520,9 @@ class DeleteManager {
     recordRepositoryIds(treeToDelete, dbEntity, recordsToDelete, repositoryIdSet, applicationUtils) {
         const repositoryId = treeToDelete.repository._localId;
         repositoryIdSet.add(repositoryId);
-        const recordsToDeleteForApplication = ensureChildJsMap(recordsToDelete, dbEntity.applicationVersion.application.index);
-        const recordsToDeleteForTable = ensureChildJsMap(recordsToDeleteForApplication, dbEntity.index);
-        const recordsToDeleteForRepository = ensureChildArray(recordsToDeleteForTable, repositoryId);
+        const recordsToDeleteForApplication = this.datastructureUtils.ensureChildJsMap(recordsToDelete, dbEntity.applicationVersion.application.index);
+        const recordsToDeleteForTable = this.datastructureUtils.ensureChildJsMap(recordsToDeleteForApplication, dbEntity.index);
+        const recordsToDeleteForRepository = this.datastructureUtils.ensureChildArray(recordsToDeleteForTable, repositoryId);
         const recordToDelete = {};
         // FIXME: implement
         recordsToDeleteForRepository.push(recordToDelete);
@@ -33435,7 +33591,7 @@ class DeleteManager {
                 const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
                     .applicationVersion.entities[entityIndex];
                 if (!systemWideOperationId) {
-                    systemWideOperationId = await getSysWideOpId(this.airportDatabase, this.sequenceGenerator);
+                    systemWideOperationId = await this.systemWideOperationIdUtils.getSysWideOpId();
                 }
                 for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
                     const repositoryTransactionHistory = await this.historyManager.getNewRepositoryTransactionHistory(transaction.transactionHistory, repositoryId, context);
@@ -33451,8 +33607,8 @@ class DeleteManager {
                                             switch (dbColumn.name) {
                                                 // Do not add Actor or Repository the are recorded
                                                 // at record history level
-                                                case airEntity.ACTOR_LID:
-                                                case airEntity.REPOSITORY_LID:
+                                                case this.dictionary.AirEntity.columns.ACTOR_LID:
+                                                case this.dictionary.AirEntity.columns.REPOSITORY_LID:
                                                     break;
                                                 default:
                                                     this.recordHistoryDuo.addOldValue(recordHistory, dbColumn, value);
@@ -33581,10 +33737,11 @@ appears more than once in the Columns clause`);
         let _localIds;
         let systemWideOperationId;
         if (!dbEntity.isLocal) {
-            systemWideOperationId = await getSysWideOpId(this.airportDatabase, this.sequenceGenerator);
+            systemWideOperationId = await this.systemWideOperationIdUtils
+                .getSysWideOpId();
         }
         if ((!transaction.isSync || context.generateOnSync) && ensureGeneratedValues) {
-            _localIds = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, this.sequenceGenerator);
+            _localIds = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix);
         }
         if (!dbEntity.isLocal && !transaction.isSync) {
             await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, transaction, rootTransaction, context);
@@ -33610,7 +33767,7 @@ appears more than once in the Columns clause`);
             }
         }
     }
-    async ensureGeneratedValues(dbEntity, jsonInsertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, sequenceGenerator) {
+    async ensureGeneratedValues(dbEntity, jsonInsertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix) {
         const values = jsonInsertValues.V;
         const idColumns = dbEntity.idColumns;
         const allIds = [];
@@ -33691,7 +33848,7 @@ appears more than once in the Columns clause`);
         // to not waste sequence numbers on invalid input
         // (thus reducing storage requirements in SqLite)
         const numSequencesNeeded = generatedColumns.map(_ => values.length);
-        const generatedSequenceValues = await sequenceGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
+        const generatedSequenceValues = await this.sequenceGenerator.generateSequenceNumbers(generatedColumns, numSequencesNeeded);
         generatedColumns.forEach((dbColumn, generatedColumnIndex) => {
             const generatedColumnSequenceValues = generatedSequenceValues[generatedColumnIndex];
             const insertColumnIndex = generatedColumnIndexes[generatedColumnIndex];
@@ -33737,10 +33894,11 @@ appears more than once in the Columns clause`);
         return allIds;
     }
     ensureAirEntityIdValues(actor, dbEntity, jsonInsertValues, errorPrefix, transaction, context) {
-        const actorIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_LID];
-        const actorRecordIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_RECORD_ID];
-        const repositoryIdColumn = dbEntity.idColumnMap[airEntity.REPOSITORY_LID];
-        const sysWideOperationIdColumn = dbEntity.columnMap[airEntity.SYSTEM_WIDE_OPERATION_ID];
+        const airEntityColumns = this.dictionary.AirEntity.columns;
+        const actorIdColumn = dbEntity.idColumnMap[airEntityColumns.ACTOR_LID];
+        const actorRecordIdColumn = dbEntity.idColumnMap[airEntityColumns.ACTOR_RECORD_ID];
+        const repositoryIdColumn = dbEntity.idColumnMap[airEntityColumns.REPOSITORY_LID];
+        const sysWideOperationIdColumn = dbEntity.columnMap[airEntityColumns.SYSTEM_WIDE_OPERATION_LID];
         let repositoryIdColumnQueryIndex;
         let foundActorIdColumn = false;
         let foundActorRecordIdColumn = false;
@@ -33849,9 +34007,10 @@ and cannot have NULL values.`);
         const jsonInsertValues = portableQuery.jsonQuery;
         let operationsByRepo = [];
         let repoTransHistories = [];
-        const repositoryIdIndex = dbEntity.columnMap[airEntity.REPOSITORY_LID].index;
-        const actorIdIndex = dbEntity.columnMap[airEntity.ACTOR_LID].index;
-        const actorRecordIdIndex = dbEntity.columnMap[airEntity.ACTOR_RECORD_ID].index;
+        const airEntityColumns = this.dictionary.AirEntity.columns;
+        const repositoryIdIndex = dbEntity.columnMap[airEntityColumns.REPOSITORY_LID].index;
+        const actorIdIndex = dbEntity.columnMap[airEntityColumns.ACTOR_LID].index;
+        const actorRecordIdIndex = dbEntity.columnMap[airEntityColumns.ACTOR_RECORD_ID].index;
         let repositoryIdColumnNumber;
         let actorIdColumnNumber;
         let actorRecordIdColumnNumber;
@@ -33988,7 +34147,7 @@ class QueryManager {
                     let relatedEntities = propertyValue;
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
-                            if (this.processRepositoryOrActor(entity, dbProperty, propertyValue, entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId)) {
+                            if (this.processRepositoryOrActor(entity, dbRelation, propertyValue, entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId)) {
                                 continue;
                             }
                             relatedEntities = [propertyValue];
@@ -34001,35 +34160,31 @@ class QueryManager {
             }
         }
     }
-    processRepositoryOrActor(entity, dbProperty, propertyValue, entityMapByRepositoryLocalId, entityMapByActorLocalId, actorsToRetrieveUserAccountForByLocalId) {
-        let isActor = true;
-        switch (dbProperty.name) {
-            case ACTOR_PROPERTY_NAME:
-                break;
-            case REPOSITORY_PROPERTY_NAME:
-                isActor = false;
-                break;
-            default:
+    processRepositoryOrActor(entity, dbRelation, propertyValue, entityMapByRepositoryLocalId, entityMapByActorLocalId, actorsToRetrieveUserAccountForByLocalId) {
+        let isActor = this.dictionary.isActor(dbRelation.relationEntity);
+        if (!isActor) {
+            if (!this.dictionary.isRepository(dbRelation.relationEntity)) {
                 return false;
+            }
         }
-        if (!propertyValue._localId) {
+        if (!propertyValue[this.dictionary.column._localId]) {
             throw new Error(`Actor entity does not have a _localId`);
         }
         if (propertyValue.GUID) {
             if (!isActor) {
                 return true;
             }
-            if (!propertyValue[USER_ACCOUNT_PROPERTY_NAME]) {
+            if (!propertyValue[this.dictionary.Actor.properties.userAccount]) {
                 actorsToRetrieveUserAccountForByLocalId.set(propertyValue._localId, propertyValue);
             }
             return true;
         }
         if (isActor) {
-            ensureChildArray(entityMapByActorLocalId, propertyValue._localId)
+            this.datastructureUtils.ensureChildArray(entityMapByActorLocalId, propertyValue._localId)
                 .push(entity);
         }
         else {
-            ensureChildArray(entityMapByRepositoryLocalId, propertyValue._localId)
+            this.datastructureUtils.ensureChildArray(entityMapByRepositoryLocalId, propertyValue._localId)
                 .push(entity);
         }
         return true;
@@ -34432,7 +34587,8 @@ class UpdateManager {
         let repositorySheetSelectInfo;
         let systemWideOperationId;
         if (!dbEntity.isLocal && !transaction.isSync) {
-            systemWideOperationId = await getSysWideOpId(this.airportDatabase, this.sequenceGenerator);
+            systemWideOperationId = await this.systemWideOperationIdUtils
+                .getSysWideOpId();
             // TODO: For entity queries an additional query really shouldn't be needed
             // Specifically for entity queries, we got the new values, just record them
             // This will require an additional operation on the first update
@@ -34496,7 +34652,7 @@ class UpdateManager {
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];
             for (const recordToUpdate of recordsForRepositoryId) {
                 const actorId = recordToUpdate[getSheetSelectFromSetClauseResult.actorIdColumnIndex];
-                const recordHistoryMapForActor = ensureChildMap(recordHistoryMapForRepository, actorId);
+                const recordHistoryMapForActor = this.datastructureUtils.ensureChildMap(recordHistoryMapForRepository, actorId);
                 const _actorRecordId = recordToUpdate[getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex];
                 const recordHistory = this.operationHistoryDuo.startRecordHistory(operationHistory, actorId, _actorRecordId);
                 recordHistoryMapForActor[_actorRecordId] = recordHistory;
@@ -34523,7 +34679,8 @@ class UpdateManager {
                 qEntity
             ],
             SELECT: [],
-            WHERE: qEntity[airEntity.systemWideOperationId]
+            WHERE: qEntity[this.dictionary.AirEntity.properties
+                .systemWideOperationId]
                 .equals(systemWideOperationId)
         });
         let portableSelect = this.queryFacade.getPortableQuery(sheetQuery, QueryResultType.SHEET, context);
@@ -34569,7 +34726,7 @@ class UpdateManager {
         for (const recordToUpdate of records) {
             const repositoryId = recordToUpdate[repositorySheetSelectInfo.repositoryIdColumnIndex];
             repositoryIdSet.add(repositoryId);
-            const recordsForRepositoryId = ensureChildArray(recordsByRepositoryId, repositoryId);
+            const recordsForRepositoryId = this.datastructureUtils.ensureChildArray(recordsByRepositoryId, repositoryId);
             recordsForRepositoryId.push(recordToUpdate);
         }
         return {
@@ -34698,8 +34855,8 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
                     case EntityRelationType.MANY_TO_ONE:
                         childDeleteByCascade = false;
                         // TODO: see if there is a cleaner way to escape nested Actor and Repository records
-                        if (dbEntity.isAirEntity && (dbProperty.name === REPOSITORY_PROPERTY_NAME
-                            || dbProperty.name === ACTOR_PROPERTY_NAME)
+                        if (dbEntity.isAirEntity && (this.dictionary.isActor(dbRelation.relationEntity)
+                            || this.dictionary.isRepository(dbRelation.relationEntity))
                             && !propertyValue[this.entityStateManager.getStateFieldName()]) {
                             continue;
                         }
@@ -34827,7 +34984,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
         let operationsByApplication_Index = [];
         for (const node of orderedDependencies) {
             const dbEntity = node.dbEntity;
-            const applicationOperationNodes = ensureChildArray(operationsByApplication_Index, dbEntity.applicationVersion.application.index);
+            const applicationOperationNodes = this.datastructureUtils.ensureChildArray(operationsByApplication_Index, dbEntity.applicationVersion.application.index);
             let entityOperations = applicationOperationNodes[dbEntity.index];
             if (!entityOperations) {
                 entityOperations = {
@@ -34984,8 +35141,7 @@ for ${dbEntity.name}.${dbProperty.name}`);
                     const previousDbEntity = context.dbEntity;
                     const previousDbApplication = previousDbEntity.applicationVersion.application;
                     const propertyDbApplication = dbRelation.relationEntity.applicationVersion.application;
-                    if (propertyDbApplication.domain.name !== 'air'
-                        && previousDbApplication.fullName !== propertyDbApplication.fullName) {
+                    if (previousDbApplication.fullName !== propertyDbApplication.fullName) {
                         // If a child entity is in a different application it won't be processed
                         // the calling application should call the API of the other application
                         // explicitly so that the application logic may be run
@@ -35453,12 +35609,12 @@ class StructuralEntityValidator {
                 continue;
             }
             const operationUniqueId = this.entityStateManager.getOperationUniqueId(record);
-            const entityOperatedOn = !!operatedOnEntityIndicator[operationUniqueId];
-            if (entityOperatedOn) {
+            const entityAlreadyOperatedOn = operatedOnEntityIndicator[operationUniqueId];
+            if (entityAlreadyOperatedOn) {
                 continue;
             }
             operatedOnEntityIndicator[operationUniqueId] = true;
-            let newRepositoryNeeded = false;
+            let repositoryAssignmentFromParentNeeded = false;
             for (const dbProperty of dbEntity.properties) {
                 let propertyValue = record[dbProperty.name];
                 if (propertyValue === undefined && !isStub) {
@@ -35510,7 +35666,7 @@ hence, it must an existing repository that exists locally.`);
                                     // Then all nested records without a repository record reference
                                     // will have that repository assigned
                                     if (!context.rootTransaction.newRepository) {
-                                        newRepositoryNeeded = true;
+                                        repositoryAssignmentFromParentNeeded = true;
                                         missingRepositoryRecords.push({
                                             record,
                                             repositoryPropertyName: dbProperty.name
@@ -35537,9 +35693,7 @@ hence, it must an existing repository that exists locally.`);
                                     // }
                                 }
                             }
-                            const isActorProperty = dbRelation.relationEntity.applicationVersion.application.fullName ===
-                                'airport____at_airport_slash_holding_dash_pattern'
-                                && dbRelation.relationEntity.name === 'Actor';
+                            const isActorProperty = this.dictionary.isActor(dbRelation.relationEntity);
                             if (propertyValue) {
                                 if (isCreate && isActorProperty) {
                                     throw new Error(`.actor property must not be populated for new objects`);
@@ -35589,79 +35743,82 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
                 } // else (dbProperty.relation
             } // for (const dbProperty of dbEntity.properties)
             if (!isPassThrough && !isStub && !isParentSchemaId) {
-                this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, newRepositoryNeeded, context);
+                this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, repositoryAssignmentFromParentNeeded, context);
             }
         } // for (const record of records)
     }
-    ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, newRepositoryNeeded, context) {
+    ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, _isCreate, repositoryAssignmentFromParentNeeded, context) {
         if (!dbEntity.isAirEntity) {
             return;
         }
         const airEntity = record;
         if (!parentRelationRecord) {
-            if (newRepositoryNeeded) {
+            if (repositoryAssignmentFromParentNeeded) {
                 throw new Error(`
-Invalid condition - entity that is root in the passed in object graph does not have a repository assigned
+Invalid condition - entity that is root in the passed
+in object graph does not have a repository assigned
 `);
             }
-            // const originalValues = this.entityStateManager.getOriginalValues(record)
-            // if (newRepositoryNeeded && originalValues && originalValues.repository
-            // 	&& originalValues.actor && originalValues._actorRecordId) {
-            // 	airEntity.sourceRepository = originalValues.repository
-            // 	this.entityStateManager.markAsStub(airEntity.sourceRepository)
-            // 	airEntity.sourceActor = originalValues.actor
-            // 	this.entityStateManager.markAsStub(airEntity.sourceActor)
-            // 	airEntity.sourceActorRecordId = originalValues._actorRecordId
-            // }
+            // There is no relationship yet between the parent and child records
+            // This is the root record in the passed in object graph
+            // NOTE: it's child records (both from @ManyToOne & @OneToMany)
+            // will be check subsequently (with possible cross-Repository
+            // relations added)
             return;
         }
-        // If a new repository is created for this record
-        if (newRepositoryNeeded) {
-            // 			throw new Error(`Error creating a new repository in a nested record:
-            // In Entity: ${dbEntity.name}
-            // That is a child of ${parentRelationProperty.entity.name} via ${parentRelationProperty.entity.name}.${parentRelationProperty.name}
-            // ->
-            // When creating a new repository the top level record should be of the newly created repository.
-            // `)
-            // no further checks needed
+        // If a repository from the parent record is assigned to this record
+        if (repositoryAssignmentFromParentNeeded) {
+            // no further checks needed, current record isn't get assigned to a
+            // different (or new) Repository so it will be assigned to the
+            // Repository of the parent record
+            // Since the repository will be same as that of the parent, it's
+            // not a cross-Repository scenario
             return;
         }
-        // One to many get traversed as well, if it's in the input graph/tree
-        // it is assumed to be part of the same repository
-        // if (fromOneToMany) {
-        // 	return
-        // }
-        // If the repositories of parent record and child record match
+        // If the repositories of root record passed into the save operation and
+        // the repository of the child record match
         if (rootRelationRecord.repository._localId === airEntity.repository._localId) {
-            // no further checks needed
+            // no further checks needed, Repository is the same
+            // across parent and child records
             return;
         }
-        if (isCreate) {
-            throw new Error(`A newly created ${dbEntity.name} via ${dbEntity.name} record for repository _localId ${airEntity.repository._localId} (GUID: ${airEntity.repository.GUID})
-is being assigned to repository _localId ${airEntity.repository._localId} (GUID: ${airEntity.repository.GUID})
-	This is because it is being referenced via ${parentRelationProperty.entity.name}.${parentRelationProperty.name},
-	from a record of repository _localId ${airEntity.repository._localId} (GUID: ${airEntity.repository.GUID})
-	
-	If you are manually creating a copy of a record in another repository, there is no need,
-	AIRport automatically copies all records refrenced via @ManyToOne()s into the created/modified
-	repository.
-
-	Otherwise, did you mean to set this record's repository to the same one as the referencing record?`);
-        }
-        // If this record is the entry point into the copied object tree (of records from other repository(s))
-        if (!airEntity.copied) {
-            const { manySideRepositoryLedger, oneSideRepositoryLedger } = this.crossRepositoryRelationManager.addRecords(parentRelationProperty.relation[0], parentRelationRecord, airEntity);
-            context.crossRepositoryRelationLedgers.push(manySideRepositoryLedger);
-            context.crossRepositoryRelationLedgers.push(oneSideRepositoryLedger);
-        }
+        // NOTE: This rule is currently disabled - to can create new records
+        // and assign them to existing repositories that are different from 
+        // repositories of paret records (or assign it the newly created repository).
+        // NOTE: it is possible to have records in the same repository that
+        // cannot be joined together in queries, so there is no need to check a valid
+        // path from this records to all other records passed to this save call that
+        // have the same repository.
+        // The disabled rule:
+        // A new record cannot be created - it has a repository that isn't:
+        // * Repository found in it's parent record,
+        // * a new Repository,
+        // 
+        // So a new record is being created and either has an explicitly
+        // assigned a Repository or has the sole (one and only per current rules)
+        // new Repository that is created in the (root) transaction.
+        /* 		if (_isCreate) {
+                    throw new Error(`
+        A newly created '${dbEntity.name}' record
+        is being assigned to Repository _localId ${airEntity.repository._localId} (GUID: ${airEntity.repository.GUID})
+        This is because it is being referenced via ${parentRelationProperty.entity.name}.${parentRelationProperty.name},
+        from a record of Repository _localId ${parentRelationRecord.repository._localId} (GUID: ${parentRelationRecord.repository.GUID})
+        
+        Did you mean to set this record's Repository to be the same one
+        as the Repository of the referencing (parent) record?
+        `)
+                } */
+        // 
+        const { manySideRepositoryLedger, oneSideRepositoryLedger } = this.crossRepositoryRelationManager.addRecords(parentRelationProperty.relation[0], parentRelationRecord, airEntity);
+        context.crossRepositoryRelationLedgers.push(manySideRepositoryLedger);
+        context.crossRepositoryRelationLedgers.push(oneSideRepositoryLedger);
+        // NOTE: the below commented out code is for scenario where records
+        // via @ManyToOne links that point to other repositories are copied
+        // into the referencing repository
         // If it doesn't then it is a reference to another repository - switch
         // the record to the parent repository and set the sourceRepositoryValue
         // airEntity.repository = rootRelationRecord.repository
-        airEntity.copied = true;
-        // reset 'actor' and clear '_actorRecordId' to prevents unique constraint
-        // violation if multiple databases flip to the same exact record (independently)
-        // airEntity.actor = context.actor as Actor
-        // delete airEntity._actorRecordId
+        // airEntity.copied = true
         // Flip the state of this record to EntityState.CREATE this record now
         // has to be created in the referencing repository
         // airEntity[this.entityStateManager.getStateFieldName()] = EntityState.CREATE
@@ -36024,14 +36181,18 @@ terminal.setDependencies(DatabaseManager, {
 terminal.setDependencies(DeleteManager, {
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: ApplicationUtils,
+    datastructureUtils: DatastructureUtils,
+    dictionary: Dictionary,
     historyManager: HistoryManager,
     operationHistoryDuo: OperationHistoryDuo,
     recordHistoryDuo: RecordHistoryDuo,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
-    sequenceGenerator: SEQUENCE_GENERATOR,
+    systemWideOperationIdUtils: SystemWideOperationIdUtils,
     utils: Utils
 });
 terminal.setDependencies(DependencyGraphResolver, {
+    datastructureUtils: DatastructureUtils,
+    dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER
 });
 terminal.setDependencies(EntityGraphReconstructor, {
@@ -36042,11 +36203,13 @@ terminal.setDependencies(HistoryManager, {
 });
 terminal.setDependencies(InsertManager, {
     airportDatabase: AIRPORT_DATABASE,
+    dictionary: Dictionary,
     historyManager: HistoryManager,
     operationHistoryDuo: OperationHistoryDuo,
     recordHistoryDuo: RecordHistoryDuo,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
-    sequenceGenerator: SEQUENCE_GENERATOR
+    sequenceGenerator: SEQUENCE_GENERATOR,
+    systemWideOperationIdUtils: SystemWideOperationIdUtils,
 });
 terminal.setDependencies(InternalRecordManager, {
     actorDao: ActorDao,
@@ -36059,6 +36222,7 @@ terminal.setDependencies(InternalRecordManager, {
 });
 REPOSITORY_MANAGER.setClass(RepositoryManager);
 REPOSITORY_MANAGER.setDependencies({
+    dictionary: Dictionary,
     keyRingManager: KeyRingManager,
     repositoryDao: RepositoryDao,
     repositoryMemberDao: RepositoryMemberDao,
@@ -36090,6 +36254,8 @@ terminal.setDependencies(OperationManager, {
 terminal.setDependencies(QueryManager, {
     actorDao: ActorDao,
     airportDatabase: AIRPORT_DATABASE,
+    datastructureUtils: DatastructureUtils,
+    dictionary: Dictionary,
     observableQueryAdapter: ObservableQueryAdapter,
     repositoryDao: RepositoryDao,
     repositoryLoader: REPOSITORY_LOADER,
@@ -36104,6 +36270,7 @@ terminal.setDependencies(StructuralEntityValidator, {
     applicationUtils: ApplicationUtils,
     crossRepositoryRelationManager: CrossRepositoryRelationManager,
     dbApplicationUtils: DbApplicationUtils,
+    dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
 });
 TERMINAL_SESSION_MANAGER.setClass(TerminalSessionManager);
@@ -36152,6 +36319,8 @@ TRANSACTIONAL_SERVER.setDependencies({
 terminal.setDependencies(UpdateManager, {
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: ApplicationUtils,
+    datastructureUtils: DatastructureUtils,
+    dictionary: Dictionary,
     fieldUtils: FieldUtils,
     historyManager: HistoryManager,
     operationHistoryDuo: OperationHistoryDuo,
@@ -36160,7 +36329,7 @@ terminal.setDependencies(UpdateManager, {
     recordHistoryDuo: RecordHistoryDuo,
     relationManager: RelationManager,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
-    sequenceGenerator: SEQUENCE_GENERATOR,
+    systemWideOperationIdUtils: SystemWideOperationIdUtils,
 });
 
 class OperationSerializer {
@@ -37588,7 +37757,19 @@ class AirportDatabase {
         return this.databaseStore.QM;
     }
     async load() {
-        // Just calling this method, loads the AirpotDatabase object
+        // Calling this method loads the AirpotDatabase object
+        // ('this.airportDatabase' statement by itself creates the object,
+        // (without the '.load() call) but '.load()' is more intuitive)
+    }
+    getCurrentDbApplicationVersion(domainName, applicationName) {
+        const applicationFullName = this.dbApplicationUtils
+            .getApplication_FullNameFromDomainAndName(domainName, applicationName);
+        return this.QM[applicationFullName]
+            .__dbApplication__.currentVersion[0].applicationVersion;
+    }
+    getDbEntity(domainName, applicationName, entityName) {
+        const dbApplicationVersion = this.getCurrentDbApplicationVersion(domainName, applicationName);
+        return dbApplicationVersion.entityMapByName[entityName];
     }
     setQApp(qApplication) {
         const fullApplication_Name = this.dbApplicationUtils
@@ -37802,11 +37983,11 @@ class SequenceGenerator {
         }
         this.addSequences(sequences);
         await this.sequenceDao.incrementCurrentValues(context);
-        setSeqGen(this);
+        globalThis.SEQ_GEN = this;
     }
     async tempInitialize(context, sequences) {
         this.addSequences(sequences);
-        setSeqGen(this);
+        globalThis.SEQ_GEN = this;
     }
     async generateSequenceNumbers(dbColumns, numSequencesNeeded) {
         if (!dbColumns.length) {
@@ -37821,6 +38002,15 @@ class SequenceGenerator {
             this.generatingSequenceNumbers = false;
         }
     }
+    async generateSequenceNumbersForColumn(domainName, applicationName, entityName, columnName, numSequencesNeeded) {
+        if (!numSequencesNeeded) {
+            return [];
+        }
+        const dbEntity = this.airportDatabase.getDbEntity(domainName, applicationName, entityName);
+        const dbColumn = dbEntity.columnMap[columnName];
+        const sequencesWrapper = await this.generateSequenceNumbers([dbColumn], [numSequencesNeeded]);
+        return sequencesWrapper[0];
+    }
     /**
      * Keeping return value as number[][] in case we ever revert back
      * to SequenceBlock-like solution
@@ -37832,7 +38022,7 @@ class SequenceGenerator {
         for (let i = 0; i < dbColumns.length; i++) {
             const dbColumn = dbColumns[i];
             let numColumnSequencesNeeded = numSequencesNeeded[i];
-            const columnNumbers = ensureChildArray(sequentialNumbers, i);
+            const columnNumbers = this.datastructureUtils.ensureChildArray(sequentialNumbers, i);
             const dbEntity = dbColumn.propertyColumns[0].property.entity;
             const application = dbEntity.applicationVersion.application;
             let sequenceBlock = this.sequenceBlocks[application.index][dbEntity.index][dbColumn.index];
@@ -37877,15 +38067,17 @@ class SequenceGenerator {
     }
     addSequences(sequences) {
         for (const sequence of sequences) {
-            ensureChildArray(ensureChildArray(this.sequences, sequence.applicationIndex), sequence.tableIndex)[sequence.columnIndex] = sequence;
+            this.datastructureUtils.ensureChildArray(this.datastructureUtils.ensureChildArray(this.sequences, sequence.applicationIndex), sequence.tableIndex)[sequence.columnIndex] = sequence;
             sequence.currentValue += sequence.incrementBy;
-            ensureChildArray(ensureChildArray(this.sequenceBlocks, sequence.applicationIndex), sequence.tableIndex)[sequence.columnIndex] = sequence.incrementBy;
+            this.datastructureUtils.ensureChildArray(this.datastructureUtils.ensureChildArray(this.sequenceBlocks, sequence.applicationIndex), sequence.tableIndex)[sequence.columnIndex] = sequence.incrementBy;
         }
     }
 }
 
 SEQUENCE_GENERATOR.setClass(SequenceGenerator);
 SEQUENCE_GENERATOR.setDependencies({
+    airportDatabase: AIRPORT_DATABASE,
+    datastructureUtils: DatastructureUtils,
     sequenceDao: SequenceDao,
     terminalStore: TerminalStore
 });
@@ -38657,11 +38849,14 @@ class QPropertyBuilder {
 }
 
 class ApplicationRelationResolver {
+    constructor() {
+        this.dictionary = new Dictionary();
+    }
     resolveAllRelationLinks(indexedApplication) {
         for (const entityName in indexedApplication.entityMapByName) {
             const indexedEntity = indexedApplication.entityMapByName[entityName];
             if (indexedEntity.entity.isAirEntity) {
-                if (indexedEntity.idColumns[0].name !== airEntity.FOREIGN_KEY) {
+                if (indexedEntity.idColumns[0].name !== this.dictionary.AirEntity.columns.REPOSITORY_LID) {
                     throw new Error(`@Id Column at index 0, must be 'REPOSITORY_LID'`);
                 }
             }
@@ -38935,6 +39130,7 @@ class SApplicationBuilder {
     constructor(config, entityMapByName) {
         this.config = config;
         this.entityMapByName = entityMapByName;
+        this.dictionary = new Dictionary();
     }
     build(applicationMapByProjectName) {
         const referencedApplicationsByProjectName = {};
@@ -38981,12 +39177,13 @@ class SApplicationBuilder {
             return entity.numIdColumns++;
         }
         entity.numIdColumns = 3;
+        const airEntityColumns = this.dictionary.AirEntity.columns;
         switch (columnName) {
-            case airEntity.REPOSITORY_LID:
+            case airEntityColumns.REPOSITORY_LID:
                 return 0;
-            case airEntity.ACTOR_LID:
+            case airEntityColumns.ACTOR_LID:
                 return 1;
-            case airEntity.ACTOR_RECORD_ID:
+            case airEntityColumns.ACTOR_RECORD_ID:
                 return 2;
             default:
                 throw new Error(`AirEntity @Id columns must be 'REPOSITORY_LID', 'ACTOR_LID' and 'ACTOR_RECORD_ID'`);
@@ -39007,6 +39204,7 @@ class SApplicationBuilder {
     buildEntity(entityCandidate, tableIndex, referencedApplicationsByProjectName) {
         let foundEntityDecorator = false;
         let tableConfig;
+        const file = this.dictionary.file;
         for (const decorator of entityCandidate.docEntry.decorators) {
             switch (decorator.name) {
                 case file.ENTITY: {
@@ -39148,6 +39346,7 @@ class ${entityCandidate.docEntry.name}
         // let joinFunctionWithOperator = SqlOperator.AND
         let relationType;
         for (const decorator of aProperty.decorators) {
+            const property = this.dictionary.property;
             switch (decorator.name) {
                 case property.ID:
                     isId = true;
@@ -39323,9 +39522,10 @@ class ${entityCandidate.docEntry.name}
                         }
                     }
                     const notNull = isManyToOnePropertyNotNull(aProperty);
+                    const airEntityColumns = this.dictionary.AirEntity.columns;
                     const relationColumnReferences = [
-                        airEntity.REPOSITORY_LID, airEntity.ACTOR_LID,
-                        airEntity.ACTOR_RECORD_ID
+                        airEntityColumns.REPOSITORY_LID, airEntityColumns.ACTOR_LID,
+                        airEntityColumns.ACTOR_RECORD_ID
                     ];
                     let numExistingReferenceToTable = relatedTableMap.get(relatedTableName);
                     if (!numExistingReferenceToTable) {
@@ -39465,7 +39665,7 @@ class ${entityCandidate.docEntry.name}
         let scale = null;
         for (const decorator of aProperty.decorators) {
             switch (decorator.name) {
-                case property.COLUMN:
+                case this.dictionary.property.COLUMN:
                     if (columnDefined) {
                         throw new Error(`@Column is defined more than once
 						 for ${entity.name}.${aProperty.name}`);
@@ -39660,18 +39860,19 @@ entityCandidate //
 ) {
     return entityExtendsOrIsAirEntity(entityCandidate.parentEntity);
 }
+const dictionary = new Dictionary();
 function entityExtendsOrIsAirEntity(//
 entityCandidate //
 ) {
     if (!entityCandidate) {
         return [false, true];
     }
-    if (entityCandidate.docEntry.name === airEntity.ENTITY_NAME) {
+    if (entityCandidate.docEntry.name === dictionary.AirEntity.name) {
         return [true, false];
     }
-    if (entityCandidate.docEntry.name === airEntity.LOCAL_ENTITY_NAME) {
-        return [true, true];
-    }
+    // if (entityCandidate.docEntry.name === airEntityColumns.LOCAL_ENTITY_NAME) {
+    // 	return [true, true];
+    // }
     return entityExtendsOrIsAirEntity(entityCandidate.parentEntity);
 }
 function isManyToOnePropertyNotNull(aProperty) {
@@ -41548,8 +41749,9 @@ ${interfaceSource}
 
 class JsonApplicationChecker {
     constructor() {
-        this.applicationReferenceChecker = new ApplicationReferenceChecker();
-        this.applicationReferenceChecker.applicationLocator = new ApplicationLocator();
+        this.applicationReferenceChecker = new ApplicationReferenceUtils();
+        this.applicationReferenceChecker.appTrackerUtils = new AppTrackerUtils();
+        this.applicationReferenceChecker.appTrackerUtils.dictionary = new Dictionary();
     }
     checkFrameworkReferences(jsonApplication, indexedApplication) {
         this.applicationReferenceChecker.checkFrameworkReferences(jsonApplication, (jsonApplication, jsonApplicationVersion, jsonRelation) => {
