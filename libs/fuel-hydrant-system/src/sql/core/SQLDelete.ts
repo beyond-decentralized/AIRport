@@ -3,7 +3,7 @@ import {
 	IQMetadataUtils,
 	IUtils
 } from '@airport/air-traffic-control'
-import { IEntityStateManager, JsonDelete } from '@airport/ground-control'
+import { IEntityStateManager, JsonDelete, SyncApplicationMap } from '@airport/ground-control'
 import { IApplicationUtils, IRelationManager } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
@@ -51,9 +51,12 @@ export class SQLDelete
 	}
 
 	toSQL(
+		fieldMap: SyncApplicationMap,
 		context: IFuelHydrantContext,
 	): string {
-		let fromFragment = this.getTableFragment(this.jsonDelete.DF, context)
+		let {
+			tableFragment
+		} = this.getFromFragment(this.jsonDelete.DF, fieldMap, true, context)
 		let whereFragment = ''
 		let jsonQuery = this.jsonDelete
 		if (jsonQuery.W) {
@@ -70,7 +73,7 @@ ${whereFragment}`
 
 		return `DELETE
 FROM
-${fromFragment}${whereFragment}`
+  ${tableFragment}${whereFragment}`
 	}
 
 }

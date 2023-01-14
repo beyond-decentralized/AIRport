@@ -6,7 +6,9 @@ import {
 import {
 	DbEntity,
 	IEntityStateManager,
-	JSONEntityRelation
+	JSONEntityRelation,
+	SyncApplicationMap,
+	SyncColumnMap
 } from '@airport/ground-control'
 import {
 	IApplicationUtils,
@@ -58,11 +60,16 @@ export abstract class SQLNoJoinQuery
 			context)
 	}
 
-	protected getTableFragment(
+	protected getFromFragment(
 		fromRelation: JSONEntityRelation,
+		fieldMap: SyncApplicationMap,
+		syncAllFields: boolean,
 		context: IFuelHydrantContext,
 		addAs: boolean = true
-	): string {
+	): {
+		columnMap: SyncColumnMap,
+		tableFragment: string
+	} {
 		if (!fromRelation) {
 			throw new Error(`Expecting exactly one table in UPDATE/DELETE clause`)
 		}
@@ -72,6 +79,7 @@ export abstract class SQLNoJoinQuery
 
 		const firstDbEntity: DbEntity = this.airportDatabase.applications[fromRelation.si]
 			.currentVersion[0].applicationVersion.entities[fromRelation.ti]
+		const columnMap = fieldMap.ensureEntity(firstDbEntity, syncAllFields)
 		let tableName = this.storeDriver.getEntityTableName(firstDbEntity, context)
 		if (fromRelation.si !== this.dbEntity.applicationVersion.application.index
 			|| fromRelation.ti !== this.dbEntity.index) {
@@ -89,7 +97,10 @@ export abstract class SQLNoJoinQuery
 			fromFragment += ` AS ${tableAlias}`
 		}
 
-		return fromFragment
+		return {
+			columnMap,
+			tableFragment: fromFragment
+		}
 	}
 
 }

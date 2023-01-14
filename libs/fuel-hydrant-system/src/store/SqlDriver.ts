@@ -305,7 +305,6 @@ Entity:          ${table.name}
 
 		let numVals = 0;
 		for (const V of splitValues) {
-
 			let sqlInsertValues = new SQLInsertValues(<JsonInsertValues>{
 				...portableQuery.jsonQuery,
 				V
@@ -321,11 +320,12 @@ Entity:          ${table.name}
 				this.subStatementSqlGenerator,
 				this.utils,
 				context);
-			let sql = sqlInsertValues.toSQL(context);
+			let sql = sqlInsertValues.toSQL(fieldMap, context);
 			let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
 
 			numVals += await this.executeNative(sql, parameters, context);
 		}
+		this.activeQueries.markQueriesToRerun(fieldMap);
 
 		return numVals;
 	}
@@ -348,7 +348,7 @@ Entity:          ${table.name}
 			this.subStatementSqlGenerator,
 			this.utils,
 			context);
-		let sql = sqlDelete.toSQL(context);
+		let sql = sqlDelete.toSQL(fieldMap, context);
 		let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
 		let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
 		this.activeQueries.markQueriesToRerun(fieldMap);
@@ -375,8 +375,9 @@ Entity:          ${table.name}
 			this.subStatementSqlGenerator,
 			this.utils,
 			context);
-		let sql = sqlUpdate.toSQL(internalFragments, context);
+		let sql = sqlUpdate.toSQL(internalFragments, fieldMap, context);
 		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
+		this.activeQueries.markQueriesToRerun(fieldMap);
 
 		return await this.executeNative(sql, parameters, context);
 	}

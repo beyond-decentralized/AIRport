@@ -2,7 +2,9 @@ import { IAirportDatabase, IQMetadataUtils, IUtils } from '@airport/air-traffic-
 import {
 	DbEntity,
 	IEntityStateManager,
-	JsonInsertValues
+	JsonInsertValues,
+	SyncApplicationMap,
+	SyncColumnMap
 } from '@airport/ground-control'
 import {
 	IApplicationUtils,
@@ -56,15 +58,18 @@ export class SQLInsertValues
 	}
 
 	toSQL(
+		fieldMap: SyncApplicationMap,
 		context: IFuelHydrantContext
 	): string {
 		if (!this.jsonInsertValues.II) {
 			throw new Error(`Expecting exactly one table in INSERT INTO clause`)
 		}
 		this.qValidator.validateInsertQEntity(this.dbEntity)
-		let tableFragment = this.getTableFragment(
-			this.jsonInsertValues.II, context, false)
-		let columnsFragment = this.getColumnsFragment(this.dbEntity, this.jsonInsertValues.C)
+		let {
+			columnMap,
+			tableFragment
+		} = this.getFromFragment(this.jsonInsertValues.II, fieldMap, false, context, false)
+		let columnsFragment = this.getColumnsFragment(this.dbEntity, this.jsonInsertValues.C, columnMap)
 		let valuesFragment = this.getValuesFragment(
 			this.jsonInsertValues.V, context)
 
@@ -77,14 +82,17 @@ ${valuesFragment}
 
 	protected getColumnsFragment(
 		dbEntity: DbEntity,
-		columns: number[]
+		columns: number[],
+		columnMap: SyncColumnMap
 	): string {
 		if (!columns.length) {
 			return ''
 		}
-		const columnNames = columns.map(
-			columnIndex =>
-				dbEntity.columns[columnIndex].name)
+		const columnNames = columns.map(columnIndex => {
+			columnMap.ensure(columnIndex)
+
+			return dbEntity.columns[columnIndex].name
+		})
 		return `( ${columnNames.join(', \n')} )`
 	}
 

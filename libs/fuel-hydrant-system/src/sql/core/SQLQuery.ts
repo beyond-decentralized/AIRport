@@ -15,7 +15,8 @@ import {
 	QueryResultType,
 	ApplicationMap,
 	SqlOperator,
-	IEntityStateManager
+	IEntityStateManager,
+	Repository_LocalId
 } from '@airport/ground-control'
 import {
 	IApplicationUtils,
@@ -65,6 +66,8 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	extends SQLWhereBase {
 
 	protected entityDefaults: EntityDefaults = new EntityDefaults()
+	inputRepositoryIds: Set<Repository_LocalId> = new Set()
+	resultsRepositoryIds: Set<Repository_LocalId> = new Set()
 
 	constructor(
 		protected jsonQuery: JQ,
@@ -98,6 +101,14 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 
 	getFieldMap(): ApplicationMap {
 		return this.fieldMap
+	}
+
+	getInputRepositoryIds(): Set<Repository_LocalId> {
+		return this.inputRepositoryIds
+	}
+
+	getResultsRepositoryIds(): Set<Repository_LocalId> {
+		return this.resultsRepositoryIds
 	}
 
 	abstract toSQL(
