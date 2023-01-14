@@ -242,7 +242,6 @@ TERMINAL_SESSION_MANAGER.setDependencies({
 })
 
 TRANSACTION_MANAGER.setDependencies({
-    activeQueries: ActiveQueries,
     appTrackerUtils: AppTrackerUtils,
     idGenerator: IdGenerator,
     storeDriver: STORE_DRIVER,

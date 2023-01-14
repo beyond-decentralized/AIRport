@@ -244,8 +244,10 @@ Entity:          ${table.name}
 		context?: IFuelHydrantContext,
 	): Promise<void> {
 		await this.ensureContext(context)
+		let commitSucceeded = false
 		try {
 			await this.internalCommit(transaction)
+			commitSucceeded = true
 		} catch (e) {
 			console.error(e)
 			try {
@@ -256,7 +258,13 @@ Entity:          ${table.name}
 			throw e
 		} finally {
 			await this.tearDownTransaction(transaction, context)
+			if (commitSucceeded) {
+				this.activeQueries.rerunQueries()
+			} else {
+				this.activeQueries.clearQueriesToRerun()
+			}
 		}
+
 	}
 
 	abstract internalCommit(
@@ -276,7 +284,9 @@ Entity:          ${table.name}
 			// Do not re-throw the exception, rollback is final (at least for now)
 		} finally {
 			await this.tearDownTransaction(transaction, context)
+			this.activeQueries.clearQueriesToRerun()
 		}
+
 	}
 
 	abstract internalRollback(
@@ -290,6 +300,7 @@ Entity:          ${table.name}
 		cachedSqlQueryId?: number,
 		// repository?: IRepository
 	): Promise<number> {
+		let fieldMap: SyncApplicationMap = new globalThis.SyncApplicationMap();
 		const splitValues = this.splitValues((portableQuery.jsonQuery as JsonInsertValues).V, context);
 
 		let numVals = 0;
@@ -350,6 +361,7 @@ Entity:          ${table.name}
 		internalFragments: InternalFragments,
 		context: IFuelHydrantContext,
 	): Promise<number> {
+		let fieldMap: SyncApplicationMap = new globalThis.SyncApplicationMap();
 		let sqlUpdate = new SQLUpdate(
 			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(context),
 			this.airportDatabase,

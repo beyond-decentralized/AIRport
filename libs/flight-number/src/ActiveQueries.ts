@@ -24,12 +24,21 @@ export interface IActiveQueries<SQLQuery extends IFieldMapped> {
 		portableQuery: PortableQuery
 	): void;
 
+	/**
+	 * Rerunning queries based on intersecting tables and columns.
+	 * Using repository ids in either query parameters or query results
+	 * could exlude some queries that really should be re-run.
+	 * 
+	 * @param applicationMap   Map of Tables and Columns in the change being checked
+	 * 
+	 */
 	markQueriesToRerun(
 		applicationMap: SyncApplicationMap
 	): void;
 
-	rerunQueries( //
-	): void;
+	rerunQueries(): void;
+
+	clearQueriesToRerun(): void
 
 }
 
@@ -56,6 +65,10 @@ export class ActiveQueries<SQLQuery extends IFieldMapped>
 		applicationMap: SyncApplicationMap
 	): void {
 		this.queries.forEach((cachedSqlQuery) => {
+			if (cachedSqlQuery.rerun) {
+				// already marked to be re-run
+				return
+			}
 			if (applicationMap.intersects(cachedSqlQuery.sqlQuery.getFieldMap())) {
 				cachedSqlQuery.rerun = true
 			}
@@ -75,6 +88,13 @@ export class ActiveQueries<SQLQuery extends IFieldMapped>
 			})
 		}, 100)
 	}
+
+	clearQueriesToRerun(): void {
+		this.queries.forEach((cachedSqlQuery) => {
+			cachedSqlQuery.rerun = false
+		})
+	}
+
 }
 
 export interface CachedSQLQuery<SQLQuery extends IFieldMapped> {

@@ -5,9 +5,8 @@ import {
 import {
 	IContext
 } from '@airport/direction-indicator';
-import { IActiveQueries } from '@airport/flight-number';
 import {
-	IIdGenerator, SQLQuery,
+	IIdGenerator, 
 } from '@airport/fuel-hydrant-system';
 import {
 	IAppTrackerUtils,
@@ -37,9 +36,6 @@ import { AbstractMutationManager } from './AbstractMutationManager';
 export class TransactionManager
 	extends AbstractMutationManager
 	implements ITransactionManager {
-
-	@Inject()
-	activeQueries: IActiveQueries<SQLQuery<any>>
 
 	@Inject()
 	appTrackerUtils: IAppTrackerUtils
@@ -310,9 +306,8 @@ parent transactions.
 				}
 			}
 
-			this.activeQueries.rerunQueries();
 			await transaction.commit(null, context);
-
+			
 			let transactionHistory = transaction.transactionHistory;
 			if (!context.doNotRecordHistory) {
 				if (!parentTransaction && transactionHistory.allRecordHistory.length) {
