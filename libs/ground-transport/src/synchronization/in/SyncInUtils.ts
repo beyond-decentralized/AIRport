@@ -7,17 +7,17 @@ import {
 	ApplicationEntity_LocalId,
 	Application_Index,
 	ApplicationVersion_LocalId,
-	IDatastructureUtils
+	IDatastructureUtils,
+	Actor_LocalId,
+	Repository_LocalId,
+	ActorRecordId
 } from '@airport/ground-control'
 import {
-	Actor_LocalId,
 	IOperationHistory,
 	IRecordHistory,
 	IRecordHistoryNewValue,
 	IRepositoryTransactionHistory,
-	RecordHistory_LocalId,
-	ActorRecordId,
-	Repository_LocalId
+	RecordHistory_LocalId
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	ISynchronizationConflict

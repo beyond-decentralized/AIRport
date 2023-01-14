@@ -3,14 +3,14 @@ import {
 	Y
 } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
-import { TransactionType } from '@airport/ground-control'
+import { Actor_GUID, Repository_GUID, Repository_LocalId, Repository_Source, TransactionType } from '@airport/ground-control'
 import {
 	QUserAccount,
 	Terminal_GUID,
 	UserAccount_GUID
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
-	Actor_GUID, Repository,
+	Repository,
 } from '../../ddl/ddl'
 import {
 	BaseRepositoryDao,
@@ -21,7 +21,6 @@ import {
 	QTransactionHistory,
 } from '../../generated/generated'
 import Q from '../../generated/qApplication'
-import { Repository_GUID, Repository_LocalId, Repository_Source } from '../../types'
 
 export interface IRepositoryDao
 	extends IBaseRepositoryDao {

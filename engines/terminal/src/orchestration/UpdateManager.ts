@@ -26,10 +26,10 @@ import {
 	PortableQuery,
 	QueryResultType,
 	IDatastructureUtils,
+	SystemWideOperationId,
 } from '@airport/ground-control'
 import {
-	IActor,
-	SystemWideOperationId
+	IActor
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	IHistoryManager,

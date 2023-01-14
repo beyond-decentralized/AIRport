@@ -4,6 +4,8 @@ import {
 	Y
 } from '@airport/tarmaq-query'
 import {
+	Actor_GUID,
+	Actor_LocalId,
 	Application_Name,
 	Domain_Name,
 	IDatastructureUtils,
@@ -20,9 +22,7 @@ import {
 	UserAccount_GUID,
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
-	Actor_LocalId,
-	Actor_GUID,
-	Actor,
+	Actor
 } from '../../ddl/infrastructure/Actor'
 import {
 	BaseActorDao,

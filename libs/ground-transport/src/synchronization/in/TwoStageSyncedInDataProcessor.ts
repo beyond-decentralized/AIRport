@@ -2,16 +2,16 @@ import {
 	RepositorySynchronizationMessage
 } from '@airport/arrivals-n-departures'
 import {
+	Actor_LocalId,
 	ApplicationVersion_LocalId,
+	Repository_LocalId,
 	TransactionType
 } from '@airport/ground-control'
 import {
-	Actor_LocalId,
 	IActor,
 	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDuo,
-	RepositoryTransactionType,
-	Repository_LocalId
+	RepositoryTransactionType
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	ISynchronizationConflict,

@@ -31985,8 +31985,11 @@ fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
     utils: Utils
 });
 
+/**
+ * Created by Papa on 2/17/2017.
+ */
 class AirEntity {
-    constructor(entityGUID) {
+    constructor(entityId) {
         this.ageSuitability = 0;
         // TODO: if and when records are copied, make this a column
         // @Column({ name: 'COPIED', nullable: false })
@@ -32015,7 +32018,7 @@ class AirEntity {
                 return this.actor.userAccount;
             }
         });
-        this.id = entityGUID;
+        this.id = entityId;
     }
 }
 

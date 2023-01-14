@@ -1,15 +1,16 @@
 import { Inject, Injected } from '@airport/direction-indicator';
 import {
+	Actor_LocalId,
 	ChangeType,
 	DbEntity,
-	IRootTransaction
+	IRootTransaction,
+	Repository_LocalId,
+	SystemWideOperationId
 } from '@airport/ground-control'
 import { v4 as guidv4 } from "uuid";
 import {
-	Actor_LocalId,
 	Repository,
-	RepositoryTransactionHistory,
-	SystemWideOperationId
+	RepositoryTransactionHistory
 } from '../../ddl/ddl'
 import {
 	IActor,
@@ -17,7 +18,6 @@ import {
 	IRepository,
 	IRepositoryTransactionHistory,
 } from '../../generated/generated'
-import { Repository_LocalId } from '../../types';
 import { IOperationHistoryDuo } from './OperationHistoryDuo'
 
 export interface IRepositoryTransactionHistoryDuo {

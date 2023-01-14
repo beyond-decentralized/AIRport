@@ -1,9 +1,9 @@
 import { Api } from '@airport/check-in'
 import { Inject, Injected } from "@airport/direction-indicator";
+import { Repository_GUID } from '@airport/ground-control';
 import { IRepositoryManager } from '../../core/RepositoryManager';
 import { RepositoryDao } from "../../dao/dao";
 import { Repository } from "../../ddl/ddl";
-import { Repository_GUID } from '../../types';
 
 @Injected()
 export class RepositoryApi {

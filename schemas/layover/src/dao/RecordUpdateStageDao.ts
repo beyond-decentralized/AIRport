@@ -8,14 +8,11 @@ import {
 	Application_Index,
 	ApplicationVersion_LocalId,
 	ApplicationEntity_TableIndex,
-	Dictionary
-} from '@airport/ground-control'
-import {
+	Dictionary,
+	Repository_LocalId,
 	Actor_LocalId,
-	RecordHistory_ActorRecordId,
-	ActorRecordId,
-	Repository_LocalId
-} from '@airport/holding-pattern/dist/app/bundle'
+	ActorRecordId
+} from '@airport/ground-control'
 import {
 	AND,
 	field,
@@ -36,7 +33,7 @@ export type RecordUpdateStageValues = [
 	ApplicationEntity_TableIndex,
 	Repository_LocalId,
 	Actor_LocalId,
-	RecordHistory_ActorRecordId,
+	ActorRecordId,
 	ApplicationColumn_Index,
 	RecordUpdateStageValue
 ];

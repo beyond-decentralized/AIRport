@@ -1,14 +1,12 @@
 import { Inject, Injected } from '@airport/direction-indicator'
 import {
+	ActorRecordId,
+	Actor_LocalId,
 	ChangeType,
 	DbEntity,
-	IRootTransaction
+	IRootTransaction,
+	SystemWideOperationId
 } from '@airport/ground-control'
-import { SystemWideOperationId } from '../../ddl/common'
-import {
-	Actor_LocalId,
-	ActorRecordId
-} from '../../ddl/ddl'
 import {
 	IActor,
 	IOperationHistory,

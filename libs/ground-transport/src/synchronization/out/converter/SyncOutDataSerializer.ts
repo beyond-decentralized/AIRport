@@ -11,16 +11,17 @@ import {
 	Injected
 } from '@airport/direction-indicator';
 import {
+	Actor_LocalId,
 	ApplicationColumn_Index,
 	ApplicationRelation_LocalId,
 	ApplicationVersion_LocalId,
 	Application_LocalId,
 	DbColumn,
 	Dictionary,
-	IDbApplicationUtils
+	IDbApplicationUtils,
+	Repository_LocalId
 } from "@airport/ground-control";
 import {
-	Actor_LocalId,
 	IActor,
 	IActorDao,
 	IOperationHistory,
@@ -30,8 +31,7 @@ import {
 	IRepository,
 	IRepositoryDao,
 	IRepositoryTransactionHistory,
-	RepositoryTransactionType,
-	Repository_LocalId
+	RepositoryTransactionType
 } from "@airport/holding-pattern/dist/app/bundle";
 import { IApplicationUtils } from '@airport/tarmaq-query';
 import { IUserAccount } from "@airport/travel-document-checkpoint";

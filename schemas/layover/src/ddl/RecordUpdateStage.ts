@@ -10,14 +10,14 @@ import {
 } from '@airport/tarmaq-entity'
 import {
 	IActor,
-	IRepository,
-	RecordHistory_ActorRecordId
+	IRepository
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	IApplicationColumn,
 	IApplicationEntity,
 	IApplicationVersion
 } from '@airport/airspace/dist/app/bundle'
+import { ActorRecordId } from '@airport/ground-control';
 
 export type RecordUpdateStage_LocalId = number;
 
@@ -67,7 +67,7 @@ export class RecordUpdateStage {
 
 	@Column({ name: 'ACTOR_RECORD_ID' })
 	@DbNumber()
-	_actorRecordId: RecordHistory_ActorRecordId
+	_actorRecordId: ActorRecordId
 
 	@ManyToOne()
 	// FIXME: verify that these records don't make it into serialized

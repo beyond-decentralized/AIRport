@@ -1,5 +1,6 @@
 import {
 	Column,
+	DbBoolean,
 	DbDate,
 	DbNumber,
 	DbString,
@@ -26,18 +27,7 @@ import { RepositoryDatabase } from "./RepositoryDatabase";
 import { RepositoryClient } from "./RepositoryClient";
 import { RepositoryTerminal } from "./RepositoryTerminal";
 import { RepositoryApplication } from "./RepositoryApplication";
-import {
-	IRepositoryIdentifier,
-	Repository_AgeSuitability,
-	Repository_CreatedAt,
-	Repository_GUID,
-	Repository_Immutable,
-	Repository_LocalId,
-	Repository_Name,
-	Repository_Source,
-	Repository_UiEntryUri
-} from "../../types";
-import { Application_FullName } from "@airport/ground-control";
+import { AgeSuitability, Application_FullName, CreatedAt, IRepositoryIdentifier, Repository_GUID, Repository_Immutable, Repository_LocalId, Repository_Name, Repository_Source, Repository_UiEntryUri } from "@airport/ground-control";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -58,11 +48,11 @@ export class Repository
 
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
-	ageSuitability?: Repository_AgeSuitability
+	ageSuitability?: AgeSuitability
 
 	@Column({ name: "CREATED_AT", nullable: false })
 	@DbDate()
-	createdAt?: Repository_CreatedAt
+	createdAt?: CreatedAt
 
 	@Column({ name: "FULL_APPLICATION_NAME", nullable: false })
 	@DbString()
@@ -73,6 +63,7 @@ export class Repository
 	GUID?: Repository_GUID
 
 	@Column({ name: "IMMUTABLE", nullable: false })
+	@DbBoolean()
 	immutable?: Repository_Immutable
 
 	@Column({ name: "NAME", nullable: false })

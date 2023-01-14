@@ -1,7 +1,6 @@
 import { RepositoryApi } from '../generated/api/repository/RepositoryApi';
 import { application } from './app-declaration';
 
-export * from '../types';
 export * from '../ddl/ddl';
 export * from '../generated/qApplication';
 export * from '../generated/qInterfaces';

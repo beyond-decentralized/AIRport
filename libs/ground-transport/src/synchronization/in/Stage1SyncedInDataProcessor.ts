@@ -13,18 +13,17 @@ import {
 	ApplicationEntity_LocalId,
 	ApplicationVersion_LocalId,
 	ApplicationEntity_TableIndex,
-	IDatastructureUtils
+	IDatastructureUtils,
+	Repository_LocalId,
+	Actor_LocalId,
+	ActorRecordId
 } from '@airport/ground-control'
 import {
-	Actor_LocalId,
 	IActor,
 	IChangedRecordIdsForRepository,
 	IOperationHistory,
 	IRecordHistory,
-	RecordHistory_ActorRecordId,
 	RecordHistory_LocalId,
-	ActorRecordId,
-	Repository_LocalId,
 	IActorDao,
 	IRepositoryTransactionHistoryDao,
 	IRepositoryTransactionHistoryDuo,
@@ -122,7 +121,7 @@ export class Stage1SyncedInDataProcessor
 				}
 				for (const operationHistory of repoTransHistory.operationHistory) {
 					// Collect the Actor related localIds
-					const idsForEntity: Map<Actor_LocalId, Set<RecordHistory_ActorRecordId>>
+					const idsForEntity: Map<Actor_LocalId, Set<ActorRecordId>>
 						= this.datastructureUtils.ensureChildJsMap(changedRecordsForRepo.actorRecordIdsByLocalIds,
 							operationHistory.entity._localId)
 					for (const recordHistory of operationHistory.recordHistory) {

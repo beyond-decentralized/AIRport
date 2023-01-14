@@ -5,6 +5,7 @@ export * from './definition/core/field/Functions'
 export * from './definition/core/field/JSONClause'
 export * from './definition/core/operation/EntityStateManager';
 export * from './definition/core/operation/Operation'
+export * from './definition/core/types'
 export * from './definition/data/sync/TransactionType'
 export * from './definition/data/ChangeType'
 export * from './definition/data/DistributionStrategy'

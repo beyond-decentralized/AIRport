@@ -5,15 +5,16 @@ import {
 	Y
 } from '@airport/tarmaq-query'
 import {
+	ActorRecordId,
+	Actor_LocalId,
 	ApplicationEntity_LocalId,
 	IDatastructureUtils,
 	JSONBaseOperation,
+	Repository_LocalId,
 	TransactionType
 } from '@airport/ground-control'
 import {
-	Actor_LocalId,
 	OperationHistory,
-	RecordHistory_ActorRecordId,
 } from '../../ddl/ddl'
 import {
 	BaseRepositoryTransactionHistoryDao,
@@ -27,7 +28,6 @@ import {
 import Q from '../../generated/qApplication'
 import { QApplicationEntity, QApplicationVersion } from '@airport/airspace/dist/app/bundle'
 import { Inject, Injected } from '@airport/direction-indicator'
-import { Repository_LocalId } from '../../types'
 
 export interface IRepositoryTransactionHistoryDao {
 
@@ -46,7 +46,7 @@ export interface IRepositoryTransactionHistoryDao {
 }
 
 export interface IChangedRecordIdsForRepository {
-	actorRecordIdsByLocalIds: Map<ApplicationEntity_LocalId, Map<Actor_LocalId, Set<RecordHistory_ActorRecordId>>>;
+	actorRecordIdsByLocalIds: Map<ApplicationEntity_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>;
 	firstChangeTime: number;
 }
 

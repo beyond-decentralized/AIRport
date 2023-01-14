@@ -2,12 +2,12 @@ import {
     ApplicationEntity_LocalId,
     PortableQuery,
     Application_Index,
-    IRootTransaction
+    IRootTransaction,
+    Repository_LocalId
 } from "@airport/ground-control";
 import { IContext } from "@airport/direction-indicator";
 import type {
-    IActor,
-    Repository_LocalId
+    IActor
 } from "@airport/holding-pattern";
 import type {
     AirEntity

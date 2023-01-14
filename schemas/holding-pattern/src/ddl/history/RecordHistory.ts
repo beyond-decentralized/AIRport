@@ -12,6 +12,7 @@ import {
 	Transient
 } from '@airport/tarmaq-entity'
 import {
+	ActorRecordId,
 	SyncColumnMap
 } from '@airport/ground-control'
 import { Actor } from '../infrastructure/Actor';
@@ -24,7 +25,6 @@ import { RecordHistoryOldValue } from './RecordHistoryOldValue';
  */
 
 export type RecordHistory_LocalId = number;
-export type RecordHistory_ActorRecordId = number;
 
 @Entity()
 @Table({
@@ -47,7 +47,7 @@ export class RecordHistory {
 
 	@Column({ name: 'ACTOR_RECORD_ID', nullable: false })
 	@DbNumber()
-	_actorRecordId: RecordHistory_ActorRecordId
+	_actorRecordId: ActorRecordId
 
 	@ManyToOne()
 	@JoinColumn({

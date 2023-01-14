@@ -11,9 +11,8 @@ import {
 	SequenceGenerator,
 	Table
 } from '@airport/tarmaq-entity'
-import { ChangeType } from '@airport/ground-control'
+import { ChangeType, SystemWideOperationId } from '@airport/ground-control'
 import { IApplicationEntity } from '@airport/airspace/dist/app/bundle'
-import { SystemWideOperationId } from '../common'
 import { RecordHistory } from './RecordHistory'
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory'
 import { Actor } from '../infrastructure/Actor'
@@ -24,7 +23,6 @@ import { Actor } from '../infrastructure/Actor'
 
 export type OperationHistory_LocalId = number;
 export type OperationHistory_OrderNumber = number;
-export type OperationHistory_SystemWideOperationId = SystemWideOperationId;
 
 /**
  * Marks a group of mutation history changes.
@@ -50,7 +48,7 @@ export class OperationHistory {
 	// This field is local to the device only, when copied to new device this value is re-created
 	@Column({ name: 'SYSTEM_WIDE_OPERATION_LID', nullable: false })
 	@DbNumber()
-	systemWideOperationId: OperationHistory_SystemWideOperationId
+	systemWideOperationId: SystemWideOperationId
 
 	@ManyToOne()
 	@JoinColumn({

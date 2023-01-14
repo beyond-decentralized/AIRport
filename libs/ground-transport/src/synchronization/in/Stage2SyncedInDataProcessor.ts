@@ -15,13 +15,11 @@ import {
 	DbColumn,
 	DbEntity,
 	Dictionary,
-	IDatastructureUtils
-} from '@airport/ground-control'
-import {
+	IDatastructureUtils,
+	Repository_LocalId,
 	Actor_LocalId,
-	ActorRecordId,
-	Repository_LocalId
-} from '@airport/holding-pattern/dist/app/bundle'
+	ActorRecordId
+} from '@airport/ground-control'
 import {
 	IRecordUpdateStageDao,
 	RecordUpdateStageValues

@@ -8,15 +8,15 @@ import {
 } from '@airport/direction-indicator'
 import { IObservableQueryAdapter } from '@airport/flight-number'
 import {
+	Actor_LocalId,
 	DbEntity,
 	DbRelation,
 	Dictionary,
 	EntityRelationType,
 	IActor,
 	IDatastructureUtils,
-	PortableQuery, QueryResultType
+	PortableQuery, QueryResultType, Repository_LocalId
 } from '@airport/ground-control'
-import { Actor_LocalId, Repository_LocalId } from '@airport/holding-pattern/dist/app/bundle'
 import { IActorDao, IRepositoryDao } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	IQueryManager,

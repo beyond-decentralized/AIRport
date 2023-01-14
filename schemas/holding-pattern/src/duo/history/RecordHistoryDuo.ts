@@ -1,9 +1,7 @@
 import { Inject, Injected } from '@airport/direction-indicator'
-import { DbColumn } from '@airport/ground-control'
+import { ActorRecordId, Actor_LocalId, DbColumn } from '@airport/ground-control'
 import {
-	Actor_LocalId,
-	RecordHistory,
-	ActorRecordId
+	RecordHistory
 } from '../../ddl/ddl'
 import {
 	IRecordHistory,

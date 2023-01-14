@@ -1,85 +1,10 @@
-import { ICoreLocalApiRequest, InternalUserAccount, ILocalAPIResponse } from '@airport/aviation-communication'
+import { ICoreLocalApiRequest, ILocalAPIResponse } from '@airport/aviation-communication'
 import { IContext } from '@airport/direction-indicator'
 import { Observable } from 'rxjs'
+import { IAirEntity } from './core/types'
 import { IAbstractQueryContext } from './query/AbstractQueryContext'
 import { PortableQuery } from './query/PortableQuery'
 import { ISaveResult } from './query/SaveResult'
-
-export interface IRootTransaction {
-	numberOfOperations: number
-	// Only one new repository can be created at at time
-	newRepository?: IRepository
-}
-
-export interface IActor {
-
-	// Id Properties
-	_localId?: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	GUID?: string;
-
-	// Non-Id Relations
-	userAccount?: InternalUserAccount;
-
-	// Transient Properties
-
-	// Public Methods
-
-}
-
-export interface IRepository {
-
-	// Id Properties
-	_localId: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	ageSuitability?: number;
-	createdAt?: Date;
-	fullApplicationName?: string;
-	GUID?: string;
-	immutable?: boolean;
-	name?: string;
-	source?: string;
-	uiEntryUri?: string;
-
-	// Non-Id Relations
-	owner?: InternalUserAccount;
-
-	// Transient Properties
-
-	// Public Methods
-
-}
-
-export interface IAirEntity {
-	// Id Properties
-	_actorRecordId?: number;
-
-	// Id Relations
-	repository?: IRepository;
-	actor?: IActor;
-
-	// Non-Id Properties
-	ageSuitability?: number;
-	copied?: boolean;
-	createdAt?: Date;
-	systemWideOperationId?: number;
-	sourceActorRecordId?: number;
-
-	// Non-Id Relations
-	sourceRepository?: IRepository;
-	sourceActor?: IActor;
-
-	// Transient Properties
-	id?: string
-
-	// Public Methods
-}
 
 export interface ITransactionalConnector {
 

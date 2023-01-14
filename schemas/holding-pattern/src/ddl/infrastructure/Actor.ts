@@ -13,9 +13,8 @@ import {
 	UserAccount
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { Application } from '@airport/airspace/dist/app/bundle';
+import { Actor_GUID, Actor_LocalId } from '@airport/ground-control';
 
-export type Actor_LocalId = number;
-export type Actor_GUID = string;
 
 @Entity()
 export class Actor {

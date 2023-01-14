@@ -15,6 +15,7 @@ import {
 	JsonInsertValues,
 	PortableQuery,
 	ISequenceGenerator,
+	SystemWideOperationId,
 } from '@airport/ground-control'
 import {
 	IActor,
@@ -22,8 +23,7 @@ import {
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
 	IRepositoryTransactionHistory,
-	IRepositoryTransactionHistoryDuo,
-	SystemWideOperationId
+	IRepositoryTransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	IHistoryManager,

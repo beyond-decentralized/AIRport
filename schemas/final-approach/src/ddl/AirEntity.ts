@@ -12,18 +12,17 @@ import {
 import { Actor, Repository } from '@airport/holding-pattern/dist/app/bundle'
 import { UserAccount } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { IAirEntityUtils } from '@airport/aviation-communication'
+import { ActorRecordId, AgeSuitability, AirEntity_Id, CreatedAt, SystemWideOperationId } from '@airport/ground-control'
 
 /**
  * Created by Papa on 2/17/2017.
  */
-export type AirEntity_ActorRecordId = number
-export type AirEntity_SystemWideOperationId = number
 
 @MappedSuperclass()
 export abstract class AirEntity {
 
 	constructor(
-		entityGUID?: string
+		entityId?: AirEntity_Id
 	) {
 		// Currently TypeScript does not support optional getters/setters
 		// this is a workaround
@@ -51,13 +50,14 @@ export abstract class AirEntity {
 			}
 		});
 
-		this.id = entityGUID
+		this.id = entityId
 	}
 
 	@Id()
 	@Column({ name: 'ACTOR_RECORD_ID', nullable: false })
 	@GeneratedValue()
-	_actorRecordId?: AirEntity_ActorRecordId
+	@DbNumber()
+	_actorRecordId?: ActorRecordId
 
 	@Id()
 	@ManyToOne()
@@ -79,7 +79,7 @@ export abstract class AirEntity {
 
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
-	ageSuitability?: number = 0
+	ageSuitability?: AgeSuitability = 0
 
 	// TODO: if and when records are copied, make this a column
 	// @Column({ name: 'COPIED', nullable: false })
@@ -88,14 +88,15 @@ export abstract class AirEntity {
 
 	@Column({ name: 'CREATED_AT', nullable: false })
 	@DbDate()
-	createdAt?: Date = new Date()
+	createdAt?: CreatedAt = new Date()
 
 	// This field is local to the device only, when copied to new device this value is re-created
 	// It is needed for bulk updates of repository records, where there is now way to find out
 	// what the new field values are (like 'UPDATE ... SET a = (SUBSELECT)'). It is used as
 	// a marker to find the new values after the update (and before saving them to history).
 	@Column({ name: 'SYSTEM_WIDE_OPERATION_LID', nullable: false })
-	systemWideOperationId?: AirEntity_SystemWideOperationId
+	@DbNumber()
+	systemWideOperationId?: SystemWideOperationId
 
 	/*
 	 *A transient convenience property to get the username of the
@@ -141,6 +142,6 @@ export abstract class AirEntity {
 	 * Returns null if one of it's member Ids does not exist
 	 */
 	@Transient()
-	id?: string
+	id?: AirEntity_Id
 
 }

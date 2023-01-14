@@ -4,16 +4,13 @@ import {
 } from '@airport/direction-indicator'
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
-	IDatastructureUtils
+	IDatastructureUtils, Repository_GUID, Repository_LocalId, Repository_Source
 } from '@airport/ground-control'
 import {
 	IRepository,
 	IRepositoryDao,
 	IRepositoryTransactionHistory,
-	IRepositoryTransactionHistoryDao,
-	Repository_LocalId,
-	Repository_Source,
-	Repository_GUID
+	IRepositoryTransactionHistoryDao
 } from '@airport/holding-pattern/dist/app/bundle'
 import { ISynchronizationAdapterLoader } from '../../adapters/SynchronizationAdapterLoader'
 import { ISyncOutDataSerializer } from './converter/SyncOutDataSerializer'

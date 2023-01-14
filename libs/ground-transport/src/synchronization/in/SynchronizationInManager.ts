@@ -10,7 +10,8 @@ import { ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
 import { IDataCheckResult } from './checker/SyncInDataChecker'
 import { ISyncInApplicationVersionChecker } from './checker/SyncInApplicationVersionChecker'
 import { IRepositoryLoader } from '@airport/air-traffic-control'
-import { IRepository, Repository_GUID } from '@airport/holding-pattern'
+import { IRepository } from '@airport/holding-pattern'
+import { Repository_GUID } from '@airport/ground-control'
 
 /**
  * The manager for synchronizing data coming in  to Terminal (TM)
