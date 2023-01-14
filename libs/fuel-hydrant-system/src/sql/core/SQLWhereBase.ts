@@ -55,7 +55,7 @@ export abstract class SQLWhereBase
 	implements ISqlValueProvider {
 
 	public parameterReferences: (string | number)[] = []
-	protected fieldMap: ApplicationMap = new ApplicationMap()
+	protected fieldMap: ApplicationMap = new globalThis.ApplicationMap()
 	protected qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal } = {}
 	protected jsonRelationMapByAlias: { [entityAlias: string]: JSONEntityRelation } = {}
 

@@ -1,5 +1,5 @@
-import {ApplicationEntity_TableIndex} from "../../definition/application/Entity";
-import {ColumnMap}  from "../query/ColumnMap";
+import { ApplicationEntity_TableIndex } from "../../definition/application/Entity";
+import { ColumnMap } from "../query/ColumnMap";
 
 export class SyncColumnMap extends ColumnMap {
 
@@ -11,3 +11,4 @@ export class SyncColumnMap extends ColumnMap {
 	}
 
 }
+globalThis.SyncColumnMap = SyncColumnMap

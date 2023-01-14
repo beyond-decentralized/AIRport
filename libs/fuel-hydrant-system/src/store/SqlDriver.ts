@@ -31,8 +31,8 @@ import {
 	QueryType,
 	SQLDataType,
 	StoreType,
-	SyncApplicationMap,
 	IAppTrackerUtils,
+	SyncApplicationMap,
 } from '@airport/ground-control';
 import {
 	IStoreDriver,
@@ -323,7 +323,7 @@ Entity:          ${table.name}
 		portableQuery: PortableQuery,
 		context: IFuelHydrantContext,
 	): Promise<number> {
-		let fieldMap = new SyncApplicationMap();
+		let fieldMap: SyncApplicationMap = new globalThis.SyncApplicationMap();
 		let sqlDelete = new SQLDelete(
 			<JsonDelete>portableQuery.jsonQuery, this.getDialect(context),
 			this.airportDatabase,

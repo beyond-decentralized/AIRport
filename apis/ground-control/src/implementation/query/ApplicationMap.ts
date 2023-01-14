@@ -26,7 +26,7 @@ export class ApplicationMap {
 		applicationVersionLocalId: ApplicationVersion_LocalId,
 		tableIndex: ApplicationEntity_TableIndex,
 		allColumns: boolean = false,
-		TableMapConstructor = TableMap
+		TableMapConstructor = globalThis.TableMap as typeof TableMap
 	): ColumnMap {
 		let tableMap = this.applicationMap[applicationVersionLocalId];
 		if (!tableMap) {
@@ -50,3 +50,4 @@ export class ApplicationMap {
 	}
 
 }
+globalThis.ApplicationMap = ApplicationMap

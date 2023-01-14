@@ -1,13 +1,13 @@
-import {ApplicationEntity_TableIndex}      from "../../definition/application/Entity";
-import {ApplicationColumn_Index}     from "../../definition/application/Property";
-import {ApplicationVersion_LocalId} from "../../definition/application/Application";
-import {ColumnMap}       from "./ColumnMap";
+import { ApplicationEntity_TableIndex } from "../../definition/application/Entity";
+import { ApplicationColumn_Index } from "../../definition/application/Property";
+import { ApplicationVersion_LocalId } from "../../definition/application/Application";
+import { ColumnMap } from "./ColumnMap";
 
 /**
  * Created by Papa on 9/10/2016.
  */
 
-export const ALL_TABLE_COLUMNS = 'A';
+globalThis.ALL_TABLE_COLUMNS = '__ALL_TABLE_COLUMNS__';
 
 export class TableMap {
 
@@ -20,7 +20,7 @@ export class TableMap {
 	ensure(
 		tableIndex: ApplicationEntity_TableIndex,
 		allColumns: boolean = false,
-		ColumnMapConstructor = ColumnMap,
+		ColumnMapConstructor = globalThis.ColumnMap as typeof ColumnMap,
 	): ColumnMap {
 		let tableColumnMap = this.tableMap[tableIndex];
 		if (!tableColumnMap) {
@@ -43,3 +43,4 @@ export class TableMap {
 	}
 
 }
+globalThis.TableMap = TableMap

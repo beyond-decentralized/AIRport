@@ -16,7 +16,7 @@ export class SyncApplicationMap extends ApplicationMap {
 		entity: DbEntity,
 		allColumns: boolean = false
 	): SyncColumnMap {
-		return super.ensureEntity(entity, allColumns, SyncTableMap);
+		return super.ensureEntity(entity, allColumns, globalThis.SyncTableMap as typeof SyncTableMap);
 	}
 
 	intersects(
@@ -24,7 +24,8 @@ export class SyncApplicationMap extends ApplicationMap {
 	): boolean {
 		for (const applicationIndex in this.applicationMap) {
 			if (applicationMap.applicationMap[applicationIndex]) {
-				const syncTableMap = new SyncTableMap(parseInt(applicationIndex), this.applicationMap[applicationIndex].tableMap);
+				const syncTableMap: SyncTableMap = new globalThis.SyncTableMap(
+					parseInt(applicationIndex), this.applicationMap[applicationIndex].tableMap);
 				if (syncTableMap.intersects(applicationMap.applicationMap[applicationIndex])) {
 					return true;
 				}
@@ -34,5 +35,4 @@ export class SyncApplicationMap extends ApplicationMap {
 	}
 
 }
-
 globalThis.SyncApplicationMap = SyncApplicationMap

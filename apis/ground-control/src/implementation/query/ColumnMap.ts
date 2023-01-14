@@ -1,6 +1,5 @@
-import {ApplicationEntity_TableIndex}        from "../../definition/application/Entity";
-import {ApplicationColumn_Index}       from "../../definition/application/Property";
-import {ALL_TABLE_COLUMNS} from "./TableMap";
+import { ApplicationEntity_TableIndex } from "../../definition/application/Entity";
+import { ApplicationColumn_Index } from "../../definition/application/Property";
 
 export class ColumnMap {
 	columnMap: { [columnIndex: string]: boolean } = {};
@@ -10,7 +9,7 @@ export class ColumnMap {
 		allColumns: boolean = false
 	) {
 		if (allColumns) {
-			this.columnMap[ALL_TABLE_COLUMNS] = true;
+			this.columnMap[globalThis.ALL_TABLE_COLUMNS] = true;
 		}
 	}
 
@@ -19,3 +18,4 @@ export class ColumnMap {
 	}
 
 }
+globalThis.ColumnMap = ColumnMap
