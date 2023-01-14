@@ -811,9 +811,6 @@ else {
 }
 const IOC = inversionOfControl;
 
-/**
- * Column keys.
- */
 class Dictionary {
     constructor() {
         this.airbridge = {
@@ -1393,44 +1390,19 @@ var ApplicationStatus;
     ApplicationStatus["STUB"] = "STUB";
 })(ApplicationStatus || (ApplicationStatus = {}));
 
-/**
- * Created by Papa on 9/10/2016.
- */
-const ALL_TABLE_COLUMNS = 'A';
-class TableMap {
-    constructor(applicationVersionId, tableMap = {}) {
-        this.applicationVersionId = applicationVersionId;
-        this.tableMap = tableMap;
-    }
-    ensure(tableIndex, allColumns = false, ColumnMapConstructor = ColumnMap) {
-        let tableColumnMap = this.tableMap[tableIndex];
-        if (!tableColumnMap) {
-            tableColumnMap = new ColumnMapConstructor(tableIndex, allColumns);
-            this.tableMap[tableIndex] = tableColumnMap;
-        }
-        return tableColumnMap;
-    }
-    existsByStructure(tableIndex, columnIndex) {
-        let tableColumnMap = this.tableMap[tableIndex];
-        if (!tableColumnMap) {
-            return false;
-        }
-        return !!tableColumnMap.columnMap[columnIndex];
-    }
-}
-
 class ColumnMap {
     constructor(tableIndex, allColumns = false) {
         this.tableIndex = tableIndex;
         this.columnMap = {};
         if (allColumns) {
-            this.columnMap[ALL_TABLE_COLUMNS] = true;
+            this.columnMap[globalThis.ALL_TABLE_COLUMNS] = true;
         }
     }
     ensure(columnIndex) {
         this.columnMap[columnIndex] = true;
     }
 }
+globalThis.ColumnMap = ColumnMap;
 
 class DbApplicationUtils {
     getApplication_FullName({ domain, name, }) {
@@ -1489,6 +1461,33 @@ class DbApplicationUtils {
     }
 }
 
+/**
+ * Created by Papa on 9/10/2016.
+ */
+globalThis.ALL_TABLE_COLUMNS = '__ALL_TABLE_COLUMNS__';
+class TableMap {
+    constructor(applicationVersionId, tableMap = {}) {
+        this.applicationVersionId = applicationVersionId;
+        this.tableMap = tableMap;
+    }
+    ensure(tableIndex, allColumns = false, ColumnMapConstructor = globalThis.ColumnMap) {
+        let tableColumnMap = this.tableMap[tableIndex];
+        if (!tableColumnMap) {
+            tableColumnMap = new ColumnMapConstructor(tableIndex, allColumns);
+            this.tableMap[tableIndex] = tableColumnMap;
+        }
+        return tableColumnMap;
+    }
+    existsByStructure(tableIndex, columnIndex) {
+        let tableColumnMap = this.tableMap[tableIndex];
+        if (!tableColumnMap) {
+            return false;
+        }
+        return !!tableColumnMap.columnMap[columnIndex];
+    }
+}
+globalThis.TableMap = TableMap;
+
 class ApplicationMap {
     constructor(applicationMap = {}) {
         this.applicationMap = applicationMap;
@@ -1496,7 +1495,7 @@ class ApplicationMap {
     ensureEntity(entity, allColumns = false, TableMapConstructor = TableMap) {
         return this.ensure(entity.applicationVersion._localId, entity.index, allColumns, TableMapConstructor);
     }
-    ensure(applicationVersionLocalId, tableIndex, allColumns = false, TableMapConstructor = TableMap) {
+    ensure(applicationVersionLocalId, tableIndex, allColumns = false, TableMapConstructor = globalThis.TableMap) {
         let tableMap = this.applicationMap[applicationVersionLocalId];
         if (!tableMap) {
             tableMap = new TableMapConstructor(applicationVersionLocalId);
@@ -1512,53 +1511,26 @@ class ApplicationMap {
         return tableMap.existsByStructure(tableIndex, columnIndex);
     }
 }
+globalThis.ApplicationMap = ApplicationMap;
 
 class SyncColumnMap extends ColumnMap {
     constructor(tableIndex, allColumns = false) {
         super(tableIndex, allColumns);
     }
 }
-
-/**
- * Created by Papa on 10/7/2016.
- */
-class SyncTableMap extends TableMap {
-    constructor(applicationIndex, tableMap) {
-        super(applicationIndex, tableMap);
-    }
-    ensureEntity(tableIndex, allColumns = false) {
-        return super.ensure(tableIndex, allColumns, SyncColumnMap);
-    }
-    intersects(columnMap) {
-        for (let tableIndex in this.tableMap) {
-            if (columnMap.tableMap[tableIndex]) {
-                let tableColumnMap = this.tableMap[tableIndex];
-                let otherTableColumnMap = columnMap.tableMap[tableIndex];
-                if (tableColumnMap[ALL_TABLE_COLUMNS] || tableColumnMap[ALL_TABLE_COLUMNS]) {
-                    return true;
-                }
-                for (let columnIndex in tableColumnMap.columnMap) {
-                    if (otherTableColumnMap.columnMap[columnIndex]) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-}
+globalThis.SyncColumnMap = SyncColumnMap;
 
 class SyncApplicationMap extends ApplicationMap {
     constructor(applicationMap) {
         super(applicationMap);
     }
     ensureEntity(entity, allColumns = false) {
-        return super.ensureEntity(entity, allColumns, SyncTableMap);
+        return super.ensureEntity(entity, allColumns, globalThis.SyncTableMap);
     }
     intersects(applicationMap) {
         for (const applicationIndex in this.applicationMap) {
             if (applicationMap.applicationMap[applicationIndex]) {
-                const syncTableMap = new SyncTableMap(parseInt(applicationIndex), this.applicationMap[applicationIndex].tableMap);
+                const syncTableMap = new globalThis.SyncTableMap(parseInt(applicationIndex), this.applicationMap[applicationIndex].tableMap);
                 if (syncTableMap.intersects(applicationMap.applicationMap[applicationIndex])) {
                     return true;
                 }
@@ -1607,6 +1579,37 @@ var TerminalSyncStatus;
     // Terminal syncing has been suspended
     TerminalSyncStatus["SUSPENDED"] = "SUSPENDED";
 })(TerminalSyncStatus || (TerminalSyncStatus = {}));
+
+/**
+ * Created by Papa on 10/7/2016.
+ */
+class SyncTableMap extends TableMap {
+    constructor(applicationIndex, tableMap) {
+        super(applicationIndex, tableMap);
+    }
+    ensureEntity(tableIndex, allColumns = false) {
+        return super.ensure(tableIndex, allColumns, globalThis.SyncColumnMap);
+    }
+    intersects(columnMap) {
+        for (let tableIndex in this.tableMap) {
+            if (columnMap.tableMap[tableIndex]) {
+                let tableColumnMap = this.tableMap[tableIndex];
+                let otherTableColumnMap = columnMap.tableMap[tableIndex];
+                if (tableColumnMap[globalThis.ALL_TABLE_COLUMNS]
+                    || tableColumnMap[globalThis.ALL_TABLE_COLUMNS]) {
+                    return true;
+                }
+                for (let columnIndex in tableColumnMap.columnMap) {
+                    if (otherTableColumnMap.columnMap[columnIndex]) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+}
+globalThis.SyncTableMap = SyncTableMap;
 
 class AppTrackerUtils {
     get EXTERNAL_ACCESS_ENTITIES() {
@@ -28990,7 +28993,7 @@ class ActiveQueries {
 
 class ObservableQueryAdapter {
     wrapInObservable(portableQuery, queryCallback) {
-        // TODO: checking for presence of a repository in in an observable
+        // TODO: checking for presence of a Repository in an Observable
         // await this.ensureRepositoryPresenceAndCurrentState(context)
         let resultsSubject = new Subject();
         // FIXME: Remove the query for the list of cached queries, that are checked every
@@ -30029,7 +30032,7 @@ class SQLWhereBase {
         this.utils = utils;
         this.context = context;
         this.parameterReferences = [];
-        this.fieldMap = new ApplicationMap();
+        this.fieldMap = new globalThis.ApplicationMap();
         this.qEntityMapByAlias = {};
         this.jsonRelationMapByAlias = {};
     }
@@ -31842,7 +31845,7 @@ Entity:          ${table.name}
         return numVals;
     }
     async deleteWhere(portableQuery, context) {
-        let fieldMap = new SyncApplicationMap();
+        let fieldMap = new globalThis.SyncApplicationMap();
         let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
         let sql = sqlDelete.toSQL(context);
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);

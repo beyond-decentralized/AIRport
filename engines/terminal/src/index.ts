@@ -1,5 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
-
 export * from './core/repository/RepositoryLoader'
 export * from './core/repository/RepositoryManager'
 export * from './data/InternalRecordManager'
@@ -22,7 +20,6 @@ export * from './processing/OperationManager'
 export * from './processing/StructuralEntityValidator'
 export * from './serialize/QueryParameterDeserializer'
 export * from './serialize/QueryResultsSerializer'
-export * from './shared/logic/DatabaseLogic'
 export * from './shared/DateUtils'
 export * from './shared/PlatformUtils'
 // export * from './Constants'
