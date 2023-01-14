@@ -27,7 +27,7 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
             (): Promise<any>
         }
     ): Observable<E> {
-        // TODO: checking for presence of a repository in in an observable
+        // TODO: checking for presence of a Repository in an Observable
         // await this.ensureRepositoryPresenceAndCurrentState(context)
 
 

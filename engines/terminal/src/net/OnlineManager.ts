@@ -5,14 +5,9 @@ import {
 import {
   IContext
 } from '@airport/direction-indicator';
-import { BlockSyncStatus } from '@airport/ground-control';
 import {
-  IRepository,
-  IRepositoryTransactionHistory,
   IRepositoryTransactionHistoryDao,
-  RepositoryTransactionHistory,
   IRepositoryDao,
-  UpdateState,
   IRepositoryManager,
 } from '@airport/holding-pattern/dist/app/bundle';
 import {

@@ -1,7 +1,3 @@
-/**
- * Column keys.
- */
-
 import { Injected } from "@airport/direction-indicator";
 import { DbEntity } from "../../application/Entity";
 

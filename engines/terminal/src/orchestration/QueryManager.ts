@@ -3,7 +3,6 @@ import {
 	IRepositoryLoader
 } from '@airport/air-traffic-control'
 import {
-	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -15,7 +14,6 @@ import {
 	EntityRelationType,
 	IActor,
 	IDatastructureUtils,
-	InternalFragments,
 	PortableQuery, QueryResultType
 } from '@airport/ground-control'
 import { Actor_LocalId, Repository_LocalId } from '@airport/holding-pattern/dist/app/bundle'
