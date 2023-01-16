@@ -5,7 +5,7 @@ AIRport allows Distributed Applications to interoperate by providing an API
 framework on top of a relational database. Data is stored in virual
 Repositories with one Transaction Log per repository.
 
-More documentation can be found at [Beyond Decentralized](https://beyond-decentralized.world/documentation.html#technologies).
+More documentation can be found at [Beyond Decentralized](https://beyond-decentralized.world/documentation.html).
 
 ## How it works
 
