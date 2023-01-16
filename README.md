@@ -1,7 +1,7 @@
 # ![AIRport - Decentralized Relational Platform](/AIRport_logo_2x1.png)
 
 ## Description <a name="description"></a>
-AIRport allows Decentralized Applications to interoperate by providing an API
+AIRport allows Distributed Applications to interoperate by providing an API
 framework on top of a relational database. Data is stored in virual
 Repositories with one Transaction Log per repository.
 
