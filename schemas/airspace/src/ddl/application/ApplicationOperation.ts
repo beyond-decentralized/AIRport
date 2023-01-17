@@ -29,7 +29,7 @@ export class ApplicationOperation
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	@Column({ name: 'APPLICATION_OPERATION_LID' })
+	@Column({ name: 'APPLICATION_OPERATION_LID', nullable: false })
 	_localId: Operation_LocalId
 
 	@Column({
@@ -37,7 +37,7 @@ export class ApplicationOperation
 		nullable: false
 	})
 	@DbNumber()
-	type: Operation_Type
+	type?: Operation_Type
 
 	@ManyToOne()
 	@JoinColumn({
@@ -45,14 +45,14 @@ export class ApplicationOperation
 		referencedColumnName: 'APPLICATION_ENTITY_LID',
 		nullable: false
 	})
-	entity: ApplicationEntity
+	entity?: ApplicationEntity
 
 	@Column({ name: 'NAME', nullable: false })
 	@DbString()
-	name: Operation_Name
+	name?: Operation_Name
 
 	@Column({ name: 'RULE', nullable: false })
 	@Json()
-	rule: Operation_Rule
+	rule?: Operation_Rule
 
 }

@@ -35,48 +35,48 @@ export class ApplicationVersion {
 	@DbNumber()
 	@Id()
 	@SequenceGenerator({ allocationSize: 100 })
-	@Column({ name: 'APPLICATION_VERSION_LID' })
+	@Column({ name: 'APPLICATION_VERSION_LID', nullable: false })
 	_localId: ApplicationVersion_LocalId
 
 	@Column({ name: 'INTEGER_VERSION', nullable: false })
 	@DbNumber()
-	integerVersion: ApplicationVersion_IntegerVersion
+	integerVersion?: ApplicationVersion_IntegerVersion
 
 	@Column({ name: 'VERSION_STRING', nullable: false })
 	@DbString()
-	versionString: ApplicationVersion_VersionString
+	versionString?: ApplicationVersion_VersionString
 
 	@Column({ name: 'MAJOR_VERSION', nullable: false })
 	@DbNumber()
-	majorVersion: ApplicationVersion_MajorVersion
+	majorVersion?: ApplicationVersion_MajorVersion
 
 	@Column({ name: 'MINOR_VERSION', nullable: false })
 	@DbNumber()
-	minorVersion: ApplicationVersion_MinorVersion
+	minorVersion?: ApplicationVersion_MinorVersion
 
 	@Column({ name: 'PATCH_VERSION', nullable: false })
 	@DbNumber()
-	patchVersion: ApplicationVersion_PatchVersion
+	patchVersion?: ApplicationVersion_PatchVersion
 
 	// FIXME: keep track of applications by signature also
 	// FIXME: revisit application tracking when versioning is implemented
 	// better to track everything by names
 	@Column({ name: 'JSON_APPLICATION', nullable: false })
 	@Json()
-	jsonApplication: JsonApplicationWithLastIds
+	jsonApplication?: JsonApplicationWithLastIds
 
 	@ManyToOne()
 	@JoinColumn({ name: 'APPLICATION_INDEX', nullable: false })
-	application: Application
+	application?: Application
 
 	@OneToMany({ mappedBy: 'applicationVersion' })
-	entities: ApplicationEntity[] = []
+	entities?: ApplicationEntity[] = []
 
 	@OneToMany({ mappedBy: 'ownApplicationVersion' })
-	references: ApplicationReference[] = []
+	references?: ApplicationReference[] = []
 
 	@OneToMany({ mappedBy: 'referencedApplicationVersion' })
-	referencedBy: ApplicationReference[] = []
+	referencedBy?: ApplicationReference[] = []
 
 	@Transient()
 	entityMapByName?: { [entityName: string]: IApplicationEntity } = {}

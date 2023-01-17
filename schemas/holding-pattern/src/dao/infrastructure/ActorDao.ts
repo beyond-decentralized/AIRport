@@ -9,7 +9,8 @@ import {
 	Application_Name,
 	Domain_Name,
 	IDatastructureUtils,
-	JSONBaseOperation
+	JSONBaseOperation,
+	Terminal_GUID
 } from '@airport/ground-control'
 import {
 	QApplication,
@@ -18,8 +19,6 @@ import {
 import {
 	QTerminal,
 	QUserAccount,
-	Terminal_GUID,
-	UserAccount_GUID,
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
 	Actor
@@ -32,6 +31,7 @@ import {
 } from '../../generated/generated'
 import Q from '../../generated/qApplication'
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
+import { UserAccount_GUID } from '@airport/aviation-communication'
 
 export interface IActorDao
 	extends IBaseActorDao {
@@ -210,8 +210,8 @@ export class ActorDao
 					}
 				},
 				terminal: {
-					_localId: 
-					GUID,
+					_localId:
+						GUID,
 					owner: {
 						username,
 						GUID,

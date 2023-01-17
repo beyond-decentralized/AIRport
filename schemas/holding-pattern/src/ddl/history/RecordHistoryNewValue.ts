@@ -1,3 +1,4 @@
+import { RecordHistoryNewValue_ColumnIndex, RecordHistoryNewValue_NewValue } from "@airport/ground-control";
 import {
 	Column,
 	DbAny,
@@ -13,10 +14,6 @@ import { RecordHistory } from './RecordHistory'
 /**
  * Created by Papa on 9/15/2016.
  */
-
-
-export type RecordHistoryNewValueColumnIndex = number;
-export type RecordHistoryNewValueNewValue = any;
 
 /**
  * Currently, syncing databases are always SqLite dbs.  This means
@@ -47,10 +44,10 @@ export class RecordHistoryNewValue {
 	@Id()
 	@Column({ name: "COLUMN_INDEX", nullable: false })
 	@DbNumber()
-	columnIndex: RecordHistoryNewValueColumnIndex;
+	columnIndex: RecordHistoryNewValue_ColumnIndex;
 
 	@Column({ name: "NEW_VALUE" })
 	@DbAny()
-	newValue: RecordHistoryNewValueNewValue;
+	newValue?: RecordHistoryNewValue_NewValue;
 
 }

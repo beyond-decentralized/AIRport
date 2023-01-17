@@ -5,12 +5,12 @@ export interface IDbApplicationUtils {
 
     getApplication_FullName({
         domain,
-        name,
+        name
     }: {
-        domain: string | {
-            name: string
+        domain?: string | {
+            name?: string
         },
-        name: string
+        name?: string
     }): Application_FullName
 
     getApplication_FullNameFromDomainAndName(

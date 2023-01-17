@@ -2,7 +2,7 @@ import { IOC } from "@airport/direction-indicator";
 import { Application, ApplicationDao } from '@airport/airspace/dist/app/bundle';
 import { Repository, RepositoryDao } from '@airport/holding-pattern/dist/app/bundle';
 import { IUserAccountInfo, TERMINAL_SESSION_MANAGER } from '@airport/terminal-map'
-import { Repository_GUID } from "@airport/holding-pattern";
+import { Repository_GUID } from "@airport/ground-control";
 
 export class AIRportApi {
 

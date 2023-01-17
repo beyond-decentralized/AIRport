@@ -1,5 +1,5 @@
 import {
-	RepositorySynchronizationMessage,
+	RepositorySynchronizationData, RepositorySynchronizationMessage,
 } from '@airport/arrivals-n-departures'
 import { IApplicationVersionCheckRecord, ISyncInApplicationVersionChecker } from './SyncInApplicationVersionChecker';
 import { ISyncInActorChecker } from './SyncInActorChecker';
@@ -19,13 +19,13 @@ import { IApplicationRelation } from '@airport/airspace';
 
 export interface ISyncInChecker {
 
-	checkMessage(
-		message: RepositorySynchronizationMessage,
+	checkData(
+		data: RepositorySynchronizationMessage,
 		context: IContext
 	): Promise<IDataCheckResult>
 
 	checkReferencedApplicationRelations(
-		message: RepositorySynchronizationMessage,
+		data: RepositorySynchronizationData,
 		applicationCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>,
 		context: IContext
 	): Promise<void>
@@ -66,39 +66,41 @@ export class SyncInChecker
 	/**
 	 * Check the message and load all required auxiliary entities.
 	 */
-	async checkMessage(
+	async checkData(
 		message: RepositorySynchronizationMessage,
 		context: IContext
 	): Promise<IDataCheckResult> {
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
 
-		if (! await this.syncInUserAccountChecker.ensureUserAccounts(message, context)) {
+		let data = message.data
+
+		if (! await this.syncInUserAccountChecker.ensureUserAccounts(data, context)) {
 			return {
 				isValid: false
 			}
 		}
-		if (! await this.syncInTerminalChecker.ensureTerminals(message, context)) {
+		if (! await this.syncInTerminalChecker.ensureTerminals(data, context)) {
 			return {
 				isValid: false
 			}
 		}
-		if (! await this.syncInApplicationChecker.ensureApplications(message, context)) {
+		if (! await this.syncInApplicationChecker.ensureApplications(data, context)) {
 			return {
 				isValid: false
 			}
 		}
-		if (! await this.syncInActorChecker.ensureActors(message, context)) {
+		if (! await this.syncInActorChecker.ensureActors(data, context)) {
 			return {
 				isValid: false
 			}
 		}
-		if (! await this.syncInRepositoryChecker.ensureRepositories(message, context)) {
+		if (! await this.syncInRepositoryChecker.ensureRepositories(data, context)) {
 			return {
 				isValid: false
 			}
 		}
 		if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(
-			message.applicationVersions, message.applications, context)) {
+			data.applicationVersions, data.applications, context)) {
 			return {
 				isValid: false
 			}
@@ -109,16 +111,16 @@ export class SyncInChecker
 	}
 
 	async checkReferencedApplicationRelations(
-		message: RepositorySynchronizationMessage,
+		data: RepositorySynchronizationData,
 		_context: IContext
 	): Promise<void> {
 		// TODO: check referencedApplicationRelations
-		message.referencedApplicationVersions
-		const applicationEntityMap = await this.syncInDataChecker.populateApplicationEntityMap(message.referencedApplicationVersions)
+		data.referencedApplicationVersions
+		const applicationEntityMap = await this.syncInDataChecker.populateApplicationEntityMap(data.referencedApplicationVersions)
 		const applicationRelationMap: Map<ApplicationEntity_LocalId, Map<ApplicationRelation_Index, IApplicationRelation>> = new Map()
 
-		for (let i = 0; i < message.referencedApplicationRelations.length; i++) {
-			const referencedRelation = message.referencedApplicationRelations[i]
+		for (let i = 0; i < data.referencedApplicationRelations.length; i++) {
+			const referencedRelation = data.referencedApplicationRelations[i]
 
 			if (typeof referencedRelation !== 'object') {
 				throw new Error(`Invalid referencedApplicationRelations[${i}] objectg`)
@@ -141,7 +143,7 @@ export class SyncInChecker
 					in 'referencedApplicationRelations[${i}].entity.index'`)
 			}
 
-			const messageApplicationVersion = message
+			const messageApplicationVersion = data
 				.referencedApplicationVersions[referencedEntity.applicationVersion as any]
 			if (!messageApplicationVersion) {
 				throw new Error(
@@ -172,7 +174,7 @@ Declared in 'referencedApplicationRelations[${i}].entity.applicationVersion'`
 			}
 			applicationRelationsForEntityMap.set(referencedRelation.index, applicationRelation)
 
-			message.referencedApplicationRelations[i] = applicationRelation
+			data.referencedApplicationRelations[i] = applicationRelation
 		}
 	}
 }

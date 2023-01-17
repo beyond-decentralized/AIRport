@@ -1,5 +1,8 @@
+import { Type_Id, Type_Name } from '@airport/ground-control'
 import {
     Column,
+    DbNumber,
+    DbString,
     Entity,
     Id,
     OneToMany,
@@ -7,8 +10,9 @@ import {
 } from '@airport/tarmaq-entity'
 import { TypeClassification } from './TypeClassification'
 
-export type Type_Id = number
-
+/**
+ * Generic Type (can be applied to any entities)
+ */
 @Entity()
 @Table({
     name: 'TYPES'
@@ -16,12 +20,15 @@ export type Type_Id = number
 export class Type {
 
     @Id()
-    @Column({ name: 'TYPE_ID' })
-    id: number
+    @Column({ name: 'TYPE_ID', nullable: false })
+    @DbNumber()
+    id?: Type_Id
 
-    name: string
+    @Column({ name: 'TYPE_NAME', nullable: false })
+    @DbString()
+    name?: Type_Name
 
     @OneToMany({ mappedBy: 'type' })
-    typeClassifications: TypeClassification[]
+    typeClassifications?: TypeClassification[]
 
 }

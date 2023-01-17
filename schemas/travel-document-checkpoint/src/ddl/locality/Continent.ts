@@ -1,3 +1,4 @@
+import { Continent_Id, Continent_Name } from "@airport/ground-control";
 import {
     Column,
     DbNumber,
@@ -10,25 +11,23 @@ import {
 import { UserAccount } from "../UserAccount";
 import { Country } from "./Country";
 
-export type Continent_Id = number;
-export type Continent_Name = string;
-
 @Entity()
 @Table({ name: "CONTINENTS" })
 export class Continent {
 
     @Id()
     @DbNumber()
-    @Column({ name: 'CONTINENT_ID' })
-    id: Continent_Id;
+    @Column({ name: 'CONTINENT_ID', nullable: false })
+    id?: Continent_Id
 
     @DbString()
-    name: Continent_Name
+    @Column({ name: 'CONTINENT_NAME', nullable: false })
+    name?: Continent_Name
 
     @OneToMany({ mappedBy: 'continent' })
-    countries: Country[]
+    countries?: Country[]
 
     @OneToMany({ mappedBy: 'continent' })
-    userAccounts: UserAccount[]
+    userAccounts?: UserAccount[]
 
 }

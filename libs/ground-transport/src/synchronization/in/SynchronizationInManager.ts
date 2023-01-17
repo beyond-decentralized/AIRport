@@ -84,7 +84,7 @@ export class SynchronizationInManager
 			}
 
 			if (!this.isValidLastChangeTime(
-				message.syncTimestamp, message.history.saveTimestamp,
+				message.syncTimestamp, message.data.history.saveTimestamp,
 				'Sync Timestamp', 'Save Timestamp')) {
 				continue
 			}
@@ -92,7 +92,7 @@ export class SynchronizationInManager
 			let processMessage = true
 			let dataCheckResult: IDataCheckResult
 			await this.transactionManager.transactInternal(async (transaction) => {
-				dataCheckResult = await this.syncInChecker.checkMessage(message, context)
+				dataCheckResult = await this.syncInChecker.checkData(message, context)
 				if (!dataCheckResult.isValid) {
 					transaction.rollback(null, context)
 					processMessage = false
@@ -102,17 +102,23 @@ export class SynchronizationInManager
 			if (processMessage) {
 				immediateProcessingMessages.push({
 					...message,
-					history: {
-						...message.history,
-						operationHistory: dataCheckResult.forImmediateProcessing
+					data: {
+						...message.data,
+						history: {
+							...message.data.history,
+							operationHistory: dataCheckResult.forImmediateProcessing
+						}
 					}
 				})
 				if (dataCheckResult.forDelayedProcessing.length) {
 					delayedProcessingMessages.push({
 						...message,
-						history: {
-							...message.history,
-							operationHistory: dataCheckResult.forDelayedProcessing
+						data: {
+							...message.data,
+							history: {
+								...message.data.history,
+								operationHistory: dataCheckResult.forDelayedProcessing
+							}
 						}
 					})
 				}
@@ -147,8 +153,8 @@ export class SynchronizationInManager
 			if (message1.syncTimestamp > message2.syncTimestamp) {
 				return 1
 			}
-			let history1 = message1.history
-			let history2 = message2.history
+			let history1 = message1.data.history
+			let history2 = message2.data.history
 			if (history1.saveTimestamp < history2.saveTimestamp) {
 				return -1
 			}
@@ -197,17 +203,18 @@ export class SynchronizationInManager
 	): Promise<void> {
 		const delayedProcessingMessagesWithValidApps: RepositorySynchronizationMessage[] = []
 		for (const message of delayedProcessingMessages) {
+			const data = message.data
 			// Possibly load (remotely) and install new apps - delayed processing
 			// messages deal with other repositories that might include data from
 			// other apps - other repositories might be referencing records in
 			// the synched repositories (which may not be aware of the apps the
 			// other repositories where created with)
 			const applicationCheckMap = await this.syncInApplicationVersionChecker.ensureApplicationVersions(
-				message.referencedApplicationVersions, message.applications, context
+				data.referencedApplicationVersions, data.applications, context
 			)
 			if (applicationCheckMap) {
 				await this.syncInChecker.checkReferencedApplicationRelations(
-					message, applicationCheckMap, context
+					data, applicationCheckMap, context
 				)
 				delayedProcessingMessagesWithValidApps.push(message)
 
@@ -228,7 +235,7 @@ export class SynchronizationInManager
 	): Promise<void> {
 		const repositoryMapByGUID: Map<Repository_GUID, IRepository> = new Map()
 		for (const message of messages) {
-			for (const repository of message.referencedRepositories) {
+			for (const repository of message.data.referencedRepositories) {
 				if (!repositoryMapByGUID.has(repository.GUID)) {
 					repositoryMapByGUID.set(repository.GUID, repository)
 				}

@@ -73,7 +73,6 @@ export class DbApplicationBuilder
 			domain: dbDomain,
 			fullName: IOC.getSync(DbApplicationUtils).
 				getApplication_FullNameFromDomainAndName(dbDomain.name, jsonApplication.name),
-			_localId: null,
 			index: allApplications.length,
 			name: jsonApplication.name,
 			scope: null,

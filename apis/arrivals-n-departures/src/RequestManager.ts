@@ -1,6 +1,6 @@
+import { InternalUserAccount } from "@airport/aviation-communication";
 import { Injected } from "@airport/direction-indicator";
-import { Actor } from "@airport/holding-pattern/dist/app/bundle";
-import { UserAccount } from "@airport/travel-document-checkpoint/dist/app/bundle";
+import { IActor } from "@airport/ground-control";
 import { AirRequest } from "./AirRequest";
 
 @Injected()
@@ -8,8 +8,8 @@ export class RequestManager {
 
     request: AirRequest
 
-    userAccount: UserAccount
+    userAccount: InternalUserAccount
 
-    actor: Actor
+    actor: IActor
 
 }

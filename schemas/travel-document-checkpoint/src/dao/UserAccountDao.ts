@@ -1,10 +1,6 @@
-import { IAirportDatabase } from '@airport/air-traffic-control'
+import { UserAccount_GUID, UserAccount_Username } from '@airport/aviation-communication'
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import { Dictionary, ISequenceGenerator } from '@airport/ground-control'
-import {
-	UserAccount_GUID,
-	UserAccount_Username
-} from '../ddl/ddl'
 import {
 	BaseUserAccountDao,
 	IBaseUserAccountDao,

@@ -1,10 +1,10 @@
 import type {
     IRootTransaction,
-    PortableQuery
+    PortableQuery,
+    RecordHistory_LocalId
 } from "@airport/ground-control";
 import type {
-    IActor,
-    RecordHistory_LocalId
+    IActor
 } from "@airport/holding-pattern/dist/app/bundle";
 import { IOperationContext } from "../processing/OperationContext";
 import { ITransaction } from "../transaction/ITransaction";

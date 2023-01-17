@@ -22,8 +22,8 @@ export class Actor {
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	@Column({ name: 'ACTOR_LID' })
-	_localId?: Actor_LocalId
+	@Column({ name: 'ACTOR_LID', nullable: false })
+	_localId: Actor_LocalId
 
 	@Column({ name: 'GUID', nullable: false })
 	@DbString()

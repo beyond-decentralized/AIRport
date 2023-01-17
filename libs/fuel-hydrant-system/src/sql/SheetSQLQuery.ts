@@ -9,7 +9,8 @@ import {
 	JSONClauseField,
 	JSONClauseObjectType,
 	JsonSheetQuery,
-	QueryResultType
+	QueryResultType,
+	SQLDataType
 } from '@airport/ground-control'
 import { IApplicationUtils, IRelationManager } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
@@ -144,7 +145,8 @@ export class SheetSQLQuery
 		if (selectClause && selectClause.length) {
 			for (const dbColumn of selectClause) {
 				let propertyValue = this.sqlQueryAdapter.getResultCellValue(
-					resultRow, dbColumn.name, nextFieldIndex[0], dbColumn.type, null)
+					resultRow, dbColumn.name, nextFieldIndex[0],
+					dbColumn.type as SQLDataType, null)
 				resultsFromSelect.push(propertyValue)
 				nextFieldIndex[0]++
 			}

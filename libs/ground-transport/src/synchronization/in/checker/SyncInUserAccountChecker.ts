@@ -3,17 +3,17 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
+import { RepositorySynchronizationData } from '@airport/arrivals-n-departures'
 import {
 	IUserAccount,
-	IUserAccountDao,
-	UserAccount_GUID
+	IUserAccountDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
+import { UserAccount_GUID } from '@airport/aviation-communication';
 
 export interface ISyncInUserAccountChecker {
 
 	ensureUserAccounts(
-		message: RepositorySynchronizationMessage,
+		message: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean>;
 
@@ -27,7 +27,7 @@ export class SyncInUserAccountChecker
 	userAccountDao: IUserAccountDao
 
 	async ensureUserAccounts(
-		message: RepositorySynchronizationMessage,
+		message: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean> {
 		try {

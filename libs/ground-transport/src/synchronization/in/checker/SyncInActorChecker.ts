@@ -4,19 +4,17 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	RepositorySynchronizationMessage,
+	RepositorySynchronizationData,
 } from '@airport/arrivals-n-departures'
-import {
-	IActor
-} from '@airport/holding-pattern/dist/app/bundle'
 import {
 	IActorDao
 } from '@airport/holding-pattern/dist/app/bundle'
+import { IActor } from '@airport/ground-control'
 
 export interface ISyncInActorChecker {
 
 	ensureActors(
-		message: RepositorySynchronizationMessage,
+		message: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean>
 
@@ -30,7 +28,7 @@ export class SyncInActorChecker
 	actorDao: IActorDao
 
 	async ensureActors(
-		message: RepositorySynchronizationMessage,
+		message: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean> {
 		try {
@@ -72,7 +70,7 @@ export class SyncInActorChecker
 
 	private checkActorApplication(
 		actor: IActor,
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationData
 	): void {
 		if (typeof actor.application !== 'number') {
 			throw new Error(`Expecting "in-message index" (number)
@@ -88,7 +86,7 @@ export class SyncInActorChecker
 
 	private checkActorTerminal(
 		actor: IActor,
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationData
 	): void {
 		if (typeof actor.terminal !== 'number') {
 			throw new Error(`Expecting "in-message index" (number)
@@ -104,7 +102,7 @@ export class SyncInActorChecker
 
 	private checkActorUserAccount(
 		actor: IActor,
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationData
 	): void {
 		if (typeof actor.userAccount !== 'number') {
 			throw new Error(`Expecting "in-message index" (number)

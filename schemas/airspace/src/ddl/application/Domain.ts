@@ -19,7 +19,7 @@ export class Domain {
 
 	@Id()
 	@DbNumber()
-	@Column({ name: 'DOMAIN_LID' })
+	@Column({ name: 'DOMAIN_LID', nullable: false })
 	_localId: Domain_LocalId
 
 	@DbString()
@@ -27,6 +27,6 @@ export class Domain {
 	name?: Domain_Name
 
 	@OneToMany({ mappedBy: 'domain' })
-	applications: Application[]
+	applications?: Application[]
 
 }

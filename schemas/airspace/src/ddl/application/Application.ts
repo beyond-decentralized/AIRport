@@ -13,7 +13,9 @@ import {
 	Application_Index,
 	Application_FullName,
 	ApplicationStatus,
-	Application_Name
+	Application_Name,
+	Application_GUID,
+	Application_Scope
 } from '@airport/ground-control';
 import { Domain } from './Domain';
 import { ApplicationCurrentVersion } from './ApplicationCurrentVersion';
@@ -28,14 +30,15 @@ export class Application {
 	@Id()
 	@DbNumber()
 	@Column({ name: 'APPLICATION_INDEX', nullable: false })
-	index: Application_Index;
+	index: Application_Index
 
 	@Column({ name: 'GUID', nullable: false })
-	GUID?: string
+	@DbString()
+	GUID?: Application_GUID
 
 	@Column({ name: 'SCOPE', nullable: false })
 	@DbString()
-	scope?: string // Application_Scope;
+	scope?: Application_Scope;
 
 	@Column({ name: 'APPLICATION_NAME', nullable: false })
 	@DbString()

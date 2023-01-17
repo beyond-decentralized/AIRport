@@ -1,5 +1,5 @@
 import { Injected } from '@airport/direction-indicator'
-import { RecordHistory_LocalId } from '../../ddl/ddl'
+import { RecordHistory_LocalId } from '@airport/ground-control'
 import {
 	BaseRecordHistoryOldValueDao,
 	IBaseRecordHistoryOldValueDao

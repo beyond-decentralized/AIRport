@@ -58,6 +58,7 @@ import {
 } from '@airport/ground-control'
 import { DATABASE_FACADE } from '@airport/tarmaq-dao'
 import { Client } from '@airway/client'
+import { MessageSigningManager } from '@airbridge/keyring/dist/app/bundle'
 
 const groundTransport = lib('ground-transport')
 
@@ -166,6 +167,7 @@ groundTransport.setDependencies(SynchronizationInManager, {
 
 groundTransport.setDependencies(SynchronizationOutManager, {
     datastructureUtils: DatastructureUtils,
+    messageSigningManager: MessageSigningManager,
     repositoryDao: RepositoryDao,
     repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
     synchronizationAdapterLoader: SynchronizationAdapterLoader,

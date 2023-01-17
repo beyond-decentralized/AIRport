@@ -198,7 +198,7 @@ function serializeSymbol(
 				&& declaration.type.kind === tsc.SyntaxKind.AnyKeyword) {
 				// Just the any keyword
 			} else {
-				throw new Error(`Unsupported type for ''${getSymbolLocationString(symbol, parent)}': ${type} (implicit if 'any')`)
+				throw new Error(`Unsupported type for '${getSymbolLocationString(symbol, parent)}': ${type} (implicit if 'any')`)
 			}
 		} else if (type.match(/^\s*any\[\]\s*$/)) {
 			if (declaration.type

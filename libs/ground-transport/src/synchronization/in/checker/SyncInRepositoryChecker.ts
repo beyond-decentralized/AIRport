@@ -3,7 +3,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
+import { RepositorySynchronizationData } from '@airport/arrivals-n-departures'
 import {
 	IRepository,
 	IRepositoryDao
@@ -12,7 +12,7 @@ import {
 export interface ISyncInRepositoryChecker {
 
 	ensureRepositories(
-		message: RepositorySynchronizationMessage,
+		message: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean>;
 
@@ -26,7 +26,7 @@ export class SyncInRepositoryChecker
 	repositoryDao: IRepositoryDao
 
 	async ensureRepositories(
-		message: RepositorySynchronizationMessage,
+		message: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean> {
 		try {
@@ -44,8 +44,8 @@ export class SyncInRepositoryChecker
 			const history = message.history
 			if (history.isRepositoryCreation) {
 				if (typeof history.repository !== 'object') {
-					throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be an object
-	if RepositorySynchronizationMessage.history.isRepositoryCreation === true`)
+					throw new Error(`Serialized RepositorySynchronizationData.history.repository should be an object
+	if RepositorySynchronizationData.history.isRepositoryCreation === true`)
 				}
 				this.checkRepository(
 					history.repository,
@@ -56,8 +56,8 @@ export class SyncInRepositoryChecker
 				)
 			} else {
 				if (typeof history.repository !== 'string') {
-					throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be a string
-	if RepositorySynchronizationMessage.history.isRepositoryCreation === false`)
+					throw new Error(`Serialized RepositorySynchronizationData.history.repository should be a string
+	if RepositorySynchronizationData.history.isRepositoryCreation === false`)
 				}
 				repositoryGUIDs.push(history.repository as any)
 			}
@@ -80,7 +80,7 @@ export class SyncInRepositoryChecker
 			if (typeof history.repository !== 'object') {
 				throw new Error(`Repository with GUID ${history.repository} is not
 					present and cannot be synced
-	This RepositorySynchronizationMessage is for an existing repository and that
+	This RepositorySynchronizationData is for an existing repository and that
 	repository must already be loaded in this database for this message to be
 	processed.`)
 			} else if (!history.repository._localId) {
@@ -103,7 +103,7 @@ export class SyncInRepositoryChecker
 		repositoryIndex: number,
 		repositoryGUIDs: string[],
 		messageRepositoryIndexMap: Map<string, number>,
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationData
 	): void {
 		if (typeof repository.ageSuitability !== 'number') {
 			throw new Error(`Invalid 'repository.ageSuitability'`)

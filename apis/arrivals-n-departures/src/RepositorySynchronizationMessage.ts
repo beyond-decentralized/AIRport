@@ -1,35 +1,29 @@
-import {
-	IActor,
-	IRepository,
-	IRepositoryTransactionHistory
-} from "@airport/holding-pattern/dist/app/bundle";
-import type {
-	ITerminal,
-	IUserAccount
-} from "@airport/travel-document-checkpoint/dist/app/bundle";
-import {
-	IApplication,
-	IApplicationRelation,
-	IApplicationVersion
-} from "@airport/airspace";
+import { InternalUserAccount } from "@airport/aviation-communication";
+import { DbApplication, DbApplicationVersion, DbRelation, IActor, IRepository, IRepositoryTransactionHistory, ITerminal } from "@airport/ground-control";
 
 export type ReferencedApplicationVersion_InMessageIndex = number
 export type ReferencedApplicationRelation_InMessageIndex = number
 export type ReferencedRepository_InMessageIndex = number
 
+export type RepositorySynchronizationMessage_Signature = string
 
 export interface RepositorySynchronizationMessage {
+	data: RepositorySynchronizationData
+	signature?: RepositorySynchronizationMessage_Signature
+	syncTimestamp?: number
+}
+
+export interface RepositorySynchronizationData {
 	actors: IActor[]
-	applications: IApplication[]
-	applicationVersions: IApplicationVersion[]
+	applications: DbApplication[]
+	applicationVersions: DbApplicationVersion[]
 	history: IRepositoryTransactionHistory
 	// Repositories may reference records in other repositories
-	referencedApplicationRelations: IApplicationRelation[]
-	referencedApplicationVersions: IApplicationVersion[]
+	referencedApplicationRelations: DbRelation[]
+	referencedApplicationVersions: DbApplicationVersion[]
 	referencedRepositories: IRepository[]
-	syncTimestamp?: number
 	terminals: ITerminal[]
-	userAccounts: IUserAccount[]
+	userAccounts: InternalUserAccount[]
 }
 
 export interface RepositorySynchronizationWriteRequest {

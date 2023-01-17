@@ -9,10 +9,6 @@ export enum QueryType {
 	MUTATE = 'MUTATE'
 }
 
-export interface ATransactionHistory {
-
-}
-
 export interface InternalSetFragment {
 	column: DbColumn;
 	value: any;

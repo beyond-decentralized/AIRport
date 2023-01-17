@@ -36,6 +36,6 @@ export class ApplicationReference
 
 	@Column({ name: 'APPLICATION_REFERENCE_INDEX', nullable: false })
 	@DbNumber()
-	index: ApplicationReference_Index
+	index?: ApplicationReference_Index
 
 }

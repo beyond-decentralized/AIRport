@@ -132,15 +132,15 @@ export abstract class SqlDriver
 
 	getTableName(
 		application: {
-			domain: Domain_Name | {
-				name: Domain_Name
+			domain?: Domain_Name | {
+				name?: Domain_Name
 			};
-			name: Application_Name;
+			name?: Application_Name;
 			fullName?: Application_FullName;
 		},
 		applicationIntegerVersion: number,
 		table: {
-			name: string, tableConfig?: {
+			name?: string, tableConfig?: {
 				name?: string
 			}
 		},

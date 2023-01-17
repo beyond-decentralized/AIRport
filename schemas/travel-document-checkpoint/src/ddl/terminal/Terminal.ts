@@ -1,3 +1,4 @@
+import { Terminal_GUID, Terminal_IsLocal, Terminal_LocalId } from '@airport/ground-control'
 import {
 	Column,
 	DbBoolean,
@@ -18,10 +19,9 @@ import { State } from '../locality/State'
 import { UserAccount } from '../UserAccount'
 import { TerminalType } from './TerminalType'
 
-export type Terminal_LocalId = number;
-export type Terminal_IsLocal = boolean;
-export type Terminal_GUID = string;
-
+/**
+ * AIRport terminal where the Apps execute (a browser tab, native app, etc.)
+ */
 @Entity()
 @Table({
 	name: 'TERMINALS',
@@ -36,11 +36,11 @@ export class Terminal {
 	@GeneratedValue()
 	@Column({ name: 'TERMINAL_LID', nullable: false })
 	@DbNumber()
-	_localId?: Terminal_LocalId
+	_localId: Terminal_LocalId
 
 	@Column({ name: 'TERMINAL_GUID', nullable: false })
 	@DbString()
-	GUID: Terminal_GUID
+	GUID?: Terminal_GUID
 
 	@ManyToOne()
 	@JoinColumn({
@@ -81,6 +81,6 @@ export class Terminal {
 	metroArea?: MetroArea
 
 	@OneToMany({ mappedBy: 'terminal' })
-	terminalTypes: TerminalType[]
+	terminalTypes?: TerminalType[]
 
 }

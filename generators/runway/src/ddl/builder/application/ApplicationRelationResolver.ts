@@ -200,7 +200,7 @@ export class ApplicationRelationResolver {
 				}
 
 				if (crossApplication) {
-					ownColumn.type = this.getTypeFromSQLDataType((<DbColumn>relatedColumn).type)
+					ownColumn.type = this.getTypeFromSQLDataType((<DbColumn>relatedColumn).type as SQLDataType)
 					this.setTypeForLinkedColumns(ownColumn)
 				} else {
 					this.linkColumnTypes(ownColumn, <SColumn>relatedColumn)

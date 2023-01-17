@@ -1,9 +1,6 @@
 import { AND } from '@airport/tarmaq-query'
 import { IContext, Inject, Injected } from '@airport/direction-indicator';
 import {
-	Terminal_GUID
-} from '../ddl/ddl'
-import {
 	BaseTerminalDao,
 	IBaseTerminalDao,
 	ITerminal,
@@ -11,9 +8,9 @@ import {
 	QUserAccount
 } from '../generated/generated'
 import Q from '../generated/qApplication'
-import { UserAccount_GUID } from '../ddl/ddl'
 import { IAirportDatabase } from '@airport/air-traffic-control';
-import { Dictionary, ISequenceGenerator } from '@airport/ground-control';
+import { Dictionary, ISequenceGenerator, Terminal_GUID } from '@airport/ground-control';
+import { UserAccount_GUID } from '@airport/aviation-communication';
 
 export interface ITerminalDao
 	extends IBaseTerminalDao {

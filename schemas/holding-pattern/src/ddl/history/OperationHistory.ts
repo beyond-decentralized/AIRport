@@ -11,7 +11,7 @@ import {
 	SequenceGenerator,
 	Table
 } from '@airport/tarmaq-entity'
-import { ChangeType, SystemWideOperationId } from '@airport/ground-control'
+import { ChangeType, OperationHistory_LocalId, OperationHistory_OrderNumber, SystemWideOperationId } from '@airport/ground-control'
 import { IApplicationEntity } from '@airport/airspace/dist/app/bundle'
 import { RecordHistory } from './RecordHistory'
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory'
@@ -20,9 +20,6 @@ import { Actor } from '../infrastructure/Actor'
 /**
  * Created by Papa on 4/17/2017.
  */
-
-export type OperationHistory_LocalId = number;
-export type OperationHistory_OrderNumber = number;
 
 /**
  * Marks a group of mutation history changes.
@@ -34,28 +31,29 @@ export class OperationHistory {
 	@GeneratedValue()
 	@SequenceGenerator({ allocationSize: 600 })
 	@Id()
-	@Column({ name: 'OPERATION_HISTORY_LID' })
+	@Column({ name: 'OPERATION_HISTORY_LID', nullable: false })
+	@DbNumber()
 	_localId: OperationHistory_LocalId
 
 	@Column({ name: 'ORDER_NUMBER', nullable: false })
 	@DbNumber()
-	orderNumber: OperationHistory_OrderNumber
+	orderNumber?: OperationHistory_OrderNumber
 
 	@Column({ name: 'CHANGE_TYPE', nullable: false })
 	@DbString()
-	changeType: ChangeType
+	changeType?: ChangeType
 
 	// This field is local to the device only, when copied to new device this value is re-created
 	@Column({ name: 'SYSTEM_WIDE_OPERATION_LID', nullable: false })
 	@DbNumber()
-	systemWideOperationId: SystemWideOperationId
+	systemWideOperationId?: SystemWideOperationId
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'APPLICATION_ENTITY_LID',
 		referencedColumnName: 'APPLICATION_ENTITY_LID', nullable: false
 	})
-	entity: IApplicationEntity
+	entity?: IApplicationEntity
 
 	@ManyToOne()
 	@JoinColumn({
@@ -63,7 +61,7 @@ export class OperationHistory {
 		referencedColumnName: 'ACTOR_LID',
 		nullable: false
 	})
-	actor: Actor
+	actor?: Actor
 
 	@ManyToOne()
 	@JoinColumn({
@@ -71,9 +69,9 @@ export class OperationHistory {
 		referencedColumnName: 'REPOSITORY_TRANSACTION_HISTORY_LID',
 		nullable: false
 	})
-	repositoryTransactionHistory: RepositoryTransactionHistory
+	repositoryTransactionHistory?: RepositoryTransactionHistory
 
 	@OneToMany({ mappedBy: 'operationHistory' })
-	recordHistory: RecordHistory[] = []
+	recordHistory?: RecordHistory[] = []
 
 }

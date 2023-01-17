@@ -92,37 +92,37 @@ export interface DbEntity
 	/**
 	 * Map of all columns in the entity by name.
 	 */
-	columnMap: { [name: string]: DbColumn };
+	columnMap?: { [name: string]: DbColumn };
 
 	/**
 	 * Array of all columns in the entity by index.
 	 */
-	columns: DbColumn[];
+	columns?: DbColumn[];
 
 	/**
 	 * Map of all columns in the entity by name.
 	 */
-	idColumnMap: { [name: string]: DbColumn };
+	idColumnMap?: { [name: string]: DbColumn };
 
 	/**
 	 * Array of all @Id() columns in the entity by index.
 	 */
-	idColumns: DbColumn[];
+	idColumns?: DbColumn[];
 
 	/*
 	 * Is this entity local-only (does not extend AirEntity)
 	 */
-	isLocal: ApplicationEntity_IsLocal;
+	isLocal?: ApplicationEntity_IsLocal;
 
 	/**
 	 * Does this entity extend AirEntity or LocalAirEntity
 	 */
-	isAirEntity: ApplicationEntity_IsAirEntity;
+	isAirEntity?: ApplicationEntity_IsAirEntity;
 
 	/**
 	 * Name of the entity.
 	 */
-	name: ApplicationEntity_Name;
+	name?: ApplicationEntity_Name;
 
 	/**
 	 * Operations that can be peformed on this entity.
@@ -132,28 +132,28 @@ export interface DbEntity
 	/**
 	 * Map of all properties in the entity by name.
 	 */
-	propertyMap: { [name: string]: DbProperty };
+	propertyMap?: { [name: string]: DbProperty };
 
 	/**
 	 * Array of all properties in the entity by index.
 	 */
-	properties: DbProperty[];
+	properties?: DbProperty[];
 
 	/**
 	 * Relations by their table relation indexes.
 	 */
-	relations: DbRelation[];
+	relations?: DbRelation[];
 
 	/**
 	 * Table configuration.
 	 */
-	tableConfig: DatabaseObjectConfiguration<any>;
+	tableConfig?: DatabaseObjectConfiguration<any>;
 
 	/**
 	 * Indexed application reference
 	 */
-	applicationVersion: DbApplicationVersion;
+	applicationVersion?: DbApplicationVersion;
 
-	relationReferences: DbRelation[]
+	relationReferences?: DbRelation[]
 
 }

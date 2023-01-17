@@ -8,7 +8,8 @@ import {
 	JoinColumn,
 	ManyToOne,
 	OneToMany,
-	Table
+	Table,
+	Transient
 } from '@airport/tarmaq-entity';
 import {
 	ApplicationColumn_LocalId,
@@ -26,6 +27,7 @@ import { ApplicationEntity } from './ApplicationEntity';
 import { ApplicationPropertyColumn } from './ApplicationPropertyColumn';
 import { ApplicationRelationColumn } from './ApplicationRelationColumn';
 import { VersionedApplicationObject } from './VersionedApplicationObject';
+import { IApplicationPropertyColumn } from '../../generated/interfaces';
 
 @Entity()
 @Table({
@@ -45,7 +47,7 @@ export class ApplicationColumn
 	// FIXME: disallow SQL keywords in names (for columns, etc.), like 'INDEX', etc.
 	@Column({ name: 'COLUMN_INDEX', nullable: false })
 	@DbNumber()
-	index: ApplicationColumn_Index;
+	index?: ApplicationColumn_Index;
 
 	/**
 	 * Index of the ID (within the entity)
@@ -56,7 +58,7 @@ export class ApplicationColumn
 
 	@Column({ name: 'IS_GENERATED', nullable: false })
 	@DbBoolean()
-	isGenerated: ApplicationColumn_IsGenerated;
+	isGenerated?: ApplicationColumn_IsGenerated;
 
 	@Column({ name: 'ALLOCATION_SIZE' })
 	@DbNumber()
@@ -64,38 +66,41 @@ export class ApplicationColumn
 
 	@Column({ name: 'NAME', nullable: false })
 	@DbString()
-	name: ApplicationColumn_Name;
+	name?: ApplicationColumn_Name;
 
 	@Column({ name: 'NOT_NULL', nullable: false })
 	@DbBoolean()
-	notNull: ApplicationColumn_NotNull;
+	notNull?: ApplicationColumn_NotNull;
 
 	@Column({ name: 'PRECISION' })
 	@DbNumber()
-	precision: ApplicationColumn_Precision;
+	precision?: ApplicationColumn_Precision;
 
 	@Column({ name: 'SCALE' })
 	@DbNumber()
-	scale: ApplicationColumn_Scale;
+	scale?: ApplicationColumn_Scale;
 
 	@Column({ name: 'TYPE', nullable: false })
 	@DbString()
-	type: SQLDataType;
+	type?: SQLDataType;
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'APPLICATION_ENTITY_LID',
 		referencedColumnName: 'APPLICATION_ENTITY_LID', nullable: false
 	})
-	entity: ApplicationEntity;
+	entity?: ApplicationEntity;
 
 	@OneToMany({ mappedBy: 'column' })
-	propertyColumns: ApplicationPropertyColumn[] = [];
+	propertyColumns?: ApplicationPropertyColumn[] = [];
 
 	@OneToMany({ mappedBy: 'manyColumn' })
-	manyRelationColumns: ApplicationRelationColumn[] = [];
+	manyRelationColumns?: ApplicationRelationColumn[] = [];
 
 	@OneToMany({ mappedBy: 'oneColumn' })
-	oneRelationColumns: ApplicationRelationColumn[] = [];
+	oneRelationColumns?: ApplicationRelationColumn[] = [];
+
+	@Transient()
+	propertyColumnMap?: { [propertyIndex: number]: IApplicationPropertyColumn } = {}
 
 }

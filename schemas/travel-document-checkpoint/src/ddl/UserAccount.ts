@@ -13,12 +13,7 @@ import { Country } from './locality/Country'
 import { Continent } from './locality/Continent'
 import { MetroArea } from './locality/MetroArea'
 import { State } from './locality/State'
-
-export type UserAccount_LocalId = number;
-export type UserAccount_GUID = string;
-export type UserAccount_Email = string;
-export type UserAccount_PasswordHash = string;
-export type UserAccount_Username = string;
+import { UserAccount_Email, UserAccount_GUID, UserAccount_LocalId, UserAccount_Username } from '@airport/aviation-communication'
 
 @Entity()
 export class UserAccount {

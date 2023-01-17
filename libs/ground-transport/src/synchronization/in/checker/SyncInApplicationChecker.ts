@@ -1,4 +1,4 @@
-import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
+import { RepositorySynchronizationData } from "@airport/arrivals-n-departures";
 import { Application_Name, ApplicationStatus } from '@airport/ground-control';
 import {
     IDomain,
@@ -27,7 +27,7 @@ export interface IApplicationCheckRecord {
 export interface ISyncInApplicationChecker {
 
     ensureApplications(
-        message: RepositorySynchronizationMessage,
+        message: RepositorySynchronizationData,
         context: IContext
     ): Promise<boolean>
 
@@ -44,7 +44,7 @@ export class SyncInApplicationChecker
     domainDao: IDomainDao
 
     async ensureApplications(
-        message: RepositorySynchronizationMessage,
+        message: RepositorySynchronizationData,
         context: IContext
     ): Promise<boolean> {
         try {
@@ -65,7 +65,7 @@ export class SyncInApplicationChecker
     }
 
     private async checkApplicationsAndDomains(
-        message: RepositorySynchronizationMessage,
+        message: RepositorySynchronizationData,
         context: IContext
     ): Promise<Map<string, Map<string, IApplicationCheckRecord>>> {
         const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap }
@@ -133,7 +133,7 @@ export class SyncInApplicationChecker
     }
 
     private getNames(
-        message: RepositorySynchronizationMessage
+        message: RepositorySynchronizationData
     ): {
         allApplication_Names: string[],
         domainCheckMap: Map<string, IDomainCheckRecord>,
@@ -141,7 +141,7 @@ export class SyncInApplicationChecker
         applicationCheckMap: Map<string, Map<string, IApplicationCheckRecord>>
     } {
         if (!message.applications || !(message.applications instanceof Array)) {
-            throw new Error(`Did not find applications in RepositorySynchronizationMessage.`)
+            throw new Error(`Did not find applications in RepositorySynchronizationData.`)
         }
 
         const domainCheckMap: Map<string, IDomainCheckRecord> = new Map()

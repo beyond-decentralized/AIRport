@@ -10,14 +10,14 @@ import {
 	IDatastructureUtils,
 	Actor_LocalId,
 	Repository_LocalId,
-	ActorRecordId
+	ActorRecordId,
+	RecordHistory_LocalId
 } from '@airport/ground-control'
 import {
 	IOperationHistory,
 	IRecordHistory,
 	IRecordHistoryNewValue,
-	IRepositoryTransactionHistory,
-	RecordHistory_LocalId
+	IRepositoryTransactionHistory
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	ISynchronizationConflict

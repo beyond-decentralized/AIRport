@@ -1,8 +1,12 @@
 import {
+	IMessageSigningManager
+} from '@airbridge/keyring/dist/app/bundle'
+import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
+import { RepositorySynchronizationData, RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	IDatastructureUtils, Repository_GUID, Repository_LocalId, Repository_Source
 } from '@airport/ground-control'
@@ -18,7 +22,8 @@ import { ISyncOutDataSerializer } from './converter/SyncOutDataSerializer'
 export interface ISynchronizationOutManager {
 
 	synchronizeOut(
-		repositoryTransactionHistories: IRepositoryTransactionHistory[]
+		repositoryTransactionHistories: IRepositoryTransactionHistory[],
+		context: IContext
 	): Promise<void>
 
 }
@@ -29,6 +34,9 @@ export class SynchronizationOutManager
 
 	@Inject()
 	datastructureUtils: IDatastructureUtils
+
+	@Inject()
+	messageSigningManager: IMessageSigningManager
 
 	@Inject()
 	repositoryDao: IRepositoryDao
@@ -43,7 +51,8 @@ export class SynchronizationOutManager
 	syncOutDataSerializer: ISyncOutDataSerializer
 
 	async synchronizeOut(
-		repositoryTransactionHistories: IRepositoryTransactionHistory[]
+		repositoryTransactionHistories: IRepositoryTransactionHistory[],
+		context: IContext
 	): Promise<void> {
 		await this.loadHistoryRepositories(repositoryTransactionHistories)
 		const {
@@ -51,6 +60,9 @@ export class SynchronizationOutManager
 			messages
 		} = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories)
 		// await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
+
+		this.messageSigningManager.signMessages(messages, context)
+
 		const groupMessageMap = this.groupMessagesBySourceAndRepository(
 			messages, historiesToSend)
 
@@ -91,7 +103,7 @@ export class SynchronizationOutManager
 
 	private async ensureGlobalRepositoryIdentifiers(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[],
-		messages: RepositorySynchronizationMessage[]
+		messages: RepositorySynchronizationData[]
 	): Promise<void> {
 		const repositoryIdsToLookup: Set<Repository_LocalId> = new Set()
 		const repositoryMapById: Map<Repository_LocalId, IRepository> = new Map()

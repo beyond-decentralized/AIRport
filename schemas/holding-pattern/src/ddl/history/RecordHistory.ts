@@ -13,18 +13,13 @@ import {
 } from '@airport/tarmaq-entity'
 import {
 	ActorRecordId,
+	RecordHistory_LocalId,
 	SyncColumnMap
 } from '@airport/ground-control'
 import { Actor } from '../infrastructure/Actor';
 import { OperationHistory } from './OperationHistory';
 import { RecordHistoryNewValue } from './RecordHistoryNewValue';
 import { RecordHistoryOldValue } from './RecordHistoryOldValue';
-
-/**
- * Entity Changes are always local-only, so a sequence for id will do.
- */
-
-export type RecordHistory_LocalId = number;
 
 @Entity()
 @Table({
@@ -42,19 +37,20 @@ export class RecordHistory {
 	@Id()
 	@GeneratedValue()
 	@SequenceGenerator({ allocationSize: 2000 })
-	@Column({ name: 'RECORD_HISTORY_LID' })
+	@Column({ name: 'RECORD_HISTORY_LID', nullable: false })
+	@DbNumber()
 	_localId: RecordHistory_LocalId
 
 	@Column({ name: 'ACTOR_RECORD_ID', nullable: false })
 	@DbNumber()
-	_actorRecordId: ActorRecordId
+	_actorRecordId?: ActorRecordId
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'ACTOR_LID',
 		referencedColumnName: 'ACTOR_LID', nullable: false
 	})
-	actor: Actor
+	actor?: Actor
 
 	@ManyToOne()
 	@JoinColumn({
@@ -62,15 +58,15 @@ export class RecordHistory {
 		referencedColumnName: 'OPERATION_HISTORY_LID',
 		nullable: false
 	})
-	operationHistory: OperationHistory
+	operationHistory?: OperationHistory
 
 	@OneToMany({ mappedBy: 'recordHistory' })
-	newValues: RecordHistoryNewValue[] = []
+	newValues?: RecordHistoryNewValue[] = []
 
 	@OneToMany({ mappedBy: 'recordHistory' })
-	oldValues: RecordHistoryOldValue[] = []
+	oldValues?: RecordHistoryOldValue[] = []
 
 	@Transient()
-	tableColumnMap: SyncColumnMap
+	tableColumnMap?: SyncColumnMap
 
 }

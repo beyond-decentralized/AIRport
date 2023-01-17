@@ -6,7 +6,7 @@ import {
 	IContext
 } from '@airport/direction-indicator';
 import {
-	IIdGenerator, 
+	IIdGenerator,
 } from '@airport/fuel-hydrant-system';
 import {
 	IAppTrackerUtils,
@@ -307,12 +307,12 @@ parent transactions.
 			}
 
 			await transaction.commit(null, context);
-			
+
 			let transactionHistory = transaction.transactionHistory;
 			if (!context.doNotRecordHistory) {
 				if (!parentTransaction && transactionHistory.allRecordHistory.length) {
 					await this.synchronizationOutManager.synchronizeOut(
-						transactionHistory.repositoryTransactionHistories)
+						transactionHistory.repositoryTransactionHistories, context)
 				}
 			}
 			if (!parentTransaction) {

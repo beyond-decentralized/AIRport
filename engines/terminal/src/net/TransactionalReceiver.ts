@@ -425,6 +425,7 @@ export abstract class TransactionalReceiver {
 
             const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(message.domain, message.application)
             actor = {
+                _localId: null,
                 application,
                 GUID: guidv4(),
                 terminal: terminal as any,

@@ -97,8 +97,8 @@ export interface JsonFunctionCall {
 
 export interface DbOperation {
 	_localId: Operation_LocalId
-	name: Operation_Name
-	rule: Operation_Rule
-	type: Operation_Type
-	entity: DbEntity
+	name?: Operation_Name
+	rule?: Operation_Rule
+	type?: Operation_Type
+	entity?: DbEntity
 }

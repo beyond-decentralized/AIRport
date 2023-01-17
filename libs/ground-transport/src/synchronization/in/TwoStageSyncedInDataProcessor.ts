@@ -4,14 +4,14 @@ import {
 import {
 	Actor_LocalId,
 	ApplicationVersion_LocalId,
+	RepositoryTransactionType,
 	Repository_LocalId,
 	TransactionType
 } from '@airport/ground-control'
 import {
 	IActor,
 	IRepositoryTransactionHistory,
-	IRepositoryTransactionHistoryDuo,
-	RepositoryTransactionType
+	IRepositoryTransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	ISynchronizationConflict,
@@ -91,7 +91,7 @@ export class TwoStageSyncedInDataProcessor
 
 		// split messages by repository and record actor information
 		for (const message of messages) {
-			const repositoryTransactionHistory = message.history
+			const repositoryTransactionHistory = message.data.history
 			transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory)
 
 			repositoryTransactionHistory.repositoryTransactionType = RepositoryTransactionType.REMOTE
@@ -132,12 +132,13 @@ export class TwoStageSyncedInDataProcessor
 		const actorMapById: Map<number, IActor> = new Map()
 		const repoTransHistories: IRepositoryTransactionHistory[] = []
 		for (const message of messages) {
-			repoTransHistories.push(message.history)
-			repositoryTransactionHistoryMapByRepositoryId.set(message.history.repository._localId, repoTransHistories)
-			for (const actor of message.actors) {
+			const data = message.data
+			repoTransHistories.push(data.history)
+			repositoryTransactionHistoryMapByRepositoryId.set(data.history.repository._localId, repoTransHistories)
+			for (const actor of data.actors) {
 				actorMapById.set(actor._localId, actor)
 			}
-			for (const applicationVersion of message.applicationVersions) {
+			for (const applicationVersion of data.applicationVersions) {
 				applicationsByApplicationVersion_LocalIdMap.set(applicationVersion._localId, applicationVersion.application)
 			}
 		}

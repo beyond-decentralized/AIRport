@@ -39,7 +39,7 @@ export class SyncInApplicationVersionChecker
 	applicationInitializer: IApplicationInitializer
 
 	async ensureApplicationVersions(
-		// message: RepositorySynchronizationMessage,
+		// message: RepositorySynchronizationData,
 		inMessageApplicationVersions: IApplicationVersion[],
 		inMessageApplications: IApplication[],
 		context: IContext
@@ -142,7 +142,7 @@ export class SyncInApplicationVersionChecker
 		applicationVersionCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>
 	} {
 		if (!inMessageApplicationVersions || !(inMessageApplicationVersions instanceof Array)) {
-			throw new Error(`Did not find applicationVersions in RepositorySynchronizationMessage.`)
+			throw new Error(`Did not find applicationVersions in RepositorySynchronizationData.`)
 		}
 
 		const applicationVersionCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>> = new Map()

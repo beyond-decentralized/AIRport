@@ -29,14 +29,14 @@ export class ApplicationRelationColumn
 		referencedColumnName: 'APPLICATION_COLUMN_LID',
 		nullable: false
 	})
-	manyColumn: ApplicationColumn
+	manyColumn?: ApplicationColumn
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'ONE_APPLICATION_COLUMN_LID',
 		referencedColumnName: 'APPLICATION_COLUMN_LID', nullable: false
 	})
-	oneColumn: ApplicationColumn
+	oneColumn?: ApplicationColumn
 
 	@ManyToOne()
 	@JoinColumn({
@@ -57,6 +57,6 @@ export class ApplicationRelationColumn
 		name: 'PARENT_RELATION_LID',
 		referencedColumnName: 'APPLICATION_RELATION_LID'
 	})
-	parentRelation: ApplicationRelation
+	parentRelation?: ApplicationRelation
 
 }

@@ -5,7 +5,8 @@ import {
 	JSONClauseObjectType,
 	JsonFieldQuery,
 	JSONSqlFunctionCall,
-	SortOrder
+	SortOrder,
+	SQLDataType
 } from '@airport/ground-control';
 import { IFieldColumnAliases } from '../../../definition/core/entity/Aliases';
 import { IQEntityInternal } from '../../../definition/core/entity/Entity';
@@ -87,7 +88,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			ci: this.dbColumn.index,
 			ta: relationManager.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
 			ot: this.objectType,
-			dt: this.dbColumn.type
+			dt: this.dbColumn.type as SQLDataType
 		};
 		if (this.__fieldSubQuery__) {
 			jsonField.fieldSubQuery = fieldUtils.getFieldQueryJson(
@@ -134,7 +135,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 				queryUtils, fieldUtils, relationManager),
 			fa: alias,
 			ot: this.objectType,
-			dt: this.dbColumn.type,
+			dt: this.dbColumn.type as SQLDataType,
 			v: this.valueToJSON(functionObject, columnAliases, false,
 				true, queryUtils, fieldUtils, relationManager)
 		};

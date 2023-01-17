@@ -4,18 +4,18 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	RepositorySynchronizationMessage,
+	RepositorySynchronizationData,
 } from '@airport/arrivals-n-departures'
 import {
 	ITerminal,
-	ITerminalDao,
-	Terminal_GUID
+	ITerminalDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
+import { Terminal_GUID } from '@airport/ground-control'
 
 export interface ISyncInTerminalChecker {
 
 	ensureTerminals(
-		message: RepositorySynchronizationMessage,
+		message: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean>
 
@@ -29,7 +29,7 @@ export class SyncInTerminalChecker
 	terminalDao: ITerminalDao
 
 	async ensureTerminals(
-		message: RepositorySynchronizationMessage,
+		message: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean> {
 		try {
@@ -42,20 +42,20 @@ export class SyncInTerminalChecker
 				}
 				if (typeof terminal.owner !== 'number') {
 					throw new Error(`Expecting "in-message index" (number)
-					in 'terminal.owner' of RepositorySynchronizationMessage.terminals`)
+					in 'terminal.owner' of RepositorySynchronizationData.terminals`)
 				}
 				if (typeof terminal.GUID !== 'string' || terminal.GUID.length !== 36) {
-					throw new Error(`Invalid 'terminal.GUID' in RepositorySynchronizationMessage.terminals`)
+					throw new Error(`Invalid 'terminal.GUID' in RepositorySynchronizationData.terminals`)
 				}
 				if (terminal.isLocal !== undefined) {
-					throw new Error(`'terminal.isLocal' cannot defined in RepositorySynchronizationMessage.terminals`)
+					throw new Error(`'terminal.isLocal' cannot defined in RepositorySynchronizationData.terminals`)
 				}
 				terminal.isLocal = false
 				const owner = message.userAccounts[terminal.owner as any]
 				if (!owner) {
 					throw new Error(
 						`Did not find userAccount for terminal.owner with "in-message index" ${terminal.owner}
-						for RepositorySynchronizationMessage.terminals`);
+						for RepositorySynchronizationData.terminals`);
 				}
 				terminal.owner = owner
 				terminalGUIDs.push(terminal.GUID)

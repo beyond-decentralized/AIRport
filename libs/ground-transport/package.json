@@ -2,8 +2,10 @@
   "name": "@airport/ground-transport",
   "version": "0.0.1",
   "peerDependencies": {
+    "@airbridge/keyring": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
     "@airport/arrivals-n-departures": "0.0.1",
+    "@airport/aviation-communication": "0.0.1",
     "@airport/check-in": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
     "@airport/ground-control": "0.0.1",

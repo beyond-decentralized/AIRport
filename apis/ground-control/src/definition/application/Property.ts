@@ -67,19 +67,19 @@ export interface DbProperty
 	DatabaseObject {
 
 	_localId: ApplicationProperty_LocalId
-	entity: DbEntity;
-	name: ApplicationProperty_Name;
-	isId: ApplicationProperty_IsId;
-	propertyColumns: DbPropertyColumn[];
-	relation: DbRelation[];
+	entity?: DbEntity;
+	name?: ApplicationProperty_Name;
+	isId?: ApplicationProperty_IsId;
+	propertyColumns?: DbPropertyColumn[];
+	relation?: DbRelation[];
 
 }
 
-export class DbPropertyColumn {
+export interface DbPropertyColumn {
 
 	column: DbColumn;
 	property: DbProperty;
-	sinceVersion: DbApplicationVersion;
+	// sinceVersion: DbApplicationVersion;
 
 }
 
@@ -145,46 +145,46 @@ export interface DbColumn
 	extends ApplicationReferenceByIndex<ApplicationColumn_Index>,
 	DatabaseObject {
 
+	_localId: ApplicationColumn_LocalId
+
 	allocationSize?: ApplicationColumn_AllocationSize
 
-	entity: DbEntity
-
-	_localId: ApplicationColumn_LocalId
+	entity?: DbEntity
 
 	/**
 	 * Id index of this column (if it's an ID column).
 	 */
 	idIndex?: ApplicationColumn_Index
 
-	isGenerated: ApplicationColumn_IsGenerated
+	isGenerated?: ApplicationColumn_IsGenerated
 
 	/**
 	 * In which ManyToOne relations is this column present.
 	 */
-	manyRelationColumns: DbRelationColumn[]
+	manyRelationColumns?: DbRelationColumn[]
 
-	name: ApplicationColumn_Name
+	name?: ApplicationColumn_Name
 
-	notNull: ApplicationColumn_NotNull
+	notNull?: ApplicationColumn_NotNull
 
 	/**
 	 * In which OneToMany relations is this column present.
 	 */
-	oneRelationColumns: DbRelationColumn[]
+	oneRelationColumns?: DbRelationColumn[]
 
 	// The precision of a decimal (total digits)
 	precision?: number;
 	/**
 	 * In which properties is this column present.
 	 */
-	propertyColumns: DbPropertyColumn[]
+	propertyColumns?: DbPropertyColumn[]
 
-	propertyColumnMap: { [propertyIndex: number]: DbPropertyColumn }
+	propertyColumnMap?: { [propertyIndex: number]: DbPropertyColumn }
 
 	// The scale of a decimal (digits after the floating point)
 	scale?: number;
 
-	type: SQLDataType
+	type?: SQLDataType | string
 
 }
 
@@ -193,7 +193,7 @@ export interface ApplicationReferenceByIndex<ID extends number> {
 	/**
 	 * Index of the referenced object.
 	 */
-	index: ID;
+	index?: ID;
 
 }
 
@@ -276,21 +276,21 @@ export interface DbRelation
 
 	_localId: ApplicationRelation_LocalId
 
-	entity: DbEntity
-	foreignKey: DatabaseForeignKey
-	isId: boolean;
+	entity?: DbEntity
+	foreignKey?: DatabaseForeignKey
+	isId?: boolean;
 	/**
 	 * Not needed - all joins to and from Repository entities are automatically repository
 	 * joins
 	 */
 	// isRepositoryJoin: boolean;
-	manyRelationColumns: DbRelationColumn[];
-	manyToOneElems: DatabaseManyToOneElements;
+	manyRelationColumns?: DbRelationColumn[];
+	manyToOneElems?: DatabaseManyToOneElements;
 	oneRelationColumns?: DbRelationColumn[];
-	oneToManyElems: DatabaseOneToManyElements;
-	property: DbProperty;
-	relationEntity: DbEntity;
-	relationType: EntityRelationType;
+	oneToManyElems?: DatabaseOneToManyElements;
+	property?: DbProperty;
+	relationEntity?: DbEntity;
+	relationType?: EntityRelationType | string;
 	// addToJoinFunction?: string; // Serialized function to add to the join
 	// joinFunctionWithOperator?: number; // How to add the function to the join
 	// whereJoinTable?: WhereJoinTableDeserialized;
@@ -319,20 +319,20 @@ export interface DbRelationColumn
 
 	_localId: ApplicationRelationColumn_LocalId;
 
-	manyColumn: DbColumn;
+	manyColumn?: DbColumn;
 
 	/**
 	 * Only present if @ManyToOne side of the relationship is defined.
 	 */
 	manyRelation?: DbRelation;
 
-	oneColumn: DbColumn;
+	oneColumn?: DbColumn;
 
 	/**
 	 * Only present if @OneToMany side of the relationship is defined.
 	 */
 	oneRelation?: DbRelation;
 
-	parentRelation: DbRelation;
+	parentRelation?: DbRelation;
 
 }

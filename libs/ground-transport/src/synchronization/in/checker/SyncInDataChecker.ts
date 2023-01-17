@@ -1,4 +1,4 @@
-import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
+import { RepositorySynchronizationData, RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	ChangeType,
 	ApplicationColumn_Index,
@@ -9,6 +9,7 @@ import {
 	Domain_Name,
 	Application_Name,
 	DbColumn,
+	RepositoryTransactionType,
 } from '@airport/ground-control'
 import {
 	IApplicationEntity,
@@ -25,8 +26,7 @@ import {
 } from '@airport/direction-indicator'
 import {
 	IOperationHistory,
-	IRecordHistory,
-	RepositoryTransactionType
+	IRecordHistory
 } from '@airport/holding-pattern/dist/app/bundle'
 import { ITerminalStore } from '@airport/terminal-map'
 import { IApplicationUtils } from '@airport/tarmaq-query'
@@ -103,11 +103,11 @@ export class SyncInDataChecker
 		message: RepositorySynchronizationMessage,
 		context: IContext
 	): Promise<IDataCheckResult> {
-		const history = message.history
+		const history = message.data.history
 		let dataCheckResult: IDataCheckResult
 		try {
 			if (!history || typeof history !== 'object') {
-				throw new Error(`Invalid RepositorySynchronizationMessage.history`)
+				throw new Error(`Invalid RepositorySynchronizationData.history`)
 			}
 			if (typeof history.GUID !== 'string' || history.GUID.length !== 36) {
 				return {
@@ -120,16 +120,16 @@ export class SyncInDataChecker
 				}
 			}
 			if (!history.saveTimestamp || typeof history.saveTimestamp !== 'number') {
-				throw new Error(`Invalid RepositorySynchronizationMessage.history.saveTimestamp`)
+				throw new Error(`Invalid RepositorySynchronizationData.history.saveTimestamp`)
 			}
 			if (history.transactionHistory) {
-				throw new Error(`RepositorySynchronizationMessage.history.transactionHistory cannot be specified`)
+				throw new Error(`RepositorySynchronizationData.history.transactionHistory cannot be specified`)
 			}
 			if (history.repositoryTransactionType) {
-				throw new Error(`RepositorySynchronizationMessage.history.repositoryTransactionType cannot be specified`)
+				throw new Error(`RepositorySynchronizationData.history.repositoryTransactionType cannot be specified`)
 			}
 			if (history.syncTimestamp) {
-				throw new Error(`RepositorySynchronizationMessage.history.syncTimestamp cannot be specified`)
+				throw new Error(`RepositorySynchronizationData.history.syncTimestamp cannot be specified`)
 			}
 
 			// Repository is already set in SyncInRepositoryChecker
@@ -138,10 +138,10 @@ export class SyncInDataChecker
 			delete history._localId
 
 			const applicationEntityMap = await this.populateApplicationEntityMap(
-				message.applicationVersions)
+				message.data.applicationVersions)
 
 			dataCheckResult = await this.checkOperationHistories(
-				message, applicationEntityMap, context)
+				message.data, applicationEntityMap, context)
 		} catch (e) {
 			console.error(e)
 
@@ -177,7 +177,7 @@ export class SyncInDataChecker
 	}
 
 	private async checkOperationHistories(
-		message: RepositorySynchronizationMessage,
+		message: RepositorySynchronizationData,
 		applicationEntityMap: Map<string, Map<string, Map<ApplicationEntity_TableIndex, IApplicationEntity>>>,
 		context: IContext
 	): Promise<IDataCheckResult> {
@@ -185,7 +185,7 @@ export class SyncInDataChecker
 		const forDelayedProcessing: IOperationHistory[] = []
 		const history = message.history
 		if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
-			throw new Error(`Invalid RepositorySynchronizationMessage.history.operationHistory Array`)
+			throw new Error(`Invalid RepositorySynchronizationData.history.operationHistory Array`)
 		}
 
 		const systemWideOperationIds = this.systemWideOperationIdUtils.getSysWideOpIds(
@@ -200,7 +200,7 @@ export class SyncInDataChecker
 			}
 			if (operationHistory.orderNumber) {
 				throw new Error(
-					`RepositorySynchronizationMessage.history -> operationHistory[${i}].orderNumber cannot be specified,
+					`RepositorySynchronizationData.history -> operationHistory[${i}].orderNumber cannot be specified,
 the position of orderHistory record determines it's order`)
 			}
 			operationHistory.orderNumber = ++orderNumber
@@ -223,7 +223,7 @@ the position of orderHistory record determines it's order`)
 			const actor = message.actors[operationHistory.actor as any]
 			if (!actor) {
 				throw new Error(`Cannot find Actor for "in-message id"
-RepositorySynchronizationMessage.history.operationHistory[${i}].actor`)
+RepositorySynchronizationData.history.operationHistory[${i}].actor`)
 			}
 
 			operationHistory.actor = actor
@@ -240,12 +240,12 @@ RepositorySynchronizationMessage.history.operationHistory[${i}].actor`)
 			operationHistory.entity = applicationEntity
 
 			if (operationHistory.repositoryTransactionHistory) {
-				throw new Error(`RepositorySynchronizationMessage.history -> operationHistory[${i}].repositoryTransactionHistory cannot be specified`)
+				throw new Error(`RepositorySynchronizationData.history -> operationHistory[${i}].repositoryTransactionHistory cannot be specified`)
 			}
 			operationHistory.repositoryTransactionHistory = history
 
 			if (operationHistory.systemWideOperationId) {
-				throw new Error(`RepositorySynchronizationMessage.history -> operationHistory[${i}].systemWideOperationId cannot be specified`)
+				throw new Error(`RepositorySynchronizationData.history -> operationHistory[${i}].systemWideOperationId cannot be specified`)
 			}
 			operationHistory.systemWideOperationId = systemWideOperationIds[i]
 
@@ -297,22 +297,22 @@ RepositorySynchronizationMessage.history.operationHistory[${i}].actor`)
 	private async checkRecordHistories(
 		operationHistory: IOperationHistory,
 		entityColumnMapsByIndex: IEntityColumnMapsByIndex,
-		message: RepositorySynchronizationMessage,
+		message: RepositorySynchronizationData,
 		context: IContext
 	): Promise<void> {
 		const recordHistories = operationHistory.recordHistory
 		if (!(recordHistories instanceof Array) || !recordHistories.length) {
-			throw new Error(`Inalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory`)
+			throw new Error(`Inalid RepositorySynchronizationData.history -> operationHistory.recordHistory`)
 		}
 
 		for (const recordHistory of recordHistories) {
 			if (!recordHistory._actorRecordId || typeof recordHistory._actorRecordId !== 'number') {
-				throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory._actorRecordId`)
+				throw new Error(`Invalid RepositorySynchronizationData.history -> operationHistory.recordHistory._actorRecordId`)
 			}
 			switch (operationHistory.changeType) {
 				case ChangeType.INSERT_VALUES:
 					if (recordHistory.actor) {
-						throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.actor
+						throw new Error(`Cannot specify RepositorySynchronizationData.history -> operationHistory.recordHistory.actor
 for ChangeType.INSERT_VALUES`)
 					}
 					recordHistory.actor = operationHistory.actor
@@ -325,7 +325,7 @@ for ChangeType.INSERT_VALUES`)
 					} else {
 						const actor = message.actors[recordHistory.actor as any]
 						if (!actor) {
-							throw new Error(`Did find Actor for "in-message id" in RepositorySynchronizationMessage.history -> operationHistory.actor`)
+							throw new Error(`Did find Actor for "in-message id" in RepositorySynchronizationData.history -> operationHistory.actor`)
 						}
 						recordHistory.actor = actor
 					}
@@ -334,7 +334,7 @@ for ChangeType.INSERT_VALUES`)
 			}
 
 			if (recordHistory.operationHistory) {
-				throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.recordHistory.operationHistory cannot be specified`)
+				throw new Error(`RepositorySynchronizationData.history -> operationHistory.recordHistory.operationHistory cannot be specified`)
 			}
 
 			this.checkNewValues(recordHistory, entityColumnMapsByIndex,
@@ -352,34 +352,34 @@ for ChangeType.INSERT_VALUES`)
 		recordHistory: IRecordHistory,
 		entityColumnMapsByIndex: IEntityColumnMapsByIndex,
 		operationHistory: IOperationHistory,
-		message: RepositorySynchronizationMessage,
+		message: RepositorySynchronizationData,
 		context: IContext
 	): void {
 		switch (operationHistory.changeType) {
 			case ChangeType.DELETE_ROWS:
 				if (recordHistory.newValues) {
-					throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues
+					throw new Error(`Cannot specify RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues
 for ChangeType.DELETE_ROWS`)
 				}
 				return
 			case ChangeType.INSERT_VALUES:
 			case ChangeType.UPDATE_ROWS:
 				if (!(recordHistory.newValues instanceof Array) || !recordHistory.newValues.length) {
-					throw new Error(`Must specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues
+					throw new Error(`Must specify RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues
 for ChangeType.INSERT_VALUES|UPDATE_ROWS`)
 				}
 				break
 		}
 		for (const newValue of recordHistory.newValues) {
 			if (newValue.recordHistory) {
-				throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.recordHistory`)
+				throw new Error(`Cannot specify RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues.recordHistory`)
 			}
 			newValue.recordHistory = recordHistory
 			if (typeof newValue.columnIndex !== 'number') {
-				throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.columnIndex`)
+				throw new Error(`Invalid RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues.columnIndex`)
 			}
 			if (typeof newValue.newValue === undefined) {
-				throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue`)
+				throw new Error(`Invalid RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues.newValue`)
 			}
 		}
 
@@ -421,34 +421,34 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS`)
 		recordHistory: IRecordHistory,
 		entityColumnMapsByIndex: IEntityColumnMapsByIndex,
 		operationHistory: IOperationHistory,
-		message: RepositorySynchronizationMessage,
+		message: RepositorySynchronizationData,
 		context: IContext
 	): void {
 		switch (operationHistory.changeType) {
 			case ChangeType.DELETE_ROWS:
 			case ChangeType.INSERT_VALUES:
 				if (recordHistory.oldValues) {
-					throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues
+					throw new Error(`Cannot specify RepositorySynchronizationData.history -> operationHistory.recordHistory.oldValues
 for ChangeType.DELETE_ROWS|INSERT_VALUES`)
 				}
 				return
 			case ChangeType.UPDATE_ROWS:
 				if (!(recordHistory.newValues instanceof Array) || !recordHistory.oldValues.length) {
-					throw new Error(`Must specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues
+					throw new Error(`Must specify RepositorySynchronizationData.history -> operationHistory.recordHistory.oldValues
 for ChangeType.UPDATE_ROWS`)
 				}
 				break
 		}
 		for (const oldValue of recordHistory.oldValues) {
 			if (oldValue.recordHistory) {
-				throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.recordHistory`)
+				throw new Error(`Cannot specify RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues.recordHistory`)
 			}
 			oldValue.recordHistory = recordHistory
 			if (typeof oldValue.columnIndex !== 'number') {
-				throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.columnIndex`)
+				throw new Error(`Invalid RepositorySynchronizationData.history -> operationHistory.recordHistory.oldValues.columnIndex`)
 			}
 			if (typeof oldValue.oldValue === undefined) {
-				throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue`)
+				throw new Error(`Invalid RepositorySynchronizationData.history -> operationHistory.recordHistory.oldValues.oldValue`)
 			}
 		}
 
@@ -533,8 +533,8 @@ for ChangeType.UPDATE_ROWS`)
 		if (relationIdColumn) {
 			const sourceEntity = entityArrayByInMessageIndex[value[valueColumnName]]
 			if (!sourceEntity) {
-				throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
-Value is for ${relationIdColumn.name} and could find RepositorySynchronizationMessage.${inMessageEntityArrayName}[${value[valueColumnName]}]`)
+				throw new Error(`Invalid RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues.newValue
+Value is for ${relationIdColumn.name} and could find RepositorySynchronizationData.${inMessageEntityArrayName}[${value[valueColumnName]}]`)
 			}
 			value[valueColumnName] = sourceEntity._localId
 		}

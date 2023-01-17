@@ -1,21 +1,19 @@
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IContext
-} from '@airport/direction-indicator'
-import {
 	DbColumn,
 	DbEntity,
-	ISequenceGenerator
-} from '@airport/ground-control'
-import {
+	ISequenceGenerator,
 	OperationHistory_LocalId,
 	RecordHistory_LocalId,
 	RepositoryTransactionHistory_LocalId,
-	Q_airport____at_airport_slash_holding_dash_pattern as Q,
 	TransactionHistory_LocalId
+} from '@airport/ground-control'
+import {
+	Q_airport____at_airport_slash_holding_dash_pattern as Q
 } from '@airport/holding-pattern/dist/app/bundle'
 
 export type NumRepositoryTransHistories = number

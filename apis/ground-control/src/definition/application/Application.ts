@@ -15,9 +15,10 @@ export type Domain_Name = string;
 export type Application_FullName = string; // Domain & Application Names
 export type JsonApplication_Name = string;
 export type Application_Index = number;
+export type Application_GUID = string;
+export type Application_Scope = 'private' | 'public' | null | string;
 // NOTE: Application_Name contains Domain_Name as a prefix DOMAIN_NAME___APPLICATION_NAME
 export type ApplicationReference_Index = number;
-export type Application_Scope = 'private' | 'public' | null;
 export type ApplicationVersion_LocalId = number;
 export type ApplicationVersion_IntegerVersion = number;
 export type ApplicationVersion_MajorVersion = number;
@@ -26,25 +27,13 @@ export type ApplicationVersion_PatchVersion = number;
 export type ApplicationVersion_VersionString = string;
 
 
-export interface DbApplication {
-
-	domain: DbDomain
-
-	_localId: Application_LocalId
-
-	name: Application_Name
-
-	signature: Application_Signature
-
-}
-
 export interface DbDomain {
 
 	_localId: Domain_LocalId
 
-	name: Domain_Name
+	name?: Domain_Name
 
-	applications: DbApplication[]
+	applications?: DbApplication[]
 }
 
 /**
@@ -75,28 +64,33 @@ export interface JsonApplication
  * A application with additional indexes (maps).
  */
 export interface DbApplication
-	extends ApplicationReferenceByIndex<Application_Index>,
-	DatabaseObject {
+	extends DatabaseObject {
 
-	currentVersion: DbApplicationCurrentVersion[];
+	index: Application_Index
+
+	currentVersion?: DbApplicationCurrentVersion[];
 
 	/**
 	 * Domain of the application ('public' if published).
 	 */
-	domain: DbDomain;
+	domain?: DbDomain;
 
-	name: Application_Name;
+	name?: Application_Name;
 
-	fullName: Application_FullName
+	fullName?: Application_FullName
 
-	scope: Application_Scope;
+	GUID?: Application_GUID
 
-	status: ApplicationStatus
+	scope?: Application_Scope;
+
+	signature?: Application_Signature
+
+	status?: ApplicationStatus | string
 
 	/**
 	 * Versions by integer version
 	 */
-	versions: DbApplicationVersion[];
+	versions?: DbApplicationVersion[];
 
 }
 
@@ -141,13 +135,13 @@ export interface DatabaseObject {
 
 	deprecatedSinceVersion?: DbApplicationVersion
 	removedInVersion?: DbApplicationVersion
-	sinceVersion: DbApplicationVersion
+	sinceVersion?: DbApplicationVersion
 
 }
 
 export interface DbApplicationVersionReference {
 
-	integerVersion: ApplicationVersion_IntegerVersion;
+	integerVersion?: ApplicationVersion_IntegerVersion;
 
 }
 
@@ -173,7 +167,7 @@ export interface DbApplicationVersion
 	/**
 	 * Entities by their application table indexes.
 	 */
-	entities: DbEntity[];
+	entities?: DbEntity[];
 
 	/**
 	 * Map of all entities by name.
@@ -184,13 +178,13 @@ export interface DbApplicationVersion
 	 * Applications referenced in this application, by terminal index.
 	 *
 	 */
-	references: DbApplicationReference[];
+	references?: DbApplicationReference[];
 
 	/**
 	 * Applications referencing in this application, by terminal index.
 	 *
 	 */
-	referencedBy: DbApplicationReference[];
+	referencedBy?: DbApplicationReference[];
 
 	/**
 	 * Map of all referenced applications, by name.
@@ -202,24 +196,24 @@ export interface DbApplicationVersion
 	 */
 	referencedByMapByName?: { [applicationName: string]: DbApplicationReference };
 
-	integerVersion: ApplicationVersion_IntegerVersion
+	integerVersion?: ApplicationVersion_IntegerVersion
 
-	versionString: ApplicationVersion_VersionString;
+	versionString?: ApplicationVersion_VersionString;
 
-	majorVersion: ApplicationVersion_MajorVersion;
+	majorVersion?: ApplicationVersion_MajorVersion;
 
-	minorVersion: ApplicationVersion_MinorVersion;
+	minorVersion?: ApplicationVersion_MinorVersion;
 
-	patchVersion: ApplicationVersion_PatchVersion;
+	patchVersion?: ApplicationVersion_PatchVersion;
 
-	application: DbApplication;
+	application?: DbApplication;
 
 }
 
 export interface DbApplicationReference
 	extends DatabaseObject {
 
-	index: ApplicationReference_Index;
+	index?: ApplicationReference_Index;
 	ownApplicationVersion: DbApplicationVersion;
 	referencedApplicationVersion: DbApplicationVersion;
 

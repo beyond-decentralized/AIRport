@@ -1,5 +1,6 @@
 import {
 	Column,
+	DbNumber,
 	DbString,
 	Entity,
 	GeneratedValue,
@@ -10,8 +11,8 @@ import {
 	Transient
 } from '@airport/tarmaq-entity'
 import {
-	ATransactionHistory,
 	SyncApplicationMap,
+	TransactionHistory_LocalId,
 	TransactionType
 } from '@airport/ground-control'
 import { IRecordHistory } from '../../generated/entity/history/IRecordHistory'
@@ -21,48 +22,43 @@ import { IRecordHistoryOldValue } from '../../generated/entity/history/IRecordHi
 import { IRepositoryTransactionHistory } from '../../generated/entity/history/IRepositoryTransactionHistory'
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory'
 
-export type TransactionHistoryNumberOfOperations = number;
-
 /**
  * Created by Papa on 5/1/2017./
  */
-
-export type TransactionHistory_LocalId = number
-
 @Entity()
 @Table({ name: 'TRANSACTION_HISTORY' })
-export class TransactionHistory
-	implements ATransactionHistory {
+export class TransactionHistory {
 
 	@GeneratedValue()
 	@Id()
 	@SequenceGenerator({ allocationSize: 100 })
-	@Column({ name: 'TRANSACTION_HISTORY_LID' })
+	@Column({ name: 'TRANSACTION_HISTORY_LID', nullable: false })
+	@DbNumber()
 	_localId: TransactionHistory_LocalId
 
 	@Column({ name: 'TRANSACTION_TYPE', nullable: false })
 	@DbString()
-	transactionType: TransactionType
+	transactionType?: TransactionType
 
 	@OneToMany({ mappedBy: 'transactionHistory' })
-	repositoryTransactionHistories: RepositoryTransactionHistory[] = []
+	repositoryTransactionHistories?: RepositoryTransactionHistory[]
 
 	@Transient()
-	repositoryTransactionHistoryMap: { [repositoryId: number]: IRepositoryTransactionHistory } = {}
+	repositoryTransactionHistoryMap?: { [repositoryId: number]: IRepositoryTransactionHistory }
 
 	@Transient()
-	applicationMap: SyncApplicationMap = new globalThis.SyncApplicationMap()
+	applicationMap?: SyncApplicationMap = new globalThis.SyncApplicationMap()
 
 	@Transient()
-	allOperationHistory: IOperationHistory[] = []
+	allOperationHistory?: IOperationHistory[] = []
 
 	@Transient()
-	allRecordHistory: IRecordHistory[] = []
+	allRecordHistory?: IRecordHistory[] = []
 
 	@Transient()
-	allRecordHistoryNewValues: IRecordHistoryNewValue[] = []
+	allRecordHistoryNewValues?: IRecordHistoryNewValue[] = []
 
 	@Transient()
-	allRecordHistoryOldValues: IRecordHistoryOldValue[] = []
+	allRecordHistoryOldValues?: IRecordHistoryOldValue[] = []
 
 }

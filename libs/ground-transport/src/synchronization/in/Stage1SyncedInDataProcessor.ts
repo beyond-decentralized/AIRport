@@ -16,14 +16,14 @@ import {
 	IDatastructureUtils,
 	Repository_LocalId,
 	Actor_LocalId,
-	ActorRecordId
+	ActorRecordId,
+	RecordHistory_LocalId
 } from '@airport/ground-control'
 import {
 	IActor,
 	IChangedRecordIdsForRepository,
 	IOperationHistory,
 	IRecordHistory,
-	RecordHistory_LocalId,
 	IActorDao,
 	IRepositoryTransactionHistoryDao,
 	IRepositoryTransactionHistoryDuo,
@@ -86,16 +86,16 @@ export class Stage1SyncedInDataProcessor
 	 *  1)  Unique create/update/delete statement datastructures are generated
 	 *  2)  Synchronization conflict datastructure is generated
 	 *
-	 * @param {Map<repositoryLocalId, ISyncRepoTransHistory[]>} repositoryTransactionHistoryMapByrepositoryLocalId
+	 * @param {Map<repositoryLocalId, ISyncRepoTransHistory[]>} repositoryTransactionHistoryMapByRepositoryLocalId
 	 * @param {Map<Actor_LocalId, IActor>} actorMayById
 	 * @returns {Promise<void>}
 	 */
 	async performStage1DataProcessing(
-		repositoryTransactionHistoryMapByrepositoryLocalId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
+		repositoryTransactionHistoryMapByRepositoryLocalId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
 		actorMayById: Map<Actor_LocalId, IActor>,
 		context: IContext
 	): Promise<Stage1SyncedInDataProcessingResult> {
-		await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByrepositoryLocalId)
+		await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryLocalId)
 
 		const changedRecordIds: Map<Repository_LocalId, IChangedRecordIdsForRepository> = new Map()
 
@@ -105,7 +105,7 @@ export class Stage1SyncedInDataProcessor
 		// that will be updated or deleted.
 
 		for (const [repositoryLocalId, repoTransHistoriesForRepo]
-			of repositoryTransactionHistoryMapByrepositoryLocalId) {
+			of repositoryTransactionHistoryMapByRepositoryLocalId) {
 			const changedRecordsForRepo: IChangedRecordIdsForRepository = {
 				actorRecordIdsByLocalIds: new Map(),
 				firstChangeTime: new Date().getTime() + 10000000000
@@ -143,7 +143,7 @@ export class Stage1SyncedInDataProcessor
 			= new Map()
 
 		const allRemoteRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(
-			allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByrepositoryLocalId)
+			allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByRepositoryLocalId)
 
 		// find local history for the matching repositories and corresponding time period
 		const localRepoTransHistoryMapByrepositoryLocalId

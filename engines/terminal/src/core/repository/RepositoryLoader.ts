@@ -14,10 +14,10 @@ import {
 } from "@airport/ground-transport";
 import {
     IRepositoryDao,
-    RepositoryTransactionHistory_GUID,
 } from "@airport/holding-pattern/dist/app/bundle";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { ITransactionContext } from "@airport/terminal-map";
+import { RepositoryTransactionHistory_GUID } from "@airport/ground-control";
 
 @Injected()
 export class RepositoryLoader
@@ -99,7 +99,7 @@ export class RepositoryLoader
             const messageMapByGUID: Map<RepositoryTransactionHistory_GUID, RepositorySynchronizationMessage>
                 = new Map()
             for (const message of messages) {
-                messageMapByGUID.set(message.history.GUID, message)
+                messageMapByGUID.set(message.data.history.GUID, message)
             }
 
             await this.synchronizationInManager.receiveMessages(messageMapByGUID, context)

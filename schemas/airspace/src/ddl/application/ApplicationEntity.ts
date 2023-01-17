@@ -44,7 +44,7 @@ export class ApplicationEntity
 	//
 	@DbNumber()
 	@Id()
-	@Column({ name: 'APPLICATION_ENTITY_LID' })
+	@Column({ name: 'APPLICATION_ENTITY_LID', nullable: false })
 	_localId: ApplicationEntity_LocalId
 
 	//
@@ -52,23 +52,23 @@ export class ApplicationEntity
 	//
 	@Column({ name: 'TABLE_INDEX', nullable: false })
 	@DbNumber()
-	index: ApplicationEntity_TableIndex
+	index?: ApplicationEntity_TableIndex
 
 	@Column({ name: 'IS_LOCAL', nullable: false })
 	@DbBoolean()
-	isLocal: ApplicationEntity_IsLocal
+	isLocal?: ApplicationEntity_IsLocal
 
 	@Column({ name: 'IS_AIR_ENTITY', nullable: false })
 	@DbBoolean()
-	isAirEntity: ApplicationEntity_IsAirEntity
+	isAirEntity?: ApplicationEntity_IsAirEntity
 
 	@Column({ name: 'NAME', nullable: false })
 	@DbString()
-	name: ApplicationEntity_Name
+	name?: ApplicationEntity_Name
 
 	@Column({ name: 'TABLE_CONFIGURATION', nullable: false })
 	@Json()
-	tableConfig: ApplicationEntity_TableConfiguration
+	tableConfig?: ApplicationEntity_TableConfiguration
 
 	//
 	// Non-Id relations
@@ -79,14 +79,14 @@ export class ApplicationEntity
 		name: 'APPLICATION_VERSION_LID',
 		referencedColumnName: 'APPLICATION_VERSION_LID', nullable: false
 	})
-	applicationVersion: ApplicationVersion
+	applicationVersion?: ApplicationVersion
 
 	//
 	// One-to-Many's
 	//
 
 	@OneToMany({ mappedBy: 'entity' })
-	columns: ApplicationColumn[] = []
+	columns?: ApplicationColumn[] = []
 
 	// TODO: implement if needed
 	// @OneToMany()
@@ -104,24 +104,24 @@ export class ApplicationEntity
 	operations?: ApplicationOperation[] = []
 
 	@OneToMany({ mappedBy: 'entity' })
-	properties: ApplicationProperty[] = []
+	properties?: ApplicationProperty[] = []
 
 	@OneToMany({ mappedBy: 'entity' })
-	relations: ApplicationRelation[] = []
+	relations?: ApplicationRelation[] = []
 
 	@OneToMany({ mappedBy: 'relationEntity' })
-	relationReferences: ApplicationRelation[] = []
+	relationReferences?: ApplicationRelation[] = []
 
 	@Transient()
 	columnMap?: { [name: string]: IApplicationColumn } = {}
 
 	@Transient()
-	idColumns: IApplicationColumn[] = []
+	idColumns?: IApplicationColumn[] = []
 
 	@Transient()
 	idColumnMap?: { [name: string]: IApplicationColumn } = {}
 
 	@Transient()
-	propertyMap: { [name: string]: IApplicationProperty } = {}
+	propertyMap?: { [name: string]: IApplicationProperty } = {}
 
 }

@@ -15,7 +15,8 @@ import {
 	JsonEntityQuery,
 	JSONEntityRelation,
 	JSONRelationType,
-	QueryResultType
+	QueryResultType,
+	SQLDataType
 } from '@airport/ground-control'
 import {
 	AliasCache,
@@ -304,8 +305,10 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 				const defaultValue = this.entityDefaults.getForAlias(entityAlias)[propertyName]
 
 				const dbColumn = dbProperty.propertyColumns[0].column
-				const propertyValue = this.sqlQueryAdapter.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, defaultValue)
-				if (this.queryParser.addProperty(entityAlias, resultObject, dbColumn.type, propertyName, propertyValue)) {
+				const propertyValue = this.sqlQueryAdapter.getResultCellValue(
+					resultRow, columnAlias, nextColumnIndex[0], dbColumn.type as SQLDataType, defaultValue)
+				if (this.queryParser.addProperty(entityAlias, resultObject,
+					dbColumn.type as SQLDataType, propertyName, propertyValue)) {
 					numNonNullColumns++
 				}
 				nextColumnIndex[0]++
@@ -324,10 +327,11 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 								propertyNameChains: string[][],
 							) => {
 								const columnAlias = this.columnAliases.getFollowingAlias()
-								let value = this.sqlQueryAdapter.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, null)
+								let value = this.sqlQueryAdapter.getResultCellValue(
+									resultRow, columnAlias, nextColumnIndex[0], dbColumn.type as SQLDataType, null)
 								relationInfos.push({
 									propertyNameChains: propertyNameChains,
-									sqlDataType: dbColumn.type,
+									sqlDataType: dbColumn.type as SQLDataType,
 									value
 								})
 								if (this.utils.objectExists(value)) {
