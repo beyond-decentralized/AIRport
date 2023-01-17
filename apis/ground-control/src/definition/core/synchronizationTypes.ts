@@ -1,5 +1,5 @@
-import { SyncColumnMap } from "../../../dist/esm";
 import { SyncApplicationMap } from "../../implementation/sync/SyncApplicationMap";
+import { SyncColumnMap } from "../../implementation/sync/SyncColumnMap";
 import { DbEntity } from "../application/Entity";
 import { ChangeType } from "../data/ChangeType";
 import { RepositoryTransactionType, TransactionType } from "../data/sync/TransactionType";
