@@ -1,5 +1,4 @@
-import { IUserAccount } from "@airport/aviation-communication"
-import { IActor } from "@airport/ground-control"
+import { IActor, IUserAccount } from "@airport/ground-control"
 
 export interface AirRequest {
     actor: IActor

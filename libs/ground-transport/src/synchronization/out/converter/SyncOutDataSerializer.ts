@@ -1,6 +1,6 @@
 import { IApplicationRelationDao } from '@airport/airspace/dist/app/bundle';
 import { RepositorySynchronizationData, RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { IUserAccount, UserAccount_GUID } from "@airport/aviation-communication";
+import { UserAccount_GUID } from "@airport/aviation-communication";
 import {
 	Inject,
 	Injected
@@ -25,6 +25,7 @@ import {
 	IRepository,
 	IRepositoryTransactionHistory,
 	ITerminal,
+	IUserAccount,
 	RepositoryTransactionType,
 	Repository_LocalId,
 	Terminal_GUID

@@ -1,6 +1,6 @@
-import { IUserAccount, UserAccount_GUID, UserAccount_Username } from '@airport/aviation-communication'
+import { UserAccount_GUID, UserAccount_Username } from '@airport/aviation-communication'
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
-import { Dictionary, ISequenceGenerator } from '@airport/ground-control'
+import { Dictionary, ISequenceGenerator, IUserAccount } from '@airport/ground-control'
 import {
 	BaseUserAccountDao,
 	IBaseUserAccountDao,

@@ -1,5 +1,5 @@
-import { IUserAccount } from "@airport/aviation-communication";
 import { Injected } from "@airport/direction-indicator";
+import { IUserAccount } from "@airport/ground-control";
 
 @Injected()
 export class SessionManager {

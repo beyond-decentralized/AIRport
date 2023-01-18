@@ -4,7 +4,6 @@ import { IRepositoryMember, Repository_GUID } from "@airport/ground-control";
 import { AND } from "@airport/tarmaq-query";
 import { QUserAccount } from "@airport/travel-document-checkpoint";
 import { QRepositoryMember } from "../../generated/qInterfaces";
-import { RepositoryMember } from "../../ddl/repository/RepositoryMember";
 import { BaseRepositoryMemberDao } from "../../generated/baseDaos";
 import Q_airport____at_airport_slash_holding_dash_pattern from "../../generated/qApplication";
 

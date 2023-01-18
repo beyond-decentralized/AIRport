@@ -993,7 +993,8 @@ export function entityExtendsOrIsAirEntity( //
 	if (!entityCandidate) {
 		return [false, true];
 	}
-	if (entityCandidate.docEntry.name === dictionary.AirEntity.name) {
+	if (entityCandidate.docEntry.name === dictionary.AirEntity.name
+		|| entityCandidate.docEntry.name === dictionary.InternalAirEntity.name) {
 		return [true, false];
 	}
 	// if (entityCandidate.docEntry.name === airEntityColumns.LOCAL_ENTITY_NAME) {

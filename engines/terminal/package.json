@@ -4,7 +4,6 @@
   "peerDependencies": {
     "@airbridge/keyring": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
-    "@airport/airport-code": "0.0.1",
     "@airport/airspace": "0.0.1",
     "@airport/apron": "0.0.1",
     "@airport/arrivals-n-departures": "0.0.1",
@@ -12,7 +11,6 @@
     "@airport/blueprint": "0.0.1",
     "@airport/check-in": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
-    "@airport/final-approach": "0.0.1",
     "@airport/flight-number": "0.0.1",
     "@airport/flight-recorder": "0.0.1",
     "@airport/fuel-hydrant-system": "0.0.1",
@@ -20,7 +18,6 @@
     "@airport/ground-transport": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
     "@airport/landing": "0.0.1",
-    "@airport/layover": "0.0.1",
     "@airport/session-state": "0.0.1",
     "@airport/takeoff": "0.0.1",
     "@airport/tarmaq-dao": "0.0.1",

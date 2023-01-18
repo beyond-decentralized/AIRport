@@ -1,12 +1,12 @@
 import { ApplicationRelation } from "@airport/airspace";
-import { AirEntity } from "@airport/final-approach";
 import { Repository } from "@airport/holding-pattern";
+import { InternalAirEntity } from "@airport/holding-pattern/dist/app/bundle";
 import { Entity, JoinColumn, ManyToOne, Table } from "@airport/tarmaq-entity";
 
 @Entity()
 @Table({ name: 'CROSS_REPOSITORY_RELATION_LEDGER' })
 export class CrossRepositoryRelationLedger
-    extends AirEntity {
+    extends InternalAirEntity {
 
     @ManyToOne()
     @JoinColumn({

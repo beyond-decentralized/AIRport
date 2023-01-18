@@ -7,6 +7,7 @@ import {
     IActor,
     IEntityStateManager,
     ITerminal,
+    IUserAccount,
     JsonApplication
 } from "@airport/ground-control";
 import {
@@ -29,7 +30,6 @@ import {
     Injected
 } from '@airport/direction-indicator'
 import { TerminalSessionManager } from "../core/TerminalSessionManager";
-import { IUserAccount } from "@airport/aviation-communication";
 
 export interface IInternalRecordManager {
 

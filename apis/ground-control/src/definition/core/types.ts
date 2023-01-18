@@ -1,11 +1,22 @@
-import { IUserAccount } from "@airport/aviation-communication";
-import { Application_FullName, DbApplication } from "../application/Application";
+import { InternalUserAccount } from "@airport/aviation-communication";
+import { Application_FullName, DbApplication, DbDomain } from "../application/Application";
 import { IRepositoryTransactionHistory } from "./synchronizationTypes";
 
 export interface IRootTransaction {
 	numberOfOperations: number
 	// Only one new repository can be created at at time
 	newRepository?: IRepository
+}
+
+export interface IUserAccount
+	extends InternalUserAccount {
+
+	domain?: DbDomain
+	continent?: IContinent
+	country?: ICountry
+	state?: IState
+	metroArea?: IMetroArea
+
 }
 
 export type Actor_LocalId = number;

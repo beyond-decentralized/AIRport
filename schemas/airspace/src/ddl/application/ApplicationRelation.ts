@@ -37,36 +37,36 @@ export class ApplicationRelation
 
 	@DbNumber()
 	@Column({ name: 'RELATION_INDEX', nullable: false })
-	index: ApplicationRelation_Index
+	index?: ApplicationRelation_Index
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'APPLICATION_PROPERTY_LID',
 		referencedColumnName: 'APPLICATION_PROPERTY_LID', nullable: false
 	})
-	property: ApplicationProperty
+	property?: ApplicationProperty
 
 	@Json()
 	@Column({ name: 'FOREIGN_KEY' })
-	foreignKey: ForeignKey
+	foreignKey?: ForeignKey
 
 	@Json()
 	@Column({ name: 'MANY_TO_ONE_ELEMENTS' })
-	manyToOneElems: ManyToOneElements
+	manyToOneElems?: ManyToOneElements
 
 	@Json()
 	@Column({ name: 'ONE_TO_MANY_ELEMENTS' })
-	oneToManyElems: OneToManyElements
+	oneToManyElems?: OneToManyElements
 
 	@DbString()
 	@Column({ name: 'RELATION_TYPE', nullable: false })
-	relationType: EntityRelationType
+	relationType?: EntityRelationType
 
 	// @Column({name: "IS_REPOSITORY_JOIN"})
 	// isRepositoryJoin: boolean;
 
 	@Column({ name: 'IS_LID', nullable: false })
-	isId: boolean
+	isId?: boolean
 
 	// @Column({name: "ADD_TO_JOIN_FUNCTION"})
 	// addToJoinFunction: string;
@@ -79,17 +79,17 @@ export class ApplicationRelation
 		name: 'APPLICATION_ENTITY_LID',
 		referencedColumnName: 'APPLICATION_ENTITY_LID', nullable: false
 	})
-	entity: ApplicationEntity
+	entity?: ApplicationEntity
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'RELATION_APPLICATION_ENTITY_LID',
 		referencedColumnName: 'APPLICATION_ENTITY_LID', nullable: false
 	})
-	relationEntity: ApplicationEntity
+	relationEntity?: ApplicationEntity
 
 	@OneToMany({ mappedBy: 'manyRelation' })
-	manyRelationColumns: ApplicationRelationColumn[] = []
+	manyRelationColumns?: ApplicationRelationColumn[] = []
 
 	@OneToMany({ mappedBy: 'oneRelation' })
 	oneRelationColumns?: ApplicationRelationColumn[] = []

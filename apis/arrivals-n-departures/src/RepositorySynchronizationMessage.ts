@@ -1,5 +1,4 @@
-import { IUserAccount } from "@airport/aviation-communication";
-import { DbApplication, DbApplicationVersion, DbRelation, IActor, IRepository, IRepositoryTransactionHistory, ITerminal } from "@airport/ground-control";
+import { DbApplication, DbApplicationVersion, DbRelation, IActor, IRepository, IRepositoryTransactionHistory, ITerminal, IUserAccount } from "@airport/ground-control";
 
 export type ReferencedApplicationVersion_InMessageIndex = number
 export type ReferencedApplicationRelation_InMessageIndex = number

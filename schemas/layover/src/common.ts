@@ -1,5 +1,4 @@
-import { IUserAccount } from "@airport/aviation-communication";
-import { DbApplication, DbApplicationVersion, DbDomain, IActor, IRepository, IRepositoryTransactionHistory, ITerminal } from "@airport/ground-control";
+import { DbApplication, DbApplicationVersion, DbDomain, IActor, IRepository, IRepositoryTransactionHistory, ITerminal, IUserAccount } from "@airport/ground-control";
 
 export interface RepositoryTransactionBlockData {
 	actors: IActor[];

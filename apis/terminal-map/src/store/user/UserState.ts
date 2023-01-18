@@ -1,7 +1,6 @@
 import { IKeyRing } from "@airbridge/data-model"
-import { IUserAccount } from "@airport/aviation-communication"
 import { Injected } from "@airport/direction-indicator"
-import { IRootTransaction } from "@airport/ground-control"
+import { IRootTransaction, IUserAccount } from "@airport/ground-control"
 import { Subject } from "rxjs"
 import { ITransaction } from "../../transaction/ITransaction"
 import { internalUserState } from "./theUserState"

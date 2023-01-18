@@ -105,15 +105,15 @@ export class QApplicationBuilder
     // }
 
     return `import {
-    QApp
-} from '@airport/aviation-communication'
+    QAppInternal
+} from '@airport/air-traffic-control'
 import {
     DbApplication
 } from '@airport/ground-control';
 ${qEntityImports}
 ${entityImports}
 
-export interface ${this.applicationFullName}_LocalQApp extends QApp {
+export interface ${this.applicationFullName}_LocalQApp extends QAppInternal {
 
     db: DbApplication;
 

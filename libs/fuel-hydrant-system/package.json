@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@airport/air-traffic-control": "0.0.1",
-    "@airport/airport-code": "0.0.1",
     "@airport/check-in": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
     "@airport/flight-number": "0.0.1",

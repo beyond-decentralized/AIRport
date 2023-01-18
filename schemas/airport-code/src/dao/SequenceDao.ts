@@ -21,10 +21,10 @@ export interface ISequenceDao
 @Injected()
 export class SequenceDao
 	extends BaseSequenceDao
-	implements ISequenceDao {
+	implements ISequenceDao { 
 
 	static diSet(): boolean {
-		return Q.__dbApplication__ && Q.__dbApplication__.currentVersion[0]
+		return Q.__dbApplication__ && !!Q.__dbApplication__.currentVersion[0]
 			.applicationVersion.entities[0]
 	}
 

@@ -2,7 +2,6 @@
   "name": "@airport/arrivals-n-departures",
   "version": "0.0.1",
   "peerDependencies": {
-    "@airport/aviation-communication": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/tarmaq-query": "0.0.1"

@@ -1,6 +1,5 @@
 import { Injected } from "@airport/direction-indicator"
-import { AirEntity } from "@airport/final-approach"
-import { DbRelation } from "@airport/ground-control"
+import { DbRelation, IAirEntity } from "@airport/ground-control"
 import { CopiedRecordLedger } from "../ddl/CopiedRecordLedger"
 import { CrossRepositoryRelationLedger } from "../ddl/CrossRepositoryRelationLedger"
 
@@ -76,7 +75,7 @@ export class CrossRepositoryRelationManager
         }
     }
 
-    private getLedger<E extends AirEntity>(
+    private getLedger<E extends IAirEntity>(
         relation: DbRelation,
         relatedEntity: E
     ): CrossRepositoryRelationLedger {

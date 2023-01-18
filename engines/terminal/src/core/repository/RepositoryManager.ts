@@ -4,11 +4,9 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IRepositoryDao
+	IRepositoryDao,
+	QInternalAirEntity
 } from '@airport/holding-pattern/dist/app/bundle' // default
-import {
-	QAirEntity
-} from '@airport/final-approach' // default
 import {
 	IKeyRingManager
 } from '@airbridge/keyring/dist/app/bundle'
@@ -30,8 +28,7 @@ import {
 	ITransactionContext,
 } from '@airport/terminal-map'
 import { v4 as guidv4 } from "uuid";
-import { Dictionary, IAppTrackerUtils, IRepository, UpdateState } from '@airport/ground-control'
-import { IUserAccount } from '@airport/aviation-communication'
+import { Dictionary, IAppTrackerUtils, IRepository, IUserAccount, UpdateState } from '@airport/ground-control'
 
 /**
  * Created by Papa on 2/12/2017.
@@ -242,7 +239,7 @@ already contains a new repository.`)
 		return {
 			UPDATE: rawUpdate.UPDATE,
 			SET: rawUpdate.SET,
-			WHERE: AND(rawUpdate.WHERE, (<QAirEntity><any>qEntity).repository._localId.equals(repository._localId))
+			WHERE: AND(rawUpdate.WHERE, (<QInternalAirEntity><any>qEntity).repository._localId.equals(repository._localId))
 		}
 	}
 
@@ -256,7 +253,7 @@ already contains a new repository.`)
 		}
 		return {
 			DELETE_FROM: rawDelete.DELETE_FROM,
-			WHERE: AND(rawDelete.WHERE, (<QAirEntity><any>qEntity).repository._localId.equals(repository._localId))
+			WHERE: AND(rawDelete.WHERE, (<QInternalAirEntity><any>qEntity).repository._localId.equals(repository._localId))
 		}
 	}
 

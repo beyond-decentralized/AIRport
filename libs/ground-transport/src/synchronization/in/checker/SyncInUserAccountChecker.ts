@@ -7,7 +7,8 @@ import { RepositorySynchronizationData } from '@airport/arrivals-n-departures'
 import {
 	IUserAccountDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
-import { IUserAccount, UserAccount_GUID } from '@airport/aviation-communication';
+import { UserAccount_GUID } from '@airport/aviation-communication';
+import { IUserAccount } from '@airport/ground-control';
 
 export interface ISyncInUserAccountChecker {
 

@@ -90,6 +90,9 @@ export class Dictionary {
 							userAccount: 'userAccount'
 						}
 					},
+					InternalAirEntity: {
+						name: 'InternalAirEntity'
+					},
 					Repository: {
 						name: 'Repository',
 						columns: {
@@ -131,6 +134,7 @@ export class Dictionary {
 	Actor = this.airport.apps.HOLDING_PATTERN.entities.Actor
 	AirEntity = this.airport.apps.FINAL_APPROACH.entities.AirEntity
 	ApplicationRelation = this.airport.apps.AIRSPACE.entities.ApplicationRelation
+	InternalAirEntity = this.airport.apps.HOLDING_PATTERN.entities.InternalAirEntity
 	// CopiedRecordLedger = this.airport.apps.FLIGHT_RECORDER.entities.CopiedRecordLedger
 	// CrossRepositoryRelationLedger = this.airport.apps.FLIGHT_RECORDER.entities.CrossRepositoryRelationLedger
 	Repository = this.airport.apps.HOLDING_PATTERN.entities.Repository
