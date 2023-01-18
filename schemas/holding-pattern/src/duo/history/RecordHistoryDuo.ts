@@ -1,13 +1,8 @@
 import { Inject, Injected } from '@airport/direction-indicator'
-import { ActorRecordId, Actor_LocalId, DbColumn } from '@airport/ground-control'
+import { ActorRecordId, Actor_LocalId, DbColumn, IRecordHistory, IRecordHistoryNewValue, IRecordHistoryOldValue } from '@airport/ground-control'
 import {
 	RecordHistory
 } from '../../ddl/ddl'
-import {
-	IRecordHistory,
-	IRecordHistoryNewValue,
-	IRecordHistoryOldValue,
-} from '../../generated/generated'
 import { IRecordHistoryNewValueDuo } from './RecordHistoryNewValueDuo'
 import { IRecordHistoryOldValueDuo } from './RecordHistoryOldValueDuo'
 

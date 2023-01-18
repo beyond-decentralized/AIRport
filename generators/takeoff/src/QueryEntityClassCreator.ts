@@ -10,7 +10,6 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { IApplication } from '@airport/airspace/dist/app/bundle'
 import { DbApplication } from '@airport/ground-control'
 import { IQueryEntityClassCreator } from '@airport/terminal-map'
 import { IApplicationUtils, IRelationManager } from '@airport/tarmaq-query'
@@ -31,7 +30,7 @@ export class QueryEntityClassCreator
 	relationManager: IRelationManager
 
 	createAll(
-		applications: IApplication[]
+		applications: DbApplication[]
 	): void {
 		const applicationsToCreate = this.qApplicationBuilderUtils
 			.orderApplicationsInOrderOfPrecedence(<any>applications)

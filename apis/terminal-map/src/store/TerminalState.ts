@@ -1,19 +1,12 @@
-import { ISequence } from '@airport/airport-code'
 import { IMessageInRecord, LastIds } from '@airport/apron'
 import { Inject, Injected } from '@airport/direction-indicator'
-import { IActor } from '@airport/holding-pattern/dist/app/bundle'
-import type {
-	IDomain,
-	IApplication
-} from '@airport/airspace/dist/app/bundle'
-import type { ITerminal } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
 	IPendingTransaction,
 } from './TerminalStore'
 import { Subject, Subscription } from 'rxjs'
 import { ITransaction } from '../transaction/ITransaction'
 import { ITransactionCredentials } from '../Credentials'
-import { Application_FullName, IAppTrackerUtils } from '@airport/ground-control'
+import { Application_FullName, DbApplication, DbDomain, DbSequence, IActor, IAppTrackerUtils, ITerminal } from '@airport/ground-control'
 
 export interface IReceiverState {
 	initializingApps: Set<Application_FullName>
@@ -45,7 +38,7 @@ export interface ITransactionManagerState {
 }
 
 export interface ISequenceGeneratorState {
-	sequences: ISequence[][][]
+	sequences: DbSequence[][][]
 	sequenceBlocks: number[][][]
 	generatingSequenceNumbers: boolean
 }
@@ -58,9 +51,9 @@ export interface IApplicationInitializerState {
 export interface ITerminalState {
 	applicationActors: IActor[]
 	applicationInitializer: IApplicationInitializerState
-	applicationMapByFullName: Map<Application_FullName, IApplication>
-	applications: IApplication[]
-	domains: IDomain[]
+	applicationMapByFullName: Map<Application_FullName, DbApplication>
+	applications: DbApplication[]
+	domains: DbDomain[]
 	frameworkActor: IActor
 	internalConnector: InternalConnectorState
 	isServer: boolean

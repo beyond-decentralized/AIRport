@@ -1,4 +1,4 @@
-import { InternalUserAccount } from "@airport/aviation-communication";
+import { IUserAccount } from "@airport/aviation-communication";
 import { Injected } from "@airport/direction-indicator";
 import { IActor } from "@airport/ground-control";
 import { AirRequest } from "./AirRequest";
@@ -8,7 +8,7 @@ export class RequestManager {
 
     request: AirRequest
 
-    userAccount: InternalUserAccount
+    userAccount: IUserAccount
 
     actor: IActor
 

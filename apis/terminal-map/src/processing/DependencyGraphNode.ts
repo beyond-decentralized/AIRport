@@ -1,5 +1,4 @@
-import { DbEntity } from '@airport/ground-control'
-import { IAirEntity } from '@airport/final-approach'
+import { DbEntity, IAirEntity } from '@airport/ground-control'
 
 export interface IDependencyGraphNode<E extends IAirEntity> {
 	circleTraversedFor: { [entityOUId: number]: boolean }

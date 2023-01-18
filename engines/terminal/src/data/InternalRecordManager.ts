@@ -2,19 +2,20 @@ import {
     IContext
 } from "@airport/direction-indicator";
 import {
+    DbApplication,
+    DbDomain,
+    IActor,
     IEntityStateManager,
+    ITerminal,
     JsonApplication
 } from "@airport/ground-control";
 import {
     Actor,
-    IActor,
     IActorDao,
 } from "@airport/holding-pattern/dist/app/bundle";
 import { JsonApplicationWithLastIds } from "@airport/apron";
 import { ITransactionManager, TerminalStore } from "@airport/terminal-map";
 import {
-    IDomain,
-    IApplication,
     IDomainDao,
     IApplicationDao
 } from "@airport/airspace/dist/app/bundle";
@@ -28,6 +29,7 @@ import {
     Injected
 } from '@airport/direction-indicator'
 import { TerminalSessionManager } from "../core/TerminalSessionManager";
+import { IUserAccount } from "@airport/aviation-communication";
 
 export interface IInternalRecordManager {
 
@@ -95,7 +97,7 @@ export class InternalRecordManager
             let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
                 application.domain, application.name, userSession.userAccount.GUID, frameworkActor.terminal.GUID)
 
-            let anApplication: IApplication = await this.applicationDao.findByIndex(
+            let anApplication: DbApplication = await this.applicationDao.findByIndex(
                 application.lastIds.applications + 1);
             if (!actor) {
                 actor = {
@@ -131,12 +133,12 @@ export class InternalRecordManager
         await this.transactionManager.transactInternal(async (
             _transaction
         ) => {
-            const userAccount = new UserAccount();
+            const userAccount: IUserAccount = new UserAccount();
             userAccount.GUID = 'AIRport-internal-' + guidv4();
             userAccount.username = "internalUserAccount";
             userAccount.publicMetaSigningKey = "not needed";
 
-            const terminal = new Terminal();
+            const terminal: ITerminal = new Terminal();
             terminal.owner = userAccount;
             terminal.isLocal = true;
             terminal.GUID = guidv4();
@@ -144,7 +146,7 @@ export class InternalRecordManager
             const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(
                 firstApp.domain, firstApp.name)
 
-            const actor = new Actor();
+            const actor: IActor = new Actor();
             actor.application = application;
             actor.userAccount = userAccount;
             actor.terminal = terminal;
@@ -164,7 +166,7 @@ export class InternalRecordManager
     private async updateDomain(
         application: JsonApplicationWithLastIds,
         context: IContext
-    ): Promise<IDomain> {
+    ): Promise<DbDomain> {
         let domain = this.terminalStore.getDomainMapByName().get(application.domain)
 
         if (domain && this.entityStateManager.getOriginalValues(domain)) {

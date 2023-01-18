@@ -40,6 +40,7 @@ export class UserAccountManager {
         context: IContext
     ): Promise<IAddUserAccountResponse> {
         const userAccount: UserAccount = {
+            _localId: null,
             email,
             GUID: guidv4(),
             publicMetaSigningKey,

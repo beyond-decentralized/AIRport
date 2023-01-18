@@ -1,10 +1,9 @@
-import { UserAccount_GUID, UserAccount_Username } from '@airport/aviation-communication'
+import { IUserAccount, UserAccount_GUID, UserAccount_Username } from '@airport/aviation-communication'
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import { Dictionary, ISequenceGenerator } from '@airport/ground-control'
 import {
 	BaseUserAccountDao,
 	IBaseUserAccountDao,
-	IUserAccount,
 	QUserAccount,
 } from '../generated/generated'
 import Q from '../generated/qApplication'

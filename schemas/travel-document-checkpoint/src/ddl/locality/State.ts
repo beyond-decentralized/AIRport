@@ -1,3 +1,4 @@
+import { State_Abbreviation, State_Id, State_Name } from "@airport/ground-control";
 import {
     Column,
     DbNumber,
@@ -12,10 +13,7 @@ import {
 } from "@airport/tarmaq-entity";
 import { UserAccount } from "../UserAccount";
 import { Country } from "./Country";
-
-export type State_Abbreviation = string;
-export type State_Id = number;
-export type State_Name = string;
+import { MetroAreaState } from "./MetroAreaState";
 
 @Entity()
 @Table({ name: "STATES" })
@@ -28,22 +26,22 @@ export class State {
     id: State_Id;
 
     @DbString()
-    abbreviation: State_Abbreviation
+    abbreviation?: State_Abbreviation
 
     @DbString()
-    name: State_Name
+    name?: State_Name
 
     @ManyToOne()
     @JoinColumn({
         name: 'COUNTRY_ID',
         referencedColumnName: 'COUNTRY_ID'
     })
-    country: Country
+    country?: Country
 
     @OneToMany({ mappedBy: 'state' })
-    metroAreaStates: State[]
+    metroAreaStates?: MetroAreaState[]
 
     @OneToMany({ mappedBy: 'state' })
-    userAccounts: UserAccount[]
+    userAccounts?: UserAccount[]
 
 }

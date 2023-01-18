@@ -4,15 +4,13 @@ import {
 	Actor_LocalId,
 	ChangeType,
 	DbEntity,
-	IRootTransaction,
-	SystemWideOperationId
-} from '@airport/ground-control'
-import {
 	IActor,
 	IOperationHistory,
 	IRecordHistory,
-	IRepositoryTransactionHistory
-} from '../../generated/generated'
+	IRepositoryTransactionHistory,
+	IRootTransaction,
+	SystemWideOperationId
+} from '@airport/ground-control'
 import { IRecordHistoryDuo } from './RecordHistoryDuo'
 
 export interface IOperationHistoryDuo {

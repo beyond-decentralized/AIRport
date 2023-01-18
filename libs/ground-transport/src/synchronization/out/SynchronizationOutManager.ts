@@ -8,12 +8,10 @@ import {
 } from '@airport/direction-indicator'
 import { RepositorySynchronizationData, RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
-	IDatastructureUtils, Repository_GUID, Repository_LocalId, Repository_Source
+	IDatastructureUtils, IRepository, IRepositoryTransactionHistory, Repository_GUID, Repository_LocalId, Repository_Source
 } from '@airport/ground-control'
 import {
-	IRepository,
 	IRepositoryDao,
-	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDao
 } from '@airport/holding-pattern/dist/app/bundle'
 import { ISynchronizationAdapterLoader } from '../../adapters/SynchronizationAdapterLoader'

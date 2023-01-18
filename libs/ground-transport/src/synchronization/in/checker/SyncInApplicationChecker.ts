@@ -1,8 +1,6 @@
 import { RepositorySynchronizationData } from "@airport/arrivals-n-departures";
-import { Application_Name, ApplicationStatus } from '@airport/ground-control';
+import { Application_Name, ApplicationStatus, DbDomain, DbApplication } from '@airport/ground-control';
 import {
-    IDomain,
-    IApplication,
     IDomainDao,
     IApplicationDao
 } from "@airport/airspace/dist/app/bundle";
@@ -13,7 +11,7 @@ import {
 } from '@airport/direction-indicator'
 
 export interface IDomainCheckRecord {
-    domain?: IDomain
+    domain?: DbDomain
     domainName: string
     found?: boolean
 }
@@ -21,7 +19,7 @@ export interface IDomainCheckRecord {
 export interface IApplicationCheckRecord {
     found?: boolean
     applicationName: Application_Name
-    application?: IApplication;
+    application?: DbApplication;
 }
 
 export interface ISyncInApplicationChecker {
@@ -89,12 +87,12 @@ export class SyncInApplicationChecker
             }
         }
 
-        let domainsToCreate: IDomain[] = []
+        let domainsToCreate: DbDomain[] = []
         for (let [name, domainCheck] of domainCheckMap) {
             if (domainCheck.found) {
                 continue
             }
-            let domain: IDomain = {
+            let domain: DbDomain = {
                 _localId: null,
                 name
             }
@@ -105,14 +103,14 @@ export class SyncInApplicationChecker
             await this.domainDao.insert(domainsToCreate)
         }
 
-        let applicationsToCreate: IApplication[] = []
+        let applicationsToCreate: DbApplication[] = []
         for (let [domainName, applicationChecksByName] of applicationCheckMap) {
             for (let [name, applicationCheck] of applicationChecksByName) {
                 if (applicationCheck.found) {
                     continue
                 }
                 let domain = domainCheckMap.get(domainName).domain
-                let application: IApplication = {
+                let application: DbApplication = {
                     domain,
                     index: null,
                     name,

@@ -28,7 +28,7 @@ export class QTransientBuilder {
 		// if(prop.isMap && type.indexOf(']: ') > -1) {
 		// 		type = type.replace(/\]\: (?!.*\]\: )/, "]: I");
 		// } else {
-		// 	type = prop.primitive ? `${type}` : `I${type}`
+		// 	type = `${type}`
 		// }
 		//
 		// return `${prop.name}?: ${type};`;

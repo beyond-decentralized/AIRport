@@ -55,7 +55,7 @@ export class QRelationBuilder
 			let interfaceName = 'IQOneToManyRelation';
 			if (entityExtendsOrIsAirEntity(this.parentBuilder.entity)[0]) {
 				interfaceName = 'IQAirEntityOneToManyRelation'
-				type = `${interfaceName}<I${entityType}, Q${entityType}>`
+				type = `${interfaceName}<${entityType}, Q${entityType}>`
 			} else {
 				type = `${interfaceName}<Q${entityType}>`
 			}

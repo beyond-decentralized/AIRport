@@ -1,9 +1,8 @@
 import { IContext, Injected } from '@airport/direction-indicator'
-import { ApplicationVersion_LocalId } from '@airport/ground-control'
+import { ApplicationVersion_LocalId, DbApplicationReference } from '@airport/ground-control'
 import {
 	BaseApplicationReferenceDao,
 	IBaseApplicationReferenceDao,
-	IApplicationReference,
 	QApplicationReference,
 } from '../generated/generated'
 import Q from '../generated/qApplication'
@@ -13,10 +12,10 @@ export interface IApplicationReferenceDao
 
 	findAllForApplicationVersions(
 		applicationVersionIds: ApplicationVersion_LocalId[]
-	): Promise<IApplicationReference[]>
+	): Promise<DbApplicationReference[]>
 
 	insert(
-		applicationReferences: IApplicationReference[],
+		applicationReferences: DbApplicationReference[],
 		context: IContext
 	): Promise<void>
 
@@ -29,7 +28,7 @@ export class ApplicationReferenceDao
 
 	async findAllForApplicationVersions(
 		applicationVersionIds: ApplicationVersion_LocalId[]
-	): Promise<IApplicationReference[]> {
+	): Promise<DbApplicationReference[]> {
 		let sr: QApplicationReference
 
 		return await this.db.find.tree({
@@ -42,7 +41,7 @@ export class ApplicationReferenceDao
 	}
 
 	async insert(
-		applicationReferences: IApplicationReference[],
+		applicationReferences: DbApplicationReference[],
 		context: IContext
 	): Promise<void> {
 		let sr: QApplicationReference;

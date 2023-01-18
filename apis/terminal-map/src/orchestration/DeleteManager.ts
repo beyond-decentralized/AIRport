@@ -3,15 +3,11 @@ import {
     PortableQuery,
     Application_Index,
     IRootTransaction,
-    Repository_LocalId
+    Repository_LocalId,
+    IActor,
+    IAirEntity
 } from "@airport/ground-control";
 import { IContext } from "@airport/direction-indicator";
-import type {
-    IActor
-} from "@airport/holding-pattern";
-import type {
-    AirEntity
-} from "@airport/final-approach";
 import { ITransaction } from "../transaction/ITransaction";
 
 export interface IDeleteManager {
@@ -27,4 +23,4 @@ export interface IDeleteManager {
 }
 
 export type RecordsToDelete =
-    Map<Application_Index, Map<ApplicationEntity_LocalId, Map<Repository_LocalId, AirEntity[]>>>
+    Map<Application_Index, Map<ApplicationEntity_LocalId, Map<Repository_LocalId, IAirEntity[]>>>

@@ -22,7 +22,7 @@ export class UserAccount {
 	@GeneratedValue()
 	@DbNumber()
 	@Column({ name: 'USER_ACCOUNT_LID', nullable: false })
-	_localId?: UserAccount_LocalId
+	_localId: UserAccount_LocalId
 
 	@Column({ name: "USER_ACCOUNT_GUID", nullable: false })
 	@DbString()

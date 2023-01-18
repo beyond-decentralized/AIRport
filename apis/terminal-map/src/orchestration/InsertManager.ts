@@ -1,11 +1,9 @@
 import type {
+    IActor,
     IRootTransaction,
     PortableQuery,
     RecordHistory_LocalId
 } from "@airport/ground-control";
-import type {
-    IActor
-} from "@airport/holding-pattern/dist/app/bundle";
 import { IOperationContext } from "../processing/OperationContext";
 import { ITransaction } from "../transaction/ITransaction";
 

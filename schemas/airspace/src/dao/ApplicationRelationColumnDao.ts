@@ -1,10 +1,9 @@
 import { OR } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
-import { ApplicationColumn_LocalId } from '@airport/ground-control'
+import { ApplicationColumn_LocalId, DbRelationColumn } from '@airport/ground-control'
 import {
 	BaseApplicationRelationColumnDao,
 	IBaseApplicationRelationColumnDao,
-	IApplicationRelationColumn,
 	QApplicationRelationColumn,
 } from '../generated/generated'
 import Q from '../generated/qApplication'
@@ -14,10 +13,10 @@ export interface IApplicationRelationColumnDao
 
 	findAllForColumns(
 		columnIds: ApplicationColumn_LocalId[]
-	): Promise<IApplicationRelationColumn[]>
+	): Promise<DbRelationColumn[]>
 
 	insert(
-		applicationRelationColumns: IApplicationRelationColumn[],
+		applicationRelationColumns: DbRelationColumn[],
 		context: IContext
 	): Promise<void>
 
@@ -30,7 +29,7 @@ export class ApplicationRelationColumnDao
 
 	async findAllForColumns(
 		columnIds: ApplicationColumn_LocalId[]
-	): Promise<IApplicationRelationColumn[]> {
+	): Promise<DbRelationColumn[]> {
 		let rc: QApplicationRelationColumn
 
 		return this.db.find.tree({
@@ -46,7 +45,7 @@ export class ApplicationRelationColumnDao
 	}
 
 	async insert(
-		applicationRelationColumns: IApplicationRelationColumn[],
+		applicationRelationColumns: DbRelationColumn[],
 		context: IContext
 	): Promise<void> {
 		let src: QApplicationRelationColumn;

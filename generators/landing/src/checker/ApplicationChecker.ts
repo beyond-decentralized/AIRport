@@ -6,9 +6,9 @@ import {
 	Application_FullName,
 	IDbApplicationUtils,
 	IDatastructureUtils,
+	DbApplication,
 } from '@airport/ground-control'
 import {
-	IApplication,
 	IApplicationDao
 } from '@airport/airspace/dist/app/bundle'
 import {
@@ -25,7 +25,7 @@ export interface CoreDomainAndApplication_Names {
 
 export interface ExistingApplicationInfo {
 	coreDomainAndApplication_NamesByApplication_Name: Map<Application_Name, CoreDomainAndApplication_Names>
-	existingApplicationMapByName: Map<Application_Name, IApplication>
+	existingApplicationMapByName: Map<Application_Name, DbApplication>
 }
 
 export interface ApplicationReferenceCheckResults {
@@ -213,7 +213,7 @@ export class ApplicationChecker
 			}
 		}
 
-		let existingApplicationMapByName: Map<Application_FullName, IApplication>
+		let existingApplicationMapByName: Map<Application_FullName, DbApplication>
 		if (!fullApplication_Names.length) {
 			existingApplicationMapByName = new Map()
 		} else {

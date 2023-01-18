@@ -8,9 +8,10 @@ import {
 	Actor_LocalId,
 	Application_Name,
 	Domain_Name,
+	IActor,
 	IDatastructureUtils,
 	JSONBaseOperation,
-	Terminal_GUID
+	Terminal_GUID,
 } from '@airport/ground-control'
 import {
 	QApplication,
@@ -21,11 +22,7 @@ import {
 	QUserAccount,
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
-	Actor
-} from '../../ddl/infrastructure/Actor'
-import {
 	BaseActorDao,
-	IActor,
 	IBaseActorDao,
 	QActor
 } from '../../generated/generated'
@@ -83,7 +80,7 @@ export class ActorDao
 		applicationName: Application_Name,
 		userAccountGUID: UserAccount_GUID,
 		terminalGUID: Terminal_GUID
-	): Promise<Actor> {
+	): Promise<IActor> {
 		let act: QActor
 		let application: QApplication
 		let domain: QDomain

@@ -3,8 +3,6 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IApplication,
-	IApplicationVersion,
 	IDomainDao,
 	IApplicationColumnDao,
 	IApplicationDao,
@@ -19,6 +17,8 @@ import {
 import {
 	Domain_LocalId,
 	Application_Index,
+	DbApplication,
+	DbApplicationVersion,
 } from '@airport/ground-control'
 import type { LastIds } from '@airport/apron'
 import { DdlObjects, ITerminalStore } from '@airport/terminal-map'
@@ -77,8 +77,8 @@ export class DdlObjectRetriever
 				domainIdSet.add(application.domain._localId)
 			})
 		applications.sort((
-			application1: IApplication,
-			application2: IApplication
+			application1: DbApplication,
+			application2: DbApplication
 		) => {
 			return application1.index - application2.index
 		})
@@ -89,9 +89,9 @@ export class DdlObjectRetriever
 			.findAllActiveOrderByApplication_IndexAndId()
 
 		let lastApplication_Index: Application_Index
-		// const allApplicationVersionsByIds: IApplicationVersion[] = []
-		const latestApplicationVersions: IApplicationVersion[] = []
-		const applicationVersions: IApplicationVersion[] = []
+		// const allApplicationVersionsByIds: DbApplicationVersion[] = []
+		const latestApplicationVersions: DbApplicationVersion[] = []
+		const applicationVersions: DbApplicationVersion[] = []
 		for (const applicationVersion of allApplicationVersions) {
 			if (applicationVersion.application.index !== lastApplication_Index) {
 				latestApplicationVersions.push(applicationVersion)

@@ -1,8 +1,4 @@
-import { IRootTransaction, PortableQuery } from "@airport/ground-control";
-import {
-    IActor,
-    IRecordHistory
-} from "@airport/holding-pattern/dist/app/bundle";
+import { IActor, IRecordHistory, IRootTransaction, PortableQuery } from "@airport/ground-control";
 import { IOperationContext } from "../processing/OperationContext";
 import { ITransaction } from "../transaction/ITransaction";
 

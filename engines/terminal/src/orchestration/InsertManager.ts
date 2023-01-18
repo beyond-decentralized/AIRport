@@ -16,13 +16,13 @@ import {
 	PortableQuery,
 	ISequenceGenerator,
 	SystemWideOperationId,
-} from '@airport/ground-control'
-import {
 	IActor,
 	IOperationHistory,
+	IRepositoryTransactionHistory,
+} from '@airport/ground-control'
+import {
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
-	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
 import {

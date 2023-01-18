@@ -27,10 +27,8 @@ import {
 	QueryResultType,
 	IDatastructureUtils,
 	SystemWideOperationId,
+	IActor,
 } from '@airport/ground-control'
-import {
-	IActor
-} from '@airport/holding-pattern/dist/app/bundle'
 import {
 	IHistoryManager,
 	IOperationContext,

@@ -1,14 +1,12 @@
-import { ISequence } from '@airport/airport-code'
 import { IContext } from '@airport/direction-indicator';
-import { JsonApplication } from '@airport/ground-control'
+import { DbApplication, DbSequence, JsonApplication } from '@airport/ground-control'
 import { JsonApplicationWithLastIds } from '@airport/apron';
-import { IApplication } from '@airport/airspace/dist/app/bundle';
 
 export interface ISchemaBuilder {
 
 	build(
 		jsonApplication: JsonApplication,
-		existingApplicationMap: Map<string, IApplication>,
+		existingApplicationMap: Map<string, DbApplication>,
 		newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>,
 		isFeatureApp: boolean,
 		context: IContext,
@@ -17,11 +15,11 @@ export interface ISchemaBuilder {
 	buildAllSequences(
 		jsonApplications: JsonApplication[],
 		context: IContext,
-	): Promise<ISequence[]>
+	): Promise<DbSequence[]>
 
 	stageSequences(
 		jsonApplications: JsonApplication[],
 		context: IContext,
-	): ISequence[]
+	): DbSequence[]
 
 }

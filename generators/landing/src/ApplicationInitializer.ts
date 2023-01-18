@@ -25,7 +25,6 @@ import {
 	ITransactionManager
 } from '@airport/terminal-map';
 import {
-	IApplication,
 	IApplicationDao
 } from '@airport/airspace/dist/app/bundle';
 import { ISchemaBuilder } from './builder/ISchemaBuilder';
@@ -120,7 +119,7 @@ export abstract class ApplicationInitializer
 		const applicationsWithValidDependencies = await this.
 			getApplicationsWithValidDependencies(jsonApplications, checkDependencies)
 
-		const existingApplicationMap: Map<Application_FullName, IApplication> = new Map()
+		const existingApplicationMap: Map<Application_FullName, DbApplication> = new Map()
 		if (loadExistingApplications) {
 			const applications = await this.applicationDao.findAllWithJson()
 			for (const application of applications) {
@@ -133,7 +132,7 @@ export abstract class ApplicationInitializer
 			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
 				getApplication_FullName(jsonApplication))
 			if (existingApplication) {
-				jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds
+				jsonApplication.lastIds = (existingApplication.versions[0].jsonApplication as JsonApplicationWithLastIds).lastIds
 			} else {
 				newJsonApplicationMap.set(this.dbApplicationUtils.
 					getApplication_FullName(jsonApplication), jsonApplication);

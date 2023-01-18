@@ -122,14 +122,7 @@ ${interfaceSource}
     this.addRelationImports(this.vEntityBuilder.nonIdRelationBuilders);
     // const entityImportRelativePath = resolveRelativePath(this.fullGenerationPath,
     //   this.entityPath).replace('.ts', '');
-    // this.addImport([this.entity.docEntry.name], entityImportRelativePath, false);
-
-    const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entity.path, 'I', 'entity');
-    let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, interfaceFilePath)
-    entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '')
-    this.addImport([
-      'I' + this.entity.docEntry.name],
-      entityInterfaceRelativePath)
+    // this.addImport([this.entity.docEntry.name], entityImportRelativePath, false); 
   }
 
 }

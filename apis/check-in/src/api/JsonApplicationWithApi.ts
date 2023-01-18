@@ -11,6 +11,6 @@ export interface JsonApplicationWithApi
 export interface JsonApplicationVersionWithApi
     extends JsonApplicationVersion {
 
-    api: IApplicationApi
+    api?: IApplicationApi
 
 }

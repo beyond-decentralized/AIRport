@@ -2,13 +2,13 @@ import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import {
 	ApplicationProperty_LocalId,
 	ApplicationRelation_LocalId,
+	DbRelation,
 	IDatastructureUtils
 } from '@airport/ground-control'
 import { Y } from '@airport/tarmaq-query'
 import {
 	BaseApplicationRelationDao,
 	IBaseApplicationRelationDao,
-	IApplicationRelation,
 	QApplicationRelation,
 	QApplicationEntity,
 	QApplicationVersion,
@@ -21,14 +21,14 @@ export interface IApplicationRelationDao
 
 	findAllForProperties(
 		propertyIds: ApplicationProperty_LocalId[]
-	): Promise<IApplicationRelation[]>
+	): Promise<DbRelation[]>
 
 	findAllByLocalIdsWithApplications(
 		localIds: ApplicationRelation_LocalId[]
-	): Promise<IApplicationRelation[]>
+	): Promise<DbRelation[]>
 
 	insert(
-		applicationRelations: IApplicationRelation[],
+		applicationRelations: DbRelation[],
 		context: IContext
 	): Promise<void>
 
@@ -44,7 +44,7 @@ export class ApplicationRelationDao
 
 	async findAllForProperties(
 		propertyIds: ApplicationProperty_LocalId[]
-	): Promise<IApplicationRelation[]> {
+	): Promise<DbRelation[]> {
 		let r: QApplicationRelation
 
 		return this.db.find.tree({
@@ -58,7 +58,7 @@ export class ApplicationRelationDao
 
 	async findAllByLocalIdsWithApplications(
 		localIds: ApplicationRelation_LocalId[]
-	): Promise<IApplicationRelation[]> {
+	): Promise<DbRelation[]> {
 		let r: QApplicationRelation,
 			e: QApplicationEntity,
 			av: QApplicationVersion,
@@ -91,7 +91,7 @@ export class ApplicationRelationDao
 	}
 
 	async insert(
-		applicationRelations: IApplicationRelation[],
+		applicationRelations: DbRelation[],
 		context: IContext
 	): Promise<void> {
 		let sr: QApplicationRelation;

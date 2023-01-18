@@ -9,11 +9,11 @@ import {
 	DbProperty,
 	Dictionary,
 	EntityRelationType,
+	IAirEntity,
 	IEntityStateManager,
 	IRepository,
 	SQLDataType
 } from '@airport/ground-control'
-import { AirEntity, IAirEntity } from '@airport/final-approach'
 import { IApplicationUtils } from '@airport/tarmaq-query'
 import {
 	IMissingRepositoryRecord,
@@ -250,7 +250,7 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 			return
 		}
 
-		const airEntity = record as unknown as AirEntity
+		const airEntity = record as unknown as IAirEntity
 		if (!parentRelationRecord) {
 			if (repositoryAssignmentFromParentNeeded) {
 				throw new Error(`

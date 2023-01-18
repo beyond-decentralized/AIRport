@@ -14,7 +14,8 @@ export class DaoBuilder
 	protected addImports() {
 		super.addImports();
 		this.addImport([
-			'DaoQueryDecorators'
+			'DaoQueryDecorators',
+			'IDao'
 		], '@airport/tarmaq-dao');
 	}
 

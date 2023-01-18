@@ -1,9 +1,9 @@
-import { IApplication } from "@airport/airspace";
+import { DbApplication } from "@airport/ground-control";
 
 export interface IQueryEntityClassCreator {
 
     createAll(
-        applications: IApplication[]
+        applications: DbApplication[]
     ): void
 
 }

@@ -11,6 +11,9 @@
 Combines:
 - @airport/airport-code
 - @airport/airspace
+- @airport/travel-document-checkpoint
 - @airport/holding-pattern
 - @airport/layover
-- @airport/travel-document-checkpoint/dist/app/bundle"
+- @airport/session-state
+- @airport/flight-recorder
+- @airbridge/keyring

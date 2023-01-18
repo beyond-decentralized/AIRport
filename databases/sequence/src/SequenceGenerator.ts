@@ -1,10 +1,10 @@
 import {
-	ISequence,
 	ISequenceDao
 } from '@airport/airport-code';
 import {
 	DbColumn,
 	DbEntity,
+	DbSequence,
 	ISequenceGenerator,
 } from '@airport/ground-control';
 import {
@@ -50,7 +50,7 @@ export class SequenceGenerator
 	@Inject()
 	terminalStore: ITerminalStore
 
-	protected get sequences(): ISequence[][][] {
+	protected get sequences(): DbSequence[][][] {
 		return this.terminalStore.getSequenceGenerator().sequences
 	}
 	protected get sequenceBlocks(): number[][][] {
@@ -97,7 +97,7 @@ export class SequenceGenerator
 
 	async initialize(
 		context: IContext,
-		sequences?: ISequence[]
+		sequences?: DbSequence[]
 	): Promise<void> {
 		if (!sequences) {
 			sequences = await this.sequenceDao.findAll();
@@ -111,7 +111,7 @@ export class SequenceGenerator
 
 	async tempInitialize(
 		context: IContext,
-		sequences?: ISequence[]
+		sequences?: DbSequence[]
 	): Promise<void> {
 		this.addSequences(sequences);
 
@@ -237,7 +237,7 @@ export class SequenceGenerator
 	}
 
 	private addSequences(
-		sequences: ISequence[]
+		sequences: DbSequence[]
 	): void {
 		for (const sequence of sequences) {
 			this.datastructureUtils.ensureChildArray(

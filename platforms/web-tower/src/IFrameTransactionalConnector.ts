@@ -1,4 +1,3 @@
-import { IApplicationVersion } from '@airport/airspace/dist/app/bundle'
 import {
 	IAddRepositoryIMI,
 	IGetLatestApplicationVersionByApplication_NameIMI,
@@ -27,6 +26,7 @@ import {
 } from '@airport/direction-indicator'
 
 import {
+	DbApplicationVersion,
 	DbDomain,
 	Domain_Name,
 	IAirEntity,
@@ -53,7 +53,7 @@ export interface IIframeTransactionalConnector
 
 	getLatestApplicationVersionMapByApplication_FullName(
 		applicationName: string
-	): Promise<IApplicationVersion>
+	): Promise<DbApplicationVersion>
 
 	initializeConnection(): Promise<void>
 
@@ -344,8 +344,8 @@ export class IframeTransactionalConnector
 
 	async getLatestApplicationVersionMapByApplication_FullName(
 		fullApplication_Name: string
-	): Promise<IApplicationVersion> {
-		return await this.sendMessageNoWait<IGetLatestApplicationVersionByApplication_NameIMI, IApplicationVersion>({
+	): Promise<DbApplicationVersion> {
+		return await this.sendMessageNoWait<IGetLatestApplicationVersionByApplication_NameIMI, DbApplicationVersion>({
 			...this.getCoreFields(),
 			fullApplication_Name: fullApplication_Name,
 			type: IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME

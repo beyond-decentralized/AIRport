@@ -1,12 +1,12 @@
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
+	DbDomain,
 	Domain_LocalId,
 	Domain_Name
 } from '@airport/ground-control'
 import {
 	BaseDomainDao,
 	IBaseDomainDao,
-	IDomain,
 	QDomain
 } from '../generated/generated'
 import Q from '../generated/qApplication'
@@ -16,31 +16,31 @@ export interface IDomainDao
 
 	findByIdIn(
 		domainIds: Domain_LocalId[]
-	): Promise<IDomain[]>
+	): Promise<DbDomain[]>
 
 	findMapByNameWithNames(
 		domainNames: Domain_Name[]
-	): Promise<Map<Domain_Name, IDomain>>
+	): Promise<Map<Domain_Name, DbDomain>>
 
 	findOneByName(
 		domainName: Domain_Name
-	): Promise<IDomain>
+	): Promise<DbDomain>
 
 	findByNames(
 		domainNames: Domain_Name[]
-	): Promise<IDomain[]>
+	): Promise<DbDomain[]>
 
 	findByName(
 		domainName: Domain_Name
-	): Promise<IDomain>
+	): Promise<DbDomain>
 
 	checkAndInsertIfNeeded(
-		domains: IDomain[],
+		domains: DbDomain[],
 		context: IContext
 	): Promise<void>
 
 	insert(
-		domains: IDomain[]
+		domains: DbDomain[]
 	): Promise<void>
 
 }
@@ -52,7 +52,7 @@ export class DomainDao
 
 	async findByIdIn(
 		domainIds: Domain_LocalId[]
-	): Promise<IDomain[]> {
+	): Promise<DbDomain[]> {
 		let d: QDomain
 
 		return await this.db.find.tree({
@@ -66,7 +66,7 @@ export class DomainDao
 
 	async findMapByNameWithNames(
 		domainNames: Domain_Name[]
-	): Promise<Map<Domain_Name, IDomain>> {
+	): Promise<Map<Domain_Name, DbDomain>> {
 		let d: QDomain
 		const domains = await this.db.find.tree({
 			SELECT: {},
@@ -74,7 +74,7 @@ export class DomainDao
 			WHERE: d.name.IN(domainNames)
 		})
 
-		const domainMapByNameWithNames: Map<Domain_Name, IDomain> = new Map()
+		const domainMapByNameWithNames: Map<Domain_Name, DbDomain> = new Map()
 
 		for (const domain of domains) {
 			domainMapByNameWithNames.set(domain.name, domain)
@@ -85,7 +85,7 @@ export class DomainDao
 
 	async findOneByName(
 		name: Domain_Name
-	): Promise<IDomain> {
+	): Promise<DbDomain> {
 		let d: QDomain
 		return await this.db.findOne.tree({
 			SELECT: {},
@@ -96,7 +96,7 @@ export class DomainDao
 
 	async findByNames(
 		names: Domain_Name[]
-	): Promise<IDomain[]> {
+	): Promise<DbDomain[]> {
 		let d: QDomain
 		return await this.db.find.tree({
 			SELECT: {},
@@ -107,7 +107,7 @@ export class DomainDao
 
 	async findByName(
 		name: Domain_Name
-	): Promise<IDomain> {
+	): Promise<DbDomain> {
 		let d: QDomain
 		return await this.db.findOne.tree({
 			SELECT: {},
@@ -117,15 +117,15 @@ export class DomainDao
 	}
 
 	async checkAndInsertIfNeeded(
-		domains: IDomain[],
+		domains: DbDomain[],
 		context: IContext
 	): Promise<void> {
 		const existingDomains = await this.findByIdIn(domains.map(domain => domain._localId))
-		const existingDomainMap: Map<Domain_LocalId, IDomain> = new Map()
+		const existingDomainMap: Map<Domain_LocalId, DbDomain> = new Map()
 		for (const existingDomain of existingDomains) {
 			existingDomainMap.set(existingDomain._localId, existingDomain)
 		}
-		const newDomains: IDomain[] = []
+		const newDomains: DbDomain[] = []
 		for (const domain of domains) {
 			if (!existingDomainMap.has(domain._localId)) {
 				newDomains.push(domain)
@@ -152,7 +152,7 @@ export class DomainDao
 	}
 
 	async insert(
-		domains: IDomain[]
+		domains: DbDomain[]
 	): Promise<void> {
 		let d: QDomain;
 		const VALUES = []

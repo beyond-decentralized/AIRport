@@ -11,17 +11,13 @@ import {
 	Actor_LocalId,
 	Repository_LocalId,
 	ActorRecordId,
-	RecordHistory_LocalId
-} from '@airport/ground-control'
-import {
+	RecordHistory_LocalId,
+	IRepositoryTransactionHistory,
 	IOperationHistory,
 	IRecordHistory,
 	IRecordHistoryNewValue,
-	IRepositoryTransactionHistory
-} from '@airport/holding-pattern/dist/app/bundle'
-import {
 	ISynchronizationConflict
-} from '@airport/layover'
+} from '@airport/ground-control'
 
 export type RemoteApplication_Index = Application_Index;
 export type RemoteApplicationVersion_LocalId = ApplicationVersion_LocalId;

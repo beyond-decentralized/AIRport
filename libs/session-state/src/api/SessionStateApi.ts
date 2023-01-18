@@ -15,6 +15,7 @@ export class SessionStateApi {
         const userAccount = userSession.userAccount
 
         return {
+            _localId: null,
             email: userAccount.email,
             username: userAccount.username,
             GUID: userAccount.GUID

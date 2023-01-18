@@ -8,13 +8,15 @@ import {
 	IDatastructureUtils,
 	Domain_Name,
 	Application_Name,
+	DbApplicationVersion,
 	DbColumn,
 	RepositoryTransactionType,
+	IOperationHistory,
+	DbEntity,
+	IRecordHistory,
+	IRecordHistoryNewValue,
+	IRecordHistoryOldValue,
 } from '@airport/ground-control'
-import {
-	IApplicationEntity,
-	IApplicationColumn
-} from '@airport/airspace/dist/app/bundle'
 import {
 	IAirportDatabase,
 	ISystemWideOperationIdUtils
@@ -24,17 +26,8 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import {
-	IOperationHistory,
-	IRecordHistory
-} from '@airport/holding-pattern/dist/app/bundle'
 import { ITerminalStore } from '@airport/terminal-map'
 import { IApplicationUtils } from '@airport/tarmaq-query'
-import { IApplicationVersion } from '@airport/airspace'
-import {
-	IRecordHistoryNewValue,
-	IRecordHistoryOldValue
-} from '@airport/holding-pattern'
 
 export interface IDataCheckResult {
 	// Delay processing of ledger tables because it might require
@@ -46,11 +39,11 @@ export interface IDataCheckResult {
 
 export interface IEntityColumnMapsByIndex {
 
-	actorIds: Map<ApplicationColumn_Index, IApplicationColumn>
-	referencedRelationIds: Map<ApplicationColumn_Index, IApplicationColumn>
-	repositoryIds: Map<ApplicationColumn_Index, IApplicationColumn>
-	terminalIds: Map<ApplicationColumn_Index, IApplicationColumn>
-	userAccountIds: Map<ApplicationColumn_Index, IApplicationColumn>
+	actorIds: Map<ApplicationColumn_Index, DbColumn>
+	referencedRelationIds: Map<ApplicationColumn_Index, DbColumn>
+	repositoryIds: Map<ApplicationColumn_Index, DbColumn>
+	terminalIds: Map<ApplicationColumn_Index, DbColumn>
+	userAccountIds: Map<ApplicationColumn_Index, DbColumn>
 
 }
 
@@ -62,8 +55,8 @@ export interface ISyncInDataChecker {
 	): Promise<IDataCheckResult>
 
 	populateApplicationEntityMap(
-		messageApplicationVersions: IApplicationVersion[]
-	): Promise<Map<Domain_Name, Map<Application_Name, Map<ApplicationEntity_TableIndex, IApplicationEntity>>>>
+		messageApplicationVersions: DbApplicationVersion[]
+	): Promise<Map<Domain_Name, Map<Application_Name, Map<ApplicationEntity_TableIndex, DbEntity>>>>
 
 }
 
@@ -157,10 +150,10 @@ export class SyncInDataChecker
 	}
 
 	async populateApplicationEntityMap(
-		messageApplicationVersions: IApplicationVersion[]
-	): Promise<Map<Domain_Name, Map<Application_Name, Map<ApplicationEntity_TableIndex, IApplicationEntity>>>> {
+		messageApplicationVersions: DbApplicationVersion[]
+	): Promise<Map<Domain_Name, Map<Application_Name, Map<ApplicationEntity_TableIndex, DbEntity>>>> {
 		const applicationVersionsByIds = this.terminalStore.getAllApplicationVersionsByIds()
-		const applicationEntityMap: Map<Domain_Name, Map<Application_Name, Map<ApplicationEntity_TableIndex, IApplicationEntity>>> = new Map()
+		const applicationEntityMap: Map<Domain_Name, Map<Application_Name, Map<ApplicationEntity_TableIndex, DbEntity>>> = new Map()
 		for (const messageApplicationVersion of messageApplicationVersions) {
 			const applicationVersion = applicationVersionsByIds[messageApplicationVersion._localId]
 			for (const applicationEntity of applicationVersion.entities) {
@@ -178,7 +171,7 @@ export class SyncInDataChecker
 
 	private async checkOperationHistories(
 		message: RepositorySynchronizationData,
-		applicationEntityMap: Map<string, Map<string, Map<ApplicationEntity_TableIndex, IApplicationEntity>>>,
+		applicationEntityMap: Map<string, Map<string, Map<ApplicationEntity_TableIndex, DbEntity>>>,
 		context: IContext
 	): Promise<IDataCheckResult> {
 		const forImmediateProcessing: IOperationHistory[] = []
@@ -488,7 +481,7 @@ for ChangeType.UPDATE_ROWS`)
 
 	private checkRelatedObjectInNewValue(
 		newValue: IRecordHistoryNewValue,
-		entityIdColumnMapByIndex: Map<number, IApplicationColumn>,
+		entityIdColumnMapByIndex: Map<number, DbColumn>,
 		entityArrayByInMessageIndex: {
 			_localId?: number
 		}[],
@@ -505,7 +498,7 @@ for ChangeType.UPDATE_ROWS`)
 
 	private checkRelatedObjectInOldValue(
 		oldValue: IRecordHistoryOldValue,
-		entityIdColumnMapByIndex: Map<number, IApplicationColumn>,
+		entityIdColumnMapByIndex: Map<number, DbColumn>,
 		entityArrayByInMessageIndex: {
 			_localId?: number
 		}[],
@@ -523,7 +516,7 @@ for ChangeType.UPDATE_ROWS`)
 	private checkRelatedObject(
 		value: IRecordHistoryNewValue | IRecordHistoryOldValue,
 		valueColumnName: 'newValue' | 'oldValue',
-		entityIdColumnMapByIndex: Map<number, IApplicationColumn>,
+		entityIdColumnMapByIndex: Map<number, DbColumn>,
 		entityArrayByInMessageIndex: {
 			_localId?: number
 		}[],

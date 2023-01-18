@@ -13,9 +13,8 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { ApplicationEntity_LocalId, ApplicationRelation_Index, Application_Name, Domain_Name, IDatastructureUtils } from '@airport/ground-control';
+import { ApplicationEntity_LocalId, ApplicationRelation_Index, Application_Name, DbRelation, Domain_Name, IDatastructureUtils } from '@airport/ground-control';
 import { ITerminalStore } from '@airport/terminal-map';
-import { IApplicationRelation } from '@airport/airspace';
 
 export interface ISyncInChecker {
 
@@ -117,7 +116,7 @@ export class SyncInChecker
 		// TODO: check referencedApplicationRelations
 		data.referencedApplicationVersions
 		const applicationEntityMap = await this.syncInDataChecker.populateApplicationEntityMap(data.referencedApplicationVersions)
-		const applicationRelationMap: Map<ApplicationEntity_LocalId, Map<ApplicationRelation_Index, IApplicationRelation>> = new Map()
+		const applicationRelationMap: Map<ApplicationEntity_LocalId, Map<ApplicationRelation_Index, DbRelation>> = new Map()
 
 		for (let i = 0; i < data.referencedApplicationRelations.length; i++) {
 			const referencedRelation = data.referencedApplicationRelations[i]

@@ -10,6 +10,7 @@ import {
     IContext,
 } from '@airport/direction-indicator';
 import {
+    IActor,
     IAppTrackerUtils,
     IDbApplicationUtils
 } from '@airport/ground-control';
@@ -36,12 +37,10 @@ import {
     ITerminalStore,
     ITransactionalServer,
     ITransactionContext,
-    ITransactionCredentials,
-    IUserSession
+    ITransactionCredentials
 } from '@airport/terminal-map';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 import { IEntityContext } from '@airport/tarmaq-entity';
-import { Actor } from '@airport/holding-pattern/dist/app/bundle';
 import { ActorDao } from '@airport/holding-pattern/dist/app/bundle';
 import { v4 as guidv4 } from "uuid";
 import { ApplicationDao } from '@airport/airspace/dist/app/bundle';
@@ -340,7 +339,7 @@ export abstract class TransactionalReceiver {
                 isStarted: false
             }
         }
-        let actor: Actor = await this.getApiCallActor(message, context)
+        let actor: IActor = await this.getApiCallActor(message, context)
 
         const initiator = context.transaction.initiator
         initiator.application = message.application
@@ -375,7 +374,7 @@ export abstract class TransactionalReceiver {
 
     private async doNativeHandleCallback(
         message: ILocalAPIRequest<'FromClientRedirected'>,
-        actor: Actor,
+        actor: IActor,
         context: IApiCallContext & ITransactionContext,
         nativeHandleCallback: () => void
     ): Promise<void> {
@@ -399,8 +398,8 @@ export abstract class TransactionalReceiver {
     async getApiCallActor(
         message: ILocalAPIRequest<'FromClientRedirected'>,
         context: IApiCallContext & ITransactionContext,
-    ): Promise<Actor> {
-        let actor: Actor
+    ): Promise<IActor> {
+        let actor: IActor
         const userSession = await this.terminalSessionManager.getUserSession(context)
         try {
             const isInternalDomain = await this.appTrackerUtils

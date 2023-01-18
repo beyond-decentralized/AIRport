@@ -5,9 +5,9 @@ import {
 } from '@airport/direction-indicator'
 import { RepositorySynchronizationData } from '@airport/arrivals-n-departures'
 import {
-	IRepository,
 	IRepositoryDao
 } from '@airport/holding-pattern/dist/app/bundle'
+import { IRepository } from '@airport/ground-control';
 
 export interface ISyncInRepositoryChecker {
 

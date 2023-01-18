@@ -1,8 +1,8 @@
 import { IInjected } from '@airport/direction-indicator'
-import { ITransactionHistory } from '@airport/holding-pattern/dist/app/bundle'
+import { ITransactionHistory } from '@airport/ground-control'
 import {
-	ICredentials,
-	ITransaction
+	ITransaction,
+	ITransactionCredentials
 } from '@airport/terminal-map'
 import {
 	Connection,
@@ -14,7 +14,7 @@ export class MySqlTransaction
 	extends MySqlDriver
 	implements ITransaction {
 
-	credentials: ICredentials
+	credentials: ITransactionCredentials
 	isSync = false
 	transactionHistory: ITransactionHistory
 

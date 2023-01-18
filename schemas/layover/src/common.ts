@@ -1,22 +1,10 @@
-import {
-	IActor,
-	IRepository,
-	IRepositoryTransactionHistory
-}                from "@airport/holding-pattern/dist/app/bundle";
-import {
-	IDomain,
-	IApplication,
-	IApplicationVersion
-}                from "@airport/airspace";
-import {
-	ITerminal,
-	IUserAccount
-}                from '@airport/travel-document-checkpoint/dist/app/bundle'
+import { IUserAccount } from "@airport/aviation-communication";
+import { DbApplication, DbApplicationVersion, DbDomain, IActor, IRepository, IRepositoryTransactionHistory, ITerminal } from "@airport/ground-control";
 
 export interface RepositoryTransactionBlockData {
 	actors: IActor[];
 	// Domains can be referenced in multiple applications of RTB
-	domains: IDomain[];
+	domains: DbDomain[];
 	referencedRepositories: IRepository[];
 	repository: IRepository;
 	repoTransHistories: IRepositoryTransactionHistory[];
@@ -27,8 +15,8 @@ export interface RepositoryTransactionBlockData {
 
 	 Hence applications can be referenced in multiple application versions
 	  */
-	applications: IApplication[];
-	applicationVersions: IApplicationVersion[];
+	applications: DbApplication[];
+	applicationVersions: DbApplicationVersion[];
 	terminal: ITerminal;
 	userAccounts: IUserAccount[];
 }

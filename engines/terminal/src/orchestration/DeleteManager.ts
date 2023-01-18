@@ -14,6 +14,7 @@ import {
 	DbProperty,
 	Dictionary,
 	EntityRelationType,
+	IActor,
 	IDatastructureUtils,
 	IRootTransaction,
 	JsonDelete,
@@ -22,7 +23,6 @@ import {
 	QueryResultType,
 } from '@airport/ground-control'
 import {
-	IActor,
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
 	IRepositoryTransactionHistoryDuo,

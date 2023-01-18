@@ -10,9 +10,9 @@ import {
     ISaveResult,
     IUpdateCacheManager,
     SQLDataType,
-    DbColumn
+    DbColumn,
+    IAirEntity
 } from "@airport/ground-control"
-import { IAirEntity } from "@airport/final-approach";
 import { IApplicationUtils } from "@airport/tarmaq-query";
 
 @Injected()

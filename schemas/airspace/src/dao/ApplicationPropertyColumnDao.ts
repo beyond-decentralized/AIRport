@@ -1,9 +1,8 @@
 import { IContext, Injected } from '@airport/direction-indicator'
-import { ApplicationColumn_LocalId } from '@airport/ground-control'
+import { ApplicationColumn_LocalId, DbPropertyColumn } from '@airport/ground-control'
 import {
 	BaseApplicationPropertyColumnDao,
 	IBaseApplicationPropertyColumnDao,
-	IApplicationPropertyColumn,
 	QApplicationPropertyColumn,
 } from '../generated/generated'
 import Q from '../generated/qApplication'
@@ -13,10 +12,10 @@ export interface IApplicationPropertyColumnDao
 
 	findAllForColumns(
 		columnIds: ApplicationColumn_LocalId[]
-	): Promise<IApplicationPropertyColumn[]>
+	): Promise<DbPropertyColumn[]>
 
 	insert(
-		applicationPropertyColumns: IApplicationPropertyColumn[],
+		applicationPropertyColumns: DbPropertyColumn[],
 		context: IContext
 	): Promise<void>
 
@@ -30,7 +29,7 @@ export class ApplicationPropertyColumnDao
 
 	async findAllForColumns(
 		columnIds: ApplicationColumn_LocalId[]
-	): Promise<IApplicationPropertyColumn[]> {
+	): Promise<DbPropertyColumn[]> {
 		let rc: QApplicationPropertyColumn
 
 		return this.db.find.tree({
@@ -43,7 +42,7 @@ export class ApplicationPropertyColumnDao
 	}
 
 	async insert(
-		applicationPropertyColumns: IApplicationPropertyColumn[],
+		applicationPropertyColumns: DbPropertyColumn[],
 		context: IContext
 	): Promise<void> {
 		let spc: QApplicationPropertyColumn;

@@ -1,7 +1,7 @@
 import { Api } from "@airport/check-in";
-import { IUserAccount } from "../generated/entity/IUserAccount";
 import { UserAccountDao } from "../dao/UserAccountDao";
-import { Inject, Injected, IOC } from "@airport/direction-indicator";
+import { Inject, Injected } from "@airport/direction-indicator";
+import { IUserAccount } from "@airport/aviation-communication";
 
 @Injected()
 export class UserAccountApi {

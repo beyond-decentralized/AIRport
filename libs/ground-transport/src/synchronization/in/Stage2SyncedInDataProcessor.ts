@@ -18,13 +18,13 @@ import {
 	IDatastructureUtils,
 	Repository_LocalId,
 	Actor_LocalId,
-	ActorRecordId
+	ActorRecordId,
+	DbApplication
 } from '@airport/ground-control'
 import {
 	IRecordUpdateStageDao,
 	RecordUpdateStageValues
 } from '@airport/layover'
-import { IApplication } from '@airport/airspace/dist/app/bundle'
 import {
 	RecordUpdate,
 	Stage1SyncedInDataProcessingResult
@@ -41,7 +41,7 @@ export interface IStage2SyncedInDataProcessor {
 
 	applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>
 	): Promise<void>;
 
 }
@@ -86,7 +86,7 @@ export class Stage2SyncedInDataProcessor
 
 	async applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>
 	): Promise<void> {
 		const context: IOperationContext = {} as any
 
@@ -115,7 +115,7 @@ export class Stage2SyncedInDataProcessor
 		recordCreations: Map<ApplicationVersion_LocalId,
 			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<ApplicationColumn_Index, any>>>>>>,
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
 		context: IOperationContext
 	): Promise<void> {
 		for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
@@ -227,7 +227,7 @@ export class Stage2SyncedInDataProcessor
 		recordUpdates: Map<ApplicationVersion_LocalId,
 			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<ApplicationColumn_Index, RecordUpdate>>>>>>,
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
 		context: IOperationContext
 	): Promise<void> {
 		const finalUpdateMap: Map<ApplicationVersion_LocalId, Map<ApplicationEntity_TableIndex, ColumnUpdateKeyMap>> = new Map()
@@ -290,7 +290,7 @@ export class Stage2SyncedInDataProcessor
 		recordDeletions: Map<ApplicationVersion_LocalId,
 			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Set<ActorRecordId>>>>>,
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
 		context: IOperationContext
 	): Promise<void> {
 		for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {

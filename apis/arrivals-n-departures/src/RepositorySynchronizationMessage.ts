@@ -1,4 +1,4 @@
-import { InternalUserAccount } from "@airport/aviation-communication";
+import { IUserAccount } from "@airport/aviation-communication";
 import { DbApplication, DbApplicationVersion, DbRelation, IActor, IRepository, IRepositoryTransactionHistory, ITerminal } from "@airport/ground-control";
 
 export type ReferencedApplicationVersion_InMessageIndex = number
@@ -23,7 +23,7 @@ export interface RepositorySynchronizationData {
 	referencedApplicationVersions: DbApplicationVersion[]
 	referencedRepositories: IRepository[]
 	terminals: ITerminal[]
-	userAccounts: InternalUserAccount[]
+	userAccounts: IUserAccount[]
 }
 
 export interface RepositorySynchronizationWriteRequest {

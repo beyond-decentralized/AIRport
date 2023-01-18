@@ -85,7 +85,7 @@ export interface DbApplication
 
 	signature?: Application_Signature
 
-	status?: ApplicationStatus | string
+	status?: ApplicationStatus
 
 	/**
 	 * Versions by integer version
@@ -195,6 +195,8 @@ export interface DbApplicationVersion
 	 * Map of all referencing applications, by name.
 	 */
 	referencedByMapByName?: { [applicationName: string]: DbApplicationReference };
+
+	jsonApplication?: JsonApplication
 
 	integerVersion?: ApplicationVersion_IntegerVersion
 

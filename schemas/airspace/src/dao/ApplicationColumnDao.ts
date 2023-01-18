@@ -1,11 +1,10 @@
 import { IContext, Inject, Injected } from '@airport/direction-indicator';
 import {
-	ApplicationEntity_LocalId, IDatastructureUtils
+	ApplicationEntity_LocalId, DbColumn, IDatastructureUtils
 } from '@airport/ground-control'
 import {
 	BaseApplicationColumnDao,
 	IBaseApplicationColumnDao,
-	IApplicationColumn,
 	QApplicationColumn
 } from '../generated/generated'
 import Q from '../generated/qApplication'
@@ -15,10 +14,10 @@ export interface IApplicationColumnDao
 
 	findAllForEntities(
 		entityIds: ApplicationEntity_LocalId[]
-	): Promise<IApplicationColumn[]>;
+	): Promise<DbColumn[]>;
 
 	insert(
-		applicationColumns: IApplicationColumn[],
+		applicationColumns: DbColumn[],
 		context: IContext
 	): Promise<void>
 
@@ -34,7 +33,7 @@ export class ApplicationColumnDao
 
 	async findAllForEntities(
 		entityIds: ApplicationEntity_LocalId[]
-	): Promise<IApplicationColumn[]> {
+	): Promise<DbColumn[]> {
 		let c: QApplicationColumn
 
 		return this.db.find.tree({
@@ -47,7 +46,7 @@ export class ApplicationColumnDao
 	}
 
 	async insert(
-		applicationColumns: IApplicationColumn[],
+		applicationColumns: DbColumn[],
 		context: IContext
 	): Promise<void> {
 		let sc: QApplicationColumn;

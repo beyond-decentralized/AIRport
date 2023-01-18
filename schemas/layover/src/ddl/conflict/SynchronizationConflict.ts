@@ -11,15 +11,9 @@ import {
 	OneToMany,
 	Table
 } from '@airport/tarmaq-entity';
-import {
-	IRecordHistory,
-	IRepository
-} from '@airport/holding-pattern/dist/app/bundle';
-import { SynchronizationConflict_Type } from './SynchronizationConflictType';
 import { SynchronizationConflictValues } from './SynchronizationConflictValues';
-
-export type SynchronizationConflict_Id = number;
-export type SynchronizationConflict_Acknowledged = boolean;
+import { SynchronizationConflict_Acknowledged, SynchronizationConflict_Id, SynchronizationConflict_Type } from '@airport/ground-control';
+import { RecordHistory, Repository } from '@airport/holding-pattern/dist/app/bundle';
 
 @Entity()
 @Table({ name: 'SYNCHRONIZATION_CONFLICT' })
@@ -42,21 +36,21 @@ export class SynchronizationConflict {
 		name: 'REPOSITORY_LID',
 		referencedColumnName: 'REPOSITORY_LID'
 	})
-	repository: IRepository;
+	repository: Repository;
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'OVERWRITTEN_RECORD_HISTORY_LID',
 		referencedColumnName: 'RECORD_HISTORY_LID'
 	})
-	overwrittenRecordHistory: IRecordHistory;
+	overwrittenRecordHistory: RecordHistory;
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'OVERWRITING_RECORD_HISTORY_LID',
 		referencedColumnName: 'RECORD_HISTORY_LID'
 	})
-	overwritingRecordHistory: IRecordHistory;
+	overwritingRecordHistory: RecordHistory;
 
 	@OneToMany({ mappedBy: 'synchronizationConflict' })
 	values: SynchronizationConflictValues[];

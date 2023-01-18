@@ -1,6 +1,7 @@
 import { SyncApplicationMap } from "../../implementation/sync/SyncApplicationMap";
 import { SyncColumnMap } from "../../implementation/sync/SyncColumnMap";
 import { DbEntity } from "../application/Entity";
+import { ApplicationColumn_Index } from "../application/Property";
 import { ChangeType } from "../data/ChangeType";
 import { RepositoryTransactionType, TransactionType } from "../data/sync/TransactionType";
 import { ActorRecordId, IActor, IRepository, SystemWideOperationId } from "./types";
@@ -19,7 +20,7 @@ export interface IRepositoryTransactionHistory {
 
     _localId: RepositoryTransactionHistory_LocalId
 
-    repositoryTransactionType?: RepositoryTransactionType | string
+    repositoryTransactionType?: RepositoryTransactionType
 
     saveTimestamp?: RepositoryTransactionHistory_SaveTimestamp
 
@@ -40,10 +41,10 @@ export interface IRepositoryTransactionHistory {
 export type TransactionHistoryNumberOfOperations = number
 export type TransactionHistory_LocalId = number
 
-export class ITransactionHistory {
+export interface ITransactionHistory {
 
     _localId: TransactionHistory_LocalId
-    transactionType?: TransactionType | string
+    transactionType?: TransactionType
     repositoryTransactionHistories?: IRepositoryTransactionHistory[]
     repositoryTransactionHistoryMap?: { [repositoryId: number]: IRepositoryTransactionHistory }
     applicationMap?: SyncApplicationMap
@@ -59,11 +60,11 @@ export type OperationHistory_OrderNumber = number;
 /**
  * Marks a group of mutation history changes.
  */
-export class IOperationHistory {
+export interface IOperationHistory {
 
     _localId: OperationHistory_LocalId
     orderNumber?: OperationHistory_OrderNumber
-    changeType?: ChangeType | string
+    changeType?: ChangeType
     systemWideOperationId?: SystemWideOperationId
     entity?: DbEntity
     actor?: IActor
@@ -76,21 +77,21 @@ export class IOperationHistory {
  * Entity Changes are always local-only, so a sequence for id will do.
  */
 export type RecordHistory_LocalId = number;
-export class IRecordHistory {
+export interface IRecordHistory {
 
     _localId: RecordHistory_LocalId
     _actorRecordId?: ActorRecordId
     actor?: IActor
     operationHistory?: IOperationHistory
-    newValues?: IRecordHistoryNewValue[] = []
-    oldValues?: IRecordHistoryOldValue[] = []
+    newValues?: IRecordHistoryNewValue[]
+    oldValues?: IRecordHistoryOldValue[]
     tableColumnMap?: SyncColumnMap
 
 }
 
 export type RecordHistoryNewValue_ColumnIndex = number;
 export type RecordHistoryNewValue_NewValue = any;
-export class IRecordHistoryNewValue {
+export interface IRecordHistoryNewValue {
 
     recordHistory: IRecordHistory;
     columnIndex: RecordHistoryNewValue_ColumnIndex;
@@ -100,10 +101,60 @@ export class IRecordHistoryNewValue {
 
 export type RecordHistoryOldValue_ColumnIndex = number;
 export type RecordHistoryOldValue_OldValue = any;
-export class IRecordHistoryOldValue {
+export interface IRecordHistoryOldValue {
 
     recordHistory: IRecordHistory;
     columnIndex: RecordHistoryOldValue_ColumnIndex;
     oldValue?: RecordHistoryOldValue_OldValue;
+
+}
+
+export enum SynchronizationConflict_Type {
+    LOCAL_UPDATE_REMOTELY_DELETED = 'LOCAL_UPDATE_REMOTELY_DELETED',
+    REMOTE_CREATE_REMOTELY_DELETED = 'REMOTE_CREATE_REMOTELY_DELETED',
+    REMOTE_UPDATE_LOCALLY_DELETED = 'REMOTE_UPDATE_LOCALLY_DELETED',
+    REMOTE_UPDATE_LOCALLY_UPDATED = 'REMOTE_UPDATE_LOCALLY_UPDATED',
+}
+
+export type SynchronizationConflict_Id = number;
+export type SynchronizationConflict_Acknowledged = boolean;
+export interface ISynchronizationConflict {
+
+    // Id Properties
+    _localId: SynchronizationConflict_Id;
+
+    // Id Relations
+
+    // Non-Id Properties
+    type?: SynchronizationConflict_Type;
+    acknowledged?: SynchronizationConflict_Acknowledged;
+
+    // Non-Id Relations
+    repository?: IRepository;
+    overwrittenRecordHistory?: IRecordHistory;
+    overwritingRecordHistory?: IRecordHistory;
+    values?: ISynchronizationConflictValues[];
+
+    // Transient Properties
+
+    // Public Methods
+
+}
+
+export interface ISynchronizationConflictValues {
+
+    // Id Properties
+    columnIndex: ApplicationColumn_Index;
+
+    // Id Relations
+    synchronizationConflict: ISynchronizationConflict;
+
+    // Non-Id Properties
+
+    // Non-Id Relations
+
+    // Transient Properties
+
+    // Public Methods
 
 }

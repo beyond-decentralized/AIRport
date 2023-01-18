@@ -1,12 +1,6 @@
-import {
-	IApplication,
-	IApplicationColumn,
-	IApplicationEntity,
-	IApplicationVersion
-} from "@airport/airspace";
 import { IApplicationRelationDao } from '@airport/airspace/dist/app/bundle';
 import { RepositorySynchronizationData, RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { UserAccount_GUID } from "@airport/aviation-communication";
+import { IUserAccount, UserAccount_GUID } from "@airport/aviation-communication";
 import {
 	Inject,
 	Injected
@@ -17,29 +11,29 @@ import {
 	ApplicationRelation_LocalId,
 	ApplicationVersion_LocalId,
 	Application_LocalId,
+	DbApplication,
+	DbApplicationVersion,
 	DbColumn,
+	DbEntity,
 	Dictionary,
-	IDbApplicationUtils,
-	RepositoryTransactionType,
-	Repository_LocalId,
-	Terminal_GUID
-} from "@airport/ground-control";
-import {
 	IActor,
-	IActorDao,
+	IDbApplicationUtils,
 	IOperationHistory,
 	IRecordHistory,
 	IRecordHistoryNewValue,
 	IRecordHistoryOldValue,
 	IRepository,
-	IRepositoryDao,
-	IRepositoryTransactionHistory
+	IRepositoryTransactionHistory,
+	ITerminal,
+	RepositoryTransactionType,
+	Repository_LocalId,
+	Terminal_GUID
+} from "@airport/ground-control";
+import {
+	IActorDao,
+	IRepositoryDao
 } from "@airport/holding-pattern/dist/app/bundle";
 import { IApplicationUtils } from '@airport/tarmaq-query';
-import { IUserAccount } from "@airport/travel-document-checkpoint";
-import {
-	ITerminal
-} from "@airport/travel-document-checkpoint/dist/app/bundle";
 
 export interface ISyncOutDataSerializer {
 
@@ -65,7 +59,7 @@ export interface IWithIndex {
 export interface InMessageLookupStructures {
 	actorInMessageIndexesById: Map<Actor_LocalId, number>
 	applicationVersionInMessageIndexesById: Map<ApplicationVersion_LocalId, number>
-	applicationVersions: IApplicationVersion[]
+	applicationVersions: DbApplicationVersion[]
 	lastInMessageActorIndex: number
 	lastInMessageReferencedApplicationRelationIndex: number
 	lastInMessageApplicationVersionIndex: number
@@ -75,7 +69,7 @@ export interface InMessageLookupStructures {
 	messageRepository: IRepository
 	referencedApplicationRelationIndexesById: Map<ApplicationRelation_LocalId, number>
 	referencedApplicationVersionInMessageIndexesById: Map<ApplicationVersion_LocalId, number>
-	referencedApplicationVersions: IApplicationVersion[]
+	referencedApplicationVersions: DbApplicationVersion[]
 	repositoryInMessageIndexesById: Map<Repository_LocalId, number>
 	terminalLookup: InMessageTerminalLookup
 	userAccountLookup: InMessageUserAccountLookup
@@ -401,8 +395,8 @@ export class SyncOutDataSerializer
 	private serializeApplicationsAndVersions(
 		data: RepositorySynchronizationData,
 		applicationLookup: InMessageApplicationLookup,
-		lookupVersions: IApplicationVersion[],
-		finalApplicationVersions: IApplicationVersion[]
+		lookupVersions: DbApplicationVersion[],
+		finalApplicationVersions: DbApplicationVersion[]
 	): void {
 		for (let i = 0; i < lookupVersions.length; i++) {
 			const applicationVersion = lookupVersions[i]
@@ -418,7 +412,7 @@ export class SyncOutDataSerializer
 	}
 
 	private serializeApplication(
-		application: IApplication,
+		application: DbApplication,
 		applicationLookup: InMessageApplicationLookup,
 		data: RepositorySynchronizationData
 	): number {
@@ -552,11 +546,11 @@ export class SyncOutDataSerializer
 	private serializeRecordHistory(
 		operationHistory: IOperationHistory,
 		recordHistory: IRecordHistory,
-		dbEntity: IApplicationEntity,
+		dbEntity: DbEntity,
 		data: RepositorySynchronizationData,
 		lookups: InMessageLookupStructures
 	): IRecordHistory {
-		const dbColumMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn> = new Map()
+		const dbColumMapByIndex: Map<ApplicationColumn_Index, DbColumn> = new Map()
 		for (const dbColumn of dbEntity.columns) {
 			dbColumMapByIndex.set(dbColumn.index, dbColumn)
 		}
@@ -629,7 +623,7 @@ export class SyncOutDataSerializer
 
 	private serializeNewValue(
 		newValue: IRecordHistoryNewValue,
-		dbColumn: IApplicationColumn,
+		dbColumn: DbColumn,
 		data: RepositorySynchronizationData,
 		lookups: InMessageLookupStructures
 	): IRecordHistoryNewValue {
@@ -639,7 +633,7 @@ export class SyncOutDataSerializer
 
 	private serializeOldValue(
 		oldValue: IRecordHistoryOldValue,
-		dbColumn: IApplicationColumn,
+		dbColumn: DbColumn,
 		data: RepositorySynchronizationData,
 		lookups: InMessageLookupStructures
 	): IRecordHistoryOldValue {
@@ -649,7 +643,7 @@ export class SyncOutDataSerializer
 
 	private serializeValue(
 		valueRecord: IRecordHistoryNewValue | IRecordHistoryNewValue,
-		dbColumn: IApplicationColumn,
+		dbColumn: DbColumn,
 		data: RepositorySynchronizationData,
 		lookups: InMessageLookupStructures,
 		valueFieldName: 'newValue' | 'oldValue'

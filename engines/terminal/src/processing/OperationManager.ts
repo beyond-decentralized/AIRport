@@ -21,17 +21,15 @@ import {
 import {
 	DbColumn,
 	EntityRelationType,
+	IActor,
+	IAirEntity,
 	IEntityStateManager,
 	IRepository,
 	IRootTransaction,
-	ISaveActor,
-	ISaveRepository,
 	ISaveResult,
 	JSONValueOperation,
 	PortableQuery
 } from '@airport/ground-control'
-import { IAirEntity } from '@airport/final-approach'
-import { IActor } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	ICascadeGraphVerifier,
 	IDeleteManager,
@@ -41,13 +39,13 @@ import {
 	IMissingRepositoryRecord,
 	IOperationContext,
 	IOperationManager,
+	IRepositoryManager,
 	IStructuralEntityValidator,
 	ITransaction,
 	ITransactionContext,
 	IUpdateManager
 } from '@airport/terminal-map'
 import { IQueryFacade } from '@airport/tarmaq-dao'
-import { IRepositoryManager } from '@airport/holding-pattern/dist/app/bundle'
 
 /**
  * Created by Papa on 11/15/2016.
@@ -155,14 +153,15 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 		const operations = this.dependencyGraphResolver
 			.getOperationsInOrder(entityGraph, context)
 		const rootDbEntity = context.dbEntity
-		let saveActor: ISaveActor = {
+		let saveActor: IActor = {
 			_localId: actor._localId,
 			GUID: actor.GUID,
 			userAccount: actor.userAccount ? {
+				_localId: null,
 				GUID: actor.userAccount.GUID
 			} : null
 		}
-		let newRepository: ISaveRepository
+		let newRepository: IRepository
 		if (context.rootTransaction.newRepository) {
 			newRepository = {
 				_localId: context.rootTransaction.newRepository._localId,
@@ -170,13 +169,10 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 				GUID: context.rootTransaction.newRepository.GUID,
 				ageSuitability: context.rootTransaction.newRepository.ageSuitability,
 				source: context.rootTransaction.newRepository.source,
-				ownerActor: {
-					_localId: actor._localId,
-					GUID: actor.GUID,
-					userAccount: actor.userAccount ? {
-						GUID: actor.userAccount.GUID
-					} : null
-				}
+				owner: actor.userAccount ? {
+					_localId: null,
+					GUID: actor.userAccount.GUID
+				} : null
 			}
 		}
 		const saveResult: ISaveResult = {

@@ -1,3 +1,4 @@
+import { MetroArea_Id, MetroArea_Name } from "@airport/ground-control";
 import {
     Column,
     DbNumber,
@@ -14,9 +15,6 @@ import { UserAccount } from "../UserAccount";
 import { Country } from "./Country";
 import { MetroAreaState } from "./MetroAreaState";
 
-export type MetroArea_Id = number;
-export type MetroArea_Name = string;
-
 @Entity()
 @Table({ name: "METRO_AREAS" })
 export class MetroArea {
@@ -28,19 +26,19 @@ export class MetroArea {
     id: MetroArea_Id;
 
     @DbString()
-    name: MetroArea_Name
+    name?: MetroArea_Name
 
     @ManyToOne()
     @JoinColumn({
         name: 'COUNTRY_ID',
         referencedColumnName: 'COUNTRY_ID'
     })
-    country: Country
+    country?: Country
 
     @OneToMany({ mappedBy: 'metroArea' })
-    metroAreaStates: MetroAreaState[]
+    metroAreaStates?: MetroAreaState[]
 
     @OneToMany({ mappedBy: 'metroArea' })
-    userAccounts: UserAccount[]
+    userAccounts?: UserAccount[]
 
 }

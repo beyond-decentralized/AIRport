@@ -1,11 +1,11 @@
 import { IInjected } from '@airport/direction-indicator'
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
-import { QueryType, SQLDataType } from '@airport/ground-control'
-import { ITransactionHistory } from '@airport/holding-pattern/dist/app/bundle'
+import { ITransactionHistory, QueryType, SQLDataType } from '@airport/ground-control'
 import {
 	ICredentials,
 	IOperationContext,
-	ITransaction
+	ITransaction,
+	ITransactionCredentials
 } from '@airport/terminal-map'
 import pg from 'pg'
 import pgConnectionString from 'pg-connection-string'
@@ -20,7 +20,7 @@ export class PostgreTransaction
 	extends SqlDriver
 	implements ITransaction {
 
-	credentials: ICredentials
+	credentials: ITransactionCredentials
 	isSync = false
 	pool: pg.Pool
 	transactionHistory: ITransactionHistory
@@ -206,7 +206,7 @@ export class PostgreTransaction
 		// config.database = database;
 		this.pool = new Pool(config as any);
 	}
-	
+
 	async initAllTables(
 		context: IOperationContext,
 	): Promise<any> {

@@ -5,6 +5,7 @@ import { RecordHistoryOldValueDao } from '../dao/history/RecordHistoryOldValueDa
 import { RepositoryTransactionHistoryDao } from '../dao/history/RepositoryTransactionHistoryDao'
 import { ActorDao } from '../dao/infrastructure/ActorDao'
 import { RepositoryDao } from '../dao/repository/RepositoryDao'
+import { RepositoryMemberDao } from '../dao/repository/RepositoryMemberDao'
 import { OperationHistoryDuo } from '../duo/history/OperationHistoryDuo'
 import { RecordHistoryDuo } from '../duo/history/RecordHistoryDuo'
 import { RecordHistoryNewValueDuo } from '../duo/history/RecordHistoryNewValueDuo'
@@ -12,8 +13,8 @@ import { RecordHistoryOldValueDuo } from '../duo/history/RecordHistoryOldValueDu
 import { RepositoryTransactionHistoryDuo } from '../duo/history/RepositoryTransactionHistoryDuo'
 import { TransactionHistoryDuo } from '../duo/history/TransactionHistoryDuo'
 import { application } from './app-declaration'
-import { IRepositoryManager } from '../core/RepositoryManager'
 import { DatastructureUtils } from '@airport/ground-control'
+import { IRepositoryManager } from '@airport/terminal-map'
 
 export const holdingPattern = app(application)
 
@@ -23,7 +24,7 @@ holdingPattern.register(
     ActorDao, OperationHistoryDuo, RecordHistoryDuo,
     RecordHistoryNewValueDao, RecordHistoryNewValueDuo,
     RecordHistoryOldValueDao, RecordHistoryOldValueDuo,
-    RepositoryDao,
+    RepositoryDao, RepositoryMemberDao,
     RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo,
     TransactionHistoryDuo, RepositoryApi
 )

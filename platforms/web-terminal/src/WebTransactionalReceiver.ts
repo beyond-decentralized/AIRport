@@ -28,8 +28,8 @@ import {
 } from 'rxjs/operators'
 import { IWebApplicationInitializer } from './WebApplicationInitializer'
 import { IWebMessageReceiver } from './WebMessageReceiver'
-import { IDbApplicationUtils } from '@airport/ground-control'
-import { IApplication } from '@airport/airspace/dist/app/bundle'
+import { DbApplication, IDbApplicationUtils } from '@airport/ground-control'
+import { JsonApplicationVersionWithApi } from '@airport/check-in'
 
 @Injected()
 export class WebTransactionalReceiver
@@ -314,13 +314,13 @@ export class WebTransactionalReceiver
 			const fullApplication_Name = this.dbApplicationUtils
 				.getApplication_FullNameFromDomainAndName(
 					message.domain, message.application)
-			const application: IApplication = this.terminalStore
+			const application: DbApplication = this.terminalStore
 				.getApplicationMapByFullName().get(fullApplication_Name)
 			if (!application) {
 				throw new Error(`Could not find AIRport Framework Application: ${fullApplication_Name}`)
 			}
 			payload = await this.localApiServer.coreHandleRequest(messageCopy,
-				application.currentVersion[0].applicationVersion.jsonApplication.versions[0].api, context)
+				(application.currentVersion[0].applicationVersion.jsonApplication.versions[0] as JsonApplicationVersionWithApi).api, context)
 		} catch (e) {
 			errorMessage = e.message ? e.message : e
 			console.error(e)

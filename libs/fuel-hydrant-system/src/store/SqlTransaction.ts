@@ -12,9 +12,10 @@ import {
     PortableQuery,
     QueryType,
     SQLDataType,
-    StoreType
+    StoreType,
+    IActor,
+    ITransactionHistory
 } from '@airport/ground-control'
-import { Actor, ITransactionHistory } from '@airport/holding-pattern/dist/app/bundle'
 import {
     IOperationContext,
     IStoreDriver,
@@ -27,7 +28,7 @@ import { v4 as guidv4 } from "uuid";
 export abstract class SqlTransaction
     implements ITransaction {
 
-    actor: Actor
+    actor: IActor
     childTransaction: ITransaction
     credentials: ITransactionCredentials
     id: string

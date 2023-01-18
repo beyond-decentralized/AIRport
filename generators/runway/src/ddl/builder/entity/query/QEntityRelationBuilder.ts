@@ -49,9 +49,6 @@ export class QEntityRelationBuilder
 			}
 			if (isAirEntity) {
 				let entityType = entity
-				if(!isMappedSuperclass) {
-					entityType = 'I' + entityType
-				}
 				parentEntityQType = `Q${this.entity.parentEntity.type}QRelation<${entityType}, ${iqEntity}>`
 			} else {
 				parentEntityQType = `Q${this.entity.parentEntity.type}QRelation<${iqEntity}>`

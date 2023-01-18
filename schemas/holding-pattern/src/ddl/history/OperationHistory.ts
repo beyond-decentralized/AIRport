@@ -12,7 +12,7 @@ import {
 	Table
 } from '@airport/tarmaq-entity'
 import { ChangeType, OperationHistory_LocalId, OperationHistory_OrderNumber, SystemWideOperationId } from '@airport/ground-control'
-import { IApplicationEntity } from '@airport/airspace/dist/app/bundle'
+import { ApplicationEntity } from '@airport/airspace/dist/app/bundle'
 import { RecordHistory } from './RecordHistory'
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory'
 import { Actor } from '../infrastructure/Actor'
@@ -53,7 +53,7 @@ export class OperationHistory {
 		name: 'APPLICATION_ENTITY_LID',
 		referencedColumnName: 'APPLICATION_ENTITY_LID', nullable: false
 	})
-	entity?: IApplicationEntity
+	entity?: ApplicationEntity
 
 	@ManyToOne()
 	@JoinColumn({

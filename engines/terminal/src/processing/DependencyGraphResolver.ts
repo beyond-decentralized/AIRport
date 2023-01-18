@@ -5,10 +5,10 @@ import {
 import {
 	Dictionary,
 	EntityRelationType,
+	IAirEntity,
 	IDatastructureUtils,
 	IEntityStateManager
 } from '@airport/ground-control'
-import { IAirEntity } from '@airport/final-approach'
 import {
 	IDependencyGraphNode,
 	IDependencyGraphResolver,

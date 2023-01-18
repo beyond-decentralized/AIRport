@@ -7,10 +7,9 @@ import {
 	RepositorySynchronizationData,
 } from '@airport/arrivals-n-departures'
 import {
-	ITerminal,
 	ITerminalDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
-import { Terminal_GUID } from '@airport/ground-control'
+import { ITerminal, Terminal_GUID } from '@airport/ground-control'
 
 export interface ISyncInTerminalChecker {
 

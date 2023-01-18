@@ -11,15 +11,15 @@ import {
 	Transient
 } from '@airport/tarmaq-entity'
 import {
+	IOperationHistory,
+	IRecordHistory,
+	IRecordHistoryNewValue,
+	IRecordHistoryOldValue,
+	IRepositoryTransactionHistory,
 	SyncApplicationMap,
 	TransactionHistory_LocalId,
 	TransactionType
 } from '@airport/ground-control'
-import { IRecordHistory } from '../../generated/entity/history/IRecordHistory'
-import { IOperationHistory } from '../../generated/entity/history/IOperationHistory'
-import { IRecordHistoryNewValue } from '../../generated/entity/history/IRecordHistoryNewValue'
-import { IRecordHistoryOldValue } from '../../generated/entity/history/IRecordHistoryOldValue'
-import { IRepositoryTransactionHistory } from '../../generated/entity/history/IRepositoryTransactionHistory'
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory'
 
 /**

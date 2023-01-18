@@ -1,16 +1,16 @@
 import { IContext } from '@airport/direction-indicator'
 import {
+	IAirEntity,
 	ISaveResult,
 	PortableQuery
 } from '@airport/ground-control'
-import { IAirEntity } from '@airport/final-approach'
 import { IEntityContext } from '@airport/tarmaq-entity'
 import { Observable } from 'rxjs'
-import { IQueryOperationContext } from '..'
 import {
 	ICredentials,
 	ITransactionCredentials
 } from '../Credentials'
+import { IQueryOperationContext } from '../processing/OperationContext'
 
 export interface ITransactionalServer {
 

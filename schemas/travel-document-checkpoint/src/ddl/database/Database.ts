@@ -1,3 +1,4 @@
+import { Database_Domain, Database_GUID, Database_LocalId } from "@airport/ground-control";
 import {
     Column,
     DbNumber,
@@ -15,9 +16,6 @@ import { MetroArea } from '../locality/MetroArea';
 import { State } from '../locality/State';
 import { DatabaseType } from "./DatabaseType";
 
-export type Database_LocalId = number
-export type Database_Domain = string
-export type Database_GUID = string
 @Entity()
 @Table({
     name: 'DATABASES'
@@ -26,16 +24,16 @@ export class Database {
 
     @Id()
     @DbNumber()
-    @Column({ name: 'DATABASE_LID' })
+    @Column({ name: 'DATABASE_LID', nullable: false })
     _localId: Database_LocalId
 
     @DbString()
-    @Column({ name: 'DATABASE_DOMAIN' })
-    domain: Database_Domain
+    @Column({ name: 'DATABASE_DOMAIN', nullable: false })
+    domain?: Database_Domain
 
     @DbString()
-    @Column({ name: 'DATABASE_GUID' })
-    GUID: Database_GUID
+    @Column({ name: 'DATABASE_GUID', nullable: false })
+    GUID?: Database_GUID
 
     @ManyToOne()
     @JoinColumn({
@@ -66,6 +64,6 @@ export class Database {
     metroArea?: MetroArea
 
     @OneToMany({ mappedBy: 'database' })
-    databaseTypes: DatabaseType[]
+    databaseTypes?: DatabaseType[]
 
 }

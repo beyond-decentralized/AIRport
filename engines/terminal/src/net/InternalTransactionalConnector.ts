@@ -9,13 +9,13 @@ import {
     IContext
 } from '@airport/direction-indicator';
 import {
+    IAirEntity,
     ISaveResult,
     ITransactionalConnector,
     PortableQuery
 } from '@airport/ground-control';
 import { ITerminalStore, ITransactionalServer } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
-import { IAirEntity } from '@airport/final-approach';
 import { IQueryContext } from '@airport/tarmaq-query';
 import { IEntityContext } from '@airport/tarmaq-entity';
 

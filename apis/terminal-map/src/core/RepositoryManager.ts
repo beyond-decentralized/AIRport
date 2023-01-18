@@ -5,9 +5,7 @@ import {
 	RawInsertValues,
 	RawUpdate,
 } from '@airport/tarmaq-query'
-import { UpdateState } from './UpdateState'
-import { IRepository } from '@airport/ground-control';
-import { Repository } from '../ddl/ddl';
+import { IRepository, UpdateState } from '@airport/ground-control';
 import { IContext } from '@airport/direction-indicator';
 
 export interface IRepositoryManager {
@@ -15,10 +13,10 @@ export interface IRepositoryManager {
 	createRepository(
 		repositoryName: string,
 		context: IContext
-	): Promise<Repository>
+	): Promise<IRepository>
 
 	addRepositoryToKeyRing(
-		repository: Repository,
+		repository: IRepository,
 		context: IContext
 	): Promise<void>
 
@@ -28,7 +26,7 @@ export interface IRepositoryManager {
 
 	setUiEntryUri(
 		uiEntryUri: string,
-		repository: Repository,
+		repository: IRepository,
 		context: IContext
 	): Promise<void>
 

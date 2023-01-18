@@ -6,8 +6,7 @@ import {
 	Table
 } from "@airport/tarmaq-entity";
 import {
-	Client,
-	Type
+	Client
 } from "@airport/travel-document-checkpoint/dist/app/bundle";
 import { Repository } from "./Repository";
 

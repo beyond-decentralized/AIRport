@@ -1,12 +1,4 @@
 import {
-	IDomain,
-	IApplication,
-	IApplicationColumn,
-	IApplicationEntity,
-	IApplicationRelation,
-	IApplicationVersion
-} from '@airport/airspace/dist/app/bundle';
-import {
 	IMemoizedSelector,
 	ISelectorManager,
 	LastIds
@@ -21,22 +13,28 @@ import {
 	JsonApplication_Name,
 	Application_Name,
 	Application_FullName,
-	IDatastructureUtils
+	IDatastructureUtils,
+	DbApplicationVersion,
+	DbColumn,
+	DbEntity,
+	DbRelation,
+	IActor,
+	DbApplication,
+	DbDomain,
+	ITerminal
 } from '@airport/ground-control';
-import { IActor } from '@airport/holding-pattern/dist/app/bundle';
 import { Subject } from 'rxjs';
 import {
 	IApplicationInitializerState,
 	InternalConnectorState,
 	IReceiverState,
+	ISequenceGeneratorState,
 	ITerminalState,
 	ITerminalStateContainer,
 	ITransactionManagerState,
 	IWebReceiverState
 } from './TerminalState';
 import { ITransactionCredentials } from '../Credentials';
-import { ISequenceGeneratorState } from '..';
-import { ITerminal } from '@airport/travel-document-checkpoint/dist/app/bundle';
 
 export interface IPendingTransaction {
 	context,
@@ -49,27 +47,27 @@ export interface ITerminalStore {
 
 	state: Subject<ITerminalState>
 
-	getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>
+	getAllApplicationVersionsByIds: IMemoizedSelector<DbApplicationVersion[], ITerminalState>
 
-	getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>
+	getAllColumns: IMemoizedSelector<DbColumn[], ITerminalState>
 
-	getAllEntities: IMemoizedSelector<IApplicationEntity[], ITerminalState>
+	getAllEntities: IMemoizedSelector<DbEntity[], ITerminalState>
 
-	getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>
+	getAllRelations: IMemoizedSelector<DbRelation[], ITerminalState>
 
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
-	getApplicationMapByFullName: IMemoizedSelector<Map<Application_FullName, IApplication>, ITerminalState>
+	getApplicationMapByFullName: IMemoizedSelector<Map<Application_FullName, DbApplication>, ITerminalState>
 
-	getApplications: IMemoizedSelector<IApplication[], ITerminalState>
+	getApplications: IMemoizedSelector<DbApplication[], ITerminalState>
 
 	getApplicationInitializer: IMemoizedSelector<IApplicationInitializerState, ITerminalState>
 
 	getApplicationActorMapByDomainAndApplication_Names: IMemoizedSelector<Map<Domain_Name, Map<Application_Name, IActor[]>>, ITerminalState>
 
-	getDomains: IMemoizedSelector<IDomain[], ITerminalState>
+	getDomains: IMemoizedSelector<DbDomain[], ITerminalState>
 
-	getDomainMapByName: IMemoizedSelector<Map<Domain_Name, IDomain>, ITerminalState>
+	getDomainMapByName: IMemoizedSelector<Map<Domain_Name, DbDomain>, ITerminalState>
 
 	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
 
@@ -79,12 +77,12 @@ export interface ITerminalStore {
 
 	getLastIds: IMemoizedSelector<LastIds, ITerminalState>
 
-	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<Domain_Name, Map<JsonApplication_Name, IApplicationVersion>>, ITerminalState>
+	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<Domain_Name, Map<JsonApplication_Name, DbApplicationVersion>>, ITerminalState>
 
 	// Application name contains the domain name as a prefix + '___'
-	getLatestApplicationVersionMapByApplication_FullName: IMemoizedSelector<Map<Application_FullName, IApplicationVersion>, ITerminalState>
+	getLatestApplicationVersionMapByApplication_FullName: IMemoizedSelector<Map<Application_FullName, DbApplicationVersion>, ITerminalState>
 
-	getLatestApplicationVersionsByApplication_Indexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>
+	getLatestApplicationVersionsByApplication_Indexes: IMemoizedSelector<DbApplicationVersion[], ITerminalState>
 
 	getReceiver: IMemoizedSelector<IReceiverState, ITerminalState>
 
@@ -118,13 +116,13 @@ export class TerminalStore
 		return this.terminalState.terminalState
 	}
 
-	getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
+	getAllApplicationVersionsByIds: IMemoizedSelector<DbApplicationVersion[], ITerminalState>;
 
-	getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>;
+	getAllColumns: IMemoizedSelector<DbColumn[], ITerminalState>;
 
-	getAllEntities: IMemoizedSelector<IApplicationEntity[], ITerminalState>;
+	getAllEntities: IMemoizedSelector<DbEntity[], ITerminalState>;
 
-	getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>;
+	getAllRelations: IMemoizedSelector<DbRelation[], ITerminalState>;
 
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
@@ -132,13 +130,13 @@ export class TerminalStore
 
 	getApplicationActorMapByDomainAndApplication_Names: IMemoizedSelector<Map<Domain_Name, Map<Application_Name, IActor[]>>, ITerminalState>
 
-	getApplicationMapByFullName: IMemoizedSelector<Map<Application_FullName, IApplication>, ITerminalState>
+	getApplicationMapByFullName: IMemoizedSelector<Map<Application_FullName, DbApplication>, ITerminalState>
 
-	getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
+	getApplications: IMemoizedSelector<DbApplication[], ITerminalState>;
 
-	getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
+	getDomains: IMemoizedSelector<DbDomain[], ITerminalState>;
 
-	getDomainMapByName: IMemoizedSelector<Map<Domain_Name, IDomain>, ITerminalState>
+	getDomainMapByName: IMemoizedSelector<Map<Domain_Name, DbDomain>, ITerminalState>
 
 	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
 
@@ -148,11 +146,11 @@ export class TerminalStore
 
 	getLastIds: IMemoizedSelector<LastIds, ITerminalState>
 
-	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<Domain_Name, Map<JsonApplication_Name, IApplicationVersion>>, ITerminalState>;
+	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<Domain_Name, Map<JsonApplication_Name, DbApplicationVersion>>, ITerminalState>;
 
-	getLatestApplicationVersionMapByApplication_FullName: IMemoizedSelector<Map<Application_FullName, IApplicationVersion>, ITerminalState>;
+	getLatestApplicationVersionMapByApplication_FullName: IMemoizedSelector<Map<Application_FullName, DbApplicationVersion>, ITerminalState>;
 
-	getLatestApplicationVersionsByApplication_Indexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
+	getLatestApplicationVersionsByApplication_Indexes: IMemoizedSelector<DbApplicationVersion[], ITerminalState>;
 
 	getReceiver: IMemoizedSelector<IReceiverState, ITerminalState>
 
@@ -193,7 +191,7 @@ export class TerminalStore
 			terminal => terminal.domains);
 		this.getDomainMapByName = this.selectorManager.createSelector(this.getDomains,
 			domains => {
-				const domainsByName: Map<Application_Signature, IDomain> = new Map()
+				const domainsByName: Map<Application_Signature, DbDomain> = new Map()
 				for (const domain of domains) {
 					domainsByName.set(domain.name, domain)
 				}
@@ -209,7 +207,7 @@ export class TerminalStore
 			terminalState => terminalState.lastIds)
 		this.getLatestApplicationVersionMapByNames = this.selectorManager.createSelector(this.getDomains,
 			domains => {
-				const latestApplicationVersionMapByNames: Map<Domain_Name, Map<Application_Name, IApplicationVersion>> = new Map();
+				const latestApplicationVersionMapByNames: Map<Domain_Name, Map<Application_Name, DbApplicationVersion>> = new Map();
 
 				for (const domain of domains) {
 					const mapForDomain = this.datastructureUtils.ensureChildJsMap(
@@ -224,9 +222,9 @@ export class TerminalStore
 
 		this.getLatestApplicationVersionMapByApplication_FullName = this.selectorManager.createSelector(
 			this.getLatestApplicationVersionMapByNames, (
-				latestApplicationVersionMapByNames: Map<Domain_Name, Map<JsonApplication_Name, IApplicationVersion>>
+				latestApplicationVersionMapByNames: Map<Domain_Name, Map<JsonApplication_Name, DbApplicationVersion>>
 			) => {
-			const latestApplicationVersionMapByApplication_FullName: Map<Application_FullName, IApplicationVersion> = new Map();
+			const latestApplicationVersionMapByApplication_FullName: Map<Application_FullName, DbApplicationVersion> = new Map();
 
 			for (const applicationVersionsForDomain_Name of latestApplicationVersionMapByNames.values()) {
 				for (const applicationVersion of applicationVersionsForDomain_Name.values()) {
@@ -239,7 +237,7 @@ export class TerminalStore
 
 		this.getAllApplicationVersionsByIds = this.selectorManager.createSelector(this.getDomains,
 			domains => {
-				const allApplicationVersionsByIds: IApplicationVersion[] = [];
+				const allApplicationVersionsByIds: DbApplicationVersion[] = [];
 
 				for (const domain of domains) {
 					for (const application of domain.applications) {
@@ -254,7 +252,7 @@ export class TerminalStore
 
 		this.getLatestApplicationVersionsByApplication_Indexes = this.selectorManager.createSelector(this.getDomains,
 			domains => {
-				const latestApplicationVersionsByApplication_Indexes: IApplicationVersion[] = [];
+				const latestApplicationVersionsByApplication_Indexes: DbApplicationVersion[] = [];
 
 				for (const domain of domains) {
 					for (const application of domain.applications) {
@@ -274,7 +272,7 @@ export class TerminalStore
 
 		this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByApplication_Indexes,
 			latestApplicationVersionsByApplication_Indexes => {
-				const allEntities: IApplicationEntity[] = [];
+				const allEntities: DbEntity[] = [];
 				for (const latestApplicationVersion of latestApplicationVersionsByApplication_Indexes) {
 					if (!latestApplicationVersion) {
 						continue;
@@ -289,7 +287,7 @@ export class TerminalStore
 
 		this.getAllColumns = this.selectorManager.createSelector(this.getAllEntities,
 			allEntities => {
-				const allColumns: IApplicationColumn[] = [];
+				const allColumns: DbColumn[] = [];
 
 				for (const entity of allEntities) {
 					if (!entity) {
@@ -305,7 +303,7 @@ export class TerminalStore
 
 		this.getAllRelations = this.selectorManager.createSelector(this.getAllEntities,
 			allEntities => {
-				const allRelations: IApplicationRelation[] = [];
+				const allRelations: DbRelation[] = [];
 
 				for (const entity of allEntities) {
 					if (!entity) {

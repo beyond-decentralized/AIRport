@@ -1,5 +1,4 @@
 import {
-	IApplicationVersion,
 	IApplicationVersionDao
 } from '@airport/airspace/dist/app/bundle'
 import {
@@ -8,21 +7,20 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import { IApplicationInitializer } from '@airport/terminal-map'
-import { IApplication } from '@airport/airspace'
-import { Application_Name, Domain_Name } from '@airport/ground-control'
+import { Application_Name, DbApplication, DbApplicationVersion, Domain_Name } from '@airport/ground-control'
 
 export interface IApplicationVersionCheckRecord {
 	found?: boolean
 	applicationName: string
-	applicationVersion?: IApplicationVersion;
+	applicationVersion?: DbApplicationVersion;
 	applicationVersionNumber: number
 }
 
 export interface ISyncInApplicationVersionChecker {
 
 	ensureApplicationVersions(
-		inMessageApplicationVersions: IApplicationVersion[],
-		inMessageApplications: IApplication[],
+		inMessageApplicationVersions: DbApplicationVersion[],
+		inMessageApplications: DbApplication[],
 		context: IContext
 	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>>;
 
@@ -40,8 +38,8 @@ export class SyncInApplicationVersionChecker
 
 	async ensureApplicationVersions(
 		// message: RepositorySynchronizationData,
-		inMessageApplicationVersions: IApplicationVersion[],
-		inMessageApplications: IApplication[],
+		inMessageApplicationVersions: DbApplicationVersion[],
+		inMessageApplications: DbApplication[],
 		context: IContext
 	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>> {
 		let applicationCheckMap
@@ -64,8 +62,8 @@ export class SyncInApplicationVersionChecker
 	}
 
 	private async checkVersionsApplicationsDomains(
-		inMessageApplicationVersions: IApplicationVersion[],
-		inMessageApplications: IApplication[],
+		inMessageApplicationVersions: DbApplicationVersion[],
+		inMessageApplications: DbApplication[],
 		context: IContext
 	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>> {
 		const { allApplicationNames: allApplication_Names, domainNames, applicationVersionCheckMap } = this
@@ -134,8 +132,8 @@ export class SyncInApplicationVersionChecker
 	}
 
 	private getNames(
-		inMessageApplicationVersions: IApplicationVersion[],
-		inMessageApplications: IApplication[]
+		inMessageApplicationVersions: DbApplicationVersion[],
+		inMessageApplications: DbApplication[]
 	): {
 		allApplicationNames: Application_Name[],
 		domainNames: Domain_Name[],

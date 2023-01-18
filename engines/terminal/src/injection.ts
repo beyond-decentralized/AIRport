@@ -32,6 +32,7 @@ import {
     OperationHistoryDuo,
     RecordHistoryDuo,
     RepositoryDao,
+    RepositoryMemberDao,
     RepositoryTransactionHistoryDao,
     RepositoryTransactionHistoryDuo,
     REPOSITORY_MANAGER,
@@ -73,8 +74,8 @@ import { RepositoryManager } from './core/repository/RepositoryManager'
 import { UserAccountManager } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { LOCAL_API_SERVER } from '@airport/apron'
 import { IdGenerator } from '@airport/fuel-hydrant-system'
-import { ActiveQueries, ObservableQueryAdapter } from '@airport/flight-number'
-import { KeyRingManager, RepositoryMemberDao } from '@airbridge/keyring/dist/app/bundle'
+import { ObservableQueryAdapter } from '@airport/flight-number'
+import { KeyRingManager } from '@airbridge/keyring/dist/app/bundle'
 import { CrossRepositoryRelationManager } from '@airport/flight-recorder/dist/app/bundle'
 
 const terminal = lib('terminal')

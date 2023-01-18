@@ -17,21 +17,19 @@ import {
 	Repository_LocalId,
 	Actor_LocalId,
 	ActorRecordId,
-	RecordHistory_LocalId
+	RecordHistory_LocalId,
+	IActor,
+	IRecordHistory,
+	IOperationHistory,
+	ISynchronizationConflict,
+	SynchronizationConflict_Type
 } from '@airport/ground-control'
 import {
-	IActor,
 	IChangedRecordIdsForRepository,
-	IOperationHistory,
-	IRecordHistory,
 	IActorDao,
 	IRepositoryTransactionHistoryDao,
 	IRepositoryTransactionHistoryDuo,
 } from '@airport/holding-pattern/dist/app/bundle'
-import {
-	ISynchronizationConflict,
-	SynchronizationConflict_Type
-} from '@airport/layover'
 import {
 	ISyncInUtils,
 	ISyncRepoTransHistory,

@@ -15,6 +15,7 @@
     "@airport/direction-indicator": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/travel-document-checkpoint": "0.0.1",
+    "@airport/terminal-map": "0.0.1",
     "@airport/airspace": "0.0.1",
     "@airport/tarmaq-dao": "0.0.1",
     "@airport/tarmaq-entity": "0.0.1",

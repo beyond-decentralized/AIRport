@@ -1,4 +1,4 @@
-import { IAirEntity } from "@airport/final-approach";
+import { IAirEntity } from "@airport/ground-control";
 import { IOperationNode } from "./DependencyGraphNode";
 import { IOperationContext } from "./OperationContext";
 

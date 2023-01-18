@@ -75,7 +75,8 @@ export interface DbProperty
 
 }
 
-export interface DbPropertyColumn {
+export interface DbPropertyColumn
+	extends DatabaseObject {
 
 	column: DbColumn;
 	property: DbProperty;
@@ -184,7 +185,7 @@ export interface DbColumn
 	// The scale of a decimal (digits after the floating point)
 	scale?: number;
 
-	type?: SQLDataType | string
+	type?: SQLDataType
 
 }
 
@@ -290,7 +291,7 @@ export interface DbRelation
 	oneToManyElems?: DatabaseOneToManyElements;
 	property?: DbProperty;
 	relationEntity?: DbEntity;
-	relationType?: EntityRelationType | string;
+	relationType?: EntityRelationType;
 	// addToJoinFunction?: string; // Serialized function to add to the join
 	// joinFunctionWithOperator?: number; // How to add the function to the join
 	// whereJoinTable?: WhereJoinTableDeserialized;

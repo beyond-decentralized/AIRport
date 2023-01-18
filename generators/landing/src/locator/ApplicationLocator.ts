@@ -1,11 +1,11 @@
 import {
+	DbApplicationVersion,
 	IDbApplicationUtils,
 	JsonApplication
 } from '@airport/ground-control'
 import {
 	ITerminalStore
 } from '@airport/terminal-map'
-import { IApplicationVersion } from '@airport/airspace/dist/app/bundle'
 import {
 	Inject,
 	Injected
@@ -16,12 +16,12 @@ export interface IApplicationLocator {
 	locateExistingApplicationVersionRecord(
 		jsonApplication: JsonApplication,
 		terminalStore: ITerminalStore
-	): IApplicationVersion
+	): DbApplicationVersion
 
 	locateLatestApplicationVersionByApplication_Name(
 		fullApplication_Name: string,
 		terminalStore: ITerminalStore,
-	): Promise<IApplicationVersion>
+	): Promise<DbApplicationVersion>
 
 }
 
@@ -37,7 +37,7 @@ export class ApplicationLocator
 	locateExistingApplicationVersionRecord(
 		jsonApplication: JsonApplication,
 		terminalStore: ITerminalStore
-	): IApplicationVersion {
+	): DbApplicationVersion {
 		const applicationVersionsForDomain_Name = terminalStore
 			.getLatestApplicationVersionMapByNames().get(jsonApplication.domain)
 		if (!applicationVersionsForDomain_Name) {
@@ -63,7 +63,7 @@ export class ApplicationLocator
 	async locateLatestApplicationVersionByApplication_Name(
 		fullApplication_Name: string,
 		terminalStore: ITerminalStore,
-	): Promise<IApplicationVersion> {
+	): Promise<DbApplicationVersion> {
 		return terminalStore.getLatestApplicationVersionMapByApplication_FullName()
 			.get(fullApplication_Name)
 	}

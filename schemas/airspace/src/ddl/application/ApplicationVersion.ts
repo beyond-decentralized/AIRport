@@ -18,13 +18,13 @@ import {
 	ApplicationVersion_MajorVersion,
 	ApplicationVersion_MinorVersion,
 	ApplicationVersion_PatchVersion,
-	ApplicationVersion_VersionString
+	ApplicationVersion_VersionString,
+	DbApplicationReference,
+	DbEntity
 } from '@airport/ground-control'
 import { Application } from './Application'
 import { ApplicationEntity } from './ApplicationEntity'
 import { ApplicationReference } from './ApplicationReference'
-import { IApplicationEntity } from '../../generated/entity/application/IApplicationEntity';
-import { IApplicationReference } from '../../generated/entity/application/IApplicationReference';
 import { JsonApplicationWithLastIds } from '@airport/apron'
 
 
@@ -79,12 +79,12 @@ export class ApplicationVersion {
 	referencedBy?: ApplicationReference[] = []
 
 	@Transient()
-	entityMapByName?: { [entityName: string]: IApplicationEntity } = {}
+	entityMapByName?: { [entityName: string]: DbEntity } = {}
 
 	@Transient()
-	referencesMapByName?: { [fullApplication_Name: string]: IApplicationReference } = {}
+	referencesMapByName?: { [fullApplication_Name: string]: DbApplicationReference } = {}
 
 	@Transient()
-	referencedByMapByName?: { [fullApplication_Name: string]: IApplicationReference } = {}
+	referencedByMapByName?: { [fullApplication_Name: string]: DbApplicationReference } = {}
 
 }

@@ -8,9 +8,9 @@ export class LocalCopyReplacementLedger {
     @Id()
     @ManyToOne()
     @JoinColumns([
-        { name: 'ACTOR_RECORD_ID', referencedColumnName: 'ACTOR_RECORD_ID' },
-        { name: 'ACTOR_LID', referencedColumnName: 'ACTOR_LID' },
-        { name: 'REPOSITORY_LID', referencedColumnName: 'REPOSITORY_LID' }
+        { name: 'ACTOR_RECORD_ID', referencedColumnName: 'ACTOR_RECORD_ID', nullable: false },
+        { name: 'ACTOR_LID', referencedColumnName: 'ACTOR_LID', nullable: false },
+        { name: 'REPOSITORY_LID', referencedColumnName: 'REPOSITORY_LID', nullable: false }
     ])
     copiedRecordLedger: CopiedRecordLedger
 

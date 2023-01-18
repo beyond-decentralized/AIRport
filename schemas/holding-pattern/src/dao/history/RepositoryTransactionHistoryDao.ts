@@ -9,6 +9,7 @@ import {
 	Actor_LocalId,
 	ApplicationEntity_LocalId,
 	IDatastructureUtils,
+	IRepositoryTransactionHistory,
 	JSONBaseOperation,
 	Repository_LocalId,
 	TransactionType
@@ -18,7 +19,6 @@ import {
 } from '../../ddl/ddl'
 import {
 	BaseRepositoryTransactionHistoryDao,
-	IRepositoryTransactionHistory,
 	QOperationHistory,
 	QRecordHistory,
 	QRecordHistoryNewValue,

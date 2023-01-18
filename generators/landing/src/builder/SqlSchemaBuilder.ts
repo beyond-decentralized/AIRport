@@ -4,8 +4,10 @@ import {
   Inject,
   Injected
 } from '@airport/direction-indicator'
-import { ISequence, ISequenceDao } from '@airport/airport-code';
+import { ISequenceDao } from '@airport/airport-code';
 import {
+  DbApplication,
+  DbSequence,
   EntityRelationType,
   IApplicationReferenceUtils,
   IDbApplicationUtils,
@@ -21,7 +23,6 @@ import { JsonApplicationWithLastIds } from '@airport/apron';
 import {
   IStoreDriver
 } from '@airport/terminal-map'
-import { IApplication } from '@airport/airspace/dist/app/bundle';
 import { ISchemaBuilder } from './ISchemaBuilder';
 
 @Injected()
@@ -45,7 +46,7 @@ export abstract class SqlSchemaBuilder
 
   async build(
     jsonApplication: JsonApplication,
-    existingApplicationMap: Map<string, IApplication>,
+    existingApplicationMap: Map<string, DbApplication>,
     newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>,
     isFeatureApp: boolean,
     context: IContext,
@@ -92,7 +93,7 @@ export abstract class SqlSchemaBuilder
     jsonApplication: JsonApplication,
     jsonApplicationVersion: JsonApplicationVersion,
     jsonEntity: JsonApplicationEntity,
-    existingApplicationMap: Map<string, IApplication>,
+    existingApplicationMap: Map<string, DbApplication>,
     context: IContext,
   ): Promise<void> {
     const primaryKeyColumnNames: string[] = [];
@@ -158,7 +159,7 @@ export abstract class SqlSchemaBuilder
     jsonApplication: JsonApplication,
     jsonApplicationVersion: JsonApplicationVersion,
     jsonRelation: JsonApplicationRelation,
-    existingApplicationMap: Map<string, IApplication>,
+    existingApplicationMap: Map<string, DbApplication>,
     newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>,
     relatedJsonApplicationMap: Map<string, JsonApplication>
   ): {
@@ -215,7 +216,7 @@ export abstract class SqlSchemaBuilder
     jsonApplication: JsonApplication,
     jsonApplicationVersion: JsonApplicationVersion,
     jsonEntity: JsonApplicationEntity,
-    existingApplicationMap: Map<string, IApplication>,
+    existingApplicationMap: Map<string, DbApplication>,
     newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>,
     relatedJsonApplicationMap: Map<string, JsonApplication>,
     context: IContext,
@@ -287,12 +288,12 @@ export abstract class SqlSchemaBuilder
   abstract buildAllSequences(
     jsonApplications: JsonApplication[],
     context: IContext,
-  ): Promise<ISequence[]>
+  ): Promise<DbSequence[]>
 
   abstract stageSequences(
     jsonApplications: JsonApplication[],
     context: IContext,
-  ): ISequence[]
+  ): DbSequence[]
 
   abstract getColumnSuffix(
     jsonApplication: JsonApplication,

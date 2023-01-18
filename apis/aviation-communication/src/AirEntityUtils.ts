@@ -7,16 +7,17 @@ export type UserAccount_PasswordHash = string;
 export type UserAccount_Ranking = number;
 export type UserAccount_Username = string;
 
-export interface InternalUserAccount {
+export interface IUserAccount {
 
     // Id Properties
-    _localId?: UserAccount_LocalId;
+    _localId: UserAccount_LocalId;
 
     // Id Relations
 
     // Non-Id Properties
     email?: UserAccount_Email;
     passwordHash?: UserAccount_PasswordHash;
+    publicMetaSigningKey?: string;
     ranking?: UserAccount_Ranking;
     username?: UserAccount_Username;
     GUID?: UserAccount_GUID;
@@ -36,7 +37,7 @@ export interface AirEntityId {
     },
     actor?: {
         GUID?: string,
-        userAccount?: InternalUserAccount
+        userAccount?: IUserAccount
     },
     _actorRecordId?: number
 
@@ -46,7 +47,7 @@ export interface IAirEntityUtils {
 
     getCreatedBy(
         idObject: AirEntityId
-    ): InternalUserAccount
+    ): IUserAccount
 
     encodeId(
         idObject: AirEntityId
@@ -69,7 +70,7 @@ export class AirEntityUtils
 
     getCreatedBy(
         airEntity: AirEntityId
-    ): InternalUserAccount {
+    ): IUserAccount {
         return airEntity.actor.userAccount
     }
 

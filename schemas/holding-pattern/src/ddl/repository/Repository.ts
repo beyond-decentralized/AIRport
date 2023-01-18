@@ -28,6 +28,7 @@ import { RepositoryClient } from "./RepositoryClient";
 import { RepositoryTerminal } from "./RepositoryTerminal";
 import { RepositoryApplication } from "./RepositoryApplication";
 import { AgeSuitability, Application_FullName, CreatedAt, IRepositoryIdentifier, Repository_GUID, Repository_Immutable, Repository_LocalId, Repository_Name, Repository_Source, Repository_UiEntryUri } from "@airport/ground-control";
+import { RepositoryMember } from "./RepositoryMember";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -40,7 +41,7 @@ import { AgeSuitability, Application_FullName, CreatedAt, IRepositoryIdentifier,
 export class Repository
 	implements IRepositoryIdentifier {
 
-	@Column({ name: "REPOSITORY_LID" })
+	@Column({ name: 'REPOSITORY_LID', nullable: false })
 	@GeneratedValue()
 	@Id()
 	@DbNumber()
@@ -116,6 +117,9 @@ export class Repository
 		referencedColumnName: 'METRO_AREA_ID', nullable: true
 	})
 	metroArea?: MetroArea
+
+	@OneToMany({ mappedBy: 'repository' })
+	repositoryMembers?: RepositoryMember[] = []
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryTransactionHistory?: RepositoryTransactionHistory[] = [];

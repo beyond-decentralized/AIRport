@@ -1,8 +1,8 @@
 import { IContext, Injected } from '@airport/direction-indicator';
+import { ISynchronizationConflict } from '@airport/ground-control';
 import {
 	BaseSynchronizationConflictDao,
 	IBaseSynchronizationConflictDao,
-	ISynchronizationConflict,
 	QSynchronizationConflict
 } from '../../generated/generated'
 import Q from '../../generated/qApplication'

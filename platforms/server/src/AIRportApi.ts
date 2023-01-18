@@ -1,18 +1,18 @@
 import { IOC } from "@airport/direction-indicator";
-import { Application, ApplicationDao } from '@airport/airspace/dist/app/bundle';
-import { Repository, RepositoryDao } from '@airport/holding-pattern/dist/app/bundle';
+import { ApplicationDao } from '@airport/airspace/dist/app/bundle';
+import { RepositoryDao } from '@airport/holding-pattern/dist/app/bundle';
 import { IUserAccountInfo, TERMINAL_SESSION_MANAGER } from '@airport/terminal-map'
-import { Repository_GUID } from "@airport/ground-control";
+import { DbApplication, IRepository, Repository_GUID } from "@airport/ground-control";
 
 export class AIRportApi {
 
-    async getAllApplications(): Promise<Application[]> {
+    async getAllApplications(): Promise<DbApplication[]> {
         const applicationDao = await IOC.get(ApplicationDao)
 
         return await applicationDao.findAll()
     }
 
-    async getRootRepositories(): Promise<Repository[]> {
+    async getRootRepositories(): Promise<IRepository[]> {
         const repositoryDao = await IOC.get(RepositoryDao)
 
         return await repositoryDao.findRootRepositories()
@@ -20,7 +20,7 @@ export class AIRportApi {
 
     async getRepository(
         repositoryGUID: Repository_GUID
-    ): Promise<Repository> {
+    ): Promise<IRepository> {
         const repositoryDao = await IOC.get(RepositoryDao)
 
         return await repositoryDao.findRepository(repositoryGUID)

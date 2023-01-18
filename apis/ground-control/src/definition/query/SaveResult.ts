@@ -1,21 +1,4 @@
-export interface ISaveUserAccount {
-    GUID: string;
-}
-
-export interface ISaveActor {
-    _localId: number;
-    GUID?: string;
-    userAccount?: ISaveUserAccount;
-}
-
-export interface ISaveRepository {
-    _localId: number;
-    createdAt?: Date;
-    GUID?: string;
-    ageSuitability?: number;
-    source?: string;
-    ownerActor?: ISaveActor;
-}
+import { IActor, IRepository } from "../core/types"
 
 /**
  * Save results are needed to update application/application isolates:
@@ -49,10 +32,10 @@ export interface IRepositoryIdParts {
 }
 
 export interface ISaveResult {
-    actor: ISaveActor
+    actor: IActor
     created: ICreateResultRecords
     deleted: IDeleteResultRecords
-    newRepository: ISaveRepository
+    newRepository: IRepository
     repositoryIdParts: IRepositoryIdParts
     updated: IUpdateResultRecords
 }

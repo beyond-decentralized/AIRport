@@ -74,7 +74,6 @@ export class QEntityFileBuilder
       }
       let parentEntityType = entity.parentEntity.type;
       this.addImport([
-        // `I${parentEntityType}`,
         `${parentEntityType}Graph`,
         `${parentEntityType}EId`,
         `${parentEntityType}EUpdateColumns`,
@@ -147,13 +146,11 @@ ${relationClassSource}`;
 
       if (property.fromProject) {
         let relationEntityPath = property.fromProject;
-        this.addImport(['I' + type], relationEntityPath);
+        this.addImport([type], relationEntityPath);
       } else {
-        const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entityMapByName[type].path, null, 'entity');
-        let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, interfaceFilePath)
-        entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '')
-				entityInterfaceRelativePath = this.pathBuilder.prefixToFileName(entityInterfaceRelativePath, 'I')
-        this.addImport(['I' + type], entityInterfaceRelativePath);
+        let entityRelativePath = resolveRelativePath(this.fullGenerationPath, this.entityMapByName[type].path)
+        entityRelativePath = entityRelativePath.replace('.ts', '')
+        this.addImport([type], entityRelativePath);
       }
     });
   }
@@ -165,12 +162,10 @@ ${relationClassSource}`;
     //   this.entityPath).replace('.ts', '');
     // this.addImport([this.entity.docEntry.name], entityImportRelativePath, false);
 
-    const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entity.path, 'I', 'entity');
-    let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, interfaceFilePath)
-    entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '')
-    this.addImport([
-      'I' + this.entity.docEntry.name],
-      entityInterfaceRelativePath)
+    const type = this.entity.docEntry.name
+    let entityRelativePath = resolveRelativePath(this.fullGenerationPath, this.entityMapByName[type].path)
+    entityRelativePath = entityRelativePath.replace('.ts', '')
+    this.addImport([type], entityRelativePath)
   }
 
 }

@@ -1,8 +1,4 @@
-import { Repository_LocalId, TransactionType } from "@airport/ground-control";
-import type {
-    IRepositoryTransactionHistory,
-    ITransactionHistory
-} from "@airport/holding-pattern/dist/app/bundle";
+import { IRepositoryTransactionHistory, ITransactionHistory, Repository_LocalId, TransactionType } from "@airport/ground-control";
 import { IOperationContext } from "../processing/OperationContext";
 
 export interface IHistoryManager {

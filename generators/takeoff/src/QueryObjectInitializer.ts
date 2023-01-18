@@ -5,15 +5,12 @@ import {
 	IQueryObjectInitializer,
 	ITerminalStore
 } from '@airport/terminal-map';
-import {
-	IDomain,
-	IApplication
-} from '@airport/airspace/dist/app/bundle';
 import { IDdlObjectRetriever } from './DdlObjectRetriever';
 import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
+import { DbApplication, DbDomain } from '@airport/ground-control';
 
 @Injected()
 export class QueryObjectInitializer
@@ -45,7 +42,7 @@ export class QueryObjectInitializer
 		for (const domain of allDdlObjects.added.domains) {
 			delete existingDomainMap[domain.name];
 		}
-		const unmodifiedDomains: IDomain[] = [];
+		const unmodifiedDomains: DbDomain[] = [];
 		for (const domainName in existingDomainMap) {
 			unmodifiedDomains.push(existingDomainMap[domainName]);
 		}
@@ -59,7 +56,7 @@ export class QueryObjectInitializer
 			lastTerminalState.applicationMapByFullName
 				.set(application.fullName, application)
 		}
-		const unmodifiedApplications: IApplication[] = [];
+		const unmodifiedApplications: DbApplication[] = [];
 		for (const applicationName in existingApplicationMap) {
 			unmodifiedApplications.push(existingApplicationMap[applicationName]);
 		}

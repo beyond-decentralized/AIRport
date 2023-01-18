@@ -83,7 +83,6 @@ ${baseClassDefinitions}`;
 			'IQEntity'
 		], '@airport/tarmaq-query');
 		this.addImport([
-			`I${this.classSuffix}`,
 			`${this.classSuffix}`
 		], '@airport/tarmaq-dao');
 		this.addImport([

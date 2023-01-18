@@ -1,11 +1,11 @@
 import { ApplicationLocator } from '@airport/landing'
 import { ITerminalStore } from '@airport/terminal-map'
-import { IApplicationVersion } from '@airport/airspace/dist/app/bundle'
 import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
 import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
+import { DbApplicationVersion } from '@airport/ground-control'
 
 @Injected()
 export class IFrameApplicationLocator
@@ -17,7 +17,7 @@ export class IFrameApplicationLocator
     async locateLatestApplicationVersionByApplication_Name(
         fullApplication_Name: string,
         terminalStore: ITerminalStore,
-    ): Promise<IApplicationVersion> {
+    ): Promise<DbApplicationVersion> {
         let applicationVersion = terminalStore
             .getLatestApplicationVersionMapByApplication_FullName()
             .get(fullApplication_Name)

@@ -1,4 +1,4 @@
-import { Actor, ITransactionHistory } from '@airport/holding-pattern/dist/app/bundle'
+import { IActor, ITransactionHistory } from '@airport/ground-control'
 import { IStoreDriver } from '../core/data/StoreDriver'
 import { ITransactionCredentials } from '../Credentials'
 
@@ -12,7 +12,7 @@ export interface ITransactionInitiator {
 export interface ITransaction
 	extends IStoreDriver {
 
-	actor: Actor
+	actor: IActor
 	childTransaction: ITransaction
 	credentials: ITransactionCredentials
 	id: string

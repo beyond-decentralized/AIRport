@@ -8,16 +8,9 @@ import {
 	ManyToOne,
 	Table
 } from '@airport/tarmaq-entity'
-import {
-	IActor,
-	IRepository
-} from '@airport/holding-pattern/dist/app/bundle'
-import {
-	IApplicationColumn,
-	IApplicationEntity,
-	IApplicationVersion
-} from '@airport/airspace/dist/app/bundle'
 import { ActorRecordId } from '@airport/ground-control';
+import { ApplicationColumn, ApplicationEntity, ApplicationVersion } from '@airport/airspace/dist/app/bundle';
+import { Actor, Repository } from '@airport/holding-pattern/dist/app/bundle';
 
 export type RecordUpdateStage_LocalId = number;
 
@@ -40,7 +33,7 @@ export class RecordUpdateStage {
 		name: 'APPLICATION_VERSION_LID',
 		referencedColumnName: 'APPLICATION_VERSION_LID'
 	})
-	applicationVersion: IApplicationVersion
+	applicationVersion: ApplicationVersion
 
 	@ManyToOne()
 	// FIXME: verify that these records don't make it into serialized
@@ -49,21 +42,21 @@ export class RecordUpdateStage {
 		name: 'APPLICATION_ENTITY_LID',
 		referencedColumnName: 'APPLICATION_ENTITY_LID'
 	})
-	entity: IApplicationEntity
+	entity: ApplicationEntity
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'REPOSITORY_LID',
 		referencedColumnName: 'REPOSITORY_LID'
 	})
-	repository: IRepository
+	repository: Repository
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'ACTOR_LID',
 		referencedColumnName: 'ACTOR_LID'
 	})
-	actor: IActor
+	actor: Actor
 
 	@Column({ name: 'ACTOR_RECORD_ID' })
 	@DbNumber()
@@ -76,7 +69,7 @@ export class RecordUpdateStage {
 		name: 'APPLICATION_COLUMN_LID',
 		referencedColumnName: 'APPLICATION_COLUMN_LID'
 	})
-	column: IApplicationColumn
+	column: ApplicationColumn
 
 
 	@Column({ name: 'UPDATED_VALUE' })

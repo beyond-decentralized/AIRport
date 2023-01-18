@@ -7,13 +7,11 @@ import {
   Injected
 } from '@airport/direction-indicator'
 import {
-  ISequence
-} from '@airport/airport-code';
-import {
   IContext,
 } from '@airport/direction-indicator';
 import {
   DbApplication,
+  DbSequence,
   JsonApplication,
   JsonApplicationColumn,
   JsonApplicationEntity,
@@ -79,10 +77,10 @@ export class SqLiteApplicationBuilder
   async buildAllSequences(
     jsonApplications: JsonApplication[],
     context: IContext
-  ): Promise<ISequence[]> {
+  ): Promise<DbSequence[]> {
     console.log('buildAllSequences');
 
-    let allSequences: ISequence[] = [];
+    let allSequences: DbSequence[] = [];
     for (const jsonApplication of jsonApplications) {
       const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
         getApplication_FullName(jsonApplication)] as QAppInternal;
@@ -99,10 +97,10 @@ export class SqLiteApplicationBuilder
   stageSequences(
     jsonApplications: JsonApplication[],
     context: IContext,
-  ): ISequence[] {
+  ): DbSequence[] {
     console.log('stageSequences');
 
-    let stagedSequences: ISequence[] = [];
+    let stagedSequences: DbSequence[] = [];
     for (const jsonApplication of jsonApplications) {
       const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
         getApplication_FullName(jsonApplication)] as QAppInternal;
@@ -117,8 +115,8 @@ export class SqLiteApplicationBuilder
   buildSequences(
     dbApplication: DbApplication,
     jsonEntity: JsonApplicationEntity,
-  ): ISequence[] {
-    const sequences: ISequence[] = [];
+  ): DbSequence[] {
+    const sequences: DbSequence[] = [];
     for (const jsonColumn of jsonEntity.columns) {
       if (!jsonColumn.isGenerated) {
         continue;

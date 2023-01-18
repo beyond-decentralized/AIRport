@@ -1,3 +1,4 @@
+import { Client_Domain, Client_GUID, Client_LocalId } from "@airport/ground-control";
 import {
     Column,
     DbNumber,
@@ -16,9 +17,6 @@ import { MetroArea } from '../locality/MetroArea';
 import { State } from '../locality/State';
 import { ClientType } from "./ClientType";
 
-export type Client_LocalId = number
-export type Client_Domain = string
-export type Client_GUID = string
 @Entity()
 @Table({
     name: 'CLIENTS'
@@ -27,16 +25,16 @@ export class Client {
 
     @Id()
     @DbNumber()
-    @Column({ name: 'CLIENT_LID' })
+    @Column({ name: 'CLIENT_LID', nullable: false })
     _localId: Client_LocalId
 
     @DbString()
-    @Column({ name: 'CLIENT_DOMAIN' })
-    domain: Client_Domain
+    @Column({ name: 'CLIENT_DOMAIN', nullable: false })
+    domain?: Client_Domain
 
     @DbString()
-    @Column({ name: 'CLIENT_GUID' })
-    GUID: Client_GUID
+    @Column({ name: 'CLIENT_GUID', nullable: false })
+    GUID?: Client_GUID
 
     @ManyToOne()
     @JoinColumn({
@@ -67,6 +65,6 @@ export class Client {
     metroArea?: MetroArea
 
     @OneToMany({ mappedBy: 'client' })
-    clientTypes: ClientType[]
+    clientTypes?: ClientType[]
 
 }

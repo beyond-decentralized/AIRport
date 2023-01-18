@@ -3,17 +3,16 @@ import {
 	Y
 } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
-import { Actor_GUID, Repository_GUID, Repository_LocalId, Repository_Source, Terminal_GUID, TransactionType } from '@airport/ground-control'
+import { Actor_GUID, IRepository, Repository_GUID, Repository_LocalId, Repository_Source, Terminal_GUID, TransactionType } from '@airport/ground-control'
 import {
 	QUserAccount
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
 	Repository,
-} from '../../ddl/ddl'
+} from '../../ddl/repository/Repository'
 import {
 	BaseRepositoryDao,
 	IBaseRepositoryDao,
-	IRepository,
 	QRepository,
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
@@ -28,11 +27,11 @@ export interface IRepositoryDao
 		repositoryGUIDs: Repository_GUID[],
 	): Promise<IRepository[]>
 
-	findRootRepositories(): Promise<Repository[]>
+	findRootRepositories(): Promise<IRepository[]>
 
 	findRepository(
 		repositoryGUID: Repository_GUID
-	): Promise<Repository>
+	): Promise<IRepository>
 
 	findWithOwnerBy_LocalIds(
 		repositoryIds: Repository_LocalId[]
@@ -70,10 +69,10 @@ export class RepositoryDao
 	extends BaseRepositoryDao
 	implements IRepositoryDao {
 
-	async findRootRepositories(): Promise<Repository[]> {
+	async findRootRepositories(): Promise<IRepository[]> {
 		let r: QRepository
 
-		return await this._find({
+		const repositories = await this._find({
 			SELECT: {
 				_localId: Y,
 				ageSuitability: Y,
@@ -90,14 +89,16 @@ export class RepositoryDao
 				r.owner.INNER_JOIN()
 			]
 		})
+
+		return repositories as IRepository[]
 	}
 
 	async findRepository(
 		repositoryGUID: Repository_GUID
-	): Promise<Repository> {
+	): Promise<IRepository> {
 		let r: QRepository
 
-		return await this._findOne({
+		const repository = await this._findOne({
 			SELECT: {
 				_localId: Y,
 				ageSuitability: Y,
@@ -115,6 +116,8 @@ export class RepositoryDao
 			],
 			WHERE: r.GUID.equals(repositoryGUID)
 		})
+
+		return repository as IRepository
 	}
 
 	async getRepositoryLoadInfo(

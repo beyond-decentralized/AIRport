@@ -1,9 +1,8 @@
 import { Api } from '@airport/check-in'
 import { Inject, Injected } from "@airport/direction-indicator";
-import { Repository_GUID } from '@airport/ground-control';
-import { IRepositoryManager } from '../../core/RepositoryManager';
+import { IRepository, Repository_GUID } from '@airport/ground-control';
+import { IRepositoryManager } from '@airport/terminal-map';
 import { RepositoryDao } from "../../dao/dao";
-import { Repository } from "../../ddl/ddl";
 
 @Injected()
 export class RepositoryApi {
@@ -15,20 +14,20 @@ export class RepositoryApi {
     repositoryManager: IRepositoryManager
 
     @Api()
-    async findRootRepositories(): Promise<Repository[]> {
+    async findRootRepositories(): Promise<IRepository[]> {
         return await this.repositoryDao.findRootRepositories()
     }
 
     async findRepository(
         repositoryGUID: Repository_GUID
-    ): Promise<Repository> {
+    ): Promise<IRepository> {
         return await this.repositoryDao.findRepository(repositoryGUID)
     }
 
     @Api()
     async create(
         repositoryName: string
-    ): Promise<Repository> {
+    ): Promise<IRepository> {
         return await this.repositoryManager.createRepository(
             repositoryName, arguments[1])
     }
@@ -36,7 +35,7 @@ export class RepositoryApi {
     @Api()
     async setUiEntryUri(
         uiEntryUri: string,
-        repository: Repository
+        repository: IRepository
     ): Promise<void> {
         await this.repositoryManager.setUiEntryUri(uiEntryUri, repository, {})
     }

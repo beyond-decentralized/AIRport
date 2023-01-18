@@ -8,9 +8,9 @@ import {
 import {
   IRepositoryTransactionHistoryDao,
   IRepositoryDao,
-  IRepositoryManager,
 } from '@airport/holding-pattern/dist/app/bundle';
 import {
+  IRepositoryManager,
   ITransactionManager,
 } from '@airport/terminal-map';
 

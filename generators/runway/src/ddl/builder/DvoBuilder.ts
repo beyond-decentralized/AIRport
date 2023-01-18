@@ -1,4 +1,3 @@
-import { DbApplication } from '@airport/ground-control';
 import { ImplementationFileBuilder } from './ImplementationFileBuilder';
 import { PathBuilder } from './PathBuilder'
 
@@ -53,8 +52,8 @@ ${baseClassDefinitions}`;
 				], `${this.pathBuilder.prefixToFileName(this.generatedPathMapByEntityName[entityName], '')}`);
 			});
 		this.addImport([
-			`I${this.classSuffix}`,
-			`${this.classSuffix}`
+			`${this.classSuffix}`,
+			'IDvo'
 		], '@airbridge/validate');
 		this.addImport([
 			{

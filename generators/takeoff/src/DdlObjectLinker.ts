@@ -3,24 +3,22 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import type {
-	IDomain,
-	IApplication,
-	IApplicationColumn,
-	IApplicationCurrentVersion,
-	IApplicationEntity,
-	IApplicationProperty,
-	IApplicationPropertyColumn,
-	IApplicationReference,
-	IApplicationRelation,
-	IApplicationRelationColumn,
-	IApplicationVersion
-} from '@airport/airspace/dist/app/bundle'
-import type {
 	ApplicationColumn_LocalId,
 	Domain_LocalId,
 	ApplicationProperty_LocalId,
 	ApplicationRelation_LocalId,
-	Application_Index
+	Application_Index,
+	DbDomain,
+	DbApplicationVersion,
+	DbApplication,
+	DbApplicationReference,
+	DbEntity,
+	DbApplicationCurrentVersion,
+	DbProperty,
+	DbRelation,
+	DbColumn,
+	DbPropertyColumn,
+	DbRelationColumn
 } from '@airport/ground-control'
 import type { AllDdlObjects, IDdlObjectLinker, ITerminalStore } from '@airport/terminal-map'
 
@@ -44,7 +42,7 @@ export class DdlObjectLinker
 		this.linkDomainsAndApplicationsAndVersions(
 			allApplicationVersionsByIds, all.domains, applications, latestApplicationVersions, applicationReferences)
 
-		const entityArrayById: IApplicationEntity[] =
+		const entityArrayById: DbEntity[] =
 			this.linkEntities(allApplicationVersionsByIds, all.entities, added.entities)
 
 		const {
@@ -57,28 +55,28 @@ export class DdlObjectLinker
 	}
 
 	private linkDomainsAndApplicationsAndVersions(
-		allApplicationVersionsByIds: IApplicationVersion[],
-		domains: IDomain[],
-		applications: IApplication[],
-		latestApplicationVersions: IApplicationVersion[],
-		applicationReferences: IApplicationReference[]
+		allApplicationVersionsByIds: DbApplicationVersion[],
+		domains: DbDomain[],
+		applications: DbApplication[],
+		latestApplicationVersions: DbApplicationVersion[],
+		applicationReferences: DbApplicationReference[]
 	): void {
-		const domainMapById: Map<Domain_LocalId, IDomain> = new Map()
-		domains.forEach((domain: IDomain) => {
+		const domainMapById: Map<Domain_LocalId, DbDomain> = new Map()
+		domains.forEach((domain: DbDomain) => {
 			domainMapById.set(domain._localId, domain)
 		})
 
-		const applicationMapByIndex: Map<Application_Index, IApplication> = new Map()
-		applications.forEach((application: IApplication) => {
+		const applicationMapByIndex: Map<Application_Index, DbApplication> = new Map()
+		applications.forEach((application: DbApplication) => {
 			applicationMapByIndex.set(application.index, application)
 			const domain = domainMapById.get(application.domain._localId)
 			application.domain = domain
 			domain.applications.push(<any>application)
 		})
 
-		latestApplicationVersions.forEach((applicationVersion: IApplicationVersion) => {
+		latestApplicationVersions.forEach((applicationVersion: DbApplicationVersion) => {
 			const application = applicationMapByIndex.get(applicationVersion.application.index)
-			let applicationCurrentVersion: IApplicationCurrentVersion = {
+			let applicationCurrentVersion: DbApplicationCurrentVersion = {
 				application,
 				applicationVersion
 			}
@@ -94,7 +92,7 @@ export class DdlObjectLinker
 			applicationVersion.referencedByMapByName = {}
 		})
 
-		applicationReferences.forEach((applicationReference: IApplicationReference) => {
+		applicationReferences.forEach((applicationReference: DbApplicationReference) => {
 			const ownApplicationVersion = allApplicationVersionsByIds[applicationReference.ownApplicationVersion._localId]
 			const referencedApplicationVersion = allApplicationVersionsByIds[applicationReference.referencedApplicationVersion._localId]
 
@@ -110,18 +108,18 @@ export class DdlObjectLinker
 	}
 
 	private linkEntities(
-		allApplicationVersionsByIds: IApplicationVersion[],
-		allEntities: IApplicationEntity[], // All of the entities of newly created applications
-		addedEntities: IApplicationEntity[] // All of the entities of newly created applications
+		allApplicationVersionsByIds: DbApplicationVersion[],
+		allEntities: DbEntity[], // All of the entities of newly created applications
+		addedEntities: DbEntity[] // All of the entities of newly created applications
 		// from the latest available versions
-	): IApplicationEntity[] {
-		const entityArrayById: IApplicationEntity[] = []
+	): DbEntity[] {
+		const entityArrayById: DbEntity[] = []
 
-		allEntities.forEach((entity: IApplicationEntity) => {
+		allEntities.forEach((entity: DbEntity) => {
 			entityArrayById[entity._localId] = entity
 		})
 
-		addedEntities.forEach((entity: IApplicationEntity) => {
+		addedEntities.forEach((entity: DbEntity) => {
 			const applicationVersion = allApplicationVersionsByIds[entity.applicationVersion._localId]
 			entity.applicationVersion = applicationVersion
 			applicationVersion.entities[entity.index] = entity
@@ -143,15 +141,15 @@ export class DdlObjectLinker
 	}
 
 	private linkPropertiesAndRelations(
-		properties: IApplicationProperty[],
-		relations: IApplicationRelation[],
-		entityArrayById: IApplicationEntity[]
+		properties: DbProperty[],
+		relations: DbRelation[],
+		entityArrayById: DbEntity[]
 	): {
-		propertyMapById: Map<ApplicationProperty_LocalId, IApplicationProperty>, relationMapById: Map<ApplicationRelation_LocalId, IApplicationRelation>
+		propertyMapById: Map<ApplicationProperty_LocalId, DbProperty>, relationMapById: Map<ApplicationRelation_LocalId, DbRelation>
 	} {
-		const propertyMapById: Map<ApplicationProperty_LocalId, IApplicationProperty> = new Map()
+		const propertyMapById: Map<ApplicationProperty_LocalId, DbProperty> = new Map()
 
-		properties.forEach((property: IApplicationProperty) => {
+		properties.forEach((property: DbProperty) => {
 			// Entity is already property wired in
 			const entity = entityArrayById[property.entity._localId]
 			entity.properties[property.index] = property
@@ -164,8 +162,8 @@ export class DdlObjectLinker
 			propertyMapById.set(property._localId, property)
 		})
 
-		const relationMapById: Map<ApplicationRelation_LocalId, IApplicationRelation> = new Map()
-		relations.forEach((relation: IApplicationRelation) => {
+		const relationMapById: Map<ApplicationRelation_LocalId, DbRelation> = new Map()
+		relations.forEach((relation: DbRelation) => {
 			const entity = entityArrayById[relation.entity._localId]
 			entity.relations[relation.index] = relation
 
@@ -193,16 +191,16 @@ export class DdlObjectLinker
 	}
 
 	private linkColumns(
-		propertyMapById: Map<ApplicationProperty_LocalId, IApplicationProperty>,
-		relationMapById: Map<ApplicationRelation_LocalId, IApplicationRelation>,
+		propertyMapById: Map<ApplicationProperty_LocalId, DbProperty>,
+		relationMapById: Map<ApplicationRelation_LocalId, DbRelation>,
 		allDdlObjects: AllDdlObjects,
-		entityArrayById: IApplicationEntity[]
+		entityArrayById: DbEntity[]
 	) {
-		const columnMapById: Map<ApplicationColumn_LocalId, IApplicationColumn> = new Map()
-		allDdlObjects.all.columns.forEach((column: IApplicationColumn) => {
+		const columnMapById: Map<ApplicationColumn_LocalId, DbColumn> = new Map()
+		allDdlObjects.all.columns.forEach((column: DbColumn) => {
 			columnMapById.set(column._localId, column)
 		})
-		allDdlObjects.added.columns.forEach((column: IApplicationColumn) => {
+		allDdlObjects.added.columns.forEach((column: DbColumn) => {
 			columnMapById.set(column._localId, column)
 
 			const entity = entityArrayById[column.entity._localId]
@@ -217,7 +215,7 @@ export class DdlObjectLinker
 			column.entity = entity
 		})
 
-		allDdlObjects.added.propertyColumns.forEach((propertyColumn: IApplicationPropertyColumn) => {
+		allDdlObjects.added.propertyColumns.forEach((propertyColumn: DbPropertyColumn) => {
 			const column = columnMapById.get(propertyColumn.column._localId)
 			column.propertyColumns.push(propertyColumn)
 
@@ -228,7 +226,7 @@ export class DdlObjectLinker
 			propertyColumn.property = property
 		})
 
-		allDdlObjects.added.relationColumns.forEach((relationColumn: IApplicationRelationColumn) => {
+		allDdlObjects.added.relationColumns.forEach((relationColumn: DbRelationColumn) => {
 			let manyColumn = columnMapById.get(relationColumn.manyColumn._localId)
 			if (!manyColumn) {
 				manyColumn = this.terminalStore.getAllColumns()[relationColumn.manyColumn._localId]

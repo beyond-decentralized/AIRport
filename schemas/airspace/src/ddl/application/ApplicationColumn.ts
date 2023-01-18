@@ -21,13 +21,13 @@ import {
 	ApplicationColumn_IdIndex,
 	ApplicationColumn_AllocationSize,
 	ApplicationColumn_IsGenerated,
-	SQLDataType
+	SQLDataType,
+	DbPropertyColumn
 } from '@airport/ground-control';
 import { ApplicationEntity } from './ApplicationEntity';
 import { ApplicationPropertyColumn } from './ApplicationPropertyColumn';
 import { ApplicationRelationColumn } from './ApplicationRelationColumn';
 import { VersionedApplicationObject } from './VersionedApplicationObject';
-import { IApplicationPropertyColumn } from '../../generated/interfaces';
 
 @Entity()
 @Table({
@@ -101,6 +101,6 @@ export class ApplicationColumn
 	oneRelationColumns?: ApplicationRelationColumn[] = [];
 
 	@Transient()
-	propertyColumnMap?: { [propertyIndex: number]: IApplicationPropertyColumn } = {}
+	propertyColumnMap?: { [propertyIndex: number]: DbPropertyColumn } = {}
 
 }

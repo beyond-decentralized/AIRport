@@ -14,7 +14,6 @@ import { entityOperationMap } from './dao/parser/OperationGenerator';
 import { ApplicationQueryGenerator } from './dao/parser/ApplicationQueryGenerator';
 import { DaoBuilder } from './ddl/builder/DaoBuilder';
 import { DvoBuilder } from './ddl/builder/DvoBuilder';
-import { EntityInterfaceFileBuilder } from './ddl/builder/entity/EntityInterfaceFileBuilder';
 import { QEntityFileBuilder } from './ddl/builder/entity/query/QEntityFileBuilder';
 import { EntityMappingBuilder } from './ddl/builder/EntityMappingBuilder';
 import { GeneratedFileListingBuilder } from './ddl/builder/GeneratedFileListingBuilder';
@@ -159,17 +158,13 @@ function emitFiles(
 
 	applicationChecker.checkFrameworkReferences(jsonApplication, indexedApplication)
 
-	const entityFileReference: { [entityName: string]: string } = {};
-
 	const applicationFullName = IOC.getSync(DbApplicationUtils).
 		getApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
 
-	const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
 	const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
 	const entityVInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'vInterfaces.ts');
 	const generatedSummaryBuilder = new GeneratedSummaryBuilder(
 		pathBuilder,
-		entityInterfaceListingBuilder,
 		entityQInterfaceListingBuilder,
 		entityVInterfaceListingBuilder
 	);
@@ -198,20 +193,13 @@ function emitFiles(
 	for (const entityName in entityMapByName) {
 		const entity: EntityCandidate = entityMapByName[entityName];
 
-		const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'I', 'entity');
 		const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'Q', 'query');
 		const fullVGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'V', 'validation');
 		const qEntityFileBuilder = new QEntityFileBuilder(entity, fullQGenerationPath, pathBuilder,
 			entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
 		const vEntityFileBuilder = new VEntityFileBuilder(entity, fullVGenerationPath, pathBuilder,
 			entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
-		const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder,
-			entityMapByName, configuration, indexedApplication.entityMapByName[entityName]);
 
-		if (!entity.isSuperclass) {
-			entityFileReference[entity.docEntry.name] = fullGenerationPath;
-		}
-		entityInterfaceListingBuilder.addFileNameAndPaths(fullGenerationPath);
 		entityQInterfaceListingBuilder.addFileNameAndPaths(fullQGenerationPath);
 		entityVInterfaceListingBuilder.addFileNameAndPaths(fullVGenerationPath);
 		qApplicationBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath,
@@ -228,13 +216,10 @@ function emitFiles(
 		entityMappingBuilder.addEntity(tableIndex, entityName, entity.path);
 		const qGenerationPath = pathBuilder.setupFileForGeneration(entity.path, 'Q', 'query');
 		const vGenerationPath = pathBuilder.setupFileForGeneration(entity.path, 'V', 'validation');
-		const generationPath = pathBuilder.setupFileForGeneration(entity.path, 'I', 'entity');
 		const qEntitySourceString = qEntityFileBuilder.build();
 		const vEntitySourceString = vEntityFileBuilder.build();
 		fs.writeFileSync(qGenerationPath, qEntitySourceString);
 		fs.writeFileSync(vGenerationPath, vEntitySourceString);
-		const entityInterfaceSourceString = entityInterfaceFileBuilder.build();
-		fs.writeFileSync(generationPath, entityInterfaceSourceString);
 	}
 	fs.writeFileSync(daoBuilder.listingFilePath, daoBuilder.build());
 	fs.writeFileSync(entityMappingBuilder.entityMappingsPath, entityMappingBuilder.build(configuration.airport.domain, configuration.airport.application));
@@ -243,7 +228,6 @@ function emitFiles(
 		configuration.airport.domain,
 		indexedApplication.application.name,
 	));
-	fs.writeFileSync(entityInterfaceListingBuilder.generatedListingFilePath, entityInterfaceListingBuilder.build());
 	fs.writeFileSync(entityQInterfaceListingBuilder.generatedListingFilePath, entityQInterfaceListingBuilder.build());
 	fs.writeFileSync(entityVInterfaceListingBuilder.generatedListingFilePath, entityVInterfaceListingBuilder.build());
 	fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());

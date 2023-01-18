@@ -3,26 +3,25 @@ import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	BaseApplicationVersionDao,
 	IBaseApplicationVersionDao,
-	IApplicationVersion,
 	QDomain,
 	QApplication,
 	QApplicationVersion
 } from '../generated/generated'
 import Q from '../generated/qApplication'
-import { Application_Name, Domain_Name } from '@airport/ground-control'
+import { Application_Name, DbApplicationVersion, Domain_Name } from '@airport/ground-control'
 
 export interface IApplicationVersionDao
 	extends IBaseApplicationVersionDao {
 
-	findAllActiveOrderByApplication_IndexAndId(): Promise<IApplicationVersion[]>
+	findAllActiveOrderByApplication_IndexAndId(): Promise<DbApplicationVersion[]>
 
 	findByDomain_NamesAndApplication_Names(
 		domainNames: string[],
 		applicationNames: string[]
-	): Promise<IApplicationVersion[]>
+	): Promise<DbApplicationVersion[]>
 
 	insert(
-		applicationVersions: IApplicationVersion[],
+		applicationVersions: DbApplicationVersion[],
 		context: IContext
 	): Promise<void>
 
@@ -36,7 +35,7 @@ export class ApplicationVersionDao
 	/*
 	async findAllLatestForApplication_Indexes(
 		applicationIndexes: Application_Index[]
-	): Promise<IApplicationVersion[]> {
+	): Promise<DbApplicationVersion[]> {
 		let sv: QAppVersion
 
 		return await this.db.find.tree({
@@ -52,7 +51,7 @@ export class ApplicationVersionDao
 	}
 	*/
 
-	async findAllActiveOrderByApplication_IndexAndId(): Promise<IApplicationVersion[]> {
+	async findAllActiveOrderByApplication_IndexAndId(): Promise<DbApplicationVersion[]> {
 		let av: QApplicationVersion,
 			a: QApplication
 
@@ -72,7 +71,7 @@ export class ApplicationVersionDao
 	async findByDomain_NamesAndApplication_Names(
 		domainNames: Domain_Name[],
 		applicationNames: Application_Name[]
-	): Promise<IApplicationVersion[]> {
+	): Promise<DbApplicationVersion[]> {
 		let av: QApplicationVersion
 		let a: QApplication
 		let d: QDomain
@@ -109,16 +108,16 @@ export class ApplicationVersionDao
 	async findMaxVersionedMapByApplicationAndDomain_Names(
 		applicationDomain_Names: Domain_Name[],
 		applicationNames: Application_Name[]
-	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersion>>> {
+	): Promise<Map<Domain_Name, Map<Application_Name, DbApplicationVersion>>> {
 		const maxVersionedMapByApplicationAndDomain_Names
-				  : Map<Domain_Name, Map<Application_Name, IApplicationVersion>>
+				  : Map<Domain_Name, Map<Application_Name, DbApplicationVersion>>
 				  = new Map()
 
 		let sv: QAppVersion
 		let s: QApp
 		let d: QDomain
 
-		const maxApplicationVersions: IApplicationVersion[] = <any>await this.db.find.tree({
+		const maxApplicationVersions: DbApplicationVersion[] = <any>await this.db.find.tree({
 			SELECT: {
 				integerVersion: Y,
 				majorVersion: Y,
@@ -179,7 +178,7 @@ export class ApplicationVersionDao
 	}
 */
 	async insert(
-		applicationVersions: IApplicationVersion[],
+		applicationVersions: DbApplicationVersion[],
 		context: IContext
 	): Promise<void> {
 		let sv: QApplicationVersion;

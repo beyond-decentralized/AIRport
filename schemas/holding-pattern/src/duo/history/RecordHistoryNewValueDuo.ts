@@ -1,10 +1,6 @@
 import { Injected } from '@airport/direction-indicator';
-import {DbColumn}               from '@airport/ground-control'
-import {RecordHistoryNewValue}  from '../../ddl/ddl'
-import {
-	IRecordHistory,
-	IRecordHistoryNewValue
-}                               from '../../generated/generated'
+import {DbColumn, IRecordHistory, IRecordHistoryNewValue}               from '@airport/ground-control'
+import {RecordHistoryNewValue}  from '../../ddl/history/RecordHistoryNewValue'
 
 export interface IRecordHistoryNewValueDuo {
 

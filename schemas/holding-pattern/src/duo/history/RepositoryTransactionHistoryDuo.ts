@@ -3,6 +3,10 @@ import {
 	Actor_LocalId,
 	ChangeType,
 	DbEntity,
+	IActor,
+	IOperationHistory,
+	IRepository,
+	IRepositoryTransactionHistory,
 	IRootTransaction,
 	Repository_LocalId,
 	SystemWideOperationId
@@ -12,12 +16,6 @@ import {
 	Repository,
 	RepositoryTransactionHistory
 } from '../../ddl/ddl'
-import {
-	IActor,
-	IOperationHistory,
-	IRepository,
-	IRepositoryTransactionHistory,
-} from '../../generated/generated'
 import { IOperationHistoryDuo } from './OperationHistoryDuo'
 
 export interface IRepositoryTransactionHistoryDuo {

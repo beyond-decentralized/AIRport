@@ -1,9 +1,8 @@
 import { IContext, Injected } from '@airport/direction-indicator';
-import { ApplicationEntity_LocalId } from '@airport/ground-control'
+import { ApplicationEntity_LocalId, DbProperty } from '@airport/ground-control'
 import {
 	BaseApplicationPropertyDao,
 	IBaseApplicationPropertyDao,
-	IApplicationProperty,
 	QApplicationProperty,
 } from '../generated/generated'
 import Q from '../generated/qApplication'
@@ -13,10 +12,10 @@ export interface IApplicationPropertyDao
 
 	findAllForEntities(
 		entityIds: ApplicationEntity_LocalId[]
-	): Promise<IApplicationProperty[]>;
+	): Promise<DbProperty[]>;
 
 	insert(
-		applicationProperties: IApplicationProperty[],
+		applicationProperties: DbProperty[],
 		context: IContext
 	): Promise<void>
 
@@ -29,7 +28,7 @@ export class ApplicationPropertyDao
 
 	async findAllForEntities(
 		entityIds: ApplicationEntity_LocalId[]
-	): Promise<IApplicationProperty[]> {
+	): Promise<DbProperty[]> {
 		let p: QApplicationProperty
 
 		return this.db.find.tree({
@@ -42,7 +41,7 @@ export class ApplicationPropertyDao
 	}
 
 	async insert(
-		applicationProperties: IApplicationProperty[],
+		applicationProperties: DbProperty[],
 		context: IContext
 	): Promise<void> {
 		let sp: QApplicationProperty;

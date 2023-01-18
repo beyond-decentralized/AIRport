@@ -4,11 +4,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IRepository,
-	IRepositoryDao,
-	IRepositoryManager,
-	Repository,
-	UpdateState
+	IRepositoryDao
 } from '@airport/holding-pattern/dist/app/bundle' // default
 import {
 	QAirEntity
@@ -28,14 +24,14 @@ import {
 } from '@airport/tarmaq-query'
 import {
 	IApiCallContext,
+	IRepositoryManager,
 	ITerminalSessionManager,
 	ITerminalStore,
 	ITransactionContext,
 } from '@airport/terminal-map'
 import { v4 as guidv4 } from "uuid";
-import { IUserAccount } from '@airport/travel-document-checkpoint'
-import { Dictionary, IAppTrackerUtils } from '@airport/ground-control'
-import { RepositoryMember } from '@airbridge/keyring'
+import { Dictionary, IAppTrackerUtils, IRepository, UpdateState } from '@airport/ground-control'
+import { IUserAccount } from '@airport/aviation-communication'
 
 /**
  * Created by Papa on 2/12/2017.
@@ -75,7 +71,7 @@ export class RepositoryManager
 	async createRepository(
 		repositoryName: string,
 		context: IApiCallContext & ITransactionContext
-	): Promise<Repository> {
+	): Promise<IRepository> {
 		const userSession = await this.terminalSessionManager.getUserSession(context)
 		if (!userSession) {
 			throw new Error('No User Session present')
@@ -126,7 +122,7 @@ already contains a new repository.`)
 	}
 
 	async addRepositoryToKeyRing(
-		repository: Repository,
+		repository: IRepository,
 		context: IContext
 	): Promise<void> {
 		const userSession = await this.terminalSessionManager.getUserSession(context)
@@ -141,7 +137,7 @@ already contains a new repository.`)
 
 	async setUiEntryUri(
 		uiEntryUri: string,
-		repository: Repository,
+		repository: IRepository,
 		context: IContext
 	): Promise<void> {
 		const userSession = await this.terminalSessionManager.getUserSession(context)
@@ -180,8 +176,8 @@ already contains a new repository.`)
 		userAccount: IUserAccount,
 		applicationFullName: string,
 		context: IApiCallContext & ITransactionContext,
-	): Promise<Repository> {
-		const repository: Repository = {
+	): Promise<IRepository> {
+		const repository: IRepository = {
 			_localId: null,
 			ageSuitability: 0,
 			createdAt: new Date(),

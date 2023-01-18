@@ -6,12 +6,12 @@ import {
 	IContext
 } from '@airport/direction-indicator';
 import {
+	IActor,
+	IAirEntity,
 	IAppTrackerUtils,
 	ISaveResult,
 	PortableQuery
 } from '@airport/ground-control';
-import { IAirEntity } from '@airport/final-approach';
-import { IActor, IRepositoryManager } from '@airport/holding-pattern/dist/app/bundle';
 import {
 	ICredentials,
 	IOperationContext,
@@ -27,7 +27,8 @@ import {
 	IInsertManager,
 	IDeleteManager,
 	IQueryManager,
-	IUpdateManager
+	IUpdateManager,
+	IRepositoryManager
 } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 

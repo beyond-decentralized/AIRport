@@ -2,10 +2,8 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { Repository_LocalId, TransactionType } from '@airport/ground-control'
+import { IRepositoryTransactionHistory, ITransactionHistory, Repository_LocalId, TransactionType } from '@airport/ground-control'
 import {
-	IRepositoryTransactionHistory,
-	ITransactionHistory,
 	ITransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
 import { IHistoryManager, IOperationContext, ITransactionContext } from '@airport/terminal-map'

@@ -18,7 +18,9 @@ import {
 	ApplicationEntity_IsLocal,
 	ApplicationEntity_IsAirEntity,
 	ApplicationEntity_Name,
-	ApplicationEntity_TableIndex
+	ApplicationEntity_TableIndex,
+	DbProperty,
+	DbColumn
 } from '@airport/ground-control'
 import { ApplicationColumn } from './ApplicationColumn'
 import { ApplicationOperation } from './ApplicationOperation'
@@ -26,8 +28,6 @@ import { ApplicationProperty } from './ApplicationProperty'
 import { ApplicationRelation } from './ApplicationRelation'
 import { ApplicationVersion } from './ApplicationVersion'
 import { VersionedApplicationObject } from './VersionedApplicationObject'
-import { IApplicationColumn } from '../../generated/entity/application/IApplicationColumn';
-import { IApplicationProperty } from '../../generated/entity/application/IApplicationProperty';
 
 @Entity()
 @Table({
@@ -98,7 +98,7 @@ export class ApplicationEntity
 	// 	otm: QAppEntity,
 	// 	mto: QAppColumn
 	// ) => mto.idIndex.IS_NOT_NULL())
-	// idColumns: IApplicationColumn[];
+	// idColumns: ApplicationColumn[];
 
 	@OneToMany({ mappedBy: 'entity' })
 	operations?: ApplicationOperation[] = []
@@ -113,15 +113,15 @@ export class ApplicationEntity
 	relationReferences?: ApplicationRelation[] = []
 
 	@Transient()
-	columnMap?: { [name: string]: IApplicationColumn } = {}
+	columnMap?: { [name: string]: DbColumn } = {}
 
 	@Transient()
-	idColumns?: IApplicationColumn[] = []
+	idColumns?: DbColumn[] = []
 
 	@Transient()
-	idColumnMap?: { [name: string]: IApplicationColumn } = {}
+	idColumnMap?: { [name: string]: DbColumn } = {}
 
 	@Transient()
-	propertyMap?: { [name: string]: IApplicationProperty } = {}
+	propertyMap?: { [name: string]: DbProperty } = {}
 
 }

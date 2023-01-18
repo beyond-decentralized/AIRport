@@ -4,25 +4,25 @@ import {
 import {
 	Actor_LocalId,
 	ApplicationVersion_LocalId,
+	DbApplication,
+	IActor,
+	IRepositoryTransactionHistory,
+	ISynchronizationConflict,
+	ISynchronizationConflictValues,
 	RepositoryTransactionType,
 	Repository_LocalId,
 	TransactionType
 } from '@airport/ground-control'
 import {
-	IActor,
-	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
-	ISynchronizationConflict,
 	ISynchronizationConflictDao,
-	ISynchronizationConflictValues,
 	ISynchronizationConflictValuesDao,
 } from '@airport/layover'
 import {
 	ITransaction
 } from '@airport/terminal-map'
-import { IApplication } from '@airport/airspace/dist/app/bundle'
 import { ISyncRepoTransHistory } from './SyncInUtils'
 import { IStage1SyncedInDataProcessor } from './Stage1SyncedInDataProcessor'
 import { IStage2SyncedInDataProcessor } from './Stage2SyncedInDataProcessor'
@@ -124,11 +124,11 @@ export class TwoStageSyncedInDataProcessor
 	): Promise<{
 		actorMapById: Map<number, IActor>
 		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>
 	}> {
 		const repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
 			= new Map()
-		const applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication> = new Map()
+		const applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication> = new Map()
 		const actorMapById: Map<number, IActor> = new Map()
 		const repoTransHistories: IRepositoryTransactionHistory[] = []
 		for (const message of messages) {
@@ -158,7 +158,7 @@ export class TwoStageSyncedInDataProcessor
 	private async updateLocalData(
 		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
 		actorMayById: Map<Actor_LocalId, IActor>,
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
 		context: IContext
 	): Promise<void> {
 		const stage1Result

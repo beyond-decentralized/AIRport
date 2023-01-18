@@ -12,10 +12,10 @@ import {
     IApplicationStore,
     ILocalAPIServer
 } from "@airport/apron";
-import { Actor } from '@airport/holding-pattern/dist/app/bundle';
 import { RequestManager } from '@airport/arrivals-n-departures';
 import { IApiCallContext, ITransactionContext } from '@airport/terminal-map';
 import { IQueryResultsDeserializer } from '@airport/pressurization'
+import { IActor } from '@airport/ground-control';
 
 @Injected()
 export class LocalAPIServer
@@ -34,7 +34,7 @@ export class LocalAPIServer
     queryResultsDeserializer: IQueryResultsDeserializer
 
     async handleRequest(
-        request: ILocalAPIRequest<LocalApiRequestCategoryType, Actor>
+        request: ILocalAPIRequest<LocalApiRequestCategoryType, IActor>
     ): Promise<ILocalAPIResponse> {
 
         let payload
@@ -75,7 +75,7 @@ export class LocalAPIServer
     }
 
     async coreHandleRequest<ReturnType = any>(
-        request: ILocalAPIRequest<LocalApiRequestCategoryType, Actor>,
+        request: ILocalAPIRequest<LocalApiRequestCategoryType, IActor>,
         api: IApplicationApi,
         context?: IApiCallContext & ITransactionContext
     ): Promise<ReturnType> {

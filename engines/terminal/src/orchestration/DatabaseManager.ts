@@ -9,18 +9,16 @@ import {
 	IContext
 } from '@airport/direction-indicator';
 import {
-	Application_FullName, IDbApplicationUtils, JsonApplication,
+	Application_FullName, DbApplication, IDbApplicationUtils, JsonApplication,
 } from '@airport/ground-control';
 import {
 	Actor,
 } from '@airport/holding-pattern/dist/app/bundle';
-import { IApplication, IApplicationDao } from '@airport/airspace/dist/app/bundle';
+import { IApplicationDao } from '@airport/airspace/dist/app/bundle';
 import {
 	IApplicationInitializer,
 	IDatabaseManager,
 	IStoreDriver,
-	ITerminalState,
-	ITerminalStore,
 	ITransactionalServer,
 	ITransactionManager
 } from '@airport/terminal-map';
@@ -112,7 +110,7 @@ export class DatabaseManager
 		jsonApplications?: JsonApplicationWithLastIds[]
 	): Promise<void> {
 		const applications = await this.applicationDao.findAllWithJson()
-		const existingApplicationMap: Map<Application_FullName, IApplication> = new Map()
+		const existingApplicationMap: Map<Application_FullName, DbApplication> = new Map()
 		for (const application of applications) {
 			existingApplicationMap.set(application.fullName, application)
 		}
@@ -122,7 +120,8 @@ export class DatabaseManager
 			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils
 				.getApplication_FullName(jsonApplication))
 			if (existingApplication) {
-				jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds
+				jsonApplication.lastIds =
+					(existingApplication.versions[0].jsonApplication as JsonApplicationWithLastIds).lastIds
 			} else {
 				applicationsToCreate.push(jsonApplication)
 			}

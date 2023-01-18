@@ -1,8 +1,7 @@
 import { IContext } from "@airport/direction-indicator";
 import {
-    DbEntity
+    DbEntity, IActor
 } from "@airport/ground-control";
-import { IActor} from "@airport/holding-pattern/dist/app/bundle";
 
 export interface IOperationContext
     extends IContext {

@@ -3,13 +3,12 @@ import { IContext, Inject, Injected } from '@airport/direction-indicator';
 import {
 	BaseTerminalDao,
 	IBaseTerminalDao,
-	ITerminal,
 	QTerminal,
 	QUserAccount
 } from '../generated/generated'
 import Q from '../generated/qApplication'
 import { IAirportDatabase } from '@airport/air-traffic-control';
-import { Dictionary, ISequenceGenerator, Terminal_GUID } from '@airport/ground-control';
+import { Dictionary, ISequenceGenerator, ITerminal, Terminal_GUID } from '@airport/ground-control';
 import { UserAccount_GUID } from '@airport/aviation-communication';
 
 export interface ITerminalDao

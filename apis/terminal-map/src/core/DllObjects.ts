@@ -1,33 +1,22 @@
-import {
-    IApplication,
-    IApplicationColumn,
-    IApplicationEntity,
-    IApplicationProperty,
-    IApplicationPropertyColumn,
-    IApplicationReference,
-    IApplicationRelation,
-    IApplicationRelationColumn,
-    IApplicationVersion,
-    IDomain
-} from "@airport/airspace";
+import { DbApplication, DbApplicationReference, DbApplicationVersion, DbColumn, DbDomain, DbEntity, DbProperty, DbPropertyColumn, DbRelation, DbRelationColumn } from "@airport/ground-control"
 
 export interface AllDdlObjects {
     all: DdlObjects
-    allApplicationVersionsByIds: IApplicationVersion[]
+    allApplicationVersionsByIds: DbApplicationVersion[]
     added: DdlObjects
 }
 
 export interface DdlObjects {
-    columns: IApplicationColumn[]
-    domains: IDomain[]
-    entities: IApplicationEntity[]
-    latestApplicationVersions: IApplicationVersion[]
-    properties: IApplicationProperty[]
-    propertyColumns: IApplicationPropertyColumn[]
-    relationColumns: IApplicationRelationColumn[]
-    relations: IApplicationRelation[]
-    applications: IApplication[]
-    applicationReferences: IApplicationReference[]
-    applicationVersions: IApplicationVersion[]
+    columns: DbColumn[]
+    domains: DbDomain[]
+    entities: DbEntity[]
+    latestApplicationVersions: DbApplicationVersion[]
+    properties: DbProperty[]
+    propertyColumns: DbPropertyColumn[]
+    relationColumns: DbRelationColumn[]
+    relations: DbRelation[]
+    applications: DbApplication[]
+    applicationReferences: DbApplicationReference[]
+    applicationVersions: DbApplicationVersion[]
 
 }

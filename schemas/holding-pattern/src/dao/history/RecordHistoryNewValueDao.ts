@@ -1,9 +1,8 @@
 import { Injected } from '@airport/direction-indicator';
-import { RecordHistory_LocalId } from '@airport/ground-control';
+import { IRecordHistoryNewValue, RecordHistory_LocalId } from '@airport/ground-control';
 import {
 	BaseRecordHistoryNewValueDao,
 	IBaseRecordHistoryNewValueDao,
-	IRecordHistoryNewValue,
 	QRecordHistoryNewValue
 }                               from '../../generated/generated'
 import Q from '../../generated/qApplication'
