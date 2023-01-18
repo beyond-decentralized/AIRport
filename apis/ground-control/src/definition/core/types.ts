@@ -183,7 +183,10 @@ export type RepositoryMember_IsOwner = boolean
 export type RepositoryMember_IsAdministrator = boolean
 export type RepositoryMember_CanWrite = boolean
 export type RepositoryMember_PublicSigningKey = string
-
+export enum RepositoryMember_Status {
+	INVITED,
+	JOINED
+}
 export interface IRepositoryMember {
 
 	_localId: RepositoryMember_LocalId
@@ -193,6 +196,7 @@ export interface IRepositoryMember {
 	isAdministrator?: RepositoryMember_IsAdministrator
 	publicSigningKey?: RepositoryMember_PublicSigningKey
 	repository?: IRepository
+	status?: RepositoryMember_Status
 	userAccount?: IUserAccount
 
 }

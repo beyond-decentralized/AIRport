@@ -1,4 +1,4 @@
-import { RepositoryMember_CanWrite, RepositoryMember_GUID, RepositoryMember_IsAdministrator, RepositoryMember_IsOwner, RepositoryMember_LocalId, RepositoryMember_PublicSigningKey } from "@airport/ground-control";
+import { RepositoryMember_CanWrite, RepositoryMember_GUID, RepositoryMember_IsAdministrator, RepositoryMember_IsOwner, RepositoryMember_LocalId, RepositoryMember_PublicSigningKey, RepositoryMember_Status } from "@airport/ground-control";
 import {
     Column,
     DbBoolean,
@@ -32,20 +32,24 @@ export class RepositoryMember {
 
     @Column({ name: 'IS_OWNER', nullable: false })
     @DbBoolean()
-    isOwner?: RepositoryMember_IsOwner = false
+    isOwner?: RepositoryMember_IsOwner
 
     @Column({ name: 'IS_ADMINISTRATOR', nullable: false })
     @DbBoolean()
-    isAdministrator?: RepositoryMember_IsAdministrator = false
+    isAdministrator?: RepositoryMember_IsAdministrator
 
     @Column({ name: 'CAN_WRITE', nullable: false })
     @DbBoolean()
-    canWrite?: RepositoryMember_CanWrite = true
+    canWrite?: RepositoryMember_CanWrite
 
     // Can be null for read-only permissions
     @Column({ name: 'PUBLIC_SIGNING_KEY' })
     @DbString()
     publicSigningKey?: RepositoryMember_PublicSigningKey
+
+    @Column({ name: 'STATUS', nullable: false })
+    @DbNumber()
+    status?: RepositoryMember_Status
 
     @ManyToOne()
     @JoinColumn({

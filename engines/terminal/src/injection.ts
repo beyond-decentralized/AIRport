@@ -18,7 +18,6 @@ import {
     DbApplicationUtils,
     Dictionary,
     ENTITY_STATE_MANAGER,
-    KeyUtils,
     SEQUENCE_GENERATOR,
     TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control'
@@ -38,7 +37,6 @@ import {
     REPOSITORY_MANAGER,
     TransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
-import { SessionStateApi } from '@airport/session-state/dist/app/bundle'
 import { QUERY_FACADE } from '@airport/tarmaq-dao'
 import { QUERY_UTILS } from '@airport/tarmaq-query'
 import {
@@ -71,11 +69,10 @@ import { StructuralEntityValidator } from './processing/StructuralEntityValidato
 import { QueryParameterDeserializer } from './serialize/QueryParameterDeserializer'
 import { QueryResultsSerializer } from './serialize/QueryResultsSerializer'
 import { RepositoryManager } from './core/repository/RepositoryManager'
-import { UserAccountManager } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { LOCAL_API_SERVER } from '@airport/apron'
 import { IdGenerator } from '@airport/fuel-hydrant-system'
 import { ObservableQueryAdapter } from '@airport/flight-number'
-import { KeyRingManager } from '@airbridge/keyring/dist/app/bundle'
+import { RepositoryMaintenanceManager } from '@airbridge/sso'
 import { CrossRepositoryRelationManager } from '@airport/flight-recorder/dist/app/bundle'
 
 const terminal = lib('terminal')
@@ -175,7 +172,7 @@ terminal.setDependencies(InternalRecordManager, {
 REPOSITORY_MANAGER.setClass(RepositoryManager)
 REPOSITORY_MANAGER.setDependencies({
     dictionary: Dictionary,
-    keyRingManager: KeyRingManager,
+    repositoryMaintenanceManager: RepositoryMaintenanceManager,
     repositoryDao: RepositoryDao,
     repositoryMemberDao: RepositoryMemberDao,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
@@ -233,12 +230,7 @@ terminal.setDependencies(StructuralEntityValidator, {
 
 TERMINAL_SESSION_MANAGER.setClass(TerminalSessionManager)
 TERMINAL_SESSION_MANAGER.setDependencies({
-    keyRingManager: KeyRingManager,
-    keyUtils: KeyUtils,
-    sessionStateApi: SessionStateApi,
     terminalStore: TerminalStore,
-    transactionManager: TransactionManager,
-    userAccountManager: UserAccountManager,
     userStore: UserStore
 })
 

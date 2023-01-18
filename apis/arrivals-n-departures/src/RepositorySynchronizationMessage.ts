@@ -1,4 +1,4 @@
-import { DbApplication, DbApplicationVersion, DbRelation, IActor, IRepository, IRepositoryTransactionHistory, ITerminal, IUserAccount } from "@airport/ground-control";
+import { DbApplication, DbApplicationVersion, DbRelation, IActor, IRepository, IRepositoryMember, IRepositoryTransactionHistory, ITerminal, IUserAccount } from "@airport/ground-control";
 
 export type ReferencedApplicationVersion_InMessageIndex = number
 export type ReferencedApplicationRelation_InMessageIndex = number
@@ -17,6 +17,7 @@ export interface RepositorySynchronizationData {
 	applications: DbApplication[]
 	applicationVersions: DbApplicationVersion[]
 	history: IRepositoryTransactionHistory
+	memberOperations: IRepositoryMember[]
 	// Repositories may reference records in other repositories
 	referencedApplicationRelations: DbRelation[]
 	referencedApplicationVersions: DbApplicationVersion[]

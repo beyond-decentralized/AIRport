@@ -8,8 +8,8 @@ import {
 	QInternalAirEntity
 } from '@airport/holding-pattern/dist/app/bundle' // default
 import {
-	IKeyRingManager
-} from '@airbridge/keyring/dist/app/bundle'
+	IRepositoryMaintenanceManager
+} from '@airbridge/sso'
 // import is reserved for Application use
 import {
 	AND,
@@ -54,7 +54,7 @@ export class RepositoryManager
 	dictionary: Dictionary
 
 	@Inject()
-	keyRingManager: IKeyRingManager
+	repositoryMaintenanceManager: IRepositoryMaintenanceManager
 
 	@Inject()
 	repositoryDao: IRepositoryDao
@@ -100,7 +100,7 @@ already contains a new repository.`)
 			context)
 
 		if (!context.forKeyRingRepository) {
-			await this.keyRingManager.createRepositoryMember(
+			await this.repositoryMaintenanceManager.createRepositoryMember(
 				repository,
 				userAccount,
 				true,

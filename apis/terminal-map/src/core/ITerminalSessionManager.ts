@@ -9,15 +9,6 @@ export interface IUserAccountInfo {
 
 export interface ITerminalSessionManager {
 
-    signUp(
-        userAccount: IUserAccountInfo,
-        context: IContext
-    ): Promise<void>
-
-    login(
-        userAccount: IUserAccountInfo
-    ): Promise<void>
-
     getUserSession(
         // FIXME: in multi-user setting check the request object, may be platform specific
         context: IContext
