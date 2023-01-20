@@ -14,7 +14,7 @@ import { ITerminal, Terminal_GUID } from '@airport/ground-control'
 export interface ISyncInTerminalChecker {
 
 	ensureTerminals(
-		message: RepositorySynchronizationData,
+		data: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean>
 
@@ -28,14 +28,14 @@ export class SyncInTerminalChecker
 	terminalDao: ITerminalDao
 
 	async ensureTerminals(
-		message: RepositorySynchronizationData,
+		data: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean> {
 		try {
 			let terminalGUIDs: string[] = []
 			let messageTerminalIndexMap: Map<string, number> = new Map()
-			for (let i = 0; i < message.terminals.length; i++) {
-				const terminal = message.terminals[i]
+			for (let i = 0; i < data.terminals.length; i++) {
+				const terminal = data.terminals[i]
 				if (typeof terminal._localId !== 'undefined') {
 					throw new Error(`'terminal._localId' cannot be specified`)
 				}
@@ -50,7 +50,7 @@ export class SyncInTerminalChecker
 					throw new Error(`'terminal.isLocal' cannot defined in RepositorySynchronizationData.terminals`)
 				}
 				terminal.isLocal = false
-				const owner = message.userAccounts[terminal.owner as any]
+				const owner = data.userAccounts[terminal.owner as any]
 				if (!owner) {
 					throw new Error(
 						`Did not find userAccount for terminal.owner with "in-message index" ${terminal.owner}
@@ -66,10 +66,10 @@ export class SyncInTerminalChecker
 			for (const terminal of terminals) {
 				foundTerminalsByGUID.set(terminal.GUID, terminal)
 				const messageTerminalIndex = messageTerminalIndexMap.get(terminal.GUID)
-				message.terminals[messageTerminalIndex] = terminal
+				data.terminals[messageTerminalIndex] = terminal
 			}
 
-			const missingTerminals = message.terminals
+			const missingTerminals = data.terminals
 				.filter(messageTerminal => !foundTerminalsByGUID.has(messageTerminal.GUID))
 
 			if (missingTerminals.length) {

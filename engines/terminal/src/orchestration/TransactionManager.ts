@@ -191,7 +191,7 @@ Only one concurrent transaction is allowed per application.`)
 			// one repository at a time.  APIs exposed externally will never be top
 			// level transactions
 			if (!this.appTrackerUtils.isInternalDomain(credentials.domain)) {
-				const userSession = await this.terminalSessionManager.getUserSession(context)
+				const userSession = await this.terminalSessionManager.getUserSession()
 				userSession.currentRootTransaction = rootTransaction
 			}
 		}
@@ -228,7 +228,7 @@ Only one concurrent transaction is allowed per application.`)
 		const transactionCleared = await this.clearTransaction(
 			transaction, parentTransaction, credentials, context)
 		if (!parentTransaction) {
-			await this.clearUserSessionRootTransaction(transaction, context)
+			await this.clearUserSessionRootTransaction(transaction)
 		}
 		if (transactionCleared) {
 			await this.resumeParentOrPendingTransaction(parentTransaction, context)
@@ -316,7 +316,7 @@ parent transactions.
 				}
 			}
 			if (!parentTransaction) {
-				await this.clearUserSessionRootTransaction(transaction, context)
+				await this.clearUserSessionRootTransaction(transaction)
 			}
 		} finally {
 			if (await this.clearTransaction(
@@ -330,8 +330,7 @@ parent transactions.
 	}
 
 	private async clearUserSessionRootTransaction(
-		transaction: ITransaction,
-		context: IContext
+		transaction: ITransaction
 	): Promise<void> {
 		// Internal calls don't maintain rootTransaction and can create more than
 		// one repository at a time.  APIs exposed externally will never be top
@@ -340,7 +339,7 @@ parent transactions.
 			return
 		}
 
-		const userSession = await this.terminalSessionManager.getUserSession(context)
+		const userSession = await this.terminalSessionManager.getUserSession()
 		userSession.currentRootTransaction = null
 	}
 

@@ -70,11 +70,7 @@ export class RepositoryManager
 		isPublic: Repository_IsPublic,
 		context: IApiCallContext & ITransactionContext
 	): Promise<IRepository> {
-		const userSession = await this.terminalSessionManager
-			.getUserSession(context)
-		if (!userSession) {
-			throw new Error('No User Session present')
-		}
+		const userSession = await this.terminalSessionManager.getUserSession()
 
 		let isInternalDomain = this.appTrackerUtils
 			.isInternalDomain(context.transaction.credentials.domain)
@@ -125,14 +121,10 @@ already contains a new repository.`)
 		repository: IRepository,
 		context: IContext
 	): Promise<void> {
-		const userSession = await this.terminalSessionManager.getUserSession(context)
-		if (!userSession) {
-			throw new Error(`No User Session found`)
-		}
-		const userAccount = userSession.userAccount
-		if (!userAccount) {
-			throw new Error(`No User Account found in User Session`)
-		}
+		const userAccount = await this.terminalSessionManager.getUserAccountFromSession()
+
+		throw new Error(`Implement`)
+
 	}
 
 	async setUiEntryUri(
@@ -140,7 +132,7 @@ already contains a new repository.`)
 		repository: IRepository,
 		context: IContext
 	): Promise<void> {
-		const userSession = await this.terminalSessionManager.getUserSession(context)
+		const userSession = await this.terminalSessionManager.getUserSession()
 
 		if (userSession.currentTransaction.actor.application.fullName !== repository.fullApplicationName) {
 			throw new Error(`Only the Application that created a repository may change the uiEntityUri.`);

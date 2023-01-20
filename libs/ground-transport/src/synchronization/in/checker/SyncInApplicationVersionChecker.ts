@@ -45,7 +45,7 @@ export class SyncInApplicationVersionChecker
 		let applicationCheckMap
 		try {
 			applicationCheckMap = await this.checkVersionsApplicationsDomains(
-				inMessageApplicationVersions, inMessageApplications, context);
+				inMessageApplicationVersions, inMessageApplications);
 
 			for (let i = 0; i < inMessageApplicationVersions.length; i++) {
 				const applicationVersion = inMessageApplicationVersions[i]
@@ -63,8 +63,7 @@ export class SyncInApplicationVersionChecker
 
 	private async checkVersionsApplicationsDomains(
 		inMessageApplicationVersions: DbApplicationVersion[],
-		inMessageApplications: DbApplication[],
-		context: IContext
+		inMessageApplications: DbApplication[]
 	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>> {
 		const { allApplicationNames: allApplication_Names, domainNames, applicationVersionCheckMap } = this
 			.getNames(inMessageApplicationVersions, inMessageApplications)

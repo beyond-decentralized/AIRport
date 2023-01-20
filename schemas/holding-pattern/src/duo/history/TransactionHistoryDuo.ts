@@ -18,8 +18,7 @@ export interface ITransactionHistoryDuo {
 		repositoryLocalId: Repository_LocalId,
 		actor: IActor,
 		isRepositoryCreation: boolean,
-		isPublic: Repository_IsPublic,
-		context: IContext
+		isPublic: Repository_IsPublic
 	): Promise<IRepositoryTransactionHistory>
 
 }
@@ -52,18 +51,13 @@ export class TransactionHistoryDuo
 		repositoryLocalId: Repository_LocalId,
 		actor: IActor,
 		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation,
-		isPublic: Repository_IsPublic,
-		context: IContext
+		isPublic: Repository_IsPublic
 	): Promise<IRepositoryTransactionHistory> {
 		let repositoryTransactionHistory: IRepositoryTransactionHistory = transactionHistory.repositoryTransactionHistoryMap[repositoryLocalId]
 
 		if (!repositoryTransactionHistory) {
-			const userSession = await this.terminalSessionManager
-				.getUserSession(context)
-			if (!userSession) {
-				throw new Error(
-					`No UserSession present`)
-			}
+			const userSession = await this.terminalSessionManager.getUserSession()
+
 			const repositoryMember = await this.repositoryMemberDao.findForRepositoryLocalIdAndUserLocalId(
 				repositoryLocalId,
 				userSession.userAccount._localId

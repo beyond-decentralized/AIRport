@@ -13,7 +13,7 @@ import { IUserAccount } from '@airport/ground-control';
 export interface ISyncInUserAccountChecker {
 
 	ensureUserAccounts(
-		message: RepositorySynchronizationData,
+		datas: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean>;
 
@@ -27,14 +27,14 @@ export class SyncInUserAccountChecker
 	userAccountDao: IUserAccountDao
 
 	async ensureUserAccounts(
-		message: RepositorySynchronizationData,
+		data: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean> {
 		try {
 			let userAccountGUIDs: string[] = []
 			let messageUserAccountIndexMap: Map<string, number> = new Map()
-			for (let i = 0; i < message.userAccounts.length; i++) {
-				const userAccount = message.userAccounts[i]
+			for (let i = 0; i < data.userAccounts.length; i++) {
+				const userAccount = data.userAccounts[i]
 				if (typeof userAccount._localId !== 'undefined') {
 					throw new Error(`'userAccount._localId' cannot be specified`)
 				}
@@ -53,10 +53,10 @@ export class SyncInUserAccountChecker
 			for (const userAccount of userAccounts) {
 				foundUserAccountsByGUID.set(userAccount.GUID, userAccount)
 				const messageUserAccountIndex = messageUserAccountIndexMap.get(userAccount.GUID)
-				message.userAccounts[messageUserAccountIndex] = userAccount
+				data.userAccounts[messageUserAccountIndex] = userAccount
 			}
 
-			const missingUserAccounts = message.userAccounts
+			const missingUserAccounts = data.userAccounts
 				.filter(messageUserAccount => !foundUserAccountsByGUID.has(messageUserAccount.GUID))
 
 			if (missingUserAccounts.length) {

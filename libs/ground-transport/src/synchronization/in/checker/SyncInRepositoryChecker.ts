@@ -6,7 +6,7 @@ import { RepositorySynchronizationData } from '@airport/arrivals-n-departures'
 import {
 	IRepositoryDao, RepositoryMemberDao
 } from '@airport/holding-pattern/dist/app/bundle'
-import { IRepository, IRepositoryMember, RepositoryMember_GUID, RepositoryMember_PublicSigningKey, RepositoryMember_Status } from '@airport/ground-control';
+import { IRepository, IRepositoryMember, IRepositoryTransactionHistory, RepositoryMember_GUID, RepositoryMember_PublicSigningKey, RepositoryMember_Status } from '@airport/ground-control';
 
 export interface IRepositoriesAndMembersCheckResult
 	extends INewAndUpdatedRepositorieAndRecords {
@@ -23,7 +23,7 @@ export interface INewAndUpdatedRepositorieAndRecords {
 export interface ISyncInRepositoryChecker {
 
 	checkRepositoriesAndMembers(
-		message: RepositorySynchronizationData
+		data: RepositorySynchronizationData
 	): Promise<IRepositoriesAndMembersCheckResult>;
 
 }
@@ -39,7 +39,7 @@ export class SyncInRepositoryChecker
 	repositoryMemberDao: RepositoryMemberDao
 
 	async checkRepositoriesAndMembers(
-		message: RepositorySynchronizationData
+		data: RepositorySynchronizationData
 	): Promise<IRepositoriesAndMembersCheckResult> {
 		let missingRepositories: IRepository[] = []
 		let newMembers: IRepositoryMember[] = []
@@ -49,16 +49,16 @@ export class SyncInRepositoryChecker
 		try {
 			let repositoryGUIDs: string[] = []
 			let messageRepositoryIndexMap: Map<string, number> = new Map()
-			for (let i = 0; i < message.referencedRepositories.length; i++) {
+			for (let i = 0; i < data.referencedRepositories.length; i++) {
 				this.checkRepository(
-					message.referencedRepositories[i],
+					data.referencedRepositories[i],
 					i,
 					repositoryGUIDs,
 					messageRepositoryIndexMap,
-					message
+					data
 				)
 			}
-			const history = message.history
+			const history = data.history
 			if (typeof history !== 'object') {
 				throw new Error(`message.history is not an object`)
 			}
@@ -75,7 +75,7 @@ export class SyncInRepositoryChecker
 					null,
 					repositoryGUIDs,
 					messageRepositoryIndexMap,
-					message
+					data
 				)
 			} else {
 				if (typeof repository !== 'string') {
@@ -87,9 +87,9 @@ export class SyncInRepositoryChecker
 
 			const repositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs)
 			for (const foundRepository of repositories) {
-				const messageUserAccountIndex = messageRepositoryIndexMap.get(foundRepository.GUID)
-				if (messageUserAccountIndex || messageUserAccountIndex === 0) {
-					message.referencedRepositories[messageUserAccountIndex] = foundRepository
+				const messageRepositoryIndex = messageRepositoryIndexMap.get(foundRepository.GUID)
+				if (messageRepositoryIndex || messageRepositoryIndex === 0) {
+					data.referencedRepositories[messageRepositoryIndex] = foundRepository
 				} else {
 					if (history.isRepositoryCreation) {
 						if (foundRepository.GUID === repository.GUID) {
@@ -107,7 +107,7 @@ export class SyncInRepositoryChecker
 				}
 			}
 
-			missingRepositories = message.referencedRepositories
+			missingRepositories = data.referencedRepositories
 				.filter(messageRepository => !messageRepository._localId)
 
 			if (typeof repository !== 'object') {
@@ -120,7 +120,7 @@ export class SyncInRepositoryChecker
 				missingRepositories.push(repository)
 			}
 
-			const memberCheckResult = await this.checkRepositoryMembers(message)
+			const memberCheckResult = await this.checkRepositoryMembers(data)
 			publicSigningKey = memberCheckResult.publicSigningKey
 			newMembers = memberCheckResult.newMembers
 			updatedMembers = memberCheckResult.updatedMembers
@@ -165,15 +165,42 @@ export class SyncInRepositoryChecker
 				throw new Error(`No ${updatedRepositoryMembersErrorPrefix} on newly created Repository`)
 			}
 		} else {
-			this.checkRepositoryMember(history.member, memberPath)
+			this.checkRepositoryMemberCommonFields(history.member, memberPath)
 		}
 
 		if (!(history.newRepositoryMembers instanceof Array)) {
 			throw new Error(`history.newRepositoryMembers is not an Array`)
 		}
-		this.checkNewRepositoryMembers(history.newRepositoryMembers, data)
-		this.checkUpdatedRepositoryMembers(history.updatedRepositoryMembers)
+		this.checkNewRepositoryMembers(history.newRepositoryMembers, data, history.isRepositoryCreation)
 
+		let allowInvitedStatus = true
+		let allowJoinedStatus = false
+		if (repository.isPublic) {
+			allowInvitedStatus = false
+		}
+		this.checkRepositoryMemberUpdateFields(history.updatedRepositoryMembers,
+			'updatedRepositoryMembers', allowInvitedStatus, allowJoinedStatus, true)
+
+		const inMessageRepositoryMemberMapByGUID = await this.getInMessageRepositoryMemberMapByGUID(history)
+
+		publicSigningKey = this.checkHistoryMemberExistence(data, inMessageRepositoryMemberMapByGUID, newMembers)
+		this.checkNewRepositoryMembersExistence(data, inMessageRepositoryMemberMapByGUID, newMembers)
+		const updatedRepositoryMembersExistenceCheckResult = this.checkUpdatedRepositoryMembersExistence(
+			data, inMessageRepositoryMemberMapByGUID, updatedMembers)
+		if (updatedRepositoryMembersExistenceCheckResult.isJoinMessage) {
+			publicSigningKey = updatedRepositoryMembersExistenceCheckResult.publicSigningKey
+		}
+
+		return {
+			newMembers,
+			publicSigningKey,
+			updatedMembers
+		}
+	}
+
+	private async getInMessageRepositoryMemberMapByGUID(
+		history: IRepositoryTransactionHistory
+	): Promise<Map<RepositoryMember_GUID, IRepositoryMember>> {
 		const messageRepositoryMemberGUIDs: RepositoryMember_GUID[] = [
 			history.member,
 			...history.newRepositoryMembers,
@@ -187,30 +214,18 @@ export class SyncInRepositoryChecker
 				throw new Error(`Found existing repositoryMembers for a newly created repository`)
 			}
 		}
-		const messageRepositoryMemberMapByGUID: Map<RepositoryMember_GUID, IRepositoryMember>
+		const inMessageRepositoryMemberMapByGUID: Map<RepositoryMember_GUID, IRepositoryMember>
 			= new Map()
 		for (const existingRepositoryMember of existingMessageRepositoryMembers) {
-			messageRepositoryMemberMapByGUID.set(existingRepositoryMember.GUID, existingRepositoryMember)
+			inMessageRepositoryMemberMapByGUID.set(existingRepositoryMember.GUID, existingRepositoryMember)
 		}
 
-		publicSigningKey = this.checkHistoryMemberExistence(data, messageRepositoryMemberMapByGUID, newMembers)
-		this.checkNewRepositoryMembersExistence(data, messageRepositoryMemberMapByGUID, newMembers)
-		const updatedRepositoryMembersExistenceCheckResult = this
-			.checkUpdatedRepositoryMembersExistence(data, messageRepositoryMemberMapByGUID, updatedMembers)
-		if (updatedRepositoryMembersExistenceCheckResult.isJoinMessage) {
-			publicSigningKey = updatedRepositoryMembersExistenceCheckResult.publicSigningKey
-		}
-
-		return {
-			newMembers,
-			publicSigningKey,
-			updatedMembers
-		}
+		return inMessageRepositoryMemberMapByGUID
 	}
 
 	private checkUpdatedRepositoryMembersExistence(
 		data: RepositorySynchronizationData,
-		messageRepositoryMemberMapByGUID: Map<RepositoryMember_GUID, IRepositoryMember>,
+		inMessageRepositoryMemberMapByGUID: Map<RepositoryMember_GUID, IRepositoryMember>,
 		updatedMembers: IRepositoryMember[]
 	): {
 		isJoinMessage: boolean,
@@ -224,7 +239,7 @@ export class SyncInRepositoryChecker
 		let hasJoinedMember = false
 
 		for (const updatedRepositoryMember of history.updatedRepositoryMembers) {
-			const existingMember = messageRepositoryMemberMapByGUID.get(updatedRepositoryMember.GUID)
+			const existingMember = inMessageRepositoryMemberMapByGUID.get(updatedRepositoryMember.GUID)
 			if (!existingMember) {
 				throw new Error(`message.history.updatedRepositoryMembers[x] with GUID ${updatedRepositoryMember.GUID}' does not exist`)
 			}
@@ -240,6 +255,9 @@ export class SyncInRepositoryChecker
 					}
 
 					publicSigningKey = updatedRepositoryMember.publicSigningKey
+					if (existingMember.publicSigningKey && existingMember.publicSigningKey !== publicSigningKey) {
+						throw new Error(`Users are not allowed to change their publicSigningKey for a repository.`)
+					}
 					isJoinMessage = true
 					existingMember.publicSigningKey = publicSigningKey
 					break;
@@ -260,14 +278,14 @@ export class SyncInRepositoryChecker
 
 	private checkNewRepositoryMembersExistence(
 		data: RepositorySynchronizationData,
-		messageRepositoryMemberMapByGUID: Map<RepositoryMember_GUID, IRepositoryMember>,
+		inMessageRepositoryMemberMapByGUID: Map<RepositoryMember_GUID, IRepositoryMember>,
 		newMembers: IRepositoryMember[]
 	) {
 		const history = data.history
 		const repository = history.repository
 
 		for (const newRepositoryMember of history.newRepositoryMembers) {
-			if (!messageRepositoryMemberMapByGUID.has(newRepositoryMember.GUID)) {
+			if (!inMessageRepositoryMemberMapByGUID.has(newRepositoryMember.GUID)) {
 				throw new Error(`message.history.newRepositoryMembers[x] with GUID ${newRepositoryMember.GUID}' already exists`)
 			}
 			const userAccount = data.userAccounts[history.member.userAccount as any]
@@ -290,7 +308,7 @@ export class SyncInRepositoryChecker
 
 	private checkHistoryMemberExistence(
 		data: RepositorySynchronizationData,
-		messageRepositoryMemberMapByGUID: Map<RepositoryMember_GUID, IRepositoryMember>,
+		inMessageRepositoryMemberMapByGUID: Map<RepositoryMember_GUID, IRepositoryMember>,
 		newMembers: IRepositoryMember[]
 	): RepositoryMember_PublicSigningKey {
 		let publicSigningKey: RepositoryMember_PublicSigningKey
@@ -300,7 +318,7 @@ export class SyncInRepositoryChecker
 
 		const historyMemberErrorPrefix = `message.history.member with GUID '${history.member.GUID}'`
 		if (history.isRepositoryCreation) {
-			if (messageRepositoryMemberMapByGUID.has(history.member.GUID)) {
+			if (inMessageRepositoryMemberMapByGUID.has(history.member.GUID)) {
 				throw new Error(`${historyMemberErrorPrefix} already exits.
 	This repository (GUID: ${repository.GUID}) is being created and cannot have existing members.`)
 			}
@@ -325,7 +343,7 @@ export class SyncInRepositoryChecker
 			}
 			newMembers.push(history.member)
 		} else {
-			const existingHistoryMember = messageRepositoryMemberMapByGUID.get(history.member.GUID)
+			const existingHistoryMember = inMessageRepositoryMemberMapByGUID.get(history.member.GUID)
 			if (!existingHistoryMember) {
 				throw new Error(`${historyMemberErrorPrefix} does not exit.
 	This repository (GUID: ${repository.GUID}) already exists and an existing member must be making the modifications`)
@@ -388,7 +406,7 @@ export class SyncInRepositoryChecker
 		delete repository._localId
 	}
 
-	private checkRepositoryMember(
+	private checkRepositoryMemberCommonFields(
 		repositoryMember: IRepositoryMember,
 		repositoryMessagePath: string,
 	): void {
@@ -411,7 +429,7 @@ export class SyncInRepositoryChecker
 		message: RepositorySynchronizationData
 	): void {
 		let errorPrefix = `repository.member`
-		this.checkRepositoryMember(repositoryMember, errorPrefix)
+		this.checkRepositoryMemberCommonFields(repositoryMember, errorPrefix)
 		if (typeof repositoryMember.userAccount !== 'number') {
 			throw new Error(`Expecting "in-message index" (number)
 				in '${errorPrefix}.userAccount'`)
@@ -422,23 +440,20 @@ export class SyncInRepositoryChecker
 		}
 		this.checkRepositoryMemberPublicSigningKey(
 			repositoryMember,
+			false,
 			errorPrefix
 		)
 	}
 
-	private checkUpdatedRepositoryMembers(
+	private checkRepositoryMemberUpdateFields(
 		repositoryMembers: IRepositoryMember[],
-		allowInvitedStatus: boolean = false,
-		allowJoinedStatus: boolean = true,
-		repositoryMembersType: string = 'updatedRepositoryMembers'
+		repositoryMembersType: string,
+		allowInvitedStatus: boolean,
+		allowJoinedStatus: boolean,
+		expectingPublicSigningKey: boolean
 	): void {
-		let errorPrefix = `repository.${repositoryMembersType}[x]`
+		let errorPrefix = `repository.${repositoryMembersType}`
 		for (const repositoryMember of repositoryMembers) {
-			this.checkRepositoryMember(repositoryMember, errorPrefix)
-			this.checkRepositoryMemberPublicSigningKey(
-				repositoryMember,
-				errorPrefix
-			)
 			switch (repositoryMember.status) {
 				case RepositoryMember_Status.INVITED:
 					if (!allowInvitedStatus) {
@@ -453,33 +468,56 @@ export class SyncInRepositoryChecker
 				default:
 					throw new Error(`${errorPrefix}.status is not a RepositoryMember_Status`)
 			}
-			delete repositoryMember._localId
+			this.checkRepositoryMemberCommonFields(repositoryMember, errorPrefix)
+			this.checkRepositoryMemberPublicSigningKey(
+				repositoryMember,
+				expectingPublicSigningKey,
+				errorPrefix
+			)
 		}
 	}
 
 	private checkRepositoryMemberPublicSigningKey(
 		repositoryMember: IRepositoryMember,
+		expectingPublicSigningKey: boolean,
 		errorPrefix: string
 	): void {
-		if (typeof repositoryMember.publicSigningKey !== 'string') {
-			throw new Error(`${errorPrefix}.publicSigningKey is not a string`)
-		}
-		// FIXME: get the right length of a publicSigningKey
-		if (repositoryMember.publicSigningKey.length !== 36) {
-			throw new Error(`${errorPrefix}.publicSigningKey does not have .length === 36`)
+		if (expectingPublicSigningKey) {
+			if (typeof repositoryMember.publicSigningKey !== 'string') {
+				throw new Error(`${errorPrefix}.publicSigningKey is not a string`)
+			}
+			// FIXME: get the right length of a publicSigningKey
+			if (repositoryMember.publicSigningKey.length !== 36) {
+				throw new Error(`${errorPrefix}.publicSigningKey does not have .length === 36`)
+			}
+		} else {
+			if (typeof repositoryMember.publicSigningKey !== 'undefined') {
+				throw new Error(`${errorPrefix}.publicSigningKey is defined (but is not allowed)`)
+			}
 		}
 	}
 
 	private checkNewRepositoryMembers(
 		repositoryMembers: IRepositoryMember[],
-		data: RepositorySynchronizationData
+		data: RepositorySynchronizationData,
+		isRepositoryCreation: boolean
 	): void {
-		this.checkUpdatedRepositoryMembers(
+		const isPublicRepository = data.history.repository.isPublic ? true : false
+		const allowInvitedStatus = !isRepositoryCreation && !isPublicRepository
+		const allowJoinedStatus = isRepositoryCreation || isPublicRepository
+		const expectingPublicSigningKey = allowJoinedStatus
+		this.checkRepositoryMemberUpdateFields(
 			repositoryMembers,
-			true,
-			true,
-			'newRepositoryMembers'
+			`newRepositoryMembers of a ${isPublicRepository ? 'public' : 'private'} Repository`,
+			allowInvitedStatus,
+			allowJoinedStatus,
+			expectingPublicSigningKey
 		)
+		if (isRepositoryCreation) {
+			if (repositoryMembers.length !== 1) {
+				throw new Error(`Expecting exactly 1 record in data.history.newRepositoryMembers for a newly created Repository`)
+			}
+		}
 		let errorPrefix = `repository.newRepositoryMembers[x]`
 		for (const repositoryMember of repositoryMembers) {
 			if (typeof repositoryMember.isOwner !== 'boolean') {
@@ -498,7 +536,6 @@ export class SyncInRepositoryChecker
 			if (!userAccount) {
 				throw new Error(`message.newRepositoryMembers[x] with GUID ${repositoryMember.GUID} does not have a valid userAccount`)
 			}
-
 		}
 	}
 

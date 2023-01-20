@@ -11,8 +11,7 @@ export class SessionStateApi {
 
     @Api()
     async getLoggedInUser(): Promise<UserAccount> {
-        const userSession = await this.terminalSessionManager.getUserSession({})
-        const userAccount = userSession.userAccount
+        const userAccount = await this.terminalSessionManager.getUserAccountFromSession()
 
         return {
             _localId: null,

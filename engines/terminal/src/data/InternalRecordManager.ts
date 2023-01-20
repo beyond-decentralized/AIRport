@@ -92,7 +92,7 @@ export class InternalRecordManager
 
             const frameworkActor = this.terminalStore.getFrameworkActor()
             // TODO: add request object
-            const userSession = await this.terminalSessionManager.getUserSession(context)
+            const userSession = await this.terminalSessionManager.getUserSession()
 
             let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
                 application.domain, application.name, userSession.userAccount.GUID, frameworkActor.terminal.GUID)

@@ -25,7 +25,7 @@ export interface IApplicationCheckRecord {
 export interface ISyncInApplicationChecker {
 
     ensureApplications(
-        message: RepositorySynchronizationData,
+        data: RepositorySynchronizationData,
         context: IContext
     ): Promise<boolean>
 
@@ -42,15 +42,15 @@ export class SyncInApplicationChecker
     domainDao: IDomainDao
 
     async ensureApplications(
-        message: RepositorySynchronizationData,
+        data: RepositorySynchronizationData,
         context: IContext
     ): Promise<boolean> {
         try {
-            let applicationCheckMap = await this.checkApplicationsAndDomains(message, context);
+            let applicationCheckMap = await this.checkApplicationsAndDomains(data, context);
 
-            for (let i = 0; i < message.applications.length; i++) {
-                let application = message.applications[i]
-                message.applications[i] = applicationCheckMap
+            for (let i = 0; i < data.applications.length; i++) {
+                let application = data.applications[i]
+                data.applications[i] = applicationCheckMap
                     .get(application.domain.name).get(application.name)
                     .application
             }
@@ -63,11 +63,11 @@ export class SyncInApplicationChecker
     }
 
     private async checkApplicationsAndDomains(
-        message: RepositorySynchronizationData,
+        data: RepositorySynchronizationData,
         context: IContext
     ): Promise<Map<string, Map<string, IApplicationCheckRecord>>> {
         const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap }
-            = this.getNames(message)
+            = this.getNames(data)
 
         const applications = await this.applicationDao
             .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names)

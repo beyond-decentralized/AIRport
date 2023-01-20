@@ -400,7 +400,7 @@ export abstract class TransactionalReceiver {
         context: IApiCallContext & ITransactionContext,
     ): Promise<IActor> {
         let actor: IActor
-        const userSession = await this.terminalSessionManager.getUserSession(context)
+        const userSession = await this.terminalSessionManager.getUserSession()
         try {
             const isInternalDomain = await this.appTrackerUtils
                 .isInternalDomain(message.domain)
@@ -451,7 +451,7 @@ export abstract class TransactionalReceiver {
                 return await this.transactionalServer.commit(credentials, context)
             }
         } finally {
-            const userSession = await this.terminalSessionManager.getUserSession(context)
+            const userSession = await this.terminalSessionManager.getUserSession()
             userSession.currentTransaction = context.transaction
         }
     }

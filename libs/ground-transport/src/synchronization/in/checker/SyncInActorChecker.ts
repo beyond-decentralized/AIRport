@@ -14,7 +14,7 @@ import { IActor } from '@airport/ground-control'
 export interface ISyncInActorChecker {
 
 	ensureActors(
-		message: RepositorySynchronizationData,
+		data: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean>
 
@@ -28,20 +28,20 @@ export class SyncInActorChecker
 	actorDao: IActorDao
 
 	async ensureActors(
-		message: RepositorySynchronizationData,
+		data: RepositorySynchronizationData,
 		context: IContext
 	): Promise<boolean> {
 		try {
 			let actorGUIDs: string[] = []
 			let messageActorIndexMap: Map<string, number> = new Map()
-			for (let i = 0; i < message.actors.length; i++) {
-				const actor = message.actors[i]
+			for (let i = 0; i < data.actors.length; i++) {
+				const actor = data.actors[i]
 				if (typeof actor.GUID !== 'string' || actor.GUID.length !== 36) {
 					throw new Error(`Invalid 'terminal.GUID'`)
 				}
-				this.checkActorApplication(actor, message)
-				this.checkActorTerminal(actor, message)
-				this.checkActorUserAccount(actor, message)
+				this.checkActorApplication(actor, data)
+				this.checkActorTerminal(actor, data)
+				this.checkActorUserAccount(actor, data)
 				actorGUIDs.push(actor.GUID)
 				messageActorIndexMap.set(actor.GUID, i)
 				// Make sure id field is not in the input
@@ -51,10 +51,10 @@ export class SyncInActorChecker
 			const actors = await this.actorDao.findByGUIDs(actorGUIDs)
 			for (const actor of actors) {
 				const messageUserAccountIndex = messageActorIndexMap.get(actor.GUID)
-				message.actors[messageUserAccountIndex] = actor
+				data.actors[messageUserAccountIndex] = actor
 			}
 
-			const missingActors = message.actors
+			const missingActors = data.actors
 				.filter(messageActor => !messageActor._localId)
 
 			if (missingActors.length) {
@@ -70,13 +70,13 @@ export class SyncInActorChecker
 
 	private checkActorApplication(
 		actor: IActor,
-		message: RepositorySynchronizationData
+		data: RepositorySynchronizationData
 	): void {
 		if (typeof actor.application !== 'number') {
 			throw new Error(`Expecting "in-message index" (number)
 			in 'actor.terminal'`)
 		}
-		const application = message.applications[actor.application as any]
+		const application = data.applications[actor.application as any]
 		if (!application) {
 			throw new Error(
 				`Did not find actor.application with "in-message index" ${actor.application}`);
@@ -86,13 +86,13 @@ export class SyncInActorChecker
 
 	private checkActorTerminal(
 		actor: IActor,
-		message: RepositorySynchronizationData
+		data: RepositorySynchronizationData
 	): void {
 		if (typeof actor.terminal !== 'number') {
 			throw new Error(`Expecting "in-message index" (number)
 			in 'actor.terminal'`)
 		}
-		const terminal = message.terminals[actor.terminal as any]
+		const terminal = data.terminals[actor.terminal as any]
 		if (!terminal) {
 			throw new Error(
 				`Did not find actor.terminal with "in-message index" ${actor.terminal}`);
@@ -102,13 +102,13 @@ export class SyncInActorChecker
 
 	private checkActorUserAccount(
 		actor: IActor,
-		message: RepositorySynchronizationData
+		data: RepositorySynchronizationData
 	): void {
 		if (typeof actor.userAccount !== 'number') {
 			throw new Error(`Expecting "in-message index" (number)
 			in 'actor.userAccount'`)
 		}
-		const userAccount = message.userAccounts[actor.userAccount as any]
+		const userAccount = data.userAccounts[actor.userAccount as any]
 		if (!userAccount) {
 			throw new Error(
 				`Did not find actor.userAccount with "in-message index" ${actor.userAccount}`);

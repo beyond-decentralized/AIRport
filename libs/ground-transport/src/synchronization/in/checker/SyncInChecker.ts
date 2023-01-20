@@ -19,7 +19,7 @@ import { ITerminalStore } from '@airport/terminal-map';
 export interface ISyncInChecker {
 
 	checkData(
-		data: RepositorySynchronizationMessage,
+		message: RepositorySynchronizationMessage,
 		context: IContext
 	): Promise<IDataCheckResult>
 

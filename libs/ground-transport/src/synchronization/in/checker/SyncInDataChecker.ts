@@ -182,13 +182,13 @@ RepositorySynchronizationData.history.actor`)
 	}
 
 	private async checkOperationHistories(
-		message: RepositorySynchronizationData,
+		data: RepositorySynchronizationData,
 		applicationEntityMap: Map<string, Map<string, Map<ApplicationEntity_TableIndex, DbEntity>>>,
 		context: IContext
 	): Promise<IInternalDataCheckResult> {
 		const forImmediateProcessing: IOperationHistory[] = []
 		const forDelayedProcessing: IOperationHistory[] = []
-		const history = message.history
+		const history = data.history
 		if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
 			throw new Error(`Invalid RepositorySynchronizationData.history.operationHistory Array`)
 		}
@@ -225,7 +225,7 @@ the position of orderHistory record determines it's order`)
 				throw new Error(`Expecting "in-message index" (number)
 					in 'operationHistory[${i}].entity.applicationVersion'`)
 			}
-			const applicationVersion = message.applicationVersions[operationHistory.entity.applicationVersion as any]
+			const applicationVersion = data.applicationVersions[operationHistory.entity.applicationVersion as any]
 			if (!applicationVersion) {
 				throw new Error(`Invalid index into message.applicationVersions [${operationHistory.entity.applicationVersion}],
 				in operationHistory[${i}].entity.applicationVersion`)
@@ -284,7 +284,7 @@ the position of orderHistory record determines it's order`)
 			}
 
 			await this.checkRecordHistories(operationHistory,
-				entityColumnMapsByIndex, message, context)
+				entityColumnMapsByIndex, data, context)
 		}
 		return {
 			forImmediateProcessing,
@@ -295,7 +295,7 @@ the position of orderHistory record determines it's order`)
 	private async checkRecordHistories(
 		operationHistory: IOperationHistory,
 		entityColumnMapsByIndex: IEntityColumnMapsByIndex,
-		message: RepositorySynchronizationData,
+		data: RepositorySynchronizationData,
 		context: IContext
 	): Promise<void> {
 		const recordHistories = operationHistory.recordHistory
@@ -313,15 +313,15 @@ the position of orderHistory record determines it's order`)
 						throw new Error(`Cannot specify RepositorySynchronizationData.history -> operationHistory.recordHistory.actor
 for ChangeType.INSERT_VALUES`)
 					}
-					recordHistory.actor = message.history.actor
+					recordHistory.actor = data.history.actor
 					break
 				case ChangeType.DELETE_ROWS:
 				case ChangeType.UPDATE_ROWS: {
 					// If no actor is present on record level its the same actor that created the repositoryTransactionHistory
 					if (recordHistory.actor === undefined) {
-						recordHistory.actor = message.history.actor
+						recordHistory.actor = data.history.actor
 					} else {
-						const actor = message.actors[recordHistory.actor as any]
+						const actor = data.actors[recordHistory.actor as any]
 						if (!actor) {
 							throw new Error(`Did find Actor for "in-message id" in RepositorySynchronizationData.history -> operationHistory.actor`)
 						}
@@ -336,9 +336,9 @@ for ChangeType.INSERT_VALUES`)
 			}
 
 			this.checkNewValues(recordHistory, entityColumnMapsByIndex,
-				operationHistory, message, context)
+				operationHistory, data)
 			this.checkOldValues(recordHistory, entityColumnMapsByIndex,
-				operationHistory, message, context)
+				operationHistory, data)
 
 			recordHistory.operationHistory = operationHistory
 
@@ -350,8 +350,7 @@ for ChangeType.INSERT_VALUES`)
 		recordHistory: IRecordHistory,
 		entityColumnMapsByIndex: IEntityColumnMapsByIndex,
 		operationHistory: IOperationHistory,
-		message: RepositorySynchronizationData,
-		context: IContext
+		data: RepositorySynchronizationData
 	): void {
 		switch (operationHistory.changeType) {
 			case ChangeType.DELETE_ROWS:
@@ -385,31 +384,31 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS`)
 			this.checkRelatedObjectInNewValue(
 				newValue,
 				entityColumnMapsByIndex.actorIds,
-				message.actors,
+				data.actors,
 				'actors'
 			)
 			this.checkRelatedObjectInNewValue(
 				newValue,
 				entityColumnMapsByIndex.referencedRelationIds,
-				message.referencedApplicationRelations,
+				data.referencedApplicationRelations,
 				'referencedApplicationRelations'
 			)
 			this.checkRelatedObjectInNewValue(
 				newValue,
 				entityColumnMapsByIndex.repositoryIds,
-				message.referencedRepositories,
+				data.referencedRepositories,
 				'referencedRepositories'
 			)
 			this.checkRelatedObjectInNewValue(
 				newValue,
 				entityColumnMapsByIndex.terminalIds,
-				message.terminals,
+				data.terminals,
 				'terminals'
 			)
 			this.checkRelatedObjectInNewValue(
 				newValue,
 				entityColumnMapsByIndex.userAccountIds,
-				message.userAccounts,
+				data.userAccounts,
 				'userAccounts'
 			)
 		}
@@ -419,8 +418,7 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS`)
 		recordHistory: IRecordHistory,
 		entityColumnMapsByIndex: IEntityColumnMapsByIndex,
 		operationHistory: IOperationHistory,
-		message: RepositorySynchronizationData,
-		context: IContext
+		data: RepositorySynchronizationData
 	): void {
 		switch (operationHistory.changeType) {
 			case ChangeType.DELETE_ROWS:
@@ -454,31 +452,31 @@ for ChangeType.UPDATE_ROWS`)
 			this.checkRelatedObjectInOldValue(
 				oldValue,
 				entityColumnMapsByIndex.actorIds,
-				message.actors,
+				data.actors,
 				'actors'
 			)
 			this.checkRelatedObjectInOldValue(
 				oldValue,
 				entityColumnMapsByIndex.repositoryIds,
-				message.referencedRepositories,
+				data.referencedRepositories,
 				'referencedRepositories'
 			)
 			this.checkRelatedObjectInOldValue(
 				oldValue,
 				entityColumnMapsByIndex.referencedRelationIds,
-				message.referencedApplicationRelations,
+				data.referencedApplicationRelations,
 				'referencedApplicationRelations'
 			)
 			this.checkRelatedObjectInOldValue(
 				oldValue,
 				entityColumnMapsByIndex.terminalIds,
-				message.terminals,
+				data.terminals,
 				'terminals'
 			)
 			this.checkRelatedObjectInOldValue(
 				oldValue,
 				entityColumnMapsByIndex.userAccountIds,
-				message.userAccounts,
+				data.userAccounts,
 				'userAccounts'
 			)
 		}

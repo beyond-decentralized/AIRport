@@ -14150,14 +14150,10 @@ class TransactionHistoryDuo {
         transaction.transactionType = TransactionType.LOCAL;
         return transaction;
     }
-    async getRepositoryTransaction(transactionHistory, repositoryLocalId, actor, isRepositoryCreation, isPublic, context) {
+    async getRepositoryTransaction(transactionHistory, repositoryLocalId, actor, isRepositoryCreation, isPublic) {
         let repositoryTransactionHistory = transactionHistory.repositoryTransactionHistoryMap[repositoryLocalId];
         if (!repositoryTransactionHistory) {
-            const userSession = await this.terminalSessionManager
-                .getUserSession(context);
-            if (!userSession) {
-                throw new Error(`No UserSession present`);
-            }
+            const userSession = await this.terminalSessionManager.getUserSession();
             const repositoryMember = await this.repositoryMemberDao.findForRepositoryLocalIdAndUserLocalId(repositoryLocalId, userSession.userAccount._localId);
             if (!repositoryMember) {
                 throw new Error(`User '${userSession.userAccount.email}' is not a member of Repository '${repositoryLocalId}'`);
@@ -27110,7 +27106,7 @@ let KeyRingManager = class KeyRingManager {
             keyRing = new KeyRing();
             keyRing.privateKey = userPrivateKey;
             keyRing.privateMetaSigningKey = privateMetaSigningKey;
-            const userSession = await this.terminalSessionManager.getUserSession(context);
+            const userSession = await this.terminalSessionManager.getUserSession();
             userSession.keyRing = keyRing;
             const repository = await this.repositoryManager
                 .createRepository('Key ring', false, keyRingContext);
@@ -27127,7 +27123,7 @@ let KeyRingManager = class KeyRingManager {
     async addRepositoryKey(memberGUID, repositoryGUID, repositoryName, context) {
         // const encryptionKey = await this.keyUtils.getEncryptionKey()
         const signingKey = await this.keyUtils.getSigningKey();
-        const userSession = await this.terminalSessionManager.getUserSession(context);
+        const userSession = await this.terminalSessionManager.getUserSession();
         if (!userSession) {
             throw new Error(`No User Session found`);
         }
@@ -27178,10 +27174,7 @@ KeyRingManager = __decorate([
 
 let MessageSigningManager = class MessageSigningManager {
     async signMessages(unsingedMessages, context) {
-        const userSession = await this.terminalSessionManager.getUserSession(context);
-        if (!userSession || !userSession.keyRing) {
-            throw new Error(`No UserSession present.`);
-        }
+        const userSession = await this.terminalSessionManager.getUserSession();
         if (!userSession.keyRing) {
             throw new Error(`No KeyRing is not set on UserSession.`);
         }
@@ -27306,18 +27299,18 @@ class SynchronizationAdapterLoader {
 }
 
 class SyncInActorChecker {
-    async ensureActors(message, context) {
+    async ensureActors(data, context) {
         try {
             let actorGUIDs = [];
             let messageActorIndexMap = new Map();
-            for (let i = 0; i < message.actors.length; i++) {
-                const actor = message.actors[i];
+            for (let i = 0; i < data.actors.length; i++) {
+                const actor = data.actors[i];
                 if (typeof actor.GUID !== 'string' || actor.GUID.length !== 36) {
                     throw new Error(`Invalid 'terminal.GUID'`);
                 }
-                this.checkActorApplication(actor, message);
-                this.checkActorTerminal(actor, message);
-                this.checkActorUserAccount(actor, message);
+                this.checkActorApplication(actor, data);
+                this.checkActorTerminal(actor, data);
+                this.checkActorUserAccount(actor, data);
                 actorGUIDs.push(actor.GUID);
                 messageActorIndexMap.set(actor.GUID, i);
                 // Make sure id field is not in the input
@@ -27326,9 +27319,9 @@ class SyncInActorChecker {
             const actors = await this.actorDao.findByGUIDs(actorGUIDs);
             for (const actor of actors) {
                 const messageUserAccountIndex = messageActorIndexMap.get(actor.GUID);
-                message.actors[messageUserAccountIndex] = actor;
+                data.actors[messageUserAccountIndex] = actor;
             }
-            const missingActors = message.actors
+            const missingActors = data.actors
                 .filter(messageActor => !messageActor._localId);
             if (missingActors.length) {
                 await this.actorDao.insert(missingActors, context);
@@ -27340,34 +27333,34 @@ class SyncInActorChecker {
         }
         return true;
     }
-    checkActorApplication(actor, message) {
+    checkActorApplication(actor, data) {
         if (typeof actor.application !== 'number') {
             throw new Error(`Expecting "in-message index" (number)
 			in 'actor.terminal'`);
         }
-        const application = message.applications[actor.application];
+        const application = data.applications[actor.application];
         if (!application) {
             throw new Error(`Did not find actor.application with "in-message index" ${actor.application}`);
         }
         actor.application = application;
     }
-    checkActorTerminal(actor, message) {
+    checkActorTerminal(actor, data) {
         if (typeof actor.terminal !== 'number') {
             throw new Error(`Expecting "in-message index" (number)
 			in 'actor.terminal'`);
         }
-        const terminal = message.terminals[actor.terminal];
+        const terminal = data.terminals[actor.terminal];
         if (!terminal) {
             throw new Error(`Did not find actor.terminal with "in-message index" ${actor.terminal}`);
         }
         actor.terminal = terminal;
     }
-    checkActorUserAccount(actor, message) {
+    checkActorUserAccount(actor, data) {
         if (typeof actor.userAccount !== 'number') {
             throw new Error(`Expecting "in-message index" (number)
 			in 'actor.userAccount'`);
         }
-        const userAccount = message.userAccounts[actor.userAccount];
+        const userAccount = data.userAccounts[actor.userAccount];
         if (!userAccount) {
             throw new Error(`Did not find actor.userAccount with "in-message index" ${actor.userAccount}`);
         }
@@ -27376,12 +27369,12 @@ class SyncInActorChecker {
 }
 
 class SyncInApplicationChecker {
-    async ensureApplications(message, context) {
+    async ensureApplications(data, context) {
         try {
-            let applicationCheckMap = await this.checkApplicationsAndDomains(message, context);
-            for (let i = 0; i < message.applications.length; i++) {
-                let application = message.applications[i];
-                message.applications[i] = applicationCheckMap
+            let applicationCheckMap = await this.checkApplicationsAndDomains(data, context);
+            for (let i = 0; i < data.applications.length; i++) {
+                let application = data.applications[i];
+                data.applications[i] = applicationCheckMap
                     .get(application.domain.name).get(application.name)
                     .application;
             }
@@ -27392,8 +27385,8 @@ class SyncInApplicationChecker {
         }
         return true;
     }
-    async checkApplicationsAndDomains(message, context) {
-        const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(message);
+    async checkApplicationsAndDomains(data, context) {
+        const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(data);
         const applications = await this.applicationDao
             .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names);
         for (let application of applications) {
@@ -27508,7 +27501,7 @@ class SyncInApplicationVersionChecker {
     inMessageApplicationVersions, inMessageApplications, context) {
         let applicationCheckMap;
         try {
-            applicationCheckMap = await this.checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications, context);
+            applicationCheckMap = await this.checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications);
             for (let i = 0; i < inMessageApplicationVersions.length; i++) {
                 const applicationVersion = inMessageApplicationVersions[i];
                 inMessageApplicationVersions[i] = applicationCheckMap
@@ -27522,7 +27515,7 @@ class SyncInApplicationVersionChecker {
         }
         return applicationCheckMap;
     }
-    async checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications, context) {
+    async checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications) {
         const { allApplicationNames: allApplication_Names, domainNames, applicationVersionCheckMap } = this
             .getNames(inMessageApplicationVersions, inMessageApplications);
         await this.setApplicationVersions(domainNames, allApplication_Names, applicationVersionCheckMap);
@@ -27787,10 +27780,10 @@ RepositorySynchronizationData.history.actor`);
         }
         return applicationEntityMap;
     }
-    async checkOperationHistories(message, applicationEntityMap, context) {
+    async checkOperationHistories(data, applicationEntityMap, context) {
         const forImmediateProcessing = [];
         const forDelayedProcessing = [];
-        const history = message.history;
+        const history = data.history;
         if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
             throw new Error(`Invalid RepositorySynchronizationData.history.operationHistory Array`);
         }
@@ -27821,7 +27814,7 @@ the position of orderHistory record determines it's order`);
                 throw new Error(`Expecting "in-message index" (number)
 					in 'operationHistory[${i}].entity.applicationVersion'`);
             }
-            const applicationVersion = message.applicationVersions[operationHistory.entity.applicationVersion];
+            const applicationVersion = data.applicationVersions[operationHistory.entity.applicationVersion];
             if (!applicationVersion) {
                 throw new Error(`Invalid index into message.applicationVersions [${operationHistory.entity.applicationVersion}],
 				in operationHistory[${i}].entity.applicationVersion`);
@@ -27872,14 +27865,14 @@ the position of orderHistory record determines it's order`);
             {
                 forImmediateProcessing.push(operationHistory);
             }
-            await this.checkRecordHistories(operationHistory, entityColumnMapsByIndex, message, context);
+            await this.checkRecordHistories(operationHistory, entityColumnMapsByIndex, data, context);
         }
         return {
             forImmediateProcessing,
             forDelayedProcessing
         };
     }
-    async checkRecordHistories(operationHistory, entityColumnMapsByIndex, message, context) {
+    async checkRecordHistories(operationHistory, entityColumnMapsByIndex, data, context) {
         const recordHistories = operationHistory.recordHistory;
         if (!(recordHistories instanceof Array) || !recordHistories.length) {
             throw new Error(`Inalid RepositorySynchronizationData.history -> operationHistory.recordHistory`);
@@ -27894,16 +27887,16 @@ the position of orderHistory record determines it's order`);
                         throw new Error(`Cannot specify RepositorySynchronizationData.history -> operationHistory.recordHistory.actor
 for ChangeType.INSERT_VALUES`);
                     }
-                    recordHistory.actor = message.history.actor;
+                    recordHistory.actor = data.history.actor;
                     break;
                 case ChangeType.DELETE_ROWS:
                 case ChangeType.UPDATE_ROWS: {
                     // If no actor is present on record level its the same actor that created the repositoryTransactionHistory
                     if (recordHistory.actor === undefined) {
-                        recordHistory.actor = message.history.actor;
+                        recordHistory.actor = data.history.actor;
                     }
                     else {
-                        const actor = message.actors[recordHistory.actor];
+                        const actor = data.actors[recordHistory.actor];
                         if (!actor) {
                             throw new Error(`Did find Actor for "in-message id" in RepositorySynchronizationData.history -> operationHistory.actor`);
                         }
@@ -27915,13 +27908,13 @@ for ChangeType.INSERT_VALUES`);
             if (recordHistory.operationHistory) {
                 throw new Error(`RepositorySynchronizationData.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
             }
-            this.checkNewValues(recordHistory, entityColumnMapsByIndex, operationHistory, message, context);
-            this.checkOldValues(recordHistory, entityColumnMapsByIndex, operationHistory, message, context);
+            this.checkNewValues(recordHistory, entityColumnMapsByIndex, operationHistory, data);
+            this.checkOldValues(recordHistory, entityColumnMapsByIndex, operationHistory, data);
             recordHistory.operationHistory = operationHistory;
             delete recordHistory._localId;
         }
     }
-    checkNewValues(recordHistory, entityColumnMapsByIndex, operationHistory, message, context) {
+    checkNewValues(recordHistory, entityColumnMapsByIndex, operationHistory, data) {
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
                 if (recordHistory.newValues) {
@@ -27950,14 +27943,14 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS`);
             }
         }
         for (const newValue of recordHistory.newValues) {
-            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.actorIds, message.actors, 'actors');
-            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.referencedRelationIds, message.referencedApplicationRelations, 'referencedApplicationRelations');
-            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.repositoryIds, message.referencedRepositories, 'referencedRepositories');
-            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.terminalIds, message.terminals, 'terminals');
-            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.userAccountIds, message.userAccounts, 'userAccounts');
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.actorIds, data.actors, 'actors');
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.referencedRelationIds, data.referencedApplicationRelations, 'referencedApplicationRelations');
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.repositoryIds, data.referencedRepositories, 'referencedRepositories');
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.terminalIds, data.terminals, 'terminals');
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.userAccountIds, data.userAccounts, 'userAccounts');
         }
     }
-    checkOldValues(recordHistory, entityColumnMapsByIndex, operationHistory, message, context) {
+    checkOldValues(recordHistory, entityColumnMapsByIndex, operationHistory, data) {
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
             case ChangeType.INSERT_VALUES:
@@ -27986,11 +27979,11 @@ for ChangeType.UPDATE_ROWS`);
             }
         }
         for (const oldValue of recordHistory.oldValues) {
-            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.actorIds, message.actors, 'actors');
-            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.repositoryIds, message.referencedRepositories, 'referencedRepositories');
-            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.referencedRelationIds, message.referencedApplicationRelations, 'referencedApplicationRelations');
-            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.terminalIds, message.terminals, 'terminals');
-            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.userAccountIds, message.userAccounts, 'userAccounts');
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.actorIds, data.actors, 'actors');
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.repositoryIds, data.referencedRepositories, 'referencedRepositories');
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.referencedRelationIds, data.referencedApplicationRelations, 'referencedApplicationRelations');
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.terminalIds, data.terminals, 'terminals');
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.userAccountIds, data.userAccounts, 'userAccounts');
         }
     }
     checkRelatedObjectInNewValue(newValue, entityIdColumnMapByIndex, entityArrayByInMessageIndex, inMessageEntityArrayName) {
@@ -28013,7 +28006,7 @@ Value is for ${relationIdColumn.name} and could find RepositorySynchronizationDa
 }
 
 class SyncInRepositoryChecker {
-    async checkRepositoriesAndMembers(message) {
+    async checkRepositoriesAndMembers(data) {
         let missingRepositories = [];
         let newMembers = [];
         let updatedMembers = [];
@@ -28021,10 +28014,10 @@ class SyncInRepositoryChecker {
         try {
             let repositoryGUIDs = [];
             let messageRepositoryIndexMap = new Map();
-            for (let i = 0; i < message.referencedRepositories.length; i++) {
-                this.checkRepository(message.referencedRepositories[i], i, repositoryGUIDs, messageRepositoryIndexMap, message);
+            for (let i = 0; i < data.referencedRepositories.length; i++) {
+                this.checkRepository(data.referencedRepositories[i], i, repositoryGUIDs, messageRepositoryIndexMap, data);
             }
-            const history = message.history;
+            const history = data.history;
             if (typeof history !== 'object') {
                 throw new Error(`message.history is not an object`);
             }
@@ -28036,7 +28029,7 @@ class SyncInRepositoryChecker {
                     throw new Error(`${repositoryErrorPrefix} an object
 	${isRepositoryCreationEqualityErrorPrefix} === true`);
                 }
-                this.checkRepository(repository, null, repositoryGUIDs, messageRepositoryIndexMap, message);
+                this.checkRepository(repository, null, repositoryGUIDs, messageRepositoryIndexMap, data);
             }
             else {
                 if (typeof repository !== 'string') {
@@ -28047,9 +28040,9 @@ class SyncInRepositoryChecker {
             }
             const repositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs);
             for (const foundRepository of repositories) {
-                const messageUserAccountIndex = messageRepositoryIndexMap.get(foundRepository.GUID);
-                if (messageUserAccountIndex || messageUserAccountIndex === 0) {
-                    message.referencedRepositories[messageUserAccountIndex] = foundRepository;
+                const messageRepositoryIndex = messageRepositoryIndexMap.get(foundRepository.GUID);
+                if (messageRepositoryIndex || messageRepositoryIndex === 0) {
+                    data.referencedRepositories[messageRepositoryIndex] = foundRepository;
                 }
                 else {
                     if (history.isRepositoryCreation) {
@@ -28068,7 +28061,7 @@ class SyncInRepositoryChecker {
                     }
                 }
             }
-            missingRepositories = message.referencedRepositories
+            missingRepositories = data.referencedRepositories
                 .filter(messageRepository => !messageRepository._localId);
             if (typeof repository !== 'object') {
                 throw new Error(`Repository with GUID ${repository} is not
@@ -28080,7 +28073,7 @@ class SyncInRepositoryChecker {
             else if (!repository._localId) {
                 missingRepositories.push(repository);
             }
-            const memberCheckResult = await this.checkRepositoryMembers(message);
+            const memberCheckResult = await this.checkRepositoryMembers(data);
             publicSigningKey = memberCheckResult.publicSigningKey;
             newMembers = memberCheckResult.newMembers;
             updatedMembers = memberCheckResult.updatedMembers;
@@ -28117,13 +28110,32 @@ class SyncInRepositoryChecker {
             }
         }
         else {
-            this.checkRepositoryMember(history.member, memberPath);
+            this.checkRepositoryMemberCommonFields(history.member, memberPath);
         }
         if (!(history.newRepositoryMembers instanceof Array)) {
             throw new Error(`history.newRepositoryMembers is not an Array`);
         }
-        this.checkNewRepositoryMembers(history.newRepositoryMembers, data);
-        this.checkUpdatedRepositoryMembers(history.updatedRepositoryMembers);
+        this.checkNewRepositoryMembers(history.newRepositoryMembers, data, history.isRepositoryCreation);
+        let allowInvitedStatus = true;
+        let allowJoinedStatus = false;
+        if (repository.isPublic) {
+            allowInvitedStatus = false;
+        }
+        this.checkRepositoryMemberUpdateFields(history.updatedRepositoryMembers, 'updatedRepositoryMembers', allowInvitedStatus, allowJoinedStatus, true);
+        const inMessageRepositoryMemberMapByGUID = await this.getInMessageRepositoryMemberMapByGUID(history);
+        publicSigningKey = this.checkHistoryMemberExistence(data, inMessageRepositoryMemberMapByGUID, newMembers);
+        this.checkNewRepositoryMembersExistence(data, inMessageRepositoryMemberMapByGUID, newMembers);
+        const updatedRepositoryMembersExistenceCheckResult = this.checkUpdatedRepositoryMembersExistence(data, inMessageRepositoryMemberMapByGUID, updatedMembers);
+        if (updatedRepositoryMembersExistenceCheckResult.isJoinMessage) {
+            publicSigningKey = updatedRepositoryMembersExistenceCheckResult.publicSigningKey;
+        }
+        return {
+            newMembers,
+            publicSigningKey,
+            updatedMembers
+        };
+    }
+    async getInMessageRepositoryMemberMapByGUID(history) {
         const messageRepositoryMemberGUIDs = [
             history.member,
             ...history.newRepositoryMembers,
@@ -28136,30 +28148,19 @@ class SyncInRepositoryChecker {
                 throw new Error(`Found existing repositoryMembers for a newly created repository`);
             }
         }
-        const messageRepositoryMemberMapByGUID = new Map();
+        const inMessageRepositoryMemberMapByGUID = new Map();
         for (const existingRepositoryMember of existingMessageRepositoryMembers) {
-            messageRepositoryMemberMapByGUID.set(existingRepositoryMember.GUID, existingRepositoryMember);
+            inMessageRepositoryMemberMapByGUID.set(existingRepositoryMember.GUID, existingRepositoryMember);
         }
-        publicSigningKey = this.checkHistoryMemberExistence(data, messageRepositoryMemberMapByGUID, newMembers);
-        this.checkNewRepositoryMembersExistence(data, messageRepositoryMemberMapByGUID, newMembers);
-        const updatedRepositoryMembersExistenceCheckResult = this
-            .checkUpdatedRepositoryMembersExistence(data, messageRepositoryMemberMapByGUID, updatedMembers);
-        if (updatedRepositoryMembersExistenceCheckResult.isJoinMessage) {
-            publicSigningKey = updatedRepositoryMembersExistenceCheckResult.publicSigningKey;
-        }
-        return {
-            newMembers,
-            publicSigningKey,
-            updatedMembers
-        };
+        return inMessageRepositoryMemberMapByGUID;
     }
-    checkUpdatedRepositoryMembersExistence(data, messageRepositoryMemberMapByGUID, updatedMembers) {
+    checkUpdatedRepositoryMembersExistence(data, inMessageRepositoryMemberMapByGUID, updatedMembers) {
         let isJoinMessage = false;
         let publicSigningKey = null;
         const history = data.history;
         let hasJoinedMember = false;
         for (const updatedRepositoryMember of history.updatedRepositoryMembers) {
-            const existingMember = messageRepositoryMemberMapByGUID.get(updatedRepositoryMember.GUID);
+            const existingMember = inMessageRepositoryMemberMapByGUID.get(updatedRepositoryMember.GUID);
             if (!existingMember) {
                 throw new Error(`message.history.updatedRepositoryMembers[x] with GUID ${updatedRepositoryMember.GUID}' does not exist`);
             }
@@ -28173,6 +28174,9 @@ class SyncInRepositoryChecker {
                         throw new Error(`Joined member must be the member sending the message.`);
                     }
                     publicSigningKey = updatedRepositoryMember.publicSigningKey;
+                    if (existingMember.publicSigningKey && existingMember.publicSigningKey !== publicSigningKey) {
+                        throw new Error(`Users are not allowed to change their publicSigningKey for a repository.`);
+                    }
                     isJoinMessage = true;
                     existingMember.publicSigningKey = publicSigningKey;
                     break;
@@ -28189,11 +28193,11 @@ class SyncInRepositoryChecker {
             publicSigningKey
         };
     }
-    checkNewRepositoryMembersExistence(data, messageRepositoryMemberMapByGUID, newMembers) {
+    checkNewRepositoryMembersExistence(data, inMessageRepositoryMemberMapByGUID, newMembers) {
         const history = data.history;
         const repository = history.repository;
         for (const newRepositoryMember of history.newRepositoryMembers) {
-            if (!messageRepositoryMemberMapByGUID.has(newRepositoryMember.GUID)) {
+            if (!inMessageRepositoryMemberMapByGUID.has(newRepositoryMember.GUID)) {
                 throw new Error(`message.history.newRepositoryMembers[x] with GUID ${newRepositoryMember.GUID}' already exists`);
             }
             const userAccount = data.userAccounts[history.member.userAccount];
@@ -28213,13 +28217,13 @@ class SyncInRepositoryChecker {
             });
         }
     }
-    checkHistoryMemberExistence(data, messageRepositoryMemberMapByGUID, newMembers) {
+    checkHistoryMemberExistence(data, inMessageRepositoryMemberMapByGUID, newMembers) {
         let publicSigningKey;
         const history = data.history;
         const repository = history.repository;
         const historyMemberErrorPrefix = `message.history.member with GUID '${history.member.GUID}'`;
         if (history.isRepositoryCreation) {
-            if (messageRepositoryMemberMapByGUID.has(history.member.GUID)) {
+            if (inMessageRepositoryMemberMapByGUID.has(history.member.GUID)) {
                 throw new Error(`${historyMemberErrorPrefix} already exits.
 	This repository (GUID: ${repository.GUID}) is being created and cannot have existing members.`);
             }
@@ -28245,7 +28249,7 @@ class SyncInRepositoryChecker {
             newMembers.push(history.member);
         }
         else {
-            const existingHistoryMember = messageRepositoryMemberMapByGUID.get(history.member.GUID);
+            const existingHistoryMember = inMessageRepositoryMemberMapByGUID.get(history.member.GUID);
             if (!existingHistoryMember) {
                 throw new Error(`${historyMemberErrorPrefix} does not exit.
 	This repository (GUID: ${repository.GUID}) already exists and an existing member must be making the modifications`);
@@ -28297,7 +28301,7 @@ class SyncInRepositoryChecker {
         // Make sure id field is not in the input
         delete repository._localId;
     }
-    checkRepositoryMember(repositoryMember, repositoryMessagePath) {
+    checkRepositoryMemberCommonFields(repositoryMember, repositoryMessagePath) {
         if (typeof repositoryMember !== 'object') {
             throw new Error(`${repositoryMessagePath} is not an object`);
         }
@@ -28311,7 +28315,7 @@ class SyncInRepositoryChecker {
     }
     checkAddedRepositoryMember(repositoryMember, repository, message) {
         let errorPrefix = `repository.member`;
-        this.checkRepositoryMember(repositoryMember, errorPrefix);
+        this.checkRepositoryMemberCommonFields(repositoryMember, errorPrefix);
         if (typeof repositoryMember.userAccount !== 'number') {
             throw new Error(`Expecting "in-message index" (number)
 				in '${errorPrefix}.userAccount'`);
@@ -28320,13 +28324,11 @@ class SyncInRepositoryChecker {
         if (userAccount !== repository.owner) {
             throw new Error(`Expecting the same UserAccount in repository.owner & repository.member.userAccount`);
         }
-        this.checkRepositoryMemberPublicSigningKey(repositoryMember, errorPrefix);
+        this.checkRepositoryMemberPublicSigningKey(repositoryMember, false, errorPrefix);
     }
-    checkUpdatedRepositoryMembers(repositoryMembers, allowInvitedStatus = false, allowJoinedStatus = true, repositoryMembersType = 'updatedRepositoryMembers') {
-        let errorPrefix = `repository.${repositoryMembersType}[x]`;
+    checkRepositoryMemberUpdateFields(repositoryMembers, repositoryMembersType, allowInvitedStatus, allowJoinedStatus, expectingPublicSigningKey) {
+        let errorPrefix = `repository.${repositoryMembersType}`;
         for (const repositoryMember of repositoryMembers) {
-            this.checkRepositoryMember(repositoryMember, errorPrefix);
-            this.checkRepositoryMemberPublicSigningKey(repositoryMember, errorPrefix);
             switch (repositoryMember.status) {
                 case RepositoryMember_Status.INVITED:
                     if (!allowInvitedStatus) {
@@ -28341,20 +28343,37 @@ class SyncInRepositoryChecker {
                 default:
                     throw new Error(`${errorPrefix}.status is not a RepositoryMember_Status`);
             }
-            delete repositoryMember._localId;
+            this.checkRepositoryMemberCommonFields(repositoryMember, errorPrefix);
+            this.checkRepositoryMemberPublicSigningKey(repositoryMember, expectingPublicSigningKey, errorPrefix);
         }
     }
-    checkRepositoryMemberPublicSigningKey(repositoryMember, errorPrefix) {
-        if (typeof repositoryMember.publicSigningKey !== 'string') {
-            throw new Error(`${errorPrefix}.publicSigningKey is not a string`);
+    checkRepositoryMemberPublicSigningKey(repositoryMember, expectingPublicSigningKey, errorPrefix) {
+        if (expectingPublicSigningKey) {
+            if (typeof repositoryMember.publicSigningKey !== 'string') {
+                throw new Error(`${errorPrefix}.publicSigningKey is not a string`);
+            }
+            // FIXME: get the right length of a publicSigningKey
+            if (repositoryMember.publicSigningKey.length !== 36) {
+                throw new Error(`${errorPrefix}.publicSigningKey does not have .length === 36`);
+            }
         }
-        // FIXME: get the right length of a publicSigningKey
-        if (repositoryMember.publicSigningKey.length !== 36) {
-            throw new Error(`${errorPrefix}.publicSigningKey does not have .length === 36`);
+        else {
+            if (typeof repositoryMember.publicSigningKey !== 'undefined') {
+                throw new Error(`${errorPrefix}.publicSigningKey is defined (but is not allowed)`);
+            }
         }
     }
-    checkNewRepositoryMembers(repositoryMembers, data) {
-        this.checkUpdatedRepositoryMembers(repositoryMembers, true, true, 'newRepositoryMembers');
+    checkNewRepositoryMembers(repositoryMembers, data, isRepositoryCreation) {
+        const isPublicRepository = data.history.repository.isPublic ? true : false;
+        const allowInvitedStatus = !isRepositoryCreation && !isPublicRepository;
+        const allowJoinedStatus = isRepositoryCreation || isPublicRepository;
+        const expectingPublicSigningKey = allowJoinedStatus;
+        this.checkRepositoryMemberUpdateFields(repositoryMembers, `newRepositoryMembers of a ${isPublicRepository ? 'public' : 'private'} Repository`, allowInvitedStatus, allowJoinedStatus, expectingPublicSigningKey);
+        if (isRepositoryCreation) {
+            if (repositoryMembers.length !== 1) {
+                throw new Error(`Expecting exactly 1 record in data.history.newRepositoryMembers for a newly created Repository`);
+            }
+        }
         let errorPrefix = `repository.newRepositoryMembers[x]`;
         for (const repositoryMember of repositoryMembers) {
             if (typeof repositoryMember.isOwner !== 'boolean') {
@@ -28378,12 +28397,12 @@ class SyncInRepositoryChecker {
 }
 
 class SyncInTerminalChecker {
-    async ensureTerminals(message, context) {
+    async ensureTerminals(data, context) {
         try {
             let terminalGUIDs = [];
             let messageTerminalIndexMap = new Map();
-            for (let i = 0; i < message.terminals.length; i++) {
-                const terminal = message.terminals[i];
+            for (let i = 0; i < data.terminals.length; i++) {
+                const terminal = data.terminals[i];
                 if (typeof terminal._localId !== 'undefined') {
                     throw new Error(`'terminal._localId' cannot be specified`);
                 }
@@ -28398,7 +28417,7 @@ class SyncInTerminalChecker {
                     throw new Error(`'terminal.isLocal' cannot defined in RepositorySynchronizationData.terminals`);
                 }
                 terminal.isLocal = false;
-                const owner = message.userAccounts[terminal.owner];
+                const owner = data.userAccounts[terminal.owner];
                 if (!owner) {
                     throw new Error(`Did not find userAccount for terminal.owner with "in-message index" ${terminal.owner}
 						for RepositorySynchronizationData.terminals`);
@@ -28412,9 +28431,9 @@ class SyncInTerminalChecker {
             for (const terminal of terminals) {
                 foundTerminalsByGUID.set(terminal.GUID, terminal);
                 const messageTerminalIndex = messageTerminalIndexMap.get(terminal.GUID);
-                message.terminals[messageTerminalIndex] = terminal;
+                data.terminals[messageTerminalIndex] = terminal;
             }
-            const missingTerminals = message.terminals
+            const missingTerminals = data.terminals
                 .filter(messageTerminal => !foundTerminalsByGUID.has(messageTerminal.GUID));
             if (missingTerminals.length) {
                 await this.addMissingTerminals(missingTerminals, context);
@@ -28435,12 +28454,12 @@ class SyncInTerminalChecker {
 }
 
 class SyncInUserAccountChecker {
-    async ensureUserAccounts(message, context) {
+    async ensureUserAccounts(data, context) {
         try {
             let userAccountGUIDs = [];
             let messageUserAccountIndexMap = new Map();
-            for (let i = 0; i < message.userAccounts.length; i++) {
-                const userAccount = message.userAccounts[i];
+            for (let i = 0; i < data.userAccounts.length; i++) {
+                const userAccount = data.userAccounts[i];
                 if (typeof userAccount._localId !== 'undefined') {
                     throw new Error(`'userAccount._localId' cannot be specified`);
                 }
@@ -28458,9 +28477,9 @@ class SyncInUserAccountChecker {
             for (const userAccount of userAccounts) {
                 foundUserAccountsByGUID.set(userAccount.GUID, userAccount);
                 const messageUserAccountIndex = messageUserAccountIndexMap.get(userAccount.GUID);
-                message.userAccounts[messageUserAccountIndex] = userAccount;
+                data.userAccounts[messageUserAccountIndex] = userAccount;
             }
-            const missingUserAccounts = message.userAccounts
+            const missingUserAccounts = data.userAccounts
                 .filter(messageUserAccount => !foundUserAccountsByGUID.has(messageUserAccount.GUID));
             if (missingUserAccounts.length) {
                 await this.addMissingUserAccounts(missingUserAccounts, context);
@@ -33224,11 +33243,11 @@ class RepositoryMaintenanceManager extends ApiProxy {
     constructor() {
         super(application$1);
     }
-    async selfJoinRepository(repository, userAccount, context) {
-        await this.proxy.selfJoinRepository(repository, userAccount, context);
+    async selfJoinRepository(repositoryGUID) {
+        await this.proxy.selfJoinRepository(repositoryGUID);
     }
-    async joinRepository(repository, userAccount, context) {
-        await this.proxy.joinRepository(repository, userAccount, context);
+    async joinRepository(repository, userAccount) {
+        await this.proxy.joinRepository(repository, userAccount);
     }
     async inviteUserToRepository(repository, userEmail, context) {
         await this.proxy.inviteUserToRepository(repository, userEmail, context);
@@ -33480,11 +33499,7 @@ class RepositoryLoader {
 // import is reserved for Application use
 class RepositoryManager {
     async createRepository(repositoryName, isPublic, context) {
-        const userSession = await this.terminalSessionManager
-            .getUserSession(context);
-        if (!userSession) {
-            throw new Error('No User Session present');
-        }
+        const userSession = await this.terminalSessionManager.getUserSession();
         let isInternalDomain = this.appTrackerUtils
             .isInternalDomain(context.transaction.credentials.domain);
         if (!isInternalDomain && userSession.currentRootTransaction.newRepository) {
@@ -33510,17 +33525,11 @@ already contains a new repository.`);
         return repository;
     }
     async addRepositoryToKeyRing(repository, context) {
-        const userSession = await this.terminalSessionManager.getUserSession(context);
-        if (!userSession) {
-            throw new Error(`No User Session found`);
-        }
-        const userAccount = userSession.userAccount;
-        if (!userAccount) {
-            throw new Error(`No User Account found in User Session`);
-        }
+        await this.terminalSessionManager.getUserAccountFromSession();
+        throw new Error(`Implement`);
     }
     async setUiEntryUri(uiEntryUri, repository, context) {
-        const userSession = await this.terminalSessionManager.getUserSession(context);
+        const userSession = await this.terminalSessionManager.getUserSession();
         if (userSession.currentTransaction.actor.application.fullName !== repository.fullApplicationName) {
             throw new Error(`Only the Application that created a repository may change the uiEntityUri.`);
         }
@@ -33618,7 +33627,7 @@ class InternalRecordManager {
             }
             const frameworkActor = this.terminalStore.getFrameworkActor();
             // TODO: add request object
-            const userSession = await this.terminalSessionManager.getUserSession(context);
+            const userSession = await this.terminalSessionManager.getUserSession();
             let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(application.domain, application.name, userSession.userAccount.GUID, frameworkActor.terminal.GUID);
             let anApplication = await this.applicationDao.findByIndex(application.lastIds.applications + 1);
             if (!actor) {
@@ -34171,7 +34180,7 @@ class TransactionalReceiver {
     }
     async getApiCallActor(message, context) {
         let actor;
-        const userSession = await this.terminalSessionManager.getUserSession(context);
+        const userSession = await this.terminalSessionManager.getUserSession();
         try {
             const isInternalDomain = await this.appTrackerUtils
                 .isInternalDomain(message.domain);
@@ -34211,7 +34220,7 @@ class TransactionalReceiver {
             }
         }
         finally {
-            const userSession = await this.terminalSessionManager.getUserSession(context);
+            const userSession = await this.terminalSessionManager.getUserSession();
             userSession.currentTransaction = context.transaction;
         }
     }
@@ -34737,7 +34746,7 @@ class HistoryManager {
             isRepositoryCreation = true;
             isPublic = newRepository.isPublic;
         }
-        return await this.transactionHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryLocalId, actor, isRepositoryCreation, isPublic, context);
+        return await this.transactionHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryLocalId, actor, isRepositoryCreation, isPublic);
     }
 }
 
@@ -35406,7 +35415,7 @@ Only one concurrent transaction is allowed per application.`)
             // one repository at a time.  APIs exposed externally will never be top
             // level transactions
             if (!this.appTrackerUtils.isInternalDomain(credentials.domain)) {
-                const userSession = await this.terminalSessionManager.getUserSession(context);
+                const userSession = await this.terminalSessionManager.getUserSession();
                 userSession.currentRootTransaction = rootTransaction;
             }
         }
@@ -35427,7 +35436,7 @@ Only one concurrent transaction is allowed per application.`)
         await transaction.rollback(null, context);
         const transactionCleared = await this.clearTransaction(transaction, parentTransaction, credentials, context);
         if (!parentTransaction) {
-            await this.clearUserSessionRootTransaction(transaction, context);
+            await this.clearUserSessionRootTransaction(transaction);
         }
         if (transactionCleared) {
             await this.resumeParentOrPendingTransaction(parentTransaction, context);
@@ -35493,7 +35502,7 @@ parent transactions.
                 }
             }
             if (!parentTransaction) {
-                await this.clearUserSessionRootTransaction(transaction, context);
+                await this.clearUserSessionRootTransaction(transaction);
             }
         }
         finally {
@@ -35505,14 +35514,14 @@ parent transactions.
             }
         }
     }
-    async clearUserSessionRootTransaction(transaction, context) {
+    async clearUserSessionRootTransaction(transaction) {
         // Internal calls don't maintain rootTransaction and can create more than
         // one repository at a time.  APIs exposed externally will never be top
         // level transactions
         if (this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)) {
             return;
         }
-        const userSession = await this.terminalSessionManager.getUserSession(context);
+        const userSession = await this.terminalSessionManager.getUserSession();
         userSession.currentRootTransaction = null;
     }
     copyTransactionHistoryToParentTransaction(transaction, parentTransaction) {
@@ -37159,9 +37168,7 @@ class QueryResultsSerializer {
 new Date().getTime();
 
 class TerminalSessionManager {
-    async getUserSession(
-    // FIXME: add the actual request object, may be platform specific
-    context) {
+    async getUserSession() {
         let session;
         if (this.terminalStore.getIsServer()) {
             throw new Error(`Implement`);
@@ -37169,11 +37176,19 @@ class TerminalSessionManager {
         else {
             const allSessions = this.userStore.getAllSessions();
             if (allSessions.length != 1) {
-                throw new Error(`Expecting exactly 1 user session`);
+                throw new Error(`No User Session found`);
             }
             session = allSessions[0];
         }
         return session;
+    }
+    async getUserAccountFromSession() {
+        const userSession = await this.getUserSession();
+        const userAccount = userSession.userAccount;
+        if (!userAccount) {
+            throw new Error(`No UserAccount found in User Session`);
+        }
+        return userAccount;
     }
 }
 
