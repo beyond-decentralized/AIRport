@@ -190,7 +190,7 @@ Only one concurrent transaction is allowed per application.`)
 			// Internal calls don't maintain rootTransaction and can create more than
 			// one repository at a time.  APIs exposed externally will never be top
 			// level transactions
-			if (this.appTrackerUtils.isInternalDomain(credentials.domain)) {
+			if (!this.appTrackerUtils.isInternalDomain(credentials.domain)) {
 				const userSession = await this.terminalSessionManager.getUserSession(context)
 				userSession.currentRootTransaction = rootTransaction
 			}
@@ -291,7 +291,6 @@ parent transactions.
 			credentials, context)
 
 		let parentTransaction = transaction.parentTransaction
-
 		try {
 			if (parentTransaction) {
 				if (!context.doNotRecordHistory) {
@@ -312,7 +311,8 @@ parent transactions.
 			if (!context.doNotRecordHistory) {
 				if (!parentTransaction && transactionHistory.allRecordHistory.length) {
 					await this.synchronizationOutManager.synchronizeOut(
-						transactionHistory.repositoryTransactionHistories, context)
+						transactionHistory.repositoryTransactionHistories,
+						context)
 				}
 			}
 			if (!parentTransaction) {
@@ -347,17 +347,17 @@ parent transactions.
 	private copyTransactionHistoryToParentTransaction(
 		transaction: ITransaction,
 		parentTransaction: ITransaction
-	) {
+	): void {
 		let childTransactionHistory = transaction.transactionHistory
 		let parentTransactionHistory = parentTransaction.transactionHistory
 		for (const operationHistory of childTransactionHistory.allOperationHistory) {
-			const repositoryId = operationHistory.repositoryTransactionHistory.repository._localId
+			const repositoryLocalId = operationHistory.repositoryTransactionHistory.repository._localId
 			const parentRepositoryTransactionRecord = parentTransactionHistory
-				.repositoryTransactionHistoryMap[repositoryId]
+				.repositoryTransactionHistoryMap[repositoryLocalId]
 			if (parentRepositoryTransactionRecord) {
 				operationHistory.repositoryTransactionHistory = parentRepositoryTransactionRecord
 			} else {
-				parentTransactionHistory.repositoryTransactionHistoryMap[repositoryId]
+				parentTransactionHistory.repositoryTransactionHistoryMap[repositoryLocalId]
 					= operationHistory.repositoryTransactionHistory
 				parentTransactionHistory.repositoryTransactionHistories
 					.push(operationHistory.repositoryTransactionHistory)
@@ -371,7 +371,6 @@ parent transactions.
 			.allRecordHistoryNewValues.concat(childTransactionHistory.allRecordHistoryNewValues)
 		parentTransactionHistory.allRecordHistoryOldValues = parentTransactionHistory
 			.allRecordHistoryOldValues.concat(childTransactionHistory.allRecordHistoryOldValues)
-
 	}
 
 	private checkForCircularDependencies(

@@ -8,6 +8,8 @@ import {
 	IRepository,
 	IRepositoryTransactionHistory,
 	IRootTransaction,
+	RepositoryTransactionHistory_IsRepositoryCreation,
+	Repository_IsPublic,
 	Repository_LocalId,
 	SystemWideOperationId
 } from '@airport/ground-control'
@@ -22,7 +24,9 @@ export interface IRepositoryTransactionHistoryDuo {
 
 	getNewRecord(
 		repositoryId: Repository_LocalId,
-		isRepositoryCreation: boolean
+		actor: IActor,
+		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation,
+		isPublic: Repository_IsPublic
 	): IRepositoryTransactionHistory;
 
 	newRecord(
@@ -39,7 +43,6 @@ export interface IRepositoryTransactionHistoryDuo {
 		systemWideOperationId: SystemWideOperationId,
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
-		actor: IActor,
 		rootTransaction: IRootTransaction
 	): IOperationHistory;
 
@@ -54,15 +57,19 @@ export class RepositoryTransactionHistoryDuo
 
 	getNewRecord(
 		repositoryId: Repository_LocalId,
-		isRepositoryCreation: boolean
+		actor: IActor,
+		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation,
+		isPublic: Repository_IsPublic
 	): IRepositoryTransactionHistory {
 		let repositoryTransactionHistory: IRepositoryTransactionHistory = new RepositoryTransactionHistory() as IRepositoryTransactionHistory
 
 		let saveTimestamp = new Date().getTime()
 
 		repositoryTransactionHistory.saveTimestamp = saveTimestamp
+		repositoryTransactionHistory.actor = actor
 		repositoryTransactionHistory.GUID = guidv4()
 		repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation
+		repositoryTransactionHistory.isPublic = isPublic
 		repositoryTransactionHistory.repository = new Repository() as IRepository
 		repositoryTransactionHistory.repository._localId = repositoryId
 
@@ -107,11 +114,10 @@ export class RepositoryTransactionHistoryDuo
 		systemWideOperationId: SystemWideOperationId,
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
-		actor: IActor,
 		rootTransaction: IRootTransaction
 	): IOperationHistory {
 		let operationHistory = this.operationHistoryDuo.getNewRecord(
-			entityChangeType, dbEntity, actor, repositoryTransactionHistory,
+			entityChangeType, dbEntity, repositoryTransactionHistory,
 			systemWideOperationId, rootTransaction)
 		repositoryTransactionHistory.operationHistory.push(operationHistory)
 

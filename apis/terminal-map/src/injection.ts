@@ -21,6 +21,7 @@ import { UserStore } from './store/user/UserStore'
 import { ITerminalSessionManager } from './core/ITerminalSessionManager'
 import { AbstractApplicationLoader } from './AbstractApplicationLoader'
 import { API_REGISTRY } from '@airport/check-in'
+import { IHistoryManager } from './orchestration/HistoryManager'
 
 const terminalMap = lib('terminal-map')
 
@@ -28,6 +29,7 @@ terminalMap.register(TerminalState, TerminalStore, UserState, UserStore)
 
 export const APPLICATION_INITIALIZER = terminalMap.token<IApplicationInitializer>('ApplicationInitializer')
 export const DOMAIN_RETRIEVER = terminalMap.token<IDomainRetriever>('DomainRetriever')
+export const HISTORY_MANAGER = terminalMap.token<IHistoryManager>('HistoryManager')
 export const STORE_DRIVER = terminalMap.token<IStoreDriver>('StoreDriver');
 export const TERMINAL_SESSION_MANAGER = terminalMap.token<ITerminalSessionManager>('TerminalSessionManager')
 export const TRANSACTION_MANAGER = terminalMap.token<ITransactionManager>('TransactionManager')

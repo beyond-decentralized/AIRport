@@ -17,7 +17,6 @@ export interface RepositorySynchronizationData {
 	applications: DbApplication[]
 	applicationVersions: DbApplicationVersion[]
 	history: IRepositoryTransactionHistory
-	memberOperations: IRepositoryMember[]
 	// Repositories may reference records in other repositories
 	referencedApplicationRelations: DbRelation[]
 	referencedApplicationVersions: DbApplicationVersion[]

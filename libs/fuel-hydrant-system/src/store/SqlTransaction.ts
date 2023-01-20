@@ -14,7 +14,8 @@ import {
     SQLDataType,
     StoreType,
     IActor,
-    ITransactionHistory
+    ITransactionHistory,
+    IRepositoryMember
 } from '@airport/ground-control'
 import {
     IOperationContext,
@@ -33,6 +34,8 @@ export abstract class SqlTransaction
     credentials: ITransactionCredentials
     id: string
     isSync = false
+    newRepositoryMembers: IRepositoryMember[] = []
+    updatedRepositoryMembers: IRepositoryMember[] = []
 
     transactionHistory: ITransactionHistory
     type: StoreType;

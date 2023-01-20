@@ -207,12 +207,12 @@ export class UpdateManager
 			// const repository                         = repositories.get(repositoryId)
 			const recordHistoryMapForRepository = {}
 			recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository
-			const repositoryTransactionHistory = await this.historyManager.getNewRepositoryTransactionHistory(
-				transaction.transactionHistory, repositoryId, context
+			const repositoryTransactionHistory = await this.historyManager.getRepositoryTransactionHistory(
+				transaction.transactionHistory, repositoryId, actor, context
 			)
 			const operationHistory = this.repositoryTransactionHistoryDuo.startOperation(
 				repositoryTransactionHistory, systemWideOperationId, ChangeType.UPDATE_ROWS,
-				context.dbEntity, actor, rootTransaction)
+				context.dbEntity, rootTransaction)
 
 			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
 			for (const recordToUpdate of recordsForRepositoryId) {
@@ -343,7 +343,7 @@ export class UpdateManager
 			const repositoryId = recordToUpdate[repositorySheetSelectInfo.repositoryIdColumnIndex]
 			repositoryIdSet.add(repositoryId)
 			const recordsForRepositoryId =
-			this.datastructureUtils.ensureChildArray(recordsByRepositoryId, repositoryId)
+				this.datastructureUtils.ensureChildArray(recordsByRepositoryId, repositoryId)
 			recordsForRepositoryId.push(recordToUpdate)
 		}
 

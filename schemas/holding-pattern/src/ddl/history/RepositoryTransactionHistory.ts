@@ -1,4 +1,4 @@
-import { RepositoryTransactionHistory_GUID, RepositoryTransactionHistory_IsRepositoryCreation, RepositoryTransactionHistory_LocalId, RepositoryTransactionHistory_SaveTimestamp, RepositoryTransactionHistory_SyncTimestamp, RepositoryTransactionType } from '@airport/ground-control'
+import { RepositoryTransactionHistory_GUID, RepositoryTransactionHistory_IsRepositoryCreation, RepositoryTransactionHistory_LocalId, RepositoryTransactionHistory_SaveTimestamp, RepositoryTransactionHistory_SyncTimestamp, RepositoryTransactionType, Repository_IsPublic } from '@airport/ground-control'
 import {
 	Column,
 	DbBoolean,
@@ -13,9 +13,12 @@ import {
 	SequenceGenerator,
 	Table,
 } from '@airport/tarmaq-entity'
+import { Actor } from '../infrastructure/Actor'
+import { RepositoryMember } from '../repository/RepositoryMember'
 import { Repository } from '../repository/Repository'
 import { OperationHistory } from './OperationHistory'
 import { TransactionHistory } from './TransactionHistory'
+import { RepositoryMemberUpdate } from '../repository/RepositoryMemberUpdate'
 
 /**
  * Created by Papa on 9/15/2016.
@@ -56,6 +59,25 @@ export class RepositoryTransactionHistory {
 	@DbBoolean()
 	isRepositoryCreation?: RepositoryTransactionHistory_IsRepositoryCreation
 
+	@Column({ name: "IS_PUBLIC" })
+	@DbBoolean()
+	isPublic?: Repository_IsPublic
+
+	@ManyToOne()
+	@JoinColumn({
+		name: 'ACTOR_LID',
+		referencedColumnName: 'ACTOR_LID',
+		nullable: false
+	})
+	actor?: Actor
+
+	@ManyToOne()
+	@JoinColumn({
+		name: 'REPOSITORY_MEMBER_LID',
+		referencedColumnName: 'REPOSITORY_MEMBER_LID', nullable: false
+	})
+	member: RepositoryMember
+
 	@ManyToOne()
 	@JoinColumn({
 		name: 'REPOSITORY_LID',
@@ -72,6 +94,12 @@ export class RepositoryTransactionHistory {
 
 	@OneToMany({ mappedBy: 'repositoryTransactionHistory' })
 	operationHistory?: OperationHistory[] = []
+
+	@OneToMany({ mappedBy: 'newInMemberRepositoryTransactionHistory' })
+	newRepositoryMembers?: RepositoryMember[] = []
+
+	@OneToMany({ mappedBy: 'repositoryTransactionHistory' })
+	repositoryMemberUpdates?: RepositoryMemberUpdate[] = []
 
 	constructor(
 		data?: RepositoryTransactionHistory

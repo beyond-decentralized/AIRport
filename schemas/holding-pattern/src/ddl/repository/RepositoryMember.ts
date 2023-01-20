@@ -9,12 +9,14 @@ import {
     Id,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     Table
 } from "@airport/tarmaq-entity";
 import {
     UserAccount
 } from "@airport/travel-document-checkpoint/dist/app/bundle";
 import { Repository } from "./Repository";
+import { RepositoryMemberUpdate } from "./RepositoryMemberUpdate";
 
 @Entity()
 @Table({ name: 'REPOSITORY_MEMBER' })
@@ -54,15 +56,20 @@ export class RepositoryMember {
     @ManyToOne()
     @JoinColumn({
         name: 'REPOSITORY_LID',
-        referencedColumnName: 'REPOSITORY_LID'
+        referencedColumnName: 'REPOSITORY_LID',
+        nullable: false
     })
     repository?: Repository
 
     @ManyToOne()
     @JoinColumn({
         name: 'USER_ACCOUNT_LID',
-        referencedColumnName: 'USER_ACCOUNT_LID'
+        referencedColumnName: 'USER_ACCOUNT_LID',
+        nullable: false
     })
     userAccount?: UserAccount
+
+    @OneToMany({ mappedBy: 'repositoryMember' })
+    updates?: RepositoryMemberUpdate[] = []
 
 }

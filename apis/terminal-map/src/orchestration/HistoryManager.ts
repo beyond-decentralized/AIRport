@@ -1,5 +1,6 @@
-import { IRepositoryTransactionHistory, ITransactionHistory, Repository_LocalId, TransactionType } from "@airport/ground-control";
+import { IActor, IRepositoryTransactionHistory, ITransactionHistory, Repository_LocalId, TransactionType } from "@airport/ground-control";
 import { IOperationContext } from "../processing/OperationContext";
+import { ITransactionContext } from "./TransactionManager";
 
 export interface IHistoryManager {
 
@@ -7,10 +8,11 @@ export interface IHistoryManager {
         transactionType: TransactionType
     ): Promise<ITransactionHistory>;
 
-    getNewRepositoryTransactionHistory(
+    getRepositoryTransactionHistory(
         transactionHistory: ITransactionHistory,
-        repositoryId: Repository_LocalId,
-        context: IOperationContext
-    ): Promise<IRepositoryTransactionHistory>;
+        repositoryLocalId: Repository_LocalId,
+        actor: IActor,
+        context: IOperationContext & ITransactionContext
+    ): Promise<IRepositoryTransactionHistory>
 
 }

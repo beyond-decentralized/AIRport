@@ -4,11 +4,10 @@ import { DbEntity } from "../application/Entity";
 import { ApplicationColumn_Index } from "../application/Property";
 import { ChangeType } from "../data/ChangeType";
 import { RepositoryTransactionType, TransactionType } from "../data/sync/TransactionType";
-import { ActorRecordId, IActor, IRepository, SystemWideOperationId } from "./types";
+import { ActorRecordId, IActor, IRepository, IRepositoryMember, Repository_IsPublic, Repository_LocalId, SystemWideOperationId } from "./types";
 
 export type RepositoryTransactionHistory_LocalId = number;
 export type RepositoryTransactionHistory_IsRepositoryCreation = boolean;
-export type RepositoryTransactionHistory_BlockId = number;
 export type RepositoryTransactionHistory_SaveTimestamp = number;
 export type RepositoryTransactionHistory_SyncTimestamp = number;
 export type RepositoryTransactionHistory_GUID = string;
@@ -19,22 +18,19 @@ export type RepositoryTransactionHistory_GUID = string;
 export interface IRepositoryTransactionHistory {
 
     _localId: RepositoryTransactionHistory_LocalId
-
+    actor?: IActor
     repositoryTransactionType?: RepositoryTransactionType
-
     saveTimestamp?: RepositoryTransactionHistory_SaveTimestamp
-
     syncTimestamp?: RepositoryTransactionHistory_SyncTimestamp
-
     GUID?: RepositoryTransactionHistory_GUID
-
+    isPublic?: Repository_IsPublic
     isRepositoryCreation?: RepositoryTransactionHistory_IsRepositoryCreation
-
+    member: IRepositoryMember
     repository?: IRepository
-
     transactionHistory?: ITransactionHistory
-
     operationHistory?: IOperationHistory[]
+    newRepositoryMembers?: IRepositoryMember[]
+    updatedRepositoryMembers?: IRepositoryMember[]
 
 }
 
@@ -46,7 +42,7 @@ export interface ITransactionHistory {
     _localId: TransactionHistory_LocalId
     transactionType?: TransactionType
     repositoryTransactionHistories?: IRepositoryTransactionHistory[]
-    repositoryTransactionHistoryMap?: { [repositoryId: number]: IRepositoryTransactionHistory }
+    repositoryTransactionHistoryMap?: { [repositoryLocalId: Repository_LocalId]: IRepositoryTransactionHistory }
     applicationMap?: SyncApplicationMap
     allOperationHistory?: IOperationHistory[]
     allRecordHistory?: IRecordHistory[]
@@ -67,7 +63,6 @@ export interface IOperationHistory {
     changeType?: ChangeType
     systemWideOperationId?: SystemWideOperationId
     entity?: DbEntity
-    actor?: IActor
     repositoryTransactionHistory?: IRepositoryTransactionHistory
     recordHistory?: IRecordHistory[]
 

@@ -56,7 +56,7 @@ export class SynchronizationOutManager
 		const {
 			historiesToSend,
 			messages
-		} = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories)
+		} = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories, context)
 		// await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
 
 		this.messageSigningManager.signMessages(messages, context)

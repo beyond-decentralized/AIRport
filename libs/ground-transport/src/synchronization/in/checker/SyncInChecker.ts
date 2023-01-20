@@ -13,7 +13,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { ApplicationEntity_LocalId, ApplicationRelation_Index, Application_Name, DbRelation, Domain_Name, IDatastructureUtils } from '@airport/ground-control';
+import { ApplicationEntity_LocalId, ApplicationRelation_Index, Application_Name, DbRelation, Domain_Name, IDatastructureUtils, KeyUtils } from '@airport/ground-control';
 import { ITerminalStore } from '@airport/terminal-map';
 
 export interface ISyncInChecker {
@@ -37,6 +37,9 @@ export class SyncInChecker
 
 	@Inject()
 	datastructureUtils: IDatastructureUtils
+
+	@Inject()
+	keyUtils: KeyUtils
 
 	@Inject()
 	syncInActorChecker: ISyncInActorChecker
@@ -73,6 +76,8 @@ export class SyncInChecker
 
 		let data = message.data
 
+		let serializedData = JSON.stringify(data)
+
 		if (! await this.syncInUserAccountChecker.ensureUserAccounts(data, context)) {
 			return {
 				isValid: false
@@ -93,11 +98,20 @@ export class SyncInChecker
 				isValid: false
 			}
 		}
-		if (! await this.syncInRepositoryChecker.ensureRepositories(data, context)) {
+		const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker.checkRepositoriesAndMembers(data)
+		if (!repositoryAndMemberCheckResult.isValid) {
 			return {
 				isValid: false
 			}
 		}
+
+		if (!this.keyUtils.verify(serializedData, message.signature, repositoryAndMemberCheckResult.publicSigningKey)) {
+			console.error(`Message signature is not valid.`)
+			return {
+				isValid: false
+			}
+		}
+
 		if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(
 			data.applicationVersions, data.applications, context)) {
 			return {
@@ -105,8 +119,13 @@ export class SyncInChecker
 			}
 		}
 
+		const dataCheckResult = await this.syncInDataChecker.checkData(message, context)
 
-		return await this.syncInDataChecker.checkData(message, context)
+
+		return {
+			...dataCheckResult,
+			...repositoryAndMemberCheckResult
+		}
 	}
 
 	async checkReferencedApplicationRelations(

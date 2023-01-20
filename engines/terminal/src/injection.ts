@@ -10,7 +10,7 @@ import {
 } from '@airport/air-traffic-control'
 import { ApplicationDao, DomainDao } from '@airport/airspace/dist/app/bundle'
 import { QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER } from '@airport/arrivals-n-departures'
-import { TerminalStore, TERMINAL_SESSION_MANAGER, UserStore } from '@airport/terminal-map'
+import { HISTORY_MANAGER, TerminalStore, TERMINAL_SESSION_MANAGER, UserStore } from '@airport/terminal-map'
 import { lib } from '@airport/direction-indicator'
 import {
     AppTrackerUtils,
@@ -91,7 +91,7 @@ QUERY_RESULTS_SERIALIZER.setClass(QueryResultsSerializer)
 terminal.register(
     AbstractMutationManager, TransactionalReceiver as any, CascadeGraphVerifier,
     DatabaseManager, DeleteManager, DependencyGraphResolver,
-    EntityGraphReconstructor, HistoryManager, InsertManager,
+    EntityGraphReconstructor, InsertManager,
     InternalRecordManager, OnlineManager, OperationManager,
     QueryManager, StructuralEntityValidator, UpdateManager
 )
@@ -125,7 +125,7 @@ terminal.setDependencies(DeleteManager, {
     applicationUtils: ApplicationUtils,
     datastructureUtils: DatastructureUtils,
     dictionary: Dictionary,
-    historyManager: HistoryManager,
+    historyManager: HISTORY_MANAGER,
     operationHistoryDuo: OperationHistoryDuo,
     recordHistoryDuo: RecordHistoryDuo,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
@@ -144,14 +144,15 @@ terminal.setDependencies(EntityGraphReconstructor, {
     entityStateManager: ENTITY_STATE_MANAGER
 })
 
-terminal.setDependencies(HistoryManager, {
+HISTORY_MANAGER.setClass(HistoryManager)
+HISTORY_MANAGER.setDependencies({
     transactionHistoryDuo: TransactionHistoryDuo,
 })
 
 terminal.setDependencies(InsertManager, {
     airportDatabase: AIRPORT_DATABASE,
     dictionary: Dictionary,
-    historyManager: HistoryManager,
+    historyManager: HISTORY_MANAGER,
     operationHistoryDuo: OperationHistoryDuo,
     recordHistoryDuo: RecordHistoryDuo,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
@@ -275,7 +276,7 @@ terminal.setDependencies(UpdateManager, {
     datastructureUtils: DatastructureUtils,
     dictionary: Dictionary,
     fieldUtils: FieldUtils,
-    historyManager: HistoryManager,
+    historyManager: HISTORY_MANAGER,
     operationHistoryDuo: OperationHistoryDuo,
     queryFacade: QUERY_FACADE,
     queryUtils: QUERY_UTILS,

@@ -1,6 +1,6 @@
 import { Api } from '@airport/check-in'
-import { Inject, Injected } from "@airport/direction-indicator";
-import { IRepository, Repository_GUID } from '@airport/ground-control';
+import { IContext, Inject, Injected } from "@airport/direction-indicator";
+import { IRepository, Repository_GUID, Repository_IsPublic } from '@airport/ground-control';
 import { IRepositoryManager } from '@airport/terminal-map';
 import { RepositoryDao } from "../../dao/dao";
 
@@ -26,10 +26,16 @@ export class RepositoryApi {
 
     @Api()
     async create(
-        repositoryName: string
+        repositoryName: string,
+        isPublic?: Repository_IsPublic
     ): Promise<IRepository> {
+        let context: IContext = arguments[2]
+        if (isPublic === undefined) {
+            context = arguments[1]
+            isPublic = false
+        }
         return await this.repositoryManager.createRepository(
-            repositoryName, arguments[1])
+            repositoryName, isPublic, context)
     }
 
     @Api()

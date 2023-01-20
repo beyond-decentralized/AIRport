@@ -9,7 +9,7 @@ import {
 } from '@airport/holding-pattern/dist/app/bundle' // default
 import {
 	IRepositoryMaintenanceManager
-} from '@airbridge/sso'
+} from '@airbridge/sso/dist/app/bundle'
 // import is reserved for Application use
 import {
 	AND,
@@ -28,7 +28,7 @@ import {
 	ITransactionContext,
 } from '@airport/terminal-map'
 import { v4 as guidv4 } from "uuid";
-import { Dictionary, IAppTrackerUtils, IRepository, IUserAccount, UpdateState } from '@airport/ground-control'
+import { Dictionary, IAppTrackerUtils, IRepository, IUserAccount, Repository_IsPublic, UpdateState } from '@airport/ground-control'
 
 /**
  * Created by Papa on 2/12/2017.
@@ -67,9 +67,11 @@ export class RepositoryManager
 
 	async createRepository(
 		repositoryName: string,
+		isPublic: Repository_IsPublic,
 		context: IApiCallContext & ITransactionContext
 	): Promise<IRepository> {
-		const userSession = await this.terminalSessionManager.getUserSession(context)
+		const userSession = await this.terminalSessionManager
+			.getUserSession(context)
 		if (!userSession) {
 			throw new Error('No User Session present')
 		}
@@ -97,6 +99,7 @@ already contains a new repository.`)
 			isInternalDomain
 				? context.applicationFullName
 				: userSession.currentTransaction.actor.application.fullName,
+			isPublic,
 			context)
 
 		if (!context.forKeyRingRepository) {
@@ -172,6 +175,7 @@ already contains a new repository.`)
 		GUID: string,
 		userAccount: IUserAccount,
 		applicationFullName: string,
+		isPublic: Repository_IsPublic,
 		context: IApiCallContext & ITransactionContext,
 	): Promise<IRepository> {
 		const repository: IRepository = {
@@ -180,6 +184,7 @@ already contains a new repository.`)
 			createdAt: new Date(),
 			fullApplicationName: applicationFullName,
 			immutable: false,
+			isPublic,
 			name,
 			owner: userAccount as any,
 			repositoryTransactionHistory: [],

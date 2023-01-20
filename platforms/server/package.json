@@ -3,6 +3,7 @@
   "description": "AIRport server framework",
   "version": "0.0.1",
   "peerDependencies": {
+    "@airbridge/sso": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
     "@airport/airspace": "0.0.1",
     "@airport/apron": "0.0.1",

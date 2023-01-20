@@ -40,6 +40,7 @@ import {
 import {
     ActorDao,
     RepositoryDao,
+    RepositoryMemberDao,
     RepositoryTransactionHistoryDao,
     RepositoryTransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
@@ -54,6 +55,7 @@ import {
     DatastructureUtils,
     DbApplicationUtils,
     Dictionary,
+    KeyUtils,
     SEQUENCE_GENERATOR
 } from '@airport/ground-control'
 import { DATABASE_FACADE } from '@airport/tarmaq-dao'
@@ -108,6 +110,7 @@ groundTransport.setDependencies(SyncInApplicationVersionChecker, {
 
 groundTransport.setDependencies(SyncInChecker, {
     datastructureUtils: DatastructureUtils,
+    keyUtils: KeyUtils,
     syncInActorChecker: SyncInActorChecker,
     syncInApplicationChecker: SyncInApplicationChecker,
     syncInApplicationVersionChecker: SyncInApplicationVersionChecker,
@@ -175,6 +178,8 @@ groundTransport.setDependencies(SynchronizationOutManager, {
 })
 
 groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
+    repositoryDao: RepositoryDao,
+    repositoryMemberDao: RepositoryMemberDao,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     stage1SyncedInDataProcessor: Stage1SyncedInDataProcessor,
     stage2SyncedInDataProcessor: Stage2SyncedInDataProcessor,

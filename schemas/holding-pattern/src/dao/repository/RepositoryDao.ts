@@ -8,9 +8,6 @@ import {
 	QUserAccount
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
-	Repository,
-} from '../../ddl/repository/Repository'
-import {
 	BaseRepositoryDao,
 	IBaseRepositoryDao,
 	QRepository,

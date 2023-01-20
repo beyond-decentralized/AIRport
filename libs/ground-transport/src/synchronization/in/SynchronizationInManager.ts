@@ -11,6 +11,7 @@ import { IDataCheckResult } from './checker/SyncInDataChecker'
 import { ISyncInApplicationVersionChecker } from './checker/SyncInApplicationVersionChecker'
 import { IRepositoryLoader } from '@airport/air-traffic-control'
 import { IRepository, Repository_GUID } from '@airport/ground-control'
+import { INewAndUpdatedRepositorieAndRecords, IRepositoriesAndMembersCheckResult } from './checker/SyncInRepositoryChecker'
 
 /**
  * The manager for synchronizing data coming in  to Terminal (TM)
@@ -75,6 +76,12 @@ export class SynchronizationInManager
 		const immediateProcessingMessages: RepositorySynchronizationMessage[] = []
 		const delayedProcessingMessages: RepositorySynchronizationMessage[] = []
 
+		const newAndUpdatedRepositoriesAndRecords: INewAndUpdatedRepositorieAndRecords = {
+			missingRepositories: [],
+			newMembers: [],
+			updatedMembers: []
+		}
+
 		// Split up messages by type
 		for (const message of orderedMessages) {
 			if (!this.isValidLastChangeTime(
@@ -97,6 +104,18 @@ export class SynchronizationInManager
 					processMessage = false
 					return
 				}
+				newAndUpdatedRepositoriesAndRecords.missingRepositories = [
+					...newAndUpdatedRepositoriesAndRecords.missingRepositories,
+					...dataCheckResult.missingRepositories
+				]
+				newAndUpdatedRepositoriesAndRecords.newMembers = [
+					...newAndUpdatedRepositoriesAndRecords.newMembers,
+					...dataCheckResult.newMembers
+				]
+				newAndUpdatedRepositoriesAndRecords.updatedMembers = [
+					...newAndUpdatedRepositoriesAndRecords.updatedMembers,
+					...dataCheckResult.updatedMembers
+				]
 			}, null, context)
 			if (processMessage) {
 				immediateProcessingMessages.push({
@@ -125,7 +144,9 @@ export class SynchronizationInManager
 		}
 		await this.transactionManager.transactInternal(async (transaction, context) => {
 			transaction.isSync = true
-			await this.twoStageSyncedInDataProcessor.syncMessages(immediateProcessingMessages, transaction, context)
+			await this.twoStageSyncedInDataProcessor.syncMessages(
+				immediateProcessingMessages, newAndUpdatedRepositoriesAndRecords,
+				transaction, context)
 		}, null, context)
 
 		await this.wait(2000)
@@ -223,7 +244,7 @@ export class SynchronizationInManager
 			await this.transactionManager.transactInternal(async (transaction, context) => {
 				transaction.isSync = true
 				await this.twoStageSyncedInDataProcessor.syncMessages(
-					delayedProcessingMessagesWithValidApps, transaction, context)
+					delayedProcessingMessagesWithValidApps, null, transaction, context)
 			}, null, context)
 		}
 	}

@@ -57,14 +57,6 @@ export class OperationHistory {
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'ACTOR_LID',
-		referencedColumnName: 'ACTOR_LID',
-		nullable: false
-	})
-	actor?: Actor
-
-	@ManyToOne()
-	@JoinColumn({
 		name: 'REPOSITORY_TRANSACTION_HISTORY_LID',
 		referencedColumnName: 'REPOSITORY_TRANSACTION_HISTORY_LID',
 		nullable: false

@@ -2,7 +2,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { IRepositoryTransactionHistory, ITransactionHistory, Repository_LocalId, TransactionType } from '@airport/ground-control'
+import { IActor, IRepositoryTransactionHistory, ITransactionHistory, Repository_LocalId, TransactionType } from '@airport/ground-control'
 import {
 	ITransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
@@ -21,13 +21,22 @@ export class HistoryManager
 		return await this.transactionHistoryDuo.getNewRecord(transactionType)
 	}
 
-	async getNewRepositoryTransactionHistory(
+	async getRepositoryTransactionHistory(
 		transactionHistory: ITransactionHistory,
-		repositoryId: Repository_LocalId,
+		repositoryLocalId: Repository_LocalId,
+		actor: IActor,
 		context: IOperationContext & ITransactionContext
 	): Promise<IRepositoryTransactionHistory> {
+		let isRepositoryCreation = false
+		let isPublic = false
+		const newRepository = context.rootTransaction.newRepository
+		if (newRepository) {
+			isRepositoryCreation = true
+			isPublic = newRepository.isPublic
+		}
 		return await this.transactionHistoryDuo.getRepositoryTransaction(
-			transactionHistory, repositoryId, !!context.rootTransaction.newRepository)
+			transactionHistory, repositoryLocalId,
+			actor, isRepositoryCreation, isPublic, context)
 	}
 
 }

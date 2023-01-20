@@ -8,7 +8,6 @@ import {
 	SqlDriver
 } from '@airport/fuel-hydrant-system'
 import { IOperationContext } from '@airport/terminal-map';
-import { IContext } from '@airport/direction-indicator';
 import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
 
 /**

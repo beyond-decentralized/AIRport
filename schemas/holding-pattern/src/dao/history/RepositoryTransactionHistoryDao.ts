@@ -111,7 +111,7 @@ export class RepositoryTransactionHistoryDao
 				const actorEquals: JSONBaseOperation[] = []
 				for (const [actorId, recordsForActor] of recordMapForEntity) {
 					actorEquals.push(AND(
-						oh.actor._localId.equals(actorId),
+						rh.actor._localId.equals(actorId),
 						rh._actorRecordId.IN(Array.from(recordsForActor))
 					))
 				}

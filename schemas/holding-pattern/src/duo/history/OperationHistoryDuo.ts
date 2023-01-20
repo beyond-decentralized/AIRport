@@ -4,7 +4,6 @@ import {
 	Actor_LocalId,
 	ChangeType,
 	DbEntity,
-	IActor,
 	IOperationHistory,
 	IRecordHistory,
 	IRepositoryTransactionHistory,
@@ -18,7 +17,6 @@ export interface IOperationHistoryDuo {
 	getNewRecord(
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
-		actor: IActor,
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		systemWideOperationId: SystemWideOperationId,
 		rootTransaction: IRootTransaction
@@ -47,13 +45,11 @@ export class OperationHistoryDuo
 	getNewRecord(
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
-		actor: IActor,
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		systemWideOperationId: SystemWideOperationId,
 		rootTransaction: IRootTransaction
 	): IOperationHistory {
 		let operationHistory: IOperationHistory = {
-			actor,
 			changeType: entityChangeType,
 			entity: dbEntity,
 			_localId: undefined,

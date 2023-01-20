@@ -47,8 +47,7 @@ export interface IStage1SyncedInDataProcessor {
 
 	performStage1DataProcessing(
 		repositoryTransactionHistoryMapByrepositoryLocalId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
-		actorMayById: Map<Actor_LocalId, IActor>,
-		context: IContext
+		actorMayById: Map<Actor_LocalId, IActor>
 	): Promise<Stage1SyncedInDataProcessingResult>;
 
 }
@@ -90,8 +89,7 @@ export class Stage1SyncedInDataProcessor
 	 */
 	async performStage1DataProcessing(
 		repositoryTransactionHistoryMapByRepositoryLocalId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
-		actorMayById: Map<Actor_LocalId, IActor>,
-		context: IContext
+		actorMayById: Map<Actor_LocalId, IActor>
 	): Promise<Stage1SyncedInDataProcessingResult> {
 		await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryLocalId)
 
@@ -155,14 +153,12 @@ export class Stage1SyncedInDataProcessor
 		// Find all actors that modified the locally recorded history, which are not already
 		// in the actorMapById collect actors not already in cache
 		const newlyFoundActorSet: Set<Actor_LocalId> = new Set()
-		for (const [repositoryLocalId, repositoryTransactionHistoriesForRepository]
+		for (const [_repositoryLocalId, repositoryTransactionHistoriesForRepository]
 			of localRepoTransHistoryMapByrepositoryLocalId) {
 			for (const repositoryTransactionHistory of repositoryTransactionHistoriesForRepository) {
-				for (const operationHistory of repositoryTransactionHistory.operationHistory) {
-					const actorId = operationHistory.actor._localId
-					if (actorMayById.get(actorId) === undefined) {
-						newlyFoundActorSet.add(actorId)
-					}
+				const actorId = repositoryTransactionHistory.actor._localId
+				if (actorMayById.get(actorId) === undefined) {
+					newlyFoundActorSet.add(actorId)
 				}
 			}
 		}
@@ -175,7 +171,7 @@ export class Stage1SyncedInDataProcessor
 		}
 
 		// sort all repository histories in processing order
-		for (const [repositoryLocalId, repoTransHistoriesForRepository]
+		for (const [_repositoryLocalId, repoTransHistoriesForRepository]
 			of allRepoTransHistoryMapByRepoId) {
 			this.repositoryTransactionHistoryDuo
 				.sortRepoTransHistories(repoTransHistoriesForRepository, actorMayById)

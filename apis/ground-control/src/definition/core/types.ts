@@ -1,6 +1,6 @@
 import { InternalUserAccount } from "@airport/aviation-communication";
 import { Application_FullName, DbApplication, DbDomain } from "../application/Application";
-import { IRepositoryTransactionHistory } from "./synchronizationTypes";
+import { IRepositoryTransactionHistory, RepositoryTransactionHistory_SyncTimestamp } from "./synchronizationTypes";
 
 export interface IRootTransaction {
 	numberOfOperations: number
@@ -50,6 +50,7 @@ export type CreatedAt = Date
 
 export type Repository_GUID = string;
 export type Repository_Immutable = boolean;
+export type Repository_IsPublic = boolean;
 export type Repository_LocalId = number;
 export type Repository_Name = string;
 export type Repository_Source = string;
@@ -71,6 +72,7 @@ export interface IRepository {
 	fullApplicationName?: Application_FullName;
 	GUID?: Repository_GUID;
 	immutable?: Repository_Immutable;
+	isPublic?: Repository_IsPublic;
 	name?: Repository_Name;
 	source?: Repository_Source;
 	uiEntryUri?: Repository_UiEntryUri;
@@ -196,14 +198,27 @@ export interface IRepositoryMember {
 	isAdministrator?: RepositoryMember_IsAdministrator
 	publicSigningKey?: RepositoryMember_PublicSigningKey
 	repository?: IRepository
+	updates?: IRepositoryMemberUpdate[]
 	status?: RepositoryMember_Status
 	userAccount?: IUserAccount
+
+}
+
+export type RepositoryMemberUpdate_LocalId = number
+export interface IRepositoryMemberUpdate {
+
+	_localId: RepositoryMemberUpdate_LocalId
+	syncTimestamp?: RepositoryTransactionHistory_SyncTimestamp
+	repositoryMember?: IRepositoryMember
+	isAdministrator?: RepositoryMember_IsAdministrator
+	canWrite?: RepositoryMember_CanWrite
 
 }
 
 export type SystemWideOperationId = number
 export type ActorRecordId = number
 export type AirEntity_Id = string
+export type AirEntity_Copied = boolean
 export interface IAirEntity {
 	// Id Properties
 	_actorRecordId?: ActorRecordId;
@@ -213,9 +228,9 @@ export interface IAirEntity {
 	actor?: IActor;
 
 	// Non-Id Properties
-	ageSuitability?: number;
-	copied?: boolean;
-	createdAt?: Date;
+	ageSuitability?: AgeSuitability;
+	copied?: AirEntity_Copied;
+	createdAt?: CreatedAt;
 	systemWideOperationId?: SystemWideOperationId;
 
 	// Transient Properties
@@ -299,8 +314,8 @@ export type Type_Name = string
  * Generic Type (can be applied to any entities)
  */
 export interface IType {
-	id?: number
-	name?: string
+	id?: Type_Id
+	name?: Type_Name
 	typeClassifications?: ITypeClassification[]
 }
 

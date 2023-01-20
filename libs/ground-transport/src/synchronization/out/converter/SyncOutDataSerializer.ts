@@ -2,6 +2,7 @@ import { IApplicationRelationDao } from '@airport/airspace/dist/app/bundle';
 import { RepositorySynchronizationData, RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { UserAccount_GUID } from "@airport/aviation-communication";
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator';
@@ -23,9 +24,11 @@ import {
 	IRecordHistoryNewValue,
 	IRecordHistoryOldValue,
 	IRepository,
+	IRepositoryMember,
 	IRepositoryTransactionHistory,
 	ITerminal,
 	IUserAccount,
+	RepositoryMember_GUID,
 	RepositoryTransactionType,
 	Repository_LocalId,
 	Terminal_GUID
@@ -39,7 +42,8 @@ import { IApplicationUtils } from '@airport/tarmaq-query';
 export interface ISyncOutDataSerializer {
 
 	serialize(
-		repositoryTransactionHistories: IRepositoryTransactionHistory[]
+		repositoryTransactionHistories: IRepositoryTransactionHistory[],
+		context: IContext
 	): Promise<{
 		historiesToSend: IRepositoryTransactionHistory[]
 		messages: RepositorySynchronizationMessage[]
@@ -116,7 +120,8 @@ export class SyncOutDataSerializer
 	WITH_INDEX: IWithIndex = {} as any
 
 	async serialize(
-		repositoryTransactionHistories: IRepositoryTransactionHistory[]
+		repositoryTransactionHistories: IRepositoryTransactionHistory[],
+		context: IContext
 	): Promise<{
 		historiesToSend: IRepositoryTransactionHistory[]
 		messages: RepositorySynchronizationMessage[]
@@ -183,6 +188,7 @@ export class SyncOutDataSerializer
 		const message: RepositorySynchronizationMessage = {
 			data
 		}
+
 		data.history = this.serializeRepositoryTransactionHistory(
 			repositoryTransactionHistory, message.data, lookups)
 
@@ -459,17 +465,42 @@ export class SyncOutDataSerializer
 		const serializedOperationHistory: IOperationHistory[] = []
 		for (const operationHistory of repositoryTransactionHistory.operationHistory) {
 			serializedOperationHistory.push(this.serializeOperationHistory(
-				operationHistory, data, lookups))
+				repositoryTransactionHistory, operationHistory, data, lookups))
+		}
+
+		let repositoryMember = repositoryTransactionHistory.member
+
+		let member: IRepositoryMember = {
+			...this.WITH_ID,
+			GUID: repositoryMember.GUID
+		}
+
+		if (repositoryTransactionHistory.isRepositoryCreation) {
+			member = {
+				...member,
+				publicSigningKey: repositoryMember.publicSigningKey,
+				userAccount: this.getUserAccountInMessageIndex(
+					repositoryMember.userAccount,
+					lookups.userAccountLookup
+				) as any
+			}
 		}
 
 		return {
 			...this.WITH_ID,
+			actor: this.getActorInMessageIndex(repositoryTransactionHistory.actor, lookups),
+			GUID: repositoryTransactionHistory.GUID,
 			isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
+			isPublic: repositoryTransactionHistory.isPublic,
+			member,
+			newRepositoryMembers: this.serializeNewRepositoryMembers(
+				repositoryTransactionHistory, lookups.userAccountLookup),
 			repository: this.serializeHistoryRepository(
 				repositoryTransactionHistory, data, lookups.userAccountLookup),
 			operationHistory: serializedOperationHistory,
 			saveTimestamp: repositoryTransactionHistory.saveTimestamp,
-			GUID: repositoryTransactionHistory.GUID
+			updatedRepositoryMembers: this.serializeUpdatedRepositoryMembers(
+				repositoryTransactionHistory),
 		}
 	}
 
@@ -493,7 +524,49 @@ export class SyncOutDataSerializer
 		}
 	}
 
+	private serializeNewRepositoryMembers(
+		repositoryTransactionHistory: IRepositoryTransactionHistory,
+		inMessageUserAccountLookup: InMessageUserAccountLookup
+	): IRepositoryMember[] {
+		const serializedRepositoryMembers: IRepositoryMember[] = []
+		for (const newRepositoryMember of repositoryTransactionHistory
+			.newRepositoryMembers) {
+			serializedRepositoryMembers.push({
+				...this.WITH_ID,
+				canWrite: newRepositoryMember.canWrite,
+				GUID: newRepositoryMember.GUID,
+				isAdministrator: newRepositoryMember.isAdministrator,
+				publicSigningKey: newRepositoryMember.publicSigningKey,
+				status: newRepositoryMember.status,
+				userAccount: this.getUserAccountInMessageIndex(
+					newRepositoryMember.userAccount,
+					inMessageUserAccountLookup
+				) as any
+			})
+		}
+
+		return serializedRepositoryMembers
+	}
+
+	private serializeUpdatedRepositoryMembers(
+		repositoryTransactionHistory: IRepositoryTransactionHistory
+	): IRepositoryMember[] {
+		const serializedRepositoryMembers: IRepositoryMember[] = []
+		for (const updatedRepositoryMember of repositoryTransactionHistory
+			.updatedRepositoryMembers) {
+			serializedRepositoryMembers.push({
+				...this.WITH_ID,
+				GUID: updatedRepositoryMember.GUID,
+				publicSigningKey: updatedRepositoryMember.publicSigningKey,
+				status: updatedRepositoryMember.status
+			})
+		}
+
+		return serializedRepositoryMembers
+	}
+
 	private serializeOperationHistory(
+		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		operationHistory: IOperationHistory,
 		data: RepositorySynchronizationData,
 		lookups: InMessageLookupStructures
@@ -502,7 +575,7 @@ export class SyncOutDataSerializer
 		const serializedRecordHistory: IRecordHistory[] = []
 		for (const recordHistory of operationHistory.recordHistory) {
 			serializedRecordHistory.push(this.serializeRecordHistory(
-				operationHistory, recordHistory, dbEntity, data, lookups))
+				repositoryTransactionHistory, recordHistory, dbEntity, data, lookups))
 		}
 
 		const entity = operationHistory.entity
@@ -533,7 +606,6 @@ export class SyncOutDataSerializer
 
 		return {
 			...this.WITH_ID,
-			actor: this.getActorInMessageIndex(operationHistory.actor, lookups),
 			changeType: operationHistory.changeType,
 			entity: {
 				...this.WITH_ID,
@@ -545,7 +617,7 @@ export class SyncOutDataSerializer
 	}
 
 	private serializeRecordHistory(
-		operationHistory: IOperationHistory,
+		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		recordHistory: IRecordHistory,
 		dbEntity: DbEntity,
 		data: RepositorySynchronizationData,
@@ -581,7 +653,7 @@ export class SyncOutDataSerializer
 		} = {
 			...this.WITH_ID,
 		}
-		if (actor._localId !== operationHistory.actor._localId) {
+		if (actor._localId !== repositoryTransactionHistory.actor._localId) {
 			baseObject.actor = this.getActorInMessageIndex(actor, lookups)
 		}
 		if (newValues.length) {

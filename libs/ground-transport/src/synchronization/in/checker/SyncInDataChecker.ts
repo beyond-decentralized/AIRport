@@ -28,14 +28,22 @@ import {
 } from '@airport/direction-indicator'
 import { ITerminalStore } from '@airport/terminal-map'
 import { IApplicationUtils } from '@airport/tarmaq-query'
+import { IRepositoriesAndMembersCheckResult } from './SyncInRepositoryChecker'
 
-export interface IDataCheckResult {
+export interface IDataCheckResult
+	extends IRepositoriesAndMembersCheckResult,
+	IInternalDataCheckResult {
+	// Delay processing of ledger tables because it might require
+	// loading of additional Apps
+}
+
+export interface IInternalDataCheckResult {
 	// Delay processing of ledger tables because it might require
 	// loading of additional Apps
 	forDelayedProcessing?: IOperationHistory[]
 	forImmediateProcessing?: IOperationHistory[]
-	isValid?: boolean
 }
+
 
 export interface IEntityColumnMapsByIndex {
 
@@ -97,20 +105,16 @@ export class SyncInDataChecker
 		context: IContext
 	): Promise<IDataCheckResult> {
 		const history = message.data.history
-		let dataCheckResult: IDataCheckResult
+		let operationHistoryCheckResult: IInternalDataCheckResult
 		try {
 			if (!history || typeof history !== 'object') {
 				throw new Error(`Invalid RepositorySynchronizationData.history`)
 			}
 			if (typeof history.GUID !== 'string' || history.GUID.length !== 36) {
-				return {
-					isValid: false
-				}
+				throw new Error(`Invalid RepositorySynchronizationData.history.GUID`)
 			}
 			if (!history.operationHistory || !(history.operationHistory instanceof Array)) {
-				return {
-					isValid: false
-				}
+				throw new Error(`Invalid RepositorySynchronizationData.history.operationHistory`)
 			}
 			if (!history.saveTimestamp || typeof history.saveTimestamp !== 'number') {
 				throw new Error(`Invalid RepositorySynchronizationData.history.saveTimestamp`)
@@ -125,6 +129,13 @@ export class SyncInDataChecker
 				throw new Error(`RepositorySynchronizationData.history.syncTimestamp cannot be specified`)
 			}
 
+			const actor = message.data.actors[history.actor as any]
+			if (!actor) {
+				throw new Error(`Cannot find Actor for "in-message id"
+RepositorySynchronizationData.history.actor`)
+			}
+			history.actor = actor
+
 			// Repository is already set in SyncInRepositoryChecker
 			history.repositoryTransactionType = RepositoryTransactionType.REMOTE
 			history.syncTimestamp = message.syncTimestamp
@@ -133,7 +144,7 @@ export class SyncInDataChecker
 			const applicationEntityMap = await this.populateApplicationEntityMap(
 				message.data.applicationVersions)
 
-			dataCheckResult = await this.checkOperationHistories(
+			operationHistoryCheckResult = await this.checkOperationHistories(
 				message.data, applicationEntityMap, context)
 		} catch (e) {
 			console.error(e)
@@ -144,7 +155,7 @@ export class SyncInDataChecker
 		}
 
 		return {
-			...dataCheckResult,
+			...operationHistoryCheckResult,
 			isValid: true
 		}
 	}
@@ -153,7 +164,8 @@ export class SyncInDataChecker
 		messageApplicationVersions: DbApplicationVersion[]
 	): Promise<Map<Domain_Name, Map<Application_Name, Map<ApplicationEntity_TableIndex, DbEntity>>>> {
 		const applicationVersionsByIds = this.terminalStore.getAllApplicationVersionsByIds()
-		const applicationEntityMap: Map<Domain_Name, Map<Application_Name, Map<ApplicationEntity_TableIndex, DbEntity>>> = new Map()
+		const applicationEntityMap: Map<Domain_Name, Map<Application_Name, Map<ApplicationEntity_TableIndex, DbEntity>>>
+			= new Map()
 		for (const messageApplicationVersion of messageApplicationVersions) {
 			const applicationVersion = applicationVersionsByIds[messageApplicationVersion._localId]
 			for (const applicationEntity of applicationVersion.entities) {
@@ -173,7 +185,7 @@ export class SyncInDataChecker
 		message: RepositorySynchronizationData,
 		applicationEntityMap: Map<string, Map<string, Map<ApplicationEntity_TableIndex, DbEntity>>>,
 		context: IContext
-	): Promise<IDataCheckResult> {
+	): Promise<IInternalDataCheckResult> {
 		const forImmediateProcessing: IOperationHistory[] = []
 		const forDelayedProcessing: IOperationHistory[] = []
 		const history = message.history
@@ -213,13 +225,6 @@ the position of orderHistory record determines it's order`)
 				throw new Error(`Expecting "in-message index" (number)
 					in 'operationHistory[${i}].entity.applicationVersion'`)
 			}
-			const actor = message.actors[operationHistory.actor as any]
-			if (!actor) {
-				throw new Error(`Cannot find Actor for "in-message id"
-RepositorySynchronizationData.history.operationHistory[${i}].actor`)
-			}
-
-			operationHistory.actor = actor
 			const applicationVersion = message.applicationVersions[operationHistory.entity.applicationVersion as any]
 			if (!applicationVersion) {
 				throw new Error(`Invalid index into message.applicationVersions [${operationHistory.entity.applicationVersion}],
@@ -308,13 +313,13 @@ RepositorySynchronizationData.history.operationHistory[${i}].actor`)
 						throw new Error(`Cannot specify RepositorySynchronizationData.history -> operationHistory.recordHistory.actor
 for ChangeType.INSERT_VALUES`)
 					}
-					recordHistory.actor = operationHistory.actor
+					recordHistory.actor = message.history.actor
 					break
 				case ChangeType.DELETE_ROWS:
 				case ChangeType.UPDATE_ROWS: {
 					// If no actor is present on record level its the same actor that created the repositoryTransactionHistory
 					if (recordHistory.actor === undefined) {
-						recordHistory.actor = operationHistory.actor
+						recordHistory.actor = message.history.actor
 					} else {
 						const actor = message.actors[recordHistory.actor as any]
 						if (!actor) {

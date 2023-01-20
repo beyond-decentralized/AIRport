@@ -1,5 +1,6 @@
 import {
 	Column,
+	DbBoolean,
 	DbDate,
 	DbNumber,
 	GeneratedValue,
@@ -12,7 +13,7 @@ import {
 import { Actor, Repository } from '@airport/holding-pattern'
 import { UserAccount } from '@airport/travel-document-checkpoint'
 import { IAirEntityUtils } from '@airport/aviation-communication'
-import { ActorRecordId, AgeSuitability, AirEntity_Id, CreatedAt, SystemWideOperationId } from '@airport/ground-control'
+import { ActorRecordId, AgeSuitability, AirEntity_Copied, AirEntity_Id, CreatedAt, SystemWideOperationId } from '@airport/ground-control'
 
 /**
  * Created by Papa on 2/17/2017.
@@ -84,7 +85,8 @@ export abstract class AirEntity {
 	// TODO: if and when records are copied, make this a column
 	// @Column({ name: 'COPIED', nullable: false })
 	@Transient()
-	copied?: boolean = false
+	@DbBoolean()
+	copied?: AirEntity_Copied = false
 
 	@Column({ name: 'CREATED_AT', nullable: false })
 	@DbDate()
