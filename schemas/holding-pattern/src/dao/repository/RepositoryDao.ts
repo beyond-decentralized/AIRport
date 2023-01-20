@@ -101,6 +101,7 @@ export class RepositoryDao
 				ageSuitability: Y,
 				createdAt: Y,
 				GUID: Y,
+				isPublic: Y,
 				owner: {
 					username: Y,
 				},

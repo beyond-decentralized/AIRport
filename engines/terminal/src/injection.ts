@@ -72,7 +72,7 @@ import { RepositoryManager } from './core/repository/RepositoryManager'
 import { LOCAL_API_SERVER } from '@airport/apron'
 import { IdGenerator } from '@airport/fuel-hydrant-system'
 import { ObservableQueryAdapter } from '@airport/flight-number'
-import { RepositoryMaintenanceManager } from '@airbridge/sso'
+import { RepositoryMaintenanceManager } from '@airbridge/sso/dist/app/bundle'
 import { CrossRepositoryRelationManager } from '@airport/flight-recorder/dist/app/bundle'
 
 const terminal = lib('terminal')
