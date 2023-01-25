@@ -1,4 +1,4 @@
-import { Terminal_GUID, Terminal_IsLocal, Terminal_LocalId } from '@airport/ground-control'
+import { ITerminal, Terminal_GUID, Terminal_IsLocal, Terminal_LocalId } from '@airport/ground-control'
 import {
 	Column,
 	DbBoolean,
@@ -30,7 +30,8 @@ import { TerminalType } from './TerminalType'
 		unique: true
 	}]
 })
-export class Terminal {
+export class Terminal
+	implements ITerminal {
 
 	@Id()
 	@GeneratedValue()

@@ -1,6 +1,8 @@
 import { InternalUserAccount } from "@airport/aviation-communication";
-import { Application_FullName, DbApplication, DbDomain } from "../application/Application";
-import { IRepositoryTransactionHistory, RepositoryTransactionHistory_SyncTimestamp } from "./synchronizationTypes";
+import { Application_FullName, DbApplication } from "../application/Application";
+import { DbEntity } from "../application/Entity";
+import { DbRelation } from "../application/Property";
+import { IRepositoryTransactionHistory } from "./synchronizationTypes";
 
 export interface IRootTransaction {
 	numberOfOperations: number
@@ -8,15 +10,13 @@ export interface IRootTransaction {
 	newRepository?: IRepository
 }
 
+// Signature is used in all entities that represent
+// direct UserAccount actions (such as inviting someone
+// to a Repository or joining a Repository)
+export type UserAccount_Signature = string
+
 export interface IUserAccount
 	extends InternalUserAccount {
-
-	domain?: DbDomain
-	continent?: IContinent
-	country?: ICountry
-	state?: IState
-	metroArea?: IMetroArea
-
 }
 
 export type Actor_LocalId = number;
@@ -56,10 +56,11 @@ export type Repository_Name = string;
 export type Repository_Source = string;
 export type Repository_UiEntryUri = string;
 export interface IRepositoryIdentifier {
-	source?: Repository_Source;
 	GUID?: Repository_GUID;
+	source?: Repository_Source;
 }
-export interface IRepository {
+export interface IRepository
+	extends IRepositoryIdentifier {
 
 	// Id Properties
 	_localId: Repository_LocalId;
@@ -70,11 +71,9 @@ export interface IRepository {
 	ageSuitability?: AgeSuitability;
 	createdAt?: CreatedAt;
 	fullApplicationName?: Application_FullName;
-	GUID?: Repository_GUID;
 	immutable?: Repository_Immutable;
 	isPublic?: Repository_IsPublic;
 	name?: Repository_Name;
-	source?: Repository_Source;
 	uiEntryUri?: Repository_UiEntryUri;
 	areDependenciesLoaded?: boolean
 
@@ -179,12 +178,14 @@ export interface IClientType {
 }
 
 
+export type RepositoryMember_CanWrite = boolean
 export type RepositoryMember_LocalId = number
-export type RepositoryMember_GUID = string
 export type RepositoryMember_IsOwner = boolean
 export type RepositoryMember_IsAdministrator = boolean
-export type RepositoryMember_CanWrite = boolean
 export type RepositoryMember_PublicSigningKey = string
+// All Repository operations must be signed
+// (RepositoryTransactionHistory records)
+export type RepositoryMember_Signature = string
 export enum RepositoryMember_Status {
 	INVITED,
 	JOINED
@@ -193,25 +194,75 @@ export interface IRepositoryMember {
 
 	_localId: RepositoryMember_LocalId
 	canWrite?: RepositoryMember_CanWrite
-	GUID?: RepositoryMember_GUID
+	invitations?: IRepositoryMemberInvitation[]
 	isOwner?: RepositoryMember_IsOwner
 	isAdministrator?: RepositoryMember_IsAdministrator
-	publicSigningKey?: RepositoryMember_PublicSigningKey
+	// doubles as the GUID
+	memberPublicSigningKey?: RepositoryMember_PublicSigningKey
 	repository?: IRepository
 	updates?: IRepositoryMemberUpdate[]
 	status?: RepositoryMember_Status
+	// When the member is first invited to the repository
+	// there is no UserAccount associated with it
 	userAccount?: IUserAccount
+	// Only populated in the database of the terminal
+	// where the RepositoryTransactionHistory was originally
+	// created (for the purpose of being able to reconstruct
+	// and re-send the RepositoryTransactionHistory)
+	addedInRepositoryTransactionHistory?: IRepositoryTransactionHistory
 
 }
+
+export type RepositoryMemberInvitation_LocalId = number
+// Private Signing Key is sent in the invitation link to the invited user's email
+// (or text message, or other messaging service)
+export type RepositoryMemberInvitation_PrivateSigningKey = string
+export type RepositoryMemberInvitation_PublicSigningKey = string
+export interface IRepositoryMemberInvitation {
+
+	_localId: RepositoryMemberUpdate_LocalId
+	createdAt?: CreatedAt
+	invitationPublicSigningKey?: RepositoryMemberInvitation_PublicSigningKey
+	invitedRepositoryMember?: IRepositoryMember
+	// Only populated in the database of the terminal
+	// where the RepositoryTransactionHistory was originally
+	// created (for the purpose of being able to reconstruct
+	// and re-send the RepositoryTransactionHistory)
+	addedInRepositoryTransactionHistory?: IRepositoryTransactionHistory
+
+}
+
+export type RepositoryMemberAcceptance_LocalId = number
+// Used to sign the message with acceptance of Repository membership
+export type RepositoryMemberAcceptance_Signature = string
+export class IRepositoryMemberAcceptance {
+
+	_localId: RepositoryMemberAcceptance_LocalId
+	createdAt?: CreatedAt
+	invitationPublicSigningKey?: RepositoryMemberInvitation_PublicSigningKey
+	acceptingRepositoryMember?: IRepositoryMember
+	// Only populated in the database of the terminal
+	// where the RepositoryTransactionHistory was originally
+	// created (for the purpose of being able to reconstruct
+	// and re-send the RepositoryTransactionHistory)
+	addedInRepositoryTransactionHistory?: IRepositoryTransactionHistory
+
+}
+
 
 export type RepositoryMemberUpdate_LocalId = number
 export interface IRepositoryMemberUpdate {
 
 	_localId: RepositoryMemberUpdate_LocalId
-	syncTimestamp?: RepositoryTransactionHistory_SyncTimestamp
-	repositoryMember?: IRepositoryMember
-	isAdministrator?: RepositoryMember_IsAdministrator
 	canWrite?: RepositoryMember_CanWrite
+	createdAt?: CreatedAt
+	isAdministrator?: RepositoryMember_IsAdministrator
+	updatedRepositoryMember?: IRepositoryMember
+	// Only populated in the database of the terminal
+	// where the RepositoryTransactionHistory was originally
+	// created (for the purpose of being able to reconstruct
+	// and re-send the RepositoryTransactionHistory)
+	addedInRepositoryTransactionHistory?: IRepositoryTransactionHistory
 
 }
 
@@ -224,8 +275,8 @@ export interface IAirEntity {
 	_actorRecordId?: ActorRecordId;
 
 	// Id Relations
-	repository?: IRepository;
 	actor?: IActor;
+	repository?: IRepository;
 
 	// Non-Id Properties
 	ageSuitability?: AgeSuitability;
@@ -234,6 +285,8 @@ export interface IAirEntity {
 	systemWideOperationId?: SystemWideOperationId;
 
 	// Transient Properties
+	createdBy?: IUserAccount
+	isNew?: boolean
 	id?: AirEntity_Id
 
 	// Public Methods
@@ -341,4 +394,37 @@ export interface ITerminal {
 	continent?: IContinent
 	country?: ICountry
 	terminalTypes?: ITerminalType[]
+}
+
+export type TerminalRun_LocalId = number
+export type TerminalRun_CreateTimestamp = number
+export type TerminalRun_RandomNumber = number
+export class ITerminalRun {
+
+	_localId: TerminalRun_LocalId
+	createTimestamp: TerminalRun_CreateTimestamp
+	randomNumber: TerminalRun_RandomNumber
+
+}
+
+export interface ICrossRepositoryRelationLedger
+	extends IAirEntity {
+
+	relation: DbRelation
+	relatedRepository: IRepository
+
+}
+export interface ICopiedRecordLedger
+	extends IAirEntity {
+
+	copyAppEntity: DbEntity
+	copyActorRecordId: ActorRecordId
+	copyActor: IActor
+	copyRepository: IRepository
+
+}
+export interface ILocalCopyReplacementLedger {
+
+	copiedRecordLedger: ICopiedRecordLedger
+
 }

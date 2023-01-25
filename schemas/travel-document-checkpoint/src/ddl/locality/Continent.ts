@@ -1,4 +1,4 @@
-import { Continent_Id, Continent_Name } from "@airport/ground-control";
+import { Continent_Id, Continent_Name, IContinent } from "@airport/ground-control";
 import {
     Column,
     DbNumber,
@@ -13,7 +13,8 @@ import { Country } from "./Country";
 
 @Entity()
 @Table({ name: "CONTINENTS" })
-export class Continent {
+export class Continent
+    implements IContinent {
 
     @Id()
     @DbNumber()

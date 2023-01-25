@@ -1,3 +1,4 @@
+import { DbRelationColumn } from '@airport/ground-control';
 import {
 	Column,
 	Entity,
@@ -17,7 +18,8 @@ export type ApplicationRelationColumn_LocalId = number;
 	name: 'APPLICATION_RELATION_COLUMNS'
 })
 export class ApplicationRelationColumn
-	extends VersionedApplicationObject {
+	extends VersionedApplicationObject
+	implements DbRelationColumn {
 
 	@Id()
 	@Column({ name: 'APPLICATION_RELATION_COLUMN_LID' })

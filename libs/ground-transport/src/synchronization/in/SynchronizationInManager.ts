@@ -11,7 +11,7 @@ import { IDataCheckResult } from './checker/SyncInDataChecker'
 import { ISyncInApplicationVersionChecker } from './checker/SyncInApplicationVersionChecker'
 import { IRepositoryLoader } from '@airport/air-traffic-control'
 import { IRepository, Repository_GUID } from '@airport/ground-control'
-import { INewAndUpdatedRepositorieAndRecords, IRepositoriesAndMembersCheckResult } from './checker/SyncInRepositoryChecker'
+import { INewAndUpdatedRepositoriesAndRecords, IRepositoriesAndMembersCheckResult } from './checker/SyncInRepositoryChecker'
 
 /**
  * The manager for synchronizing data coming in  to Terminal (TM)
@@ -76,10 +76,11 @@ export class SynchronizationInManager
 		const immediateProcessingMessages: RepositorySynchronizationMessage[] = []
 		const delayedProcessingMessages: RepositorySynchronizationMessage[] = []
 
-		const newAndUpdatedRepositoriesAndRecords: INewAndUpdatedRepositorieAndRecords = {
+		const newAndUpdatedRepositoriesAndRecords: INewAndUpdatedRepositoriesAndRecords = {
 			missingRepositories: [],
 			newMembers: [],
-			updatedMembers: []
+			newRepositoryMemberInvitations: [],
+			newRepositoryMemberAcceptances: []
 		}
 
 		// Split up messages by type
@@ -112,9 +113,13 @@ export class SynchronizationInManager
 					...newAndUpdatedRepositoriesAndRecords.newMembers,
 					...dataCheckResult.newMembers
 				]
-				newAndUpdatedRepositoriesAndRecords.updatedMembers = [
-					...newAndUpdatedRepositoriesAndRecords.updatedMembers,
-					...dataCheckResult.updatedMembers
+				newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances = [
+					...newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances,
+					...dataCheckResult.newRepositoryMemberAcceptances
+				]
+				newAndUpdatedRepositoriesAndRecords.newRepositoryMemberInvitations = [
+					...newAndUpdatedRepositoriesAndRecords.newRepositoryMemberInvitations,
+					...dataCheckResult.newRepositoryMemberInvitations
 				]
 			}, null, context)
 			if (processMessage) {

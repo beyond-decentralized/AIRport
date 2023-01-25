@@ -1,4 +1,4 @@
-import { MetroArea_Id, MetroArea_Name } from "@airport/ground-control";
+import { IMetroArea, MetroArea_Id, MetroArea_Name } from "@airport/ground-control";
 import {
     Column,
     DbNumber,
@@ -17,7 +17,8 @@ import { MetroAreaState } from "./MetroAreaState";
 
 @Entity()
 @Table({ name: "METRO_AREAS" })
-export class MetroArea {
+export class MetroArea
+    implements IMetroArea {
 
     @Id()
     @GeneratedValue()

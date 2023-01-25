@@ -1,4 +1,5 @@
 import { IMemoizedSelector, ISelectorManager } from "@airport/apron";
+import { UserAccount_PublicSigningKey } from "@airport/aviation-communication";
 import { Inject, Injected } from "@airport/direction-indicator";
 import { Subject } from "rxjs";
 import { IUserSession, IUserState, IUserStateContainer } from "./UserState";
@@ -9,7 +10,8 @@ export interface IUserStore {
 
     getAllSessions: IMemoizedSelector<IUserSession[], IUserState>
 
-    getSessionMapByEmail: IMemoizedSelector<Map<string, IUserSession>, IUserState>
+    getSessionMapByAccountPublicSigningKey:
+    IMemoizedSelector<Map<UserAccount_PublicSigningKey, IUserSession>, IUserState>
 
 }
 
@@ -29,7 +31,7 @@ export class UserStore
 
     getAllSessions: IMemoizedSelector<IUserSession[], IUserState>
 
-    getSessionMapByEmail: IMemoizedSelector<Map<string, IUserSession>, IUserState>
+    getSessionMapByAccountPublicSigningKey: IMemoizedSelector<Map<string, IUserSession>, IUserState>
 
     getUserState: IMemoizedSelector<IUserState, IUserState>
 
@@ -37,8 +39,8 @@ export class UserStore
         this.getUserState = this.selectorManager.createRootSelector(this.state);
         this.getAllSessions = this.selectorManager.createSelector(this.getUserState,
             userState => userState.allSessions)
-        this.getSessionMapByEmail = this.selectorManager.createSelector(this.getUserState,
-            userState => userState.sessionMapByEmail)
+        this.getSessionMapByAccountPublicSigningKey = this.selectorManager.createSelector(this.getUserState,
+            userState => userState.sessionMapByAccountPublicSigningKey)
     }
 
 }

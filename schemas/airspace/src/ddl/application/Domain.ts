@@ -8,6 +8,7 @@ import {
 	Table,
 } from '@airport/tarmaq-entity'
 import {
+	DbDomain,
 	Domain_LocalId,
 	Domain_Name,
 } from '@airport/ground-control'
@@ -15,7 +16,8 @@ import { Application } from './Application'
 
 @Entity()
 @Table({ name: 'DOMAINS' })
-export class Domain {
+export class Domain
+	implements DbDomain {
 
 	@Id()
 	@DbNumber()

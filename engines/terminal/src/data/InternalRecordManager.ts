@@ -94,8 +94,10 @@ export class InternalRecordManager
             // TODO: add request object
             const userSession = await this.terminalSessionManager.getUserSession()
 
-            let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
-                application.domain, application.name, userSession.userAccount.GUID, frameworkActor.terminal.GUID)
+            let actor = await this.actorDao
+                .findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(
+                    application.domain, application.name,
+                    userSession.userAccount.accountPublicSigningKey, frameworkActor.terminal.GUID)
 
             let anApplication: DbApplication = await this.applicationDao.findByIndex(
                 application.lastIds.applications + 1);
@@ -134,9 +136,8 @@ export class InternalRecordManager
             _transaction
         ) => {
             const userAccount: IUserAccount = new UserAccount();
-            userAccount.GUID = 'AIRport-internal-' + guidv4();
             userAccount.username = "internalUserAccount";
-            userAccount.publicMetaSigningKey = "not needed";
+            userAccount.accountPublicSigningKey = guidv4();
 
             const terminal: ITerminal = new Terminal();
             terminal.owner = userAccount;

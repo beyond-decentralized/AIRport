@@ -1,5 +1,5 @@
+import { UserAccount_PublicSigningKey, UserAccount_Username } from "@airport/aviation-communication";
 import { IContext, Inject, Injected } from "@airport/direction-indicator";
-import { v4 as guidv4 } from "uuid";
 import { UserAccountDao } from "../dao/UserAccountDao";
 import { UserAccount } from "../ddl/UserAccount";
 
@@ -34,16 +34,13 @@ export class UserAccountManager {
     userAccountDao: UserAccountDao
 
     async addUserAccount(
-        username: string,
-        email: string,
-        publicMetaSigningKey: string,
+        username: UserAccount_Username,
+        accountPublicSigningKey: UserAccount_PublicSigningKey,
         context: IContext
     ): Promise<IAddUserAccountResponse> {
         const userAccount: UserAccount = {
             _localId: null,
-            email,
-            GUID: guidv4(),
-            publicMetaSigningKey,
+            accountPublicSigningKey,
             username
         }
 

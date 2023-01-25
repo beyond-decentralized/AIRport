@@ -1,11 +1,17 @@
 import { ApplicationEntity } from "@airport/airspace";
+import { ActorRecordId, ICopiedRecordLedger } from "@airport/ground-control";
 import { Actor, InternalAirEntity, Repository } from "@airport/holding-pattern/dist/app/bundle";
-import { Column, Entity, JoinColumn, ManyToOne, Table } from "@airport/tarmaq-entity";
+import { Column, DbNumber, Entity, JoinColumn, ManyToOne, Table } from "@airport/tarmaq-entity";
 
 @Entity()
 @Table({ name: 'COPIED_RECORD_LEDGER' })
 export class CopiedRecordLedger
-    extends InternalAirEntity {
+    extends InternalAirEntity
+    implements ICopiedRecordLedger {
+
+    @Column({ name: 'COPY_ACTOR_RECORD_ID' })
+    @DbNumber()
+    copyActorRecordId: ActorRecordId
 
     @ManyToOne()
     @JoinColumn({
@@ -14,9 +20,6 @@ export class CopiedRecordLedger
         nullable: false
     })
     copyAppEntity: ApplicationEntity
-
-    @Column({ name: 'COPY_ACTOR_RECORD_ID' })
-    copyActorRecordId: number
 
     @ManyToOne()
     @JoinColumn({

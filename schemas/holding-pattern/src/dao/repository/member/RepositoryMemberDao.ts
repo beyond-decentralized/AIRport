@@ -1,18 +1,18 @@
-import { UserAccount_Email, UserAccount_LocalId } from "@airport/aviation-communication";
+import { UserAccount_PublicSigningKey, UserAccount_LocalId } from "@airport/aviation-communication";
 import { IContext, Injected } from "@airport/direction-indicator";
-import { IRepositoryMember, RepositoryMember_GUID, RepositoryMember_PublicSigningKey, RepositoryMember_Status, Repository_LocalId } from "@airport/ground-control";
-import { AND, OR, Y } from "@airport/tarmaq-query";
+import { IRepositoryMember, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Status, Repository_LocalId } from "@airport/ground-control";
+import { AND, EXISTS, Y } from "@airport/tarmaq-query";
 import { QUserAccount } from "@airport/travel-document-checkpoint";
-import { QRepositoryMember } from "../../generated/qInterfaces";
-import { BaseRepositoryMemberDao } from "../../generated/baseDaos";
-import Q_airport____at_airport_slash_holding_dash_pattern from "../../generated/qApplication";
+import { QRepositoryMember, QRepositoryMemberInvitation } from "../../../generated/qInterfaces";
+import { BaseRepositoryMemberDao } from "../../../generated/baseDaos";
+import Q_airport____at_airport_slash_holding_dash_pattern from "../../../generated/qApplication";
 
 @Injected()
 export class RepositoryMemberDao
     extends BaseRepositoryMemberDao {
 
-    async findByGUIDs(
-        repositoryMemberGUIDs: RepositoryMember_GUID[]
+    async findByMemberPublicSigningKeys(
+        memberPublicSigningKeys: RepositoryMember_PublicSigningKey[]
     ): Promise<IRepositoryMember[]> {
         let rm: QRepositoryMember,
             ua: QUserAccount
@@ -26,13 +26,13 @@ export class RepositoryMemberDao
                 rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
                 ua = rm.userAccount.LEFT_JOIN()
             ],
-            WHERE: rm.GUID.IN(repositoryMemberGUIDs)
+            WHERE: rm.memberPublicSigningKey.IN(memberPublicSigningKeys)
         })
     }
 
-    async findForRepositoryLocalIdAndUserEmail(
+    async findForRepositoryLocalIdAndAccountPublicSingingKey(
         repositoryLocalId: Repository_LocalId,
-        userEmail: UserAccount_Email
+        accountPublicSigningKey: UserAccount_PublicSigningKey
     ): Promise<IRepositoryMember> {
         let rm: QRepositoryMember,
             ua: QUserAccount
@@ -45,7 +45,7 @@ export class RepositoryMemberDao
             ],
             WHERE: AND(
                 rm.repository.equals(repositoryLocalId),
-                ua.email.equals(userEmail)
+                ua.accountPublicSigningKey.equals(accountPublicSigningKey)
             )
         })
     }
@@ -63,8 +63,27 @@ export class RepositoryMemberDao
             ],
             WHERE: AND(
                 rm.repository.equals(repositoryLocalId),
-                rm.repository.equals(repositoryLocalId),
                 rm.userAccount.equals(userLocalId)
+            )
+        })
+    }
+
+    async findForRepositoryLocalIdAndIvitationPublicSigningKey(
+        repositoryLocalId: Repository_LocalId,
+        base64EncodedKeyInvitationPublicSigningKey: RepositoryMemberInvitation_PublicSigningKey
+    ): Promise<IRepositoryMember> {
+        let rm: QRepositoryMember,
+            rmi: QRepositoryMemberInvitation
+
+        return await this._findOne({
+            SELECT: {},
+            FROM: [
+                rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
+                rmi = rm.invitations.LEFT_JOIN()
+            ],
+            WHERE: AND(
+                rm.repository.equals(repositoryLocalId),
+                rmi.invitationPublicSigningKey.equals(base64EncodedKeyInvitationPublicSigningKey)
             )
         })
     }
@@ -77,9 +96,9 @@ export class RepositoryMemberDao
         const VALUES = []
         for (const repositoryMember of repositoryMembers) {
             VALUES.push([
-                repositoryMember.GUID, repositoryMember.isOwner,
+                repositoryMember.isOwner,
                 repositoryMember.isAdministrator, repositoryMember.canWrite,
-                repositoryMember.publicSigningKey, repositoryMember.status,
+                repositoryMember.memberPublicSigningKey, repositoryMember.status,
                 repositoryMember.repository._localId,
                 repositoryMember.userAccount._localId,
             ])
@@ -87,11 +106,10 @@ export class RepositoryMemberDao
         const _localIds = await this.db.insertValuesGenerateIds({
             INSERT_INTO: rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
             columns: [
-                rm.GUID,
                 rm.isOwner,
                 rm.isAdministrator,
                 rm.canWrite,
-                rm.publicSigningKey,
+                rm.memberPublicSigningKey,
                 rm.status,
                 rm.repository._localId,
                 rm.userAccount._localId
@@ -105,19 +123,29 @@ export class RepositoryMemberDao
     }
 
     async updatePublicSigningKey(
-        repositoryMemberGUID: RepositoryMember_GUID,
-        publicSigningKey: RepositoryMember_PublicSigningKey,
+        invitationPublicSigningKey: RepositoryMemberInvitation_PublicSigningKey,
+        memberPublicSigningKey: RepositoryMember_PublicSigningKey,
         context?: IContext
     ): Promise<void> {
-        let rm: QRepositoryMember;
+        let rm: QRepositoryMember,
+            rmi: QRepositoryMemberInvitation;
 
         await this.db.updateColumnsWhere({
             UPDATE: rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
             SET: {
-                PUBLIC_SIGNING_KEY: publicSigningKey,
+                MEMBER_PUBLIC_SIGNING_KEY: memberPublicSigningKey,
                 STATUS: RepositoryMember_Status.JOINED
             },
-            WHERE: rm.GUID.equals(repositoryMemberGUID)
+            WHERE: EXISTS({
+                FROM: [
+                    rmi = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMemberInvitation
+                ],
+                SELECT: rmi._localId,
+                WHERE: AND(
+                    rmi.invitedRepositoryMember._localId.equals(rm._localId),
+                    rmi.invitationPublicSigningKey.equals(invitationPublicSigningKey)
+                )
+            })
         }, context)
     }
 

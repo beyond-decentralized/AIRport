@@ -11,11 +11,10 @@ import {
 	SequenceGenerator,
 	Table
 } from '@airport/tarmaq-entity'
-import { ChangeType, OperationHistory_LocalId, OperationHistory_OrderNumber, SystemWideOperationId } from '@airport/ground-control'
+import { ChangeType, IOperationHistory, OperationHistory_LocalId, OperationHistory_OrderNumber, SystemWideOperationId } from '@airport/ground-control'
 import { ApplicationEntity } from '@airport/airspace/dist/app/bundle'
 import { RecordHistory } from './RecordHistory'
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory'
-import { Actor } from '../infrastructure/Actor'
 
 /**
  * Created by Papa on 4/17/2017.
@@ -26,7 +25,8 @@ import { Actor } from '../infrastructure/Actor'
  */
 @Entity()
 @Table({ name: 'REPOSITORY_OPERATION_HISTORY' })
-export class OperationHistory {
+export class OperationHistory
+	implements IOperationHistory {
 
 	@GeneratedValue()
 	@SequenceGenerator({ allocationSize: 600 })

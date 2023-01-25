@@ -9,13 +9,13 @@ import {
 import Q from '../generated/qApplication'
 import { IAirportDatabase } from '@airport/air-traffic-control';
 import { Dictionary, ISequenceGenerator, ITerminal, Terminal_GUID } from '@airport/ground-control';
-import { UserAccount_GUID } from '@airport/aviation-communication';
+import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 
 export interface ITerminalDao
 	extends IBaseTerminalDao {
 
-	findByOwnerIdsAndGUIDs(
-		ownerGuids: UserAccount_GUID[],
+	findByOwnerPublicKeysAndOwnGUIDs(
+		accountPublicSigningKeys: UserAccount_PublicSigningKey[],
 		GUIDs: Terminal_GUID[]
 	): Promise<ITerminal[]>;
 
@@ -44,8 +44,8 @@ export class TerminalDao
 	@Inject()
 	sequenceGenerator: ISequenceGenerator
 
-	async findByOwnerIdsAndGUIDs(
-		ownerGuids: UserAccount_GUID[],
+	async findByOwnerPublicKeysAndOwnGUIDs(
+		accountPublicSigningKeys: UserAccount_PublicSigningKey[],
 		GUIDs: Terminal_GUID[]
 	): Promise<ITerminal[]> {
 		let t: QTerminal,
@@ -57,7 +57,7 @@ export class TerminalDao
 				ua = t.owner.LEFT_JOIN()
 			],
 			WHERE: AND(
-				ua.GUID.IN(ownerGuids),
+				ua.accountPublicSigningKey.IN(accountPublicSigningKeys),
 				t.GUID.IN(GUIDs)
 			)
 		})

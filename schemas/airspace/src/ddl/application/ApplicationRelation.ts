@@ -17,6 +17,7 @@ import {
 	EntityRelationType,
 	ApplicationRelation_LocalId,
 	ApplicationRelation_Index,
+	DbRelation,
 } from '@airport/ground-control'
 import { ApplicationEntity } from './ApplicationEntity'
 import { ApplicationProperty } from './ApplicationProperty'
@@ -28,7 +29,8 @@ import { VersionedApplicationObject } from './VersionedApplicationObject'
 	name: 'APPLICATION_RELATIONS'
 })
 export class ApplicationRelation
-	extends VersionedApplicationObject {
+	extends VersionedApplicationObject
+	implements DbRelation {
 
 	@DbNumber()
 	@Id()

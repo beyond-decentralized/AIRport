@@ -98,6 +98,18 @@ export class Dictionary {
 						columns: {
 							REPOSITORY_LID: 'REPOSITORY_LID'
 						},
+					},
+					RepositoryMember: {
+						name: 'RepositoryMember'
+					},
+					RepositoryMemberAcceptance: {
+						name: 'RepositoryMemberAcceptance'
+					},
+					RepositoryMemberInvitation: {
+						name: 'RepositoryMemberInvitation'
+					},
+					RepositoryMemberUpdate: {
+						name: 'RepositoryMemberUpdate'
 					}
 				}
 			},
@@ -128,8 +140,8 @@ export class Dictionary {
 		DOMAIN_NAME: 'airway' as 'airway'
 	}
 
-    INTERNAL_APP = '@airport/terminal'
-    INTERNAL_DOMAIN = 'internal://domain'
+	INTERNAL_APP = '@airport/terminal'
+	INTERNAL_DOMAIN = 'internal://domain'
 
 	Actor = this.airport.apps.HOLDING_PATTERN.entities.Actor
 	AirEntity = this.airport.apps.FINAL_APPROACH.entities.AirEntity

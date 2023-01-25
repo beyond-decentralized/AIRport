@@ -2,7 +2,6 @@ import {
 	IMessageSigningManager
 } from '@airbridge/keyring/dist/app/bundle'
 import {
-	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -20,8 +19,7 @@ import { ISyncOutDataSerializer } from './converter/SyncOutDataSerializer'
 export interface ISynchronizationOutManager {
 
 	synchronizeOut(
-		repositoryTransactionHistories: IRepositoryTransactionHistory[],
-		context: IContext
+		repositoryTransactionHistories: IRepositoryTransactionHistory[]
 	): Promise<void>
 
 }
@@ -49,17 +47,16 @@ export class SynchronizationOutManager
 	syncOutDataSerializer: ISyncOutDataSerializer
 
 	async synchronizeOut(
-		repositoryTransactionHistories: IRepositoryTransactionHistory[],
-		context: IContext
+		repositoryTransactionHistories: IRepositoryTransactionHistory[]
 	): Promise<void> {
 		await this.loadHistoryRepositories(repositoryTransactionHistories)
 		const {
 			historiesToSend,
 			messages
-		} = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories, context)
+		} = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories)
 		// await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
 
-		this.messageSigningManager.signMessages(messages, context)
+		this.messageSigningManager.signMessages(messages)
 
 		const groupMessageMap = this.groupMessagesBySourceAndRepository(
 			messages, historiesToSend)

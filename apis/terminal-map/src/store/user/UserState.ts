@@ -1,4 +1,5 @@
 import { IKeyRing } from "@airbridge/data-model"
+import { UserAccount_PublicSigningKey } from "@airport/aviation-communication"
 import { Injected } from "@airport/direction-indicator"
 import { IRootTransaction, IUserAccount } from "@airport/ground-control"
 import { Subject } from "rxjs"
@@ -14,7 +15,7 @@ export interface IUserSession {
 
 export interface IUserState {
     allSessions: IUserSession[],
-    sessionMapByEmail: Map<string, IUserSession>
+    sessionMapByAccountPublicSigningKey: Map<UserAccount_PublicSigningKey, IUserSession>
 }
 
 export interface IUserStateContainer {

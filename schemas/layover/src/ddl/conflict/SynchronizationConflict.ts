@@ -12,12 +12,13 @@ import {
 	Table
 } from '@airport/tarmaq-entity';
 import { SynchronizationConflictValues } from './SynchronizationConflictValues';
-import { SynchronizationConflict_Acknowledged, SynchronizationConflict_Id, SynchronizationConflict_Type } from '@airport/ground-control';
+import { ISynchronizationConflict, SynchronizationConflict_Acknowledged, SynchronizationConflict_Id, SynchronizationConflict_Type } from '@airport/ground-control';
 import { RecordHistory, Repository } from '@airport/holding-pattern/dist/app/bundle';
 
 @Entity()
 @Table({ name: 'SYNCHRONIZATION_CONFLICT' })
-export class SynchronizationConflict {
+export class SynchronizationConflict
+	implements ISynchronizationConflict {
 
 	@GeneratedValue()
 	@Id()

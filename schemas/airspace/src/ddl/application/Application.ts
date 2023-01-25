@@ -15,7 +15,8 @@ import {
 	ApplicationStatus,
 	Application_Name,
 	Application_GUID,
-	Application_Scope
+	Application_Scope,
+	DbApplication
 } from '@airport/ground-control';
 import { Domain } from './Domain';
 import { ApplicationCurrentVersion } from './ApplicationCurrentVersion';
@@ -25,7 +26,8 @@ import { ApplicationVersion } from './ApplicationVersion';
 @Table({
 	name: 'APPLICATIONS'
 })
-export class Application {
+export class Application
+	implements DbApplication {
 
 	@Id()
 	@DbNumber()

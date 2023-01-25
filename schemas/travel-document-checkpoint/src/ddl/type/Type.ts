@@ -1,4 +1,4 @@
-import { Type_Id, Type_Name } from '@airport/ground-control'
+import { IType, Type_Id, Type_Name } from '@airport/ground-control'
 import {
     Column,
     DbNumber,
@@ -17,7 +17,8 @@ import { TypeClassification } from './TypeClassification'
 @Table({
     name: 'TYPES'
 })
-export class Type {
+export class Type
+    implements IType {
 
     @Id()
     @Column({ name: 'TYPE_ID', nullable: false })

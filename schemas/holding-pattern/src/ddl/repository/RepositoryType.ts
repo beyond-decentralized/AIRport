@@ -1,3 +1,4 @@
+import { IRepositoryType } from "@airport/ground-control";
 import {
 	Entity,
 	Id,
@@ -14,7 +15,8 @@ import { Repository } from "./Repository";
 @Table({
 	name: "REPOSITORY_TYPES"
 })
-export class RepositoryType {
+export class RepositoryType
+	implements IRepositoryType {
 
 	@Id()
 	@ManyToOne()

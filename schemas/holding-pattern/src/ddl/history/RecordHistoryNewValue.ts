@@ -1,4 +1,4 @@
-import { RecordHistoryNewValue_ColumnIndex, RecordHistoryNewValue_NewValue } from "@airport/ground-control";
+import { IRecordHistoryNewValue, RecordHistoryNewValue_ColumnIndex, RecordHistoryNewValue_NewValue } from "@airport/ground-control";
 import {
 	Column,
 	DbAny,
@@ -31,7 +31,8 @@ import { RecordHistory } from './RecordHistory'
 	// 	"COLUMN_INDEX"
 	// ]
 })
-export class RecordHistoryNewValue {
+export class RecordHistoryNewValue
+	implements IRecordHistoryNewValue {
 
 	@Id()
 	@ManyToOne()

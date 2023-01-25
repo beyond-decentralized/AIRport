@@ -22,7 +22,8 @@ import {
 	ApplicationColumn_AllocationSize,
 	ApplicationColumn_IsGenerated,
 	SQLDataType,
-	DbPropertyColumn
+	DbPropertyColumn,
+	DbColumn
 } from '@airport/ground-control';
 import { ApplicationEntity } from './ApplicationEntity';
 import { ApplicationPropertyColumn } from './ApplicationPropertyColumn';
@@ -34,7 +35,8 @@ import { VersionedApplicationObject } from './VersionedApplicationObject';
 	name: 'APPLICATION_COLUMNS'
 })
 export class ApplicationColumn
-	extends VersionedApplicationObject {
+	extends VersionedApplicationObject
+	implements DbColumn {
 
 	@DbNumber()
 	@Id()

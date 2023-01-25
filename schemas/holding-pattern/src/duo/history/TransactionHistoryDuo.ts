@@ -1,7 +1,7 @@
 import { IContext, Inject, Injected } from '@airport/direction-indicator';
 import { IActor, IRepositoryTransactionHistory, ITransactionHistory, RepositoryTransactionHistory_IsRepositoryCreation, Repository_IsPublic, Repository_LocalId, TransactionType } from '@airport/ground-control'
 import { ITerminalSessionManager } from '@airport/terminal-map';
-import { RepositoryMemberDao } from '../../dao/repository/RepositoryMemberDao';
+import { RepositoryMemberDao } from '../../dao/repository/member/RepositoryMemberDao';
 import {
 	TransactionHistory
 } from '../../ddl/history/TransactionHistory'
@@ -64,7 +64,7 @@ export class TransactionHistoryDuo
 			)
 			if (!repositoryMember) {
 				throw new Error(
-					`User '${userSession.userAccount.email}' is not a member of Repository '${repositoryLocalId}'`)
+					`User '${userSession.userAccount.username}' is not a member of Repository '${repositoryLocalId}'`)
 			}
 
 			repositoryTransactionHistory = this.repositoryTransactionHistoryDuo.getNewRecord(

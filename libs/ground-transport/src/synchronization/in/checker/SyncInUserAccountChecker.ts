@@ -7,7 +7,7 @@ import { RepositorySynchronizationData } from '@airport/arrivals-n-departures'
 import {
 	IUserAccountDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
-import { UserAccount_GUID } from '@airport/aviation-communication';
+import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 import { IUserAccount } from '@airport/ground-control';
 
 export interface ISyncInUserAccountChecker {
@@ -31,33 +31,47 @@ export class SyncInUserAccountChecker
 		context: IContext
 	): Promise<boolean> {
 		try {
-			let userAccountGUIDs: string[] = []
-			let messageUserAccountIndexMap: Map<string, number> = new Map()
+			// let userAccountPublicSigningKeys: UserAccount_PublicSigningKey[] = []
+			const userAccountPublicSigningKeySet: Set<UserAccount_PublicSigningKey> = new Set()
+			let messageUserAccountIndexMap: Map<UserAccount_PublicSigningKey, number> = new Map()
 			for (let i = 0; i < data.userAccounts.length; i++) {
 				const userAccount = data.userAccounts[i]
 				if (typeof userAccount._localId !== 'undefined') {
 					throw new Error(`'userAccount._localId' cannot be specified`)
 				}
-				if (typeof userAccount.GUID !== 'string' || userAccount.GUID.length !== 36) {
-					throw new Error(`Invalid 'userAccount.GUID'`)
+				const accountPublicSigningKey = userAccount.accountPublicSigningKey
+				// FIXME: put in the proper UserAccount_PublicSigningKey (521) length
+				if (typeof accountPublicSigningKey !== 'string' || accountPublicSigningKey.length !== 36) {
+					throw new Error(`Invalid 'userAccount.accountPublicSigningKey'`)
+				}
+				if (userAccountPublicSigningKeySet.has(accountPublicSigningKey)) {
+					throw new Error(`UserAccount with accountPublicSigningKey:
+'${accountPublicSigningKey}'
+appears more than once in message.data.userAccounts
+`)
 				}
 				if (typeof userAccount.username !== 'string' || userAccount.username.length < 3) {
 					throw new Error(`Invalid 'userAccount.username'`)
 				}
-				userAccountGUIDs.push(userAccount.GUID)
-				messageUserAccountIndexMap.set(userAccount.GUID, i)
+				userAccountPublicSigningKeySet.add(userAccount.accountPublicSigningKey)
+				messageUserAccountIndexMap.set(userAccount.accountPublicSigningKey, i)
 			}
 
-			const userAccounts = await this.userAccountDao.findByGUIDs(userAccountGUIDs)
-			const foundUserAccountsByGUID: Map<UserAccount_GUID, IUserAccount> = new Map()
+			const userAccounts = await this.userAccountDao
+				.findByAccountPublicSingingKeys(Array.from(userAccountPublicSigningKeySet))
+			const foundUserAccountsByPublicSigningKey: Map<UserAccount_PublicSigningKey, IUserAccount>
+				= new Map()
 			for (const userAccount of userAccounts) {
-				foundUserAccountsByGUID.set(userAccount.GUID, userAccount)
-				const messageUserAccountIndex = messageUserAccountIndexMap.get(userAccount.GUID)
+				foundUserAccountsByPublicSigningKey.set(
+					userAccount.accountPublicSigningKey, userAccount)
+				const messageUserAccountIndex = messageUserAccountIndexMap.get(
+					userAccount.accountPublicSigningKey)
 				data.userAccounts[messageUserAccountIndex] = userAccount
 			}
 
 			const missingUserAccounts = data.userAccounts
-				.filter(messageUserAccount => !foundUserAccountsByGUID.has(messageUserAccount.GUID))
+				.filter(messageUserAccount => !foundUserAccountsByPublicSigningKey
+					.has(messageUserAccount.accountPublicSigningKey))
 
 			if (missingUserAccounts.length) {
 				await this.addMissingUserAccounts(missingUserAccounts, context)

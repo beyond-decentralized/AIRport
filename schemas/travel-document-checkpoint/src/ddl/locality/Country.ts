@@ -12,12 +12,13 @@ import {
 } from "@airport/tarmaq-entity";
 import { Continent } from "./Continent";
 import { UserAccount } from "../UserAccount";
-import { Country_Abbreviation, Country_Id, Country_Name } from "@airport/ground-control";
+import { Country_Abbreviation, Country_Id, Country_Name, ICountry } from "@airport/ground-control";
 import { State } from "./State";
 
 @Entity()
 @Table({ name: "COUNTRIES" })
-export class Country {
+export class Country
+    implements ICountry {
 
     @Id()
     @GeneratedValue()

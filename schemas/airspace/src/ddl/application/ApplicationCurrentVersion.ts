@@ -1,3 +1,4 @@
+import { DbApplicationCurrentVersion } from "@airport/ground-control";
 import {
     Entity,
     Id,
@@ -12,7 +13,8 @@ import { ApplicationVersion } from "./ApplicationVersion";
 @Table({
     name: 'APPLICATION_CURRENT_VERSIONS'
 })
-export class ApplicationCurrentVersion {
+export class ApplicationCurrentVersion
+    implements DbApplicationCurrentVersion {
 
     @Id()
     @ManyToOne()

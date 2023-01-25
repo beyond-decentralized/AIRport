@@ -73,7 +73,6 @@ export class SyncInChecker
 		context: IContext
 	): Promise<IDataCheckResult> {
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
-
 		let data = message.data
 
 		let serializedData = JSON.stringify(data)
@@ -98,17 +97,22 @@ export class SyncInChecker
 				isValid: false
 			}
 		}
-		const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker.checkRepositoriesAndMembers(data)
+		const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
+			.checkRepositoriesAndMembers(message)
 		if (!repositoryAndMemberCheckResult.isValid) {
 			return {
 				isValid: false
 			}
 		}
 
-		if (!this.keyUtils.verify(serializedData, message.signature, repositoryAndMemberCheckResult.publicSigningKey)) {
-			console.error(`Message signature is not valid.`)
-			return {
-				isValid: false
+		for (let i = 0; i < repositoryAndMemberCheckResult.signaturesToCheck.length; i++) {
+			if (!this.keyUtils.verify(serializedData,
+				repositoryAndMemberCheckResult.signaturesToCheck[i],
+				repositoryAndMemberCheckResult.publicSigningKeys[i])) {
+				console.error(`Message signature is not valid.`)
+				return {
+					isValid: false
+				}
 			}
 		}
 

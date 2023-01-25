@@ -1,3 +1,4 @@
+import { IRepositoryDatabase } from "@airport/ground-control";
 import {
 	Entity,
 	Id,
@@ -14,7 +15,8 @@ import { Repository } from "./Repository";
 @Table({
 	name: "REPOSITORY_DATABASES"
 })
-export class RepositoryDatabase {
+export class RepositoryDatabase
+	implements IRepositoryDatabase {
 
 	@Id()
 	@ManyToOne()

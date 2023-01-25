@@ -20,7 +20,8 @@ import {
 	ApplicationVersion_PatchVersion,
 	ApplicationVersion_VersionString,
 	DbApplicationReference,
-	DbEntity
+	DbEntity,
+	DbApplicationVersion
 } from '@airport/ground-control'
 import { Application } from './Application'
 import { ApplicationEntity } from './ApplicationEntity'
@@ -30,7 +31,8 @@ import { JsonApplicationWithLastIds } from '@airport/apron'
 
 @Entity()
 @Table({ name: 'APPLICATION_VERSIONS' })
-export class ApplicationVersion {
+export class ApplicationVersion
+	implements DbApplicationVersion {
 
 	@DbNumber()
 	@Id()

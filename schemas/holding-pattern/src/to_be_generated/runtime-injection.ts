@@ -5,7 +5,7 @@ import { RecordHistoryOldValueDao } from '../dao/history/RecordHistoryOldValueDa
 import { RepositoryTransactionHistoryDao } from '../dao/history/RepositoryTransactionHistoryDao'
 import { ActorDao } from '../dao/infrastructure/ActorDao'
 import { RepositoryDao } from '../dao/repository/RepositoryDao'
-import { RepositoryMemberDao } from '../dao/repository/RepositoryMemberDao'
+import { RepositoryMemberDao } from '../dao/repository/member/RepositoryMemberDao'
 import { OperationHistoryDuo } from '../duo/history/OperationHistoryDuo'
 import { RecordHistoryDuo } from '../duo/history/RecordHistoryDuo'
 import { RecordHistoryNewValueDuo } from '../duo/history/RecordHistoryNewValueDuo'

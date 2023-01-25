@@ -11,7 +11,7 @@ import {
 } from '@airport/tarmaq-entity'
 import { UserAccount } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { IAirEntityUtils } from '@airport/aviation-communication'
-import { ActorRecordId, AgeSuitability, AirEntity_Id, CreatedAt, SystemWideOperationId } from '@airport/ground-control'
+import { ActorRecordId, AgeSuitability, AirEntity_Id, CreatedAt, IAirEntity, SystemWideOperationId } from '@airport/ground-control'
 import { Actor } from './Actor'
 import { Repository } from '../repository/Repository'
 
@@ -21,7 +21,8 @@ import { Repository } from '../repository/Repository'
 
 // Used withint the framework because it imports from '@airport/travel-document-checkpoint/dist/app/bundle'
 @MappedSuperclass()
-export abstract class InternalAirEntity {
+export abstract class InternalAirEntity
+	implements IAirEntity {
 
 	constructor(
 		entityId?: AirEntity_Id

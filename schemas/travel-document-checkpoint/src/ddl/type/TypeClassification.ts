@@ -1,3 +1,4 @@
+import { ITypeClassification } from '@airport/ground-control'
 import {
     Entity,
     Id,
@@ -12,7 +13,8 @@ import { Type } from './Type'
 @Table({
     name: 'TYPE_CLASSIFICATIONS'
 })
-export class TypeClassification {
+export class TypeClassification
+    implements ITypeClassification {
 
     @Id()
     @ManyToOne()

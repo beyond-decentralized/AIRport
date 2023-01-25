@@ -2,6 +2,15 @@ import { Application_Index } from "./Application";
 import { ApplicationEntity_TableIndex } from "./Entity";
 import { ApplicationColumn_Index } from "./Property";
 
+export type SystemWideOperationId_Id = number;
+/**
+ * No actual records are inserted into this table, 
+ * it is only used for the associated sequence
+ */
+export interface ISystemWideOperationId {
+	_localId: SystemWideOperationId_Id
+}
+
 export type SequenceIncrementBy = number
 export type SequenceCurrentValue = number
 

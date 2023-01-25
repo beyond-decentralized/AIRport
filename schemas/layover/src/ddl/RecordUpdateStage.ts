@@ -8,11 +8,9 @@ import {
 	ManyToOne,
 	Table
 } from '@airport/tarmaq-entity'
-import { ActorRecordId } from '@airport/ground-control';
+import { ActorRecordId, IRecordUpdateStage, RecordUpdateStage_LocalId } from '@airport/ground-control';
 import { ApplicationColumn, ApplicationEntity, ApplicationVersion } from '@airport/airspace/dist/app/bundle';
 import { Actor, Repository } from '@airport/holding-pattern/dist/app/bundle';
-
-export type RecordUpdateStage_LocalId = number;
 
 /**
  * Used to temporarily store updates during application remotely synced updates
@@ -21,12 +19,22 @@ export type RecordUpdateStage_LocalId = number;
  */
 @Entity()
 @Table({ name: 'RECORD_UPDATE_STAGE' })
-export class RecordUpdateStage {
+export class RecordUpdateStage
+	implements IRecordUpdateStage {
 
 	@Id()
 	@GeneratedValue()
 	@Column({ name: 'RECORD_UPDATE_STAGE_LID' })
+	@DbNumber()
 	_localId: RecordUpdateStage_LocalId
+
+	@Column({ name: 'ACTOR_RECORD_ID' })
+	@DbNumber()
+	_actorRecordId: ActorRecordId
+
+
+	@Column({ name: 'UPDATED_VALUE' })
+	updatedValue: any
 
 	@ManyToOne()
 	@JoinColumn({
@@ -58,10 +66,6 @@ export class RecordUpdateStage {
 	})
 	actor: Actor
 
-	@Column({ name: 'ACTOR_RECORD_ID' })
-	@DbNumber()
-	_actorRecordId: ActorRecordId
-
 	@ManyToOne()
 	// FIXME: verify that these records don't make it into serialized
 	// repository ledger (and hence, that using local ids is safe)
@@ -70,9 +74,5 @@ export class RecordUpdateStage {
 		referencedColumnName: 'APPLICATION_COLUMN_LID'
 	})
 	column: ApplicationColumn
-
-
-	@Column({ name: 'UPDATED_VALUE' })
-	updatedValue: any
 
 }

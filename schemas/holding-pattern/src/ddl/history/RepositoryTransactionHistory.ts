@@ -1,4 +1,4 @@
-import { RepositoryTransactionHistory_GUID, RepositoryTransactionHistory_IsRepositoryCreation, RepositoryTransactionHistory_LocalId, RepositoryTransactionHistory_SaveTimestamp, RepositoryTransactionHistory_SyncTimestamp, RepositoryTransactionType, Repository_IsPublic } from '@airport/ground-control'
+import { IRepositoryTransactionHistory, RepositoryMemberInvitation_PrivateSigningKey, RepositoryTransactionHistory_GUID, RepositoryTransactionHistory_IsRepositoryCreation, RepositoryTransactionHistory_LocalId, RepositoryTransactionHistory_SaveTimestamp, RepositoryTransactionHistory_SyncTimestamp, RepositoryTransactionType, Repository_IsPublic } from '@airport/ground-control'
 import {
 	Column,
 	DbBoolean,
@@ -14,11 +14,13 @@ import {
 	Table,
 } from '@airport/tarmaq-entity'
 import { Actor } from '../infrastructure/Actor'
-import { RepositoryMember } from '../repository/RepositoryMember'
+import { RepositoryMember } from '../repository/member/RepositoryMember'
 import { Repository } from '../repository/Repository'
 import { OperationHistory } from './OperationHistory'
 import { TransactionHistory } from './TransactionHistory'
-import { RepositoryMemberUpdate } from '../repository/RepositoryMemberUpdate'
+import { RepositoryMemberUpdate } from '../repository/member/RepositoryMemberUpdate'
+import { RepositoryMemberInvitation } from '../repository/member/RepositoryMemberInvitation'
+import { RepositoryMemberAcceptance } from '../repository/member/RepositoryMemberAcceptance'
 
 /**
  * Created by Papa on 9/15/2016.
@@ -30,7 +32,8 @@ import { RepositoryMemberUpdate } from '../repository/RepositoryMemberUpdate'
  */
 @Entity()
 @Table({ name: 'REPOSITORY_TRANSACTION_HISTORY' })
-export class RepositoryTransactionHistory {
+export class RepositoryTransactionHistory
+	implements IRepositoryTransactionHistory {
 
 	@GeneratedValue()
 	@Id()
@@ -62,6 +65,12 @@ export class RepositoryTransactionHistory {
 	@Column({ name: "IS_PUBLIC" })
 	@DbBoolean()
 	isPublic?: Repository_IsPublic
+
+	// Present only for Repository invitation acceptances and only
+	// in the database of the Terminal where the invitation is accepted
+	@Column({ name: "INVITATION_PRIVATE_SIGNING_KEY" })
+	@DbString()
+	invitationPrivateSigningKey?: RepositoryMemberInvitation_PrivateSigningKey
 
 	@ManyToOne()
 	@JoinColumn({
@@ -95,11 +104,29 @@ export class RepositoryTransactionHistory {
 	@OneToMany({ mappedBy: 'repositoryTransactionHistory' })
 	operationHistory?: OperationHistory[] = []
 
-	@OneToMany({ mappedBy: 'newInMemberRepositoryTransactionHistory' })
-	newRepositoryMembers?: RepositoryMember[] = []
+	// Tracked only in the Terminal database where originally added, for the
+	// purpose of sending out synchronization messages
+	// IS resent in RepositorySynchronizationMessage
+	@OneToMany({ mappedBy: 'addedInRepositoryTransactionHistory' })
+	newRepositoryMemberInvitations?: RepositoryMemberInvitation[] = []
 
-	@OneToMany({ mappedBy: 'repositoryTransactionHistory' })
-	repositoryMemberUpdates?: RepositoryMemberUpdate[] = []
+	// Tracked only in the Terminal database where originally added, for the
+	// purpose of sending out synchronization messages
+	// IS resent in RepositorySynchronizationMessage
+	@OneToMany({ mappedBy: 'addedInRepositoryTransactionHistory' })
+	newRepositoryMemberAcceptances?: RepositoryMemberAcceptance[] = []
+
+	// Tracked only in the Terminal database where originally added, for the
+	// purpose of sending out synchronization messages
+	// IS NOT implemented (currently)
+	@OneToMany({ mappedBy: 'addedInRepositoryTransactionHistory' })
+	newRepositoryMemberUpdates?: RepositoryMemberUpdate[] = []
+
+	// Tracked only in the Terminal database where originally added, for the
+	// purpose of sending out synchronization messages
+	// IS NOT resent in RepositorySynchronizationMessage
+	@OneToMany({ mappedBy: 'addedInRepositoryTransactionHistory' })
+	newRepositoryMembers?: RepositoryMember[] = []
 
 	constructor(
 		data?: RepositoryTransactionHistory

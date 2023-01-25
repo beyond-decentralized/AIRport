@@ -1,3 +1,5 @@
+export type SystemWideOperationId_Id = number;
+
 export interface ISystemWideOperationIdUtils {
 
     getSysWideOpId(

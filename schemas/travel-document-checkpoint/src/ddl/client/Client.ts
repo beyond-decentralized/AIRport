@@ -1,4 +1,4 @@
-import { Client_Domain, Client_GUID, Client_LocalId } from "@airport/ground-control";
+import { Client_Domain, Client_GUID, Client_LocalId, IClient } from "@airport/ground-control";
 import {
     Column,
     DbNumber,
@@ -21,7 +21,8 @@ import { ClientType } from "./ClientType";
 @Table({
     name: 'CLIENTS'
 })
-export class Client {
+export class Client
+    implements IClient {
 
     @Id()
     @DbNumber()

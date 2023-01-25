@@ -158,7 +158,7 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 			GUID: actor.GUID,
 			userAccount: actor.userAccount ? {
 				_localId: null,
-				GUID: actor.userAccount.GUID
+				accountPublicSigningKey: actor.userAccount.accountPublicSigningKey
 			} : null
 		}
 		let newRepository: IRepository
@@ -171,7 +171,7 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 				source: context.rootTransaction.newRepository.source,
 				owner: actor.userAccount ? {
 					_localId: null,
-					GUID: actor.userAccount.GUID
+					accountPublicSigningKey: actor.userAccount.accountPublicSigningKey
 				} : null
 			}
 		}

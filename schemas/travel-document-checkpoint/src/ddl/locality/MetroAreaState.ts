@@ -1,3 +1,4 @@
+import { IMetroAreaState } from "@airport/ground-control";
 import {
     Entity,
     Id,
@@ -10,7 +11,8 @@ import { State } from "./State";
 
 @Entity()
 @Table({ name: "METRO_AREA_STATES" })
-export class MetroAreaState {
+export class MetroAreaState
+    implements IMetroAreaState {
 
     @Id()
     @ManyToOne()

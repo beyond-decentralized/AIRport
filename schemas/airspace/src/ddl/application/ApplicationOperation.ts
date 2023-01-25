@@ -11,6 +11,7 @@ import {
 	Table
 } from '@airport/tarmaq-entity'
 import {
+	DbOperation,
 	Operation_LocalId,
 	Operation_Name,
 	Operation_Rule,
@@ -24,7 +25,8 @@ import { VersionedApplicationObject } from './VersionedApplicationObject'
 	name: 'APPLICATION_OPERATIONS'
 })
 export class ApplicationOperation
-	extends VersionedApplicationObject {
+	extends VersionedApplicationObject
+	implements DbOperation {
 
 	@Id()
 	@GeneratedValue()

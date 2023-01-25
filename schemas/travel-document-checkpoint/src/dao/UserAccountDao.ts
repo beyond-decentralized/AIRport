@@ -1,4 +1,4 @@
-import { UserAccount_GUID, UserAccount_Username } from '@airport/aviation-communication'
+import { UserAccount_PublicSigningKey, UserAccount_Username } from '@airport/aviation-communication'
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import { Dictionary, ISequenceGenerator, IUserAccount } from '@airport/ground-control'
 import {
@@ -15,8 +15,8 @@ export interface IUserAccountDao
 		usernames: UserAccount_Username[]
 	): Promise<IUserAccount[]>
 
-	findByGUIDs(
-		GUIDs: UserAccount_GUID[]
+	findByAccountPublicSingingKeys(
+		accountPublicSingingKeys: UserAccount_PublicSigningKey[]
 	): Promise<IUserAccount[]>
 
 	insert(
@@ -50,8 +50,8 @@ export class UserAccountDao
 		})
 	}
 
-	async findByGUIDs(
-		GUIDs: UserAccount_GUID[]
+	async findByAccountPublicSingingKeys(
+		accountPublicSingingKeys: UserAccount_PublicSigningKey[]
 	): Promise<IUserAccount[]> {
 		let u: QUserAccount
 		return await this.db.find.tree({
@@ -59,7 +59,7 @@ export class UserAccountDao
 			FROM: [
 				u = Q.UserAccount
 			],
-			WHERE: u.GUID.IN(GUIDs)
+			WHERE: u.accountPublicSigningKey.IN(accountPublicSingingKeys)
 		})
 	}
 
@@ -83,7 +83,7 @@ export class UserAccountDao
 			const userAccount = userAccounts[i]
 			userAccount._localId = userAccountLids[i]
 			VALUES.push([
-				userAccountLids[i], userAccount.GUID, userAccount.username
+				userAccountLids[i], userAccount.accountPublicSigningKey, userAccount.username
 			])
 		}
 
@@ -92,7 +92,7 @@ export class UserAccountDao
 			INSERT_INTO: u = Q.UserAccount,
 			columns: [
 				u._localId,
-				u.GUID,
+				u.accountPublicSigningKey,
 				u.username
 			],
 			VALUES

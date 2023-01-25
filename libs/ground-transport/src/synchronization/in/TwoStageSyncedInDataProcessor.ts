@@ -17,6 +17,7 @@ import {
 import {
 	IRepositoryDao,
 	IRepositoryTransactionHistoryDuo,
+	RepositoryMemberAcceptanceDao,
 	RepositoryMemberDao
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
@@ -34,7 +35,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { INewAndUpdatedRepositorieAndRecords as INewAndUpdatedRepositoriesAndRecords } from './checker/SyncInRepositoryChecker'
+import { INewAndUpdatedRepositoriesAndRecords as INewAndUpdatedRepositoriesAndRecords } from './checker/SyncInRepositoryChecker'
 
 /**
  * Synchronizes incoming data and records message conflicts in two processing stages.
@@ -58,7 +59,13 @@ export class TwoStageSyncedInDataProcessor
 	repositoryDao: IRepositoryDao
 
 	@Inject()
+	repositoryMemberAcceptanceDao: RepositoryMemberAcceptanceDao
+
+	@Inject()
 	repositoryMemberDao: RepositoryMemberDao
+
+	@Inject()
+	repositoryMemberInvitationDao: RepositoryMemberAcceptanceDao
 
 	@Inject()
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
@@ -91,17 +98,17 @@ export class TwoStageSyncedInDataProcessor
 
 		await this.repositoryDao.insert(newAndUpdatedRepositoriesAndRecords.missingRepositories, context)
 		await this.repositoryMemberDao.insert(newAndUpdatedRepositoriesAndRecords.newMembers, context)
-		for (const updatedRepositoryMember of newAndUpdatedRepositoriesAndRecords.updatedMembers) {
-			switch (updatedRepositoryMember.status) {
-				case RepositoryMember_Status.INVITED:
-					break;
-				default:
-					throw new Error(`Unsupported RepositoryMember_Status for updated RepositoryMember`)
-			}
+		await this.repositoryMemberInvitationDao.insert(newAndUpdatedRepositoriesAndRecords.newRepositoryMemberInvitations, context)
+		await this.repositoryMemberAcceptanceDao.insert(newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances, context)
+
+		for (const newRepositoryMemberAcceptance of
+			newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances) {
 			await this.repositoryMemberDao.updatePublicSigningKey(
-				updatedRepositoryMember.GUID, updatedRepositoryMember.publicSigningKey,
+				newRepositoryMemberAcceptance.invitationPublicSigningKey,
+				newRepositoryMemberAcceptance.acceptingRepositoryMember.memberPublicSigningKey,
 				context)
 		}
+
 
 		await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById,
 			applicationsByApplicationVersion_LocalIdMap, context)
@@ -140,7 +147,12 @@ export class TwoStageSyncedInDataProcessor
 					}
 				})
 			})
-
+			transactionHistory.allRepositoryMembers = transactionHistory
+				.allRepositoryMembers.concat(repositoryTransactionHistory.newRepositoryMembers)
+			transactionHistory.allRepositoryMemberAcceptances = transactionHistory
+				.allRepositoryMemberAcceptances.concat(repositoryTransactionHistory.newRepositoryMemberAcceptances)
+			transactionHistory.allRepositoryMemberInvitations = transactionHistory
+				.allRepositoryMemberInvitations.concat(repositoryTransactionHistory.newRepositoryMemberInvitations)
 		}
 	}
 

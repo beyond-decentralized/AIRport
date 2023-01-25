@@ -3,5 +3,5 @@ import { IUserState } from "./UserState";
 
 export const internalUserState: Subject<IUserState> = new BehaviorSubject({
     allSessions: [],
-    sessionMapByEmail: new Map()
+    sessionMapByAccountPublicSigningKey: new Map()
 })

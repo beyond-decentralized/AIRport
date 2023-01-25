@@ -7,12 +7,14 @@ import {
 } from "@airport/tarmaq-entity";
 import { Application } from "@airport/airspace";
 import { Repository } from './Repository'
+import { IRepositoryApplication } from "@airport/ground-control";
 
 @Entity()
 @Table({
 	name: "REPOSITORY_APPLICATIONS"
 })
-export class RepositoryApplication {
+export class RepositoryApplication
+	implements IRepositoryApplication {
 
 	@Id()
 	@ManyToOne()

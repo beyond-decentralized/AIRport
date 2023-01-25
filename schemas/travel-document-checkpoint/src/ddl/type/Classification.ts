@@ -1,4 +1,4 @@
-import { Classification_Id, Classification_Name } from '@airport/ground-control'
+import { Classification_Id, Classification_Name, IClassification } from '@airport/ground-control'
 import {
     Column,
     DbNumber,
@@ -15,7 +15,8 @@ import {
 @Table({
     name: 'CLASSIFICATIONS'
 })
-export class Classification {
+export class Classification
+    implements IClassification {
 
     @Id()
     @Column({ name: 'CLASSIFICATION_ID', nullable: false })

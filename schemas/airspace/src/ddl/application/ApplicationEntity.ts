@@ -20,7 +20,8 @@ import {
 	ApplicationEntity_Name,
 	ApplicationEntity_TableIndex,
 	DbProperty,
-	DbColumn
+	DbColumn,
+	DbEntity
 } from '@airport/ground-control'
 import { ApplicationColumn } from './ApplicationColumn'
 import { ApplicationOperation } from './ApplicationOperation'
@@ -37,7 +38,8 @@ import { VersionedApplicationObject } from './VersionedApplicationObject'
 	// }]
 })
 export class ApplicationEntity
-	extends VersionedApplicationObject {
+	extends VersionedApplicationObject
+	implements DbEntity {
 
 	//
 	// Id columns

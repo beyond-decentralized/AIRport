@@ -14,7 +14,8 @@ import {
 	ApplicationProperty_LocalId,
 	ApplicationProperty_Index,
 	ApplicationProperty_IsId,
-	ApplicationProperty_Name
+	ApplicationProperty_Name,
+	DbProperty
 } from '@airport/ground-control'
 import { ApplicationEntity } from './ApplicationEntity'
 import { ApplicationPropertyColumn } from './ApplicationPropertyColumn'
@@ -26,7 +27,8 @@ import { VersionedApplicationObject } from './VersionedApplicationObject'
 	name: 'APPLICATION_PROPERTIES'
 })
 export class ApplicationProperty
-	extends VersionedApplicationObject {
+	extends VersionedApplicationObject
+	implements DbProperty {
 
 	@DbNumber()
 	@Id()

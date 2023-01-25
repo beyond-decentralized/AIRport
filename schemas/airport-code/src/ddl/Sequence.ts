@@ -10,12 +10,14 @@ import {
 	Application_Index,
 	ApplicationEntity_TableIndex,
 	SequenceIncrementBy,
-	SequenceCurrentValue
+	SequenceCurrentValue,
+	DbSequence
 } from '@airport/ground-control'
 
 @Entity()
 @Table({ name: 'SEQUENCES' })
-export class Sequence {
+export class Sequence
+	implements DbSequence {
 
 	@Id()
 	@Column({ name: 'APPLICATION_INDEX', nullable: false })

@@ -3,7 +3,7 @@ import {
 	Y
 } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
-import { Actor_GUID, IRepository, Repository_GUID, Repository_LocalId, Repository_Source, Terminal_GUID, TransactionType } from '@airport/ground-control'
+import { IRepository, Repository_GUID, Repository_LocalId, Repository_Source, TransactionType } from '@airport/ground-control'
 import {
 	QUserAccount
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
@@ -15,7 +15,6 @@ import {
 	QTransactionHistory,
 } from '../../generated/generated'
 import Q from '../../generated/qApplication'
-import { UserAccount_GUID } from '@airport/aviation-communication'
 
 export interface IRepositoryDao
 	extends IBaseRepositoryDao {
@@ -55,11 +54,6 @@ export interface IRepositoryDao
 	): Promise<void>
 
 }
-
-export type RepositoryIdMap = Map<UserAccount_GUID,
-	Map<Terminal_GUID, Map<UserAccount_GUID,
-		Map<Actor_GUID, Map<number,
-			Map<Repository_GUID, Repository_LocalId>>>>>>;
 
 @Injected()
 export class RepositoryDao
@@ -161,7 +155,7 @@ export class RepositoryDao
 				createdAt: Y,
 				GUID,
 				owner: {
-					GUID
+					accountPublicSigningKey: Y
 				},
 				uiEntryUri: Y
 			},
@@ -184,7 +178,7 @@ export class RepositoryDao
 				createdAt: Y,
 				GUID: Y,
 				owner: {
-					GUID: Y,
+					accountPublicSigningKey: Y,
 					username: Y
 				},
 				uiEntryUri: Y
@@ -210,8 +204,7 @@ export class RepositoryDao
 				createdAt: Y,
 				GUID: Y,
 				owner: {
-					GUID: Y,
-					ranking: Y,
+					accountPublicSigningKey: Y,
 					username: Y
 				},
 				uiEntryUri: Y

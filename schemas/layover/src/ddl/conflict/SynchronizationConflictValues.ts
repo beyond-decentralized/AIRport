@@ -6,12 +6,13 @@ import {
 	ManyToOne,
 	Table
 } from '@airport/tarmaq-entity'
-import { ApplicationColumn_Index } from '@airport/ground-control'
+import { ApplicationColumn_Index, ISynchronizationConflictValues } from '@airport/ground-control'
 import { SynchronizationConflict } from './SynchronizationConflict'
 
 @Entity()
 @Table({ name: 'SYNCHRONIZATION_CONFLICT_VALUES' })
-export class SynchronizationConflictValues {
+export class SynchronizationConflictValues
+	implements ISynchronizationConflictValues {
 
 	@Id()
 	@ManyToOne()

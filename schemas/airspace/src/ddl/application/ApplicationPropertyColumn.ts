@@ -1,3 +1,4 @@
+import { DbPropertyColumn } from '@airport/ground-control'
 import {
 	Entity,
 	Id,
@@ -18,7 +19,8 @@ import { VersionedApplicationObject } from './VersionedApplicationObject'
 	name: 'APPLICATION_PROPERTY_COLUMNS'
 })
 export class ApplicationPropertyColumn
-	extends VersionedApplicationObject {
+	extends VersionedApplicationObject
+	implements DbPropertyColumn {
 
 	@Id()
 	@ManyToOne()

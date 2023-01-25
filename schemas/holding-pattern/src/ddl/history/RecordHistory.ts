@@ -13,6 +13,7 @@ import {
 } from '@airport/tarmaq-entity'
 import {
 	ActorRecordId,
+	IRecordHistory,
 	RecordHistory_LocalId,
 	SyncColumnMap
 } from '@airport/ground-control'
@@ -32,7 +33,8 @@ import { RecordHistoryOldValue } from './RecordHistoryOldValue';
 		unique: false
 	}]
 })
-export class RecordHistory {
+export class RecordHistory
+	implements IRecordHistory {
 
 	@Id()
 	@GeneratedValue()

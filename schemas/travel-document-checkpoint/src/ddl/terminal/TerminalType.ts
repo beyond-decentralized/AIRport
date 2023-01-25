@@ -1,3 +1,4 @@
+import { ITerminalType } from '@airport/ground-control'
 import {
     Entity,
     Id,
@@ -15,7 +16,8 @@ import { Terminal } from './Terminal'
 @Table({
     name: 'TERMINAL_TYPES'
 })
-export class TerminalType {
+export class TerminalType
+    implements ITerminalType {
 
     @Id()
     @ManyToOne()

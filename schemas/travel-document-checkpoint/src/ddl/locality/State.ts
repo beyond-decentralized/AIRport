@@ -1,4 +1,4 @@
-import { State_Abbreviation, State_Id, State_Name } from "@airport/ground-control";
+import { IState, State_Abbreviation, State_Id, State_Name } from "@airport/ground-control";
 import {
     Column,
     DbNumber,
@@ -17,7 +17,8 @@ import { MetroAreaState } from "./MetroAreaState";
 
 @Entity()
 @Table({ name: "STATES" })
-export class State {
+export class State
+    implements IState {
 
     @Id()
     @GeneratedValue()

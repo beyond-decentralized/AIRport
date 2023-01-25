@@ -1,3 +1,4 @@
+import { IRepositoryTerminal } from "@airport/ground-control";
 import {
 	Entity,
 	Id,
@@ -14,7 +15,8 @@ import { Repository } from "./Repository";
 @Table({
 	name: "REPOSITORY_TERMINALS"
 })
-export class RepositoryTerminal {
+export class RepositoryTerminal
+	implements IRepositoryTerminal {
 
 	@Id()
 	@ManyToOne()

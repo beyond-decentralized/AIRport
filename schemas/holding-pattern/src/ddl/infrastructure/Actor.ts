@@ -13,11 +13,12 @@ import {
 	UserAccount
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { Application } from '@airport/airspace/dist/app/bundle';
-import { Actor_GUID, Actor_LocalId } from '@airport/ground-control';
+import { Actor_GUID, Actor_LocalId, IActor } from '@airport/ground-control';
 
 
 @Entity()
-export class Actor {
+export class Actor
+	implements IActor {
 
 	@Id()
 	@GeneratedValue()

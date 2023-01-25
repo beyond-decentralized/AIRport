@@ -15,7 +15,10 @@ import {
 import { ISynchronizationOutManager } from '@airport/ground-transport';
 import {
 	ITransactionHistoryDuo,
-	Q_airport____at_airport_slash_holding_dash_pattern as Q
+	Q_airport____at_airport_slash_holding_dash_pattern as Q,
+	RepositoryMemberAcceptanceDao,
+	RepositoryMemberDao,
+	RepositoryMemberInvitationDao
 } from '@airport/holding-pattern/dist/app/bundle';
 import { IQEntityInternal } from '@airport/tarmaq-query';
 import {
@@ -42,6 +45,15 @@ export class TransactionManager
 
 	@Inject()
 	idGenerator: IIdGenerator
+
+	@Inject()
+	repositoryMemberAcceptanceDao: RepositoryMemberAcceptanceDao
+
+	@Inject()
+	repositoryMemberDao: RepositoryMemberDao
+
+	@Inject()
+	repositoryMemberInvitationDao: RepositoryMemberInvitationDao
 
 	@Inject()
 	storeDriver: IStoreDriver
@@ -311,8 +323,7 @@ parent transactions.
 			if (!context.doNotRecordHistory) {
 				if (!parentTransaction && transactionHistory.allRecordHistory.length) {
 					await this.synchronizationOutManager.synchronizeOut(
-						transactionHistory.repositoryTransactionHistories,
-						context)
+						transactionHistory.repositoryTransactionHistories)
 				}
 			}
 			if (!parentTransaction) {
@@ -370,6 +381,12 @@ parent transactions.
 			.allRecordHistoryNewValues.concat(childTransactionHistory.allRecordHistoryNewValues)
 		parentTransactionHistory.allRecordHistoryOldValues = parentTransactionHistory
 			.allRecordHistoryOldValues.concat(childTransactionHistory.allRecordHistoryOldValues)
+		parentTransactionHistory.allRepositoryMembers = parentTransactionHistory
+			.allRepositoryMembers.concat(childTransactionHistory.allRepositoryMembers)
+		parentTransactionHistory.allRepositoryMemberAcceptances = parentTransactionHistory
+			.allRepositoryMemberAcceptances.concat(childTransactionHistory.allRepositoryMemberAcceptances)
+		parentTransactionHistory.allRepositoryMemberInvitations = parentTransactionHistory
+			.allRepositoryMemberInvitations.concat(childTransactionHistory.allRepositoryMemberInvitations)
 	}
 
 	private checkForCircularDependencies(
@@ -525,6 +542,19 @@ ${callHerarchy}
 			await this.doInsertValues(transaction,
 				Q.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues,
 				context);
+		}
+
+		if (transactionHistory.allRepositoryMembers.length) {
+			await this.repositoryMemberDao
+				.insert(transactionHistory.allRepositoryMembers, context)
+		}
+		if (transactionHistory.allRepositoryMemberAcceptances.length) {
+			await this.repositoryMemberAcceptanceDao
+				.insert(transactionHistory.allRepositoryMemberAcceptances, context)
+		}
+		if (transactionHistory.allRepositoryMemberInvitations.length) {
+			await this.repositoryMemberInvitationDao
+				.insert(transactionHistory.allRepositoryMemberInvitations, context)
 		}
 
 		return true;

@@ -40,7 +40,9 @@ import {
 import {
     ActorDao,
     RepositoryDao,
+    RepositoryMemberAcceptanceDao,
     RepositoryMemberDao,
+    RepositoryMemberInvitationDao,
     RepositoryTransactionHistoryDao,
     RepositoryTransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
@@ -179,7 +181,9 @@ groundTransport.setDependencies(SynchronizationOutManager, {
 
 groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
     repositoryDao: RepositoryDao,
+    repositoryMemberAcceptanceDao: RepositoryMemberAcceptanceDao,
     repositoryMemberDao: RepositoryMemberDao,
+    repositoryMemberInvitationDao: RepositoryMemberInvitationDao,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     stage1SyncedInDataProcessor: Stage1SyncedInDataProcessor,
     stage2SyncedInDataProcessor: Stage2SyncedInDataProcessor,

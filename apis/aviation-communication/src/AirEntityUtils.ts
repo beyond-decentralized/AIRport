@@ -1,10 +1,8 @@
 import { Injected } from '@airport/direction-indicator'
 
+export type UserAccount_PublicSigningKey = string;
 export type UserAccount_LocalId = number;
-export type UserAccount_GUID = string;
 export type UserAccount_Email = string;
-export type UserAccount_PasswordHash = string;
-export type UserAccount_Ranking = number;
 export type UserAccount_Username = string;
 
 export interface InternalUserAccount {
@@ -15,12 +13,10 @@ export interface InternalUserAccount {
     // Id Relations
 
     // Non-Id Properties
-    email?: UserAccount_Email;
-    passwordHash?: UserAccount_PasswordHash;
-    publicMetaSigningKey?: string;
-    ranking?: UserAccount_Ranking;
+
+    // doubles as the GUID
+    accountPublicSigningKey?: UserAccount_PublicSigningKey;
     username?: UserAccount_Username;
-    GUID?: UserAccount_GUID;
 
     // Non-Id Relations
 

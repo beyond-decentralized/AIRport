@@ -1,4 +1,4 @@
-import { Database_Domain, Database_GUID, Database_LocalId } from "@airport/ground-control";
+import { Database_Domain, Database_GUID, Database_LocalId, IDatabase } from "@airport/ground-control";
 import {
     Column,
     DbNumber,
@@ -20,7 +20,8 @@ import { DatabaseType } from "./DatabaseType";
 @Table({
     name: 'DATABASES'
 })
-export class Database {
+export class Database
+    implements IDatabase {
 
     @Id()
     @DbNumber()

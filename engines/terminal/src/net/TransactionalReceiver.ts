@@ -78,6 +78,10 @@ export abstract class TransactionalReceiver {
     @Inject()
     transactionalServer: ITransactionalServer
 
+    WITH_ID: {
+        _localId: number
+    } = {} as any
+
     async processMessage<ReturnType extends IIsolateMessageOut<any>>(
         message: IIsolateMessage & IApiIMI
     ): Promise<ReturnType> {
@@ -373,7 +377,7 @@ export abstract class TransactionalReceiver {
     }
 
     private async doNativeHandleCallback(
-        message: ILocalAPIRequest<'FromClientRedirected'>,
+        message: ILocalAPIRequest<'FromClientRedirected', IActor>,
         actor: IActor,
         context: IApiCallContext & ITransactionContext,
         nativeHandleCallback: () => void
@@ -381,13 +385,16 @@ export abstract class TransactionalReceiver {
         message.transactionId = context.transaction.id
 
         message.actor = {
+            ...this.WITH_ID,
             application: actor.application,
             GUID: actor.GUID,
             terminal: {
+                ...this.WITH_ID,
                 GUID: actor.terminal.GUID
             },
             userAccount: {
-                GUID: actor.userAccount.GUID,
+                ...this.WITH_ID,
+                accountPublicSigningKey: actor.userAccount.accountPublicSigningKey,
                 username: actor.userAccount.username
             }
         }
@@ -412,10 +419,10 @@ export abstract class TransactionalReceiver {
             }
 
             const terminal = this.terminalStore.getTerminal()
-            actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
+            actor = await this.actorDao.findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(
                 message.domain,
                 message.application,
-                userSession.userAccount.GUID,
+                userSession.userAccount.accountPublicSigningKey,
                 terminal.GUID
             )
             if (actor) {

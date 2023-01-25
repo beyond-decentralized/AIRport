@@ -28,7 +28,7 @@ import {
 } from '../../generated/generated'
 import Q from '../../generated/qApplication'
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
-import { UserAccount_GUID } from '@airport/aviation-communication'
+import { UserAccount_PublicSigningKey } from '@airport/aviation-communication'
 
 export interface IActorDao
 	extends IBaseActorDao {
@@ -41,10 +41,10 @@ export interface IActorDao
 		actor_localIds: Actor_LocalId[],
 	): Promise<IActor[]>
 
-	findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
+	findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(
 		domainName: Domain_Name,
 		applicationName: Application_Name,
-		userAccountGUID: UserAccount_GUID,
+		accountPublicSigningKey: UserAccount_PublicSigningKey,
 		terminalGUID: Terminal_GUID
 	): Promise<IActor>
 
@@ -75,10 +75,10 @@ export class ActorDao
 		) => a._localId.IN(actorIds))
 	}
 
-	async findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
+	async findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(
 		domainName: Domain_Name,
 		applicationName: Application_Name,
-		userAccountGUID: UserAccount_GUID,
+		accountPublicSigningKey: UserAccount_PublicSigningKey,
 		terminalGUID: Terminal_GUID
 	): Promise<IActor> {
 		let act: QActor
@@ -112,7 +112,7 @@ export class ActorDao
 				domain.name.equals(domainName),
 				application.name.equals(applicationName),
 				terminal.GUID.equals(terminalGUID),
-				userAccount.GUID.equals(userAccountGUID)
+				userAccount.accountPublicSigningKey.equals(accountPublicSigningKey)
 			)
 		})
 	}
@@ -139,18 +139,13 @@ export class ActorDao
 			SELECT: {
 				'*': Y,
 				userAccount: {
-					GUID: Y,
-					ranking: Y,
+					accountPublicSigningKey: Y,
 					username: Y
 				}
 			},
 			FROM: [
 				a = Q.Actor,
-				u = a.userAccount.LEFT_JOIN(),
-				u.continent.LEFT_JOIN(),
-				u.country.LEFT_JOIN(),
-				u.metroArea.LEFT_JOIN(),
-				u.state.LEFT_JOIN()
+				u = a.userAccount.LEFT_JOIN()
 			],
 
 			WHERE: a._localId.IN(actor_localIds)

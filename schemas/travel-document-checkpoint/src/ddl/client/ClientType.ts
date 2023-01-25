@@ -1,3 +1,4 @@
+import { IClientType } from '@airport/ground-control'
 import {
     Entity,
     Id,
@@ -12,7 +13,8 @@ import { Client } from './Client'
 @Table({
     name: 'CLIENT_TYPES'
 })
-export class ClientType {
+export class ClientType
+    implements IClientType {
 
     @Id()
     @ManyToOne()

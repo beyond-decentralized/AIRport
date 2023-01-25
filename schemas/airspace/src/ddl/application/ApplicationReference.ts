@@ -7,7 +7,7 @@ import {
 	ManyToOne,
 	Table
 } from '@airport/tarmaq-entity'
-import { ApplicationReference_Index } from '@airport/ground-control'
+import { ApplicationReference_Index, DbApplicationReference } from '@airport/ground-control'
 import { ApplicationVersion } from './ApplicationVersion'
 import { VersionedApplicationObject } from './VersionedApplicationObject'
 
@@ -16,7 +16,8 @@ import { VersionedApplicationObject } from './VersionedApplicationObject'
 	name: 'APPLICATION_REFERENCES'
 })
 export class ApplicationReference
-	extends VersionedApplicationObject {
+	extends VersionedApplicationObject
+	implements DbApplicationReference {
 
 	@Id()
 	@ManyToOne()

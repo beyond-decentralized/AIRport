@@ -1,10 +1,13 @@
 import { SyncApplicationMap } from "../../implementation/sync/SyncApplicationMap";
 import { SyncColumnMap } from "../../implementation/sync/SyncColumnMap";
+import { DbApplicationVersion } from "../application/Application";
 import { DbEntity } from "../application/Entity";
-import { ApplicationColumn_Index } from "../application/Property";
+import { ApplicationColumn_Index, DbColumn } from "../application/Property";
 import { ChangeType } from "../data/ChangeType";
 import { RepositoryTransactionType, TransactionType } from "../data/sync/TransactionType";
-import { ActorRecordId, IActor, IRepository, IRepositoryMember, Repository_IsPublic, Repository_LocalId, SystemWideOperationId } from "./types";
+import { ActorRecordId, IActor, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, IRepositoryMemberUpdate, RepositoryMemberInvitation_PrivateSigningKey, Repository_IsPublic, Repository_LocalId, SystemWideOperationId } from "./types";
+
+export type InMessageIndex = number
 
 export type RepositoryTransactionHistory_LocalId = number;
 export type RepositoryTransactionHistory_IsRepositoryCreation = boolean;
@@ -29,8 +32,11 @@ export interface IRepositoryTransactionHistory {
     repository?: IRepository
     transactionHistory?: ITransactionHistory
     operationHistory?: IOperationHistory[]
+    newRepositoryMemberAcceptances?: IRepositoryMemberAcceptance[]
+    newRepositoryMemberInvitations?: IRepositoryMemberInvitation[]
+    newRepositoryMemberUpdates?: IRepositoryMemberUpdate[]
     newRepositoryMembers?: IRepositoryMember[]
-    updatedRepositoryMembers?: IRepositoryMember[]
+    invitationPrivateSigningKey?: RepositoryMemberInvitation_PrivateSigningKey
 
 }
 
@@ -48,6 +54,9 @@ export interface ITransactionHistory {
     allRecordHistory?: IRecordHistory[]
     allRecordHistoryNewValues?: IRecordHistoryNewValue[]
     allRecordHistoryOldValues?: IRecordHistoryOldValue[]
+    allRepositoryMemberAcceptances?: IRepositoryMemberAcceptance[]
+    allRepositoryMemberInvitations?: IRepositoryMemberInvitation[]
+    allRepositoryMembers?: IRepositoryMember[]
 
 }
 
@@ -151,5 +160,19 @@ export interface ISynchronizationConflictValues {
     // Transient Properties
 
     // Public Methods
+
+}
+
+export type RecordUpdateStage_LocalId = number;
+export class IRecordUpdateStage {
+
+    _localId: RecordUpdateStage_LocalId
+    applicationVersion: DbApplicationVersion
+    entity: DbEntity
+    repository: IRepository
+    actor: IActor
+    _actorRecordId: ActorRecordId
+    column: DbColumn
+    updatedValue: any
 
 }

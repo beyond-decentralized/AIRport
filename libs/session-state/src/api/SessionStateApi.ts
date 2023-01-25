@@ -15,9 +15,8 @@ export class SessionStateApi {
 
         return {
             _localId: null,
-            email: userAccount.email,
             username: userAccount.username,
-            GUID: userAccount.GUID
+            accountPublicSigningKey: userAccount.accountPublicSigningKey
         }
     }
 

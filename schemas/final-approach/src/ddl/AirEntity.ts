@@ -13,46 +13,15 @@ import {
 import { Actor, Repository } from '@airport/holding-pattern'
 import { UserAccount } from '@airport/travel-document-checkpoint'
 import { IAirEntityUtils } from '@airport/aviation-communication'
-import { ActorRecordId, AgeSuitability, AirEntity_Copied, AirEntity_Id, CreatedAt, SystemWideOperationId } from '@airport/ground-control'
+import { ActorRecordId, AgeSuitability, AirEntity_Copied, AirEntity_Id, CreatedAt, IAirEntity, SystemWideOperationId } from '@airport/ground-control'
 
 /**
  * Created by Papa on 2/17/2017.
  */
 
 @MappedSuperclass()
-export abstract class AirEntity {
-
-	constructor(
-		entityId?: AirEntity_Id
-	) {
-		// Currently TypeScript does not support optional getters/setters
-		// this is a workaround
-		delete this.id
-		Object.defineProperty(this, 'id', {
-			get() {
-				return (globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).encodeId(this)
-			},
-			set(
-				idString: string
-			) {
-				(globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).setId(idString, this)
-			}
-		});
-		delete this.isNew
-		Object.defineProperty(this, 'isNew', {
-			get() {
-				return !!this._actorRecordId
-			}
-		});
-		delete this.createdBy
-		Object.defineProperty(this, 'createdBy', {
-			get() {
-				return this.actor.userAccount
-			}
-		});
-
-		this.id = entityId
-	}
+export abstract class AirEntity
+	implements IAirEntity {
 
 	@Id()
 	@Column({ name: 'ACTOR_RECORD_ID', nullable: false })
@@ -145,5 +114,37 @@ export abstract class AirEntity {
 	 */
 	@Transient()
 	id?: AirEntity_Id
+
+	constructor(
+		entityId?: AirEntity_Id
+	) {
+		// Currently TypeScript does not support optional getters/setters
+		// this is a workaround
+		delete this.id
+		Object.defineProperty(this, 'id', {
+			get() {
+				return (globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).encodeId(this)
+			},
+			set(
+				idString: string
+			) {
+				(globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS) as IAirEntityUtils).setId(idString, this)
+			}
+		});
+		delete this.isNew
+		Object.defineProperty(this, 'isNew', {
+			get() {
+				return !!this._actorRecordId
+			}
+		});
+		delete this.createdBy
+		Object.defineProperty(this, 'createdBy', {
+			get() {
+				return this.actor.userAccount
+			}
+		});
+
+		this.id = entityId
+	}
 
 }

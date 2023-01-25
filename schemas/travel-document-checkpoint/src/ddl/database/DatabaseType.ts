@@ -1,3 +1,4 @@
+import { IDatabaseType } from '@airport/ground-control'
 import {
     Entity,
     Id,
@@ -12,7 +13,8 @@ import { Database } from './Database'
 @Table({
     name: 'DATABASE_TYPE'
 })
-export class DatabaseType {
+export class DatabaseType
+    implements IDatabaseType {
 
     @Id()
     @ManyToOne()

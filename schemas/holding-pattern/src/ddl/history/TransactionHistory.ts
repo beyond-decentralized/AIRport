@@ -15,7 +15,11 @@ import {
 	IRecordHistory,
 	IRecordHistoryNewValue,
 	IRecordHistoryOldValue,
+	IRepositoryMember,
+	IRepositoryMemberAcceptance,
+	IRepositoryMemberInvitation,
 	IRepositoryTransactionHistory,
+	ITransactionHistory,
 	SyncApplicationMap,
 	TransactionHistory_LocalId,
 	TransactionType
@@ -27,7 +31,8 @@ import { RepositoryTransactionHistory } from './RepositoryTransactionHistory'
  */
 @Entity()
 @Table({ name: 'TRANSACTION_HISTORY' })
-export class TransactionHistory {
+export class TransactionHistory
+	implements ITransactionHistory {
 
 	@GeneratedValue()
 	@Id()
@@ -60,5 +65,14 @@ export class TransactionHistory {
 
 	@Transient()
 	allRecordHistoryOldValues?: IRecordHistoryOldValue[] = []
+
+	@Transient()
+	allRepositoryMemberAcceptances?: IRepositoryMemberAcceptance[] = []
+
+	@Transient()
+	allRepositoryMemberInvitations?: IRepositoryMemberInvitation[] = []
+
+	@Transient()
+	allRepositoryMembers?: IRepositoryMember[] = []
 
 }

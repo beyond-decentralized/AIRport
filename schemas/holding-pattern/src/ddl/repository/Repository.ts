@@ -27,8 +27,8 @@ import { RepositoryDatabase } from "./RepositoryDatabase";
 import { RepositoryClient } from "./RepositoryClient";
 import { RepositoryTerminal } from "./RepositoryTerminal";
 import { RepositoryApplication } from "./RepositoryApplication";
-import { AgeSuitability, Application_FullName, CreatedAt, IRepositoryIdentifier, Repository_GUID, Repository_Immutable, Repository_IsPublic, Repository_LocalId, Repository_Name, Repository_Source, Repository_UiEntryUri } from "@airport/ground-control";
-import { RepositoryMember } from "./RepositoryMember";
+import { AgeSuitability, Application_FullName, CreatedAt, IRepository, IRepositoryIdentifier, Repository_GUID, Repository_Immutable, Repository_IsPublic, Repository_LocalId, Repository_Name, Repository_Source, Repository_UiEntryUri } from "@airport/ground-control";
+import { RepositoryMember } from "./member/RepositoryMember";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -39,7 +39,7 @@ import { RepositoryMember } from "./RepositoryMember";
 	name: "REPOSITORY"
 })
 export class Repository
-	implements IRepositoryIdentifier {
+	implements IRepository {
 
 	@Column({ name: 'REPOSITORY_LID', nullable: false })
 	@GeneratedValue()
