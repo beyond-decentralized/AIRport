@@ -105,11 +105,11 @@ export class SyncInChecker
 			}
 		}
 
-		for (let i = 0; i < repositoryAndMemberCheckResult.signaturesToCheck.length; i++) {
+		for (const signatureCheck of repositoryAndMemberCheckResult.signatureChecks) {
 			if (!this.keyUtils.verify(serializedData,
-				repositoryAndMemberCheckResult.signaturesToCheck[i],
-				repositoryAndMemberCheckResult.publicSigningKeys[i])) {
-				console.error(`Message signature is not valid.`)
+				signatureCheck.signatureToCheck,
+				signatureCheck.publicSigningKey)) {
+				console.error(`message.${signatureCheck.signatureName} is not valid.`)
 				return {
 					isValid: false
 				}
@@ -124,7 +124,6 @@ export class SyncInChecker
 		}
 
 		const dataCheckResult = await this.syncInDataChecker.checkData(message, context)
-
 
 		return {
 			...dataCheckResult,

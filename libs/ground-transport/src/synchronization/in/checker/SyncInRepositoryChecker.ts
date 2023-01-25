@@ -12,8 +12,7 @@ import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 export interface IRepositoriesAndMembersCheckResult
 	extends INewAndUpdatedRepositoriesAndRecords {
 	isValid: boolean
-	publicSigningKeys?: (RepositoryMember_PublicSigningKey | RepositoryMemberInvitation_PublicSigningKey | UserAccount_PublicSigningKey)[]
-	signaturesToCheck?: (RepositoryMember_Signature | RepositoryMemberInvitation_PublicSigningKey | UserAccount_Signature)[]
+	signatureChecks?: ISignatureCheck[]
 }
 
 export interface INewAndUpdatedRepositoriesAndRecords {
@@ -21,6 +20,12 @@ export interface INewAndUpdatedRepositoriesAndRecords {
 	newMembers?: IRepositoryMember[]
 	newRepositoryMemberInvitations?: IRepositoryMemberInvitation[]
 	newRepositoryMemberAcceptances?: IRepositoryMemberAcceptance[]
+}
+
+export interface ISignatureCheck {
+	publicSigningKey: RepositoryMember_PublicSigningKey | RepositoryMemberInvitation_PublicSigningKey | UserAccount_PublicSigningKey
+	signatureName: string
+	signatureToCheck: RepositoryMember_Signature | RepositoryMemberInvitation_PublicSigningKey | UserAccount_Signature
 }
 
 export interface ISyncInRepositoryChecker {
@@ -47,8 +52,7 @@ export class SyncInRepositoryChecker
 		let missingRepositories: IRepository[] = []
 		let newMembers: IRepositoryMember[] = []
 		let newRepositoryMemberAcceptances: IRepositoryMemberAcceptance[] = []
-		let publicSigningKeys: (RepositoryMember_PublicSigningKey | RepositoryMemberInvitation_PublicSigningKey | UserAccount_PublicSigningKey)[] = []
-		let signaturesToCheck: (RepositoryMember_Signature | RepositoryMemberInvitation_PublicSigningKey | UserAccount_Signature)[] = []
+		let signatureChecks: ISignatureCheck[] = []
 
 		try {
 			const data = message.data
@@ -126,8 +130,7 @@ export class SyncInRepositoryChecker
 			}
 
 			const memberCheckResult = await this.checkRepositoryMembers(message)
-			publicSigningKeys = memberCheckResult.publicSigningKeys
-			signaturesToCheck = memberCheckResult.signaturesToCheck
+			signatureChecks = memberCheckResult.signatureChecks
 			newMembers = memberCheckResult.newMembers
 			newRepositoryMemberAcceptances = [memberCheckResult.newRepositoryMemberAcceptance]
 		} catch (e) {
@@ -142,8 +145,7 @@ export class SyncInRepositoryChecker
 			missingRepositories,
 			newMembers,
 			newRepositoryMemberAcceptances,
-			publicSigningKeys,
-			signaturesToCheck
+			signatureChecks
 		}
 	}
 
@@ -152,8 +154,7 @@ export class SyncInRepositoryChecker
 	): Promise<{
 		newMembers: IRepositoryMember[]
 		newRepositoryMemberAcceptance: IRepositoryMemberAcceptance
-		publicSigningKeys?: (RepositoryMember_PublicSigningKey | RepositoryMemberInvitation_PublicSigningKey | UserAccount_PublicSigningKey)[]
-		signaturesToCheck?: (RepositoryMember_Signature | RepositoryMemberInvitation_PublicSigningKey | UserAccount_Signature)[]
+		signatureChecks?: ISignatureCheck[]
 	}> {
 		const data = message.data
 		const inMessageRepositoryMemberMapByPublicSigningKey = this
@@ -177,10 +178,7 @@ export class SyncInRepositoryChecker
 			isNewRepositoryMemberAcceptanceMessage,
 			isNewRepositoryMemberInvitationMessage)
 
-		const {
-			publicSigningKeys,
-			signaturesToCheck
-		} = this.getPublicSigningKeysAndSignatureToCheck(
+		const signatureChecks = this.getPublicSigningKeysAndSignatureToCheck(
 			message, isNewRepositoryMemberAcceptanceMessage)
 
 		delete data.history.newRepositoryMembers
@@ -191,8 +189,7 @@ export class SyncInRepositoryChecker
 		return {
 			newMembers,
 			newRepositoryMemberAcceptance,
-			publicSigningKeys,
-			signaturesToCheck
+			signatureChecks
 		}
 	}
 
@@ -284,6 +281,11 @@ a acceptingRepositoryMember.userAccount specified.`)
 		if (typeof newRepositoryMemberAcceptance.acceptingRepositoryMember !== 'number') {
 			throw new Error(`${newRepositoryMemberAcceptancesErrorPrefix}[0].acceptingRepositoryMember is not a number`)
 		}
+
+		this.checkPublicSigningKey(
+			newRepositoryMemberAcceptance.invitationPublicSigningKey,
+			`${newRepositoryMemberAcceptancesErrorPrefix}[0].invitationPublicSigningKey`
+		)
 
 		const acceptingRepositoryMember = data.repositoryMembers[newRepositoryMemberAcceptance.acceptingRepositoryMember]
 
@@ -484,29 +486,32 @@ is not present in the message.`)
 	private getPublicSigningKeysAndSignatureToCheck(
 		message: RepositorySynchronizationMessage,
 		isNewRepositoryMemberAcceptanceMessage: boolean
-	): {
-		publicSigningKeys: (RepositoryMember_PublicSigningKey | RepositoryMemberInvitation_PublicSigningKey | UserAccount_PublicSigningKey)[]
-		signaturesToCheck: (RepositoryMember_Signature | RepositoryMemberInvitation_PublicSigningKey | UserAccount_Signature)[]
-	} {
-		const publicSigningKeys: (RepositoryMember_PublicSigningKey | RepositoryMemberInvitation_PublicSigningKey | UserAccount_PublicSigningKey)[] = []
-		const signaturesToCheck: (RepositoryMember_Signature | RepositoryMemberInvitation_PublicSigningKey | UserAccount_Signature)[] = []
+	): ISignatureCheck[] {
+		const signatureChecks: ISignatureCheck[] = []
 
 		const history = message.data.history
-		publicSigningKeys.push(history.member.memberPublicSigningKey)
-		signaturesToCheck.push(message.memberSignature)
+		signatureChecks.push({
+			publicSigningKey: history.member.memberPublicSigningKey,
+			signatureName: 'memberSignature',
+			signatureToCheck: message.memberSignature
+		})
 		if (isNewRepositoryMemberAcceptanceMessage) {
-			publicSigningKeys.push(message.data.history.invitationPrivateSigningKey)
-			signaturesToCheck.push(message.acceptanceSignature)
+			signatureChecks.push({
+				publicSigningKey: message.data.history
+					.newRepositoryMemberAcceptances[0].invitationPublicSigningKey,
+				signatureName: 'acceptanceSignature',
+				signatureToCheck: message.acceptanceSignature
+			})
 		}
 		if (isNewRepositoryMemberAcceptanceMessage || history.isRepositoryCreation) {
-			publicSigningKeys.push(history.member.userAccount.accountPublicSigningKey)
-			signaturesToCheck.push(message.userAccountSignature)
+			signatureChecks.push({
+				publicSigningKey: history.member.userAccount.accountPublicSigningKey,
+				signatureName: 'userAccountSignature',
+				signatureToCheck: message.userAccountSignature
+			})
 		}
 
-		return {
-			publicSigningKeys,
-			signaturesToCheck
-		}
+		return signatureChecks
 	}
 
 	private checkRepository(

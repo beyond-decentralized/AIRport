@@ -27516,8 +27516,7 @@ let KeyRingManager = class KeyRingManager {
         if (!keyRing) {
             throw new Error(`No Key Ring found in User Session`);
         }
-        const publicSigningKeySignature = this.keyUtils.sign(signingKey.public, keyRing.internalPrivateSigningKey, 521);
-        const memberPublicSigningKey = `${signingKey.public}|${publicSigningKeySignature}`;
+        const memberPublicSigningKey = signingKey.public;
         const repositoryKey = new RepositoryKey();
         repositoryKey.repositoryGUID = repositoryGUID;
         repositoryKey.keyRing = userSession.keyRing;
@@ -28029,9 +28028,9 @@ class SyncInChecker {
                 isValid: false
             };
         }
-        for (let i = 0; i < repositoryAndMemberCheckResult.signaturesToCheck.length; i++) {
-            if (!this.keyUtils.verify(serializedData, repositoryAndMemberCheckResult.signaturesToCheck[i], repositoryAndMemberCheckResult.publicSigningKeys[i])) {
-                console.error(`Message signature is not valid.`);
+        for (const signatureCheck of repositoryAndMemberCheckResult.signatureChecks) {
+            if (!this.keyUtils.verify(serializedData, signatureCheck.signatureToCheck, signatureCheck.publicSigningKey)) {
+                console.error(`message.${signatureCheck.signatureName} is not valid.`);
                 return {
                     isValid: false
                 };
@@ -28404,8 +28403,7 @@ class SyncInRepositoryChecker {
         let missingRepositories = [];
         let newMembers = [];
         let newRepositoryMemberAcceptances = [];
-        let publicSigningKeys = [];
-        let signaturesToCheck = [];
+        let signatureChecks = [];
         try {
             const data = message.data;
             let repositoryGUIDs = [];
@@ -28470,8 +28468,7 @@ class SyncInRepositoryChecker {
                 missingRepositories.push(repository);
             }
             const memberCheckResult = await this.checkRepositoryMembers(message);
-            publicSigningKeys = memberCheckResult.publicSigningKeys;
-            signaturesToCheck = memberCheckResult.signaturesToCheck;
+            signatureChecks = memberCheckResult.signatureChecks;
             newMembers = memberCheckResult.newMembers;
             newRepositoryMemberAcceptances = [memberCheckResult.newRepositoryMemberAcceptance];
         }
@@ -28486,8 +28483,7 @@ class SyncInRepositoryChecker {
             missingRepositories,
             newMembers,
             newRepositoryMemberAcceptances,
-            publicSigningKeys,
-            signaturesToCheck
+            signatureChecks
         };
     }
     async checkRepositoryMembers(message) {
@@ -28502,14 +28498,13 @@ class SyncInRepositoryChecker {
         const isNewRepositoryMemberInvitationMessage = this
             .isNewRepositoryMemberInvitationMessage(data, existingRepositoryMember, newMembers);
         await this.checkRepositoryMemberUserAccounts(data, isNewRepositoryMemberAcceptanceMessage, isNewRepositoryMemberInvitationMessage);
-        const { publicSigningKeys, signaturesToCheck } = this.getPublicSigningKeysAndSignatureToCheck(message, isNewRepositoryMemberAcceptanceMessage);
+        const signatureChecks = this.getPublicSigningKeysAndSignatureToCheck(message, isNewRepositoryMemberAcceptanceMessage);
         delete data.history.newRepositoryMembers;
         // TODO: Add a newPublicRepositoryMember property to history and check it
         return {
             newMembers,
             newRepositoryMemberAcceptance,
-            publicSigningKeys,
-            signaturesToCheck
+            signatureChecks
         };
     }
     async checkRepositoryMemberUserAccounts(data, isNewRepositoryMemberAcceptanceMessage, isNewRepositoryMemberInvitationMessage) {
@@ -28577,6 +28572,7 @@ a acceptingRepositoryMember.userAccount specified.`);
         if (typeof newRepositoryMemberAcceptance.acceptingRepositoryMember !== 'number') {
             throw new Error(`${newRepositoryMemberAcceptancesErrorPrefix}[0].acceptingRepositoryMember is not a number`);
         }
+        this.checkPublicSigningKey(newRepositoryMemberAcceptance.invitationPublicSigningKey, `${newRepositoryMemberAcceptancesErrorPrefix}[0].invitationPublicSigningKey`);
         const acceptingRepositoryMember = data.repositoryMembers[newRepositoryMemberAcceptance.acceptingRepositoryMember];
         if (acceptingRepositoryMember !== existingRepositoryMember) {
             throw new Error(`${newRepositoryMemberAcceptancesErrorPrefix}[0] must be an existing RepositoryMember`);
@@ -28707,23 +28703,29 @@ is not present in the message.`);
         return existingRepositoryMember;
     }
     getPublicSigningKeysAndSignatureToCheck(message, isNewRepositoryMemberAcceptanceMessage) {
-        const publicSigningKeys = [];
-        const signaturesToCheck = [];
+        const signatureChecks = [];
         const history = message.data.history;
-        publicSigningKeys.push(history.member.memberPublicSigningKey);
-        signaturesToCheck.push(message.memberSignature);
+        signatureChecks.push({
+            publicSigningKey: history.member.memberPublicSigningKey,
+            signatureName: 'memberSignature',
+            signatureToCheck: message.memberSignature
+        });
         if (isNewRepositoryMemberAcceptanceMessage) {
-            publicSigningKeys.push(message.data.history.invitationPrivateSigningKey);
-            signaturesToCheck.push(message.acceptanceSignature);
+            signatureChecks.push({
+                publicSigningKey: message.data.history
+                    .newRepositoryMemberAcceptances[0].invitationPublicSigningKey,
+                signatureName: 'acceptanceSignature',
+                signatureToCheck: message.acceptanceSignature
+            });
         }
         if (isNewRepositoryMemberAcceptanceMessage || history.isRepositoryCreation) {
-            publicSigningKeys.push(history.member.userAccount.accountPublicSigningKey);
-            signaturesToCheck.push(message.userAccountSignature);
+            signatureChecks.push({
+                publicSigningKey: history.member.userAccount.accountPublicSigningKey,
+                signatureName: 'userAccountSignature',
+                signatureToCheck: message.userAccountSignature
+            });
         }
-        return {
-            publicSigningKeys,
-            signaturesToCheck
-        };
+        return signatureChecks;
     }
     checkRepository(repository, repositoryIndex, repositoryGUIDs, messageRepositoryIndexMap, message) {
         if (typeof repository.ageSuitability !== 'number') {
@@ -33932,7 +33934,7 @@ let RepositoryMaintenanceManager = class RepositoryMaintenanceManager {
             console.warn(`User ${userAccount.username} is already a member of Repository ${repository.name}`);
             return;
         }
-        await this.createRepositoryMember(repository, userAccount, false, false, true, true, null, context);
+        await this.createRepositoryMember(repository, userAccount, false, false, true, true, context);
     }
     async acceptRepositoryMemberInvitation(repositoryGUID, base64EncodedInvitationPrivateSigningKey, base64EncodedInvitationPublicSigningKey) {
         let context = arguments[1];
@@ -33962,7 +33964,7 @@ let RepositoryMaintenanceManager = class RepositoryMaintenanceManager {
         let context = arguments[2];
         const invitationSigningKey = await this.keyUtils.getSigningKey();
         const base64EncodedKeyInvitationPrivateSigningKey = btoa(invitationSigningKey.private);
-        const invitedRepositoryMember = await this.createRepositoryMember(repository, null, false, false, true, false, null, context);
+        const invitedRepositoryMember = await this.createRepositoryMember(repository, null, false, false, true, false, context);
         const base64EncodedKeyInvitationPublicSigningKey = btoa(invitationSigningKey.public);
         const repositoryMemberInvitation = new RepositoryMemberInvitation$1();
         repositoryMemberInvitation.createdAt = new Date();
@@ -33975,11 +33977,12 @@ let RepositoryMaintenanceManager = class RepositoryMaintenanceManager {
             await this.share(`Join ${repository.name.substring(0, 20)}${repository.name.length > 20 ? '...' : ''}`, `You are invited to join '${repository.name}' on Turbase`, joinUrl);
         }
     }
-    async createRepositoryMember(repository, userAccount, isOwner, isAdministrator, canWrite, addRepositoryKey, publicSigningKey, context) {
+    async createRepositoryMember(repository, userAccount, isOwner, isAdministrator, canWrite, addRepositoryKey, context) {
+        let memberPublicSigningKey = null;
         if (addRepositoryKey) {
-            publicSigningKey = await this.keyRingManager.addRepositoryKey(repository.GUID, repository.name);
+            memberPublicSigningKey = await this.keyRingManager.addRepositoryKey(repository.GUID, repository.name);
         }
-        const repositoryMember = this.getRepositoryMember(userAccount, repository, isOwner, isAdministrator, canWrite, publicSigningKey);
+        const repositoryMember = this.getRepositoryMember(userAccount, repository, isOwner, isAdministrator, canWrite, memberPublicSigningKey);
         await this.addRepositoryMemberInfoToHistory(repositoryMember, repository, null, null, null, context);
         return repositoryMember;
     }
@@ -34398,7 +34401,7 @@ already contains a new repository.`);
             ? context.applicationFullName
             : userSession.currentTransaction.actor.application.fullName, isPublic, context);
         if (!context.forKeyRingRepository) {
-            await this.repositoryMaintenanceManager.createRepositoryMember(repository, userAccount, true, true, true, true, null, context);
+            await this.repositoryMaintenanceManager.createRepositoryMember(repository, userAccount, true, true, true, true, context);
         }
         if (!isInternalDomain) {
             userSession.currentRootTransaction.newRepository = repository;
