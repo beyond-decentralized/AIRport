@@ -19,6 +19,8 @@ writes the Transaction Log entries back to data hosts.
 
 ## Build instructions
 
+If something isn't building and it really should, run 'rush update'
+
 Check out [AIRroot](https://github.com/beyond-decentralized/AIRroot) for framework build instructions.
 
 ## Entity Definitions
