@@ -1,6 +1,7 @@
 import { JSONRelation } from '../../core/entity/Relation'
 import { JSONFieldInOrderBy } from '../../core/field/FieldInOrderBy'
 import { JSONBaseOperation } from '../../core/operation/Operation'
+import { Repository_GUID } from '../../core/types'
 
 export enum JsonStatementType {
 	ENTITY_QUERY = 'ENTITY_QUERY',
@@ -19,6 +20,8 @@ export interface JsonStatement {
 	 * WHERE
 	 */
 	W?: JSONBaseOperation
+
+	trackedRepoGUIDs?: Repository_GUID[]
 }
 
 /**

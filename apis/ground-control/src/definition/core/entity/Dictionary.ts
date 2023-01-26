@@ -1,5 +1,6 @@
 import { Injected } from "@airport/direction-indicator";
 import { DbEntity } from "../../application/Entity";
+import { DbProperty } from "../../application/Property";
 
 export type Primitive = boolean | Date | number | string;
 
@@ -96,7 +97,8 @@ export class Dictionary {
 					Repository: {
 						name: 'Repository',
 						columns: {
-							REPOSITORY_LID: 'REPOSITORY_LID'
+							REPOSITORY_LID: 'REPOSITORY_LID',
+							GUID: 'GUID'
 						},
 					},
 					RepositoryMember: {
@@ -289,6 +291,15 @@ export class Dictionary {
 			this.airport.apps.HOLDING_PATTERN,
 			this.Repository
 		)
+	}
+
+	isRepositoryGUIDProperty(
+		dbProperty: DbProperty
+	): boolean {
+		if (!this.isRepository(dbProperty.entity)) {
+			return false
+		}
+		return dbProperty.propertyColumns[0].column.name === this.Repository.columns.GUID
 	}
 
 	isTerminal(

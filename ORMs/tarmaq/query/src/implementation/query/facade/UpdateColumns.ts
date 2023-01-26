@@ -55,7 +55,7 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 				throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${dbEntity.name}`
 			}
 			setClause[columnName] = (<QField<any>>value).toJSON(
-				this.columnAliases, false,
+				this.columnAliases, false, this.trackedRepoGUIDSet,
 				queryUtils, fieldUtils, relationManager)
 		}
 

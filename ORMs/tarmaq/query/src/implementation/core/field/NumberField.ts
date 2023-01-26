@@ -3,6 +3,7 @@ import {
 	DbProperty,
 	JSONClauseField,
 	JSONClauseObjectType,
+	Repository_GUID,
 	SQLDataType
 } from '@airport/ground-control';
 import { IQEntityInternal } from '../../../definition/core/entity/Entity';
@@ -68,12 +69,14 @@ export class QNumberFunction<T extends number | number[] = number>
 	toJSON(
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
 	): JSONClauseField {
 		let json = this.operableFunctionToJson(
 			this, columnAliases, forSelectClause,
+			trackedRepoGUIDSet,
 			queryUtils, fieldUtils, relationManager);
 
 		if (this.isQueryParameter) {

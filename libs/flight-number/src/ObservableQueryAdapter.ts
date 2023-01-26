@@ -30,7 +30,6 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
         // TODO: checking for presence of a Repository in an Observable
         // await this.ensureRepositoryPresenceAndCurrentState(context)
 
-
         let resultsSubject = new Subject<E>()
         // FIXME: Remove the query for the list of cached queries, that are checked every
         //       time a mutation operation is run

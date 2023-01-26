@@ -42,11 +42,13 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 		return {
 			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.UPDATE)
 				.__driver__.getRelationJson(
-					this.columnAliases,
+					this.columnAliases, this.trackedRepoGUIDSet,
 					queryUtils, fieldUtils, relationManager),
 			S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
 			W: queryUtils.whereClauseToJSON(
-				this.rawUpdate.WHERE, this.columnAliases)
+				this.rawUpdate.WHERE, this.columnAliases,
+				this.trackedRepoGUIDSet),
+			trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
 		}
 	}
 

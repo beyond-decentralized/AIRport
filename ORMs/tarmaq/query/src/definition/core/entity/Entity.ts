@@ -4,7 +4,8 @@ import {
 	DbRelation,
 	JoinType,
 	JSONBaseOperation,
-	JSONRelation
+	JSONRelation,
+	Repository_GUID
 } from '@airport/ground-control'
 import { IQOperableFieldInternal } from '../field/OperableField'
 import { IFieldColumnAliases } from './Aliases'
@@ -214,6 +215,7 @@ export interface IQEntityDriver<QE extends IQEntity<any> = any> {
 
 	getRelationJson(
 		columnAliases: IFieldColumnAliases<any>,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager

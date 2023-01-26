@@ -1,5 +1,5 @@
 import { extend, IOC } from "@airport/direction-indicator";
-import { JSONRelationType, JSONViewJoinRelation } from "@airport/ground-control";
+import { JSONRelationType, JSONViewJoinRelation, Repository_GUID } from "@airport/ground-control";
 import { IFieldColumnAliases } from "../../../definition/core/entity/Aliases";
 import { IQEntityDriver, IQEntityInternal } from "../../../definition/core/entity/Entity";
 import { RawTreeQuery } from "../../../definition/query/facade/TreeQuery";
@@ -53,12 +53,13 @@ export class QTreeDriver
     getJoinRelationJson(
         jsonRelation: JSONViewJoinRelation,
         columnAliases: IFieldColumnAliases<any>,
+        trackedRepoGUIDSet: Set<Repository_GUID>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
         relationManager: IRelationManager
     ): JSONViewJoinRelation {
         jsonRelation = <JSONViewJoinRelation>super.getJoinRelationJson(
-            jsonRelation, columnAliases,
+            jsonRelation, columnAliases, trackedRepoGUIDSet,
             queryUtils, fieldUtils, relationManager)
         jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON
         jsonRelation.subQuery =
@@ -73,12 +74,13 @@ export class QTreeDriver
     getRootRelationJson(
         jsonRelation: JSONViewJoinRelation,
         columnAliases: FieldColumnAliases,
+        trackedRepoGUIDSet: Set<Repository_GUID>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
         relationManager: IRelationManager
     ): JSONViewJoinRelation {
         jsonRelation = <JSONViewJoinRelation>super.getJoinRelationJson(
-            jsonRelation, columnAliases,
+            jsonRelation, columnAliases, trackedRepoGUIDSet,
             queryUtils, fieldUtils, relationManager)
         jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT
         jsonRelation.subQuery =

@@ -5,6 +5,7 @@ import {
 	JSONClauseObjectType,
 	JsonFieldQuery,
 	JSONSqlFunctionCall,
+	Repository_GUID,
 	SortOrder,
 	SQLDataType
 } from '@airport/ground-control';
@@ -64,6 +65,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 	toJSON(
 		columnAliases: IFieldColumnAliases<IQF>,
 		forSelectClause: boolean,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
@@ -80,7 +82,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		}
 		let jsonField: JSONClauseField = {
 			appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases,
-				queryUtils, fieldUtils, relationManager),
+				trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
 			si: this.dbProperty.entity.applicationVersion._localId,
 			ti: this.dbProperty.entity.index,
 			fa: alias,
@@ -94,6 +96,10 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			jsonField.fieldSubQuery = fieldUtils.getFieldQueryJson(
 				this.__fieldSubQuery__, columnAliases.entityAliases, queryUtils);
 			jsonField.ot = JSONClauseObjectType.FIELD_QUERY;
+
+			for (const trackedRepoGUID of jsonField.fieldSubQuery.trackedRepoGUIDs) {
+				trackedRepoGUIDSet.add(trackedRepoGUID)
+			}
 		}
 
 		return jsonField;
@@ -122,6 +128,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		functionObject: IQFunction<any>,
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
@@ -131,13 +138,17 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			alias = columnAliases.getNextAlias(this);
 		}
 		return {
-			appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases,
-				queryUtils, fieldUtils, relationManager),
+			appliedFunctions: this.appliedFunctionsToJson(
+				this.__appliedFunctions__, columnAliases,
+				trackedRepoGUIDSet,
+				queryUtils, fieldUtils, relationManager
+			),
 			fa: alias,
 			ot: this.objectType,
 			dt: this.dbColumn.type as SQLDataType,
 			v: this.valueToJSON(functionObject, columnAliases, false,
-				true, queryUtils, fieldUtils, relationManager)
+				true, trackedRepoGUIDSet, queryUtils,
+				fieldUtils, relationManager)
 		};
 	}
 
@@ -149,6 +160,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 	protected appliedFunctionsToJson(
 		appliedFunctions: JSONSqlFunctionCall[],
 		columnAliases: IFieldColumnAliases<IQF>,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
@@ -158,7 +170,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		}
 		return appliedFunctions.map((appliedFunction) => {
 			return this.functionCallToJson(
-				appliedFunction, columnAliases,
+				appliedFunction, columnAliases, trackedRepoGUIDSet,
 				queryUtils, fieldUtils, relationManager);
 		});
 	}
@@ -166,6 +178,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 	protected functionCallToJson(
 		functionCall: JSONSqlFunctionCall,
 		columnAliases: IFieldColumnAliases<IQF>,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
@@ -175,6 +188,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			parameters = functionCall.p.map((parameter) => {
 				return this.valueToJSON(
 					parameter, columnAliases, false, false,
+					trackedRepoGUIDSet,
 					queryUtils, fieldUtils, relationManager);
 			});
 		}
@@ -189,6 +203,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		columnAliases: IFieldColumnAliases<IQF>,
 		forSelectClause: boolean,
 		fromFunctionObject: boolean,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
@@ -198,7 +213,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		}
 		if (!fromFunctionObject && functionObject instanceof QField) {
 			return functionObject.toJSON(
-				columnAliases, forSelectClause,
+				columnAliases, forSelectClause, trackedRepoGUIDSet,
 				queryUtils, fieldUtils, relationManager);
 		}
 

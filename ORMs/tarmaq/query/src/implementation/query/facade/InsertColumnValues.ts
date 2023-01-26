@@ -24,7 +24,8 @@ export class InsertColumnValues<IQE extends IQEntity>
 	): JsonInsertValues {
 		const entityDriver = (<IQEntityInternal><any>this.rawInsertValues.INSERT_INTO).__driver__
 		const insertInto = <JSONEntityRelation>entityDriver.getRelationJson(
-			this.columnAliases, queryUtils, fieldUtils, relationManager)
+			this.columnAliases, this.trackedRepoGUIDSet,
+			queryUtils, fieldUtils, relationManager)
 
 		const columnMap = entityDriver.dbEntity.columnMap
 
@@ -44,7 +45,8 @@ export class InsertColumnValues<IQE extends IQEntity>
 			C: columnIndexes,
 			V: this.valuesToJSON(
 				this.rawInsertValues.VALUES, dbColumns,
-				queryUtils, fieldUtils, relationManager)
+				queryUtils, fieldUtils, relationManager),
+			trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
 		}
 	}
 

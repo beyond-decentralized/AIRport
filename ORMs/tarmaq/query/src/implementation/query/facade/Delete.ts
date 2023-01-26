@@ -33,9 +33,11 @@ export class Delete<IQE extends IQEntity>
 		return {
 			DF: <JSONEntityRelation>(<IQEntityInternal><any>this.rawDelete.DELETE_FROM)
 				.__driver__.getRelationJson(
-					this.columnAliases,
+					this.columnAliases, this.trackedRepoGUIDSet,
 					queryUtils, fieldUtils, relationManager),
-			W: queryUtils.whereClauseToJSON(this.rawDelete.WHERE, this.columnAliases)
+			W: queryUtils.whereClauseToJSON(this.rawDelete.WHERE, this.columnAliases,
+				this.trackedRepoGUIDSet),
+			trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
 		}
 	}
 }

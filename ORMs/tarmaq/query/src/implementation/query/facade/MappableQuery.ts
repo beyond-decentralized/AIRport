@@ -40,7 +40,7 @@ export abstract class MappableQuery
 				// Because the alias only matters for GROUP_BY and ORDER_BY
 				// that is OK.
 				select[property] = value.toJSON(
-					this.columnAliases, true,
+					this.columnAliases, true, this.trackedRepoGUIDSet,
 					queryUtils, fieldUtils, relationManager)
 			} else if (value instanceof QOneToManyRelation
 				|| value instanceof QAirEntityOneToManyRelation) {

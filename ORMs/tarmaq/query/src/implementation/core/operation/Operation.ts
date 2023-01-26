@@ -1,11 +1,11 @@
-import {OperationCategory, SqlOperator} from "@airport/ground-control";
-import {IQOperableField} from "../../../definition/core/field/OperableField";
+import { OperationCategory, Repository_GUID, SqlOperator } from "@airport/ground-control";
+import { IQOperableField } from "../../../definition/core/field/OperableField";
 import {
 	IOperation,
 	IValueOperation,
 	JSONRawValueOperation
 } from "../../../definition/core/operation/Operation";
-import {RawFieldQuery} from "../../../definition/query/facade/FieldQuery";
+import { RawFieldQuery } from "../../../definition/query/facade/FieldQuery";
 
 /**
  * Created by Papa on 4/21/2016.
@@ -34,14 +34,20 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 
 	equals(
 		lValue: IQF,
-		rValue: T | IQF | RawFieldQuery<IQF>
+		rValue: T | IQF | RawFieldQuery<IQF>,
+		trackedRepoGUID?: Repository_GUID
 	): JRO {
-		return <JRO> {
+		const jsonRawValueOperation = <JRO>{
 			c: this.category,
 			l: lValue,
 			o: SqlOperator.EQUALS,
 			r: rValue
 		};
+		if (trackedRepoGUID) {
+			jsonRawValueOperation.trackedRepoGUIDs = [trackedRepoGUID]
+		}
+
+		return jsonRawValueOperation
 	}
 
 	greaterThan(
@@ -88,14 +94,20 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 
 	IN(
 		lValue: IQF,
-		rValue: T[] | IQF | RawFieldQuery<IQF>
+		rValue: T[] | IQF | RawFieldQuery<IQF>,
+		trackedRepoGUIDs?: Repository_GUID[]
 	): JRO {
-		return <JRO>{
+		const jsonRawValueOperation = <JRO>{
 			c: this.category,
 			l: lValue,
 			o: SqlOperator.IN,
 			r: rValue
 		};
+		if (trackedRepoGUIDs) {
+			jsonRawValueOperation.trackedRepoGUIDs = trackedRepoGUIDs
+		}
+
+		return jsonRawValueOperation
 	}
 
 	lessThan(

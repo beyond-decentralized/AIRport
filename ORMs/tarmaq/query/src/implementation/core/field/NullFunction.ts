@@ -1,6 +1,7 @@
 import {
 	JSONClauseField,
-	JSONClauseObjectType
+	JSONClauseObjectType,
+	Repository_GUID
 } from '@airport/ground-control'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { IQFunction } from '../../../definition/core/field/Functions'
@@ -32,12 +33,14 @@ export class QNullFunction
 	toJSON(
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
 	): JSONClauseField {
 		return this.operableFunctionToJson(
 			this, columnAliases, forSelectClause,
+			trackedRepoGUIDSet,
 			queryUtils, fieldUtils, relationManager)
 	}
 

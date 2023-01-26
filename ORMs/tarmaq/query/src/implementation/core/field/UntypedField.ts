@@ -3,6 +3,7 @@ import {
 	DbProperty,
 	JSONClauseField,
 	JSONClauseObjectType,
+	Repository_GUID,
 } from '@airport/ground-control'
 import { IQEntityInternal } from '../../../definition/core/entity/Entity'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
@@ -78,12 +79,14 @@ export class QUntypedFunction
 	toJSON(
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
 	): JSONClauseField {
 		let json = this.operableFunctionToJson(
 			this, columnAliases, forSelectClause,
+			trackedRepoGUIDSet,
 			queryUtils, fieldUtils, relationManager)
 
 		if (this.isQueryParameter) {

@@ -53,9 +53,11 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 			throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE)
 		}
 		this.columnAliases.entityAliases.getNextAlias(this.rawQuery.SELECT.q.__driver__.getRootJoinEntity())
-		return (<QField<any>><any>this.rawQuery.SELECT).toJSON(
-			this.columnAliases, true,
+		const jsonClauseField = (<QField<any>><any>this.rawQuery.SELECT).toJSON(
+			this.columnAliases, true, this.trackedRepoGUIDSet,
 			queryUtils, fieldUtils, relationManager)
+
+		return jsonClauseField
 	}
 
 	toJSON(
@@ -72,7 +74,8 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 			S: select,
 			forUpdate: this.rawQuery.FOR_UPDATE,
 			ot: JSONClauseObjectType.FIELD_QUERY,
-			dt: this.getClauseDataType()
+			dt: this.getClauseDataType(),
+			trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
 		}
 
 		return <JsonFieldQuery>this.getNonEntityQuery(

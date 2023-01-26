@@ -80,7 +80,8 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 					// return ++currentValueIndex;
 				} else {
 					return (<QField<any>>value).toJSON(
-						this.columnAliases, false, queryUtils, fieldUtils, relationManager)
+						this.columnAliases, false, this.trackedRepoGUIDSet,
+						queryUtils, fieldUtils, relationManager)
 				}
 			})
 		})

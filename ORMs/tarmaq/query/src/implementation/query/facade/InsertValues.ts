@@ -30,7 +30,8 @@ export class InsertValues<IQE extends IQEntity>
 		const driver = (<IQEntityInternal><any>this.rawInsertValues.INSERT_INTO)
 			.__driver__
 		const insertInto = driver.getRelationJson(
-			this.columnAliases, queryUtils, fieldUtils, relationManager)
+			this.columnAliases, this.trackedRepoGUIDSet,
+			queryUtils, fieldUtils, relationManager)
 		const dbColumns: DbColumn[] = []
 		let columnIndexes: number[]
 		if (this.columnIndexes) {
@@ -56,7 +57,8 @@ export class InsertValues<IQE extends IQEntity>
 			C: columnIndexes,
 			V: this.valuesToJSON(
 				this.rawInsertValues.VALUES, dbColumns,
-				queryUtils, fieldUtils, relationManager)
+				queryUtils, fieldUtils, relationManager),
+			trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
 		}
 	}
 

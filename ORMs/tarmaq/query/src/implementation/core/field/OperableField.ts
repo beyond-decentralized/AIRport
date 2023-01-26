@@ -1,19 +1,17 @@
+import { IOC } from "@airport/direction-indicator";
 import {
 	DbColumn,
 	DbProperty,
 	JSONClauseObjectType
-}                        from "@airport/ground-control";
-import {
-	IQEntityInternal,
-	IQOperableFieldInternal
-}                        from "../../../";
-import {IQOperableField} from "../../../definition/core/field/OperableField";
+} from "@airport/ground-control";
+import { IQEntityInternal } from "../../../definition/core/entity/Entity";
+import { IQOperableField, IQOperableFieldInternal } from "../../../definition/core/field/OperableField";
 import {
 	IValueOperation,
 	JSONRawValueOperation
-}                        from "../../../definition/core/operation/Operation";
-import {RawFieldQuery}   from "../../../definition/query/facade/FieldQuery";
-import {QField}          from "./Field";
+} from "../../../definition/core/operation/Operation";
+import { RawFieldQuery } from "../../../definition/query/facade/FieldQuery";
+import { QField } from "./Field";
 
 /**
  * Created by Papa on 10/25/2016.
@@ -25,6 +23,10 @@ export abstract class QOperableField<T,
 	IQF extends IQOperableField<T, JO, IO, IQF>>
 	extends QField<IQF>
 	implements IQOperableFieldInternal<T, JO, IO, IQF> {
+
+	private dictionaryToken =
+		globalThis.AIRPORT_DOMAIN
+			.app('ground-control').token('Dictionary')
 
 	constructor(
 		dbColumn: DbColumn,
@@ -42,7 +44,14 @@ export abstract class QOperableField<T,
 		if (value instanceof Function) {
 			value = value();
 		}
-		return this.operation.equals(<any>this, value);
+		let trackedRepoGUID = undefined
+		if (typeof value === 'string') {
+			if (globalThis.IOC.getSync(this.dictionaryToken).isRepositoryGUIDProperty(
+				this.dbProperty)) {
+				trackedRepoGUID = value
+			}
+		}
+		return this.operation.equals(<any>this, value, trackedRepoGUID);
 	}
 
 	greaterThan(
@@ -77,7 +86,16 @@ export abstract class QOperableField<T,
 		if (value instanceof Function) {
 			value = value();
 		}
-		return this.operation.IN(<any>this, <any>value);
+		let trackedRepoGUIDs = undefined
+		if (value instanceof Array
+			&& value.length
+			&& !value.filter(aValue => typeof aValue !== 'string').length) {
+			if (globalThis.IOC.getSync(this.dictionaryToken).isRepositoryGUIDProperty(
+				this.dbProperty)) {
+				trackedRepoGUIDs = value
+			}
+		}
+		return this.operation.IN(<any>this, <any>value, trackedRepoGUIDs);
 	}
 
 	lessThan(

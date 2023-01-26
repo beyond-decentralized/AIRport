@@ -10,6 +10,7 @@ import {
 	JSONJoinRelation,
 	JSONRelation,
 	JSONRelationType,
+	Repository_GUID,
 } from '@airport/ground-control'
 import { IFieldColumnAliases } from '../../../definition/core/entity/Aliases'
 import {
@@ -188,6 +189,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
 
 	getRelationJson(
 		columnAliases: IFieldColumnAliases<any>,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
@@ -205,11 +207,12 @@ export class QEntityDriver<IQE extends IQEntity = any>
 		}
 		if (this.joinWhereClause) {
 			this.getJoinRelationJson(<JSONJoinRelation>jsonRelation, columnAliases,
-				queryUtils, fieldUtils, relationManager)
+				trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager)
 		} else if (this.dbRelation) {
 			this.getEntityRelationJson(<JSONEntityRelation>jsonRelation)
 		} else {
 			this.getRootRelationJson(jsonRelation, columnAliases,
+				trackedRepoGUIDSet,
 				queryUtils, fieldUtils, relationManager)
 		}
 		return jsonRelation
@@ -218,13 +221,15 @@ export class QEntityDriver<IQE extends IQEntity = any>
 	getJoinRelationJson(
 		jsonRelation: JSONJoinRelation,
 		columnAliases: IFieldColumnAliases<any>,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
 	): JSONJoinRelation {
 		jsonRelation.rt = JSONRelationType.ENTITY_JOIN_ON
 		jsonRelation.joinWhereClause = queryUtils.whereClauseToJSON(
-			this.joinWhereClause, columnAliases)
+			this.joinWhereClause, columnAliases,
+			trackedRepoGUIDSet)
 
 		return jsonRelation
 	}
@@ -266,6 +271,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
 	getRootRelationJson(
 		jsonRelation: JSONRelation,
 		columnAliases: IFieldColumnAliases<any>,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager

@@ -1,5 +1,5 @@
 import { AirEntityId } from "@airport/aviation-communication";
-import { IAirEntity, JSONBaseOperation } from "@airport/ground-control";
+import { IAirEntity, JSONBaseOperation, Repository_GUID } from "@airport/ground-control";
 import { IFieldColumnAliases } from "../core/entity/Aliases";
 import { IQAirEntity, IQEntity } from "../core/entity/Entity";
 import { JSONLogicalOperation } from "../core/operation/LogicalOperation";
@@ -34,7 +34,8 @@ export interface IQueryUtils {
 
 	whereClauseToJSON(
 		whereClause: JSONBaseOperation,
-		columnAliases: IFieldColumnAliases<any>
+		columnAliases: IFieldColumnAliases<any>,
+		trackedRepositoryGUIDSet: Set<Repository_GUID>
 	): JSONBaseOperation
 
 }

@@ -39,9 +39,11 @@ export class SheetQuery
 			}
 			this.columnAliases.entityAliases.getNextAlias(
 				selectField.q.__driver__.getRootJoinEntity())
-			return selectField.toJSON(
-				this.columnAliases, true,
+			const jsonClauseField = selectField.toJSON(
+				this.columnAliases, true, this.trackedRepoGUIDSet,
 				queryUtils, fieldUtils, relationManager)
+
+			return jsonClauseField
 		})
 	}
 

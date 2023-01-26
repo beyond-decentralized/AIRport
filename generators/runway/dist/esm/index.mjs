@@ -902,7 +902,8 @@ class Dictionary {
                         Repository: {
                             name: 'Repository',
                             columns: {
-                                REPOSITORY_LID: 'REPOSITORY_LID'
+                                REPOSITORY_LID: 'REPOSITORY_LID',
+                                GUID: 'GUID'
                             },
                         },
                         RepositoryMember: {
@@ -1060,6 +1061,12 @@ class Dictionary {
     }
     isRepository(dbEntity) {
         return this.isEntityType(dbEntity, this.airport.apps.HOLDING_PATTERN, this.Repository);
+    }
+    isRepositoryGUIDProperty(dbProperty) {
+        if (!this.isRepository(dbProperty.entity)) {
+            return false;
+        }
+        return dbProperty.propertyColumns[0].column.name === this.Repository.columns.GUID;
     }
     isTerminal(dbEntity) {
         return this.isEntityType(dbEntity, this.airport.apps.TRAVEL_DOCUMENT_CHECKPOINT, this.Terminal);
@@ -4351,13 +4358,17 @@ class ValueOperation extends Operation {
         super(category);
         this.category = category;
     }
-    equals(lValue, rValue) {
-        return {
+    equals(lValue, rValue, trackedRepoGUID) {
+        const jsonRawValueOperation = {
             c: this.category,
             l: lValue,
             o: SqlOperator.EQUALS,
             r: rValue
         };
+        if (trackedRepoGUID) {
+            jsonRawValueOperation.trackedRepoGUIDs = [trackedRepoGUID];
+        }
+        return jsonRawValueOperation;
     }
     greaterThan(lValue, rValue) {
         return {
@@ -4389,13 +4400,17 @@ class ValueOperation extends Operation {
             o: SqlOperator.IS_NULL
         };
     }
-    IN(lValue, rValue) {
-        return {
+    IN(lValue, rValue, trackedRepoGUIDs) {
+        const jsonRawValueOperation = {
             c: this.category,
             l: lValue,
             o: SqlOperator.IN,
             r: rValue
         };
+        if (trackedRepoGUIDs) {
+            jsonRawValueOperation.trackedRepoGUIDs = trackedRepoGUIDs;
+        }
+        return jsonRawValueOperation;
     }
     lessThan(lValue, rValue) {
         return {
@@ -4655,7 +4670,7 @@ class QField {
         appliedField.__appliedFunctions__.push(sqlFunctionCall);
         return appliedField;
     }
-    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager) {
+    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
@@ -4668,7 +4683,7 @@ class QField {
             rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.q.__driver__.getRootJoinEntity());
         }
         let jsonField = {
-            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, queryUtils, fieldUtils, relationManager),
+            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
             si: this.dbProperty.entity.applicationVersion._localId,
             ti: this.dbProperty.entity.index,
             fa: alias,
@@ -4681,6 +4696,9 @@ class QField {
         if (this.__fieldSubQuery__) {
             jsonField.fieldSubQuery = fieldUtils.getFieldQueryJson(this.__fieldSubQuery__, columnAliases.entityAliases, queryUtils);
             jsonField.ot = JSONClauseObjectType.FIELD_QUERY;
+            for (const trackedRepoGUID of jsonField.fieldSubQuery.trackedRepoGUIDs) {
+                trackedRepoGUIDSet.add(trackedRepoGUID);
+            }
         }
         return jsonField;
     }
@@ -4695,36 +4713,36 @@ class QField {
         appliedField.__fieldSubQuery__ = subQuery;
         return appliedField;
     }
-    operableFunctionToJson(functionObject, columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager) {
+    operableFunctionToJson(functionObject, columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
         }
         return {
-            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, queryUtils, fieldUtils, relationManager),
+            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
             fa: alias,
             ot: this.objectType,
             dt: this.dbColumn.type,
-            v: this.valueToJSON(functionObject, columnAliases, false, true, queryUtils, fieldUtils, relationManager)
+            v: this.valueToJSON(functionObject, columnAliases, false, true, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager)
         };
     }
     copyFunctions(field) {
         field.__appliedFunctions__ = this.__appliedFunctions__.slice();
         return field;
     }
-    appliedFunctionsToJson(appliedFunctions, columnAliases, queryUtils, fieldUtils, relationManager) {
+    appliedFunctionsToJson(appliedFunctions, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
         if (!appliedFunctions) {
             return appliedFunctions;
         }
         return appliedFunctions.map((appliedFunction) => {
-            return this.functionCallToJson(appliedFunction, columnAliases, queryUtils, fieldUtils, relationManager);
+            return this.functionCallToJson(appliedFunction, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         });
     }
-    functionCallToJson(functionCall, columnAliases, queryUtils, fieldUtils, relationManager) {
+    functionCallToJson(functionCall, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
         let parameters;
         if (functionCall.p) {
             parameters = functionCall.p.map((parameter) => {
-                return this.valueToJSON(parameter, columnAliases, false, false, queryUtils, fieldUtils, relationManager);
+                return this.valueToJSON(parameter, columnAliases, false, false, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
             });
         }
         return {
@@ -4732,12 +4750,12 @@ class QField {
             p: parameters
         };
     }
-    valueToJSON(functionObject, columnAliases, forSelectClause, fromFunctionObject, queryUtils, fieldUtils, relationManager) {
+    valueToJSON(functionObject, columnAliases, forSelectClause, fromFunctionObject, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
         if (!functionObject) {
             throw new Error(`Function object must be provided to valueToJSON function.`);
         }
         if (!fromFunctionObject && functionObject instanceof QField) {
-            return functionObject.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager);
+            return functionObject.toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         }
         let value = functionObject.value;
         switch (typeof value) {
@@ -4795,12 +4813,20 @@ class QOperableField extends QField {
     constructor(dbColumn, dbProperty, q, objectType, operation) {
         super(dbColumn, dbProperty, q, objectType);
         this.operation = operation;
+        this.dictionaryToken = globalThis.AIRPORT_DOMAIN
+            .app('ground-control').token('Dictionary');
     }
     equals(value) {
         if (value instanceof Function) {
             value = value();
         }
-        return this.operation.equals(this, value);
+        let trackedRepoGUID = undefined;
+        if (typeof value === 'string') {
+            if (globalThis.IOC.getSync(this.dictionaryToken).isRepositoryGUIDProperty(this.dbProperty)) {
+                trackedRepoGUID = value;
+            }
+        }
+        return this.operation.equals(this, value, trackedRepoGUID);
     }
     greaterThan(value) {
         if (value instanceof Function) {
@@ -4824,7 +4850,15 @@ class QOperableField extends QField {
         if (value instanceof Function) {
             value = value();
         }
-        return this.operation.IN(this, value);
+        let trackedRepoGUIDs = undefined;
+        if (value instanceof Array
+            && value.length
+            && !value.filter(aValue => typeof aValue !== 'string').length) {
+            if (globalThis.IOC.getSync(this.dictionaryToken).isRepositoryGUIDProperty(this.dbProperty)) {
+                trackedRepoGUIDs = value;
+            }
+        }
+        return this.operation.IN(this, value, trackedRepoGUIDs);
     }
     lessThan(value) {
         if (value instanceof Function) {
@@ -4872,8 +4906,8 @@ class QBooleanFunction extends QBooleanField {
     getInstance() {
         return this.copyFunctions(new QBooleanFunction(this.value));
     }
-    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager);
+    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = json.v;
         }
@@ -4907,8 +4941,8 @@ class QDateFunction extends QDateField {
     getInstance() {
         return this.copyFunctions(new QDateFunction(this.value, this.isQueryParameter));
     }
-    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager);
+    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = json.v;
         }
@@ -4951,8 +4985,8 @@ class QNumberFunction extends QNumberField {
     getInstance() {
         return this.copyFunctions(new QNumberFunction(this.value, this.isQueryParameter));
     }
-    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager);
+    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = json.v;
         }
@@ -5012,8 +5046,8 @@ class QStringFunction extends QStringField {
     getInstance() {
         return this.copyFunctions(new QStringFunction(this.value, this.isQueryParameter));
     }
-    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager);
+    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = json.v;
         }
@@ -5379,7 +5413,7 @@ class QEntityDriver {
         return QMetadataUtils.getRelationPropertyName(QMetadataUtils.getRelationByIndex(this.qEntity, this.relationIndex));
     }
 */
-    getRelationJson(columnAliases, queryUtils, fieldUtils, relationManager) {
+    getRelationJson(columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
         // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
         // see ApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
         let jsonRelation = {
@@ -5392,19 +5426,19 @@ class QEntityDriver {
             si: this.dbEntity.applicationVersion.application.index
         };
         if (this.joinWhereClause) {
-            this.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager);
+            this.getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         }
         else if (this.dbRelation) {
             this.getEntityRelationJson(jsonRelation);
         }
         else {
-            this.getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager);
+            this.getRootRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         }
         return jsonRelation;
     }
-    getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager) {
+    getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
         jsonRelation.rt = JSONRelationType.ENTITY_JOIN_ON;
-        jsonRelation.joinWhereClause = queryUtils.whereClauseToJSON(this.joinWhereClause, columnAliases);
+        jsonRelation.joinWhereClause = queryUtils.whereClauseToJSON(this.joinWhereClause, columnAliases, trackedRepoGUIDSet);
         return jsonRelation;
     }
     getEntityRelationJson(jsonRelation) {
@@ -5434,7 +5468,7 @@ class QEntityDriver {
         // jsonRelation.joinWhereClauseOperator   = this.dbRelation.joinFunctionWithOperator;  return
         // jsonRelation;
     }
-    getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager) {
+    getRootRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
         jsonRelation.rt = IOC.getSync(ENTITY_UTILS)
             // Removes circular dependency at code initialization time 
             .isQTree(this) ? JSONRelationType.SUB_QUERY_ROOT : JSONRelationType.ENTITY_ROOT;
@@ -5542,8 +5576,8 @@ class QTreeDriver extends QEntityDriver {
     // getRelationPropertyName(): string {
     // 	throw new Error(`not implemented`);
     // }
-    getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager) {
-        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager);
+    getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON;
         jsonRelation.subQuery =
             // Removes circular dependency at code initialization time 
@@ -5551,8 +5585,8 @@ class QTreeDriver extends QEntityDriver {
                 .toJSON(queryUtils, fieldUtils, relationManager);
         return jsonRelation;
     }
-    getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager) {
-        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager);
+    getRootRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT;
         jsonRelation.subQuery =
             // Removes circular dependency at code initialization time 
@@ -5573,8 +5607,8 @@ class QNullFunction extends QField {
     getInstance() {
         return this.copyFunctions(new QNullFunction());
     }
-    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager) {
-        return this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager);
+    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+        return this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
     }
 }
 
@@ -6095,6 +6129,7 @@ class AbstractQuery {
         this.entityAliases = entityAliases;
         this.columnAliases = columnAliases;
         this.isEntityQuery = false;
+        this.trackedRepoGUIDSet = new Set();
     }
     getParameters( //
     ) {
@@ -6106,12 +6141,13 @@ class AbstractQuery {
         if (createSelectCallback) {
             createSelectCallback(jsonQuery);
         }
-        jsonQuery.W = queryUtils.whereClauseToJSON(rawQuery.WHERE, this.columnAliases);
+        jsonQuery.W = queryUtils.whereClauseToJSON(rawQuery.WHERE, this.columnAliases, this.trackedRepoGUIDSet);
         jsonQuery.GB = this.groupByClauseToJSON(rawQuery.GROUP_BY);
-        jsonQuery.H = queryUtils.whereClauseToJSON(rawQuery.HAVING, this.columnAliases);
+        jsonQuery.H = queryUtils.whereClauseToJSON(rawQuery.HAVING, this.columnAliases, this.trackedRepoGUIDSet);
         jsonQuery.OB = this.orderByClauseToJSON(rawQuery.ORDER_BY);
         jsonQuery.L = rawQuery.LIMIT;
         jsonQuery.O = rawQuery.OFFSET;
+        jsonQuery.trackedRepoGUIDs = Array.from(this.trackedRepoGUIDSet);
         return jsonQuery;
     }
     fromClauseToJSON(fromClause, queryUtils, fieldUtils, relationManager) {
@@ -6133,7 +6169,7 @@ class AbstractQuery {
                 }
             }
             return fromEntity.__driver__
-                .getRelationJson(this.columnAliases, queryUtils, fieldUtils, relationManager);
+                .getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         });
     }
     groupByClauseToJSON(groupBy) {
@@ -6206,7 +6242,7 @@ class AbstractInsertValues extends AbstractQuery {
                     // return ++currentValueIndex;
                 }
                 else {
-                    return value.toJSON(this.columnAliases, false, queryUtils, fieldUtils, relationManager);
+                    return value.toJSON(this.columnAliases, false, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
                 }
             });
         });
@@ -6221,9 +6257,10 @@ class AbstractUpdate extends AbstractQuery {
     toJSON(queryUtils, fieldUtils, relationManager) {
         return {
             U: this.rawUpdate.UPDATE
-                .__driver__.getRelationJson(this.columnAliases, queryUtils, fieldUtils, relationManager),
+                .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
             S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases)
+            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet),
+            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
         };
     }
 }
@@ -6239,8 +6276,9 @@ class Delete extends AbstractQuery {
     toJSON(queryUtils, fieldUtils, relationManager) {
         return {
             DF: this.rawDelete.DELETE_FROM
-                .__driver__.getRelationJson(this.columnAliases, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawDelete.WHERE, this.columnAliases)
+                .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
+            W: queryUtils.whereClauseToJSON(this.rawDelete.WHERE, this.columnAliases, this.trackedRepoGUIDSet),
+            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
         };
     }
 }
@@ -6289,7 +6327,7 @@ class MappableQuery extends DistinguishableQuery {
                 // In that case the last one will set the alias for all of them.
                 // Because the alias only matters for GROUP_BY and ORDER_BY
                 // that is OK.
-                select[property] = value.toJSON(this.columnAliases, true, queryUtils, fieldUtils, relationManager);
+                select[property] = value.toJSON(this.columnAliases, true, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
             }
             else if (value instanceof QOneToManyRelation
                 || value instanceof QAirEntityOneToManyRelation) {
@@ -6342,8 +6380,9 @@ class EntityQuery extends MappableQuery {
             S: this.selectClauseToJSON(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager),
             F: this.fromClauseToJSON(this.rawQuery.FROM, queryUtils, fieldUtils, relationManager),
             forUpdate: this.rawQuery.FOR_UPDATE,
-            W: queryUtils.whereClauseToJSON(this.rawQuery.WHERE, this.columnAliases),
-            OB: this.orderByClauseToJSON(this.rawQuery.ORDER_BY)
+            W: queryUtils.whereClauseToJSON(this.rawQuery.WHERE, this.columnAliases, this.trackedRepoGUIDSet),
+            OB: this.orderByClauseToJSON(this.rawQuery.ORDER_BY),
+            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
         };
     }
     nonDistinctSelectClauseToJSON(rawSelect) {
@@ -6399,7 +6438,8 @@ class FieldQuery extends DistinguishableQuery {
             throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
         }
         this.columnAliases.entityAliases.getNextAlias(this.rawQuery.SELECT.q.__driver__.getRootJoinEntity());
-        return this.rawQuery.SELECT.toJSON(this.columnAliases, true, queryUtils, fieldUtils, relationManager);
+        const jsonClauseField = this.rawQuery.SELECT.toJSON(this.columnAliases, true, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+        return jsonClauseField;
     }
     toJSON(queryUtils, fieldUtils, relationManager) {
         let select = this.selectClauseToJSON(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager);
@@ -6407,7 +6447,8 @@ class FieldQuery extends DistinguishableQuery {
             S: select,
             forUpdate: this.rawQuery.FOR_UPDATE,
             ot: JSONClauseObjectType.FIELD_QUERY,
-            dt: this.getClauseDataType()
+            dt: this.getClauseDataType(),
+            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
         };
         return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils, relationManager);
     }
@@ -6441,7 +6482,7 @@ class FieldQuery extends DistinguishableQuery {
 class InsertColumnValues extends AbstractInsertValues {
     toJSON(queryUtils, fieldUtils, relationManager) {
         const entityDriver = this.rawInsertValues.INSERT_INTO.__driver__;
-        const insertInto = entityDriver.getRelationJson(this.columnAliases, queryUtils, fieldUtils, relationManager);
+        const insertInto = entityDriver.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         const columnMap = entityDriver.dbEntity.columnMap;
         const dbColumns = [];
         const columnIndexes = this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map((columnName) => {
@@ -6453,7 +6494,8 @@ class InsertColumnValues extends AbstractInsertValues {
         return {
             II: insertInto,
             C: columnIndexes,
-            V: this.valuesToJSON(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager)
+            V: this.valuesToJSON(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager),
+            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
         };
     }
 }
@@ -6466,7 +6508,7 @@ class InsertValues extends AbstractInsertValues {
     toJSON(queryUtils, fieldUtils, relationManager) {
         const driver = this.rawInsertValues.INSERT_INTO
             .__driver__;
-        const insertInto = driver.getRelationJson(this.columnAliases, queryUtils, fieldUtils, relationManager);
+        const insertInto = driver.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         const dbColumns = [];
         let columnIndexes;
         if (this.columnIndexes) {
@@ -6488,7 +6530,8 @@ class InsertValues extends AbstractInsertValues {
         return {
             II: insertInto,
             C: columnIndexes,
-            V: this.valuesToJSON(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager)
+            V: this.valuesToJSON(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager),
+            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
         };
     }
 }
@@ -6510,7 +6553,8 @@ class SheetQuery extends DistinguishableQuery {
                 throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
             }
             this.columnAliases.entityAliases.getNextAlias(selectField.q.__driver__.getRootJoinEntity());
-            return selectField.toJSON(this.columnAliases, true, queryUtils, fieldUtils, relationManager);
+            const jsonClauseField = selectField.toJSON(this.columnAliases, true, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+            return jsonClauseField;
         });
     }
     toJSON(queryUtils, fieldUtils, relationManager) {
@@ -6570,7 +6614,7 @@ class UpdateColumns extends AbstractUpdate {
             if (!value.toJSON) {
                 throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${dbEntity.name}`;
             }
-            setClause[columnName] = value.toJSON(this.columnAliases, false, queryUtils, fieldUtils, relationManager);
+            setClause[columnName] = value.toJSON(this.columnAliases, false, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
         }
         return setClause;
     }
@@ -6587,9 +6631,10 @@ class UpdateProperties extends AbstractUpdate {
     toJSON(queryUtils, fieldUtils, relationManager) {
         return {
             U: this.rawUpdate.UPDATE
-                .__driver__.getRelationJson(this.columnAliases, queryUtils, fieldUtils, relationManager),
+                .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
             S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases)
+            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet),
+            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
         };
     }
     setToJSON(rawSet, queryUtils, fieldUtils, relationManager) {
@@ -9372,7 +9417,7 @@ is supported only for single columm relations
             return entityId;
         }
     }
-    whereClauseToJSON(whereClause, columnAliases) {
+    whereClauseToJSON(whereClause, columnAliases, trackedRepoGUIDSet) {
         if (!whereClause) {
             return null;
         }
@@ -9387,11 +9432,11 @@ is supported only for single columm relations
                 let jsonLogicalOperation = jsonOperation;
                 switch (operation.o) {
                     case SqlOperator.NOT:
-                        jsonLogicalOperation.v = this.whereClauseToJSON(logicalOperation.v, columnAliases);
+                        jsonLogicalOperation.v = this.whereClauseToJSON(logicalOperation.v, columnAliases, trackedRepoGUIDSet);
                         break;
                     case SqlOperator.AND:
                     case SqlOperator.OR:
-                        jsonLogicalOperation.v = logicalOperation.v.map((value) => this.whereClauseToJSON(value, columnAliases));
+                        jsonLogicalOperation.v = logicalOperation.v.map((value) => this.whereClauseToJSON(value, columnAliases, trackedRepoGUIDSet));
                         break;
                     default:
                         throw new Error(`Unsupported logical operation '${operation.o}'`);
@@ -9413,7 +9458,7 @@ is supported only for single columm relations
                 // All Non logical or exists operations are value operations (equals, IS_NULL, LIKE,
                 // etc.)
                 let jsonValueOperation = jsonOperation;
-                jsonValueOperation.l = this.convertLRValue(valueOperation.l, columnAliases);
+                jsonValueOperation.l = this.convertLRValue(valueOperation.l, columnAliases, trackedRepoGUIDSet);
                 if (operation.o === SqlOperator.IS_NOT_NULL
                     || operation.o === SqlOperator.IS_NULL) {
                     break;
@@ -9421,24 +9466,27 @@ is supported only for single columm relations
                 let rValue = valueOperation.r;
                 if (rValue instanceof Array) {
                     jsonValueOperation.r = rValue.map((anRValue) => {
-                        return this.convertLRValue(anRValue, columnAliases);
+                        return this.convertLRValue(anRValue, columnAliases, trackedRepoGUIDSet);
                     });
                 }
                 else {
-                    jsonValueOperation.r = this.convertLRValue(rValue, columnAliases);
+                    jsonValueOperation.r = this.convertLRValue(rValue, columnAliases, trackedRepoGUIDSet);
+                }
+                for (const trackedRepoGUID of valueOperation.trackedRepoGUIDs) {
+                    trackedRepoGUIDSet.add(trackedRepoGUID);
                 }
                 break;
         }
         return jsonOperation;
     }
-    convertLRValue(value, columnAliases) {
+    convertLRValue(value, columnAliases, trackedRepoGUIDSet) {
         value = wrapPrimitive(value);
         switch (typeof value) {
             case 'undefined':
                 throw new Error(`'undefined' is not a valid L or R value`);
             default:
                 if (value instanceof QOperableField) {
-                    return value.toJSON(columnAliases, false, this, this.fieldUtils, this.relationManager);
+                    return value.toJSON(columnAliases, false, trackedRepoGUIDSet, this, this.fieldUtils, this.relationManager);
                 } // Must be a Field Query
                 else {
                     let rawFieldQuery = value;

@@ -48,8 +48,10 @@ export class EntityQuery<IEP extends IEntitySelectProperties>
 				queryUtils, fieldUtils, relationManager),
 			forUpdate: this.rawQuery.FOR_UPDATE,
 			W: queryUtils.whereClauseToJSON(
-				this.rawQuery.WHERE, this.columnAliases),
-			OB: this.orderByClauseToJSON(this.rawQuery.ORDER_BY)
+				this.rawQuery.WHERE, this.columnAliases,
+				this.trackedRepoGUIDSet),
+			OB: this.orderByClauseToJSON(this.rawQuery.ORDER_BY),
+			trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
 		}
 	}
 

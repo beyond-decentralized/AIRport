@@ -4,7 +4,8 @@ import {
 	JSONFieldInOrderBy,
 	JsonNonEntityQuery,
 	JSONRelation,
-	JsonStatement
+	JsonStatement,
+	Repository_GUID
 } from '@airport/ground-control'
 import {
 	IEntityAliases,
@@ -36,6 +37,7 @@ export abstract class AbstractQuery
 
 	values: any[]
 	protected isEntityQuery: boolean = false
+	protected trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
 
 	constructor(
 		protected entityAliases: IEntityAliases = new EntityAliases(),
@@ -70,13 +72,16 @@ export abstract class AbstractQuery
 		}
 
 		jsonQuery.W = queryUtils.whereClauseToJSON(
-			rawQuery.WHERE, this.columnAliases)
+			rawQuery.WHERE, this.columnAliases,
+			this.trackedRepoGUIDSet)
 		jsonQuery.GB = this.groupByClauseToJSON(rawQuery.GROUP_BY)
 		jsonQuery.H = queryUtils.whereClauseToJSON(
-			rawQuery.HAVING, this.columnAliases)
+			rawQuery.HAVING, this.columnAliases,
+			this.trackedRepoGUIDSet)
 		jsonQuery.OB = this.orderByClauseToJSON(rawQuery.ORDER_BY)
 		jsonQuery.L = rawQuery.LIMIT
 		jsonQuery.O = rawQuery.OFFSET
+		jsonQuery.trackedRepoGUIDs = Array.from(this.trackedRepoGUIDSet)
 
 		return jsonQuery
 	}
@@ -104,7 +109,7 @@ export abstract class AbstractQuery
 				}
 			}
 			return (fromEntity as IQEntityInternal).__driver__
-				.getRelationJson(this.columnAliases,
+				.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet,
 					queryUtils, fieldUtils, relationManager)
 		})
 	}

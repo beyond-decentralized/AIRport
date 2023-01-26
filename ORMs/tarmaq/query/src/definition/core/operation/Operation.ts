@@ -1,4 +1,4 @@
-import { JSONBaseOperation, OperationCategory, SqlOperator } from "@airport/ground-control";
+import { JSONBaseOperation, OperationCategory, Repository_GUID, SqlOperator } from "@airport/ground-control";
 import { RawFieldQuery } from '../../query/facade/FieldQuery';
 import { IQOperableField } from '../field/OperableField';
 
@@ -24,7 +24,8 @@ export interface IValueOperation<T, JRO extends JSONBaseOperation, IQF extends I
 	 */
 	equals(
 		lValue: IQF,
-		rValue: T | IQF | RawFieldQuery<IQF>
+		rValue: T | IQF | RawFieldQuery<IQF>,
+		trackedRepoGUID?: Repository_GUID
 	): JRO;
 
 	/**
@@ -48,7 +49,8 @@ export interface IValueOperation<T, JRO extends JSONBaseOperation, IQF extends I
 	 */
 	IN(
 		lValue: IQF,
-		rValue: T[] | IQF | RawFieldQuery<IQF>
+		rValue: T[] | IQF | RawFieldQuery<IQF>,
+		trackedRepoGUIDs?: Repository_GUID[]
 	): JRO;
 
 	/**
@@ -70,12 +72,12 @@ export interface IValueOperation<T, JRO extends JSONBaseOperation, IQF extends I
 	/**
 	 * A.B IS NOT NULL
 	 */
-	IS_NOT_NULL( lValue: IQF ): JRO;
+	IS_NOT_NULL(lValue: IQF): JRO;
 
 	/**
 	 * A.B IS NULL
 	 */
-	IS_NULL( lValue: IQF ): JRO;
+	IS_NULL(lValue: IQF): JRO;
 
 	/**
 	 * A.B != C
@@ -107,4 +109,6 @@ export interface JSONRawValueOperation<IQF extends IQOperableField<any, any, any
 	l?: IQF;
 	// Value on the right side of the operator
 	r?: boolean | number | string | Date | IQF | IQF[] | RawFieldQuery<IQF> | RawFieldQuery<IQF>[];
+	// Repository Ids in .equals(x) and .IN(x,y,z)
+	trackedRepoGUIDs?: Repository_GUID[]
 }
