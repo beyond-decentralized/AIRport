@@ -47,8 +47,7 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 			S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
 			W: queryUtils.whereClauseToJSON(
 				this.rawUpdate.WHERE, this.columnAliases,
-				this.trackedRepoGUIDSet),
-			trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
+				this.trackedRepoGUIDSet)
 		}
 	}
 

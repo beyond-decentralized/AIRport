@@ -57,8 +57,7 @@ export class InsertValues<IQE extends IQEntity>
 			C: columnIndexes,
 			V: this.valuesToJSON(
 				this.rawInsertValues.VALUES, dbColumns,
-				queryUtils, fieldUtils, relationManager),
-			trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
+				queryUtils, fieldUtils, relationManager)
 		}
 	}
 

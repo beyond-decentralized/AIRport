@@ -4694,11 +4694,8 @@ class QField {
             dt: this.dbColumn.type
         };
         if (this.__fieldSubQuery__) {
-            jsonField.fieldSubQuery = fieldUtils.getFieldQueryJson(this.__fieldSubQuery__, columnAliases.entityAliases, queryUtils);
+            jsonField.fieldSubQuery = fieldUtils.getFieldQueryJson(this.__fieldSubQuery__, columnAliases.entityAliases, trackedRepoGUIDSet, queryUtils);
             jsonField.ot = JSONClauseObjectType.FIELD_QUERY;
-            for (const trackedRepoGUID of jsonField.fieldSubQuery.trackedRepoGUIDs) {
-                trackedRepoGUIDSet.add(trackedRepoGUID);
-            }
         }
         return jsonField;
     }
@@ -6128,8 +6125,8 @@ class AbstractQuery {
     constructor(entityAliases = new EntityAliases(), columnAliases = entityAliases.getNewFieldColumnAliases()) {
         this.entityAliases = entityAliases;
         this.columnAliases = columnAliases;
-        this.isEntityQuery = false;
         this.trackedRepoGUIDSet = new Set();
+        this.isEntityQuery = false;
     }
     getParameters( //
     ) {
@@ -6147,7 +6144,6 @@ class AbstractQuery {
         jsonQuery.OB = this.orderByClauseToJSON(rawQuery.ORDER_BY);
         jsonQuery.L = rawQuery.LIMIT;
         jsonQuery.O = rawQuery.OFFSET;
-        jsonQuery.trackedRepoGUIDs = Array.from(this.trackedRepoGUIDSet);
         return jsonQuery;
     }
     fromClauseToJSON(fromClause, queryUtils, fieldUtils, relationManager) {
@@ -6259,8 +6255,7 @@ class AbstractUpdate extends AbstractQuery {
             U: this.rawUpdate.UPDATE
                 .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
             S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet),
-            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
+            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet)
         };
     }
 }
@@ -6277,8 +6272,7 @@ class Delete extends AbstractQuery {
         return {
             DF: this.rawDelete.DELETE_FROM
                 .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawDelete.WHERE, this.columnAliases, this.trackedRepoGUIDSet),
-            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
+            W: queryUtils.whereClauseToJSON(this.rawDelete.WHERE, this.columnAliases, this.trackedRepoGUIDSet)
         };
     }
 }
@@ -6381,8 +6375,7 @@ class EntityQuery extends MappableQuery {
             F: this.fromClauseToJSON(this.rawQuery.FROM, queryUtils, fieldUtils, relationManager),
             forUpdate: this.rawQuery.FOR_UPDATE,
             W: queryUtils.whereClauseToJSON(this.rawQuery.WHERE, this.columnAliases, this.trackedRepoGUIDSet),
-            OB: this.orderByClauseToJSON(this.rawQuery.ORDER_BY),
-            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
+            OB: this.orderByClauseToJSON(this.rawQuery.ORDER_BY)
         };
     }
     nonDistinctSelectClauseToJSON(rawSelect) {
@@ -6429,9 +6422,10 @@ class FieldQuery extends DistinguishableQuery {
     // EntityRelationRecord}},
     //		private entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]:
     // boolean}}
-    constructor(rawQuery, entityAliases = new EntityAliases()) {
+    constructor(rawQuery, trackedRepoGUIDSet = new Set(), entityAliases = new EntityAliases()) {
         super(entityAliases);
         this.rawQuery = rawQuery;
+        this.trackedRepoGUIDSet = trackedRepoGUIDSet;
     }
     nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager) {
         if (!(this.rawQuery.SELECT instanceof QField)) {
@@ -6447,8 +6441,7 @@ class FieldQuery extends DistinguishableQuery {
             S: select,
             forUpdate: this.rawQuery.FOR_UPDATE,
             ot: JSONClauseObjectType.FIELD_QUERY,
-            dt: this.getClauseDataType(),
-            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
+            dt: this.getClauseDataType()
         };
         return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils, relationManager);
     }
@@ -6494,8 +6487,7 @@ class InsertColumnValues extends AbstractInsertValues {
         return {
             II: insertInto,
             C: columnIndexes,
-            V: this.valuesToJSON(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager),
-            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
+            V: this.valuesToJSON(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager)
         };
     }
 }
@@ -6530,8 +6522,7 @@ class InsertValues extends AbstractInsertValues {
         return {
             II: insertInto,
             C: columnIndexes,
-            V: this.valuesToJSON(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager),
-            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
+            V: this.valuesToJSON(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager)
         };
     }
 }
@@ -6633,8 +6624,7 @@ class UpdateProperties extends AbstractUpdate {
             U: this.rawUpdate.UPDATE
                 .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
             S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet),
-            trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
+            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet)
         };
     }
     setToJSON(rawSet, queryUtils, fieldUtils, relationManager) {
@@ -9186,8 +9176,8 @@ It must be an Object with the id property.`);
 ENTITY_UTILS.setClass(EntityUtils);
 
 class FieldUtils {
-    getFieldQueryJson(fieldSubQuery, entityAliases, queryUtils) {
-        let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases);
+    getFieldQueryJson(fieldSubQuery, entityAliases, trackedRepoGUIDSet, queryUtils) {
+        let subSelectQuery = new FieldQuery(fieldSubQuery, trackedRepoGUIDSet, entityAliases);
         return subSelectQuery.toJSON(queryUtils, this, this.relationManager);
     }
 }
@@ -9490,7 +9480,7 @@ is supported only for single columm relations
                 } // Must be a Field Query
                 else {
                     let rawFieldQuery = value;
-                    return this.fieldUtils.getFieldQueryJson(rawFieldQuery, columnAliases.entityAliases, this);
+                    return this.fieldUtils.getFieldQueryJson(rawFieldQuery, columnAliases.entityAliases, trackedRepoGUIDSet, this);
                 }
         }
     }
@@ -35356,6 +35346,7 @@ class AbstractMutationManager {
             jsonQuery: query.toJSON(this.queryUtils, this.fieldUtils, this.relationManager),
             parameterMap: query.getParameters(),
             queryResultType,
+            trackedRepoGUIDs: Array.from(query.trackedRepoGUIDSet)
         };
     }
     async doInsertValues(transaction, q, entities, context) {
@@ -39695,6 +39686,7 @@ class QueryFacade {
             queryResultType,
             applicationIndex: context.dbEntity.applicationVersion.application.index,
             tableIndex: context.dbEntity.index,
+            trackedRepoGUIDs: Array.from(query.trackedRepoGUIDSet)
             // values: query.values
         };
     }

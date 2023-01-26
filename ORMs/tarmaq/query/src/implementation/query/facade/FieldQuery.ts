@@ -1,6 +1,7 @@
 import {
 	JSONClauseObjectType,
 	JsonFieldQuery,
+	Repository_GUID,
 	SQLDataType
 } from '@airport/ground-control'
 import { IEntityAliases } from '../../../definition/core/entity/Aliases'
@@ -38,9 +39,11 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 	// boolean}}
 	constructor(
 		private rawQuery: RawFieldQuery<IQF>,
+		trackedRepoGUIDSet: Set<Repository_GUID> = new Set(),
 		entityAliases: IEntityAliases = new EntityAliases()
 	) {
 		super(entityAliases)
+		this.trackedRepoGUIDSet = trackedRepoGUIDSet
 	}
 
 	nonDistinctSelectClauseToJSON(
@@ -74,8 +77,7 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 			S: select,
 			forUpdate: this.rawQuery.FOR_UPDATE,
 			ot: JSONClauseObjectType.FIELD_QUERY,
-			dt: this.getClauseDataType(),
-			trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
+			dt: this.getClauseDataType()
 		}
 
 		return <JsonFieldQuery>this.getNonEntityQuery(

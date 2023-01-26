@@ -36,8 +36,7 @@ export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractR
 				queryUtils, fieldUtils, relationManager),
 			W: queryUtils.whereClauseToJSON(
 				this.rawUpdate.WHERE, this.columnAliases,
-				this.trackedRepoGUIDSet),
-			trackedRepoGUIDs: Array.from(this.trackedRepoGUIDSet)
+				this.trackedRepoGUIDSet)
 		}
 	}
 

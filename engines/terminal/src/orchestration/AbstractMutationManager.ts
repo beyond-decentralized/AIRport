@@ -49,6 +49,7 @@ export class AbstractMutationManager {
         this.queryUtils, this.fieldUtils, this.relationManager),
       parameterMap: query.getParameters(),
       queryResultType,
+      trackedRepoGUIDs: Array.from(query.trackedRepoGUIDSet)
     };
   }
 

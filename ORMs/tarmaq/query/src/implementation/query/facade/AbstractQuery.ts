@@ -35,9 +35,9 @@ import { IRelationManager } from '../../../definition/core/entity/IRelationManag
 export abstract class AbstractQuery
 	implements IAbstractQuery {
 
+	trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
 	values: any[]
 	protected isEntityQuery: boolean = false
-	protected trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
 
 	constructor(
 		protected entityAliases: IEntityAliases = new EntityAliases(),
@@ -81,7 +81,6 @@ export abstract class AbstractQuery
 		jsonQuery.OB = this.orderByClauseToJSON(rawQuery.ORDER_BY)
 		jsonQuery.L = rawQuery.LIMIT
 		jsonQuery.O = rawQuery.OFFSET
-		jsonQuery.trackedRepoGUIDs = Array.from(this.trackedRepoGUIDSet)
 
 		return jsonQuery
 	}

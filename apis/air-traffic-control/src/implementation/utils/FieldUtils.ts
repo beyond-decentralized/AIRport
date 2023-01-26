@@ -1,4 +1,4 @@
-import { JsonFieldQuery } from '@airport/ground-control'
+import { JsonFieldQuery, Repository_GUID } from '@airport/ground-control'
 import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	FieldQuery,
@@ -22,9 +22,10 @@ export class FieldUtils
 	getFieldQueryJson<IQF extends IQOrderableField<IQF>>(
 		fieldSubQuery: RawFieldQuery<IQF>,
 		entityAliases: IEntityAliases,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils
 	): JsonFieldQuery {
-		let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases)
+		let subSelectQuery = new FieldQuery(fieldSubQuery, trackedRepoGUIDSet, entityAliases)
 
 		return subSelectQuery.toJSON(queryUtils, this, this.relationManager)
 	}

@@ -73,6 +73,7 @@ export class QueryFacade
 			queryResultType,
 			applicationIndex: context.dbEntity.applicationVersion.application.index,
 			tableIndex: context.dbEntity.index,
+			trackedRepoGUIDs: Array.from(query.trackedRepoGUIDSet)
 			// values: query.values
 		};
 	}

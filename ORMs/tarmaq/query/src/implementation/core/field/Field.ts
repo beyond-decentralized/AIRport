@@ -94,12 +94,9 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		};
 		if (this.__fieldSubQuery__) {
 			jsonField.fieldSubQuery = fieldUtils.getFieldQueryJson(
-				this.__fieldSubQuery__, columnAliases.entityAliases, queryUtils);
+				this.__fieldSubQuery__, columnAliases.entityAliases,
+				trackedRepoGUIDSet, queryUtils);
 			jsonField.ot = JSONClauseObjectType.FIELD_QUERY;
-
-			for (const trackedRepoGUID of jsonField.fieldSubQuery.trackedRepoGUIDs) {
-				trackedRepoGUIDSet.add(trackedRepoGUID)
-			}
 		}
 
 		return jsonField;

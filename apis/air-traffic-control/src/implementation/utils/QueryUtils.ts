@@ -291,7 +291,8 @@ is supported only for single columm relations
 				else {
 					let rawFieldQuery: RawFieldQuery<any> = value
 					return this.fieldUtils.getFieldQueryJson(
-						rawFieldQuery, columnAliases.entityAliases, this)
+						rawFieldQuery, columnAliases.entityAliases,
+						trackedRepoGUIDSet, this)
 				}
 		}
 	}

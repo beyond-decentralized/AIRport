@@ -1,4 +1,5 @@
-import { JsonStatement }   from './facade/Query';
+import { Repository_GUID } from '../core/types';
+import { JsonStatement } from './facade/Query';
 import { QueryResultType } from './QueryResultType';
 
 /**
@@ -20,6 +21,7 @@ export interface PortableQuery {
 	parameterMap: {
 		[alias: string]: IQueryParameter<any>
 	};
+	trackedRepoGUIDs?: Repository_GUID[]
 	// values?: any[];
 }
 

@@ -20,8 +20,6 @@ export interface JsonStatement {
 	 * WHERE
 	 */
 	W?: JSONBaseOperation
-
-	trackedRepoGUIDs?: Repository_GUID[]
 }
 
 /**
