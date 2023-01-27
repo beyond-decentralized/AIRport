@@ -1,13 +1,14 @@
 import { IAirportDatabase, IQMetadataUtils, IUtils } from '@airport/air-traffic-control'
 import {
 	DbEntity,
+	IApplicationUtils,
 	IEntityStateManager,
 	JsonInsertValues,
 	SyncApplicationMap,
 	SyncColumnMap
 } from '@airport/ground-control'
 import {
-	IApplicationUtils,
+	IQueryUtils,
 	IRelationManager
 } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
@@ -31,6 +32,7 @@ export class SQLInsertValues
 		dialect: SQLDialect,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
+		queryUtils: IQueryUtils,
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
@@ -46,6 +48,7 @@ export class SQLInsertValues
 			.applicationVersion.entities[jsonInsertValues.II.ti], dialect,
 			airportDatabase,
 			applicationUtils,
+			queryUtils,
 			entityStateManager,
 			qMetadataUtils,
 			qValidator,

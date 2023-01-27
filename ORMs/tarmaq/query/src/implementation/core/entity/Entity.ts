@@ -4,6 +4,7 @@ import {
 	DbEntity,
 	DbRelation,
 	IAirEntity,
+	IApplicationUtils,
 	JoinType,
 	JSONBaseOperation,
 	JSONEntityRelation,
@@ -34,8 +35,6 @@ import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { JoinFields } from '../Joins'
 import { ENTITY_UTILS, QUERY_UTILS } from '../../../injection'
-import { IApplicationUtils } from '../../../definition/utils/IApplicationUtils'
-import { OneToManyElements } from '@airport/tarmaq-entity'
 import { IEntityQueryDatabaseFacade } from '../../../definition/core/IEntityQueryDatabaseFacade'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 
@@ -68,7 +67,7 @@ export interface QEntityConstructor<IQE extends IQEntity> {
 
 	new(
 		dbEntity: DbEntity,
-		applicationUtils: IApplicationUtils,
+		queryUtils: IQueryUtils,
 		relationManager: IRelationManager,
 		fromClausePosition?: number[],
 		dbRelation?: DbRelation,
@@ -81,14 +80,14 @@ export interface QEntityConstructor<IQE extends IQEntity> {
 
 export function QEntity<IEntity, IQE extends IQEntity>(
 	dbEntity: DbEntity,
-	applicationUtils: IApplicationUtils,
+	queryUtils: IQueryUtils,
 	relationManager: IRelationManager,
 	fromClausePosition: number[] = [],
 	dbRelation = null,
 	joinType: JoinType = null,
 	QDriver: { new(...args: any[]): IQEntityDriver<IQE> } = QEntityDriver
 ) {
-	this.__driver__ = new QDriver(dbEntity, applicationUtils, relationManager,
+	this.__driver__ = new QDriver(dbEntity, queryUtils, relationManager,
 		fromClausePosition, dbRelation, joinType, this)
 }
 
@@ -136,13 +135,10 @@ export class QEntityDriver<IQE extends IQEntity = any>
 	currentChildIndex = -1
 	joinWhereClause: JSONBaseOperation
 	parentJoinEntity: IQEntityInternal
-	private entityRelationMap: { [propertyName: string]: IQInternalRelation<any> }
-	private oneToManyConfigMap: { [name: string]: OneToManyElements }
-
 
 	constructor(
 		public dbEntity: DbEntity,
-		private applicationUtils: IApplicationUtils,
+		private queryUtils: IQueryUtils,
 		private relationManager: IRelationManager,
 		public fromClausePosition: number[] = [],
 		public dbRelation: DbRelation = null,
@@ -152,11 +148,11 @@ export class QEntityDriver<IQE extends IQEntity = any>
 	}
 
 	getInstance(): IQEntityInternal<IQE> {
-		const qEntityConstructor = this.applicationUtils
+		const qEntityConstructor = this.queryUtils
 			.getQEntityConstructor<IQE>(this.dbEntity)
 
 		let instance: IQE & IQEntityInternal = new qEntityConstructor(this.dbEntity,
-			this.applicationUtils, this.relationManager,
+			this.queryUtils, this.relationManager,
 			this.fromClausePosition, this.dbRelation, this.joinType) as any
 
 		instance.__driver__.currentChildIndex = this.currentChildIndex

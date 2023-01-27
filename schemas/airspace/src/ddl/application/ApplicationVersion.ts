@@ -26,7 +26,7 @@ import {
 import { Application } from './Application'
 import { ApplicationEntity } from './ApplicationEntity'
 import { ApplicationReference } from './ApplicationReference'
-import { JsonApplicationWithLastIds } from '@airport/apron'
+import { JsonApplicationWithLastIds } from '@airport/air-traffic-control'
 
 
 @Entity()

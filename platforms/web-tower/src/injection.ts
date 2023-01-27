@@ -1,12 +1,8 @@
 import { API_CLIENT } from '@airport/direction-indicator'
 import { DbApplicationUtils, TRANSACTIONAL_CONNECTOR } from "@airport/ground-control";
 import { APPLICATION_LOCATOR } from "@airport/landing";
-import {
-    ApplicationStore,
-    APPLICATION_LOADER,
-    LOCAL_API_SERVER
-} from "@airport/apron";
-import { APPLICATION_INITIALIZER, DOMAIN_RETRIEVER, TerminalStore } from "@airport/terminal-map";
+import { APPLICATION_INITIALIZER, APPLICATION_LOADER, DOMAIN_RETRIEVER, LOCAL_API_SERVER, TerminalStore } from "@airport/terminal-map";
+import { ApplicationStore } from '@airport/tower';
 import { DomainRetriever } from "./DomainRetriever";
 import { IFrameApplicationInitializer } from "./IFrameApplicationInitializer";
 import { IFrameApplicationLocator } from "./IFrameApplicationLocator";

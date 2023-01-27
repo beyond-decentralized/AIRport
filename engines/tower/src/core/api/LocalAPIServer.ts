@@ -7,15 +7,12 @@ import {
     ILocalAPIResponse,
     LocalApiRequestCategoryType
 } from "@airport/aviation-communication";
-import { IApiRegistry, IApplicationApi } from "@airport/check-in";
-import {
-    IApplicationStore,
-    ILocalAPIServer
-} from "@airport/apron";
-import { RequestManager } from '@airport/arrivals-n-departures';
-import { IApiCallContext, ITransactionContext } from '@airport/terminal-map';
+import { IApiCallContext, ILocalAPIServer, ITransactionContext } from '@airport/terminal-map';
 import { IQueryResultsDeserializer } from '@airport/pressurization'
 import { IActor } from '@airport/ground-control';
+import { IApplicationStore } from '../../state/ApplicationStore';
+import { IApiRegistry, IApplicationApi } from '@airport/air-traffic-control';
+import { RequestManager } from './RequestManager';
 
 @Injected()
 export class LocalAPIServer

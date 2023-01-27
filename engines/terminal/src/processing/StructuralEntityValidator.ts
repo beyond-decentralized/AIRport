@@ -10,11 +10,11 @@ import {
 	Dictionary,
 	EntityRelationType,
 	IAirEntity,
+	IApplicationUtils,
 	IEntityStateManager,
 	IRepository,
 	SQLDataType
 } from '@airport/ground-control'
-import { IApplicationUtils } from '@airport/tarmaq-query'
 import {
 	IMissingRepositoryRecord,
 	IOperationContext,

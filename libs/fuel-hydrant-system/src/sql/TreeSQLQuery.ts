@@ -4,6 +4,7 @@ import {
 	IUtils
 } from '@airport/air-traffic-control'
 import {
+	IApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
 	JSONClauseField,
@@ -11,7 +12,7 @@ import {
 	JsonTreeQuery,
 	QueryResultType
 } from '@airport/ground-control'
-import { AliasCache, IApplicationUtils, IRelationManager } from '@airport/tarmaq-query'
+import { AliasCache, IQueryUtils, IRelationManager } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
@@ -37,6 +38,7 @@ export class TreeSQLQuery
 		dialect: SQLDialect,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
+		queryUtils: IQueryUtils,
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
@@ -50,6 +52,7 @@ export class TreeSQLQuery
 		super(jsonQuery, dialect, QueryResultType.TREE,
 			airportDatabase,
 			applicationUtils,
+			queryUtils,
 			entityStateManager,
 			qMetadataUtils,
 			qValidator,

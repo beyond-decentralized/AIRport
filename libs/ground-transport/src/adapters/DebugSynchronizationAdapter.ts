@@ -2,10 +2,9 @@ import {
     Inject,
     Injected
 } from '@airport/direction-indicator'
-import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponseFragment } from "@airport/arrivals-n-departures";
 import { IClient } from "@airway/client";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
-import { Repository_GUID, Repository_Source } from '@airport/ground-control';
+import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponseFragment, Repository_GUID, Repository_Source } from '@airport/ground-control';
 
 @Injected()
 export class DebugSynchronizationAdapter

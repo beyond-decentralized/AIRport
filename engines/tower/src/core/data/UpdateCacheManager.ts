@@ -11,9 +11,9 @@ import {
     IUpdateCacheManager,
     SQLDataType,
     DbColumn,
-    IAirEntity
+    IAirEntity,
+    IApplicationUtils
 } from "@airport/ground-control"
-import { IApplicationUtils } from "@airport/tarmaq-query";
 
 @Injected()
 export class UpdateCacheManager

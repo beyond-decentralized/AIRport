@@ -9,8 +9,7 @@ import {
     Utils
 } from '@airport/air-traffic-control'
 import { ApplicationDao, DomainDao } from '@airport/airspace/dist/app/bundle'
-import { QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER } from '@airport/arrivals-n-departures'
-import { HISTORY_MANAGER, TerminalStore, TERMINAL_SESSION_MANAGER, UserStore } from '@airport/terminal-map'
+import { HISTORY_MANAGER, LOCAL_API_SERVER, TerminalStore, TERMINAL_SESSION_MANAGER, UserStore } from '@airport/terminal-map'
 import { lib } from '@airport/direction-indicator'
 import {
     AppTrackerUtils,
@@ -18,6 +17,8 @@ import {
     DbApplicationUtils,
     Dictionary,
     ENTITY_STATE_MANAGER,
+    QUERY_PARAMETER_DESERIALIZER,
+    QUERY_RESULTS_SERIALIZER,
     SEQUENCE_GENERATOR,
     TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control'
@@ -71,7 +72,6 @@ import { StructuralEntityValidator } from './processing/StructuralEntityValidato
 import { QueryParameterDeserializer } from './serialize/QueryParameterDeserializer'
 import { QueryResultsSerializer } from './serialize/QueryResultsSerializer'
 import { RepositoryManager } from './core/repository/RepositoryManager'
-import { LOCAL_API_SERVER } from '@airport/apron'
 import { IdGenerator } from '@airport/fuel-hydrant-system'
 import { ObservableQueryAdapter } from '@airport/flight-number'
 import { RepositoryMaintenanceManager } from '@airbridge/sso/dist/app/bundle'
@@ -278,7 +278,6 @@ TRANSACTIONAL_SERVER.setDependencies({
 
 terminal.setDependencies(UpdateManager, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
     datastructureUtils: DatastructureUtils,
     dictionary: Dictionary,
     fieldUtils: FieldUtils,

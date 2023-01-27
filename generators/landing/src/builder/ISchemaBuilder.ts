@@ -1,6 +1,6 @@
+import { JsonApplicationWithLastIds } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
 import { DbApplication, DbSequence, JsonApplication } from '@airport/ground-control'
-import { JsonApplicationWithLastIds } from '@airport/apron';
 
 export interface ISchemaBuilder {
 

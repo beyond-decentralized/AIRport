@@ -1,14 +1,11 @@
 import {
-    IClientQuery,
-    IJsonClientQueryParameter,
-    IQueryParameterDeserializer
-} from '@airport/arrivals-n-departures';
-import {
     Injected
 } from '@airport/direction-indicator'
 import {
-    EntityState,
+    IClientQuery,
     IEntityStateManager,
+    IJsonClientQueryParameter,
+    IQueryParameterDeserializer,
     SQLDataType
 } from "@airport/ground-control";
 

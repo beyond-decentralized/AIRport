@@ -1,7 +1,7 @@
-import { IMemoizedSelector, ISelectorManager } from "@airport/apron";
 import { UserAccount_PublicSigningKey } from "@airport/aviation-communication";
 import { Inject, Injected } from "@airport/direction-indicator";
 import { Subject } from "rxjs";
+import { IMemoizedSelector, ISelectorManager } from "../Selector";
 import { IUserSession, IUserState, IUserStateContainer } from "./UserState";
 
 export interface IUserStore {

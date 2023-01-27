@@ -1,5 +1,5 @@
 import {
-	IAirportDatabase
+	IAirportDatabase, JsonApplicationWithLastIds
 } from '@airport/air-traffic-control';
 import {
 	Inject,
@@ -16,7 +16,6 @@ import {
 	JsonApplication,
 	IAppTrackerUtils
 } from '@airport/ground-control';
-import { JsonApplicationWithLastIds } from '@airport/apron';
 import {
 	AllDdlObjects,
 	IApplicationInitializer,

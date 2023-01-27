@@ -4,6 +4,7 @@ import {
 	IUtils,
 } from '@airport/air-traffic-control'
 import {
+	IApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
 	JSONClauseObjectType,
@@ -12,8 +13,8 @@ import {
 	SyncColumnMap
 } from '@airport/ground-control'
 import {
-	IApplicationUtils,
 	IEntityUpdateProperties,
+	IQueryUtils,
 	IRelationManager,
 	ManyToOneColumnMapping
 } from '@airport/tarmaq-query'
@@ -38,6 +39,7 @@ export class SQLUpdate
 		dialect: SQLDialect,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
+		queryUtils: IQueryUtils,
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
@@ -52,6 +54,7 @@ export class SQLUpdate
 			.applicationVersion.entities[jsonUpdate.U.ti], dialect,
 			airportDatabase,
 			applicationUtils,
+			queryUtils,
 			entityStateManager,
 			qMetadataUtils,
 			qValidator,

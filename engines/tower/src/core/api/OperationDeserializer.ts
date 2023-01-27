@@ -1,4 +1,3 @@
-import { IOperationDeserializer } from '@airport/arrivals-n-departures';
 import {
     Injected
 } from '@airport/direction-indicator'
@@ -7,10 +6,11 @@ import {
     DbProperty,
     EntityRelationType,
     EntityState,
+    IApplicationUtils,
     IEntityStateManager,
+    IOperationDeserializer,
     SQLDataType
 } from "@airport/ground-control";
-import { IApplicationUtils } from '@airport/tarmaq-query';
 
 interface IDeserializableOperation {
     lookupTable: any[]

@@ -2,11 +2,10 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { RepositorySynchronizationData, RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	IRepositoryDao, RepositoryMemberDao
 } from '@airport/holding-pattern/dist/app/bundle'
-import { InMessageIndex, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Signature, RepositoryMember_Status, Repository_GUID, Repository_LocalId, UserAccount_Signature } from '@airport/ground-control';
+import { InMessageIndex, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Signature, RepositoryMember_Status, RepositorySynchronizationData, RepositorySynchronizationMessage, Repository_GUID, Repository_LocalId, UserAccount_Signature } from '@airport/ground-control';
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 
 export interface IRepositoriesAndMembersCheckResult

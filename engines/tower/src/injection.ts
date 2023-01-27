@@ -1,8 +1,6 @@
-import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
-import { API_REGISTRY, API_VALIDATOR } from '@airport/check-in';
+import { AIRPORT_DATABASE, API_REGISTRY, API_VALIDATOR } from '@airport/air-traffic-control';
 import { QUERY_RESULTS_DESERIALIZER, lib, ContainerAccessor } from '@airport/direction-indicator'
-import { ENTITY_STATE_MANAGER, UPDATE_CACHE_MANAGER } from '@airport/ground-control';
-import { ApplicationStore, LOCAL_API_SERVER } from '@airport/apron';
+import { ENTITY_STATE_MANAGER, OPERATION_DESERIALIZER, UPDATE_CACHE_MANAGER } from '@airport/ground-control';
 import { AirportDatabase } from './AirportDatabase';
 import { ApiRegistry } from './core/api/ApiRegistry';
 import { ApiValidator } from './core/api/ApiValidator';
@@ -14,11 +12,13 @@ import { EntityStateManager } from './core/EntityStateManager';
 import { DatabaseFacade } from './facade/DatabaseFacade';
 import { QueryFacade } from './facade/QueryFacade';
 import { DATABASE_FACADE, QUERY_FACADE } from '@airport/tarmaq-dao';
-import { OPERATION_DESERIALIZER, RequestManager } from '@airport/arrivals-n-departures';
+import { ApplicationStore } from './state/ApplicationStore';
+import { RequestManager } from './core/api/RequestManager';
+import { LOCAL_API_SERVER } from '@airport/terminal-map';
 
 const tower = lib('tower')
 
-tower.register(EntityCopier)
+tower.register(ApplicationStore, EntityCopier, RequestManager)
 
 AIRPORT_DATABASE.setClass(AirportDatabase);
 

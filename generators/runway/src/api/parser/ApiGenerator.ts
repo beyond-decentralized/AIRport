@@ -1,7 +1,4 @@
-import {
-    IApiObject,
-    IApplicationApi
-} from '@airport/check-in';
+import { IApiObject, IApplicationApi } from '@airport/air-traffic-control';
 import * as ts from 'typescript';
 import tsc from 'typescript';
 import { FileImports } from '../../ddl/parser/FileImports';

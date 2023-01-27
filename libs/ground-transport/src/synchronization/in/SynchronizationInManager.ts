@@ -2,7 +2,6 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import { IRepositoryTransactionHistoryDao } from '@airport/holding-pattern/dist/app/bundle'
 import { ITransactionContext, ITransactionManager } from '@airport/terminal-map'
 import { ISyncInChecker } from './checker/SyncInChecker'
@@ -10,7 +9,7 @@ import { ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
 import { IDataCheckResult } from './checker/SyncInDataChecker'
 import { ISyncInApplicationVersionChecker } from './checker/SyncInApplicationVersionChecker'
 import { IRepositoryLoader } from '@airport/air-traffic-control'
-import { IRepository, Repository_GUID, Repository_LocalId } from '@airport/ground-control'
+import { IRepository, RepositorySynchronizationMessage, Repository_GUID, Repository_LocalId } from '@airport/ground-control'
 import { INewAndUpdatedRepositoriesAndRecords, IRepositoriesAndMembersCheckResult } from './checker/SyncInRepositoryChecker'
 
 /**

@@ -1,11 +1,8 @@
 import {
-    IApiIMI,
-    IIsolateMessage
-} from "@airport/apron"
-import {
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication"
+import { IApiIMI, IIsolateMessage } from "../isolate/IsolateMessage"
 
 export interface ITransactionalReceiver {
 
@@ -15,8 +12,8 @@ export interface ITransactionalReceiver {
 
     handleAppRequest(
         message: (IIsolateMessage & IApiIMI) | ILocalAPIResponse,
-		messageOrigin: string,
-		source: any
+        messageOrigin: string,
+        source: any
     ): void
 
     onMessage(callback: (

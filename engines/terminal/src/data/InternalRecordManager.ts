@@ -14,7 +14,6 @@ import {
     Actor,
     IActorDao,
 } from "@airport/holding-pattern/dist/app/bundle";
-import { JsonApplicationWithLastIds } from "@airport/apron";
 import { ITransactionManager, TerminalStore } from "@airport/terminal-map";
 import {
     IDomainDao,
@@ -30,6 +29,7 @@ import {
     Injected
 } from '@airport/direction-indicator'
 import { TerminalSessionManager } from "../core/TerminalSessionManager";
+import { JsonApplicationWithLastIds } from "@airport/air-traffic-control";
 
 export interface IInternalRecordManager {
 

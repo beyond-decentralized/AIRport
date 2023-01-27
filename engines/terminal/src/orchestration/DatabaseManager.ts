@@ -1,5 +1,5 @@
 import {
-	IAirportDatabase
+	IAirportDatabase, JsonApplicationWithLastIds
 } from '@airport/air-traffic-control';
 import {
 	Inject,
@@ -22,7 +22,6 @@ import {
 	ITransactionalServer,
 	ITransactionManager
 } from '@airport/terminal-map';
-import { JsonApplicationWithLastIds } from '@airport/apron';
 import { BLUEPRINT } from '@airport/blueprint';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 

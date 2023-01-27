@@ -1,5 +1,4 @@
-import { JsonApplicationWithLastIds } from "../JsonApplicationWithLastIds";
-import { LastIds } from "../LastIds";
+import { JsonApplicationWithLastIds, LastIds } from "@airport/air-traffic-control"
 
 export interface IApplicationLoader {
 

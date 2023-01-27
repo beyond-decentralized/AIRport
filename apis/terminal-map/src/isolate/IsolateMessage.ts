@@ -1,10 +1,9 @@
+import { JsonApplicationWithLastIds, LastIds } from "@airport/air-traffic-control";
 import { ILocalAPIRequest } from "@airport/aviation-communication";
 import {
     PortableQuery
 } from "@airport/ground-control";
 import { Observable } from "rxjs";
-import { JsonApplicationWithLastIds } from '..';
-import { LastIds } from '../LastIds';
 
 export enum IsolateMessageType {
     ADD_REPOSITORY = 'ADD_REPOSITORY',

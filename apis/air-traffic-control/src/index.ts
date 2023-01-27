@@ -1,10 +1,17 @@
 
+export * from './api/Api';
+export * from './api/ApiOperation'
+export * from './api/ApiRegistry'
+export * from './api/ApiValidator'
+export * from './api/JsonApplicationWithApi'
 export * from './definition/utils/IQMetadataUtils'
 export * from './definition/utils/IQApplicationBuilderUtils';
 export * from './definition/utils/ISystemWideOperationIdUtils';
 export * from './definition/utils/Utils'
 export * from './definition/AirportDatabase'
 export * from './definition/DatabaseState'
+export * from './definition/JsonApplicationWithLastIds'
+export * from './definition/LastIds'
 export * from './definition/RepositoryLoader'
 export * from './implementation/utils/ApplicationUtils';
 export * from './implementation/utils/EntityUtils';

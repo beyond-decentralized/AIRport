@@ -1,6 +1,6 @@
 import { QApp } from "@airport/aviation-communication";
 import { extend, Injected, IOC } from "@airport/direction-indicator";
-import { DbColumn, DbEntity, DbProperty, DbRelation, EntityRelationType, JoinType, SQLDataType } from "@airport/ground-control";
+import { DbColumn, DbEntity, DbProperty, DbRelation, EntityRelationType, IApplicationUtils, JoinType, SQLDataType } from "@airport/ground-control";
 import { IQEntity, IQEntityInternal } from "../../definition/core/entity/Entity";
 import { IRelationManager } from "../../definition/core/entity/IRelationManager";
 import { IQRelation } from "../../definition/core/entity/Relation";
@@ -11,7 +11,6 @@ import { IQOperableFieldInternal } from "../../definition/core/field/OperableFie
 import { IQStringField } from "../../definition/core/field/StringField";
 import { IQUntypedField } from "../../definition/core/field/UntypedField";
 import { IQEntityUtils } from "../../definition/utils/IQEntityUtils";
-import { IApplicationUtils } from "../../definition/utils/IApplicationUtils";
 import { QEntity } from "../core/entity/Entity";
 import { QAirEntityOneToManyRelation, QOneToManyRelation } from "../core/entity/OneToManyRelation";
 import { QManyToOneAirEntityRelation, QManyToOneInternalRelation, QRelation } from "../core/entity/Relation";

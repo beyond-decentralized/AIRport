@@ -16,11 +16,12 @@ import {
 	ApplicationMap,
 	SqlOperator,
 	IEntityStateManager,
-	Repository_LocalId
+	Repository_LocalId,
+	IApplicationUtils
 } from '@airport/ground-control'
 import {
-	IApplicationUtils,
 	IQEntityInternal,
+	IQueryUtils,
 	IRelationManager,
 	JoinTreeNode
 } from '@airport/tarmaq-query'
@@ -76,6 +77,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		protected queryResultType: QueryResultType,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
+		queryUtils: IQueryUtils,
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
@@ -89,6 +91,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		super(dbEntity, dialect,
 			airportDatabase,
 			applicationUtils,
+			queryUtils,
 			entityStateManager,
 			qMetadataUtils,
 			qValidator,

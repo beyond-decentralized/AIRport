@@ -3,9 +3,6 @@ import {
 	ApplicationEntity_LocalId,
 	DbApplicationUtils,
 } from '@airport/ground-control';
-import {
-	JsonApplicationWithApi
-} from '@airport/check-in'
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import tsc from 'typescript';
@@ -30,6 +27,7 @@ import { ApiIndexBuilder } from './api/builder/ApiIndexBuilder';
 import { VEntityFileBuilder } from './ddl/builder/entity/validate/VEntityFileBuilder';
 import { IOC } from '@airport/direction-indicator';
 import { JsonApplicationChecker } from './ddl/builder/application/JsonApplicationChecker';
+import { JsonApplicationWithApi } from '@airport/air-traffic-control';
 
 /**
  * Created by Papa on 3/30/2016.

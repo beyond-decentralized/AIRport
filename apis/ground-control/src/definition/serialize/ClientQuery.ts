@@ -1,7 +1,5 @@
-import {
-    DbEntity,
-    SQLDataType
-} from "@airport/ground-control";
+import { DbEntity } from "../application/Entity";
+import { SQLDataType } from "../core/field/JSONClause";
 
 export interface IJsonClientQueryParameter {
     type: SQLDataType

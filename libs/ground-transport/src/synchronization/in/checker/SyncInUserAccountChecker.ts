@@ -3,12 +3,11 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { RepositorySynchronizationData } from '@airport/arrivals-n-departures'
 import {
 	IUserAccountDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
-import { IUserAccount } from '@airport/ground-control';
+import { IUserAccount, RepositorySynchronizationData } from '@airport/ground-control';
 
 export interface ISyncInUserAccountChecker {
 

@@ -18,7 +18,6 @@ import {
 	DbApplicationCurrentVersion,
 	DbApplicationReference,
 } from '@airport/ground-control';
-import { JsonApplicationWithLastIds } from '@airport/apron';
 import {
 	AllDdlObjects,
 	DdlObjects,
@@ -30,6 +29,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
+import { JsonApplicationWithLastIds } from '@airport/air-traffic-control';
 
 export interface IApplicationComposer {
 

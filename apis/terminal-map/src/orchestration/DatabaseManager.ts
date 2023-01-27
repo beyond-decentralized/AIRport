@@ -1,9 +1,7 @@
+import { JsonApplicationWithLastIds } from "@airport/air-traffic-control";
 import {
-    IContext
+	IContext
 } from "@airport/direction-indicator"
-import {
-	JsonApplicationWithLastIds
-} from "@airport/apron"
 
 export interface IDatabaseManager {
 
@@ -29,7 +27,7 @@ export interface IDatabaseManager {
 		context: IContext,
 		...applications: JsonApplicationWithLastIds[]
 	): Promise<void>
-	
+
 	initFeatureApplications(
 		context: IContext,
 		jsonApplications?: JsonApplicationWithLastIds[],

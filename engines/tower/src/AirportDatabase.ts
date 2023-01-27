@@ -16,6 +16,7 @@ import {
 	DbApplicationVersion,
 	DbEntity,
 	Dictionary,
+	IApplicationUtils,
 	IDbApplicationUtils,
 	ISaveResult,
 } from '@airport/ground-control';
@@ -30,7 +31,6 @@ import {
 import { IEntityContext } from '@airport/tarmaq-entity';
 import {
 	FunctionsAndOperators,
-	IApplicationUtils,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,

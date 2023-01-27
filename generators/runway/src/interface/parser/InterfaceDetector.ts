@@ -1,6 +1,4 @@
-import {
-    IApiObject
-} from '@airport/check-in';
+import { IApiObject } from '@airport/air-traffic-control';
 import * as ts from 'typescript';
 import tsc from 'typescript';
 import { getRelativePath } from '../../resolve/pathResolver';

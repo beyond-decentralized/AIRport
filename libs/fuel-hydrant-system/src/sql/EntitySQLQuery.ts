@@ -9,6 +9,7 @@ import {
 	DbProperty,
 	EntityRelationType,
 	EntityState,
+	IApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
 	JoinType,
@@ -21,8 +22,8 @@ import {
 import {
 	AliasCache,
 	getErrorMessageSelectStatement,
-	IApplicationUtils,
 	IEntitySelectProperties,
+	IQueryUtils,
 	IRelationManager,
 	isID,
 	isN,
@@ -71,6 +72,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 		queryResultType: QueryResultType,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
+		queryUtils: IQueryUtils,
 		entityStateManager: IEntityStateManager,
 		protected objectResultParserFactory: IObjectResultParserFactory,
 		qMetadataUtils: IQMetadataUtils,
@@ -86,6 +88,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 		super(jsonQuery, dbEntity, dialect, queryResultType,
 			airportDatabase,
 			applicationUtils,
+			queryUtils,
 			entityStateManager,
 			qMetadataUtils,
 			qValidator,
@@ -387,7 +390,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 			return null
 		}
 
-		let idValue = this.applicationUtils.getIdKey(resultObject, dbEntity)
+		let idValue = this.queryUtils.getIdKey(resultObject, dbEntity)
 
 		return this.queryParser.flushEntity(entityAlias, dbEntity, selectClauseFragment, idValue, resultObject, context)
 	}

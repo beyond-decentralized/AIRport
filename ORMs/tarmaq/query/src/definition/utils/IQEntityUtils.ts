@@ -1,5 +1,5 @@
 import { QApp } from "@airport/aviation-communication";
-import { DbColumn, DbEntity, DbProperty } from "@airport/ground-control";
+import { DbColumn, DbEntity, DbProperty, IApplicationUtils } from "@airport/ground-control";
 import { IQEntity, IQEntityInternal } from "../core/entity/Entity";
 import { IRelationManager } from "../core/entity/IRelationManager";
 import { IQRelation } from "../core/entity/Relation";
@@ -8,7 +8,6 @@ import { IQDateField } from "../core/field/DateField";
 import { IQNumberField } from "../core/field/NumberField";
 import { IQStringField } from "../core/field/StringField";
 import { IQUntypedField } from "../core/field/UntypedField";
-import { IApplicationUtils } from "./IApplicationUtils";
 import { QEntity } from "../../implementation/core/entity/Entity";
 import { QRelation } from "../../implementation/core/entity/Relation";
 

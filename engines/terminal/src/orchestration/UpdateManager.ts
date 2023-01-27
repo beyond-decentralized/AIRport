@@ -3,7 +3,6 @@ import {
 	ISystemWideOperationIdUtils
 } from '@airport/air-traffic-control'
 import {
-	IApplicationUtils,
 	IFieldUtils,
 	IQueryUtils,
 	IRelationManager,
@@ -28,6 +27,7 @@ import {
 	IDatastructureUtils,
 	SystemWideOperationId,
 	IActor,
+	IApplicationUtils,
 } from '@airport/ground-control'
 import {
 	IHistoryManager,
@@ -49,9 +49,6 @@ export class UpdateManager
 
 	@Inject()
 	airportDatabase: IAirportDatabase
-
-	@Inject()
-	applicationUtils: IApplicationUtils
 
 	@Inject()
 	datastructureUtils: IDatastructureUtils
@@ -168,7 +165,7 @@ export class UpdateManager
 		const qEntity = this.airportDatabase
 			.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 		const jsonUpdate: JsonUpdate<any> = <JsonUpdate<any>>portableQuery.jsonQuery
-		const getSheetSelectFromSetClauseResult = this.applicationUtils.getSheetSelectFromSetClause(
+		const getSheetSelectFromSetClauseResult = this.queryUtils.getSheetSelectFromSetClause(
 			context.dbEntity, qEntity, jsonUpdate.S, errorPrefix)
 
 		const sheetQuery = new SheetQuery(null)

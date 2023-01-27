@@ -6,9 +6,6 @@ communication modules.
 [air-traffic-control](./air-traffic-control)
 Internal and external query APIs.  Also ORM, to be split into ORMs\tmc
 
-[apron](./apron)
-Application state and state transfer APIs.
-
 [arrivals-n-departures](./arrivals-n-departures)
 Data sharing APIs.
 

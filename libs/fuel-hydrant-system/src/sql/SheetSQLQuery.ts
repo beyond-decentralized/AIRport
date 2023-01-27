@@ -4,6 +4,7 @@ import {
 	IUtils
 } from '@airport/air-traffic-control'
 import {
+	IApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
 	JSONClauseField,
@@ -12,7 +13,7 @@ import {
 	QueryResultType,
 	SQLDataType
 } from '@airport/ground-control'
-import { IApplicationUtils, IRelationManager } from '@airport/tarmaq-query'
+import { IQueryUtils, IRelationManager } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
@@ -38,6 +39,7 @@ export class SheetSQLQuery
 		dialect: SQLDialect,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
+		queryUtils: IQueryUtils,
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
@@ -51,6 +53,7 @@ export class SheetSQLQuery
 		super(jsonQuery, dialect, QueryResultType.SHEET,
 			airportDatabase,
 			applicationUtils,
+			queryUtils,
 			entityStateManager,
 			qMetadataUtils,
 			qValidator,

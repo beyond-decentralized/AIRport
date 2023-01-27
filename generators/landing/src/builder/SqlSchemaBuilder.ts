@@ -1,4 +1,4 @@
-import { IAirportDatabase } from '@airport/air-traffic-control';
+import { IAirportDatabase, JsonApplicationWithLastIds } from '@airport/air-traffic-control';
 import {
   IContext,
   Inject,
@@ -19,7 +19,6 @@ import {
   PropertyReference,
   QueryType,
 } from '@airport/ground-control';
-import { JsonApplicationWithLastIds } from '@airport/apron';
 import {
   IStoreDriver
 } from '@airport/terminal-map'

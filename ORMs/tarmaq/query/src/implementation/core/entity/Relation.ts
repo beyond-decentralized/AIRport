@@ -3,13 +3,13 @@ import { extend, IOC } from '@airport/direction-indicator'
 import {
 	DbRelation,
 	IAirEntity,
+	IApplicationUtils,
 	JoinType,
 	JSONBaseOperation,
 } from '@airport/ground-control'
 import { IQAirEntity, IQEntityInternal } from '../../../definition/core/entity/Entity'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { JSONLogicalOperation } from '../../../definition/core/operation/LogicalOperation'
-import { IApplicationUtils } from '../../../definition/utils/IApplicationUtils'
 import { QUERY_UTILS } from '../../../injection'
 import { QEntityUtils } from '../../utils/QEntityUtils'
 import { AND, OR } from '../operation/LogicalOperation'

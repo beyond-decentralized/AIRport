@@ -5,10 +5,8 @@
     "@airbridge/data-model": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
     "@airport/aviation-communication": "0.0.1",
-    "@airport/check-in": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
     "@airport/ground-control": "0.0.1",
-    "@airport/apron": "0.0.1",
     "@airport/tarmaq-entity": "0.0.1",
     "@airport/tarmaq-query": "0.0.1",
     "rxjs": "~7.4.0"

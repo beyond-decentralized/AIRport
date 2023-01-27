@@ -8,13 +8,14 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
+	IApplicationUtils,
 	IEntityStateManager,
 	JsonFieldQuery,
 	JsonTreeQuery
 } from '@airport/ground-control'
 import {
-	IApplicationUtils,
 	IQEntityInternal,
+	IQueryUtils,
 	IRelationManager
 } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
@@ -65,6 +66,9 @@ export class SubStatementSqlGenerator
 	qMetadataUtils: IQMetadataUtils
 
 	@Inject()
+	queryUtils: IQueryUtils
+
+	@Inject()
 	qValidator: IValidator
 
 	@Inject()
@@ -91,6 +95,7 @@ export class SubStatementSqlGenerator
 			jsonTreeQuery, dialect,
 			this.airportDatabase,
 			this.applicationUtils,
+			this.queryUtils,
 			this.entityStateManager,
 			this.qMetadataUtils,
 			this.qValidator,
@@ -123,6 +128,7 @@ export class SubStatementSqlGenerator
 			jsonFieldSqlSubQuery, dialect,
 			this.airportDatabase,
 			this.applicationUtils,
+			this.queryUtils,
 			this.entityStateManager,
 			this.qMetadataUtils,
 			this.qValidator,

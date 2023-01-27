@@ -1,5 +1,4 @@
 import { IApplicationRelationDao } from '@airport/airspace/dist/app/bundle';
-import { RepositorySynchronizationData, RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 import {
 	Inject,
@@ -17,6 +16,7 @@ import {
 	DbEntity,
 	Dictionary,
 	IActor,
+	IApplicationUtils,
 	IDbApplicationUtils,
 	IOperationHistory,
 	IRecordHistory,
@@ -30,6 +30,8 @@ import {
 	ITerminal,
 	IUserAccount,
 	RepositoryMember_PublicSigningKey,
+	RepositorySynchronizationData,
+	RepositorySynchronizationMessage,
 	RepositoryTransactionType,
 	Repository_LocalId,
 	Terminal_GUID
@@ -38,7 +40,6 @@ import {
 	IActorDao,
 	IRepositoryDao
 } from "@airport/holding-pattern/dist/app/bundle";
-import { IApplicationUtils } from '@airport/tarmaq-query';
 
 export interface ISyncOutDataSerializer {
 

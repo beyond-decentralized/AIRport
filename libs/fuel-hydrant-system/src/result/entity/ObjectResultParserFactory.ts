@@ -7,11 +7,12 @@ import {
 } from '@airport/direction-indicator'
 import {
 	DbEntity,
+	IApplicationUtils,
 	IDatastructureUtils,
 	IEntityStateManager,
 	QueryResultType
 } from '@airport/ground-control'
-import { IApplicationUtils } from '@airport/tarmaq-query'
+import { IQueryUtils } from '@airport/tarmaq-query'
 import { EntityGraphResultParser } from './EntityGraphResultParser'
 import { EntityTreeResultParser } from './EntityTreeResultParser'
 import {
@@ -43,6 +44,9 @@ export class ObjectResultParserFactory
 	entityStateManager: IEntityStateManager
 
 	@Inject()
+	queryUtils: IQueryUtils
+
+	@Inject()
 	utils: IUtils
 
 	getObjectResultParser(
@@ -53,7 +57,8 @@ export class ObjectResultParserFactory
 		switch (queryResultType) {
 			case QueryResultType.ENTITY_GRAPH:
 				return new EntityGraphResultParser(config, this.datastructureUtils,
-					rootDbEntity, this.applicationUtils, this.entityStateManager, this.utils)
+					rootDbEntity, this.applicationUtils, this.queryUtils,
+					this.entityStateManager, this.utils)
 			case QueryResultType.ENTITY_TREE:
 				return new EntityTreeResultParser(
 					this.applicationUtils, this.entityStateManager, this.utils)

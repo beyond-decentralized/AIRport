@@ -3,11 +3,11 @@ import {
 } from '@airport/air-traffic-control'
 import {
 	DbEntity,
+	IApplicationUtils,
 	IEntityStateManager,
 	SQLDataType
 } from '@airport/ground-control'
 import {
-	IApplicationUtils,
 	ReferencedColumnData
 } from '@airport/tarmaq-query'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'

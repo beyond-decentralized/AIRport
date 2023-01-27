@@ -6,7 +6,6 @@ import {
 import {
 	AND,
 	Delete,
-	IApplicationUtils,
 	InsertValues,
 	IQOperableFieldInternal,
 	OR,
@@ -25,6 +24,7 @@ import {
 	EntityRelationType,
 	IActor,
 	IAirEntity,
+	IApplicationUtils,
 	IEntityStateManager,
 	IRepository,
 	IRootTransaction,

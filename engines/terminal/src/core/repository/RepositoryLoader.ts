@@ -15,9 +15,8 @@ import {
 import {
     IRepositoryDao,
 } from "@airport/holding-pattern/dist/app/bundle";
-import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { ITransactionContext } from "@airport/terminal-map";
-import { RepositoryTransactionHistory_GUID } from "@airport/ground-control";
+import { RepositorySynchronizationMessage, RepositoryTransactionHistory_GUID } from "@airport/ground-control";
 
 @Injected()
 export class RepositoryLoader

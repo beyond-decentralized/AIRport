@@ -8,7 +8,8 @@ import {
 	EntityRelationType,
 	Application_Index,
 	ApplicationEntity_TableIndex,
-	IEntityStateManager
+	IEntityStateManager,
+	IApplicationUtils
 } from '@airport/ground-control'
 import {
 	Inject,
@@ -16,18 +17,10 @@ import {
 } from '@airport/direction-indicator'
 import {
 	convertToY,
-	IApplicationUtils,
-	IdKeysByIdColumnIndex,
-	IEntityIdProperties,
-	IQEntity,
-	IQFieldInternal,
 	isY,
-	QEntityConstructor,
-	RepositorySheetSelectInfo
 } from '@airport/tarmaq-query'
 import {
 	IAirportDatabase,
-	QAppInternal
 } from '../../definition/AirportDatabase'
 import { IUtils } from '../../definition/utils/Utils'
 
@@ -102,13 +95,6 @@ export class ApplicationUtils
 		}
 	}
 
-	getQEntityConstructor<IQE extends IQEntity>(
-		dbEntity: DbEntity
-	): QEntityConstructor<IQE> {
-		return (<QAppInternal>this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index])
-			.__qConstructors__[dbEntity.index]
-	}
-
 	getEntityConstructor(
 		dbEntity: DbEntity
 	): any {
@@ -158,67 +144,6 @@ export class ApplicationUtils
 		dbColumn: DbColumn
 	): DbEntity {
 		return dbColumn.manyRelationColumns[0].oneColumn.entity
-	}
-
-	getIdKey(
-		entityObject: IEntityIdProperties,
-		dbEntity: DbEntity,
-		failOnNoId: boolean = true,
-		// noIdValueCallback: {
-		// 	(
-		// 		relationColumn: DbColumn,
-		// 		value: any,
-		// 		propertyNameChains: string[][],
-		// 	): boolean;
-		// } = null,
-		idValueCallback?: {
-			(
-				relationColumn: DbColumn,
-				value: any,
-				propertyNameChains: string[][],
-			): void;
-		}
-	): string {
-		const keys = this.getIdKeyInfo(entityObject, dbEntity, failOnNoId, idValueCallback)
-		return keys.arrayByIdColumnIndex.join('|')
-	}
-
-	getIdKeyInfo(
-		entityObject: IEntityIdProperties,
-		dbEntity: DbEntity,
-		failOnNoId: boolean = true,
-		idValueCallback?: {
-			(
-				relationColumn: DbColumn,
-				value: any,
-				propertyNameChains: string[][],
-			): void;
-		}
-	): IdKeysByIdColumnIndex {
-		if (!dbEntity.idColumns.length) {
-			if (failOnNoId) {
-				throw new Error(`@Id is not defined on entity '${dbEntity.name}'.`)
-			}
-			return null
-		}
-
-		const idKeys = {
-			arrayByIdColumnIndex: [],
-			mapByIdColumnName: {}
-		}
-		for (const dbColumn of dbEntity.idColumns) {
-
-			const [propertyNameChains, idValue] =
-				this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn,
-					entityObject, true, failOnNoId)
-
-			idValueCallback && idValueCallback(dbColumn, idValue, propertyNameChains)
-
-			idKeys.arrayByIdColumnIndex.push(idValue)
-			idKeys.mapByIdColumnName[dbColumn.name] = idValue
-		}
-
-		return idKeys
 	}
 
 	getColumnPropertyNameChainsAndValue(
@@ -349,74 +274,6 @@ export class ApplicationUtils
 		}
 	}
 
-	getSheetSelectFromSetClause(
-		dbEntity: DbEntity,
-		qEntity: IQEntity,
-		setClause: any,
-		errorPrefix: string
-	): RepositorySheetSelectInfo {
-		const selectClause: IQFieldInternal<any>[] = []
-		let actorIdColumnIndex: number
-		let actorRecordIdColumnIndex: number
-		let repositoryIdColumnIndex: number
-		let systemWideOperationIdColumn: DbColumn
-
-		for (const columnIndex in dbEntity.columns) {
-			const dbColumn = dbEntity.columns[columnIndex]
-			let dbProperty
-			const isIdColumn = dbColumn.propertyColumns.some(
-				propertyColumn => {
-					dbProperty = propertyColumn.property
-					return dbProperty.isId
-				})
-
-			let nonIdColumnSet = false
-			if (isIdColumn) {
-				if (setClause[dbColumn.name]) {
-					throw new Error(errorPrefix + `Cannot update @Id column '${dbColumn.name}' 
-of property '${dbEntity.name}.${dbProperty.name}'.`)
-				}
-				this.addColumnToSheetSelect(dbColumn, qEntity, selectClause)
-			} else if (setClause[dbColumn.name]) {
-				nonIdColumnSet = true
-				this.addColumnToSheetSelect(dbColumn, qEntity, selectClause)
-				// } else {
-				// entitySelectClause[dbColumn.index] = null;
-			}
-
-			const inQueryColumnIndex = selectClause.length - 1
-
-			const AirEntity = this.dictionary.AirEntity
-
-			switch (dbColumn.name) {
-				case AirEntity.columns.ACTOR_LID:
-					actorIdColumnIndex = inQueryColumnIndex
-					break
-				case AirEntity.columns.ACTOR_RECORD_ID:
-					actorRecordIdColumnIndex = inQueryColumnIndex
-					break
-				case AirEntity.columns.REPOSITORY_LID:
-					repositoryIdColumnIndex = inQueryColumnIndex
-					break
-				case AirEntity.columns.SYSTEM_WIDE_OPERATION_LID:
-					if (nonIdColumnSet) {
-						throw new Error(errorPrefix +
-							`Cannot update 'systemWideOperationId' of Repository Entities.`)
-					}
-					systemWideOperationIdColumn = dbColumn
-					break
-			}
-		}
-
-		return {
-			actorIdColumnIndex,
-			actorRecordIdColumnIndex,
-			repositoryIdColumnIndex,
-			selectClause,
-			systemWideOperationIdColumn
-		}
-	}
-
 	private getColumnValuesAndPaths(
 		dbColumn: DbColumn,
 		relationObject: any,
@@ -488,7 +345,7 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 		}
 	}
 
-	private getColumnPaths(
+	getColumnPaths(
 		dbColumn: DbColumn,
 		breadCrumb: string[],
 	): string[][] {
@@ -516,58 +373,6 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 		return columnValuesAndPaths
 	}
 
-	private addColumnToSheetSelect(
-		dbColumn: DbColumn,
-		qEntity: IQEntity,
-		entitySelectClause: IQFieldInternal<any>[],
-	) {
-		if (this.isManyRelationColumn(dbColumn)) {
-			const columnPaths = this.getColumnPaths(dbColumn, [])
-			const firstColumnPath = columnPaths[0]
-			let relationColumn = qEntity[firstColumnPath[0]]
-			firstColumnPath.reduce((
-				last,
-				current
-			) => {
-				relationColumn = relationColumn[current]
-				return current
-			})
-			entitySelectClause.push(relationColumn)
-		} else {
-			entitySelectClause.push(qEntity[dbColumn.propertyColumns[0].property.name])
-		}
-	}
-
-	/*
-		private addColumnToEntitySelect(
-			dbColumn: DbColumn,
-			entitySelectClause: any,
-		) {
-			const dbRelation = dbColumn.relation;
-			if (dbRelation) {
-				let selectClauseFragment = entitySelectClause;
-				let lastSelectClauseFragment;
-				let sourceColumn = dbColumn;
-				let lastPropertyName;
-				do {
-					lastPropertyName = sourceColumn.property.name;
-					lastSelectClauseFragment = selectClauseFragment;
-					if (!lastSelectClauseFragment[lastPropertyName]) {
-						selectClauseFragment = {};
-						lastSelectClauseFragment[lastPropertyName] = selectClauseFragment;
-					} else {
-						selectClauseFragment = lastSelectClauseFragment[lastPropertyName];
-					}
-					const relationColumn = sourceColumn.relation.relationColumns.filter(
-						relationColumn => relationColumn.ownColumn.index === sourceColumn.index)[0];
-					sourceColumn = relationColumn.relationColumn;
-				} while (sourceColumn.relation);
-				lastSelectClauseFragment[lastPropertyName] = null;
-			} else {
-				entitySelectClause[dbColumn.property.name] = null;
-			}
-		}
-	*/
 	private handleNoId(
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,

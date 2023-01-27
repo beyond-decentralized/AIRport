@@ -1,4 +1,4 @@
-import { Api } from '@airport/check-in'
+import { Api } from "@airport/air-traffic-control";
 import { IContext, Inject, Injected } from "@airport/direction-indicator";
 import { IRepository, Repository_GUID, Repository_IsPublic } from '@airport/ground-control';
 import { IRepositoryManager } from '@airport/terminal-map';

@@ -1,4 +1,3 @@
-import { JsonApplicationWithApi } from '@airport/check-in';
 import {
 	AJsonPropertyIndexConfiguration,
 	ApplicationColumn_Index,
@@ -31,6 +30,7 @@ import {
 	SApplicationReference
 } from './SApplication';
 import { SApplicationBuilder } from './SApplicationBuilder';
+import { JsonApplicationWithApi } from '@airport/air-traffic-control';
 
 export class JsonApplicationBuilder {
 

@@ -1,10 +1,7 @@
+import { IApiOperation, IApiValidator } from '@airport/air-traffic-control';
 import {
-	Injected
+    Injected
 } from '@airport/direction-indicator'
-import {
-    IApiOperation,
-    IApiValidator
-} from "@airport/check-in";
 
 @Injected()
 export class ApiValidator

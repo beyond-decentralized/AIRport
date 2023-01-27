@@ -13,7 +13,7 @@ import { visitApiFile } from './api/parser/ApiGenerator'
 import { PathBuilder } from './ddl/builder/PathBuilder'
 import { normalizePath } from './resolve/pathResolver'
 import { DB_APPLICATION_LOADER } from './ddl/loader/ApplicationLoader'
-import { JsonApplicationWithApi } from '@airport/check-in'
+import { JsonApplicationWithApi } from '@airport/air-traffic-control'
 
 export interface IFileProcessor<Candidate> {
 

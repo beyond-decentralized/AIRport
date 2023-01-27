@@ -1,5 +1,5 @@
 import { Injected } from "@airport/direction-indicator";
-import { IApplicationState } from "./ApplicationState";
+import { IApplicationState } from "@airport/terminal-map";
 import { applicationState as theApplicationState } from "./theApplicationState";
 
 export interface IApplicationStore {

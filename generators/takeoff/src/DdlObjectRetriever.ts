@@ -20,8 +20,8 @@ import {
 	DbApplication,
 	DbApplicationVersion,
 } from '@airport/ground-control'
-import type { LastIds } from '@airport/apron'
 import { DdlObjects, ITerminalStore } from '@airport/terminal-map'
+import { LastIds } from '@airport/air-traffic-control'
 
 export interface IDdlObjectRetriever {
 

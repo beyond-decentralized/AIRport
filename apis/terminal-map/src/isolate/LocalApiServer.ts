@@ -1,9 +1,9 @@
 
+import { IApplicationApi } from "@airport/air-traffic-control";
 import {
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication";
-import { IApplicationApi } from "@airport/check-in";
 import { IContext } from "@airport/direction-indicator";
 
 export interface ILocalAPIServer {

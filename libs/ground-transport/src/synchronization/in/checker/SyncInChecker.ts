@@ -1,6 +1,3 @@
-import {
-	RepositorySynchronizationData, RepositorySynchronizationMessage,
-} from '@airport/arrivals-n-departures'
 import { IApplicationVersionCheckRecord, ISyncInApplicationVersionChecker } from './SyncInApplicationVersionChecker';
 import { ISyncInActorChecker } from './SyncInActorChecker';
 import { ISyncInApplicationChecker } from './SyncInApplicationChecker';
@@ -13,7 +10,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { ApplicationEntity_LocalId, ApplicationRelation_Index, Application_Name, DbRelation, Domain_Name, IDatastructureUtils, KeyUtils, Repository_GUID, Repository_LocalId } from '@airport/ground-control';
+import { ApplicationEntity_LocalId, ApplicationRelation_Index, Application_Name, DbRelation, Domain_Name, IDatastructureUtils, KeyUtils, RepositorySynchronizationData, RepositorySynchronizationMessage, Repository_GUID, Repository_LocalId } from '@airport/ground-control';
 import { ITerminalStore } from '@airport/terminal-map';
 
 export interface ISyncInChecker {

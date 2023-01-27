@@ -9,6 +9,9 @@ import { AppTrackerUtils } from './implementation/utils/AppTrackerUtils';
 import { Dictionary } from './definition/core/entity/Dictionary';
 import { DatastructureUtils } from './implementation/utils/DatastructureUtils';
 import { ApplicationReferenceUtils } from './implementation/utils/ApplicationReferenceUtils';
+import { IOperationDeserializer } from './definition/serialize/OperationDeserializer';
+import { IQueryParameterDeserializer } from './definition/serialize/QueryParameterDeserializer';
+import { IQueryResultsSerializer } from './definition/serialize/QueryResultsSerializer';
 
 const groundControl = lib('ground-control')
 
@@ -18,6 +21,9 @@ groundControl.register(
 )
 
 export const ENTITY_STATE_MANAGER = groundControl.token<IEntityStateManager>('EntityStateManager')
+export const OPERATION_DESERIALIZER = groundControl.token<IOperationDeserializer>('OperationDeserializer');
+export const QUERY_PARAMETER_DESERIALIZER = groundControl.token<IQueryParameterDeserializer>('QueryParameterDeserializer');
+export const QUERY_RESULTS_SERIALIZER = groundControl.token<IQueryResultsSerializer>('QueryResultsSerializer');
 export const SEQUENCE_GENERATOR = groundControl.token<ISequenceGenerator>('SequenceGenerator')
 export const TRANSACTIONAL_CONNECTOR = groundControl.token<ITransactionalConnector>('TransactionalConnector')
 export const UPDATE_CACHE_MANAGER = groundControl.token<IUpdateCacheManager>('UpdateCacheManager')

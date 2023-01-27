@@ -1,9 +1,10 @@
 import { Inject, Injected } from '@airport/direction-indicator'
 import {
+	IApplicationUtils,
 	JSONEntityRelation,
 	JSONRelation
 } from '@airport/ground-control'
-import { IApplicationUtils, IQEntityDriver, IQEntityInternal, IRelationManager, IRelationManagerContext } from '@airport/tarmaq-query'
+import { IQEntityDriver, IQEntityInternal, IQueryUtils, IRelationManager, IRelationManagerContext } from '@airport/tarmaq-query'
 
 @Injected()
 export class RelationManager
@@ -11,6 +12,9 @@ export class RelationManager
 
 	@Inject()
 	applicationUtils: IApplicationUtils
+
+	@Inject()
+	queryUtils: IQueryUtils
 
 	getPositionAlias(
 		rootEntityPrefix: string,
@@ -41,11 +45,11 @@ export class RelationManager
 	): IQ {
 		const dbEntity = this.applicationUtils.getDbEntity(
 			joinRelation.si, joinRelation.ti)
-		let QEntityConstructor = this.applicationUtils.getQEntityConstructor<IQ>(
+		let QEntityConstructor = this.queryUtils.getQEntityConstructor<IQ>(
 			dbEntity)
 		return new QEntityConstructor(
 			dbEntity,
-			this.applicationUtils,
+			this.queryUtils,
 			this,
 			joinRelation.fromClausePosition,
 			dbEntity.relations[(<JSONEntityRelation>joinRelation).ri],

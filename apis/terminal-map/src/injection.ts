@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE } from '@airport/air-traffic-control'
+import { AIRPORT_DATABASE, API_REGISTRY } from '@airport/air-traffic-control'
 import { lib } from '@airport/direction-indicator'
 import {
     AppTrackerUtils,
@@ -14,27 +14,41 @@ import { ITransactionalReceiver } from './transaction/ITransactionalReceiver'
 import { IDomainRetriever } from './store/DomainRetriever'
 import { IStoreDriver } from './core/data/StoreDriver'
 import { TerminalState } from './store/TerminalState'
-import { APPLICATION_LOADER, SelectorManager } from '@airport/apron'
 import { IApplicationInitializer } from './core/ApplicationInitializer'
 import { UserState } from './store/user/UserState'
 import { UserStore } from './store/user/UserStore'
 import { ITerminalSessionManager } from './core/ITerminalSessionManager'
 import { AbstractApplicationLoader } from './AbstractApplicationLoader'
-import { API_REGISTRY } from '@airport/check-in'
 import { IHistoryManager } from './orchestration/HistoryManager'
+import { IApplicationLoader } from './isolate/ApplicationLoader'
+import { ILocalAPIServer } from './isolate/LocalApiServer'
+import { SelectorManager } from './store/Selector'
 
 const terminalMap = lib('terminal-map')
 
-terminalMap.register(TerminalState, TerminalStore, UserState, UserStore)
+terminalMap.register(SelectorManager, TerminalState, TerminalStore, UserState, UserStore)
 
+export const APPLICATION_LOADER = terminalMap.token<IApplicationLoader>('ApplicationLoader')
 export const APPLICATION_INITIALIZER = terminalMap.token<IApplicationInitializer>('ApplicationInitializer')
 export const DOMAIN_RETRIEVER = terminalMap.token<IDomainRetriever>('DomainRetriever')
 export const HISTORY_MANAGER = terminalMap.token<IHistoryManager>('HistoryManager')
+export const LOCAL_API_SERVER = terminalMap.token<ILocalAPIServer>('LocalAPIServer')
 export const STORE_DRIVER = terminalMap.token<IStoreDriver>('StoreDriver');
 export const TERMINAL_SESSION_MANAGER = terminalMap.token<ITerminalSessionManager>('TerminalSessionManager')
 export const TRANSACTION_MANAGER = terminalMap.token<ITransactionManager>('TransactionManager')
 export const TRANSACTIONAL_RECEIVER = terminalMap.token<ITransactionalReceiver>('TransactionalReceiver')
 export const TRANSACTIONAL_SERVER = terminalMap.token<ITransactionalServer>('TransactionalServer')
+
+/**
+ * Used by Apps (in App VMs) to set App-specific ApplicationLoader
+ * 
+ * @param applicationLoader Application specific ApplicationLoader
+ */
+export function setApplicationLoader(
+    applicationLoader: { new(): IApplicationLoader }
+) {
+    APPLICATION_LOADER.setClass(applicationLoader)
+}
 
 APPLICATION_INITIALIZER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,

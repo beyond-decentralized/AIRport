@@ -1,4 +1,7 @@
-import { DbApplication, DbApplicationVersion, DbRelation, IActor, IRepository, IRepositoryMember, IRepositoryTransactionHistory, ITerminal, IUserAccount, RepositoryMemberAcceptance_Signature, RepositoryMember_Signature, UserAccount_Signature } from "@airport/ground-control";
+import { DbApplication, DbApplicationVersion } from "../application/Application"
+import { DbRelation } from "../application/Property"
+import { IRepositoryTransactionHistory } from "./synchronizationTypes"
+import { IActor, IRepository, IRepositoryMember, ITerminal, IUserAccount, RepositoryMemberAcceptance_Signature, RepositoryMember_Signature, UserAccount_Signature } from "../core/types"
 
 export type ReferencedApplicationVersion_InMessageIndex = number
 export type ReferencedApplicationRelation_InMessageIndex = number

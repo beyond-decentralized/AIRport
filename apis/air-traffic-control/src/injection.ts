@@ -1,4 +1,4 @@
-import { AIR_ENTITY_UTILS } from '@airport/direction-indicator'
+import { AIR_ENTITY_UTILS, ContainerAccessor } from '@airport/direction-indicator'
 import {
 	DbApplicationUtils,
 	Dictionary,
@@ -32,6 +32,8 @@ import { QApplicationBuilderUtils } from './implementation/utils/QApplicationBui
 import { airTrafficControl } from './injectionLibrary'
 import { Utils } from './implementation/Utils'
 import { SystemWideOperationIdUtils } from './implementation/utils/SystemWideOperationIdUtils'
+import { IApiRegistry } from './api/ApiRegistry'
+import { IApiValidator } from './api/ApiValidator'
 
 airTrafficControl.register(
 	ApplicationUtils, DatabaseStore, FieldUtils,
@@ -40,6 +42,8 @@ airTrafficControl.register(
 )
 
 export const AIRPORT_DATABASE = airTrafficControl.token<IAirportDatabase>('AirportDatabase')
+export const API_REGISTRY = airTrafficControl.token<IApiRegistry>('ApiRegistry')
+export const API_VALIDATOR = airTrafficControl.token<IApiValidator>('ApiValidator')
 export const REPOSITORY_LOADER = airTrafficControl.token<IRepositoryLoader>('RepositoryLoader')
 
 AIRPORT_DATABASE.setDependencies({
@@ -54,6 +58,9 @@ AIRPORT_DATABASE.setDependencies({
 	relationManager: RelationManager,
 	search: NonEntitySearch,
 	searchOne: NonEntitySearchOne
+})
+API_REGISTRY.setDependencies({
+	containerAccessor: ContainerAccessor
 })
 airTrafficControl.setDependencies(ApplicationUtils, {
 	airportDatabase: AIRPORT_DATABASE,
@@ -88,13 +95,17 @@ QUERY_FACADE.setDependencies({
 	transactionalConnector: TRANSACTIONAL_CONNECTOR
 })
 QUERY_UTILS.setDependencies({
+	airportDatabase: AIRPORT_DATABASE,
+	applicationUtils: ApplicationUtils,
+	dictionary: Dictionary,
 	entityUtils: ENTITY_UTILS,
 	fieldUtils: FieldUtils,
 	relationManager: RelationManager,
 	airEntityUtils: AIR_ENTITY_UTILS
 })
 airTrafficControl.setDependencies(RelationManager, {
-	applicationUtils: ApplicationUtils
+	applicationUtils: ApplicationUtils,
+	queryUtils: QUERY_UTILS
 })
 airTrafficControl.setDependencies(SystemWideOperationIdUtils, {
 	dictionary: Dictionary,

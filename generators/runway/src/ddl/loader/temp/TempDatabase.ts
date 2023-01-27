@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
+import { AIRPORT_DATABASE, JsonApplicationWithLastIds } from '@airport/air-traffic-control';
 import { IOC } from '@airport/direction-indicator';
 import {
 	JsonApplication, SEQUENCE_GENERATOR
@@ -16,7 +16,6 @@ import {
 	STORE_DRIVER
 } from '@airport/terminal-map';
 import { injectAirportDatabase } from '@airport/tower';
-import { JsonApplicationWithLastIds } from '@airport/apron';
 import { NoOpApplicationBuilder } from './NoOpApplicationBuilder';
 import { NoOpSequenceGenerator } from './NoOpSequenceGenerator';
 import { NoOpSqlDriver } from './NoOpSqlDriver';

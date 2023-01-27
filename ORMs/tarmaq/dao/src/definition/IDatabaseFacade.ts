@@ -1,12 +1,11 @@
 import {
+	EntityIdData,
 	ISaveResult,
 	PortableQuery,
 	QueryResultType,
 	Repository_GUID
 } from '@airport/ground-control';
-import { IContext } from '@airport/direction-indicator';
 import {
-	EntityIdData,
 	IAbstractQuery,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,

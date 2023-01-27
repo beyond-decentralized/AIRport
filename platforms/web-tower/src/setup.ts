@@ -1,8 +1,8 @@
-import { IIsolateMessageOut } from '@airport/apron'
 import { loadAutopilot } from '@airport/autopilot'
 import { ILocalAPIRequest } from '@airport/aviation-communication'
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
+import { IIsolateMessageOut } from '@airport/terminal-map'
 import { loadTower } from '@airport/tower'
 import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
 

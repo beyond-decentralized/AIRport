@@ -4,12 +4,9 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	RepositorySynchronizationData,
-} from '@airport/arrivals-n-departures'
-import {
 	IActorDao
 } from '@airport/holding-pattern/dist/app/bundle'
-import { IActor } from '@airport/ground-control'
+import { IActor, RepositorySynchronizationData } from '@airport/ground-control'
 
 export interface ISyncInActorChecker {
 

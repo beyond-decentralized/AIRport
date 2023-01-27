@@ -1,5 +1,4 @@
-import { RepositorySynchronizationData } from "@airport/arrivals-n-departures";
-import { Application_Name, ApplicationStatus, DbDomain, DbApplication } from '@airport/ground-control';
+import { Application_Name, ApplicationStatus, DbDomain, DbApplication, RepositorySynchronizationData } from '@airport/ground-control';
 import {
     IDomainDao,
     IApplicationDao

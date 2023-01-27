@@ -5,15 +5,16 @@ import {
 } from '@airport/air-traffic-control'
 import {
 	DbEntity,
+	IApplicationUtils,
 	IEntityStateManager,
 	JSONEntityRelation,
 	SyncApplicationMap,
 	SyncColumnMap
 } from '@airport/ground-control'
 import {
-	IApplicationUtils,
 	IQEntity,
 	IQEntityInternal,
+	IQueryUtils,
 	IRelationManager,
 	QEntity
 } from '@airport/tarmaq-query'
@@ -37,6 +38,7 @@ export abstract class SQLNoJoinQuery
 		dialect: SQLDialect,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
+		queryUtils: IQueryUtils,
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
@@ -50,6 +52,7 @@ export abstract class SQLNoJoinQuery
 		super(dbEntity, dialect,
 			airportDatabase,
 			applicationUtils,
+			queryUtils,
 			entityStateManager,
 			qMetadataUtils,
 			qValidator,
@@ -88,7 +91,7 @@ export abstract class SQLNoJoinQuery
 			expecting: '${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}'`)
 		}
 
-		const firstQEntity: IQEntity = new QEntity(firstDbEntity, this.applicationUtils, this.relationManager)
+		const firstQEntity: IQEntity = new QEntity(firstDbEntity, this.queryUtils, this.relationManager)
 
 		const tableAlias = this.relationManager.getAlias(fromRelation)
 		this.qEntityMapByAlias[tableAlias] = firstQEntity as IQEntityInternal

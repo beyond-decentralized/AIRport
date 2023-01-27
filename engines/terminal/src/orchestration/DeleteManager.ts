@@ -15,6 +15,7 @@ import {
 	Dictionary,
 	EntityRelationType,
 	IActor,
+	IApplicationUtils,
 	IDatastructureUtils,
 	IRootTransaction,
 	JsonDelete,
@@ -29,7 +30,6 @@ import {
 } from '@airport/holding-pattern/dist/app/bundle' // default import is reserved
 // for Applications
 import {
-	IApplicationUtils,
 	Y
 } from '@airport/tarmaq-query'
 import {

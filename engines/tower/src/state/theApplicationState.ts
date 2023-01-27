@@ -1,4 +1,4 @@
-import { AppState, IApplicationState } from "./ApplicationState";
+import { AppState, IApplicationState } from "@airport/terminal-map";
 
 export const applicationState: IApplicationState = {
     api: null,

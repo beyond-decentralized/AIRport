@@ -1,8 +1,6 @@
-import { IApplicationUtils } from "@airport/tarmaq-query";
-import {
-	DbEntity,
-	IEntityStateManager
-} from "@airport/ground-control";
+import { DbEntity } from "../application/Entity";
+import { IEntityStateManager } from "../core/operation/EntityStateManager";
+import { IApplicationUtils } from "../utils/IApplicationUtils";
 
 export interface IQueryResultsSerializer {
 

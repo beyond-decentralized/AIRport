@@ -1,4 +1,4 @@
-import { JsonApplicationWithApi } from "@airport/check-in";
+import { JsonApplicationWithApi } from "@airport/air-traffic-control";
 import { ApplicationReferenceUtils, AppTrackerUtils, Dictionary, JsonApplication, JsonApplicationRelation, JsonApplicationVersion } from "@airport/ground-control";
 import { SIndexedApplication } from "./SApplication";
 

@@ -1,13 +1,9 @@
+import { IApiOperation, IApiRegistry, IApplicationApi } from "@airport/air-traffic-control";
 import { IContainerAccessor, Inject } from "@airport/direction-indicator";
-import {
-    IApiOperation,
-    IApiRegistry,
-    IApplicationApi
-} from "@airport/check-in";
 import {
     Injected
 } from '@airport/direction-indicator'
-import { IApplicationStore } from "@airport/apron";
+import { IApplicationStore } from "../../state/ApplicationStore";
 
 @Injected()
 export class ApiRegistry

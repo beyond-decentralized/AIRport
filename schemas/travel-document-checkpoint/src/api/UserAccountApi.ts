@@ -1,8 +1,8 @@
-import { Api } from "@airport/check-in";
 import { UserAccountDao } from "../dao/UserAccountDao";
 import { Inject, Injected } from "@airport/direction-indicator";
 import { IUserAccount } from "@airport/ground-control";
 import { UserAccount_PublicSigningKey } from "@airport/aviation-communication";
+import { Api } from "@airport/air-traffic-control";
 
 @Injected()
 export class UserAccountApi {

@@ -36,7 +36,6 @@ export * from './definition/query/facade/SheetQuery';
 export * from './definition/query/facade/TreeQuery';
 export * from './definition/query/facade/Update';
 export * from './definition/query/QueryContext';
-export * from './definition/utils/IApplicationUtils';
 export * from './definition/utils/IEntityUtils';
 export * from './definition/utils/IFieldUtils';
 export * from './definition/utils/IQEntityUtils';

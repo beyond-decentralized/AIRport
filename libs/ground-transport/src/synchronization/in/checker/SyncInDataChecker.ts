@@ -1,4 +1,3 @@
-import { RepositorySynchronizationData, RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	ChangeType,
 	ApplicationColumn_Index,
@@ -16,6 +15,9 @@ import {
 	IRecordHistory,
 	IRecordHistoryNewValue,
 	IRecordHistoryOldValue,
+	RepositorySynchronizationMessage,
+	IApplicationUtils,
+	RepositorySynchronizationData,
 } from '@airport/ground-control'
 import {
 	IAirportDatabase,
@@ -27,7 +29,6 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import { ITerminalStore } from '@airport/terminal-map'
-import { IApplicationUtils } from '@airport/tarmaq-query'
 import { IRepositoriesAndMembersCheckResult } from './SyncInRepositoryChecker'
 
 export interface IDataCheckResult

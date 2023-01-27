@@ -1,4 +1,3 @@
-import { IQueryResultsSerializer } from '@airport/arrivals-n-departures'
 import {
 	Injected
 } from '@airport/direction-indicator'
@@ -6,10 +5,11 @@ import {
 import {
 	DbEntity,
 	EntityState,
+	IApplicationUtils,
 	IEntityStateManager,
+	IQueryResultsSerializer,
 	SQLDataType
 } from '@airport/ground-control'
-import { IApplicationUtils } from '@airport/tarmaq-query'
 
 interface ISerializableOperation {
 	lookupTable: any[]

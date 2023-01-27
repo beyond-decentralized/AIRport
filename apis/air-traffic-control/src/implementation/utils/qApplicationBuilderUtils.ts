@@ -3,9 +3,10 @@ import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	DbApplication,
-	Application_Index
+	Application_Index,
+	IApplicationUtils
 } from '@airport/ground-control'
-import { IApplicationUtils, IRelationManager, QEntityUtils } from '@airport/tarmaq-query'
+import { IRelationManager, QEntityUtils } from '@airport/tarmaq-query'
 import { QAppInternal } from '../../definition/AirportDatabase'
 import { DbApplicationDependency, DbApplicationWithDependencies, IQApplicationBuilderUtils } from '../../definition/utils/IQApplicationBuilderUtils'
 

@@ -6,7 +6,7 @@ export * from './definition/core/field/JSONClause'
 export * from './definition/core/operation/EntityStateManager';
 export * from './definition/core/operation/Operation'
 export * from './definition/core/types'
-export * from './definition/core/synchronizationTypes'
+export * from './definition/synchronization/synchronizationTypes'
 export * from './definition/core/UpdateState'
 export * from './definition/data/sync/TransactionType'
 export * from './definition/data/ChangeType'
@@ -49,8 +49,14 @@ export * from './definition/application/DatabaseObjectConfiguration'
 export * from './definition/application/DatabaseRelationConfiguration'
 export * from './definition/application/Entity'
 export * from './definition/application/Property'
+export * from './definition/serialize/ClientQuery';
+export * from './definition/serialize/OperationDeserializer';
+export * from './definition/serialize/QueryParameterDeserializer';
+export * from './definition/serialize/QueryResultsSerializer';
+export * from './definition/synchronization/RepositorySynchronizationMessage';
 export * from './definition/utils/IAppTrackerUtils'
 export * from './definition/utils/IApplicationReferenceUtils'
+export * from './definition/utils/IApplicationUtils';
 export * from './definition/utils/IDatastructureUtils'
 export * from './definition/utils/IKeyUtils'
 export * from './definition/application/Application'

@@ -4,12 +4,9 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	RepositorySynchronizationData,
-} from '@airport/arrivals-n-departures'
-import {
 	ITerminalDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
-import { ITerminal, Terminal_GUID } from '@airport/ground-control'
+import { ITerminal, RepositorySynchronizationData, Terminal_GUID } from '@airport/ground-control'
 
 export interface ISyncInTerminalChecker {
 

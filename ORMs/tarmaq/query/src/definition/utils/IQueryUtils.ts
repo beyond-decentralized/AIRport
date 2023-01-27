@@ -1,8 +1,36 @@
 import { AirEntityId } from "@airport/aviation-communication";
-import { IAirEntity, JSONBaseOperation, Repository_GUID } from "@airport/ground-control";
+import { DbColumn, DbEntity, IAirEntity, JSONBaseOperation, Repository_GUID, SQLDataType } from "@airport/ground-control";
+import { QEntityConstructor } from "../../implementation/core/entity/Entity";
 import { IFieldColumnAliases } from "../core/entity/Aliases";
-import { IQAirEntity, IQEntity } from "../core/entity/Entity";
+import { IEntityIdProperties, IQAirEntity, IQEntity } from "../core/entity/Entity";
+import { IQFieldInternal } from "../core/field/Field";
 import { JSONLogicalOperation } from "../core/operation/LogicalOperation";
+
+export interface ManyToOneColumnMapping {
+	tableIndex: number;
+	propertyChain: string[];
+	value: any;
+  }
+  
+  export interface ReferencedColumnData {
+	propertyNameChains: string[][];
+	sqlDataType: SQLDataType;
+	value?: any;
+  }
+
+export interface IdKeysByIdColumnIndex {
+	arrayByIdColumnIndex: (number | string)[],
+	mapByIdColumnName: { [columnName: string]: (number | string) }
+}
+
+export interface RepositorySheetSelectInfo {
+	actorIdColumnIndex: number;
+	actorRecordIdColumnIndex: number;
+	repositoryIdColumnIndex: number;
+	systemWideOperationIdColumn: DbColumn;
+	selectClause?: IQFieldInternal<any>[];
+	selectClauseColumns?: DbColumn[];
+}
 
 export interface IQueryUtils {
 
@@ -37,5 +65,49 @@ export interface IQueryUtils {
 		columnAliases: IFieldColumnAliases<any>,
 		trackedRepositoryGUIDSet: Set<Repository_GUID>
 	): JSONBaseOperation
+
+	getQEntityConstructor<IQE extends IQEntity>(
+	  dbEntity: DbEntity
+	): QEntityConstructor<IQE>;
+
+	getIdKey(
+		entityObject: IEntityIdProperties,
+		dbEntity: DbEntity,
+		failOnNoId?: boolean,
+		// noIdValueCallback?: {
+		// 	(
+		// 		idColumn: DbColumn,
+		// 		value: number | string,
+		// 		propertyNameChains: string[][],
+		// 	): boolean;
+		// },
+		idValueCallback?: {
+			(
+				idColumn: DbColumn,
+				value: number | string,
+				propertyNameChains: string[][],
+			): void;
+		},
+	): string;
+
+	getIdKeyInfo(
+		entityObject: IEntityIdProperties,
+		dbEntity: DbEntity,
+		failOnNoId?: boolean,
+		idValueCallback?: {
+			(
+				idColumn: DbColumn,
+				value: number | string,
+				propertyNameChains: string[][],
+			): void;
+		},
+	): IdKeysByIdColumnIndex;
+
+	getSheetSelectFromSetClause(
+		dbEntity: DbEntity,
+		qEntity: IQEntity,
+		setClause: any,
+		errorPrefix: string,
+	): RepositorySheetSelectInfo
 
 }

@@ -2,7 +2,7 @@ import { InternalUserAccount } from "@airport/aviation-communication";
 import { Application_FullName, DbApplication } from "../application/Application";
 import { DbEntity } from "../application/Entity";
 import { DbRelation } from "../application/Property";
-import { IRepositoryTransactionHistory } from "./synchronizationTypes";
+import { IRepositoryTransactionHistory } from "../synchronization/synchronizationTypes";
 
 export interface IRootTransaction {
 	numberOfOperations: number

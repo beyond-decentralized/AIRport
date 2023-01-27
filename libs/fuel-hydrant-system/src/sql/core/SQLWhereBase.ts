@@ -24,11 +24,12 @@ import {
 	ApplicationMap,
 	SqlOperator,
 	ApplicationEntity_TableIndex,
-	IEntityStateManager
+	IEntityStateManager,
+	IApplicationUtils
 } from '@airport/ground-control'
 import {
-	IApplicationUtils,
 	IQEntityInternal,
+	IQueryUtils,
 	JSONLogicalOperation,
 	Parameter
 } from '@airport/tarmaq-query'
@@ -64,6 +65,7 @@ export abstract class SQLWhereBase
 		protected dialect: SQLDialect,
 		protected airportDatabase: IAirportDatabase,
 		protected applicationUtils: IApplicationUtils,
+		protected queryUtils: IQueryUtils,
 		protected entityStateManager: IEntityStateManager,
 		protected qMetadataUtils: IQMetadataUtils,
 		protected qValidator: IValidator,

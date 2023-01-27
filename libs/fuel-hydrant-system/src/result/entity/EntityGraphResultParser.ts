@@ -4,12 +4,13 @@ import {
 import {
 	DbEntity,
 	EntityRelationType,
+	IApplicationUtils,
 	IDatastructureUtils,
 	IEntityStateManager,
 	SQLDataType
 } from '@airport/ground-control'
 import {
-	IApplicationUtils,
+	IQueryUtils,
 	ReferencedColumnData
 } from '@airport/tarmaq-query'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
@@ -57,6 +58,7 @@ export class EntityGraphResultParser
 		private datastructureUtils: IDatastructureUtils,
 		private rootDbEntity: DbEntity,
 		applicationUtils: IApplicationUtils,
+		private queryUtils: IQueryUtils,
 		entityStateManager: IEntityStateManager,
 		utils: IUtils,
 	) {
@@ -96,7 +98,7 @@ export class EntityGraphResultParser
 		const oneToManyStubAdded = this.addManyToOneStub(
 			resultObject, propertyName, relationInfos, context)
 		if (oneToManyStubAdded) {
-			const relatedEntityId = this.applicationUtils.getIdKey(resultObject[propertyName], relationDbEntity)
+			const relatedEntityId = this.queryUtils.getIdKey(resultObject[propertyName], relationDbEntity)
 			this.bufferManyToOne(dbEntity, propertyName, relationDbEntity, relatedEntityId)
 		}
 	}
@@ -120,7 +122,7 @@ export class EntityGraphResultParser
 		context: IFuelHydrantContext,
 	): any {
 		resultObject[propertyName] = childResultObject
-		const relatedEntityId = this.applicationUtils.getIdKey(resultObject[propertyName], relationDbEntity)
+		const relatedEntityId = this.queryUtils.getIdKey(resultObject[propertyName], relationDbEntity)
 		this.bufferManyToOne(dbEntity, propertyName, relationDbEntity, relatedEntityId)
 	}
 
@@ -294,7 +296,7 @@ export class EntityGraphResultParser
 		if (!source || target === source) {
 			return target
 		}
-		const id = this.applicationUtils.getIdKey(target, dbEntity)
+		const id = this.queryUtils.getIdKey(target, dbEntity)
 
 		for (let propertyName in selectClauseFragment) {
 			if (selectClauseFragment[propertyName] === undefined) {
@@ -358,7 +360,7 @@ export class EntityGraphResultParser
 							const sourceSet: { [id: string]: any } = {}
 							if (sourceArray) {
 								sourceArray.forEach((sourceChild) => {
-									const sourceChildIdValue = this.applicationUtils.getIdKey(sourceChild, childDbEntity)
+									const sourceChildIdValue = this.queryUtils.getIdKey(sourceChild, childDbEntity)
 									sourceSet[sourceChildIdValue] = sourceChild
 								})
 							} else {
@@ -367,7 +369,7 @@ export class EntityGraphResultParser
 							}
 							if (targetArray) {
 								targetArray.forEach((targetChild) => {
-									const targetChildIdValue = this.applicationUtils.getIdKey(targetChild, childDbEntity)
+									const targetChildIdValue = this.queryUtils.getIdKey(targetChild, childDbEntity)
 									if (this.config && this.config.strict && !sourceSet[targetChildIdValue]) {
 										throw new Error(`One-to-Many child arrays don't match for 
 										'${dbEntity.name}.${dbProperty.name}', Id: ${id}`)

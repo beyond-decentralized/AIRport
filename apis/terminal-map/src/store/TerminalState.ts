@@ -1,4 +1,3 @@
-import { IMessageInRecord, LastIds } from '@airport/apron'
 import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	IPendingTransaction,
@@ -7,6 +6,8 @@ import { Subject, Subscription } from 'rxjs'
 import { ITransaction } from '../transaction/ITransaction'
 import { ITransactionCredentials } from '../Credentials'
 import { Application_FullName, DbApplication, DbDomain, DbSequence, IActor, IAppTrackerUtils, ITerminal } from '@airport/ground-control'
+import { IMessageInRecord } from './ApplicationState'
+import { LastIds } from '@airport/air-traffic-control'
 
 export interface IReceiverState {
 	initializingApps: Set<Application_FullName>

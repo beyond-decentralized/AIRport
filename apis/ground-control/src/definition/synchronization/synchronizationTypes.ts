@@ -5,7 +5,7 @@ import { DbEntity } from "../application/Entity";
 import { ApplicationColumn_Index, DbColumn } from "../application/Property";
 import { ChangeType } from "../data/ChangeType";
 import { RepositoryTransactionType, TransactionType } from "../data/sync/TransactionType";
-import { ActorRecordId, IActor, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, IRepositoryMemberUpdate, RepositoryMemberInvitation_PrivateSigningKey, Repository_IsPublic, Repository_LocalId, SystemWideOperationId } from "./types";
+import { ActorRecordId, IActor, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, IRepositoryMemberUpdate, RepositoryMemberInvitation_PrivateSigningKey, Repository_IsPublic, Repository_LocalId, SystemWideOperationId } from "../core/types";
 
 export type InMessageIndex = number
 

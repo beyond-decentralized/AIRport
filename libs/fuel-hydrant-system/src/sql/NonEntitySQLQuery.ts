@@ -4,9 +4,9 @@ import {
 	IUtils
 } from '@airport/air-traffic-control'
 import {
-	IApplicationUtils,
 	IQEntityInternal,
 	IQTree,
+	IQueryUtils,
 	IRelationManager,
 	JoinTreeNode,
 	QBooleanField,
@@ -19,6 +19,7 @@ import {
 	DbColumn,
 	DbEntity,
 	DbProperty,
+	IApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
 	JoinType,
@@ -66,6 +67,7 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		queryResultType: QueryResultType,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
+		queryUtils: IQueryUtils,
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
@@ -79,6 +81,7 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		super(jsonQuery, null, dialect, queryResultType,
 			airportDatabase,
 			applicationUtils,
+			queryUtils,
 			entityStateManager,
 			qMetadataUtils,
 			qValidator,

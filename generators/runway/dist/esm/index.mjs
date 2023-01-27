@@ -1969,6 +1969,9 @@ class KeyUtils {
 const groundControl = lib('ground-control');
 groundControl.register(ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, Dictionary, KeyUtils);
 const ENTITY_STATE_MANAGER = groundControl.token('EntityStateManager');
+const OPERATION_DESERIALIZER = groundControl.token('OperationDeserializer');
+const QUERY_PARAMETER_DESERIALIZER = groundControl.token('QueryParameterDeserializer');
+const QUERY_RESULTS_SERIALIZER = groundControl.token('QueryResultsSerializer');
 const SEQUENCE_GENERATOR = groundControl.token('SequenceGenerator');
 const TRANSACTIONAL_CONNECTOR = groundControl.token('TransactionalConnector');
 const UPDATE_CACHE_MANAGER = groundControl.token('UpdateCacheManager');
@@ -5360,8 +5363,8 @@ class JoinFields {
     }
 }
 
-function QEntity(dbEntity, applicationUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = QEntityDriver) {
-    this.__driver__ = new QDriver(dbEntity, applicationUtils, relationManager, fromClausePosition, dbRelation, joinType, this);
+function QEntity(dbEntity, queryUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = QEntityDriver) {
+    this.__driver__ = new QDriver(dbEntity, queryUtils, relationManager, fromClausePosition, dbRelation, joinType, this);
 }
 QEntity.prototype.FULL_JOIN = function (right) {
     return this.__driver__.join(right, JoinType.FULL_JOIN);
@@ -5382,9 +5385,9 @@ QEntity.prototype.in = function (entities) {
     return IOC.getSync(QUERY_UTILS).in(entities, this);
 };
 class QEntityDriver {
-    constructor(dbEntity, applicationUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, qEntity) {
+    constructor(dbEntity, queryUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, qEntity) {
         this.dbEntity = dbEntity;
-        this.applicationUtils = applicationUtils;
+        this.queryUtils = queryUtils;
         this.relationManager = relationManager;
         this.fromClausePosition = fromClausePosition;
         this.dbRelation = dbRelation;
@@ -5399,9 +5402,9 @@ class QEntityDriver {
         this.currentChildIndex = -1;
     }
     getInstance() {
-        const qEntityConstructor = this.applicationUtils
+        const qEntityConstructor = this.queryUtils
             .getQEntityConstructor(this.dbEntity);
-        let instance = new qEntityConstructor(this.dbEntity, this.applicationUtils, this.relationManager, this.fromClausePosition, this.dbRelation, this.joinType);
+        let instance = new qEntityConstructor(this.dbEntity, this.queryUtils, this.relationManager, this.fromClausePosition, this.dbRelation, this.joinType);
         instance.__driver__.currentChildIndex = this.currentChildIndex;
         instance.__driver__.joinWhereClause = this.joinWhereClause;
         instance.__driver__.entityFieldMap = this.entityFieldMap;
@@ -8626,6 +8629,28 @@ loadGlobalAirApi();
 globalThis.airApi.dS = diSet;
 globalThis.airApi.ddS = duoDiSet;
 
+const Api = function () {
+    return function (target, propertyKey, descriptor) {
+        // No runtime logic required.
+        return null;
+    };
+};
+
+var ApiObjectKind;
+(function (ApiObjectKind) {
+    ApiObjectKind["ARRAY"] = "ARRAY";
+    ApiObjectKind["BOOLEAN"] = "BOOLEAN";
+    ApiObjectKind["BOOLEAN_VALUE"] = "BOOLEAN_VALUE";
+    ApiObjectKind["DATE"] = "DATE";
+    ApiObjectKind["DB_ENTITY"] = "DB_ENTITY";
+    ApiObjectKind["NUMBER"] = "NUMBER";
+    ApiObjectKind["NUMBER_VALUE"] = "NUMBER_VALUE";
+    ApiObjectKind["OBJECT"] = "OBJECT";
+    ApiObjectKind["STRING"] = "STRING";
+    ApiObjectKind["STRING_VALUE"] = "STRING_VALUE";
+    ApiObjectKind["TYPE_UNION"] = "TYPE_UNION";
+})(ApiObjectKind || (ApiObjectKind = {}));
+
 class ApplicationUtils {
     getDbEntity(applicationIndex, tableIndex) {
         return this.airportDatabase.applications[applicationIndex].currentVersion[0]
@@ -8655,10 +8680,6 @@ class ApplicationUtils {
             default:
                 throw new Error(`Unsupported CRUDOperation '${crudOperation}' for cascade check.`);
         }
-    }
-    getQEntityConstructor(dbEntity) {
-        return this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index]
-            .__qConstructors__[dbEntity.index];
     }
     getEntityConstructor(dbEntity) {
         const entityConstructor = this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index]
@@ -8690,37 +8711,6 @@ class ApplicationUtils {
     }
     getOneSideEntityOfManyRelationColumn(dbColumn) {
         return dbColumn.manyRelationColumns[0].oneColumn.entity;
-    }
-    getIdKey(entityObject, dbEntity, failOnNoId = true, 
-    // noIdValueCallback: {
-    // 	(
-    // 		relationColumn: DbColumn,
-    // 		value: any,
-    // 		propertyNameChains: string[][],
-    // 	): boolean;
-    // } = null,
-    idValueCallback) {
-        const keys = this.getIdKeyInfo(entityObject, dbEntity, failOnNoId, idValueCallback);
-        return keys.arrayByIdColumnIndex.join('|');
-    }
-    getIdKeyInfo(entityObject, dbEntity, failOnNoId = true, idValueCallback) {
-        if (!dbEntity.idColumns.length) {
-            if (failOnNoId) {
-                throw new Error(`@Id is not defined on entity '${dbEntity.name}'.`);
-            }
-            return null;
-        }
-        const idKeys = {
-            arrayByIdColumnIndex: [],
-            mapByIdColumnName: {}
-        };
-        for (const dbColumn of dbEntity.idColumns) {
-            const [propertyNameChains, idValue] = this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, true, failOnNoId);
-            idValueCallback && idValueCallback(dbColumn, idValue, propertyNameChains);
-            idKeys.arrayByIdColumnIndex.push(idValue);
-            idKeys.mapByIdColumnName[dbColumn.name] = idValue;
-        }
-        return idKeys;
     }
     getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, forIdKey = false, generateNegativeIdsForMissing = true) {
         const columnValuesAndPaths = this.getColumnValuesAndPaths(dbColumn, entityObject, [], forIdKey, generateNegativeIdsForMissing);
@@ -8804,62 +8794,6 @@ class ApplicationUtils {
                 return;
             }
         }
-    }
-    getSheetSelectFromSetClause(dbEntity, qEntity, setClause, errorPrefix) {
-        const selectClause = [];
-        let actorIdColumnIndex;
-        let actorRecordIdColumnIndex;
-        let repositoryIdColumnIndex;
-        let systemWideOperationIdColumn;
-        for (const columnIndex in dbEntity.columns) {
-            const dbColumn = dbEntity.columns[columnIndex];
-            let dbProperty;
-            const isIdColumn = dbColumn.propertyColumns.some(propertyColumn => {
-                dbProperty = propertyColumn.property;
-                return dbProperty.isId;
-            });
-            let nonIdColumnSet = false;
-            if (isIdColumn) {
-                if (setClause[dbColumn.name]) {
-                    throw new Error(errorPrefix + `Cannot update @Id column '${dbColumn.name}' 
-of property '${dbEntity.name}.${dbProperty.name}'.`);
-                }
-                this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
-            }
-            else if (setClause[dbColumn.name]) {
-                nonIdColumnSet = true;
-                this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
-                // } else {
-                // entitySelectClause[dbColumn.index] = null;
-            }
-            const inQueryColumnIndex = selectClause.length - 1;
-            const AirEntity = this.dictionary.AirEntity;
-            switch (dbColumn.name) {
-                case AirEntity.columns.ACTOR_LID:
-                    actorIdColumnIndex = inQueryColumnIndex;
-                    break;
-                case AirEntity.columns.ACTOR_RECORD_ID:
-                    actorRecordIdColumnIndex = inQueryColumnIndex;
-                    break;
-                case AirEntity.columns.REPOSITORY_LID:
-                    repositoryIdColumnIndex = inQueryColumnIndex;
-                    break;
-                case AirEntity.columns.SYSTEM_WIDE_OPERATION_LID:
-                    if (nonIdColumnSet) {
-                        throw new Error(errorPrefix +
-                            `Cannot update 'systemWideOperationId' of Repository Entities.`);
-                    }
-                    systemWideOperationIdColumn = dbColumn;
-                    break;
-            }
-        }
-        return {
-            actorIdColumnIndex,
-            actorRecordIdColumnIndex,
-            repositoryIdColumnIndex,
-            selectClause,
-            systemWideOperationIdColumn
-        };
     }
     getColumnValuesAndPaths(dbColumn, relationObject, breadCrumb, forIdKey = false, generateNegativeIdsForMissing = true
     // noIdValueCallback: {
@@ -8953,51 +8887,6 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
         }
         return columnValuesAndPaths;
     }
-    addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause) {
-        if (this.isManyRelationColumn(dbColumn)) {
-            const columnPaths = this.getColumnPaths(dbColumn, []);
-            const firstColumnPath = columnPaths[0];
-            let relationColumn = qEntity[firstColumnPath[0]];
-            firstColumnPath.reduce((last, current) => {
-                relationColumn = relationColumn[current];
-                return current;
-            });
-            entitySelectClause.push(relationColumn);
-        }
-        else {
-            entitySelectClause.push(qEntity[dbColumn.propertyColumns[0].property.name]);
-        }
-    }
-    /*
-        private addColumnToEntitySelect(
-            dbColumn: DbColumn,
-            entitySelectClause: any,
-        ) {
-            const dbRelation = dbColumn.relation;
-            if (dbRelation) {
-                let selectClauseFragment = entitySelectClause;
-                let lastSelectClauseFragment;
-                let sourceColumn = dbColumn;
-                let lastPropertyName;
-                do {
-                    lastPropertyName = sourceColumn.property.name;
-                    lastSelectClauseFragment = selectClauseFragment;
-                    if (!lastSelectClauseFragment[lastPropertyName]) {
-                        selectClauseFragment = {};
-                        lastSelectClauseFragment[lastPropertyName] = selectClauseFragment;
-                    } else {
-                        selectClauseFragment = lastSelectClauseFragment[lastPropertyName];
-                    }
-                    const relationColumn = sourceColumn.relation.relationColumns.filter(
-                        relationColumn => relationColumn.ownColumn.index === sourceColumn.index)[0];
-                    sourceColumn = relationColumn.relationColumn;
-                } while (sourceColumn.relation);
-                lastSelectClauseFragment[lastPropertyName] = null;
-            } else {
-                entitySelectClause[dbColumn.property.name] = null;
-            }
-        }
-    */
     handleNoId(dbColumn, dbProperty, propertyNameChains, value, noIdValueCallback) {
         if (noIdValueCallback) {
             if (!noIdValueCallback(dbColumn, value, propertyNameChains)) {
@@ -9484,6 +9373,142 @@ is supported only for single columm relations
         }
         return jsonOperation;
     }
+    getQEntityConstructor(dbEntity) {
+        return this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index]
+            .__qConstructors__[dbEntity.index];
+    }
+    getIdKey(entityObject, dbEntity, failOnNoId = true, 
+    // noIdValueCallback: {
+    // 	(
+    // 		relationColumn: DbColumn,
+    // 		value: any,
+    // 		propertyNameChains: string[][],
+    // 	): boolean;
+    // } = null,
+    idValueCallback) {
+        const keys = this.getIdKeyInfo(entityObject, dbEntity, failOnNoId, idValueCallback);
+        return keys.arrayByIdColumnIndex.join('|');
+    }
+    getIdKeyInfo(entityObject, dbEntity, failOnNoId = true, idValueCallback) {
+        if (!dbEntity.idColumns.length) {
+            if (failOnNoId) {
+                throw new Error(`@Id is not defined on entity '${dbEntity.name}'.`);
+            }
+            return null;
+        }
+        const idKeys = {
+            arrayByIdColumnIndex: [],
+            mapByIdColumnName: {}
+        };
+        for (const dbColumn of dbEntity.idColumns) {
+            const [propertyNameChains, idValue] = this.applicationUtils.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, true, failOnNoId);
+            idValueCallback && idValueCallback(dbColumn, idValue, propertyNameChains);
+            idKeys.arrayByIdColumnIndex.push(idValue);
+            idKeys.mapByIdColumnName[dbColumn.name] = idValue;
+        }
+        return idKeys;
+    }
+    getSheetSelectFromSetClause(dbEntity, qEntity, setClause, errorPrefix) {
+        const selectClause = [];
+        let actorIdColumnIndex;
+        let actorRecordIdColumnIndex;
+        let repositoryIdColumnIndex;
+        let systemWideOperationIdColumn;
+        for (const columnIndex in dbEntity.columns) {
+            const dbColumn = dbEntity.columns[columnIndex];
+            let dbProperty;
+            const isIdColumn = dbColumn.propertyColumns.some(propertyColumn => {
+                dbProperty = propertyColumn.property;
+                return dbProperty.isId;
+            });
+            let nonIdColumnSet = false;
+            if (isIdColumn) {
+                if (setClause[dbColumn.name]) {
+                    throw new Error(errorPrefix + `Cannot update @Id column '${dbColumn.name}' 
+of property '${dbEntity.name}.${dbProperty.name}'.`);
+                }
+                this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
+            }
+            else if (setClause[dbColumn.name]) {
+                nonIdColumnSet = true;
+                this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
+                // } else {
+                // entitySelectClause[dbColumn.index] = null;
+            }
+            const inQueryColumnIndex = selectClause.length - 1;
+            const AirEntity = this.dictionary.AirEntity;
+            switch (dbColumn.name) {
+                case AirEntity.columns.ACTOR_LID:
+                    actorIdColumnIndex = inQueryColumnIndex;
+                    break;
+                case AirEntity.columns.ACTOR_RECORD_ID:
+                    actorRecordIdColumnIndex = inQueryColumnIndex;
+                    break;
+                case AirEntity.columns.REPOSITORY_LID:
+                    repositoryIdColumnIndex = inQueryColumnIndex;
+                    break;
+                case AirEntity.columns.SYSTEM_WIDE_OPERATION_LID:
+                    if (nonIdColumnSet) {
+                        throw new Error(errorPrefix +
+                            `Cannot update 'systemWideOperationId' of Repository Entities.`);
+                    }
+                    systemWideOperationIdColumn = dbColumn;
+                    break;
+            }
+        }
+        return {
+            actorIdColumnIndex,
+            actorRecordIdColumnIndex,
+            repositoryIdColumnIndex,
+            selectClause,
+            systemWideOperationIdColumn
+        };
+    }
+    addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause) {
+        if (this.applicationUtils.isManyRelationColumn(dbColumn)) {
+            const columnPaths = this.applicationUtils.getColumnPaths(dbColumn, []);
+            const firstColumnPath = columnPaths[0];
+            let relationColumn = qEntity[firstColumnPath[0]];
+            firstColumnPath.reduce((last, current) => {
+                relationColumn = relationColumn[current];
+                return current;
+            });
+            entitySelectClause.push(relationColumn);
+        }
+        else {
+            entitySelectClause.push(qEntity[dbColumn.propertyColumns[0].property.name]);
+        }
+    }
+    /*
+        private addColumnToEntitySelect(
+            dbColumn: DbColumn,
+            entitySelectClause: any,
+        ) {
+            const dbRelation = dbColumn.relation;
+            if (dbRelation) {
+                let selectClauseFragment = entitySelectClause;
+                let lastSelectClauseFragment;
+                let sourceColumn = dbColumn;
+                let lastPropertyName;
+                do {
+                    lastPropertyName = sourceColumn.property.name;
+                    lastSelectClauseFragment = selectClauseFragment;
+                    if (!lastSelectClauseFragment[lastPropertyName]) {
+                        selectClauseFragment = {};
+                        lastSelectClauseFragment[lastPropertyName] = selectClauseFragment;
+                    } else {
+                        selectClauseFragment = lastSelectClauseFragment[lastPropertyName];
+                    }
+                    const relationColumn = sourceColumn.relation.relationColumns.filter(
+                        relationColumn => relationColumn.ownColumn.index === sourceColumn.index)[0];
+                    sourceColumn = relationColumn.relationColumn;
+                } while (sourceColumn.relation);
+                lastSelectClauseFragment[lastPropertyName] = null;
+            } else {
+                entitySelectClause[dbColumn.property.name] = null;
+            }
+        }
+    */
     convertLRValue(value, columnAliases, trackedRepoGUIDSet) {
         value = wrapPrimitive(value);
         switch (typeof value) {
@@ -9584,8 +9609,8 @@ class RelationManager {
     }
     createRelatedQEntity(joinRelation, context) {
         const dbEntity = this.applicationUtils.getDbEntity(joinRelation.si, joinRelation.ti);
-        let QEntityConstructor = this.applicationUtils.getQEntityConstructor(dbEntity);
-        return new QEntityConstructor(dbEntity, this.applicationUtils, this, joinRelation.fromClausePosition, dbEntity.relations[joinRelation.ri], joinRelation.jt);
+        let QEntityConstructor = this.queryUtils.getQEntityConstructor(dbEntity);
+        return new QEntityConstructor(dbEntity, this.queryUtils, this, joinRelation.fromClausePosition, dbEntity.relations[joinRelation.ri], joinRelation.jt);
     }
     getNextChildJoinPosition(joinParentDriver) {
         let nextChildJoinPosition = joinParentDriver.fromClausePosition.slice();
@@ -9692,6 +9717,8 @@ QUERY_UTILS.setClass(QueryUtils);
 
 airTrafficControl.register(ApplicationUtils, DatabaseStore, FieldUtils, QApplicationBuilderUtils, QMetadataUtils, RelationManager, SystemWideOperationIdUtils);
 const AIRPORT_DATABASE = airTrafficControl.token('AirportDatabase');
+const API_REGISTRY = airTrafficControl.token('ApiRegistry');
+const API_VALIDATOR = airTrafficControl.token('ApiValidator');
 const REPOSITORY_LOADER = airTrafficControl.token('RepositoryLoader');
 AIRPORT_DATABASE.setDependencies({
     appliationUtils: ApplicationUtils,
@@ -9705,6 +9732,9 @@ AIRPORT_DATABASE.setDependencies({
     relationManager: RelationManager,
     search: NonEntitySearch,
     searchOne: NonEntitySearchOne
+});
+API_REGISTRY.setDependencies({
+    containerAccessor: ContainerAccessor
 });
 airTrafficControl.setDependencies(ApplicationUtils, {
     airportDatabase: AIRPORT_DATABASE,
@@ -9739,13 +9769,17 @@ QUERY_FACADE.setDependencies({
     transactionalConnector: TRANSACTIONAL_CONNECTOR
 });
 QUERY_UTILS.setDependencies({
+    airportDatabase: AIRPORT_DATABASE,
+    applicationUtils: ApplicationUtils,
+    dictionary: Dictionary,
     entityUtils: ENTITY_UTILS,
     fieldUtils: FieldUtils,
     relationManager: RelationManager,
     airEntityUtils: AIR_ENTITY_UTILS
 });
 airTrafficControl.setDependencies(RelationManager, {
-    applicationUtils: ApplicationUtils
+    applicationUtils: ApplicationUtils,
+    queryUtils: QUERY_UTILS
 });
 airTrafficControl.setDependencies(SystemWideOperationIdUtils, {
     dictionary: Dictionary,
@@ -11087,108 +11121,6 @@ var IsolateMessageType;
     IsolateMessageType["UPDATE_VALUES"] = "UPDATE_VALUES";
 })(IsolateMessageType || (IsolateMessageType = {}));
 
-var AppState;
-(function (AppState) {
-    AppState["NOT_INITIALIED"] = "NOT_INITIALIED";
-    AppState["START_INITIALIZING"] = "START_INITIALIZING";
-    AppState["INITIALIZING_IN_PROGRESS"] = "INITIALIZING_IN_PROGRESS";
-    AppState["INITIALIZED"] = "INITIALIZED";
-})(AppState || (AppState = {}));
-
-const applicationState = {
-    api: null,
-    application: null,
-    appState: AppState.NOT_INITIALIED,
-    domain: null,
-    // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
-    // and debugging (https://localhost:3000)
-    hostServer: 'https://localhost:3000',
-    // FIXME: tie this in to the hostServer variable
-    mainDomain: null,
-    observableMessageMap: new Map(),
-    pendingMessageMap: new Map(),
-    messageCallback: null,
-};
-
-class ApplicationStore {
-    constructor() {
-        this.applicationState = applicationState;
-    }
-    get state() {
-        return this.applicationState;
-    }
-}
-
-class SelectorManager {
-    createSelector(...args) {
-        if (args.length < 2 || args.length > 6) {
-            throw new Error(`Invalid createSelector call, Expecting 1 to 5 selectors and a callback.`);
-        }
-        const inputSelectors = args.slice(0, args.length - 1);
-        const callback = args[args.length - 1];
-        let sourceObservable;
-        if (inputSelectors.length > 1) {
-            // TODO: check if this will work
-            sourceObservable = from(inputSelectors.map(selector => selector.observable));
-        }
-        else {
-            sourceObservable = inputSelectors[0].observable;
-        }
-        let observable = sourceObservable.pipe(
-        // share() TODO: implement once RxJs support is added
-        distinctUntilChanged(), map(value => callback(value)));
-        return this.getSelector(observable);
-    }
-    createRootSelector(stateObservable) {
-        return this.getSelector(stateObservable);
-    }
-    getSelector(observable) {
-        let selector = (function (
-        // otherStateObservable?: Observable<SV>
-        ) {
-            let currentValue;
-            observable.subscribe(value => currentValue = value).unsubscribe();
-            return currentValue;
-        });
-        selector.observable = observable;
-        return selector;
-    }
-}
-
-const apron = lib('apron');
-apron.register(ApplicationStore, SelectorManager);
-const APPLICATION_LOADER = apron.token('ApplicationLoader');
-const LOCAL_API_SERVER = apron.token('LocalAPIServer');
-
-const Api = function () {
-    return function (target, propertyKey, descriptor) {
-        // No runtime logic required.
-        return null;
-    };
-};
-
-var ApiObjectKind;
-(function (ApiObjectKind) {
-    ApiObjectKind["ARRAY"] = "ARRAY";
-    ApiObjectKind["BOOLEAN"] = "BOOLEAN";
-    ApiObjectKind["BOOLEAN_VALUE"] = "BOOLEAN_VALUE";
-    ApiObjectKind["DATE"] = "DATE";
-    ApiObjectKind["DB_ENTITY"] = "DB_ENTITY";
-    ApiObjectKind["NUMBER"] = "NUMBER";
-    ApiObjectKind["NUMBER_VALUE"] = "NUMBER_VALUE";
-    ApiObjectKind["OBJECT"] = "OBJECT";
-    ApiObjectKind["STRING"] = "STRING";
-    ApiObjectKind["STRING_VALUE"] = "STRING_VALUE";
-    ApiObjectKind["TYPE_UNION"] = "TYPE_UNION";
-})(ApiObjectKind || (ApiObjectKind = {}));
-
-const checkIn = lib('check-in');
-const API_REGISTRY = checkIn.token('ApiRegistry');
-const API_VALIDATOR = checkIn.token('ApiValidator');
-API_REGISTRY.setDependencies({
-    containerAccessor: ContainerAccessor
-});
-
 /**
  * Created by Papa on 4/16/2017.
  */
@@ -11197,6 +11129,14 @@ var AirEntityType;
     AirEntityType["NOT_AIR_ENTITY"] = "NOT_AIR_ENTITY";
     AirEntityType["AIR_ENTITY"] = "AIR_ENTITY";
 })(AirEntityType || (AirEntityType = {}));
+
+var AppState;
+(function (AppState) {
+    AppState["NOT_INITIALIED"] = "NOT_INITIALIED";
+    AppState["START_INITIALIZING"] = "START_INITIALIZING";
+    AppState["INITIALIZING_IN_PROGRESS"] = "INITIALIZING_IN_PROGRESS";
+    AppState["INITIALIZED"] = "INITIALIZED";
+})(AppState || (AppState = {}));
 
 class TerminalState {
     init() {
@@ -11425,6 +11365,42 @@ class UserStore {
     }
 }
 
+class SelectorManager {
+    createSelector(...args) {
+        if (args.length < 2 || args.length > 6) {
+            throw new Error(`Invalid createSelector call, Expecting 1 to 5 selectors and a callback.`);
+        }
+        const inputSelectors = args.slice(0, args.length - 1);
+        const callback = args[args.length - 1];
+        let sourceObservable;
+        if (inputSelectors.length > 1) {
+            // TODO: check if this will work
+            sourceObservable = from(inputSelectors.map(selector => selector.observable));
+        }
+        else {
+            sourceObservable = inputSelectors[0].observable;
+        }
+        let observable = sourceObservable.pipe(
+        // share() TODO: implement once RxJs support is added
+        distinctUntilChanged(), map(value => callback(value)));
+        return this.getSelector(observable);
+    }
+    createRootSelector(stateObservable) {
+        return this.getSelector(stateObservable);
+    }
+    getSelector(observable) {
+        let selector = (function (
+        // otherStateObservable?: Observable<SV>
+        ) {
+            let currentValue;
+            observable.subscribe(value => currentValue = value).unsubscribe();
+            return currentValue;
+        });
+        selector.observable = observable;
+        return selector;
+    }
+}
+
 class AbstractApplicationLoader {
     constructor(application) {
         this.application = application;
@@ -11451,10 +11427,12 @@ class AbstractApplicationLoader {
 }
 
 const terminalMap = lib('terminal-map');
-terminalMap.register(TerminalState, TerminalStore, UserState, UserStore);
+terminalMap.register(SelectorManager, TerminalState, TerminalStore, UserState, UserStore);
+const APPLICATION_LOADER = terminalMap.token('ApplicationLoader');
 const APPLICATION_INITIALIZER = terminalMap.token('ApplicationInitializer');
 const DOMAIN_RETRIEVER = terminalMap.token('DomainRetriever');
 const HISTORY_MANAGER = terminalMap.token('HistoryManager');
+const LOCAL_API_SERVER = terminalMap.token('LocalAPIServer');
 const STORE_DRIVER = terminalMap.token('StoreDriver');
 const TERMINAL_SESSION_MANAGER = terminalMap.token('TerminalSessionManager');
 const TRANSACTION_MANAGER = terminalMap.token('TransactionManager');
@@ -27020,18 +26998,6 @@ var index = /*#__PURE__*/Object.freeze({
 	BLUEPRINT: BLUEPRINT
 });
 
-class RequestManager {
-}
-
-class SessionManager {
-}
-
-const arrivalsNDepartures = lib('arrivals-n-departures');
-arrivalsNDepartures.register(RequestManager, SessionManager);
-const OPERATION_DESERIALIZER = arrivalsNDepartures.token('OperationDeserializer');
-const QUERY_PARAMETER_DESERIALIZER = arrivalsNDepartures.token('QueryParameterDeserializer');
-const QUERY_RESULTS_SERIALIZER = arrivalsNDepartures.token('QueryResultsSerializer');
-
 class SynchronizationConflict {
 }
 
@@ -30662,10 +30628,12 @@ class ActiveQueries {
         this.queries = new Map();
     }
     add(portableQuery, cachedSqlQuery) {
-        this.queries.set(portableQuery, cachedSqlQuery);
+        const serializedJSONQuery = JSON.stringify(portableQuery.jsonQuery);
+        this.queries.set(serializedJSONQuery, cachedSqlQuery);
     }
     remove(portableQuery) {
-        this.queries.delete(portableQuery);
+        const serializedJSONQuery = JSON.stringify(portableQuery.jsonQuery);
+        this.queries.delete(serializedJSONQuery);
     }
     markQueriesToRerun(applicationMap, trackedRepoGUIDSet) {
         this.queries.forEach((cachedSqlQuery) => {
@@ -30711,6 +30679,23 @@ class ActiveQueries {
 }
 
 class ObservableQueryAdapter {
+    constructor() {
+        this.repositoryGUIDSetToCheck = new Set();
+    }
+    init() {
+        this.repositoryLoadInterval = setInterval(() => {
+            // Query for all repositories
+            // Find missing repositories
+            // Load missing repositories
+            this.repositoryGUIDSetToCheck.clear();
+        }, 1000);
+    }
+    // FIXIME: implement calling disposed in dependency injection
+    // when the object is unloaded (once unloading of objects is
+    // implemented)
+    dispose() {
+        clearInterval(this.repositoryLoadInterval);
+    }
     wrapInObservable(portableQuery, queryCallback) {
         // TODO: checking for presence of a Repository in an Observable
         // await this.ensureRepositoryPresenceAndCurrentState(context)
@@ -30748,6 +30733,7 @@ class ObservableQueryAdapter {
                     throw new Error(`Invalid Repository GUID`);
                 }
                 trackedRepoGUIDSet.add(trackedRepoGUID);
+                this.repositoryGUIDSetToCheck.add(trackedRepoGUID);
             }
         }
         return trackedRepoGUIDSet;
@@ -31118,11 +31104,12 @@ class AbstractObjectResultParser {
  * inter-connected graph (where possible).
  */
 class EntityGraphResultParser extends AbstractObjectResultParser {
-    constructor(config, datastructureUtils, rootDbEntity, applicationUtils, entityStateManager, utils) {
+    constructor(config, datastructureUtils, rootDbEntity, applicationUtils, queryUtils, entityStateManager, utils) {
         super(applicationUtils, entityStateManager, utils);
         this.config = config;
         this.datastructureUtils = datastructureUtils;
         this.rootDbEntity = rootDbEntity;
+        this.queryUtils = queryUtils;
         // Keys can only be strings or numbers | TODO: change to JS Maps, if needed
         this.entityMapByApplicationAndTableIndexes = [];
         // One-To-Many & MtO temp stubs (before entityId is available)
@@ -31143,7 +31130,7 @@ class EntityGraphResultParser extends AbstractObjectResultParser {
     bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, context) {
         const oneToManyStubAdded = this.addManyToOneStub(resultObject, propertyName, relationInfos, context);
         if (oneToManyStubAdded) {
-            const relatedEntityId = this.applicationUtils.getIdKey(resultObject[propertyName], relationDbEntity);
+            const relatedEntityId = this.queryUtils.getIdKey(resultObject[propertyName], relationDbEntity);
             this.bufferManyToOne(dbEntity, propertyName, relationDbEntity, relatedEntityId);
         }
     }
@@ -31153,7 +31140,7 @@ class EntityGraphResultParser extends AbstractObjectResultParser {
     }
     bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject, context) {
         resultObject[propertyName] = childResultObject;
-        const relatedEntityId = this.applicationUtils.getIdKey(resultObject[propertyName], relationDbEntity);
+        const relatedEntityId = this.queryUtils.getIdKey(resultObject[propertyName], relationDbEntity);
         this.bufferManyToOne(dbEntity, propertyName, relationDbEntity, relatedEntityId);
     }
     bufferBlankManyToOneObject(entityAlias, resultObject, propertyName) {
@@ -31249,7 +31236,7 @@ class EntityGraphResultParser extends AbstractObjectResultParser {
         if (!source || target === source) {
             return target;
         }
-        const id = this.applicationUtils.getIdKey(target, dbEntity);
+        const id = this.queryUtils.getIdKey(target, dbEntity);
         for (let propertyName in selectClauseFragment) {
             if (selectClauseFragment[propertyName] === undefined) {
                 continue;
@@ -31311,7 +31298,7 @@ class EntityGraphResultParser extends AbstractObjectResultParser {
                             const sourceSet = {};
                             if (sourceArray) {
                                 sourceArray.forEach((sourceChild) => {
-                                    const sourceChildIdValue = this.applicationUtils.getIdKey(sourceChild, childDbEntity);
+                                    const sourceChildIdValue = this.queryUtils.getIdKey(sourceChild, childDbEntity);
                                     sourceSet[sourceChildIdValue] = sourceChild;
                                 });
                             }
@@ -31321,7 +31308,7 @@ class EntityGraphResultParser extends AbstractObjectResultParser {
                             }
                             if (targetArray) {
                                 targetArray.forEach((targetChild) => {
-                                    const targetChildIdValue = this.applicationUtils.getIdKey(targetChild, childDbEntity);
+                                    const targetChildIdValue = this.queryUtils.getIdKey(targetChild, childDbEntity);
                                     if (this.config && this.config.strict && !sourceSet[targetChildIdValue]) {
                                         throw new Error(`One-to-Many child arrays don't match for 
 										'${dbEntity.name}.${dbProperty.name}', Id: ${id}`);
@@ -31714,7 +31701,7 @@ class ObjectResultParserFactory {
     getObjectResultParser(queryResultType, config, rootDbEntity) {
         switch (queryResultType) {
             case QueryResultType.ENTITY_GRAPH:
-                return new EntityGraphResultParser(config, this.datastructureUtils, rootDbEntity, this.applicationUtils, this.entityStateManager, this.utils);
+                return new EntityGraphResultParser(config, this.datastructureUtils, rootDbEntity, this.applicationUtils, this.queryUtils, this.entityStateManager, this.utils);
             case QueryResultType.ENTITY_TREE:
                 return new EntityTreeResultParser(this.applicationUtils, this.entityStateManager, this.utils);
             default:
@@ -31752,11 +31739,12 @@ var ClauseType;
     ClauseType["FUNCTION_CALL"] = "FUNCTION_CALL";
 })(ClauseType || (ClauseType = {}));
 class SQLWhereBase {
-    constructor(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
+    constructor(dbEntity, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
         this.dbEntity = dbEntity;
         this.dialect = dialect;
         this.airportDatabase = airportDatabase;
         this.applicationUtils = applicationUtils;
+        this.queryUtils = queryUtils;
         this.entityStateManager = entityStateManager;
         this.qMetadataUtils = qMetadataUtils;
         this.qValidator = qValidator;
@@ -32021,8 +32009,8 @@ class SQLWhereBase {
  * Created by Papa on 10/2/2016.
  */
 class SQLNoJoinQuery extends SQLWhereBase {
-    constructor(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
-        super(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+    constructor(dbEntity, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
+        super(dbEntity, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.relationManager = relationManager;
     }
     getFromFragment(fromRelation, fieldMap, syncAllFields, context, addAs = true) {
@@ -32042,7 +32030,7 @@ class SQLNoJoinQuery extends SQLWhereBase {
 			'${tableName}',
 			expecting: '${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}'`);
         }
-        const firstQEntity = new QEntity(firstDbEntity, this.applicationUtils, this.relationManager);
+        const firstQEntity = new QEntity(firstDbEntity, this.queryUtils, this.relationManager);
         const tableAlias = this.relationManager.getAlias(fromRelation);
         this.qEntityMapByAlias[tableAlias] = firstQEntity;
         let fromFragment = `\t${tableName}`;
@@ -32060,9 +32048,9 @@ class SQLNoJoinQuery extends SQLWhereBase {
  * Created by Papa on 10/2/2016.
  */
 class SQLDelete extends SQLNoJoinQuery {
-    constructor(jsonDelete, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
+    constructor(jsonDelete, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
         super(airportDatabase.applications[jsonDelete.DF.si].currentVersion[0]
-            .applicationVersion.entities[jsonDelete.DF.ti], dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+            .applicationVersion.entities[jsonDelete.DF.ti], dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.jsonDelete = jsonDelete;
     }
     toSQL(fieldMap, context) {
@@ -32090,11 +32078,11 @@ FROM
  * Created by Papa on 11/17/2016.
  */
 class SQLInsertValues extends SQLNoJoinQuery {
-    constructor(jsonInsertValues, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context
+    constructor(jsonInsertValues, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context
     // repository?: IRepository
     ) {
         super(airportDatabase.applications[jsonInsertValues.II.si].currentVersion[0]
-            .applicationVersion.entities[jsonInsertValues.II.ti], dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+            .applicationVersion.entities[jsonInsertValues.II.ti], dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.jsonInsertValues = jsonInsertValues;
     }
     toSQL(fieldMap, context) {
@@ -32168,8 +32156,8 @@ class EntityDefaults {
  * String based SQL query.
  */
 class SQLQuery extends SQLWhereBase {
-    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
-        super(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
+        super(dbEntity, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.jsonQuery = jsonQuery;
         this.queryResultType = queryResultType;
         this.relationManager = relationManager;
@@ -32253,9 +32241,9 @@ on '${leftDbEntity.applicationVersion.application.name}.${leftDbEntity.name}.${d
  * Created by Papa on 10/2/2016.
  */
 class SQLUpdate extends SQLNoJoinQuery {
-    constructor(jsonUpdate, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
+    constructor(jsonUpdate, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
         super(airportDatabase.applications[jsonUpdate.U.si].currentVersion[0]
-            .applicationVersion.entities[jsonUpdate.U.ti], dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+            .applicationVersion.entities[jsonUpdate.U.ti], dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.jsonUpdate = jsonUpdate;
     }
     toSQL(internalFragments, fieldMap, context) {
@@ -32361,8 +32349,8 @@ class SqlFunctionField {
  * Created by Papa on 10/28/2016.
  */
 class NonEntitySQLQuery extends SQLQuery {
-    constructor(jsonQuery, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(jsonQuery, null, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(jsonQuery, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(jsonQuery, null, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
     }
     addQEntityMapByAlias(sourceMap) {
         for (let alias in sourceMap) {
@@ -32709,8 +32697,8 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
  * Created by Papa on 10/29/2016.
  */
 class FieldSQLQuery extends NonEntitySQLQuery {
-    constructor(jsonQuery, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(jsonQuery, dialect, QueryResultType.FIELD, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(jsonQuery, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(jsonQuery, dialect, QueryResultType.FIELD, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
         this.orderByParser = new ExactOrderByParser(qValidator);
     }
     async parseQueryResults(results, internalFragments, queryResultType, context, bridgedQueryConfiguration) {
@@ -32753,8 +32741,8 @@ class FieldSQLQuery extends NonEntitySQLQuery {
  * Created by Papa on 10/28/2016.
  */
 class TreeSQLQuery extends NonEntitySQLQuery {
-    constructor(jsonQuery, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(jsonQuery, dialect, QueryResultType.TREE, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(jsonQuery, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(jsonQuery, dialect, QueryResultType.TREE, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
         this.queryParser = new TreeQueryResultParser(applicationUtils, entityStateManager, utils);
         this.orderByParser = new MappedOrderByParser(qValidator);
     }
@@ -32861,7 +32849,7 @@ class TreeSQLQuery extends NonEntitySQLQuery {
 
 class SubStatementSqlGenerator {
     getTreeQuerySql(jsonTreeQuery, dialect, context) {
-        let mappedSqlQuery = new TreeSQLQuery(jsonTreeQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
+        let mappedSqlQuery = new TreeSQLQuery(jsonTreeQuery, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
         const subQuerySql = mappedSqlQuery.toSQL({}, context);
         const parameterReferences = mappedSqlQuery.parameterReferences;
         return {
@@ -32870,7 +32858,7 @@ class SubStatementSqlGenerator {
         };
     }
     getFieldQuerySql(jsonFieldSqlSubQuery, dialect, qEntityMapByAlias, context) {
-        let fieldSqlQuery = new FieldSQLQuery(jsonFieldSqlSubQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
+        let fieldSqlQuery = new FieldSQLQuery(jsonFieldSqlSubQuery, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
         fieldSqlQuery.addQEntityMapByAlias(qEntityMapByAlias);
         const subQuerySql = fieldSqlQuery.toSQL({}, context);
         const parameterReferences = fieldSqlQuery.parameterReferences;
@@ -32888,8 +32876,8 @@ class SubStatementSqlGenerator {
  * Represents SQL String query with Entity tree Select clause.
  */
 class EntitySQLQuery extends SQLQuery {
-    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, objectResultParserFactory, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context, graphQueryConfiguration) {
-        super(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, objectResultParserFactory, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context, graphQueryConfiguration) {
+        super(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.objectResultParserFactory = objectResultParserFactory;
         this.graphQueryConfiguration = graphQueryConfiguration;
         this.columnAliases = new AliasCache();
@@ -33136,7 +33124,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
         if (numNonNullColumns === 0) {
             return null;
         }
-        let idValue = this.applicationUtils.getIdKey(resultObject, dbEntity);
+        let idValue = this.queryUtils.getIdKey(resultObject, dbEntity);
         return this.queryParser.flushEntity(entityAlias, dbEntity, selectClauseFragment, idValue, resultObject, context);
     }
     /**
@@ -33359,8 +33347,8 @@ ${getErrorMessageSelectStatement(this.jsonQuery.S)}
  * Represents SQL String query with flat (aka traditional) Select clause.
  */
 class SheetSQLQuery extends NonEntitySQLQuery {
-    constructor(jsonQuery, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(jsonQuery, dialect, QueryResultType.SHEET, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(jsonQuery, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(jsonQuery, dialect, QueryResultType.SHEET, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
         this.orderByParser = new ExactOrderByParser(qValidator);
     }
     async parseQueryResults(results, internalFragments, queryResultType, context, bridgedQueryConfiguration) {
@@ -33727,6 +33715,7 @@ fuelHydrantSystem.setDependencies(ObjectResultParserFactory, {
     applicationUtils: ApplicationUtils,
     datastructureUtils: DatastructureUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
+    queryUtils: QUERY_UTILS,
     utils: Utils
 });
 fuelHydrantSystem.setDependencies(SqlDriver, {
@@ -33751,6 +33740,7 @@ fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
     applicationUtils: ApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
     qMetadataUtils: QMetadataUtils,
+    queryUtils: QUERY_UTILS,
     qValidator: QValidator,
     relationManager: RelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
@@ -36743,7 +36733,7 @@ class UpdateManager {
         const qEntity = this.airportDatabase
             .qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
         const jsonUpdate = portableQuery.jsonQuery;
-        const getSheetSelectFromSetClauseResult = this.applicationUtils.getSheetSelectFromSetClause(context.dbEntity, qEntity, jsonUpdate.S, errorPrefix);
+        const getSheetSelectFromSetClauseResult = this.queryUtils.getSheetSelectFromSetClause(context.dbEntity, qEntity, jsonUpdate.S, errorPrefix);
         const sheetQuery = new SheetQuery(null);
         const jsonSelectClause = sheetQuery.nonDistinctSelectClauseToJSON(getSheetSelectFromSetClauseResult.selectClause, this.queryUtils, this.fieldUtils, this.relationManager);
         const jsonSelect = {
@@ -38437,7 +38427,6 @@ TRANSACTIONAL_SERVER.setDependencies({
 });
 terminal.setDependencies(UpdateManager, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
     datastructureUtils: DatastructureUtils,
     dictionary: Dictionary,
     fieldUtils: FieldUtils,
@@ -39122,6 +39111,9 @@ class OperationDeserializer {
         }
         return valueCopy;
     }
+}
+
+class RequestManager {
 }
 
 class EntityCopier {
@@ -39831,6 +39823,30 @@ class QueryFacade {
     }
 }
 
+const applicationState = {
+    api: null,
+    application: null,
+    appState: AppState.NOT_INITIALIED,
+    domain: null,
+    // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
+    // and debugging (https://localhost:3000)
+    hostServer: 'https://localhost:3000',
+    // FIXME: tie this in to the hostServer variable
+    mainDomain: null,
+    observableMessageMap: new Map(),
+    pendingMessageMap: new Map(),
+    messageCallback: null,
+};
+
+class ApplicationStore {
+    constructor() {
+        this.applicationState = applicationState;
+    }
+    get state() {
+        return this.applicationState;
+    }
+}
+
 class EntityAccumulator {
     constructor(applicationDomain, applicationName, entityMap) {
         this.applicationDomain = applicationDomain;
@@ -39962,7 +39978,7 @@ function injectAirportDatabase() {
 }
 
 const tower = lib('tower');
-tower.register(EntityCopier);
+tower.register(ApplicationStore, EntityCopier, RequestManager);
 AIRPORT_DATABASE.setClass(AirportDatabase);
 ENTITY_STATE_MANAGER.setClass(EntityStateManager);
 API_REGISTRY.setClass(ApiRegistry);

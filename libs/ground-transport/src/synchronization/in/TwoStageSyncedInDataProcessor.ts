@@ -1,7 +1,4 @@
 import {
-	RepositorySynchronizationMessage
-} from '@airport/arrivals-n-departures'
-import {
 	Actor_LocalId,
 	ApplicationVersion_LocalId,
 	DbApplication,
@@ -9,6 +6,7 @@ import {
 	IRepositoryTransactionHistory,
 	ISynchronizationConflict,
 	ISynchronizationConflictValues,
+	RepositorySynchronizationMessage,
 	RepositoryTransactionType,
 	Repository_GUID,
 	Repository_LocalId,

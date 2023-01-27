@@ -1,6 +1,6 @@
 import { QApp } from "@airport/aviation-communication"
-import { ApplicationEntity_TableIndex, Application_Index, DbApplication, DbEntity } from "@airport/ground-control"
-import { IApplicationUtils, IRelationManager } from "@airport/tarmaq-query"
+import { ApplicationEntity_TableIndex, Application_Index, DbApplication, DbEntity, IApplicationUtils } from "@airport/ground-control"
+import { IRelationManager } from "@airport/tarmaq-query"
 import { QAppInternal } from "../AirportDatabase"
 
 export interface DbApplicationWithDependencies {

@@ -6,7 +6,6 @@ import {
   IQEntityInternal,
   IQueryUtils,
   RawInsertValues,
-  IApplicationUtils,
   IRelationManager,
 } from '@airport/tarmaq-query';
 import {
@@ -14,7 +13,7 @@ import {
   Injected
 } from '@airport/direction-indicator'
 import { IContext } from '@airport/direction-indicator';
-import { DbColumn, JsonQuery, PortableQuery, QueryResultType } from '@airport/ground-control';
+import { DbColumn, IApplicationUtils, JsonQuery, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { ITransaction } from '@airport/terminal-map';
 
 interface IColumnValueLookup {

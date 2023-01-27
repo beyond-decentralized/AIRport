@@ -10,9 +10,9 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { DbApplication } from '@airport/ground-control'
+import { DbApplication, IApplicationUtils } from '@airport/ground-control'
 import { IQueryEntityClassCreator } from '@airport/terminal-map'
-import { IApplicationUtils, IRelationManager } from '@airport/tarmaq-query'
+import { IRelationManager } from '@airport/tarmaq-query'
 
 @Injected()
 export class QueryEntityClassCreator

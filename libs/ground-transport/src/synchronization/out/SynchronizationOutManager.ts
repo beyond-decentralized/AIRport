@@ -5,9 +5,8 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { RepositorySynchronizationData, RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
-	IDatastructureUtils, IRepository, IRepositoryTransactionHistory, Repository_GUID, Repository_LocalId, Repository_Source
+	IDatastructureUtils, IRepository, IRepositoryTransactionHistory, RepositorySynchronizationData, RepositorySynchronizationMessage, Repository_GUID, Repository_LocalId, Repository_Source
 } from '@airport/ground-control'
 import {
 	IRepositoryDao,

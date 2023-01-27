@@ -15,6 +15,7 @@ import {
     AIRPORT_DATABASE, ApplicationUtils, QMetadataUtils, RelationManager, Utils
 } from '@airport/air-traffic-control'
 import { ActiveQueries, ObservableQueryAdapter } from '@airport/flight-number'
+import { QUERY_UTILS } from '@airport/tarmaq-query'
 
 const fuelHydrantSystem = lib('fuel-hydrant-system')
 
@@ -33,6 +34,7 @@ fuelHydrantSystem.setDependencies(ObjectResultParserFactory, {
     applicationUtils: ApplicationUtils,
     datastructureUtils: DatastructureUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
+    queryUtils: QUERY_UTILS,
     utils: Utils
 })
 
@@ -46,6 +48,7 @@ fuelHydrantSystem.setDependencies(SqlDriver as any, {
     objectResultParserFactory: ObjectResultParserFactory,
     observableQueryAdapter: ObservableQueryAdapter,
     qMetadataUtils: QMetadataUtils,
+    queryUtils: QUERY_UTILS,
     qValidator: QValidator,
     relationManager: RelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
@@ -59,6 +62,7 @@ fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
     applicationUtils: ApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
     qMetadataUtils: QMetadataUtils,
+    queryUtils: QUERY_UTILS,
     qValidator: QValidator,
     relationManager: RelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,

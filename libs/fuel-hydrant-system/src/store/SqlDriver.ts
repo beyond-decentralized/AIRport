@@ -33,6 +33,7 @@ import {
 	StoreType,
 	IAppTrackerUtils,
 	SyncApplicationMap,
+	IApplicationUtils,
 } from '@airport/ground-control';
 import {
 	IStoreDriver,
@@ -56,7 +57,7 @@ import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
 import { IValidator } from '../validation/Validator';
 import { ISubStatementSqlGenerator } from '../sql/core/SubStatementSqlGenerator';
 import { IObjectResultParserFactory } from '../result/entity/ObjectResultParserFactory';
-import { IApplicationUtils, IRelationManager } from '@airport/tarmaq-query';
+import { IQueryUtils, IRelationManager } from '@airport/tarmaq-query';
 import { doEnsureContext } from '@airport/tarmaq-dao';
 
 /**
@@ -92,6 +93,9 @@ export abstract class SqlDriver
 
 	@Inject()
 	qMetadataUtils: IQMetadataUtils
+
+	@Inject()
+	queryUtils: IQueryUtils
 
 	@Inject()
 	qValidator: IValidator
@@ -314,6 +318,7 @@ Entity:          ${table.name}
 			}, this.getDialect(context),
 				this.airportDatabase,
 				this.applicationUtils,
+				this.queryUtils,
 				this.entityStateManager,
 				this.qMetadataUtils,
 				this.qValidator,
@@ -343,6 +348,7 @@ Entity:          ${table.name}
 			<JsonDelete>portableQuery.jsonQuery, this.getDialect(context),
 			this.airportDatabase,
 			this.applicationUtils,
+			this.queryUtils,
 			this.entityStateManager,
 			this.qMetadataUtils,
 			this.qValidator,
@@ -371,6 +377,7 @@ Entity:          ${table.name}
 			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(context),
 			this.airportDatabase,
 			this.applicationUtils,
+			this.queryUtils,
 			this.entityStateManager,
 			this.qMetadataUtils,
 			this.qValidator,
@@ -423,6 +430,7 @@ Entity:          ${table.name}
 					dbEntity, dialect, resultType,
 					this.airportDatabase,
 					this.applicationUtils,
+					this.queryUtils,
 					this.entityStateManager,
 					this.objectResultParserFactory,
 					this.qMetadataUtils,
@@ -437,6 +445,7 @@ Entity:          ${table.name}
 				return new FieldSQLQuery(<JsonFieldQuery>jsonQuery, dialect,
 					this.airportDatabase,
 					this.applicationUtils,
+					this.queryUtils,
 					this.entityStateManager,
 					this.qMetadataUtils,
 					this.qValidator,
@@ -450,6 +459,7 @@ Entity:          ${table.name}
 				return new SheetSQLQuery(<JsonSheetQuery>jsonQuery, dialect,
 					this.airportDatabase,
 					this.applicationUtils,
+					this.queryUtils,
 					this.entityStateManager,
 					this.qMetadataUtils,
 					this.qValidator,
@@ -463,6 +473,7 @@ Entity:          ${table.name}
 				return new TreeSQLQuery(<JsonSheetQuery>jsonQuery, dialect,
 					this.airportDatabase,
 					this.applicationUtils,
+					this.queryUtils,
 					this.entityStateManager,
 					this.qMetadataUtils,
 					this.qValidator,

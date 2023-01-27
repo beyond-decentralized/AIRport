@@ -3,8 +3,8 @@ import {
 	IQMetadataUtils,
 	IUtils
 } from '@airport/air-traffic-control'
-import { IEntityStateManager, JsonDelete, SyncApplicationMap } from '@airport/ground-control'
-import { IApplicationUtils, IRelationManager } from '@airport/tarmaq-query'
+import { IApplicationUtils, IEntityStateManager, JsonDelete, SyncApplicationMap } from '@airport/ground-control'
+import { IQueryUtils, IRelationManager } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
@@ -25,6 +25,7 @@ export class SQLDelete
 		dialect: SQLDialect,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
+		queryUtils: IQueryUtils,
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
@@ -39,6 +40,7 @@ export class SQLDelete
 			.applicationVersion.entities[jsonDelete.DF.ti], dialect,
 			airportDatabase,
 			applicationUtils,
+			queryUtils,
 			entityStateManager,
 			qMetadataUtils,
 			qValidator,

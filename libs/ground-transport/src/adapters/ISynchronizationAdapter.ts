@@ -1,5 +1,4 @@
-import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { Repository_GUID, Repository_Source } from "@airport/ground-control";
+import { RepositorySynchronizationMessage, Repository_GUID, Repository_Source } from "@airport/ground-control";
 
 export interface ISynchronizationAdapter {
 

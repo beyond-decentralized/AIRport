@@ -1,4 +1,4 @@
-import { IApplicationApi } from "@airport/check-in"
+import { IApplicationApi } from "@airport/air-traffic-control"
 import { Observer } from "rxjs"
 import { IIsolateMessage } from "../isolate/IsolateMessage"
 

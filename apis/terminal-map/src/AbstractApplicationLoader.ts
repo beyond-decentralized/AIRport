@@ -1,13 +1,7 @@
-import {
-    IApiRegistry,
-} from '@airport/check-in'
-import {
-    IApplicationLoader,
-    JsonApplicationWithLastIds,
-    LastIds
-} from '@airport/apron'
+import { IApiRegistry, JsonApplicationWithLastIds, LastIds } from '@airport/air-traffic-control'
 import { Inject, Injected } from '@airport/direction-indicator'
 import { IApplicationInitializer } from './core/ApplicationInitializer'
+import { IApplicationLoader } from './isolate/ApplicationLoader'
 import { ITerminalStore } from './store/TerminalStore'
 
 @Injected()
