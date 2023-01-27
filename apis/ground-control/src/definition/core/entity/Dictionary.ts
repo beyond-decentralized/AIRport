@@ -1,6 +1,6 @@
 import { Injected } from "@airport/direction-indicator";
 import { DbEntity } from "../../application/Entity";
-import { DbProperty } from "../../application/Property";
+import { DbColumn, DbProperty } from "../../application/Property";
 
 export type Primitive = boolean | Date | number | string;
 
@@ -320,6 +320,34 @@ export class Dictionary {
 			this.airport.apps.TRAVEL_DOCUMENT_CHECKPOINT,
 			this.UserAccount
 		)
+	}
+
+	isActorRelationColumn(
+		dbColumn: DbColumn
+	): boolean {
+		return /.*_AID_[\d]+$/.test(dbColumn.name)
+			&& !!dbColumn.manyRelationColumns.length
+	}
+
+	isRepositoryRelationColumn(
+		dbColumn: DbColumn
+	): boolean {
+		return /.*_RID_[\d]+$/.test(dbColumn.name)
+			&& !!dbColumn.manyRelationColumns.length
+	}
+
+	isActorProperty(
+		dbProperty: DbProperty
+	) {
+		return dbProperty.entity.isAirEntity
+			&& this.AirEntity.properties.actor === dbProperty.name
+	}
+
+	isRepositoryProperty(
+		dbProperty: DbProperty
+	) {
+		return dbProperty.entity.isAirEntity
+			&& this.AirEntity.properties.repository === dbProperty.name
 	}
 
 	private isEntityType(

@@ -4,6 +4,7 @@ import {
 import {
 	ApplicationMap,
 	PortableQuery,
+	Repository_GUID,
 	SyncApplicationMap
 } from '@airport/ground-control'
 import { Subject } from 'rxjs'
@@ -33,7 +34,8 @@ export interface IActiveQueries<SQLQuery extends IFieldMapped> {
 	 * 
 	 */
 	markQueriesToRerun(
-		applicationMap: SyncApplicationMap
+		applicationMap: SyncApplicationMap,
+		trackedRepoGUIDSet: Set<Repository_GUID>
 	): void;
 
 	rerunQueries(): void;
@@ -62,17 +64,40 @@ export class ActiveQueries<SQLQuery extends IFieldMapped>
 	}
 
 	markQueriesToRerun(
-		applicationMap: SyncApplicationMap
+		applicationMap: SyncApplicationMap,
+		trackedRepoGUIDSet: Set<Repository_GUID>
 	): void {
 		this.queries.forEach((cachedSqlQuery) => {
-			if (cachedSqlQuery.rerun) {
-				// already marked to be re-run
-				return
-			}
-			if (applicationMap.intersects(cachedSqlQuery.sqlQuery.getFieldMap())) {
-				cachedSqlQuery.rerun = true
-			}
+			cachedSqlQuery.rerun = this.shouldQueryBeRerun(
+				cachedSqlQuery, applicationMap, trackedRepoGUIDSet)
 		})
+	}
+
+	private shouldQueryBeRerun(
+		cachedSqlQuery: CachedSQLQuery<SQLQuery>,
+		applicationMap: SyncApplicationMap,
+		trackedRepoGUIDSet: Set<Repository_GUID>,
+	): boolean {
+		if (cachedSqlQuery.rerun) {
+			// already marked to be re-run
+			return true
+		}
+
+		if (!applicationMap.intersects(cachedSqlQuery.sqlQuery.getFieldMap())) {
+			return false
+		}
+
+		if (!cachedSqlQuery.trackedRepoGUIDSet.size || !trackedRepoGUIDSet.size) {
+			return true
+		}
+
+		for (const repositoryGUID of trackedRepoGUIDSet.values()) {
+			if (cachedSqlQuery.trackedRepoGUIDSet.has(repositoryGUID)) {
+				return true
+			}
+		}
+
+		return false
 	}
 
 	rerunQueries( //
@@ -104,7 +129,8 @@ export interface CachedSQLQuery<SQLQuery extends IFieldMapped> {
 	rerun: boolean;
 	runQuery: Function,
 	sqlQuery: SQLQuery,
-	sql: string
+	sql: string,
+	trackedRepoGUIDSet: Set<Repository_GUID>,
 }
 
 export interface IFieldMapped {

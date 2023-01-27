@@ -1,6 +1,7 @@
 import {
 	JsonNonEntityQuery,
-	JsonTreeQuery
+	JsonTreeQuery,
+	Repository_GUID
 } from '@airport/ground-control'
 import { IEntityAliases } from '../../../definition/core/entity/Aliases'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
@@ -21,8 +22,9 @@ export class TreeQuery<ITE extends ITreeEntity>
 	constructor(
 		public rawQuery: RawTreeQuery<ITE>,
 		entityAliases: IEntityAliases = new EntityAliases(),
+		trackedRepoGUIDSet?: Set<Repository_GUID>,
 	) {
-		super(entityAliases)
+		super(entityAliases, trackedRepoGUIDSet)
 	}
 
 	toJSON(

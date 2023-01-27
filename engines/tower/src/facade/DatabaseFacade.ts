@@ -8,7 +8,8 @@ import {
 	ISaveResult,
 	ITransactionalConnector,
 	IUpdateCacheManager,
-	PortableQuery
+	PortableQuery,
+	Repository_GUID
 } from '@airport/ground-control'
 import { IDatabaseFacade, IFunctionWrapper, IQueryFacade } from '@airport/tarmaq-dao'
 import { IEntityContext } from '@airport/tarmaq-entity'
@@ -58,7 +59,8 @@ export class DatabaseFacade
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		context: IContext
+		context: IContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number> {
 		if (!rawInsertColumnValues) {
 			return 0
@@ -66,7 +68,8 @@ export class DatabaseFacade
 		if (rawInsertColumnValues instanceof Function) {
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
-		const insertColumnValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
+		const insertColumnValues: InsertColumnValues<IQE> = new InsertColumnValues(
+			rawInsertColumnValues, null, trackedRepoGUIDSet)
 		const queryContext = await this.ensureQueryContext(context)
 		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertColumnValues, null, queryContext)
@@ -76,7 +79,8 @@ export class DatabaseFacade
 
 	async insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> },
-		context: IContext
+		context: IContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number> {
 		if (!rawInsertValues) {
 			return 0
@@ -84,7 +88,8 @@ export class DatabaseFacade
 		if (rawInsertValues instanceof Function) {
 			rawInsertValues = rawInsertValues()
 		}
-		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
+		const insertValues: InsertValues<IQE> = new InsertValues(
+			rawInsertValues, null, trackedRepoGUIDSet)
 		const queryContext = await this.ensureQueryContext(context)
 		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
@@ -96,7 +101,8 @@ export class DatabaseFacade
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		context: IContext
+		context: IContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number[][] | string[][]> {
 		if (!rawInsertColumnValues) {
 			return []
@@ -104,7 +110,8 @@ export class DatabaseFacade
 		if (rawInsertColumnValues instanceof Function) {
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
-		const insertValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
+		const insertValues: InsertColumnValues<IQE> = new InsertColumnValues(
+			rawInsertColumnValues, null, trackedRepoGUIDSet)
 		const queryContext = await this.ensureQueryContext(context)
 		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
@@ -116,7 +123,8 @@ export class DatabaseFacade
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		},
-		context: IContext
+		context: IContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number[][] | string[][]> {
 		if (!rawInsertValues) {
 			return []
@@ -124,7 +132,8 @@ export class DatabaseFacade
 		if (rawInsertValues instanceof Function) {
 			rawInsertValues = rawInsertValues()
 		}
-		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
+		const insertValues: InsertValues<IQE> = new InsertValues(
+			rawInsertValues, null, trackedRepoGUIDSet)
 		const queryContext = await this.ensureQueryContext(context)
 		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
@@ -136,7 +145,8 @@ export class DatabaseFacade
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
-		context: IContext
+		context: IContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number> {
 		if (!rawDelete) {
 			return 0
@@ -144,7 +154,8 @@ export class DatabaseFacade
 		if (rawDelete instanceof Function) {
 			rawDelete = rawDelete()
 		}
-		let deleteWhere: Delete<IQE> = new Delete(rawDelete)
+		let deleteWhere: Delete<IQE> = new Delete(
+			rawDelete, trackedRepoGUIDSet)
 		const queryContext = await this.ensureQueryContext(context)
 		let portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			deleteWhere, null, queryContext)
@@ -216,7 +227,8 @@ export class DatabaseFacade
 			| {
 				(...args: any[]): RawUpdateColumns<IEUC, IQE>
 			},
-		context: IContext
+		context: IContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number> {
 		if (!rawUpdate) {
 			return 0
@@ -225,7 +237,8 @@ export class DatabaseFacade
 			rawUpdate = rawUpdate()
 		}
 
-		let updateColumns: UpdateColumns<any, IQE> = new UpdateColumns(rawUpdate)
+		let updateColumns: UpdateColumns<any, IQE> = new UpdateColumns(
+			rawUpdate, trackedRepoGUIDSet)
 		const queryContext = await this.ensureQueryContext(context)
 		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			updateColumns, null, queryContext)
@@ -238,7 +251,8 @@ export class DatabaseFacade
 			rawUpdate: RawUpdate<IEUP, IQE> | {
 				(...args: any[]): RawUpdate<IEUP, IQE>
 			},
-			context: IContext
+			context: IContext,
+			trackedRepoGUIDSet?: Set<Repository_GUID>
 		): Promise<number> {
 		if (!rawUpdate) {
 			return 0
@@ -246,7 +260,8 @@ export class DatabaseFacade
 		if (rawUpdate instanceof Function) {
 			rawUpdate = rawUpdate()
 		}
-		let update: UpdateProperties<any, IQE> = new UpdateProperties(rawUpdate)
+		let update: UpdateProperties<any, IQE> = new UpdateProperties(
+			rawUpdate, trackedRepoGUIDSet)
 		const queryContext = await this.ensureQueryContext(context)
 		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			update, null, queryContext)

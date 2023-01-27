@@ -1,9 +1,10 @@
-import { JsonSheetQuery } from '@airport/ground-control'
+import { JsonSheetQuery, Repository_GUID } from '@airport/ground-control'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { IQuery } from '../../../definition/query/facade/Query'
 import { RawSheetQuery } from '../../../definition/query/facade/SheetQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
+import { EntityAliases } from '../../core/entity/Aliases'
 import { QField } from '../../core/field/Field'
 import {
 	DistinguishableQuery,
@@ -19,9 +20,10 @@ export class SheetQuery
 	implements IQuery {
 
 	constructor(
-		public rawQuery: RawSheetQuery
+		public rawQuery: RawSheetQuery,
+		trackedRepoGUIDSet?: Set<Repository_GUID>,
 	) {
-		super()
+		super(new EntityAliases(), trackedRepoGUIDSet)
 	}
 
 	nonDistinctSelectClauseToJSON(

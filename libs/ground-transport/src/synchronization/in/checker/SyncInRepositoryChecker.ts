@@ -6,7 +6,7 @@ import { RepositorySynchronizationData, RepositorySynchronizationMessage } from 
 import {
 	IRepositoryDao, RepositoryMemberDao
 } from '@airport/holding-pattern/dist/app/bundle'
-import { InMessageIndex, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Signature, RepositoryMember_Status, UserAccount_Signature } from '@airport/ground-control';
+import { InMessageIndex, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Signature, RepositoryMember_Status, Repository_GUID, Repository_LocalId, UserAccount_Signature } from '@airport/ground-control';
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 
 export interface IRepositoriesAndMembersCheckResult
@@ -31,7 +31,8 @@ export interface ISignatureCheck {
 export interface ISyncInRepositoryChecker {
 
 	checkRepositoriesAndMembers(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>
 	): Promise<IRepositoriesAndMembersCheckResult>;
 
 }
@@ -47,7 +48,8 @@ export class SyncInRepositoryChecker
 	repositoryMemberDao: RepositoryMemberDao
 
 	async checkRepositoriesAndMembers(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>
 	): Promise<IRepositoriesAndMembersCheckResult> {
 		let missingRepositories: IRepository[] = []
 		let newMembers: IRepositoryMember[] = []
@@ -117,7 +119,14 @@ export class SyncInRepositoryChecker
 			}
 
 			missingRepositories = data.referencedRepositories
-				.filter(messageRepository => !messageRepository._localId)
+				.filter(messageRepository => {
+					if (messageRepository._localId) {
+						repositoryGUIDMapByLocalId.set(
+							messageRepository._localId, messageRepository.GUID)
+						return false
+					}
+					return true
+				})
 
 			if (typeof repository !== 'object') {
 				throw new Error(`Repository with GUID ${repository} is not
@@ -125,8 +134,12 @@ export class SyncInRepositoryChecker
 	This RepositorySynchronizationData is for an existing repository and that
 	repository must already be loaded in this database for this message to be
 	processed.`)
-			} else if (!repository._localId) {
-				missingRepositories.push(repository)
+			} else {
+				if (repository._localId) {
+					repositoryGUIDMapByLocalId.set(repository._localId, repository.GUID)
+				} else {
+					missingRepositories.push(repository)
+				}
 			}
 
 			const memberCheckResult = await this.checkRepositoryMembers(message)

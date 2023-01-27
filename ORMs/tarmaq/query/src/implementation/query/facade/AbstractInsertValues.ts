@@ -1,12 +1,15 @@
 import {
 	DbColumn,
-	DbEntity
+	DbEntity,
+	Repository_GUID
 } from '@airport/ground-control'
+import { IEntityAliases } from '../../../../dist/esm'
 import { IQEntity } from '../../../definition/core/entity/Entity'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { AbstractRawInsertValues } from '../../../definition/query/facade/InsertValues'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
+import { EntityAliases } from '../../core/entity/Aliases'
 import { QField } from '../../core/field/Field'
 import { getPrimitiveValue } from '../../core/field/WrapperFunctions'
 import { AbstractQuery } from './AbstractQuery'
@@ -22,8 +25,12 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 	constructor(
 		public rawInsertValues: ARIV,
 		public columnIndexes?: number[],
+		trackedRepoGUIDSet?: Set<Repository_GUID>,
+		entityAliases: IEntityAliases = new EntityAliases(),
 	) {
-		super()
+		super(entityAliases,
+			entityAliases.getNewFieldColumnAliases(),
+			trackedRepoGUIDSet)
 	}
 
 	protected validateColumn(

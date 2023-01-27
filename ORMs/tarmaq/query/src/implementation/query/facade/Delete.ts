@@ -1,7 +1,9 @@
 import {
 	JsonDelete,
-	JSONEntityRelation
+	JSONEntityRelation,
+	Repository_GUID
 } from '@airport/ground-control'
+import { IEntityAliases } from '../../../definition/core/entity/Aliases'
 import {
 	IQEntity,
 	IQEntityInternal
@@ -10,6 +12,7 @@ import { IRelationManager } from '../../../definition/core/entity/IRelationManag
 import { RawDelete } from '../../../definition/query/facade/Delete'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
+import { EntityAliases } from '../../core/entity/Aliases'
 import { AbstractQuery } from './AbstractQuery'
 
 /**
@@ -20,9 +23,13 @@ export class Delete<IQE extends IQEntity>
 	extends AbstractQuery {
 
 	constructor(
-		public rawDelete: RawDelete<IQE>
+		public rawDelete: RawDelete<IQE>,
+		trackedRepoGUIDSet?: Set<Repository_GUID>,
+		entityAliases: IEntityAliases = new EntityAliases(),
 	) {
-		super()
+		super(entityAliases,
+			entityAliases.getNewFieldColumnAliases(),
+			trackedRepoGUIDSet)
 	}
 
 	toJSON(

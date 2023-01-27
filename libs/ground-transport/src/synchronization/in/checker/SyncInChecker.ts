@@ -13,13 +13,14 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { ApplicationEntity_LocalId, ApplicationRelation_Index, Application_Name, DbRelation, Domain_Name, IDatastructureUtils, KeyUtils } from '@airport/ground-control';
+import { ApplicationEntity_LocalId, ApplicationRelation_Index, Application_Name, DbRelation, Domain_Name, IDatastructureUtils, KeyUtils, Repository_GUID, Repository_LocalId } from '@airport/ground-control';
 import { ITerminalStore } from '@airport/terminal-map';
 
 export interface ISyncInChecker {
 
 	checkData(
 		message: RepositorySynchronizationMessage,
+		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		context: IContext
 	): Promise<IDataCheckResult>
 
@@ -70,6 +71,7 @@ export class SyncInChecker
 	 */
 	async checkData(
 		message: RepositorySynchronizationMessage,
+		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		context: IContext
 	): Promise<IDataCheckResult> {
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
@@ -98,7 +100,7 @@ export class SyncInChecker
 			}
 		}
 		const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
-			.checkRepositoriesAndMembers(message)
+			.checkRepositoriesAndMembers(message, repositoryGUIDMapByLocalId)
 		if (!repositoryAndMemberCheckResult.isValid) {
 			return {
 				isValid: false

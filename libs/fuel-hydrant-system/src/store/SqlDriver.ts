@@ -8,7 +8,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IActiveQueries
+	IActiveQueries, IObservableQueryAdapter
 } from '@airport/flight-number';
 import {
 	Application_Name,
@@ -86,6 +86,9 @@ export abstract class SqlDriver
 
 	@Inject()
 	objectResultParserFactory: IObjectResultParserFactory
+
+	@Inject()
+	observableQueryAdapter: IObservableQueryAdapter
 
 	@Inject()
 	qMetadataUtils: IQMetadataUtils
@@ -325,7 +328,8 @@ Entity:          ${table.name}
 
 			numVals += await this.executeNative(sql, parameters, context);
 		}
-		this.activeQueries.markQueriesToRerun(fieldMap);
+
+		this.markQueriesToRerun(portableQuery, fieldMap)
 
 		return numVals;
 	}
@@ -351,7 +355,8 @@ Entity:          ${table.name}
 		let sql = sqlDelete.toSQL(fieldMap, context);
 		let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
 		let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
-		this.activeQueries.markQueriesToRerun(fieldMap);
+
+		this.markQueriesToRerun(portableQuery, fieldMap)
 
 		return numberOfAffectedRecords;
 	}
@@ -377,7 +382,8 @@ Entity:          ${table.name}
 			context);
 		let sql = sqlUpdate.toSQL(internalFragments, fieldMap, context);
 		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
-		this.activeQueries.markQueriesToRerun(fieldMap);
+
+		this.markQueriesToRerun(portableQuery, fieldMap)
 
 		return await this.executeNative(sql, parameters, context);
 	}
@@ -561,6 +567,15 @@ Entity:          ${table.name}
 		context: IFuelHydrantContext
 	): Promise<IFuelHydrantContext> {
 		return <IFuelHydrantContext>doEnsureContext(context);
+	}
+
+	private markQueriesToRerun(
+		portableQuery: PortableQuery,
+		fieldMap: SyncApplicationMap
+	): void {
+		const trackedRepoGUIDSet = this.observableQueryAdapter
+			.trackedRepoGUIDArrayToSet(portableQuery.trackedRepoGUIDs)
+		this.activeQueries.markQueriesToRerun(fieldMap, trackedRepoGUIDSet)
 	}
 
 }

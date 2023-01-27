@@ -14,7 +14,7 @@ import { AppTrackerUtils, DatastructureUtils, DbApplicationUtils, ENTITY_STATE_M
 import {
     AIRPORT_DATABASE, ApplicationUtils, QMetadataUtils, RelationManager, Utils
 } from '@airport/air-traffic-control'
-import { ActiveQueries } from '@airport/flight-number'
+import { ActiveQueries, ObservableQueryAdapter } from '@airport/flight-number'
 
 const fuelHydrantSystem = lib('fuel-hydrant-system')
 
@@ -44,6 +44,7 @@ fuelHydrantSystem.setDependencies(SqlDriver as any, {
     dbApplicationUtils: DbApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
     objectResultParserFactory: ObjectResultParserFactory,
+    observableQueryAdapter: ObservableQueryAdapter,
     qMetadataUtils: QMetadataUtils,
     qValidator: QValidator,
     relationManager: RelationManager,

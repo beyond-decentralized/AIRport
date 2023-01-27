@@ -35,13 +35,13 @@ import { IRelationManager } from '../../../definition/core/entity/IRelationManag
 export abstract class AbstractQuery
 	implements IAbstractQuery {
 
-	trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
 	values: any[]
 	protected isEntityQuery: boolean = false
 
 	constructor(
 		protected entityAliases: IEntityAliases = new EntityAliases(),
-		protected columnAliases: IFieldColumnAliases<any> = entityAliases.getNewFieldColumnAliases()
+		protected columnAliases: IFieldColumnAliases<any> = entityAliases.getNewFieldColumnAliases(),
+		public trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
 	) {
 	}
 

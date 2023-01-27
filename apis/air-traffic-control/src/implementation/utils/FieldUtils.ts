@@ -25,7 +25,7 @@ export class FieldUtils
 		trackedRepoGUIDSet: Set<Repository_GUID>,
 		queryUtils: IQueryUtils
 	): JsonFieldQuery {
-		let subSelectQuery = new FieldQuery(fieldSubQuery, trackedRepoGUIDSet, entityAliases)
+		let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases, trackedRepoGUIDSet)
 
 		return subSelectQuery.toJSON(queryUtils, this, this.relationManager)
 	}

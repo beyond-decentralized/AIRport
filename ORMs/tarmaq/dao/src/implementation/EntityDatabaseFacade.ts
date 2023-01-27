@@ -14,7 +14,8 @@ import {
 import { QApp } from '@airport/aviation-communication'
 import {
   DbEntity,
-  ISaveResult
+  ISaveResult,
+  Repository_GUID
 } from '@airport/ground-control';
 import { IEntityDatabaseFacade } from '../definition/IEntityDatabaseFacade';
 import { IEntityFind } from '../definition/query/EntityFind';
@@ -76,12 +77,14 @@ export class EntityDatabaseFacade<Entity,
       (...args: any[]): RawInsertColumnValues<IQE>;
     },
     ctx?: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
   ): Promise<number> {
     return await this.withDbEntity(ctx, async (
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
-      return await databaseFacade.insertColumnValues(rawInsertColumnValues, ctx);
+      return await databaseFacade.insertColumnValues(
+        rawInsertColumnValues, ctx, trackedRepoGUIDSet);
     });
   }
 
@@ -90,13 +93,15 @@ export class EntityDatabaseFacade<Entity,
       (...args: any[]): RawInsertValues<IQE>;
     },
     ctx?: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
   ): Promise<number> {
     return await this.withDbEntity(ctx, async (
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
-      return await databaseFacade.insertValues(rawInsertValues, ctx);
-    });
+      return await databaseFacade.insertValues(
+        rawInsertValues, ctx, trackedRepoGUIDSet);
+    }, );
   }
 
   async insertColumnValuesGenerateIds<IQE extends IQEntity>(
@@ -104,12 +109,14 @@ export class EntityDatabaseFacade<Entity,
       (...args: any[]): RawInsertColumnValues<IQE>;
     },
     ctx?: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
   ): Promise<number[] | string[] | number[][] | string[][]> {
     return await this.withDbEntity(ctx, async (
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
-      return await databaseFacade.insertColumnValuesGenerateIds(rawInsertColumnValues, ctx);
+      return await databaseFacade.insertColumnValuesGenerateIds(
+        rawInsertColumnValues, ctx, trackedRepoGUIDSet);
     });
   }
 
@@ -118,12 +125,14 @@ export class EntityDatabaseFacade<Entity,
       (...args: any[]): RawInsertValues<IQE>;
     },
     ctx?: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
   ): Promise<number[] | string[] | number[][] | string[][]> {
     return await this.withDbEntity(ctx, async (
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
-      return await databaseFacade.insertValuesGenerateIds(rawInsertValues, ctx);
+      return await databaseFacade.insertValuesGenerateIds(
+        rawInsertValues, ctx, trackedRepoGUIDSet);
     });
   }
 
@@ -133,12 +142,14 @@ export class EntityDatabaseFacade<Entity,
         : RawUpdate<EntityUpdateColumns, IQ>
     },
     ctx?: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
   ): Promise<number> {
     return await this.withDbEntity(ctx, async (
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
-      return await databaseFacade.updateColumnsWhere(rawUpdateColumns, ctx);
+      return await databaseFacade.updateColumnsWhere(
+        rawUpdateColumns, ctx, trackedRepoGUIDSet);
     });
   }
 
@@ -148,24 +159,28 @@ export class EntityDatabaseFacade<Entity,
         : RawUpdate<EntityUpdateProperties, IQ>
     },
     ctx?: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
   ): Promise<number> {
     return await this.withDbEntity(ctx, async (
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
-      return await databaseFacade.updateWhere(rawUpdate, ctx);
+      return await databaseFacade.updateWhere(
+        rawUpdate, ctx, trackedRepoGUIDSet);
     });
   }
 
   async deleteWhere(
     rawDelete: RawDelete<IQ> | { (...args: any[]): RawDelete<IQ> },
     ctx?: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
   ): Promise<number> {
     return await this.withDbEntity(ctx, async (
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
-      return await databaseFacade.deleteWhere(rawDelete, ctx);
+      return await databaseFacade.deleteWhere(
+        rawDelete, ctx, trackedRepoGUIDSet);
     });
   }
 

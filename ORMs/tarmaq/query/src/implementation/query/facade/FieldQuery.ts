@@ -39,11 +39,10 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 	// boolean}}
 	constructor(
 		private rawQuery: RawFieldQuery<IQF>,
-		trackedRepoGUIDSet: Set<Repository_GUID> = new Set(),
-		entityAliases: IEntityAliases = new EntityAliases()
+		entityAliases: IEntityAliases = new EntityAliases(),
+		trackedRepoGUIDSet?: Set<Repository_GUID>,
 	) {
-		super(entityAliases)
-		this.trackedRepoGUIDSet = trackedRepoGUIDSet
+		super(entityAliases, trackedRepoGUIDSet)
 	}
 
 	nonDistinctSelectClauseToJSON(

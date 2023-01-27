@@ -1,7 +1,8 @@
 import {
 	ISaveResult,
 	PortableQuery,
-	QueryResultType
+	QueryResultType,
+	Repository_GUID
 } from '@airport/ground-control';
 import { IContext } from '@airport/direction-indicator';
 import {
@@ -46,28 +47,32 @@ export interface IDatabaseFacade {
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IEntityContext
+		ctx: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number>;
 
 	insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
-		ctx: IEntityContext
+		ctx: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number>;
 
 	insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IEntityContext
+		ctx: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
-		ctx: IEntityContext
+		ctx: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	/**
@@ -80,7 +85,8 @@ export interface IDatabaseFacade {
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
-		ctx: IEntityContext
+		ctx: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number>;
 
 	/**
@@ -117,7 +123,8 @@ export interface IDatabaseFacade {
 			| {
 				(...args: any[]): RawUpdateColumns<IEUC, IQE>
 			},
-		ctx: IEntityContext
+		ctx: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number>;
 
 	/**
@@ -130,7 +137,8 @@ export interface IDatabaseFacade {
 		rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
 			(...args: any[]): RawUpdate<IEUP, IQE>
 		},
-		ctx: IEntityContext
+		ctx: IEntityContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number>;
 
 	prepare<QF extends Function>(

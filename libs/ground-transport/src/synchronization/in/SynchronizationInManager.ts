@@ -10,7 +10,7 @@ import { ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
 import { IDataCheckResult } from './checker/SyncInDataChecker'
 import { ISyncInApplicationVersionChecker } from './checker/SyncInApplicationVersionChecker'
 import { IRepositoryLoader } from '@airport/air-traffic-control'
-import { IRepository, Repository_GUID } from '@airport/ground-control'
+import { IRepository, Repository_GUID, Repository_LocalId } from '@airport/ground-control'
 import { INewAndUpdatedRepositoriesAndRecords, IRepositoriesAndMembersCheckResult } from './checker/SyncInRepositoryChecker'
 
 /**
@@ -83,6 +83,8 @@ export class SynchronizationInManager
 			newRepositoryMemberAcceptances: []
 		}
 
+		const repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID> = new Map()
+
 		// Split up messages by type
 		for (const message of orderedMessages) {
 			if (!this.isValidLastChangeTime(
@@ -99,7 +101,8 @@ export class SynchronizationInManager
 			let processMessage = true
 			let dataCheckResult: IDataCheckResult
 			await this.transactionManager.transactInternal(async (transaction) => {
-				dataCheckResult = await this.syncInChecker.checkData(message, context)
+				dataCheckResult = await this.syncInChecker.checkData(
+					message, repositoryGUIDMapByLocalId, context)
 				if (!dataCheckResult.isValid) {
 					transaction.rollback(null, context)
 					processMessage = false
@@ -151,12 +154,13 @@ export class SynchronizationInManager
 			transaction.isSync = true
 			await this.twoStageSyncedInDataProcessor.syncMessages(
 				immediateProcessingMessages, newAndUpdatedRepositoriesAndRecords,
-				transaction, context)
+				repositoryGUIDMapByLocalId, transaction, context)
 		}, null, context)
 
 		await this.wait(2000)
 
-		await this.processDelayedMessages(delayedProcessingMessages, context)
+		await this.processDelayedMessages(delayedProcessingMessages,
+			repositoryGUIDMapByLocalId, context)
 
 		if (!context.doNotLoadReferences) {
 			await this.loadReferencedRepositories([
@@ -224,6 +228,7 @@ export class SynchronizationInManager
 
 	private async processDelayedMessages(
 		delayedProcessingMessages: RepositorySynchronizationMessage[],
+		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		context: ITransactionContext
 	): Promise<void> {
 		const delayedProcessingMessagesWithValidApps: RepositorySynchronizationMessage[] = []
@@ -249,7 +254,8 @@ export class SynchronizationInManager
 			await this.transactionManager.transactInternal(async (transaction, context) => {
 				transaction.isSync = true
 				await this.twoStageSyncedInDataProcessor.syncMessages(
-					delayedProcessingMessagesWithValidApps, null, transaction, context)
+					delayedProcessingMessagesWithValidApps, null,
+					repositoryGUIDMapByLocalId, transaction, context)
 			}, null, context)
 		}
 	}

@@ -1,3 +1,4 @@
+import { Repository_GUID } from '@airport/ground-control'
 import {
 	IEntityUpdateColumns,
 	IQEntity,
@@ -15,9 +16,10 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 	extends AbstractUpdate<IQE, RawUpdateColumns<IEUC, IQE>> {
 
 	constructor(
-		rawUpdate: RawUpdateColumns<IEUC, IQE>
+		rawUpdate: RawUpdateColumns<IEUC, IQE>,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	) {
-		super(rawUpdate)
+		super(rawUpdate, trackedRepoGUIDSet)
 	}
 
 	protected setToJSON(

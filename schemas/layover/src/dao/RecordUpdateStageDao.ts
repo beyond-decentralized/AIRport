@@ -1,7 +1,7 @@
 import {
 	IAirportDatabase
 } from '@airport/air-traffic-control'
-import { Injected } from '@airport/direction-indicator';
+import { IContext, Injected } from '@airport/direction-indicator';
 import {
 	ApplicationColumn_Index,
 	JSONBaseOperation,
@@ -11,7 +11,8 @@ import {
 	Dictionary,
 	Repository_LocalId,
 	Actor_LocalId,
-	ActorRecordId
+	ActorRecordId,
+	Repository_GUID
 } from '@airport/ground-control'
 import {
 	AND,
@@ -50,7 +51,9 @@ export interface IRecordUpdateStageDao
 		applicationVersionId: ApplicationVersion_LocalId,
 		tableIndex: ApplicationEntity_TableIndex,
 		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>,
-		updatedColumnIndexes: ApplicationColumn_Index[]
+		updatedColumnIndexes: ApplicationColumn_Index[],
+		context: IContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<void>;
 
 	delete( //
@@ -100,7 +103,9 @@ export class RecordUpdateStageDao
 		applicationVersionId: ApplicationVersion_LocalId,
 		tableIndex: ApplicationEntity_TableIndex,
 		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>,
-		updatedColumnIndexes: ApplicationColumn_Index[]
+		updatedColumnIndexes: ApplicationColumn_Index[],
+		context: IContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<void> {
 		const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
 			.applicationVersion.entities[tableIndex]
@@ -148,7 +153,7 @@ export class RecordUpdateStageDao
 			UPDATE: qEntity,
 			SET: setClause,
 			WHERE: OR(...repositoryEquals)
-		})
+		}, context, trackedRepoGUIDSet)
 	}
 
 	async delete( //

@@ -3,6 +3,7 @@ import {
 	IUtils,
 } from '@airport/air-traffic-control'
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -19,7 +20,8 @@ import {
 	Repository_LocalId,
 	Actor_LocalId,
 	ActorRecordId,
-	DbApplication
+	DbApplication,
+	Repository_GUID
 } from '@airport/ground-control'
 import {
 	IRecordUpdateStageDao,
@@ -31,7 +33,7 @@ import {
 } from './SyncInUtils'
 import { IOperationContext } from '@airport/terminal-map'
 import { IDatabaseFacade } from '@airport/tarmaq-dao'
-import { AND, IQEntityInternal, OR } from '@airport/tarmaq-query'
+import { AND, IQEntityInternal, IQOperableFieldInternal, OR } from '@airport/tarmaq-query'
 
 /**
  * Stage 2 data processor is used to optimize the number of required
@@ -41,7 +43,8 @@ export interface IStage2SyncedInDataProcessor {
 
 	applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
+		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>
 	): Promise<void>;
 
 }
@@ -86,16 +89,20 @@ export class Stage2SyncedInDataProcessor
 
 	async applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
+		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>
 	): Promise<void> {
 		const context: IOperationContext = {} as any
 
 		await this.performCreates(stage1Result.recordCreations,
-			applicationsByApplicationVersion_LocalIdMap, context)
+			applicationsByApplicationVersion_LocalIdMap,
+			repositoryGUIDMapByLocalId, context)
 		await this.performUpdates(stage1Result.recordUpdates,
-			applicationsByApplicationVersion_LocalIdMap, context)
+			applicationsByApplicationVersion_LocalIdMap,
+			repositoryGUIDMapByLocalId, context)
 		await this.performDeletes(stage1Result.recordDeletions,
-			applicationsByApplicationVersion_LocalIdMap, context)
+			applicationsByApplicationVersion_LocalIdMap,
+			repositoryGUIDMapByLocalId, context)
 	}
 
 	/**
@@ -111,17 +118,21 @@ export class Stage2SyncedInDataProcessor
 	 *  structure is passed in.
 	 */
 
-	async performCreates(
+	private async performCreates(
 		recordCreations: Map<ApplicationVersion_LocalId,
 			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<ApplicationColumn_Index, any>>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
+		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		context: IOperationContext
 	): Promise<void> {
+		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
+
 		for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
+			const applicationIndex = applicationsByApplicationVersion_LocalIdMap
+				.get(applicationVersionId).index
+
 			for (const [tableIndex, creationInTableMap] of creationInApplicationMap) {
-				const applicationIndex = applicationsByApplicationVersion_LocalIdMap
-					.get(applicationVersionId).index
 				const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
 					.applicationVersion.entities[tableIndex]
 				const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name]
@@ -134,7 +145,11 @@ export class Stage2SyncedInDataProcessor
 				let creatingColumns = true
 				let numInserts = 0
 				const VALUES: any[][] = []
+
 				for (const [repositoryId, creationForRepositoryMap] of creationInTableMap) {
+					const recordRepositoryGUID = this.getRepositoryGUID(
+						repositoryId, repositoryGUIDMapByLocalId)
+
 					for (const [actorId, creationForActorMap] of creationForRepositoryMap) {
 						for (const [_actorRecordId, creationOfRowMap] of creationForActorMap) {
 							const rowValues = [
@@ -149,6 +164,7 @@ export class Stage2SyncedInDataProcessor
 							if (columnIndexedValues.length) {
 								numInserts++
 							}
+
 							columnIndexedValues.sort((
 								col1IndexAndValue: ColumnIndexAndValue,
 								col2IndexAndValue: ColumnIndexAndValue
@@ -167,9 +183,14 @@ export class Stage2SyncedInDataProcessor
 									currentNonIdColumnArrayIndex++
 									nonIdColumn = nonIdColumns[currentNonIdColumnArrayIndex]
 								}
+								const qColumn: IQOperableFieldInternal<any, JSONBaseOperation, any, any>
+									= qEntity.__driver__.allColumns[columnIndex]
 								if (creatingColumns) {
-									columns.push(qEntity.__driver__.allColumns[columnIndex])
+									columns.push(qColumn)
+									trackedRepoGUIDSet.add(recordRepositoryGUID)
 								}
+								this.recordRepositoryGUID(qColumn.dbColumn, columnValue,
+									repositoryGUIDMapByLocalId, trackedRepoGUIDSet)
 								rowValues.push(columnValue)
 								currentNonIdColumnArrayIndex++
 							}
@@ -190,7 +211,7 @@ export class Stage2SyncedInDataProcessor
 							INSERT_INTO: qEntity,
 							columns,
 							VALUES
-						}, context)
+						}, context, trackedRepoGUIDSet)
 					} finally {
 						context.dbEntity = previousDbEntity
 					}
@@ -199,7 +220,48 @@ export class Stage2SyncedInDataProcessor
 		}
 	}
 
-	getNonIdColumnsInIndexOrder(
+	private addRepositoryGUID(
+		repositoryId: Repository_LocalId,
+		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
+		trackedRepoGUIDSet: Set<Repository_GUID>
+	): void {
+		const recordRepositoryGUID = this.getRepositoryGUID(
+			repositoryId, repositoryGUIDMapByLocalId)
+		trackedRepoGUIDSet.add(recordRepositoryGUID)
+	}
+
+	private getRepositoryGUID(
+		repositoryId: Repository_LocalId,
+		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
+	): Repository_GUID {
+		const recordRepositoryGUID = repositoryGUIDMapByLocalId.get(repositoryId)
+		if (!recordRepositoryGUID) {
+			throw new Error(`No Repository GUID from _localId: ${repositoryId}`)
+		}
+		return recordRepositoryGUID
+	}
+
+	private recordRepositoryGUID(
+		dbColumn: DbColumn,
+		columnValue: any,
+		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
+		trackedRepoGUIDSet: Set<Repository_GUID>
+	): void {
+		if (columnValue === null) {
+			return
+		}
+
+		const dbRelation = dbColumn.propertyColumns[0].property.relation[0]
+		if (!dbRelation || !this.dictionary.isRepositoryRelationColumn(dbColumn)) {
+			return
+		}
+
+		const columnRepositoryGUID = this.getRepositoryGUID(
+			columnValue, repositoryGUIDMapByLocalId)
+		trackedRepoGUIDSet.add(columnRepositoryGUID)
+	}
+
+	private getNonIdColumnsInIndexOrder(
 		dbEntity: DbEntity
 	): DbColumn[] {
 		const nonIdColumns = []
@@ -223,35 +285,49 @@ export class Stage2SyncedInDataProcessor
 		return nonIdColumns
 	}
 
-	async performUpdates(
+	private async performUpdates(
 		recordUpdates: Map<ApplicationVersion_LocalId,
 			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<ApplicationColumn_Index, RecordUpdate>>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
+		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		context: IOperationContext
 	): Promise<void> {
+		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
 		const finalUpdateMap: Map<ApplicationVersion_LocalId, Map<ApplicationEntity_TableIndex, ColumnUpdateKeyMap>> = new Map()
-
 		const recordUpdateStage: RecordUpdateStageValues[] = []
 
 		// Build the final update data structure
 		for (const [applicationVersionId, applicationUpdateMap] of recordUpdates) {
-			const finalApplicationUpdateMap
-				= this.datastructureUtils.ensureChildJsMap(
-					finalUpdateMap, applicationVersionId)
+			const finalApplicationUpdateMap = this.datastructureUtils.ensureChildJsMap(
+				finalUpdateMap, applicationVersionId)
+			const applicationIndex = applicationsByApplicationVersion_LocalIdMap
+				.get(applicationVersionId).index
+
 			for (const [tableIndex, tableUpdateMap] of applicationUpdateMap) {
 				const finalTableUpdateMap = this.datastructureUtils.ensureChildJsMap(
 					finalApplicationUpdateMap, tableIndex)
+				const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
+					.applicationVersion.entities[tableIndex]
+
 				for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
+					this.addRepositoryGUID(repositoryId, repositoryGUIDMapByLocalId,
+						trackedRepoGUIDSet)
+
 					for (const [actorId, actorUpdates] of repositoryUpdateMap) {
 						for (const [_actorRecordId, recordUpdateMap] of actorUpdates) {
 							const recordKeyMap = this.getRecordKeyMap(recordUpdateMap, finalTableUpdateMap)
+
 							this.datastructureUtils.ensureChildJsSet(
 								this.datastructureUtils.ensureChildJsMap(
 									recordKeyMap, repositoryId),
 								actorId)
 								.add(_actorRecordId)
 							for (const [columnIndex, columnUpdate] of recordUpdateMap) {
+								const dbColumn = dbEntity.columns[columnIndex]
+								this.recordRepositoryGUID(dbColumn, columnUpdate.newValue,
+									repositoryGUIDMapByLocalId, trackedRepoGUIDSet)
+
 								recordUpdateStage.push([
 									applicationVersionId,
 									tableIndex,
@@ -279,38 +355,48 @@ export class Stage2SyncedInDataProcessor
 			const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId)
 			for (const [tableIndex, updateMapForTable] of updateMapForApplication) {
 				await this.runUpdatesForTable(application.index, applicationVersionId,
-					tableIndex, updateMapForTable)
+					tableIndex, updateMapForTable, context, trackedRepoGUIDSet)
 			}
 		}
 
 		await this.recordUpdateStageDao.delete()
 	}
 
-	async performDeletes(
+	private async performDeletes(
 		recordDeletions: Map<ApplicationVersion_LocalId,
 			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Set<ActorRecordId>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
+		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		context: IOperationContext
 	): Promise<void> {
+		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
+
 		for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {
 			const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId)
+
 			for (const [tableIndex, deletionInTableMap] of deletionInApplicationMap) {
 				const dbEntity = this.airportDatabase.applications[application.index].currentVersion[0]
 					.applicationVersion.entities[tableIndex]
 				const qEntity = this.airportDatabase.qApplications[application.index][dbEntity.name]
-
 				let numClauses = 0
 				let repositoryWhereFragments: JSONBaseOperation[] = []
+
 				for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
+					const recordRepositoryGUID = this.getRepositoryGUID(
+						repositoryId, repositoryGUIDMapByLocalId)
 					let actorWhereFragments: JSONBaseOperation[] = []
+
 					for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
 						numClauses++
+
+						trackedRepoGUIDSet.add(recordRepositoryGUID)
 						actorWhereFragments.push(AND(
 							qEntity._actorRecordId.IN(Array.from(actorRecordIdSet)),
 							qEntity.actor._localId.equals(actorId)
 						))
 					}
+
 					repositoryWhereFragments.push(AND(
 						qEntity.repository._localId.equals(repositoryId),
 						OR(...actorWhereFragments)
@@ -318,7 +404,6 @@ export class Stage2SyncedInDataProcessor
 				}
 
 				if (numClauses) {
-
 					const previousDbEntity = context.dbEntity
 					context.dbEntity = (qEntity as IQEntityInternal)
 						.__driver__.dbEntity
@@ -326,7 +411,7 @@ export class Stage2SyncedInDataProcessor
 						await this.databaseFacade.deleteWhere({
 							DELETE_FROM: qEntity,
 							WHERE: OR(...repositoryWhereFragments)
-						}, context)
+						}, context, trackedRepoGUIDSet)
 					} finally {
 						context.dbEntity = previousDbEntity
 					}
@@ -398,7 +483,9 @@ export class Stage2SyncedInDataProcessor
 		applicationIndex: Application_Index,
 		applicationVersionId: ApplicationVersion_LocalId,
 		tableIndex: ApplicationEntity_TableIndex,
-		updateKeyMap: ColumnUpdateKeyMap
+		updateKeyMap: ColumnUpdateKeyMap,
+		context: IContext,
+		trackedRepoGUIDSet?: Set<Repository_GUID>
 	) {
 		for (const columnValueUpdate of updateKeyMap.values()) {
 			const updatedColumns = columnValueUpdate.updatedColumns
@@ -408,13 +495,16 @@ export class Stage2SyncedInDataProcessor
 					applicationVersionId,
 					tableIndex,
 					columnValueUpdate.recordKeyMap,
-					updatedColumns
+					updatedColumns,
+					context,
+					trackedRepoGUIDSet
 				)
 			}
 			// Traverse down into nested column update combinations
 			await this.runUpdatesForTable(
 				applicationIndex, applicationVersionId, tableIndex,
-				columnValueUpdate.childColumnUpdateKeyMap)
+				columnValueUpdate.childColumnUpdateKeyMap,
+				context, trackedRepoGUIDSet)
 		}
 
 	}

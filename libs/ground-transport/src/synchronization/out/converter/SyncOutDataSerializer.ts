@@ -812,12 +812,10 @@ export class SyncOutDataSerializer
 			}
 		}
 
-		if (/.*_AID_[\d]+$/.test(dbColumn.name)
-			&& dbColumn.manyRelationColumns.length) {
+		if (this.dictionary.isActorRelationColumn(dbColumn)) {
 			serailizedValue = this.getActorInMessageIndexById(value, lookups)
 		}
-		if (/.*_RID_[\d]+$/.test(dbColumn.name)
-			&& dbColumn.manyRelationColumns.length) {
+		if (this.dictionary.isRepositoryRelationColumn(dbColumn)) {
 			serailizedValue = this.getSerializedRepositoryId(value, lookups)
 		}
 

@@ -1,5 +1,5 @@
 import { Inject, Injected } from "@airport/direction-indicator";
-import { PortableQuery } from "@airport/ground-control";
+import { PortableQuery, Repository_GUID } from "@airport/ground-control";
 import { Observable, Subject } from "rxjs";
 import { ActiveQueries, CachedSQLQuery, IFieldMapped } from "./ActiveQueries";
 
@@ -11,6 +11,10 @@ export interface IObservableQueryAdapter {
             (): Promise<any>
         }
     ): Observable<E>
+
+    trackedRepoGUIDArrayToSet(
+        trackedRepoGUIDs: Repository_GUID[]
+    ): Set<Repository_GUID>
 
 }
 
@@ -40,6 +44,8 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
         // 					this.activeQueries.remove(portableQuery)
         // 	}
         // });
+        let trackedRepoGUIDSet: Set<Repository_GUID> = this
+            .trackedRepoGUIDArrayToSet(portableQuery.trackedRepoGUIDs)
         let cachedSqlQuery: CachedSQLQuery<SQLQuery> = {
             portableQuery,
             resultsSubject: resultsSubject,
@@ -47,7 +53,8 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
                 queryCallback().then(augmentedResult => {
                     resultsSubject.next(augmentedResult)
                 })
-            }
+            },
+            trackedRepoGUIDSet
         } as any as CachedSQLQuery<SQLQuery>;
 
         this.activeQueries.add(portableQuery, cachedSqlQuery);
@@ -55,6 +62,22 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
         cachedSqlQuery.runQuery()
 
         return resultsSubject
+    }
+
+    trackedRepoGUIDArrayToSet(
+        trackedRepoGUIDs: Repository_GUID[]
+    ): Set<Repository_GUID> {
+        let trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
+        if (trackedRepoGUIDs instanceof Array && trackedRepoGUIDs.length) {
+            for (const trackedRepoGUID of trackedRepoGUIDs) {
+                if (typeof trackedRepoGUID !== 'string') {
+                    throw new Error(`Invalid Repository GUID`)
+                }
+                trackedRepoGUIDSet.add(trackedRepoGUID)
+            }
+        }
+
+        return trackedRepoGUIDSet
     }
 
 }

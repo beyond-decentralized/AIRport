@@ -2,7 +2,8 @@ import {
 	JSONEntityFieldInOrderBy,
 	JsonEntityQuery,
 	JSONEntityRelation,
-	JsonLimitedEntityQuery
+	JsonLimitedEntityQuery,
+	Repository_GUID
 } from '@airport/ground-control'
 import { IEntitySelectProperties } from '../../../definition/core/entity/Entity'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
@@ -14,6 +15,7 @@ import {
 import { IQuery } from '../../../definition/query/facade/Query'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
+import { EntityAliases } from '../../core/entity/Aliases'
 import { QField } from '../../core/field/Field'
 import { FieldInOrderBy } from '../../core/field/FieldInOrderBy'
 import { MappableQuery } from './MappableQuery'
@@ -27,9 +29,10 @@ export class EntityQuery<IEP extends IEntitySelectProperties>
 	implements IQuery {
 
 	constructor(
-		protected rawQuery: RawEntityQuery<IEP>
+		protected rawQuery: RawEntityQuery<IEP>,
+		trackedRepoGUIDSet?: Set<Repository_GUID>,
 	) {
-		super()
+		super(new EntityAliases(), trackedRepoGUIDSet)
 		this.isEntityQuery = true
 		this.isHierarchicalEntityQuery = true
 	}

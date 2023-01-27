@@ -1,7 +1,9 @@
+import { Repository_GUID } from '@airport/ground-control'
 import { IEntityAliases } from '../../../definition/core/entity/Aliases'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
+import { EntityAliases } from '../../core/entity/Aliases'
 import { QDistinctFunction } from '../../core/field/Functions'
 import { AbstractQuery } from './AbstractQuery'
 
@@ -18,9 +20,11 @@ export abstract class DistinguishableQuery
 	protected isHierarchicalEntityQuery: boolean = false
 
 	constructor(
-		entityAliases?: IEntityAliases
+		entityAliases: IEntityAliases = new EntityAliases(),
+		trackedRepoGUIDSet?: Set<Repository_GUID>,
 	) {
-		super(entityAliases)
+		super(entityAliases,
+			entityAliases.getNewFieldColumnAliases(), trackedRepoGUIDSet)
 	}
 
 	protected selectClauseToJSON(

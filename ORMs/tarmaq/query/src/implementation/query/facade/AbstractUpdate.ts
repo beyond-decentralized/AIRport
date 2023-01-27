@@ -1,8 +1,10 @@
 import {
 	JSONEntityRelation,
 	JsonEntityUpdateColumns,
-	JsonUpdate
+	JsonUpdate,
+	Repository_GUID
 } from '@airport/ground-control'
+import { IEntityAliases } from '../../../definition/core/entity/Aliases'
 import {
 	IQEntity,
 	IQEntityInternal
@@ -11,15 +13,20 @@ import { IRelationManager } from '../../../definition/core/entity/IRelationManag
 import { AbstractRawUpdate } from '../../../definition/query/facade/Update'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
+import { EntityAliases } from '../../core/entity/Aliases'
 import { AbstractQuery } from './AbstractQuery'
 
 export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractRawUpdate<IQE>>
 	extends AbstractQuery {
 
 	protected constructor(
-		public rawUpdate: ARE
+		public rawUpdate: ARE,
+		trackedRepoGUIDSet?: Set<Repository_GUID>,
+		entityAliases: IEntityAliases = new EntityAliases(),
 	) {
-		super()
+		super(entityAliases,
+			entityAliases.getNewFieldColumnAliases(),
+			trackedRepoGUIDSet)
 	}
 
 	toJSON(

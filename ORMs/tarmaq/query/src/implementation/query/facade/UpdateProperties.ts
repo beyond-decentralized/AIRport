@@ -6,7 +6,8 @@ import {
 	JSONBaseOperation,
 	JSONEntityRelation,
 	JsonEntityUpdateColumns,
-	JsonUpdate
+	JsonUpdate,
+	Repository_GUID
 } from '@airport/ground-control'
 import {
 	IEntityUpdateProperties,
@@ -29,9 +30,10 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 	extends AbstractUpdate<IQE, RawUpdate<IEUP, IQE>> {
 
 	constructor(
-		rawUpdate: RawUpdate<IEUP, IQE>
+		rawUpdate: RawUpdate<IEUP, IQE>,
+		trackedRepoGUIDSet?: Set<Repository_GUID>,
 	) {
-		super(rawUpdate)
+		super(rawUpdate, trackedRepoGUIDSet)
 	}
 
 	toJSON(
