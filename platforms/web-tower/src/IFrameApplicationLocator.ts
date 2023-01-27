@@ -1,4 +1,4 @@
-import { ApplicationLocator } from '@airport/landing'
+import { ApplicationLocator } from '@airport/takeoff'
 import { ITerminalStore } from '@airport/terminal-map'
 import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
 import {

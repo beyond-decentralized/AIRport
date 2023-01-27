@@ -2,7 +2,7 @@
 
 ## Why the name 
 
-"defined rectangular area on a land aerodrome prepared for the landing and takeoff of aircraft"
+"defined rectangular area on a land aerodrome prepared for the takeoff and takeoff of aircraft"
 
 @airport/runway generates the code and schema descriptors for AIRport.  It is the means
 by which Applications get to AIRport.

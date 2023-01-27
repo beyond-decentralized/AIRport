@@ -1,5 +1,5 @@
 import { SQL_QUERY_ADAPTOR } from "@airport/fuel-hydrant-system";
-import { APPLICATION_BUILDER } from "@airport/landing";
+import { APPLICATION_BUILDER } from "@airport/takeoff";
 import { STORE_DRIVER } from "@airport/terminal-map";
 import { PostgreQueryAdaptor } from "./PostgreQueryAdaptor";
 import { PostgreApplicationBuilder } from "./PostgreSchemaBuilder";

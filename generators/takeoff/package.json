@@ -3,13 +3,17 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@airport/air-traffic-control": "0.0.1",
+    "@airport/airport-code": "0.0.1",
+    "@airport/airspace": "0.0.1",
     "@airport/aviation-communication": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
-    "@airport/fuel-hydrant-system": "0.0.1",
     "@airport/ground-control": "0.0.1",
+    "@airport/fuel-hydrant-system": "0.0.1",
+    "@airport/takeoff": "0.0.1",
+    "@airport/tarmaq-dao": "0.0.1",
     "@airport/tarmaq-query": "0.0.1",
     "@airport/terminal-map": "0.0.1",
-    "@airport/airspace": "0.0.1"
+    "@airport/tower": "0.0.1"
   },
   "devDependencies": {
     "@airport/taxiway": "0.0.1",

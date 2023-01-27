@@ -2,7 +2,7 @@ import {
     Injected
 } from '@airport/direction-indicator'
 import { Application_FullName } from "@airport/ground-control";
-import { ApplicationInitializer } from "@airport/landing";
+import { ApplicationInitializer } from "@airport/takeoff";
 import {
     IApplicationInitializer
 } from "@airport/terminal-map";

@@ -11477,385 +11477,6 @@ APPLICATION_LOADER.setDependencies({
     apiRegistry: API_REGISTRY,
 });
 
-// TODO: probably not needed, included application source populates itself
-// May be needed to populate applications from the database
-class AirportDatabasePopulator {
-    populate() {
-        // FIXME: implement
-        // this.airDb.applications
-        // this.airDb.qApplications
-    }
-}
-
-class DdlObjectLinker {
-    link(allDdlObjects) {
-        const { all, allApplicationVersionsByIds, added } = allDdlObjects;
-        const { latestApplicationVersions, properties, relations, applicationReferences, applications } = added;
-        this.linkDomainsAndApplicationsAndVersions(allApplicationVersionsByIds, all.domains, applications, latestApplicationVersions, applicationReferences);
-        const entityArrayById = this.linkEntities(allApplicationVersionsByIds, all.entities, added.entities);
-        const { propertyMapById, relationMapById } = this.linkPropertiesAndRelations(properties, relations, entityArrayById);
-        this.linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById);
-    }
-    linkDomainsAndApplicationsAndVersions(allApplicationVersionsByIds, domains, applications, latestApplicationVersions, applicationReferences) {
-        const domainMapById = new Map();
-        domains.forEach((domain) => {
-            domainMapById.set(domain._localId, domain);
-        });
-        const applicationMapByIndex = new Map();
-        applications.forEach((application) => {
-            applicationMapByIndex.set(application.index, application);
-            const domain = domainMapById.get(application.domain._localId);
-            application.domain = domain;
-            domain.applications.push(application);
-        });
-        latestApplicationVersions.forEach((applicationVersion) => {
-            const application = applicationMapByIndex.get(applicationVersion.application.index);
-            let applicationCurrentVersion = {
-                application,
-                applicationVersion
-            };
-            application.currentVersion = [applicationCurrentVersion];
-            application.versions = [applicationVersion];
-            applicationVersion.application = application;
-            applicationVersion.entities = [];
-            applicationVersion.references = [];
-            applicationVersion.referencedBy = [];
-            applicationVersion.entityMapByName = {};
-            applicationVersion.referencesMapByName = {};
-            applicationVersion.referencedByMapByName = {};
-        });
-        applicationReferences.forEach((applicationReference) => {
-            const ownApplicationVersion = allApplicationVersionsByIds[applicationReference.ownApplicationVersion._localId];
-            const referencedApplicationVersion = allApplicationVersionsByIds[applicationReference.referencedApplicationVersion._localId];
-            ownApplicationVersion.references[applicationReference.index] = applicationReference;
-            ownApplicationVersion.referencesMapByName[referencedApplicationVersion.application.fullName] = applicationReference;
-            referencedApplicationVersion.referencedBy.push(applicationReference);
-            referencedApplicationVersion.referencedByMapByName[ownApplicationVersion.application.fullName] = applicationReference;
-            applicationReference.ownApplicationVersion = ownApplicationVersion;
-            applicationReference.referencedApplicationVersion = referencedApplicationVersion;
-        });
-    }
-    linkEntities(allApplicationVersionsByIds, allEntities, // All of the entities of newly created applications
-    addedEntities // All of the entities of newly created applications
-    // from the latest available versions
-    ) {
-        const entityArrayById = [];
-        allEntities.forEach((entity) => {
-            entityArrayById[entity._localId] = entity;
-        });
-        addedEntities.forEach((entity) => {
-            const applicationVersion = allApplicationVersionsByIds[entity.applicationVersion._localId];
-            entity.applicationVersion = applicationVersion;
-            applicationVersion.entities[entity.index] = entity;
-            applicationVersion.entityMapByName[entity.name] = entity;
-            entityArrayById[entity._localId] = entity;
-            entity.columns = [];
-            entity.properties = [];
-            entity.relations = [];
-            entity.relationReferences = [];
-            entity.columnMap = {};
-            entity.idColumns = [];
-            entity.idColumnMap = {};
-            entity.propertyMap = {};
-        });
-        return entityArrayById;
-    }
-    linkPropertiesAndRelations(properties, relations, entityArrayById) {
-        const propertyMapById = new Map();
-        properties.forEach((property) => {
-            // Entity is already property wired in
-            const entity = entityArrayById[property.entity._localId];
-            entity.properties[property.index] = property;
-            entity.propertyMap[property.name] = property;
-            property.entity = entity;
-            property.propertyColumns = [];
-            propertyMapById.set(property._localId, property);
-        });
-        const relationMapById = new Map();
-        relations.forEach((relation) => {
-            const entity = entityArrayById[relation.entity._localId];
-            entity.relations[relation.index] = relation;
-            let relationEntity = entityArrayById[relation.relationEntity._localId];
-            if (!relationEntity) {
-                relationEntity = this.terminalStore.getAllEntities()[relation.relationEntity._localId];
-            }
-            relationEntity.relationReferences.push(relation);
-            const property = propertyMapById.get(relation.property._localId);
-            relation.property = property;
-            property.relation = [relation];
-            relation.entity = entity;
-            relation.relationEntity = relationEntity;
-            relation.manyRelationColumns = [];
-            relation.oneRelationColumns = [];
-            relationMapById.set(relation._localId, relation);
-        });
-        return {
-            propertyMapById, relationMapById
-        };
-    }
-    linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById) {
-        const columnMapById = new Map();
-        allDdlObjects.all.columns.forEach((column) => {
-            columnMapById.set(column._localId, column);
-        });
-        allDdlObjects.added.columns.forEach((column) => {
-            columnMapById.set(column._localId, column);
-            const entity = entityArrayById[column.entity._localId];
-            entity.columns[column.index] = column;
-            entity.columnMap[column.name] = column;
-            if (column.idIndex || column.idIndex === 0) {
-                entity.idColumns[column.idIndex] = column;
-                entity.idColumnMap[column.name] = column;
-            }
-            column.entity = entity;
-        });
-        allDdlObjects.added.propertyColumns.forEach((propertyColumn) => {
-            const column = columnMapById.get(propertyColumn.column._localId);
-            column.propertyColumns.push(propertyColumn);
-            const property = propertyMapById.get(propertyColumn.property._localId);
-            property.propertyColumns.push(propertyColumn);
-            propertyColumn.column = column;
-            propertyColumn.property = property;
-        });
-        allDdlObjects.added.relationColumns.forEach((relationColumn) => {
-            let manyColumn = columnMapById.get(relationColumn.manyColumn._localId);
-            if (!manyColumn) {
-                manyColumn = this.terminalStore.getAllColumns()[relationColumn.manyColumn._localId];
-            }
-            manyColumn.manyRelationColumns.push(relationColumn);
-            let oneColumn = columnMapById.get(relationColumn.oneColumn._localId);
-            if (!oneColumn) {
-                oneColumn = this.terminalStore.getAllColumns()[relationColumn.oneColumn._localId];
-            }
-            oneColumn.oneRelationColumns.push(relationColumn);
-            let manyRelation;
-            if (relationColumn.manyRelation && relationColumn.manyRelation._localId) {
-                manyRelation = relationMapById.get(relationColumn.manyRelation._localId);
-                if (!manyRelation) {
-                    manyRelation = this.terminalStore.getAllRelations()[relationColumn.manyRelation._localId];
-                }
-                manyRelation.manyRelationColumns.push(relationColumn);
-            }
-            let oneRelation;
-            if (relationColumn.oneRelation && relationColumn.oneRelation._localId) {
-                oneRelation = relationMapById.get(relationColumn.oneRelation._localId);
-                if (!oneRelation) {
-                    oneRelation = this.terminalStore.getAllRelations()[relationColumn.oneRelation._localId];
-                }
-                oneRelation.oneRelationColumns.push(relationColumn);
-            }
-            relationColumn.manyColumn = manyColumn;
-            relationColumn.manyRelation = manyRelation;
-            relationColumn.oneColumn = oneColumn;
-            relationColumn.oneRelation = oneRelation;
-        });
-    }
-}
-
-class DdlObjectRetriever {
-    async retrieveDdlObjects() {
-        const applications = await this.applicationDao.findAllActive();
-        const applicationIndexes = [];
-        const domainIdSet = new Set();
-        applications.forEach(application => {
-            applicationIndexes.push(application.index);
-            domainIdSet.add(application.domain._localId);
-        });
-        applications.sort((application1, application2) => {
-            return application1.index - application2.index;
-        });
-        const domains = await this.domainDao.findByIdIn(Array.from(domainIdSet));
-        const allApplicationVersions = await this.applicationVersionDao
-            .findAllActiveOrderByApplication_IndexAndId();
-        let lastApplication_Index;
-        // const allApplicationVersionsByIds: DbApplicationVersion[] = []
-        const latestApplicationVersions = [];
-        const applicationVersions = [];
-        for (const applicationVersion of allApplicationVersions) {
-            if (applicationVersion.application.index !== lastApplication_Index) {
-                latestApplicationVersions.push(applicationVersion);
-            }
-            // allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion
-            lastApplication_Index = applicationVersion.application.index;
-            applicationVersions.push(applicationVersion);
-        }
-        const latestApplicationVersion_LocalIds = latestApplicationVersions.map(applicationVersion => applicationVersion._localId);
-        const applicationReferences = await this.applicationReferenceDao
-            .findAllForApplicationVersions(latestApplicationVersion_LocalIds);
-        const entities = await this.applicationEntityDao
-            .findAllForApplicationVersions(latestApplicationVersion_LocalIds);
-        const entityIds = entities.map(entity => entity._localId);
-        /*
-        const entityIds = entities.map(
-    entity => {
-        if (entity.tableConfig) {
-            entity.tableConfig = JSON.parse(entity.tableConfig as any)
-        }
-        return entity._localId
-    })
-         */
-        const properties = await this.applicationPropertyDao
-            .findAllForEntities(entityIds);
-        const propertyIds = properties.map(property => property._localId);
-        const relations = await this.applicationRelationDao
-            .findAllForProperties(propertyIds);
-        const columns = await this.applicationColumnDao
-            .findAllForEntities(entityIds);
-        const columnIds = columns.map(column => column._localId);
-        const propertyColumns = await this.applicationPropertyColumnDao
-            .findAllForColumns(columnIds);
-        const relationColumns = await this.applicationRelationColumnDao
-            .findAllForColumns(columnIds);
-        const lastTerminalState = this.terminalStore.getTerminalState();
-        const lastIds = {
-            columns: columns.length,
-            domains: domains.length,
-            entities: entities.length,
-            properties: properties.length,
-            relationColumns: relationColumns.length,
-            relations: relations.length,
-            applications: applications.length,
-            applicationVersions: applicationVersions.length,
-        };
-        this.terminalStore.state.next({
-            ...lastTerminalState,
-            lastIds
-        });
-        return {
-            // allDomains: domains,
-            // allApplications: applications,
-            // allApplicationVersionsByIds,
-            columns,
-            domains,
-            entities,
-            latestApplicationVersions,
-            properties,
-            propertyColumns,
-            relationColumns,
-            relations,
-            applicationReferences,
-            applications,
-            applicationVersions
-        };
-    }
-}
-
-class QueryEntityClassCreator {
-    createAll(applications) {
-        const applicationsToCreate = this.qApplicationBuilderUtils
-            .orderApplicationsInOrderOfPrecedence(applications);
-        applicationsToCreate.map(dbApplication => this.create(dbApplication));
-    }
-    create(dbApplication) {
-        let qApplication = this.airportDatabase.QM[dbApplication.fullName];
-        // If the Application API source has already been loaded
-        if (qApplication) {
-            qApplication.__dbApplication__ = dbApplication;
-        }
-        else {
-            qApplication = {
-                __constructors__: {},
-                __qConstructors__: {},
-                __dbApplication__: dbApplication,
-                name: dbApplication.name,
-                domain: dbApplication.domain.name
-            };
-            this.airportDatabase.QM[dbApplication.fullName] = qApplication;
-        }
-        this.airportDatabase.Q[dbApplication.index] = qApplication;
-        this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.airportDatabase.qApplications, this.applicationUtils, this.relationManager);
-        return qApplication;
-    }
-}
-
-class QueryObjectInitializer {
-    generateQObjectsAndPopulateStore(allDdlObjects) {
-        this.ddlObjectLinker.link(allDdlObjects);
-        this.queryEntityClassCreator.createAll(allDdlObjects.all.applications);
-        const lastTerminalState = this.terminalStore.getTerminalState();
-        const existingDomainMap = {};
-        for (const domain of lastTerminalState.domains) {
-            existingDomainMap[domain.name] = domain;
-        }
-        for (const domain of allDdlObjects.added.domains) {
-            delete existingDomainMap[domain.name];
-        }
-        const unmodifiedDomains = [];
-        for (const domainName in existingDomainMap) {
-            unmodifiedDomains.push(existingDomainMap[domainName]);
-        }
-        const existingApplicationMap = {};
-        for (const application of lastTerminalState.applications) {
-            existingApplicationMap[application.fullName] = application;
-        }
-        for (const application of allDdlObjects.added.applications) {
-            delete existingApplicationMap[application.fullName];
-            lastTerminalState.applicationMapByFullName
-                .set(application.fullName, application);
-        }
-        const unmodifiedApplications = [];
-        for (const applicationName in existingApplicationMap) {
-            unmodifiedApplications.push(existingApplicationMap[applicationName]);
-        }
-        this.terminalStore.state.next({
-            ...lastTerminalState,
-            domains: [
-                ...unmodifiedDomains,
-                ...allDdlObjects.added.domains
-            ],
-            applicationMapByFullName: lastTerminalState.applicationMapByFullName,
-            applications: [
-                ...unmodifiedApplications,
-                ...allDdlObjects.added.applications
-            ]
-        });
-    }
-    async initialize() {
-        const ddlObjects = await this.ddlObjectRetriever.retrieveDdlObjects();
-        const allApplicationVersionsByIds = [];
-        for (const applicationVersion of ddlObjects.applicationVersions) {
-            allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion;
-        }
-        let allDdlObjects = {
-            all: ddlObjects,
-            allApplicationVersionsByIds,
-            added: ddlObjects
-        };
-        this.generateQObjectsAndPopulateStore(allDdlObjects);
-        return allDdlObjects;
-    }
-}
-
-const takeoff = lib('takeoff');
-takeoff.register(AirportDatabasePopulator, DdlObjectLinker, DdlObjectRetriever, QueryEntityClassCreator, QueryObjectInitializer);
-takeoff.setDependencies(DdlObjectLinker, {
-    terminalStore: TerminalStore
-});
-takeoff.setDependencies(DdlObjectRetriever, {
-    applicationColumnDao: ApplicationColumnDao,
-    applicationDao: ApplicationDao,
-    applicationEntityDao: ApplicationEntityDao,
-    applicationPropertyColumnDao: ApplicationPropertyColumnDao,
-    applicationPropertyDao: ApplicationPropertyDao,
-    applicationReferenceDao: ApplicationReferenceDao,
-    applicationRelationColumnDao: ApplicationRelationColumnDao,
-    applicationRelationDao: ApplicationRelationDao,
-    applicationVersionDao: ApplicationVersionDao,
-    domainDao: DomainDao
-});
-takeoff.setDependencies(QueryEntityClassCreator, {
-    airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
-    qApplicationBuilderUtils: QApplicationBuilderUtils,
-    relationManager: RelationManager,
-});
-takeoff.setDependencies(QueryObjectInitializer, {
-    ddlObjectLinker: DdlObjectLinker,
-    ddlObjectRetriever: DdlObjectRetriever,
-    queryEntityClassCreator: QueryEntityClassCreator,
-    terminalStore: TerminalStore
-});
-
 class SqlSchemaBuilder {
     async build(jsonApplication, existingApplicationMap, newJsonApplicationMap, isFeatureApp, context) {
         await this.createApplication(jsonApplication, context);
@@ -12950,12 +12571,361 @@ class ApplicationInitializer {
     }
 }
 
-const landing = lib('landing');
-const tokens = landing.register('ApplicationBuilder', ApplicationInitializer, ApplicationChecker, ApplicationComposer, ApplicationLocator, ApplicationRecorder, SqlSchemaBuilder);
+// TODO: probably not needed, included application source populates itself
+// May be needed to populate applications from the database
+class AirportDatabasePopulator {
+    populate() {
+        // FIXME: implement
+        // this.airDb.applications
+        // this.airDb.qApplications
+    }
+}
+
+class DdlObjectLinker {
+    link(allDdlObjects) {
+        const { all, allApplicationVersionsByIds, added } = allDdlObjects;
+        const { latestApplicationVersions, properties, relations, applicationReferences, applications } = added;
+        this.linkDomainsAndApplicationsAndVersions(allApplicationVersionsByIds, all.domains, applications, latestApplicationVersions, applicationReferences);
+        const entityArrayById = this.linkEntities(allApplicationVersionsByIds, all.entities, added.entities);
+        const { propertyMapById, relationMapById } = this.linkPropertiesAndRelations(properties, relations, entityArrayById);
+        this.linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById);
+    }
+    linkDomainsAndApplicationsAndVersions(allApplicationVersionsByIds, domains, applications, latestApplicationVersions, applicationReferences) {
+        const domainMapById = new Map();
+        domains.forEach((domain) => {
+            domainMapById.set(domain._localId, domain);
+        });
+        const applicationMapByIndex = new Map();
+        applications.forEach((application) => {
+            applicationMapByIndex.set(application.index, application);
+            const domain = domainMapById.get(application.domain._localId);
+            application.domain = domain;
+            domain.applications.push(application);
+        });
+        latestApplicationVersions.forEach((applicationVersion) => {
+            const application = applicationMapByIndex.get(applicationVersion.application.index);
+            let applicationCurrentVersion = {
+                application,
+                applicationVersion
+            };
+            application.currentVersion = [applicationCurrentVersion];
+            application.versions = [applicationVersion];
+            applicationVersion.application = application;
+            applicationVersion.entities = [];
+            applicationVersion.references = [];
+            applicationVersion.referencedBy = [];
+            applicationVersion.entityMapByName = {};
+            applicationVersion.referencesMapByName = {};
+            applicationVersion.referencedByMapByName = {};
+        });
+        applicationReferences.forEach((applicationReference) => {
+            const ownApplicationVersion = allApplicationVersionsByIds[applicationReference.ownApplicationVersion._localId];
+            const referencedApplicationVersion = allApplicationVersionsByIds[applicationReference.referencedApplicationVersion._localId];
+            ownApplicationVersion.references[applicationReference.index] = applicationReference;
+            ownApplicationVersion.referencesMapByName[referencedApplicationVersion.application.fullName] = applicationReference;
+            referencedApplicationVersion.referencedBy.push(applicationReference);
+            referencedApplicationVersion.referencedByMapByName[ownApplicationVersion.application.fullName] = applicationReference;
+            applicationReference.ownApplicationVersion = ownApplicationVersion;
+            applicationReference.referencedApplicationVersion = referencedApplicationVersion;
+        });
+    }
+    linkEntities(allApplicationVersionsByIds, allEntities, // All of the entities of newly created applications
+    addedEntities // All of the entities of newly created applications
+    // from the latest available versions
+    ) {
+        const entityArrayById = [];
+        allEntities.forEach((entity) => {
+            entityArrayById[entity._localId] = entity;
+        });
+        addedEntities.forEach((entity) => {
+            const applicationVersion = allApplicationVersionsByIds[entity.applicationVersion._localId];
+            entity.applicationVersion = applicationVersion;
+            applicationVersion.entities[entity.index] = entity;
+            applicationVersion.entityMapByName[entity.name] = entity;
+            entityArrayById[entity._localId] = entity;
+            entity.columns = [];
+            entity.properties = [];
+            entity.relations = [];
+            entity.relationReferences = [];
+            entity.columnMap = {};
+            entity.idColumns = [];
+            entity.idColumnMap = {};
+            entity.propertyMap = {};
+        });
+        return entityArrayById;
+    }
+    linkPropertiesAndRelations(properties, relations, entityArrayById) {
+        const propertyMapById = new Map();
+        properties.forEach((property) => {
+            // Entity is already property wired in
+            const entity = entityArrayById[property.entity._localId];
+            entity.properties[property.index] = property;
+            entity.propertyMap[property.name] = property;
+            property.entity = entity;
+            property.propertyColumns = [];
+            propertyMapById.set(property._localId, property);
+        });
+        const relationMapById = new Map();
+        relations.forEach((relation) => {
+            const entity = entityArrayById[relation.entity._localId];
+            entity.relations[relation.index] = relation;
+            let relationEntity = entityArrayById[relation.relationEntity._localId];
+            if (!relationEntity) {
+                relationEntity = this.terminalStore.getAllEntities()[relation.relationEntity._localId];
+            }
+            relationEntity.relationReferences.push(relation);
+            const property = propertyMapById.get(relation.property._localId);
+            relation.property = property;
+            property.relation = [relation];
+            relation.entity = entity;
+            relation.relationEntity = relationEntity;
+            relation.manyRelationColumns = [];
+            relation.oneRelationColumns = [];
+            relationMapById.set(relation._localId, relation);
+        });
+        return {
+            propertyMapById, relationMapById
+        };
+    }
+    linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById) {
+        const columnMapById = new Map();
+        allDdlObjects.all.columns.forEach((column) => {
+            columnMapById.set(column._localId, column);
+        });
+        allDdlObjects.added.columns.forEach((column) => {
+            columnMapById.set(column._localId, column);
+            const entity = entityArrayById[column.entity._localId];
+            entity.columns[column.index] = column;
+            entity.columnMap[column.name] = column;
+            if (column.idIndex || column.idIndex === 0) {
+                entity.idColumns[column.idIndex] = column;
+                entity.idColumnMap[column.name] = column;
+            }
+            column.entity = entity;
+        });
+        allDdlObjects.added.propertyColumns.forEach((propertyColumn) => {
+            const column = columnMapById.get(propertyColumn.column._localId);
+            column.propertyColumns.push(propertyColumn);
+            const property = propertyMapById.get(propertyColumn.property._localId);
+            property.propertyColumns.push(propertyColumn);
+            propertyColumn.column = column;
+            propertyColumn.property = property;
+        });
+        allDdlObjects.added.relationColumns.forEach((relationColumn) => {
+            let manyColumn = columnMapById.get(relationColumn.manyColumn._localId);
+            if (!manyColumn) {
+                manyColumn = this.terminalStore.getAllColumns()[relationColumn.manyColumn._localId];
+            }
+            manyColumn.manyRelationColumns.push(relationColumn);
+            let oneColumn = columnMapById.get(relationColumn.oneColumn._localId);
+            if (!oneColumn) {
+                oneColumn = this.terminalStore.getAllColumns()[relationColumn.oneColumn._localId];
+            }
+            oneColumn.oneRelationColumns.push(relationColumn);
+            let manyRelation;
+            if (relationColumn.manyRelation && relationColumn.manyRelation._localId) {
+                manyRelation = relationMapById.get(relationColumn.manyRelation._localId);
+                if (!manyRelation) {
+                    manyRelation = this.terminalStore.getAllRelations()[relationColumn.manyRelation._localId];
+                }
+                manyRelation.manyRelationColumns.push(relationColumn);
+            }
+            let oneRelation;
+            if (relationColumn.oneRelation && relationColumn.oneRelation._localId) {
+                oneRelation = relationMapById.get(relationColumn.oneRelation._localId);
+                if (!oneRelation) {
+                    oneRelation = this.terminalStore.getAllRelations()[relationColumn.oneRelation._localId];
+                }
+                oneRelation.oneRelationColumns.push(relationColumn);
+            }
+            relationColumn.manyColumn = manyColumn;
+            relationColumn.manyRelation = manyRelation;
+            relationColumn.oneColumn = oneColumn;
+            relationColumn.oneRelation = oneRelation;
+        });
+    }
+}
+
+class DdlObjectRetriever {
+    async retrieveDdlObjects() {
+        const applications = await this.applicationDao.findAllActive();
+        const applicationIndexes = [];
+        const domainIdSet = new Set();
+        applications.forEach(application => {
+            applicationIndexes.push(application.index);
+            domainIdSet.add(application.domain._localId);
+        });
+        applications.sort((application1, application2) => {
+            return application1.index - application2.index;
+        });
+        const domains = await this.domainDao.findByIdIn(Array.from(domainIdSet));
+        const allApplicationVersions = await this.applicationVersionDao
+            .findAllActiveOrderByApplication_IndexAndId();
+        let lastApplication_Index;
+        // const allApplicationVersionsByIds: DbApplicationVersion[] = []
+        const latestApplicationVersions = [];
+        const applicationVersions = [];
+        for (const applicationVersion of allApplicationVersions) {
+            if (applicationVersion.application.index !== lastApplication_Index) {
+                latestApplicationVersions.push(applicationVersion);
+            }
+            // allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion
+            lastApplication_Index = applicationVersion.application.index;
+            applicationVersions.push(applicationVersion);
+        }
+        const latestApplicationVersion_LocalIds = latestApplicationVersions.map(applicationVersion => applicationVersion._localId);
+        const applicationReferences = await this.applicationReferenceDao
+            .findAllForApplicationVersions(latestApplicationVersion_LocalIds);
+        const entities = await this.applicationEntityDao
+            .findAllForApplicationVersions(latestApplicationVersion_LocalIds);
+        const entityIds = entities.map(entity => entity._localId);
+        /*
+        const entityIds = entities.map(
+    entity => {
+        if (entity.tableConfig) {
+            entity.tableConfig = JSON.parse(entity.tableConfig as any)
+        }
+        return entity._localId
+    })
+         */
+        const properties = await this.applicationPropertyDao
+            .findAllForEntities(entityIds);
+        const propertyIds = properties.map(property => property._localId);
+        const relations = await this.applicationRelationDao
+            .findAllForProperties(propertyIds);
+        const columns = await this.applicationColumnDao
+            .findAllForEntities(entityIds);
+        const columnIds = columns.map(column => column._localId);
+        const propertyColumns = await this.applicationPropertyColumnDao
+            .findAllForColumns(columnIds);
+        const relationColumns = await this.applicationRelationColumnDao
+            .findAllForColumns(columnIds);
+        const lastTerminalState = this.terminalStore.getTerminalState();
+        const lastIds = {
+            columns: columns.length,
+            domains: domains.length,
+            entities: entities.length,
+            properties: properties.length,
+            relationColumns: relationColumns.length,
+            relations: relations.length,
+            applications: applications.length,
+            applicationVersions: applicationVersions.length,
+        };
+        this.terminalStore.state.next({
+            ...lastTerminalState,
+            lastIds
+        });
+        return {
+            // allDomains: domains,
+            // allApplications: applications,
+            // allApplicationVersionsByIds,
+            columns,
+            domains,
+            entities,
+            latestApplicationVersions,
+            properties,
+            propertyColumns,
+            relationColumns,
+            relations,
+            applicationReferences,
+            applications,
+            applicationVersions
+        };
+    }
+}
+
+class QueryEntityClassCreator {
+    createAll(applications) {
+        const applicationsToCreate = this.qApplicationBuilderUtils
+            .orderApplicationsInOrderOfPrecedence(applications);
+        applicationsToCreate.map(dbApplication => this.create(dbApplication));
+    }
+    create(dbApplication) {
+        let qApplication = this.airportDatabase.QM[dbApplication.fullName];
+        // If the Application API source has already been loaded
+        if (qApplication) {
+            qApplication.__dbApplication__ = dbApplication;
+        }
+        else {
+            qApplication = {
+                __constructors__: {},
+                __qConstructors__: {},
+                __dbApplication__: dbApplication,
+                name: dbApplication.name,
+                domain: dbApplication.domain.name
+            };
+            this.airportDatabase.QM[dbApplication.fullName] = qApplication;
+        }
+        this.airportDatabase.Q[dbApplication.index] = qApplication;
+        this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.airportDatabase.qApplications, this.applicationUtils, this.relationManager);
+        return qApplication;
+    }
+}
+
+class QueryObjectInitializer {
+    generateQObjectsAndPopulateStore(allDdlObjects) {
+        this.ddlObjectLinker.link(allDdlObjects);
+        this.queryEntityClassCreator.createAll(allDdlObjects.all.applications);
+        const lastTerminalState = this.terminalStore.getTerminalState();
+        const existingDomainMap = {};
+        for (const domain of lastTerminalState.domains) {
+            existingDomainMap[domain.name] = domain;
+        }
+        for (const domain of allDdlObjects.added.domains) {
+            delete existingDomainMap[domain.name];
+        }
+        const unmodifiedDomains = [];
+        for (const domainName in existingDomainMap) {
+            unmodifiedDomains.push(existingDomainMap[domainName]);
+        }
+        const existingApplicationMap = {};
+        for (const application of lastTerminalState.applications) {
+            existingApplicationMap[application.fullName] = application;
+        }
+        for (const application of allDdlObjects.added.applications) {
+            delete existingApplicationMap[application.fullName];
+            lastTerminalState.applicationMapByFullName
+                .set(application.fullName, application);
+        }
+        const unmodifiedApplications = [];
+        for (const applicationName in existingApplicationMap) {
+            unmodifiedApplications.push(existingApplicationMap[applicationName]);
+        }
+        this.terminalStore.state.next({
+            ...lastTerminalState,
+            domains: [
+                ...unmodifiedDomains,
+                ...allDdlObjects.added.domains
+            ],
+            applicationMapByFullName: lastTerminalState.applicationMapByFullName,
+            applications: [
+                ...unmodifiedApplications,
+                ...allDdlObjects.added.applications
+            ]
+        });
+    }
+    async initialize() {
+        const ddlObjects = await this.ddlObjectRetriever.retrieveDdlObjects();
+        const allApplicationVersionsByIds = [];
+        for (const applicationVersion of ddlObjects.applicationVersions) {
+            allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion;
+        }
+        let allDdlObjects = {
+            all: ddlObjects,
+            allApplicationVersionsByIds,
+            added: ddlObjects
+        };
+        this.generateQObjectsAndPopulateStore(allDdlObjects);
+        return allDdlObjects;
+    }
+}
+
+const takeoff = lib('takeoff');
+const tokens = takeoff.register(AirportDatabasePopulator, 'ApplicationBuilder', ApplicationInitializer, ApplicationChecker, ApplicationComposer, ApplicationLocator, ApplicationRecorder, DdlObjectLinker, DdlObjectRetriever, QueryEntityClassCreator, QueryObjectInitializer, SqlSchemaBuilder);
 const APPLICATION_BUILDER = tokens.ApplicationBuilder;
 // Needed as a token in @airport/web-tower (platforms/web-tower)
 tokens.ApplicationLocator;
-landing.setDependencies(ApplicationInitializer, {
+takeoff.setDependencies(ApplicationInitializer, {
     airportDatabase: AIRPORT_DATABASE,
     applicationBuilder: APPLICATION_BUILDER,
     applicationChecker: ApplicationChecker,
@@ -12973,22 +12943,22 @@ landing.setDependencies(ApplicationInitializer, {
 APPLICATION_BUILDER.setDependencies({
     airportDatabase: AIRPORT_DATABASE
 });
-landing.setDependencies(ApplicationChecker, {
+takeoff.setDependencies(ApplicationChecker, {
     applicationDao: ApplicationDao,
     datastructureUtils: DatastructureUtils,
     dbApplicationUtils: DbApplicationUtils
 });
-landing.setDependencies(ApplicationComposer, {
+takeoff.setDependencies(ApplicationComposer, {
     applicationLocator: ApplicationLocator,
     datastructureUtils: DatastructureUtils,
     dbApplicationUtils: DbApplicationUtils,
     domainRetriever: DOMAIN_RETRIEVER,
     terminalStore: TerminalStore
 });
-landing.setDependencies(ApplicationLocator, {
+takeoff.setDependencies(ApplicationLocator, {
     dbApplicationUtils: DbApplicationUtils,
 });
-landing.setDependencies(ApplicationRecorder, {
+takeoff.setDependencies(ApplicationRecorder, {
     applicationColumnDao: ApplicationColumnDao,
     applicationDao: ApplicationDao,
     applicationEntityDao: ApplicationEntityDao,
@@ -13002,7 +12972,34 @@ landing.setDependencies(ApplicationRecorder, {
     domainDao: DomainDao,
     transactionManager: TRANSACTION_MANAGER
 });
-landing.setDependencies(SqlSchemaBuilder, {
+takeoff.setDependencies(DdlObjectLinker, {
+    terminalStore: TerminalStore
+});
+takeoff.setDependencies(DdlObjectRetriever, {
+    applicationColumnDao: ApplicationColumnDao,
+    applicationDao: ApplicationDao,
+    applicationEntityDao: ApplicationEntityDao,
+    applicationPropertyColumnDao: ApplicationPropertyColumnDao,
+    applicationPropertyDao: ApplicationPropertyDao,
+    applicationReferenceDao: ApplicationReferenceDao,
+    applicationRelationColumnDao: ApplicationRelationColumnDao,
+    applicationRelationDao: ApplicationRelationDao,
+    applicationVersionDao: ApplicationVersionDao,
+    domainDao: DomainDao
+});
+takeoff.setDependencies(QueryEntityClassCreator, {
+    airportDatabase: AIRPORT_DATABASE,
+    applicationUtils: ApplicationUtils,
+    qApplicationBuilderUtils: QApplicationBuilderUtils,
+    relationManager: RelationManager,
+});
+takeoff.setDependencies(QueryObjectInitializer, {
+    ddlObjectLinker: DdlObjectLinker,
+    ddlObjectRetriever: DdlObjectRetriever,
+    queryEntityClassCreator: QueryEntityClassCreator,
+    terminalStore: TerminalStore
+});
+takeoff.setDependencies(SqlSchemaBuilder, {
     airportDatabase: AIRPORT_DATABASE,
     applicationReferenceUtils: ApplicationReferenceUtils,
     dbApplicationUtils: DbApplicationUtils,
@@ -33589,7 +33586,7 @@ Entity:          ${table.name}
             let sqlInsertValues = new SQLInsertValues({
                 ...portableQuery.jsonQuery,
                 V
-            }, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+            }, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             let sql = sqlInsertValues.toSQL(fieldMap, context);
             let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
             numVals += await this.executeNative(sql, parameters, context);
@@ -33599,7 +33596,7 @@ Entity:          ${table.name}
     }
     async deleteWhere(portableQuery, context) {
         let fieldMap = new globalThis.SyncApplicationMap();
-        let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+        let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
         let sql = sqlDelete.toSQL(fieldMap, context);
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
         let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
@@ -33608,7 +33605,7 @@ Entity:          ${table.name}
     }
     async updateWhere(portableQuery, internalFragments, context) {
         let fieldMap = new globalThis.SyncApplicationMap();
-        let sqlUpdate = new SQLUpdate(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+        let sqlUpdate = new SQLUpdate(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
         let sql = sqlUpdate.toSQL(internalFragments, fieldMap, context);
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
         this.markQueriesToRerun(portableQuery, fieldMap);
@@ -33633,13 +33630,13 @@ Entity:          ${table.name}
             case QueryResType.ENTITY_TREE:
                 const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
                     .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
-                return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.objectResultParserFactory, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+                return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.objectResultParserFactory, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.FIELD:
-                return new FieldSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+                return new FieldSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.SHEET:
-                return new SheetSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+                return new SheetSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.TREE:
-                return new TreeSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+                return new TreeSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.RAW:
             default:
                 throw new Error(`Unknown QueryResultType: ${resultType}`);
@@ -33728,6 +33725,7 @@ fuelHydrantSystem.setDependencies(SqlDriver, {
     objectResultParserFactory: ObjectResultParserFactory,
     observableQueryAdapter: ObservableQueryAdapter,
     qMetadataUtils: QMetadataUtils,
+    queryUtils: QUERY_UTILS,
     qValidator: QValidator,
     relationManager: RelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,

@@ -17,7 +17,7 @@ import {
   JsonApplicationEntity,
   SQLDataType,
 } from '@airport/ground-control';
-import { SqlSchemaBuilder } from '@airport/landing';
+import { SqlSchemaBuilder } from '@airport/takeoff';
 
 @Injected()
 export class SqLiteApplicationBuilder

@@ -5,7 +5,7 @@ import {
 } from '@airport/ground-control';
 import {
 	APPLICATION_BUILDER
-} from '@airport/landing';
+} from '@airport/takeoff';
 import {
 	DatabaseManager,
 	injectTransactionalConnector,

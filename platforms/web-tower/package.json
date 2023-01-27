@@ -10,7 +10,6 @@
     "@airport/direction-indicator": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
-    "@airport/landing": "0.0.1",
     "@airport/pressurization": "0.0.1",
     "@airport/takeoff": "0.0.1",
     "@airport/tarmaq-entity": "0.0.1",

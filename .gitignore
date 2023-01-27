@@ -2,7 +2,6 @@
 /apis/**/dist/*
 /databases/**/dist/*
 /engines/**/dist/*
-/generators/landing/dist/*
 /generators/takeoff/dist/*
 /generators/runway/dist/**/*.d.ts
 /generators/runway/dist/**/*.d.ts.map
