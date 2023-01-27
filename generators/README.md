@@ -11,3 +11,4 @@ Also Schema related configuration generation.
 
 [taxiway](./taxiway)
 Runtime bundle modifier used by AIRport schemas.
+Strips all decorators from generated JavaScript.
