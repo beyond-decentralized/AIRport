@@ -1082,6 +1082,14 @@ class Dictionary {
         return /.*_RID_[\d]+$/.test(dbColumn.name)
             && !!dbColumn.manyRelationColumns.length;
     }
+    isActorProperty(dbProperty) {
+        return dbProperty.entity.isAirEntity
+            && this.AirEntity.properties.actor === dbProperty.name;
+    }
+    isRepositoryProperty(dbProperty) {
+        return dbProperty.entity.isAirEntity
+            && this.AirEntity.properties.repository === dbProperty.name;
+    }
     isEntityType(dbEntity, application, entity) {
         const dbApplication = dbEntity.applicationVersion.application;
         return dbApplication.domain.name === this.airport.DOMAIN_NAME
@@ -30669,14 +30677,15 @@ class ActiveQueries {
             // already marked to be re-run
             return true;
         }
+        if (!applicationMap.intersects(cachedSqlQuery.sqlQuery.getFieldMap())) {
+            return false;
+        }
         if (!cachedSqlQuery.trackedRepoGUIDSet.size || !trackedRepoGUIDSet.size) {
             return true;
         }
-        if (applicationMap.intersects(cachedSqlQuery.sqlQuery.getFieldMap())) {
-            for (const repositoryGUID of trackedRepoGUIDSet.values()) {
-                if (cachedSqlQuery.trackedRepoGUIDSet.has(repositoryGUID)) {
-                    return true;
-                }
+        for (const repositoryGUID of trackedRepoGUIDSet.values()) {
+            if (cachedSqlQuery.trackedRepoGUIDSet.has(repositoryGUID)) {
+                return true;
             }
         }
         return false;
@@ -37446,9 +37455,8 @@ in top level objects (that are passed into '...Dao.save(...)')`);
         for (const entity of entities) {
             entity.createdAt = new Date();
         }
-        const trackedRepoGUIDs = new Set();
+        const trackedRepoGUIDSet = new Set();
         for (const entity of entities) {
-            trackedRepoGUIDs.add(entity.repository.GUID);
             let valuesFragment = [];
             for (const dbProperty of context.dbEntity.properties) {
                 let newValue = entity[dbProperty.name];
@@ -37459,7 +37467,7 @@ in top level objects (that are passed into '...Dao.save(...)')`);
                     const dbRelation = dbProperty.relation[0];
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
-                            this.addTrackedRepoGUID(newValue, context.dbEntity, trackedRepoGUIDs);
+                            this.addTrackedRepoGUID(newValue, dbProperty, trackedRepoGUIDSet);
                             this.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, _propertyNameChains) => {
                                 if (dbColumn.isGenerated) {
                                     return;
@@ -37484,7 +37492,7 @@ in top level objects (that are passed into '...Dao.save(...)')`);
             }
             rawInsert.VALUES.push(valuesFragment);
         }
-        const insertValues = new InsertValues(rawInsert, null, trackedRepoGUIDs);
+        const insertValues = new InsertValues(rawInsert, null, trackedRepoGUIDSet);
         if (rawInsert.VALUES.length) {
             const generatedColumns = context.dbEntity.columns.filter(column => column.isGenerated);
             if (generatedColumns.length && ensureGeneratedValues) {
@@ -37526,9 +37534,8 @@ in top level objects (that are passed into '...Dao.save(...)')`);
      */
     async internalUpdate(entities, actor, transaction, rootTransaction, saveResult, context) {
         const qEntity = this.airportDatabase.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
-        const trackedRepoGUIDs = new Set();
+        const trackedRepoGUIDSet = new Set();
         for (const entity of entities) {
-            trackedRepoGUIDs.add(entity.repository.GUID);
             const setFragment = {};
             const idWhereFragments = [];
             let runUpdate = false;
@@ -37557,8 +37564,8 @@ in top level objects (that are passed into '...Dao.save(...)')`);
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
                             const originalValue = originalEntity[dbProperty.name];
-                            this.addTrackedRepoGUID(originalValue, context.dbEntity, trackedRepoGUIDs);
-                            this.addTrackedRepoGUID(updatedValue, context.dbEntity, trackedRepoGUIDs);
+                            this.addTrackedRepoGUID(originalValue, dbProperty, trackedRepoGUIDSet);
+                            this.addTrackedRepoGUID(updatedValue, dbProperty, trackedRepoGUIDSet);
                             let propertyOriginalValue = originalEntity[dbProperty.name];
                             this.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (_dbColumn, value, propertyNameChains) => {
                                 let originalColumnValue = propertyOriginalValue;
@@ -37626,7 +37633,7 @@ in top level objects (that are passed into '...Dao.save(...)')`);
                     SET: setFragment,
                     WHERE: whereFragment
                 };
-                const update = new UpdateProperties(rawUpdate, trackedRepoGUIDs);
+                const update = new UpdateProperties(rawUpdate, trackedRepoGUIDSet);
                 const portableQuery = this.queryFacade.getPortableQuery(update, null, context);
                 await this.updateManager.updateValues(portableQuery, actor, transaction, rootTransaction, context);
             }
@@ -37638,9 +37645,8 @@ in top level objects (that are passed into '...Dao.save(...)')`);
         const idWhereFragments = [];
         const valuesMapByColumn = [];
         let entityIdWhereClauses = [];
-        const trackedRepoGUIDs = new Set();
+        const trackedRepoGUIDSet = new Set();
         for (const entity of entities) {
-            trackedRepoGUIDs.add(entity.repository.GUID);
             for (let propertyName in entity) {
                 if (!entity.hasOwnProperty(propertyName)) {
                     continue;
@@ -37665,7 +37671,7 @@ in top level objects (that are passed into '...Dao.save(...)')`);
                 else {
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
-                            this.addTrackedRepoGUID(deletedValue, dbEntity, trackedRepoGUIDs);
+                            this.addTrackedRepoGUID(deletedValue, dbProperty, trackedRepoGUIDSet);
                             this.applicationUtils.forEachColumnOfRelation(dbRelation, dbEntity, (dbColumn, value, propertyNameChains) => {
                                 if (dbProperty.isId && valuesMapByColumn[dbColumn.index] === undefined) {
                                     let idQProperty = qEntity;
@@ -37705,15 +37711,26 @@ in top level objects (that are passed into '...Dao.save(...)')`);
             DELETE_FROM: qEntity,
             WHERE
         };
-        let deleteWhere = new Delete(rawDelete, trackedRepoGUIDs);
+        let deleteWhere = new Delete(rawDelete, trackedRepoGUIDSet);
         let portableQuery = this.queryFacade.getPortableQuery(deleteWhere, null, context);
         await this.deleteManager.deleteWhere(portableQuery, actor, transaction, rootTransaction, context);
     }
-    addTrackedRepoGUID(value, dbEntity, trackedRepoGUIDs) {
-        if (value && dbEntity.isAirEntity
+    addTrackedRepoGUID(value, dbProperty, trackedRepoGUIDSet) {
+        if (!value) {
+            return;
+        }
+        if (this.dictionary.isActorProperty(dbProperty)) {
+            return;
+        }
+        if (this.dictionary.isRepositoryProperty(dbProperty)
+            && value.GUID) {
+            trackedRepoGUIDSet.add(value.GUID);
+            return;
+        }
+        if (dbProperty.entity.isAirEntity
             && value.repository
             && value.repository.GUID) {
-            trackedRepoGUIDs.add(value.repository.GUID);
+            trackedRepoGUIDSet.add(value.repository.GUID);
         }
     }
 }
