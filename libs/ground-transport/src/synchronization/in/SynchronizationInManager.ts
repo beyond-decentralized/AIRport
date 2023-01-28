@@ -273,7 +273,6 @@ export class SynchronizationInManager
 		}
 		for (const repository of repositoryMapByGUID.values()) {
 			await this.repositoryLoader.loadRepository(
-				repository.source,
 				repository.GUID,
 				{
 					...context,

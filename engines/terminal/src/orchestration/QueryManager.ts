@@ -134,8 +134,8 @@ export class QueryManager
 	private async ensureRepositoryPresenceAndCurrentState(
 		context: IQueryOperationContext
 	) {
-		if (context.repository && context.repository.source && context.repository.GUID) {
-			await this.repositoryLoader.loadRepository(context.repository.source, context.repository.GUID, context)
+		if (context.repository && context.repository.GUID) {
+			await this.repositoryLoader.loadRepository(context.repository.GUID, context)
 		}
 	}
 

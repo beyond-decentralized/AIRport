@@ -4,7 +4,7 @@ import {
 } from '@airport/direction-indicator'
 import { IClient } from "@airway/client";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
-import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponseFragment, Repository_GUID, Repository_Source } from '@airport/ground-control';
+import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponseFragment, Repository_GUID } from '@airport/ground-control';
 
 @Injected()
 export class DebugSynchronizationAdapter
@@ -14,11 +14,10 @@ export class DebugSynchronizationAdapter
     client: IClient
 
     async getTransactionsForRepository(
-        repositorySource: Repository_Source,
         repositoryGUID: Repository_GUID,
         sinceSyncTimestamp?: number
     ): Promise<RepositorySynchronizationMessage[]> {
-        const location = this.getLocation(repositorySource)
+        const location = this.getLocation(repositoryGUID)
         const response: RepositorySynchronizationReadResponseFragment[]
             = await this.client.getRepositoryTransactions(
                 location, repositoryGUID, sinceSyncTimestamp)
@@ -43,27 +42,23 @@ export class DebugSynchronizationAdapter
     }
 
     async sendTransactions(
-        repositorySource: Repository_Source,
-        messagesByRepository: Map<Repository_GUID, RepositorySynchronizationMessage[]>
+        repositoryGUID: Repository_GUID,
+        messagesForRepository: RepositorySynchronizationMessage[]
     ): Promise<boolean> {
         let allSent = true
-        for (const [repositoryGUID, messages] of messagesByRepository) {
-            try {
-                if (!await this.sendTransactionsForRepository(
-                    repositorySource, repositoryGUID, messages)) {
-                    allSent = false
-                }
-            } catch (e) {
-                console.error(e)
+        try {
+            if (!await this.sendTransactionsForRepository(repositoryGUID, messagesForRepository)) {
                 allSent = false
             }
+        } catch (e) {
+            console.error(e)
+            allSent = false
         }
 
         return allSent
     }
 
     async sendTransactionsForRepository(
-        repositorySource: Repository_Source,
         repositoryGUID: Repository_GUID,
         messages: RepositorySynchronizationMessage[]
     ): Promise<boolean> {
@@ -71,7 +66,7 @@ export class DebugSynchronizationAdapter
             return false
         }
 
-        const location = this.getLocation(repositorySource)
+        const location = this.getLocation(repositoryGUID)
         const syncTimestamp = await this.client.sendRepositoryTransactions(
             location, repositoryGUID, messages)
 
@@ -87,11 +82,11 @@ export class DebugSynchronizationAdapter
     }
 
     private getLocation(
-        repositorySource: Repository_Source
+        repositoryGUID: Repository_GUID
     ): string {
-        if (repositorySource !== 'DEVSERVR') {
-            throw new Error(`DebugSynchronizationAdapter only supports DEVSERVR source`)
-        }
+        // if (repositorySource !== 'DEVSERVR') {
+        //     throw new Error(`DebugSynchronizationAdapter only supports DEVSERVR source`)
+        // }
 
         return 'localhost:9000'
     }

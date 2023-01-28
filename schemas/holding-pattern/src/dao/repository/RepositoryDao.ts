@@ -38,7 +38,6 @@ export interface IRepositoryDao
 	): Promise<IRepository[]>
 
 	getRepositoryLoadInfo(
-		repositorySource: Repository_Source,
 		repositoryGUID: Repository_GUID,
 		context: IContext
 	): Promise<IRepository>
@@ -113,7 +112,6 @@ export class RepositoryDao
 	}
 
 	async getRepositoryLoadInfo(
-		repositorySource: Repository_Source,
 		repositoryGUID: Repository_GUID,
 		context: IContext
 	): Promise<IRepository> {
@@ -135,7 +133,6 @@ export class RepositoryDao
 				th = rth.transactionHistory.INNER_JOIN()
 			],
 			WHERE: AND(
-				r.source.equals(repositorySource),
 				r.GUID.equals(repositoryGUID),
 				th.transactionType.equals(TransactionType.REMOTE_SYNC)
 			)

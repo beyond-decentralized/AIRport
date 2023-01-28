@@ -9,12 +9,14 @@ import {
 } from '@airport/ground-control'
 import { Subject } from 'rxjs'
 
+export type SerializedJSONQuery = string
+
 /**
  * Created by shamsutdinov.artem on 8/8/2016.
  */
 export interface IActiveQueries<SQLQuery extends IFieldMapped> {
 
-	queries: Map<PortableQuery, CachedSQLQuery<SQLQuery>>;
+	queries: Map<SerializedJSONQuery, CachedSQLQuery<SQLQuery>>;
 
 	add(
 		portableQuery: PortableQuery,
@@ -48,19 +50,24 @@ export interface IActiveQueries<SQLQuery extends IFieldMapped> {
 export class ActiveQueries<SQLQuery extends IFieldMapped>
 	implements IActiveQueries<SQLQuery> {
 
-	queries: Map<PortableQuery, CachedSQLQuery<SQLQuery>> = new Map<PortableQuery, CachedSQLQuery<SQLQuery>>()
+	queries: Map<SerializedJSONQuery, CachedSQLQuery<SQLQuery>>
+		= new Map<SerializedJSONQuery, CachedSQLQuery<SQLQuery>>()
 
 	add(
 		portableQuery: PortableQuery,
 		cachedSqlQuery: CachedSQLQuery<SQLQuery>
 	): void {
-		this.queries.set(portableQuery, cachedSqlQuery)
+		const serializedJSONQuery = JSON.stringify(portableQuery.jsonQuery)
+
+		this.queries.set(serializedJSONQuery, cachedSqlQuery)
 	}
 
 	remove(
 		portableQuery: PortableQuery
 	): void {
-		this.queries.delete(portableQuery)
+		const serializedJSONQuery = JSON.stringify(portableQuery.jsonQuery)
+
+		this.queries.delete(serializedJSONQuery)
 	}
 
 	markQueriesToRerun(

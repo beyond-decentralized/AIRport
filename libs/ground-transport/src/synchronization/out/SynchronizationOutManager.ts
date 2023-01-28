@@ -6,7 +6,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IDatastructureUtils, IRepository, IRepositoryTransactionHistory, RepositorySynchronizationData, RepositorySynchronizationMessage, Repository_GUID, Repository_LocalId, Repository_Source
+	IDatastructureUtils, IRepository, IRepositoryTransactionHistory, RepositorySynchronizationData, RepositorySynchronizationMessage, Repository_GUID, Repository_LocalId
 } from '@airport/ground-control'
 import {
 	IRepositoryDao,
@@ -57,13 +57,14 @@ export class SynchronizationOutManager
 
 		this.messageSigningManager.signMessages(messages)
 
-		const groupMessageMap = this.groupMessagesBySourceAndRepository(
+		const groupMessageMap = this.groupMessagesByRepository(
 			messages, historiesToSend)
 
-		for (const [repositorySource, messageMapForSource] of groupMessageMap) {
+		for (const [repositoryGUID, messagesForRepository] of groupMessageMap) {
 			const synchronizationAdapter = await this.synchronizationAdapterLoader.load(
-				repositorySource)
-			await synchronizationAdapter.sendTransactions(repositorySource, messageMapForSource)
+				repositoryGUID)
+			await synchronizationAdapter.sendTransactions(repositoryGUID,
+				messagesForRepository)
 		}
 
 		await this.updateRepositoryTransactionHistories(messages, historiesToSend)
@@ -132,19 +133,17 @@ export class SynchronizationOutManager
 		}
 	}
 
-	private groupMessagesBySourceAndRepository(
+	private groupMessagesByRepository(
 		messages: RepositorySynchronizationMessage[],
 		historiesToSend: IRepositoryTransactionHistory[]
-	): Map<Repository_Source, Map<Repository_GUID, RepositorySynchronizationMessage[]>> {
-		const groupMessageMap: Map<Repository_Source, Map<Repository_GUID, RepositorySynchronizationMessage[]>>
+	): Map<Repository_GUID, RepositorySynchronizationMessage[]> {
+		const groupMessageMap: Map<Repository_GUID, RepositorySynchronizationMessage[]>
 			= new Map()
 
 		for (let i = 0; i < messages.length; i++) {
 			const repository = historiesToSend[i].repository
-			const source = repository.GUID.substring(0, 8)
 			this.datastructureUtils.ensureChildArray(
-				this.datastructureUtils.ensureChildJsMap(groupMessageMap, source),
-				repository.GUID).push(messages[i])
+				groupMessageMap, repository.GUID).push(messages[i])
 		}
 
 		return groupMessageMap

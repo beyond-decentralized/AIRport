@@ -2,12 +2,13 @@ import {
     Inject,
     Injected
 } from '@airport/direction-indicator'
+import { Repository_GUID } from '@airport/ground-control';
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
 
 export interface ISynchronizationAdapterLoader {
 
     load(
-        source: string
+        repositoryGUID: Repository_GUID
     ): Promise<ISynchronizationAdapter>
 
 }
@@ -20,18 +21,18 @@ export class SynchronizationAdapterLoader
     debugSynchronizationAdapter: ISynchronizationAdapter
 
     async load(
-        synchronizationSource: string
+        repositoryGUID: Repository_GUID
     ): Promise<ISynchronizationAdapter> {
-        switch (synchronizationSource) {
-            case 'IPFS': {
-                throw new Error(`Not Implemented`)
-            }
-            case 'DEVSERVR': {
+        // switch (synchronizationSource) {
+        //     case 'IPFS': {
+        //         throw new Error(`Not Implemented`)
+        //     }
+        //     case 'DEVSERVR': {
                 return this.debugSynchronizationAdapter
-            }
-            default:
-                throw new Error(`Unexpected synchronization source: ${synchronizationSource}`)
-        }
+        //     }
+        //     default:
+        //         throw new Error(`Unexpected synchronization source: ${synchronizationSource}`)
+        // }
     }
 
 }

@@ -2,8 +2,8 @@ import {
     IRepositoryLoader
 } from "@airport/air-traffic-control";
 import {
-	Inject,
-	Injected
+    Inject,
+    Injected
 } from '@airport/direction-indicator'
 import {
     IContext
@@ -39,7 +39,6 @@ export class RepositoryLoader
     Immutable repositories are only loaded once
     */
     async loadRepository(
-        repositorySource: string,
         repositoryGUID: string,
         context: IContext & ITransactionContext
     ): Promise<void> {
@@ -49,7 +48,7 @@ export class RepositoryLoader
         context.repositoryExistenceChecked = true
 
         const repositoryLoadInfo = await this.repositoryDao.getRepositoryLoadInfo(
-            repositorySource, repositoryGUID, context)
+            repositoryGUID, context)
 
         let loadRepository = false
         let lastSyncTimestamp = 0
@@ -70,7 +69,7 @@ export class RepositoryLoader
 
         const now = new Date().getTime()
         const synchronizationAdapter = await this.synchronizationAdapterLoader
-            .load(repositorySource)
+            .load(repositoryGUID)
 
         let messages: RepositorySynchronizationMessage[]
         try {
@@ -82,10 +81,10 @@ export class RepositoryLoader
                 // Check 100 seconds back, in case there were update issues
                 lastSyncTimestamp -= 100000
                 messages = await synchronizationAdapter.getTransactionsForRepository(
-                    repositorySource, repositoryGUID, lastSyncTimestamp)
+                    repositoryGUID, lastSyncTimestamp)
             } else {
                 messages = await synchronizationAdapter.getTransactionsForRepository(
-                    repositorySource, repositoryGUID)
+                    repositoryGUID)
             }
 
             // TODO: Add a special message for repository for adding users
