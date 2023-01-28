@@ -7,6 +7,8 @@ import { readConfiguration } from './ddl/options/generator';
 import { additionalFileProcessors } from './FileProcessor';
 import { watchFiles } from './FileWatcher';
 
+globalThis.repositoryAutoload = false
+
 function addRootDirPaths(
 	dirNameFromConfig: string,
 	defaultDir: string,

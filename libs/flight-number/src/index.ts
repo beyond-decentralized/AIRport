@@ -4,7 +4,12 @@ export * from './ActiveQueries'
 export * from './ObservableQueryAdapter'
 export * from './injection'
 
-setInterval(() => {
-    const observableQueryAdapter = globalThis.IOC.getSync(OBSERVABLE_QUERY_ADAPTER)
-    observableQueryAdapter.checkRepositoryExistence().then()
-}, 1000)
+setTimeout(() => {
+    if (globalThis.repositoryAutoload !== false) {
+        setInterval(() => {
+            globalThis.IOC.get(OBSERVABLE_QUERY_ADAPTER).then(
+                observableQueryAdapter => observableQueryAdapter.checkRepositoryExistence().then()
+            )
+        }, 1000)
+    }
+}, 2000)

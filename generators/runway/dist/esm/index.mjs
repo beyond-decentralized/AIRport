@@ -13836,189 +13836,6 @@ class ActorDao extends BaseActorDao {
     }
 }
 
-class RepositoryDao extends BaseRepositoryDao {
-    async findRootRepositories() {
-        let r;
-        const repositories = await this._find({
-            SELECT: {
-                _localId: Y,
-                ageSuitability: Y,
-                createdAt: Y,
-                GUID: Y,
-                owner: {
-                    username: Y,
-                },
-                '*': Y,
-                uiEntryUri: Y
-            },
-            FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
-                r.owner.INNER_JOIN()
-            ]
-        });
-        return repositories;
-    }
-    async findRepository(repositoryGUID) {
-        let r;
-        const repository = await this._findOne({
-            SELECT: {
-                _localId: Y,
-                ageSuitability: Y,
-                createdAt: Y,
-                GUID: Y,
-                isPublic: Y,
-                owner: {
-                    username: Y,
-                },
-                '*': Y,
-                uiEntryUri: Y
-            },
-            FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
-                r.owner.INNER_JOIN()
-            ],
-            WHERE: r.GUID.equals(repositoryGUID)
-        });
-        return repository;
-    }
-    async getRepositoryLoadInfo(repositorySource, repositoryGUID, context) {
-        let r;
-        let rth;
-        let th;
-        return await this.db.findOne.tree({
-            SELECT: {
-                immutable: Y,
-                repositoryTransactionHistory: {
-                    saveTimestamp: Y
-                }
-            },
-            FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
-                rth = r.repositoryTransactionHistory.INNER_JOIN(),
-                th = rth.transactionHistory.INNER_JOIN()
-            ],
-            WHERE: AND(r.source.equals(repositorySource), r.GUID.equals(repositoryGUID), th.transactionType.equals(TransactionType.REMOTE_SYNC))
-        }, context);
-    }
-    async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
-        let r;
-        const _localId = Y;
-        const GUID = Y;
-        return await this.db.find.tree({
-            SELECT: {
-                _localId,
-                ageSuitability: Y,
-                createdAt: Y,
-                GUID,
-                owner: {
-                    accountPublicSigningKey: Y
-                },
-                uiEntryUri: Y
-            },
-            FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
-                r.owner.INNER_JOIN()
-            ],
-            WHERE: r._localId.IN(repositoryIds)
-        });
-    }
-    async findWithOwnerBy_LocalIds(repositoryIds) {
-        let r;
-        return await this.db.find.tree({
-            SELECT: {
-                _localId: Y,
-                ageSuitability: Y,
-                createdAt: Y,
-                GUID: Y,
-                owner: {
-                    accountPublicSigningKey: Y,
-                    username: Y
-                },
-                uiEntryUri: Y
-            },
-            FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
-                r.owner.INNER_JOIN()
-            ],
-            WHERE: r._localId.IN(repositoryIds)
-        });
-    }
-    async findWithOwnerBy_LocalIdIn(repository_localIds) {
-        let r;
-        return await this.db.find.graph({
-            SELECT: {
-                _localId: Y,
-                ageSuitability: Y,
-                createdAt: Y,
-                GUID: Y,
-                owner: {
-                    accountPublicSigningKey: Y,
-                    username: Y
-                },
-                uiEntryUri: Y
-            },
-            FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
-                r.owner.INNER_JOIN()
-            ],
-            WHERE: r._localId.IN(repository_localIds)
-        });
-    }
-    async findByGUIDs(repositoryGUIDs) {
-        let r;
-        return await this.db.find.tree({
-            SELECT: {
-                _localId: Y,
-                ageSuitability: Y,
-                createdAt: Y,
-                GUID: Y,
-                '*': Y,
-                uiEntryUri: Y
-            },
-            FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository
-            ],
-            WHERE: r.GUID.IN(repositoryGUIDs)
-        });
-    }
-    async insert(repositories, context) {
-        let r;
-        const VALUES = [];
-        for (const repository of repositories) {
-            VALUES.push([
-                repository.createdAt, repository.GUID, repository.ageSuitability,
-                repository.source, repository.immutable, repository.owner._localId,
-            ]);
-        }
-        const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
-            columns: [
-                r.createdAt,
-                r.GUID,
-                r.ageSuitability,
-                r.source,
-                r.immutable,
-                r.owner._localId
-            ],
-            VALUES
-        }, context);
-        for (let i = 0; i < repositories.length; i++) {
-            let repository = repositories[i];
-            repository._localId = _localIds[i][0];
-        }
-    }
-    async updateUiEntityUri(repositoryGuid, uiEntityUri) {
-        let r;
-        await this.db.updateColumnsWhere({
-            UPDATE: r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
-            SET: {
-                UI_ENTRY_URI: uiEntityUri
-            },
-            WHERE: r.GUID.equals(repositoryGuid)
-        });
-    }
-}
-
 class RepositoryMemberAcceptanceDao extends BaseRepositoryMemberAcceptanceDao {
     async insert(repositoryMemberAcceptances, context) {
         let rma;
@@ -14168,6 +13985,189 @@ class RepositoryMemberInvitationDao extends BaseRepositoryMemberInvitationDao {
             let repositoryMemberInvitation = repositoryMemberInvitations[i];
             repositoryMemberInvitation._localId = _localIds[i][0];
         }
+    }
+}
+
+class RepositoryDao extends BaseRepositoryDao {
+    async findRootRepositories() {
+        let r;
+        const repositories = await this._find({
+            SELECT: {
+                _localId: Y,
+                ageSuitability: Y,
+                createdAt: Y,
+                GUID: Y,
+                owner: {
+                    username: Y,
+                },
+                '*': Y,
+                uiEntryUri: Y
+            },
+            FROM: [
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+                r.owner.INNER_JOIN()
+            ]
+        });
+        return repositories;
+    }
+    async findRepository(repositoryGUID) {
+        let r;
+        const repository = await this._findOne({
+            SELECT: {
+                _localId: Y,
+                ageSuitability: Y,
+                createdAt: Y,
+                GUID: Y,
+                isPublic: Y,
+                owner: {
+                    username: Y,
+                },
+                '*': Y,
+                uiEntryUri: Y
+            },
+            FROM: [
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+                r.owner.INNER_JOIN()
+            ],
+            WHERE: r.GUID.equals(repositoryGUID)
+        });
+        return repository;
+    }
+    async getRepositoryLoadInfo(repositoryGUID, context) {
+        let r;
+        let rth;
+        let th;
+        return await this.db.findOne.tree({
+            SELECT: {
+                immutable: Y,
+                repositoryTransactionHistory: {
+                    saveTimestamp: Y
+                }
+            },
+            FROM: [
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+                rth = r.repositoryTransactionHistory.INNER_JOIN(),
+                th = rth.transactionHistory.INNER_JOIN()
+            ],
+            WHERE: AND(r.GUID.equals(repositoryGUID), th.transactionType.equals(TransactionType.REMOTE_SYNC))
+        }, context);
+    }
+    async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
+        let r;
+        const _localId = Y;
+        const GUID = Y;
+        return await this.db.find.tree({
+            SELECT: {
+                _localId,
+                ageSuitability: Y,
+                createdAt: Y,
+                GUID,
+                owner: {
+                    accountPublicSigningKey: Y
+                },
+                uiEntryUri: Y
+            },
+            FROM: [
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+                r.owner.INNER_JOIN()
+            ],
+            WHERE: r._localId.IN(repositoryIds)
+        });
+    }
+    async findWithOwnerBy_LocalIds(repositoryIds) {
+        let r;
+        return await this.db.find.tree({
+            SELECT: {
+                _localId: Y,
+                ageSuitability: Y,
+                createdAt: Y,
+                GUID: Y,
+                owner: {
+                    accountPublicSigningKey: Y,
+                    username: Y
+                },
+                uiEntryUri: Y
+            },
+            FROM: [
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+                r.owner.INNER_JOIN()
+            ],
+            WHERE: r._localId.IN(repositoryIds)
+        });
+    }
+    async findWithOwnerBy_LocalIdIn(repository_localIds) {
+        let r;
+        return await this.db.find.graph({
+            SELECT: {
+                _localId: Y,
+                ageSuitability: Y,
+                createdAt: Y,
+                GUID: Y,
+                owner: {
+                    accountPublicSigningKey: Y,
+                    username: Y
+                },
+                uiEntryUri: Y
+            },
+            FROM: [
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+                r.owner.INNER_JOIN()
+            ],
+            WHERE: r._localId.IN(repository_localIds)
+        });
+    }
+    async findByGUIDs(repositoryGUIDs) {
+        let r;
+        return await this.db.find.tree({
+            SELECT: {
+                _localId: Y,
+                ageSuitability: Y,
+                createdAt: Y,
+                GUID: Y,
+                '*': Y,
+                uiEntryUri: Y
+            },
+            FROM: [
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository
+            ],
+            WHERE: r.GUID.IN(repositoryGUIDs)
+        });
+    }
+    async insert(repositories, context) {
+        let r;
+        const VALUES = [];
+        for (const repository of repositories) {
+            VALUES.push([
+                repository.createdAt, repository.GUID, repository.ageSuitability,
+                repository.source, repository.immutable, repository.owner._localId,
+            ]);
+        }
+        const _localIds = await this.db.insertValuesGenerateIds({
+            INSERT_INTO: r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+            columns: [
+                r.createdAt,
+                r.GUID,
+                r.ageSuitability,
+                r.source,
+                r.immutable,
+                r.owner._localId
+            ],
+            VALUES
+        }, context);
+        for (let i = 0; i < repositories.length; i++) {
+            let repository = repositories[i];
+            repository._localId = _localIds[i][0];
+        }
+    }
+    async updateUiEntityUri(repositoryGuid, uiEntityUri) {
+        let r;
+        await this.db.updateColumnsWhere({
+            UPDATE: r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+            SET: {
+                UI_ENTRY_URI: uiEntityUri
+            },
+            WHERE: r.GUID.equals(repositoryGuid)
+        });
     }
 }
 
@@ -27500,7 +27500,7 @@ const application$2 = {
 
 let KeyRingManager = class KeyRingManager {
     async getKeyRing(userPrivateKey, privateMetaSigningKey, context) {
-        await this.repositoryLoader.loadRepository('DEVSERVR', userPrivateKey, {});
+        await this.repositoryLoader.loadRepository('DEVSERVR_' + userPrivateKey, {});
         let keyRing = await this.keyRingDao.findKeyRing(userPrivateKey);
         if (!keyRing) {
             const keyRingContext = {
@@ -27633,8 +27633,8 @@ keyring.setDependencies(MessageSigningManager, {
 });
 
 class DebugSynchronizationAdapter {
-    async getTransactionsForRepository(repositorySource, repositoryGUID, sinceSyncTimestamp) {
-        const location = this.getLocation(repositorySource);
+    async getTransactionsForRepository(repositoryGUID, sinceSyncTimestamp) {
+        const location = this.getLocation(repositoryGUID);
         const response = await this.client.getRepositoryTransactions(location, repositoryGUID, sinceSyncTimestamp);
         const messages = [];
         // NOTE: syncTimestamp is populated here because file sharing mechanisms
@@ -27652,26 +27652,24 @@ class DebugSynchronizationAdapter {
         }
         return messages;
     }
-    async sendTransactions(repositorySource, messagesByRepository) {
+    async sendTransactions(repositoryGUID, messagesForRepository) {
         let allSent = true;
-        for (const [repositoryGUID, messages] of messagesByRepository) {
-            try {
-                if (!await this.sendTransactionsForRepository(repositorySource, repositoryGUID, messages)) {
-                    allSent = false;
-                }
-            }
-            catch (e) {
-                console.error(e);
+        try {
+            if (!await this.sendTransactionsForRepository(repositoryGUID, messagesForRepository)) {
                 allSent = false;
             }
         }
+        catch (e) {
+            console.error(e);
+            allSent = false;
+        }
         return allSent;
     }
-    async sendTransactionsForRepository(repositorySource, repositoryGUID, messages) {
+    async sendTransactionsForRepository(repositoryGUID, messages) {
         if (!messages || !messages.length) {
             return false;
         }
-        const location = this.getLocation(repositorySource);
+        const location = this.getLocation(repositoryGUID);
         const syncTimestamp = await this.client.sendRepositoryTransactions(location, repositoryGUID, messages);
         if (!syncTimestamp) {
             return false;
@@ -27681,26 +27679,26 @@ class DebugSynchronizationAdapter {
         }
         return true;
     }
-    getLocation(repositorySource) {
-        if (repositorySource !== 'DEVSERVR') {
-            throw new Error(`DebugSynchronizationAdapter only supports DEVSERVR source`);
-        }
+    getLocation(repositoryGUID) {
+        // if (repositorySource !== 'DEVSERVR') {
+        //     throw new Error(`DebugSynchronizationAdapter only supports DEVSERVR source`)
+        // }
         return 'localhost:9000';
     }
 }
 
 class SynchronizationAdapterLoader {
-    async load(synchronizationSource) {
-        switch (synchronizationSource) {
-            case 'IPFS': {
-                throw new Error(`Not Implemented`);
-            }
-            case 'DEVSERVR': {
-                return this.debugSynchronizationAdapter;
-            }
-            default:
-                throw new Error(`Unexpected synchronization source: ${synchronizationSource}`);
-        }
+    async load(repositoryGUID) {
+        // switch (synchronizationSource) {
+        //     case 'IPFS': {
+        //         throw new Error(`Not Implemented`)
+        //     }
+        //     case 'DEVSERVR': {
+        return this.debugSynchronizationAdapter;
+        //     }
+        //     default:
+        //         throw new Error(`Unexpected synchronization source: ${synchronizationSource}`)
+        // }
     }
 }
 
@@ -29787,7 +29785,7 @@ class SynchronizationInManager {
             }
         }
         for (const repository of repositoryMapByGUID.values()) {
-            await this.repositoryLoader.loadRepository(repository.source, repository.GUID, {
+            await this.repositoryLoader.loadRepository(repository.GUID, {
                 ...context,
                 doNotLoadReferences: true
             });
@@ -30436,10 +30434,10 @@ class SynchronizationOutManager {
         const { historiesToSend, messages } = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories);
         // await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
         this.messageSigningManager.signMessages(messages);
-        const groupMessageMap = this.groupMessagesBySourceAndRepository(messages, historiesToSend);
-        for (const [repositorySource, messageMapForSource] of groupMessageMap) {
-            const synchronizationAdapter = await this.synchronizationAdapterLoader.load(repositorySource);
-            await synchronizationAdapter.sendTransactions(repositorySource, messageMapForSource);
+        const groupMessageMap = this.groupMessagesByRepository(messages, historiesToSend);
+        for (const [repositoryGUID, messagesForRepository] of groupMessageMap) {
+            const synchronizationAdapter = await this.synchronizationAdapterLoader.load(repositoryGUID);
+            await synchronizationAdapter.sendTransactions(repositoryGUID, messagesForRepository);
         }
         await this.updateRepositoryTransactionHistories(messages, historiesToSend);
     }
@@ -30494,12 +30492,11 @@ class SynchronizationOutManager {
             }
         }
     }
-    groupMessagesBySourceAndRepository(messages, historiesToSend) {
+    groupMessagesByRepository(messages, historiesToSend) {
         const groupMessageMap = new Map();
         for (let i = 0; i < messages.length; i++) {
             const repository = historiesToSend[i].repository;
-            const source = repository.GUID.substring(0, 8);
-            this.datastructureUtils.ensureChildArray(this.datastructureUtils.ensureChildJsMap(groupMessageMap, source), repository.GUID).push(messages[i]);
+            this.datastructureUtils.ensureChildArray(groupMessageMap, repository.GUID).push(messages[i]);
         }
         return groupMessageMap;
     }
@@ -30678,20 +30675,40 @@ class ActiveQueries {
 class ObservableQueryAdapter {
     constructor() {
         this.repositoryGUIDSetToCheck = new Set();
+        this.repositoryExistenceCheckInProgress = false;
     }
-    init() {
-        this.repositoryLoadInterval = setInterval(() => {
-            // Query for all repositories
-            // Find missing repositories
-            // Load missing repositories
+    async checkRepositoryExistence() {
+        try {
+            if (this.repositoryExistenceCheckInProgress) {
+                return;
+            }
+            this.repositoryExistenceCheckInProgress = true;
+            const locallyPresentRepositories = await this.repositoryDao
+                .findByGUIDs(Array.from(this.repositoryGUIDSetToCheck));
+            const locallyPresentRepositoryGUIDSet = new Set();
+            for (const localyPresentRepository of locallyPresentRepositories) {
+                locallyPresentRepositoryGUIDSet.add(localyPresentRepository.GUID);
+            }
+            const locallyMissingRepositoryGUIDS = [];
+            for (const repositoryGUIDToCheck of this.repositoryGUIDSetToCheck.values()) {
+                if (!locallyPresentRepositoryGUIDSet.has(repositoryGUIDToCheck)) {
+                    locallyMissingRepositoryGUIDS.push(repositoryGUIDToCheck);
+                }
+            }
+            for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDS) {
+                await this.repositoryLoader.loadRepository(locallyMissingRepositoryGUID, {
+                    doNotLoadReferences: true
+                });
+            }
             this.repositoryGUIDSetToCheck.clear();
-        }, 1000);
-    }
-    // FIXIME: implement calling disposed in dependency injection
-    // when the object is unloaded (once unloading of objects is
-    // implemented)
-    dispose() {
-        clearInterval(this.repositoryLoadInterval);
+        }
+        catch (e) {
+            console.error('Error checking Repositor existence');
+            console.error(e);
+        }
+        finally {
+            this.repositoryExistenceCheckInProgress = false;
+        }
     }
     wrapInObservable(portableQuery, queryCallback) {
         // TODO: checking for presence of a Repository in an Observable
@@ -30738,10 +30755,21 @@ class ObservableQueryAdapter {
 }
 
 const flightNumber = lib('flight-number');
-flightNumber.register(ActiveQueries, ObservableQueryAdapter);
-flightNumber.setDependencies(ObservableQueryAdapter, {
-    activeQueries: ActiveQueries
+flightNumber.register(ActiveQueries);
+const OBSERVABLE_QUERY_ADAPTER = flightNumber.token('ObservableQueryAdapter');
+OBSERVABLE_QUERY_ADAPTER.setClass(ObservableQueryAdapter);
+OBSERVABLE_QUERY_ADAPTER.setDependencies({
+    activeQueries: ActiveQueries,
+    repositoryDao: RepositoryDao
 });
+
+setTimeout(() => {
+    if (globalThis.repositoryAutoload !== false) {
+        setInterval(() => {
+            globalThis.IOC.get(OBSERVABLE_QUERY_ADAPTER).then(observableQueryAdapter => observableQueryAdapter.checkRepositoryExistence().then());
+        }, 1000);
+    }
+}, 2000);
 
 class AbstractEntityOrderByParser {
     constructor(rootSelectClauseFragment, airportDatabase, qValidator, relationManager, orderBy) {
@@ -34447,12 +34475,12 @@ class RepositoryLoader {
     - Distributed:  Also stale timestamp but not as frequently (maybe once an hour)
     Immutable repositories are only loaded once
     */
-    async loadRepository(repositorySource, repositoryGUID, context) {
+    async loadRepository(repositoryGUID, context) {
         if (context.repositoryExistenceChecked) {
             return;
         }
         context.repositoryExistenceChecked = true;
-        const repositoryLoadInfo = await this.repositoryDao.getRepositoryLoadInfo(repositorySource, repositoryGUID, context);
+        const repositoryLoadInfo = await this.repositoryDao.getRepositoryLoadInfo(repositoryGUID, context);
         let loadRepository = false;
         let lastSyncTimestamp = 0;
         if (!repositoryLoadInfo) {
@@ -34471,7 +34499,7 @@ class RepositoryLoader {
         }
         const now = new Date().getTime();
         const synchronizationAdapter = await this.synchronizationAdapterLoader
-            .load(repositorySource);
+            .load(repositoryGUID);
         let messages;
         try {
             if (lastSyncTimestamp) {
@@ -34481,10 +34509,10 @@ class RepositoryLoader {
                 }
                 // Check 100 seconds back, in case there were update issues
                 lastSyncTimestamp -= 100000;
-                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryGUID, lastSyncTimestamp);
+                messages = await synchronizationAdapter.getTransactionsForRepository(repositoryGUID, lastSyncTimestamp);
             }
             else {
-                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryGUID);
+                messages = await synchronizationAdapter.getTransactionsForRepository(repositoryGUID);
             }
             // TODO: Add a special message for repository for adding users
             // into the repository 
@@ -36199,8 +36227,8 @@ class QueryManager {
         });
     }
     async ensureRepositoryPresenceAndCurrentState(context) {
-        if (context.repository && context.repository.source && context.repository.GUID) {
-            await this.repositoryLoader.loadRepository(context.repository.source, context.repository.GUID, context);
+        if (context.repository && context.repository.GUID) {
+            await this.repositoryLoader.loadRepository(context.repository.GUID, context);
         }
     }
     async populateEntityGuidEntitiesAndUserAccounts(portableQuery, entities) {
@@ -44065,6 +44093,7 @@ class Logger {
 /**
  * Created by Papa on 4/24/2016.
  */
+globalThis.repositoryAutoload = false;
 function addRootDirPaths(dirNameFromConfig, defaultDir, existingSourceFilePaths) {
     const dir = dirNameFromConfig ? dirNameFromConfig : defaultDir;
     const dirPath = process.cwd() + '/' + dir;
