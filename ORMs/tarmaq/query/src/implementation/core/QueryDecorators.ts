@@ -1,4 +1,4 @@
-import {IQEntityInternal} from '../../definition/core/entity/Entity'
+import { IQEntityInternal } from '../../definition/core/entity/IQEntityDriver'
 import {
 	AddToJoinFunction,
 	SubQueryDecorator,

@@ -30,8 +30,7 @@ export interface ISignatureCheck {
 export interface ISyncInRepositoryChecker {
 
 	checkRepositoriesAndMembers(
-		message: RepositorySynchronizationMessage,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>
+		message: RepositorySynchronizationMessage
 	): Promise<IRepositoriesAndMembersCheckResult>;
 
 }
@@ -47,8 +46,7 @@ export class SyncInRepositoryChecker
 	repositoryMemberDao: RepositoryMemberDao
 
 	async checkRepositoriesAndMembers(
-		message: RepositorySynchronizationMessage,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>
+		message: RepositorySynchronizationMessage
 	): Promise<IRepositoriesAndMembersCheckResult> {
 		let missingRepositories: IRepository[] = []
 		let newMembers: IRepositoryMember[] = []
@@ -72,72 +70,72 @@ export class SyncInRepositoryChecker
 			if (typeof history !== 'object') {
 				throw new Error(`message.data.history is not an object`)
 			}
-			let repository = history.repository
+			let historyRepository = history.repository
 			const repositoryErrorPrefix = `Serialized RepositorySynchronizationData.history.repository should be`
 			const isRepositoryCreationEqualityErrorPrefix = `if RepositorySynchronizationData.history.isRepositoryCreation ===`
 			if (history.isRepositoryCreation) {
-				if (typeof repository !== 'object') {
+				if (typeof historyRepository !== 'object') {
 					throw new Error(`${repositoryErrorPrefix} an object
 	${isRepositoryCreationEqualityErrorPrefix} === true`)
 				}
 				this.checkRepository(
-					repository,
+					historyRepository,
 					null,
 					repositoryGUIDs,
 					messageRepositoryIndexMap,
 					data
 				)
 			} else {
-				if (typeof repository !== 'string') {
+				if (typeof historyRepository !== 'string') {
 					throw new Error(`${repositoryErrorPrefix} a string
 	i${isRepositoryCreationEqualityErrorPrefix} === false`)
 				}
-				repositoryGUIDs.push(repository as any)
+				repositoryGUIDs.push(historyRepository as any)
 			}
 
-			const repositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs)
-			for (const foundRepository of repositories) {
+			const foundRepositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs)
+			for (const foundRepository of foundRepositories) {
 				const messageRepositoryIndex = messageRepositoryIndexMap.get(foundRepository.GUID)
 				if (messageRepositoryIndex || messageRepositoryIndex === 0) {
 					data.referencedRepositories[messageRepositoryIndex] = foundRepository
 				} else {
 					if (history.isRepositoryCreation) {
-						if (foundRepository.GUID === repository.GUID) {
+						if (foundRepository.GUID === historyRepository.GUID) {
 							throw new Error(`Repository ${foundRepository.GUID} is already created.`)
 						}
 						throw new Error(`Unexpected Repository ${foundRepository.GUID}`)
 					} else {
-						if (foundRepository.GUID !== repository as any) {
+						if (foundRepository.GUID !== historyRepository as any) {
 							throw new Error(`Unexpected Repository ${foundRepository.GUID}`)
 						}
 						// Populating ahead of potential insert is OK, object
 						// gets modified with required state on an insert
-						history.repository = repository = foundRepository
+						history.repository = historyRepository = foundRepository
 					}
 				}
 			}
 
 			missingRepositories = data.referencedRepositories
-				.filter(messageRepository => {
-					if (messageRepository._localId) {
-						repositoryGUIDMapByLocalId.set(
-							messageRepository._localId, messageRepository.GUID)
+				.filter(referencedRepository => {
+					if (referencedRepository._localId) {
 						return false
+					} else {
+						// Only the repository reference is loaded
+						referencedRepository.isLoaded = false
+
+						return true
 					}
-					return true
 				})
 
-			if (typeof repository !== 'object') {
-				throw new Error(`Repository with GUID ${repository} is not
-					present and cannot be synced
+			if (typeof historyRepository !== 'object') {
+				throw new Error(`Repository with GUID ${historyRepository} is not
+	present and cannot be synced
 	This RepositorySynchronizationData is for an existing repository and that
 	repository must already be loaded in this database for this message to be
 	processed.`)
 			} else {
-				if (repository._localId) {
-					repositoryGUIDMapByLocalId.set(repository._localId, repository.GUID)
-				} else {
-					missingRepositories.push(repository)
+				if (!historyRepository._localId) {
+					missingRepositories.push(historyRepository)
 				}
 			}
 
@@ -556,8 +554,8 @@ is not present in the message.`)
 		if (typeof repository.isPublic !== 'boolean') {
 			throw new Error(`Invalid 'repository.isPublic'`)
 		}
-		if (typeof repository.areDependenciesLoaded !== 'undefined') {
-			throw new Error(`Invalid 'repository.areDependenciesLoaded' is a local-only field`)
+		if (typeof repository.isLoaded !== 'undefined') {
+			throw new Error(`'repository.isLoaded' cannot be specified`)
 		}
 		const userAccount = message.userAccounts[repository.owner as any]
 		if (!userAccount) {

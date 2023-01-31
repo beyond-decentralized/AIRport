@@ -15,7 +15,10 @@ import {
     StoreType,
     IActor,
     ITransactionHistory,
-    IRepositoryMember
+    IRepositoryMember,
+    SyncApplicationMap,
+    Repository_GUID,
+    Repository_LocalId
 } from '@airport/ground-control'
 import {
     IOperationContext,
@@ -32,9 +35,12 @@ export abstract class SqlTransaction
     actor: IActor
     childTransaction: ITransaction
     credentials: ITransactionCredentials
+    fieldMap: SyncApplicationMap = new SyncApplicationMap()
     id: string
     isSync = false
     newRepositoryMembers: IRepositoryMember[] = []
+    affectedRepository_GUIDSet: Set<Repository_GUID> = new Set()
+    affectedRepository_LocalIdSet: Set<Repository_LocalId> = new Set()
     updatedRepositoryMembers: IRepositoryMember[] = []
 
     transactionHistory: ITransactionHistory

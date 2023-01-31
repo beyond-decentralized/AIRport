@@ -2,9 +2,9 @@ import { IOC } from '@airport/direction-indicator';
 import {
 	IFrom,
 	IQEntity,
-	IQEntityInternal,
 	IQTree
 } from '../../definition/core/entity/Entity'
+import { IQEntityInternal } from '../../definition/core/entity/IQEntityDriver';
 import {
 	IJoinFields,
 	JoinOperation

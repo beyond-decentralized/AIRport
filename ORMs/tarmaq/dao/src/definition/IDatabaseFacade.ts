@@ -46,32 +46,28 @@ export interface IDatabaseFacade {
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		ctx: IEntityContext
 	): Promise<number>;
 
 	insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
-		ctx: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		ctx: IEntityContext
 	): Promise<number>;
 
 	insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		ctx: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
-		ctx: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		ctx: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	/**

@@ -11,3 +11,6 @@ tarmaqQuery.register(QEntityUtils)
 
 export const ENTITY_UTILS = tarmaqQuery.token<IEntityUtils>('EntityUtils')
 export const QUERY_UTILS = tarmaqQuery.token<IQueryUtils>('QueryUtils')
+
+globalThis.ENTITY_UTILS = ENTITY_UTILS
+globalThis.QUERY_UTILS = QUERY_UTILS

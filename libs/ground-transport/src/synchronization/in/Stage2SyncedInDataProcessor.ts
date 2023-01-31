@@ -44,7 +44,6 @@ export interface IStage2SyncedInDataProcessor {
 	applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>
 	): Promise<void>;
 
 }
@@ -90,19 +89,15 @@ export class Stage2SyncedInDataProcessor
 	async applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>
 	): Promise<void> {
 		const context: IOperationContext = {} as any
 
 		await this.performCreates(stage1Result.recordCreations,
-			applicationsByApplicationVersion_LocalIdMap,
-			repositoryGUIDMapByLocalId, context)
+			applicationsByApplicationVersion_LocalIdMap, context)
 		await this.performUpdates(stage1Result.recordUpdates,
-			applicationsByApplicationVersion_LocalIdMap,
-			repositoryGUIDMapByLocalId, context)
+			applicationsByApplicationVersion_LocalIdMap, context)
 		await this.performDeletes(stage1Result.recordDeletions,
-			applicationsByApplicationVersion_LocalIdMap,
-			repositoryGUIDMapByLocalId, context)
+			applicationsByApplicationVersion_LocalIdMap, context)
 	}
 
 	/**
@@ -123,11 +118,8 @@ export class Stage2SyncedInDataProcessor
 			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<ApplicationColumn_Index, any>>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		context: IOperationContext
 	): Promise<void> {
-		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
-
 		for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
 			const applicationIndex = applicationsByApplicationVersion_LocalIdMap
 				.get(applicationVersionId).index
@@ -147,9 +139,6 @@ export class Stage2SyncedInDataProcessor
 				const VALUES: any[][] = []
 
 				for (const [repositoryId, creationForRepositoryMap] of creationInTableMap) {
-					const recordRepositoryGUID = this.getRepositoryGUID(
-						repositoryId, repositoryGUIDMapByLocalId)
-
 					for (const [actorId, creationForActorMap] of creationForRepositoryMap) {
 						for (const [_actorRecordId, creationOfRowMap] of creationForActorMap) {
 							const rowValues = [
@@ -187,10 +176,7 @@ export class Stage2SyncedInDataProcessor
 									= qEntity.__driver__.allColumns[columnIndex]
 								if (creatingColumns) {
 									columns.push(qColumn)
-									trackedRepoGUIDSet.add(recordRepositoryGUID)
 								}
-								this.recordRepositoryGUID(qColumn.dbColumn, columnValue,
-									repositoryGUIDMapByLocalId, trackedRepoGUIDSet)
 								rowValues.push(columnValue)
 								currentNonIdColumnArrayIndex++
 							}
@@ -211,54 +197,13 @@ export class Stage2SyncedInDataProcessor
 							INSERT_INTO: qEntity,
 							columns,
 							VALUES
-						}, context, trackedRepoGUIDSet)
+						}, context)
 					} finally {
 						context.dbEntity = previousDbEntity
 					}
 				}
 			}
 		}
-	}
-
-	private addRepositoryGUID(
-		repositoryId: Repository_LocalId,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
-		trackedRepoGUIDSet: Set<Repository_GUID>
-	): void {
-		const recordRepositoryGUID = this.getRepositoryGUID(
-			repositoryId, repositoryGUIDMapByLocalId)
-		trackedRepoGUIDSet.add(recordRepositoryGUID)
-	}
-
-	private getRepositoryGUID(
-		repositoryId: Repository_LocalId,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
-	): Repository_GUID {
-		const recordRepositoryGUID = repositoryGUIDMapByLocalId.get(repositoryId)
-		if (!recordRepositoryGUID) {
-			throw new Error(`No Repository GUID from _localId: ${repositoryId}`)
-		}
-		return recordRepositoryGUID
-	}
-
-	private recordRepositoryGUID(
-		dbColumn: DbColumn,
-		columnValue: any,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
-		trackedRepoGUIDSet: Set<Repository_GUID>
-	): void {
-		if (columnValue === null) {
-			return
-		}
-
-		const dbRelation = dbColumn.propertyColumns[0].property.relation[0]
-		if (!dbRelation || !this.dictionary.isRepositoryRelationColumn(dbColumn)) {
-			return
-		}
-
-		const columnRepositoryGUID = this.getRepositoryGUID(
-			columnValue, repositoryGUIDMapByLocalId)
-		trackedRepoGUIDSet.add(columnRepositoryGUID)
 	}
 
 	private getNonIdColumnsInIndexOrder(
@@ -290,7 +235,6 @@ export class Stage2SyncedInDataProcessor
 			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<ApplicationColumn_Index, RecordUpdate>>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		context: IOperationContext
 	): Promise<void> {
 		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
@@ -311,8 +255,6 @@ export class Stage2SyncedInDataProcessor
 					.applicationVersion.entities[tableIndex]
 
 				for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
-					this.addRepositoryGUID(repositoryId, repositoryGUIDMapByLocalId,
-						trackedRepoGUIDSet)
 
 					for (const [actorId, actorUpdates] of repositoryUpdateMap) {
 						for (const [_actorRecordId, recordUpdateMap] of actorUpdates) {
@@ -325,8 +267,6 @@ export class Stage2SyncedInDataProcessor
 								.add(_actorRecordId)
 							for (const [columnIndex, columnUpdate] of recordUpdateMap) {
 								const dbColumn = dbEntity.columns[columnIndex]
-								this.recordRepositoryGUID(dbColumn, columnUpdate.newValue,
-									repositoryGUIDMapByLocalId, trackedRepoGUIDSet)
 
 								recordUpdateStage.push([
 									applicationVersionId,
@@ -348,18 +288,18 @@ export class Stage2SyncedInDataProcessor
 			return
 		}
 
-		await this.recordUpdateStageDao.insertValues(recordUpdateStage)
+		await this.recordUpdateStageDao.insertValues(recordUpdateStage, context)
 
 		// Perform the updates
 		for (const [applicationVersionId, updateMapForApplication] of finalUpdateMap) {
 			const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId)
 			for (const [tableIndex, updateMapForTable] of updateMapForApplication) {
 				await this.runUpdatesForTable(application.index, applicationVersionId,
-					tableIndex, updateMapForTable, context, trackedRepoGUIDSet)
+					tableIndex, updateMapForTable, context)
 			}
 		}
 
-		await this.recordUpdateStageDao.delete()
+		await this.recordUpdateStageDao.delete(context)
 	}
 
 	private async performDeletes(
@@ -367,7 +307,6 @@ export class Stage2SyncedInDataProcessor
 			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Set<ActorRecordId>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		context: IOperationContext
 	): Promise<void> {
 		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
@@ -383,14 +322,11 @@ export class Stage2SyncedInDataProcessor
 				let repositoryWhereFragments: JSONBaseOperation[] = []
 
 				for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
-					const recordRepositoryGUID = this.getRepositoryGUID(
-						repositoryId, repositoryGUIDMapByLocalId)
 					let actorWhereFragments: JSONBaseOperation[] = []
 
 					for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
 						numClauses++
 
-						trackedRepoGUIDSet.add(recordRepositoryGUID)
 						actorWhereFragments.push(AND(
 							qEntity._actorRecordId.IN(Array.from(actorRecordIdSet)),
 							qEntity.actor._localId.equals(actorId)
@@ -484,8 +420,7 @@ export class Stage2SyncedInDataProcessor
 		applicationVersionId: ApplicationVersion_LocalId,
 		tableIndex: ApplicationEntity_TableIndex,
 		updateKeyMap: ColumnUpdateKeyMap,
-		context: IContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		context: IContext
 	) {
 		for (const columnValueUpdate of updateKeyMap.values()) {
 			const updatedColumns = columnValueUpdate.updatedColumns
@@ -496,15 +431,14 @@ export class Stage2SyncedInDataProcessor
 					tableIndex,
 					columnValueUpdate.recordKeyMap,
 					updatedColumns,
-					context,
-					trackedRepoGUIDSet
+					context
 				)
 			}
 			// Traverse down into nested column update combinations
 			await this.runUpdatesForTable(
 				applicationIndex, applicationVersionId, tableIndex,
 				columnValueUpdate.childColumnUpdateKeyMap,
-				context, trackedRepoGUIDSet)
+				context)
 		}
 
 	}

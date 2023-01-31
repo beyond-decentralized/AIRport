@@ -43,7 +43,8 @@ export interface IRecordUpdateStageDao
 	extends IBaseRecordUpdateStageDao {
 
 	insertValues(
-		values: RecordUpdateStageValues[]
+		values: RecordUpdateStageValues[],
+		context: IContext
 	): Promise<number[][]>;
 
 	updateEntityWhereIds(
@@ -52,11 +53,11 @@ export interface IRecordUpdateStageDao
 		tableIndex: ApplicationEntity_TableIndex,
 		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>,
 		updatedColumnIndexes: ApplicationColumn_Index[],
-		context: IContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		context: IContext
 	): Promise<void>;
 
-	delete( //
+	delete(
+		context: IContext
 	): Promise<number>;
 
 }
@@ -73,7 +74,8 @@ export class RecordUpdateStageDao
 	dictionary: Dictionary
 
 	async insertValues(
-		values: RecordUpdateStageValues[]
+		values: RecordUpdateStageValues[],
+		context: IContext
 	): Promise<number[][]> {
 
 		const rus: QRecordUpdateStage = Q.RecordUpdateStage
@@ -93,6 +95,7 @@ export class RecordUpdateStageDao
 			columns,
 			VALUES: values
 		}, {
+			...context,
 			generateOnSync: true
 		}) as number[][]
 
@@ -104,8 +107,7 @@ export class RecordUpdateStageDao
 		tableIndex: ApplicationEntity_TableIndex,
 		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>,
 		updatedColumnIndexes: ApplicationColumn_Index[],
-		context: IContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		context: IContext
 	): Promise<void> {
 		const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
 			.applicationVersion.entities[tableIndex]
@@ -153,14 +155,15 @@ export class RecordUpdateStageDao
 			UPDATE: qEntity,
 			SET: setClause,
 			WHERE: OR(...repositoryEquals)
-		}, context, trackedRepoGUIDSet)
+		}, context)
 	}
 
-	async delete( //
+	async delete(
+		context: IContext
 	): Promise<number> {
 		return await this.db.deleteWhere({
 			DELETE_FROM: Q.RecordUpdateStage
-		})
+		}, context)
 	}
 
 }

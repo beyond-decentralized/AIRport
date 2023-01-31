@@ -4,9 +4,9 @@ import {
 	JsonInsertValues
 } from '@airport/ground-control'
 import {
-	IQEntity,
-	IQEntityInternal
+	IQEntity
 } from '../../../definition/core/entity/Entity'
+import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { RawInsertColumnValues } from '../../../definition/query/facade/InsertValues'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
@@ -24,7 +24,8 @@ export class InsertColumnValues<IQE extends IQEntity>
 	): JsonInsertValues {
 		const entityDriver = (<IQEntityInternal><any>this.rawInsertValues.INSERT_INTO).__driver__
 		const insertInto = <JSONEntityRelation>entityDriver.getRelationJson(
-			this.columnAliases, this.trackedRepoGUIDSet,
+			this.columnAliases,
+			this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 			queryUtils, fieldUtils, relationManager)
 
 		const columnMap = entityDriver.dbEntity.columnMap

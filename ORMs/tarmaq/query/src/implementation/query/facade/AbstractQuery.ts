@@ -5,7 +5,8 @@ import {
 	JsonNonEntityQuery,
 	JSONRelation,
 	JsonStatement,
-	Repository_GUID
+	Repository_GUID,
+	Repository_LocalId
 } from '@airport/ground-control'
 import {
 	IEntityAliases,
@@ -14,8 +15,7 @@ import {
 } from '../../../definition/core/entity/Aliases'
 import {
 	IEntityRelationFrom,
-	IFrom,
-	IQEntityInternal
+	IFrom
 } from '../../../definition/core/entity/Entity'
 import { IFieldInOrderBy } from '../../../definition/core/field/FieldInOrderBy'
 import { IQOperableField } from '../../../definition/core/field/OperableField'
@@ -28,6 +28,7 @@ import { ENTITY_UTILS } from '../../../injection'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
+import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 
 /**
  * Created by Papa on 10/27/2016.
@@ -41,7 +42,8 @@ export abstract class AbstractQuery
 	constructor(
 		protected entityAliases: IEntityAliases = new EntityAliases(),
 		protected columnAliases: IFieldColumnAliases<any> = entityAliases.getNewFieldColumnAliases(),
-		public trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
+		public trackedRepoGUIDSet: Set<Repository_GUID> = new Set(),
+		public trackedRepoLocalIdSet: Set<Repository_LocalId> = new Set()
 	) {
 	}
 
@@ -73,11 +75,11 @@ export abstract class AbstractQuery
 
 		jsonQuery.W = queryUtils.whereClauseToJSON(
 			rawQuery.WHERE, this.columnAliases,
-			this.trackedRepoGUIDSet)
+			this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
 		jsonQuery.GB = this.groupByClauseToJSON(rawQuery.GROUP_BY)
 		jsonQuery.H = queryUtils.whereClauseToJSON(
 			rawQuery.HAVING, this.columnAliases,
-			this.trackedRepoGUIDSet)
+			this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
 		jsonQuery.OB = this.orderByClauseToJSON(rawQuery.ORDER_BY)
 		jsonQuery.L = rawQuery.LIMIT
 		jsonQuery.O = rawQuery.OFFSET
@@ -108,7 +110,8 @@ export abstract class AbstractQuery
 				}
 			}
 			return (fromEntity as IQEntityInternal).__driver__
-				.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet,
+				.getRelationJson(this.columnAliases,
+					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 					queryUtils, fieldUtils, relationManager)
 		})
 	}

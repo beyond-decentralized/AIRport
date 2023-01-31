@@ -1,10 +1,7 @@
 import {
 	JSONRelation
 } from '@airport/ground-control'
-import {
-	IQEntityDriver,
-	IQEntityInternal
-} from './Entity'
+import { IQEntityDriver, IQEntityInternal } from './IQEntityDriver'
 
 export interface IRelationManager {
 

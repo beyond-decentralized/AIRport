@@ -100,6 +100,10 @@ export class Dictionary {
 							REPOSITORY_LID: 'REPOSITORY_LID',
 							GUID: 'GUID'
 						},
+						properties: {
+							_localId: '_localId',
+							GUID: 'GUID'
+						}
 					},
 					RepositoryMember: {
 						name: 'RepositoryMember'
@@ -299,7 +303,23 @@ export class Dictionary {
 		if (!this.isRepository(dbProperty.entity)) {
 			return false
 		}
-		return dbProperty.propertyColumns[0].column.name === this.Repository.columns.GUID
+
+		return dbProperty.name === this.Repository.properties.GUID
+	}
+
+	isRepositoryLIDColumn(
+		dbProperty: DbProperty,
+		dbColumn: DbColumn
+	): boolean {
+		if (!dbProperty.entity.isAirEntity) {
+			if (!this.isRepository(dbProperty.entity)) {
+				return false
+			}
+
+			return dbColumn.name === this.Repository.columns.REPOSITORY_LID
+		}
+
+		return this.isRepositoryRelationColumn(dbColumn)
 	}
 
 	isTerminal(

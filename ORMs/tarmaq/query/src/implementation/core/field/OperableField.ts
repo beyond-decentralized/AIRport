@@ -1,10 +1,9 @@
-import { IOC } from "@airport/direction-indicator";
 import {
 	DbColumn,
 	DbProperty,
 	JSONClauseObjectType
 } from "@airport/ground-control";
-import { IQEntityInternal } from "../../../definition/core/entity/Entity";
+import { IQEntityInternal } from "../../../definition/core/entity/IQEntityDriver";
 import { IQOperableField, IQOperableFieldInternal } from "../../../definition/core/field/OperableField";
 import {
 	IValueOperation,
@@ -24,10 +23,6 @@ export abstract class QOperableField<T,
 	extends QField<IQF>
 	implements IQOperableFieldInternal<T, JO, IO, IQF> {
 
-	private dictionaryToken =
-		globalThis.AIRPORT_DOMAIN
-			.app('ground-control').token('Dictionary')
-
 	constructor(
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
@@ -44,14 +39,8 @@ export abstract class QOperableField<T,
 		if (value instanceof Function) {
 			value = value();
 		}
-		let trackedRepoGUID = undefined
-		if (typeof value === 'string') {
-			if (globalThis.IOC.getSync(this.dictionaryToken).isRepositoryGUIDProperty(
-				this.dbProperty)) {
-				trackedRepoGUID = value
-			}
-		}
-		return this.operation.equals(<any>this, value, trackedRepoGUID);
+
+		return this.operation.equals(<any>this, value);
 	}
 
 	greaterThan(
@@ -86,16 +75,8 @@ export abstract class QOperableField<T,
 		if (value instanceof Function) {
 			value = value();
 		}
-		let trackedRepoGUIDs = undefined
-		if (value instanceof Array
-			&& value.length
-			&& !value.filter(aValue => typeof aValue !== 'string').length) {
-			if (globalThis.IOC.getSync(this.dictionaryToken).isRepositoryGUIDProperty(
-				this.dbProperty)) {
-				trackedRepoGUIDs = value
-			}
-		}
-		return this.operation.IN(<any>this, <any>value, trackedRepoGUIDs);
+
+		return this.operation.IN(<any>this, <any>value);
 	}
 
 	lessThan(

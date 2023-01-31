@@ -13,7 +13,7 @@ export class TableMap {
 
 	constructor(
 		public applicationVersionId: ApplicationVersion_LocalId,
-		public tableMap: { [tableIndex: string]: ColumnMap } = {}
+		public tableMap: { [tableIndex: ApplicationEntity_TableIndex]: ColumnMap } = {}
 	) {
 	}
 

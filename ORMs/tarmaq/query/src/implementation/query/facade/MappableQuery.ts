@@ -6,7 +6,7 @@ import { QField } from '../../core/field/Field'
 import {
 	DistinguishableQuery,
 	NON_ENTITY_SELECT_ERROR_MESSAGE
-} from './NonEntityQuery'
+} from './DistinguishableQuery'
 
 /**
  * Created by Papa on 10/24/2016.
@@ -40,7 +40,8 @@ export abstract class MappableQuery
 				// Because the alias only matters for GROUP_BY and ORDER_BY
 				// that is OK.
 				select[property] = value.toJSON(
-					this.columnAliases, true, this.trackedRepoGUIDSet,
+					this.columnAliases, true,
+					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 					queryUtils, fieldUtils, relationManager)
 			} else if (value instanceof QOneToManyRelation
 				|| value instanceof QAirEntityOneToManyRelation) {

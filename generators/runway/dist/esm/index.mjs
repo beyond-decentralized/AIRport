@@ -905,6 +905,10 @@ class Dictionary {
                                 REPOSITORY_LID: 'REPOSITORY_LID',
                                 GUID: 'GUID'
                             },
+                            properties: {
+                                _localId: '_localId',
+                                GUID: 'GUID'
+                            }
                         },
                         RepositoryMember: {
                             name: 'RepositoryMember'
@@ -1066,7 +1070,16 @@ class Dictionary {
         if (!this.isRepository(dbProperty.entity)) {
             return false;
         }
-        return dbProperty.propertyColumns[0].column.name === this.Repository.columns.GUID;
+        return dbProperty.name === this.Repository.properties.GUID;
+    }
+    isRepositoryLIDColumn(dbProperty, dbColumn) {
+        if (!dbProperty.entity.isAirEntity) {
+            if (!this.isRepository(dbProperty.entity)) {
+                return false;
+            }
+            return dbColumn.name === this.Repository.columns.REPOSITORY_LID;
+        }
+        return this.isRepositoryRelationColumn(dbColumn);
     }
     isTerminal(dbEntity) {
         return this.isEntityType(dbEntity, this.airport.apps.TRAVEL_DOCUMENT_CHECKPOINT, this.Terminal);
@@ -1593,16 +1606,36 @@ class SyncApplicationMap extends ApplicationMap {
     ensureEntity(entity, allColumns = false) {
         return super.ensureEntity(entity, allColumns, globalThis.SyncTableMap);
     }
-    intersects(applicationMap) {
+    intersects(fieldMap) {
         for (const applicationIndex in this.applicationMap) {
-            if (applicationMap.applicationMap[applicationIndex]) {
+            if (fieldMap.applicationMap[applicationIndex]) {
                 const syncTableMap = new globalThis.SyncTableMap(parseInt(applicationIndex), this.applicationMap[applicationIndex].tableMap);
-                if (syncTableMap.intersects(applicationMap.applicationMap[applicationIndex])) {
+                if (syncTableMap.intersects(fieldMap.applicationMap[applicationIndex])) {
                     return true;
                 }
             }
         }
         return false;
+    }
+    merge(fieldMap) {
+        for (const applicationIndex in fieldMap.applicationMap) {
+            const tableMap = this.applicationMap[applicationIndex];
+            const tableMapIn = fieldMap.applicationMap[applicationIndex];
+            if (!tableMap) {
+                this.applicationMap[applicationIndex] = tableMapIn;
+                continue;
+            }
+            for (const tableIndex in tableMapIn.tableMap) {
+                const columnMap = tableMap.tableMap[tableIndex];
+                const columnMapIn = tableMapIn.tableMap[tableIndex];
+                if (!columnMap) {
+                    tableMap.tableMap[tableIndex] = columnMapIn;
+                }
+                for (const columnIndex in columnMapIn.columnMap) {
+                    columnMap.columnMap[columnIndex] = true;
+                }
+            }
+        }
     }
 }
 globalThis.SyncApplicationMap = SyncApplicationMap;
@@ -4364,104 +4397,38 @@ class FieldColumnAliases extends AliasMap {
     }
 }
 
+function QEntity(dbEntity, queryUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = globalThis.QEntityDriver) {
+    this.__driver__ = new QDriver(dbEntity, queryUtils, relationManager, fromClausePosition, dbRelation, joinType, this);
+}
+QEntity.prototype.FULL_JOIN = function (right) {
+    return this.__driver__.join(right, JoinType.FULL_JOIN);
+};
+QEntity.prototype.INNER_JOIN = function (right) {
+    return this.__driver__.join(right, JoinType.INNER_JOIN);
+};
+QEntity.prototype.LEFT_JOIN = function (right) {
+    return this.__driver__.join(right, JoinType.LEFT_JOIN);
+};
+QEntity.prototype.RIGHT_JOIN = function (right) {
+    return this.__driver__.join(right, JoinType.RIGHT_JOIN);
+};
+QEntity.prototype.equals = function (entity) {
+    return globalThis.IOC
+        .getSync(globalThis.QUERY_UTILS)
+        .equals(entity, this);
+};
+QEntity.prototype.in = function (entities) {
+    return globalThis.IOC
+        .getSync(globalThis.QUERY_UTILS)
+        .in(entities, this);
+};
+
 /**
  * Created by Papa on 4/21/2016.
  */
 class Operation {
     constructor(category) {
         this.category = category;
-    }
-}
-class ValueOperation extends Operation {
-    constructor(category) {
-        super(category);
-        this.category = category;
-    }
-    equals(lValue, rValue, trackedRepoGUID) {
-        const jsonRawValueOperation = {
-            c: this.category,
-            l: lValue,
-            o: SqlOperator.EQUALS,
-            r: rValue
-        };
-        if (trackedRepoGUID) {
-            jsonRawValueOperation.trackedRepoGUIDs = [trackedRepoGUID];
-        }
-        return jsonRawValueOperation;
-    }
-    greaterThan(lValue, rValue) {
-        return {
-            c: this.category,
-            l: lValue,
-            o: SqlOperator.GREATER_THAN,
-            r: rValue
-        };
-    }
-    greaterThanOrEquals(lValue, rValue) {
-        return {
-            c: this.category,
-            l: lValue,
-            o: SqlOperator.GREATER_THAN_OR_EQUALS,
-            r: rValue
-        };
-    }
-    IS_NOT_NULL(lValue) {
-        return {
-            c: this.category,
-            l: lValue,
-            o: SqlOperator.IS_NOT_NULL
-        };
-    }
-    IS_NULL(lValue) {
-        return {
-            c: this.category,
-            l: lValue,
-            o: SqlOperator.IS_NULL
-        };
-    }
-    IN(lValue, rValue, trackedRepoGUIDs) {
-        const jsonRawValueOperation = {
-            c: this.category,
-            l: lValue,
-            o: SqlOperator.IN,
-            r: rValue
-        };
-        if (trackedRepoGUIDs) {
-            jsonRawValueOperation.trackedRepoGUIDs = trackedRepoGUIDs;
-        }
-        return jsonRawValueOperation;
-    }
-    lessThan(lValue, rValue) {
-        return {
-            c: this.category,
-            l: lValue,
-            o: SqlOperator.LESS_THAN,
-            r: rValue
-        };
-    }
-    lessThanOrEquals(lValue, rValue) {
-        return {
-            c: this.category,
-            l: lValue,
-            o: SqlOperator.LESS_THAN_OR_EQUALS,
-            r: rValue
-        };
-    }
-    notEquals(lValue, rValue) {
-        return {
-            c: this.category,
-            l: lValue,
-            o: SqlOperator.NOT_EQUALS,
-            r: lValue
-        };
-    }
-    NOT_IN(lValue, rValue) {
-        return {
-            c: this.category,
-            l: lValue,
-            o: SqlOperator.NOT_IN,
-            r: rValue
-        };
     }
 }
 
@@ -4627,6 +4594,121 @@ yourMethodName: function() {},
 };
 extend(QAirEntityRelation, QAirEntityOneToManyRelation, qAirEntityOneToManyRelationMethods);
 
+class ValueOperation extends Operation {
+    constructor(category) {
+        super(category);
+        this.category = category;
+        this.dictionaryToken = globalThis.AIRPORT_DOMAIN
+            .app('ground-control').token('Dictionary');
+    }
+    equals(lValue, rValue) {
+        const jsonRawValueOperation = {
+            c: this.category,
+            l: lValue,
+            o: SqlOperator.EQUALS,
+            r: rValue
+        };
+        this.addTrackedRepoIDs(lValue, rValue, jsonRawValueOperation);
+        return jsonRawValueOperation;
+    }
+    addTrackedRepoIDs(lValue, rValue, jsonRawValueOperation) {
+        const dictionary = globalThis.IOC
+            .getSync(this.dictionaryToken);
+        if (dictionary.isRepositoryGUIDProperty(lValue.dbProperty)) {
+            let trackedRepoGUIDs;
+            if (typeof rValue === 'string') {
+                trackedRepoGUIDs = [rValue];
+            }
+            else if (rValue instanceof Array) {
+                trackedRepoGUIDs = rValue;
+            }
+            jsonRawValueOperation.trackedRepoGUIDs = trackedRepoGUIDs;
+        }
+        else if (dictionary.isRepositoryLIDColumn(lValue.dbProperty, lValue.dbColumn)) {
+            let trackedRepoLIDs;
+            if (typeof rValue === 'number') {
+                trackedRepoLIDs = [rValue];
+            }
+            else if (rValue instanceof Array) {
+                trackedRepoLIDs = rValue;
+            }
+            jsonRawValueOperation.trackedRepoLocalIds = trackedRepoLIDs;
+        }
+    }
+    greaterThan(lValue, rValue) {
+        return {
+            c: this.category,
+            l: lValue,
+            o: SqlOperator.GREATER_THAN,
+            r: rValue
+        };
+    }
+    greaterThanOrEquals(lValue, rValue) {
+        return {
+            c: this.category,
+            l: lValue,
+            o: SqlOperator.GREATER_THAN_OR_EQUALS,
+            r: rValue
+        };
+    }
+    IS_NOT_NULL(lValue) {
+        return {
+            c: this.category,
+            l: lValue,
+            o: SqlOperator.IS_NOT_NULL
+        };
+    }
+    IS_NULL(lValue) {
+        return {
+            c: this.category,
+            l: lValue,
+            o: SqlOperator.IS_NULL
+        };
+    }
+    IN(lValue, rValue) {
+        const jsonRawValueOperation = {
+            c: this.category,
+            l: lValue,
+            o: SqlOperator.IN,
+            r: rValue
+        };
+        this.addTrackedRepoIDs(lValue, rValue, jsonRawValueOperation);
+        return jsonRawValueOperation;
+    }
+    lessThan(lValue, rValue) {
+        return {
+            c: this.category,
+            l: lValue,
+            o: SqlOperator.LESS_THAN,
+            r: rValue
+        };
+    }
+    lessThanOrEquals(lValue, rValue) {
+        return {
+            c: this.category,
+            l: lValue,
+            o: SqlOperator.LESS_THAN_OR_EQUALS,
+            r: rValue
+        };
+    }
+    notEquals(lValue, rValue) {
+        return {
+            c: this.category,
+            l: lValue,
+            o: SqlOperator.NOT_EQUALS,
+            r: lValue
+        };
+    }
+    NOT_IN(lValue, rValue) {
+        return {
+            c: this.category,
+            l: lValue,
+            o: SqlOperator.NOT_IN,
+            r: rValue
+        };
+    }
+}
+
 /**
  * Created by Papa on 6/20/2016.
  */
@@ -4689,7 +4771,7 @@ class QField {
         appliedField.__appliedFunctions__.push(sqlFunctionCall);
         return appliedField;
     }
-    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
@@ -4702,7 +4784,7 @@ class QField {
             rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.q.__driver__.getRootJoinEntity());
         }
         let jsonField = {
-            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
+            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
             si: this.dbProperty.entity.applicationVersion._localId,
             ti: this.dbProperty.entity.index,
             fa: alias,
@@ -4713,7 +4795,7 @@ class QField {
             dt: this.dbColumn.type
         };
         if (this.__fieldSubQuery__) {
-            jsonField.fieldSubQuery = fieldUtils.getFieldQueryJson(this.__fieldSubQuery__, columnAliases.entityAliases, trackedRepoGUIDSet, queryUtils);
+            jsonField.fieldSubQuery = fieldUtils.getFieldQueryJson(this.__fieldSubQuery__, columnAliases.entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils);
             jsonField.ot = JSONClauseObjectType.FIELD_QUERY;
         }
         return jsonField;
@@ -4729,36 +4811,36 @@ class QField {
         appliedField.__fieldSubQuery__ = subQuery;
         return appliedField;
     }
-    operableFunctionToJson(functionObject, columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+    operableFunctionToJson(functionObject, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
         }
         return {
-            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
+            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
             fa: alias,
             ot: this.objectType,
             dt: this.dbColumn.type,
-            v: this.valueToJSON(functionObject, columnAliases, false, true, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager)
+            v: this.valueToJSON(functionObject, columnAliases, false, true, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager)
         };
     }
     copyFunctions(field) {
         field.__appliedFunctions__ = this.__appliedFunctions__.slice();
         return field;
     }
-    appliedFunctionsToJson(appliedFunctions, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+    appliedFunctionsToJson(appliedFunctions, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
         if (!appliedFunctions) {
             return appliedFunctions;
         }
         return appliedFunctions.map((appliedFunction) => {
-            return this.functionCallToJson(appliedFunction, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+            return this.functionCallToJson(appliedFunction, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         });
     }
-    functionCallToJson(functionCall, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+    functionCallToJson(functionCall, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
         let parameters;
         if (functionCall.p) {
             parameters = functionCall.p.map((parameter) => {
-                return this.valueToJSON(parameter, columnAliases, false, false, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+                return this.valueToJSON(parameter, columnAliases, false, false, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
             });
         }
         return {
@@ -4766,12 +4848,12 @@ class QField {
             p: parameters
         };
     }
-    valueToJSON(functionObject, columnAliases, forSelectClause, fromFunctionObject, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+    valueToJSON(functionObject, columnAliases, forSelectClause, fromFunctionObject, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
         if (!functionObject) {
             throw new Error(`Function object must be provided to valueToJSON function.`);
         }
         if (!fromFunctionObject && functionObject instanceof QField) {
-            return functionObject.toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+            return functionObject.toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         }
         let value = functionObject.value;
         switch (typeof value) {
@@ -4829,20 +4911,12 @@ class QOperableField extends QField {
     constructor(dbColumn, dbProperty, q, objectType, operation) {
         super(dbColumn, dbProperty, q, objectType);
         this.operation = operation;
-        this.dictionaryToken = globalThis.AIRPORT_DOMAIN
-            .app('ground-control').token('Dictionary');
     }
     equals(value) {
         if (value instanceof Function) {
             value = value();
         }
-        let trackedRepoGUID = undefined;
-        if (typeof value === 'string') {
-            if (globalThis.IOC.getSync(this.dictionaryToken).isRepositoryGUIDProperty(this.dbProperty)) {
-                trackedRepoGUID = value;
-            }
-        }
-        return this.operation.equals(this, value, trackedRepoGUID);
+        return this.operation.equals(this, value);
     }
     greaterThan(value) {
         if (value instanceof Function) {
@@ -4866,15 +4940,7 @@ class QOperableField extends QField {
         if (value instanceof Function) {
             value = value();
         }
-        let trackedRepoGUIDs = undefined;
-        if (value instanceof Array
-            && value.length
-            && !value.filter(aValue => typeof aValue !== 'string').length) {
-            if (globalThis.IOC.getSync(this.dictionaryToken).isRepositoryGUIDProperty(this.dbProperty)) {
-                trackedRepoGUIDs = value;
-            }
-        }
-        return this.operation.IN(this, value, trackedRepoGUIDs);
+        return this.operation.IN(this, value);
     }
     lessThan(value) {
         if (value instanceof Function) {
@@ -4922,8 +4988,8 @@ class QBooleanFunction extends QBooleanField {
     getInstance() {
         return this.copyFunctions(new QBooleanFunction(this.value));
     }
-    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = json.v;
         }
@@ -4957,8 +5023,8 @@ class QDateFunction extends QDateField {
     getInstance() {
         return this.copyFunctions(new QDateFunction(this.value, this.isQueryParameter));
     }
-    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = json.v;
         }
@@ -5001,8 +5067,8 @@ class QNumberFunction extends QNumberField {
     getInstance() {
         return this.copyFunctions(new QNumberFunction(this.value, this.isQueryParameter));
     }
-    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = json.v;
         }
@@ -5062,8 +5128,8 @@ class QStringFunction extends QStringField {
     getInstance() {
         return this.copyFunctions(new QStringFunction(this.value, this.isQueryParameter));
     }
-    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = json.v;
         }
@@ -5291,6 +5357,8 @@ const tarmaqQuery = lib('tarmaq-query');
 tarmaqQuery.register(QEntityUtils);
 const ENTITY_UTILS = tarmaqQuery.token('EntityUtils');
 const QUERY_UTILS = tarmaqQuery.token('QueryUtils');
+globalThis.ENTITY_UTILS = ENTITY_UTILS;
+globalThis.QUERY_UTILS = QUERY_UTILS;
 
 /**
  * Created by Papa on 10/25/2016.
@@ -5363,27 +5431,6 @@ class JoinFields {
     }
 }
 
-function QEntity(dbEntity, queryUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = QEntityDriver) {
-    this.__driver__ = new QDriver(dbEntity, queryUtils, relationManager, fromClausePosition, dbRelation, joinType, this);
-}
-QEntity.prototype.FULL_JOIN = function (right) {
-    return this.__driver__.join(right, JoinType.FULL_JOIN);
-};
-QEntity.prototype.INNER_JOIN = function (right) {
-    return this.__driver__.join(right, JoinType.INNER_JOIN);
-};
-QEntity.prototype.LEFT_JOIN = function (right) {
-    return this.__driver__.join(right, JoinType.LEFT_JOIN);
-};
-QEntity.prototype.RIGHT_JOIN = function (right) {
-    return this.__driver__.join(right, JoinType.RIGHT_JOIN);
-};
-QEntity.prototype.equals = function (entity) {
-    return IOC.getSync(QUERY_UTILS).equals(entity, this);
-};
-QEntity.prototype.in = function (entities) {
-    return IOC.getSync(QUERY_UTILS).in(entities, this);
-};
 class QEntityDriver {
     constructor(dbEntity, queryUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, qEntity) {
         this.dbEntity = dbEntity;
@@ -5429,7 +5476,7 @@ class QEntityDriver {
         return QMetadataUtils.getRelationPropertyName(QMetadataUtils.getRelationByIndex(this.qEntity, this.relationIndex));
     }
 */
-    getRelationJson(columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+    getRelationJson(columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
         // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
         // see ApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
         let jsonRelation = {
@@ -5442,19 +5489,19 @@ class QEntityDriver {
             si: this.dbEntity.applicationVersion.application.index
         };
         if (this.joinWhereClause) {
-            this.getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+            this.getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         }
         else if (this.dbRelation) {
             this.getEntityRelationJson(jsonRelation);
         }
         else {
-            this.getRootRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+            this.getRootRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         }
         return jsonRelation;
     }
-    getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
+    getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
         jsonRelation.rt = JSONRelationType.ENTITY_JOIN_ON;
-        jsonRelation.joinWhereClause = queryUtils.whereClauseToJSON(this.joinWhereClause, columnAliases, trackedRepoGUIDSet);
+        jsonRelation.joinWhereClause = queryUtils.whereClauseToJSON(this.joinWhereClause, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
         return jsonRelation;
     }
     getEntityRelationJson(jsonRelation) {
@@ -5484,8 +5531,9 @@ class QEntityDriver {
         // jsonRelation.joinWhereClauseOperator   = this.dbRelation.joinFunctionWithOperator;  return
         // jsonRelation;
     }
-    getRootRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
-        jsonRelation.rt = IOC.getSync(ENTITY_UTILS)
+    getRootRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        jsonRelation.rt = globalThis.IOC
+            .getSync(globalThis.ENTITY_UTILS)
             // Removes circular dependency at code initialization time 
             .isQTree(this) ? JSONRelationType.SUB_QUERY_ROOT : JSONRelationType.ENTITY_ROOT;
         return jsonRelation;
@@ -5515,6 +5563,7 @@ class QEntityDriver {
         return rootEntity;
     }
 }
+globalThis.QEntityDriver = QEntityDriver;
 
 /**
  * Created by Papa on 10/18/2016.
@@ -5581,7 +5630,7 @@ const qTreeMethods = {
 yourMethodName: function() {},
 */
 };
-extend(QEntity, QTree, qTreeMethods);
+globalThis.extend(QEntity, QTree, qTreeMethods);
 class QTreeDriver extends QEntityDriver {
     getInstance() {
         let instance = super.getInstance();
@@ -5592,21 +5641,21 @@ class QTreeDriver extends QEntityDriver {
     // getRelationPropertyName(): string {
     // 	throw new Error(`not implemented`);
     // }
-    getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
-        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+    getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON;
         jsonRelation.subQuery =
             // Removes circular dependency at code initialization time 
-            IOC.getSync(ENTITY_UTILS).getTreeQuery(this.subQuery, columnAliases.entityAliases)
+            globalThis.IOC.getSync(globalThis.ENTITY_UTILS).getTreeQuery(this.subQuery, columnAliases.entityAliases)
                 .toJSON(queryUtils, fieldUtils, relationManager);
         return jsonRelation;
     }
-    getRootRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
-        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+    getRootRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT;
         jsonRelation.subQuery =
             // Removes circular dependency at code initialization time 
-            IOC.getSync(ENTITY_UTILS).getTreeQuery(this.subQuery, columnAliases.entityAliases)
+            globalThis.IOC.getSync(globalThis.ENTITY_UTILS).getTreeQuery(this.subQuery, columnAliases.entityAliases)
                 .toJSON(queryUtils, fieldUtils, relationManager);
         return jsonRelation;
     }
@@ -5623,8 +5672,8 @@ class QNullFunction extends QField {
     getInstance() {
         return this.copyFunctions(new QNullFunction());
     }
-    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager) {
-        return this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        return this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
     }
 }
 
@@ -6141,10 +6190,11 @@ const MINUS = EXCEPT;
  * Created by Papa on 10/27/2016.
  */
 class AbstractQuery {
-    constructor(entityAliases = new EntityAliases(), columnAliases = entityAliases.getNewFieldColumnAliases(), trackedRepoGUIDSet = new Set()) {
+    constructor(entityAliases = new EntityAliases(), columnAliases = entityAliases.getNewFieldColumnAliases(), trackedRepoGUIDSet = new Set(), trackedRepoLocalIdSet = new Set()) {
         this.entityAliases = entityAliases;
         this.columnAliases = columnAliases;
         this.trackedRepoGUIDSet = trackedRepoGUIDSet;
+        this.trackedRepoLocalIdSet = trackedRepoLocalIdSet;
         this.isEntityQuery = false;
     }
     getParameters( //
@@ -6157,9 +6207,9 @@ class AbstractQuery {
         if (createSelectCallback) {
             createSelectCallback(jsonQuery);
         }
-        jsonQuery.W = queryUtils.whereClauseToJSON(rawQuery.WHERE, this.columnAliases, this.trackedRepoGUIDSet);
+        jsonQuery.W = queryUtils.whereClauseToJSON(rawQuery.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet);
         jsonQuery.GB = this.groupByClauseToJSON(rawQuery.GROUP_BY);
-        jsonQuery.H = queryUtils.whereClauseToJSON(rawQuery.HAVING, this.columnAliases, this.trackedRepoGUIDSet);
+        jsonQuery.H = queryUtils.whereClauseToJSON(rawQuery.HAVING, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet);
         jsonQuery.OB = this.orderByClauseToJSON(rawQuery.ORDER_BY);
         jsonQuery.L = rawQuery.LIMIT;
         jsonQuery.O = rawQuery.OFFSET;
@@ -6184,7 +6234,7 @@ class AbstractQuery {
                 }
             }
             return fromEntity.__driver__
-                .getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+                .getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         });
     }
     groupByClauseToJSON(groupBy) {
@@ -6215,8 +6265,8 @@ class AbstractQuery {
  */
 // FIXME: add support for a full blown INSERT VALUES, with expression support for VALUES
 class AbstractInsertValues extends AbstractQuery {
-    constructor(rawInsertValues, columnIndexes, trackedRepoGUIDSet, entityAliases = new EntityAliases()) {
-        super(entityAliases, entityAliases.getNewFieldColumnAliases(), trackedRepoGUIDSet);
+    constructor(rawInsertValues, columnIndexes, entityAliases = new EntityAliases()) {
+        super(entityAliases, entityAliases.getNewFieldColumnAliases());
         this.rawInsertValues = rawInsertValues;
         this.columnIndexes = columnIndexes;
     }
@@ -6257,7 +6307,7 @@ class AbstractInsertValues extends AbstractQuery {
                     // return ++currentValueIndex;
                 }
                 else {
-                    return value.toJSON(this.columnAliases, false, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+                    return value.toJSON(this.columnAliases, false, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
                 }
             });
         });
@@ -6265,16 +6315,16 @@ class AbstractInsertValues extends AbstractQuery {
 }
 
 class AbstractUpdate extends AbstractQuery {
-    constructor(rawUpdate, trackedRepoGUIDSet, entityAliases = new EntityAliases()) {
-        super(entityAliases, entityAliases.getNewFieldColumnAliases(), trackedRepoGUIDSet);
+    constructor(rawUpdate, entityAliases = new EntityAliases()) {
+        super(entityAliases, entityAliases.getNewFieldColumnAliases());
         this.rawUpdate = rawUpdate;
     }
     toJSON(queryUtils, fieldUtils, relationManager) {
         return {
             U: this.rawUpdate.UPDATE
-                .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
+                .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
             S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet)
+            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
         };
     }
 }
@@ -6283,15 +6333,15 @@ class AbstractUpdate extends AbstractQuery {
  * Created by Papa on 10/2/2016.
  */
 class Delete extends AbstractQuery {
-    constructor(rawDelete, trackedRepoGUIDSet, entityAliases = new EntityAliases()) {
-        super(entityAliases, entityAliases.getNewFieldColumnAliases(), trackedRepoGUIDSet);
+    constructor(rawDelete, entityAliases = new EntityAliases()) {
+        super(entityAliases, entityAliases.getNewFieldColumnAliases());
         this.rawDelete = rawDelete;
     }
     toJSON(queryUtils, fieldUtils, relationManager) {
         return {
             DF: this.rawDelete.DELETE_FROM
-                .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawDelete.WHERE, this.columnAliases, this.trackedRepoGUIDSet)
+                .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
+            W: queryUtils.whereClauseToJSON(this.rawDelete.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
         };
     }
 }
@@ -6301,8 +6351,8 @@ class Delete extends AbstractQuery {
  */
 const NON_ENTITY_SELECT_ERROR_MESSAGE = `Unsupported entry in Non-Entity SELECT clause, must be a(n): Entity Field | ManyToOne Relation | primitive wrapped by "bool","date","num","str" | query wrapped by "field"`;
 class DistinguishableQuery extends AbstractQuery {
-    constructor(entityAliases = new EntityAliases(), trackedRepoGUIDSet) {
-        super(entityAliases, entityAliases.getNewFieldColumnAliases(), trackedRepoGUIDSet);
+    constructor(entityAliases = new EntityAliases(), trackedRepoGUIDSet, trackedRepoLidSet) {
+        super(entityAliases, entityAliases.getNewFieldColumnAliases(), trackedRepoGUIDSet, trackedRepoLidSet);
         this.isHierarchicalEntityQuery = false;
     }
     selectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager) {
@@ -6340,7 +6390,7 @@ class MappableQuery extends DistinguishableQuery {
                 // In that case the last one will set the alias for all of them.
                 // Because the alias only matters for GROUP_BY and ORDER_BY
                 // that is OK.
-                select[property] = value.toJSON(this.columnAliases, true, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+                select[property] = value.toJSON(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
             }
             else if (value instanceof QOneToManyRelation
                 || value instanceof QAirEntityOneToManyRelation) {
@@ -6393,7 +6443,7 @@ class EntityQuery extends MappableQuery {
             S: this.selectClauseToJSON(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager),
             F: this.fromClauseToJSON(this.rawQuery.FROM, queryUtils, fieldUtils, relationManager),
             forUpdate: this.rawQuery.FOR_UPDATE,
-            W: queryUtils.whereClauseToJSON(this.rawQuery.WHERE, this.columnAliases, this.trackedRepoGUIDSet),
+            W: queryUtils.whereClauseToJSON(this.rawQuery.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet),
             OB: this.orderByClauseToJSON(this.rawQuery.ORDER_BY)
         };
     }
@@ -6441,8 +6491,8 @@ class FieldQuery extends DistinguishableQuery {
     // EntityRelationRecord}},
     //		private entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]:
     // boolean}}
-    constructor(rawQuery, entityAliases = new EntityAliases(), trackedRepoGUIDSet) {
-        super(entityAliases, trackedRepoGUIDSet);
+    constructor(rawQuery, entityAliases = new EntityAliases(), trackedRepoGUIDSet, trackedRepoLocalIdSet) {
+        super(entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
         this.rawQuery = rawQuery;
     }
     nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager) {
@@ -6450,7 +6500,7 @@ class FieldQuery extends DistinguishableQuery {
             throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
         }
         this.columnAliases.entityAliases.getNextAlias(this.rawQuery.SELECT.q.__driver__.getRootJoinEntity());
-        const jsonClauseField = this.rawQuery.SELECT.toJSON(this.columnAliases, true, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+        const jsonClauseField = this.rawQuery.SELECT.toJSON(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         return jsonClauseField;
     }
     toJSON(queryUtils, fieldUtils, relationManager) {
@@ -6493,7 +6543,7 @@ class FieldQuery extends DistinguishableQuery {
 class InsertColumnValues extends AbstractInsertValues {
     toJSON(queryUtils, fieldUtils, relationManager) {
         const entityDriver = this.rawInsertValues.INSERT_INTO.__driver__;
-        const insertInto = entityDriver.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+        const insertInto = entityDriver.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         const columnMap = entityDriver.dbEntity.columnMap;
         const dbColumns = [];
         const columnIndexes = this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map((columnName) => {
@@ -6518,7 +6568,7 @@ class InsertValues extends AbstractInsertValues {
     toJSON(queryUtils, fieldUtils, relationManager) {
         const driver = this.rawInsertValues.INSERT_INTO
             .__driver__;
-        const insertInto = driver.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+        const insertInto = driver.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         const dbColumns = [];
         let columnIndexes;
         if (this.columnIndexes) {
@@ -6549,8 +6599,8 @@ class InsertValues extends AbstractInsertValues {
  * Created by Papa on 10/23/2016.
  */
 class SheetQuery extends DistinguishableQuery {
-    constructor(rawQuery, trackedRepoGUIDSet) {
-        super(new EntityAliases(), trackedRepoGUIDSet);
+    constructor(rawQuery, trackedRepoGUIDSet, trackedRepoLocalIdSet) {
+        super(new EntityAliases(), trackedRepoGUIDSet, trackedRepoLocalIdSet);
         this.rawQuery = rawQuery;
     }
     nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager) {
@@ -6562,7 +6612,7 @@ class SheetQuery extends DistinguishableQuery {
                 throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
             }
             this.columnAliases.entityAliases.getNextAlias(selectField.q.__driver__.getRootJoinEntity());
-            const jsonClauseField = selectField.toJSON(this.columnAliases, true, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+            const jsonClauseField = selectField.toJSON(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
             return jsonClauseField;
         });
     }
@@ -6591,8 +6641,8 @@ class TreeQuery extends MappableQuery {
 }
 
 class UpdateColumns extends AbstractUpdate {
-    constructor(rawUpdate, trackedRepoGUIDSet) {
-        super(rawUpdate, trackedRepoGUIDSet);
+    constructor(rawUpdate) {
+        super(rawUpdate);
     }
     setToJSON(set, queryUtils, fieldUtils, relationManager) {
         const setClause = {};
@@ -6623,7 +6673,7 @@ class UpdateColumns extends AbstractUpdate {
             if (!value.toJSON) {
                 throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${dbEntity.name}`;
             }
-            setClause[columnName] = value.toJSON(this.columnAliases, false, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager);
+            setClause[columnName] = value.toJSON(this.columnAliases, false, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         }
         return setClause;
     }
@@ -6635,14 +6685,14 @@ class UpdateColumns extends AbstractUpdate {
 // FIXME: add support for a full blown UPDATE, with expression support for SET
 class UpdateProperties extends AbstractUpdate {
     constructor(rawUpdate, trackedRepoGUIDSet) {
-        super(rawUpdate, trackedRepoGUIDSet);
+        super(rawUpdate);
     }
     toJSON(queryUtils, fieldUtils, relationManager) {
         return {
             U: this.rawUpdate.UPDATE
-                .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, queryUtils, fieldUtils, relationManager),
+                .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
             S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet)
+            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
         };
     }
     setToJSON(rawSet, queryUtils, fieldUtils, relationManager) {
@@ -8324,24 +8374,24 @@ class EntityDatabaseFacade {
     get FROM() {
         return this.Q[this.dbEntity.name];
     }
-    async insertColumnValues(rawInsertColumnValues, ctx, trackedRepoGUIDSet) {
+    async insertColumnValues(rawInsertColumnValues, ctx) {
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.insertColumnValues(rawInsertColumnValues, ctx, trackedRepoGUIDSet);
+            return await databaseFacade.insertColumnValues(rawInsertColumnValues, ctx);
         });
     }
-    async insertValues(rawInsertValues, ctx, trackedRepoGUIDSet) {
+    async insertValues(rawInsertValues, ctx) {
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.insertValues(rawInsertValues, ctx, trackedRepoGUIDSet);
+            return await databaseFacade.insertValues(rawInsertValues, ctx);
         });
     }
-    async insertColumnValuesGenerateIds(rawInsertColumnValues, ctx, trackedRepoGUIDSet) {
+    async insertColumnValuesGenerateIds(rawInsertColumnValues, ctx) {
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.insertColumnValuesGenerateIds(rawInsertColumnValues, ctx, trackedRepoGUIDSet);
+            return await databaseFacade.insertColumnValuesGenerateIds(rawInsertColumnValues, ctx);
         });
     }
-    async insertValuesGenerateIds(rawInsertValues, ctx, trackedRepoGUIDSet) {
+    async insertValuesGenerateIds(rawInsertValues, ctx) {
         return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.insertValuesGenerateIds(rawInsertValues, ctx, trackedRepoGUIDSet);
+            return await databaseFacade.insertValuesGenerateIds(rawInsertValues, ctx);
         });
     }
     async updateColumnsWhere(rawUpdateColumns, ctx, trackedRepoGUIDSet) {
@@ -9080,8 +9130,8 @@ It must be an Object with the id property.`);
 ENTITY_UTILS.setClass(EntityUtils);
 
 class FieldUtils {
-    getFieldQueryJson(fieldSubQuery, entityAliases, trackedRepoGUIDSet, queryUtils) {
-        let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases, trackedRepoGUIDSet);
+    getFieldQueryJson(fieldSubQuery, entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils) {
+        let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
         return subSelectQuery.toJSON(queryUtils, this, this.relationManager);
     }
 }
@@ -9311,7 +9361,7 @@ is supported only for single columm relations
             return entityId;
         }
     }
-    whereClauseToJSON(whereClause, columnAliases, trackedRepoGUIDSet) {
+    whereClauseToJSON(whereClause, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet) {
         if (!whereClause) {
             return null;
         }
@@ -9326,11 +9376,11 @@ is supported only for single columm relations
                 let jsonLogicalOperation = jsonOperation;
                 switch (operation.o) {
                     case SqlOperator.NOT:
-                        jsonLogicalOperation.v = this.whereClauseToJSON(logicalOperation.v, columnAliases, trackedRepoGUIDSet);
+                        jsonLogicalOperation.v = this.whereClauseToJSON(logicalOperation.v, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
                         break;
                     case SqlOperator.AND:
                     case SqlOperator.OR:
-                        jsonLogicalOperation.v = logicalOperation.v.map((value) => this.whereClauseToJSON(value, columnAliases, trackedRepoGUIDSet));
+                        jsonLogicalOperation.v = logicalOperation.v.map((value) => this.whereClauseToJSON(value, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet));
                         break;
                     default:
                         throw new Error(`Unsupported logical operation '${operation.o}'`);
@@ -9352,7 +9402,7 @@ is supported only for single columm relations
                 // All Non logical or exists operations are value operations (equals, IS_NULL, LIKE,
                 // etc.)
                 let jsonValueOperation = jsonOperation;
-                jsonValueOperation.l = this.convertLRValue(valueOperation.l, columnAliases, trackedRepoGUIDSet);
+                jsonValueOperation.l = this.convertLRValue(valueOperation.l, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
                 if (operation.o === SqlOperator.IS_NOT_NULL
                     || operation.o === SqlOperator.IS_NULL) {
                     break;
@@ -9360,14 +9410,17 @@ is supported only for single columm relations
                 let rValue = valueOperation.r;
                 if (rValue instanceof Array) {
                     jsonValueOperation.r = rValue.map((anRValue) => {
-                        return this.convertLRValue(anRValue, columnAliases, trackedRepoGUIDSet);
+                        return this.convertLRValue(anRValue, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
                     });
                 }
                 else {
-                    jsonValueOperation.r = this.convertLRValue(rValue, columnAliases, trackedRepoGUIDSet);
+                    jsonValueOperation.r = this.convertLRValue(rValue, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
                 }
                 for (const trackedRepoGUID of valueOperation.trackedRepoGUIDs) {
                     trackedRepoGUIDSet.add(trackedRepoGUID);
+                }
+                for (const trackedRepoLocalId of valueOperation.trackedRepoLocalIds) {
+                    trackedRepoLocalIdSet.add(trackedRepoLocalId);
                 }
                 break;
         }
@@ -9509,18 +9562,18 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
             }
         }
     */
-    convertLRValue(value, columnAliases, trackedRepoGUIDSet) {
+    convertLRValue(value, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet) {
         value = wrapPrimitive(value);
         switch (typeof value) {
             case 'undefined':
                 throw new Error(`'undefined' is not a valid L or R value`);
             default:
                 if (value instanceof QOperableField) {
-                    return value.toJSON(columnAliases, false, trackedRepoGUIDSet, this, this.fieldUtils, this.relationManager);
+                    return value.toJSON(columnAliases, false, trackedRepoGUIDSet, trackedRepoLocalIdSet, this, this.fieldUtils, this.relationManager);
                 } // Must be a Field Query
                 else {
                     let rawFieldQuery = value;
-                    return this.fieldUtils.getFieldQueryJson(rawFieldQuery, columnAliases.entityAliases, trackedRepoGUIDSet, this);
+                    return this.fieldUtils.getFieldQueryJson(rawFieldQuery, columnAliases.entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, this);
                 }
         }
     }
@@ -13229,7 +13282,9 @@ class InternalAirEntity$1 {
 class Repository$1 {
     constructor() {
         this._localId = null;
-        this.areDependenciesLoaded = false;
+        // Local-only, represents state of the repository
+        // false if only a reference stub is loaded
+        this.isLoaded = true;
         this.repositoryMembers = [];
         this.repositoryTransactionHistory = [];
         this.repositoryApplications = [];
@@ -14133,6 +14188,23 @@ class RepositoryDao extends BaseRepositoryDao {
             WHERE: r.GUID.IN(repositoryGUIDs)
         });
     }
+    async findByGUIDsAndLocalIds(repositoryGUIDs, repositoryLocalIds) {
+        let r;
+        return await this.db.find.tree({
+            SELECT: {
+                _localId: Y,
+                ageSuitability: Y,
+                createdAt: Y,
+                GUID: Y,
+                '*': Y,
+                uiEntryUri: Y
+            },
+            FROM: [
+                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository
+            ],
+            WHERE: OR(r.GUID.IN(repositoryGUIDs), r._localId.IN(repositoryLocalIds))
+        });
+    }
     async insert(repositories, context) {
         let r;
         const VALUES = [];
@@ -14221,6 +14293,7 @@ class RecordHistoryDuo {
         }
         const recordHistoryNewValue = this.recordHistoryNewValueDuo.getNewRecord(recordHistory, dbColumn, newValue);
         recordHistory.newValues.push(recordHistoryNewValue);
+        this.ensureModifiedRepositoryLocalIdSet(recordHistory, dbColumn, newValue);
         recordHistory.operationHistory.repositoryTransactionHistory
             .transactionHistory.allRecordHistoryNewValues.push(recordHistoryNewValue);
         return recordHistoryNewValue;
@@ -14230,11 +14303,19 @@ class RecordHistoryDuo {
             // No need to record a null value
             return null;
         }
-        const recordHistoryOldValue = this.recordHistoryOldValueDuo.getNewRecord(recordHistory, dbColumn, oldValue);
+        const recordHistoryOldValue = this.recordHistoryOldValueDuo
+            .getNewRecord(recordHistory, dbColumn, oldValue);
         recordHistory.oldValues.push(recordHistoryOldValue);
+        this.ensureModifiedRepositoryLocalIdSet(recordHistory, dbColumn, oldValue);
         recordHistory.operationHistory.repositoryTransactionHistory
             .transactionHistory.allRecordHistoryOldValues.push(recordHistoryOldValue);
         return recordHistoryOldValue;
+    }
+    ensureModifiedRepositoryLocalIdSet(recordHistory, dbColumn, value) {
+        if (this.dictionary.isRepositoryRelationColumn(dbColumn)) {
+            recordHistory.operationHistory.repositoryTransactionHistory
+                .modifiedRepository_LocalIdSet.add(value);
+        }
     }
 }
 
@@ -14269,7 +14350,13 @@ class RepositoryTransactionHistoryDuo {
         repositoryTransactionHistory.isPublic = isPublic;
         repositoryTransactionHistory.repository = new Repository$1();
         repositoryTransactionHistory.repository._localId = repositoryId;
+        this.setModifiedRepository_LocalIdSet(repositoryTransactionHistory);
         return repositoryTransactionHistory;
+    }
+    setModifiedRepository_LocalIdSet(repositoryTransactionHistory) {
+        repositoryTransactionHistory.modifiedRepository_LocalIdSet = new Set();
+        repositoryTransactionHistory.modifiedRepository_LocalIdSet
+            .add(repositoryTransactionHistory.repository._localId);
     }
     newRecord(data) {
         if (!data) {
@@ -14378,6 +14465,7 @@ holdingPattern.setDependencies(RepositoryApi$1, {
     repositoryManager: REPOSITORY_MANAGER,
 });
 holdingPattern.setDependencies(RecordHistoryDuo, {
+    dictionary: Dictionary,
     recordHistoryNewValueDuo: RecordHistoryNewValueDuo,
     recordHistoryOldValueDuo: RecordHistoryOldValueDuo,
 });
@@ -22497,7 +22585,7 @@ const APPLICATION$4 = {
                             "index": 10,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "ARE_DEPENDENCIES_LOADED",
+                            "name": "IS_LOADED",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -22724,7 +22812,7 @@ const APPLICATION$4 = {
                             },
                             "index": 10,
                             "isId": false,
-                            "name": "areDependenciesLoaded",
+                            "name": "isLoaded",
                             "sinceVersion": 1
                         },
                         {
@@ -27143,7 +27231,7 @@ class SynchronizationConflictValuesDao extends BaseSynchronizationConflictValues
 }
 
 class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
-    async insertValues(values) {
+    async insertValues(values, context) {
         const rus = Q_airport____at_airport_slash_layover.RecordUpdateStage;
         const columns = [
             rus.applicationVersion._localId,
@@ -27159,10 +27247,11 @@ class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
             columns,
             VALUES: values
         }, {
+            ...context,
             generateOnSync: true
         });
     }
-    async updateEntityWhereIds(applicationIndex, applicationVersionId, tableIndex, idMap, updatedColumnIndexes, context, trackedRepoGUIDSet) {
+    async updateEntityWhereIds(applicationIndex, applicationVersionId, tableIndex, idMap, updatedColumnIndexes, context) {
         const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
             .applicationVersion.entities[tableIndex];
         const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name];
@@ -27192,13 +27281,12 @@ class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
             UPDATE: qEntity,
             SET: setClause,
             WHERE: OR(...repositoryEquals)
-        }, context, trackedRepoGUIDSet);
+        }, context);
     }
-    async delete( //
-    ) {
+    async delete(context) {
         return await this.db.deleteWhere({
             DELETE_FROM: Q_airport____at_airport_slash_layover.RecordUpdateStage
-        });
+        }, context);
     }
 }
 
@@ -28011,7 +28099,7 @@ class SyncInChecker {
     /**
      * Check the message and load all required auxiliary entities.
      */
-    async checkData(message, repositoryGUIDMapByLocalId, context) {
+    async checkData(message, context) {
         // FIXME: replace as many DB lookups as possible with Terminal State lookups
         let data = message.data;
         let serializedData = JSON.stringify(data);
@@ -28036,7 +28124,7 @@ class SyncInChecker {
             };
         }
         const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
-            .checkRepositoriesAndMembers(message, repositoryGUIDMapByLocalId);
+            .checkRepositoriesAndMembers(message);
         if (!repositoryAndMemberCheckResult.isValid) {
             return {
                 isValid: false
@@ -28413,7 +28501,7 @@ Value is for ${relationIdColumn.name} and could find RepositorySynchronizationDa
 }
 
 class SyncInRepositoryChecker {
-    async checkRepositoriesAndMembers(message, repositoryGUIDMapByLocalId) {
+    async checkRepositoriesAndMembers(message) {
         let missingRepositories = [];
         let newMembers = [];
         let newRepositoryMemberAcceptances = [];
@@ -28429,67 +28517,67 @@ class SyncInRepositoryChecker {
             if (typeof history !== 'object') {
                 throw new Error(`message.data.history is not an object`);
             }
-            let repository = history.repository;
+            let historyRepository = history.repository;
             const repositoryErrorPrefix = `Serialized RepositorySynchronizationData.history.repository should be`;
             const isRepositoryCreationEqualityErrorPrefix = `if RepositorySynchronizationData.history.isRepositoryCreation ===`;
             if (history.isRepositoryCreation) {
-                if (typeof repository !== 'object') {
+                if (typeof historyRepository !== 'object') {
                     throw new Error(`${repositoryErrorPrefix} an object
 	${isRepositoryCreationEqualityErrorPrefix} === true`);
                 }
-                this.checkRepository(repository, null, repositoryGUIDs, messageRepositoryIndexMap, data);
+                this.checkRepository(historyRepository, null, repositoryGUIDs, messageRepositoryIndexMap, data);
             }
             else {
-                if (typeof repository !== 'string') {
+                if (typeof historyRepository !== 'string') {
                     throw new Error(`${repositoryErrorPrefix} a string
 	i${isRepositoryCreationEqualityErrorPrefix} === false`);
                 }
-                repositoryGUIDs.push(repository);
+                repositoryGUIDs.push(historyRepository);
             }
-            const repositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs);
-            for (const foundRepository of repositories) {
+            const foundRepositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs);
+            for (const foundRepository of foundRepositories) {
                 const messageRepositoryIndex = messageRepositoryIndexMap.get(foundRepository.GUID);
                 if (messageRepositoryIndex || messageRepositoryIndex === 0) {
                     data.referencedRepositories[messageRepositoryIndex] = foundRepository;
                 }
                 else {
                     if (history.isRepositoryCreation) {
-                        if (foundRepository.GUID === repository.GUID) {
+                        if (foundRepository.GUID === historyRepository.GUID) {
                             throw new Error(`Repository ${foundRepository.GUID} is already created.`);
                         }
                         throw new Error(`Unexpected Repository ${foundRepository.GUID}`);
                     }
                     else {
-                        if (foundRepository.GUID !== repository) {
+                        if (foundRepository.GUID !== historyRepository) {
                             throw new Error(`Unexpected Repository ${foundRepository.GUID}`);
                         }
                         // Populating ahead of potential insert is OK, object
                         // gets modified with required state on an insert
-                        history.repository = repository = foundRepository;
+                        history.repository = historyRepository = foundRepository;
                     }
                 }
             }
             missingRepositories = data.referencedRepositories
-                .filter(messageRepository => {
-                if (messageRepository._localId) {
-                    repositoryGUIDMapByLocalId.set(messageRepository._localId, messageRepository.GUID);
+                .filter(referencedRepository => {
+                if (referencedRepository._localId) {
                     return false;
                 }
-                return true;
+                else {
+                    // Only the repository reference is loaded
+                    referencedRepository.isLoaded = false;
+                    return true;
+                }
             });
-            if (typeof repository !== 'object') {
-                throw new Error(`Repository with GUID ${repository} is not
-					present and cannot be synced
+            if (typeof historyRepository !== 'object') {
+                throw new Error(`Repository with GUID ${historyRepository} is not
+	present and cannot be synced
 	This RepositorySynchronizationData is for an existing repository and that
 	repository must already be loaded in this database for this message to be
 	processed.`);
             }
             else {
-                if (repository._localId) {
-                    repositoryGUIDMapByLocalId.set(repository._localId, repository.GUID);
-                }
-                else {
-                    missingRepositories.push(repository);
+                if (!historyRepository._localId) {
+                    missingRepositories.push(historyRepository);
                 }
             }
             const memberCheckResult = await this.checkRepositoryMembers(message);
@@ -28776,8 +28864,8 @@ is not present in the message.`);
         if (typeof repository.isPublic !== 'boolean') {
             throw new Error(`Invalid 'repository.isPublic'`);
         }
-        if (typeof repository.areDependenciesLoaded !== 'undefined') {
-            throw new Error(`Invalid 'repository.areDependenciesLoaded' is a local-only field`);
+        if (typeof repository.isLoaded !== 'undefined') {
+            throw new Error(`'repository.isLoaded' cannot be specified`);
         }
         const userAccount = message.userAccounts[repository.owner];
         if (!userAccount) {
@@ -29329,11 +29417,11 @@ class Stage1SyncedInDataProcessor {
 }
 
 class Stage2SyncedInDataProcessor {
-    async applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap, repositoryGUIDMapByLocalId) {
+    async applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap) {
         const context = {};
-        await this.performCreates(stage1Result.recordCreations, applicationsByApplicationVersion_LocalIdMap, repositoryGUIDMapByLocalId, context);
-        await this.performUpdates(stage1Result.recordUpdates, applicationsByApplicationVersion_LocalIdMap, repositoryGUIDMapByLocalId, context);
-        await this.performDeletes(stage1Result.recordDeletions, applicationsByApplicationVersion_LocalIdMap, repositoryGUIDMapByLocalId, context);
+        await this.performCreates(stage1Result.recordCreations, applicationsByApplicationVersion_LocalIdMap, context);
+        await this.performUpdates(stage1Result.recordUpdates, applicationsByApplicationVersion_LocalIdMap, context);
+        await this.performDeletes(stage1Result.recordDeletions, applicationsByApplicationVersion_LocalIdMap, context);
     }
     /**
      * Remote changes come in with ApplicationVersion_LocalIds not Application_Indexes, so it makes
@@ -29347,8 +29435,7 @@ class Stage2SyncedInDataProcessor {
      *  To tie in a given ApplicationVersion_LocalId to its Application_Index an additional mapping data
      *  structure is passed in.
      */
-    async performCreates(recordCreations, applicationsByApplicationVersion_LocalIdMap, repositoryGUIDMapByLocalId, context) {
-        const trackedRepoGUIDSet = new Set();
+    async performCreates(recordCreations, applicationsByApplicationVersion_LocalIdMap, context) {
         for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
             const applicationIndex = applicationsByApplicationVersion_LocalIdMap
                 .get(applicationVersionId).index;
@@ -29366,7 +29453,6 @@ class Stage2SyncedInDataProcessor {
                 let numInserts = 0;
                 const VALUES = [];
                 for (const [repositoryId, creationForRepositoryMap] of creationInTableMap) {
-                    const recordRepositoryGUID = this.getRepositoryGUID(repositoryId, repositoryGUIDMapByLocalId);
                     for (const [actorId, creationForActorMap] of creationForRepositoryMap) {
                         for (const [_actorRecordId, creationOfRowMap] of creationForActorMap) {
                             const rowValues = [
@@ -29398,9 +29484,7 @@ class Stage2SyncedInDataProcessor {
                                 const qColumn = qEntity.__driver__.allColumns[columnIndex];
                                 if (creatingColumns) {
                                     columns.push(qColumn);
-                                    trackedRepoGUIDSet.add(recordRepositoryGUID);
                                 }
-                                this.recordRepositoryGUID(qColumn.dbColumn, columnValue, repositoryGUIDMapByLocalId, trackedRepoGUIDSet);
                                 rowValues.push(columnValue);
                                 currentNonIdColumnArrayIndex++;
                             }
@@ -29420,7 +29504,7 @@ class Stage2SyncedInDataProcessor {
                             INSERT_INTO: qEntity,
                             columns,
                             VALUES
-                        }, context, trackedRepoGUIDSet);
+                        }, context);
                     }
                     finally {
                         context.dbEntity = previousDbEntity;
@@ -29428,28 +29512,6 @@ class Stage2SyncedInDataProcessor {
                 }
             }
         }
-    }
-    addRepositoryGUID(repositoryId, repositoryGUIDMapByLocalId, trackedRepoGUIDSet) {
-        const recordRepositoryGUID = this.getRepositoryGUID(repositoryId, repositoryGUIDMapByLocalId);
-        trackedRepoGUIDSet.add(recordRepositoryGUID);
-    }
-    getRepositoryGUID(repositoryId, repositoryGUIDMapByLocalId) {
-        const recordRepositoryGUID = repositoryGUIDMapByLocalId.get(repositoryId);
-        if (!recordRepositoryGUID) {
-            throw new Error(`No Repository GUID from _localId: ${repositoryId}`);
-        }
-        return recordRepositoryGUID;
-    }
-    recordRepositoryGUID(dbColumn, columnValue, repositoryGUIDMapByLocalId, trackedRepoGUIDSet) {
-        if (columnValue === null) {
-            return;
-        }
-        const dbRelation = dbColumn.propertyColumns[0].property.relation[0];
-        if (!dbRelation || !this.dictionary.isRepositoryRelationColumn(dbColumn)) {
-            return;
-        }
-        const columnRepositoryGUID = this.getRepositoryGUID(columnValue, repositoryGUIDMapByLocalId);
-        trackedRepoGUIDSet.add(columnRepositoryGUID);
     }
     getNonIdColumnsInIndexOrder(dbEntity) {
         const nonIdColumns = [];
@@ -29468,8 +29530,7 @@ class Stage2SyncedInDataProcessor {
         });
         return nonIdColumns;
     }
-    async performUpdates(recordUpdates, applicationsByApplicationVersion_LocalIdMap, repositoryGUIDMapByLocalId, context) {
-        const trackedRepoGUIDSet = new Set();
+    async performUpdates(recordUpdates, applicationsByApplicationVersion_LocalIdMap, context) {
         const finalUpdateMap = new Map();
         const recordUpdateStage = [];
         // Build the final update data structure
@@ -29482,15 +29543,13 @@ class Stage2SyncedInDataProcessor {
                 const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
                     .applicationVersion.entities[tableIndex];
                 for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
-                    this.addRepositoryGUID(repositoryId, repositoryGUIDMapByLocalId, trackedRepoGUIDSet);
                     for (const [actorId, actorUpdates] of repositoryUpdateMap) {
                         for (const [_actorRecordId, recordUpdateMap] of actorUpdates) {
                             const recordKeyMap = this.getRecordKeyMap(recordUpdateMap, finalTableUpdateMap);
                             this.datastructureUtils.ensureChildJsSet(this.datastructureUtils.ensureChildJsMap(recordKeyMap, repositoryId), actorId)
                                 .add(_actorRecordId);
                             for (const [columnIndex, columnUpdate] of recordUpdateMap) {
-                                const dbColumn = dbEntity.columns[columnIndex];
-                                this.recordRepositoryGUID(dbColumn, columnUpdate.newValue, repositoryGUIDMapByLocalId, trackedRepoGUIDSet);
+                                dbEntity.columns[columnIndex];
                                 recordUpdateStage.push([
                                     applicationVersionId,
                                     tableIndex,
@@ -29509,17 +29568,17 @@ class Stage2SyncedInDataProcessor {
         if (!recordUpdateStage.length) {
             return;
         }
-        await this.recordUpdateStageDao.insertValues(recordUpdateStage);
+        await this.recordUpdateStageDao.insertValues(recordUpdateStage, context);
         // Perform the updates
         for (const [applicationVersionId, updateMapForApplication] of finalUpdateMap) {
             const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId);
             for (const [tableIndex, updateMapForTable] of updateMapForApplication) {
-                await this.runUpdatesForTable(application.index, applicationVersionId, tableIndex, updateMapForTable, context, trackedRepoGUIDSet);
+                await this.runUpdatesForTable(application.index, applicationVersionId, tableIndex, updateMapForTable, context);
             }
         }
-        await this.recordUpdateStageDao.delete();
+        await this.recordUpdateStageDao.delete(context);
     }
-    async performDeletes(recordDeletions, applicationsByApplicationVersion_LocalIdMap, repositoryGUIDMapByLocalId, context) {
+    async performDeletes(recordDeletions, applicationsByApplicationVersion_LocalIdMap, context) {
         const trackedRepoGUIDSet = new Set();
         for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {
             const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId);
@@ -29530,11 +29589,9 @@ class Stage2SyncedInDataProcessor {
                 let numClauses = 0;
                 let repositoryWhereFragments = [];
                 for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
-                    const recordRepositoryGUID = this.getRepositoryGUID(repositoryId, repositoryGUIDMapByLocalId);
                     let actorWhereFragments = [];
                     for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
                         numClauses++;
-                        trackedRepoGUIDSet.add(recordRepositoryGUID);
                         actorWhereFragments.push(AND(qEntity._actorRecordId.IN(Array.from(actorRecordIdSet)), qEntity.actor._localId.equals(actorId)));
                     }
                     repositoryWhereFragments.push(AND(qEntity.repository._localId.equals(repositoryId), OR(...actorWhereFragments)));
@@ -29606,14 +29663,14 @@ class Stage2SyncedInDataProcessor {
      * @param {ColumnUpdateKeyMap} updateKeyMap
      * @returns {Promise<void>}
      */
-    async runUpdatesForTable(applicationIndex, applicationVersionId, tableIndex, updateKeyMap, context, trackedRepoGUIDSet) {
+    async runUpdatesForTable(applicationIndex, applicationVersionId, tableIndex, updateKeyMap, context) {
         for (const columnValueUpdate of updateKeyMap.values()) {
             const updatedColumns = columnValueUpdate.updatedColumns;
             if (updatedColumns) {
-                await this.recordUpdateStageDao.updateEntityWhereIds(applicationIndex, applicationVersionId, tableIndex, columnValueUpdate.recordKeyMap, updatedColumns, context, trackedRepoGUIDSet);
+                await this.recordUpdateStageDao.updateEntityWhereIds(applicationIndex, applicationVersionId, tableIndex, columnValueUpdate.recordKeyMap, updatedColumns, context);
             }
             // Traverse down into nested column update combinations
-            await this.runUpdatesForTable(applicationIndex, applicationVersionId, tableIndex, columnValueUpdate.childColumnUpdateKeyMap, context, trackedRepoGUIDSet);
+            await this.runUpdatesForTable(applicationIndex, applicationVersionId, tableIndex, columnValueUpdate.childColumnUpdateKeyMap, context);
         }
     }
 }
@@ -29641,7 +29698,6 @@ class SynchronizationInManager {
             newRepositoryMemberInvitations: [],
             newRepositoryMemberAcceptances: []
         };
-        const repositoryGUIDMapByLocalId = new Map();
         // Split up messages by type
         for (const message of orderedMessages) {
             if (!this.isValidLastChangeTime(syncTimestamp, message.syncTimestamp, 'Sync Timestamp')) {
@@ -29653,7 +29709,7 @@ class SynchronizationInManager {
             let processMessage = true;
             let dataCheckResult;
             await this.transactionManager.transactInternal(async (transaction) => {
-                dataCheckResult = await this.syncInChecker.checkData(message, repositoryGUIDMapByLocalId, context);
+                dataCheckResult = await this.syncInChecker.checkData(message, context);
                 if (!dataCheckResult.isValid) {
                     transaction.rollback(null, context);
                     processMessage = false;
@@ -29703,10 +29759,10 @@ class SynchronizationInManager {
         }
         await this.transactionManager.transactInternal(async (transaction, context) => {
             transaction.isSync = true;
-            await this.twoStageSyncedInDataProcessor.syncMessages(immediateProcessingMessages, newAndUpdatedRepositoriesAndRecords, repositoryGUIDMapByLocalId, transaction, context);
+            await this.twoStageSyncedInDataProcessor.syncMessages(immediateProcessingMessages, newAndUpdatedRepositoriesAndRecords, transaction, context);
         }, null, context);
         await this.wait(2000);
-        await this.processDelayedMessages(delayedProcessingMessages, repositoryGUIDMapByLocalId, context);
+        await this.processDelayedMessages(delayedProcessingMessages, context);
         if (!context.doNotLoadReferences) {
             await this.loadReferencedRepositories([
                 ...immediateProcessingMessages,
@@ -29753,7 +29809,7 @@ class SynchronizationInManager {
             }, milliseconds);
         });
     }
-    async processDelayedMessages(delayedProcessingMessages, repositoryGUIDMapByLocalId, context) {
+    async processDelayedMessages(delayedProcessingMessages, context) {
         const delayedProcessingMessagesWithValidApps = [];
         for (const message of delayedProcessingMessages) {
             const data = message.data;
@@ -29771,7 +29827,7 @@ class SynchronizationInManager {
         if (delayedProcessingMessagesWithValidApps.length) {
             await this.transactionManager.transactInternal(async (transaction, context) => {
                 transaction.isSync = true;
-                await this.twoStageSyncedInDataProcessor.syncMessages(delayedProcessingMessagesWithValidApps, null, repositoryGUIDMapByLocalId, transaction, context);
+                await this.twoStageSyncedInDataProcessor.syncMessages(delayedProcessingMessagesWithValidApps, null, transaction, context);
             }, null, context);
         }
     }
@@ -29818,12 +29874,9 @@ class TwoStageSyncedInDataProcessor {
     /**
      * Synchronize the data messages coming to Terminal (new data for this TM)
      */
-    async syncMessages(messages, newAndUpdatedRepositoriesAndRecords, repositoryGUIDMapByLocalId, transaction, context) {
+    async syncMessages(messages, newAndUpdatedRepositoriesAndRecords, transaction, context) {
         this.aggregateHistoryRecords(messages, transaction);
         await this.repositoryDao.insert(newAndUpdatedRepositoriesAndRecords.missingRepositories, context);
-        for (const newRepository of newAndUpdatedRepositoriesAndRecords.missingRepositories) {
-            repositoryGUIDMapByLocalId.set(newRepository._localId, newRepository.GUID);
-        }
         const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersion_LocalIdMap } = await this.getDataStructures(messages);
         await this.repositoryMemberDao.insert(newAndUpdatedRepositoriesAndRecords.newMembers, context);
         await this.repositoryMemberInvitationDao.insert(newAndUpdatedRepositoriesAndRecords.newRepositoryMemberInvitations, context);
@@ -29831,7 +29884,7 @@ class TwoStageSyncedInDataProcessor {
         for (const newRepositoryMemberAcceptance of newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances) {
             await this.repositoryMemberDao.updatePublicSigningKey(newRepositoryMemberAcceptance.invitationPublicSigningKey, newRepositoryMemberAcceptance.acceptingRepositoryMember.memberPublicSigningKey, context);
         }
-        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersion_LocalIdMap, repositoryGUIDMapByLocalId, context);
+        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersion_LocalIdMap, context);
     }
     aggregateHistoryRecords(messages, transaction) {
         const transactionHistory = transaction.transactionHistory;
@@ -29839,21 +29892,36 @@ class TwoStageSyncedInDataProcessor {
         // split messages by repository and record actor information
         for (const message of messages) {
             const repositoryTransactionHistory = message.data.history;
+            this.repositoryTransactionHistoryDuo
+                .setModifiedRepository_LocalIdSet(repositoryTransactionHistory);
             transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory);
+            const columnMapByEntityLocalIdAndColumnIndex = new Map();
             repositoryTransactionHistory.repositoryTransactionType = RepositoryTransactionType.REMOTE;
             transactionHistory.allOperationHistory = transactionHistory
                 .allOperationHistory.concat(repositoryTransactionHistory.operationHistory);
             repositoryTransactionHistory.operationHistory.forEach((operationHistory) => {
+                const entityColumnMapByIndex = this.datastructureUtils.ensureChildJsMap(columnMapByEntityLocalIdAndColumnIndex, operationHistory.entity._localId);
+                for (const dbColumn of operationHistory.entity.columns) {
+                    entityColumnMapByIndex.set(dbColumn.index, dbColumn);
+                }
                 transactionHistory.allRecordHistory = transactionHistory
                     .allRecordHistory.concat(operationHistory.recordHistory);
                 operationHistory.recordHistory.forEach((recordHistory) => {
                     if (recordHistory.newValues && recordHistory.newValues.length) {
                         transactionHistory.allRecordHistoryNewValues = transactionHistory
                             .allRecordHistoryNewValues.concat(recordHistory.newValues);
+                        for (const newValue of recordHistory.newValues) {
+                            const dbColumn = entityColumnMapByIndex.get(newValue.columnIndex);
+                            this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(recordHistory, dbColumn, newValue.columnIndex);
+                        }
                     }
                     if (recordHistory.oldValues && recordHistory.oldValues.length) {
                         transactionHistory.allRecordHistoryOldValues = transactionHistory
                             .allRecordHistoryOldValues.concat(recordHistory.oldValues);
+                        for (const oldValue of recordHistory.oldValues) {
+                            const dbColumn = entityColumnMapByIndex.get(oldValue.columnIndex);
+                            this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(recordHistory, dbColumn, oldValue.columnIndex);
+                        }
                     }
                 });
             });
@@ -29891,7 +29959,7 @@ class TwoStageSyncedInDataProcessor {
             applicationsByApplicationVersion_LocalIdMap
         };
     }
-    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersion_LocalIdMap, repositoryGUIDMapByLocalId, context) {
+    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersion_LocalIdMap, context) {
         const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById);
         let allSyncConflicts = [];
         let allSyncConflictValues = [];
@@ -29903,7 +29971,7 @@ class TwoStageSyncedInDataProcessor {
                 }
             }
         }
-        await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap, repositoryGUIDMapByLocalId);
+        await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap);
         if (allSyncConflicts.length) {
             await this.synchronizationConflictDao.insert(allSyncConflicts, context);
         }
@@ -30606,6 +30674,8 @@ groundTransport.setDependencies(SynchronizationOutManager, {
     syncOutDataSerializer: SyncOutDataSerializer
 });
 groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
+    datastructureUtils: DatastructureUtils,
+    recordHistoryDuo: RecordHistoryDuo,
     repositoryDao: RepositoryDao,
     repositoryMemberAcceptanceDao: RepositoryMemberAcceptanceDao,
     repositoryMemberDao: RepositoryMemberDao,
@@ -30652,8 +30722,7 @@ class ActiveQueries {
         }
         return false;
     }
-    rerunQueries( //
-    ) {
+    rerunQueries(fieldMap) {
         // Add a bit of a wait to let any query-subscribed screens that are closing after
         // a mutation operation to un-subscribe from those queries.
         setTimeout(() => {
@@ -30674,33 +30743,72 @@ class ActiveQueries {
 
 class ObservableQueryAdapter {
     constructor() {
-        this.repositoryGUIDSetToCheck = new Set();
+        this.queriedRepositoryIds = {
+            GUIDSet: new Set(),
+            localIdSet: new Set()
+        };
         this.repositoryExistenceCheckInProgress = false;
     }
-    async checkRepositoryExistence() {
+    collectAffectedFieldsAndRepositoriesToRerunQueriesBy(portableQuery, fieldMap, transaction) {
+        transaction.fieldMap.merge(fieldMap);
+        const trackedRepoGUIDs = portableQuery.trackedRepoGUIDs;
+        if (trackedRepoGUIDs instanceof Array) {
+            for (const trackedRepoGUID of trackedRepoGUIDs) {
+                if (typeof trackedRepoGUID !== 'string') {
+                    throw new Error(`Invalid Repository GUID`);
+                }
+                transaction.affectedRepository_GUIDSet.add(trackedRepoGUID);
+            }
+        }
+        const trackedRepoLocalIds = portableQuery.trackedRepoLocalIds;
+        if (trackedRepoLocalIds instanceof Array) {
+            for (const trackedRepoLocalId of trackedRepoLocalIds) {
+                if (typeof trackedRepoLocalId !== 'number') {
+                    throw new Error(`Invalid Repository LocalId`);
+                }
+                transaction.affectedRepository_LocalIdSet.add(trackedRepoLocalId);
+            }
+        }
+    }
+    async checkExistenceOfQueriedRepositories() {
         try {
             if (this.repositoryExistenceCheckInProgress) {
                 return;
             }
             this.repositoryExistenceCheckInProgress = true;
             const locallyPresentRepositories = await this.repositoryDao
-                .findByGUIDs(Array.from(this.repositoryGUIDSetToCheck));
-            const locallyPresentRepositoryGUIDSet = new Set();
+                .findByGUIDsAndLocalIds(Array.from(this.queriedRepositoryIds.GUIDSet), Array.from(this.queriedRepositoryIds.localIdSet));
+            const locallyPresentRepositoryMapByGUID = new Map();
+            const locallyPresentRepositoryMapByLocalId = new Map();
             for (const localyPresentRepository of locallyPresentRepositories) {
-                locallyPresentRepositoryGUIDSet.add(localyPresentRepository.GUID);
+                locallyPresentRepositoryMapByGUID.set(localyPresentRepository.GUID, localyPresentRepository);
+                locallyPresentRepositoryMapByLocalId.set(localyPresentRepository._localId, localyPresentRepository);
             }
-            const locallyMissingRepositoryGUIDS = [];
-            for (const repositoryGUIDToCheck of this.repositoryGUIDSetToCheck.values()) {
-                if (!locallyPresentRepositoryGUIDSet.has(repositoryGUIDToCheck)) {
-                    locallyMissingRepositoryGUIDS.push(repositoryGUIDToCheck);
+            const locallyMissingRepositoryGUIDSet = new Set();
+            for (const repositoryGUIDToCheck of this.queriedRepositoryIds.GUIDSet.values()) {
+                const locallyPresentRepository = locallyPresentRepositoryMapByGUID
+                    .get(repositoryGUIDToCheck);
+                if (!locallyPresentRepository || !locallyPresentRepository.isLoaded) {
+                    locallyMissingRepositoryGUIDSet.add(repositoryGUIDToCheck);
                 }
             }
-            for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDS) {
+            for (const repositoryLocalId of this.queriedRepositoryIds.localIdSet.values()) {
+                const locallyPresentRepository = locallyPresentRepositoryMapByLocalId
+                    .get(repositoryLocalId);
+                if (!locallyPresentRepository) {
+                    throw new Error(`Did not find a repository with _localId '${repositoryLocalId}'.`);
+                }
+                if (!locallyPresentRepository.isLoaded) {
+                    locallyMissingRepositoryGUIDSet.add(locallyPresentRepository.GUID);
+                }
+            }
+            for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
                 await this.repositoryLoader.loadRepository(locallyMissingRepositoryGUID, {
                     doNotLoadReferences: true
                 });
             }
-            this.repositoryGUIDSetToCheck.clear();
+            this.queriedRepositoryIds.GUIDSet.clear();
+            this.queriedRepositoryIds.localIdSet.clear();
         }
         catch (e) {
             console.error('Error checking Repositor existence');
@@ -30725,15 +30833,18 @@ class ObservableQueryAdapter {
         // });
         let trackedRepoGUIDSet = this
             .trackedRepoGUIDArrayToSet(portableQuery.trackedRepoGUIDs);
+        let trackedRepoLocalIdSet = this
+            .trackedRepoLocalIdArrayToSet(portableQuery.trackedRepoLocalIds);
         let cachedSqlQuery = {
             portableQuery,
-            resultsSubject: resultsSubject,
+            resultsSubject,
             runQuery: () => {
                 queryCallback().then(augmentedResult => {
                     resultsSubject.next(augmentedResult);
                 });
             },
-            trackedRepoGUIDSet
+            trackedRepoGUIDSet,
+            trackedRepoLocalIdSet
         };
         this.activeQueries.add(portableQuery, cachedSqlQuery);
         cachedSqlQuery.runQuery();
@@ -30741,16 +30852,29 @@ class ObservableQueryAdapter {
     }
     trackedRepoGUIDArrayToSet(trackedRepoGUIDs) {
         let trackedRepoGUIDSet = new Set();
-        if (trackedRepoGUIDs instanceof Array && trackedRepoGUIDs.length) {
-            for (const trackedRepoGUID of trackedRepoGUIDs) {
-                if (typeof trackedRepoGUID !== 'string') {
-                    throw new Error(`Invalid Repository GUID`);
-                }
-                trackedRepoGUIDSet.add(trackedRepoGUID);
-                this.repositoryGUIDSetToCheck.add(trackedRepoGUID);
+        if (!(trackedRepoGUIDs instanceof Array) || !trackedRepoGUIDs.length) {
+            return;
+        }
+        for (const trackedRepoGUID of trackedRepoGUIDs) {
+            if (typeof trackedRepoGUID !== 'string') {
+                throw new Error(`Invalid Repository GUID`);
             }
+            trackedRepoGUIDSet.add(trackedRepoGUID);
         }
         return trackedRepoGUIDSet;
+    }
+    trackedRepoLocalIdArrayToSet(trackedRepoLocalIds) {
+        let trackedRepoLocalIdSet = new Set();
+        if (!(trackedRepoLocalIds instanceof Array) || !trackedRepoLocalIds.length) {
+            return;
+        }
+        for (const trackedRepoLocalId of trackedRepoLocalIds) {
+            if (typeof trackedRepoLocalId !== 'number') {
+                throw new Error(`Invalid Repository Local Id`);
+            }
+            trackedRepoLocalIdSet.add(trackedRepoLocalId);
+        }
+        return trackedRepoLocalIdSet;
     }
 }
 
@@ -30762,12 +30886,14 @@ OBSERVABLE_QUERY_ADAPTER.setDependencies({
     activeQueries: ActiveQueries,
     repositoryDao: RepositoryDao
 });
+globalThis.OBSERVABLE_QUERY_ADAPTER = OBSERVABLE_QUERY_ADAPTER;
 
 setTimeout(() => {
     if (globalThis.repositoryAutoload !== false) {
         setInterval(() => {
-            globalThis.IOC.get(OBSERVABLE_QUERY_ADAPTER).then(observableQueryAdapter => observableQueryAdapter.checkRepositoryExistence().then());
-        }, 1000);
+            globalThis.IOC.get(globalThis.OBSERVABLE_QUERY_ADAPTER).then(observableQueryAdapter => observableQueryAdapter
+                .checkExistenceOfQueriedRepositories().then());
+        }, 300);
     }
 }, 2000);
 
@@ -33585,7 +33711,7 @@ Entity:          ${table.name}
         finally {
             await this.tearDownTransaction(transaction, context);
             if (commitSucceeded) {
-                this.activeQueries.rerunQueries();
+                this.activeQueries.rerunQueries(transaction.fieldMap);
             }
             else {
                 this.activeQueries.clearQueriesToRerun();
@@ -33619,7 +33745,8 @@ Entity:          ${table.name}
             let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
             numVals += await this.executeNative(sql, parameters, context);
         }
-        this.markQueriesToRerun(portableQuery, fieldMap);
+        this.observableQueryAdapter
+            .collectAffectedFieldsAndRepositoriesToRerunQueriesBy(portableQuery, fieldMap, context.transaction);
         return numVals;
     }
     async deleteWhere(portableQuery, context) {
@@ -33628,7 +33755,8 @@ Entity:          ${table.name}
         let sql = sqlDelete.toSQL(fieldMap, context);
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
         let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
-        this.markQueriesToRerun(portableQuery, fieldMap);
+        this.observableQueryAdapter
+            .collectAffectedFieldsAndRepositoriesToRerunQueriesBy(portableQuery, fieldMap, context.transaction);
         return numberOfAffectedRecords;
     }
     async updateWhere(portableQuery, internalFragments, context) {
@@ -33636,8 +33764,10 @@ Entity:          ${table.name}
         let sqlUpdate = new SQLUpdate(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
         let sql = sqlUpdate.toSQL(internalFragments, fieldMap, context);
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
-        this.markQueriesToRerun(portableQuery, fieldMap);
-        return await this.executeNative(sql, parameters, context);
+        const numAffectedRows = await this.executeNative(sql, parameters, context);
+        this.observableQueryAdapter
+            .collectAffectedFieldsAndRepositoriesToRerunQueriesBy(portableQuery, fieldMap, context.transaction);
+        return numAffectedRows;
     }
     async find(portableQuery, internalFragments, context, cachedSqlQueryId) {
         context = await this.ensureContext(context);
@@ -33699,11 +33829,6 @@ Entity:          ${table.name}
     }
     async ensureContext(context) {
         return doEnsureContext(context);
-    }
-    markQueriesToRerun(portableQuery, fieldMap) {
-        const trackedRepoGUIDSet = this.observableQueryAdapter
-            .trackedRepoGUIDArrayToSet(portableQuery.trackedRepoGUIDs);
-        this.activeQueries.markQueriesToRerun(fieldMap, trackedRepoGUIDSet);
     }
 }
 
@@ -33974,7 +34099,9 @@ class InternalAirEntity {
 class Repository {
     constructor() {
         this._localId = null;
-        this.areDependenciesLoaded = false;
+        // Local-only, represents state of the repository
+        // false if only a reference stub is loaded
+        this.isLoaded = true;
         this.repositoryMembers = [];
         this.repositoryTransactionHistory = [];
         this.repositoryApplications = [];
@@ -34592,6 +34719,7 @@ already contains a new repository.`);
             createdAt: new Date(),
             fullApplicationName: applicationFullName,
             immutable: false,
+            isLoaded: true,
             isPublic,
             name,
             owner: userAccount,
@@ -35461,7 +35589,8 @@ class AbstractMutationManager {
             jsonQuery: query.toJSON(this.queryUtils, this.fieldUtils, this.relationManager),
             parameterMap: query.getParameters(),
             queryResultType,
-            trackedRepoGUIDs: Array.from(query.trackedRepoGUIDSet)
+            trackedRepoGUIDs: Array.from(query.trackedRepoGUIDSet),
+            trackedRepoLocalIds: Array.from(query.trackedRepoLocalIdSet)
         };
     }
     async doInsertValues(transaction, q, entities, context) {
@@ -36540,7 +36669,7 @@ parent transactions.
             }
             await transaction.commit(null, context);
             let transactionHistory = transaction.transactionHistory;
-            if (!context.doNotRecordHistory) {
+            if (!context.doNotRecordHistory && !transaction.isSync) {
                 if (!parentTransaction && transactionHistory.allRecordHistory.length) {
                     await this.synchronizationOutManager.synchronizeOut(transactionHistory.repositoryTransactionHistories);
                 }
@@ -37471,7 +37600,6 @@ in top level objects (that are passed into '...Dao.save(...)')`);
         for (const entity of entities) {
             entity.createdAt = new Date();
         }
-        const trackedRepoGUIDSet = new Set();
         for (const entity of entities) {
             let valuesFragment = [];
             for (const dbProperty of context.dbEntity.properties) {
@@ -37483,7 +37611,6 @@ in top level objects (that are passed into '...Dao.save(...)')`);
                     const dbRelation = dbProperty.relation[0];
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
-                            this.addTrackedRepoGUID(newValue, dbProperty, trackedRepoGUIDSet);
                             this.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (dbColumn, columnValue, _propertyNameChains) => {
                                 if (dbColumn.isGenerated) {
                                     return;
@@ -37508,7 +37635,7 @@ in top level objects (that are passed into '...Dao.save(...)')`);
             }
             rawInsert.VALUES.push(valuesFragment);
         }
-        const insertValues = new InsertValues(rawInsert, null, trackedRepoGUIDSet);
+        const insertValues = new InsertValues(rawInsert, null);
         if (rawInsert.VALUES.length) {
             const generatedColumns = context.dbEntity.columns.filter(column => column.isGenerated);
             if (generatedColumns.length && ensureGeneratedValues) {
@@ -37550,7 +37677,6 @@ in top level objects (that are passed into '...Dao.save(...)')`);
      */
     async internalUpdate(entities, actor, transaction, rootTransaction, saveResult, context) {
         const qEntity = this.airportDatabase.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
-        const trackedRepoGUIDSet = new Set();
         for (const entity of entities) {
             const setFragment = {};
             const idWhereFragments = [];
@@ -37579,9 +37705,6 @@ in top level objects (that are passed into '...Dao.save(...)')`);
                     const dbRelation = dbProperty.relation[0];
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
-                            const originalValue = originalEntity[dbProperty.name];
-                            this.addTrackedRepoGUID(originalValue, dbProperty, trackedRepoGUIDSet);
-                            this.addTrackedRepoGUID(updatedValue, dbProperty, trackedRepoGUIDSet);
                             let propertyOriginalValue = originalEntity[dbProperty.name];
                             this.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (_dbColumn, value, propertyNameChains) => {
                                 let originalColumnValue = propertyOriginalValue;
@@ -37649,7 +37772,7 @@ in top level objects (that are passed into '...Dao.save(...)')`);
                     SET: setFragment,
                     WHERE: whereFragment
                 };
-                const update = new UpdateProperties(rawUpdate, trackedRepoGUIDSet);
+                const update = new UpdateProperties(rawUpdate);
                 const portableQuery = this.queryFacade.getPortableQuery(update, null, context);
                 await this.updateManager.updateValues(portableQuery, actor, transaction, rootTransaction, context);
             }
@@ -37661,7 +37784,6 @@ in top level objects (that are passed into '...Dao.save(...)')`);
         const idWhereFragments = [];
         const valuesMapByColumn = [];
         let entityIdWhereClauses = [];
-        const trackedRepoGUIDSet = new Set();
         for (const entity of entities) {
             for (let propertyName in entity) {
                 if (!entity.hasOwnProperty(propertyName)) {
@@ -37687,7 +37809,6 @@ in top level objects (that are passed into '...Dao.save(...)')`);
                 else {
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
-                            this.addTrackedRepoGUID(deletedValue, dbProperty, trackedRepoGUIDSet);
                             this.applicationUtils.forEachColumnOfRelation(dbRelation, dbEntity, (dbColumn, value, propertyNameChains) => {
                                 if (dbProperty.isId && valuesMapByColumn[dbColumn.index] === undefined) {
                                     let idQProperty = qEntity;
@@ -37727,27 +37848,9 @@ in top level objects (that are passed into '...Dao.save(...)')`);
             DELETE_FROM: qEntity,
             WHERE
         };
-        let deleteWhere = new Delete(rawDelete, trackedRepoGUIDSet);
+        let deleteWhere = new Delete(rawDelete);
         let portableQuery = this.queryFacade.getPortableQuery(deleteWhere, null, context);
         await this.deleteManager.deleteWhere(portableQuery, actor, transaction, rootTransaction, context);
-    }
-    addTrackedRepoGUID(value, dbProperty, trackedRepoGUIDSet) {
-        if (!value) {
-            return;
-        }
-        if (this.dictionary.isActorProperty(dbProperty)) {
-            return;
-        }
-        if (this.dictionary.isRepositoryProperty(dbProperty)
-            && value.GUID) {
-            trackedRepoGUIDSet.add(value.GUID);
-            return;
-        }
-        if (dbProperty.entity.isAirEntity
-            && value.repository
-            && value.repository.GUID) {
-            trackedRepoGUIDSet.add(value.repository.GUID);
-        }
     }
 }
 
@@ -39677,62 +39780,62 @@ EntityStateManager.OPERATION_UNIQUE_ID_FIELD = '__OUID__';
  * Created by Papa on 5/23/2016.
  */
 class DatabaseFacade {
-    async insertColumnValues(rawInsertColumnValues, context, trackedRepoGUIDSet) {
+    async insertColumnValues(rawInsertColumnValues, context) {
         if (!rawInsertColumnValues) {
             return 0;
         }
         if (rawInsertColumnValues instanceof Function) {
             rawInsertColumnValues = rawInsertColumnValues();
         }
-        const insertColumnValues = new InsertColumnValues(rawInsertColumnValues, null, trackedRepoGUIDSet);
+        const insertColumnValues = new InsertColumnValues(rawInsertColumnValues, null);
         const queryContext = await this.ensureQueryContext(context);
         const portableQuery = this.queryFacade.getPortableQuery(insertColumnValues, null, queryContext);
         return await this.transactionalConnector.insertValues(portableQuery, context);
     }
-    async insertValues(rawInsertValues, context, trackedRepoGUIDSet) {
+    async insertValues(rawInsertValues, context) {
         if (!rawInsertValues) {
             return 0;
         }
         if (rawInsertValues instanceof Function) {
             rawInsertValues = rawInsertValues();
         }
-        const insertValues = new InsertValues(rawInsertValues, null, trackedRepoGUIDSet);
+        const insertValues = new InsertValues(rawInsertValues, null);
         const queryContext = await this.ensureQueryContext(context);
         const portableQuery = this.queryFacade.getPortableQuery(insertValues, null, queryContext);
         return await this.transactionalConnector.insertValues(portableQuery, context);
     }
-    async insertColumnValuesGenerateIds(rawInsertColumnValues, context, trackedRepoGUIDSet) {
+    async insertColumnValuesGenerateIds(rawInsertColumnValues, context) {
         if (!rawInsertColumnValues) {
             return [];
         }
         if (rawInsertColumnValues instanceof Function) {
             rawInsertColumnValues = rawInsertColumnValues();
         }
-        const insertValues = new InsertColumnValues(rawInsertColumnValues, null, trackedRepoGUIDSet);
+        const insertValues = new InsertColumnValues(rawInsertColumnValues, null);
         const queryContext = await this.ensureQueryContext(context);
         const portableQuery = this.queryFacade.getPortableQuery(insertValues, null, queryContext);
         return await this.transactionalConnector.insertValuesGetLocalIds(portableQuery, context);
     }
-    async insertValuesGenerateIds(rawInsertValues, context, trackedRepoGUIDSet) {
+    async insertValuesGenerateIds(rawInsertValues, context) {
         if (!rawInsertValues) {
             return [];
         }
         if (rawInsertValues instanceof Function) {
             rawInsertValues = rawInsertValues();
         }
-        const insertValues = new InsertValues(rawInsertValues, null, trackedRepoGUIDSet);
+        const insertValues = new InsertValues(rawInsertValues, null);
         const queryContext = await this.ensureQueryContext(context);
         const portableQuery = this.queryFacade.getPortableQuery(insertValues, null, queryContext);
         return await this.transactionalConnector.insertValuesGetLocalIds(portableQuery, context);
     }
-    async deleteWhere(rawDelete, context, trackedRepoGUIDSet) {
+    async deleteWhere(rawDelete, context) {
         if (!rawDelete) {
             return 0;
         }
         if (rawDelete instanceof Function) {
             rawDelete = rawDelete();
         }
-        let deleteWhere = new Delete(rawDelete, trackedRepoGUIDSet);
+        let deleteWhere = new Delete(rawDelete);
         const queryContext = await this.ensureQueryContext(context);
         let portableQuery = this.queryFacade.getPortableQuery(deleteWhere, null, queryContext);
         return await this.transactionalConnector.deleteWhere(portableQuery, context);
@@ -39772,14 +39875,14 @@ class DatabaseFacade {
      *
      * @return Number of records updated
      */
-    async updateColumnsWhere(rawUpdate, context, trackedRepoGUIDSet) {
+    async updateColumnsWhere(rawUpdate, context) {
         if (!rawUpdate) {
             return 0;
         }
         if (rawUpdate instanceof Function) {
             rawUpdate = rawUpdate();
         }
-        let updateColumns = new UpdateColumns(rawUpdate, trackedRepoGUIDSet);
+        let updateColumns = new UpdateColumns(rawUpdate);
         const queryContext = await this.ensureQueryContext(context);
         const portableQuery = this.queryFacade.getPortableQuery(updateColumns, null, queryContext);
         return await this.transactionalConnector.updateValues(portableQuery, context);
@@ -39830,7 +39933,8 @@ class QueryFacade {
             queryResultType,
             applicationIndex: context.dbEntity.applicationVersion.application.index,
             tableIndex: context.dbEntity.index,
-            trackedRepoGUIDs: Array.from(query.trackedRepoGUIDSet)
+            trackedRepoGUIDs: Array.from(query.trackedRepoGUIDSet),
+            trackedRepoLocalIds: Array.from(query.trackedRepoLocalIdSet)
             // values: query.values
         };
     }

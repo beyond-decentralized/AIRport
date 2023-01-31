@@ -75,7 +75,9 @@ export interface IRepository
 	isPublic?: Repository_IsPublic;
 	name?: Repository_Name;
 	uiEntryUri?: Repository_UiEntryUri;
-	areDependenciesLoaded?: boolean
+	// Local-only, represents state of the repository
+	// false if only a reference stub is loaded
+	isLoaded?: boolean
 
 	// Non-Id Relations
 	owner?: IUserAccount;

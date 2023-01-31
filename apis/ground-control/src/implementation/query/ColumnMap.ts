@@ -2,7 +2,7 @@ import { ApplicationEntity_TableIndex } from "../../definition/application/Entit
 import { ApplicationColumn_Index } from "../../definition/application/Property";
 
 export class ColumnMap {
-	columnMap: { [columnIndex: string]: boolean } = {};
+	columnMap: { [columnIndex: ApplicationColumn_Index]: boolean } = {};
 
 	constructor(
 		public tableIndex: ApplicationEntity_TableIndex,

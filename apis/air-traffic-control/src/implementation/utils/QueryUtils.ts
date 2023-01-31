@@ -17,6 +17,7 @@ import {
 	JSONValueOperation,
 	OperationCategory,
 	Repository_GUID,
+	Repository_LocalId,
 	SqlOperator
 } from '@airport/ground-control'
 import {
@@ -221,7 +222,8 @@ is supported only for single columm relations
 	whereClauseToJSON(
 		whereClause: JSONBaseOperation,
 		columnAliases: IFieldColumnAliases<any>,
-		trackedRepoGUIDSet: Set<Repository_GUID>
+		trackedRepoGUIDSet: Set<Repository_GUID>,
+		trackedRepoLocalIdSet: Set<Repository_LocalId>
 	): JSONBaseOperation {
 		if (!whereClause) {
 			return null
@@ -239,13 +241,13 @@ is supported only for single columm relations
 					case SqlOperator.NOT:
 						jsonLogicalOperation.v = this.whereClauseToJSON(
 							<JSONBaseOperation>logicalOperation.v, columnAliases,
-							trackedRepoGUIDSet)
+							trackedRepoGUIDSet, trackedRepoLocalIdSet)
 						break
 					case SqlOperator.AND:
 					case SqlOperator.OR:
 						jsonLogicalOperation.v = (<JSONBaseOperation[]>logicalOperation.v).map((value) =>
 							this.whereClauseToJSON(value, columnAliases,
-								trackedRepoGUIDSet)
+								trackedRepoGUIDSet, trackedRepoLocalIdSet)
 						)
 						break
 					default:
@@ -271,7 +273,8 @@ is supported only for single columm relations
 				// etc.)
 				let jsonValueOperation: JSONValueOperation = <JSONValueOperation>jsonOperation
 				jsonValueOperation.l = this.convertLRValue(
-					valueOperation.l, columnAliases, trackedRepoGUIDSet)
+					valueOperation.l, columnAliases,
+					trackedRepoGUIDSet, trackedRepoLocalIdSet)
 				if (operation.o === SqlOperator.IS_NOT_NULL
 					|| operation.o === SqlOperator.IS_NULL) {
 					break
@@ -279,13 +282,18 @@ is supported only for single columm relations
 				let rValue = valueOperation.r
 				if (rValue instanceof Array) {
 					jsonValueOperation.r = rValue.map((anRValue) => {
-						return this.convertLRValue(anRValue, columnAliases, trackedRepoGUIDSet)
+						return this.convertLRValue(anRValue, columnAliases,
+							trackedRepoGUIDSet, trackedRepoLocalIdSet)
 					})
 				} else {
-					jsonValueOperation.r = this.convertLRValue(rValue, columnAliases, trackedRepoGUIDSet)
+					jsonValueOperation.r = this.convertLRValue(rValue, columnAliases,
+						trackedRepoGUIDSet, trackedRepoLocalIdSet)
 				}
 				for (const trackedRepoGUID of valueOperation.trackedRepoGUIDs) {
 					trackedRepoGUIDSet.add(trackedRepoGUID)
+				}
+				for (const trackedRepoLocalId of valueOperation.trackedRepoLocalIds) {
+					trackedRepoLocalIdSet.add(trackedRepoLocalId)
 				}
 				break
 		}
@@ -485,7 +493,8 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 	private convertLRValue(
 		value,
 		columnAliases: IFieldColumnAliases<any>,
-		trackedRepoGUIDSet: Set<Repository_GUID>
+		trackedRepoGUIDSet: Set<Repository_GUID>,
+		trackedRepoLocalIdSet: Set<Repository_LocalId>
 	): any {
 		value = wrapPrimitive(value)
 		switch (typeof value) {
@@ -493,14 +502,15 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 				throw new Error(`'undefined' is not a valid L or R value`)
 			default:
 				if (value instanceof QOperableField) {
-					return value.toJSON(columnAliases, false, trackedRepoGUIDSet,
+					return value.toJSON(columnAliases, false,
+						trackedRepoGUIDSet, trackedRepoLocalIdSet,
 						this, this.fieldUtils, this.relationManager)
 				} // Must be a Field Query
 				else {
 					let rawFieldQuery: RawFieldQuery<any> = value
 					return this.fieldUtils.getFieldQueryJson(
 						rawFieldQuery, columnAliases.entityAliases,
-						trackedRepoGUIDSet, this)
+						trackedRepoGUIDSet, trackedRepoLocalIdSet, this)
 				}
 		}
 	}

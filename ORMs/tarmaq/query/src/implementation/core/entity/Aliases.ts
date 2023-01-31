@@ -5,7 +5,7 @@ import {
 	IParameterAliases,
 	Parameter
 } from '../../../definition/core/entity/Aliases'
-import {IQEntityInternal} from "../../../definition/core/entity/Entity";
+import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver';
 import {
 	IQFieldInternal,
 	IQOrderableField

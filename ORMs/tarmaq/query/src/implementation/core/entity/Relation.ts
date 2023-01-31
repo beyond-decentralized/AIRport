@@ -7,7 +7,8 @@ import {
 	JoinType,
 	JSONBaseOperation,
 } from '@airport/ground-control'
-import { IQAirEntity, IQEntityInternal } from '../../../definition/core/entity/Entity'
+import { IQAirEntity } from '../../../definition/core/entity/Entity'
+import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { JSONLogicalOperation } from '../../../definition/core/operation/LogicalOperation'
 import { QUERY_UTILS } from '../../../injection'

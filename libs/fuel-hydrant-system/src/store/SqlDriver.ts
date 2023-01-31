@@ -266,7 +266,7 @@ Entity:          ${table.name}
 		} finally {
 			await this.tearDownTransaction(transaction, context)
 			if (commitSucceeded) {
-				this.activeQueries.rerunQueries()
+				this.activeQueries.rerunQueries(transaction.fieldMap)
 			} else {
 				this.activeQueries.clearQueriesToRerun()
 			}
@@ -334,7 +334,9 @@ Entity:          ${table.name}
 			numVals += await this.executeNative(sql, parameters, context);
 		}
 
-		this.markQueriesToRerun(portableQuery, fieldMap)
+		this.observableQueryAdapter
+			.collectAffectedFieldsAndRepositoriesToRerunQueriesBy(
+				portableQuery, fieldMap, context.transaction)
 
 		return numVals;
 	}
@@ -362,7 +364,9 @@ Entity:          ${table.name}
 		let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
 		let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
 
-		this.markQueriesToRerun(portableQuery, fieldMap)
+		this.observableQueryAdapter
+			.collectAffectedFieldsAndRepositoriesToRerunQueriesBy(
+				portableQuery, fieldMap, context.transaction)
 
 		return numberOfAffectedRecords;
 	}
@@ -390,9 +394,13 @@ Entity:          ${table.name}
 		let sql = sqlUpdate.toSQL(internalFragments, fieldMap, context);
 		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
 
-		this.markQueriesToRerun(portableQuery, fieldMap)
+		const numAffectedRows = await this.executeNative(sql, parameters, context);
 
-		return await this.executeNative(sql, parameters, context);
+		this.observableQueryAdapter
+			.collectAffectedFieldsAndRepositoriesToRerunQueriesBy(
+				portableQuery, fieldMap, context.transaction)
+
+		return numAffectedRows
 	}
 
 	async find<E, EntityArray extends Array<E>>(
@@ -578,15 +586,6 @@ Entity:          ${table.name}
 		context: IFuelHydrantContext
 	): Promise<IFuelHydrantContext> {
 		return <IFuelHydrantContext>doEnsureContext(context);
-	}
-
-	private markQueriesToRerun(
-		portableQuery: PortableQuery,
-		fieldMap: SyncApplicationMap
-	): void {
-		const trackedRepoGUIDSet = this.observableQueryAdapter
-			.trackedRepoGUIDArrayToSet(portableQuery.trackedRepoGUIDs)
-		this.activeQueries.markQueriesToRerun(fieldMap, trackedRepoGUIDSet)
 	}
 
 }

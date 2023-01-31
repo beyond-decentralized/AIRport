@@ -29,6 +29,7 @@ export interface IRepositoryTransactionHistory {
     isPublic?: Repository_IsPublic
     isRepositoryCreation?: RepositoryTransactionHistory_IsRepositoryCreation
     member: IRepositoryMember
+    modifiedRepository_LocalIdSet?: Set<Repository_LocalId>
     repository?: IRepository
     transactionHistory?: ITransactionHistory
     operationHistory?: IOperationHistory[]
@@ -37,7 +38,6 @@ export interface IRepositoryTransactionHistory {
     newRepositoryMemberUpdates?: IRepositoryMemberUpdate[]
     newRepositoryMembers?: IRepositoryMember[]
     invitationPrivateSigningKey?: RepositoryMemberInvitation_PrivateSigningKey
-
 }
 
 export type TransactionHistoryNumberOfOperations = number

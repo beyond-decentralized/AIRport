@@ -2,7 +2,7 @@ import { OperationCategory, SqlOperator } from "@airport/ground-control";
 import { IQUntypedField } from "../../../definition/core/field/UntypedField";
 import { IUntypedOperation, JSONRawUntypedOperation } from "../../../definition/core/operation/UntypedOperation";
 import { RawFieldQuery } from "../../../definition/query/facade/FieldQuery";
-import { ValueOperation } from "./Operation";
+import { ValueOperation } from "./ValueOperation";
 
 /**
  * Created by papa on 7/13/17.

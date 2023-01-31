@@ -27,7 +27,7 @@ import { RepositoryDatabase } from "./RepositoryDatabase";
 import { RepositoryClient } from "./RepositoryClient";
 import { RepositoryTerminal } from "./RepositoryTerminal";
 import { RepositoryApplication } from "./RepositoryApplication";
-import { AgeSuitability, Application_FullName, CreatedAt, IRepository, IRepositoryIdentifier, Repository_GUID, Repository_Immutable, Repository_IsPublic, Repository_LocalId, Repository_Name, Repository_Source, Repository_UiEntryUri } from "@airport/ground-control";
+import { AgeSuitability, Application_FullName, CreatedAt, IRepository, Repository_GUID, Repository_Immutable, Repository_IsPublic, Repository_LocalId, Repository_Name, Repository_Source, Repository_UiEntryUri } from "@airport/ground-control";
 import { RepositoryMember } from "./member/RepositoryMember";
 
 /**
@@ -83,8 +83,10 @@ export class Repository
 	@DbString()
 	uiEntryUri?: Repository_UiEntryUri
 
-	@Column({ name: 'ARE_DEPENDENCIES_LOADED', nullable: false })
-	areDependenciesLoaded?: boolean = false
+	// Local-only, represents state of the repository
+	// false if only a reference stub is loaded
+	@Column({ name: 'IS_LOADED', nullable: false })
+	isLoaded?: boolean = true
 
 	@ManyToOne()
 	@JoinColumn({

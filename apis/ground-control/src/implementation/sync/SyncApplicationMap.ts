@@ -1,3 +1,4 @@
+import { Application_Index } from "../../definition/application/Application";
 import { DbEntity } from "../../definition/application/Entity";
 import { ApplicationMap } from "../query/ApplicationMap";
 import { TableMap } from "../query/TableMap";
@@ -7,7 +8,7 @@ import { SyncTableMap } from "./SyncTableMap";
 export class SyncApplicationMap extends ApplicationMap {
 
 	constructor(
-		applicationMap?: { [applicationIndex: string]: TableMap }
+		applicationMap?: { [applicationIndex: Application_Index]: TableMap }
 	) {
 		super(applicationMap);
 	}
@@ -20,18 +21,41 @@ export class SyncApplicationMap extends ApplicationMap {
 	}
 
 	intersects(
-		applicationMap: ApplicationMap
+		fieldMap: ApplicationMap
 	): boolean {
 		for (const applicationIndex in this.applicationMap) {
-			if (applicationMap.applicationMap[applicationIndex]) {
+			if (fieldMap.applicationMap[applicationIndex]) {
 				const syncTableMap: SyncTableMap = new globalThis.SyncTableMap(
 					parseInt(applicationIndex), this.applicationMap[applicationIndex].tableMap);
-				if (syncTableMap.intersects(applicationMap.applicationMap[applicationIndex])) {
+				if (syncTableMap.intersects(fieldMap.applicationMap[applicationIndex])) {
 					return true;
 				}
 			}
 		}
 		return false;
+	}
+
+	merge(
+		fieldMap: ApplicationMap
+	): void {
+		for (const applicationIndex in fieldMap.applicationMap) {
+			const tableMap = this.applicationMap[applicationIndex]
+			const tableMapIn = fieldMap.applicationMap[applicationIndex]
+			if (!tableMap) {
+				this.applicationMap[applicationIndex] = tableMapIn
+				continue
+			}
+			for (const tableIndex in tableMapIn.tableMap) {
+				const columnMap = tableMap.tableMap[tableIndex]
+				const columnMapIn = tableMapIn.tableMap[tableIndex]
+				if (!columnMap) {
+					tableMap.tableMap[tableIndex] = columnMapIn
+				}
+				for (const columnIndex in columnMapIn.columnMap) {
+					columnMap.columnMap[columnIndex] = true
+				}
+			}
+		}
 	}
 
 }

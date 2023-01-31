@@ -1,7 +1,6 @@
 import {
     DbEntity,
-    ISaveResult,
-    Repository_GUID
+    ISaveResult
 } from '@airport/ground-control'
 import { IEntityContext } from '@airport/tarmaq-entity';
 import { RawDelete } from '../query/facade/Delete';
@@ -17,7 +16,6 @@ import {
     IEntityUpdateProperties,
     IQEntity
 } from './entity/Entity'
-
 
 /**
  * Facade for all DB operations related to a particular Entity.
@@ -52,32 +50,28 @@ export interface IEntityQueryDatabaseFacade<IEntity,
         rawInsertValues: RawInsertColumnValues<IQE> | {
             (...args: any[]): RawInsertColumnValues<IQE>;
         },
-        ctx?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+        ctx?: IEntityContext
     ): Promise<number>;
 
     insertValues<IQE extends IQEntity>(
         rawInsertValues: RawInsertValues<IQE> | {
             (...args: any[]): RawInsertValues<IQE>;
         },
-        ctx?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+        ctx?: IEntityContext
     ): Promise<number>;
 
     insertColumnValuesGenerateIds<IQE extends IQEntity>(
         rawInsertValues: RawInsertColumnValues<IQE> | {
             (...args: any[]): RawInsertColumnValues<IQE>;
         },
-        ctx?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+        ctx?: IEntityContext
     ): Promise<number[] | string[] | number[][] | string[][]>;
 
     insertValuesGenerateIds<IQE extends IQEntity>(
         rawInsertValues: RawInsertValues<IQE> | {
             (...args: any[]): RawInsertValues<IQE>;
         },
-        ctx?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+        ctx?: IEntityContext
     ): Promise<number[] | string[] | number[][] | string[][]>;
 
     /**
@@ -89,8 +83,7 @@ export interface IEntityQueryDatabaseFacade<IEntity,
     updateColumnsWhere(
         rawUpdateColumns: RawUpdateColumns<EntityUpdateColumns, IQ>
             | { (...args: any[]): RawUpdateColumns<EntityUpdateColumns, IQ> },
-        ctx?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+        ctx?: IEntityContext
     ): Promise<number>;
 
     /**
@@ -101,8 +94,7 @@ export interface IEntityQueryDatabaseFacade<IEntity,
      */
     updateWhere(
         rawUpdateProperties: RawUpdate<EntityUpdateProperties, IQ> | { (...args: any[]): RawUpdate<EntityUpdateProperties, IQ> },
-        ctx?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+        ctx?: IEntityContext
     ): Promise<number>;
 
     /**
@@ -112,8 +104,7 @@ export interface IEntityQueryDatabaseFacade<IEntity,
      */
     deleteWhere(
         rawDelete: RawDelete<IQ> | { (...args: any[]): RawDelete<IQ> },
-        ctx?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+        ctx?: IEntityContext
     ): Promise<number>;
 
     /**

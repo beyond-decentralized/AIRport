@@ -1,4 +1,4 @@
-import { IRepositoryTransactionHistory, RepositoryMemberInvitation_PrivateSigningKey, RepositoryTransactionHistory_GUID, RepositoryTransactionHistory_IsRepositoryCreation, RepositoryTransactionHistory_LocalId, RepositoryTransactionHistory_SaveTimestamp, RepositoryTransactionHistory_SyncTimestamp, RepositoryTransactionType, Repository_IsPublic } from '@airport/ground-control'
+import { IRepositoryTransactionHistory, RepositoryMemberInvitation_PrivateSigningKey, RepositoryTransactionHistory_GUID, RepositoryTransactionHistory_IsRepositoryCreation, RepositoryTransactionHistory_LocalId, RepositoryTransactionHistory_SaveTimestamp, RepositoryTransactionHistory_SyncTimestamp, RepositoryTransactionType, Repository_IsPublic, Repository_LocalId } from '@airport/ground-control'
 import {
 	Column,
 	DbBoolean,
@@ -12,6 +12,7 @@ import {
 	OneToMany,
 	SequenceGenerator,
 	Table,
+	Transient,
 } from '@airport/tarmaq-entity'
 import { Actor } from '../infrastructure/Actor'
 import { RepositoryMember } from '../repository/member/RepositoryMember'

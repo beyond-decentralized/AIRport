@@ -17,7 +17,6 @@ export interface ISyncInChecker {
 
 	checkData(
 		message: RepositorySynchronizationMessage,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		context: IContext
 	): Promise<IDataCheckResult>
 
@@ -68,7 +67,6 @@ export class SyncInChecker
 	 */
 	async checkData(
 		message: RepositorySynchronizationMessage,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		context: IContext
 	): Promise<IDataCheckResult> {
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
@@ -97,7 +95,7 @@ export class SyncInChecker
 			}
 		}
 		const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
-			.checkRepositoriesAndMembers(message, repositoryGUIDMapByLocalId)
+			.checkRepositoriesAndMembers(message)
 		if (!repositoryAndMemberCheckResult.isValid) {
 			return {
 				isValid: false

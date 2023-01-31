@@ -320,7 +320,7 @@ parent transactions.
 			await transaction.commit(null, context);
 
 			let transactionHistory = transaction.transactionHistory;
-			if (!context.doNotRecordHistory) {
+			if (!context.doNotRecordHistory && !transaction.isSync) {
 				if (!parentTransaction && transactionHistory.allRecordHistory.length) {
 					await this.synchronizationOutManager.synchronizeOut(
 						transactionHistory.repositoryTransactionHistories)

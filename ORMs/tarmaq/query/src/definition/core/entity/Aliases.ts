@@ -1,6 +1,6 @@
 import {IQOrderableField} from "../field/Field";
 import {IQFunction}       from "../field/Functions";
-import {IQEntityInternal} from "./Entity";
+import { IQEntityInternal } from "./IQEntityDriver";
 
 export interface IAliasMap<T, A> {
 

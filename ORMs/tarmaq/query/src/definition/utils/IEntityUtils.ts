@@ -1,6 +1,9 @@
 import { IEntityAliases } from "../core/entity/Aliases";
-import { IEntityRelationFrom, IEntitySelectProperties, IFrom, IQEntity,
-IQEntityInternal, IQEntityDriver, IQTree } from "../core/entity/Entity";
+import {
+	IEntityRelationFrom, IEntitySelectProperties, IFrom, IQEntity,
+	IQTree
+} from "../core/entity/Entity";
+import { IQEntityDriver, IQEntityInternal } from "../core/entity/IQEntityDriver";
 import { IAbstractQuery } from "../query/facade/AbstractQuery";
 import { RawEntityQuery } from "../query/facade/EntityQuery";
 import { IQuery, RawQuery } from "../query/facade/Query";
@@ -15,11 +18,11 @@ export interface IEntityUtils {
 	exists(object: any);
 
 	isAppliable(object: any): boolean;
-	
+
 	getQuery<Q>(
 		query: Q | { (...args: any[]): Q }
 	): Q;
-	
+
 	ensureAllQEntitiesInFromClause(
 		rawQuery: RawQuery
 	): void

@@ -1,4 +1,4 @@
-import { Repository_GUID } from '../core/types';
+import { Repository_GUID, Repository_LocalId } from '../core/types';
 import { JsonStatement } from './facade/Query';
 import { QueryResultType } from './QueryResultType';
 
@@ -22,6 +22,7 @@ export interface PortableQuery {
 		[alias: string]: IQueryParameter<any>
 	};
 	trackedRepoGUIDs?: Repository_GUID[]
+	trackedRepoLocalIds?: Repository_LocalId[]
 	// values?: any[];
 }
 

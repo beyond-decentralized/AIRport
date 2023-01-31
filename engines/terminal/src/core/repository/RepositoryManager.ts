@@ -176,6 +176,7 @@ already contains a new repository.`)
 			createdAt: new Date(),
 			fullApplicationName: applicationFullName,
 			immutable: false,
+			isLoaded: true,
 			isPublic,
 			name,
 			owner: userAccount as any,

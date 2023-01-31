@@ -120,7 +120,9 @@ export class NoOpSqlDriver
 		return Promise.resolve(0);
 	}
 
-	protected getDialect(context: IOperationContext): SQLDialect {
+	protected getDialect(
+		context: IOperationContext
+	): SQLDialect {
 		return undefined;
 	}
 

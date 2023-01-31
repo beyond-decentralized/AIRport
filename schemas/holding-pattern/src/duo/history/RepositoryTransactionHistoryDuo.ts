@@ -29,6 +29,10 @@ export interface IRepositoryTransactionHistoryDuo {
 		isPublic: Repository_IsPublic
 	): IRepositoryTransactionHistory;
 
+	setModifiedRepository_LocalIdSet(
+		repositoryTransactionHistory: IRepositoryTransactionHistory
+	): void
+
 	newRecord(
 		data?: IRepositoryTransactionHistory
 	): IRepositoryTransactionHistory;
@@ -73,7 +77,17 @@ export class RepositoryTransactionHistoryDuo
 		repositoryTransactionHistory.repository = new Repository() as IRepository
 		repositoryTransactionHistory.repository._localId = repositoryId
 
+		this.setModifiedRepository_LocalIdSet(repositoryTransactionHistory)
+
 		return repositoryTransactionHistory
+	}
+
+	setModifiedRepository_LocalIdSet(
+		repositoryTransactionHistory: IRepositoryTransactionHistory
+	): void {
+		repositoryTransactionHistory.modifiedRepository_LocalIdSet = new Set()
+		repositoryTransactionHistory.modifiedRepository_LocalIdSet
+			.add(repositoryTransactionHistory.repository._localId)
 	}
 
 	newRecord(

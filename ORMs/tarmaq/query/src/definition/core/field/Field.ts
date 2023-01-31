@@ -2,9 +2,9 @@ import {
 	DbColumn,
 	DbProperty,
 	JSONClauseObjectType
-}                         from "@airport/ground-control";
-import {IQEntityInternal} from "../entity/Entity";
-import {IFieldInOrderBy}  from './FieldInOrderBy';
+} from "@airport/ground-control";
+import { IQEntityInternal } from "../entity/IQEntityDriver";
+import { IFieldInOrderBy } from './FieldInOrderBy';
 
 /**
  * A concrete query field/column that can be ordered.

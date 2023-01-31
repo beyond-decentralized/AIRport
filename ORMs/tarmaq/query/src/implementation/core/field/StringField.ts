@@ -4,9 +4,10 @@ import {
 	JSONClauseField,
 	JSONClauseObjectType,
 	Repository_GUID,
+	Repository_LocalId,
 	SQLDataType
 } from '@airport/ground-control';
-import { IQEntityInternal } from '../../../definition/core/entity/Entity';
+import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver';
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager';
 import { IQFunction } from '../../../definition/core/field/Functions';
 import { IQStringField } from '../../../definition/core/field/StringField';
@@ -79,13 +80,14 @@ export class QStringFunction<T extends string | string[] = string>
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
 		trackedRepoGUIDSet: Set<Repository_GUID>,
+		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
 	): JSONClauseField {
 		let json = this.operableFunctionToJson(
 			this, columnAliases, forSelectClause,
-			trackedRepoGUIDSet,
+			trackedRepoGUIDSet, trackedRepoLocalIdSet,
 			queryUtils, fieldUtils, relationManager);
 
 		if (this.isQueryParameter) {

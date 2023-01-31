@@ -13,7 +13,7 @@ import { RecordHistoryOldValueDuo } from '../duo/history/RecordHistoryOldValueDu
 import { RepositoryTransactionHistoryDuo } from '../duo/history/RepositoryTransactionHistoryDuo'
 import { TransactionHistoryDuo } from '../duo/history/TransactionHistoryDuo'
 import { application } from './app-declaration'
-import { DatastructureUtils } from '@airport/ground-control'
+import { DatastructureUtils, Dictionary } from '@airport/ground-control'
 import { IRepositoryManager, TERMINAL_SESSION_MANAGER } from '@airport/terminal-map'
 
 export const holdingPattern = app(application)
@@ -43,6 +43,7 @@ holdingPattern.setDependencies(RepositoryApi, {
 })
 
 holdingPattern.setDependencies(RecordHistoryDuo, {
+    dictionary: Dictionary,
     recordHistoryNewValueDuo: RecordHistoryNewValueDuo,
     recordHistoryOldValueDuo: RecordHistoryOldValueDuo,
 })

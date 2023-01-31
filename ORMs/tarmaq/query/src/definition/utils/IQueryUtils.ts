@@ -1,6 +1,6 @@
 import { AirEntityId } from "@airport/aviation-communication";
-import { DbColumn, DbEntity, IAirEntity, JSONBaseOperation, Repository_GUID, SQLDataType } from "@airport/ground-control";
-import { QEntityConstructor } from "../../implementation/core/entity/Entity";
+import { DbColumn, DbEntity, IAirEntity, JSONBaseOperation, Repository_GUID, Repository_LocalId, SQLDataType } from "@airport/ground-control";
+import { QEntityConstructor } from "../../implementation/core/entity/QEntity";
 import { IFieldColumnAliases } from "../core/entity/Aliases";
 import { IEntityIdProperties, IQAirEntity, IQEntity } from "../core/entity/Entity";
 import { IQFieldInternal } from "../core/field/Field";
@@ -10,13 +10,13 @@ export interface ManyToOneColumnMapping {
 	tableIndex: number;
 	propertyChain: string[];
 	value: any;
-  }
-  
-  export interface ReferencedColumnData {
+}
+
+export interface ReferencedColumnData {
 	propertyNameChains: string[][];
 	sqlDataType: SQLDataType;
 	value?: any;
-  }
+}
 
 export interface IdKeysByIdColumnIndex {
 	arrayByIdColumnIndex: (number | string)[],
@@ -63,11 +63,12 @@ export interface IQueryUtils {
 	whereClauseToJSON(
 		whereClause: JSONBaseOperation,
 		columnAliases: IFieldColumnAliases<any>,
-		trackedRepositoryGUIDSet: Set<Repository_GUID>
+		trackedRepositoryGUIDSet: Set<Repository_GUID>,
+		trackedRepositoryLocalIdSet: Set<Repository_LocalId>
 	): JSONBaseOperation
 
 	getQEntityConstructor<IQE extends IQEntity>(
-	  dbEntity: DbEntity
+		dbEntity: DbEntity
 	): QEntityConstructor<IQE>;
 
 	getIdKey(

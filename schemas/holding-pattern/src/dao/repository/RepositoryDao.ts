@@ -1,5 +1,6 @@
 import {
 	AND,
+	OR,
 	Y
 } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
@@ -20,7 +21,12 @@ export interface IRepositoryDao
 	extends IBaseRepositoryDao {
 
 	findByGUIDs(
+		repositoryGUIDs: Repository_GUID[]
+	): Promise<IRepository[]>
+
+	findByGUIDsAndLocalIds(
 		repositoryGUIDs: Repository_GUID[],
+		repositoryLocalIds: Repository_LocalId[]
 	): Promise<IRepository[]>
 
 	findRootRepositories(): Promise<IRepository[]>
@@ -216,7 +222,7 @@ export class RepositoryDao
 	}
 
 	async findByGUIDs(
-		repositoryGUIDs: Repository_GUID[],
+		repositoryGUIDs: Repository_GUID[]
 	): Promise<IRepository[]> {
 		let r: QRepository
 		return await this.db.find.tree({
@@ -232,6 +238,30 @@ export class RepositoryDao
 				r = Q.Repository
 			],
 			WHERE: r.GUID.IN(repositoryGUIDs)
+		})
+	}
+
+	async findByGUIDsAndLocalIds(
+		repositoryGUIDs: Repository_GUID[],
+		repositoryLocalIds: Repository_LocalId[]
+	): Promise<IRepository[]> {
+		let r: QRepository
+		return await this.db.find.tree({
+			SELECT: {
+				_localId: Y,
+				ageSuitability: Y,
+				createdAt: Y,
+				GUID: Y,
+				'*': Y,
+				uiEntryUri: Y
+			},
+			FROM: [
+				r = Q.Repository
+			],
+			WHERE: OR(
+				r.GUID.IN(repositoryGUIDs),
+				r._localId.IN(repositoryLocalIds),
+			)
 		})
 	}
 

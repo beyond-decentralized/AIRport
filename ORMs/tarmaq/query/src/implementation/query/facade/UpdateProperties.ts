@@ -11,9 +11,9 @@ import {
 } from '@airport/ground-control'
 import {
 	IEntityUpdateProperties,
-	IQEntity,
-	IQEntityInternal
+	IQEntity
 } from '../../../definition/core/entity/Entity'
+import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { RawUpdate } from '../../../definition/query/facade/Update'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
@@ -33,7 +33,7 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 		rawUpdate: RawUpdate<IEUP, IQE>,
 		trackedRepoGUIDSet?: Set<Repository_GUID>,
 	) {
-		super(rawUpdate, trackedRepoGUIDSet)
+		super(rawUpdate)
 	}
 
 	toJSON(
@@ -44,12 +44,13 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 		return {
 			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.UPDATE)
 				.__driver__.getRelationJson(
-					this.columnAliases, this.trackedRepoGUIDSet,
+					this.columnAliases,
+					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 					queryUtils, fieldUtils, relationManager),
 			S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
 			W: queryUtils.whereClauseToJSON(
 				this.rawUpdate.WHERE, this.columnAliases,
-				this.trackedRepoGUIDSet)
+				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
 		}
 	}
 

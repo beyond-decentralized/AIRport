@@ -1,18 +1,22 @@
 import {
 	Actor_LocalId,
+	ApplicationColumn_Index,
+	ApplicationEntity_LocalId,
 	ApplicationVersion_LocalId,
 	DbApplication,
+	DbColumn,
 	IActor,
+	IDatastructureUtils,
 	IRepositoryTransactionHistory,
 	ISynchronizationConflict,
 	ISynchronizationConflictValues,
 	RepositorySynchronizationMessage,
 	RepositoryTransactionType,
-	Repository_GUID,
 	Repository_LocalId,
 	TransactionType
 } from '@airport/ground-control'
 import {
+	IRecordHistoryDuo,
 	IRepositoryDao,
 	IRepositoryTransactionHistoryDuo,
 	RepositoryMemberAcceptanceDao,
@@ -23,6 +27,7 @@ import {
 	ISynchronizationConflictValuesDao,
 } from '@airport/layover'
 import {
+	ITerminalStore,
 	ITransaction
 } from '@airport/terminal-map'
 import { ISyncRepoTransHistory } from './SyncInUtils'
@@ -43,7 +48,6 @@ export interface ITwoStageSyncedInDataProcessor {
 	syncMessages(
 		messages: RepositorySynchronizationMessage[],
 		newAndUpdatedRepositorieAndRecords: INewAndUpdatedRepositoriesAndRecords,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		transaction: ITransaction,
 		context: IContext
 	): Promise<void>;
@@ -53,6 +57,12 @@ export interface ITwoStageSyncedInDataProcessor {
 @Injected()
 export class TwoStageSyncedInDataProcessor
 	implements ITwoStageSyncedInDataProcessor {
+
+	@Inject()
+	datastructureUtils: IDatastructureUtils
+
+	@Inject()
+	recordHistoryDuo: IRecordHistoryDuo
 
 	@Inject()
 	repositoryDao: IRepositoryDao
@@ -87,16 +97,12 @@ export class TwoStageSyncedInDataProcessor
 	async syncMessages(
 		messages: RepositorySynchronizationMessage[],
 		newAndUpdatedRepositoriesAndRecords: INewAndUpdatedRepositoriesAndRecords,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		transaction: ITransaction,
 		context: IContext
 	): Promise<void> {
 		this.aggregateHistoryRecords(messages, transaction)
 
 		await this.repositoryDao.insert(newAndUpdatedRepositoriesAndRecords.missingRepositories, context)
-		for (const newRepository of newAndUpdatedRepositoriesAndRecords.missingRepositories) {
-			repositoryGUIDMapByLocalId.set(newRepository._localId, newRepository.GUID)
-		}
 
 		const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersion_LocalIdMap }
 			= await this.getDataStructures(messages)
@@ -113,11 +119,9 @@ export class TwoStageSyncedInDataProcessor
 				context)
 		}
 
-
 		await this.updateLocalData(
 			repositoryTransactionHistoryMapByRepositoryId, actorMapById,
-			applicationsByApplicationVersion_LocalIdMap,
-			repositoryGUIDMapByLocalId, context)
+			applicationsByApplicationVersion_LocalIdMap, context)
 	}
 
 	private aggregateHistoryRecords(
@@ -130,7 +134,14 @@ export class TwoStageSyncedInDataProcessor
 		// split messages by repository and record actor information
 		for (const message of messages) {
 			const repositoryTransactionHistory = message.data.history
+			this.repositoryTransactionHistoryDuo
+				.setModifiedRepository_LocalIdSet(repositoryTransactionHistory)
+
 			transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory)
+
+			const columnMapByEntityLocalIdAndColumnIndex:
+				Map<ApplicationEntity_LocalId, Map<ApplicationColumn_Index, DbColumn>>
+				= new Map()
 
 			repositoryTransactionHistory.repositoryTransactionType = RepositoryTransactionType.REMOTE
 			transactionHistory.allOperationHistory = transactionHistory
@@ -138,6 +149,14 @@ export class TwoStageSyncedInDataProcessor
 			repositoryTransactionHistory.operationHistory.forEach((
 				operationHistory
 			) => {
+				const entityColumnMapByIndex = this.datastructureUtils.ensureChildJsMap(
+					columnMapByEntityLocalIdAndColumnIndex,
+					operationHistory.entity._localId
+				)
+				for (const dbColumn of operationHistory.entity.columns) {
+					entityColumnMapByIndex.set(dbColumn.index, dbColumn)
+				}
+
 				transactionHistory.allRecordHistory = transactionHistory
 					.allRecordHistory.concat(operationHistory.recordHistory)
 				operationHistory.recordHistory.forEach((
@@ -146,10 +165,22 @@ export class TwoStageSyncedInDataProcessor
 					if (recordHistory.newValues && recordHistory.newValues.length) {
 						transactionHistory.allRecordHistoryNewValues = transactionHistory
 							.allRecordHistoryNewValues.concat(recordHistory.newValues)
+						for (const newValue of recordHistory.newValues) {
+							const dbColumn = entityColumnMapByIndex.get(newValue.columnIndex)
+							this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(
+								recordHistory, dbColumn, newValue.columnIndex
+							)
+						}
 					}
 					if (recordHistory.oldValues && recordHistory.oldValues.length) {
 						transactionHistory.allRecordHistoryOldValues = transactionHistory
 							.allRecordHistoryOldValues.concat(recordHistory.oldValues)
+						for (const oldValue of recordHistory.oldValues) {
+							const dbColumn = entityColumnMapByIndex.get(oldValue.columnIndex)
+							this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(
+								recordHistory, dbColumn, oldValue.columnIndex
+							)
+						}
 					}
 				})
 			})
@@ -202,7 +233,6 @@ export class TwoStageSyncedInDataProcessor
 		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
 		actorMayById: Map<Actor_LocalId, IActor>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
-		repositoryGUIDMapByLocalId: Map<Repository_LocalId, Repository_GUID>,
 		context: IContext
 	): Promise<void> {
 		const stage1Result
@@ -221,8 +251,7 @@ export class TwoStageSyncedInDataProcessor
 		}
 
 		await this.stage2SyncedInDataProcessor.applyChangesToDb(
-			stage1Result, applicationsByApplicationVersion_LocalIdMap,
-			repositoryGUIDMapByLocalId)
+			stage1Result, applicationsByApplicationVersion_LocalIdMap)
 
 
 		if (allSyncConflicts.length) {

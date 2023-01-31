@@ -75,7 +75,8 @@ export class InsertManager
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
 		return <number>await this.internalInsertValues(
-			portableQuery, actor, transaction, rootTransaction, context, false, ensureGeneratedValues)
+			portableQuery, actor, transaction, rootTransaction,
+			context, false, ensureGeneratedValues)
 	}
 
 	async insertValuesGetLocalIds(
@@ -86,7 +87,8 @@ export class InsertManager
 		context: IOperationContext,
 	): Promise<Record_LocalId[][]> {
 		return <Record_LocalId[][]>await this.internalInsertValues(
-			portableQuery, actor, transaction, rootTransaction, context, true)
+			portableQuery, actor, transaction,
+			rootTransaction, context, true)
 	}
 
 	verifyNoGeneratedColumns(

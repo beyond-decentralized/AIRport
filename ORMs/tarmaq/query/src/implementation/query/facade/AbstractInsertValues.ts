@@ -1,9 +1,8 @@
 import {
 	DbColumn,
-	DbEntity,
-	Repository_GUID
+	DbEntity
 } from '@airport/ground-control'
-import { IEntityAliases } from '../../../../dist/esm'
+import { IEntityAliases } from '../../../definition/core/entity/Aliases'
 import { IQEntity } from '../../../definition/core/entity/Entity'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { AbstractRawInsertValues } from '../../../definition/query/facade/InsertValues'
@@ -25,12 +24,10 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 	constructor(
 		public rawInsertValues: ARIV,
 		public columnIndexes?: number[],
-		trackedRepoGUIDSet?: Set<Repository_GUID>,
 		entityAliases: IEntityAliases = new EntityAliases(),
 	) {
 		super(entityAliases,
-			entityAliases.getNewFieldColumnAliases(),
-			trackedRepoGUIDSet)
+			entityAliases.getNewFieldColumnAliases())
 	}
 
 	protected validateColumn(
@@ -87,7 +84,8 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 					// return ++currentValueIndex;
 				} else {
 					return (<QField<any>>value).toJSON(
-						this.columnAliases, false, this.trackedRepoGUIDSet,
+						this.columnAliases, false,
+						this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 						queryUtils, fieldUtils, relationManager)
 				}
 			})

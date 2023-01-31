@@ -4,7 +4,7 @@ import {
 	IBooleanOperation,
 	JSONRawBooleanOperation
 }                           from "../../../definition/core/operation/BooleanOperation";
-import {ValueOperation}     from "./Operation";
+import {ValueOperation}     from "./ValueOperation";
 
 /**
  * Created by Papa on 6/20/2016.

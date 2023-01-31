@@ -1,20 +1,23 @@
-import { JSONBaseOperation } from '@airport/ground-control';
-import { RawFieldQuery }     from '../../query/facade/FieldQuery';
+import { DbColumn, DbProperty, JSONBaseOperation } from '@airport/ground-control';
+import { RawFieldQuery } from '../../query/facade/FieldQuery';
 import {
 	IOperation,
 	IValueOperation,
 	JSONRawValueOperation
-}                            from '../operation/Operation';
+} from '../operation/Operation';
 import {
 	IQFieldInternal,
 	IQOrderableField
-}                            from './Field';
+} from './Field';
 
 /**
  * Concrete field that can be operated on with SQL operators.
  */
 export interface IQOperableField<T, JO extends JSONBaseOperation, IO extends IOperation, IQF extends IQOperableField<T, JO, IO, any>>
 	extends IQOrderableField<IQF> {
+
+	dbColumn: DbColumn
+	dbProperty: DbProperty
 
 	/**
 	 * A.B = C
@@ -89,6 +92,6 @@ export interface IQOperableFieldInternal<T,
 	IO extends IValueOperation<T, JO, IQF>,
 	IQF extends IQOperableField<T, JO, IO, IQF>>
 	extends IQOperableField<T, JO, IO, IQF>,
-	        IQFieldInternal<IQF> {
+	IQFieldInternal<IQF> {
 
 }

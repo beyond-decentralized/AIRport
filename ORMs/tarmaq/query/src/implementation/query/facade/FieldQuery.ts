@@ -2,6 +2,7 @@ import {
 	JSONClauseObjectType,
 	JsonFieldQuery,
 	Repository_GUID,
+	Repository_LocalId,
 	SQLDataType
 } from '@airport/ground-control'
 import { IEntityAliases } from '../../../definition/core/entity/Aliases'
@@ -22,7 +23,7 @@ import { QUntypedField } from '../../core/field/UntypedField'
 import {
 	DistinguishableQuery,
 	NON_ENTITY_SELECT_ERROR_MESSAGE,
-} from './NonEntityQuery'
+} from './DistinguishableQuery'
 
 /**
  * Created by Papa on 10/24/2016.
@@ -41,8 +42,10 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 		private rawQuery: RawFieldQuery<IQF>,
 		entityAliases: IEntityAliases = new EntityAliases(),
 		trackedRepoGUIDSet?: Set<Repository_GUID>,
+		trackedRepoLocalIdSet?: Set<Repository_LocalId>,
 	) {
-		super(entityAliases, trackedRepoGUIDSet)
+		super(entityAliases, trackedRepoGUIDSet,
+			trackedRepoLocalIdSet)
 	}
 
 	nonDistinctSelectClauseToJSON(
@@ -56,7 +59,8 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 		}
 		this.columnAliases.entityAliases.getNextAlias(this.rawQuery.SELECT.q.__driver__.getRootJoinEntity())
 		const jsonClauseField = (<QField<any>><any>this.rawQuery.SELECT).toJSON(
-			this.columnAliases, true, this.trackedRepoGUIDSet,
+			this.columnAliases, true,
+			this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 			queryUtils, fieldUtils, relationManager)
 
 		return jsonClauseField

@@ -1,14 +1,13 @@
 import {
 	JSONEntityRelation,
 	JsonEntityUpdateColumns,
-	JsonUpdate,
-	Repository_GUID
+	JsonUpdate
 } from '@airport/ground-control'
 import { IEntityAliases } from '../../../definition/core/entity/Aliases'
 import {
-	IQEntity,
-	IQEntityInternal
+	IQEntity
 } from '../../../definition/core/entity/Entity'
+import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { AbstractRawUpdate } from '../../../definition/query/facade/Update'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
@@ -21,12 +20,10 @@ export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractR
 
 	protected constructor(
 		public rawUpdate: ARE,
-		trackedRepoGUIDSet?: Set<Repository_GUID>,
 		entityAliases: IEntityAliases = new EntityAliases(),
 	) {
 		super(entityAliases,
-			entityAliases.getNewFieldColumnAliases(),
-			trackedRepoGUIDSet)
+			entityAliases.getNewFieldColumnAliases())
 	}
 
 	toJSON(
@@ -36,14 +33,14 @@ export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractR
 	): JsonUpdate<JsonEntityUpdateColumns> {
 		return {
 			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.UPDATE)
-				.__driver__.getRelationJson(
-					this.columnAliases, this.trackedRepoGUIDSet,
+				.__driver__.getRelationJson(this.columnAliases,
+					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 					queryUtils, fieldUtils, relationManager),
 			S: this.setToJSON(this.rawUpdate.SET,
 				queryUtils, fieldUtils, relationManager),
 			W: queryUtils.whereClauseToJSON(
 				this.rawUpdate.WHERE, this.columnAliases,
-				this.trackedRepoGUIDSet)
+				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
 		}
 	}
 

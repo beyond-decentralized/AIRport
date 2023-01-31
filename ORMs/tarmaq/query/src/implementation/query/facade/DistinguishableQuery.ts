@@ -1,4 +1,4 @@
-import { Repository_GUID } from '@airport/ground-control'
+import { Repository_GUID, Repository_LocalId } from '@airport/ground-control'
 import { IEntityAliases } from '../../../definition/core/entity/Aliases'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
@@ -22,9 +22,11 @@ export abstract class DistinguishableQuery
 	constructor(
 		entityAliases: IEntityAliases = new EntityAliases(),
 		trackedRepoGUIDSet?: Set<Repository_GUID>,
+		trackedRepoLidSet?: Set<Repository_LocalId>,
 	) {
 		super(entityAliases,
-			entityAliases.getNewFieldColumnAliases(), trackedRepoGUIDSet)
+			entityAliases.getNewFieldColumnAliases(),
+			trackedRepoGUIDSet, trackedRepoLidSet)
 	}
 
 	protected selectClauseToJSON(

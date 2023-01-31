@@ -1,13 +1,12 @@
 import {
 	JsonDelete,
-	JSONEntityRelation,
-	Repository_GUID
+	JSONEntityRelation
 } from '@airport/ground-control'
 import { IEntityAliases } from '../../../definition/core/entity/Aliases'
 import {
-	IQEntity,
-	IQEntityInternal
+	IQEntity
 } from '../../../definition/core/entity/Entity'
+import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { RawDelete } from '../../../definition/query/facade/Delete'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
@@ -24,12 +23,10 @@ export class Delete<IQE extends IQEntity>
 
 	constructor(
 		public rawDelete: RawDelete<IQE>,
-		trackedRepoGUIDSet?: Set<Repository_GUID>,
 		entityAliases: IEntityAliases = new EntityAliases(),
 	) {
 		super(entityAliases,
-			entityAliases.getNewFieldColumnAliases(),
-			trackedRepoGUIDSet)
+			entityAliases.getNewFieldColumnAliases())
 	}
 
 	toJSON(
@@ -40,10 +37,11 @@ export class Delete<IQE extends IQEntity>
 		return {
 			DF: <JSONEntityRelation>(<IQEntityInternal><any>this.rawDelete.DELETE_FROM)
 				.__driver__.getRelationJson(
-					this.columnAliases, this.trackedRepoGUIDSet,
+					this.columnAliases,
+					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 					queryUtils, fieldUtils, relationManager),
 			W: queryUtils.whereClauseToJSON(this.rawDelete.WHERE, this.columnAliases,
-				this.trackedRepoGUIDSet)
+				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
 		}
 	}
 }

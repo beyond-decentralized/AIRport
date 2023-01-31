@@ -14,3 +14,5 @@ OBSERVABLE_QUERY_ADAPTER.setDependencies({
     activeQueries: ActiveQueries,
     repositoryDao: RepositoryDao
 })
+
+globalThis.OBSERVABLE_QUERY_ADAPTER = OBSERVABLE_QUERY_ADAPTER

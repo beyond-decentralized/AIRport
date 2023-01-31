@@ -5,6 +5,7 @@ import {
 	ApplicationMap,
 	PortableQuery,
 	Repository_GUID,
+	Repository_LocalId,
 	SyncApplicationMap
 } from '@airport/ground-control'
 import { Subject } from 'rxjs'
@@ -40,7 +41,9 @@ export interface IActiveQueries<SQLQuery extends IFieldMapped> {
 		trackedRepoGUIDSet: Set<Repository_GUID>
 	): void;
 
-	rerunQueries(): void;
+	rerunQueries(
+		fieldMap: SyncApplicationMap
+	): void;
 
 	clearQueriesToRerun(): void
 
@@ -107,7 +110,8 @@ export class ActiveQueries<SQLQuery extends IFieldMapped>
 		return false
 	}
 
-	rerunQueries( //
+	rerunQueries(
+		fieldMap: SyncApplicationMap
 	): void {
 		// Add a bit of a wait to let any query-subscribed screens that are closing after
 		// a mutation operation to un-subscribe from those queries.
@@ -138,6 +142,7 @@ export interface CachedSQLQuery<SQLQuery extends IFieldMapped> {
 	sqlQuery: SQLQuery,
 	sql: string,
 	trackedRepoGUIDSet: Set<Repository_GUID>,
+	trackedRepoLocalIdSet: Set<Repository_LocalId>,
 }
 
 export interface IFieldMapped {

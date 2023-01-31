@@ -1,14 +1,15 @@
-import { extend, IOC } from "@airport/direction-indicator";
-import { JSONRelationType, JSONViewJoinRelation, Repository_GUID } from "@airport/ground-control";
+import { JSONRelationType, JSONViewJoinRelation, Repository_GUID, Repository_LocalId } from "@airport/ground-control";
 import { IFieldColumnAliases } from "../../../definition/core/entity/Aliases";
-import { IQEntityDriver, IQEntityInternal } from "../../../definition/core/entity/Entity";
 import { RawTreeQuery } from "../../../definition/query/facade/TreeQuery";
-import { ENTITY_UTILS } from "../../../injection";
 import { FieldColumnAliases } from "./Aliases";
-import { QEntity, QEntityDriver } from "./Entity";
 import { IQueryUtils } from "../../../definition/utils/IQueryUtils";
 import { IFieldUtils } from "../../../definition/utils/IFieldUtils";
 import { IRelationManager } from "../../../definition/core/entity/IRelationManager";
+import { QEntityDriver } from "./QEntityDriver";
+import { IDependencyInjectionToken, InversionOfControl } from "@airport/direction-indicator";
+import { IEntityUtils } from "../../../definition/utils/IEntityUtils";
+import { IQEntityDriver, IQEntityInternal } from "../../../definition/core/entity/IQEntityDriver";
+import { QEntity } from "./QEntity";
 
 export function QTree(
     fromClausePosition: number[] = [],
@@ -23,7 +24,7 @@ const qTreeMethods = {
     */
 }
 
-extend(QEntity, QTree, qTreeMethods)
+globalThis.extend(QEntity, QTree, qTreeMethods)
 
 export interface IQTreeDriver
     extends IQEntityDriver {
@@ -54,17 +55,21 @@ export class QTreeDriver
         jsonRelation: JSONViewJoinRelation,
         columnAliases: IFieldColumnAliases<any>,
         trackedRepoGUIDSet: Set<Repository_GUID>,
+        trackedRepoLocalIdSet: Set<Repository_LocalId>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
         relationManager: IRelationManager
     ): JSONViewJoinRelation {
         jsonRelation = <JSONViewJoinRelation>super.getJoinRelationJson(
-            jsonRelation, columnAliases, trackedRepoGUIDSet,
+            jsonRelation, columnAliases,
+            trackedRepoGUIDSet, trackedRepoLocalIdSet,
             queryUtils, fieldUtils, relationManager)
         jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON
         jsonRelation.subQuery =
             // Removes circular dependency at code initialization time 
-            IOC.getSync(ENTITY_UTILS).getTreeQuery(
+            (globalThis.IOC as InversionOfControl).getSync(
+                globalThis.ENTITY_UTILS as IDependencyInjectionToken<IEntityUtils>
+            ).getTreeQuery(
                 this.subQuery, columnAliases.entityAliases)
                 .toJSON(queryUtils, fieldUtils, relationManager)
 
@@ -75,17 +80,21 @@ export class QTreeDriver
         jsonRelation: JSONViewJoinRelation,
         columnAliases: FieldColumnAliases,
         trackedRepoGUIDSet: Set<Repository_GUID>,
+        trackedRepoLocalIdSet: Set<Repository_LocalId>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
         relationManager: IRelationManager
     ): JSONViewJoinRelation {
         jsonRelation = <JSONViewJoinRelation>super.getJoinRelationJson(
-            jsonRelation, columnAliases, trackedRepoGUIDSet,
+            jsonRelation, columnAliases,
+            trackedRepoGUIDSet, trackedRepoLocalIdSet,
             queryUtils, fieldUtils, relationManager)
         jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT
         jsonRelation.subQuery =
             // Removes circular dependency at code initialization time 
-            IOC.getSync(ENTITY_UTILS).getTreeQuery(
+            (globalThis.IOC as InversionOfControl).getSync(
+                globalThis.ENTITY_UTILS as IDependencyInjectionToken<IEntityUtils>
+            ).getTreeQuery(
                 this.subQuery, columnAliases.entityAliases)
                 .toJSON(queryUtils, fieldUtils, relationManager)
 

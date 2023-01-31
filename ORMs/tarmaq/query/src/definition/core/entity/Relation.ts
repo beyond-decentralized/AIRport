@@ -3,9 +3,9 @@ import { DbRelation, JSONBaseOperation } from "@airport/ground-control";
 import { JSONLogicalOperation } from "../operation/LogicalOperation";
 import {
 	IQAirEntity,
-	IQEntity,
-	IQEntityInternal
+	IQEntity
 } from './Entity';
+import { IQEntityInternal } from "./IQEntityDriver";
 
 /**
  * A concrete ORM relation, limited to INNER and LEFT joins since

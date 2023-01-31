@@ -4,7 +4,7 @@ import {
 	INumberOperation,
 	JSONRawNumberOperation
 }                          from "../../../definition/core/operation/NumberOperation";
-import {ValueOperation}    from "./Operation";
+import {ValueOperation}    from "./ValueOperation";
 
 /**
  * Created by Papa on 6/20/2016.

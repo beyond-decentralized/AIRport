@@ -1,7 +1,7 @@
 import { QApp } from "@airport/aviation-communication";
 import { extend, Injected, IOC } from "@airport/direction-indicator";
 import { DbColumn, DbEntity, DbProperty, DbRelation, EntityRelationType, IApplicationUtils, JoinType, SQLDataType } from "@airport/ground-control";
-import { IQEntity, IQEntityInternal } from "../../definition/core/entity/Entity";
+import { IQEntity } from "../../definition/core/entity/Entity";
 import { IRelationManager } from "../../definition/core/entity/IRelationManager";
 import { IQRelation } from "../../definition/core/entity/Relation";
 import { IQBooleanField } from "../../definition/core/field/BooleanField";
@@ -11,7 +11,7 @@ import { IQOperableFieldInternal } from "../../definition/core/field/OperableFie
 import { IQStringField } from "../../definition/core/field/StringField";
 import { IQUntypedField } from "../../definition/core/field/UntypedField";
 import { IQEntityUtils } from "../../definition/utils/IQEntityUtils";
-import { QEntity } from "../core/entity/Entity";
+import { QEntity } from "../core/entity/QEntity";
 import { QAirEntityOneToManyRelation, QOneToManyRelation } from "../core/entity/OneToManyRelation";
 import { QManyToOneAirEntityRelation, QManyToOneInternalRelation, QRelation } from "../core/entity/Relation";
 import { QBooleanField } from "../core/field/BooleanField";
@@ -19,6 +19,7 @@ import { QDateField } from "../core/field/DateField";
 import { QNumberField } from "../core/field/NumberField";
 import { QStringField } from "../core/field/StringField";
 import { QUntypedField } from "../core/field/UntypedField";
+import { IQEntityInternal } from "../../definition/core/entity/IQEntityDriver";
 
 @Injected()
 export class QEntityUtils implements IQEntityUtils {

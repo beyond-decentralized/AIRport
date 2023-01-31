@@ -59,8 +59,7 @@ export class DatabaseFacade
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		context: IContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		context: IContext
 	): Promise<number> {
 		if (!rawInsertColumnValues) {
 			return 0
@@ -69,7 +68,7 @@ export class DatabaseFacade
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
 		const insertColumnValues: InsertColumnValues<IQE> = new InsertColumnValues(
-			rawInsertColumnValues, null, trackedRepoGUIDSet)
+			rawInsertColumnValues, null)
 		const queryContext = await this.ensureQueryContext(context)
 		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertColumnValues, null, queryContext)
@@ -79,8 +78,7 @@ export class DatabaseFacade
 
 	async insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> },
-		context: IContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		context: IContext
 	): Promise<number> {
 		if (!rawInsertValues) {
 			return 0
@@ -89,7 +87,7 @@ export class DatabaseFacade
 			rawInsertValues = rawInsertValues()
 		}
 		const insertValues: InsertValues<IQE> = new InsertValues(
-			rawInsertValues, null, trackedRepoGUIDSet)
+			rawInsertValues, null)
 		const queryContext = await this.ensureQueryContext(context)
 		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
@@ -101,8 +99,7 @@ export class DatabaseFacade
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		context: IContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		context: IContext
 	): Promise<number[][] | string[][]> {
 		if (!rawInsertColumnValues) {
 			return []
@@ -111,7 +108,7 @@ export class DatabaseFacade
 			rawInsertColumnValues = rawInsertColumnValues()
 		}
 		const insertValues: InsertColumnValues<IQE> = new InsertColumnValues(
-			rawInsertColumnValues, null, trackedRepoGUIDSet)
+			rawInsertColumnValues, null)
 		const queryContext = await this.ensureQueryContext(context)
 		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
@@ -123,8 +120,7 @@ export class DatabaseFacade
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		},
-		context: IContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		context: IContext
 	): Promise<number[][] | string[][]> {
 		if (!rawInsertValues) {
 			return []
@@ -133,7 +129,7 @@ export class DatabaseFacade
 			rawInsertValues = rawInsertValues()
 		}
 		const insertValues: InsertValues<IQE> = new InsertValues(
-			rawInsertValues, null, trackedRepoGUIDSet)
+			rawInsertValues, null)
 		const queryContext = await this.ensureQueryContext(context)
 		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
@@ -145,8 +141,7 @@ export class DatabaseFacade
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
-		context: IContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		context: IContext
 	): Promise<number> {
 		if (!rawDelete) {
 			return 0
@@ -154,8 +149,7 @@ export class DatabaseFacade
 		if (rawDelete instanceof Function) {
 			rawDelete = rawDelete()
 		}
-		let deleteWhere: Delete<IQE> = new Delete(
-			rawDelete, trackedRepoGUIDSet)
+		let deleteWhere: Delete<IQE> = new Delete(rawDelete)
 		const queryContext = await this.ensureQueryContext(context)
 		let portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			deleteWhere, null, queryContext)
@@ -227,8 +221,7 @@ export class DatabaseFacade
 			| {
 				(...args: any[]): RawUpdateColumns<IEUC, IQE>
 			},
-		context: IContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		context: IContext
 	): Promise<number> {
 		if (!rawUpdate) {
 			return 0
@@ -238,7 +231,7 @@ export class DatabaseFacade
 		}
 
 		let updateColumns: UpdateColumns<any, IQE> = new UpdateColumns(
-			rawUpdate, trackedRepoGUIDSet)
+			rawUpdate)
 		const queryContext = await this.ensureQueryContext(context)
 		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			updateColumns, null, queryContext)

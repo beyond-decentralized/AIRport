@@ -39,6 +39,7 @@ import {
 } from '@airport/airspace/dist/app/bundle'
 import {
     ActorDao,
+    RecordHistoryDuo,
     RepositoryDao,
     RepositoryMemberAcceptanceDao,
     RepositoryMemberDao,
@@ -180,6 +181,8 @@ groundTransport.setDependencies(SynchronizationOutManager, {
 })
 
 groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
+    datastructureUtils: DatastructureUtils,
+    recordHistoryDuo: RecordHistoryDuo,
     repositoryDao: RepositoryDao,
     repositoryMemberAcceptanceDao: RepositoryMemberAcceptanceDao,
     repositoryMemberDao: RepositoryMemberDao,

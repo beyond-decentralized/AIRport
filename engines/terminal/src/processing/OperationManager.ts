@@ -258,7 +258,6 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 			entity.createdAt = new Date()
 		}
 
-		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
 		for (const entity of entities) {
 			let valuesFragment: any = []
 
@@ -271,8 +270,6 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 					const dbRelation = dbProperty.relation[0]
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
-							this.addTrackedRepoGUID(newValue, dbProperty, trackedRepoGUIDSet)
-
 							this.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (
 								dbColumn: DbColumn,
 								columnValue: any,
@@ -303,7 +300,7 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 		}
 
 		const insertValues: InsertValues<any> = new InsertValues(
-			rawInsert, null, trackedRepoGUIDSet)
+			rawInsert, null)
 
 		if (rawInsert.VALUES.length) {
 			const generatedColumns = context.dbEntity.columns.filter(
@@ -361,7 +358,6 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 		const qEntity = this.airportDatabase.qApplications
 		[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 
-		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
 		for (const entity of entities) {
 			const setFragment: any = {}
 			const idWhereFragments: JSONValueOperation[] = []
@@ -390,11 +386,6 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 					const dbRelation = dbProperty.relation[0]
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
-							const originalValue = originalEntity[dbProperty.name]
-
-							this.addTrackedRepoGUID(originalValue, dbProperty, trackedRepoGUIDSet)
-							this.addTrackedRepoGUID(updatedValue, dbProperty, trackedRepoGUIDSet)
-
 							let propertyOriginalValue = originalEntity[dbProperty.name]
 							this.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (
 								_dbColumn: DbColumn,
@@ -467,7 +458,7 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 					WHERE: whereFragment
 				}
 				const update: UpdateProperties<any, any> = new UpdateProperties(
-					rawUpdate, trackedRepoGUIDSet)
+					rawUpdate)
 				const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 					update, null, context)
 
@@ -493,7 +484,6 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 		const idWhereFragments: JSONValueOperation[] = []
 		const valuesMapByColumn: any[] = []
 		let entityIdWhereClauses = []
-		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
 		for (const entity of entities) {
 			for (let propertyName in entity) {
 				if (!entity.hasOwnProperty(propertyName)) {
@@ -519,8 +509,6 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 				} else {
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
-							this.addTrackedRepoGUID(deletedValue, dbProperty, trackedRepoGUIDSet)
-
 							this.applicationUtils.forEachColumnOfRelation(dbRelation, dbEntity, (
 								dbColumn: DbColumn,
 								value: any,
@@ -568,36 +556,11 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 			DELETE_FROM: qEntity,
 			WHERE
 		}
-		let deleteWhere: Delete<any> = new Delete(rawDelete, trackedRepoGUIDSet)
+		let deleteWhere: Delete<any> = new Delete(rawDelete)
 		let portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			deleteWhere, null, context)
 		await this.deleteManager.deleteWhere(portableQuery, actor,
 			transaction, rootTransaction, context)
-	}
-
-	private addTrackedRepoGUID(
-		value: IAirEntity | IRepository,
-		dbProperty: DbProperty,
-		trackedRepoGUIDSet: Set<Repository_GUID>
-	): void {
-		if (!value) {
-			return
-		}
-		if (this.dictionary.isActorProperty(dbProperty)) {
-			return
-		}
-
-		if (this.dictionary.isRepositoryProperty(dbProperty)
-			&& (value as IRepository).GUID) {
-			trackedRepoGUIDSet.add((value as IRepository).GUID)
-			return
-		}
-
-		if (dbProperty.entity.isAirEntity
-			&& (value as IAirEntity).repository
-			&& (value as IAirEntity).repository.GUID) {
-			trackedRepoGUIDSet.add((value as IAirEntity).repository.GUID)
-		}
 	}
 
 }

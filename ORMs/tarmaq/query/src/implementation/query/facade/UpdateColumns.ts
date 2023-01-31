@@ -1,9 +1,8 @@
-import { Repository_GUID } from '@airport/ground-control'
 import {
 	IEntityUpdateColumns,
-	IQEntity,
-	IQEntityInternal
+	IQEntity
 } from '../../../definition/core/entity/Entity'
+import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { RawUpdateColumns } from '../../../definition/query/facade/Update'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
@@ -16,10 +15,9 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 	extends AbstractUpdate<IQE, RawUpdateColumns<IEUC, IQE>> {
 
 	constructor(
-		rawUpdate: RawUpdateColumns<IEUC, IQE>,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+		rawUpdate: RawUpdateColumns<IEUC, IQE>
 	) {
-		super(rawUpdate, trackedRepoGUIDSet)
+		super(rawUpdate)
 	}
 
 	protected setToJSON(
@@ -57,7 +55,8 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 				throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${dbEntity.name}`
 			}
 			setClause[columnName] = (<QField<any>>value).toJSON(
-				this.columnAliases, false, this.trackedRepoGUIDSet,
+				this.columnAliases, false,
+				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 				queryUtils, fieldUtils, relationManager)
 		}
 

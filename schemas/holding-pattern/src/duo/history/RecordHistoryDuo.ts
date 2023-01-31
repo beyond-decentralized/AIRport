@@ -1,11 +1,10 @@
 import { Inject, Injected } from '@airport/direction-indicator'
-import { ActorRecordId, Actor_LocalId, DbColumn, IRecordHistory, IRecordHistoryNewValue, IRecordHistoryOldValue } from '@airport/ground-control'
+import { ActorRecordId, Actor_LocalId, DbColumn, Dictionary, IRecordHistory, IRecordHistoryNewValue, IRecordHistoryOldValue } from '@airport/ground-control'
 import {
 	RecordHistory
 } from '../../ddl/ddl'
 import { IRecordHistoryNewValueDuo } from './RecordHistoryNewValueDuo'
 import { IRecordHistoryOldValueDuo } from './RecordHistoryOldValueDuo'
-
 
 export interface IRecordHistoryDuo {
 
@@ -26,11 +25,20 @@ export interface IRecordHistoryDuo {
 		oldValue: any
 	): IRecordHistoryOldValue;
 
+	ensureModifiedRepositoryLocalIdSet(
+		recordHistory: IRecordHistory,
+		dbColumn: DbColumn,
+		value: any
+	): void
+
 }
 
 @Injected()
 export class RecordHistoryDuo
 	implements IRecordHistoryDuo {
+
+	@Inject()
+	dictionary: Dictionary
 
 	@Inject()
 	recordHistoryNewValueDuo: IRecordHistoryNewValueDuo
@@ -65,6 +73,8 @@ export class RecordHistoryDuo
 
 		recordHistory.newValues.push(recordHistoryNewValue)
 
+		this.ensureModifiedRepositoryLocalIdSet(
+			recordHistory, dbColumn, newValue)
 
 		recordHistory.operationHistory.repositoryTransactionHistory
 			.transactionHistory.allRecordHistoryNewValues.push(<any>recordHistoryNewValue)
@@ -81,15 +91,29 @@ export class RecordHistoryDuo
 			// No need to record a null value
 			return null
 		}
-		const recordHistoryOldValue = this.recordHistoryOldValueDuo.getNewRecord(recordHistory, dbColumn, oldValue)
+		const recordHistoryOldValue = this.recordHistoryOldValueDuo
+			.getNewRecord(recordHistory, dbColumn, oldValue)
 
 		recordHistory.oldValues.push(recordHistoryOldValue)
 
+		this.ensureModifiedRepositoryLocalIdSet(
+			recordHistory, dbColumn, oldValue)
 
 		recordHistory.operationHistory.repositoryTransactionHistory
 			.transactionHistory.allRecordHistoryOldValues.push(<any>recordHistoryOldValue)
 
 		return recordHistoryOldValue
+	}
+
+	ensureModifiedRepositoryLocalIdSet(
+		recordHistory: IRecordHistory,
+		dbColumn: DbColumn,
+		value: any
+	): void {
+		if (this.dictionary.isRepositoryRelationColumn(dbColumn)) {
+			recordHistory.operationHistory.repositoryTransactionHistory
+				.modifiedRepository_LocalIdSet.add(value)
+		}
 	}
 
 }

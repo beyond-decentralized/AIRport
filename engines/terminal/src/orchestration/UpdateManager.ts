@@ -27,7 +27,6 @@ import {
 	IDatastructureUtils,
 	SystemWideOperationId,
 	IActor,
-	IApplicationUtils,
 } from '@airport/ground-control'
 import {
 	IHistoryManager,
@@ -95,7 +94,6 @@ export class UpdateManager
 
 		const errorPrefix = `Error updating '${dbEntity.name}'
 `
-
 		const internalFragments: InternalFragments = {
 			SET: []
 		}

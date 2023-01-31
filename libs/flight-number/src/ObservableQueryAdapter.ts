@@ -1,13 +1,20 @@
 import { IRepositoryLoader } from "@airport/air-traffic-control";
 import { Inject, Injected } from "@airport/direction-indicator";
-import { PortableQuery, Repository_GUID } from "@airport/ground-control";
+import { IRepository, PortableQuery, Repository_GUID, Repository_LocalId, SyncApplicationMap } from "@airport/ground-control";
 import { IRepositoryDao } from '@airport/holding-pattern/dist/app/bundle'
+import { ITransaction } from "@airport/terminal-map";
 import { Observable, Subject } from "rxjs";
 import { ActiveQueries, CachedSQLQuery, IFieldMapped } from "./ActiveQueries";
 
 export interface IObservableQueryAdapter {
 
-    checkRepositoryExistence(): Promise<void>
+    checkExistenceOfQueriedRepositories(): Promise<void>
+
+    collectAffectedFieldsAndRepositoriesToRerunQueriesBy(
+        portableQuery: PortableQuery,
+        fieldMap: SyncApplicationMap,
+        transaction: ITransaction
+    ): void
 
     wrapInObservable<E>(
         portableQuery: PortableQuery,
@@ -15,10 +22,6 @@ export interface IObservableQueryAdapter {
             (): Promise<any>
         }
     ): Observable<E>
-
-    trackedRepoGUIDArrayToSet(
-        trackedRepoGUIDs: Repository_GUID[]
-    ): Set<Repository_GUID>
 
 }
 
@@ -35,11 +38,45 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
     @Inject()
     repositoryLoader: IRepositoryLoader
 
-    repositoryGUIDSetToCheck: Set<Repository_GUID> = new Set()
+    queriedRepositoryIds: {
+        GUIDSet: Set<Repository_GUID>,
+        localIdSet: Set<Repository_LocalId>
+    } = {
+            GUIDSet: new Set(),
+            localIdSet: new Set()
+        }
 
     repositoryExistenceCheckInProgress = false
 
-    async checkRepositoryExistence(): Promise<void> {
+    collectAffectedFieldsAndRepositoriesToRerunQueriesBy(
+        portableQuery: PortableQuery,
+        fieldMap: SyncApplicationMap,
+        transaction: ITransaction
+    ): void {
+        transaction.fieldMap.merge(fieldMap)
+
+        const trackedRepoGUIDs = portableQuery.trackedRepoGUIDs
+        if (trackedRepoGUIDs instanceof Array) {
+            for (const trackedRepoGUID of trackedRepoGUIDs) {
+                if (typeof trackedRepoGUID !== 'string') {
+                    throw new Error(`Invalid Repository GUID`)
+                }
+                transaction.affectedRepository_GUIDSet.add(trackedRepoGUID)
+            }
+        }
+
+        const trackedRepoLocalIds = portableQuery.trackedRepoLocalIds
+        if (trackedRepoLocalIds instanceof Array) {
+            for (const trackedRepoLocalId of trackedRepoLocalIds) {
+                if (typeof trackedRepoLocalId !== 'number') {
+                    throw new Error(`Invalid Repository LocalId`)
+                }
+                transaction.affectedRepository_LocalIdSet.add(trackedRepoLocalId)
+            }
+        }
+    }
+
+    async checkExistenceOfQueriedRepositories(): Promise<void> {
         try {
             if (this.repositoryExistenceCheckInProgress) {
                 return
@@ -47,21 +84,45 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
             this.repositoryExistenceCheckInProgress = true
 
             const locallyPresentRepositories = await this.repositoryDao
-                .findByGUIDs(Array.from(this.repositoryGUIDSetToCheck))
-            const locallyPresentRepositoryGUIDSet: Set<Repository_GUID> = new Set()
+                .findByGUIDsAndLocalIds(
+                    Array.from(this.queriedRepositoryIds.GUIDSet),
+                    Array.from(this.queriedRepositoryIds.localIdSet)
+                )
+            const locallyPresentRepositoryMapByGUID:
+                Map<Repository_GUID, IRepository> = new Map()
+            const locallyPresentRepositoryMapByLocalId:
+                Map<Repository_LocalId, IRepository> = new Map()
             for (const localyPresentRepository of locallyPresentRepositories) {
-                locallyPresentRepositoryGUIDSet.add(localyPresentRepository.GUID)
+                locallyPresentRepositoryMapByGUID.set(
+                    localyPresentRepository.GUID,
+                    localyPresentRepository
+                )
+                locallyPresentRepositoryMapByLocalId.set(
+                    localyPresentRepository._localId,
+                    localyPresentRepository
+                )
             }
 
-            const locallyMissingRepositoryGUIDS: Repository_GUID[] = []
-            for (const repositoryGUIDToCheck of this.repositoryGUIDSetToCheck.values()) {
-                if (!locallyPresentRepositoryGUIDSet.has(repositoryGUIDToCheck)) {
-                    locallyMissingRepositoryGUIDS.push(repositoryGUIDToCheck)
+            const locallyMissingRepositoryGUIDSet: Set<Repository_GUID> = new Set()
+            for (const repositoryGUIDToCheck of this.queriedRepositoryIds.GUIDSet.values()) {
+                const locallyPresentRepository = locallyPresentRepositoryMapByGUID
+                    .get(repositoryGUIDToCheck)
+                if (!locallyPresentRepository || !locallyPresentRepository.isLoaded) {
+                    locallyMissingRepositoryGUIDSet.add(repositoryGUIDToCheck)
+                }
+            }
+            for (const repositoryLocalId of this.queriedRepositoryIds.localIdSet.values()) {
+                const locallyPresentRepository = locallyPresentRepositoryMapByLocalId
+                    .get(repositoryLocalId)
+                if (!locallyPresentRepository) {
+                    throw new Error(`Did not find a repository with _localId '${repositoryLocalId}'.`)
+                }
+                if (!locallyPresentRepository.isLoaded) {
+                    locallyMissingRepositoryGUIDSet.add(locallyPresentRepository.GUID)
                 }
             }
 
-
-            for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDS) {
+            for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
                 await this.repositoryLoader.loadRepository(
                     locallyMissingRepositoryGUID,
                     {
@@ -70,7 +131,8 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
                 )
             }
 
-            this.repositoryGUIDSetToCheck.clear()
+            this.queriedRepositoryIds.GUIDSet.clear()
+            this.queriedRepositoryIds.localIdSet.clear()
         } catch (e) {
             console.error('Error checking Repositor existence')
             console.error(e)
@@ -100,15 +162,19 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
         // });
         let trackedRepoGUIDSet: Set<Repository_GUID> = this
             .trackedRepoGUIDArrayToSet(portableQuery.trackedRepoGUIDs)
+        let trackedRepoLocalIdSet: Set<Repository_LocalId> = this
+            .trackedRepoLocalIdArrayToSet(portableQuery.trackedRepoLocalIds)
+
         let cachedSqlQuery: CachedSQLQuery<SQLQuery> = {
             portableQuery,
-            resultsSubject: resultsSubject,
+            resultsSubject,
             runQuery: () => {
                 queryCallback().then(augmentedResult => {
                     resultsSubject.next(augmentedResult)
                 })
             },
-            trackedRepoGUIDSet
+            trackedRepoGUIDSet,
+            trackedRepoLocalIdSet
         } as any as CachedSQLQuery<SQLQuery>;
 
         this.activeQueries.add(portableQuery, cachedSqlQuery);
@@ -118,21 +184,40 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
         return resultsSubject
     }
 
-    trackedRepoGUIDArrayToSet(
+    private trackedRepoGUIDArrayToSet(
         trackedRepoGUIDs: Repository_GUID[]
     ): Set<Repository_GUID> {
         let trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
-        if (trackedRepoGUIDs instanceof Array && trackedRepoGUIDs.length) {
-            for (const trackedRepoGUID of trackedRepoGUIDs) {
-                if (typeof trackedRepoGUID !== 'string') {
-                    throw new Error(`Invalid Repository GUID`)
-                }
-                trackedRepoGUIDSet.add(trackedRepoGUID)
-                this.repositoryGUIDSetToCheck.add(trackedRepoGUID)
+        if (!(trackedRepoGUIDs instanceof Array) || !trackedRepoGUIDs.length) {
+            return
+        }
+
+        for (const trackedRepoGUID of trackedRepoGUIDs) {
+            if (typeof trackedRepoGUID !== 'string') {
+                throw new Error(`Invalid Repository GUID`)
             }
+            trackedRepoGUIDSet.add(trackedRepoGUID)
         }
 
         return trackedRepoGUIDSet
+    }
+
+    private trackedRepoLocalIdArrayToSet(
+        trackedRepoLocalIds: Repository_LocalId[]
+    ): Set<Repository_LocalId> {
+        let trackedRepoLocalIdSet: Set<Repository_LocalId> = new Set()
+        if (!(trackedRepoLocalIds instanceof Array) || !trackedRepoLocalIds.length) {
+            return
+        }
+
+        for (const trackedRepoLocalId of trackedRepoLocalIds) {
+            if (typeof trackedRepoLocalId !== 'number') {
+                throw new Error(`Invalid Repository Local Id`)
+            }
+            trackedRepoLocalIdSet.add(trackedRepoLocalId)
+        }
+
+        return trackedRepoLocalIdSet
     }
 
 }

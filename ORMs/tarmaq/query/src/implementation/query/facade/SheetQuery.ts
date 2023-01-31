@@ -1,4 +1,4 @@
-import { JsonSheetQuery, Repository_GUID } from '@airport/ground-control'
+import { JsonSheetQuery, Repository_GUID, Repository_LocalId } from '@airport/ground-control'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { IQuery } from '../../../definition/query/facade/Query'
 import { RawSheetQuery } from '../../../definition/query/facade/SheetQuery'
@@ -9,7 +9,7 @@ import { QField } from '../../core/field/Field'
 import {
 	DistinguishableQuery,
 	NON_ENTITY_SELECT_ERROR_MESSAGE,
-} from './NonEntityQuery'
+} from './DistinguishableQuery'
 
 /**
  * Created by Papa on 10/23/2016.
@@ -22,8 +22,9 @@ export class SheetQuery
 	constructor(
 		public rawQuery: RawSheetQuery,
 		trackedRepoGUIDSet?: Set<Repository_GUID>,
+		trackedRepoLocalIdSet?: Set<Repository_LocalId>,
 	) {
-		super(new EntityAliases(), trackedRepoGUIDSet)
+		super(new EntityAliases(), trackedRepoGUIDSet, trackedRepoLocalIdSet)
 	}
 
 	nonDistinctSelectClauseToJSON(
@@ -42,7 +43,8 @@ export class SheetQuery
 			this.columnAliases.entityAliases.getNextAlias(
 				selectField.q.__driver__.getRootJoinEntity())
 			const jsonClauseField = selectField.toJSON(
-				this.columnAliases, true, this.trackedRepoGUIDSet,
+				this.columnAliases, true,
+				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 				queryUtils, fieldUtils, relationManager)
 
 			return jsonClauseField

@@ -76,15 +76,14 @@ export class EntityDatabaseFacade<Entity,
     rawInsertColumnValues: RawInsertColumnValues<IQE> | {
       (...args: any[]): RawInsertColumnValues<IQE>;
     },
-    ctx?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+    ctx?: IEntityContext
   ): Promise<number> {
     return await this.withDbEntity(ctx, async (
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
       return await databaseFacade.insertColumnValues(
-        rawInsertColumnValues, ctx, trackedRepoGUIDSet);
+        rawInsertColumnValues, ctx);
     });
   }
 
@@ -92,15 +91,14 @@ export class EntityDatabaseFacade<Entity,
     rawInsertValues: RawInsertValues<IQE> | {
       (...args: any[]): RawInsertValues<IQE>;
     },
-    ctx?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+    ctx?: IEntityContext
   ): Promise<number> {
     return await this.withDbEntity(ctx, async (
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
       return await databaseFacade.insertValues(
-        rawInsertValues, ctx, trackedRepoGUIDSet);
+        rawInsertValues, ctx);
     }, );
   }
 
@@ -108,15 +106,14 @@ export class EntityDatabaseFacade<Entity,
     rawInsertColumnValues: RawInsertColumnValues<IQE> | {
       (...args: any[]): RawInsertColumnValues<IQE>;
     },
-    ctx?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+    ctx?: IEntityContext
   ): Promise<number[] | string[] | number[][] | string[][]> {
     return await this.withDbEntity(ctx, async (
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
       return await databaseFacade.insertColumnValuesGenerateIds(
-        rawInsertColumnValues, ctx, trackedRepoGUIDSet);
+        rawInsertColumnValues, ctx);
     });
   }
 
@@ -124,15 +121,14 @@ export class EntityDatabaseFacade<Entity,
     rawInsertValues: RawInsertValues<IQE> | {
       (...args: any[]): RawInsertValues<IQE>;
     },
-    ctx?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+    ctx?: IEntityContext
   ): Promise<number[] | string[] | number[][] | string[][]> {
     return await this.withDbEntity(ctx, async (
       databaseFacade: IDatabaseFacade,
       ctx: IEntityContext,
     ) => {
       return await databaseFacade.insertValuesGenerateIds(
-        rawInsertValues, ctx, trackedRepoGUIDSet);
+        rawInsertValues, ctx);
     });
   }
 

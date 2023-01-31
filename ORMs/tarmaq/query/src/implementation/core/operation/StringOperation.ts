@@ -2,7 +2,7 @@ import { OperationCategory, SqlOperator } from "@airport/ground-control";
 import { IQStringField } from "../../../definition/core/field/StringField";
 import { IStringOperation, JSONRawStringOperation } from "../../../definition/core/operation/StringOperation";
 import { RawFieldQuery } from "../../../definition/query/facade/FieldQuery";
-import { ValueOperation } from "./Operation";
+import { ValueOperation } from "./ValueOperation";
 
 /**
  * Created by Papa on 6/20/2016.

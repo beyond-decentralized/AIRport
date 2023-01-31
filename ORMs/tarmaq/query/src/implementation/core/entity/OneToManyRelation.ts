@@ -1,6 +1,6 @@
 import { extend } from '@airport/direction-indicator'
 import { DbRelation, IApplicationUtils } from '@airport/ground-control'
-import { IQEntityInternal } from '../../../definition/core/entity/Entity'
+import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { QRelation, QAirEntityRelation } from './Relation'
 
