@@ -18,7 +18,7 @@ export interface DbSequence {
 
 	// Id Properties
 	applicationIndex: DbApplication_Index
-	tableIndex?: DbEntity_TableIndex
+	entityIndex?: DbEntity_TableIndex
 	columnIndex?: DbColumn_Index
 
 	// Id Relations

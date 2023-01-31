@@ -42,9 +42,9 @@ export class InsertColumnValues<IQE extends IQEntity>
 		})
 
 		return {
-			II: insertInto,
-			C: columnIndexes,
-			V: this.rawToQueryValuesClause(
+			INSERT_INTO: insertInto,
+			COLUMNS: columnIndexes,
+			VALUES: this.rawToQueryValuesClause(
 				this.rawInsertValues.VALUES, dbColumns,
 				queryUtils, fieldUtils, relationManager)
 		}

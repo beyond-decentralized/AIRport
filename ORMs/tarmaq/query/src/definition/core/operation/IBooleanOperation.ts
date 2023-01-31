@@ -14,7 +14,7 @@ export interface IBooleanOperation
 export interface RawBooleanOperation
 	extends RawValueOperation<IQBooleanField> {
 	// Boolean Operator
-	o: SqlOperator.EQUALS
+	operator: SqlOperator.EQUALS
 		| SqlOperator.IS_NOT_NULL
 		| SqlOperator.IS_NULL
 		| SqlOperator.IN
@@ -25,7 +25,7 @@ export interface RawBooleanOperation
 		| SqlOperator.LESS_THAN
 		| SqlOperator.LESS_THAN_OR_EQUALS;
 	// Value on the left side of the operator
-	l: IQBooleanField;
+	leftSideValue: IQBooleanField;
 	// Value on the right side of the operator
-	r: boolean | IQBooleanField | IQBooleanField[] | RawFieldQuery<IQBooleanField> | RawFieldQuery<IQBooleanField>[];
+	rightSideValue: boolean | IQBooleanField | IQBooleanField[] | RawFieldQuery<IQBooleanField> | RawFieldQuery<IQBooleanField>[];
 }

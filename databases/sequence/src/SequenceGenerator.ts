@@ -242,11 +242,11 @@ export class SequenceGenerator
 		for (const sequence of sequences) {
 			this.datastructureUtils.ensureChildArray(
 				this.datastructureUtils.ensureChildArray(this.sequences, sequence.applicationIndex),
-				sequence.tableIndex)[sequence.columnIndex] = sequence;
+				sequence.entityIndex)[sequence.columnIndex] = sequence;
 			sequence.currentValue += sequence.incrementBy;
 			this.datastructureUtils.ensureChildArray(
 				this.datastructureUtils.ensureChildArray(this.sequenceBlocks, sequence.applicationIndex),
-				sequence.tableIndex)[sequence.columnIndex] = sequence.incrementBy;
+				sequence.entityIndex)[sequence.columnIndex] = sequence.incrementBy;
 		}
 	}
 

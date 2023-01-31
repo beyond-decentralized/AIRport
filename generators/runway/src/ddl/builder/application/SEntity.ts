@@ -54,7 +54,7 @@ export interface SEntity {
 	/**
 	 * Application specific index of the table represented by the entity.
 	 */
-	tableIndex: number;
+	entityIndex: number;
 
 }
 

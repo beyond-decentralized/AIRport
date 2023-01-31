@@ -1,5 +1,5 @@
 import { IInjected } from '@airport/direction-indicator'
-import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
+import { SQLDialect, SqlStoreDriver } from '@airport/fuel-hydrant-system'
 import { ITransactionHistory, QueryType, SQLDataType } from '@airport/ground-control'
 import {
 	ICredentials,
@@ -17,7 +17,7 @@ const parse = pgConnectionString.parse
 
 
 export class PostgreTransaction
-	extends SqlDriver
+	extends SqlStoreDriver
 	implements ITransaction {
 
 	credentials: ITransactionCredentials

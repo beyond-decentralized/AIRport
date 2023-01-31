@@ -9,13 +9,13 @@ export interface QueryInsertValues
 	/**
 	 * INSERT INTO
  	 */
-	II: QueryEntityRelation;
+	INSERT_INTO: QueryEntityRelation;
 	/**
 	 * COLUMNS
  	 */
-	C: number[];
+	COLUMNS: number[];
 	/**
 	 * VALUES
 	 */
-	V: any[][];
+	VALUES: any[][];
 }

@@ -26,7 +26,7 @@ export class RelationManager
 	getAlias(
 		queryRelation: QueryRelation
 	): string {
-		return this.getPositionAlias(queryRelation.rep, queryRelation.fromClausePosition)
+		return this.getPositionAlias(queryRelation.rootEntityPrefix, queryRelation.fromClausePosition)
 	}
 
 	getParentAlias(
@@ -36,7 +36,7 @@ export class RelationManager
 		if (fromClausePosition.length === 0) {
 			throw new Error(`Cannot find alias of a parent entity for the root entity`)
 		}
-		return this.getPositionAlias(queryRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1))
+		return this.getPositionAlias(queryRelation.rootEntityPrefix, fromClausePosition.slice(0, fromClausePosition.length - 1))
 	}
 
 	createRelatedQEntity<IQ extends IQEntityInternal>(
@@ -44,7 +44,7 @@ export class RelationManager
 		context: IQueryRelationManagerContext,
 	): IQ {
 		const dbEntity = this.applicationUtils.getDbEntity(
-			joinRelation.si, joinRelation.ti)
+			joinRelation.applicationIndex, joinRelation.entityIndex)
 		let QEntityConstructor = this.queryUtils.getQEntityConstructor<IQ>(
 			dbEntity)
 		return new QEntityConstructor(
@@ -52,8 +52,8 @@ export class RelationManager
 			this.queryUtils,
 			this,
 			joinRelation.fromClausePosition,
-			dbEntity.relations[(<QueryEntityRelation>joinRelation).ri],
-			joinRelation.jt)
+			dbEntity.relations[(<QueryEntityRelation>joinRelation).relationIndex],
+			joinRelation.joinType)
 	}
 
 	getNextChildJoinPosition(

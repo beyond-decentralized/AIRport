@@ -27,20 +27,20 @@ export class FieldInOrderBy<IQF extends IQOrderableField<IQF>>
 			throw new Error(`Field used in ORDER_BY clause is not present in SELECT clause`);
 		}
 		return {
-			fa: columnAliases.getExistingAlias(this.field),
-			so: this.sortOrder
+			fieldAlias: columnAliases.getExistingAlias(this.field),
+			sortOrder: this.sortOrder
 		};
 	}
 
 	toEntityJSON(): QueryEntityFieldInOrderBy {
 		let qField = <QField<IQF>>this.field;
 		return {
-			fa: undefined,
-			ci: qField.dbColumn.index,
-			pi: qField.dbProperty.index,
-			ti: qField.dbProperty.entity.index,
-			si: qField.dbProperty.entity.applicationVersion._localId,
-			so: this.sortOrder
+			fieldAlias: undefined,
+			columnIndex: qField.dbColumn.index,
+			propertyIndex: qField.dbProperty.index,
+			entityIndex: qField.dbProperty.entity.index,
+			applicationIndex: qField.dbProperty.entity.applicationVersion._localId,
+			sortOrder: this.sortOrder
 		};
 	}
 

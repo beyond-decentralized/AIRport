@@ -4,10 +4,10 @@
 export interface QueryFunctionCall {
 	// Function Type
 	// Type of SQL function
-	ft: SqlFunction,
+	functionType: SqlFunction,
 	// Parameters
 	// Function parameters
-	p: any[];
+	functionParameters: any[];
 }
 
 /**

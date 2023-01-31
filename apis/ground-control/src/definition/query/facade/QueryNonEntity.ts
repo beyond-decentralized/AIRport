@@ -9,11 +9,11 @@ export interface QueryGroupedBy {
 	/**
 	 * GROUP BY
 	 */
-	GB?: QueryFieldInGroupBy[];
+	GROUP_BY?: QueryFieldInGroupBy[];
 	/**
 	 * HAVING
 	 */
-	H?: QueryBaseOperation;
+	HAVING?: QueryBaseOperation;
 }
 
 /**

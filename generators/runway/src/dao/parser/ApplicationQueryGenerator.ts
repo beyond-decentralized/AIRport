@@ -190,7 +190,7 @@ export class ApplicationQueryGenerator {
 			query: portableQuery.query,
 			parameterMap,
 			queryResultType: portableQuery.queryResultType,
-			tableIndex: portableQuery.tableIndex
+			entityIndex: portableQuery.entityIndex
 		};
 	}
 

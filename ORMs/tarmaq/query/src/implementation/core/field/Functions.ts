@@ -10,10 +10,10 @@ import {
 	SQLDataType,
 	SqlFunction,
 	SqlOperator
-}                          from '@airport/ground-control'
-import {IQUntypedField}    from '../../../definition/core/field/IQUntypedField'
-import {IQBooleanField}    from '../../../definition/core/field/IQBooleanField'
-import {IQDateField}       from '../../../definition/core/field/IQDateField'
+} from '@airport/ground-control'
+import { IQUntypedField } from '../../../definition/core/field/IQUntypedField'
+import { IQBooleanField } from '../../../definition/core/field/IQBooleanField'
+import { IQDateField } from '../../../definition/core/field/IQDateField'
 import {
 	absFunction,
 	addFunction,
@@ -46,44 +46,44 @@ import {
 	ucaseFunction,
 	unionAllFunction,
 	unionFunction
-}                          from '../../../definition/core/field/IQFunctions'
-import {IQNumberField}     from '../../../definition/core/field/IQNumberField'
-import {IQOperableField}   from '../../../definition/core/field/IQOperableField'
-import {IQStringField}     from '../../../definition/core/field/IQStringField'
-import {RawFieldQuery}     from '../../../definition/query/facade/RawFieldQuery'
-import {RawNonEntityQuery} from '../../../definition/query/facade/RawNonEntityQuery'
+} from '../../../definition/core/field/IQFunctions'
+import { IQNumberField } from '../../../definition/core/field/IQNumberField'
+import { IQOperableField } from '../../../definition/core/field/IQOperableField'
+import { IQStringField } from '../../../definition/core/field/IQStringField'
+import { RawFieldQuery } from '../../../definition/query/facade/RawFieldQuery'
+import { RawNonEntityQuery } from '../../../definition/query/facade/RawNonEntityQuery'
 import {
 	ITreeEntity,
 	RawTreeQuery
-}                          from '../../../definition/query/facade/RawTreeQuery'
-import {IAppliable}        from './Appliable'
+} from '../../../definition/query/facade/RawTreeQuery'
+import { IAppliable } from './Appliable'
 import {
 	QBooleanField,
 	QBooleanFunction
-}                          from './BooleanField'
+} from './BooleanField'
 import {
 	QDateField,
 	QDateFunction
-}                          from './DateField'
+} from './DateField'
 import {
 	QNumberField,
 	QNumberFunction
-}                          from './NumberField'
-import {QOperableField}    from './OperableField'
+} from './NumberField'
+import { QOperableField } from './OperableField'
 import {
 	QStringField,
 	QStringFunction
-}                          from './StringField'
+} from './StringField'
 import {
 	QUntypedField,
 	QUntypedFunction
-}                          from './UntypedField'
+} from './UntypedField'
 import {
 	bool,
 	date,
 	num,
 	str
-}                          from './WrapperFunctions'
+} from './WrapperFunctions'
 
 function getSqlFunctionCall(
 	sqlFunction: SqlFunction,
@@ -108,8 +108,8 @@ function getSqlFunctionCall(
 		})
 	}
 	return {
-		ft: sqlFunction,
-		p: parameters
+		functionType: sqlFunction,
+		functionParameters: parameters
 	}
 }
 
@@ -165,8 +165,8 @@ export function getFunctionObject<T extends boolean | Date | number | string>(
 
 export const COUNT: countFunction = function <T extends boolean | Date | number | string,
 	IQF extends IQOperableField<T, any, any, any>>(
-	value: IQF | T | RawFieldQuery<IQF>
-): IQF {
+		value: IQF | T | RawFieldQuery<IQF>
+	): IQF {
 	if (value instanceof QOperableField) {
 		return value.applySqlFunction(getSqlFunctionCall(SqlFunction.COUNT))
 	} else {
@@ -177,8 +177,8 @@ export const COUNT: countFunction = function <T extends boolean | Date | number 
 
 export const MAX: maxFunction = function <T extends boolean | Date | number | string,
 	IQF extends IQOperableField<T, any, any, any>>(
-	value: IQF | T | RawFieldQuery<IQF>
-): IQF {
+		value: IQF | T | RawFieldQuery<IQF>
+	): IQF {
 	if (value instanceof QOperableField) {
 		return value.applySqlFunction(getSqlFunctionCall(SqlFunction.MAX))
 	} else {
@@ -189,8 +189,8 @@ export const MAX: maxFunction = function <T extends boolean | Date | number | st
 
 export const MIN: minFunction = function <T extends boolean | Date | number | string,
 	IQF extends IQOperableField<T, any, any, any>>(
-	value: IQF | T | RawFieldQuery<IQF>
-): IQF {
+		value: IQF | T | RawFieldQuery<IQF>
+	): IQF {
 	if (value instanceof QOperableField) {
 		return value.applySqlFunction(getSqlFunctionCall(SqlFunction.MIN))
 	} else {
@@ -353,9 +353,9 @@ export const NOW: nowFunction = function (): IQDateField {
 
 export const FORMAT: formatFunction = function <T extends boolean | Date | number | string,
 	IQF extends IQOperableField<T, any, any, IQF>>(
-	format: string | IQStringField | RawFieldQuery<IQF>,
-	...formatParameters: (T | IQF | RawFieldQuery<IQF>)[]
-): IQStringField {
+		format: string | IQStringField | RawFieldQuery<IQF>,
+		...formatParameters: (T | IQF | RawFieldQuery<IQF>)[]
+	): IQStringField {
 	if (format instanceof QStringField) {
 		return format.applySqlFunction(getSqlFunctionCall(SqlFunction.FORMAT, formatParameters))
 	} else {
@@ -403,7 +403,7 @@ export const DISTINCT: distinctFunction = function <ISelect>(
 export class QDistinctFunction<ISelect>
 	extends StandAloneFunction
 	implements IQDistinctFunction<ISelect>,
-	           IAppliable<QueryBaseClause, any> {
+	IAppliable<QueryBaseClause, any> {
 
 	__appliedFunctions__: QueryFunctionCall[] = []
 
@@ -416,7 +416,7 @@ export class QDistinctFunction<ISelect>
 	static getSelect(
 		distinct: QDistinctFunction<any>
 	): any {
-		return distinct.__appliedFunctions__[0].p[0]
+		return distinct.__appliedFunctions__[0].functionParameters[0]
 	}
 
 	applySqlFunction(
@@ -444,10 +444,10 @@ export class QDistinctFunction<ISelect>
 		]
 		return {
 			appliedFunctions: appliedFunctions,
-			dt: null,
-			fa: null,
-			ot: QueryClauseObjectType.DISTINCT_FUNCTION,
-			v: <any>parsedSelectClause
+			dataType: null,
+			fieldAlias: null,
+			objectType: QueryClauseObjectType.DISTINCT_FUNCTION,
+			value: <any>parsedSelectClause
 		}
 	}
 }
@@ -466,14 +466,12 @@ export const EXISTS: existsFunction = function <IME extends ITreeEntity>(
 export class QExistsFunction<IME extends ITreeEntity>
 	extends StandAloneFunction
 	implements IQExistsFunction,
-	           IAppliable<QueryBaseClause, any>,
-	           QueryBaseOperation {
+	IAppliable<QueryBaseClause, any>,
+	QueryBaseOperation {
 
 	__appliedFunctions__: QueryFunctionCall[] = []
-	operator                                    = SqlOperator.EXISTS
-	o                                           = SqlOperator.EXISTS
-	category                                    = OperationCategory.FUNCTION
-	c                                           = OperationCategory.FUNCTION
+	operator = SqlOperator.EXISTS
+	operationCategory = OperationCategory.FUNCTION
 
 	constructor(
 		private subQuery: RawTreeQuery<IME>
@@ -505,14 +503,14 @@ export class QExistsFunction<IME extends ITreeEntity>
 			getSqlFunctionCall(SqlFunction.EXISTS)
 		]
 		return {
-			c: this.category,
-			ob: <QueryBaseClause>{
+			operationCategory: this.operationCategory,
+			object: <QueryBaseClause>{
 				appliedFunctions: appliedFunctions,
-				dt: null,
-				ot: QueryClauseObjectType.EXISTS_FUNCTION,
-				v: <any>parsedQuery
+				dataType: null,
+				objectType: QueryClauseObjectType.EXISTS_FUNCTION,
+				value: <any>parsedQuery
 			},
-			o: this.operator
+			operator: this.operator
 		}
 	}
 }
@@ -590,7 +588,7 @@ export const CONCAT: concatenateFunction = function ( //
 	if (fragments.length > 2) {
 		throw new Error(`Less than two operands passed to 'concat' function.`)
 	}
-	let firstFragment   = fragments[0]
+	let firstFragment = fragments[0]
 	let restOfFragments = fragments.slice(1)
 	if (firstFragment instanceof QStringField) {
 		return firstFragment.applySqlFunction(getSqlFunctionCall(SqlFunction.CONCATENATE, restOfFragments))

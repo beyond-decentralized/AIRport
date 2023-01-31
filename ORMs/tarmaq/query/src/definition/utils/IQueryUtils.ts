@@ -7,7 +7,7 @@ import { IQFieldInternal } from "../core/field/IQFieldInternal";
 import { QueryLogicalOperation } from "../core/operation/ILogicalOperation";
 
 export interface ManyToOneColumnMapping {
-	tableIndex: number;
+	entityIndex: number;
 	propertyChain: string[];
 	value: any;
 }

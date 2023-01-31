@@ -17,7 +17,7 @@ export interface INumberOperation
 export interface RawNumberOperation
 	extends RawValueOperation<IQNumberField> {
 	// Number Operator
-	o: SqlOperator.EQUALS
+	operator: SqlOperator.EQUALS
 		| SqlOperator.IS_NOT_NULL
 		| SqlOperator.IS_NULL
 		| SqlOperator.IN
@@ -28,7 +28,7 @@ export interface RawNumberOperation
 		| SqlOperator.LESS_THAN
 		| SqlOperator.LESS_THAN_OR_EQUALS;
 	// Value on the left side of the operator
-	l: IQNumberField;
+	leftSideValue: IQNumberField;
 	// Value on the right side of the operator
-	r: number | IQNumberField | IQNumberField[] | RawFieldQuery<IQNumberField> | RawFieldQuery<IQNumberField>[];
+	rightSideValue: number | IQNumberField | IQNumberField[] | RawFieldQuery<IQNumberField> | RawFieldQuery<IQNumberField>[];
 }

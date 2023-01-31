@@ -26,10 +26,10 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		rValue: T | IQF | RawFieldQuery<IQF>
 	): JRO {
 		const rawValueOperation = <JRO>{
-			c: this.category,
-			l: lValue,
-			o: SqlOperator.EQUALS,
-			r: rValue
+			operationCategory: this.category,
+			leftSideValue: lValue,
+			operator: SqlOperator.EQUALS,
+			rightSideValue: rValue
 		};
 
 		this.addTrackedRepoIDs(
@@ -73,10 +73,10 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		rValue: T | IQF | RawFieldQuery<IQF>
 	): JRO {
 		return <JRO>{
-			c: this.category,
-			l: lValue,
-			o: SqlOperator.GREATER_THAN,
-			r: rValue
+			operationCategory: this.category,
+			leftSideValue: lValue,
+			operator: SqlOperator.GREATER_THAN,
+			rightSideValue: rValue
 		};
 	}
 
@@ -85,18 +85,18 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		rValue: T | IQF | RawFieldQuery<IQF>
 	): JRO {
 		return <JRO>{
-			c: this.category,
-			l: lValue,
-			o: SqlOperator.GREATER_THAN_OR_EQUALS,
-			r: rValue
+			operationCategory: this.category,
+			leftSideValue: lValue,
+			operator: SqlOperator.GREATER_THAN_OR_EQUALS,
+			rightSideValue: rValue
 		};
 	}
 
 	IS_NOT_NULL(lValue: IQF): JRO {
 		return <JRO>{
-			c: this.category,
-			l: lValue,
-			o: SqlOperator.IS_NOT_NULL
+			operationCategory: this.category,
+			leftSideValue: lValue,
+			operator: SqlOperator.IS_NOT_NULL
 		};
 	}
 
@@ -104,9 +104,9 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		lValue: IQF
 	): JRO {
 		return <JRO>{
-			c: this.category,
-			l: lValue,
-			o: SqlOperator.IS_NULL
+			operationCategory: this.category,
+			leftSideValue: lValue,
+			operator: SqlOperator.IS_NULL
 		};
 	}
 
@@ -115,10 +115,10 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		rValue: T[] | IQF | RawFieldQuery<IQF>
 	): JRO {
 		const rawValueOperation = <JRO>{
-			c: this.category,
-			l: lValue,
-			o: SqlOperator.IN,
-			r: rValue
+			operationCategory: this.category,
+			leftSideValue: lValue,
+			operator: SqlOperator.IN,
+			rightSideValue: rValue
 		};
 
 		this.addTrackedRepoIDs(
@@ -135,10 +135,10 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		rValue: T | IQF | RawFieldQuery<IQF>
 	): JRO {
 		return <JRO>{
-			c: this.category,
-			l: lValue,
-			o: SqlOperator.LESS_THAN,
-			r: rValue
+			operationCategory: this.category,
+			leftSideValue: lValue,
+			operator: SqlOperator.LESS_THAN,
+			rightSideValue: rValue
 		};
 	}
 
@@ -147,10 +147,10 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		rValue: T | IQF | RawFieldQuery<IQF>
 	): JRO {
 		return <JRO>{
-			c: this.category,
-			l: lValue,
-			o: SqlOperator.LESS_THAN_OR_EQUALS,
-			r: rValue
+			operationCategory: this.category,
+			leftSideValue: lValue,
+			operator: SqlOperator.LESS_THAN_OR_EQUALS,
+			rightSideValue: rValue
 		};
 	}
 
@@ -159,10 +159,10 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		rValue: T | IQF | RawFieldQuery<IQF>
 	): JRO {
 		return <JRO>{
-			c: this.category,
-			l: lValue,
-			o: SqlOperator.NOT_EQUALS,
-			r: lValue
+			operationCategory: this.category,
+			leftSideValue: lValue,
+			operator: SqlOperator.NOT_EQUALS,
+			rightSideValue: lValue
 		};
 	}
 
@@ -171,10 +171,10 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		rValue: (T | IQF | RawFieldQuery<IQF>)[]
 	): JRO {
 		return <JRO>{
-			c: this.category,
-			l: lValue,
-			o: SqlOperator.NOT_IN,
-			r: rValue
+			operationCategory: this.category,
+			leftSideValue: lValue,
+			operator: SqlOperator.NOT_IN,
+			rightSideValue: rValue
 		};
 	}
 

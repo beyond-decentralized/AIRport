@@ -53,9 +53,9 @@ export class LogicalOperation extends Operation implements ILogicalOperation {
 		ops: QueryBaseOperation[]
 	): QueryLogicalOperation {
 		return {
-			c: OperationCategory.LOGICAL,
-			o: SqlOperator.AND,
-			v: ops
+			operationCategory: OperationCategory.LOGICAL,
+			operator: SqlOperator.AND,
+			value: ops
 		};
 	}
 
@@ -63,9 +63,9 @@ export class LogicalOperation extends Operation implements ILogicalOperation {
 		ops: QueryBaseOperation[]
 	): QueryLogicalOperation {
 		return {
-			c: OperationCategory.LOGICAL,
-			o: SqlOperator.OR,
-			v: ops
+			operationCategory: OperationCategory.LOGICAL,
+			operator: SqlOperator.OR,
+			value: ops
 		};
 	}
 
@@ -73,9 +73,9 @@ export class LogicalOperation extends Operation implements ILogicalOperation {
 		op: QueryBaseOperation
 	): QueryLogicalOperation {
 		return {
-			c: OperationCategory.LOGICAL,
-			o: SqlOperator.NOT,
-			v: op
+			operationCategory: OperationCategory.LOGICAL,
+			operator: SqlOperator.NOT,
+			value: op
 		};
 	}
 

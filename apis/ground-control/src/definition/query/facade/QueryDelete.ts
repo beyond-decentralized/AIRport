@@ -8,5 +8,5 @@ export interface QueryDelete extends QueryWhereBase {
 	/**
 	 * DELETE FROM
 	 */
-	DF: QueryEntityRelation;
+	DELETE_FROM: QueryEntityRelation;
 }

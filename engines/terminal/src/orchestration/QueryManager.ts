@@ -152,7 +152,7 @@ export class QueryManager
 		}
 
 		const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
-			.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex]
+			.currentVersion[0].applicationVersion.entities[portableQuery.entityIndex]
 
 		const entityMapByRepositoryLocalId = new Map<Repository_LocalId, any[]>()
 		const entityMapByActorRecordId = new Map<Actor_LocalId, any[]>()

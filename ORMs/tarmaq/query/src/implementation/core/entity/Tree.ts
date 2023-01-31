@@ -64,7 +64,7 @@ export class QTreeDriver
             queryRelation, columnAliases,
             trackedRepoGUIDSet, trackedRepoLocalIdSet,
             queryUtils, fieldUtils, relationManager)
-        queryRelation.rt = QueryRelationType.SUB_QUERY_JOIN_ON
+        queryRelation.relationType = QueryRelationType.SUB_QUERY_JOIN_ON
         queryRelation.subQuery =
             // Removes circular dependency at code initialization time 
             (globalThis.IOC as InversionOfControl).getSync(
@@ -89,7 +89,7 @@ export class QTreeDriver
             queryRelation, columnAliases,
             trackedRepoGUIDSet, trackedRepoLocalIdSet,
             queryUtils, fieldUtils, relationManager)
-        queryRelation.rt = QueryRelationType.SUB_QUERY_ROOT
+        queryRelation.relationType = QueryRelationType.SUB_QUERY_ROOT
         queryRelation.subQuery =
             // Removes circular dependency at code initialization time 
             (globalThis.IOC as InversionOfControl).getSync(

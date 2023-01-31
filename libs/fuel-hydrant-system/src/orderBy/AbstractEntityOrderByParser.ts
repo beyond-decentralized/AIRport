@@ -51,11 +51,11 @@ export abstract class AbstractEntityOrderByParser {
 		orderByFields: QueryFieldInOrderBy[],
 	): string {
 		return orderByFields.map((orderByField) => {
-			switch (orderByField.so) {
+			switch (orderByField.sortOrder) {
 				case QuerySortOrder.ASCENDING:
-					return `${orderByField.fa} ASC`
+					return `${orderByField.fieldAlias} ASC`
 				case QuerySortOrder.DESCENDING:
-					return `${orderByField.fa} DESC`
+					return `${orderByField.fieldAlias} DESC`
 			}
 		})
 			.join(', ')

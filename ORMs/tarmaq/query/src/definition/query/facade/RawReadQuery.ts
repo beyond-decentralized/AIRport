@@ -116,11 +116,9 @@ export function isInsertOrNull(
 	return object && object.insert === true && object.null === true;
 }
 
-export const U: any = {
+export const UPDATE: any = {
 	update: true
 };
-
-export const UPDATE = U;
 
 export function isUpdate(
 	object: any

@@ -23,10 +23,10 @@ export class StringOperation
 		//| RegExp
 	): RawStringOperation {
 		return {
-			c: this.category,
-			l: lValue,
-			o: SqlOperator.LIKE,
-			r: rValue
+			operationCategory: this.category,
+			leftSideValue: lValue,
+			operator: SqlOperator.LIKE,
+			rightSideValue: rValue
 		};
 	}
 

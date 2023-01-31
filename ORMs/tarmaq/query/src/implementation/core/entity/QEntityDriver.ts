@@ -85,12 +85,12 @@ export class QEntityDriver<IQE extends IQEntity = any>
         // see ApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
         let QueryRelation: QueryRelation = {
             currentChildIndex: this.currentChildIndex,
-            ti: this.dbEntity.index,
+            entityIndex: this.dbEntity.index,
             fromClausePosition: this.fromClausePosition,
-            jt: this.joinType,
-            rt: null,
-            rep: columnAliases.entityAliases.getNextAlias(this.getRootJoinEntity()),
-            si: this.dbEntity.applicationVersion.application.index
+            joinType: this.joinType,
+            relationType: null,
+            rootEntityPrefix: columnAliases.entityAliases.getNextAlias(this.getRootJoinEntity()),
+            applicationIndex: this.dbEntity.applicationVersion.application.index
         }
         if (this.joinWhereClause) {
             this.getJoinRelationQuery(<QueryJoinRelation>QueryRelation, columnAliases,
@@ -115,7 +115,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
         fieldUtils: IFieldUtils,
         relationManager: IQueryRelationManager
     ): QueryJoinRelation {
-        QueryRelation.rt = QueryRelationType.ENTITY_JOIN_ON
+        QueryRelation.relationType = QueryRelationType.ENTITY_JOIN_ON
         QueryRelation.joinWhereClause = queryUtils.whereClauseToQueryOperation(
             this.joinWhereClause, columnAliases,
             trackedRepoGUIDSet, trackedRepoLocalIdSet)
@@ -129,8 +129,8 @@ export class QEntityDriver<IQE extends IQEntity = any>
         // queryUtils: IQueryUtils,
         // fieldUtils: IFieldUtils
     ): QueryEntityRelation {
-        QueryRelation.rt = QueryRelationType.ENTITY_APPLICATION_RELATION
-        QueryRelation.ri = this.dbRelation.index
+        QueryRelation.relationType = QueryRelationType.ENTITY_APPLICATION_RELATION
+        QueryRelation.relationIndex = this.dbRelation.index
 
         // if (!this.dbRelation.whereJoinTable) {
         return QueryRelation
@@ -151,7 +151,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
         // }
         //
         // let joinWhereClause = this.dbRelation.whereJoinTable.addToJoinFunction(otmQEntity,
-        // mtoQEntity, this.airportDb, this.airportDb.F); QueryRelation.joinWhereClause    =
+        // mtoQEntity, this.airportDb, this.airportDb.FROM); QueryRelation.joinWhereClause    =
         // this.utils.Query.whereClauseToQueryOperation(joinWhereClause, columnAliases);
         // QueryRelation.joinWhereClauseOperator   = this.dbRelation.joinFunctionWithOperator;  return
         // QueryRelation;
@@ -166,7 +166,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
         fieldUtils: IFieldUtils,
         relationManager: IQueryRelationManager
     ): QueryJoinRelation {
-        QueryRelation.rt = (globalThis.IOC as InversionOfControl)
+        QueryRelation.relationType = (globalThis.IOC as InversionOfControl)
             .getSync(globalThis.ENTITY_UTILS as IDependencyInjectionToken<IEntityUtils>)
             // Removes circular dependency at code initialization time 
             .isQTree(this) ? QueryRelationType.SUB_QUERY_ROOT : QueryRelationType.ENTITY_ROOT
@@ -231,7 +231,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
             return this.oneToManyConfigMap;
         }
 
-        const iEntity = ApplicationUtils.getIEntity(this.applicationIndex, this.tableIndex);
+        const iEntity = ApplicationUtils.getIEntity(this.applicationIndex, this.entityIndex);
         this.oneToManyConfigMap = ApplicationUtils.getOneToManyConfigMap(iEntity);
 
         return this.oneToManyConfigMap;

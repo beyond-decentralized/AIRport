@@ -18,7 +18,7 @@ export interface QueryWhereBase {
 	/**
 	 * WHERE
 	 */
-	W?: QueryBaseOperation
+	WHERE?: QueryBaseOperation
 }
 
 /**
@@ -29,16 +29,16 @@ export interface Query
 	/**
 	 * FROM
 	 */
-	F?: QueryRelation[];
+	FROM?: QueryRelation[];
 	forUpdate?: boolean;
 	/**
 	 * ORDER BY
 	 */
-	OB?: QueryFieldInOrderBy[];
+	ORDER_BY?: QueryFieldInOrderBy[];
 	/**
 	 * SELECT
 	 */
-	S: any;
+	SELECT: any;
 }
 
 /**
@@ -48,9 +48,9 @@ export interface LimitedQuery {
 	/**
 	 * LIMIT
 	 */
-	L?: number;
+	LIMIT?: number;
 	/**
 	 * OFFSET
 	 */
-	O?: number;
+	OFFSET?: number;
 }

@@ -70,7 +70,7 @@ export class MappedOrderByParser
 					selectFragmentQueue.push(field)
 					continue
 				}
-				currentSelectFragmentFieldSet[field.fa] = true
+				currentSelectFragmentFieldSet[field.fieldAlias] = true
 			}
 
 			let currentEntityOrderBy: QueryFieldInOrderBy[] = []
@@ -78,10 +78,10 @@ export class MappedOrderByParser
 			// First add the fields specified in the query Order By clause for this entity, in the
 			// order they are specified
 			orderBy = orderBy.filter((orderByField) => {
-				if (!currentSelectFragmentFieldSet[orderByField.fa]) {
+				if (!currentSelectFragmentFieldSet[orderByField.fieldAlias]) {
 					return true
 				}
-				delete currentSelectFragmentFieldSet[orderByField.fa]
+				delete currentSelectFragmentFieldSet[orderByField.fieldAlias]
 				currentEntityOrderBy.push(orderByField)
 				return false
 			})
@@ -89,8 +89,8 @@ export class MappedOrderByParser
 			// structure of the result
 			for (let alias in currentSelectFragmentFieldSet) {
 				currentEntityOrderBy.push({
-					fa: alias,
-					so: QuerySortOrder.ASCENDING
+					fieldAlias: alias,
+					sortOrder: QuerySortOrder.ASCENDING
 				})
 			}
 
@@ -109,12 +109,12 @@ export class MappedOrderByParser
 		orderByFields: QueryFieldInOrderBy[]
 	): string[] {
 		return orderByFields.map((orderByField) => {
-			this.validator.validateAliasedFieldAccess(orderByField.fa)
-			switch (orderByField.so) {
+			this.validator.validateAliasedFieldAccess(orderByField.fieldAlias)
+			switch (orderByField.sortOrder) {
 				case QuerySortOrder.ASCENDING:
-					return `${orderByField.fa} ASC`
+					return `${orderByField.fieldAlias} ASC`
 				case QuerySortOrder.DESCENDING:
-					return `${orderByField.fa} DESC`
+					return `${orderByField.fieldAlias} DESC`
 			}
 		})
 	}

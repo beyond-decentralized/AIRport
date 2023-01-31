@@ -13,29 +13,29 @@ export class TableMap {
 
 	constructor(
 		public applicationVersionId: DbApplicationVersion_LocalId,
-		public tableMap: { [tableIndex: DbEntity_TableIndex]: ColumnMap } = {}
+		public tableMap: { [entityIndex: DbEntity_TableIndex]: ColumnMap } = {}
 	) {
 	}
 
 	ensure(
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		allColumns: boolean = false,
 		ColumnMapConstructor = globalThis.ColumnMap as typeof ColumnMap,
 	): ColumnMap {
-		let tableColumnMap = this.tableMap[tableIndex];
+		let tableColumnMap = this.tableMap[entityIndex];
 		if (!tableColumnMap) {
-			tableColumnMap = new ColumnMapConstructor(tableIndex, allColumns);
-			this.tableMap[tableIndex] = tableColumnMap;
+			tableColumnMap = new ColumnMapConstructor(entityIndex, allColumns);
+			this.tableMap[entityIndex] = tableColumnMap;
 		}
 
 		return tableColumnMap;
 	}
 
 	existsByStructure(
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index
 	): boolean {
-		let tableColumnMap = this.tableMap[tableIndex];
+		let tableColumnMap = this.tableMap[entityIndex];
 		if (!tableColumnMap) {
 			return false;
 		}

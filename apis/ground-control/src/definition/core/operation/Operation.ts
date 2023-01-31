@@ -39,7 +39,7 @@ export interface QueryFunctionOperation
 	extends QueryBaseOperation {
 	// Object
 	// Function call data
-	ob: QueryBaseClause;
+	object: QueryBaseClause;
 }
 
 /**
@@ -49,10 +49,10 @@ export interface QueryValueOperation
 	extends QueryBaseOperation {
 	// lValue
 	// Value on the left side of the operator
-	l: QueryFieldClause;
+	leftSideValue: QueryFieldClause;
 	// rValue
 	// Value on the right side of the operator
-	r?: QueryFieldClause | QueryFieldClause[] | QueryField;
+	rightSideValue?: QueryFieldClause | QueryFieldClause[] | QueryField;
 }
 
 /**
@@ -62,11 +62,11 @@ export interface QueryBaseOperation {
 	/**
 	 * Category of the IOperation.
 	 */
-	c: OperationCategory;
+	operationCategory: OperationCategory;
 	/**
 	 * Operator
 	 */
-	o: SqlOperator;
+	operator: SqlOperator;
 }
 
 export enum CRUDOperation {

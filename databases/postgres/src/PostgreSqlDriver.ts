@@ -1,5 +1,5 @@
 import { Query, QueryType, SQLDataType, } from '@airport/ground-control'
-import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
+import { SQLDialect, SqlStoreDriver } from '@airport/fuel-hydrant-system'
 import pg from 'pg'
 import pgConnectionString from 'pg-connection-string'
 import { DDLManager } from './DDLManager'
@@ -17,7 +17,7 @@ const parse = pgConnectionString.parse
 
 @Injected()
 export class PostgreSqlDriver
-	extends SqlDriver {
+	extends SqlStoreDriver {
 
 	pool: pg.Pool
 

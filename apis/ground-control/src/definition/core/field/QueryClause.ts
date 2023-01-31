@@ -1,5 +1,8 @@
-import {QueryField}      from '../../query/facade/QueryField'
-import {QueryFunctionCall} from './Functions'
+import { DbApplication_Index } from '../../application/DbApplication'
+import { DbEntity_TableIndex } from '../../application/DbEntity'
+import { DbColumn_Index, DbProperty_Index } from '../../application/DbProperty'
+import { QueryField } from '../../query/facade/QueryField'
+import { QueryFunctionCall } from './Functions'
 
 /**
  * All possible types of serialized JSON clauses.
@@ -52,7 +55,7 @@ export function getSqlDataType(
 }
 
 /**
- * Base serialized JSON clause.
+ * Base serialized Query clause.
  */
 export interface QueryBaseClause {
 	/**
@@ -64,12 +67,12 @@ export interface QueryBaseClause {
 	 * Object Type
 	 * Type of clause
 	 */
-	ot: QueryClauseObjectType;
+	objectType: QueryClauseObjectType;
 	/**
 	 * Data Type
 	 * Data contentType of the clause (contentType of what it evaluates to)
 	 */
-	dt: SQLDataType;
+	dataType: SQLDataType;
 }
 
 /**
@@ -78,29 +81,29 @@ export interface QueryBaseClause {
 export interface QueryFieldClause
 	extends QueryBaseClause {
 	/**
-	 * Application Version id
+	 * Application index
 	 */
-	si?: number;
+	applicationIndex?: DbApplication_Index;
 	/**
-	 * Table Index
+	 * Entity Index
 	 * Index of the entity to which this field belongs
 	 */
-	ti?: number;
+	entityIndex?: DbEntity_TableIndex;
 	/**
 	 * Field Alias
 	 * Alias of the field/column (in the query)
 	 */
-	fa: string;
+	fieldAlias: string;
 	/**
 	 * Property Index
 	 * Property index (representing a property on the entity).
 	 */
-	pi?: number;
+	propertyIndex?: DbProperty_Index;
 	/**
 	 * Column Index
 	 * Column index (representing a column on the entity).
 	 */
-	ci?: number,
+	columnIndex?: DbColumn_Index,
 	/**
 	 * Field Sub Query
 	 * A reference pointer from a field to a sub-query, as defined in SELECT clause via the
@@ -111,10 +114,10 @@ export interface QueryFieldClause
 	 * Table Alias
 	 * Alias of the table to which this field/column belongs
 	 */
-	ta?: string,
+	tableAlias?: string,
 	/**
 	 * Value
 	 * alias of the field/column or (a) serialized function call(s) / sub-query
 	 */
-	v?: string | QueryFieldClause | QueryField;
+	value?: string | QueryFieldClause | QueryField;
 }

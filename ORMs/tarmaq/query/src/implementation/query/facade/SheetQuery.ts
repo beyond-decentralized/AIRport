@@ -61,7 +61,7 @@ export class SheetQuery
 			queryUtils, fieldUtils, relationManager)
 
 		let querySheet: QuerySheet = {
-			S: select,
+			SELECT: select,
 			forUpdate: this.rawQuery.FOR_UPDATE
 		}
 

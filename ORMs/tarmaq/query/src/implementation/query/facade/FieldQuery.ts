@@ -77,10 +77,10 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 			queryUtils, fieldUtils, relationManager)
 
 		let queryField: QueryField = {
-			S: select,
+			SELECT: select,
 			forUpdate: this.rawQuery.FOR_UPDATE,
-			ot: QueryClauseObjectType.FIELD_QUERY,
-			dt: this.getClauseDataType()
+			objectType: QueryClauseObjectType.FIELD_QUERY,
+			dataType: this.getClauseDataType()
 		}
 
 		return <QueryField>this.getNonEntityQuery(

@@ -92,7 +92,7 @@ export class NoOpApplicationBuilder
 
 			sequences.push({
 				applicationIndex: dbApplication.index,
-				tableIndex: jsonEntity.index,
+				entityIndex: jsonEntity.index,
 				columnIndex: jsonColumn.index,
 				incrementBy,
 				currentValue: 0

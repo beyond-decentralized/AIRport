@@ -8,5 +8,5 @@ export interface QuerySheet extends QueryNonEntity {
 	/**
 	 * SELECT
 	 */
-	S: QueryFieldClause[];
+	SELECT: QueryFieldClause[];
 }

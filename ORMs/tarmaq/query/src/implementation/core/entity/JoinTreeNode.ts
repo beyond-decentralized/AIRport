@@ -43,11 +43,11 @@ export class JoinTreeNode {
 
 	getEntityRelationChildNodeByIndexes(
 		applicationIndex: DbApplication_Index,
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		relationIndex: DbRelation_Index
 	): JoinTreeNode {
 		let matchingNodes = this.childNodes.filter((childNode) => {
-			return (<QueryEntityRelation>childNode.queryRelation).ri === relationIndex;
+			return (<QueryEntityRelation>childNode.queryRelation).relationIndex === relationIndex;
 		});
 		switch (matchingNodes.length) {
 			case 0:
@@ -63,19 +63,19 @@ export class JoinTreeNode {
 		childPosition.push(this.childNodes.length);
 		let rootEntityPrefix;
 		if (this.parentNode) {
-			rootEntityPrefix = this.parentNode.queryRelation.rep;
+			rootEntityPrefix = this.parentNode.queryRelation.rootEntityPrefix;
 		} else {
-			rootEntityPrefix = this.queryRelation.rep;
+			rootEntityPrefix = this.queryRelation.rootEntityPrefix;
 		}
 		let queryEntityRelation: QueryEntityRelation = {
 			currentChildIndex: 0,
 			fromClausePosition: childPosition,
-			ti: tableIndex,
-			jt: JoinType.LEFT_JOIN,
-			rt: QueryRelationType.ENTITY_APPLICATION_RELATION,
-			rep: rootEntityPrefix,
-			ri: relationIndex,
-			si: applicationIndex
+			entityIndex: entityIndex,
+			joinType: JoinType.LEFT_JOIN,
+			relationType: QueryRelationType.ENTITY_APPLICATION_RELATION,
+			rootEntityPrefix: rootEntityPrefix,
+			relationIndex: relationIndex,
+			applicationIndex: applicationIndex
 		};
 		let childTreeNode                          = new JoinTreeNode(queryEntityRelation, [], this);
 		this.addChildNode(childTreeNode);

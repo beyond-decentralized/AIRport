@@ -216,7 +216,7 @@ export interface IQExistsFunction
 	/**
 	 * Category of the IOperation.
 	 */
-	category: OperationCategory;
+	operationCategory: OperationCategory;
 	/**
 	 * Operator
 	 */

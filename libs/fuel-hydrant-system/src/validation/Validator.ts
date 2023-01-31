@@ -39,13 +39,13 @@ export interface IValidator {
 
 	validateReadQEntityProperty(
 		applicationIndex: DbApplication_Index,
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index,
 	): void;
 
 	validateReadQEntityManyToOneRelation(
 		applicationIndex: DbApplication_Index,
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index,
 	): void;
 
@@ -88,14 +88,14 @@ export class QValidator
 
 	validateReadQEntityProperty(
 		applicationIndex: DbApplication_Index,
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index,
 	): void {
 	}
 
 	validateReadQEntityManyToOneRelation(
 		applicationIndex: DbApplication_Index,
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index,
 	): void {
 	}

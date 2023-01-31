@@ -24,7 +24,7 @@ export class ApplicationMap {
 
 	ensure(
 		applicationVersionLocalId: DbApplicationVersion_LocalId,
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		allColumns: boolean = false,
 		TableMapConstructor = globalThis.TableMap as typeof TableMap
 	): ColumnMap {
@@ -34,19 +34,19 @@ export class ApplicationMap {
 			this.applicationMap[applicationVersionLocalId] = tableMap;
 		}
 
-		return tableMap.ensure(tableIndex, allColumns);
+		return tableMap.ensure(entityIndex, allColumns);
 	}
 
 	existsByStructure(
 		applicationVersionLocalId: DbApplicationVersion_LocalId,
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index
 	): boolean {
 		let tableMap = this.applicationMap[applicationVersionLocalId];
 		if (!tableMap) {
 			return false;
 		}
-		return tableMap.existsByStructure(tableIndex, columnIndex);
+		return tableMap.existsByStructure(entityIndex, columnIndex);
 	}
 
 }

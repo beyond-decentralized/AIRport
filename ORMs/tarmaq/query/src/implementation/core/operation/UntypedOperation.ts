@@ -22,10 +22,10 @@ export class UntypedOperation extends ValueOperation<number | string, RawUntyped
 		//| RegExp
 	): RawUntypedOperation {
 		return {
-			c: this.category,
-			l: lValue,
-			o: SqlOperator.LIKE,
-			r: rValue
+			operationCategory: this.category,
+			leftSideValue: lValue,
+			operator: SqlOperator.LIKE,
+			rightSideValue: rValue
 		};
 	}
 

@@ -104,9 +104,9 @@ export interface IValueOperation<T, JRO extends QueryBaseOperation, IQF extends 
 export interface RawValueOperation<IQF extends IQOperableField<any, any, any, any>>
 	extends QueryBaseOperation {
 	// Value on the left side of the operator
-	l?: IQF;
+	leftSideValue?: IQF;
 	// Value on the right side of the operator
-	r?: boolean | number | string | Date | IQF | IQF[] | RawFieldQuery<IQF> | RawFieldQuery<IQF>[];
+	rightSideValue?: boolean | number | string | Date | IQF | IQF[] | RawFieldQuery<IQF> | RawFieldQuery<IQF>[];
 	// Repository Ids in .equals(x) and .IN(x,y,z)
 	trackedRepoGUIDs?: Repository_GUID[]
 	trackedRepoLocalIds?: Repository_LocalId[]

@@ -83,19 +83,19 @@ export class EntityOrderByParser
 					return true
 				}
 
-				const orderByDbEntity: DbEntity = this.airportDatabase.applications[orderByField.si]
-					.currentVersion[0].applicationVersion.entities[orderByField.ti]
-				const dbColumn = orderByDbEntity.columns[orderByField.ci]
+				const orderByDbEntity: DbEntity = this.airportDatabase.applications[orderByField.applicationIndex]
+					.currentVersion[0].applicationVersion.entities[orderByField.entityIndex]
+				const dbColumn = orderByDbEntity.columns[orderByField.columnIndex]
 				if (this.isForParentNode(currentJoinNode, orderByField)) {
 					throw new Error(`Found out of order entry in Order By 
 					[${orderByDbEntity.applicationVersion.application.name} - ${orderByDbEntity.name}.${dbColumn.name}].
 					Entries must be ordered hierarchically, in breadth-first order.`)
 				}
-				if (orderByField.si !== dbEntity.applicationVersion.application.index || orderByField.ti !== dbEntity.index) {
+				if (orderByField.applicationIndex !== dbEntity.applicationVersion.application.index || orderByField.entityIndex !== dbEntity.index) {
 					return true
 				}
 				this.qValidator.validateReadProperty(dbColumn)
-				orderByField.fa = `${tableAlias}.${dbColumn.name}`
+				orderByField.fieldAlias = `${tableAlias}.${dbColumn.name}`
 				currentEntityOrderBy.push(orderByField)
 				return false
 			})
@@ -128,8 +128,8 @@ export class EntityOrderByParser
 
 					const matchingNodes = currentJoinNode.childNodes.filter(childNode => {
 						const queryRelation = childNode.queryRelation
-						return queryRelation.si === dbEntity.applicationVersion.application.index
-							&& queryRelation.ti === dbEntity.index
+						return queryRelation.applicationIndex === dbEntity.applicationVersion.application.index
+							&& queryRelation.entityIndex === dbEntity.index
 					})
 
 					if (!matchingNodes.length) {
@@ -176,7 +176,7 @@ export class EntityOrderByParser
 		// First add the fields specified in the Order By clause for this entity
 		currentEntityOrderBy.forEach((orderByField) => {
 			finalOrderByColumnsFragments.push(orderByField)
-			const columnName = dbEntity.columns[orderByField.ci].name
+			const columnName = dbEntity.columns[orderByField.columnIndex].name
 			inputOrderByPropertyNameSet[columnName] = true
 		})
 		if (idColumnsToSortBy.length) {
@@ -184,8 +184,8 @@ export class EntityOrderByParser
 			for (const idColumnName of idColumnsToSortBy) {
 				if (!inputOrderByPropertyNameSet[idColumnName]) {
 					finalOrderByColumnsFragments.push({
-						fa: `${tableAlias}.${idColumnName}`,
-						so: QuerySortOrder.ASCENDING
+						fieldAlias: `${tableAlias}.${idColumnName}`,
+						sortOrder: QuerySortOrder.ASCENDING
 					})
 				}
 			}
@@ -193,8 +193,8 @@ export class EntityOrderByParser
 			allColumnsToSortBy.forEach((columnName) => {
 				if (!inputOrderByPropertyNameSet[columnName]) {
 					finalOrderByColumnsFragments.push({
-						fa: `${tableAlias}.${columnName}`,
-						so: QuerySortOrder.ASCENDING
+						fieldAlias: `${tableAlias}.${columnName}`,
+						sortOrder: QuerySortOrder.ASCENDING
 					})
 				}
 			})
@@ -211,8 +211,8 @@ export class EntityOrderByParser
 			if (!joinTreeNode) {
 				return false
 			}
-			if (orderByField.si === joinTreeNode.queryRelation.si
-				&& orderByField.ti === joinTreeNode.queryRelation.ti) {
+			if (orderByField.applicationIndex === joinTreeNode.queryRelation.applicationIndex
+				&& orderByField.entityIndex === joinTreeNode.queryRelation.entityIndex) {
 				return true
 			}
 		} while (joinTreeNode.parentNode)

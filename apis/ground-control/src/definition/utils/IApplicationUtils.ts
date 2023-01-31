@@ -23,7 +23,7 @@ export interface IApplicationUtils {
 
   getDbEntity(
     applicationIndex: DbApplication_Index,
-    tableIndex: DbEntity_TableIndex
+    entityIndex: DbEntity_TableIndex
   ): DbEntity;
 
   getEntityConstructor(

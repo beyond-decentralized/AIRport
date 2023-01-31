@@ -27,7 +27,7 @@ export class Sequence
 	@Id()
 	@Column({ name: 'TABLE_INDEX', nullable: false })
 	@DbNumber()
-	tableIndex?: DbEntity_TableIndex
+	entityIndex?: DbEntity_TableIndex
 
 	@Id()
 	@Column({ name: 'COLUMN_INDEX', nullable: false })

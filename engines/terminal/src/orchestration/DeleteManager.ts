@@ -83,7 +83,7 @@ export class DeleteManager
 	): Promise<number> {
 		const dbEntity = this.airportDatabase
 			.applications[portableQuery.applicationIndex].currentVersion[0].applicationVersion
-			.entities[portableQuery.tableIndex]
+			.entities[portableQuery.entityIndex]
 
 		const deleteCommand = transaction.deleteWhere(portableQuery, context)
 		if (dbEntity.isLocal || transaction.isSync) {
@@ -94,13 +94,13 @@ export class DeleteManager
 			dbEntity)
 		const queryDelete = <QueryDelete>portableQuery.query
 		const queryEntity: QueryEntity<any> = {
-			S: selectCascadeTree,
-			F: [queryDelete.DF],
-			W: queryDelete.W,
+			SELECT: selectCascadeTree,
+			FROM: [queryDelete.DELETE_FROM],
+			WHERE: queryDelete.WHERE,
 		}
 		const portableSelect = {
 			applicationIndex: portableQuery.applicationIndex,
-			tableIndex: portableQuery.tableIndex,
+			entityIndex: portableQuery.entityIndex,
 			query: queryEntity,
 			queryResultType: QueryResultType.ENTITY_TREE,
 			parameterMap: portableQuery.parameterMap,

@@ -4,10 +4,10 @@ import { ColumnMap } from "../query/ColumnMap";
 export class SyncColumnMap extends ColumnMap {
 
 	constructor(
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		allColumns: boolean = false
 	) {
-		super(tableIndex, allColumns);
+		super(entityIndex, allColumns);
 	}
 
 }

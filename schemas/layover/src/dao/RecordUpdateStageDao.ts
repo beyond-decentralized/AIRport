@@ -50,7 +50,7 @@ export interface IRecordUpdateStageDao
 	updateEntityWhereIds(
 		applicationIndex: DbApplication_Index,
 		applicationVersionId: DbApplicationVersion_LocalId,
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>,
 		updatedColumnIndexes: DbColumn_Index[],
 		context: IContext
@@ -104,13 +104,13 @@ export class RecordUpdateStageDao
 	async updateEntityWhereIds(
 		applicationIndex: DbApplication_Index,
 		applicationVersionId: DbApplicationVersion_LocalId,
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>,
 		updatedColumnIndexes: DbColumn_Index[],
 		context: IContext
 	): Promise<void> {
 		const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
-			.applicationVersion.entities[tableIndex]
+			.applicationVersion.entities[entityIndex]
 		const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name]
 
 		const repositoryEquals: QueryBaseOperation[] = []

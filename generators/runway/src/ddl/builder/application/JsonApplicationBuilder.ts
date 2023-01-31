@@ -141,7 +141,7 @@ export class JsonApplicationBuilder {
 				return {
 					columns,
 					idColumnRefs: this.getIdColumnReferences(sIndexedEntity),
-					index: sEntity.tableIndex,
+					index: sEntity.entityIndex,
 					isLocal: sEntity.isLocal,
 					isAirEntity: sEntity.isAirEntity,
 					name: sEntity.name,
@@ -302,7 +302,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 				} else {
 					relatedIndexedEntity = sIndexedApplication.entityMapByName[sRelation.entityName];
 					relationDbApplication_Index = null;
-					relationTableIndex = relatedIndexedEntity.entity.tableIndex;
+					relationTableIndex = relatedIndexedEntity.entity.entityIndex;
 				}
 
 				this.buildColumnRelations(

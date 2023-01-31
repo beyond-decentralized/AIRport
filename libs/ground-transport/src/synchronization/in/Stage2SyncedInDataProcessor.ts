@@ -124,9 +124,9 @@ export class Stage2SyncedInDataProcessor
 			const applicationIndex = applicationsByDbApplicationVersion_LocalIdMap
 				.get(applicationVersionId).index
 
-			for (const [tableIndex, creationInTableMap] of creationInApplicationMap) {
+			for (const [entityIndex, creationInTableMap] of creationInApplicationMap) {
 				const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
-					.applicationVersion.entities[tableIndex]
+					.applicationVersion.entities[entityIndex]
 				const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name]
 				const columns = [
 					qEntity.repository._localId,
@@ -248,11 +248,11 @@ export class Stage2SyncedInDataProcessor
 			const applicationIndex = applicationsByDbApplicationVersion_LocalIdMap
 				.get(applicationVersionId).index
 
-			for (const [tableIndex, tableUpdateMap] of applicationUpdateMap) {
+			for (const [entityIndex, tableUpdateMap] of applicationUpdateMap) {
 				const finalTableUpdateMap = this.datastructureUtils.ensureChildJsMap(
-					finalApplicationUpdateMap, tableIndex)
+					finalApplicationUpdateMap, entityIndex)
 				const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
-					.applicationVersion.entities[tableIndex]
+					.applicationVersion.entities[entityIndex]
 
 				for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
 
@@ -270,7 +270,7 @@ export class Stage2SyncedInDataProcessor
 
 								recordUpdateStage.push([
 									applicationVersionId,
-									tableIndex,
+									entityIndex,
 									repositoryId,
 									actorId,
 									_actorRecordId,
@@ -293,9 +293,9 @@ export class Stage2SyncedInDataProcessor
 		// Perform the updates
 		for (const [applicationVersionId, updateMapForApplication] of finalUpdateMap) {
 			const application = applicationsByDbApplicationVersion_LocalIdMap.get(applicationVersionId)
-			for (const [tableIndex, updateMapForTable] of updateMapForApplication) {
+			for (const [entityIndex, updateMapForTable] of updateMapForApplication) {
 				await this.runUpdatesForTable(application.index, applicationVersionId,
-					tableIndex, updateMapForTable, context)
+					entityIndex, updateMapForTable, context)
 			}
 		}
 
@@ -314,9 +314,9 @@ export class Stage2SyncedInDataProcessor
 		for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {
 			const application = applicationsByDbApplicationVersion_LocalIdMap.get(applicationVersionId)
 
-			for (const [tableIndex, deletionInTableMap] of deletionInApplicationMap) {
+			for (const [entityIndex, deletionInTableMap] of deletionInApplicationMap) {
 				const dbEntity = this.airportDatabase.applications[application.index].currentVersion[0]
-					.applicationVersion.entities[tableIndex]
+					.applicationVersion.entities[entityIndex]
 				const qEntity = this.airportDatabase.qApplications[application.index][dbEntity.name]
 				let numClauses = 0
 				let repositoryWhereFragments: QueryBaseOperation[] = []
@@ -411,14 +411,14 @@ export class Stage2SyncedInDataProcessor
 	 * is run.
 	 *
 	 * @param {DbApplication_Index} applicationIndex
-	 * @param {DbEntity_TableIndex} tableIndex
+	 * @param {DbEntity_TableIndex} entityIndex
 	 * @param {ColumnUpdateKeyMap} updateKeyMap
 	 * @returns {Promise<void>}
 	 */
 	private async runUpdatesForTable(
 		applicationIndex: DbApplication_Index,
 		applicationVersionId: DbApplicationVersion_LocalId,
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		updateKeyMap: ColumnUpdateKeyMap,
 		context: IContext
 	) {
@@ -428,7 +428,7 @@ export class Stage2SyncedInDataProcessor
 				await this.recordUpdateStageDao.updateEntityWhereIds(
 					applicationIndex,
 					applicationVersionId,
-					tableIndex,
+					entityIndex,
 					columnValueUpdate.recordKeyMap,
 					updatedColumns,
 					context
@@ -436,7 +436,7 @@ export class Stage2SyncedInDataProcessor
 			}
 			// Traverse down into nested column update combinations
 			await this.runUpdatesForTable(
-				applicationIndex, applicationVersionId, tableIndex,
+				applicationIndex, applicationVersionId, entityIndex,
 				columnValueUpdate.childColumnUpdateKeyMap,
 				context)
 		}

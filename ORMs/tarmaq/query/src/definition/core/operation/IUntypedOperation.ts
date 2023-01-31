@@ -27,7 +27,7 @@ export interface IUntypedOperation
 export interface RawUntypedOperation
 	extends RawValueOperation<IQUntypedField> {
 	// Untyped Operator
-	o: SqlOperator.EQUALS
+	operator: SqlOperator.EQUALS
 		| SqlOperator.IS_NOT_NULL
 		| SqlOperator.IS_NULL
 		| SqlOperator.IN
@@ -39,7 +39,7 @@ export interface RawUntypedOperation
 		| SqlOperator.LESS_THAN
 		| SqlOperator.LESS_THAN_OR_EQUALS;
 	// Value on the left side of the operator
-	l: IQUntypedField;
+	leftSideValue: IQUntypedField;
 	// Value on the right side of the operator
-	r: any | IQUntypedField | IQUntypedField[] | RawFieldQuery<IQUntypedField> | RawFieldQuery<IQUntypedField>[];
+	rightSideValue: any | IQUntypedField | IQUntypedField[] | RawFieldQuery<IQUntypedField> | RawFieldQuery<IQUntypedField>[];
 }

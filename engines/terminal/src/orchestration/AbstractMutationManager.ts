@@ -37,13 +37,13 @@ export class AbstractMutationManager {
 
   protected getPortableQuery(
     applicationIndex: number,
-    tableIndex: number,
+    entityIndex: number,
     query: AbstractQuery,
     queryResultType: QueryResultType
   ): PortableQuery {
     return {
       applicationIndex,
-      tableIndex,
+      entityIndex,
       query: <Query>query.toQuery(
         this.queryUtils, this.fieldUtils, this.relationManager),
       parameterMap: query.getParameters(),

@@ -8,13 +8,13 @@ export interface QueryField extends QueryNonEntity {
 	/**
 	 * SELECT
 	 */
-	S: QueryFieldClause;
+	SELECT: QueryFieldClause;
 	/**
 	 * Object Type
 	 */
-	ot: QueryClauseObjectType;
+	objectType: QueryClauseObjectType;
 	/**
 	 * Data Type
 	 */
-	dt: SQLDataType;
+	dataType: SQLDataType;
 }

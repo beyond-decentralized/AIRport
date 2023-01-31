@@ -1,3 +1,4 @@
+import { DbApplication_Index } from '../../application/DbApplication';
 import { QueryTree } from '../../query/facade/QueryTree';
 import {
 	QueryBaseOperation,
@@ -48,10 +49,10 @@ export interface QueryRelation {
 	 */
 	currentChildIndex: number;
 	/**
-	 * Table Index
-	 * Table Index of the parent entity in relation
+	 * Entity Index
+	 * Entity Index of the parent entity in relation
 	 */
-	ti?: number;
+	entityIndex?: number;
 	/**
 	 * From Clause Position
 	 * Entity position in the FROM clause tree
@@ -61,22 +62,22 @@ export interface QueryRelation {
 	 *  Join Type
 	 * Type of SQL join in relation
 	 */
-	jt: JoinType;
+	joinType: JoinType;
 	/**
 	 *  Relation Type
 	 * Type of serialized relation
 	 */
-	rt: QueryRelationType;
+	relationType: QueryRelationType;
 	/**
 	 *  Root Entity Prefix
 	 ** Prefix of the alias of the root entity in the FROM clause
 	 */
-	rep: string;
+	rootEntityPrefix: string;
 	/**
 	 *  Application Index
 	 * Application Index of the parent entity in relation
 	 */
-	si?: number;
+	applicationIndex: DbApplication_Index;
 }
 
 /**
@@ -111,7 +112,7 @@ export interface QueryEntityRelation extends QueryJoinRelation {
 	 * Relation Index
 	 * Index of the Many-To-One or One-To-Many relation
 	 */
-	ri: number;
+	relationIndex: number;
 	/**
 	 * Where Join Table Operator
 	 * How @WhereJoinTable is joined to the rest of the JOIN ON

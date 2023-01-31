@@ -9,11 +9,11 @@ import {IOperation} from './IValueOperation';
 export interface QueryLogicalOperation
 	extends QueryBaseOperation {
 	// Logical Operator
-	o: SqlOperator.AND
+	operator: SqlOperator.AND
 		| SqlOperator.OR
 		| SqlOperator.NOT;
 	// Value(s) operated on by the logical operator
-	v: QueryBaseOperation | QueryBaseOperation[];
+	value: QueryBaseOperation | QueryBaseOperation[];
 }
 
 /**

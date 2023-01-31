@@ -49,10 +49,10 @@ export class ApplicationUtils
 
 	getDbEntity(
 		applicationIndex: DbApplication_Index,
-		tableIndex: DbEntity_TableIndex
+		entityIndex: DbEntity_TableIndex
 	): DbEntity {
 		return this.airportDatabase.applications[applicationIndex].currentVersion[0]
-			.applicationVersion.entities[tableIndex]
+			.applicationVersion.entities[entityIndex]
 	}
 
 	isActorId(

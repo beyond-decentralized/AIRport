@@ -87,21 +87,21 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 				this.__appliedFunctions__, columnAliases,
 				trackedRepoGUIDSet, trackedRepoLocalIdSet,
 				queryUtils, fieldUtils, relationManager),
-			si: this.dbProperty.entity.applicationVersion._localId,
-			ti: this.dbProperty.entity.index,
-			fa: alias,
-			pi: this.dbProperty.index,
-			ci: this.dbColumn.index,
-			ta: relationManager.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
-			ot: this.objectType,
-			dt: this.dbColumn.type as SQLDataType
+			applicationIndex: this.dbProperty.entity.applicationVersion._localId,
+			entityIndex: this.dbProperty.entity.index,
+			fieldAlias: alias,
+			propertyIndex: this.dbProperty.index,
+			columnIndex: this.dbColumn.index,
+			tableAlias: relationManager.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
+			objectType: this.objectType,
+			dataType: this.dbColumn.type as SQLDataType
 		};
 		if (this.__fieldSubQuery__) {
 			queryFieldClause.fieldSubQuery = fieldUtils.getFieldQueryJson(
 				this.__fieldSubQuery__, columnAliases.entityAliases,
 				trackedRepoGUIDSet, trackedRepoLocalIdSet,
 				queryUtils);
-			queryFieldClause.ot = QueryClauseObjectType.FIELD_QUERY;
+			queryFieldClause.objectType = QueryClauseObjectType.FIELD_QUERY;
 		}
 
 		return queryFieldClause;
@@ -146,10 +146,10 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 				trackedRepoGUIDSet, trackedRepoLocalIdSet,
 				queryUtils, fieldUtils, relationManager
 			),
-			fa: alias,
-			ot: this.objectType,
-			dt: this.dbColumn.type as SQLDataType,
-			v: this.valueToJSON(functionObject, columnAliases,
+			fieldAlias: alias,
+			objectType: this.objectType,
+			dataType: this.dbColumn.type as SQLDataType,
+			value: this.valueToJSON(functionObject, columnAliases,
 				false, true,
 				trackedRepoGUIDSet, trackedRepoLocalIdSet,
 				queryUtils, fieldUtils, relationManager)
@@ -191,8 +191,8 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		relationManager: IQueryRelationManager
 	): QueryFunctionCall {
 		let parameters;
-		if (functionCall.p) {
-			parameters = functionCall.p.map((parameter) => {
+		if (functionCall.functionParameters) {
+			parameters = functionCall.functionParameters.map((parameter) => {
 				return this.valueToJSON(
 					parameter, columnAliases,
 					false, false,
@@ -201,8 +201,8 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			});
 		}
 		return {
-			ft: functionCall.ft,
-			p: parameters
+			functionType: functionCall.functionType,
+			functionParameters: parameters
 		};
 	}
 

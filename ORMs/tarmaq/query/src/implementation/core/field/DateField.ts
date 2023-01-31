@@ -82,7 +82,7 @@ export class QDateFunction<T extends Date | Date[] = Date>
 			queryUtils, fieldUtils, relationManager);
 
 		if (this.isQueryParameter) {
-			this.parameterAlias = <string>queryFieldClause.v;
+			this.parameterAlias = <string>queryFieldClause.value;
 		}
 
 		return queryFieldClause;

@@ -36,7 +36,7 @@ export class TreeQuery<ITE extends ITreeEntity>
 			= <QueryTree>this.getNonEntityQuery(this.rawQuery, <any>{}, (
 				nonEntityQuery: QueryNonEntity
 			) => {
-				nonEntityQuery.S = this.rawToQuerySelectClause(
+				nonEntityQuery.SELECT = this.rawToQuerySelectClause(
 					this.rawQuery.SELECT,
 					queryUtils, fieldUtils, relationManager)
 				nonEntityQuery.forUpdate = this.rawQuery.FOR_UPDATE

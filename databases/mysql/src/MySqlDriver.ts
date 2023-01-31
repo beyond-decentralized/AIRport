@@ -4,7 +4,7 @@ import {
 } from '@airport/direction-indicator'
 import {
   SQLDialect,
-  SqlDriver
+  SqlStoreDriver
 } from '@airport/fuel-hydrant-system';
 import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
 import {
@@ -70,7 +70,7 @@ export interface IQueryApi {
 
 @Injected()
 export class MySqlDriver
-  extends SqlDriver {
+  extends SqlStoreDriver {
 
   protected pool: Pool;
   protected queryApi: IQueryApi;

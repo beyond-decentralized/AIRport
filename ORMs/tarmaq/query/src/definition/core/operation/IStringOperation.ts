@@ -23,7 +23,7 @@ export interface IStringOperation
 export interface RawStringOperation
 	extends RawValueOperation<IQStringField> {
 	// String Operator
-	o: SqlOperator.EQUALS
+	operator: SqlOperator.EQUALS
 		| SqlOperator.IS_NOT_NULL
 		| SqlOperator.IS_NULL
 		| SqlOperator.IN
@@ -35,7 +35,7 @@ export interface RawStringOperation
 		| SqlOperator.LESS_THAN
 		| SqlOperator.LESS_THAN_OR_EQUALS;
 	// Value on the left side of the operator
-	l: IQStringField;
+	leftSideValue: IQStringField;
 	// Value on the right side of the operator
-	r: string | IQStringField | IQStringField[] | RawFieldQuery<IQStringField> | RawFieldQuery<IQStringField>[];
+	rightSideValue: string | IQStringField | IQStringField[] | RawFieldQuery<IQStringField> | RawFieldQuery<IQStringField>[];
 }

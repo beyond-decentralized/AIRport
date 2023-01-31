@@ -16,7 +16,7 @@ export interface IDateOperation extends IValueOperation<Date, RawDateOperation, 
  */
 export interface RawDateOperation extends RawValueOperation<IQDateField> {
 	// Date Operator
-	o: SqlOperator.EQUALS
+	operator: SqlOperator.EQUALS
 		| SqlOperator.IS_NOT_NULL
 		| SqlOperator.IS_NULL
 		| SqlOperator.IN
@@ -27,7 +27,7 @@ export interface RawDateOperation extends RawValueOperation<IQDateField> {
 		| SqlOperator.LESS_THAN
 		| SqlOperator.LESS_THAN_OR_EQUALS;
 	// Value on the left side of the operator
-	l: IQDateField;
+	leftSideValue: IQDateField;
 	// Value on the right side of the operator
-	r: Date | IQDateField | IQDateField[] | RawFieldQuery<IQDateField> | RawFieldQuery<IQDateField>[];
+	rightSideValue: Date | IQDateField | IQDateField[] | RawFieldQuery<IQDateField> | RawFieldQuery<IQDateField>[];
 }

@@ -96,8 +96,8 @@ export class InsertManager
 		queryInsertValues: QueryInsertValues,
 		errorPrefix: string
 	): DbColumn[] {
-		for (let i = 0; i < queryInsertValues.C.length; i++) {
-			const columnIndex = queryInsertValues.C[i]
+		for (let i = 0; i < queryInsertValues.COLUMNS.length; i++) {
+			const columnIndex = queryInsertValues.COLUMNS[i]
 
 			const dbColumn = dbEntity.columns[columnIndex]
 
@@ -121,7 +121,7 @@ export class InsertManager
 		ensureGeneratedValues: boolean = true
 	): Promise<number | Record_LocalId[] | Record_LocalId[][]> {
 		const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
-			.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex]
+			.currentVersion[0].applicationVersion.entities[portableQuery.entityIndex]
 
 		const errorPrefix = `Error inserting into '${dbEntity.name}'.'
 `
@@ -132,7 +132,7 @@ export class InsertManager
 
 		const columnIndexSet = {}
 		let inStatementIndex = 0
-		for (const columnIndex of queryInsertValues.C) {
+		for (const columnIndex of queryInsertValues.COLUMNS) {
 			if (columnIndex < 0 || columnIndex >= dbEntity.columns.length) {
 				throw new Error(errorPrefix +
 					`Invalid column index: ${columnIndex}`)
@@ -143,7 +143,7 @@ export class InsertManager
 appears more than once in the Columns clause`)
 			}
 			let rowNumber = 1
-			for (let row of queryInsertValues.V) {
+			for (let row of queryInsertValues.VALUES) {
 				if (row[inStatementIndex] === undefined) {
 					throw new Error(errorPrefix +
 						`
@@ -202,7 +202,7 @@ appears more than once in the Columns clause`)
 		portableQuery: PortableQuery,
 		errorPrefix: string
 	) {
-		const values = (portableQuery.query as QueryInsertValues).V;
+		const values = (portableQuery.query as QueryInsertValues).VALUES;
 		if (!values.length) {
 			throw new Error(errorPrefix + `no colum values provided`)
 		}
@@ -232,7 +232,7 @@ appears more than once in the Columns clause`)
 		systemWideOperationId: SystemWideOperationId,
 		errorPrefix: string
 	): Promise<Record_LocalId[] | Record_LocalId[][]> {
-		const values = queryInsertValues.V
+		const values = queryInsertValues.VALUES
 		const idColumns = dbEntity.idColumns
 
 		const allIds: Record_LocalId[][] = []
@@ -255,7 +255,7 @@ appears more than once in the Columns clause`)
 
 			let isActorIdColumn = false
 			let inStatementColumnIndex: number
-			const matchingColumns = queryInsertValues.C.filter(
+			const matchingColumns = queryInsertValues.COLUMNS.filter(
 				(
 					columnIndex,
 					index
@@ -269,8 +269,8 @@ appears more than once in the Columns clause`)
 				// Actor Id cannot be in the insert statement
 				if (idColumn._localId === actorIdColumn._localId) {
 					isActorIdColumn = true
-					inStatementColumnIndex = queryInsertValues.C.length
-					queryInsertValues.C.push(actorIdColumn.index)
+					inStatementColumnIndex = queryInsertValues.COLUMNS.length
+					queryInsertValues.COLUMNS.push(actorIdColumn.index)
 				} else {
 					throw new Error(errorPrefix +
 						`Could not find @Id column ${dbEntity.name}.${idColumn.name} in
@@ -308,13 +308,13 @@ appears more than once in the Columns clause`)
 		const generatedColumnIndexes: number[] = []
 		// let numAddedColumns                    = 0
 		for (const generatedColumn of generatedColumns) {
-			// const matchingColumns = queryInsertValues.C.filter(
+			// const matchingColumns = queryInsertValues.COLUMNS.filter(
 			// 	columnIndex => columnIndex === generatedColumn.index)
 			// if (!matchingColumns.length) {
 			// TODO: verify that it is OK to mutate the QueryInsertValues query
-			const generatedIdColumnIndex = queryInsertValues.C.length
-			generatedColumnIndexes.push(queryInsertValues.C.length)
-			queryInsertValues.C.push(generatedColumn.index)
+			const generatedIdColumnIndex = queryInsertValues.COLUMNS.length
+			generatedColumnIndexes.push(queryInsertValues.COLUMNS.length)
+			queryInsertValues.COLUMNS.push(generatedColumn.index)
 			// numAddedColumns++
 			continue
 			// }
@@ -361,7 +361,7 @@ appears more than once in the Columns clause`)
 		})
 
 		if (!dbEntity.isLocal) {
-			queryInsertValues.C.push(sysWideOperationIdColumn.index)
+			queryInsertValues.COLUMNS.push(sysWideOperationIdColumn.index)
 			values.forEach(
 				entityValues => {
 					entityValues.push(systemWideOperationId)
@@ -419,8 +419,8 @@ appears more than once in the Columns clause`)
 		let foundActorRecordIdColumn = false
 		let foundSystemWideOperationIdColumn = false
 
-		for (let i = 0; i < queryInsertValues.C.length; i++) {
-			const columnIndex = queryInsertValues.C[i]
+		for (let i = 0; i < queryInsertValues.COLUMNS.length; i++) {
+			const columnIndex = queryInsertValues.COLUMNS[i]
 			switch (columnIndex) {
 				case actorIdColumn.index:
 					foundActorIdColumn = true
@@ -476,10 +476,10 @@ You must provide a valid REPOSITORY_LID value for Repository entities.`
 			}
 		}
 
-		for (const entityValues of queryInsertValues.V) {
-			if (entityValues.length !== queryInsertValues.C.length) {
+		for (const entityValues of queryInsertValues.VALUES) {
+			if (entityValues.length !== queryInsertValues.COLUMNS.length) {
 				throw new Error(errorPrefix +
-					`Number of columns (${queryInsertValues.C.length}) does not match number of values (${entityValues.length}).
+					`Number of columns (${queryInsertValues.COLUMNS.length}) does not match number of values (${entityValues.length}).
 				`)
 			}
 
@@ -497,7 +497,7 @@ You must provide a valid REPOSITORY_LID value for Repository entities.`
 				}
 				const value = entityValues[i]
 
-				const columnIndex = queryInsertValues.C[i]
+				const columnIndex = queryInsertValues.COLUMNS[i]
 				const dbColumn = dbEntity.columns[columnIndex]
 
 				if (dbColumn.notNull && value === null) {
@@ -551,8 +551,8 @@ and cannot have NULL values.`)
 		let repositoryIdColumnNumber
 		let actorIdColumnNumber
 		let actorRecordIdColumnNumber
-		for (const columnNumber in queryInsertValues.C) {
-			const columnIndex = queryInsertValues.C[columnNumber]
+		for (const columnNumber in queryInsertValues.COLUMNS) {
+			const columnIndex = queryInsertValues.COLUMNS[columnNumber]
 			switch (columnIndex) {
 				case repositoryIdIndex:
 					repositoryIdColumnNumber = columnNumber
@@ -567,7 +567,7 @@ and cannot have NULL values.`)
 		}
 
 		// Rows may belong to different repositories
-		for (const row of queryInsertValues.V) {
+		for (const row of queryInsertValues.VALUES) {
 			const repositoryId = row[repositoryIdColumnNumber]
 			// const repo           = await repoManager.getRepository(repositoryId)
 			let repositoryTransactionHistory = repoTransHistories[repositoryId]
@@ -590,13 +590,13 @@ and cannot have NULL values.`)
 			const recordHistory = this.operationHistoryDuo.startRecordHistory(
 				operationHistory, actorId, _actorRecordId)
 
-			for (const columnNumber in queryInsertValues.C) {
+			for (const columnNumber in queryInsertValues.COLUMNS) {
 				if (columnNumber === repositoryIdColumnNumber
 					|| columnNumber === actorIdColumnNumber
 					|| columnNumber === actorRecordIdColumnNumber) {
 					continue
 				}
-				const columnIndex = queryInsertValues.C[columnNumber]
+				const columnIndex = queryInsertValues.COLUMNS[columnNumber]
 				const dbColumn = dbEntity.columns[columnIndex]
 				const newValue = row[columnNumber]
 				this.recordHistoryDuo.addNewValue(recordHistory, dbColumn, newValue)

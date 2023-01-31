@@ -230,28 +230,28 @@ is supported only for single columm relations
 		}
 		let operation: QueryBaseOperation = whereClause
 		let queryOperation: QueryBaseOperation = {
-			c: operation.c,
-			o: operation.o
+			operationCategory: operation.operationCategory,
+			operator: operation.operator
 		}
-		switch (operation.c) {
+		switch (operation.operationCategory) {
 			case OperationCategory.LOGICAL:
 				let logicalOperation = <QueryLogicalOperation>operation
 				let queryLogicalOperation = <QueryLogicalOperation>queryOperation
-				switch (operation.o) {
+				switch (operation.operator) {
 					case SqlOperator.NOT:
-						queryLogicalOperation.v = this.whereClauseToQueryOperation(
-							<QueryBaseOperation>logicalOperation.v, columnAliases,
+						queryLogicalOperation.value = this.whereClauseToQueryOperation(
+							<QueryBaseOperation>logicalOperation.value, columnAliases,
 							trackedRepoGUIDSet, trackedRepoLocalIdSet)
 						break
 					case SqlOperator.AND:
 					case SqlOperator.OR:
-						queryLogicalOperation.v = (<QueryBaseOperation[]>logicalOperation.v).map((value) =>
+						queryLogicalOperation.value = (<QueryBaseOperation[]>logicalOperation.value).map((value) =>
 							this.whereClauseToQueryOperation(value, columnAliases,
 								trackedRepoGUIDSet, trackedRepoLocalIdSet)
 						)
 						break
 					default:
-						throw new Error(`Unsupported logical operation '${operation.o}'`)
+						throw new Error(`Unsupported logical operation '${operation.operator}'`)
 				}
 				break
 			case OperationCategory.FUNCTION:
@@ -272,21 +272,21 @@ is supported only for single columm relations
 				// All Non logical or exists operations are value operations (equals, IS_NULL, LIKE,
 				// etc.)
 				let queryValueOperation: QueryValueOperation = <QueryValueOperation>queryOperation
-				queryValueOperation.l = this.convertLRValue(
-					valueOperation.l, columnAliases,
+				queryValueOperation.leftSideValue = this.convertLRValue(
+					valueOperation.leftSideValue, columnAliases,
 					trackedRepoGUIDSet, trackedRepoLocalIdSet)
-				if (operation.o === SqlOperator.IS_NOT_NULL
-					|| operation.o === SqlOperator.IS_NULL) {
+				if (operation.operator === SqlOperator.IS_NOT_NULL
+					|| operation.operator === SqlOperator.IS_NULL) {
 					break
 				}
-				let rValue = valueOperation.r
+				let rValue = valueOperation.rightSideValue
 				if (rValue instanceof Array) {
-					queryValueOperation.r = rValue.map((anRValue) => {
+					queryValueOperation.rightSideValue = rValue.map((anRValue) => {
 						return this.convertLRValue(anRValue, columnAliases,
 							trackedRepoGUIDSet, trackedRepoLocalIdSet)
 					})
 				} else {
-					queryValueOperation.r = this.convertLRValue(rValue, columnAliases,
+					queryValueOperation.rightSideValue = this.convertLRValue(rValue, columnAliases,
 						trackedRepoGUIDSet, trackedRepoLocalIdSet)
 				}
 				for (const trackedRepoGUID of valueOperation.trackedRepoGUIDs) {

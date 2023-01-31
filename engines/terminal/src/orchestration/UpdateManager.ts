@@ -90,7 +90,7 @@ export class UpdateManager
 		context: IOperationContext
 	): Promise<number> {
 		const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
-			.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex]
+			.currentVersion[0].applicationVersion.entities[portableQuery.entityIndex]
 
 		const errorPrefix = `Error updating '${dbEntity.name}'
 `
@@ -164,7 +164,7 @@ export class UpdateManager
 			.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 		const queryUpdate: QueryUpdate<any> = <QueryUpdate<any>>portableQuery.query
 		const getSheetSelectFromSetClauseResult = this.queryUtils.getSheetSelectFromSetClause(
-			context.dbEntity, qEntity, queryUpdate.S, errorPrefix)
+			context.dbEntity, qEntity, queryUpdate.SELECT, errorPrefix)
 
 		const sheetQuery = new SheetQuery(null)
 
@@ -173,13 +173,13 @@ export class UpdateManager
 			this.queryUtils, this.fieldUtils, this.relationManager)
 
 		const querySheet: QuerySheet = {
-			S: querySelectClause,
-			F: [queryUpdate.U],
-			W: queryUpdate.W,
+			SELECT: querySelectClause,
+			FROM: [queryUpdate.UPDATE],
+			WHERE: queryUpdate.WHERE,
 		}
 		const portableSelect: PortableQuery = {
 			applicationIndex: portableQuery.applicationIndex,
-			tableIndex: portableQuery.tableIndex,
+			entityIndex: portableQuery.entityIndex,
 			query: querySheet,
 			queryResultType: QueryResultType.SHEET,
 			parameterMap: portableQuery.parameterMap,
@@ -300,7 +300,7 @@ export class UpdateManager
 					repositorySheetSelectInfo.actorRecordIdColumnIndex)]
 				const recordHistory = recordHistoryMapByRecordId
 				[repositoryId][actorId][_actorRecordId]
-				for (const columnName in queryUpdate.S) {
+				for (const columnName in queryUpdate.SELECT) {
 					const dbColumn = context.dbEntity.columnMap[columnName]
 					const value = updatedRecord[resultSetIndexByColumnIndex.get(dbColumn.index)]
 

@@ -525,12 +525,12 @@ export class ApplicationComposer
 			= this.datastructureUtils.ensureChildArray(newPropertiesMap, applicationName);
 		jsonEntities.forEach((
 			jsonEntity,
-			tableIndex
+			entityIndex
 		) => {
-			const entity = entities[tableIndex];
+			const entity = entities[entityIndex];
 			const propertiesForEntity
 				= [];
-			propertiesByEntityIndex[tableIndex]
+			propertiesByEntityIndex[entityIndex]
 				= propertiesForEntity;
 			let index = 0;
 
@@ -570,15 +570,15 @@ export class ApplicationComposer
 			= this.datastructureUtils.ensureChildArray(newRelationsMap, applicationName);
 		const referencesForApplication = newApplicationReferenceMap.get(applicationName);
 
-		for (let tableIndex = 0; tableIndex < jsonEntities.length; tableIndex++) {
-			const jsonEntity = jsonEntities[tableIndex]
+		for (let entityIndex = 0; entityIndex < jsonEntities.length; entityIndex++) {
+			const jsonEntity = jsonEntities[entityIndex]
 			const propertiesForEntity
-				= propertiesByEntityIndex[tableIndex];
+				= propertiesByEntityIndex[entityIndex];
 			const relationsForEntity
 				= [];
-			relationsByEntityIndex[tableIndex]
+			relationsByEntityIndex[entityIndex]
 				= relationsForEntity;
-			const entity = entitiesForApplication[tableIndex];
+			const entity = entitiesForApplication[entityIndex];
 			let index = 0;
 
 			const relations: DbRelation[] = [];
@@ -645,11 +645,11 @@ export class ApplicationComposer
 
 		jsonEntities.forEach((
 			jsonEntity,
-			tableIndex
+			entityIndex
 		) => {
-			const entity = entitiesForApplication[tableIndex];
+			const entity = entitiesForApplication[entityIndex];
 			const columnsForTable: DbColumn[] = [];
-			columnsByTable[tableIndex] = columnsForTable;
+			columnsByTable[entityIndex] = columnsForTable;
 			const idColumnIndexes: DbColumn_IdIndex[] = [];
 			jsonEntity.idColumnRefs.forEach((
 				idColumnRef,
@@ -657,7 +657,7 @@ export class ApplicationComposer
 			) => {
 				idColumnIndexes[idColumnRef.index] = idColumnIndex;
 			});
-			const propertiesForEntity = propertiesForApplication[tableIndex];
+			const propertiesForEntity = propertiesForApplication[entityIndex];
 
 			jsonEntity.columns.forEach((
 				jsonColumn,
@@ -715,10 +715,10 @@ export class ApplicationComposer
 		const relationsForApplication = newRelationsMap.get(applicationName);
 		const applicationReferencesForApplication = newApplicationReferenceMap.get(applicationName);
 
-		for (let tableIndex = 0; tableIndex < jsonEntities.length; tableIndex++) {
-			const jsonEntity = jsonEntities[tableIndex]
-			const columnsForEntity = columnsForApplication[tableIndex];
-			const relationsForEntity = relationsForApplication[tableIndex];
+		for (let entityIndex = 0; entityIndex < jsonEntities.length; entityIndex++) {
+			const jsonEntity = jsonEntities[entityIndex]
+			const columnsForEntity = columnsForApplication[entityIndex];
+			const relationsForEntity = relationsForApplication[entityIndex];
 
 			for (let index = 0; index < jsonEntity.columns.length; index++) {
 				const jsonColumn = jsonEntity.columns[index]

@@ -100,7 +100,7 @@ export function buildIndexedSApplication(
 			relations,
 		};
 
-		idx.entities[entity.tableIndex]  = indexedEntity;
+		idx.entities[entity.entityIndex]  = indexedEntity;
 		idx.entityMapByName[entity.name] = indexedEntity;
 	}
 

@@ -74,8 +74,8 @@ export class SApplicationBuilder {
 		const sEntityMapByName: { [name: string]: SEntity } = {};
 		for (const entityName in this.entityMapByName) {
 			const entityCandidate: EntityCandidate = this.entityMapByName[entityName];
-			const tableIndex = application.entities.length;
-			const entity = this.buildEntity(entityCandidate, tableIndex, referencedApplicationsByProjectName);
+			const entityIndex = application.entities.length;
+			const entity = this.buildEntity(entityCandidate, entityIndex, referencedApplicationsByProjectName);
 			if (entity) {
 				application.entities.push(entity);
 				sEntityMapByName[entityName] = entity;
@@ -145,7 +145,7 @@ export class SApplicationBuilder {
 
 	private buildEntity(
 		entityCandidate: EntityCandidate,
-		tableIndex: number,
+		entityIndex: number,
 		referencedApplicationsByProjectName: { [projectName: string]: SApplicationReference },
 	): SEntity {
 		let foundEntityDecorator = false;
@@ -228,7 +228,7 @@ class ${entityCandidate.docEntry.name}
 			numRelations: 0,
 			properties: [],
 			table: tableConfig,
-			tableIndex
+			entityIndex
 		};
 
 		const primitiveColumnMapByName: { [columnName: string]: SColumn } = {};

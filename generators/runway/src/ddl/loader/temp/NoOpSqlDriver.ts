@@ -1,6 +1,6 @@
 import {
 	SQLDialect,
-	SqlDriver
+	SqlStoreDriver
 } from '@airport/fuel-hydrant-system';
 import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
 import { Query } from '@airport/ground-control';
@@ -11,7 +11,7 @@ import {
 } from '@airport/terminal-map';
 
 export class NoOpSqlDriver
-	extends SqlDriver {
+	extends SqlStoreDriver {
 	composeTableName(
 		applicationName: string,
 		tableName: string,

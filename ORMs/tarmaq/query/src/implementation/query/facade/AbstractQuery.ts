@@ -68,21 +68,21 @@ export abstract class AbstractQuery
 	): QueryNonEntity {
 		let from = this.rawToQueryFromClause(rawQuery.FROM,
 			queryUtils, fieldUtils, relationManager)
-		queryNonEntity.F = from
+		queryNonEntity.FROM = from
 		if (createSelectCallback) {
 			createSelectCallback(queryNonEntity)
 		}
 
-		queryNonEntity.W = queryUtils.whereClauseToQueryOperation(
+		queryNonEntity.WHERE = queryUtils.whereClauseToQueryOperation(
 			rawQuery.WHERE, this.columnAliases,
 			this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
-		queryNonEntity.GB = this.groupByClauseToQuery(rawQuery.GROUP_BY)
-		queryNonEntity.H = queryUtils.whereClauseToQueryOperation(
+		queryNonEntity.GROUP_BY = this.groupByClauseToQuery(rawQuery.GROUP_BY)
+		queryNonEntity.HAVING = queryUtils.whereClauseToQueryOperation(
 			rawQuery.HAVING, this.columnAliases,
 			this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
-		queryNonEntity.OB = this.orderByClauseToQuery(rawQuery.ORDER_BY)
-		queryNonEntity.L = rawQuery.LIMIT
-		queryNonEntity.O = rawQuery.OFFSET
+		queryNonEntity.ORDER_BY = this.orderByClauseToQuery(rawQuery.ORDER_BY)
+		queryNonEntity.LIMIT = rawQuery.LIMIT
+		queryNonEntity.OFFSET = rawQuery.OFFSET
 
 		return queryNonEntity
 	}
@@ -127,7 +127,7 @@ export abstract class AbstractQuery
 				throw new Error(`Field used in group by clause is not present in SELECT clause`)
 			}
 			return {
-				fa: this.columnAliases.getExistingAlias(field)
+				fieldAlias: this.columnAliases.getExistingAlias(field)
 			}
 		})
 	}

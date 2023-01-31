@@ -23,12 +23,12 @@ export class ExactOrderByParser
 	): string {
 		return orderBy.map(
 			(orderByField) => {
-				this.validator.validateAliasedFieldAccess(orderByField.fa)
-				switch (orderByField.so) {
+				this.validator.validateAliasedFieldAccess(orderByField.fieldAlias)
+				switch (orderByField.sortOrder) {
 					case QuerySortOrder.ASCENDING:
-						return `${orderByField.fa} ASC`
+						return `${orderByField.fieldAlias} ASC`
 					case QuerySortOrder.DESCENDING:
-						return `${orderByField.fa} DESC`
+						return `${orderByField.fieldAlias} DESC`
 				}
 			})
 			.join(', ')

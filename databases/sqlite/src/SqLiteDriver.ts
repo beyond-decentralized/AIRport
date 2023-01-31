@@ -5,7 +5,7 @@ import {
 } from '@airport/ground-control'
 import {
 	SQLDialect,
-	SqlDriver
+	SqlStoreDriver
 } from '@airport/fuel-hydrant-system'
 import { IOperationContext } from '@airport/terminal-map';
 import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
@@ -15,7 +15,7 @@ import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
  */
 
 export abstract class SqLiteDriver
-	extends SqlDriver {
+	extends SqlStoreDriver {
 
 	constructor() {
 		super()

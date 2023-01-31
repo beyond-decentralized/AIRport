@@ -54,9 +54,9 @@ export class InsertValues<IQE extends IQEntity>
 		}
 
 		return {
-			II: insertInto as QueryEntityRelation,
-			C: columnIndexes,
-			V: this.rawToQueryValuesClause(
+			INSERT_INTO: insertInto as QueryEntityRelation,
+			COLUMNS: columnIndexes,
+			VALUES: this.rawToQueryValuesClause(
 				this.rawInsertValues.VALUES, dbColumns,
 				queryUtils, fieldUtils, relationManager)
 		}

@@ -5,7 +5,7 @@ export class ColumnMap {
 	columnMap: { [columnIndex: DbColumn_Index]: boolean } = {};
 
 	constructor(
-		public tableIndex: DbEntity_TableIndex,
+		public entityIndex: DbEntity_TableIndex,
 		allColumns: boolean = false
 	) {
 		if (allColumns) {

@@ -15,7 +15,7 @@ export interface PortableQueryParameter<Value> {
 
 export interface PortableQuery {
 	applicationIndex?: number;
-	tableIndex?: number;
+	entityIndex?: number;
 	query: QueryWhereBase;
 	queryResultType: QueryResultType;
 	parameterMap: {

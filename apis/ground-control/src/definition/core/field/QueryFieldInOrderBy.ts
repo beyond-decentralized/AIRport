@@ -1,3 +1,5 @@
+import { DbApplication_Index } from "../../application/DbApplication";
+
 /**
  * Order of a sorted field, as specified in the ORDER BY clause.
  */
@@ -11,7 +13,7 @@ export enum QuerySortOrder {
  */
 export interface QueryFieldInGroupBy {
 	// Field Alias
-	fa: string;
+	fieldAlias: string;
 }
 
 /**
@@ -20,7 +22,7 @@ export interface QueryFieldInGroupBy {
 export interface QueryFieldInOrderBy
 	extends QueryFieldInGroupBy {
 	// Sort Order
-	so: QuerySortOrder;
+	sortOrder: QuerySortOrder;
 }
 
 /**
@@ -29,11 +31,11 @@ export interface QueryFieldInOrderBy
 export interface QueryEntityFieldInOrderBy
 	extends QueryFieldInOrderBy {
 	// Application Version Id
-	si: number,
-	// Entity Type Index
-	ti: number,
+	applicationIndex: DbApplication_Index,
+	// Entity Index
+	entityIndex: number,
 	// Property Index
-	pi: number,
+	propertyIndex: number,
 	// Column Index
-	ci: number
+	columnIndex: number
 }

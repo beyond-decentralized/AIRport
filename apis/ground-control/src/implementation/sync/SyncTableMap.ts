@@ -15,26 +15,26 @@ export class SyncTableMap
 
 	constructor(
 		applicationIndex: DbApplication_Index,
-		tableMap: { [tableIndex: string]: ColumnMap }
+		tableMap: { [entityIndex: string]: ColumnMap }
 	) {
 		super(applicationIndex, tableMap);
 	}
 
 	ensureEntity(
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		allColumns: boolean = false
 	): SyncColumnMap {
-		return super.ensure(tableIndex, allColumns,
+		return super.ensure(entityIndex, allColumns,
 			globalThis.SyncColumnMap as typeof SyncColumnMap);
 	}
 
 	intersects(
 		columnMap: TableMap
 	): boolean {
-		for (let tableIndex in this.tableMap) {
-			if (columnMap.tableMap[tableIndex]) {
-				let tableColumnMap = this.tableMap[tableIndex];
-				let otherTableColumnMap = columnMap.tableMap[tableIndex];
+		for (let entityIndex in this.tableMap) {
+			if (columnMap.tableMap[entityIndex]) {
+				let tableColumnMap = this.tableMap[entityIndex];
+				let otherTableColumnMap = columnMap.tableMap[entityIndex];
 				if (tableColumnMap[globalThis.ALL_TABLE_COLUMNS]
 					|| tableColumnMap[globalThis.ALL_TABLE_COLUMNS]) {
 					return true;

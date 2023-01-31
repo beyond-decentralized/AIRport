@@ -205,13 +205,13 @@ function emitFiles(
 
 		const sIndexedEntity = indexedApplication.entityMapByName[entityName];
 
-		let tableIndex: DbEntity_LocalId;
+		let entityIndex: DbEntity_LocalId;
 		if (sIndexedEntity) {
-			tableIndex = sIndexedEntity.entity.tableIndex;
+			entityIndex = sIndexedEntity.entity.entityIndex;
 		}
-		daoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullQGenerationPath);
-		dvoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullVGenerationPath);
-		entityMappingBuilder.addEntity(tableIndex, entityName, entity.path);
+		daoBuilder.addFileNameAndPaths(entityIndex, entityName, entity.path, fullQGenerationPath);
+		dvoBuilder.addFileNameAndPaths(entityIndex, entityName, entity.path, fullVGenerationPath);
+		entityMappingBuilder.addEntity(entityIndex, entityName, entity.path);
 		const qGenerationPath = pathBuilder.setupFileForGeneration(entity.path, 'Q', 'query');
 		const vGenerationPath = pathBuilder.setupFileForGeneration(entity.path, 'V', 'validation');
 		const qEntitySourceString = qEntityFileBuilder.build();

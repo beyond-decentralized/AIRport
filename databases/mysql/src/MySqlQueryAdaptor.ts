@@ -144,7 +144,7 @@ export class MySqlFunctionAdaptor
 		context: IOperationContext,
 	): string {
 		let param2;
-		switch (jsonFunctionCall.ft) {
+		switch (jsonFunctionCall.functionType) {
 			case SqlFunction.ABS:
 				return `ABS(${value})`;
 			case SqlFunction.AVG:
@@ -163,22 +163,22 @@ export class MySqlFunctionAdaptor
 				return `LOWER(${value})`;
 			case SqlFunction.MID:
 				let start = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context);
+					jsonFunctionCall.functionParameters[0], context);
 				let length = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[1], context);
+					jsonFunctionCall.functionParameters[1], context);
 				return `SUBSTR(${value}, ${start}, ${length})`;
 			case SqlFunction.LEN:
 				return `LENGTH(${value})`;
 			case SqlFunction.ROUND:
 				let digits = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context);
+					jsonFunctionCall.functionParameters[0], context);
 				return `ROUND(${value}, ${digits})`;
 			case SqlFunction.NOW:
 				return `DATE('now')`;
 			case SqlFunction.FORMAT:
 				let formatCall = `FORMAT('${value}', `;
-				for (let i = 0; i < jsonFunctionCall.p.length; i++) {
-					let formatParam = jsonFunctionCall.p[i];
+				for (let i = 0; i < jsonFunctionCall.functionParameters.length; i++) {
+					let formatParam = jsonFunctionCall.functionParameters[i];
 					formatParam = sqlValueProvider.getFunctionCallValue(
 						formatParam, context);
 					formatCall = `${formatCall}, ${formatParam}`;
@@ -187,9 +187,9 @@ export class MySqlFunctionAdaptor
 				return formatCall;
 			case SqlFunction.REPLACE:
 				let param1 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context);
+					jsonFunctionCall.functionParameters[0], context);
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[1], context);
+					jsonFunctionCall.functionParameters[1], context);
 				return `REPLACE('${value}', ${param1}, ${param2})`;
 			case SqlFunction.TRIM:
 				return `TRIM(${value})`;
@@ -199,22 +199,22 @@ export class MySqlFunctionAdaptor
 				throw new Error(`Invalid placement of an exists function`);
 			case SqlFunction.DIVIDE:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context);
+					jsonFunctionCall.functionParameters[0], context);
 				return `${value} / ${param2}`;
 			case SqlFunction.MINUS:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context);
+					jsonFunctionCall.functionParameters[0], context);
 				return `${value} - ${param2}`;
 			case SqlFunction.MULTIPLY:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context);
+					jsonFunctionCall.functionParameters[0], context);
 				return `${value} * ${param2}`;
 			case SqlFunction.PLUS:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					jsonFunctionCall.p[0], context);
+					jsonFunctionCall.functionParameters[0], context);
 				return `${value} + ${param2}`;
 			case SqlFunction.CONCATENATE:
-				return jsonFunctionCall.p.reduce((
+				return jsonFunctionCall.functionParameters.reduce((
 					acc,
 					val,
 				) => {
@@ -226,7 +226,7 @@ export class MySqlFunctionAdaptor
 			case SqlFunction.COALESCE:
 				throw new Error('Not Implemented');
 			default:
-				throw new Error(`Unknown function type: ${jsonFunctionCall.ft}`);
+				throw new Error(`Unknown function type: ${jsonFunctionCall.functionType}`);
 		}
 	}
 

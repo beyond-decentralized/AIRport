@@ -18,15 +18,15 @@ export interface QueryEntity<IEP extends QueryEntityProperties> extends Query {
 	/**
 	 * FROM
 	 */
-	F?: QueryEntityRelation[];
+	FROM?: QueryEntityRelation[];
 	/**
 	 * ORDER BY
 	 */
-	OB?: QueryEntityFieldInOrderBy[];
+	ORDER_BY?: QueryEntityFieldInOrderBy[];
 	/**
 	 * SELECT
 	 */
-	S: IEP;
+	SELECT: IEP;
 }
 
 /**

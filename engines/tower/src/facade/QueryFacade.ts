@@ -72,7 +72,7 @@ export class QueryFacade
 			parameterMap: query.getParameters(),
 			queryResultType,
 			applicationIndex: context.dbEntity.applicationVersion.application.index,
-			tableIndex: context.dbEntity.index,
+			entityIndex: context.dbEntity.index,
 			trackedRepoGUIDs: Array.from(query.trackedRepoGUIDSet),
 			trackedRepoLocalIds: Array.from(query.trackedRepoLocalIdSet)
 			// values: query.values
