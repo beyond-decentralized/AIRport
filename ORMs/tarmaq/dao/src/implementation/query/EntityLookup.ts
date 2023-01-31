@@ -11,7 +11,7 @@ import {
 	RawEntityQuery
 } from '@airport/tarmaq-query'
 import { IDao } from '../../definition/IDao'
-import { IEntityLookup } from '../../definition/query/EntityLookup'
+import { IEntityLookup } from '../../definition/query/IEntityLookup'
 import { LookupProxy } from './Lookup'
 
 export interface IEntityLookupInternal<Child,

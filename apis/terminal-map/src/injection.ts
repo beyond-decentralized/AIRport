@@ -3,26 +3,26 @@ import { lib } from '@airport/direction-indicator'
 import {
     AppTrackerUtils,
     DatastructureUtils,
-    DbApplicationUtils,
+    ImplApplicationUtils,
     SEQUENCE_GENERATOR,
     TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control'
-import { ITransactionManager } from './orchestration/TransactionManager'
+import { ITransactionManager } from './orchestration/ITransactionManager'
 import { TerminalStore } from './store/TerminalStore'
 import { ITransactionalServer } from './transaction/ITransactionalServer'
 import { ITransactionalReceiver } from './transaction/ITransactionalReceiver'
-import { IDomainRetriever } from './store/DomainRetriever'
-import { IStoreDriver } from './core/data/StoreDriver'
+import { IDomainRetriever } from './store/IDomainRetriever'
+import { IStoreDriver } from './core/data/IStoreDriver'
 import { TerminalState } from './store/TerminalState'
-import { IApplicationInitializer } from './core/ApplicationInitializer'
+import { IApplicationInitializer } from './core/IApplicationInitializer'
 import { UserState } from './store/user/UserState'
 import { UserStore } from './store/user/UserStore'
 import { ITerminalSessionManager } from './core/ITerminalSessionManager'
 import { AbstractApplicationLoader } from './AbstractApplicationLoader'
 import { IHistoryManager } from './orchestration/HistoryManager'
-import { IApplicationLoader } from './isolate/ApplicationLoader'
-import { ILocalAPIServer } from './isolate/LocalApiServer'
-import { SelectorManager } from './store/Selector'
+import { IApplicationLoader } from './isolate/IApplicationLoader'
+import { ILocalAPIServer } from './isolate/ILocalApiServer'
+import { SelectorManager } from './store/SelectorManager'
 
 const terminalMap = lib('terminal-map')
 
@@ -77,7 +77,7 @@ TRANSACTION_MANAGER.setDependencies({
 
 TRANSACTIONAL_RECEIVER.setDependencies({
     applicationInitializer: APPLICATION_INITIALIZER,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
 })
 
 TRANSACTIONAL_SERVER.setDependencies({

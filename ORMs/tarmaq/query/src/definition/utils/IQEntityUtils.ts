@@ -1,13 +1,13 @@
 import { QApp } from "@airport/aviation-communication";
 import { DbColumn, DbEntity, DbProperty, IApplicationUtils } from "@airport/ground-control";
-import { IQEntity } from "../core/entity/Entity";
-import { IRelationManager } from "../core/entity/IRelationManager";
-import { IQRelation } from "../core/entity/Relation";
-import { IQBooleanField } from "../core/field/BooleanField";
-import { IQDateField } from "../core/field/DateField";
-import { IQNumberField } from "../core/field/NumberField";
-import { IQStringField } from "../core/field/StringField";
-import { IQUntypedField } from "../core/field/UntypedField";
+import { IQEntity } from "../core/entity/IQEntity";
+import { IQueryRelationManager } from "../core/entity/IQueryRelationManager";
+import { IQRelation } from "../core/entity/IQRelation";
+import { IQBooleanField } from "../core/field/IQBooleanField";
+import { IQDateField } from "../core/field/IQDateField";
+import { IQNumberField } from "../core/field/IQNumberField";
+import { IQStringField } from "../core/field/IQStringField";
+import { IQUntypedField } from "../core/field/IQUntypedField";
 import { QEntity } from "../../implementation/core/entity/QEntity";
 import { QRelation } from "../../implementation/core/entity/Relation";
 import { IQEntityInternal } from "../core/entity/IQEntityDriver";
@@ -27,7 +27,7 @@ export interface IQEntityUtils {
         q: IQEntityInternal,
         allQApps: QApp[],
         applicationUtils: IApplicationUtils,
-        relationManager: IRelationManager
+        relationManager: IQueryRelationManager
     ): IQRelation<typeof q>
 
     getQEntityConstructor(

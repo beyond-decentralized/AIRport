@@ -3,18 +3,18 @@ import {
 	IFrom,
 	IQEntity,
 	IQTree
-} from '../../definition/core/entity/Entity'
+} from '../../definition/core/entity/IQEntity'
 import { IQEntityInternal } from '../../definition/core/entity/IQEntityDriver';
 import {
 	IJoinFields,
 	JoinOperation
-} from "../../definition/core/entity/Joins";
-import { IQOrderableField } from "../../definition/core/field/Field";
-import { RawFieldQuery } from "../../definition/query/facade/FieldQuery";
+} from "../../definition/core/entity/IJoins";
+import { IQOrderableField } from "../../definition/core/field/IQFieldInternal";
+import { RawFieldQuery } from "../../definition/query/facade/RawFieldQuery";
 import {
 	ITreeEntity,
 	RawTreeQuery
-} from "../../definition/query/facade/TreeQuery";
+} from "../../definition/query/facade/RawTreeQuery";
 import { ENTITY_UTILS } from '../../injection';
 import type { QField } from "./field/Field";
 

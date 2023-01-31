@@ -1,4 +1,4 @@
-import { JsonFieldQuery, Repository_GUID, Repository_LocalId } from '@airport/ground-control'
+import { QueryField, Repository_GUID, Repository_LocalId } from '@airport/ground-control'
 import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	FieldQuery,
@@ -6,7 +6,7 @@ import {
 	IFieldUtils,
 	IQOrderableField,
 	IQueryUtils,
-	IRelationManager,
+	IQueryRelationManager,
 	RawFieldQuery
 } from '@airport/tarmaq-query'
 
@@ -15,7 +15,7 @@ export class FieldUtils
 	implements IFieldUtils {
 
 	@Inject()
-	relationManager: IRelationManager
+	relationManager: IQueryRelationManager
 
 	FieldQuery: typeof FieldQuery
 
@@ -25,10 +25,10 @@ export class FieldUtils
 		trackedRepoGUIDSet: Set<Repository_GUID>,
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils
-	): JsonFieldQuery {
+	): QueryField {
 		let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases,
 			trackedRepoGUIDSet, trackedRepoLocalIdSet)
 
-		return subSelectQuery.toJSON(queryUtils, this, this.relationManager)
+		return subSelectQuery.toQuery(queryUtils, this, this.relationManager)
 	}
 }

@@ -5,7 +5,7 @@ import {
 	ManyToOne,
 	Table
 } from "@airport/tarmaq-entity";
-import { Application } from "@airport/airspace";
+import { DdlApplication } from "@airport/airspace";
 import { Repository } from './Repository'
 import { IRepositoryApplication } from "@airport/ground-control";
 
@@ -19,11 +19,11 @@ export class RepositoryApplication
 	@Id()
 	@ManyToOne()
 	@JoinColumn({
-		name: "APPLICATION_INDEX",
-		referencedColumnName: "APPLICATION_INDEX",
+		name: "DB_APPLICATION_INDEX",
+		referencedColumnName: "DB_APPLICATION_INDEX",
 		nullable: false
 	})
-	application: Application;
+	application: DdlApplication;
 
 	@Id()
 	@ManyToOne()

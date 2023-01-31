@@ -12,7 +12,7 @@ import {
 	Table
 } from '@airport/tarmaq-entity'
 import { ChangeType, IOperationHistory, OperationHistory_LocalId, OperationHistory_OrderNumber, SystemWideOperationId } from '@airport/ground-control'
-import { ApplicationEntity } from '@airport/airspace/dist/app/bundle'
+import { DdlEntity } from '@airport/airspace/dist/app/bundle'
 import { RecordHistory } from './RecordHistory'
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory'
 
@@ -50,10 +50,10 @@ export class OperationHistory
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'APPLICATION_ENTITY_LID',
-		referencedColumnName: 'APPLICATION_ENTITY_LID', nullable: false
+		name: 'DB_ENTITY_LID',
+		referencedColumnName: 'DB_ENTITY_LID', nullable: false
 	})
-	entity?: ApplicationEntity
+	entity?: DdlEntity
 
 	@ManyToOne()
 	@JoinColumn({

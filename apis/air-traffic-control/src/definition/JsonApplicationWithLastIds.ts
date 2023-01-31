@@ -1,9 +1,9 @@
 import { JsonApplicationWithApi } from "../api/JsonApplicationWithApi";
-import { LastIds } from "./LastIds";
+import { ILastIds } from "./ILastIds";
 
 export interface JsonApplicationWithLastIds
     extends JsonApplicationWithApi {
 
-    lastIds?: LastIds
+    lastIds?: ILastIds
 
 }

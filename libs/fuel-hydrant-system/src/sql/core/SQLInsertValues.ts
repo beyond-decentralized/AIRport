@@ -3,13 +3,13 @@ import {
 	DbEntity,
 	IApplicationUtils,
 	IEntityStateManager,
-	JsonInsertValues,
+	QueryInsertValues,
 	SyncApplicationMap,
 	SyncColumnMap
 } from '@airport/ground-control'
 import {
 	IQueryUtils,
-	IRelationManager
+	IQueryRelationManager
 } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
@@ -28,7 +28,7 @@ export class SQLInsertValues
 	extends SQLNoJoinQuery {
 
 	constructor(
-		public jsonInsertValues: JsonInsertValues,
+		public insertValuesQuery: QueryInsertValues,
 		dialect: SQLDialect,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
@@ -36,7 +36,7 @@ export class SQLInsertValues
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		relationManager: IRelationManager,
+		relationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementSqlGenerator: ISubStatementSqlGenerator,
@@ -44,8 +44,8 @@ export class SQLInsertValues
 		context: IFuelHydrantContext
 		// repository?: IRepository
 	) {
-		super(airportDatabase.applications[jsonInsertValues.II.si].currentVersion[0]
-			.applicationVersion.entities[jsonInsertValues.II.ti], dialect,
+		super(airportDatabase.applications[insertValuesQuery.II.si].currentVersion[0]
+			.applicationVersion.entities[insertValuesQuery.II.ti], dialect,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -64,17 +64,17 @@ export class SQLInsertValues
 		fieldMap: SyncApplicationMap,
 		context: IFuelHydrantContext
 	): string {
-		if (!this.jsonInsertValues.II) {
+		if (!this.insertValuesQuery.II) {
 			throw new Error(`Expecting exactly one table in INSERT INTO clause`)
 		}
 		this.qValidator.validateInsertQEntity(this.dbEntity)
 		let {
 			columnMap,
 			tableFragment
-		} = this.getFromFragment(this.jsonInsertValues.II, fieldMap, false, context, false)
-		let columnsFragment = this.getColumnsFragment(this.dbEntity, this.jsonInsertValues.C, columnMap)
+		} = this.getFromFragment(this.insertValuesQuery.II, fieldMap, false, context, false)
+		let columnsFragment = this.getColumnsFragment(this.dbEntity, this.insertValuesQuery.C, columnMap)
 		let valuesFragment = this.getValuesFragment(
-			this.jsonInsertValues.V, context)
+			this.insertValuesQuery.V, context)
 
 		return `INSERT INTO
 ${tableFragment} ${columnsFragment}

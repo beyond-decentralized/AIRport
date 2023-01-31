@@ -3,7 +3,7 @@ import {
 	SqlDriver
 } from '@airport/fuel-hydrant-system';
 import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
-import { JsonQuery } from '@airport/ground-control';
+import { Query } from '@airport/ground-control';
 import {
 	IOperationContext,
 	ITransaction,
@@ -105,7 +105,7 @@ export class NoOpSqlDriver
 	}
 
 	getSelectQuerySuffix(
-		jsonQuery: JsonQuery,
+		query: Query,
 		context: IFuelHydrantContext
 	): string {
 		return ''

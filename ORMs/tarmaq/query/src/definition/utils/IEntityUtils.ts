@@ -1,13 +1,13 @@
-import { IEntityAliases } from "../core/entity/Aliases";
+import { IEntityAliases } from "../core/entity/IAliases";
 import {
 	IEntityRelationFrom, IEntitySelectProperties, IFrom, IQEntity,
 	IQTree
-} from "../core/entity/Entity";
+} from "../core/entity/IQEntity";
 import { IQEntityDriver, IQEntityInternal } from "../core/entity/IQEntityDriver";
-import { IAbstractQuery } from "../query/facade/AbstractQuery";
-import { RawEntityQuery } from "../query/facade/EntityQuery";
-import { IQuery, RawQuery } from "../query/facade/Query";
-import { ITreeEntity, RawTreeQuery } from "../query/facade/TreeQuery";
+import { IAbstractQuery } from "../query/facade/IAbstractQuery";
+import { RawEntityQuery } from "../query/facade/RawEntityQuery";
+import { IReadQuery, RawReadQuery } from "../query/facade/RawReadQuery";
+import { ITreeEntity, RawTreeQuery } from "../query/facade/RawTreeQuery";
 
 export interface IEntityUtils {
 
@@ -24,7 +24,7 @@ export interface IEntityUtils {
 	): Q;
 
 	ensureAllQEntitiesInFromClause(
-		rawQuery: RawQuery
+		rawQuery: RawReadQuery
 	): void
 
 	ensureId<EntitySelect extends IEntitySelectProperties>(
@@ -40,8 +40,8 @@ export interface IEntityUtils {
 	}
 
 	getRawQuery(
-		rawQuery: RawQuery | { (...args: any[]): RawQuery }
-	): RawQuery;
+		rawQuery: RawReadQuery | { (...args: any[]): RawReadQuery }
+	): RawReadQuery;
 
 	// Removes circular dependency at code initialization time
 	getEntityQuery(
@@ -52,7 +52,7 @@ export interface IEntityUtils {
 	getTreeQuery<ITE extends ITreeEntity>(
 		rawQuery: RawTreeQuery<ITE>,
 		entityAliases: IEntityAliases
-	): IQuery
+	): IReadQuery
 
 	// Removes circular dependency at code initialization time
 	isQEntity<IF extends IFrom>(

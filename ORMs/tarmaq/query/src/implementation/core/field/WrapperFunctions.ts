@@ -2,16 +2,16 @@ import {
 	DbColumn,
 	SQLDataType
 }                         from '@airport/ground-control'
-import {IQBooleanField}   from '../../../definition/core/field/BooleanField'
-import {IQDateField}      from '../../../definition/core/field/DateField'
-import {IQNumberField}    from '../../../definition/core/field/NumberField'
-import {IQStringField}    from '../../../definition/core/field/StringField'
+import {IQBooleanField}   from '../../../definition/core/field/IQBooleanField'
+import {IQDateField}      from '../../../definition/core/field/IQDateField'
+import {IQNumberField}    from '../../../definition/core/field/IQNumberField'
+import {IQStringField}    from '../../../definition/core/field/IQStringField'
 import {
 	boolFunction,
 	dateFunction,
 	numFunction,
 	strFunction
-}                         from '../../../definition/core/field/WrapperFunctions'
+}                         from '../../../definition/core/field/IQWrapperFunctions'
 import {QBooleanFunction} from './BooleanField'
 import {QDateFunction}    from './DateField'
 import {QNullFunction}    from './NullFunction'

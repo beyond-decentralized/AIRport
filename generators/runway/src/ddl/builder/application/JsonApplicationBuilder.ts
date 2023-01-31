@@ -1,8 +1,8 @@
 import {
-	AJsonPropertyIndexConfiguration,
-	ApplicationColumn_Index,
-	DatabaseIndexConfiguration,
-	DatabaseOneToManyElements,
+	JsonAPropertyIndexConfiguration,
+	DbColumn_Index,
+	DbIndexConfiguration,
+	DbOneToManyElements,
 	DbEntity,
 	DbApplication,
 	EntityRelationType,
@@ -11,13 +11,13 @@ import {
 	JsonDatabaseObjectConfiguration,
 	JsonOperation,
 	JsonApplication,
-	JsonApplicationColumn,
-	JsonApplicationEntity,
-	JsonApplicationProperty,
-	JsonApplicationRelation,
-	Application_Index,
-	ApplicationReferenceByIndex,
-	ApplicationEntity_TableIndex
+	JsonColumn,
+	JsonEntity,
+	JsonProperty,
+	JsonRelation,
+	DbApplication_Index,
+	DbApplicationReferenceByIndex,
+	DbEntity_TableIndex
 } from '@airport/ground-control';
 import { currentApplicationApi } from '../../../api/parser/ApiGenerator';
 import { getExpectedPropertyIndexesFormatMessage } from '../../../ParserUtils';
@@ -99,12 +99,12 @@ export class JsonApplicationBuilder {
 		domain: string,
 		sIndexedApplication: SIndexedApplication,
 	): JsonApplicationWithApi {
-		const jsonEntities: JsonApplicationEntity[] = sIndexedApplication.entities.map(
+		const jsonEntities: JsonEntity[] = sIndexedApplication.entities.map(
 			sIndexedEntity => {
 				const sEntity = sIndexedEntity.entity;
-				const columns: JsonApplicationColumn[] = sIndexedEntity.columns.map(
+				const columns: JsonColumn[] = sIndexedEntity.columns.map(
 					sColumn => {
-						const jsonColumn: JsonApplicationColumn = {
+						const jsonColumn: JsonColumn = {
 							allocationSize: sColumn.allocationSize,
 							// columnDefinition: sColumn.columnDefinition,
 							index: sColumn.index,
@@ -181,7 +181,7 @@ export class JsonApplicationBuilder {
 		};
 	}
 
-	private convertTableConfig<DIC extends DatabaseIndexConfiguration>(
+	private convertTableConfig<DIC extends DbIndexConfiguration>(
 		sEntity: SEntity
 	): JsonDatabaseObjectConfiguration<DIC> {
 		if (!sEntity.table) {
@@ -241,7 +241,7 @@ Expecting entityAlias.propertyName.${getExpectedPropertyIndexesFormatMessage()}`
 Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName} ${getExpectedPropertyIndexesFormatMessage()}`)
 			}
 
-			const coreConfig: AJsonPropertyIndexConfiguration = {
+			const coreConfig: JsonAPropertyIndexConfiguration = {
 				propertyIndex: property.index
 			}
 
@@ -260,7 +260,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 
 	private getIdColumnReferences(
 		sIndexedEntity: SIndexedEntity
-	): ApplicationReferenceByIndex<ApplicationColumn_Index>[] {
+	): DbApplicationReferenceByIndex<DbColumn_Index>[] {
 		return sIndexedEntity.idColumns.map(
 			sColumn => ({
 				index: sColumn.index
@@ -270,8 +270,8 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 	private getPropertiesAndRelations(
 		sIndexedApplication: SIndexedApplication,
 		sIndexedEntity: SIndexedEntity,
-		columns: JsonApplicationColumn[],
-	): [JsonApplicationProperty[], JsonApplicationRelation[]] {
+		columns: JsonColumn[],
+	): [JsonProperty[], JsonRelation[]] {
 		const relations = [];
 		const properties = sIndexedEntity.entity.properties.map((
 			sProperty,
@@ -288,28 +288,28 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 				};
 
 			} else {
-				let relationTableApplication_Index: number;
-				let relationApplication_Index: Application_Index;
-				let relationTableIndex: ApplicationEntity_TableIndex;
+				let relationTableDbApplication_Index: number;
+				let relationDbApplication_Index: DbApplication_Index;
+				let relationTableIndex: DbEntity_TableIndex;
 				let relatedIndexedEntity: SIndexedEntity | DbEntity;
-				if (sRelation.referencedApplication_Index || sRelation.referencedApplication_Index === 0) {
-					relationTableApplication_Index = sRelation.referencedApplication_Index;
-					const relatedDbApplication = sIndexedApplication.application.referencedApplications[sRelation.referencedApplication_Index];
-					relationApplication_Index = relatedDbApplication.index;
+				if (sRelation.referencedDbApplication_Index || sRelation.referencedDbApplication_Index === 0) {
+					relationTableDbApplication_Index = sRelation.referencedDbApplication_Index;
+					const relatedDbApplication = sIndexedApplication.application.referencedApplications[sRelation.referencedDbApplication_Index];
+					relationDbApplication_Index = relatedDbApplication.index;
 					relatedIndexedEntity = relatedDbApplication.dbApplication
 						.currentVersion[0].applicationVersion.entityMapByName[sRelation.entityName];
 					relationTableIndex = relatedIndexedEntity.index;
 				} else {
 					relatedIndexedEntity = sIndexedApplication.entityMapByName[sRelation.entityName];
-					relationApplication_Index = null;
+					relationDbApplication_Index = null;
 					relationTableIndex = relatedIndexedEntity.entity.tableIndex;
 				}
 
 				this.buildColumnRelations(
 					sIndexedEntity, sRelation, relatedIndexedEntity,
-					relationApplication_Index, relationTableIndex, columns);
+					relationDbApplication_Index, relationTableIndex, columns);
 
-				const relation: JsonApplicationRelation = {
+				const relation: JsonRelation = {
 					// addToJoinFunction: sRelation.addToJoinFunction,
 					foreignKey: sRelation.foreignKey,
 					index: sRelation.index,
@@ -323,7 +323,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 						index: index
 					},
 					relationTableIndex,
-					relationTableApplication_Index,
+					relationTableDbApplication_Index,
 					sinceVersion: 1
 				};
 				relations[sRelation.index] = relation;
@@ -349,9 +349,9 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 		sIndexedEntity: SIndexedEntity,
 		sRelation: SRelation,
 		relatedIndexedEntity: SIndexedEntity | DbEntity,
-		relationApplication_Index: number,
+		relationDbApplication_Index: number,
 		relationTableIndex: number,
-		columns: JsonApplicationColumn[]
+		columns: JsonColumn[]
 	): void {
 		switch (sRelation.relationType) {
 			case EntityRelationType.MANY_TO_ONE:
@@ -385,7 +385,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 
 				column.manyRelationColumnRefs.push({
 					manyRelationIndex: sRelation.index,
-					oneApplication_Index: relationApplication_Index,
+					oneDbApplication_Index: relationDbApplication_Index,
 					oneTableIndex: relationTableIndex,
 					oneRelationIndex: sRelationColumn.oneSideRelationIndex,
 					oneColumnIndex: relationColumnIndex,
@@ -396,8 +396,8 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 	}
 
 	private prepOneToManyElems(
-		elems: DatabaseOneToManyElements
-	): DatabaseOneToManyElements {
+		elems: DbOneToManyElements
+	): DbOneToManyElements {
 		if (!elems) {
 			return elems;
 		}

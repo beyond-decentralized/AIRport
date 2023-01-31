@@ -5,7 +5,7 @@ import {
 import {
 	IRepositoryDao, RepositoryMemberDao
 } from '@airport/holding-pattern/dist/app/bundle'
-import { InMessageIndex, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Signature, RepositoryMember_Status, RepositorySynchronizationData, RepositorySynchronizationMessage, Repository_GUID, Repository_LocalId, UserAccount_Signature } from '@airport/ground-control';
+import { InMessageIndex, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Signature, RepositoryMember_Status, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, Repository_LocalId, UserAccount_Signature } from '@airport/ground-control';
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 
 export interface IRepositoriesAndMembersCheckResult
@@ -30,7 +30,7 @@ export interface ISignatureCheck {
 export interface ISyncInRepositoryChecker {
 
 	checkRepositoriesAndMembers(
-		message: RepositorySynchronizationMessage
+		message: SyncRepositoryMessage
 	): Promise<IRepositoriesAndMembersCheckResult>;
 
 }
@@ -46,7 +46,7 @@ export class SyncInRepositoryChecker
 	repositoryMemberDao: RepositoryMemberDao
 
 	async checkRepositoriesAndMembers(
-		message: RepositorySynchronizationMessage
+		message: SyncRepositoryMessage
 	): Promise<IRepositoriesAndMembersCheckResult> {
 		let missingRepositories: IRepository[] = []
 		let newMembers: IRepositoryMember[] = []
@@ -71,8 +71,8 @@ export class SyncInRepositoryChecker
 				throw new Error(`message.data.history is not an object`)
 			}
 			let historyRepository = history.repository
-			const repositoryErrorPrefix = `Serialized RepositorySynchronizationData.history.repository should be`
-			const isRepositoryCreationEqualityErrorPrefix = `if RepositorySynchronizationData.history.isRepositoryCreation ===`
+			const repositoryErrorPrefix = `Serialized SyncRepositoryData.history.repository should be`
+			const isRepositoryCreationEqualityErrorPrefix = `if SyncRepositoryData.history.isRepositoryCreation ===`
 			if (history.isRepositoryCreation) {
 				if (typeof historyRepository !== 'object') {
 					throw new Error(`${repositoryErrorPrefix} an object
@@ -130,7 +130,7 @@ export class SyncInRepositoryChecker
 			if (typeof historyRepository !== 'object') {
 				throw new Error(`Repository with GUID ${historyRepository} is not
 	present and cannot be synced
-	This RepositorySynchronizationData is for an existing repository and that
+	This SyncRepositoryData is for an existing repository and that
 	repository must already be loaded in this database for this message to be
 	processed.`)
 			} else {
@@ -160,7 +160,7 @@ export class SyncInRepositoryChecker
 	}
 
 	private async checkRepositoryMembers(
-		message: RepositorySynchronizationMessage
+		message: SyncRepositoryMessage
 	): Promise<{
 		newMembers: IRepositoryMember[]
 		newRepositoryMemberAcceptance: IRepositoryMemberAcceptance
@@ -204,7 +204,7 @@ export class SyncInRepositoryChecker
 	}
 
 	private async checkRepositoryMemberUserAccounts(
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		isNewRepositoryMemberAcceptanceMessage: boolean,
 		isNewRepositoryMemberInvitationMessage: boolean
 	): Promise<void> {
@@ -248,7 +248,7 @@ a acceptingRepositoryMember.userAccount specified.`)
 	}
 
 	private isNewRepositoryMemberAcceptanceMessage(
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		existingRepositoryMember: IRepositoryMember
 	): IRepositoryMemberAcceptance {
 		const history = data.history
@@ -316,7 +316,7 @@ a acceptingRepositoryMember.userAccount specified.`)
 	}
 
 	private isNewRepositoryMemberInvitationMessage(
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		existingRepositoryMember: IRepositoryMember,
 		newMembers: IRepositoryMember[]
 	): boolean {
@@ -411,7 +411,7 @@ is not present in the message.`)
 	}
 
 	private getInMessageRepositoryMemberMap(
-		data: RepositorySynchronizationData
+		data: SyncRepositoryData
 	): Map<RepositoryMember_PublicSigningKey, InMessageIndex> {
 		const repositoryMemberInMessageIndexesMapByPublicSigningKey:
 			Map<RepositoryMember_PublicSigningKey, InMessageIndex> = new Map()
@@ -453,7 +453,7 @@ is not present in the message.`)
 	}
 
 	private async getExistingRepositoryMember(
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		repositoryMemberInMessageIndexesMapByPublicSigningKey:
 			Map<RepositoryMember_PublicSigningKey, InMessageIndex>,
 		newMembers: IRepositoryMember[]
@@ -494,7 +494,7 @@ is not present in the message.`)
 	}
 
 	private getPublicSigningKeysAndSignatureToCheck(
-		message: RepositorySynchronizationMessage,
+		message: SyncRepositoryMessage,
 		isNewRepositoryMemberAcceptanceMessage: boolean
 	): ISignatureCheck[] {
 		const signatureChecks: ISignatureCheck[] = []
@@ -529,7 +529,7 @@ is not present in the message.`)
 		repositoryIndex: number,
 		repositoryGUIDs: string[],
 		messageRepositoryIndexMap: Map<string, number>,
-		message: RepositorySynchronizationData
+		message: SyncRepositoryData
 	): void {
 		if (typeof repository.ageSuitability !== 'number') {
 			throw new Error(`Invalid 'repository.ageSuitability'`)

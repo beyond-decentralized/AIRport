@@ -1,5 +1,5 @@
 import { Repository_GUID, Repository_LocalId } from '../core/types';
-import { JsonStatement } from './facade/Query';
+import { QueryWhereBase } from './facade/Query';
 import { QueryResultType } from './QueryResultType';
 
 /**
@@ -8,7 +8,7 @@ import { QueryResultType } from './QueryResultType';
 
 export type QueryParameterPosition = number;
 
-export interface IQueryParameter<Value> {
+export interface PortableQueryParameter<Value> {
 	alias: string;
 	value: Value
 }
@@ -16,19 +16,19 @@ export interface IQueryParameter<Value> {
 export interface PortableQuery {
 	applicationIndex?: number;
 	tableIndex?: number;
-	jsonQuery: JsonStatement;
+	query: QueryWhereBase;
 	queryResultType: QueryResultType;
 	parameterMap: {
-		[alias: string]: IQueryParameter<any>
+		[alias: string]: PortableQueryParameter<any>
 	};
 	trackedRepoGUIDs?: Repository_GUID[]
 	trackedRepoLocalIds?: Repository_LocalId[]
 	// values?: any[];
 }
 
-export interface IApplicationQuery
+export interface PortableApplicationQuery
 	extends PortableQuery {
 	parameterMap: {
-		[alias: string]: IQueryParameter<QueryParameterPosition>
+		[alias: string]: PortableQueryParameter<QueryParameterPosition>
 	};
 }

@@ -9,9 +9,9 @@ import {
 import {
 	DbApplicationVersion,
 	DbDomain,
-	Domain_Name,
+	DbDomain_Name,
 	IAirEntity,
-	IDbApplicationUtils,
+	DbApplicationUtils,
 	ISaveResult,
 	ITransactionalConnector,
 	PortableQuery
@@ -22,7 +22,7 @@ import {
 import {
 	IQueryContext
 } from '@airport/tarmaq-query';
-import { AppState, IAddRepositoryIMI, IApplicationLoader, ICallApiIMI, IGetLatestApplicationVersionByApplication_NameIMI, IInitConnectionIMI, IInitConnectionIMO, IIsolateMessage, IIsolateMessageOut, ILocalAPIServer, IObservableMessageInRecord, IPortableQueryIMI, IReadQueryIMI, IRetrieveDomainIMI, ISaveIMI, IsolateMessageType, ITerminalStore } from '@airport/terminal-map';
+import { AppState, IAddRepositoryIMI, IApplicationLoader, ICallApiIMI, IGetLatestApplicationVersionByDbApplication_NameIMI, IInitConnectionIMI, IInitConnectionIMO, IIsolateMessage, IIsolateMessageOut, ILocalAPIServer, IObservableMessageInRecord, IPortableQueryIMI, IReadQueryIMI, IRetrieveDomainIMI, ISaveIMI, IsolateMessageType, ITerminalStore } from '@airport/terminal-map';
 import { IApplicationStore } from '@airport/tower';
 import {
 	Observable,
@@ -33,7 +33,7 @@ import { v4 as guidv4 } from "uuid";
 export interface IIframeTransactionalConnector
 	extends ITransactionalConnector {
 
-	getLatestApplicationVersionMapByApplication_FullName(
+	getLatestApplicationVersionMapByDbApplication_FullName(
 		applicationName: string
 	): Promise<DbApplicationVersion>
 
@@ -45,7 +45,7 @@ export interface IIframeTransactionalConnector
 	): Promise<void>
 
 	retrieveDomain(
-		domainName: Domain_Name
+		domainName: DbDomain_Name
 	): Promise<DbDomain>
 
 }
@@ -61,7 +61,7 @@ export class IframeTransactionalConnector
 	applicationStore: IApplicationStore
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	dbApplicationUtils: DbApplicationUtils
 
 	@Inject()
 	localApiServer: ILocalAPIServer
@@ -113,7 +113,7 @@ export class IframeTransactionalConnector
 				|| !message.application
 				// And if own domain is a direct sub-domain of the message's domain
 				|| ownDomain !== this.dbApplicationUtils.
-					getApplication_FullName({
+					getDbApplication_FullName({
 						domain: message.domain,
 						name: message.application,
 					}) + domainSuffix) {
@@ -324,12 +324,12 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	async getLatestApplicationVersionMapByApplication_FullName(
-		fullApplication_Name: string
+	async getLatestApplicationVersionMapByDbApplication_FullName(
+		fullDbApplication_Name: string
 	): Promise<DbApplicationVersion> {
-		return await this.sendMessageNoWait<IGetLatestApplicationVersionByApplication_NameIMI, DbApplicationVersion>({
+		return await this.sendMessageNoWait<IGetLatestApplicationVersionByDbApplication_NameIMI, DbApplicationVersion>({
 			...this.getCoreFields(),
-			fullApplication_Name: fullApplication_Name,
+			fullDbApplication_Name: fullDbApplication_Name,
 			type: IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME
 		})
 	}
@@ -492,8 +492,8 @@ export class IframeTransactionalConnector
 				await this.applicationLoader.initialize()
 				window.parent.postMessage({
 					...this.getCoreFields(),
-					fullApplication_Name: this.dbApplicationUtils.
-						getApplication_FullName(
+					fullDbApplication_Name: this.dbApplicationUtils.
+						getDbApplication_FullName(
 							this.applicationLoader.getApplication()),
 					type: IsolateMessageType.APP_INITIALIZED
 				}, this.applicationStore.state.hostServer)
@@ -517,7 +517,7 @@ export class IframeTransactionalConnector
 	}
 
 	async retrieveDomain(
-		domainName: Domain_Name
+		domainName: DbDomain_Name
 	): Promise<DbDomain> {
 		return await this.sendMessageNoWait<IRetrieveDomainIMI, DbDomain>({
 			...this.getCoreFields(),

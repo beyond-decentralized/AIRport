@@ -7,30 +7,30 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	ApplicationColumn_Index,
+	DbColumn_Index,
 	DbColumn,
 	DbEntity,
-	JSONBaseOperation,
-	JSONClauseField,
-	JSONClauseObject,
-	JSONClauseObjectType,
-	JSONEntityRelation,
-	JsonFieldQuery,
-	JSONFunctionOperation,
-	JsonTreeQuery,
-	JSONValueOperation,
+	QueryBaseOperation,
+	QueryFieldClause,
+	QueryBaseClause,
+	QueryClauseObjectType,
+	QueryEntityRelation,
+	QueryField,
+	QueryFunctionOperation,
+	QueryTree,
+	QueryValueOperation,
 	OperationCategory,
-	Application_Index,
+	DbApplication_Index,
 	ApplicationMap,
 	SqlOperator,
-	ApplicationEntity_TableIndex,
+	DbEntity_TableIndex,
 	IEntityStateManager,
 	IApplicationUtils
 } from '@airport/ground-control'
 import {
 	IQEntityInternal,
 	IQueryUtils,
-	JSONLogicalOperation,
+	QueryLogicalOperation,
 	Parameter
 } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
@@ -58,7 +58,7 @@ export abstract class SQLWhereBase
 	public parameterReferences: (string | number)[] = []
 	protected fieldMap: ApplicationMap = new globalThis.ApplicationMap()
 	protected qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal } = {}
-	protected jsonRelationMapByAlias: { [entityAlias: string]: JSONEntityRelation } = {}
+	protected queryRelationMapByAlias: { [entityAlias: string]: QueryEntityRelation } = {}
 
 	constructor(
 		protected dbEntity: DbEntity,
@@ -115,12 +115,12 @@ export abstract class SQLWhereBase
 		context: IFuelHydrantContext,
 	): string {
 		return this.getFieldValue(
-			<JSONClauseField>rawValue, ClauseType.FUNCTION_CALL, null, context
+			<QueryFieldClause>rawValue, ClauseType.FUNCTION_CALL, null, context
 		)
 	}
 
 	getFieldFunctionValue(
-		aField: JSONClauseField,
+		aField: QueryFieldClause,
 		defaultCallback: () => string,
 		context: IFuelHydrantContext,
 	): string {
@@ -142,7 +142,7 @@ export abstract class SQLWhereBase
 	}
 
 	getFieldValue(
-		clauseField: JSONClauseObject | JSONClauseField[] | JsonFieldQuery,
+		clauseField: QueryBaseClause | QueryFieldClause[] | QueryField,
 		clauseType: ClauseType,
 		defaultCallback: () => string,
 		context: IFuelHydrantContext,
@@ -158,17 +158,17 @@ export abstract class SQLWhereBase
 				.join(', ')
 		}
 		if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.ot) {
-			throw new Error(`Object Type is not defined in JSONClauseField`)
+			throw new Error(`Object Type is not defined in QueryFieldClause`)
 		}
 
-		const aField = <JSONClauseField>clauseField
+		const aField = <QueryFieldClause>clauseField
 		let qEntity: IQEntityInternal
 		switch (clauseField.ot) {
-			case JSONClauseObjectType.FIELD_FUNCTION:
+			case QueryClauseObjectType.FIELD_FUNCTION:
 				return this.getFieldFunctionValue(aField, defaultCallback, context)
-			case JSONClauseObjectType.DISTINCT_FUNCTION:
+			case QueryClauseObjectType.DISTINCT_FUNCTION:
 				throw new Error(`Distinct function cannot be nested.`)
-			case JSONClauseObjectType.EXISTS_FUNCTION: {
+			case QueryClauseObjectType.EXISTS_FUNCTION: {
 				if (clauseType !== ClauseType.WHERE_CLAUSE) {
 					throw new Error(
 						`Exists can only be used as a top function in a WHERE clause.`)
@@ -176,13 +176,13 @@ export abstract class SQLWhereBase
 				const {
 					parameterReferences,
 					subQuerySql
-				} = this.subStatementSqlGenerator.getTreeQuerySql(<JsonTreeQuery>aField.v, this.dialect, context)
+				} = this.subStatementSqlGenerator.getTreeQuerySql(<QueryTree>aField.v, this.dialect, context)
 				if (parameterReferences.length) {
 					this.parameterReferences = this.parameterReferences.concat(parameterReferences)
 				}
 				return `EXISTS(${subQuerySql})`
 			}
-			case <any>JSONClauseObjectType.FIELD: {
+			case <any>QueryClauseObjectType.FIELD: {
 				qEntity = this.qEntityMapByAlias[aField.ta]
 				this.qValidator.validateReadQEntityProperty(
 					aField.si, aField.ti, aField.ci)
@@ -192,23 +192,23 @@ export abstract class SQLWhereBase
 				return this.getComplexColumnFragment(aField, columnName,
 					context)
 			}
-			case JSONClauseObjectType.FIELD_QUERY: {
-				let jsonFieldSqlSubQuery: JsonFieldQuery = aField.fieldSubQuery
-				if ((<JsonFieldQuery><any>aField).S) {
-					jsonFieldSqlSubQuery = <any>aField
+			case QueryClauseObjectType.FIELD_QUERY: {
+				let fieldSubQuery: QueryField = aField.fieldSubQuery
+				if ((<QueryField><any>aField).S) {
+					fieldSubQuery = <any>aField
 				}
 				const {
 					parameterReferences,
 					subQuerySql
 				} = this.subStatementSqlGenerator.getFieldQuerySql(
-					jsonFieldSqlSubQuery, this.dialect, this.qEntityMapByAlias, context)
+					fieldSubQuery, this.dialect, this.qEntityMapByAlias, context)
 				if (parameterReferences.length) {
 					this.parameterReferences = this.parameterReferences.concat(parameterReferences)
 				}
 				this.qValidator.addSubQueryAlias(aField.fa)
 				return `(${subQuerySql})`
 			}
-			case JSONClauseObjectType.MANY_TO_ONE_RELATION: {
+			case QueryClauseObjectType.MANY_TO_ONE_RELATION: {
 				qEntity = this.qEntityMapByAlias[aField.ta]
 				this.qValidator.validateReadQEntityManyToOneRelation(
 					aField.si, aField.ti, aField.ci)
@@ -259,7 +259,7 @@ export abstract class SQLWhereBase
 	}
 
 	protected getWHEREFragment(
-		operation: JSONBaseOperation,
+		operation: QueryBaseOperation,
 		nestingPrefix: string,
 		context: IFuelHydrantContext,
 	): string {
@@ -272,13 +272,13 @@ export abstract class SQLWhereBase
 		switch (operation.c) {
 			case OperationCategory.LOGICAL:
 				return this.getLogicalWhereFragment(
-					<JSONLogicalOperation>operation, nestingPrefix, context)
+					<QueryLogicalOperation>operation, nestingPrefix, context)
 			case OperationCategory.BOOLEAN:
 			case OperationCategory.DATE:
 			case OperationCategory.NUMBER:
 			case OperationCategory.STRING:
 			case OperationCategory.UNTYPED:
-				let valueOperation = <JSONValueOperation>operation
+				let valueOperation = <QueryValueOperation>operation
 				let lValueSql = this.getFieldValue(
 					valueOperation.l, ClauseType.WHERE_CLAUSE, null, context)
 				if (valueOperation.o === SqlOperator.IS_NOT_NULL
@@ -293,7 +293,7 @@ export abstract class SQLWhereBase
 				}
 				break
 			case OperationCategory.FUNCTION:
-				let functionOperation = <JSONFunctionOperation><any>operation
+				let functionOperation = <QueryFunctionOperation><any>operation
 				whereFragment = this.getFieldValue(
 					functionOperation.ob, ClauseType.WHERE_CLAUSE, null, context)
 				// exists function and maybe others
@@ -321,9 +321,9 @@ export abstract class SQLWhereBase
 	}
 
 	protected addField(
-		applicationIndex: Application_Index,
-		tableIndex: ApplicationEntity_TableIndex,
-		columnIndex: ApplicationColumn_Index,
+		applicationIndex: DbApplication_Index,
+		tableIndex: DbEntity_TableIndex,
+		columnIndex: DbColumn_Index,
 	): void {
 		this.fieldMap.ensure(applicationIndex, tableIndex)
 			.ensure(columnIndex)
@@ -341,7 +341,7 @@ export abstract class SQLWhereBase
 	}
 
 	protected getComplexColumnFragment(
-		value: JSONClauseField,
+		value: QueryFieldClause,
 		columnName: string,
 		context: IFuelHydrantContext,
 	): string {
@@ -363,7 +363,7 @@ export abstract class SQLWhereBase
 	}
 
 	protected getLogicalWhereFragment(
-		operation: JSONLogicalOperation,
+		operation: QueryLogicalOperation,
 		nestingPrefix: string,
 		context: IFuelHydrantContext,
 	) {
@@ -377,12 +377,12 @@ export abstract class SQLWhereBase
 				break
 			case SqlOperator.NOT:
 				const whereFragment = this.getWHEREFragment(
-					<JSONBaseOperation>operation.v, nestingPrefix, context)
+					<QueryBaseOperation>operation.v, nestingPrefix, context)
 				return ` NOT (${whereFragment})`
 			default:
 				throw new Error(`Unknown logical operator: ${operation.o}`)
 		}
-		let childOperations = <JSONBaseOperation[]>operation.v
+		let childOperations = <QueryBaseOperation[]>operation.v
 		if (!(childOperations instanceof Array)) {
 			throw new Error(
 				`Expecting an array of child operations as a value for operator ${operator}, 

@@ -1,5 +1,5 @@
-import { JsonFieldQuery } from '../../query/facade/FieldQuery';
-import { JSONClauseField, JSONClauseObject } from '../field/JSONClause';
+import { QueryField } from '../../query/facade/QueryField';
+import { QueryFieldClause, QueryBaseClause } from '../field/QueryClause';
 
 /**
  * Category of a SQL contentType
@@ -35,30 +35,30 @@ export enum SqlOperator {
 /**
  * Serialized version of a function call.
  */
-export interface JSONFunctionOperation
-	extends JSONBaseOperation {
+export interface QueryFunctionOperation
+	extends QueryBaseOperation {
 	// Object
 	// Function call data
-	ob: JSONClauseObject;
+	ob: QueryBaseClause;
 }
 
 /**
  * Serialized version of a value contentType.
  */
-export interface JSONValueOperation
-	extends JSONBaseOperation {
+export interface QueryValueOperation
+	extends QueryBaseOperation {
 	// lValue
 	// Value on the left side of the operator
-	l: JSONClauseField;
+	l: QueryFieldClause;
 	// rValue
 	// Value on the right side of the operator
-	r?: JSONClauseField | JSONClauseField[] | JsonFieldQuery;
+	r?: QueryFieldClause | QueryFieldClause[] | QueryField;
 }
 
 /**
  * All serialized operations extend this class
  */
-export interface JSONBaseOperation {
+export interface QueryBaseOperation {
 	/**
 	 * Category of the IOperation.
 	 */

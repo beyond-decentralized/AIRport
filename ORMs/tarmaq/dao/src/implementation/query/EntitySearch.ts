@@ -11,7 +11,7 @@ import {
 	Observable,
 	from
 } from 'rxjs';
-import { IEntitySearch } from '../../definition/query/EntitySearch';
+import { IEntitySearch } from '../../definition/query/IEntitySearch';
 import { EntityLookup } from './EntityLookup';
 
 export interface IEntitySearchInternal<Entity, EntityArray extends Array<Entity>,

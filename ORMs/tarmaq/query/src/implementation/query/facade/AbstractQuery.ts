@@ -1,10 +1,10 @@
 import { IOC } from '@airport/direction-indicator'
 import {
-	JSONFieldInGroupBy,
-	JSONFieldInOrderBy,
-	JsonNonEntityQuery,
-	JSONRelation,
-	JsonStatement,
+	QueryFieldInGroupBy,
+	QueryFieldInOrderBy,
+	QueryNonEntity,
+	QueryRelation,
+	QueryWhereBase,
 	Repository_GUID,
 	Repository_LocalId
 } from '@airport/ground-control'
@@ -12,22 +12,22 @@ import {
 	IEntityAliases,
 	IFieldColumnAliases,
 	Parameter
-} from '../../../definition/core/entity/Aliases'
+} from '../../../definition/core/entity/IAliases'
 import {
 	IEntityRelationFrom,
 	IFrom
-} from '../../../definition/core/entity/Entity'
-import { IFieldInOrderBy } from '../../../definition/core/field/FieldInOrderBy'
-import { IQOperableField } from '../../../definition/core/field/OperableField'
-import { IAbstractQuery } from '../../../definition/query/facade/AbstractQuery'
-import { RawNonEntityQuery } from '../../../definition/query/facade/NonEntityQuery'
-import { RawTreeQuery } from '../../../definition/query/facade/TreeQuery'
+} from '../../../definition/core/entity/IQEntity'
+import { IFieldInOrderBy } from '../../../definition/core/field/IFieldInOrderBy'
+import { IQOperableField } from '../../../definition/core/field/IQOperableField'
+import { IAbstractQuery } from '../../../definition/query/facade/IAbstractQuery'
+import { RawNonEntityQuery } from '../../../definition/query/facade/RawNonEntityQuery'
+import { RawTreeQuery } from '../../../definition/query/facade/RawTreeQuery'
 import { EntityAliases, } from '../../core/entity/Aliases'
 import { FieldInOrderBy } from '../../core/field/FieldInOrderBy'
 import { ENTITY_UTILS } from '../../../injection'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 
 /**
@@ -52,47 +52,47 @@ export abstract class AbstractQuery
 		return this.entityAliases.getParams().getParameters()
 	}
 
-	abstract toJSON(
+	abstract toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JsonStatement;
+		relationManager: IQueryRelationManager
+	): QueryWhereBase;
 
 	protected getNonEntityQuery(
 		rawQuery: RawNonEntityQuery,
-		jsonQuery: JsonNonEntityQuery,
-		createSelectCallback: { (jsonQuery: JsonNonEntityQuery): void },
+		queryNonEntity: QueryNonEntity,
+		createSelectCallback: { (queryNonEntity: QueryNonEntity): void },
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JsonNonEntityQuery {
-		let from = this.fromClauseToJSON(rawQuery.FROM,
+		relationManager: IQueryRelationManager
+	): QueryNonEntity {
+		let from = this.rawToQueryFromClause(rawQuery.FROM,
 			queryUtils, fieldUtils, relationManager)
-		jsonQuery.F = from
+		queryNonEntity.F = from
 		if (createSelectCallback) {
-			createSelectCallback(jsonQuery)
+			createSelectCallback(queryNonEntity)
 		}
 
-		jsonQuery.W = queryUtils.whereClauseToJSON(
+		queryNonEntity.W = queryUtils.whereClauseToQueryOperation(
 			rawQuery.WHERE, this.columnAliases,
 			this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
-		jsonQuery.GB = this.groupByClauseToJSON(rawQuery.GROUP_BY)
-		jsonQuery.H = queryUtils.whereClauseToJSON(
+		queryNonEntity.GB = this.groupByClauseToQuery(rawQuery.GROUP_BY)
+		queryNonEntity.H = queryUtils.whereClauseToQueryOperation(
 			rawQuery.HAVING, this.columnAliases,
 			this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
-		jsonQuery.OB = this.orderByClauseToJSON(rawQuery.ORDER_BY)
-		jsonQuery.L = rawQuery.LIMIT
-		jsonQuery.O = rawQuery.OFFSET
+		queryNonEntity.OB = this.orderByClauseToQuery(rawQuery.ORDER_BY)
+		queryNonEntity.L = rawQuery.LIMIT
+		queryNonEntity.O = rawQuery.OFFSET
 
-		return jsonQuery
+		return queryNonEntity
 	}
 
-	protected fromClauseToJSON(
+	protected rawToQueryFromClause(
 		fromClause: (IFrom | IEntityRelationFrom | RawTreeQuery<any>)[],
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JSONRelation[] {
+		relationManager: IQueryRelationManager
+	): QueryRelation[] {
 		if (!fromClause) {
 			if (this.isEntityQuery) {
 				return []
@@ -110,15 +110,15 @@ export abstract class AbstractQuery
 				}
 			}
 			return (fromEntity as IQEntityInternal).__driver__
-				.getRelationJson(this.columnAliases,
+				.getQueryRelation(this.columnAliases,
 					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 					queryUtils, fieldUtils, relationManager)
 		})
 	}
 
-	protected groupByClauseToJSON(
+	protected groupByClauseToQuery(
 		groupBy: IQOperableField<any, any, any, any>[]
-	): JSONFieldInGroupBy[] {
+	): QueryFieldInGroupBy[] {
 		if (!groupBy || !groupBy.length) {
 			return null
 		}
@@ -132,14 +132,14 @@ export abstract class AbstractQuery
 		})
 	}
 
-	protected orderByClauseToJSON(
+	protected orderByClauseToQuery(
 		orderBy: IFieldInOrderBy<any>[]
-	): JSONFieldInOrderBy[] {
+	): QueryFieldInOrderBy[] {
 		if (!orderBy || !orderBy.length) {
 			return null
 		}
 		return orderBy.map((field) => {
-			return (<FieldInOrderBy<any>><any>field).toJSON(this.columnAliases)
+			return (<FieldInOrderBy<any>><any>field).toQueryFragment(this.columnAliases)
 		})
 	}
 

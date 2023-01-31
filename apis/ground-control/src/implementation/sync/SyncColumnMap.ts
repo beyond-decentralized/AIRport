@@ -1,10 +1,10 @@
-import { ApplicationEntity_TableIndex } from "../../definition/application/Entity";
+import { DbEntity_TableIndex } from "../../definition/application/DbEntity";
 import { ColumnMap } from "../query/ColumnMap";
 
 export class SyncColumnMap extends ColumnMap {
 
 	constructor(
-		tableIndex: ApplicationEntity_TableIndex,
+		tableIndex: DbEntity_TableIndex,
 		allColumns: boolean = false
 	) {
 		super(tableIndex, allColumns);

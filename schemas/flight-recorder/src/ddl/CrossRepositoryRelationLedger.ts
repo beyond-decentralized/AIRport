@@ -1,4 +1,4 @@
-import { ApplicationRelation } from "@airport/airspace";
+import { DdlRelation } from "@airport/airspace";
 import { ICrossRepositoryRelationLedger } from "@airport/ground-control";
 import { Repository } from "@airport/holding-pattern";
 import { InternalAirEntity } from "@airport/holding-pattern/dist/app/bundle";
@@ -13,9 +13,9 @@ export class CrossRepositoryRelationLedger
     @ManyToOne()
     @JoinColumn({
         name: 'ONE_SIDE_APPLICATION_RELATION_LID',
-        referencedColumnName: 'APPLICATION_RELATION_LID'
+        referencedColumnName: 'DB_RELATION_LID'
     })
-    relation: ApplicationRelation
+    relation: DdlRelation
 
     @ManyToOne()
     @JoinColumn({

@@ -6,7 +6,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IDatastructureUtils, IRepository, IRepositoryTransactionHistory, RepositorySynchronizationData, RepositorySynchronizationMessage, Repository_GUID, Repository_LocalId
+	IDatastructureUtils, IRepository, IRepositoryTransactionHistory, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, Repository_LocalId
 } from '@airport/ground-control'
 import {
 	IRepositoryDao,
@@ -98,7 +98,7 @@ export class SynchronizationOutManager
 
 	private async ensureGlobalRepositoryIdentifiers(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[],
-		messages: RepositorySynchronizationData[]
+		messages: SyncRepositoryData[]
 	): Promise<void> {
 		const repositoryIdsToLookup: Set<Repository_LocalId> = new Set()
 		const repositoryMapById: Map<Repository_LocalId, IRepository> = new Map()
@@ -134,10 +134,10 @@ export class SynchronizationOutManager
 	}
 
 	private groupMessagesByRepository(
-		messages: RepositorySynchronizationMessage[],
+		messages: SyncRepositoryMessage[],
 		historiesToSend: IRepositoryTransactionHistory[]
-	): Map<Repository_GUID, RepositorySynchronizationMessage[]> {
-		const groupMessageMap: Map<Repository_GUID, RepositorySynchronizationMessage[]>
+	): Map<Repository_GUID, SyncRepositoryMessage[]> {
+		const groupMessageMap: Map<Repository_GUID, SyncRepositoryMessage[]>
 			= new Map()
 
 		for (let i = 0; i < messages.length; i++) {
@@ -150,7 +150,7 @@ export class SynchronizationOutManager
 	}
 
 	private async updateRepositoryTransactionHistories(
-		messages: RepositorySynchronizationMessage[],
+		messages: SyncRepositoryMessage[],
 		repositoryTransactionHistories: IRepositoryTransactionHistory[]
 	): Promise<void> {
 		for (let i = 0; i < messages.length; i++) {

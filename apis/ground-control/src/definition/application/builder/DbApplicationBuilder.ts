@@ -1,10 +1,10 @@
 import {
 	DbApplication,
 	JsonApplication
-}                           from "../Application";
-import {ILinkingDictionary} from "./LinkingDictionary";
+}                           from "../DbApplication";
+import {ILinkingDictionary} from "./ILinkingDictionary";
 
-export interface IDbApplicationBuilder {
+export interface DbApplicationBuilder {
 
 	buildDbApplicationWithoutReferences(
 		jsonApplication: JsonApplication,

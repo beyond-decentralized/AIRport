@@ -6,10 +6,10 @@ import {
 } from '@airport/direction-indicator';
 import {
 	Actor_LocalId,
-	ApplicationColumn_Index,
-	ApplicationRelation_LocalId,
-	ApplicationVersion_LocalId,
-	Application_LocalId,
+	DbColumn_Index,
+	DbRelation_LocalId,
+	DbApplicationVersion_LocalId,
+	DbApplication_LocalId,
 	DbApplication,
 	DbApplicationVersion,
 	DbColumn,
@@ -17,7 +17,7 @@ import {
 	Dictionary,
 	IActor,
 	IApplicationUtils,
-	IDbApplicationUtils,
+	DbApplicationUtils,
 	IOperationHistory,
 	IRecordHistory,
 	IRecordHistoryNewValue,
@@ -30,8 +30,8 @@ import {
 	ITerminal,
 	IUserAccount,
 	RepositoryMember_PublicSigningKey,
-	RepositorySynchronizationData,
-	RepositorySynchronizationMessage,
+	SyncRepositoryData,
+	SyncRepositoryMessage,
 	RepositoryTransactionType,
 	Repository_LocalId,
 	Terminal_GUID
@@ -47,7 +47,7 @@ export interface ISyncOutDataSerializer {
 		repositoryTransactionHistories: IRepositoryTransactionHistory[]
 	): Promise<{
 		historiesToSend: IRepositoryTransactionHistory[],
-		messages: RepositorySynchronizationMessage[]
+		messages: SyncRepositoryMessage[]
 	}>
 }
 
@@ -64,7 +64,7 @@ export interface IWithIndex {
 
 export interface InMessageLookupStructures {
 	actorInMessageIndexesById: Map<Actor_LocalId, number>
-	applicationVersionInMessageIndexesById: Map<ApplicationVersion_LocalId, number>
+	applicationVersionInMessageIndexesById: Map<DbApplicationVersion_LocalId, number>
 	applicationVersions: DbApplicationVersion[]
 	lastInMessageActorIndex: number
 	lastInMessageApplicationVersionIndex: number
@@ -73,11 +73,11 @@ export interface InMessageLookupStructures {
 	lastInMessageReferencedApplicationVersionIndex: number
 	lastInMessageRepositoryIndex: number
 	messageRepository: IRepository
-	referencedApplicationRelationIndexesById: Map<ApplicationRelation_LocalId, number>
-	referencedApplicationVersionInMessageIndexesById: Map<ApplicationVersion_LocalId, number>
+	referencedApplicationRelationIndexesById: Map<DbRelation_LocalId, number>
+	referencedApplicationVersionInMessageIndexesById: Map<DbApplicationVersion_LocalId, number>
 	referencedApplicationVersions: DbApplicationVersion[]
 	repositoryInMessageIndexesById: Map<Repository_LocalId, number>
-	applicationLookup: InMessageEntityLookup<Application_LocalId>
+	applicationLookup: InMessageEntityLookup<DbApplication_LocalId>
 	repositoryMemberLookup: InMessageEntityLookup<RepositoryMember_PublicSigningKey>
 	terminalLookup: InMessageEntityLookup<Terminal_GUID>
 	userAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
@@ -109,7 +109,7 @@ export class SyncOutDataSerializer
 	applicationRelationDao: IApplicationRelationDao
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	dbApplicationUtils: DbApplicationUtils
 
 	@Inject()
 	dictionary: Dictionary
@@ -125,10 +125,10 @@ export class SyncOutDataSerializer
 		repositoryTransactionHistories: IRepositoryTransactionHistory[]
 	): Promise<{
 		historiesToSend: IRepositoryTransactionHistory[],
-		messages: RepositorySynchronizationMessage[]
+		messages: SyncRepositoryMessage[]
 	}> {
 		let historiesToSend: IRepositoryTransactionHistory[] = []
-		const messages: RepositorySynchronizationMessage[] = []
+		const messages: SyncRepositoryMessage[] = []
 		for (let i = 0; i < repositoryTransactionHistories.length; i++) {
 			const repositoryTransactionHistory = repositoryTransactionHistories[i]
 			if (repositoryTransactionHistory.repositoryTransactionType !== RepositoryTransactionType.LOCAL) {
@@ -155,7 +155,7 @@ export class SyncOutDataSerializer
 
 	private async serializeMessage(
 		repositoryTransactionHistory: IRepositoryTransactionHistory
-	): Promise<RepositorySynchronizationMessage> {
+	): Promise<SyncRepositoryMessage> {
 		const lookups: InMessageLookupStructures = {
 			actorInMessageIndexesById: new Map(),
 			applicationLookup: this.getInMessageEntityLookup(),
@@ -177,7 +177,7 @@ export class SyncOutDataSerializer
 			userAccountLookup: this.getInMessageEntityLookup()
 		}
 
-		const data: RepositorySynchronizationData = {
+		const data: SyncRepositoryData = {
 			actors: [],
 			applicationVersions: [],
 			applications: [],
@@ -191,7 +191,7 @@ export class SyncOutDataSerializer
 			terminals: []
 		}
 
-		const message: RepositorySynchronizationMessage = {
+		const message: SyncRepositoryMessage = {
 			data
 		}
 
@@ -212,7 +212,7 @@ export class SyncOutDataSerializer
 	}
 
 	private async serializeActorsUserAccountsAndTerminals(
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
 	): Promise<void> {
 		let actorIdsToFindBy: Actor_LocalId[] = []
@@ -243,7 +243,7 @@ export class SyncOutDataSerializer
 
 	private serializeActorTerminals(
 		actors: IActor[],
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		inMessageTerminalLookup: InMessageEntityLookup<Terminal_GUID>,
 		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
 	): void {
@@ -259,7 +259,7 @@ export class SyncOutDataSerializer
 
 	private serializeUserAccounts(
 		actors: IActor[],
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
 	): void {
 		for (const actor of actors) {
@@ -270,7 +270,7 @@ export class SyncOutDataSerializer
 
 	private addRepositoryMemberToMessage(
 		repositoryMember: IRepositoryMember,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures,
 		addFullRecord: boolean
 	): IRepositoryMember {
@@ -305,7 +305,7 @@ export class SyncOutDataSerializer
 	private getEntityInMessageIndex(
 		entity: DbApplication | IRepositoryMember | ITerminal | IUserAccount,
 		indexedEntityType: IndexedEntityType,
-		inMessageEntityLookup: InMessageEntityLookup<Application_LocalId
+		inMessageEntityLookup: InMessageEntityLookup<DbApplication_LocalId
 			| RepositoryMember_PublicSigningKey
 			| Terminal_GUID
 			| UserAccount_PublicSigningKey>
@@ -347,7 +347,7 @@ export class SyncOutDataSerializer
 
 	private addUserAccountToMessage(
 		userAccount: IUserAccount,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
 	): IUserAccount {
 		if (!userAccount) {
@@ -372,7 +372,7 @@ export class SyncOutDataSerializer
 
 	private addTerminalToMessage(
 		terminal: ITerminal,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		inMessageTerminalLookup: InMessageEntityLookup<Terminal_GUID>,
 		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
 	): ITerminal {
@@ -394,7 +394,7 @@ export class SyncOutDataSerializer
 
 	private async serializeRepositories(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
 	): Promise<void> {
 		let repositoryIdsToFindBy: Repository_LocalId[] = []
@@ -421,10 +421,10 @@ export class SyncOutDataSerializer
 	}
 
 	private async serializeReferencedApplicationProperties(
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
 	): Promise<void> {
-		let applicationRelationIdsToFindBy: ApplicationRelation_LocalId[] = []
+		let applicationRelationIdsToFindBy: DbRelation_LocalId[] = []
 		for (let applicationRelationLocalId of lookups.referencedApplicationRelationIndexesById.keys()) {
 			applicationRelationIdsToFindBy.push(applicationRelationLocalId)
 		}
@@ -457,8 +457,8 @@ export class SyncOutDataSerializer
 	}
 
 	private serializeApplicationsAndVersions(
-		data: RepositorySynchronizationData,
-		applicationLookup: InMessageEntityLookup<Application_LocalId>,
+		data: SyncRepositoryData,
+		applicationLookup: InMessageEntityLookup<DbApplication_LocalId>,
 		lookupVersions: DbApplicationVersion[],
 		finalApplicationVersions: DbApplicationVersion[]
 	): void {
@@ -477,8 +477,8 @@ export class SyncOutDataSerializer
 
 	private serializeApplication(
 		application: DbApplication,
-		applicationLookup: InMessageEntityLookup<Application_LocalId>,
-		data: RepositorySynchronizationData
+		applicationLookup: InMessageEntityLookup<DbApplication_LocalId>,
+		data: SyncRepositoryData
 	): number {
 
 		const {
@@ -502,7 +502,7 @@ export class SyncOutDataSerializer
 
 	private serializeRepositoryTransactionHistory(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
 	): IRepositoryTransactionHistory {
 		repositoryTransactionHistory.operationHistory.sort((
@@ -553,7 +553,7 @@ export class SyncOutDataSerializer
 
 	private serializeHistoryRepository(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
 	): IRepository {
 		if (repositoryTransactionHistory.isRepositoryCreation) {
@@ -573,7 +573,7 @@ export class SyncOutDataSerializer
 
 	private serializeNewRepositoryMembers(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
 	): void {
 		for (const newRepositoryMember of repositoryTransactionHistory
@@ -586,7 +586,7 @@ export class SyncOutDataSerializer
 
 	private serializeRepositoryMemberAcceptances(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
 	): IRepositoryMember[] {
 		const serializedRepositoryMemberAcceptances: IRepositoryMemberAcceptance[] = []
@@ -610,7 +610,7 @@ export class SyncOutDataSerializer
 
 	private serializeRepositoryMemberInvitations(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
 	): IRepositoryMember[] {
 		const serializedRepositoryMemberInvitations: IRepositoryMemberInvitation[] = []
@@ -635,7 +635,7 @@ export class SyncOutDataSerializer
 	private serializeOperationHistory(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		operationHistory: IOperationHistory,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
 	): IOperationHistory {
 		const dbEntity = operationHistory.entity
@@ -687,10 +687,10 @@ export class SyncOutDataSerializer
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		recordHistory: IRecordHistory,
 		dbEntity: DbEntity,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
 	): IRecordHistory {
-		const dbColumMapByIndex: Map<ApplicationColumn_Index, DbColumn> = new Map()
+		const dbColumMapByIndex: Map<DbColumn_Index, DbColumn> = new Map()
 		for (const dbColumn of dbEntity.columns) {
 			dbColumMapByIndex.set(dbColumn.index, dbColumn)
 		}
@@ -764,7 +764,7 @@ export class SyncOutDataSerializer
 	private serializeNewValue(
 		newValue: IRecordHistoryNewValue,
 		dbColumn: DbColumn,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
 	): IRecordHistoryNewValue {
 		return this.serializeValue(
@@ -774,7 +774,7 @@ export class SyncOutDataSerializer
 	private serializeOldValue(
 		oldValue: IRecordHistoryOldValue,
 		dbColumn: DbColumn,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
 	): IRecordHistoryOldValue {
 		return this.serializeValue(
@@ -784,7 +784,7 @@ export class SyncOutDataSerializer
 	private serializeValue(
 		valueRecord: IRecordHistoryNewValue | IRecordHistoryNewValue,
 		dbColumn: DbColumn,
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures,
 		valueFieldName: 'newValue' | 'oldValue'
 	): IRecordHistoryNewValue {

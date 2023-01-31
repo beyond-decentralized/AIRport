@@ -2,7 +2,7 @@ import {
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication"
-import { IApiIMI, IIsolateMessage } from "../isolate/IsolateMessage"
+import { IApiIMI, IIsolateMessage } from "../isolate/IIsolateMessage"
 
 export interface ITransactionalReceiver {
 

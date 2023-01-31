@@ -38,7 +38,7 @@ export interface IRecordState {
 
 	update(): void;
 
-	toJSON(): any;
+	toJson(): any;
 }
 
 export class RecordState
@@ -58,7 +58,7 @@ export class RecordState
 		this.currentState = CurrentState.DELETED
 	}
 
-	toJSON(): any {
+	toJson(): any {
 		// TODO: implement
 		return null
 	}

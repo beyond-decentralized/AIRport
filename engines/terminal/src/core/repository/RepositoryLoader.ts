@@ -16,7 +16,7 @@ import {
     IRepositoryDao,
 } from "@airport/holding-pattern/dist/app/bundle";
 import { ITransactionContext } from "@airport/terminal-map";
-import { RepositorySynchronizationMessage, RepositoryTransactionHistory_GUID } from "@airport/ground-control";
+import { SyncRepositoryMessage, RepositoryTransactionHistory_GUID } from "@airport/ground-control";
 
 @Injected()
 export class RepositoryLoader
@@ -71,7 +71,7 @@ export class RepositoryLoader
         const synchronizationAdapter = await this.synchronizationAdapterLoader
             .load(repositoryGUID)
 
-        let messages: RepositorySynchronizationMessage[]
+        let messages: SyncRepositoryMessage[]
         try {
             if (lastSyncTimestamp) {
                 // If it's been less than 10 seconds, don't retrieve the repository
@@ -94,7 +94,7 @@ export class RepositoryLoader
             // message for repository is CREATE_REPOSITORY with the public 
             // key of the owner user
 
-            const messageMapByGUID: Map<RepositoryTransactionHistory_GUID, RepositorySynchronizationMessage>
+            const messageMapByGUID: Map<RepositoryTransactionHistory_GUID, SyncRepositoryMessage>
                 = new Map()
             for (const message of messages) {
                 messageMapByGUID.set(message.data.history.GUID, message)

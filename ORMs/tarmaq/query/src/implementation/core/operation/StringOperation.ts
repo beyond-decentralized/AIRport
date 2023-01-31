@@ -1,7 +1,7 @@
 import { OperationCategory, SqlOperator } from "@airport/ground-control";
-import { IQStringField } from "../../../definition/core/field/StringField";
-import { IStringOperation, JSONRawStringOperation } from "../../../definition/core/operation/StringOperation";
-import { RawFieldQuery } from "../../../definition/query/facade/FieldQuery";
+import { IQStringField } from "../../../definition/core/field/IQStringField";
+import { IStringOperation, RawStringOperation } from "../../../definition/core/operation/IStringOperation";
+import { RawFieldQuery } from "../../../definition/query/facade/RawFieldQuery";
 import { ValueOperation } from "./ValueOperation";
 
 /**
@@ -9,7 +9,7 @@ import { ValueOperation } from "./ValueOperation";
  */
 
 export class StringOperation
-	extends ValueOperation<string, JSONRawStringOperation, IQStringField>
+	extends ValueOperation<string, RawStringOperation, IQStringField>
 	implements IStringOperation {
 
 	constructor() {
@@ -21,7 +21,7 @@ export class StringOperation
 		rValue: string | IQStringField | RawFieldQuery<IQStringField>
 		// TODO: implement ReqExp
 		//| RegExp
-	): JSONRawStringOperation {
+	): RawStringOperation {
 		return {
 			c: this.category,
 			l: lValue,

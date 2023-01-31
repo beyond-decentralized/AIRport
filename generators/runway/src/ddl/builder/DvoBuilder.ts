@@ -58,7 +58,7 @@ ${baseClassDefinitions}`;
 		this.addImport([
 			{
 				asName: 'DbEntityId',
-				sourceName: 'ApplicationEntity_LocalId'
+				sourceName: 'DbEntity_LocalId'
 			}
 		], '@airport/ground-control');
 		this.addImport([

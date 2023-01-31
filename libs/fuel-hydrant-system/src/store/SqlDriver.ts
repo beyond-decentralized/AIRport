@@ -11,21 +11,21 @@ import {
 	IActiveQueries, IObservableQueryAdapter
 } from '@airport/flight-number';
 import {
-	Application_Name,
+	DbApplication_Name,
 	DbApplication,
 	DbEntity,
-	Domain_Name,
-	Application_FullName,
-	IDbApplicationUtils,
+	DbDomain_Name,
+	DbApplication_FullName,
+	DbApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
-	JsonDelete,
-	JsonEntityQuery,
-	JsonFieldQuery,
-	JsonInsertValues,
-	JsonQuery,
-	JsonSheetQuery,
-	JsonUpdate,
+	QueryDelete,
+	QueryEntity,
+	QueryField,
+	QueryInsertValues,
+	Query,
+	QuerySheet,
+	QueryUpdate,
 	PortableQuery,
 	QueryResultType,
 	QueryType,
@@ -57,7 +57,7 @@ import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
 import { IValidator } from '../validation/Validator';
 import { ISubStatementSqlGenerator } from '../sql/core/SubStatementSqlGenerator';
 import { IObjectResultParserFactory } from '../result/entity/ObjectResultParserFactory';
-import { IQueryUtils, IRelationManager } from '@airport/tarmaq-query';
+import { IQueryUtils, IQueryRelationManager } from '@airport/tarmaq-query';
 import { doEnsureContext } from '@airport/tarmaq-dao';
 
 /**
@@ -80,7 +80,7 @@ export abstract class SqlDriver
 	appTrackerUtils: IAppTrackerUtils
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	dbApplicationUtils: DbApplicationUtils
 
 	@Inject()
 	entityStateManager: IEntityStateManager
@@ -101,7 +101,7 @@ export abstract class SqlDriver
 	qValidator: IValidator
 
 	@Inject()
-	relationManager: IRelationManager
+	relationManager: IQueryRelationManager
 
 	@Inject()
 	sqlQueryAdapter: ISQLQueryAdaptor
@@ -133,17 +133,17 @@ export abstract class SqlDriver
 	}
 
 	abstract getSelectQuerySuffix(
-		jsonQuery: JsonQuery,
+		querys: Query,
 		context: IFuelHydrantContext,
 	): string
 
 	getTableName(
 		application: {
-			domain?: Domain_Name | {
-				name?: Domain_Name
+			domain?: DbDomain_Name | {
+				name?: DbDomain_Name
 			};
-			name?: Application_Name;
-			fullName?: Application_FullName;
+			name?: DbApplication_Name;
+			fullName?: DbApplication_FullName;
 		},
 		applicationIntegerVersion: number,
 		table: {
@@ -182,13 +182,13 @@ Entity:          ${table.name}
 		if (table.tableConfig && table.tableConfig.name) {
 			theTableName = table.tableConfig.name;
 		}
-		let fullApplication_Name;
+		let fullDbApplication_Name;
 		if ((application as DbApplication).fullName) {
-			fullApplication_Name = (application as DbApplication).fullName;
+			fullDbApplication_Name = (application as DbApplication).fullName;
 		} else {
-			fullApplication_Name = this.dbApplicationUtils.getApplication_FullName(application);
+			fullDbApplication_Name = this.dbApplicationUtils.getDbApplication_FullName(application);
 		}
-		return this.composeTableName(fullApplication_Name, theTableName, context);
+		return this.composeTableName(fullDbApplication_Name, theTableName, context);
 	}
 
 	abstract composeTableName(
@@ -308,12 +308,12 @@ Entity:          ${table.name}
 		// repository?: IRepository
 	): Promise<number> {
 		let fieldMap: SyncApplicationMap = new globalThis.SyncApplicationMap();
-		const splitValues = this.splitValues((portableQuery.jsonQuery as JsonInsertValues).V, context);
+		const splitValues = this.splitValues((portableQuery.query as QueryInsertValues).V, context);
 
 		let numVals = 0;
 		for (const V of splitValues) {
-			let sqlInsertValues = new SQLInsertValues(<JsonInsertValues>{
-				...portableQuery.jsonQuery,
+			let sqlInsertValues = new SQLInsertValues(<QueryInsertValues>{
+				...portableQuery.query,
 				V
 			}, this.getDialect(context),
 				this.airportDatabase,
@@ -347,7 +347,7 @@ Entity:          ${table.name}
 	): Promise<number> {
 		let fieldMap: SyncApplicationMap = new globalThis.SyncApplicationMap();
 		let sqlDelete = new SQLDelete(
-			<JsonDelete>portableQuery.jsonQuery, this.getDialect(context),
+			<QueryDelete>portableQuery.query, this.getDialect(context),
 			this.airportDatabase,
 			this.applicationUtils,
 			this.queryUtils,
@@ -378,7 +378,7 @@ Entity:          ${table.name}
 	): Promise<number> {
 		let fieldMap: SyncApplicationMap = new globalThis.SyncApplicationMap();
 		let sqlUpdate = new SQLUpdate(
-			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(context),
+			<QueryUpdate<any>>portableQuery.query, this.getDialect(context),
 			this.airportDatabase,
 			this.applicationUtils,
 			this.queryUtils,
@@ -425,7 +425,7 @@ Entity:          ${table.name}
 		portableQuery: PortableQuery,
 		context: IFuelHydrantContext,
 	): SQLQuery<any> {
-		let jsonQuery = portableQuery.jsonQuery;
+		let query = portableQuery.query;
 		let dialect = this.getDialect(context);
 		let resultType = portableQuery.queryResultType;
 		const QueryResType = QueryResultType;
@@ -434,7 +434,7 @@ Entity:          ${table.name}
 			case QueryResType.ENTITY_TREE:
 				const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
 					.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
-				return new EntitySQLQuery(<JsonEntityQuery<any>>jsonQuery,
+				return new EntitySQLQuery(<QueryEntity<any>>query,
 					dbEntity, dialect, resultType,
 					this.airportDatabase,
 					this.applicationUtils,
@@ -450,7 +450,7 @@ Entity:          ${table.name}
 					this.utils,
 					context);
 			case QueryResType.FIELD:
-				return new FieldSQLQuery(<JsonFieldQuery>jsonQuery, dialect,
+				return new FieldSQLQuery(<QueryField>query, dialect,
 					this.airportDatabase,
 					this.applicationUtils,
 					this.queryUtils,
@@ -464,7 +464,7 @@ Entity:          ${table.name}
 					this.utils,
 					context);
 			case QueryResType.SHEET:
-				return new SheetSQLQuery(<JsonSheetQuery>jsonQuery, dialect,
+				return new SheetSQLQuery(<QuerySheet>query, dialect,
 					this.airportDatabase,
 					this.applicationUtils,
 					this.queryUtils,
@@ -478,7 +478,7 @@ Entity:          ${table.name}
 					this.utils,
 					context);
 			case QueryResType.TREE:
-				return new TreeSQLQuery(<JsonSheetQuery>jsonQuery, dialect,
+				return new TreeSQLQuery(<QuerySheet>query, dialect,
 					this.airportDatabase,
 					this.applicationUtils,
 					this.queryUtils,

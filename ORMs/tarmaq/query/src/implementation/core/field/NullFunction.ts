@@ -1,12 +1,12 @@
 import {
-	JSONClauseField,
-	JSONClauseObjectType,
+	QueryFieldClause,
+	QueryClauseObjectType,
 	Repository_GUID,
 	Repository_LocalId
 } from '@airport/ground-control'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { IQFunction } from '../../../definition/core/field/Functions'
-import { RawFieldQuery } from '../../../definition/query/facade/FieldQuery'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { IQFunction } from '../../../definition/core/field/IQFunctions'
+import { RawFieldQuery } from '../../../definition/query/facade/RawFieldQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { FieldColumnAliases } from '../entity/Aliases'
@@ -24,23 +24,23 @@ export class QNullFunction
 	value = null
 
 	constructor() {
-		super(null, null, null, JSONClauseObjectType.FIELD_FUNCTION)
+		super(null, null, null, QueryClauseObjectType.FIELD_FUNCTION)
 	}
 
 	getInstance(): QNullFunction {
 		return this.copyFunctions(new QNullFunction())
 	}
 
-	toJSON(
+	toQueryFragment(
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
 		trackedRepoGUIDSet: Set<Repository_GUID>,
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JSONClauseField {
-		return this.operableFunctionToJson(
+		relationManager: IQueryRelationManager
+	): QueryFieldClause {
+		return this.rawToQueryOperableFunction(
 			this, columnAliases, forSelectClause,
 			trackedRepoGUIDSet, trackedRepoLocalIdSet,
 			queryUtils, fieldUtils, relationManager)

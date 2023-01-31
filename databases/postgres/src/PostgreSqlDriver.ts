@@ -1,4 +1,4 @@
-import { JsonQuery, QueryType, SQLDataType, } from '@airport/ground-control'
+import { Query, QueryType, SQLDataType, } from '@airport/ground-control'
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
 import pg from 'pg'
 import pgConnectionString from 'pg-connection-string'
@@ -65,10 +65,10 @@ export class PostgreSqlDriver
 	}
 
 	getSelectQuerySuffix(
-		jsonQuery: JsonQuery,
+		query: Query,
 		context: IFuelHydrantContext
 	): string {
-		if (jsonQuery.forUpdate) {
+		if (query.forUpdate) {
 			return 'FOR UPDATE'
 		}
 		return ''

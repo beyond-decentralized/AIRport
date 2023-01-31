@@ -1,4 +1,4 @@
-import { ApplicationEntity_LocalId } from '@airport/ground-control';
+import { DbEntity_LocalId } from '@airport/ground-control';
 import { resolveRelativePath } from '../../resolve/pathResolver';
 import { IBuilder } from './Builder';
 import { FileBuilder } from './entity/FileBuilder';
@@ -10,7 +10,7 @@ export abstract class ImplementationFileBuilder
 
 	public listingFilePath;
 
-	protected entityIdMapByName: { [entityName: string]: ApplicationEntity_LocalId } = {};
+	protected entityIdMapByName: { [entityName: string]: DbEntity_LocalId } = {};
 	protected entityNames: string[]
 		= [];
 	protected ddlPathMapByEntityName: { [entityName: string]: string } = {};
@@ -25,7 +25,7 @@ export abstract class ImplementationFileBuilder
 	}
 
 	addFileNameAndPaths(
-		entityId: ApplicationEntity_LocalId,
+		entityId: DbEntity_LocalId,
 		entityName: string,
 		fullDdlPath: string,
 		fullGenerationPath: string,

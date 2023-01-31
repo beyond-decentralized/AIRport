@@ -81,7 +81,7 @@ export class InternalRecordManager
             await this.updateDomain(application, context)
 
             let actorMapForDomain = this.terminalStore
-                .getApplicationActorMapByDomainAndApplication_Names().get(application.domain)
+                .getApplicationActorMapByDomainAndDbApplication_Names().get(application.domain)
             let actors: IActor[]
             if (actorMapForDomain) {
                 actors = actorMapForDomain.get(application.name)
@@ -95,7 +95,7 @@ export class InternalRecordManager
             const userSession = await this.terminalSessionManager.getUserSession()
 
             let actor = await this.actorDao
-                .findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(
+                .findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(
                     application.domain, application.name,
                     userSession.userAccount.accountPublicSigningKey, frameworkActor.terminal.GUID)
 
@@ -144,7 +144,7 @@ export class InternalRecordManager
             terminal.isLocal = true;
             terminal.GUID = guidv4();
 
-            const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(
+            const application = await this.applicationDao.findOneByDomain_NameAndDbApplication_Name(
                 firstApp.domain, firstApp.name)
 
             const actor: IActor = new Actor();

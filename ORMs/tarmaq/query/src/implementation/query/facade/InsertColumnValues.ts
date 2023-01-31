@@ -1,14 +1,14 @@
 import {
 	DbColumn,
-	JSONEntityRelation,
-	JsonInsertValues
+	QueryEntityRelation,
+	QueryInsertValues
 } from '@airport/ground-control'
 import {
 	IQEntity
-} from '../../../definition/core/entity/Entity'
+} from '../../../definition/core/entity/IQEntity'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { RawInsertColumnValues } from '../../../definition/query/facade/InsertValues'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { RawInsertColumnValues } from '../../../definition/query/facade/RawInsertValues'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { AbstractInsertValues } from './AbstractInsertValues'
@@ -17,13 +17,13 @@ import { AbstractInsertValues } from './AbstractInsertValues'
 export class InsertColumnValues<IQE extends IQEntity>
 	extends AbstractInsertValues<IQE, RawInsertColumnValues<IQE>> {
 
-	toJSON(
+	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JsonInsertValues {
+		relationManager: IQueryRelationManager
+	): QueryInsertValues {
 		const entityDriver = (<IQEntityInternal><any>this.rawInsertValues.INSERT_INTO).__driver__
-		const insertInto = <JSONEntityRelation>entityDriver.getRelationJson(
+		const insertInto = <QueryEntityRelation>entityDriver.getQueryRelation(
 			this.columnAliases,
 			this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 			queryUtils, fieldUtils, relationManager)
@@ -44,7 +44,7 @@ export class InsertColumnValues<IQE extends IQEntity>
 		return {
 			II: insertInto,
 			C: columnIndexes,
-			V: this.valuesToJSON(
+			V: this.rawToQueryValuesClause(
 				this.rawInsertValues.VALUES, dbColumns,
 				queryUtils, fieldUtils, relationManager)
 		}

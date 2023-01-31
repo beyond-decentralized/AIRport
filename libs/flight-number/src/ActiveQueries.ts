@@ -60,7 +60,7 @@ export class ActiveQueries<SQLQuery extends IFieldMapped>
 		portableQuery: PortableQuery,
 		cachedSqlQuery: CachedSQLQuery<SQLQuery>
 	): void {
-		const serializedJSONQuery = JSON.stringify(portableQuery.jsonQuery)
+		const serializedJSONQuery = JSON.stringify(portableQuery.query)
 
 		this.queries.set(serializedJSONQuery, cachedSqlQuery)
 	}
@@ -68,7 +68,7 @@ export class ActiveQueries<SQLQuery extends IFieldMapped>
 	remove(
 		portableQuery: PortableQuery
 	): void {
-		const serializedJSONQuery = JSON.stringify(portableQuery.jsonQuery)
+		const serializedJSONQuery = JSON.stringify(portableQuery.query)
 
 		this.queries.delete(serializedJSONQuery)
 	}

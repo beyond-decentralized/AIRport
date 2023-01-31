@@ -1,9 +1,9 @@
 import {
 	DbEntity,
-	ApplicationEntity_TableIndex
-} from "../../definition/application/Entity";
-import { ApplicationColumn_Index } from "../../definition/application/Property";
-import { ApplicationVersion_LocalId } from "../../definition/application/Application";
+	DbEntity_TableIndex
+} from "../../definition/application/DbEntity";
+import { DbColumn_Index } from "../../definition/application/DbProperty";
+import { DbApplicationVersion_LocalId } from "../../definition/application/DbApplication";
 import { ColumnMap } from "./ColumnMap";
 import { TableMap } from "./TableMap";
 
@@ -23,8 +23,8 @@ export class ApplicationMap {
 	}
 
 	ensure(
-		applicationVersionLocalId: ApplicationVersion_LocalId,
-		tableIndex: ApplicationEntity_TableIndex,
+		applicationVersionLocalId: DbApplicationVersion_LocalId,
+		tableIndex: DbEntity_TableIndex,
 		allColumns: boolean = false,
 		TableMapConstructor = globalThis.TableMap as typeof TableMap
 	): ColumnMap {
@@ -38,9 +38,9 @@ export class ApplicationMap {
 	}
 
 	existsByStructure(
-		applicationVersionLocalId: ApplicationVersion_LocalId,
-		tableIndex: ApplicationEntity_TableIndex,
-		columnIndex: ApplicationColumn_Index
+		applicationVersionLocalId: DbApplicationVersion_LocalId,
+		tableIndex: DbEntity_TableIndex,
+		columnIndex: DbColumn_Index
 	): boolean {
 		let tableMap = this.applicationMap[applicationVersionLocalId];
 		if (!tableMap) {

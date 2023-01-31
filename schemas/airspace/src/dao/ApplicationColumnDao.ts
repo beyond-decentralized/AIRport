@@ -1,19 +1,19 @@
 import { IContext, Inject, Injected } from '@airport/direction-indicator';
 import {
-	ApplicationEntity_LocalId, DbColumn, IDatastructureUtils
+	DbEntity_LocalId, DbColumn, IDatastructureUtils
 } from '@airport/ground-control'
 import {
-	BaseApplicationColumnDao,
-	IBaseApplicationColumnDao,
-	QApplicationColumn
+	BaseDdlColumnDao,
+	IBaseDdlColumnDao,
+	QDdlColumn
 } from '../generated/generated'
 import Q from '../generated/qApplication'
 
 export interface IApplicationColumnDao
-	extends IBaseApplicationColumnDao {
+	extends IBaseDdlColumnDao {
 
 	findAllForEntities(
-		entityIds: ApplicationEntity_LocalId[]
+		entityIds: DbEntity_LocalId[]
 	): Promise<DbColumn[]>;
 
 	insert(
@@ -25,16 +25,16 @@ export interface IApplicationColumnDao
 
 @Injected()
 export class ApplicationColumnDao
-	extends BaseApplicationColumnDao
+	extends BaseDdlColumnDao
 	implements IApplicationColumnDao {
 
 	@Inject()
 	datastructureUtils: IDatastructureUtils
 
 	async findAllForEntities(
-		entityIds: ApplicationEntity_LocalId[]
+		entityIds: DbEntity_LocalId[]
 	): Promise<DbColumn[]> {
-		let c: QApplicationColumn
+		let c: QDdlColumn
 
 		return this.db.find.tree({
 			SELECT: {},
@@ -49,7 +49,7 @@ export class ApplicationColumnDao
 		applicationColumns: DbColumn[],
 		context: IContext
 	): Promise<void> {
-		let sc: QApplicationColumn;
+		let sc: QDdlColumn;
 		const VALUES = []
 		for (const applicationColumn of applicationColumns) {
 			VALUES.push([

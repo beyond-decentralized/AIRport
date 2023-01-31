@@ -1,7 +1,7 @@
 import { Inject, Injected } from '@airport/direction-indicator'
 import { Dictionary } from '@airport/ground-control'
-import { EntityQuery, ENTITY_UTILS, IEntityAliases, IEntityRelationFrom, IEntitySelectProperties, IEntityUtils, IFrom, IQEntity, IQEntityDriver, IQEntityInternal, IQTree, IQuery, ITreeEntity, QEntity, QField, QOperableField, QTree, QTreeDriver, RawEntityQuery, RawQuery, RawTreeQuery, TreeQuery, Y } from '@airport/tarmaq-query'
-import { IUtils } from '../../definition/utils/Utils'
+import { EntityQuery, ENTITY_UTILS, IEntityAliases, IEntityRelationFrom, IEntitySelectProperties, IEntityUtils, IFrom, IQEntity, IQEntityDriver, IQEntityInternal, IQTree, IReadQuery, ITreeEntity, QEntity, QField, QOperableField, QTree, QTreeDriver, RawEntityQuery, RawReadQuery, RawTreeQuery, TreeQuery, Y } from '@airport/tarmaq-query'
+import { IUtils } from '../../definition/utils/IUtils'
 
 /**
  * Created by Papa on 6/14/2016.
@@ -160,7 +160,7 @@ It must be an Object with the id property.`)
 	}
 
 	ensureAllQEntitiesInFromClause(
-		rawQuery: RawQuery
+		rawQuery: RawReadQuery
 	): void {
 		const allQEntities: Set<IQEntity> = new Set()
 		for (let fromEntry of rawQuery.FROM) {
@@ -198,8 +198,8 @@ It must be an Object with the id property.`)
 
 	// Removes circular dependency at code initialization time
 	getRawQuery(
-		rawQuery: RawQuery | { (...args: any[]): RawQuery }
-	): RawQuery {
+		rawQuery: RawReadQuery | { (...args: any[]): RawReadQuery }
+	): RawReadQuery {
 		if (rawQuery instanceof Function) {
 			return rawQuery()
 		} else {
@@ -218,7 +218,7 @@ It must be an Object with the id property.`)
 	getTreeQuery<ITE extends ITreeEntity>(
 		rawQuery: RawTreeQuery<ITE>,
 		entityAliases: IEntityAliases
-	): IQuery {
+	): IReadQuery {
 		return new TreeQuery(rawQuery, entityAliases)
 	}
 

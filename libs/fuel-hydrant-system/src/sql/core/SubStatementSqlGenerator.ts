@@ -10,13 +10,13 @@ import {
 import {
 	IApplicationUtils,
 	IEntityStateManager,
-	JsonFieldQuery,
-	JsonTreeQuery
+	QueryField,
+	QueryTree
 } from '@airport/ground-control'
 import {
 	IQEntityInternal,
 	IQueryUtils,
-	IRelationManager
+	IQueryRelationManager
 } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
@@ -29,7 +29,7 @@ import { SQLDialect } from './SQLQuery'
 export interface ISubStatementSqlGenerator {
 
 	getTreeQuerySql(
-		jsonTreeQuery: JsonTreeQuery,
+		treeQuery: QueryTree,
 		dialect: SQLDialect,
 		context: IFuelHydrantContext,
 	): {
@@ -38,7 +38,7 @@ export interface ISubStatementSqlGenerator {
 	}
 
 	getFieldQuerySql(
-		jsonFieldSqlSubQuery: JsonFieldQuery,
+		fieldSubQuery: QueryField,
 		dialect: SQLDialect,
 		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
 		context: IFuelHydrantContext,
@@ -72,7 +72,7 @@ export class SubStatementSqlGenerator
 	qValidator: IValidator
 
 	@Inject()
-	relationManager: IRelationManager
+	relationManager: IQueryRelationManager
 
 	@Inject()
 	sqlQueryAdapter: ISQLQueryAdaptor
@@ -84,7 +84,7 @@ export class SubStatementSqlGenerator
 	utils: IUtils
 
 	getTreeQuerySql(
-		jsonTreeQuery: JsonTreeQuery,
+		treeQuery: QueryTree,
 		dialect: SQLDialect,
 		context: IFuelHydrantContext,
 	): {
@@ -92,7 +92,7 @@ export class SubStatementSqlGenerator
 		subQuerySql: string
 	} {
 		let mappedSqlQuery = new TreeSQLQuery(
-			jsonTreeQuery, dialect,
+			treeQuery, dialect,
 			this.airportDatabase,
 			this.applicationUtils,
 			this.queryUtils,
@@ -116,7 +116,7 @@ export class SubStatementSqlGenerator
 	}
 
 	getFieldQuerySql(
-		jsonFieldSqlSubQuery: JsonFieldQuery,
+		fieldSubQuery: QueryField,
 		dialect: SQLDialect,
 		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
 		context: IFuelHydrantContext,
@@ -125,7 +125,7 @@ export class SubStatementSqlGenerator
 		subQuerySql: string
 	} {
 		let fieldSqlQuery = new FieldSQLQuery(
-			jsonFieldSqlSubQuery, dialect,
+			fieldSubQuery, dialect,
 			this.airportDatabase,
 			this.applicationUtils,
 			this.queryUtils,

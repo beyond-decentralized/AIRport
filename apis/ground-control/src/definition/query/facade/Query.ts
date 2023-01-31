@@ -1,9 +1,8 @@
-import { JSONRelation } from '../../core/entity/Relation'
-import { JSONFieldInOrderBy } from '../../core/field/FieldInOrderBy'
-import { JSONBaseOperation } from '../../core/operation/Operation'
-import { Repository_GUID } from '../../core/types'
+import { QueryRelation } from '../../core/entity/QueryRelation'
+import { QueryFieldInOrderBy } from '../../core/field/QueryFieldInOrderBy'
+import { QueryBaseOperation } from '../../core/operation/Operation'
 
-export enum JsonStatementType {
+export enum QueryStatementType {
 	ENTITY_QUERY = 'ENTITY_QUERY',
 	NON_ENTITY_QUERY = 'NON_ENTITY_QUERY'
 }
@@ -11,31 +10,31 @@ export enum JsonStatementType {
 /**
  * All JSON Statements extend this object (have an optional WHERE clause)
  */
-export interface JsonStatement {
+export interface QueryWhereBase {
 	/**
 	 * Type of statement
 	 */
-	// T: JsonStatementType
+	// T: QueryStatementType
 	/**
 	 * WHERE
 	 */
-	W?: JSONBaseOperation
+	W?: QueryBaseOperation
 }
 
 /**
  * Internal query format used to serialize queries (in JSON).
  */
-export interface JsonQuery
-	extends JsonStatement {
+export interface Query
+	extends QueryWhereBase {
 	/**
 	 * FROM
 	 */
-	F?: JSONRelation[];
+	F?: QueryRelation[];
 	forUpdate?: boolean;
 	/**
 	 * ORDER BY
 	 */
-	OB?: JSONFieldInOrderBy[];
+	OB?: QueryFieldInOrderBy[];
 	/**
 	 * SELECT
 	 */
@@ -45,7 +44,7 @@ export interface JsonQuery
 /**
  * Serialized format for the LIMIT, OFFSET clauses of a query.
  */
-export interface JsonLimitedQuery {
+export interface LimitedQuery {
 	/**
 	 * LIMIT
 	 */

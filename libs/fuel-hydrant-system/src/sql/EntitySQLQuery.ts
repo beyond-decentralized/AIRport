@@ -13,9 +13,9 @@ import {
 	IEntityStateManager,
 	InternalFragments,
 	JoinType,
-	JsonEntityQuery,
-	JSONEntityRelation,
-	JSONRelationType,
+	QueryEntity,
+	QueryEntityRelation,
+	QueryRelationType,
 	QueryResultType,
 	SQLDataType
 } from '@airport/ground-control'
@@ -24,7 +24,7 @@ import {
 	getErrorMessageSelectStatement,
 	IEntitySelectProperties,
 	IQueryUtils,
-	IRelationManager,
+	IQueryRelationManager,
 	isID,
 	isN,
 	isY,
@@ -57,7 +57,7 @@ import { ISubStatementSqlGenerator } from './core/SubStatementSqlGenerator'
  * Represents SQL String query with Entity tree Select clause.
  */
 export class EntitySQLQuery<IEP extends IEntitySelectProperties>
-	extends SQLQuery<JsonEntityQuery<IEP>> {
+	extends SQLQuery<QueryEntity<IEP>> {
 
 	orderByParser: IEntityOrderByParser
 	protected finalSelectTree: any
@@ -66,7 +66,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 	private columnAliases = new AliasCache()
 
 	constructor(
-		jsonQuery: JsonEntityQuery<IEP>,
+		queryEntity: QueryEntity<IEP>,
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
 		queryResultType: QueryResultType,
@@ -77,7 +77,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 		protected objectResultParserFactory: IObjectResultParserFactory,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		relationManager: IRelationManager,
+		relationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementSqlGenerator: ISubStatementSqlGenerator,
@@ -85,7 +85,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 		context: IFuelHydrantContext,
 		protected graphQueryConfiguration?: GraphQueryConfiguration
 	) {
-		super(jsonQuery, dbEntity, dialect, queryResultType,
+		super(queryEntity, dbEntity, dialect, queryResultType,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -102,8 +102,8 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 			throw new Error(`"strict" configuration is not yet implemented for 
 			QueryResultType.ENTITY_GRAPH`)
 		}
-		this.finalSelectTree = this.setupSelectFields(this.jsonQuery.S, dbEntity, context)
-		this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, relationManager, jsonQuery.OB)
+		this.finalSelectTree = this.setupSelectFields(this.query.S, dbEntity, context)
+		this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, relationManager, queryEntity.OB)
 	}
 
 	toSQL(
@@ -112,19 +112,19 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 	): string {
 		let joinNodeMap: { [alias: string]: JoinTreeNode } = {}
 
-		this.joinTree = this.buildFromJoinTree(this.jsonQuery.F, joinNodeMap, context)
+		this.joinTree = this.buildFromJoinTree(this.query.F, joinNodeMap, context)
 
 		let selectFragment = this.getSELECTFragment(this.dbEntity, this.finalSelectTree, this.joinTree, context)
 		let fromFragment = this.getFROMFragment(null, this.joinTree, context)
 		let whereFragment = ''
-		let jsonQuery = this.jsonQuery
-		if (jsonQuery.W) {
+		let entityQuery = this.query
+		if (entityQuery.W) {
 			whereFragment = `
 WHERE
-${this.getWHEREFragment(jsonQuery.W, '', context)}`
+${this.getWHEREFragment(entityQuery.W, '', context)}`
 		}
 		let orderByFragment = ''
-		if (jsonQuery.OB && jsonQuery.OB.length) {
+		if (entityQuery.OB && entityQuery.OB.length) {
 			orderByFragment = `
 ORDER BY
 ${this.orderByParser.getOrderByFragment(this.joinTree, this.qEntityMapByAlias, context)}`
@@ -134,7 +134,7 @@ ${this.orderByParser.getOrderByFragment(this.joinTree, this.qEntityMapByAlias, c
 	${selectFragment}
 FROM
 ${fromFragment}${whereFragment}${orderByFragment}
-${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
+${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 	}
 
 	/**
@@ -166,7 +166,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 		let lastResult
 		for (let i = 0; i < results.length; i++) {
 			let result = results[i]
-			let entityAlias = this.relationManager.getAlias(this.joinTree.jsonRelation)
+			let entityAlias = this.relationManager.getAlias(this.joinTree.queryRelation)
 			this.columnAliases.reset()
 			let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, [0], context)
 			if (!lastResult) {
@@ -178,25 +178,25 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 			this.queryParser.flushRow()
 		}
 
-		return this.queryParser.bridge(parsedResults, this.jsonQuery.S, context)
+		return this.queryParser.bridge(parsedResults, this.query.S, context)
 	}
 
 	protected buildFromJoinTree(
-		joinRelations: JSONEntityRelation[],
+		joinRelations: QueryEntityRelation[],
 		joinNodeMap: { [alias: string]: JoinTreeNode },
 		context: IFuelHydrantContext,
 	): JoinTreeNode {
-		let jsonTree: JoinTreeNode
+		let joinTreeNode: JoinTreeNode
 		// For entity queries it is possible to have a query with no from clause, in this case
 		// make the query entity the root tree node
 		if (joinRelations.length < 1) {
-			let onlyJsonRelation: JSONEntityRelation = {
+			let onlyJsonRelation: QueryEntityRelation = {
 				currentChildIndex: 0,
 				ti: this.dbEntity.index,
 				fromClausePosition: [],
 				jt: null,
 				ri: null,
-				rt: JSONRelationType.ENTITY_ROOT,
+				rt: QueryRelationType.ENTITY_ROOT,
 				rep: 'r_',
 				si: this.dbEntity.applicationVersion._localId
 			}
@@ -206,25 +206,25 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 		let firstRelation = joinRelations[0]
 
 		switch (firstRelation.rt) {
-			case JSONRelationType.ENTITY_ROOT:
+			case QueryRelationType.ENTITY_ROOT:
 				break
-			case JSONRelationType.SUB_QUERY_ROOT:
-			case JSONRelationType.SUB_QUERY_JOIN_ON:
+			case QueryRelationType.SUB_QUERY_ROOT:
+			case QueryRelationType.SUB_QUERY_JOIN_ON:
 				throw new Error(`Entity query's FROM clause cannot contain sub-queries`)
-			case JSONRelationType.ENTITY_JOIN_ON:
+			case QueryRelationType.ENTITY_JOIN_ON:
 				throw new Error(`Entity queries cannot use JOIN ON`)
 			default:
 				throw new Error(`First table in FROM clause cannot be result of a join`)
 		}
 
-		// if (firstRelation.rt !== JSONRelationType.ENTITY_ROOT) {
+		// if (firstRelation.rt !== QueryRelationType.ENTITY_ROOT) {
 		// 	throw new Error(`First table in FROM clause cannot be joined`)
 		// }
 
 		let alias = this.relationManager.getAlias(firstRelation)
 		let firstEntity = this.relationManager.createRelatedQEntity(firstRelation, context)
 		this.qEntityMapByAlias[alias] = firstEntity
-		this.jsonRelationMapByAlias[alias] = firstRelation
+		this.queryRelationMapByAlias[alias] = firstRelation
 		// In entity queries the first entity must always be the same as the query entity
 		const firstDbEntity = firstEntity.__driver__.dbEntity
 		// if (firstEntity.constructor != this.rootQEntity.constructor) {
@@ -234,19 +234,19 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 			expecting:
 			'${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}'`)
 		}
-		jsonTree = new JoinTreeNode(firstRelation, [], null)
+		joinTreeNode = new JoinTreeNode(firstRelation, [], null)
 
-		joinNodeMap[alias] = jsonTree
+		joinNodeMap[alias] = joinTreeNode
 
 		for (let i = 1; i < joinRelations.length; i++) {
 
 			let joinRelation = joinRelations[i]
 			switch (joinRelation.rt) {
-				case JSONRelationType.ENTITY_ROOT:
+				case QueryRelationType.ENTITY_ROOT:
 					throw new Error(`All Entity query tables after the first must be joined`)
-				case JSONRelationType.SUB_QUERY_JOIN_ON:
+				case QueryRelationType.SUB_QUERY_JOIN_ON:
 					throw new Error(`Entity queries FROM clause cannot contain sub-queries`)
-				case JSONRelationType.ENTITY_JOIN_ON:
+				case QueryRelationType.ENTITY_JOIN_ON:
 					throw new Error(`Entity queries cannot use JOIN ON`)
 				default:
 					break
@@ -267,7 +267,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 			alias = this.relationManager.getAlias(joinRelation)
 			let rightEntity = this.relationManager.createRelatedQEntity(joinRelation, context)
 			this.qEntityMapByAlias[alias] = rightEntity
-			this.jsonRelationMapByAlias[alias] = firstRelation
+			this.queryRelationMapByAlias[alias] = firstRelation
 			if (!rightEntity) {
 				throw new Error(`Could not find entity ${joinRelation.ti} for 
 				table ${i + 1} in FROM clause`)
@@ -278,7 +278,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 			joinNodeMap[alias] = rightNode
 		}
 
-		return jsonTree
+		return joinTreeNode
 	}
 
 	protected parseQueryResult(
@@ -358,7 +358,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 					}
 				} else {
 					const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation)
-					const childEntityAlias = this.relationManager.getAlias(childJoinNode.jsonRelation)
+					const childEntityAlias = this.relationManager.getAlias(childJoinNode.queryRelation)
 					const relationQEntity = this.qEntityMapByAlias[childEntityAlias]
 					const relationDbEntity = relationQEntity.__driver__.dbEntity
 
@@ -530,7 +530,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 		context: IFuelHydrantContext,
 		parentProperty?: DbProperty,
 	): string[] {
-		const tableAlias = this.relationManager.getAlias(joinTree.jsonRelation)
+		const tableAlias = this.relationManager.getAlias(joinTree.queryRelation)
 		let selectSqlFragments = []
 
 		let isStubProperty = this.entityStateManager.isStub(selectClauseFragment)
@@ -577,7 +577,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 		context: IFuelHydrantContext,
 	): string {
 		let fromFragment = '\t'
-		let currentRelation = currentTree.jsonRelation
+		let currentRelation = currentTree.queryRelation
 		let currentAlias = this.relationManager.getAlias(currentRelation)
 		let qEntity = this.qEntityMapByAlias[currentAlias]
 		if (!qEntity) {
@@ -586,7 +586,7 @@ Please make sure that all entities present in the SELECT: {...} clause
 are specified in the FROM: [...] clause, with the SAME nesting pattern as
 in the SELECT: {...} clause.  The non-matching SELECT clause is:
 
-${getErrorMessageSelectStatement(this.jsonQuery.S)}
+${getErrorMessageSelectStatement(this.query.S)}
 
 `)
 
@@ -596,7 +596,7 @@ ${getErrorMessageSelectStatement(this.jsonQuery.S)}
 		if (!parentTree) {
 			fromFragment += `${tableName} ${currentAlias}`
 		} else {
-			let parentRelation = parentTree.jsonRelation
+			let parentRelation = parentTree.queryRelation
 			let parentAlias = this.relationManager.getAlias(parentRelation)
 			let leftEntity = this.qEntityMapByAlias[parentAlias]
 
@@ -620,9 +620,9 @@ ${getErrorMessageSelectStatement(this.jsonQuery.S)}
 
 			let errorPrefix = 'Error building FROM: '
 			switch (currentRelation.rt) {
-				case JSONRelationType.ENTITY_APPLICATION_RELATION:
+				case QueryRelationType.ENTITY_APPLICATION_RELATION:
 					fromFragment += this.getEntityApplicationRelationFromJoin(leftEntity, rightEntity,
-						<JSONEntityRelation>currentRelation, parentRelation, currentAlias, parentAlias,
+						<QueryEntityRelation>currentRelation, parentRelation, currentAlias, parentAlias,
 						joinTypeString, errorPrefix, context)
 					break
 				default:

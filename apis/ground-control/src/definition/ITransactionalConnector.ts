@@ -2,9 +2,9 @@ import { ICoreLocalApiRequest, ILocalAPIResponse } from '@airport/aviation-commu
 import { IContext } from '@airport/direction-indicator'
 import { Observable } from 'rxjs'
 import { IAirEntity } from './core/types'
-import { IAbstractQueryContext } from './query/AbstractQueryContext'
+import { IAbstractQueryContext } from './query/IAbstractQueryContext'
 import { PortableQuery } from './query/PortableQuery'
-import { ISaveResult } from './query/SaveResult'
+import { ISaveResult } from './query/ISaveResult'
 
 export interface ITransactionalConnector {
 

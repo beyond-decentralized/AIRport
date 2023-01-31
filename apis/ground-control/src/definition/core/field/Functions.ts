@@ -1,7 +1,7 @@
 /*
  * Serialized representation of a SQL function call.
  */
-export interface JSONSqlFunctionCall {
+export interface QueryFunctionCall {
 	// Function Type
 	// Type of SQL function
 	ft: SqlFunction,

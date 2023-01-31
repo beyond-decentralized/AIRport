@@ -5,12 +5,12 @@ import {
 	IAirEntity,
 	IApplicationUtils,
 	JoinType,
-	JSONBaseOperation,
+	QueryBaseOperation,
 } from '@airport/ground-control'
-import { IQAirEntity } from '../../../definition/core/entity/Entity'
+import { IQAirEntity } from '../../../definition/core/entity/IQEntity'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { JSONLogicalOperation } from '../../../definition/core/operation/LogicalOperation'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { QueryLogicalOperation } from '../../../definition/core/operation/ILogicalOperation'
 import { QUERY_UTILS } from '../../../injection'
 import { QEntityUtils } from '../../utils/QEntityUtils'
 import { AND, OR } from '../operation/LogicalOperation'
@@ -30,7 +30,7 @@ export function QRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
-	relationManager: IRelationManager
+	relationManager: IQueryRelationManager
 ) {
 	this.dbRelation = dbRelation
 	this.parentQ = parentQ
@@ -52,17 +52,17 @@ QRelation.prototype.LEFT_JOIN = function <IQ extends IQEntityInternal>(): IQ {
 	return newQEntity
 }
 
-QRelation.prototype.IS_NULL = function (): JSONBaseOperation {
+QRelation.prototype.IS_NULL = function (): QueryBaseOperation {
 	return this.nullOrNot(true)
 }
 
-QRelation.prototype.IS_NOT_NULL = function (): JSONBaseOperation {
+QRelation.prototype.IS_NOT_NULL = function (): QueryBaseOperation {
 	return this.nullOrNot(false)
 }
 
 QRelation.prototype.nullOrNot = function (
 	isNull: boolean
-): JSONBaseOperation {
+): QueryBaseOperation {
 	const dbRelation: DbRelation = this.dbRelation
 	const qEntityUtils = IOC.getSync(QEntityUtils)
 
@@ -115,7 +115,7 @@ export function QAirEntityRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
-	relationManager: IRelationManager,
+	relationManager: IQueryRelationManager,
 ) {
 	(<any>QAirEntityRelation).base.constructor.call(
 		this, dbRelation, parentQ, applicationUtils, relationManager)
@@ -131,7 +131,7 @@ export function QManyToOneAirEntityRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
-	relationManager: IRelationManager,
+	relationManager: IQueryRelationManager,
 ) {
 	(<any>QAirEntityRelation).base.constructor.call(
 		this, dbRelation, parentQ, applicationUtils, relationManager)
@@ -142,7 +142,7 @@ export const qManyToOneAirEntityRelationMethods = {
 		entity: Entity | IQAirEntity |
 			// IQAirEntityRelation<Entity, IQ> |
 			AirEntityId | string
-	): JSONLogicalOperation {
+	): QueryLogicalOperation {
 		return IOC.getSync(QUERY_UTILS).equals(entity, this)
 	},
 	IN: function <Entity extends IAirEntity, IQ extends IQEntityInternal>(
@@ -150,7 +150,7 @@ export const qManyToOneAirEntityRelationMethods = {
 			// IQAirEntity |
 			// IQAirEntityRelation<Entity, IQ> |
 			AirEntityId | string)[]
-	): JSONLogicalOperation {
+	): QueryLogicalOperation {
 		return IOC.getSync(QUERY_UTILS).in(entitiesOrIds, this)
 	}
 }
@@ -162,7 +162,7 @@ export function QManyToOneInternalRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
-	relationManager: IRelationManager,
+	relationManager: IQueryRelationManager,
 ) {
 	(<any>QAirEntityRelation).base.constructor.call(
 		this, dbRelation, parentQ, applicationUtils, relationManager)
@@ -173,14 +173,14 @@ export const qManyToOneInternalRelationMethods = {
 		// <Entity extends IAirEntity, IQ extends IQEntityInternal>
 		(
 			entityId: string | number
-		): JSONBaseOperation {
+		): QueryBaseOperation {
 		return IOC.getSync(QUERY_UTILS).equalsInternal(entityId, this)
 	},
 	IN: function
 		// <Entity extends IAirEntity, IQ extends IQEntityInternal>
 		(
 			entityIds: (string | number)[]
-		): JSONBaseOperation {
+		): QueryBaseOperation {
 		return IOC.getSync(QUERY_UTILS).inInternal(entityIds, this)
 	}
 }

@@ -6,8 +6,8 @@ import {
 	DbRelation,
 	Dictionary,
 	EntityRelationType,
-	Application_Index,
-	ApplicationEntity_TableIndex,
+	DbApplication_Index,
+	DbEntity_TableIndex,
 	IEntityStateManager,
 	IApplicationUtils
 } from '@airport/ground-control'
@@ -21,8 +21,8 @@ import {
 } from '@airport/tarmaq-query'
 import {
 	IAirportDatabase,
-} from '../../definition/AirportDatabase'
-import { IUtils } from '../../definition/utils/Utils'
+} from '../../definition/IAirportDatabase'
+import { IUtils } from '../../definition/utils/IUtils'
 
 interface ColumnValueForPath {
 	value: any,
@@ -48,8 +48,8 @@ export class ApplicationUtils
 	utils: IUtils
 
 	getDbEntity(
-		applicationIndex: Application_Index,
-		tableIndex: ApplicationEntity_TableIndex
+		applicationIndex: DbApplication_Index,
+		tableIndex: DbEntity_TableIndex
 	): DbEntity {
 		return this.airportDatabase.applications[applicationIndex].currentVersion[0]
 			.applicationVersion.entities[tableIndex]

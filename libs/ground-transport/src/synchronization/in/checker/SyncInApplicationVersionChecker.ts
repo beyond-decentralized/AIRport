@@ -7,7 +7,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import { IApplicationInitializer } from '@airport/terminal-map'
-import { Application_Name, DbApplication, DbApplicationVersion, Domain_Name } from '@airport/ground-control'
+import { DbApplication_Name, DbApplication, DbApplicationVersion, DbDomain_Name } from '@airport/ground-control'
 
 export interface IApplicationVersionCheckRecord {
 	found?: boolean
@@ -22,7 +22,7 @@ export interface ISyncInApplicationVersionChecker {
 		inMessageApplicationVersions: DbApplicationVersion[],
 		inMessageApplications: DbApplication[],
 		context: IContext
-	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>>;
+	): Promise<Map<DbDomain_Name, Map<DbApplication_Name, IApplicationVersionCheckRecord>>>;
 
 }
 
@@ -37,11 +37,11 @@ export class SyncInApplicationVersionChecker
 	applicationInitializer: IApplicationInitializer
 
 	async ensureApplicationVersions(
-		// message: RepositorySynchronizationData,
+		// message: SyncRepositoryData,
 		inMessageApplicationVersions: DbApplicationVersion[],
 		inMessageApplications: DbApplication[],
 		context: IContext
-	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>> {
+	): Promise<Map<DbDomain_Name, Map<DbApplication_Name, IApplicationVersionCheckRecord>>> {
 		let applicationCheckMap
 		try {
 			applicationCheckMap = await this.checkVersionsApplicationsDomains(
@@ -64,18 +64,18 @@ export class SyncInApplicationVersionChecker
 	private async checkVersionsApplicationsDomains(
 		inMessageApplicationVersions: DbApplicationVersion[],
 		inMessageApplications: DbApplication[]
-	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>> {
-		const { allApplicationNames: allApplication_Names, domainNames, applicationVersionCheckMap } = this
+	): Promise<Map<DbDomain_Name, Map<DbApplication_Name, IApplicationVersionCheckRecord>>> {
+		const { allApplicationNames: allDbApplication_Names, domainNames, applicationVersionCheckMap } = this
 			.getNames(inMessageApplicationVersions, inMessageApplications)
 
 		await this.setApplicationVersions(
 			domainNames,
-			allApplication_Names,
+			allDbApplication_Names,
 			applicationVersionCheckMap
 		)
 
-		const domainWithNewApp_NameSet: Set<Domain_Name> = new Set()
-		const newApplicationNameSet: Set<Application_Name> = new Set()
+		const domainWithNewApp_NameSet: Set<DbDomain_Name> = new Set()
+		const newApplicationNameSet: Set<DbApplication_Name> = new Set()
 		for (const [domainName, applicationChecks] of applicationVersionCheckMap) {
 			for (let [_, applicationCheck] of applicationChecks) {
 				if (!applicationCheck.found) {
@@ -97,12 +97,12 @@ export class SyncInApplicationVersionChecker
 	}
 
 	async setApplicationVersions(
-		domainNames: Domain_Name[],
-		allApplication_Names: Application_Name[],
-		applicationVersionCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>
+		domainNames: DbDomain_Name[],
+		allDbApplication_Names: DbApplication_Name[],
+		applicationVersionCheckMap: Map<DbDomain_Name, Map<DbApplication_Name, IApplicationVersionCheckRecord>>
 	): Promise<void> {
 		const existingApplicationVersions = await this.applicationVersionDao
-			.findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names)
+			.findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names)
 
 		let lastDomainName
 		let lastApplicationName
@@ -134,15 +134,15 @@ export class SyncInApplicationVersionChecker
 		inMessageApplicationVersions: DbApplicationVersion[],
 		inMessageApplications: DbApplication[]
 	): {
-		allApplicationNames: Application_Name[],
-		domainNames: Domain_Name[],
-		applicationVersionCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>
+		allApplicationNames: DbApplication_Name[],
+		domainNames: DbDomain_Name[],
+		applicationVersionCheckMap: Map<DbDomain_Name, Map<DbApplication_Name, IApplicationVersionCheckRecord>>
 	} {
 		if (!inMessageApplicationVersions || !(inMessageApplicationVersions instanceof Array)) {
-			throw new Error(`Did not find applicationVersions in RepositorySynchronizationData.`)
+			throw new Error(`Did not find applicationVersions in SyncRepositoryData.`)
 		}
 
-		const applicationVersionCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>> = new Map()
+		const applicationVersionCheckMap: Map<DbDomain_Name, Map<DbApplication_Name, IApplicationVersionCheckRecord>> = new Map()
 
 		for (let applicationVersion of inMessageApplicationVersions) {
 			if (!applicationVersion.integerVersion || typeof applicationVersion.integerVersion !== 'number') {

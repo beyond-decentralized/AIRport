@@ -6,12 +6,12 @@ import {
 import {
 	IActorDao
 } from '@airport/holding-pattern/dist/app/bundle'
-import { IActor, RepositorySynchronizationData } from '@airport/ground-control'
+import { IActor, SyncRepositoryData } from '@airport/ground-control'
 
 export interface ISyncInActorChecker {
 
 	ensureActors(
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		context: IContext
 	): Promise<boolean>
 
@@ -25,7 +25,7 @@ export class SyncInActorChecker
 	actorDao: IActorDao
 
 	async ensureActors(
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		context: IContext
 	): Promise<boolean> {
 		try {
@@ -67,7 +67,7 @@ export class SyncInActorChecker
 
 	private checkActorApplication(
 		actor: IActor,
-		data: RepositorySynchronizationData
+		data: SyncRepositoryData
 	): void {
 		if (typeof actor.application !== 'number') {
 			throw new Error(`Expecting "in-message index" (number)
@@ -83,7 +83,7 @@ export class SyncInActorChecker
 
 	private checkActorTerminal(
 		actor: IActor,
-		data: RepositorySynchronizationData
+		data: SyncRepositoryData
 	): void {
 		if (typeof actor.terminal !== 'number') {
 			throw new Error(`Expecting "in-message index" (number)
@@ -99,7 +99,7 @@ export class SyncInActorChecker
 
 	private checkActorUserAccount(
 		actor: IActor,
-		data: RepositorySynchronizationData
+		data: SyncRepositoryData
 	): void {
 		if (typeof actor.userAccount !== 'number') {
 			throw new Error(`Expecting "in-message index" (number)

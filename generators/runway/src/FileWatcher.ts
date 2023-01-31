@@ -1,7 +1,7 @@
 import {
 	DbApplication,
-	ApplicationEntity_LocalId,
-	DbApplicationUtils,
+	DbEntity_LocalId,
+	ImplApplicationUtils,
 } from '@airport/ground-control';
 import * as fs from 'fs';
 import * as ts from 'typescript';
@@ -156,8 +156,8 @@ function emitFiles(
 
 	applicationChecker.checkFrameworkReferences(jsonApplication, indexedApplication)
 
-	const applicationFullName = IOC.getSync(DbApplicationUtils).
-		getApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
+	const applicationFullName = IOC.getSync(ImplApplicationUtils).
+		getDbApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
 
 	const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
 	const entityVInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'vInterfaces.ts');
@@ -205,7 +205,7 @@ function emitFiles(
 
 		const sIndexedEntity = indexedApplication.entityMapByName[entityName];
 
-		let tableIndex: ApplicationEntity_LocalId;
+		let tableIndex: DbEntity_LocalId;
 		if (sIndexedEntity) {
 			tableIndex = sIndexedEntity.entity.tableIndex;
 		}

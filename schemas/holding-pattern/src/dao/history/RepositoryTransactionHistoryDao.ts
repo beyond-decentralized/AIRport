@@ -7,10 +7,10 @@ import {
 import {
 	ActorRecordId,
 	Actor_LocalId,
-	ApplicationEntity_LocalId,
+	DbEntity_LocalId,
 	IDatastructureUtils,
 	IRepositoryTransactionHistory,
-	JSONBaseOperation,
+	QueryBaseOperation,
 	Repository_LocalId,
 	TransactionType
 } from '@airport/ground-control'
@@ -26,7 +26,7 @@ import {
 	QTransactionHistory,
 } from '../../generated/generated'
 import Q from '../../generated/qApplication'
-import { QApplicationEntity, QApplicationVersion } from '@airport/airspace/dist/app/bundle'
+import { QDdlEntity, QDdlApplicationVersion } from '@airport/airspace/dist/app/bundle'
 import { Inject, Injected } from '@airport/direction-indicator'
 
 export interface IRepositoryTransactionHistoryDao {
@@ -46,7 +46,7 @@ export interface IRepositoryTransactionHistoryDao {
 }
 
 export interface IChangedRecordIdsForRepository {
-	actorRecordIdsByLocalIds: Map<ApplicationEntity_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>;
+	actorRecordIdsByLocalIds: Map<DbEntity_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>;
 	firstChangeTime: number;
 }
 
@@ -97,18 +97,18 @@ export class RepositoryTransactionHistoryDao
 		const rth: QRepositoryTransactionHistory = Q.RepositoryTransactionHistory
 		const th: QTransactionHistory = rth.transactionHistory.INNER_JOIN()
 		const oh: QOperationHistory = rth.operationHistory.LEFT_JOIN()
-		const ae: QApplicationEntity = oh.entity.LEFT_JOIN()
-		const av: QApplicationVersion = ae.applicationVersion.LEFT_JOIN()
+		const ae: QDdlEntity = oh.entity.LEFT_JOIN()
+		const av: QDdlApplicationVersion = ae.applicationVersion.LEFT_JOIN()
 		const rh: QRecordHistory = oh.recordHistory.LEFT_JOIN()
 		const nv: QRecordHistoryNewValue = rh.newValues.LEFT_JOIN()
 		let _localId = Y
 
-		const repositoryEquals: JSONBaseOperation[] = []
+		const repositoryEquals: QueryBaseOperation[] = []
 		for (const [repositoryId, idsForRepository] of changedRecordIds) {
 			const recordMapForRepository = idsForRepository.actorRecordIdsByLocalIds
-			const entityEquals: JSONBaseOperation[] = []
+			const entityEquals: QueryBaseOperation[] = []
 			for (const [entityId, recordMapForEntity] of recordMapForRepository) {
-				const actorEquals: JSONBaseOperation[] = []
+				const actorEquals: QueryBaseOperation[] = []
 				for (const [actorId, recordsForActor] of recordMapForEntity) {
 					actorEquals.push(AND(
 						rh.actor._localId.equals(actorId),

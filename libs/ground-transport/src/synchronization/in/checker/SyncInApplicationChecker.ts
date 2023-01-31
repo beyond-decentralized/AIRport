@@ -1,4 +1,4 @@
-import { Application_Name, ApplicationStatus, DbDomain, DbApplication, RepositorySynchronizationData } from '@airport/ground-control';
+import { DbApplication_Name, ApplicationStatus, DbDomain, DbApplication, SyncRepositoryData } from '@airport/ground-control';
 import {
     IDomainDao,
     IApplicationDao
@@ -17,14 +17,14 @@ export interface IDomainCheckRecord {
 
 export interface IApplicationCheckRecord {
     found?: boolean
-    applicationName: Application_Name
+    applicationName: DbApplication_Name
     application?: DbApplication;
 }
 
 export interface ISyncInApplicationChecker {
 
     ensureApplications(
-        data: RepositorySynchronizationData,
+        data: SyncRepositoryData,
         context: IContext
     ): Promise<boolean>
 
@@ -41,7 +41,7 @@ export class SyncInApplicationChecker
     domainDao: IDomainDao
 
     async ensureApplications(
-        data: RepositorySynchronizationData,
+        data: SyncRepositoryData,
         context: IContext
     ): Promise<boolean> {
         try {
@@ -62,14 +62,14 @@ export class SyncInApplicationChecker
     }
 
     private async checkApplicationsAndDomains(
-        data: RepositorySynchronizationData,
+        data: SyncRepositoryData,
         context: IContext
     ): Promise<Map<string, Map<string, IApplicationCheckRecord>>> {
-        const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap }
+        const { allDbApplication_Names, domainCheckMap, domainNames, applicationCheckMap }
             = this.getNames(data)
 
         const applications = await this.applicationDao
-            .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names)
+            .findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names)
 
         for (let application of applications) {
             let domainName = application.domain.name
@@ -130,15 +130,15 @@ export class SyncInApplicationChecker
     }
 
     private getNames(
-        message: RepositorySynchronizationData
+        message: SyncRepositoryData
     ): {
-        allApplication_Names: string[],
+        allDbApplication_Names: string[],
         domainCheckMap: Map<string, IDomainCheckRecord>,
         domainNames: string[],
         applicationCheckMap: Map<string, Map<string, IApplicationCheckRecord>>
     } {
         if (!message.applications || !(message.applications instanceof Array)) {
-            throw new Error(`Did not find applications in RepositorySynchronizationData.`)
+            throw new Error(`Did not find applications in SyncRepositoryData.`)
         }
 
         const domainCheckMap: Map<string, IDomainCheckRecord> = new Map()
@@ -177,16 +177,16 @@ export class SyncInApplicationChecker
         }
 
         const domainNames = []
-        const allApplication_Names = []
+        const allDbApplication_Names = []
         for (const [domainName, applicationChecksForDomainMap] of applicationCheckMap) {
             domainNames.push(domainName)
             for (let [applicationName, _] of applicationChecksForDomainMap) {
-                allApplication_Names.push(applicationName)
+                allDbApplication_Names.push(applicationName)
             }
         }
 
         return {
-            allApplication_Names,
+            allDbApplication_Names,
             domainCheckMap,
             domainNames,
             applicationCheckMap

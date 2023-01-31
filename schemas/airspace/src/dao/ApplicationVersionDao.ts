@@ -1,21 +1,21 @@
 import { AND, Y } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
-	BaseApplicationVersionDao,
-	IBaseApplicationVersionDao,
-	QDomain,
-	QApplication,
-	QApplicationVersion
+	BaseDdlApplicationVersionDao,
+	IBaseDdlApplicationVersionDao,
+	QDdlDomain,
+	QDdlApplication,
+	QDdlApplicationVersion
 } from '../generated/generated'
 import Q from '../generated/qApplication'
-import { Application_Name, DbApplicationVersion, Domain_Name } from '@airport/ground-control'
+import { DbApplication_Name, DbApplicationVersion, DbDomain_Name } from '@airport/ground-control'
 
 export interface IApplicationVersionDao
-	extends IBaseApplicationVersionDao {
+	extends IBaseDdlApplicationVersionDao {
 
-	findAllActiveOrderByApplication_IndexAndId(): Promise<DbApplicationVersion[]>
+	findAllActiveOrderByDbApplication_IndexAndId(): Promise<DbApplicationVersion[]>
 
-	findByDomain_NamesAndApplication_Names(
+	findByDomain_NamesAndDbApplication_Names(
 		domainNames: string[],
 		applicationNames: string[]
 	): Promise<DbApplicationVersion[]>
@@ -29,12 +29,12 @@ export interface IApplicationVersionDao
 
 @Injected()
 export class ApplicationVersionDao
-	extends BaseApplicationVersionDao
+	extends BaseDdlApplicationVersionDao
 	implements IApplicationVersionDao {
 
 	/*
-	async findAllLatestForApplication_Indexes(
-		applicationIndexes: Application_Index[]
+	async findAllLatestForDbApplication_Indexes(
+		applicationIndexes: DbApplication_Index[]
 	): Promise<DbApplicationVersion[]> {
 		let sv: QAppVersion
 
@@ -51,9 +51,9 @@ export class ApplicationVersionDao
 	}
 	*/
 
-	async findAllActiveOrderByApplication_IndexAndId(): Promise<DbApplicationVersion[]> {
-		let av: QApplicationVersion,
-			a: QApplication
+	async findAllActiveOrderByDbApplication_IndexAndId(): Promise<DbApplicationVersion[]> {
+		let av: QDdlApplicationVersion,
+			a: QDdlApplication
 
 		return await this.db.find.tree({
 			FROM: [
@@ -68,13 +68,13 @@ export class ApplicationVersionDao
 		})
 	}
 
-	async findByDomain_NamesAndApplication_Names(
-		domainNames: Domain_Name[],
-		applicationNames: Application_Name[]
+	async findByDomain_NamesAndDbApplication_Names(
+		domainNames: DbDomain_Name[],
+		applicationNames: DbApplication_Name[]
 	): Promise<DbApplicationVersion[]> {
-		let av: QApplicationVersion
-		let a: QApplication
-		let d: QDomain
+		let av: QDdlApplicationVersion
+		let a: QDdlApplication
+		let d: QDdlDomain
 
 		return await this.db.find.tree({
 			SELECT: {
@@ -106,16 +106,16 @@ export class ApplicationVersionDao
 
 	/*
 	async findMaxVersionedMapByApplicationAndDomain_Names(
-		applicationDomain_Names: Domain_Name[],
-		applicationNames: Application_Name[]
-	): Promise<Map<Domain_Name, Map<Application_Name, DbApplicationVersion>>> {
+		applicationDomain_Names: DbDomain_Name[],
+		applicationNames: DbApplication_Name[]
+	): Promise<Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationVersion>>> {
 		const maxVersionedMapByApplicationAndDomain_Names
-				  : Map<Domain_Name, Map<Application_Name, DbApplicationVersion>>
+				  : Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationVersion>>
 				  = new Map()
 
 		let sv: QAppVersion
 		let s: QApp
-		let d: QDomain
+		let d: QDdlDomain
 
 		const maxApplicationVersions: DbApplicationVersion[] = <any>await this.db.find.tree({
 			SELECT: {
@@ -181,7 +181,7 @@ export class ApplicationVersionDao
 		applicationVersions: DbApplicationVersion[],
 		context: IContext
 	): Promise<void> {
-		let sv: QApplicationVersion;
+		let sv: QDdlApplicationVersion;
 		const VALUES = []
 		for (const applicationVersion of applicationVersions) {
 			VALUES.push([

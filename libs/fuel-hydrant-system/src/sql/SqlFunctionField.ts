@@ -1,4 +1,4 @@
-import {JSONClauseField}   from '@airport/ground-control'
+import {QueryFieldClause}   from '@airport/ground-control'
 import {ISqlValueProvider} from '../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
 
@@ -15,7 +15,7 @@ export class SqlFunctionField
 	implements ISqlFunctionField {
 
 	constructor(
-		public jsonClauseField: JSONClauseField,
+		public queryFieldClause: QueryFieldClause,
 	) {
 		// Test
 	}
@@ -25,7 +25,7 @@ export class SqlFunctionField
 		context: IFuelHydrantContext,
 	): string {
 		return sqlValueProvider.getFieldFunctionValue(
-			this.jsonClauseField, null, context)
+			this.queryFieldClause, null, context)
 	}
 
 }

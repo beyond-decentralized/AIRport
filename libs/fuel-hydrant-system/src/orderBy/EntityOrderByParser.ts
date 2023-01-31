@@ -1,8 +1,8 @@
 import {
 	DbEntity,
-	JSONEntityFieldInOrderBy,
-	JSONFieldInOrderBy,
-	SortOrder
+	QueryEntityFieldInOrderBy,
+	QueryFieldInOrderBy,
+	QuerySortOrder
 } from '@airport/ground-control'
 import {
 	IQEntityInternal,
@@ -55,7 +55,7 @@ export class EntityOrderByParser
 		context: IFuelHydrantContext,
 	): string {
 		let orderByFragments: string[] = []
-		let orderBy: JSONEntityFieldInOrderBy[] = []
+		let orderBy: QueryEntityFieldInOrderBy[] = []
 		if (this.orderBy) {
 			orderBy = this.orderBy.slice()
 		}
@@ -72,7 +72,7 @@ export class EntityOrderByParser
 			(currentSelectFragment = selectFragmentQueue.shift())
 			&& (currentJoinNode = joinNodeQueue.shift())) {
 
-			const tableAlias = this.relationManager.getAlias(currentJoinNode.jsonRelation)
+			const tableAlias = this.relationManager.getAlias(currentJoinNode.queryRelation)
 			const dbEntity: DbEntity = qEntityMapByAlias[tableAlias].__driver__.dbEntity
 
 			const currentEntityOrderBy = []
@@ -127,9 +127,9 @@ export class EntityOrderByParser
 					const dbEntity = dbRelation.relationEntity
 
 					const matchingNodes = currentJoinNode.childNodes.filter(childNode => {
-						const jsonRelation = childNode.jsonRelation
-						return jsonRelation.si === dbEntity.applicationVersion.application.index
-							&& jsonRelation.ti === dbEntity.index
+						const queryRelation = childNode.queryRelation
+						return queryRelation.si === dbEntity.applicationVersion.application.index
+							&& queryRelation.ti === dbEntity.index
 					})
 
 					if (!matchingNodes.length) {
@@ -166,10 +166,10 @@ export class EntityOrderByParser
 		tableAlias: string,
 		allColumnsToSortBy: string[],
 		idColumnsToSortBy: string[],
-		currentEntityOrderBy: JSONEntityFieldInOrderBy[],
+		currentEntityOrderBy: QueryEntityFieldInOrderBy[],
 		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
 	) {
-		const finalOrderByColumnsFragments: JSONFieldInOrderBy[] = []
+		const finalOrderByColumnsFragments: QueryFieldInOrderBy[] = []
 		const inputOrderByPropertyNameSet: { [propertyName: string]: boolean } = {}
 
 		const dbEntity: DbEntity = qEntityMapByAlias[tableAlias].__driver__.dbEntity
@@ -185,7 +185,7 @@ export class EntityOrderByParser
 				if (!inputOrderByPropertyNameSet[idColumnName]) {
 					finalOrderByColumnsFragments.push({
 						fa: `${tableAlias}.${idColumnName}`,
-						so: SortOrder.ASCENDING
+						so: QuerySortOrder.ASCENDING
 					})
 				}
 			}
@@ -194,7 +194,7 @@ export class EntityOrderByParser
 				if (!inputOrderByPropertyNameSet[columnName]) {
 					finalOrderByColumnsFragments.push({
 						fa: `${tableAlias}.${columnName}`,
-						so: SortOrder.ASCENDING
+						so: QuerySortOrder.ASCENDING
 					})
 				}
 			})
@@ -204,15 +204,15 @@ export class EntityOrderByParser
 
 	isForParentNode(
 		joinTreeNode: JoinTreeNode,
-		orderByField: JSONEntityFieldInOrderBy
+		orderByField: QueryEntityFieldInOrderBy
 	): boolean {
 		do {
 			joinTreeNode = joinTreeNode.parentNode
 			if (!joinTreeNode) {
 				return false
 			}
-			if (orderByField.si === joinTreeNode.jsonRelation.si
-				&& orderByField.ti === joinTreeNode.jsonRelation.ti) {
+			if (orderByField.si === joinTreeNode.queryRelation.si
+				&& orderByField.ti === joinTreeNode.queryRelation.ti) {
 				return true
 			}
 		} while (joinTreeNode.parentNode)

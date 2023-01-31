@@ -1,6 +1,6 @@
 import { Repository_GUID, Repository_LocalId } from '@airport/ground-control'
-import { IEntityAliases } from '../../../definition/core/entity/Aliases'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
+import { IEntityAliases } from '../../../definition/core/entity/IAliases'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { EntityAliases } from '../../core/entity/Aliases'
@@ -29,31 +29,31 @@ export abstract class DistinguishableQuery
 			trackedRepoGUIDSet, trackedRepoLidSet)
 	}
 
-	protected selectClauseToJSON(
+	protected rawToQuerySelectClause(
 		rawSelect: any,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
+		relationManager: IQueryRelationManager
 	): any {
 		if (rawSelect instanceof QDistinctFunction) {
 			if (this.isHierarchicalEntityQuery) {
 				throw new Error(`Distinct cannot be used in SELECT of Hierarchical/Bridged Entity queries.`)
 			}
 			let rawInnerSelect = rawSelect.getSelectClause()
-			let innerSelect = this.nonDistinctSelectClauseToJSON(
+			let innerSelect = this.rawToQueryNonDistinctSelectClause(
 				rawInnerSelect, queryUtils, fieldUtils, relationManager)
-			return rawSelect.toJSON(innerSelect)
+			return rawSelect.toQueryFragment(innerSelect)
 		} else {
-			return this.nonDistinctSelectClauseToJSON(
+			return this.rawToQueryNonDistinctSelectClause(
 				rawSelect, queryUtils, fieldUtils, relationManager)
 		}
 	}
 
-	protected abstract nonDistinctSelectClauseToJSON(
+	protected abstract rawToQueryNonDistinctSelectClause(
 		rawSelect: any,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
+		relationManager: IQueryRelationManager
 	): any;
 
 }

@@ -1,6 +1,6 @@
-import { JsonApplication, JsonApplicationVersion } from "../application/Application"
-import { JsonApplicationEntity } from "../application/Entity"
-import { JsonApplicationRelation } from "../application/Property"
+import { JsonApplication, JsonApplicationVersion } from "../application/DbApplication"
+import { JsonEntity } from "../application/DbEntity"
+import { JsonRelation } from "../application/DbProperty"
 
 export interface IApplicationReferenceUtils {
 
@@ -13,10 +13,10 @@ export interface IApplicationReferenceUtils {
         getRelationInfo: (
             jsonApplication: JsonApplication,
             applicationVersion: JsonApplicationVersion,
-            jsonRelation: JsonApplicationRelation
+            queryRelation: JsonRelation
         ) => {
             relatedJsonApplication: JsonApplication,
-            relatedJsonEntity: JsonApplicationEntity
+            relatedJsonEntity: JsonEntity
         }
     ): void
 

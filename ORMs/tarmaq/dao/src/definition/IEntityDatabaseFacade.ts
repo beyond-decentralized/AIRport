@@ -1,5 +1,5 @@
-import { IEntityFind } from './query/EntityFind'
-import { IEntityFindOne } from './query/EntityFindOne'
+import { IEntityFind } from './query/IEntityFind'
+import { IEntityFindOne } from './query/IEntityFindOne'
 import {
     IEntityCascadeGraph,
     IEntityCreateProperties,
@@ -19,7 +19,7 @@ export interface IEntityDatabaseFacade<IEntity,
     EntityCreateProperties extends IEntityCreateProperties,
     EntityUpdateColumns extends IEntityUpdateColumns,
     EntityUpdateProperties extends IEntityUpdateProperties,
-    ApplicationEntity_LocalId extends IEntityIdProperties,
+    DbEntity_LocalId extends IEntityIdProperties,
     EntityCascadeGraph extends IEntityCascadeGraph,
     IQ extends IQEntity>
     extends IEntityQueryDatabaseFacade<IEntity,
@@ -27,7 +27,7 @@ export interface IEntityDatabaseFacade<IEntity,
     EntityCreateProperties,
     EntityUpdateColumns,
     EntityUpdateProperties,
-    ApplicationEntity_LocalId,
+    DbEntity_LocalId,
     EntityCascadeGraph,
     IQ> {
 

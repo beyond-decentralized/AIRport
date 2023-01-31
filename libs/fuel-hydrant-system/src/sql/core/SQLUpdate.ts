@@ -7,15 +7,15 @@ import {
 	IApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
-	JSONClauseObjectType,
-	JsonUpdate,
+	QueryClauseObjectType,
+	QueryUpdate,
 	SyncApplicationMap,
 	SyncColumnMap
 } from '@airport/ground-control'
 import {
 	IEntityUpdateProperties,
 	IQueryUtils,
-	IRelationManager,
+	IQueryRelationManager,
 	ManyToOneColumnMapping
 } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
@@ -35,7 +35,7 @@ export class SQLUpdate
 	extends SQLNoJoinQuery {
 
 	constructor(
-		public jsonUpdate: JsonUpdate<IEntityUpdateProperties>,
+		public updateQuery: QueryUpdate<IEntityUpdateProperties>,
 		dialect: SQLDialect,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
@@ -43,15 +43,15 @@ export class SQLUpdate
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		relationManager: IRelationManager,
+		relationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementSqlGenerator: ISubStatementSqlGenerator,
 		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
-		super(airportDatabase.applications[jsonUpdate.U.si].currentVersion[0]
-			.applicationVersion.entities[jsonUpdate.U.ti], dialect,
+		super(airportDatabase.applications[updateQuery.U.si].currentVersion[0]
+			.applicationVersion.entities[updateQuery.U.ti], dialect,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -71,14 +71,14 @@ export class SQLUpdate
 		fieldMap: SyncApplicationMap,
 		context: IFuelHydrantContext,
 	): string {
-		if (!this.jsonUpdate.U) {
+		if (!this.updateQuery.U) {
 			throw new Error(`Expecting exactly one table in UPDATE clause`)
 		}
 		let {
 			columnMap,
 			tableFragment
-		} = this.getFromFragment(this.jsonUpdate.U, fieldMap, false, context)
-		let setFragment = this.getSetFragment(this.jsonUpdate.S, columnMap, context)
+		} = this.getFromFragment(this.updateQuery.U, fieldMap, false, context)
+		let setFragment = this.getSetFragment(this.updateQuery.S, columnMap, context)
 		if (internalFragments.SET && internalFragments.SET.length) {
 			setFragment += ',' + internalFragments.SET.map(
 				internalSetFragment => {
@@ -89,15 +89,15 @@ export class SQLUpdate
 				.join(',')
 		}
 		let whereFragment = ''
-		let jsonQuery = this.jsonUpdate
-		if (jsonQuery.W) {
-			whereFragment = this.getWHEREFragment(jsonQuery.W, '',
+		let updateQuery = this.updateQuery
+		if (updateQuery.W) {
+			whereFragment = this.getWHEREFragment(updateQuery.W, '',
 				context)
 			whereFragment = `WHERE
 ${whereFragment}`
 			// TODO: following might be needed for some RDBMS, does not work for SqLite
 			// Replace the root entity alias reference with the table name
-			// let tableAlias = this.relationManager.getAlias(this.jsonUpdate.U)
+			// let tableAlias = this.relationManager.getAlias(this.updateQuery.U)
 			// let tableName  = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
 			// whereFragment  = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
 		}
@@ -152,7 +152,7 @@ ${whereFragment}`
 		value: any
 	): boolean {
 		return typeof value === 'object'
-			&& value.ot === JSONClauseObjectType.MANY_TO_ONE_RELATION
+			&& value.ot === QueryClauseObjectType.MANY_TO_ONE_RELATION
 	}
 
 	private addManyToOneMappings(
@@ -162,10 +162,10 @@ ${whereFragment}`
 		const value = parentMapping.value
 		if (typeof value === 'object' &&
 			(!value.ot
-				|| value.ot === JSONClauseObjectType.MANY_TO_ONE_RELATION)) {
+				|| value.ot === QueryClauseObjectType.MANY_TO_ONE_RELATION)) {
 			for (const key in value) {
 				if (key === 'ot'
-					&& value[key] === JSONClauseObjectType.MANY_TO_ONE_RELATION) {
+					&& value[key] === QueryClauseObjectType.MANY_TO_ONE_RELATION) {
 					continue
 				}
 				const mapping: ManyToOneColumnMapping = {

@@ -5,7 +5,7 @@ import {
 	IEntitySelectProperties,
 	RawEntityQuery
 } from '@airport/tarmaq-query'
-import { IEntityFind } from '../../definition/query/EntityFind'
+import { IEntityFind } from '../../definition/query/IEntityFind'
 import { EntityLookup } from './EntityLookup'
 
 export interface IEntityFindInternal<Entity, EntityArray extends Array<Entity>,

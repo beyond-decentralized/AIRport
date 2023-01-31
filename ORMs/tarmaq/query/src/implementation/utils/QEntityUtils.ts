@@ -1,15 +1,15 @@
 import { QApp } from "@airport/aviation-communication";
 import { extend, Injected, IOC } from "@airport/direction-indicator";
 import { DbColumn, DbEntity, DbProperty, DbRelation, EntityRelationType, IApplicationUtils, JoinType, SQLDataType } from "@airport/ground-control";
-import { IQEntity } from "../../definition/core/entity/Entity";
-import { IRelationManager } from "../../definition/core/entity/IRelationManager";
-import { IQRelation } from "../../definition/core/entity/Relation";
-import { IQBooleanField } from "../../definition/core/field/BooleanField";
-import { IQDateField } from "../../definition/core/field/DateField";
-import { IQNumberField } from "../../definition/core/field/NumberField";
-import { IQOperableFieldInternal } from "../../definition/core/field/OperableField";
-import { IQStringField } from "../../definition/core/field/StringField";
-import { IQUntypedField } from "../../definition/core/field/UntypedField";
+import { IQEntity } from "../../definition/core/entity/IQEntity";
+import { IQueryRelationManager } from "../../definition/core/entity/IQueryRelationManager";
+import { IQRelation } from "../../definition/core/entity/IQRelation";
+import { IQBooleanField } from "../../definition/core/field/IQBooleanField";
+import { IQDateField } from "../../definition/core/field/IQDateField";
+import { IQNumberField } from "../../definition/core/field/IQNumberField";
+import { IQOperableFieldInternal } from "../../definition/core/field/IQOperableField";
+import { IQStringField } from "../../definition/core/field/IQStringField";
+import { IQUntypedField } from "../../definition/core/field/IQUntypedField";
 import { IQEntityUtils } from "../../definition/utils/IQEntityUtils";
 import { QEntity } from "../core/entity/QEntity";
 import { QAirEntityOneToManyRelation, QOneToManyRelation } from "../core/entity/OneToManyRelation";
@@ -53,7 +53,7 @@ export class QEntityUtils implements IQEntityUtils {
         q: IQEntityInternal,
         allQApps: QApp[],
         applicationUtils: IApplicationUtils,
-        relationManager: IRelationManager
+        relationManager: IQueryRelationManager
     ): IQRelation<typeof q> {
         const relation = property.relation[0]
         switch (relation.relationType) {
@@ -86,7 +86,7 @@ export class QEntityUtils implements IQEntityUtils {
         var ChildQEntity = function (
             entity: DbEntity,
             applicationUtils: IApplicationUtils,
-            relationManager: IRelationManager,
+            relationManager: IQueryRelationManager,
             nextChildJoinPosition: number[],
             dbRelation: DbRelation,
             joinType: JoinType
@@ -154,7 +154,7 @@ export class QEntityUtils implements IQEntityUtils {
             relation: DbRelation,
             qEntity: IQEntityInternal,
             appliationUtils: IApplicationUtils,
-            relationManager: IRelationManager,
+            relationManager: IQueryRelationManager,
         ) {
             (<any>QEntityIdRelation).base.constructor.call(
                 this, relation, qEntity, appliationUtils, relationManager)

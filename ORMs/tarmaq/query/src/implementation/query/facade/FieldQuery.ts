@@ -1,15 +1,15 @@
 import {
-	JSONClauseObjectType,
-	JsonFieldQuery,
+	QueryClauseObjectType,
+	QueryField,
 	Repository_GUID,
 	Repository_LocalId,
 	SQLDataType
 } from '@airport/ground-control'
-import { IEntityAliases } from '../../../definition/core/entity/Aliases'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { IQOrderableField } from '../../../definition/core/field/Field'
-import { RawFieldQuery } from '../../../definition/query/facade/FieldQuery'
-import { IQuery } from '../../../definition/query/facade/Query'
+import { IEntityAliases } from '../../../definition/core/entity/IAliases'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { IQOrderableField } from '../../../definition/core/field/IQFieldInternal'
+import { RawFieldQuery } from '../../../definition/query/facade/RawFieldQuery'
+import { IReadQuery } from '../../../definition/query/facade/RawReadQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { EntityAliases } from '../../core/entity/Aliases'
@@ -31,7 +31,7 @@ import {
 
 export class FieldQuery<IQF extends IQOrderableField<IQF>>
 	extends DistinguishableQuery
-	implements IQuery {
+	implements IReadQuery {
 
 	// private qEntityMap: {[entityName: string]: QEntity<any>},
 	//	private entitiesRelationPropertyMap: {[entityName: string]: {[propertyName: string]:
@@ -48,43 +48,43 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 			trackedRepoLocalIdSet)
 	}
 
-	nonDistinctSelectClauseToJSON(
+	rawToQueryNonDistinctSelectClause(
 		rawSelect: any,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
+		relationManager: IQueryRelationManager
 	): any {
 		if (!(this.rawQuery.SELECT instanceof QField)) {
 			throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE)
 		}
 		this.columnAliases.entityAliases.getNextAlias(this.rawQuery.SELECT.q.__driver__.getRootJoinEntity())
-		const jsonClauseField = (<QField<any>><any>this.rawQuery.SELECT).toJSON(
+		const queryClauseField = (<QField<any>><any>this.rawQuery.SELECT).toQueryFragment(
 			this.columnAliases, true,
 			this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 			queryUtils, fieldUtils, relationManager)
 
-		return jsonClauseField
+		return queryClauseField
 	}
 
-	toJSON(
+	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JsonFieldQuery {
+		relationManager: IQueryRelationManager
+	): QueryField {
 
-		let select = this.selectClauseToJSON(
+		let select = this.rawToQuerySelectClause(
 			this.rawQuery.SELECT,
 			queryUtils, fieldUtils, relationManager)
 
-		let jsonFieldQuery: JsonFieldQuery = {
+		let queryField: QueryField = {
 			S: select,
 			forUpdate: this.rawQuery.FOR_UPDATE,
-			ot: JSONClauseObjectType.FIELD_QUERY,
+			ot: QueryClauseObjectType.FIELD_QUERY,
 			dt: this.getClauseDataType()
 		}
 
-		return <JsonFieldQuery>this.getNonEntityQuery(
-			this.rawQuery, jsonFieldQuery, null,
+		return <QueryField>this.getNonEntityQuery(
+			this.rawQuery, queryField, null,
 			queryUtils, fieldUtils, relationManager)
 	}
 

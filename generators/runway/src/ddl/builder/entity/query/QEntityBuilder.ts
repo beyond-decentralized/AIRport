@@ -88,7 +88,7 @@ export class QEntityBuilder extends QCoreEntityBuilder {
 		// }
 
 		let classSource = `/**
- * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
+ * Query Entity Query Definition (used for Q.DbEntity_Name).
  */
 export interface ${qName}<IQE extends ${qName} = any>${interfaceGenericAndExtends}<IQE | ${qName}>
 {

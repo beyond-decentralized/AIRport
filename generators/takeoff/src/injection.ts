@@ -13,7 +13,7 @@ import {
     DomainDao
 } from '@airport/airspace/dist/app/bundle'
 import { lib } from '@airport/direction-indicator'
-import { ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, SEQUENCE_GENERATOR } from '@airport/ground-control'
+import { ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils, ImplApplicationUtils, SEQUENCE_GENERATOR } from '@airport/ground-control'
 import { DOMAIN_RETRIEVER, STORE_DRIVER, TerminalStore, TRANSACTION_MANAGER } from '@airport/terminal-map'
 import { AirportDatabasePopulator } from './AirportDatabasePopulator'
 import { ApplicationInitializer } from './ApplicationInitializer'
@@ -52,7 +52,7 @@ takeoff.setDependencies(ApplicationInitializer as any, {
     applicationLocator: ApplicationLocator,
     applicationRecorder: ApplicationRecorder,
     appTrackerUtils: AppTrackerUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     queryObjectInitializer: QueryObjectInitializer,
     sequenceGenerator: SEQUENCE_GENERATOR,
     terminalStore: TerminalStore,
@@ -66,19 +66,19 @@ APPLICATION_BUILDER.setDependencies({
 takeoff.setDependencies(ApplicationChecker, {
     applicationDao: ApplicationDao,
     datastructureUtils: DatastructureUtils,
-    dbApplicationUtils: DbApplicationUtils
+    dbApplicationUtils: ImplApplicationUtils
 })
 
 takeoff.setDependencies(ApplicationComposer, {
     applicationLocator: ApplicationLocator,
     datastructureUtils: DatastructureUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     domainRetriever: DOMAIN_RETRIEVER,
     terminalStore: TerminalStore
 })
 
 takeoff.setDependencies(ApplicationLocator, {
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
 })
 
 takeoff.setDependencies(ApplicationRecorder, {
@@ -130,7 +130,7 @@ takeoff.setDependencies(QueryObjectInitializer, {
 takeoff.setDependencies(SqlSchemaBuilder as any, {
     airportDatabase: AIRPORT_DATABASE,
     applicationReferenceUtils: ApplicationReferenceUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     sequenceDao: SequenceDao,
     storeDriver: STORE_DRIVER
 })

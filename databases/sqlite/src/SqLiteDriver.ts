@@ -1,5 +1,5 @@
 import {
-	JsonQuery,
+	Query,
 	QueryType,
 	SQLDataType
 } from '@airport/ground-control'
@@ -50,7 +50,7 @@ WHERE
 	}
 
 	getSelectQuerySuffix(
-		jsonQuery: JsonQuery,
+		query: Query,
 		context: IFuelHydrantContext
 	): string {
 		return ''

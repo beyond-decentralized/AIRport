@@ -3,12 +3,12 @@ import {
     IInjected
 } from '@airport/direction-indicator'
 import {
-    Application_Name,
+    DbApplication_Name,
     DbEntity,
-    Domain_Name,
-    Application_FullName,
+    DbDomain_Name,
+    DbApplication_FullName,
     InternalFragments,
-    JsonQuery,
+    Query,
     PortableQuery,
     QueryType,
     SQLDataType,
@@ -99,20 +99,20 @@ export abstract class SqlTransaction
     }
 
     getSelectQuerySuffix(
-        jsonQuery: JsonQuery,
+        query: Query,
         context: IContext,
     ): string {
 
-        return this.driver.getSelectQuerySuffix(jsonQuery, context)
+        return this.driver.getSelectQuerySuffix(query, context)
     }
 
     getTableName(
         application: {
-            domain: Domain_Name | {
-                name: Domain_Name
+            domain: DbDomain_Name | {
+                name: DbDomain_Name
             };
-            name: Application_Name;
-            fullName?: Application_FullName;
+            name: DbApplication_Name;
+            fullName?: DbApplication_FullName;
         },
         applicationIntegerVersion: number,
         table: {

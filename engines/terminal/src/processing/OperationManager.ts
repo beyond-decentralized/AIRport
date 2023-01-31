@@ -29,7 +29,7 @@ import {
 	IRepository,
 	IRootTransaction,
 	ISaveResult,
-	JSONValueOperation,
+	QueryValueOperation,
 	PortableQuery,
 	Repository_GUID
 } from '@airport/ground-control'
@@ -360,7 +360,7 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 
 		for (const entity of entities) {
 			const setFragment: any = {}
-			const idWhereFragments: JSONValueOperation[] = []
+			const idWhereFragments: QueryValueOperation[] = []
 			let runUpdate = false
 			const originalEntity = this.entityStateManager.getOriginalValues(entity)
 			if (!originalEntity) {
@@ -481,7 +481,7 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 		const qEntity =
 			this.airportDatabase.qApplications
 			[dbEntity.applicationVersion.application.index][dbEntity.name]
-		const idWhereFragments: JSONValueOperation[] = []
+		const idWhereFragments: QueryValueOperation[] = []
 		const valuesMapByColumn: any[] = []
 		let entityIdWhereClauses = []
 		for (const entity of entities) {

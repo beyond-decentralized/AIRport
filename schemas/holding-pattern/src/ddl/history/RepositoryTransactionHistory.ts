@@ -12,7 +12,6 @@ import {
 	OneToMany,
 	SequenceGenerator,
 	Table,
-	Transient,
 } from '@airport/tarmaq-entity'
 import { Actor } from '../infrastructure/Actor'
 import { RepositoryMember } from '../repository/member/RepositoryMember'
@@ -107,13 +106,13 @@ export class RepositoryTransactionHistory
 
 	// Tracked only in the Terminal database where originally added, for the
 	// purpose of sending out synchronization messages
-	// IS resent in RepositorySynchronizationMessage
+	// IS resent in SyncRepositoryMessage
 	@OneToMany({ mappedBy: 'addedInRepositoryTransactionHistory' })
 	newRepositoryMemberInvitations?: RepositoryMemberInvitation[] = []
 
 	// Tracked only in the Terminal database where originally added, for the
 	// purpose of sending out synchronization messages
-	// IS resent in RepositorySynchronizationMessage
+	// IS resent in SyncRepositoryMessage
 	@OneToMany({ mappedBy: 'addedInRepositoryTransactionHistory' })
 	newRepositoryMemberAcceptances?: RepositoryMemberAcceptance[] = []
 
@@ -125,7 +124,7 @@ export class RepositoryTransactionHistory
 
 	// Tracked only in the Terminal database where originally added, for the
 	// purpose of sending out synchronization messages
-	// IS NOT resent in RepositorySynchronizationMessage
+	// IS NOT resent in SyncRepositoryMessage
 	@OneToMany({ mappedBy: 'addedInRepositoryTransactionHistory' })
 	newRepositoryMembers?: RepositoryMember[] = []
 

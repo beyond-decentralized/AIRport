@@ -4,7 +4,7 @@ import {
 } from '@airport/direction-indicator'
 import {
 	ITransactionalConnector,
-	JsonQuery,
+	Query,
 	PortableQuery,
 	QueryResultType,
 } from '@airport/ground-control';
@@ -15,7 +15,7 @@ import {
 	IFieldUtils,
 	IQueryContext,
 	IQueryUtils,
-	IRelationManager
+	IQueryRelationManager
 } from '@airport/tarmaq-query';
 import {
 	Observable,
@@ -32,7 +32,7 @@ export class QueryFacade
 	queryUtils: IQueryUtils
 
 	@Inject()
-	relationManager: IRelationManager
+	relationManager: IQueryRelationManager
 
 	@Inject()
 	transactionalConnector: ITransactionalConnector
@@ -67,7 +67,7 @@ export class QueryFacade
 		context: IQueryContext
 	): PortableQuery {
 		return {
-			jsonQuery: <JsonQuery>query.toJSON(
+			query: <Query>query.toQuery(
 				this.queryUtils, this.fieldUtils, this.relationManager),
 			parameterMap: query.getParameters(),
 			queryResultType,

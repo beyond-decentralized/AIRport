@@ -17,7 +17,7 @@ import {
 	DbEntity,
 	Dictionary,
 	IApplicationUtils,
-	IDbApplicationUtils,
+	DbApplicationUtils,
 	ISaveResult,
 } from '@airport/ground-control';
 import {
@@ -30,11 +30,11 @@ import {
 } from '@airport/tarmaq-dao';
 import { IEntityContext } from '@airport/tarmaq-entity';
 import {
-	FunctionsAndOperators,
+	IFunctionsAndOperators,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-	IRelationManager,
+	IQueryRelationManager,
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
@@ -86,7 +86,7 @@ export class AirportDatabase
 	dictionary: Dictionary
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	dbApplicationUtils: DbApplicationUtils
 
 	@Inject()
 	find: INonEntityFind
@@ -98,7 +98,7 @@ export class AirportDatabase
 	qApplicationBuilderUtils: IQApplicationBuilderUtils
 
 	@Inject()
-	relationManager: IRelationManager
+	relationManager: IQueryRelationManager
 
 	@Inject()
 	search: INonEntitySearch
@@ -110,11 +110,11 @@ export class AirportDatabase
 		return this.databaseStore.entityMap
 	};
 
-	get F(): FunctionsAndOperators {
+	get F(): IFunctionsAndOperators {
 		return this.databaseStore.functions
 	}
 
-	get functions(): FunctionsAndOperators {
+	get functions(): IFunctionsAndOperators {
 		return this.databaseStore.functions
 	}
 
@@ -148,9 +148,9 @@ export class AirportDatabase
 		applicationName: string
 	): DbApplicationVersion {
 		const applicationFullName = this.dbApplicationUtils
-			.getApplication_FullNameFromDomainAndName(domainName, applicationName)
+			.getDbApplication_FullNameFromDomainAndName(domainName, applicationName)
 		return (this.QM[applicationFullName] as QAppInternal)
-			.__dbApplication__.currentVersion[0].applicationVersion
+			.__dbDbApplication__.currentVersion[0].applicationVersion
 	}
 
 	getDbEntity(
@@ -169,19 +169,19 @@ export class AirportDatabase
 	setQApp(
 		qApplication: QApp
 	): void {
-		const fullApplication_Name = this.dbApplicationUtils
-			.getApplication_FullName(qApplication)
-		const existingQApp = this.QM[fullApplication_Name]
+		const fullDbApplication_Name = this.dbApplicationUtils
+			.getDbApplication_FullName(qApplication)
+		const existingQApp = this.QM[fullDbApplication_Name]
 		if (existingQApp) {
-			const dbApplication = existingQApp.__dbApplication__
+			const dbApplication = existingQApp.__dbDbApplication__
 			if (dbApplication) {
-				qApplication.__dbApplication__ = dbApplication
+				qApplication.__dbDbApplication__ = dbApplication
 				this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.qApplications,
 					this.appliationUtils, this.relationManager)
 				this.Q[dbApplication.index] = qApplication
 			}
 		}
-		this.QM[fullApplication_Name] = qApplication
+		this.QM[fullDbApplication_Name] = qApplication
 	}
 
 	getAccumulator(

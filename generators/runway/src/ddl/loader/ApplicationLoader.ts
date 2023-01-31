@@ -1,11 +1,11 @@
 import {
 	DbApplication,
-	IDbApplicationBuilder,
+	DbApplicationBuilder,
 	JsonApplication
 } from '@airport/ground-control';
 import fs from 'fs';
 import { EntityReference, PropertyDocEntry } from '../parser/DocEntry';
-import { DbApplicationBuilder } from './DbApplicationBuilder';
+import { ImplApplicationBuilder } from './ImplApplicationBuilder';
 
 export interface IApplicationLoader {
 
@@ -28,7 +28,7 @@ export class ApplicationLoader
 	applicationMap: { [projectName: string]: DbApplication } = {};
 
 	allApplications: DbApplication[] = [];
-	dbApplicationBuilder: IDbApplicationBuilder = new DbApplicationBuilder();
+	dbApplicationBuilder: DbApplicationBuilder = new ImplApplicationBuilder();
 	dictionary = {
 		dbColumnRelationMapByManySide: {},
 		dbColumnRelationMapByOneSide: {}

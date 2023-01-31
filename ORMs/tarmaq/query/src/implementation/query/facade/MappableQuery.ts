@@ -1,4 +1,4 @@
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { QOneToManyRelation, QAirEntityOneToManyRelation } from '../../core/entity/OneToManyRelation'
@@ -21,11 +21,11 @@ export const FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE
 export abstract class MappableQuery
 	extends DistinguishableQuery {
 
-	protected nonDistinctSelectClauseToJSON(
+	protected rawToQueryNonDistinctSelectClause(
 		rawSelect: any,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
+		relationManager: IQueryRelationManager
 	): any {
 		let select = {}
 
@@ -39,7 +39,7 @@ export abstract class MappableQuery
 				// In that case the last one will set the alias for all of them.
 				// Because the alias only matters for GROUP_BY and ORDER_BY
 				// that is OK.
-				select[property] = value.toJSON(
+				select[property] = value.toQueryFragment(
 					this.columnAliases, true,
 					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 					queryUtils, fieldUtils, relationManager)
@@ -64,7 +64,7 @@ export abstract class MappableQuery
 
 							} else {
 								isChildObject = true
-								select[property] = this.nonDistinctSelectClauseToJSON(
+								select[property] = this.rawToQueryNonDistinctSelectClause(
 									value, queryUtils, fieldUtils, relationManager)
 							}
 					}

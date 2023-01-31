@@ -1,7 +1,7 @@
 import {IContext}      from '@airport/direction-indicator'
-import {SQLDataType}   from '../core/field/JSONClause'
+import {SQLDataType}   from '../core/field/QueryClause'
 import {PortableQuery} from '../query/PortableQuery'
-import {DbColumn}      from '../application/Property'
+import {DbColumn}      from '../application/DbProperty'
 
 export enum QueryType {
 	DDL = 'DDL',

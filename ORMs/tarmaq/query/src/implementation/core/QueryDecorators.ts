@@ -2,7 +2,7 @@ import { IQEntityInternal } from '../../definition/core/entity/IQEntityDriver'
 import {
 	AddToJoinFunction,
 	SubQueryDecorator,
-} from '../../definition/QueryDecorators'
+} from '../../definition/IQueryDecorators'
 
 /**
  * Function used to add a clause to a Join
@@ -10,7 +10,7 @@ import {
 	(
 		otm: QOtm, // One-to-Many IQEntity
 		mto: QMto // Many-to-One IQEntity
-	): JSONBaseOperation;
+	): QueryBaseOperation;
 }
  */
 

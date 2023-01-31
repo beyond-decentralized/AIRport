@@ -4,14 +4,14 @@ import {
 	IUtils,
 } from '@airport/air-traffic-control'
 import {
-	DatabaseManyToOneElements,
+	DbManyToOneElements,
 	DbEntity,
 	DbRelationColumn,
 	EntityRelationType,
 	InternalFragments,
-	JSONEntityRelation,
-	JsonQuery,
-	JSONRelation,
+	QueryEntityRelation,
+	Query,
+	QueryRelation,
 	QueryResultType,
 	ApplicationMap,
 	SqlOperator,
@@ -22,7 +22,7 @@ import {
 import {
 	IQEntityInternal,
 	IQueryUtils,
-	IRelationManager,
+	IQueryRelationManager,
 	JoinTreeNode
 } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
@@ -63,7 +63,7 @@ interface JoinOnColumns {
 /**
  * String based SQL query.
  */
-export abstract class SQLQuery<JQ extends JsonQuery>
+export abstract class SQLQuery<JQ extends Query>
 	extends SQLWhereBase {
 
 	protected entityDefaults: EntityDefaults = new EntityDefaults()
@@ -71,7 +71,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	resultsRepositoryIds: Set<Repository_LocalId> = new Set()
 
 	constructor(
-		protected jsonQuery: JQ,
+		protected query: JQ,
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
 		protected queryResultType: QueryResultType,
@@ -81,7 +81,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		protected relationManager: IRelationManager,
+		protected relationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementSqlGenerator: ISubStatementSqlGenerator,
@@ -140,7 +140,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	): Promise<any[]>;
 
 	protected abstract buildFromJoinTree(
-		joinRelations: (JSONEntityRelation | JSONRelation)[],
+		joinRelations: (QueryEntityRelation | QueryRelation)[],
 		joinNodeMap: { [alias: string]: JoinTreeNode },
 		context: IFuelHydrantContext,
 		applicationIndex?: number,
@@ -150,8 +150,8 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	protected getEntityApplicationRelationFromJoin(
 		leftQEntity: IQEntityInternal,
 		rightQEntity: IQEntityInternal,
-		entityRelation: JSONEntityRelation,
-		parentRelation: JSONRelation,
+		entityRelation: QueryEntityRelation,
+		parentRelation: QueryRelation,
 		currentAlias: string,
 		parentAlias: string,
 		joinTypeString: string,
@@ -177,7 +177,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 						manySideRelation.relationEntity._localId == leftDbEntity._localId
 						&& manySideRelation.manyToOneElems
 						&& manySideRelation.manyToOneElems as any !== true
-						&& (manySideRelation.manyToOneElems as DatabaseManyToOneElements).mappedBy === dbRelation.property.name
+						&& (manySideRelation.manyToOneElems as DbManyToOneElements).mappedBy === dbRelation.property.name
 					)
 					if (matchingRelations.length) {
 						relationColumns = matchingRelations[0].manyRelationColumns

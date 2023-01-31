@@ -12,7 +12,7 @@ import {
 } from '@airport/direction-indicator'
 import { DbApplication, IApplicationUtils } from '@airport/ground-control'
 import { IQueryEntityClassCreator } from '@airport/terminal-map'
-import { IRelationManager } from '@airport/tarmaq-query'
+import { IQueryRelationManager } from '@airport/tarmaq-query'
 
 @Injected()
 export class QueryEntityClassCreator
@@ -27,7 +27,7 @@ export class QueryEntityClassCreator
 	qApplicationBuilderUtils: IQApplicationBuilderUtils
 
 	@Inject()
-	relationManager: IRelationManager
+	relationManager: IQueryRelationManager
 
 	createAll(
 		applications: DbApplication[]
@@ -44,12 +44,12 @@ export class QueryEntityClassCreator
 		let qApplication: QAppInternal = this.airportDatabase.QM[dbApplication.fullName] as QAppInternal
 		// If the Application API source has already been loaded
 		if (qApplication) {
-			qApplication.__dbApplication__ = dbApplication
+			qApplication.__dbDbApplication__ = dbApplication
 		} else {
 			qApplication = {
 				__constructors__: {},
 				__qConstructors__: {},
-				__dbApplication__: dbApplication,
+				__dbDbApplication__: dbApplication,
 				name: dbApplication.name,
 				domain: dbApplication.domain.name
 			}

@@ -7,7 +7,7 @@ import {
 	IQEntityInternal,
 	IQTree,
 	IQueryUtils,
-	IRelationManager,
+	IQueryRelationManager,
 	JoinTreeNode,
 	QBooleanField,
 	QDateField,
@@ -23,19 +23,19 @@ import {
 	IEntityStateManager,
 	InternalFragments,
 	JoinType,
-	JSONClauseField,
-	JSONClauseObjectType,
-	JSONEntityRelation,
-	JSONFieldInGroupBy,
-	JSONFieldInOrderBy,
-	JsonFieldQuery,
-	JSONJoinRelation,
-	JsonNonEntityQuery,
-	JSONRelation,
-	JSONRelationType,
-	JSONViewJoinRelation,
+	QueryFieldClause,
+	QueryClauseObjectType,
+	QueryEntityRelation,
+	QueryFieldInGroupBy,
+	QueryFieldInOrderBy,
+	QueryField,
+	QueryJoinRelation,
+	QueryNonEntity,
+	QueryRelation,
+	QueryRelationType,
+	QueryViewJoinRelation,
 	QueryResultType,
-	SortOrder,
+	QuerySortOrder,
 	SQLDataType
 } from '@airport/ground-control'
 import { IStoreDriver } from '@airport/terminal-map'
@@ -55,14 +55,14 @@ import { SqlFunctionField } from './SqlFunctionField'
  * Created by Papa on 10/28/2016.
  */
 
-export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
+export abstract class NonEntitySQLQuery<JNEQ extends QueryNonEntity>
 	extends SQLQuery<JNEQ> {
 
 	protected joinTrees: JoinTreeNode[]
 	protected orderByParser: INonEntityOrderByParser
 
 	constructor(
-		jsonQuery: JNEQ,
+		nonEntityQuery: JNEQ,
 		dialect: SQLDialect,
 		queryResultType: QueryResultType,
 		airportDatabase: IAirportDatabase,
@@ -71,14 +71,14 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		relationManager: IRelationManager,
+		relationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementQueryGenerator: ISubStatementSqlGenerator,
 		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
-		super(jsonQuery, null, dialect, queryResultType,
+		super(nonEntityQuery, null, dialect, queryResultType,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -104,75 +104,75 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		internalFragments: InternalFragments,
 		context: IFuelHydrantContext,
 	): string {
-		let jsonQuery = <JsonNonEntityQuery>this.jsonQuery
+		let nonEntityQuery = <QueryNonEntity>this.query
 		let joinNodeMap: { [alias: string]: JoinTreeNode }
 			= {}
 		this.joinTrees = this.buildFromJoinTree(
-			jsonQuery.F, joinNodeMap, context)
+			nonEntityQuery.F, joinNodeMap, context)
 		let selectFragment = this.getSELECTFragment(
-			false, jsonQuery.S, internalFragments,
+			false, nonEntityQuery.S, internalFragments,
 			context)
 		let fromFragment = this.getFROMFragments(
 			this.joinTrees, context)
 		let whereFragment = ''
-		if (jsonQuery.W) {
+		if (nonEntityQuery.W) {
 			whereFragment = `
 WHERE
-	${this.getWHEREFragment(jsonQuery.W, '', context)}`
+	${this.getWHEREFragment(nonEntityQuery.W, '', context)}`
 		}
 		let groupByFragment = ''
-		if (jsonQuery.GB && jsonQuery.GB.length) {
+		if (nonEntityQuery.GB && nonEntityQuery.GB.length) {
 			groupByFragment = `
 GROUP BY
-	${this.getGroupByFragment(jsonQuery.GB)}`
+	${this.getGroupByFragment(nonEntityQuery.GB)}`
 		}
 		let havingFragment = ''
-		if (jsonQuery.H) {
+		if (nonEntityQuery.H) {
 			havingFragment = `
 HAVING
-	${this.getWHEREFragment(jsonQuery.H, '', context)}`
+	${this.getWHEREFragment(nonEntityQuery.H, '', context)}`
 		}
 		let orderByFragment = ''
-		if (jsonQuery.OB && jsonQuery.OB.length) {
+		if (nonEntityQuery.OB && nonEntityQuery.OB.length) {
 			orderByFragment = `
 ORDER BY
-	${this.orderByParser.getOrderByFragment(jsonQuery.S, jsonQuery.OB)}`
+	${this.orderByParser.getOrderByFragment(nonEntityQuery.S, nonEntityQuery.OB)}`
 		}
 		let offsetFragment = ''
-		if (jsonQuery.O) {
-			offsetFragment = this.sqlQueryAdapter.getOffsetFragment(jsonQuery.O)
+		if (nonEntityQuery.O) {
+			offsetFragment = this.sqlQueryAdapter.getOffsetFragment(nonEntityQuery.O)
 		}
 		let limitFragment = ''
-		if (jsonQuery.L) {
-			offsetFragment = this.sqlQueryAdapter.getLimitFragment(jsonQuery.L)
+		if (nonEntityQuery.L) {
+			offsetFragment = this.sqlQueryAdapter.getLimitFragment(nonEntityQuery.L)
 		}
 
 		return `SELECT
 	${selectFragment}
 FROM
 ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragment}${offsetFragment}${limitFragment}
-${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
+${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 	}
 
 	buildFromJoinTree(
-		joinRelations: JSONRelation[],
+		queryRelations: QueryRelation[],
 		joinNodeMap: { [alias: string]: JoinTreeNode },
 		context: IFuelHydrantContext,
 	): JoinTreeNode[] {
-		let jsonTrees: JoinTreeNode[] = []
-		let jsonTree: JoinTreeNode
+		let joinTreeNodes: JoinTreeNode[] = []
+		let joinTreeNode: JoinTreeNode
 
 		// For entity queries it is possible to have a query with no from clause, in this case
 		// make the query entity the root tree node
-		if (joinRelations.length < 1) {
+		if (queryRelations.length < 1) {
 			throw new Error(
 				`FROM clause must have entries for non-Entity queries`)
 		}
 
-		let firstRelation = joinRelations[0]
+		let firstRelation = queryRelations[0]
 		switch (firstRelation.rt) {
-			case JSONRelationType.SUB_QUERY_ROOT:
-			case JSONRelationType.ENTITY_ROOT:
+			case QueryRelationType.SUB_QUERY_ROOT:
+			case QueryRelationType.ENTITY_ROOT:
 				break
 			default:
 				throw new Error(`First table in FROM clause cannot be joined`)
@@ -183,25 +183,25 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 		let firstEntity = this.relationManager.createRelatedQEntity(
 			firstRelation, context)
 		this.qEntityMapByAlias[alias] = firstEntity
-		jsonTree = new JoinTreeNode(firstRelation, [], null)
-		jsonTrees.push(jsonTree)
-		joinNodeMap[alias] = jsonTree
+		joinTreeNode = new JoinTreeNode(firstRelation, [], null)
+		joinTreeNodes.push(joinTreeNode)
+		joinNodeMap[alias] = joinTreeNode
 
-		for (let i = 1; i < joinRelations.length; i++) {
+		for (let i = 1; i < queryRelations.length; i++) {
 			let rightEntity
-			let joinRelation = joinRelations[i]
+			let joinRelation = queryRelations[i]
 			if (!joinRelation.jt) {
 				throw new Error(`Table ${i + 1} in FROM clause is missing joinType`)
 			}
 			this.qValidator.validateReadFromEntity(joinRelation)
 			alias = this.relationManager.getAlias(joinRelation)
 			switch (joinRelation.rt) {
-				case JSONRelationType.SUB_QUERY_ROOT:
+				case QueryRelationType.SUB_QUERY_ROOT:
 					let view = this.addFieldsToView(
-						<JSONViewJoinRelation>joinRelation, alias, context)
+						<QueryViewJoinRelation>joinRelation, alias, context)
 					this.qEntityMapByAlias[alias] = view as IQEntityInternal
 					continue
-				case JSONRelationType.ENTITY_ROOT:
+				case QueryRelationType.ENTITY_ROOT:
 					// Non-Joined table
 					let nonJoinedEntity = this.relationManager.createRelatedQEntity(
 						joinRelation, context)
@@ -211,32 +211,32 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 						throw new Error(
 							`Alias '${alias}' used more than once in the FROM clause.`)
 					}
-					jsonTrees.push(anotherTree)
+					joinTreeNodes.push(anotherTree)
 					joinNodeMap[alias] = anotherTree
 					continue
-				case JSONRelationType.ENTITY_APPLICATION_RELATION:
-					if (!(<JSONEntityRelation>joinRelation).ri) {
+				case QueryRelationType.ENTITY_APPLICATION_RELATION:
+					if (!(<QueryEntityRelation>joinRelation).ri) {
 						throw new Error(
 							`Table ${i + 1} in FROM clause is missing relationPropertyName`)
 					}
 					rightEntity = this.relationManager.createRelatedQEntity(
 						joinRelation, context)
 					break
-				case JSONRelationType.SUB_QUERY_JOIN_ON:
-					if (!(<JSONJoinRelation>joinRelation).joinWhereClause) {
+				case QueryRelationType.SUB_QUERY_JOIN_ON:
+					if (!(<QueryJoinRelation>joinRelation).joinWhereClause) {
 						this.warn(`View ${i + 1} in FROM clause is missing joinWhereClause`)
 					}
-					rightEntity = this.addFieldsToView(<JSONViewJoinRelation>joinRelation, alias, context)
+					rightEntity = this.addFieldsToView(<QueryViewJoinRelation>joinRelation, alias, context)
 					break
-				case JSONRelationType.ENTITY_JOIN_ON:
-					if (!(<JSONJoinRelation>joinRelation).joinWhereClause) {
+				case QueryRelationType.ENTITY_JOIN_ON:
+					if (!(<QueryJoinRelation>joinRelation).joinWhereClause) {
 						this.warn(`Table ${i + 1} in FROM clause is missing joinWhereClause`)
 					}
 					rightEntity = this.relationManager.createRelatedQEntity(
 						joinRelation, context)
 					break
 				default:
-					throw new Error(`Unknown JSONRelationType ${joinRelation.rt}`)
+					throw new Error(`Unknown QueryRelationType ${joinRelation.rt}`)
 			}
 			let parentAlias = this.relationManager.getParentAlias(joinRelation)
 			if (!joinNodeMap[parentAlias]) {
@@ -260,11 +260,11 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 			joinNodeMap[alias] = rightNode
 		}
 
-		return jsonTrees
+		return joinTreeNodes
 	}
 
 	addFieldsToView(
-		viewJoinRelation: JSONViewJoinRelation,
+		viewJoinRelation: QueryViewJoinRelation,
 		viewAlias: string,
 		context: IFuelHydrantContext,
 	): IQTree {
@@ -294,7 +294,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 		let hasDistinctClause = false
 		for (let fieldName in select) {
 			let alias = `${fieldPrefix}${++fieldIndex}`
-			let fieldJson: JSONClauseField = select[fieldName]
+			let fieldJson: QueryFieldClause = select[fieldName]
 			// If its a nested SELECT
 			if (!fieldJson.ot) {
 				this.addFieldsToViewForSelect(view, viewAlias, fieldJson,
@@ -322,7 +322,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 		view: IQTree,
 		viewAlias: string,
 		fieldPrefix: string,
-		fieldJson: JSONClauseField,
+		fieldJson: QueryFieldClause,
 		alias: string,
 		forFieldQueryAlias: string = null,
 		context: IFuelHydrantContext,
@@ -332,12 +332,12 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 		let dbProperty: DbProperty
 		let dbColumn: DbColumn
 		switch (fieldJson.ot) {
-			case JSONClauseObjectType.FIELD_FUNCTION:
+			case QueryClauseObjectType.FIELD_FUNCTION:
 				view[alias] = new SqlFunctionField(fieldJson)
 				throw new Error('Not implemented')
-			case JSONClauseObjectType.EXISTS_FUNCTION:
+			case QueryClauseObjectType.EXISTS_FUNCTION:
 				throw new Error(`Exists function cannot be used in SELECT clause.`)
-			case JSONClauseObjectType.FIELD:
+			case QueryClauseObjectType.FIELD:
 				dbEntity = this.airportDatabase.applications[fieldJson.si].currentVersion[0]
 					.applicationVersion.entities[fieldJson.ti]
 				dbProperty = dbEntity.properties[fieldJson.pi]
@@ -367,17 +367,17 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 						throw new Error(`Unknown SQLDataType: ${fieldJson.dt}.`)
 				}
 				break
-			case JSONClauseObjectType.FIELD_QUERY:
-				let fieldQuery = <JsonFieldQuery><any>fieldJson
+			case QueryClauseObjectType.FIELD_QUERY:
+				let fieldQuery = <QueryField><any>fieldJson
 				this.addFieldToViewForSelect(view, viewAlias, fieldPrefix,
 					fieldQuery.S, alias, alias, context)
 				break
-			case JSONClauseObjectType.DISTINCT_FUNCTION:
+			case QueryClauseObjectType.DISTINCT_FUNCTION:
 				this.addFieldsToViewForSelect(view, viewAlias, fieldJson.v,
 					fieldPrefix, forFieldQueryAlias, context)
 				hasDistinctClause = true
 				break
-			case JSONClauseObjectType.MANY_TO_ONE_RELATION:
+			case QueryClauseObjectType.MANY_TO_ONE_RELATION:
 				throw new Error(
 					`@ManyToOne fields cannot be directly in a SELECT clause.
 					Please select a non-relational field within the relation.`)
@@ -386,7 +386,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 			// fieldJson.ci); view[alias] = relation.getInstance(view); break;
 			default:
 				throw new Error(
-					`Unexpected type property on JSONClauseField: ${fieldJson.ot}.`)
+					`Unexpected type property on QueryFieldClause: ${fieldJson.ot}.`)
 		}
 
 		return hasDistinctClause
@@ -400,7 +400,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 	): string;
 
 	protected getFieldSelectFragment(
-		value: JSONClauseField,
+		value: QueryFieldClause,
 		clauseType: ClauseType,
 		nestedObjectCallBack: { (): string },
 		fieldIndex: number,
@@ -435,17 +435,17 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 		context: IFuelHydrantContext,
 	): string {
 		let fromFragment = '\t'
-		let currentRelation = currentTree.jsonRelation
+		let currentRelation = currentTree.queryRelation
 		let currentAlias = this.relationManager.getAlias(currentRelation)
 		let qEntity = this.qEntityMapByAlias[currentAlias]
 
 		if (!parentTree) {
 			switch (currentRelation.rt) {
-				case JSONRelationType.ENTITY_ROOT:
+				case QueryRelationType.ENTITY_ROOT:
 					fromFragment += `${this.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context)} ${currentAlias}`
 					break
-				case JSONRelationType.SUB_QUERY_ROOT:
-					let viewRelation = <JSONViewJoinRelation>currentRelation
+				case QueryRelationType.SUB_QUERY_ROOT:
+					let viewRelation = <QueryViewJoinRelation>currentRelation
 					const {
 						parameterReferences,
 						subQuerySql
@@ -461,7 +461,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 						`Top level FROM entries must be Entity or Sub-Query root`)
 			}
 		} else {
-			let parentRelation = parentTree.jsonRelation
+			let parentRelation = parentTree.queryRelation
 			let parentAlias = this.relationManager.getAlias(parentRelation)
 			let leftEntity = this.qEntityMapByAlias[parentAlias]
 
@@ -488,21 +488,21 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 
 			let joinOnClause
 			switch (currentRelation.rt) {
-				case JSONRelationType.ENTITY_JOIN_ON:
-					let joinRelation = <JSONJoinRelation>currentRelation
+				case QueryRelationType.ENTITY_JOIN_ON:
+					let joinRelation = <QueryJoinRelation>currentRelation
 					joinOnClause = this.getWHEREFragment(joinRelation.joinWhereClause, '\t',
 						context)
 					fromFragment += `\t${joinTypeString} ${this.storeDriver.getEntityTableName(
 						qEntity.__driver__.dbEntity, context)} ${currentAlias} ON\n${joinOnClause}`
 					break
-				case JSONRelationType.ENTITY_APPLICATION_RELATION:
+				case QueryRelationType.ENTITY_APPLICATION_RELATION:
 					fromFragment += this.getEntityApplicationRelationFromJoin(
-						leftEntity, rightEntity, <JSONEntityRelation>currentRelation,
+						leftEntity, rightEntity, <QueryEntityRelation>currentRelation,
 						parentRelation, currentAlias, parentAlias,
 						joinTypeString, errorPrefix, context)
 					break
-				case JSONRelationType.SUB_QUERY_JOIN_ON:
-					let viewJoinRelation = <JSONViewJoinRelation>currentRelation
+				case QueryRelationType.SUB_QUERY_JOIN_ON:
+					let viewJoinRelation = <QueryViewJoinRelation>currentRelation
 					const {
 						parameterReferences,
 						subQuerySql
@@ -530,7 +530,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 	}
 
 	protected getGroupByFragment(
-		groupBy?: JSONFieldInGroupBy[]
+		groupBy?: QueryFieldInGroupBy[]
 	): string {
 		return groupBy.map(
 			(groupByField) => {
@@ -541,15 +541,15 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 	}
 
 	protected getOrderByFragment(
-		orderBy: JSONFieldInOrderBy[]
+		orderBy: QueryFieldInOrderBy[]
 	): string {
 		return orderBy.map(
 			(orderByField) => {
 				this.qValidator.validateAliasedFieldAccess(orderByField.fa)
 				switch (orderByField.so) {
-					case SortOrder.ASCENDING:
+					case QuerySortOrder.ASCENDING:
 						return `${orderByField.fa} ASC`
-					case SortOrder.DESCENDING:
+					case QuerySortOrder.DESCENDING:
 						return `${orderByField.fa} DESC`
 				}
 			})

@@ -9,7 +9,7 @@ import { ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
 import { IDataCheckResult } from './checker/SyncInDataChecker'
 import { ISyncInApplicationVersionChecker } from './checker/SyncInApplicationVersionChecker'
 import { IRepositoryLoader } from '@airport/air-traffic-control'
-import { IRepository, RepositorySynchronizationMessage, RepositoryTransactionHistory_GUID, Repository_GUID, Repository_LocalId } from '@airport/ground-control'
+import { IRepository, SyncRepositoryMessage, RepositoryTransactionHistory_GUID, Repository_GUID, Repository_LocalId } from '@airport/ground-control'
 import { INewAndUpdatedRepositoriesAndRecords, IRepositoriesAndMembersCheckResult } from './checker/SyncInRepositoryChecker'
 
 /**
@@ -18,7 +18,7 @@ import { INewAndUpdatedRepositoriesAndRecords, IRepositoriesAndMembersCheckResul
 export interface ISynchronizationInManager {
 
 	receiveMessages(
-		messageMapByGUID: Map<string, RepositorySynchronizationMessage>,
+		messageMapByGUID: Map<string, SyncRepositoryMessage>,
 		context: ITransactionContext
 	): Promise<void>;
 
@@ -55,7 +55,7 @@ export class SynchronizationInManager
 	twoStageSyncedInDataProcessor: ITwoStageSyncedInDataProcessor
 
 	async receiveMessages(
-		messageMapByGUID: Map<RepositoryTransactionHistory_GUID, RepositorySynchronizationMessage>,
+		messageMapByGUID: Map<RepositoryTransactionHistory_GUID, SyncRepositoryMessage>,
 		context: ISyncTransactionContext
 	): Promise<void> {
 		const syncTimestamp = new Date().getTime()
@@ -72,8 +72,8 @@ export class SynchronizationInManager
 
 		const orderedMessages = this.timeOrderMessages(messageMapByGUID)
 
-		const immediateProcessingMessages: RepositorySynchronizationMessage[] = []
-		const delayedProcessingMessages: RepositorySynchronizationMessage[] = []
+		const immediateProcessingMessages: SyncRepositoryMessage[] = []
+		const delayedProcessingMessages: SyncRepositoryMessage[] = []
 
 		const newAndUpdatedRepositoriesAndRecords: INewAndUpdatedRepositoriesAndRecords = {
 			missingRepositories: [],
@@ -168,9 +168,9 @@ export class SynchronizationInManager
 	}
 
 	private timeOrderMessages(
-		messageMapByGUID: Map<string, RepositorySynchronizationMessage>
-	): RepositorySynchronizationMessage[] {
-		const messages: RepositorySynchronizationMessage[] = [...messageMapByGUID.values()]
+		messageMapByGUID: Map<string, SyncRepositoryMessage>
+	): SyncRepositoryMessage[] {
+		const messages: SyncRepositoryMessage[] = [...messageMapByGUID.values()]
 
 		messages.sort((message1, message2) => {
 			if (message1.syncTimestamp < message2.syncTimestamp) {
@@ -224,10 +224,10 @@ export class SynchronizationInManager
 	}
 
 	private async processDelayedMessages(
-		delayedProcessingMessages: RepositorySynchronizationMessage[],
+		delayedProcessingMessages: SyncRepositoryMessage[],
 		context: ITransactionContext
 	): Promise<void> {
-		const delayedProcessingMessagesWithValidApps: RepositorySynchronizationMessage[] = []
+		const delayedProcessingMessagesWithValidApps: SyncRepositoryMessage[] = []
 		for (const message of delayedProcessingMessages) {
 			const data = message.data
 			// Possibly load (remotely) and install new apps - delayed processing
@@ -257,7 +257,7 @@ export class SynchronizationInManager
 	}
 
 	private async loadReferencedRepositories(
-		messages: RepositorySynchronizationMessage[],
+		messages: SyncRepositoryMessage[],
 		context: ISyncTransactionContext
 	): Promise<void> {
 		const repositoryMapByGUID: Map<Repository_GUID, IRepository> = new Map()

@@ -135,7 +135,7 @@ export default Q_${this.applicationFullName}
 export function ${this.applicationFullName}_diSet(
 	dbEntityId: number
 ): boolean {
-	return globalThis.airApi.dS(Q_${this.applicationFullName}.__dbApplication__, dbEntityId)
+	return globalThis.airApi.dS(Q_${this.applicationFullName}.__dbDbApplication__, dbEntityId)
 }
 if (globalThis.airApi) {
   globalThis.airApi.setQApp(Q_${this.applicationFullName})
@@ -145,7 +145,7 @@ if (globalThis.airApi) {
     // export function duoDiSet(
     // 	dbEntityId: number
     // ): boolean {
-    // 	return globalThis.airApi.ddS(Q.__dbApplication__, dbEntityId)
+    // 	return globalThis.airApi.ddS(Q.__dbDbApplication__, dbEntityId)
     // }
   }
 

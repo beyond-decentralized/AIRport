@@ -7,12 +7,12 @@ import {
 	IApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
-	JSONClauseField,
-	JSONClauseObjectType,
-	JsonTreeQuery,
+	QueryFieldClause,
+	QueryClauseObjectType,
+	QueryTree,
 	QueryResultType
 } from '@airport/ground-control'
-import { AliasCache, IQueryUtils, IRelationManager } from '@airport/tarmaq-query'
+import { AliasCache, IQueryUtils, IQueryRelationManager } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
@@ -29,12 +29,12 @@ import { SqlFunctionField } from './SqlFunctionField'
  * Created by Papa on 10/28/2016.
  */
 export class TreeSQLQuery
-	extends NonEntitySQLQuery<JsonTreeQuery> {
+	extends NonEntitySQLQuery<QueryTree> {
 
 	protected queryParser: TreeQueryResultParser
 
 	constructor(
-		jsonQuery: JsonTreeQuery,
+		treeQuery: QueryTree,
 		dialect: SQLDialect,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
@@ -42,14 +42,14 @@ export class TreeSQLQuery
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		relationManager: IRelationManager,
+		relationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementQueryGenerator: ISubStatementSqlGenerator,
 		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
-		super(jsonQuery, dialect, QueryResultType.TREE,
+		super(treeQuery, dialect, QueryResultType.TREE,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -90,7 +90,7 @@ export class TreeSQLQuery
 		let lastResult
 		results.forEach((result) => {
 			let aliasCache = new AliasCache()
-			let parsedResult = this.parseQueryResult(this.jsonQuery.S, result, [0], aliasCache, aliasCache.getFollowingAlias())
+			let parsedResult = this.parseQueryResult(this.query.S, result, [0], aliasCache, aliasCache.getFollowingAlias())
 			if (!lastResult) {
 				parsedResults.push(parsedResult)
 			} else if (lastResult !== parsedResult) {
@@ -109,8 +109,8 @@ export class TreeSQLQuery
 		internalFragments: InternalFragments,
 		context: IFuelHydrantContext,
 	): string {
-		const distinctClause = <JSONClauseField>selectClauseFragment
-		if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
+		const distinctClause = <QueryFieldClause>selectClauseFragment
+		if (distinctClause.ot == QueryClauseObjectType.DISTINCT_FUNCTION) {
 			if (nested) {
 				throw new Error(
 					`Cannot have DISTINCT specified in a nested SELECT clause`)
@@ -175,8 +175,8 @@ export class TreeSQLQuery
 			return resultRow
 		}
 		{
-			let distinctClause = <JSONClauseField>selectClauseFragment
-			if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
+			let distinctClause = <QueryFieldClause>selectClauseFragment
+			if (distinctClause.ot == QueryClauseObjectType.DISTINCT_FUNCTION) {
 				return this.parseQueryResult(distinctClause.appliedFunctions[0].p[0], resultRow, nextFieldIndex, aliasCache, entityAlias)
 			}
 		}
@@ -187,12 +187,12 @@ export class TreeSQLQuery
 			if (selectClauseFragment[propertyName] === undefined) {
 				continue
 			}
-			let jsonClauseField: JSONClauseField = selectClauseFragment[propertyName]
-			let dataType = jsonClauseField.dt
+			let queryFieldClause: QueryFieldClause = selectClauseFragment[propertyName]
+			let dataType = queryFieldClause.dt
 			// Must be a sub-query
 			if (!dataType) {
 				let childResultObject = this.parseQueryResult(
-					jsonClauseField,
+					queryFieldClause,
 					resultRow,
 					nextFieldIndex,
 					aliasCache,
@@ -201,7 +201,7 @@ export class TreeSQLQuery
 				this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, propertyName, childResultObject)
 			} else {
 				let propertyValue = this.sqlQueryAdapter.getResultCellValue(
-					resultRow, jsonClauseField.fa, nextFieldIndex[0], dataType, null)
+					resultRow, queryFieldClause.fa, nextFieldIndex[0], dataType, null)
 				this.queryParser.addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue)
 			}
 			nextFieldIndex[0]++

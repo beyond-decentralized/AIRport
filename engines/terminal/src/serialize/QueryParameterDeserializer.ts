@@ -4,7 +4,7 @@ import {
 import {
     IClientQuery,
     IEntityStateManager,
-    IJsonClientQueryParameter,
+    JsonClientQueryParameter,
     IQueryParameterDeserializer,
     SQLDataType
 } from "@airport/ground-control";
@@ -23,10 +23,10 @@ export class QueryParameterDeserializer
         query: IClientQuery,
         entityStateManager: IEntityStateManager
     ): any[] {
-        if (parameters.length !== query.jsonQuery.parameters.length) {
-            throw new Error(`Wrong number of parameters for ${query.dbEntity.name}.${query.jsonQuery.queryName}
+        if (parameters.length !== query.query.parameters.length) {
+            throw new Error(`Wrong number of parameters for ${query.dbEntity.name}.${query.query.queryName}
             Received:  ${parameters.length}
-            Expecting: ${query.jsonQuery.parameters.length}
+            Expecting: ${query.query.parameters.length}
             `)
         }
 
@@ -34,7 +34,7 @@ export class QueryParameterDeserializer
 
         for (let i = 0; i < parameters.length; i++) {
             const deserializedParameter = this.deserializeParameter(
-                parameters[i], query.jsonQuery.parameters[i], i + 1,
+                parameters[i], query.query.parameters[i], i + 1,
                 query, entityStateManager)
             deserializedParameters.push(deserializedParameter)
         }
@@ -44,12 +44,12 @@ export class QueryParameterDeserializer
 
     private deserializeParameter(
         parameter: any,
-        jsonQueryParameter: IJsonClientQueryParameter,
+        queryParameter: JsonClientQueryParameter,
         parameterIndex: number,
         query: IClientQuery,
         entityStateManager: IEntityStateManager
     ): boolean | Date | number | string {
-        switch (jsonQueryParameter.type) {
+        switch (queryParameter.type) {
             case SQLDataType.BOOLEAN:
                 this.checkTypeOfParameter(parameter, 'boolean', parameterIndex, query)
                 break;
@@ -58,7 +58,7 @@ export class QueryParameterDeserializer
                     // || parameter[entityStateManager.getStateFieldName()] !== EntityState.RESULT_DATE
                     || !parameter.value) {
                     throw new Error(`Invalid Serialized Date format for:
-                    ${query.dbEntity.name}.${query.jsonQuery.queryName}
+                    ${query.dbEntity.name}.${query.query.queryName}
                     parameter #: ${parameterIndex}
         got: ${JSON.stringify(parameter)}
                     `)
@@ -67,7 +67,7 @@ export class QueryParameterDeserializer
                     return new Date(parameter)
                 } catch (e) {
                     throw new Error(`Invalid Serialized Date format for:
-                    ${query.dbEntity.name}.${query.jsonQuery.queryName}
+                    ${query.dbEntity.name}.${query.query.queryName}
                     parameter #: ${parameterIndex}
         got: ${JSON.stringify(parameter)}
                     `);
@@ -81,9 +81,9 @@ export class QueryParameterDeserializer
                 break;
             default:
                 throw new Error(`Unsupported parameter type for:
-                ${query.dbEntity.name}.${query.jsonQuery.queryName}
+                ${query.dbEntity.name}.${query.query.queryName}
                 parameter #: ${parameterIndex}
-    got: ${jsonQueryParameter.type}
+    got: ${queryParameter.type}
                 `);
         }
 
@@ -99,7 +99,7 @@ export class QueryParameterDeserializer
         const typeOfParameter = typeof parameter
         if (typeOfParameter !== expectedParameterType) {
             throw new Error(`Expecting a '${expectedParameterType}' parameter for:
-            ${query.dbEntity.name}.${query.jsonQuery.queryName}
+            ${query.dbEntity.name}.${query.query.queryName}
             parameter #: ${parameterIndex}
 got: ${typeOfParameter}
             `);

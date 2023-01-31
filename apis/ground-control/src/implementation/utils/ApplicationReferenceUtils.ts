@@ -1,7 +1,7 @@
 import { Inject, Injected } from "@airport/direction-indicator";
-import { DbApplication, DbDomain, JsonApplication, JsonApplicationVersion } from "../../definition/application/Application";
-import { DbEntity, JsonApplicationEntity } from "../../definition/application/Entity";
-import { JsonApplicationColumn, JsonApplicationProperty, JsonApplicationRelation } from "../../definition/application/Property";
+import { DbApplication, DbDomain, JsonApplication, JsonApplicationVersion } from "../../definition/application/DbApplication";
+import { DbEntity, JsonEntity } from "../../definition/application/DbEntity";
+import { JsonColumn, JsonProperty, JsonRelation } from "../../definition/application/DbProperty";
 import { IApplicationReferenceUtils } from "../../definition/utils/IApplicationReferenceUtils";
 import { IAppTrackerUtils } from "../../definition/utils/IAppTrackerUtils";
 
@@ -23,10 +23,10 @@ export class ApplicationReferenceUtils
         getRelationInfo: (
             jsonApplication: JsonApplication,
             applicationVersion: JsonApplicationVersion,
-            jsonRelation: JsonApplicationRelation
+            queryRelation: JsonRelation
         ) => {
             relatedJsonApplication: JsonApplication | DbApplication,
-            relatedJsonEntity: JsonApplicationEntity | DbEntity
+            relatedJsonEntity: JsonEntity | DbEntity
         }
     ): void {
         if (this.appTrackerUtils.isInternalDomain(jsonApplication.domain)) {
@@ -43,17 +43,17 @@ export class ApplicationReferenceUtils
                     continue
                 }
                 const relations = this.getRelationsFromColumn(jsonEntity, jsonColumn);
-                for (let jsonRelation of relations) {
+                for (let queryRelation of relations) {
                     const {
                         relatedJsonApplication, relatedJsonEntity
                     } = getRelationInfo(jsonApplication, applicationVersion,
-                        jsonRelation)
+                        queryRelation)
                     this.isRelationToAFrameworkEntity(
                         relatedJsonApplication,
                         relatedJsonEntity,
                         jsonApplication,
                         jsonEntity,
-                        jsonEntity.properties[jsonRelation.propertyRef.index],
+                        jsonEntity.properties[queryRelation.propertyRef.index],
                         jsonColumn
                     )
                 }
@@ -62,10 +62,10 @@ export class ApplicationReferenceUtils
     }
 
     private getRelationsFromColumn(
-        jsonEntity: JsonApplicationEntity,
-        jsonColumn: JsonApplicationColumn
-    ): JsonApplicationRelation[] {
-        let relationSet: Set<JsonApplicationRelation> = new Set()
+        jsonEntity: JsonEntity,
+        jsonColumn: JsonColumn
+    ): JsonRelation[] {
+        let relationSet: Set<JsonRelation> = new Set()
         for (let propertyRef of jsonColumn.propertyRefs) {
             let property = jsonEntity.properties[propertyRef.index]
             if (property.relationRef) {
@@ -81,11 +81,11 @@ export class ApplicationReferenceUtils
 
     private isRelationToAFrameworkEntity(
         relatedJsonApplication: JsonApplication | DbApplication,
-        relatedJsonEntity: JsonApplicationEntity | DbEntity,
+        relatedJsonEntity: JsonEntity | DbEntity,
         jsonApplication: JsonApplication,
-        jsonEntity: JsonApplicationEntity,
-        jsonProperty: JsonApplicationProperty,
-        jsonColumn: JsonApplicationColumn
+        jsonEntity: JsonEntity,
+        jsonProperty: JsonProperty,
+        jsonColumn: JsonColumn
     ) {
         const domain: string | DbDomain = relatedJsonApplication.domain
         const domainName = typeof domain === 'string' ? domain : (domain as DbDomain).name

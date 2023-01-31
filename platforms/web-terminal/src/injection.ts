@@ -7,7 +7,7 @@ import { DomainRetriever } from "./DomainRetriever";
 import { WebApplicationInitializer } from "./WebApplicationInitializer";
 import { WebMessageReceiver } from "./WebMessageReceiver";
 import { WebTransactionalReceiver } from "./WebTransactionalReceiver";
-import { DbApplicationUtils } from "@airport/ground-control";
+import { ImplApplicationUtils } from "@airport/ground-control";
 
 const webTerminal = lib('web-terminal')
 
@@ -27,7 +27,7 @@ TRANSACTIONAL_RECEIVER.setDependencies({
     applicationDao: ApplicationDao,
     applicationInitializer: APPLICATION_INITIALIZER,
     databaseManager: DatabaseManager,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     localApiServer: LOCAL_API_SERVER,
     internalRecordManager: InternalRecordManager,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,

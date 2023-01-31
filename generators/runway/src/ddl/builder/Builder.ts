@@ -41,16 +41,16 @@ export function getPropertyJSONOperationInterface( //
 ): string {
 	switch (propertyDocEntry.primitive) {
 		case 'boolean':
-			return 'JSONRawBooleanOperation'
+			return 'RawBooleanOperation'
 		case 'Date':
-			return 'JSONRawDateOperation'
+			return 'RawDateOperation'
 		case 'number':
-			return 'JSONRawNumberOperation'
+			return 'RawNumberOperation'
 		case 'string':
 		case 'Json':
-			return 'JSONRawStringOperation'
+			return 'RawStringOperation'
 		case 'any':
-			return 'JSONRawUntypedOperation'
+			return 'RawUntypedOperation'
 		default:
 			throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`)
 	}

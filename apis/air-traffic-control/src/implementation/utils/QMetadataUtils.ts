@@ -2,10 +2,10 @@ import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	Dictionary,
-	JSONBaseOperation,
+	QueryBaseOperation,
 } from '@airport/ground-control'
 import { IQEntityInternal, IQOperableFieldInternal } from '@airport/tarmaq-query'
-import { IAirportDatabase } from '../../definition/AirportDatabase'
+import { IAirportDatabase } from '../../definition/IAirportDatabase'
 import { IQMetadataUtils } from '../../definition/utils/IQMetadataUtils'
 
 @Injected()
@@ -17,19 +17,19 @@ export class QMetadataUtils
 
 	getAllColumns(
 		qEntity: IQEntityInternal
-	): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[] {
+	): IQOperableFieldInternal<any, QueryBaseOperation, any, any>[] {
 		return qEntity.__driver__.allColumns
 	}
 
 	getAllNonGeneratedColumns(
 		qEntity: IQEntityInternal
-	): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[] {
+	): IQOperableFieldInternal<any, QueryBaseOperation, any, any>[] {
 		return this.getAllColumns(qEntity).filter(qField => !qField.dbColumn.isGenerated)
 	}
 
 	getAllInsertableColumns(
 		qEntity: IQEntityInternal
-	): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[] {
+	): IQOperableFieldInternal<any, QueryBaseOperation, any, any>[] {
 		return this.getAllColumns(qEntity).filter(qField => {
 			if (qField.dbColumn.isGenerated) {
 				return false

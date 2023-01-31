@@ -1,6 +1,6 @@
 import { IActor, IRepositoryTransactionHistory, ITransactionHistory, Repository_LocalId, TransactionType } from "@airport/ground-control";
-import { IOperationContext } from "../processing/OperationContext";
-import { ITransactionContext } from "./TransactionManager";
+import { IOperationContext } from "../processing/IOperationContext";
+import { ITransactionContext } from "./ITransactionManager";
 
 export interface IHistoryManager {
 

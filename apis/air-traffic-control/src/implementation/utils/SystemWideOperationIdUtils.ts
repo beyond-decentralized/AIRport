@@ -3,11 +3,11 @@ import {
 	ISequenceGenerator,
 	Dictionary
 } from '@airport/ground-control';
-import { ISystemWideOperationIdUtils } from '../../definition/utils/ISystemWideOperationIdUtils';
+import { DbSystemWideOperationIdUtils } from '../../definition/utils/DbSystemWideOperationIdUtils';
 
 @Injected()
 export class SystemWideOperationIdUtils
-	implements ISystemWideOperationIdUtils {
+	implements DbSystemWideOperationIdUtils {
 
 	@Inject()
 	dictionary: Dictionary

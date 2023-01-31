@@ -1,7 +1,7 @@
 import {
-	DatabaseForeignKey,
-	DatabaseManyToOneElements,
-	DatabaseOneToManyElements,
+	DbForeignKey,
+	DbManyToOneElements,
+	DbOneToManyElements,
 	DbApplication,
 	Dictionary,
 	EntityRelationType,
@@ -361,9 +361,9 @@ class ${entityCandidate.docEntry.name}
 	): void {
 		let columnRelationDefs = [];
 		let columnsDefined = false;
-		let foreignKey: DatabaseForeignKey;
-		let manyToOne: DatabaseManyToOneElements = undefined;
-		let oneToMany: DatabaseOneToManyElements = undefined;
+		let foreignKey: DbForeignKey;
+		let manyToOne: DbManyToOneElements = undefined;
+		let oneToMany: DbOneToManyElements = undefined;
 		let isId = false;
 		// let repositoryJoin                       = false;
 		// let addToJoinFunction;
@@ -592,7 +592,7 @@ class ${entityCandidate.docEntry.name}
 			}
 		}
 		let entityName;
-		let referencedApplication_Index;
+		let referencedDbApplication_Index;
 		if (!aProperty.entity) {
 			if (!aProperty.fromProject) {
 				throw new Error(`Neither entity nor source project was specified 
@@ -615,7 +615,7 @@ class ${entityCandidate.docEntry.name}
 				referencedApplicationsByProjectName[aProperty.fromProject] = applicationReference;
 			}
 
-			referencedApplication_Index = applicationReference.index;
+			referencedDbApplication_Index = applicationReference.index;
 			const propertyType = aProperty.nonArrayType;
 			let relatedEntity = applicationReference.dbApplication.currentVersion[0]
 				.applicationVersion.entityMapByName[propertyType];
@@ -649,7 +649,7 @@ class ${entityCandidate.docEntry.name}
 			manyToOne,
 			oneToMany,
 			relationType,
-			referencedApplication_Index,
+			referencedDbApplication_Index,
 			relationMustBeSingleIdEntity,
 			// repositoryJoin,
 			sRelationColumns
@@ -941,7 +941,7 @@ class ${entity.name}
 
 	/*
 		private getIdColumnIndex(
-			columnName: string | ApplicationColumn_IdIndex,
+			columnName: string | DbColumn_IdIndex,
 			throwIfNotFound?: string
 		) {
 			let idColumnIndex

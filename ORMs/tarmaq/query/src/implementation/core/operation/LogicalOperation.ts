@@ -1,16 +1,16 @@
 import {
-	JSONBaseOperation,
+	QueryBaseOperation,
 	OperationCategory,
 	SqlOperator
 } from "@airport/ground-control";
 import {
 	andOperator,
 	ILogicalOperation,
-	JSONLogicalOperation,
+	QueryLogicalOperation,
 	notOperator,
 	orOperator
-} from "../../../definition/core/operation/LogicalOperation";
-import {IOperation} from "../../../definition/core/operation/Operation";
+} from "../../../definition/core/operation/ILogicalOperation";
+import {IOperation} from "../../../definition/core/operation/IValueOperation";
 import {Operation} from "./Operation";
 
 /**
@@ -18,20 +18,20 @@ import {Operation} from "./Operation";
  */
 
 export const AND: andOperator = function (
-	...ops: JSONBaseOperation[]
-): JSONLogicalOperation {
+	...ops: QueryBaseOperation[]
+): QueryLogicalOperation {
 	return new LogicalOperation().AND(ops);
 };
 
 export const OR: orOperator = function (
-	...ops: JSONBaseOperation[]
-): JSONLogicalOperation {
+	...ops: QueryBaseOperation[]
+): QueryLogicalOperation {
 	return new LogicalOperation().OR(ops);
 };
 
 export const NOT: notOperator = function (
-	op: JSONBaseOperation
-): JSONLogicalOperation {
+	op: QueryBaseOperation
+): QueryLogicalOperation {
 	return new LogicalOperation().NOT(op);
 };
 
@@ -50,8 +50,8 @@ export class LogicalOperation extends Operation implements ILogicalOperation {
 	}
 
 	AND(
-		ops: JSONBaseOperation[]
-	): JSONLogicalOperation {
+		ops: QueryBaseOperation[]
+	): QueryLogicalOperation {
 		return {
 			c: OperationCategory.LOGICAL,
 			o: SqlOperator.AND,
@@ -60,8 +60,8 @@ export class LogicalOperation extends Operation implements ILogicalOperation {
 	}
 
 	OR(
-		ops: JSONBaseOperation[]
-	): JSONLogicalOperation {
+		ops: QueryBaseOperation[]
+	): QueryLogicalOperation {
 		return {
 			c: OperationCategory.LOGICAL,
 			o: SqlOperator.OR,
@@ -70,8 +70,8 @@ export class LogicalOperation extends Operation implements ILogicalOperation {
 	}
 
 	NOT(
-		op: JSONBaseOperation
-	): JSONLogicalOperation {
+		op: QueryBaseOperation
+	): QueryLogicalOperation {
 		return {
 			c: OperationCategory.LOGICAL,
 			o: SqlOperator.NOT,

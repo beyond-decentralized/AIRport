@@ -3,10 +3,10 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	ApplicationColumn_Index,
-	ApplicationEntity_LocalId,
-	Application_Index,
-	ApplicationVersion_LocalId,
+	DbColumn_Index,
+	DbEntity_LocalId,
+	DbApplication_Index,
+	DbApplicationVersion_LocalId,
 	IDatastructureUtils,
 	Actor_LocalId,
 	Repository_LocalId,
@@ -19,8 +19,8 @@ import {
 	ISynchronizationConflict
 } from '@airport/ground-control'
 
-export type RemoteApplication_Index = Application_Index;
-export type RemoteApplicationVersion_LocalId = ApplicationVersion_LocalId;
+export type RemoteDbApplication_Index = DbApplication_Index;
+export type RemoteDbApplicationVersion_LocalId = DbApplicationVersion_LocalId;
 export type RemoteActorId = Actor_LocalId;
 
 /**
@@ -51,7 +51,7 @@ export interface ISyncOperationHistory
 
 export interface ISyncRecordHistory
 	extends IRecordHistory {
-	newValueMap?: Map<ApplicationColumn_Index, ISyncNewValue>;
+	newValueMap?: Map<DbColumn_Index, ISyncNewValue>;
 }
 
 export interface ISyncNewValue
@@ -70,22 +70,22 @@ export interface ISyncInUtils {
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
 		repositoryLocalId: Repository_LocalId,
 		operationHistory: IOperationHistory,
-		recordMapByApplicationTableAndRepository: Map<ApplicationVersion_LocalId,
-			Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<CI, V>>>>
+		recordMapByApplicationTableAndRepository: Map<DbApplicationVersion_LocalId,
+			Map<DbEntity_LocalId, Map<Repository_LocalId, Map<CI, V>>>>
 	): Map<CI, V>;
 
 }
 
 export interface Stage1SyncedInDataProcessingResult {
-	recordCreations: Map<ApplicationVersion_LocalId,
-		Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
-			Map<ActorRecordId, Map<ApplicationColumn_Index, any>>>>>>,
-	recordDeletions: Map<ApplicationVersion_LocalId,
-		Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
+	recordCreations: Map<DbApplicationVersion_LocalId,
+		Map<DbEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
+			Map<ActorRecordId, Map<DbColumn_Index, any>>>>>>,
+	recordDeletions: Map<DbApplicationVersion_LocalId,
+		Map<DbEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
 			Set<ActorRecordId>>>>>,
-	recordUpdates: Map<ApplicationVersion_LocalId,
-		Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
-			Map<ActorRecordId, Map<ApplicationColumn_Index, RecordUpdate>>>>>>,
+	recordUpdates: Map<DbApplicationVersion_LocalId,
+		Map<DbEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
+			Map<ActorRecordId, Map<DbColumn_Index, RecordUpdate>>>>>>,
 	syncConflictMapByRepoId: Map<Repository_LocalId, ISynchronizationConflict[]>
 }
 
@@ -99,8 +99,8 @@ export class SyncInUtils
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
 		repositoryLocalId: Repository_LocalId,
 		operationHistory: IOperationHistory,
-		recordMapByApplicationTableAndRepository: Map<ApplicationVersion_LocalId,
-			Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<CI, V>>>>
+		recordMapByApplicationTableAndRepository: Map<DbApplicationVersion_LocalId,
+			Map<DbEntity_LocalId, Map<Repository_LocalId, Map<CI, V>>>>
 	): Map<CI, V> {
 		return <any>this.datastructureUtils.ensureChildJsMap(
 			this.datastructureUtils.ensureChildJsMap(

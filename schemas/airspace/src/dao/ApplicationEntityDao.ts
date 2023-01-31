@@ -1,17 +1,17 @@
 import { IContext, Injected } from '@airport/direction-indicator'
-import { ApplicationVersion_LocalId, DbEntity } from '@airport/ground-control'
+import { DbApplicationVersion_LocalId, DbEntity } from '@airport/ground-control'
 import {
-	BaseApplicationEntityDao,
-	IBaseApplicationEntityDao,
-	QApplicationEntity,
+	BaseDdlEntityDao,
+	IBaseDdlEntityDao,
+	QDdlEntity,
 } from '../generated/generated'
 import Q from '../generated/qApplication'
 
 export interface IApplicationEntityDao
-	extends IBaseApplicationEntityDao {
+	extends IBaseDdlEntityDao {
 
 	findAllForApplicationVersions(
-		applicationVersionIds: ApplicationVersion_LocalId[]
+		applicationVersionIds: DbApplicationVersion_LocalId[]
 	): Promise<DbEntity[]>
 
 	insert(
@@ -23,13 +23,13 @@ export interface IApplicationEntityDao
 
 @Injected()
 export class ApplicationEntityDao
-	extends BaseApplicationEntityDao
+	extends BaseDdlEntityDao
 	implements IApplicationEntityDao {
 
 	async findAllForApplicationVersions(
-		applicationVersionIds: ApplicationVersion_LocalId[]
+		applicationVersionIds: DbApplicationVersion_LocalId[]
 	): Promise<DbEntity[]> {
-		let se: QApplicationEntity
+		let se: QDdlEntity
 
 		return await this.db.find.tree({
 			SELECT: {},
@@ -44,7 +44,7 @@ export class ApplicationEntityDao
 		applicationEntities: DbEntity[],
 		context: IContext
 	): Promise<void> {
-		let se: QApplicationEntity;
+		let se: QDdlEntity;
 		const VALUES = []
 		for (const applicationEntity of applicationEntities) {
 			VALUES.push([

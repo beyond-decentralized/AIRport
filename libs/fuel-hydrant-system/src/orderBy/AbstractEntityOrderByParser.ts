@@ -2,13 +2,13 @@ import {
 	IAirportDatabase
 } from '@airport/air-traffic-control'
 import {
-	JSONEntityFieldInOrderBy,
-	JSONFieldInOrderBy,
-	SortOrder
+	QueryEntityFieldInOrderBy,
+	QueryFieldInOrderBy,
+	QuerySortOrder
 } from '@airport/ground-control'
 import {
 	IQEntityInternal,
-	IRelationManager,
+	IQueryRelationManager,
 	JoinTreeNode
 } from '@airport/tarmaq-query';
 import { IFuelHydrantContext } from '../FuelHydrantContext'
@@ -31,7 +31,7 @@ export interface INonEntityOrderByParser {
 
 	getOrderByFragment(
 		rootSelectClauseFragment: any,
-		originalOrderBy: JSONFieldInOrderBy[]
+		originalOrderBy: QueryFieldInOrderBy[]
 	): string;
 
 }
@@ -42,19 +42,19 @@ export abstract class AbstractEntityOrderByParser {
 		protected rootSelectClauseFragment: any,
 		protected airportDatabase: IAirportDatabase,
 		protected qValidator: IValidator,
-		protected relationManager: IRelationManager,
-		protected orderBy?: JSONEntityFieldInOrderBy[]
+		protected relationManager: IQueryRelationManager,
+		protected orderBy?: QueryEntityFieldInOrderBy[]
 	) {
 	}
 
 	protected getCommonOrderByFragment(
-		orderByFields: JSONFieldInOrderBy[],
+		orderByFields: QueryFieldInOrderBy[],
 	): string {
 		return orderByFields.map((orderByField) => {
 			switch (orderByField.so) {
-				case SortOrder.ASCENDING:
+				case QuerySortOrder.ASCENDING:
 					return `${orderByField.fa} ASC`
-				case SortOrder.DESCENDING:
+				case QuerySortOrder.DESCENDING:
 					return `${orderByField.fa} DESC`
 			}
 		})

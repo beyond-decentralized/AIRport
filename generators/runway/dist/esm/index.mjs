@@ -1132,28 +1132,28 @@ var EntityRelationType;
 /**
  * Serialized relation contentType.
  */
-var JSONRelationType;
-(function (JSONRelationType) {
+var QueryRelationType;
+(function (QueryRelationType) {
     // Join of an entity with the ON clause
-    JSONRelationType["ENTITY_JOIN_ON"] = "ENTITY_JOIN_ON";
+    QueryRelationType["ENTITY_JOIN_ON"] = "ENTITY_JOIN_ON";
     // Join of an entity via a application relation
-    JSONRelationType["ENTITY_APPLICATION_RELATION"] = "ENTITY_APPLICATION_RELATION";
+    QueryRelationType["ENTITY_APPLICATION_RELATION"] = "ENTITY_APPLICATION_RELATION";
     // The root entity in a join
-    JSONRelationType["ENTITY_ROOT"] = "ENTITY_ROOT";
+    QueryRelationType["ENTITY_ROOT"] = "ENTITY_ROOT";
     // Join of a sub-query (with the ON clause)
-    JSONRelationType["SUB_QUERY_JOIN_ON"] = "SUB_QUERY_JOIN_ON";
+    QueryRelationType["SUB_QUERY_JOIN_ON"] = "SUB_QUERY_JOIN_ON";
     // The root sub-query in a join
-    JSONRelationType["SUB_QUERY_ROOT"] = "SUB_QUERY_ROOT";
-})(JSONRelationType || (JSONRelationType = {}));
+    QueryRelationType["SUB_QUERY_ROOT"] = "SUB_QUERY_ROOT";
+})(QueryRelationType || (QueryRelationType = {}));
 
 /**
  * Order of a sorted field, as specified in the ORDER BY clause.
  */
-var SortOrder;
-(function (SortOrder) {
-    SortOrder["ASCENDING"] = "ASCENDING";
-    SortOrder["DESCENDING"] = "DESCENDING";
-})(SortOrder || (SortOrder = {}));
+var QuerySortOrder;
+(function (QuerySortOrder) {
+    QuerySortOrder["ASCENDING"] = "ASCENDING";
+    QuerySortOrder["DESCENDING"] = "DESCENDING";
+})(QuerySortOrder || (QuerySortOrder = {}));
 
 /**
  * Extracted from http://www.w3schools.com/sql/sql_functions.asp
@@ -1202,15 +1202,15 @@ var SqlFunction;
 /**
  * All possible types of serialized JSON clauses.
  */
-var JSONClauseObjectType;
-(function (JSONClauseObjectType) {
-    JSONClauseObjectType["FIELD"] = "FIELD";
-    JSONClauseObjectType["FIELD_FUNCTION"] = "FIELD_FUNCTION";
-    JSONClauseObjectType["FIELD_QUERY"] = "FIELD_QUERY";
-    JSONClauseObjectType["DISTINCT_FUNCTION"] = "DISTINCT_FUNCTION";
-    JSONClauseObjectType["EXISTS_FUNCTION"] = "EXISTS_FUNCTION";
-    JSONClauseObjectType["MANY_TO_ONE_RELATION"] = "MANY_TO_ONE_RELATION"; // A many-to-one relation (used in a query)
-})(JSONClauseObjectType || (JSONClauseObjectType = {}));
+var QueryClauseObjectType;
+(function (QueryClauseObjectType) {
+    QueryClauseObjectType["FIELD"] = "FIELD";
+    QueryClauseObjectType["FIELD_FUNCTION"] = "FIELD_FUNCTION";
+    QueryClauseObjectType["FIELD_QUERY"] = "FIELD_QUERY";
+    QueryClauseObjectType["DISTINCT_FUNCTION"] = "DISTINCT_FUNCTION";
+    QueryClauseObjectType["EXISTS_FUNCTION"] = "EXISTS_FUNCTION";
+    QueryClauseObjectType["MANY_TO_ONE_RELATION"] = "MANY_TO_ONE_RELATION"; // A many-to-one relation (used in a query)
+})(QueryClauseObjectType || (QueryClauseObjectType = {}));
 /**
  * Types of data
  */
@@ -1412,11 +1412,11 @@ var IdGeneration;
     IdGeneration["ENTITY_CHANGE_ID"] = "ENTITY_CHANGE_LID";
 })(IdGeneration || (IdGeneration = {}));
 
-var JsonStatementType;
-(function (JsonStatementType) {
-    JsonStatementType["ENTITY_QUERY"] = "ENTITY_QUERY";
-    JsonStatementType["NON_ENTITY_QUERY"] = "NON_ENTITY_QUERY";
-})(JsonStatementType || (JsonStatementType = {}));
+var QueryStatementType;
+(function (QueryStatementType) {
+    QueryStatementType["ENTITY_QUERY"] = "ENTITY_QUERY";
+    QueryStatementType["NON_ENTITY_QUERY"] = "NON_ENTITY_QUERY";
+})(QueryStatementType || (QueryStatementType = {}));
 
 var QueryResultType;
 (function (QueryResultType) {
@@ -1434,19 +1434,19 @@ var QueryResultType;
     QueryResultType["RAW"] = "RAW";
 })(QueryResultType || (QueryResultType = {}));
 
-var OperationType;
-(function (OperationType) {
-    OperationType["DELETE"] = "DELETE";
-    OperationType["FIND_ONE_GRAPH"] = "FIND_ONE_GRAPH";
-    OperationType["FIND_ONE_TREE"] = "FIND_ONE_TREE";
-    OperationType["FIND_GRAPH"] = "FIND_GRAPH";
-    OperationType["FIND_TREE"] = "FIND_TREE";
-    OperationType["SAVE"] = "SAVE";
-    OperationType["SEARCH_ONE_GRAPH"] = "SEARCH_ONE_GRAPH";
-    OperationType["SEARCH_ONE_TREE"] = "SEARCH_ONE_TREE";
-    OperationType["SEARCH_GRAPH"] = "SEARCH_GRAPH";
-    OperationType["SEARCH_TREE"] = "SEARCH_TREE";
-})(OperationType || (OperationType = {}));
+var DbOperationType;
+(function (DbOperationType) {
+    DbOperationType["DELETE"] = "DELETE";
+    DbOperationType["FIND_ONE_GRAPH"] = "FIND_ONE_GRAPH";
+    DbOperationType["FIND_ONE_TREE"] = "FIND_ONE_TREE";
+    DbOperationType["FIND_GRAPH"] = "FIND_GRAPH";
+    DbOperationType["FIND_TREE"] = "FIND_TREE";
+    DbOperationType["SAVE"] = "SAVE";
+    DbOperationType["SEARCH_ONE_GRAPH"] = "SEARCH_ONE_GRAPH";
+    DbOperationType["SEARCH_ONE_TREE"] = "SEARCH_ONE_TREE";
+    DbOperationType["SEARCH_GRAPH"] = "SEARCH_GRAPH";
+    DbOperationType["SEARCH_TREE"] = "SEARCH_TREE";
+})(DbOperationType || (DbOperationType = {}));
 var QueryInputKind;
 (function (QueryInputKind) {
     QueryInputKind["PARAMETER"] = "PARAMETER";
@@ -1483,14 +1483,14 @@ class ColumnMap {
 }
 globalThis.ColumnMap = ColumnMap;
 
-class DbApplicationUtils {
-    getApplication_FullName({ domain, name, }) {
+class ImplApplicationUtils {
+    getDbApplication_FullName({ domain, name, }) {
         if (domain.name) {
             domain = domain.name;
         }
-        return this.getApplication_FullNameFromDomainAndName(domain, name);
+        return this.getDbApplication_FullNameFromDomainAndName(domain, name);
     }
-    getApplication_FullNameFromDomainAndName(domainName, applicationName) {
+    getDbApplication_FullNameFromDomainAndName(domainName, applicationName) {
         if (domainName.indexOf('___') > -1) {
             throw new Error('Domain Name cannot contain "___" (3 consecutive underscores) in it.');
         }
@@ -1529,11 +1529,11 @@ class DbApplicationUtils {
         if (applicationPrefix.indexOf('___') > -1) {
             throw new Error('Application Name cannot have with "@", "/", "." or "_" right next to each other.');
         }
-        let fullApplication_Name = `${domainPrefix}___${applicationPrefix}`;
-        if (fullApplication_Name.endsWith('_dash_runtime')) {
-            fullApplication_Name = fullApplication_Name.substring(0, fullApplication_Name.length - 13);
+        let fullDbApplication_Name = `${domainPrefix}___${applicationPrefix}`;
+        if (fullDbApplication_Name.endsWith('_dash_runtime')) {
+            fullDbApplication_Name = fullDbApplication_Name.substring(0, fullDbApplication_Name.length - 13);
         }
-        return fullApplication_Name;
+        return fullDbApplication_Name;
     }
     getSequenceName(prefixedTableName, columnName) {
         return `${prefixedTableName}_${columnName}__SEQUENCE`;
@@ -1816,9 +1816,9 @@ class ApplicationReferenceUtils {
                     continue;
                 }
                 const relations = this.getRelationsFromColumn(jsonEntity, jsonColumn);
-                for (let jsonRelation of relations) {
-                    const { relatedJsonApplication, relatedJsonEntity } = getRelationInfo(jsonApplication, applicationVersion, jsonRelation);
-                    this.isRelationToAFrameworkEntity(relatedJsonApplication, relatedJsonEntity, jsonApplication, jsonEntity, jsonEntity.properties[jsonRelation.propertyRef.index], jsonColumn);
+                for (let queryRelation of relations) {
+                    const { relatedJsonApplication, relatedJsonEntity } = getRelationInfo(jsonApplication, applicationVersion, queryRelation);
+                    this.isRelationToAFrameworkEntity(relatedJsonApplication, relatedJsonEntity, jsonApplication, jsonEntity, jsonEntity.properties[queryRelation.propertyRef.index], jsonColumn);
                 }
             }
         }
@@ -2000,7 +2000,7 @@ class KeyUtils {
 }
 
 const groundControl = lib('ground-control');
-groundControl.register(ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, Dictionary, KeyUtils);
+groundControl.register(ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils, ImplApplicationUtils, Dictionary, KeyUtils);
 const ENTITY_STATE_MANAGER = groundControl.token('EntityStateManager');
 const OPERATION_DESERIALIZER = groundControl.token('OperationDeserializer');
 const QUERY_PARAMETER_DESERIALIZER = groundControl.token('QueryParameterDeserializer');
@@ -2015,7 +2015,7 @@ groundControl.setDependencies(AppTrackerUtils, {
     dictionary: Dictionary
 });
 TRANSACTIONAL_CONNECTOR.setDependencies({
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
 });
 
 function forEach$1(collection, callback) {
@@ -2086,7 +2086,7 @@ function visitDaoFile(node, path) {
             case tsc__default.SyntaxKind.ExtendsKeyword: {
                 extendedBaseClass = heritageClause.types[0].expression.escapedText;
                 if (!extendedBaseClass.startsWith('Base') || !extendedBaseClass.endsWith('Dao')) {
-                    throw new Error(`Dao ${daoName} must extends the Base{ApplicationEntity_Name}Dao class.`);
+                    throw new Error(`Dao ${daoName} must extends the Base{DbEntity_Name}Dao class.`);
                 }
                 entityName = extendedBaseClass.substring(4, extendedBaseClass.length - 3);
                 break;
@@ -2098,7 +2098,7 @@ function visitDaoFile(node, path) {
         }
     }
     if (!entityName) {
-        throw new Error(`The '${daoName}' Dao must extend the Base{ApplicationEntity_Name}Dao class.`);
+        throw new Error(`The '${daoName}' Dao must extend the Base{DbEntity_Name}Dao class.`);
     }
     if (file.hasDao) {
         throw new Error(`Cannot declare more than one DAO per file
@@ -2308,7 +2308,7 @@ function getImplNameFromInterfaceName(interfaceName) {
     return interfaceName.substr(1);
 }
 
-class DbApplicationBuilder {
+class ImplApplicationBuilder {
     constructor() {
         this.datastructureUtils = new DatastructureUtils();
     }
@@ -2350,8 +2350,8 @@ class DbApplicationBuilder {
         const dbApplication = {
             currentVersion: [dbApplicationCurrentVersion],
             domain: dbDomain,
-            fullName: IOC.getSync(DbApplicationUtils).
-                getApplication_FullNameFromDomainAndName(dbDomain.name, jsonApplication.name),
+            fullName: IOC.getSync(ImplApplicationUtils).
+                getDbApplication_FullNameFromDomainAndName(dbDomain.name, jsonApplication.name),
             index: allApplications.length,
             name: jsonApplication.name,
             scope: null,
@@ -2400,7 +2400,7 @@ class DbApplicationBuilder {
                 const jsonApplicationVersion = jsonApplication.versions[0];
                 for (const index in jsonApplicationVersion.referencedApplications) {
                     const applicationReference = jsonApplicationVersion.referencedApplications[index];
-                    const referencedApplication_Name = applicationReference.name;
+                    const referencedDbApplication_Name = applicationReference.name;
                     const referencedDbDomain = applicationMap[applicationReference.domain];
                     if (!referencedDbDomain) {
                         if (failOnMissingMappings) {
@@ -2408,10 +2408,10 @@ class DbApplicationBuilder {
                         }
                         continue;
                     }
-                    const referencedApplication = referencedDbDomain[referencedApplication_Name];
+                    const referencedApplication = referencedDbDomain[referencedDbApplication_Name];
                     if (!referencedApplication) {
                         if (failOnMissingMappings) {
-                            throw new Error(`Application '${referencedApplication_Name}' is not yet available for relation linking.`);
+                            throw new Error(`Application '${referencedDbApplication_Name}' is not yet available for relation linking.`);
                         }
                         continue;
                     }
@@ -2540,9 +2540,9 @@ class DbApplicationBuilder {
         });
         jsonEntity.properties.sort((a, b) => a.index < b.index ? -1 : 1);
         properties.sort((a, b) => a.index < b.index ? -1 : 1);
-        jsonEntity.relations.forEach((jsonRelation, index) => {
-            const dbProperty = properties[jsonRelation.propertyRef.index];
-            const dbRelation = this.buildDbRelation(jsonRelation, dbProperty, applicationVersion);
+        jsonEntity.relations.forEach((queryRelation, index) => {
+            const dbProperty = properties[queryRelation.propertyRef.index];
+            const dbRelation = this.buildDbRelation(queryRelation, dbProperty, applicationVersion);
             relations[index] = dbRelation;
         });
         relations.sort((a, b) => a.index < b.index ? -1 : 1);
@@ -2557,24 +2557,24 @@ class DbApplicationBuilder {
         columns.sort((a, b) => a.index < b.index ? -1 : 1);
         return dbEntity;
     }
-    buildDbRelation(jsonRelation, dbProperty, applicationVersion) {
+    buildDbRelation(queryRelation, dbProperty, applicationVersion) {
         const dbRelation = {
             entity: undefined,
-            foreignKey: jsonRelation.foreignKey,
+            foreignKey: queryRelation.foreignKey,
             isId: dbProperty.isId,
-            // isRepositoryJoin: jsonRelation.isRepositoryJoin,
-            manyToOneElems: jsonRelation.manyToOneElems,
-            oneToManyElems: jsonRelation.oneToManyElems,
-            relationType: jsonRelation.relationType,
+            // isRepositoryJoin: queryRelation.isRepositoryJoin,
+            manyToOneElems: queryRelation.manyToOneElems,
+            oneToManyElems: queryRelation.oneToManyElems,
+            relationType: queryRelation.relationType,
             _localId: null,
-            index: jsonRelation.index,
+            index: queryRelation.index,
             property: dbProperty,
             manyRelationColumns: [],
             oneRelationColumns: [],
             relationEntity: null,
             sinceVersion: applicationVersion
-            // addToJoinFunction: jsonRelation.addToJoinFunction,
-            // joinFunctionWithOperator: jsonRelation.joinFunctionWithOperator,
+            // addToJoinFunction: queryRelation.addToJoinFunction,
+            // joinFunctionWithOperator: queryRelation.joinFunctionWithOperator,
         };
         // if (dbRelation.addToJoinFunction) {
         // 	dbRelation.whereJoinTable = {
@@ -2631,24 +2631,24 @@ class DbApplicationBuilder {
         });
         dbColumn.propertyColumns = propertyColumns;
         jsonColumn.manyRelationColumnRefs.map(relationColumnRef => {
-            const manyApplicationReference_Index = jsonApplication.index;
+            const manyDbApplicationReference_Index = jsonApplication.index;
             let manyApplication;
-            if (manyApplicationReference_Index === null) {
+            if (manyDbApplicationReference_Index === null) {
                 manyApplication = jsonApplication;
             }
             else {
-                manyApplication = referencedApplications[manyApplicationReference_Index];
+                manyApplication = referencedApplications[manyDbApplicationReference_Index];
             }
             const manyTableIndex = jsonEntity.index;
             const manyRelationIndex = relationColumnRef.manyRelationIndex;
             const manyColumnIndex = dbColumn.index;
-            const oneApplicationReference_Index = relationColumnRef.oneApplication_Index;
+            const oneDbApplicationReference_Index = relationColumnRef.oneDbApplication_Index;
             let oneApplication;
-            if (oneApplicationReference_Index === null) {
+            if (oneDbApplicationReference_Index === null) {
                 oneApplication = jsonApplication;
             }
             else {
-                oneApplication = referencedApplications[oneApplicationReference_Index];
+                oneApplication = referencedApplications[oneDbApplicationReference_Index];
             }
             if (!oneApplication) {
                 // FIXME: figure out if not having references to nested applications is OK
@@ -2695,7 +2695,7 @@ class ApplicationLoader {
     constructor() {
         this.applicationMap = {};
         this.allApplications = [];
-        this.dbApplicationBuilder = new DbApplicationBuilder();
+        this.dbApplicationBuilder = new ImplApplicationBuilder();
         this.dictionary = {
             dbColumnRelationMapByManySide: {},
             dbColumnRelationMapByOneSide: {}
@@ -4262,8 +4262,8 @@ function cleanErrorMessageSelectStatement(errorMessageSelectStatement) {
         }
     }
 }
-function getErrorMessageSelectStatement(jsonSelectClause) {
-    const errorMessageSelectStatement = JSON.parse(JSON.stringify(jsonSelectClause));
+function getErrorMessageSelectStatement(querySelectClause) {
+    const errorMessageSelectStatement = JSON.parse(JSON.stringify(querySelectClause));
     cleanErrorMessageSelectStatement(errorMessageSelectStatement);
     return JSON.stringify(errorMessageSelectStatement, null, 4);
 }
@@ -4602,16 +4602,16 @@ class ValueOperation extends Operation {
             .app('ground-control').token('Dictionary');
     }
     equals(lValue, rValue) {
-        const jsonRawValueOperation = {
+        const rawValueOperation = {
             c: this.category,
             l: lValue,
             o: SqlOperator.EQUALS,
             r: rValue
         };
-        this.addTrackedRepoIDs(lValue, rValue, jsonRawValueOperation);
-        return jsonRawValueOperation;
+        this.addTrackedRepoIDs(lValue, rValue, rawValueOperation);
+        return rawValueOperation;
     }
-    addTrackedRepoIDs(lValue, rValue, jsonRawValueOperation) {
+    addTrackedRepoIDs(lValue, rValue, rawValueOperation) {
         const dictionary = globalThis.IOC
             .getSync(this.dictionaryToken);
         if (dictionary.isRepositoryGUIDProperty(lValue.dbProperty)) {
@@ -4622,7 +4622,7 @@ class ValueOperation extends Operation {
             else if (rValue instanceof Array) {
                 trackedRepoGUIDs = rValue;
             }
-            jsonRawValueOperation.trackedRepoGUIDs = trackedRepoGUIDs;
+            rawValueOperation.trackedRepoGUIDs = trackedRepoGUIDs;
         }
         else if (dictionary.isRepositoryLIDColumn(lValue.dbProperty, lValue.dbColumn)) {
             let trackedRepoLIDs;
@@ -4632,7 +4632,7 @@ class ValueOperation extends Operation {
             else if (rValue instanceof Array) {
                 trackedRepoLIDs = rValue;
             }
-            jsonRawValueOperation.trackedRepoLocalIds = trackedRepoLIDs;
+            rawValueOperation.trackedRepoLocalIds = trackedRepoLIDs;
         }
     }
     greaterThan(lValue, rValue) {
@@ -4666,14 +4666,14 @@ class ValueOperation extends Operation {
         };
     }
     IN(lValue, rValue) {
-        const jsonRawValueOperation = {
+        const rawValueOperation = {
             c: this.category,
             l: lValue,
             o: SqlOperator.IN,
             r: rValue
         };
-        this.addTrackedRepoIDs(lValue, rValue, jsonRawValueOperation);
-        return jsonRawValueOperation;
+        this.addTrackedRepoIDs(lValue, rValue, rawValueOperation);
+        return rawValueOperation;
     }
     lessThan(lValue, rValue) {
         return {
@@ -4726,7 +4726,7 @@ class FieldInOrderBy {
         this.field = field;
         this.sortOrder = sortOrder;
     }
-    toJSON(columnAliases) {
+    toQueryFragment(columnAliases) {
         if (!columnAliases.hasAliasFor(this.field)) {
             throw new Error(`Field used in ORDER_BY clause is not present in SELECT clause`);
         }
@@ -4771,7 +4771,7 @@ class QField {
         appliedField.__appliedFunctions__.push(sqlFunctionCall);
         return appliedField;
     }
-    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
@@ -4783,7 +4783,7 @@ class QField {
         else {
             rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.q.__driver__.getRootJoinEntity());
         }
-        let jsonField = {
+        let queryFieldClause = {
             appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
             si: this.dbProperty.entity.applicationVersion._localId,
             ti: this.dbProperty.entity.index,
@@ -4795,23 +4795,23 @@ class QField {
             dt: this.dbColumn.type
         };
         if (this.__fieldSubQuery__) {
-            jsonField.fieldSubQuery = fieldUtils.getFieldQueryJson(this.__fieldSubQuery__, columnAliases.entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils);
-            jsonField.ot = JSONClauseObjectType.FIELD_QUERY;
+            queryFieldClause.fieldSubQuery = fieldUtils.getFieldQueryJson(this.__fieldSubQuery__, columnAliases.entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils);
+            queryFieldClause.ot = QueryClauseObjectType.FIELD_QUERY;
         }
-        return jsonField;
+        return queryFieldClause;
     }
     ASC() {
-        return new FieldInOrderBy(this, SortOrder.ASCENDING);
+        return new FieldInOrderBy(this, QuerySortOrder.ASCENDING);
     }
     DESC() {
-        return new FieldInOrderBy(this, SortOrder.DESCENDING);
+        return new FieldInOrderBy(this, QuerySortOrder.DESCENDING);
     }
     addSubQuery(subQuery) {
         let appliedField = this.getInstance();
         appliedField.__fieldSubQuery__ = subQuery;
         return appliedField;
     }
-    operableFunctionToJson(functionObject, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+    rawToQueryOperableFunction(functionObject, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
@@ -4853,7 +4853,7 @@ class QField {
             throw new Error(`Function object must be provided to valueToJSON function.`);
         }
         if (!fromFunctionObject && functionObject instanceof QField) {
-            return functionObject.toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+            return functionObject.toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         }
         let value = functionObject.value;
         switch (typeof value) {
@@ -4894,7 +4894,7 @@ boolean | Date | Date[] | number | number[] | string | string[]
                 .getNextAlias(functionObject as IQFunction<any>)
         }
         if (value instanceof QField) {
-            return value.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager)
+            return value.toQueryFragment(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager)
         }
         // must be a field sub-query
         let rawFieldQuery: RawFieldQuery<any> = value
@@ -4972,7 +4972,7 @@ class QOperableField extends QField {
 }
 
 class QBooleanField extends QOperableField {
-    constructor(dbColumn, dbProperty, q, objectType = JSONClauseObjectType.FIELD) {
+    constructor(dbColumn, dbProperty, q, objectType = QueryClauseObjectType.FIELD) {
         super(dbColumn, dbProperty, q, objectType, new BooleanOperation());
     }
     getInstance(qEntity = this.q) {
@@ -4981,19 +4981,19 @@ class QBooleanField extends QOperableField {
 }
 class QBooleanFunction extends QBooleanField {
     constructor(value, isQueryParameter = false) {
-        super({ type: SQLDataType.BOOLEAN }, null, null, JSONClauseObjectType.FIELD_FUNCTION);
+        super({ type: SQLDataType.BOOLEAN }, null, null, QueryClauseObjectType.FIELD_FUNCTION);
         this.value = value;
         this.isQueryParameter = isQueryParameter;
     }
     getInstance() {
         return this.copyFunctions(new QBooleanFunction(this.value));
     }
-    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        let queryFieldClause = this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
-            this.parameterAlias = json.v;
+            this.parameterAlias = queryFieldClause.v;
         }
-        return json;
+        return queryFieldClause;
     }
 }
 
@@ -5007,7 +5007,7 @@ class DateOperation extends ValueOperation {
 }
 
 class QDateField extends QOperableField {
-    constructor(dbColumn, dbProperty, q, objectType = JSONClauseObjectType.FIELD) {
+    constructor(dbColumn, dbProperty, q, objectType = QueryClauseObjectType.FIELD) {
         super(dbColumn, dbProperty, q, objectType, new DateOperation());
     }
     getInstance(qEntity = this.q) {
@@ -5016,19 +5016,19 @@ class QDateField extends QOperableField {
 }
 class QDateFunction extends QDateField {
     constructor(value, isQueryParameter = false) {
-        super({ type: SQLDataType.DATE }, null, null, JSONClauseObjectType.FIELD_FUNCTION);
+        super({ type: SQLDataType.DATE }, null, null, QueryClauseObjectType.FIELD_FUNCTION);
         this.value = value;
         this.isQueryParameter = isQueryParameter;
     }
     getInstance() {
         return this.copyFunctions(new QDateFunction(this.value, this.isQueryParameter));
     }
-    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        let queryFieldClause = this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
-            this.parameterAlias = json.v;
+            this.parameterAlias = queryFieldClause.v;
         }
-        return json;
+        return queryFieldClause;
     }
 }
 class QDateArrayFunction extends QDateFunction {
@@ -5051,7 +5051,7 @@ class NumberOperation extends ValueOperation {
 }
 
 class QNumberField extends QOperableField {
-    constructor(dbColumn, dbProperty, q, objectType = JSONClauseObjectType.FIELD) {
+    constructor(dbColumn, dbProperty, q, objectType = QueryClauseObjectType.FIELD) {
         super(dbColumn, dbProperty, q, objectType, new NumberOperation());
     }
     getInstance(qEntity = this.q) {
@@ -5060,19 +5060,19 @@ class QNumberField extends QOperableField {
 }
 class QNumberFunction extends QNumberField {
     constructor(value, isQueryParameter = false) {
-        super({ type: SQLDataType.NUMBER }, null, null, JSONClauseObjectType.FIELD_FUNCTION);
+        super({ type: SQLDataType.NUMBER }, null, null, QueryClauseObjectType.FIELD_FUNCTION);
         this.value = value;
         this.isQueryParameter = isQueryParameter;
     }
     getInstance() {
         return this.copyFunctions(new QNumberFunction(this.value, this.isQueryParameter));
     }
-    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        let queryFieldClause = this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
-            this.parameterAlias = json.v;
+            this.parameterAlias = queryFieldClause.v;
         }
-        return json;
+        return queryFieldClause;
     }
 }
 class QNumberArrayFunction extends QNumberFunction {
@@ -5106,7 +5106,7 @@ class StringOperation extends ValueOperation {
 }
 
 class QStringField extends QOperableField {
-    constructor(dbColumn, dbProperty, q, objectType = JSONClauseObjectType.FIELD) {
+    constructor(dbColumn, dbProperty, q, objectType = QueryClauseObjectType.FIELD) {
         super(dbColumn, dbProperty, q, objectType, new StringOperation());
     }
     getInstance(qEntity = this.q) {
@@ -5121,19 +5121,19 @@ class QStringField extends QOperableField {
 }
 class QStringFunction extends QStringField {
     constructor(value, isQueryParameter = false) {
-        super({ type: SQLDataType.STRING }, null, null, JSONClauseObjectType.FIELD_FUNCTION);
+        super({ type: SQLDataType.STRING }, null, null, QueryClauseObjectType.FIELD_FUNCTION);
         this.value = value;
         this.isQueryParameter = isQueryParameter;
     }
     getInstance() {
         return this.copyFunctions(new QStringFunction(this.value, this.isQueryParameter));
     }
-    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        let queryFieldClause = this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
-            this.parameterAlias = json.v;
+            this.parameterAlias = queryFieldClause.v;
         }
-        return json;
+        return queryFieldClause;
     }
 }
 class QStringArrayFunction extends QStringFunction {
@@ -5167,7 +5167,7 @@ class UntypedOperation extends ValueOperation {
 }
 
 class QUntypedField extends QOperableField {
-    constructor(dbColumn, dbProperty, q, objectType = JSONClauseObjectType.FIELD) {
+    constructor(dbColumn, dbProperty, q, objectType = QueryClauseObjectType.FIELD) {
         super(dbColumn, dbProperty, q, objectType, new UntypedOperation());
     }
     getInstance(qEntity = this.q) {
@@ -5465,7 +5465,7 @@ class QEntityDriver {
         this.entityRelations[relation.parentRelationIndex] = relation;
     }
 
-    addEntityField<T, IQF extends IQOperableFieldInternal<T, JSONBaseOperation, any, any>>(
+    addEntityField<T, IQF extends IQOperableFieldInternal<T, QueryBaseOperation, any, any>>(
         field: IQF
     ): void {
         this.entityFieldMap[field.fieldName] = field;
@@ -5476,10 +5476,10 @@ class QEntityDriver {
         return QMetadataUtils.getRelationPropertyName(QMetadataUtils.getRelationByIndex(this.qEntity, this.relationIndex));
     }
 */
-    getRelationJson(columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+    getQueryRelation(columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
         // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
         // see ApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
-        let jsonRelation = {
+        let QueryRelation = {
             currentChildIndex: this.currentChildIndex,
             ti: this.dbEntity.index,
             fromClausePosition: this.fromClausePosition,
@@ -5489,26 +5489,26 @@ class QEntityDriver {
             si: this.dbEntity.applicationVersion.application.index
         };
         if (this.joinWhereClause) {
-            this.getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+            this.getJoinRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         }
         else if (this.dbRelation) {
-            this.getEntityRelationJson(jsonRelation);
+            this.getEntityRelationQuery(QueryRelation);
         }
         else {
-            this.getRootRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+            this.getRootRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         }
-        return jsonRelation;
+        return QueryRelation;
     }
-    getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        jsonRelation.rt = JSONRelationType.ENTITY_JOIN_ON;
-        jsonRelation.joinWhereClause = queryUtils.whereClauseToJSON(this.joinWhereClause, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
-        return jsonRelation;
+    getJoinRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        QueryRelation.rt = QueryRelationType.ENTITY_JOIN_ON;
+        QueryRelation.joinWhereClause = queryUtils.whereClauseToQueryOperation(this.joinWhereClause, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
+        return QueryRelation;
     }
-    getEntityRelationJson(jsonRelation) {
-        jsonRelation.rt = JSONRelationType.ENTITY_APPLICATION_RELATION;
-        jsonRelation.ri = this.dbRelation.index;
+    getEntityRelationQuery(QueryRelation) {
+        QueryRelation.rt = QueryRelationType.ENTITY_APPLICATION_RELATION;
+        QueryRelation.ri = this.dbRelation.index;
         // if (!this.dbRelation.whereJoinTable) {
-        return jsonRelation;
+        return QueryRelation;
         // }
         // let otmQEntity;
         // let mtoQEntity;
@@ -5526,17 +5526,17 @@ class QEntityDriver {
         // }
         //
         // let joinWhereClause = this.dbRelation.whereJoinTable.addToJoinFunction(otmQEntity,
-        // mtoQEntity, this.airportDb, this.airportDb.F); jsonRelation.joinWhereClause    =
-        // this.utils.Query.whereClauseToJSON(joinWhereClause, columnAliases);
-        // jsonRelation.joinWhereClauseOperator   = this.dbRelation.joinFunctionWithOperator;  return
-        // jsonRelation;
+        // mtoQEntity, this.airportDb, this.airportDb.F); QueryRelation.joinWhereClause    =
+        // this.utils.Query.whereClauseToQueryOperation(joinWhereClause, columnAliases);
+        // QueryRelation.joinWhereClauseOperator   = this.dbRelation.joinFunctionWithOperator;  return
+        // QueryRelation;
     }
-    getRootRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        jsonRelation.rt = globalThis.IOC
+    getRootRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        QueryRelation.rt = globalThis.IOC
             .getSync(globalThis.ENTITY_UTILS)
             // Removes circular dependency at code initialization time 
-            .isQTree(this) ? JSONRelationType.SUB_QUERY_ROOT : JSONRelationType.ENTITY_ROOT;
-        return jsonRelation;
+            .isQTree(this) ? QueryRelationType.SUB_QUERY_ROOT : QueryRelationType.ENTITY_ROOT;
+        return QueryRelation;
     }
     getQ() {
         return this.qEntity;
@@ -5569,13 +5569,13 @@ globalThis.QEntityDriver = QEntityDriver;
  * Created by Papa on 10/18/2016.
  */
 class JoinTreeNode {
-    constructor(jsonRelation, childNodes, parentNode) {
-        this.jsonRelation = jsonRelation;
+    constructor(queryRelation, childNodes, parentNode) {
+        this.queryRelation = queryRelation;
         this.childNodes = childNodes;
         this.parentNode = parentNode;
     }
     addChildNode(joinTreeNode) {
-        let childFromClausePositionArray = joinTreeNode.jsonRelation.fromClausePosition;
+        let childFromClausePositionArray = joinTreeNode.queryRelation.fromClausePosition;
         let childPosition = childFromClausePositionArray[childFromClausePositionArray.length - 1];
         this.childNodes[childPosition] = joinTreeNode;
     }
@@ -5584,7 +5584,7 @@ class JoinTreeNode {
     }
     getEntityRelationChildNodeByIndexes(applicationIndex, tableIndex, relationIndex) {
         let matchingNodes = this.childNodes.filter((childNode) => {
-            return childNode.jsonRelation.ri === relationIndex;
+            return childNode.queryRelation.ri === relationIndex;
         });
         switch (matchingNodes.length) {
             case 0:
@@ -5596,26 +5596,26 @@ class JoinTreeNode {
         }
         // No node matched, this must be reference to a sub-entity in SELECT clause (in a Entity
         // query)
-        let childPosition = this.jsonRelation.fromClausePosition.slice();
+        let childPosition = this.queryRelation.fromClausePosition.slice();
         childPosition.push(this.childNodes.length);
         let rootEntityPrefix;
         if (this.parentNode) {
-            rootEntityPrefix = this.parentNode.jsonRelation.rep;
+            rootEntityPrefix = this.parentNode.queryRelation.rep;
         }
         else {
-            rootEntityPrefix = this.jsonRelation.rep;
+            rootEntityPrefix = this.queryRelation.rep;
         }
-        let jsonEntityRelation = {
+        let queryEntityRelation = {
             currentChildIndex: 0,
             fromClausePosition: childPosition,
             ti: tableIndex,
             jt: JoinType.LEFT_JOIN,
-            rt: JSONRelationType.ENTITY_APPLICATION_RELATION,
+            rt: QueryRelationType.ENTITY_APPLICATION_RELATION,
             rep: rootEntityPrefix,
             ri: relationIndex,
             si: applicationIndex
         };
-        let childTreeNode = new JoinTreeNode(jsonEntityRelation, [], this);
+        let childTreeNode = new JoinTreeNode(queryEntityRelation, [], this);
         this.addChildNode(childTreeNode);
         return childTreeNode;
     }
@@ -5641,23 +5641,23 @@ class QTreeDriver extends QEntityDriver {
     // getRelationPropertyName(): string {
     // 	throw new Error(`not implemented`);
     // }
-    getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
-        jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON;
-        jsonRelation.subQuery =
+    getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        queryRelation = super.getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+        queryRelation.rt = QueryRelationType.SUB_QUERY_JOIN_ON;
+        queryRelation.subQuery =
             // Removes circular dependency at code initialization time 
             globalThis.IOC.getSync(globalThis.ENTITY_UTILS).getTreeQuery(this.subQuery, columnAliases.entityAliases)
-                .toJSON(queryUtils, fieldUtils, relationManager);
-        return jsonRelation;
+                .toQuery(queryUtils, fieldUtils, relationManager);
+        return queryRelation;
     }
-    getRootRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
-        jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT;
-        jsonRelation.subQuery =
+    getRootRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        queryRelation = super.getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+        queryRelation.rt = QueryRelationType.SUB_QUERY_ROOT;
+        queryRelation.subQuery =
             // Removes circular dependency at code initialization time 
             globalThis.IOC.getSync(globalThis.ENTITY_UTILS).getTreeQuery(this.subQuery, columnAliases.entityAliases)
-                .toJSON(queryUtils, fieldUtils, relationManager);
-        return jsonRelation;
+                .toQuery(queryUtils, fieldUtils, relationManager);
+        return queryRelation;
     }
 }
 
@@ -5666,14 +5666,14 @@ class QTreeDriver extends QEntityDriver {
  */
 class QNullFunction extends QField {
     constructor() {
-        super(null, null, null, JSONClauseObjectType.FIELD_FUNCTION);
+        super(null, null, null, QueryClauseObjectType.FIELD_FUNCTION);
         this.value = null;
     }
     getInstance() {
         return this.copyFunctions(new QNullFunction());
     }
-    toJSON(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        return this.operableFunctionToJson(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+        return this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
     }
 }
 
@@ -6020,7 +6020,7 @@ class QDistinctFunction extends StandAloneFunction {
     getSelectClause() {
         return this.selectClause;
     }
-    toJSON(parsedSelectClause) {
+    toQueryFragment(parsedSelectClause) {
         if (this.__appliedFunctions__.length != 1) {
             throw new Error(`Not expecting and parent or child functions on "distinct"`);
         }
@@ -6034,7 +6034,7 @@ class QDistinctFunction extends StandAloneFunction {
             appliedFunctions: appliedFunctions,
             dt: null,
             fa: null,
-            ot: JSONClauseObjectType.DISTINCT_FUNCTION,
+            ot: QueryClauseObjectType.DISTINCT_FUNCTION,
             v: parsedSelectClause
         };
     }
@@ -6064,7 +6064,7 @@ class QExistsFunction extends StandAloneFunction {
     getQuery() {
         return this.subQuery;
     }
-    toJSON(parsedQuery) {
+    toQueryFragment(parsedQuery) {
         if (this.__appliedFunctions__.length != 1) {
             throw new Error(`Not expecting and parent or child functions on "exists"`);
         }
@@ -6079,7 +6079,7 @@ class QExistsFunction extends StandAloneFunction {
             ob: {
                 appliedFunctions: appliedFunctions,
                 dt: null,
-                ot: JSONClauseObjectType.EXISTS_FUNCTION,
+                ot: QueryClauseObjectType.EXISTS_FUNCTION,
                 v: parsedQuery
             },
             o: this.operator
@@ -6201,21 +6201,21 @@ class AbstractQuery {
     ) {
         return this.entityAliases.getParams().getParameters();
     }
-    getNonEntityQuery(rawQuery, jsonQuery, createSelectCallback, queryUtils, fieldUtils, relationManager) {
-        let from = this.fromClauseToJSON(rawQuery.FROM, queryUtils, fieldUtils, relationManager);
-        jsonQuery.F = from;
+    getNonEntityQuery(rawQuery, queryNonEntity, createSelectCallback, queryUtils, fieldUtils, relationManager) {
+        let from = this.rawToQueryFromClause(rawQuery.FROM, queryUtils, fieldUtils, relationManager);
+        queryNonEntity.F = from;
         if (createSelectCallback) {
-            createSelectCallback(jsonQuery);
+            createSelectCallback(queryNonEntity);
         }
-        jsonQuery.W = queryUtils.whereClauseToJSON(rawQuery.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet);
-        jsonQuery.GB = this.groupByClauseToJSON(rawQuery.GROUP_BY);
-        jsonQuery.H = queryUtils.whereClauseToJSON(rawQuery.HAVING, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet);
-        jsonQuery.OB = this.orderByClauseToJSON(rawQuery.ORDER_BY);
-        jsonQuery.L = rawQuery.LIMIT;
-        jsonQuery.O = rawQuery.OFFSET;
-        return jsonQuery;
+        queryNonEntity.W = queryUtils.whereClauseToQueryOperation(rawQuery.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet);
+        queryNonEntity.GB = this.groupByClauseToQuery(rawQuery.GROUP_BY);
+        queryNonEntity.H = queryUtils.whereClauseToQueryOperation(rawQuery.HAVING, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet);
+        queryNonEntity.OB = this.orderByClauseToQuery(rawQuery.ORDER_BY);
+        queryNonEntity.L = rawQuery.LIMIT;
+        queryNonEntity.O = rawQuery.OFFSET;
+        return queryNonEntity;
     }
-    fromClauseToJSON(fromClause, queryUtils, fieldUtils, relationManager) {
+    rawToQueryFromClause(fromClause, queryUtils, fieldUtils, relationManager) {
         if (!fromClause) {
             if (this.isEntityQuery) {
                 return [];
@@ -6234,10 +6234,10 @@ class AbstractQuery {
                 }
             }
             return fromEntity.__driver__
-                .getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+                .getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         });
     }
-    groupByClauseToJSON(groupBy) {
+    groupByClauseToQuery(groupBy) {
         if (!groupBy || !groupBy.length) {
             return null;
         }
@@ -6250,12 +6250,12 @@ class AbstractQuery {
             };
         });
     }
-    orderByClauseToJSON(orderBy) {
+    orderByClauseToQuery(orderBy) {
         if (!orderBy || !orderBy.length) {
             return null;
         }
         return orderBy.map((field) => {
-            return field.toJSON(this.columnAliases);
+            return field.toQueryFragment(this.columnAliases);
         });
     }
 }
@@ -6293,7 +6293,7 @@ class AbstractInsertValues extends AbstractQuery {
 				Entity: ${dbColumn.entity.name}`);
         }
     }
-    valuesToJSON(valueSets, dbColumns, queryUtils, fieldUtils, relationManager) {
+    rawToQueryValuesClause(valueSets, dbColumns, queryUtils, fieldUtils, relationManager) {
         // let currentValueIndex = -1;
         // this.values           = [];
         return valueSets.map((valueSet, rowIndex) => {
@@ -6307,7 +6307,7 @@ class AbstractInsertValues extends AbstractQuery {
                     // return ++currentValueIndex;
                 }
                 else {
-                    return value.toJSON(this.columnAliases, false, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+                    return value.toQueryFragment(this.columnAliases, false, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
                 }
             });
         });
@@ -6319,12 +6319,12 @@ class AbstractUpdate extends AbstractQuery {
         super(entityAliases, entityAliases.getNewFieldColumnAliases());
         this.rawUpdate = rawUpdate;
     }
-    toJSON(queryUtils, fieldUtils, relationManager) {
+    toQuery(queryUtils, fieldUtils, relationManager) {
         return {
             U: this.rawUpdate.UPDATE
-                .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
-            S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
+                .__driver__.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
+            S: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
+            W: queryUtils.whereClauseToQueryOperation(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
         };
     }
 }
@@ -6337,11 +6337,11 @@ class Delete extends AbstractQuery {
         super(entityAliases, entityAliases.getNewFieldColumnAliases());
         this.rawDelete = rawDelete;
     }
-    toJSON(queryUtils, fieldUtils, relationManager) {
+    toQuery(queryUtils, fieldUtils, relationManager) {
         return {
             DF: this.rawDelete.DELETE_FROM
-                .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawDelete.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
+                .__driver__.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
+            W: queryUtils.whereClauseToQueryOperation(this.rawDelete.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
         };
     }
 }
@@ -6355,17 +6355,17 @@ class DistinguishableQuery extends AbstractQuery {
         super(entityAliases, entityAliases.getNewFieldColumnAliases(), trackedRepoGUIDSet, trackedRepoLidSet);
         this.isHierarchicalEntityQuery = false;
     }
-    selectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager) {
+    rawToQuerySelectClause(rawSelect, queryUtils, fieldUtils, relationManager) {
         if (rawSelect instanceof QDistinctFunction) {
             if (this.isHierarchicalEntityQuery) {
                 throw new Error(`Distinct cannot be used in SELECT of Hierarchical/Bridged Entity queries.`);
             }
             let rawInnerSelect = rawSelect.getSelectClause();
-            let innerSelect = this.nonDistinctSelectClauseToJSON(rawInnerSelect, queryUtils, fieldUtils, relationManager);
-            return rawSelect.toJSON(innerSelect);
+            let innerSelect = this.rawToQueryNonDistinctSelectClause(rawInnerSelect, queryUtils, fieldUtils, relationManager);
+            return rawSelect.toQueryFragment(innerSelect);
         }
         else {
-            return this.nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager);
+            return this.rawToQueryNonDistinctSelectClause(rawSelect, queryUtils, fieldUtils, relationManager);
         }
     }
 }
@@ -6378,7 +6378,7 @@ const FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE = `Entity SELECT clauses can only con
  * A query whose SELECT facade is a collection of properties.
  */
 class MappableQuery extends DistinguishableQuery {
-    nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager) {
+    rawToQueryNonDistinctSelectClause(rawSelect, queryUtils, fieldUtils, relationManager) {
         let select = {};
         for (let property in rawSelect) {
             let value = rawSelect[property];
@@ -6390,7 +6390,7 @@ class MappableQuery extends DistinguishableQuery {
                 // In that case the last one will set the alias for all of them.
                 // Because the alias only matters for GROUP_BY and ORDER_BY
                 // that is OK.
-                select[property] = value.toJSON(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+                select[property] = value.toQueryFragment(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
             }
             else if (value instanceof QOneToManyRelation
                 || value instanceof QAirEntityOneToManyRelation) {
@@ -6413,7 +6413,7 @@ class MappableQuery extends DistinguishableQuery {
                             }
                             else {
                                 isChildObject = true;
-                                select[property] = this.nonDistinctSelectClauseToJSON(value, queryUtils, fieldUtils, relationManager);
+                                select[property] = this.rawToQueryNonDistinctSelectClause(value, queryUtils, fieldUtils, relationManager);
                             }
                     }
                 }
@@ -6438,28 +6438,28 @@ class EntityQuery extends MappableQuery {
         this.isEntityQuery = true;
         this.isHierarchicalEntityQuery = true;
     }
-    toJSON(queryUtils, fieldUtils, relationManager) {
+    toQuery(queryUtils, fieldUtils, relationManager) {
         return {
-            S: this.selectClauseToJSON(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager),
-            F: this.fromClauseToJSON(this.rawQuery.FROM, queryUtils, fieldUtils, relationManager),
+            S: this.rawToQuerySelectClause(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager),
+            F: this.rawToQueryFromClause(this.rawQuery.FROM, queryUtils, fieldUtils, relationManager),
             forUpdate: this.rawQuery.FOR_UPDATE,
-            W: queryUtils.whereClauseToJSON(this.rawQuery.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet),
-            OB: this.orderByClauseToJSON(this.rawQuery.ORDER_BY)
+            W: queryUtils.whereClauseToQueryOperation(this.rawQuery.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet),
+            OB: this.orderByClauseToQuery(this.rawQuery.ORDER_BY)
         };
     }
-    nonDistinctSelectClauseToJSON(rawSelect) {
+    rawToQueryNonDistinctSelectClause(rawSelect) {
         for (let field in rawSelect) {
             let value = rawSelect[field];
             if (value instanceof QField) {
                 throw new Error(`Field References cannot be used in Entity Queries`);
             }
             else if (value instanceof Object && !(value instanceof Date)) {
-                this.nonDistinctSelectClauseToJSON(value);
+                this.rawToQueryNonDistinctSelectClause(value);
             }
         }
         return rawSelect;
     }
-    orderByClauseToJSON(orderBy) {
+    orderByClauseToQuery(orderBy) {
         if (!orderBy || !orderBy.length) {
             return null;
         }
@@ -6474,11 +6474,11 @@ class LimitedEntityQuery extends EntityQuery {
         this.rawQuery = rawQuery;
         this.isHierarchicalEntityQuery = false;
     }
-    toJSON(queryUtils, fieldUtils, relationManager) {
-        let limitedJsonEntity = super.toJSON(queryUtils, fieldUtils, relationManager);
-        limitedJsonEntity.L = this.rawQuery.LIMIT;
-        limitedJsonEntity.O = this.rawQuery.OFFSET;
-        return limitedJsonEntity;
+    toQuery(queryUtils, fieldUtils, relationManager) {
+        let queryEntityLimited = super.toQuery(queryUtils, fieldUtils, relationManager);
+        queryEntityLimited.L = this.rawQuery.LIMIT;
+        queryEntityLimited.O = this.rawQuery.OFFSET;
+        return queryEntityLimited;
     }
 }
 
@@ -6495,23 +6495,23 @@ class FieldQuery extends DistinguishableQuery {
         super(entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
         this.rawQuery = rawQuery;
     }
-    nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager) {
+    rawToQueryNonDistinctSelectClause(rawSelect, queryUtils, fieldUtils, relationManager) {
         if (!(this.rawQuery.SELECT instanceof QField)) {
             throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
         }
         this.columnAliases.entityAliases.getNextAlias(this.rawQuery.SELECT.q.__driver__.getRootJoinEntity());
-        const jsonClauseField = this.rawQuery.SELECT.toJSON(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
-        return jsonClauseField;
+        const queryClauseField = this.rawQuery.SELECT.toQueryFragment(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+        return queryClauseField;
     }
-    toJSON(queryUtils, fieldUtils, relationManager) {
-        let select = this.selectClauseToJSON(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager);
-        let jsonFieldQuery = {
+    toQuery(queryUtils, fieldUtils, relationManager) {
+        let select = this.rawToQuerySelectClause(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager);
+        let queryField = {
             S: select,
             forUpdate: this.rawQuery.FOR_UPDATE,
-            ot: JSONClauseObjectType.FIELD_QUERY,
+            ot: QueryClauseObjectType.FIELD_QUERY,
             dt: this.getClauseDataType()
         };
-        return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils, relationManager);
+        return this.getNonEntityQuery(this.rawQuery, queryField, null, queryUtils, fieldUtils, relationManager);
     }
     getClauseDataType() {
         let selectField = this.rawQuery.SELECT;
@@ -6541,9 +6541,9 @@ class FieldQuery extends DistinguishableQuery {
 
 // FIXME: add support for a full blown INSERT VALUES, with expression support for VALUES
 class InsertColumnValues extends AbstractInsertValues {
-    toJSON(queryUtils, fieldUtils, relationManager) {
+    toQuery(queryUtils, fieldUtils, relationManager) {
         const entityDriver = this.rawInsertValues.INSERT_INTO.__driver__;
-        const insertInto = entityDriver.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+        const insertInto = entityDriver.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         const columnMap = entityDriver.dbEntity.columnMap;
         const dbColumns = [];
         const columnIndexes = this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map((columnName) => {
@@ -6555,7 +6555,7 @@ class InsertColumnValues extends AbstractInsertValues {
         return {
             II: insertInto,
             C: columnIndexes,
-            V: this.valuesToJSON(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager)
+            V: this.rawToQueryValuesClause(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager)
         };
     }
 }
@@ -6565,10 +6565,10 @@ class InsertColumnValues extends AbstractInsertValues {
  */
 // FIXME: add support for a full blown INSERT VALUES, with expression support for VALUES
 class InsertValues extends AbstractInsertValues {
-    toJSON(queryUtils, fieldUtils, relationManager) {
+    toQuery(queryUtils, fieldUtils, relationManager) {
         const driver = this.rawInsertValues.INSERT_INTO
             .__driver__;
-        const insertInto = driver.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+        const insertInto = driver.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         const dbColumns = [];
         let columnIndexes;
         if (this.columnIndexes) {
@@ -6590,7 +6590,7 @@ class InsertValues extends AbstractInsertValues {
         return {
             II: insertInto,
             C: columnIndexes,
-            V: this.valuesToJSON(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager)
+            V: this.rawToQueryValuesClause(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager)
         };
     }
 }
@@ -6603,7 +6603,7 @@ class SheetQuery extends DistinguishableQuery {
         super(new EntityAliases(), trackedRepoGUIDSet, trackedRepoLocalIdSet);
         this.rawQuery = rawQuery;
     }
-    nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager) {
+    rawToQueryNonDistinctSelectClause(rawSelect, queryUtils, fieldUtils, relationManager) {
         if (!(rawSelect instanceof Array)) {
             throw new Error(`Flat Queries an array of fields in SELECT clause.`);
         }
@@ -6612,17 +6612,17 @@ class SheetQuery extends DistinguishableQuery {
                 throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
             }
             this.columnAliases.entityAliases.getNextAlias(selectField.q.__driver__.getRootJoinEntity());
-            const jsonClauseField = selectField.toJSON(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
-            return jsonClauseField;
+            const queryFieldClause = selectField.toQueryFragment(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+            return queryFieldClause;
         });
     }
-    toJSON(queryUtils, fieldUtils, relationManager) {
-        let select = this.selectClauseToJSON(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager);
-        let jsonFieldQuery = {
+    toQuery(queryUtils, fieldUtils, relationManager) {
+        let select = this.rawToQuerySelectClause(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager);
+        let querySheet = {
             S: select,
             forUpdate: this.rawQuery.FOR_UPDATE
         };
-        return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils, relationManager);
+        return this.getNonEntityQuery(this.rawQuery, querySheet, null, queryUtils, fieldUtils, relationManager);
     }
 }
 
@@ -6631,12 +6631,12 @@ class TreeQuery extends MappableQuery {
         super(entityAliases, trackedRepoGUIDSet);
         this.rawQuery = rawQuery;
     }
-    toJSON(queryUtils, fieldUtils, relationManager) {
-        let jsonMappedQuery = this.getNonEntityQuery(this.rawQuery, {}, (jsonQuery) => {
-            jsonQuery.S = this.selectClauseToJSON(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager);
-            jsonQuery.forUpdate = this.rawQuery.FOR_UPDATE;
+    toQuery(queryUtils, fieldUtils, relationManager) {
+        let queryTree = this.getNonEntityQuery(this.rawQuery, {}, (nonEntityQuery) => {
+            nonEntityQuery.S = this.rawToQuerySelectClause(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager);
+            nonEntityQuery.forUpdate = this.rawQuery.FOR_UPDATE;
         }, queryUtils, fieldUtils, relationManager);
-        return jsonMappedQuery;
+        return queryTree;
     }
 }
 
@@ -6644,7 +6644,7 @@ class UpdateColumns extends AbstractUpdate {
     constructor(rawUpdate) {
         super(rawUpdate);
     }
-    setToJSON(set, queryUtils, fieldUtils, relationManager) {
+    rawToQuerySetClause(set, queryUtils, fieldUtils, relationManager) {
         const setClause = {};
         const dbEntity = this.rawUpdate.UPDATE
             .__driver__.dbEntity;
@@ -6670,10 +6670,10 @@ class UpdateColumns extends AbstractUpdate {
 				`);
             }
             value = wrapPrimitive(value);
-            if (!value.toJSON) {
+            if (!value.toQueryFragment) {
                 throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${dbEntity.name}`;
             }
-            setClause[columnName] = value.toJSON(this.columnAliases, false, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+            setClause[columnName] = value.toQueryFragment(this.columnAliases, false, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
         }
         return setClause;
     }
@@ -6687,22 +6687,22 @@ class UpdateProperties extends AbstractUpdate {
     constructor(rawUpdate, trackedRepoGUIDSet) {
         super(rawUpdate);
     }
-    toJSON(queryUtils, fieldUtils, relationManager) {
+    toQuery(queryUtils, fieldUtils, relationManager) {
         return {
             U: this.rawUpdate.UPDATE
-                .__driver__.getRelationJson(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
-            S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
+                .__driver__.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
+            S: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
+            W: queryUtils.whereClauseToQueryOperation(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
         };
     }
-    setToJSON(rawSet, queryUtils, fieldUtils, relationManager) {
-        const jsonSetClause = {};
+    rawToQuerySetClause(rawSet, queryUtils, fieldUtils, relationManager) {
+        const querySetClause = {};
         const dbEntity = this.rawUpdate.UPDATE.__driver__.dbEntity;
         const dbPropertyMap = dbEntity.propertyMap;
-        this.setEntityFragmentsToJSON(rawSet, jsonSetClause, [], dbPropertyMap, [], queryUtils, fieldUtils, relationManager);
-        return jsonSetClause;
+        this.rawToQuerySetEntityFragments(rawSet, querySetClause, [], dbPropertyMap, [], queryUtils, fieldUtils, relationManager);
+        return querySetClause;
     }
-    setEntityFragmentsToJSON(rawSetFragment, jsonSetClause, dbPropertyChain, dbPropertyMap, childDbRelationChain, queryUtils, fieldUtils, relationManager) {
+    rawToQuerySetEntityFragments(rawSetFragment, querySetClause, dbPropertyChain, dbPropertyMap, childDbRelationChain, queryUtils, fieldUtils, relationManager) {
         const isTopLevelFragment = !dbPropertyMap.length;
         for (const propertyName in rawSetFragment) {
             const dbProperty = dbPropertyMap[propertyName];
@@ -6735,10 +6735,10 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
             }
             const childDbPropertyChain = [...dbPropertyChain];
             childDbPropertyChain.push(dbProperty);
-            this.setFragmentToJSON(rawSetFragment, jsonSetClause, childDbPropertyChain, propertyName, childDbRelationChain, queryUtils, fieldUtils, relationManager);
+            this.rawToQuerySetFragment(rawSetFragment, querySetClause, childDbPropertyChain, propertyName, childDbRelationChain, queryUtils, fieldUtils, relationManager);
         }
     }
-    setFragmentToJSON(rawSetFragment, jsonSetClause, dbPropertyChain, propertyName, dbRelationChain, queryUtils, fieldUtils, relationManager) {
+    rawToQuerySetFragment(rawSetFragment, querySetClause, dbPropertyChain, propertyName, dbRelationChain, queryUtils, fieldUtils, relationManager) {
         const dbProperty = dbPropertyChain[dbPropertyChain.length - 1];
         const dbEntity = dbProperty.entity;
         let value = rawSetFragment[propertyName];
@@ -6748,7 +6748,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
         }
         value = wrapPrimitive(value);
         // If this is not a nested object definition
-        if (value.toJSON) {
+        if (value.toQueryFragment) {
             if (dbProperty.propertyColumns.length !== 1) {
                 throw new Error(`
 ${this.getPropertyChainDesription(dbPropertyChain)}
@@ -6772,7 +6772,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
                         dbColumn = matchingManyRelationColumn.oneColumn;
                     }
                 }
-                if (jsonSetClause[dbColumn.name]) {
+                if (querySetClause[dbColumn.name]) {
                     const firstProperty = dbPropertyChain[0];
                     throw new Error(`
 ${this.getPropertyChainDesription(dbPropertyChain)}
@@ -6784,7 +6784,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 		which has already been set in this update statement (above).
 				`);
                 }
-                jsonSetClause[dbColumn.name] = value.toJSON(this.columnAliases, false, queryUtils, fieldUtils, relationManager);
+                querySetClause[dbColumn.name] = value.toQueryFragment(this.columnAliases, false, queryUtils, fieldUtils, relationManager);
                 return;
             }
         }
@@ -6796,7 +6796,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
                 childDbRelationChain.push(dbRelation);
                 switch (dbRelation.relationType) {
                     case EntityRelationType.MANY_TO_ONE: {
-                        this.setEntityFragmentsToJSON(value, jsonSetClause, dbPropertyChain, dbRelation.relationEntity.propertyMap, childDbRelationChain, queryUtils, fieldUtils, relationManager);
+                        this.rawToQuerySetEntityFragments(value, querySetClause, dbPropertyChain, dbRelation.relationEntity.propertyMap, childDbRelationChain, queryUtils, fieldUtils, relationManager);
                         break;
                     }
                     case EntityRelationType.ONE_TO_MANY:
@@ -8073,8 +8073,8 @@ function defaultCompare(a, b) {
 
 const airApi = {
     setQApp: function (qApplication) { },
-    dS: function (__dbApplication__, dbEntityId) { return true; },
-    ddS: function (__dbApplication__, dbEntityId) { return true; }
+    dS: function (__dbDbApplication__, dbEntityId) { return true; },
+    ddS: function (__dbDbApplication__, dbEntityId) { return true; }
 };
 function loadGlobalAirApi() {
     globalThis.airApi = airApi;
@@ -8490,7 +8490,7 @@ class Dao {
     }
     constructor(dbEntityId, Q, internal = false) {
         this.internal = internal;
-        const dbEntity = Q.__dbApplication__.currentVersion[0]
+        const dbEntity = Q.__dbDbApplication__.currentVersion[0]
             .applicationVersion.entities[dbEntityId];
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
         this.db = new EntityDatabaseFacade(dbEntity, Q, this);
@@ -8658,7 +8658,7 @@ tarmaqDao.setDependencies(Dao, {
     updateCacheManager: UPDATE_CACHE_MANAGER
 });
 
-function diSet(dbApplication, dbEntityId // ApplicationEntity_LocalId
+function diSet(dbApplication, dbEntityId // DbEntity_LocalId
 ) {
     if ((!globalThis.inAppMode && !globalThis.SEQ_GEN)
         || !dbApplication) {
@@ -9132,7 +9132,7 @@ ENTITY_UTILS.setClass(EntityUtils);
 class FieldUtils {
     getFieldQueryJson(fieldSubQuery, entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils) {
         let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
-        return subSelectQuery.toJSON(queryUtils, this, this.relationManager);
+        return subSelectQuery.toQuery(queryUtils, this, this.relationManager);
     }
 }
 
@@ -9227,13 +9227,13 @@ class QApplicationBuilderUtils {
         });
         return appsWithDependencies.map(applicationWithDeps => applicationWithDeps.application);
     }
-    applicationDependsOn(dependantApplication, dependsOnApplication_Index) {
+    applicationDependsOn(dependantApplication, dependsOnDbApplication_Index) {
         for (const dependency of dependantApplication.dependencies) {
-            if (dependency.index == dependsOnApplication_Index) {
+            if (dependency.index == dependsOnDbApplication_Index) {
                 return true;
             }
             if (dependency.appWithDependencies.dependencies.size) {
-                if (this.applicationDependsOn(dependency.appWithDependencies, dependsOnApplication_Index)) {
+                if (this.applicationDependsOn(dependency.appWithDependencies, dependsOnDbApplication_Index)) {
                     return true;
                 }
             }
@@ -9361,26 +9361,26 @@ is supported only for single columm relations
             return entityId;
         }
     }
-    whereClauseToJSON(whereClause, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet) {
+    whereClauseToQueryOperation(whereClause, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet) {
         if (!whereClause) {
             return null;
         }
         let operation = whereClause;
-        let jsonOperation = {
+        let queryOperation = {
             c: operation.c,
             o: operation.o
         };
         switch (operation.c) {
             case OperationCategory.LOGICAL:
                 let logicalOperation = operation;
-                let jsonLogicalOperation = jsonOperation;
+                let queryLogicalOperation = queryOperation;
                 switch (operation.o) {
                     case SqlOperator.NOT:
-                        jsonLogicalOperation.v = this.whereClauseToJSON(logicalOperation.v, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
+                        queryLogicalOperation.v = this.whereClauseToQueryOperation(logicalOperation.v, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
                         break;
                     case SqlOperator.AND:
                     case SqlOperator.OR:
-                        jsonLogicalOperation.v = logicalOperation.v.map((value) => this.whereClauseToJSON(value, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet));
+                        queryLogicalOperation.v = logicalOperation.v.map((value) => this.whereClauseToQueryOperation(value, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet));
                         break;
                     default:
                         throw new Error(`Unsupported logical operation '${operation.o}'`);
@@ -9389,9 +9389,9 @@ is supported only for single columm relations
             case OperationCategory.FUNCTION:
                 // TODO: verify that cast of Q object is valid
                 let functionOperation = operation;
-                let query = functionOperation.getQuery();
-                let jsonQuery = IOC.getSync(ENTITY_UTILS).getTreeQuery(query, columnAliases.entityAliases).toJSON(this, this.fieldUtils, this.relationManager);
-                jsonOperation = functionOperation.toJSON(jsonQuery);
+                let subQuery = functionOperation.getQuery();
+                let query = IOC.getSync(ENTITY_UTILS).getTreeQuery(subQuery, columnAliases.entityAliases).toQuery(this, this.fieldUtils, this.queryRelationManager);
+                queryOperation = functionOperation.toQueryFragment(query);
                 break;
             case OperationCategory.BOOLEAN:
             case OperationCategory.DATE:
@@ -9401,20 +9401,20 @@ is supported only for single columm relations
                 let valueOperation = operation;
                 // All Non logical or exists operations are value operations (equals, IS_NULL, LIKE,
                 // etc.)
-                let jsonValueOperation = jsonOperation;
-                jsonValueOperation.l = this.convertLRValue(valueOperation.l, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
+                let queryValueOperation = queryOperation;
+                queryValueOperation.l = this.convertLRValue(valueOperation.l, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
                 if (operation.o === SqlOperator.IS_NOT_NULL
                     || operation.o === SqlOperator.IS_NULL) {
                     break;
                 }
                 let rValue = valueOperation.r;
                 if (rValue instanceof Array) {
-                    jsonValueOperation.r = rValue.map((anRValue) => {
+                    queryValueOperation.r = rValue.map((anRValue) => {
                         return this.convertLRValue(anRValue, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
                     });
                 }
                 else {
-                    jsonValueOperation.r = this.convertLRValue(rValue, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
+                    queryValueOperation.r = this.convertLRValue(rValue, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
                 }
                 for (const trackedRepoGUID of valueOperation.trackedRepoGUIDs) {
                     trackedRepoGUIDSet.add(trackedRepoGUID);
@@ -9424,7 +9424,7 @@ is supported only for single columm relations
                 }
                 break;
         }
-        return jsonOperation;
+        return queryOperation;
     }
     getQEntityConstructor(dbEntity) {
         return this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index]
@@ -9569,7 +9569,7 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
                 throw new Error(`'undefined' is not a valid L or R value`);
             default:
                 if (value instanceof QOperableField) {
-                    return value.toJSON(columnAliases, false, trackedRepoGUIDSet, trackedRepoLocalIdSet, this, this.fieldUtils, this.relationManager);
+                    return value.toQueryFragment(columnAliases, false, trackedRepoGUIDSet, trackedRepoLocalIdSet, this, this.fieldUtils, this.queryRelationManager);
                 } // Must be a Field Query
                 else {
                     let rawFieldQuery = value;
@@ -9650,15 +9650,15 @@ class RelationManager {
     getPositionAlias(rootEntityPrefix, fromClausePosition) {
         return `${rootEntityPrefix}_${fromClausePosition.join('_')}`;
     }
-    getAlias(jsonRelation) {
-        return this.getPositionAlias(jsonRelation.rep, jsonRelation.fromClausePosition);
+    getAlias(queryRelation) {
+        return this.getPositionAlias(queryRelation.rep, queryRelation.fromClausePosition);
     }
-    getParentAlias(jsonRelation) {
-        let fromClausePosition = jsonRelation.fromClausePosition;
+    getParentAlias(queryRelation) {
+        let fromClausePosition = queryRelation.fromClausePosition;
         if (fromClausePosition.length === 0) {
             throw new Error(`Cannot find alias of a parent entity for the root entity`);
         }
-        return this.getPositionAlias(jsonRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1));
+        return this.getPositionAlias(queryRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1));
     }
     createRelatedQEntity(joinRelation, context) {
         const dbEntity = this.applicationUtils.getDbEntity(joinRelation.si, joinRelation.ti);
@@ -9778,7 +9778,7 @@ AIRPORT_DATABASE.setDependencies({
     databaseFacade: DATABASE_FACADE,
     databaseStore: DatabaseStore,
     dictionary: Dictionary,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     find: NonEntityFind,
     findOne: NonEntityFindOne,
     qApplicationBuilderUtils: QApplicationBuilderUtils,
@@ -9875,7 +9875,7 @@ const Q_airport____at_airport_slash_airport_dash_code = {
     name: '@airport/airport-code'
 };
 function airport____at_airport_slash_airport_dash_code_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_airport_dash_code.__dbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_airport_dash_code.__dbDbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
     globalThis.airApi.setQApp(Q_airport____at_airport_slash_airport_dash_code);
@@ -9938,7 +9938,7 @@ class TerminalRunDao extends BaseTerminalRunDao {
 
 class SequenceDao extends BaseSequenceDao {
     static diSet() {
-        return Q_airport____at_airport_slash_airport_dash_code.__dbApplication__ && !!Q_airport____at_airport_slash_airport_dash_code.__dbApplication__.currentVersion[0]
+        return Q_airport____at_airport_slash_airport_dash_code.__dbDbApplication__ && !!Q_airport____at_airport_slash_airport_dash_code.__dbDbApplication__.currentVersion[0]
             .applicationVersion.entities[0];
     }
     async incrementCurrentValues(context) {
@@ -9964,20 +9964,20 @@ class SequenceDao extends BaseSequenceDao {
 const airportCode = lib('@airport/airport-code');
 airportCode.register(SequenceDao, TerminalRunDao);
 
-class Domain {
+class DdlDomain {
 }
 
-class Application {
+class DdlApplication {
     constructor() {
         this.versions = [];
         this.currentVersion = [];
     }
 }
 
-class VersionedApplicationObject {
+class DdlVersionedObject {
 }
 
-class ApplicationColumn extends VersionedApplicationObject {
+class DdlColumn extends DdlVersionedObject {
     constructor() {
         super(...arguments);
         this.propertyColumns = [];
@@ -9987,10 +9987,10 @@ class ApplicationColumn extends VersionedApplicationObject {
     }
 }
 
-class ApplicationCurrentVersion {
+class DdlApplicationCurrentVersion {
 }
 
-class ApplicationEntity extends VersionedApplicationObject {
+class DdlEntity extends DdlVersionedObject {
     constructor() {
         super(...arguments);
         //
@@ -10008,7 +10008,6 @@ class ApplicationEntity extends VersionedApplicationObject {
         // 	mto: QAppColumn
         // ) => mto.idIndex.IS_NOT_NULL())
         // idColumns: ApplicationColumn[];
-        this.operations = [];
         this.properties = [];
         this.relations = [];
         this.relationReferences = [];
@@ -10019,10 +10018,7 @@ class ApplicationEntity extends VersionedApplicationObject {
     }
 }
 
-class ApplicationOperation extends VersionedApplicationObject {
-}
-
-class ApplicationProperty extends VersionedApplicationObject {
+class DdlProperty extends DdlVersionedObject {
     constructor() {
         super(...arguments);
         this.propertyColumns = [];
@@ -10033,13 +10029,13 @@ class ApplicationProperty extends VersionedApplicationObject {
 /**
  * Many-to-Many between Columns and properties
  */
-class ApplicationPropertyColumn extends VersionedApplicationObject {
+class DdlPropertyColumn extends DdlVersionedObject {
 }
 
-class ApplicationReference extends VersionedApplicationObject {
+class DdlApplicationReference extends DdlVersionedObject {
 }
 
-class ApplicationRelation extends VersionedApplicationObject {
+class DdlRelation extends DdlVersionedObject {
     constructor() {
         super(...arguments);
         this.manyRelationColumns = [];
@@ -10047,10 +10043,10 @@ class ApplicationRelation extends VersionedApplicationObject {
     }
 }
 
-class ApplicationRelationColumn extends VersionedApplicationObject {
+class DdlRelationColumn extends DdlVersionedObject {
 }
 
-class ApplicationVersion {
+class DdlApplicationVersion {
     constructor() {
         this.entities = [];
         this.references = [];
@@ -10061,70 +10057,39 @@ class ApplicationVersion {
     }
 }
 
-const __constructors__$7 = {
-    Application,
-    ApplicationColumn,
-    ApplicationCurrentVersion,
-    ApplicationEntity,
-    ApplicationOperation,
-    ApplicationProperty,
-    ApplicationPropertyColumn,
-    ApplicationReference,
-    ApplicationRelation,
-    ApplicationRelationColumn,
-    ApplicationVersion,
-    Domain,
-    VersionedApplicationObject
+const __constructors__$1$1 = {
+    DdlApplication,
+    DdlApplicationCurrentVersion,
+    DdlApplicationReference,
+    DdlApplicationVersion,
+    DdlColumn,
+    DdlDomain,
+    DdlEntity,
+    DdlProperty,
+    DdlPropertyColumn,
+    DdlRelation,
+    DdlRelationColumn,
+    DdlVersionedObject
 };
-const Q_airport____at_airport_slash_airspace = {
-    __constructors__: __constructors__$7,
+const Q_airport____at_airport_slash_airspace$1 = {
+    __constructors__: __constructors__$1$1,
     domain: 'airport',
     name: '@airport/airspace'
 };
 function airport____at_airport_slash_airspace_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_airspace.__dbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_airspace$1.__dbDbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
-    globalThis.airApi.setQApp(Q_airport____at_airport_slash_airspace);
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_airspace$1);
 }
 
 // Application Q object Dependency Injection readiness detection Dao
 class SQDIDao$5 extends Dao {
     constructor(dbEntityId) {
-        super(dbEntityId, Q_airport____at_airport_slash_airspace);
+        super(dbEntityId, Q_airport____at_airport_slash_airspace$1);
     }
 }
-class BaseApplicationDao extends SQDIDao$5 {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_airspace_diSet(10);
-    }
-    constructor() {
-        super(10);
-    }
-}
-BaseApplicationDao.Find = new DaoQueryDecorators();
-BaseApplicationDao.FindOne = new DaoQueryDecorators();
-BaseApplicationDao.Search = new DaoQueryDecorators();
-BaseApplicationDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationColumnDao extends SQDIDao$5 {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_airspace_diSet(4);
-    }
-    constructor() {
-        super(4);
-    }
-}
-BaseApplicationColumnDao.Find = new DaoQueryDecorators();
-BaseApplicationColumnDao.FindOne = new DaoQueryDecorators();
-BaseApplicationColumnDao.Search = new DaoQueryDecorators();
-BaseApplicationColumnDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationCurrentVersionDao extends SQDIDao$5 {
+class BaseDdlApplicationDao extends SQDIDao$5 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10135,116 +10100,11 @@ class BaseApplicationCurrentVersionDao extends SQDIDao$5 {
         super(9);
     }
 }
-BaseApplicationCurrentVersionDao.Find = new DaoQueryDecorators();
-BaseApplicationCurrentVersionDao.FindOne = new DaoQueryDecorators();
-BaseApplicationCurrentVersionDao.Search = new DaoQueryDecorators();
-BaseApplicationCurrentVersionDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationEntityDao extends SQDIDao$5 {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_airspace_diSet(6);
-    }
-    constructor() {
-        super(6);
-    }
-}
-BaseApplicationEntityDao.Find = new DaoQueryDecorators();
-BaseApplicationEntityDao.FindOne = new DaoQueryDecorators();
-BaseApplicationEntityDao.Search = new DaoQueryDecorators();
-BaseApplicationEntityDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationOperationDao extends SQDIDao$5 {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_airspace_diSet(5);
-    }
-    constructor() {
-        super(5);
-    }
-}
-BaseApplicationOperationDao.Find = new DaoQueryDecorators();
-BaseApplicationOperationDao.FindOne = new DaoQueryDecorators();
-BaseApplicationOperationDao.Search = new DaoQueryDecorators();
-BaseApplicationOperationDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationPropertyDao extends SQDIDao$5 {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_airspace_diSet(2);
-    }
-    constructor() {
-        super(2);
-    }
-}
-BaseApplicationPropertyDao.Find = new DaoQueryDecorators();
-BaseApplicationPropertyDao.FindOne = new DaoQueryDecorators();
-BaseApplicationPropertyDao.Search = new DaoQueryDecorators();
-BaseApplicationPropertyDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationPropertyColumnDao extends SQDIDao$5 {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_airspace_diSet(3);
-    }
-    constructor() {
-        super(3);
-    }
-}
-BaseApplicationPropertyColumnDao.Find = new DaoQueryDecorators();
-BaseApplicationPropertyColumnDao.FindOne = new DaoQueryDecorators();
-BaseApplicationPropertyColumnDao.Search = new DaoQueryDecorators();
-BaseApplicationPropertyColumnDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationReferenceDao extends SQDIDao$5 {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_airspace_diSet(7);
-    }
-    constructor() {
-        super(7);
-    }
-}
-BaseApplicationReferenceDao.Find = new DaoQueryDecorators();
-BaseApplicationReferenceDao.FindOne = new DaoQueryDecorators();
-BaseApplicationReferenceDao.Search = new DaoQueryDecorators();
-BaseApplicationReferenceDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationRelationDao extends SQDIDao$5 {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_airspace_diSet(1);
-    }
-    constructor() {
-        super(1);
-    }
-}
-BaseApplicationRelationDao.Find = new DaoQueryDecorators();
-BaseApplicationRelationDao.FindOne = new DaoQueryDecorators();
-BaseApplicationRelationDao.Search = new DaoQueryDecorators();
-BaseApplicationRelationDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationRelationColumnDao extends SQDIDao$5 {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_airspace_diSet(0);
-    }
-    constructor() {
-        super(0);
-    }
-}
-BaseApplicationRelationColumnDao.Find = new DaoQueryDecorators();
-BaseApplicationRelationColumnDao.FindOne = new DaoQueryDecorators();
-BaseApplicationRelationColumnDao.Search = new DaoQueryDecorators();
-BaseApplicationRelationColumnDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationVersionDao extends SQDIDao$5 {
+BaseDdlApplicationDao.Find = new DaoQueryDecorators();
+BaseDdlApplicationDao.FindOne = new DaoQueryDecorators();
+BaseDdlApplicationDao.Search = new DaoQueryDecorators();
+BaseDdlApplicationDao.SearchOne = new DaoQueryDecorators();
+class BaseDdlApplicationCurrentVersionDao extends SQDIDao$5 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10255,33 +10115,153 @@ class BaseApplicationVersionDao extends SQDIDao$5 {
         super(8);
     }
 }
-BaseApplicationVersionDao.Find = new DaoQueryDecorators();
-BaseApplicationVersionDao.FindOne = new DaoQueryDecorators();
-BaseApplicationVersionDao.Search = new DaoQueryDecorators();
-BaseApplicationVersionDao.SearchOne = new DaoQueryDecorators();
-class BaseDomainDao extends SQDIDao$5 {
+BaseDdlApplicationCurrentVersionDao.Find = new DaoQueryDecorators();
+BaseDdlApplicationCurrentVersionDao.FindOne = new DaoQueryDecorators();
+BaseDdlApplicationCurrentVersionDao.Search = new DaoQueryDecorators();
+BaseDdlApplicationCurrentVersionDao.SearchOne = new DaoQueryDecorators();
+class BaseDdlApplicationReferenceDao extends SQDIDao$5 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_airspace_diSet(11);
+        return airport____at_airport_slash_airspace_diSet(6);
     }
     constructor() {
-        super(11);
+        super(6);
     }
 }
-BaseDomainDao.Find = new DaoQueryDecorators();
-BaseDomainDao.FindOne = new DaoQueryDecorators();
-BaseDomainDao.Search = new DaoQueryDecorators();
-BaseDomainDao.SearchOne = new DaoQueryDecorators();
+BaseDdlApplicationReferenceDao.Find = new DaoQueryDecorators();
+BaseDdlApplicationReferenceDao.FindOne = new DaoQueryDecorators();
+BaseDdlApplicationReferenceDao.Search = new DaoQueryDecorators();
+BaseDdlApplicationReferenceDao.SearchOne = new DaoQueryDecorators();
+class BaseDdlApplicationVersionDao extends SQDIDao$5 {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_airspace_diSet(7);
+    }
+    constructor() {
+        super(7);
+    }
+}
+BaseDdlApplicationVersionDao.Find = new DaoQueryDecorators();
+BaseDdlApplicationVersionDao.FindOne = new DaoQueryDecorators();
+BaseDdlApplicationVersionDao.Search = new DaoQueryDecorators();
+BaseDdlApplicationVersionDao.SearchOne = new DaoQueryDecorators();
+class BaseDdlColumnDao extends SQDIDao$5 {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_airspace_diSet(4);
+    }
+    constructor() {
+        super(4);
+    }
+}
+BaseDdlColumnDao.Find = new DaoQueryDecorators();
+BaseDdlColumnDao.FindOne = new DaoQueryDecorators();
+BaseDdlColumnDao.Search = new DaoQueryDecorators();
+BaseDdlColumnDao.SearchOne = new DaoQueryDecorators();
+class BaseDdlDomainDao extends SQDIDao$5 {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_airspace_diSet(10);
+    }
+    constructor() {
+        super(10);
+    }
+}
+BaseDdlDomainDao.Find = new DaoQueryDecorators();
+BaseDdlDomainDao.FindOne = new DaoQueryDecorators();
+BaseDdlDomainDao.Search = new DaoQueryDecorators();
+BaseDdlDomainDao.SearchOne = new DaoQueryDecorators();
+class BaseDdlEntityDao extends SQDIDao$5 {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_airspace_diSet(5);
+    }
+    constructor() {
+        super(5);
+    }
+}
+BaseDdlEntityDao.Find = new DaoQueryDecorators();
+BaseDdlEntityDao.FindOne = new DaoQueryDecorators();
+BaseDdlEntityDao.Search = new DaoQueryDecorators();
+BaseDdlEntityDao.SearchOne = new DaoQueryDecorators();
+class BaseDdlPropertyDao extends SQDIDao$5 {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_airspace_diSet(2);
+    }
+    constructor() {
+        super(2);
+    }
+}
+BaseDdlPropertyDao.Find = new DaoQueryDecorators();
+BaseDdlPropertyDao.FindOne = new DaoQueryDecorators();
+BaseDdlPropertyDao.Search = new DaoQueryDecorators();
+BaseDdlPropertyDao.SearchOne = new DaoQueryDecorators();
+class BaseDdlPropertyColumnDao extends SQDIDao$5 {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_airspace_diSet(3);
+    }
+    constructor() {
+        super(3);
+    }
+}
+BaseDdlPropertyColumnDao.Find = new DaoQueryDecorators();
+BaseDdlPropertyColumnDao.FindOne = new DaoQueryDecorators();
+BaseDdlPropertyColumnDao.Search = new DaoQueryDecorators();
+BaseDdlPropertyColumnDao.SearchOne = new DaoQueryDecorators();
+class BaseDdlRelationDao extends SQDIDao$5 {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_airspace_diSet(1);
+    }
+    constructor() {
+        super(1);
+    }
+}
+BaseDdlRelationDao.Find = new DaoQueryDecorators();
+BaseDdlRelationDao.FindOne = new DaoQueryDecorators();
+BaseDdlRelationDao.Search = new DaoQueryDecorators();
+BaseDdlRelationDao.SearchOne = new DaoQueryDecorators();
+class BaseDdlRelationColumnDao extends SQDIDao$5 {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_airspace_diSet(0);
+    }
+    constructor() {
+        super(0);
+    }
+}
+BaseDdlRelationColumnDao.Find = new DaoQueryDecorators();
+BaseDdlRelationColumnDao.FindOne = new DaoQueryDecorators();
+BaseDdlRelationColumnDao.Search = new DaoQueryDecorators();
+BaseDdlRelationColumnDao.SearchOne = new DaoQueryDecorators();
 
-class DomainDao extends BaseDomainDao {
+class DomainDao extends BaseDdlDomainDao {
     async findByIdIn(domainIds) {
         let d;
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                d = Q_airport____at_airport_slash_airspace.Domain
+                d = Q_airport____at_airport_slash_airspace$1.Domain
             ],
             WHERE: d._localId.IN(domainIds)
         });
@@ -10290,7 +10270,7 @@ class DomainDao extends BaseDomainDao {
         let d;
         const domains = await this.db.find.tree({
             SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
+            FROM: [d = Q_airport____at_airport_slash_airspace$1.Domain],
             WHERE: d.name.IN(domainNames)
         });
         const domainMapByNameWithNames = new Map();
@@ -10303,7 +10283,7 @@ class DomainDao extends BaseDomainDao {
         let d;
         return await this.db.findOne.tree({
             SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
+            FROM: [d = Q_airport____at_airport_slash_airspace$1.Domain],
             WHERE: d.name.equals(name)
         });
     }
@@ -10311,7 +10291,7 @@ class DomainDao extends BaseDomainDao {
         let d;
         return await this.db.find.tree({
             SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
+            FROM: [d = Q_airport____at_airport_slash_airspace$1.Domain],
             WHERE: d.name.IN(names)
         });
     }
@@ -10319,7 +10299,7 @@ class DomainDao extends BaseDomainDao {
         let d;
         return await this.db.findOne.tree({
             SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
+            FROM: [d = Q_airport____at_airport_slash_airspace$1.Domain],
             WHERE: d.name.equals(name)
         });
     }
@@ -10346,7 +10326,7 @@ class DomainDao extends BaseDomainDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.Domain,
+            INSERT_INTO: d = Q_airport____at_airport_slash_airspace$1.Domain,
             columns: [
                 d._localId,
                 d.name,
@@ -10363,7 +10343,7 @@ class DomainDao extends BaseDomainDao {
             ]);
         }
         const ids = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.Domain,
+            INSERT_INTO: d = Q_airport____at_airport_slash_airspace$1.Domain,
             columns: [
                 d.name
             ],
@@ -10376,13 +10356,13 @@ class DomainDao extends BaseDomainDao {
     }
 }
 
-class ApplicationColumnDao extends BaseApplicationColumnDao {
+class ApplicationColumnDao extends BaseDdlColumnDao {
     async findAllForEntities(entityIds) {
         let c;
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                c = Q_airport____at_airport_slash_airspace.ApplicationColumn
+                c = Q_airport____at_airport_slash_airspace$1.ApplicationColumn
             ],
             WHERE: c.entity._localId.IN(entityIds)
         });
@@ -10408,7 +10388,7 @@ class ApplicationColumnDao extends BaseApplicationColumnDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sc = Q_airport____at_airport_slash_airspace.ApplicationColumn,
+            INSERT_INTO: sc = Q_airport____at_airport_slash_airspace$1.ApplicationColumn,
             columns: [
                 sc._localId,
                 sc.index,
@@ -10430,7 +10410,30 @@ class ApplicationColumnDao extends BaseApplicationColumnDao {
     }
 }
 
-class ApplicationDao extends BaseApplicationDao {
+const __constructors__$7 = {
+    DdlApplication,
+    DdlApplicationCurrentVersion,
+    DdlApplicationReference,
+    DdlApplicationVersion,
+    DdlColumn,
+    DdlDomain,
+    DdlEntity,
+    DdlProperty,
+    DdlPropertyColumn,
+    DdlRelation,
+    DdlRelationColumn,
+    DdlVersionedObject
+};
+const Q_airport____at_airport_slash_airspace = {
+    __constructors__: __constructors__$7,
+    domain: 'airport',
+    name: '@airport/airspace'
+};
+if (globalThis.airApi) {
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_airspace);
+}
+
+class ApplicationDao extends BaseDdlApplicationDao {
     async findAllActive() {
         return this.db.find.tree({
             SELECT: {},
@@ -10596,7 +10599,7 @@ class ApplicationDao extends BaseApplicationDao {
             WHERE: s.index.IN(indexes)
         });
     }
-    async findMapByFullNames(fullApplication_Names) {
+    async findMapByFullNames(fullDbApplication_Names) {
         const mapByFullName = new Map();
         let s;
         const records = await this.db.find.tree({
@@ -10604,14 +10607,14 @@ class ApplicationDao extends BaseApplicationDao {
             FROM: [
                 s = Q_airport____at_airport_slash_airspace.Application
             ],
-            WHERE: s.fullName.IN(fullApplication_Names)
+            WHERE: s.fullName.IN(fullDbApplication_Names)
         });
         for (const record of records) {
             mapByFullName.set(record.fullName, record);
         }
         return mapByFullName;
     }
-    async findByDomain_NamesAndApplication_Names(domainNames, applicationNames) {
+    async findByDomain_NamesAndDbApplication_Names(domainNames, applicationNames) {
         let s;
         let d;
         return await this.db.find.tree({
@@ -10631,7 +10634,7 @@ class ApplicationDao extends BaseApplicationDao {
             WHERE: AND(d.name.IN(domainNames), s.name.IN(applicationNames))
         });
     }
-    async findOneByDomain_NameAndApplication_Name(domainName, applicationName) {
+    async findOneByDomain_NameAndDbApplication_Name(domainName, applicationName) {
         let s;
         let d;
         return await this.db.findOne.tree({
@@ -10692,13 +10695,13 @@ class ApplicationDao extends BaseApplicationDao {
     }
 }
 
-class ApplicationEntityDao extends BaseApplicationEntityDao {
+class ApplicationEntityDao extends BaseDdlEntityDao {
     async findAllForApplicationVersions(applicationVersionIds) {
         let se;
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                se = Q_airport____at_airport_slash_airspace.ApplicationEntity
+                se = Q_airport____at_airport_slash_airspace$1.ApplicationEntity
             ],
             WHERE: se.applicationVersion._localId.IN(applicationVersionIds)
         });
@@ -10718,7 +10721,7 @@ class ApplicationEntityDao extends BaseApplicationEntityDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: se = Q_airport____at_airport_slash_airspace.ApplicationEntity,
+            INSERT_INTO: se = Q_airport____at_airport_slash_airspace$1.ApplicationEntity,
             columns: [
                 se._localId,
                 se.index,
@@ -10736,13 +10739,13 @@ class ApplicationEntityDao extends BaseApplicationEntityDao {
     }
 }
 
-class ApplicationPropertyColumnDao extends BaseApplicationPropertyColumnDao {
+class ApplicationPropertyColumnDao extends BaseDdlPropertyColumnDao {
     async findAllForColumns(columnIds) {
         let rc;
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                rc = Q_airport____at_airport_slash_airspace.ApplicationPropertyColumn
+                rc = Q_airport____at_airport_slash_airspace$1.ApplicationPropertyColumn
             ],
             WHERE: rc.column._localId.IN(columnIds)
         });
@@ -10759,7 +10762,7 @@ class ApplicationPropertyColumnDao extends BaseApplicationPropertyColumnDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: spc = Q_airport____at_airport_slash_airspace.ApplicationPropertyColumn,
+            INSERT_INTO: spc = Q_airport____at_airport_slash_airspace$1.ApplicationPropertyColumn,
             columns: [
                 spc.column._localId,
                 spc.property._localId,
@@ -10772,13 +10775,13 @@ class ApplicationPropertyColumnDao extends BaseApplicationPropertyColumnDao {
     }
 }
 
-class ApplicationPropertyDao extends BaseApplicationPropertyDao {
+class ApplicationPropertyDao extends BaseDdlPropertyDao {
     async findAllForEntities(entityIds) {
         let p;
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                p = Q_airport____at_airport_slash_airspace.ApplicationProperty
+                p = Q_airport____at_airport_slash_airspace$1.ApplicationProperty
             ],
             WHERE: p.entity._localId.IN(entityIds)
         });
@@ -10797,7 +10800,7 @@ class ApplicationPropertyDao extends BaseApplicationPropertyDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sp = Q_airport____at_airport_slash_airspace.ApplicationProperty,
+            INSERT_INTO: sp = Q_airport____at_airport_slash_airspace$1.ApplicationProperty,
             columns: [
                 sp._localId,
                 sp.index,
@@ -10813,13 +10816,13 @@ class ApplicationPropertyDao extends BaseApplicationPropertyDao {
     }
 }
 
-class ApplicationReferenceDao extends BaseApplicationReferenceDao {
+class ApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
     async findAllForApplicationVersions(applicationVersionIds) {
         let sr;
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                sr = Q_airport____at_airport_slash_airspace.ApplicationReference
+                sr = Q_airport____at_airport_slash_airspace$1.ApplicationReference
             ],
             WHERE: sr.ownApplicationVersion._localId.IN(applicationVersionIds)
         });
@@ -10838,7 +10841,7 @@ class ApplicationReferenceDao extends BaseApplicationReferenceDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.ApplicationReference,
+            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace$1.ApplicationReference,
             columns: [
                 sr.ownApplicationVersion._localId,
                 sr.referencedApplicationVersion._localId,
@@ -10852,13 +10855,13 @@ class ApplicationReferenceDao extends BaseApplicationReferenceDao {
     }
 }
 
-class ApplicationRelationColumnDao extends BaseApplicationRelationColumnDao {
+class ApplicationRelationColumnDao extends BaseDdlRelationColumnDao {
     async findAllForColumns(columnIds) {
         let rc;
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                rc = Q_airport____at_airport_slash_airspace.ApplicationRelationColumn
+                rc = Q_airport____at_airport_slash_airspace$1.ApplicationRelationColumn
             ],
             WHERE: OR(rc.oneColumn._localId.IN(columnIds), rc.manyColumn._localId.IN(columnIds))
         });
@@ -10880,7 +10883,7 @@ class ApplicationRelationColumnDao extends BaseApplicationRelationColumnDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: src = Q_airport____at_airport_slash_airspace.ApplicationRelationColumn,
+            INSERT_INTO: src = Q_airport____at_airport_slash_airspace$1.ApplicationRelationColumn,
             columns: [
                 src._localId,
                 src.manyColumn._localId,
@@ -10897,13 +10900,13 @@ class ApplicationRelationColumnDao extends BaseApplicationRelationColumnDao {
     }
 }
 
-class ApplicationRelationDao extends BaseApplicationRelationDao {
+class ApplicationRelationDao extends BaseDdlRelationDao {
     async findAllForProperties(propertyIds) {
         let r;
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                r = Q_airport____at_airport_slash_airspace.ApplicationRelation
+                r = Q_airport____at_airport_slash_airspace$1.ApplicationRelation
             ],
             WHERE: r.property._localId.IN(propertyIds)
         });
@@ -10926,7 +10929,7 @@ class ApplicationRelationDao extends BaseApplicationRelationDao {
                 }
             },
             FROM: [
-                r = Q_airport____at_airport_slash_airspace.ApplicationRelation,
+                r = Q_airport____at_airport_slash_airspace$1.ApplicationRelation,
                 e = r.entity.LEFT_JOIN(),
                 av = e.applicationVersion.LEFT_JOIN(),
                 a = av.application.LEFT_JOIN(),
@@ -10953,7 +10956,7 @@ class ApplicationRelationDao extends BaseApplicationRelationDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.ApplicationRelation,
+            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace$1.ApplicationRelation,
             columns: [
                 sr._localId,
                 sr.index,
@@ -10974,10 +10977,10 @@ class ApplicationRelationDao extends BaseApplicationRelationDao {
     }
 }
 
-class ApplicationVersionDao extends BaseApplicationVersionDao {
+class ApplicationVersionDao extends BaseDdlApplicationVersionDao {
     /*
-    async findAllLatestForApplication_Indexes(
-        applicationIndexes: Application_Index[]
+    async findAllLatestForDbApplication_Indexes(
+        applicationIndexes: DbApplication_Index[]
     ): Promise<DbApplicationVersion[]> {
         let sv: QAppVersion
 
@@ -10993,11 +10996,11 @@ class ApplicationVersionDao extends BaseApplicationVersionDao {
         })
     }
     */
-    async findAllActiveOrderByApplication_IndexAndId() {
+    async findAllActiveOrderByDbApplication_IndexAndId() {
         let av, a;
         return await this.db.find.tree({
             FROM: [
-                av = Q_airport____at_airport_slash_airspace.ApplicationVersion,
+                av = Q_airport____at_airport_slash_airspace$1.ApplicationVersion,
                 a = av.application.INNER_JOIN()
             ],
             SELECT: {},
@@ -11007,7 +11010,7 @@ class ApplicationVersionDao extends BaseApplicationVersionDao {
             ]
         });
     }
-    async findByDomain_NamesAndApplication_Names(domainNames, applicationNames) {
+    async findByDomain_NamesAndDbApplication_Names(domainNames, applicationNames) {
         let av;
         let a;
         let d;
@@ -11024,7 +11027,7 @@ class ApplicationVersionDao extends BaseApplicationVersionDao {
                 }
             },
             FROM: [
-                av = Q_airport____at_airport_slash_airspace.ApplicationVersion,
+                av = Q_airport____at_airport_slash_airspace$1.ApplicationVersion,
                 a = av.application.INNER_JOIN(),
                 d = a.domain.INNER_JOIN()
             ],
@@ -11037,16 +11040,16 @@ class ApplicationVersionDao extends BaseApplicationVersionDao {
     }
     /*
     async findMaxVersionedMapByApplicationAndDomain_Names(
-        applicationDomain_Names: Domain_Name[],
-        applicationNames: Application_Name[]
-    ): Promise<Map<Domain_Name, Map<Application_Name, DbApplicationVersion>>> {
+        applicationDomain_Names: DbDomain_Name[],
+        applicationNames: DbApplication_Name[]
+    ): Promise<Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationVersion>>> {
         const maxVersionedMapByApplicationAndDomain_Names
-                  : Map<Domain_Name, Map<Application_Name, DbApplicationVersion>>
+                  : Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationVersion>>
                   = new Map()
 
         let sv: QAppVersion
         let s: QApp
-        let d: QDomain
+        let d: QDdlDomain
 
         const maxApplicationVersions: DbApplicationVersion[] = <any>await this.db.find.tree({
             SELECT: {
@@ -11120,7 +11123,7 @@ class ApplicationVersionDao extends BaseApplicationVersionDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sv = Q_airport____at_airport_slash_airspace.ApplicationVersion,
+            INSERT_INTO: sv = Q_airport____at_airport_slash_airspace$1.ApplicationVersion,
             columns: [
                 sv._localId,
                 sv.integerVersion,
@@ -11220,10 +11223,10 @@ class TerminalStore {
         this.getTerminalState = this.selectorManager.createRootSelector(this.state);
         this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
         this.getApplicationInitializer = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationInitializer);
-        this.getApplicationActorMapByDomainAndApplication_Names = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
-            const applicationActorsByDomainAndApplication_Names = new Map();
+        this.getApplicationActorMapByDomainAndDbApplication_Names = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
+            const applicationActorsByDomainAndDbApplication_Names = new Map();
             for (const applicationActor of applicationActors) {
-                const applicationActorMapForDomain = this.datastructureUtils.ensureChildJsMap(applicationActorsByDomainAndApplication_Names, applicationActor.application.domain.name);
+                const applicationActorMapForDomain = this.datastructureUtils.ensureChildJsMap(applicationActorsByDomainAndDbApplication_Names, applicationActor.application.domain.name);
                 let actorsForApplication = applicationActorMapForDomain
                     .get(applicationActor.application.name);
                 if (!actorsForApplication) {
@@ -11232,7 +11235,7 @@ class TerminalStore {
                 }
                 actorsForApplication.push(applicationActor);
             }
-            return applicationActorsByDomainAndApplication_Names;
+            return applicationActorsByDomainAndDbApplication_Names;
         });
         this.getDomains = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.domains);
         this.getDomainMapByName = this.selectorManager.createSelector(this.getDomains, domains => {
@@ -11256,14 +11259,14 @@ class TerminalStore {
             }
             return latestApplicationVersionMapByNames;
         });
-        this.getLatestApplicationVersionMapByApplication_FullName = this.selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
-            const latestApplicationVersionMapByApplication_FullName = new Map();
+        this.getLatestApplicationVersionMapByDbApplication_FullName = this.selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
+            const latestApplicationVersionMapByDbApplication_FullName = new Map();
             for (const applicationVersionsForDomain_Name of latestApplicationVersionMapByNames.values()) {
                 for (const applicationVersion of applicationVersionsForDomain_Name.values()) {
-                    latestApplicationVersionMapByApplication_FullName.set(applicationVersion.application.fullName, applicationVersion);
+                    latestApplicationVersionMapByDbApplication_FullName.set(applicationVersion.application.fullName, applicationVersion);
                 }
             }
-            return latestApplicationVersionMapByApplication_FullName;
+            return latestApplicationVersionMapByDbApplication_FullName;
         });
         this.getAllApplicationVersionsByIds = this.selectorManager.createSelector(this.getDomains, domains => {
             const allApplicationVersionsByIds = [];
@@ -11276,21 +11279,21 @@ class TerminalStore {
             }
             return allApplicationVersionsByIds;
         });
-        this.getLatestApplicationVersionsByApplication_Indexes = this.selectorManager.createSelector(this.getDomains, domains => {
-            const latestApplicationVersionsByApplication_Indexes = [];
+        this.getLatestApplicationVersionsByDbApplication_Indexes = this.selectorManager.createSelector(this.getDomains, domains => {
+            const latestApplicationVersionsByDbApplication_Indexes = [];
             for (const domain of domains) {
                 for (const application of domain.applications) {
-                    latestApplicationVersionsByApplication_Indexes[application.index]
+                    latestApplicationVersionsByDbApplication_Indexes[application.index]
                         = application.currentVersion[0].applicationVersion;
                 }
             }
-            return latestApplicationVersionsByApplication_Indexes;
+            return latestApplicationVersionsByDbApplication_Indexes;
         });
         this.getApplicationMapByFullName = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationMapByFullName);
         this.getApplications = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applications);
-        this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByApplication_Indexes, latestApplicationVersionsByApplication_Indexes => {
+        this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByDbApplication_Indexes, latestApplicationVersionsByDbApplication_Indexes => {
             const allEntities = [];
-            for (const latestApplicationVersion of latestApplicationVersionsByApplication_Indexes) {
+            for (const latestApplicationVersion of latestApplicationVersionsByDbApplication_Indexes) {
                 if (!latestApplicationVersion) {
                     continue;
                 }
@@ -11513,7 +11516,7 @@ TRANSACTION_MANAGER.setDependencies({
 });
 TRANSACTIONAL_RECEIVER.setDependencies({
     applicationInitializer: APPLICATION_INITIALIZER,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
 });
 TRANSACTIONAL_SERVER.setDependencies({
     terminalStore: TerminalStore,
@@ -11542,8 +11545,8 @@ class SqlSchemaBuilder {
         for (const jsonEntity of jsonApplicationVersion.entities) {
             await this.buildForeignKeys(jsonApplication, jsonApplicationVersion, jsonEntity, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap, context);
         }
-        this.applicationReferenceUtils.checkFrameworkReferences(jsonApplication, (jsonApplication, jsonApplicationVersion, jsonRelation) => {
-            return this.getRelationInfo(jsonApplication, jsonApplicationVersion, jsonRelation, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap);
+        this.applicationReferenceUtils.checkFrameworkReferences(jsonApplication, (jsonApplication, jsonApplicationVersion, queryRelation) => {
+            return this.getRelationInfo(jsonApplication, jsonApplicationVersion, queryRelation, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap);
         });
     }
     async buildTable(jsonApplication, jsonApplicationVersion, jsonEntity, existingApplicationMap, context) {
@@ -11589,39 +11592,39 @@ class SqlSchemaBuilder {
         }
         //
     }
-    getRelationInfo(jsonApplication, jsonApplicationVersion, jsonRelation, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap) {
+    getRelationInfo(jsonApplication, jsonApplicationVersion, queryRelation, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap) {
         let relatedJsonApplication;
         let relatedJsonEntity;
-        if (jsonRelation.relationTableApplication_Index
-            || jsonRelation.relationTableApplication_Index === 0) {
+        if (queryRelation.relationTableDbApplication_Index
+            || queryRelation.relationTableDbApplication_Index === 0) {
             const referencedApplication = jsonApplicationVersion
-                .referencedApplications[jsonRelation.relationTableApplication_Index];
-            let relatedApplication_FullName = this.dbApplicationUtils
-                .getApplication_FullNameFromDomainAndName(referencedApplication.domain, referencedApplication.name);
-            relatedJsonApplication = relatedJsonApplicationMap.get(relatedApplication_FullName);
+                .referencedApplications[queryRelation.relationTableDbApplication_Index];
+            let relatedDbApplication_FullName = this.dbApplicationUtils
+                .getDbApplication_FullNameFromDomainAndName(referencedApplication.domain, referencedApplication.name);
+            relatedJsonApplication = relatedJsonApplicationMap.get(relatedDbApplication_FullName);
             if (!relatedJsonApplication) {
-                const relatedApplication = existingApplicationMap.get(relatedApplication_FullName);
+                const relatedApplication = existingApplicationMap.get(relatedDbApplication_FullName);
                 if (relatedApplication) {
                     // FIXME: this should be looked up though currentVersion - make sure it's populated
                     // relatedJsonApplication = relatedApplication.currentVersion[0].applicationVersion.jsonApplication
                     relatedJsonApplication = relatedApplication.versions[0].jsonApplication;
                 }
                 else {
-                    relatedJsonApplication = newJsonApplicationMap.get(relatedApplication_FullName);
+                    relatedJsonApplication = newJsonApplicationMap.get(relatedDbApplication_FullName);
                 }
                 if (!relatedJsonApplication) {
-                    throw new Error(`Could not find related application ${relatedApplication_FullName}
+                    throw new Error(`Could not find related application ${relatedDbApplication_FullName}
           in either existing applications or newly installing applications.`);
                 }
-                relatedJsonApplicationMap.set(relatedApplication_FullName, relatedJsonApplication);
+                relatedJsonApplicationMap.set(relatedDbApplication_FullName, relatedJsonApplication);
             }
             const relatedApplicationVersion = relatedJsonApplication
                 .versions[relatedJsonApplication.versions.length - 1];
-            relatedJsonEntity = relatedApplicationVersion.entities[jsonRelation.relationTableIndex];
+            relatedJsonEntity = relatedApplicationVersion.entities[queryRelation.relationTableIndex];
         }
         else {
             relatedJsonApplication = jsonApplication;
-            relatedJsonEntity = jsonApplicationVersion.entities[jsonRelation.relationTableIndex];
+            relatedJsonEntity = jsonApplicationVersion.entities[queryRelation.relationTableIndex];
         }
         return {
             relatedJsonApplication,
@@ -11637,15 +11640,15 @@ class SqlSchemaBuilder {
         }
         const applicationVersion = this.getApplicationVersion(jsonApplication);
         const tableName = this.storeDriver.getTableName(jsonApplication, jsonApplicationVersion.integerVersion, jsonEntity, context);
-        for (const jsonRelation of jsonEntity.relations) {
-            if (jsonRelation.relationType !== EntityRelationType.MANY_TO_ONE) {
+        for (const queryRelation of jsonEntity.relations) {
+            if (queryRelation.relationType !== EntityRelationType.MANY_TO_ONE) {
                 continue;
             }
-            const { relatedJsonApplication, relatedJsonEntity } = this.getRelationInfo(jsonApplication, applicationVersion, jsonRelation, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap);
+            const { relatedJsonApplication, relatedJsonEntity } = this.getRelationInfo(jsonApplication, applicationVersion, queryRelation, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap);
             let foreignKeyColumnNames = [];
             for (const jsonColumn of jsonEntity.columns) {
                 for (const propertyRef of jsonColumn.propertyRefs) {
-                    if (propertyRef.index === jsonRelation.propertyRef.index) {
+                    if (propertyRef.index === queryRelation.propertyRef.index) {
                         foreignKeyColumnNames.push(jsonColumn.name);
                         break;
                     }
@@ -11675,8 +11678,8 @@ class SqlSchemaBuilder {
     }
     /*
     protected abstract isForeignKey(
-      jsonEntity: JsonApplicationEntity,
-      jsonColumn: JsonApplicationColumn
+      jsonEntity: JsonEntity,
+      jsonColumn: JsonColumn
     ): boolean
     */
     getPrimaryKeyStatement(columnNames) {
@@ -11760,45 +11763,45 @@ class ApplicationChecker {
     async pruneReferencesToExistingApplications(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication) {
         const existingApplicationInfo = await this.findExistingApplications(allReferencedApplicationMap);
         for (const applicationName of existingApplicationInfo.existingApplicationMapByName.keys()) {
-            const coreDomainAndApplication_Names = existingApplicationInfo.coreDomainAndApplication_NamesByApplication_Name.get(applicationName);
+            const coreDomainAndDbApplication_Names = existingApplicationInfo.coreDomainAndDbApplication_NamesByDbApplication_Name.get(applicationName);
             // Remove every reference for this existing application
             for (const referenceMapForApplicationsOfDomain of referencedApplicationMapByApplication.values()) {
                 for (const applicationsReferencedByAGivenApplication of referenceMapForApplicationsOfDomain.values()) {
-                    const applicationReferencesForDomain = applicationsReferencedByAGivenApplication.get(coreDomainAndApplication_Names.domain);
+                    const applicationReferencesForDomain = applicationsReferencedByAGivenApplication.get(coreDomainAndDbApplication_Names.domain);
                     if (applicationReferencesForDomain) {
-                        applicationReferencesForDomain.delete(coreDomainAndApplication_Names.application);
+                        applicationReferencesForDomain.delete(coreDomainAndDbApplication_Names.application);
                     }
                 }
             }
-            const allApplicationReferencesForDomain = allReferencedApplicationMap.get(coreDomainAndApplication_Names.domain);
+            const allApplicationReferencesForDomain = allReferencedApplicationMap.get(coreDomainAndDbApplication_Names.domain);
             if (allApplicationReferencesForDomain) {
-                allApplicationReferencesForDomain.delete(coreDomainAndApplication_Names.application);
+                allApplicationReferencesForDomain.delete(coreDomainAndDbApplication_Names.application);
             }
         }
     }
     async findExistingApplications(allReferencedApplicationMap) {
-        const fullApplication_Names = [];
-        const coreDomainAndApplication_NamesByApplication_Name = new Map();
+        const fullDbApplication_Names = [];
+        const coreDomainAndDbApplication_NamesByDbApplication_Name = new Map();
         for (const [domainName, allReferencedApplicationsForDomain] of allReferencedApplicationMap) {
-            for (const [coreApplication_Name, referencedApplication] of allReferencedApplicationsForDomain) {
-                const fullApplication_Name = this.dbApplicationUtils.
-                    getApplication_FullName(referencedApplication);
-                fullApplication_Names.push(fullApplication_Name);
-                coreDomainAndApplication_NamesByApplication_Name.set(fullApplication_Name, {
+            for (const [coreDbApplication_Name, referencedApplication] of allReferencedApplicationsForDomain) {
+                const fullDbApplication_Name = this.dbApplicationUtils.
+                    getDbApplication_FullName(referencedApplication);
+                fullDbApplication_Names.push(fullDbApplication_Name);
+                coreDomainAndDbApplication_NamesByDbApplication_Name.set(fullDbApplication_Name, {
                     domain: domainName,
-                    application: coreApplication_Name
+                    application: coreDbApplication_Name
                 });
             }
         }
         let existingApplicationMapByName;
-        if (!fullApplication_Names.length) {
+        if (!fullDbApplication_Names.length) {
             existingApplicationMapByName = new Map();
         }
         else {
-            existingApplicationMapByName = await this.applicationDao.findMapByFullNames(fullApplication_Names);
+            existingApplicationMapByName = await this.applicationDao.findMapByFullNames(fullDbApplication_Names);
         }
         return {
-            coreDomainAndApplication_NamesByApplication_Name,
+            coreDomainAndDbApplication_NamesByDbApplication_Name,
             existingApplicationMapByName
         };
     }
@@ -11820,9 +11823,9 @@ class ApplicationLocator {
         if (!applicationVersionsForDomain_Name) {
             return null;
         }
-        const fullApplication_Name = this.dbApplicationUtils.
-            getApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
-        const latestApplicationVersionForApplication = applicationVersionsForDomain_Name.get(fullApplication_Name);
+        const fullDbApplication_Name = this.dbApplicationUtils.
+            getDbApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
+        const latestApplicationVersionForApplication = applicationVersionsForDomain_Name.get(fullDbApplication_Name);
         const jsonApplicationVersion = jsonApplication.versions[0];
         if (latestApplicationVersionForApplication
             && latestApplicationVersionForApplication.integerVersion !== jsonApplicationVersion.integerVersion) {
@@ -11830,9 +11833,9 @@ class ApplicationLocator {
         }
         return latestApplicationVersionForApplication;
     }
-    async locateLatestApplicationVersionByApplication_Name(fullApplication_Name, terminalStore) {
-        return terminalStore.getLatestApplicationVersionMapByApplication_FullName()
-            .get(fullApplication_Name);
+    async locateLatestApplicationVersionByDbApplication_Name(fullDbApplication_Name, terminalStore) {
+        return terminalStore.getLatestApplicationVersionMapByDbApplication_FullName()
+            .get(fullDbApplication_Name);
     }
 }
 
@@ -11853,8 +11856,8 @@ class ApplicationComposer {
             applicationMapByFullName.set(application.fullName, application);
         }
         const newLatestApplicationVersions = [];
-        const newApplicationVersionMapByApplication_Name = new Map();
-        const newEntitiesMapByApplication_Name = new Map();
+        const newApplicationVersionMapByDbApplication_Name = new Map();
+        const newEntitiesMapByDbApplication_Name = new Map();
         const newPropertiesMap = new Map();
         const newRelationsMap = new Map();
         const newColumnsMap = new Map();
@@ -11892,12 +11895,12 @@ class ApplicationComposer {
         };
         for (const jsonApplication of jsonApplications) {
             jsonApplicationMapByFullName.set(this.dbApplicationUtils.
-                getApplication_FullName(jsonApplication), jsonApplication);
+                getDbApplication_FullName(jsonApplication), jsonApplication);
             const domain = await this.composeDomain(jsonApplication.domain, allDomains, added.domains, domainMapByName);
             const application = this.composeApplication(domain, jsonApplication, allApplications, added.applications, applicationMapByFullName);
-            this.composeApplicationVersion(jsonApplication, application, newLatestApplicationVersions, added.applicationVersions, newApplicationVersionMapByApplication_Name);
+            this.composeApplicationVersion(jsonApplication, application, newLatestApplicationVersions, added.applicationVersions, newApplicationVersionMapByDbApplication_Name);
         }
-        const { newApplicationReferenceMap, newApplicationReferences } = await this.composeApplicationReferences(jsonApplicationMapByFullName, newApplicationVersionMapByApplication_Name, terminalStore, allDdlObjects, context.deepTraverseReferences);
+        const { newApplicationReferenceMap, newApplicationReferences } = await this.composeApplicationReferences(jsonApplicationMapByFullName, newApplicationVersionMapByDbApplication_Name, terminalStore, allDdlObjects, context.deepTraverseReferences);
         added.applicationReferences = newApplicationReferences;
         for (const applicationVersion of allApplicationVersionsByIds) {
             if (applicationVersion) {
@@ -11905,12 +11908,12 @@ class ApplicationComposer {
             }
         }
         for (const jsonApplication of jsonApplications) {
-            const fullApplication_Name = this.dbApplicationUtils.
-                getApplication_FullName(jsonApplication);
-            jsonApplicationMapByFullName.set(fullApplication_Name, jsonApplication);
+            const fullDbApplication_Name = this.dbApplicationUtils.
+                getDbApplication_FullName(jsonApplication);
+            jsonApplicationMapByFullName.set(fullDbApplication_Name, jsonApplication);
             const domain = domainMapByName.get(jsonApplication.domain);
             const application = applicationMapByFullName.get(this.dbApplicationUtils.
-                getApplication_FullName(jsonApplication));
+                getDbApplication_FullName(jsonApplication));
             if (!application.index) {
                 jsonApplication.lastIds = {
                     ...this.terminalStore.getLastIds()
@@ -11920,16 +11923,16 @@ class ApplicationComposer {
             if (!domain._localId) {
                 domain._localId = ++this.terminalStore.getLastIds().domains;
             }
-            const applicationVersion = newApplicationVersionMapByApplication_Name.get(application.fullName);
+            const applicationVersion = newApplicationVersionMapByDbApplication_Name.get(application.fullName);
             if (!applicationVersion._localId) {
                 applicationVersion._localId = ++this.terminalStore.getLastIds().applicationVersions;
                 applicationVersion.jsonApplication = jsonApplication;
             }
-            this.composeApplicationEntities(jsonApplication, applicationVersion, newEntitiesMapByApplication_Name, added.entities);
-            this.composeApplicationProperties(jsonApplication, added.properties, newPropertiesMap, newEntitiesMapByApplication_Name);
-            await this.composeApplicationRelations(jsonApplication, added.relations, newRelationsMap, newEntitiesMapByApplication_Name, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects);
-            this.composeApplicationColumns(jsonApplication, added.columns, newColumnsMap, added.propertyColumns, newEntitiesMapByApplication_Name, newPropertiesMap);
-            await this.composeApplicationRelationColumns(jsonApplication, added.relationColumns, newApplicationVersionMapByApplication_Name, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects);
+            this.composeApplicationEntities(jsonApplication, applicationVersion, newEntitiesMapByDbApplication_Name, added.entities);
+            this.composeApplicationProperties(jsonApplication, added.properties, newPropertiesMap, newEntitiesMapByDbApplication_Name);
+            await this.composeApplicationRelations(jsonApplication, added.relations, newRelationsMap, newEntitiesMapByDbApplication_Name, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects);
+            this.composeApplicationColumns(jsonApplication, added.columns, newColumnsMap, added.propertyColumns, newEntitiesMapByDbApplication_Name, newPropertiesMap);
+            await this.composeApplicationRelationColumns(jsonApplication, added.relationColumns, newApplicationVersionMapByDbApplication_Name, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects);
         }
         this.addObjects(allDdlObjects.added, allDdlObjects.all);
         for (const applicationVersion of allDdlObjects.all.applicationVersions) {
@@ -11937,13 +11940,13 @@ class ApplicationComposer {
         }
         return allDdlObjects;
     }
-    async getExistingLatestApplicationVersion(referencedApplication_Name, allDdlObjects) {
+    async getExistingLatestApplicationVersion(referencedDbApplication_Name, allDdlObjects) {
         for (const latestApplicationVersion of allDdlObjects.all.latestApplicationVersions) {
-            if (latestApplicationVersion.application.fullName == referencedApplication_Name) {
+            if (latestApplicationVersion.application.fullName == referencedDbApplication_Name) {
                 return latestApplicationVersion;
             }
         }
-        throw new Error(`Cannot find application "${referencedApplication_Name}".`);
+        throw new Error(`Cannot find application "${referencedDbApplication_Name}".`);
     }
     addApplicationVersionObjects(applicationVersion, ddlObjects) {
         let foundDomain = false;
@@ -12048,14 +12051,14 @@ class ApplicationComposer {
         return domain;
     }
     composeApplication(domain, jsonApplication, allApplications, newApplications, applicationMapByFullName) {
-        const fullApplication_Name = this.dbApplicationUtils.
-            getApplication_FullName(jsonApplication);
-        let application = applicationMapByFullName.get(fullApplication_Name);
+        const fullDbApplication_Name = this.dbApplicationUtils.
+            getDbApplication_FullName(jsonApplication);
+        let application = applicationMapByFullName.get(fullDbApplication_Name);
         if (!application) {
             application = {
                 domain,
                 index: null,
-                fullName: fullApplication_Name,
+                fullName: fullDbApplication_Name,
                 name: jsonApplication.name,
                 scope: 'public',
                 signature: 'localhost',
@@ -12063,11 +12066,11 @@ class ApplicationComposer {
             };
             allApplications.push(application);
             newApplications.push(application);
-            applicationMapByFullName.set(fullApplication_Name, application);
+            applicationMapByFullName.set(fullDbApplication_Name, application);
         }
         return application;
     }
-    composeApplicationVersion(jsonApplication, application, newLatestApplicationVersions, newApplicationVersions, newApplicationVersionMapByApplication_Name) {
+    composeApplicationVersion(jsonApplication, application, newLatestApplicationVersions, newApplicationVersions, newApplicationVersionMapByDbApplication_Name) {
         // Application versions are guaranteed to be new
         let newApplicationVersion;
         for (const applicationVersion of jsonApplication.versions) {
@@ -12103,35 +12106,35 @@ class ApplicationComposer {
         // needed for normalOperation only
         application.currentVersion = [newApplicationCurrentVersion];
         newLatestApplicationVersions.push(newApplicationVersion);
-        newApplicationVersionMapByApplication_Name.set(application.fullName, newApplicationVersion);
+        newApplicationVersionMapByDbApplication_Name.set(application.fullName, newApplicationVersion);
         return newApplicationVersion;
     }
-    async composeApplicationReferences(jsonApplicationMapByName, newApplicationVersionMapByApplication_Name, terminalStore, allDdlObjects, deepTraverseReferences) {
+    async composeApplicationReferences(jsonApplicationMapByName, newApplicationVersionMapByDbApplication_Name, terminalStore, allDdlObjects, deepTraverseReferences) {
         const newApplicationReferenceMap = new Map();
         const newApplicationReferenceLookup = new Map();
         const newApplicationReferences = [];
-        for (const [applicationName, ownApplicationVersion] of newApplicationVersionMapByApplication_Name) {
+        for (const [applicationName, ownApplicationVersion] of newApplicationVersionMapByDbApplication_Name) {
             const application = ownApplicationVersion.application;
             const jsonApplication = jsonApplicationMapByName.get(application.fullName);
             const lastJsonApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
             const applicationReferences = this.datastructureUtils.ensureChildArray(newApplicationReferenceMap, applicationName);
             const applicationReferenceLookup = this.datastructureUtils.ensureChildJsSet(newApplicationReferenceLookup, applicationName);
             for (const jsonReferencedApplication of lastJsonApplicationVersion.referencedApplications) {
-                const referencedApplication_FullName = this.dbApplicationUtils.
-                    getApplication_FullName(jsonReferencedApplication);
-                let referencedApplicationVersion = newApplicationVersionMapByApplication_Name.get(referencedApplication_FullName);
+                const referencedDbApplication_FullName = this.dbApplicationUtils.
+                    getDbApplication_FullName(jsonReferencedApplication);
+                let referencedApplicationVersion = newApplicationVersionMapByDbApplication_Name.get(referencedDbApplication_FullName);
                 if (!referencedApplicationVersion) {
-                    referencedApplicationVersion = await this.applicationLocator.locateLatestApplicationVersionByApplication_Name(referencedApplication_FullName, terminalStore);
+                    referencedApplicationVersion = await this.applicationLocator.locateLatestApplicationVersionByDbApplication_Name(referencedDbApplication_FullName, terminalStore);
                     if (!referencedApplicationVersion) {
                         throw new Error(`Could not locate application:
-						${referencedApplication_FullName}
+						${referencedDbApplication_FullName}
 						in either existing applications or applications being currently processed`);
                     }
                     this.addApplicationVersionObjects(referencedApplicationVersion, allDdlObjects.all);
                     if (deepTraverseReferences) {
                         // This should cause another iteration over the outer loop to process newly added ApplicationVersion
-                        jsonApplicationMapByName.set(referencedApplication_FullName, referencedApplicationVersion.jsonApplication);
-                        newApplicationVersionMapByApplication_Name.set(referencedApplication_FullName, referencedApplicationVersion);
+                        jsonApplicationMapByName.set(referencedDbApplication_FullName, referencedApplicationVersion.jsonApplication);
+                        newApplicationVersionMapByDbApplication_Name.set(referencedDbApplication_FullName, referencedApplicationVersion);
                     }
                 }
                 const applicationReference = {
@@ -12151,9 +12154,9 @@ class ApplicationComposer {
             newApplicationReferences
         };
     }
-    composeApplicationEntities(jsonApplication, applicationVersion, newEntitiesMapByApplication_Name, newEntities) {
+    composeApplicationEntities(jsonApplication, applicationVersion, newEntitiesMapByDbApplication_Name, newEntities) {
         const applicationName = this.dbApplicationUtils.
-            getApplication_FullName(jsonApplication);
+            getDbApplication_FullName(jsonApplication);
         let index = 0;
         // TODO: verify that jsonApplication.versions is always ordered ascending
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
@@ -12180,15 +12183,15 @@ class ApplicationComposer {
             newApplicationEntities.push(entity);
             newEntities.push(entity);
         }
-        newEntitiesMapByApplication_Name.set(applicationName, newApplicationEntities);
+        newEntitiesMapByDbApplication_Name.set(applicationName, newApplicationEntities);
         applicationVersion.entities = newApplicationEntities;
     }
-    composeApplicationProperties(jsonApplication, newProperties, newPropertiesMap, newEntitiesMapByApplication_Name) {
+    composeApplicationProperties(jsonApplication, newProperties, newPropertiesMap, newEntitiesMapByDbApplication_Name) {
         const applicationName = this.dbApplicationUtils.
-            getApplication_FullName(jsonApplication);
+            getDbApplication_FullName(jsonApplication);
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
         const jsonEntities = currentApplicationVersion.entities;
-        const entities = newEntitiesMapByApplication_Name.get(applicationName);
+        const entities = newEntitiesMapByDbApplication_Name.get(applicationName);
         const propertiesByEntityIndex = this.datastructureUtils.ensureChildArray(newPropertiesMap, applicationName);
         jsonEntities.forEach((jsonEntity, tableIndex) => {
             const entity = entities[tableIndex];
@@ -12210,12 +12213,12 @@ class ApplicationComposer {
             }
         });
     }
-    async composeApplicationRelations(jsonApplication, newRelations, newRelationsMap, newEntitiesMapByApplication_Name, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects) {
+    async composeApplicationRelations(jsonApplication, newRelations, newRelationsMap, newEntitiesMapByDbApplication_Name, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects) {
         const applicationName = this.dbApplicationUtils.
-            getApplication_FullName(jsonApplication);
+            getDbApplication_FullName(jsonApplication);
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
         const jsonEntities = currentApplicationVersion.entities;
-        const entitiesForApplication = newEntitiesMapByApplication_Name.get(applicationName);
+        const entitiesForApplication = newEntitiesMapByDbApplication_Name.get(applicationName);
         const propertiesByEntityIndex = newPropertiesMap.get(applicationName);
         const relationsByEntityIndex = this.datastructureUtils.ensureChildArray(newRelationsMap, applicationName);
         const referencesForApplication = newApplicationReferenceMap.get(applicationName);
@@ -12227,31 +12230,31 @@ class ApplicationComposer {
                 = relationsForEntity;
             const entity = entitiesForApplication[tableIndex];
             let index = 0;
-            for (const jsonRelation of jsonEntity.relations) {
-                const property = propertiesForEntity[jsonRelation.propertyRef.index];
-                let referencedApplication_Name = applicationName;
-                if (jsonRelation.relationTableApplication_Index
-                    || jsonRelation.relationTableApplication_Index === 0) {
-                    const applicationReference = referencesForApplication[jsonRelation.relationTableApplication_Index];
-                    referencedApplication_Name = applicationReference.referencedApplicationVersion.application.fullName;
+            for (const queryRelation of jsonEntity.relations) {
+                const property = propertiesForEntity[queryRelation.propertyRef.index];
+                let referencedDbApplication_Name = applicationName;
+                if (queryRelation.relationTableDbApplication_Index
+                    || queryRelation.relationTableDbApplication_Index === 0) {
+                    const applicationReference = referencesForApplication[queryRelation.relationTableDbApplication_Index];
+                    referencedDbApplication_Name = applicationReference.referencedApplicationVersion.application.fullName;
                 }
-                let entitiesArray = newEntitiesMapByApplication_Name.get(referencedApplication_Name);
+                let entitiesArray = newEntitiesMapByDbApplication_Name.get(referencedDbApplication_Name);
                 if (!entitiesArray) {
-                    const applicationVersion = await this.getExistingLatestApplicationVersion(referencedApplication_Name, allDdlObjects);
+                    const applicationVersion = await this.getExistingLatestApplicationVersion(referencedDbApplication_Name, allDdlObjects);
                     entitiesArray = applicationVersion.entities;
                 }
-                const relationEntity = entitiesArray[jsonRelation.relationTableIndex];
+                const relationEntity = entitiesArray[queryRelation.relationTableIndex];
                 const relation = {
                     entity,
                     _localId: ++terminalStore.getLastIds().relations,
                     index,
-                    foreignKey: jsonRelation.foreignKey,
+                    foreignKey: queryRelation.foreignKey,
                     isId: property.isId,
-                    manyToOneElems: jsonRelation.manyToOneElems,
+                    manyToOneElems: queryRelation.manyToOneElems,
                     property,
-                    oneToManyElems: jsonRelation.oneToManyElems,
+                    oneToManyElems: queryRelation.oneToManyElems,
                     relationEntity,
-                    relationType: jsonRelation.relationType,
+                    relationType: queryRelation.relationType,
                     // oneRelationColumns: [],
                     // manyRelationColumns: []
                 };
@@ -12263,12 +12266,12 @@ class ApplicationComposer {
             }
         }
     }
-    composeApplicationColumns(jsonApplication, newColumns, newColumnsMap, newPropertyColumns, newEntitiesMapByApplication_Name, newPropertiesMap) {
+    composeApplicationColumns(jsonApplication, newColumns, newColumnsMap, newPropertyColumns, newEntitiesMapByDbApplication_Name, newPropertiesMap) {
         const applicationName = this.dbApplicationUtils.
-            getApplication_FullName(jsonApplication);
+            getDbApplication_FullName(jsonApplication);
         const columnsByTable = [];
         newColumnsMap.set(applicationName, columnsByTable);
-        const entitiesForApplication = newEntitiesMapByApplication_Name.get(applicationName);
+        const entitiesForApplication = newEntitiesMapByDbApplication_Name.get(applicationName);
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
         const jsonEntities = currentApplicationVersion.entities;
         const propertiesForApplication = newPropertiesMap.get(applicationName);
@@ -12312,9 +12315,9 @@ class ApplicationComposer {
             });
         });
     }
-    async composeApplicationRelationColumns(jsonApplication, newRelationColumns, newApplicationVersionMapByApplication_Name, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects) {
+    async composeApplicationRelationColumns(jsonApplication, newRelationColumns, newApplicationVersionMapByDbApplication_Name, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects) {
         const applicationName = this.dbApplicationUtils.
-            getApplication_FullName(jsonApplication);
+            getDbApplication_FullName(jsonApplication);
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
         const jsonEntities = currentApplicationVersion.entities;
         const columnsForApplication = newColumnsMap.get(applicationName);
@@ -12333,16 +12336,16 @@ class ApplicationComposer {
                     // 	manyRelation.manyRelationColumns = []
                     // }
                     let oneRelationApplicationVersion;
-                    if (jsonRelationColumn.oneApplication_Index
-                        || jsonRelationColumn.oneApplication_Index === 0) {
-                        const applicationReference = applicationReferencesForApplication[jsonRelationColumn.oneApplication_Index];
+                    if (jsonRelationColumn.oneDbApplication_Index
+                        || jsonRelationColumn.oneDbApplication_Index === 0) {
+                        const applicationReference = applicationReferencesForApplication[jsonRelationColumn.oneDbApplication_Index];
                         oneRelationApplicationVersion = applicationReference.referencedApplicationVersion;
                     }
                     else {
-                        oneRelationApplicationVersion = newApplicationVersionMapByApplication_Name.get(applicationName);
+                        oneRelationApplicationVersion = newApplicationVersionMapByDbApplication_Name.get(applicationName);
                     }
-                    const referencedApplication_Name = oneRelationApplicationVersion.application.fullName;
-                    const oneTableColumnsMapForApplication = newColumnsMap.get(referencedApplication_Name);
+                    const referencedDbApplication_Name = oneRelationApplicationVersion.application.fullName;
+                    const oneTableColumnsMapForApplication = newColumnsMap.get(referencedDbApplication_Name);
                     let oneTableColumns;
                     let oneTableRelations;
                     if (oneTableColumnsMapForApplication) {
@@ -12350,19 +12353,19 @@ class ApplicationComposer {
                         oneTableRelations = newRelationsMap.get(oneRelationApplicationVersion.application.fullName)[jsonRelationColumn.oneTableIndex];
                     }
                     else {
-                        const applicationVersion = await this.getExistingLatestApplicationVersion(referencedApplication_Name, allDdlObjects);
+                        const applicationVersion = await this.getExistingLatestApplicationVersion(referencedDbApplication_Name, allDdlObjects);
                         const entitiesArray = applicationVersion.entities;
                         const entity = entitiesArray[jsonRelationColumn.oneTableIndex];
                         oneTableColumns = entity.columns;
                         oneTableRelations = entity.relations;
                     }
                     const oneColumn = oneTableColumns[jsonRelationColumn.oneColumnIndex];
-                    // if (!jsonRelationColumn.oneApplication_Index
+                    // if (!jsonRelationColumn.oneDbApplication_Index
                     // 	&& !oneColumn.oneRelationColumns) {
                     // 	oneColumn.oneRelationColumns = []
                     // }
                     const oneRelation = oneTableRelations[jsonRelationColumn.oneRelationIndex];
-                    // if (!jsonRelationColumn.oneApplication_Index
+                    // if (!jsonRelationColumn.oneDbApplication_Index
                     // 	&& !oneRelation.oneRelationColumns) {
                     // 	oneRelation.oneRelationColumns = []
                     // }
@@ -12480,19 +12483,19 @@ class ApplicationInitializer {
         const newJsonApplicationMap = new Map();
         for (const jsonApplication of jsonApplications) {
             const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-                getApplication_FullName(jsonApplication));
+                getDbApplication_FullName(jsonApplication));
             if (existingApplication) {
                 jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds;
             }
             else {
                 newJsonApplicationMap.set(this.dbApplicationUtils.
-                    getApplication_FullName(jsonApplication), jsonApplication);
+                    getDbApplication_FullName(jsonApplication), jsonApplication);
             }
         }
         let checkedApplicationsWithValidDependencies = [];
         for (const jsonApplication of applicationsWithValidDependencies) {
             const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-                getApplication_FullName(jsonApplication));
+                getDbApplication_FullName(jsonApplication));
             if (!existingApplication) {
                 checkedApplicationsWithValidDependencies.push(jsonApplication);
                 await this.applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, areFeatureApps, context);
@@ -12510,15 +12513,15 @@ class ApplicationInitializer {
             await this.applicationRecorder.record(allDdlObjects.added, context);
         }, null, context);
     }
-    async isApplicationIsInstalled(domain, fullApplication_Name) {
-        if (!fullApplication_Name) {
+    async isApplicationIsInstalled(domain, fullDbApplication_Name) {
+        if (!fullDbApplication_Name) {
             return false;
         }
         if (this.appTrackerUtils.isInternalDomain(domain)) {
             return true;
         }
         return !!this.terminalStore.getApplicationInitializer()
-            .applicationWindowMap.get(fullApplication_Name);
+            .applicationWindowMap.get(fullDbApplication_Name);
     }
     async ensureApplicationIsInstalled(domainName, applicationName) {
         const isInternalDomain = await this.appTrackerUtils
@@ -12526,18 +12529,18 @@ class ApplicationInitializer {
         if (isInternalDomain) {
             return true;
         }
-        const fullApplication_Name = this.dbApplicationUtils.
-            getApplication_FullNameFromDomainAndName(domainName, applicationName);
+        const fullDbApplication_Name = this.dbApplicationUtils.
+            getDbApplication_FullNameFromDomainAndName(domainName, applicationName);
         const applicationInitializing = this.terminalStore.getApplicationInitializer()
-            .initializingApplicationMap.get(fullApplication_Name);
+            .initializingApplicationMap.get(fullDbApplication_Name);
         if (applicationInitializing) {
             return false;
         }
-        const isApplicationLoaded = this.isAppLoaded(fullApplication_Name);
+        const isApplicationLoaded = this.isAppLoaded(fullDbApplication_Name);
         if (!isApplicationLoaded) {
             this.terminalStore.getApplicationInitializer()
-                .initializingApplicationMap.set(fullApplication_Name, true);
-            await this.nativeInitializeApplication(domainName, applicationName, fullApplication_Name);
+                .initializingApplicationMap.set(fullDbApplication_Name, true);
+            await this.nativeInitializeApplication(domainName, applicationName, fullDbApplication_Name);
         }
         return true;
     }
@@ -12602,9 +12605,9 @@ class ApplicationInitializer {
                 // const
                 for (let i = 0; i < applicationReferenceCheckResults.neededDependencies.length; i++) {
                     const neededDependency = applicationReferenceCheckResults.neededDependencies[i];
-                    const fullApplication_Name = this.dbApplicationUtils.
-                        getApplication_FullName(neededDependency);
-                    await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name, fullApplication_Name);
+                    const fullDbApplication_Name = this.dbApplicationUtils.
+                        getDbApplication_FullName(neededDependency);
+                    await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name, fullDbApplication_Name);
                 }
             }
             applicationsWithValidDependencies = [
@@ -12813,24 +12816,24 @@ class DdlObjectRetriever {
         });
         const domains = await this.domainDao.findByIdIn(Array.from(domainIdSet));
         const allApplicationVersions = await this.applicationVersionDao
-            .findAllActiveOrderByApplication_IndexAndId();
-        let lastApplication_Index;
+            .findAllActiveOrderByDbApplication_IndexAndId();
+        let lastDbApplication_Index;
         // const allApplicationVersionsByIds: DbApplicationVersion[] = []
         const latestApplicationVersions = [];
         const applicationVersions = [];
         for (const applicationVersion of allApplicationVersions) {
-            if (applicationVersion.application.index !== lastApplication_Index) {
+            if (applicationVersion.application.index !== lastDbApplication_Index) {
                 latestApplicationVersions.push(applicationVersion);
             }
             // allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion
-            lastApplication_Index = applicationVersion.application.index;
+            lastDbApplication_Index = applicationVersion.application.index;
             applicationVersions.push(applicationVersion);
         }
-        const latestApplicationVersion_LocalIds = latestApplicationVersions.map(applicationVersion => applicationVersion._localId);
+        const latestDbApplicationVersion_LocalIds = latestApplicationVersions.map(applicationVersion => applicationVersion._localId);
         const applicationReferences = await this.applicationReferenceDao
-            .findAllForApplicationVersions(latestApplicationVersion_LocalIds);
+            .findAllForApplicationVersions(latestDbApplicationVersion_LocalIds);
         const entities = await this.applicationEntityDao
-            .findAllForApplicationVersions(latestApplicationVersion_LocalIds);
+            .findAllForApplicationVersions(latestDbApplicationVersion_LocalIds);
         const entityIds = entities.map(entity => entity._localId);
         /*
         const entityIds = entities.map(
@@ -12897,13 +12900,13 @@ class QueryEntityClassCreator {
         let qApplication = this.airportDatabase.QM[dbApplication.fullName];
         // If the Application API source has already been loaded
         if (qApplication) {
-            qApplication.__dbApplication__ = dbApplication;
+            qApplication.__dbDbApplication__ = dbApplication;
         }
         else {
             qApplication = {
                 __constructors__: {},
                 __qConstructors__: {},
-                __dbApplication__: dbApplication,
+                __dbDbApplication__: dbApplication,
                 name: dbApplication.name,
                 domain: dbApplication.domain.name
             };
@@ -12987,7 +12990,7 @@ takeoff.setDependencies(ApplicationInitializer, {
     applicationLocator: ApplicationLocator,
     applicationRecorder: ApplicationRecorder,
     appTrackerUtils: AppTrackerUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     queryObjectInitializer: QueryObjectInitializer,
     sequenceGenerator: SEQUENCE_GENERATOR,
     terminalStore: TerminalStore,
@@ -12999,17 +13002,17 @@ APPLICATION_BUILDER.setDependencies({
 takeoff.setDependencies(ApplicationChecker, {
     applicationDao: ApplicationDao,
     datastructureUtils: DatastructureUtils,
-    dbApplicationUtils: DbApplicationUtils
+    dbApplicationUtils: ImplApplicationUtils
 });
 takeoff.setDependencies(ApplicationComposer, {
     applicationLocator: ApplicationLocator,
     datastructureUtils: DatastructureUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     domainRetriever: DOMAIN_RETRIEVER,
     terminalStore: TerminalStore
 });
 takeoff.setDependencies(ApplicationLocator, {
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
 });
 takeoff.setDependencies(ApplicationRecorder, {
     applicationColumnDao: ApplicationColumnDao,
@@ -13055,7 +13058,7 @@ takeoff.setDependencies(QueryObjectInitializer, {
 takeoff.setDependencies(SqlSchemaBuilder, {
     airportDatabase: AIRPORT_DATABASE,
     applicationReferenceUtils: ApplicationReferenceUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     sequenceDao: SequenceDao,
     storeDriver: STORE_DRIVER
 });
@@ -13194,11 +13197,11 @@ class RepositoryTransactionHistory$1 {
         this.operationHistory = [];
         // Tracked only in the Terminal database where originally added, for the
         // purpose of sending out synchronization messages
-        // IS resent in RepositorySynchronizationMessage
+        // IS resent in SyncRepositoryMessage
         this.newRepositoryMemberInvitations = [];
         // Tracked only in the Terminal database where originally added, for the
         // purpose of sending out synchronization messages
-        // IS resent in RepositorySynchronizationMessage
+        // IS resent in SyncRepositoryMessage
         this.newRepositoryMemberAcceptances = [];
         // Tracked only in the Terminal database where originally added, for the
         // purpose of sending out synchronization messages
@@ -13206,7 +13209,7 @@ class RepositoryTransactionHistory$1 {
         this.newRepositoryMemberUpdates = [];
         // Tracked only in the Terminal database where originally added, for the
         // purpose of sending out synchronization messages
-        // IS NOT resent in RepositorySynchronizationMessage
+        // IS NOT resent in SyncRepositoryMessage
         this.newRepositoryMembers = [];
         if (!data) {
             return;
@@ -13351,7 +13354,7 @@ const Q_airport____at_airport_slash_holding_dash_pattern$1 = {
     name: '@airport/holding-pattern'
 };
 function airport____at_airport_slash_holding_dash_pattern_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_holding_dash_pattern$1.__dbDbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
     globalThis.airApi.setQApp(Q_airport____at_airport_slash_holding_dash_pattern$1);
@@ -13766,7 +13769,7 @@ class ActorDao extends BaseActorDao {
     async findWithDetailsAndGlobalIdsByIds(actorIds) {
         return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a._localId.IN(actorIds));
     }
-    async findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(domainName, applicationName, accountPublicSigningKey, terminalGUID) {
+    async findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(domainName, applicationName, accountPublicSigningKey, terminalGUID) {
         let act;
         let application;
         let domain;
@@ -14595,7 +14598,7 @@ const Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint = {
     name: '@airport/travel-document-checkpoint'
 };
 function airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.__dbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.__dbDbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
     globalThis.airApi.setQApp(Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint);
@@ -14973,7 +14976,7 @@ const APPLICATION$7 = {
                             "index": 0,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "APPLICATION_INDEX",
+                            "name": "DB_APPLICATION_INDEX",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -15273,13 +15276,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "DEPRECATED_SINCE_APPLICATION_VERSION_LID",
+                            "name": "DEPRECATED_SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -15295,13 +15298,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REMOVED_IN_APPLICATION_VERSION_LID",
+                            "name": "REMOVED_IN_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -15317,13 +15320,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "SINCE_APPLICATION_VERSION_LID",
+                            "name": "SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -15337,7 +15340,7 @@ const APPLICATION$6 = {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "APPLICATION_RELATION_COLUMN_LID",
+                            "name": "DB_RELATION_COLUMN_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -15353,14 +15356,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneRelationIndex": 5,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "MANY_APPLICATION_COLUMN_LID",
+                            "name": "MANY_DB_COLUMN_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -15376,14 +15379,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneRelationIndex": 6,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "ONE_APPLICATION_COLUMN_LID",
+                            "name": "ONE_DB_COLUMN_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -15399,14 +15402,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 5,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneRelationIndex": 6,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "MANY_APPLICATION_RELATION_LID",
+                            "name": "MANY_DB_RELATION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -15422,14 +15425,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 6,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneRelationIndex": 7,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "ONE_APPLICATION_RELATION_LID",
+                            "name": "ONE_DB_RELATION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -15445,13 +15448,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 7,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "PARENT_RELATION_LID",
+                            "name": "PARENT_DB_RELATION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -15470,7 +15473,7 @@ const APPLICATION$6 = {
                     "index": 0,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "ApplicationRelationColumn",
+                    "name": "DdlRelationColumn",
                     "properties": [
                         {
                             "index": 0,
@@ -15562,7 +15565,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -15572,7 +15575,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -15582,7 +15585,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -15638,7 +15641,7 @@ const APPLICATION$6 = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "APPLICATION_RELATION_COLUMNS",
+                        "name": "DB_RELATION_COLUMNS",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -15651,13 +15654,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "DEPRECATED_SINCE_APPLICATION_VERSION_LID",
+                            "name": "DEPRECATED_SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -15673,13 +15676,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REMOVED_IN_APPLICATION_VERSION_LID",
+                            "name": "REMOVED_IN_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -15695,13 +15698,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "SINCE_APPLICATION_VERSION_LID",
+                            "name": "SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -15715,7 +15718,7 @@ const APPLICATION$6 = {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "APPLICATION_RELATION_LID",
+                            "name": "DB_RELATION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -15729,7 +15732,7 @@ const APPLICATION$6 = {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "RELATION_INDEX",
+                            "name": "DB_RELATION_INDEX",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -15815,14 +15818,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 2,
                                     "oneRelationIndex": 5,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_PROPERTY_LID",
+                            "name": "DB_PROPERTY_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -15838,14 +15841,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 6,
-                                    "oneRelationIndex": 7,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 5,
+                                    "oneRelationIndex": 6,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_ENTITY_LID",
+                            "name": "DB_ENTITY_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -15861,14 +15864,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 5,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 6,
-                                    "oneRelationIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 5,
+                                    "oneRelationIndex": 7,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "RELATION_APPLICATION_ENTITY_LID",
+                            "name": "RELATION_DB_ENTITY_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -15887,7 +15890,7 @@ const APPLICATION$6 = {
                     "index": 1,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "ApplicationRelation",
+                    "name": "DdlRelation",
                     "properties": [
                         {
                             "index": 0,
@@ -16033,7 +16036,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -16043,7 +16046,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -16053,7 +16056,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -16073,7 +16076,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 11
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -16083,7 +16086,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 12
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -16115,7 +16118,7 @@ const APPLICATION$6 = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "APPLICATION_RELATIONS",
+                        "name": "DB_RELATIONS",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -16128,13 +16131,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "DEPRECATED_SINCE_APPLICATION_VERSION_LID",
+                            "name": "DEPRECATED_SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -16150,13 +16153,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REMOVED_IN_APPLICATION_VERSION_LID",
+                            "name": "REMOVED_IN_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -16172,13 +16175,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "SINCE_APPLICATION_VERSION_LID",
+                            "name": "SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -16192,7 +16195,7 @@ const APPLICATION$6 = {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "APPLICATION_PROPERTY_LID",
+                            "name": "DB_PROPERTY_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -16250,14 +16253,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 6,
-                                    "oneRelationIndex": 6,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 5,
+                                    "oneRelationIndex": 5,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_ENTITY_LID",
+                            "name": "DB_ENTITY_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -16276,7 +16279,7 @@ const APPLICATION$6 = {
                     "index": 2,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "ApplicationProperty",
+                    "name": "DdlProperty",
                     "properties": [
                         {
                             "index": 0,
@@ -16377,7 +16380,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -16387,7 +16390,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -16397,7 +16400,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -16407,7 +16410,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -16439,7 +16442,7 @@ const APPLICATION$6 = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "APPLICATION_PROPERTIES",
+                        "name": "DB_PROPERTIES",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -16452,13 +16455,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "DEPRECATED_SINCE_APPLICATION_VERSION_LID",
+                            "name": "DEPRECATED_SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -16474,13 +16477,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REMOVED_IN_APPLICATION_VERSION_LID",
+                            "name": "REMOVED_IN_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -16496,13 +16499,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "SINCE_APPLICATION_VERSION_LID",
+                            "name": "SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -16518,14 +16521,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_COLUMN_LID",
+                            "name": "DB_COLUMN_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -16541,14 +16544,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 2,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_PROPERTY_LID",
+                            "name": "DB_PROPERTY_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -16570,7 +16573,7 @@ const APPLICATION$6 = {
                     "index": 3,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "ApplicationPropertyColumn",
+                    "name": "DdlPropertyColumn",
                     "properties": [
                         {
                             "index": 0,
@@ -16626,7 +16629,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -16636,7 +16639,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -16646,7 +16649,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -16672,7 +16675,7 @@ const APPLICATION$6 = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "APPLICATION_PROPERTY_COLUMNS",
+                        "name": "DB_PROPERTY_COLUMNS",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -16685,13 +16688,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "DEPRECATED_SINCE_APPLICATION_VERSION_LID",
+                            "name": "DEPRECATED_SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -16707,13 +16710,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REMOVED_IN_APPLICATION_VERSION_LID",
+                            "name": "REMOVED_IN_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -16729,13 +16732,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "SINCE_APPLICATION_VERSION_LID",
+                            "name": "SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -16749,7 +16752,7 @@ const APPLICATION$6 = {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "APPLICATION_COLUMN_LID",
+                            "name": "DB_COLUMN_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -16891,14 +16894,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 6,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 5,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_ENTITY_LID",
+                            "name": "DB_ENTITY_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -16917,7 +16920,7 @@ const APPLICATION$6 = {
                     "index": 4,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "ApplicationColumn",
+                    "name": "DdlColumn",
                     "properties": [
                         {
                             "index": 0,
@@ -17081,7 +17084,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -17091,7 +17094,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -17101,7 +17104,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -17111,7 +17114,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 13
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -17156,7 +17159,7 @@ const APPLICATION$6 = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "APPLICATION_COLUMNS",
+                        "name": "DB_COLUMNS",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -17169,13 +17172,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "DEPRECATED_SINCE_APPLICATION_VERSION_LID",
+                            "name": "DEPRECATED_SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -17191,13 +17194,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REMOVED_IN_APPLICATION_VERSION_LID",
+                            "name": "REMOVED_IN_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -17213,292 +17216,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "SINCE_APPLICATION_VERSION_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "APPLICATION_OPERATION_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "TYPE",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "NAME",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "RULE",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "JSON"
-                        },
-                        {
-                            "index": 7,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 6,
-                                    "oneRelationIndex": 5,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "APPLICATION_ENTITY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 3
-                        }
-                    ],
-                    "index": 5,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "ApplicationOperation",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "name": "deprecatedSinceVersion",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "name": "removedInVersion",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "name": "sinceVersion",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 3,
-                            "isId": true,
-                            "name": "_localId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 4
-                            },
-                            "index": 4,
-                            "isId": false,
-                            "name": "type",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "name": "entity",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 5
-                            },
-                            "index": 6,
-                            "isId": false,
-                            "name": "name",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 6
-                            },
-                            "index": 7,
-                            "isId": false,
-                            "name": "rule",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 8,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 8,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 8,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 6,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "APPLICATION_OPERATIONS",
-                        "columnIndexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "DEPRECATED_SINCE_APPLICATION_VERSION_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REMOVED_IN_APPLICATION_VERSION_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SINCE_APPLICATION_VERSION_LID",
+                            "name": "SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -17512,7 +17236,7 @@ const APPLICATION$6 = {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "APPLICATION_ENTITY_LID",
+                            "name": "DB_ENTITY_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -17598,14 +17322,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_VERSION_LID",
+                            "name": "DB_APPLICATION_VERSION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -17621,10 +17345,10 @@ const APPLICATION$6 = {
                             "index": 3
                         }
                     ],
-                    "index": 6,
+                    "index": 5,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "ApplicationEntity",
+                    "name": "DdlEntity",
                     "properties": [
                         {
                             "index": 0,
@@ -17728,7 +17452,7 @@ const APPLICATION$6 = {
                         {
                             "index": 11,
                             "isId": false,
-                            "name": "operations",
+                            "name": "properties",
                             "relationRef": {
                                 "index": 5
                             },
@@ -17737,7 +17461,7 @@ const APPLICATION$6 = {
                         {
                             "index": 12,
                             "isId": false,
-                            "name": "properties",
+                            "name": "relations",
                             "relationRef": {
                                 "index": 6
                             },
@@ -17746,18 +17470,9 @@ const APPLICATION$6 = {
                         {
                             "index": 13,
                             "isId": false,
-                            "name": "relations",
-                            "relationRef": {
-                                "index": 7
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 14,
-                            "isId": false,
                             "name": "relationReferences",
                             "relationRef": {
-                                "index": 8
+                                "index": 7
                             },
                             "sinceVersion": 1
                         }
@@ -17770,7 +17485,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -17780,7 +17495,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -17790,7 +17505,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -17800,7 +17515,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 9
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -17826,7 +17541,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 11
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 2,
                             "sinceVersion": 1
                         },
                         {
@@ -17839,14 +17554,14 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 12
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         },
                         {
                             "index": 7,
                             "isId": false,
                             "oneToManyElems": {
-                                "mappedBy": "entity"
+                                "mappedBy": "relationEntity"
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
@@ -17854,24 +17569,11 @@ const APPLICATION$6 = {
                             },
                             "relationTableIndex": 1,
                             "sinceVersion": 1
-                        },
-                        {
-                            "index": 8,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "relationEntity"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 14
-                            },
-                            "relationTableIndex": 1,
-                            "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "APPLICATION_ENTITIES",
+                        "name": "DB_ENTITIES",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -17884,13 +17586,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "DEPRECATED_SINCE_APPLICATION_VERSION_LID",
+                            "name": "DEPRECATED_SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -17906,13 +17608,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REMOVED_IN_APPLICATION_VERSION_LID",
+                            "name": "REMOVED_IN_DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -17928,13 +17630,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "SINCE_APPLICATION_VERSION_LID",
+                            "name": "SINCE_DB_APPLICATION_VERSION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -17948,7 +17650,7 @@ const APPLICATION$6 = {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "APPLICATION_REFERENCE_INDEX",
+                            "name": "DB_APPLICATION_REFERENCE_INDEX",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -17964,14 +17666,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "OWN_APPLICATION_VERSION_LID",
+                            "name": "OWN_DB_APPLICATION_VERSION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -17987,14 +17689,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REFERENCED_APPLICATION_VERSION_LID",
+                            "name": "REFERENCED_DB_APPLICATION_VERSION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -18013,10 +17715,10 @@ const APPLICATION$6 = {
                             "index": 5
                         }
                     ],
-                    "index": 7,
+                    "index": 6,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "ApplicationReference",
+                    "name": "DdlApplicationReference",
                     "properties": [
                         {
                             "index": 0,
@@ -18081,7 +17783,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -18091,7 +17793,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -18101,7 +17803,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -18111,7 +17813,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -18121,13 +17823,13 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "APPLICATION_REFERENCES",
+                        "name": "DB_APPLICATION_REFERENCES",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -18139,7 +17841,7 @@ const APPLICATION$6 = {
                             "index": 0,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "APPLICATION_VERSION_LID",
+                            "name": "DB_APPLICATION_VERSION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -18239,14 +17941,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 9,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_INDEX",
+                            "name": "DB_APPLICATION_INDEX",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -18262,10 +17964,10 @@ const APPLICATION$6 = {
                             "index": 0
                         }
                     ],
-                    "index": 8,
+                    "index": 7,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "ApplicationVersion",
+                    "name": "DdlApplicationVersion",
                     "properties": [
                         {
                             "columnRef": {
@@ -18375,7 +18077,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 9,
                             "sinceVersion": 1
                         },
                         {
@@ -18388,7 +18090,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 8
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -18401,7 +18103,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 9
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 6,
                             "sinceVersion": 1
                         },
                         {
@@ -18414,13 +18116,13 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 10
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 6,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "APPLICATION_VERSIONS",
+                        "name": "DB_APPLICATION_VERSIONS",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -18433,14 +18135,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 9,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_INDEX",
+                            "name": "DB_APPLICATION_INDEX",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -18456,13 +18158,13 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_VERSION_LID",
+                            "name": "DB_APPLICATION_VERSION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -18481,10 +18183,10 @@ const APPLICATION$6 = {
                             "index": 1
                         }
                     ],
-                    "index": 9,
+                    "index": 8,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "ApplicationCurrentVersion",
+                    "name": "DdlApplicationCurrentVersion",
                     "properties": [
                         {
                             "index": 0,
@@ -18513,7 +18215,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 9,
                             "sinceVersion": 1
                         },
                         {
@@ -18523,13 +18225,13 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "APPLICATION_CURRENT_VERSIONS",
+                        "name": "DB_APPLICATION_CURRENT_VERSIONS",
                         "columnIndexes": []
                     }
                 },
@@ -18539,7 +18241,7 @@ const APPLICATION$6 = {
                             "index": 0,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "APPLICATION_INDEX",
+                            "name": "DB_APPLICATION_INDEX",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -18595,7 +18297,7 @@ const APPLICATION$6 = {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "FULL_APPLICATION_NAME",
+                            "name": "APPLICATION_FULL_NAME",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -18639,14 +18341,14 @@ const APPLICATION$6 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 11,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 10,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "DOMAIN_LID",
+                            "name": "DB_DOMAIN_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -18662,10 +18364,10 @@ const APPLICATION$6 = {
                             "index": 0
                         }
                     ],
-                    "index": 10,
+                    "index": 9,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "Application",
+                    "name": "DdlApplication",
                     "properties": [
                         {
                             "columnRef": {
@@ -18766,7 +18468,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 11,
+                            "relationTableIndex": 10,
                             "sinceVersion": 1
                         },
                         {
@@ -18779,7 +18481,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 8
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -18792,7 +18494,7 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 9
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 8,
                             "sinceVersion": 1
                         }
                     ],
@@ -18809,7 +18511,7 @@ const APPLICATION$6 = {
                             "index": 0,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "DOMAIN_LID",
+                            "name": "DB_DOMAIN_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -18823,7 +18525,7 @@ const APPLICATION$6 = {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "NAME",
+                            "name": "DOMAIN_NAME",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -18839,10 +18541,10 @@ const APPLICATION$6 = {
                             "index": 0
                         }
                     ],
-                    "index": 11,
+                    "index": 10,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "Domain",
+                    "name": "DdlDomain",
                     "properties": [
                         {
                             "columnRef": {
@@ -18883,13 +18585,13 @@ const APPLICATION$6 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 9,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "DOMAINS",
+                        "name": "DB_DOMAINS",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -19054,7 +18756,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -19179,7 +18881,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 3,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
@@ -19202,7 +18904,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
@@ -19330,7 +19032,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
@@ -19507,7 +19209,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 5,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
@@ -19821,7 +19523,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 6,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -19843,7 +19545,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 8,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
@@ -20019,7 +19721,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 0,
@@ -20042,7 +19744,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 8,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20169,7 +19871,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20191,7 +19893,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20213,7 +19915,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20235,7 +19937,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20404,7 +20106,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 12,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 0,
@@ -20427,7 +20129,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 8,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20554,7 +20256,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20576,7 +20278,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20598,7 +20300,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20620,7 +20322,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20789,7 +20491,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 14,
                                     "oneRelationIndex": 5,
                                     "oneColumnIndex": 0,
@@ -20812,7 +20514,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 8,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20939,7 +20641,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20961,7 +20663,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20983,7 +20685,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -21005,7 +20707,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -21027,7 +20729,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -21304,7 +21006,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -21326,7 +21028,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 14,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -21348,13 +21050,13 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 10,
+                                    "oneDbApplication_Index": 1,
+                                    "oneTableIndex": 9,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_INDEX",
+                            "name": "DB_APPLICATION_INDEX",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -21430,7 +21132,7 @@ const APPLICATION$4 = {
                                 "index": 2
                             },
                             "relationTableIndex": 0,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -21441,7 +21143,7 @@ const APPLICATION$4 = {
                                 "index": 3
                             },
                             "relationTableIndex": 14,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -21451,8 +21153,8 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 10,
-                            "relationTableApplication_Index": 1,
+                            "relationTableIndex": 9,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         }
                     ],
@@ -21498,7 +21200,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 3,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
@@ -21612,7 +21314,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 3,
                                     "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
@@ -21727,7 +21429,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -21749,7 +21451,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 16,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
@@ -21902,7 +21604,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 9,
                                     "oneRelationIndex": 11,
                                     "oneColumnIndex": 0,
@@ -21925,7 +21627,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 8,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -21993,7 +21695,7 @@ const APPLICATION$4 = {
                                 "index": 1
                             },
                             "relationTableIndex": 8,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         }
                     ],
@@ -22011,7 +21713,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 9,
                                     "oneRelationIndex": 9,
                                     "oneColumnIndex": 0,
@@ -22034,7 +21736,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 12,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -22102,7 +21804,7 @@ const APPLICATION$4 = {
                                 "index": 1
                             },
                             "relationTableIndex": 12,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         }
                     ],
@@ -22120,7 +21822,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 9,
                                     "oneRelationIndex": 8,
                                     "oneColumnIndex": 0,
@@ -22143,7 +21845,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -22211,7 +21913,7 @@ const APPLICATION$4 = {
                                 "index": 1
                             },
                             "relationTableIndex": 10,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         }
                     ],
@@ -22229,7 +21931,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 9,
                                     "oneRelationIndex": 10,
                                     "oneColumnIndex": 0,
@@ -22252,7 +21954,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 14,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -22320,7 +22022,7 @@ const APPLICATION$4 = {
                                 "index": 1
                             },
                             "relationTableIndex": 14,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         }
                     ],
@@ -22338,13 +22040,13 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 10,
+                                    "oneDbApplication_Index": 1,
+                                    "oneTableIndex": 9,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_INDEX",
+                            "name": "DB_APPLICATION_INDEX",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -22360,7 +22062,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 9,
                                     "oneRelationIndex": 7,
                                     "oneColumnIndex": 0,
@@ -22418,8 +22120,8 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 10,
-                            "relationTableApplication_Index": 1,
+                            "relationTableIndex": 9,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -22601,7 +22303,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -22623,7 +22325,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -22645,7 +22347,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -22667,7 +22369,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -22689,7 +22391,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -22933,7 +22635,7 @@ const APPLICATION$4 = {
                                 "index": 11
                             },
                             "relationTableIndex": 0,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -22944,7 +22646,7 @@ const APPLICATION$4 = {
                                 "index": 12
                             },
                             "relationTableIndex": 5,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -22955,7 +22657,7 @@ const APPLICATION$4 = {
                                 "index": 13
                             },
                             "relationTableIndex": 4,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -22966,7 +22668,7 @@ const APPLICATION$4 = {
                                 "index": 14
                             },
                             "relationTableIndex": 3,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -22977,7 +22679,7 @@ const APPLICATION$4 = {
                                 "index": 15
                             },
                             "relationTableIndex": 1,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -23129,7 +22831,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 13,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -23151,7 +22853,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 15,
                                     "oneRelationIndex": 6,
                                     "oneColumnIndex": 0,
@@ -23304,7 +23006,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 13,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -23326,7 +23028,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 15,
                                     "oneRelationIndex": 5,
                                     "oneColumnIndex": 0,
@@ -23493,7 +23195,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 13,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -23515,7 +23217,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 15,
                                     "oneRelationIndex": 7,
                                     "oneColumnIndex": 0,
@@ -23718,7 +23420,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 9,
                                     "oneRelationIndex": 5,
                                     "oneColumnIndex": 0,
@@ -23741,7 +23443,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -23763,7 +23465,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 15,
                                     "oneRelationIndex": 8,
                                     "oneColumnIndex": 0,
@@ -23919,7 +23621,7 @@ const APPLICATION$4 = {
                                 "index": 7
                             },
                             "relationTableIndex": 0,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -24191,7 +23893,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24213,7 +23915,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 13,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24235,7 +23937,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 9,
                                     "oneRelationIndex": 6,
                                     "oneColumnIndex": 0,
@@ -24258,7 +23960,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 14,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
@@ -24619,13 +24321,13 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 6,
+                                    "oneDbApplication_Index": 1,
+                                    "oneTableIndex": 5,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_ENTITY_LID",
+                            "name": "DB_ENTITY_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -24641,7 +24343,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 15,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 0,
@@ -24741,8 +24443,8 @@ const APPLICATION$4 = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 6,
-                            "relationTableApplication_Index": 1,
+                            "relationTableIndex": 5,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -24874,13 +24576,13 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": 0,
-                                    "oneTableIndex": 8,
+                                    "oneDbApplication_Index": 0,
+                                    "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_VERSION_LID",
+                            "name": "DB_APPLICATION_VERSION_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -24896,13 +24598,13 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 0,
-                                    "oneTableIndex": 6,
+                                    "oneDbApplication_Index": 0,
+                                    "oneTableIndex": 5,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_ENTITY_LID",
+                            "name": "DB_ENTITY_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -24918,7 +24620,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": 1,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 9,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24940,7 +24642,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": 1,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24962,13 +24664,13 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "APPLICATION_COLUMN_LID",
+                            "name": "DB_COLUMN_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -25070,8 +24772,8 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 8,
-                            "relationTableApplication_Index": 0,
+                            "relationTableIndex": 7,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -25081,8 +24783,8 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 6,
-                            "relationTableApplication_Index": 0,
+                            "relationTableIndex": 5,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -25093,7 +24795,7 @@ const APPLICATION$3 = {
                                 "index": 5
                             },
                             "relationTableIndex": 9,
-                            "relationTableApplication_Index": 1,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -25104,7 +24806,7 @@ const APPLICATION$3 = {
                                 "index": 6
                             },
                             "relationTableIndex": 0,
-                            "relationTableApplication_Index": 1,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -25115,7 +24817,7 @@ const APPLICATION$3 = {
                                 "index": 7
                             },
                             "relationTableIndex": 4,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         }
                     ],
@@ -25148,7 +24850,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 2,
                                     "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
@@ -25267,7 +24969,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": 1,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 9,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25289,7 +24991,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 1,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25311,7 +25013,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": 1,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25411,7 +25113,7 @@ const APPLICATION$3 = {
                                 "index": 3
                             },
                             "relationTableIndex": 9,
-                            "relationTableApplication_Index": 1,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -25422,7 +25124,7 @@ const APPLICATION$3 = {
                                 "index": 4
                             },
                             "relationTableIndex": 3,
-                            "relationTableApplication_Index": 1,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -25433,7 +25135,7 @@ const APPLICATION$3 = {
                                 "index": 5
                             },
                             "relationTableIndex": 3,
-                            "relationTableApplication_Index": 1,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -25542,7 +25244,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 1,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 9,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25564,7 +25266,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": 1,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25656,13 +25358,13 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": 0,
-                                    "oneTableIndex": 6,
+                                    "oneDbApplication_Index": 0,
+                                    "oneTableIndex": 5,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "COPY_APPLICATION_ENTITY_LID",
+                            "name": "COPY_DB_ENTITY_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -25678,7 +25380,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": 1,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25700,7 +25402,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneApplication_Index": 1,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 9,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25833,7 +25535,7 @@ const APPLICATION$1 = {
                                 "index": 1
                             },
                             "relationTableIndex": 0,
-                            "relationTableApplication_Index": 1,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -25844,7 +25546,7 @@ const APPLICATION$1 = {
                                 "index": 2
                             },
                             "relationTableIndex": 9,
-                            "relationTableApplication_Index": 1,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -25854,8 +25556,8 @@ const APPLICATION$1 = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 6,
-                            "relationTableApplication_Index": 0,
+                            "relationTableIndex": 5,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -25866,7 +25568,7 @@ const APPLICATION$1 = {
                                 "index": 8
                             },
                             "relationTableIndex": 0,
-                            "relationTableApplication_Index": 1,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -25877,7 +25579,7 @@ const APPLICATION$1 = {
                                 "index": 9
                             },
                             "relationTableIndex": 9,
-                            "relationTableApplication_Index": 1,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         }
                     ],
@@ -25896,7 +25598,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 1,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 9,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25918,7 +25620,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": 1,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25996,7 +25698,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 1,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -26018,7 +25720,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneApplication_Index": 1,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 9,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26133,7 +25835,7 @@ const APPLICATION$1 = {
                                 "index": 1
                             },
                             "relationTableIndex": 0,
-                            "relationTableApplication_Index": 1,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -26144,7 +25846,7 @@ const APPLICATION$1 = {
                                 "index": 2
                             },
                             "relationTableIndex": 9,
-                            "relationTableApplication_Index": 1,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -26155,7 +25857,7 @@ const APPLICATION$1 = {
                                 "index": 6
                             },
                             "relationTableIndex": 1,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -26166,7 +25868,7 @@ const APPLICATION$1 = {
                                 "index": 7
                             },
                             "relationTableIndex": 9,
-                            "relationTableApplication_Index": 1,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         }
                     ],
@@ -26185,7 +25887,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 2,
                                     "sinceVersion": 1
@@ -26207,7 +25909,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 1,
                                     "sinceVersion": 1
@@ -26229,7 +25931,7 @@ const APPLICATION$1 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -27120,7 +26822,7 @@ const Q_airport____at_airport_slash_layover = {
     name: '@airport/layover'
 };
 function airport____at_airport_slash_layover_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_layover.__dbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_layover.__dbDbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
     globalThis.airApi.setQApp(Q_airport____at_airport_slash_layover);
@@ -27593,7 +27295,7 @@ let KeyRingManager = class KeyRingManager {
         if (!keyRing) {
             const keyRingContext = {
                 ...context,
-                applicationFullName: this.dbApplicationUtils.getApplication_FullName(application$2),
+                applicationFullName: this.dbApplicationUtils.getDbApplication_FullName(application$2),
                 newRepositoryGUID: 'DEVSERVR_' + userPrivateKey,
                 forKeyRingRepository: true
             };
@@ -27708,7 +27410,7 @@ MessageSigningManager = __decorate$1([
 const keyring = app(application$2);
 keyring.register(KeyRingDao, KeyRingManager, MessageSigningManager, RepositoryKeyDao);
 keyring.setDependencies(KeyRingManager, {
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     keyRingDao: KeyRingDao,
     keyUtils: KeyUtils,
     repositoryKeyDao: RepositoryKeyDao,
@@ -27878,9 +27580,9 @@ class SyncInApplicationChecker {
         return true;
     }
     async checkApplicationsAndDomains(data, context) {
-        const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(data);
+        const { allDbApplication_Names, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(data);
         const applications = await this.applicationDao
-            .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names);
+            .findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names);
         for (let application of applications) {
             let domainName = application.domain.name;
             let applicationName = application.name;
@@ -27935,7 +27637,7 @@ class SyncInApplicationChecker {
     }
     getNames(message) {
         if (!message.applications || !(message.applications instanceof Array)) {
-            throw new Error(`Did not find applications in RepositorySynchronizationData.`);
+            throw new Error(`Did not find applications in SyncRepositoryData.`);
         }
         const domainCheckMap = new Map();
         const applicationCheckMap = new Map();
@@ -27971,15 +27673,15 @@ class SyncInApplicationChecker {
             }
         }
         const domainNames = [];
-        const allApplication_Names = [];
+        const allDbApplication_Names = [];
         for (const [domainName, applicationChecksForDomainMap] of applicationCheckMap) {
             domainNames.push(domainName);
             for (let [applicationName, _] of applicationChecksForDomainMap) {
-                allApplication_Names.push(applicationName);
+                allDbApplication_Names.push(applicationName);
             }
         }
         return {
-            allApplication_Names,
+            allDbApplication_Names,
             domainCheckMap,
             domainNames,
             applicationCheckMap
@@ -27989,7 +27691,7 @@ class SyncInApplicationChecker {
 
 class SyncInApplicationVersionChecker {
     async ensureApplicationVersions(
-    // message: RepositorySynchronizationData,
+    // message: SyncRepositoryData,
     inMessageApplicationVersions, inMessageApplications, context) {
         let applicationCheckMap;
         try {
@@ -28008,9 +27710,9 @@ class SyncInApplicationVersionChecker {
         return applicationCheckMap;
     }
     async checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications) {
-        const { allApplicationNames: allApplication_Names, domainNames, applicationVersionCheckMap } = this
+        const { allApplicationNames: allDbApplication_Names, domainNames, applicationVersionCheckMap } = this
             .getNames(inMessageApplicationVersions, inMessageApplications);
-        await this.setApplicationVersions(domainNames, allApplication_Names, applicationVersionCheckMap);
+        await this.setApplicationVersions(domainNames, allDbApplication_Names, applicationVersionCheckMap);
         const domainWithNewApp_NameSet = new Set();
         const newApplicationNameSet = new Set();
         for (const [domainName, applicationChecks] of applicationVersionCheckMap) {
@@ -28025,9 +27727,9 @@ class SyncInApplicationVersionChecker {
         await this.setApplicationVersions(Array.from(domainWithNewApp_NameSet), Array.from(newApplicationNameSet), applicationVersionCheckMap);
         return applicationVersionCheckMap;
     }
-    async setApplicationVersions(domainNames, allApplication_Names, applicationVersionCheckMap) {
+    async setApplicationVersions(domainNames, allDbApplication_Names, applicationVersionCheckMap) {
         const existingApplicationVersions = await this.applicationVersionDao
-            .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names);
+            .findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names);
         let lastDomainName;
         let lastApplicationName;
         for (let applicationVersion of existingApplicationVersions) {
@@ -28053,7 +27755,7 @@ class SyncInApplicationVersionChecker {
     }
     getNames(inMessageApplicationVersions, inMessageApplications) {
         if (!inMessageApplicationVersions || !(inMessageApplicationVersions instanceof Array)) {
-            throw new Error(`Did not find applicationVersions in RepositorySynchronizationData.`);
+            throw new Error(`Did not find applicationVersions in SyncRepositoryData.`);
         }
         const applicationVersionCheckMap = new Map();
         for (let applicationVersion of inMessageApplicationVersions) {
@@ -28219,30 +27921,30 @@ class SyncInDataChecker {
         let operationHistoryCheckResult;
         try {
             if (!history || typeof history !== 'object') {
-                throw new Error(`Invalid RepositorySynchronizationData.history`);
+                throw new Error(`Invalid SyncRepositoryData.history`);
             }
             if (typeof history.GUID !== 'string' || history.GUID.length !== 36) {
-                throw new Error(`Invalid RepositorySynchronizationData.history.GUID`);
+                throw new Error(`Invalid SyncRepositoryData.history.GUID`);
             }
             if (!history.operationHistory || !(history.operationHistory instanceof Array)) {
-                throw new Error(`Invalid RepositorySynchronizationData.history.operationHistory`);
+                throw new Error(`Invalid SyncRepositoryData.history.operationHistory`);
             }
             if (!history.saveTimestamp || typeof history.saveTimestamp !== 'number') {
-                throw new Error(`Invalid RepositorySynchronizationData.history.saveTimestamp`);
+                throw new Error(`Invalid SyncRepositoryData.history.saveTimestamp`);
             }
             if (history.transactionHistory) {
-                throw new Error(`RepositorySynchronizationData.history.transactionHistory cannot be specified`);
+                throw new Error(`SyncRepositoryData.history.transactionHistory cannot be specified`);
             }
             if (history.repositoryTransactionType) {
-                throw new Error(`RepositorySynchronizationData.history.repositoryTransactionType cannot be specified`);
+                throw new Error(`SyncRepositoryData.history.repositoryTransactionType cannot be specified`);
             }
             if (history.syncTimestamp) {
-                throw new Error(`RepositorySynchronizationData.history.syncTimestamp cannot be specified`);
+                throw new Error(`SyncRepositoryData.history.syncTimestamp cannot be specified`);
             }
             const actor = message.data.actors[history.actor];
             if (!actor) {
                 throw new Error(`Cannot find Actor for "in-message id"
-RepositorySynchronizationData.history.actor`);
+SyncRepositoryData.history.actor`);
             }
             history.actor = actor;
             // Repository is already set in SyncInRepositoryChecker
@@ -28280,7 +27982,7 @@ RepositorySynchronizationData.history.actor`);
         const forDelayedProcessing = [];
         const history = data.history;
         if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
-            throw new Error(`Invalid RepositorySynchronizationData.history.operationHistory Array`);
+            throw new Error(`Invalid SyncRepositoryData.history.operationHistory Array`);
         }
         const systemWideOperationIds = this.systemWideOperationIdUtils.getSysWideOpIds(history.operationHistory.length);
         let orderNumber = 0;
@@ -28290,7 +27992,7 @@ RepositorySynchronizationData.history.actor`);
                 throw new Error(`Invalid operationHistory[${i}]`);
             }
             if (operationHistory.orderNumber) {
-                throw new Error(`RepositorySynchronizationData.history -> operationHistory[${i}].orderNumber cannot be specified,
+                throw new Error(`SyncRepositoryData.history -> operationHistory[${i}].orderNumber cannot be specified,
 the position of orderHistory record determines it's order`);
             }
             operationHistory.orderNumber = ++orderNumber;
@@ -28321,11 +28023,11 @@ the position of orderHistory record determines it's order`);
             }
             operationHistory.entity = applicationEntity;
             if (operationHistory.repositoryTransactionHistory) {
-                throw new Error(`RepositorySynchronizationData.history -> operationHistory[${i}].repositoryTransactionHistory cannot be specified`);
+                throw new Error(`SyncRepositoryData.history -> operationHistory[${i}].repositoryTransactionHistory cannot be specified`);
             }
             operationHistory.repositoryTransactionHistory = history;
             if (operationHistory.systemWideOperationId) {
-                throw new Error(`RepositorySynchronizationData.history -> operationHistory[${i}].systemWideOperationId cannot be specified`);
+                throw new Error(`SyncRepositoryData.history -> operationHistory[${i}].systemWideOperationId cannot be specified`);
             }
             operationHistory.systemWideOperationId = systemWideOperationIds[i];
             delete operationHistory._localId;
@@ -28370,16 +28072,16 @@ the position of orderHistory record determines it's order`);
     async checkRecordHistories(operationHistory, entityColumnMapsByIndex, data, context) {
         const recordHistories = operationHistory.recordHistory;
         if (!(recordHistories instanceof Array) || !recordHistories.length) {
-            throw new Error(`Inalid RepositorySynchronizationData.history -> operationHistory.recordHistory`);
+            throw new Error(`Inalid SyncRepositoryData.history -> operationHistory.recordHistory`);
         }
         for (const recordHistory of recordHistories) {
             if (!recordHistory._actorRecordId || typeof recordHistory._actorRecordId !== 'number') {
-                throw new Error(`Invalid RepositorySynchronizationData.history -> operationHistory.recordHistory._actorRecordId`);
+                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory._actorRecordId`);
             }
             switch (operationHistory.changeType) {
                 case ChangeType.INSERT_VALUES:
                     if (recordHistory.actor) {
-                        throw new Error(`Cannot specify RepositorySynchronizationData.history -> operationHistory.recordHistory.actor
+                        throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.actor
 for ChangeType.INSERT_VALUES`);
                     }
                     recordHistory.actor = data.history.actor;
@@ -28393,7 +28095,7 @@ for ChangeType.INSERT_VALUES`);
                     else {
                         const actor = data.actors[recordHistory.actor];
                         if (!actor) {
-                            throw new Error(`Did find Actor for "in-message id" in RepositorySynchronizationData.history -> operationHistory.actor`);
+                            throw new Error(`Did find Actor for "in-message id" in SyncRepositoryData.history -> operationHistory.actor`);
                         }
                         recordHistory.actor = actor;
                     }
@@ -28401,7 +28103,7 @@ for ChangeType.INSERT_VALUES`);
                 }
             }
             if (recordHistory.operationHistory) {
-                throw new Error(`RepositorySynchronizationData.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
+                throw new Error(`SyncRepositoryData.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
             }
             this.checkNewValues(recordHistory, entityColumnMapsByIndex, operationHistory, data);
             this.checkOldValues(recordHistory, entityColumnMapsByIndex, operationHistory, data);
@@ -28413,28 +28115,28 @@ for ChangeType.INSERT_VALUES`);
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
                 if (recordHistory.newValues) {
-                    throw new Error(`Cannot specify RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues
+                    throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues
 for ChangeType.DELETE_ROWS`);
                 }
                 return;
             case ChangeType.INSERT_VALUES:
             case ChangeType.UPDATE_ROWS:
                 if (!(recordHistory.newValues instanceof Array) || !recordHistory.newValues.length) {
-                    throw new Error(`Must specify RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues
+                    throw new Error(`Must specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues
 for ChangeType.INSERT_VALUES|UPDATE_ROWS`);
                 }
                 break;
         }
         for (const newValue of recordHistory.newValues) {
             if (newValue.recordHistory) {
-                throw new Error(`Cannot specify RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues.recordHistory`);
+                throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues.recordHistory`);
             }
             newValue.recordHistory = recordHistory;
             if (typeof newValue.columnIndex !== 'number') {
-                throw new Error(`Invalid RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues.columnIndex`);
+                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.columnIndex`);
             }
             if (typeof newValue.newValue === undefined) {
-                throw new Error(`Invalid RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues.newValue`);
+                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.newValue`);
             }
         }
         for (const newValue of recordHistory.newValues) {
@@ -28450,27 +28152,27 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS`);
             case ChangeType.DELETE_ROWS:
             case ChangeType.INSERT_VALUES:
                 if (recordHistory.oldValues) {
-                    throw new Error(`Cannot specify RepositorySynchronizationData.history -> operationHistory.recordHistory.oldValues
+                    throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.oldValues
 for ChangeType.DELETE_ROWS|INSERT_VALUES`);
                 }
                 return;
             case ChangeType.UPDATE_ROWS:
                 if (!(recordHistory.newValues instanceof Array) || !recordHistory.oldValues.length) {
-                    throw new Error(`Must specify RepositorySynchronizationData.history -> operationHistory.recordHistory.oldValues
+                    throw new Error(`Must specify SyncRepositoryData.history -> operationHistory.recordHistory.oldValues
 for ChangeType.UPDATE_ROWS`);
                 }
                 break;
         }
         for (const oldValue of recordHistory.oldValues) {
             if (oldValue.recordHistory) {
-                throw new Error(`Cannot specify RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues.recordHistory`);
+                throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues.recordHistory`);
             }
             oldValue.recordHistory = recordHistory;
             if (typeof oldValue.columnIndex !== 'number') {
-                throw new Error(`Invalid RepositorySynchronizationData.history -> operationHistory.recordHistory.oldValues.columnIndex`);
+                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.oldValues.columnIndex`);
             }
             if (typeof oldValue.oldValue === undefined) {
-                throw new Error(`Invalid RepositorySynchronizationData.history -> operationHistory.recordHistory.oldValues.oldValue`);
+                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.oldValues.oldValue`);
             }
         }
         for (const oldValue of recordHistory.oldValues) {
@@ -28492,8 +28194,8 @@ for ChangeType.UPDATE_ROWS`);
         if (relationIdColumn) {
             const sourceEntity = entityArrayByInMessageIndex[value[valueColumnName]];
             if (!sourceEntity) {
-                throw new Error(`Invalid RepositorySynchronizationData.history -> operationHistory.recordHistory.newValues.newValue
-Value is for ${relationIdColumn.name} and could find RepositorySynchronizationData.${inMessageEntityArrayName}[${value[valueColumnName]}]`);
+                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.newValue
+Value is for ${relationIdColumn.name} and could find SyncRepositoryData.${inMessageEntityArrayName}[${value[valueColumnName]}]`);
             }
             value[valueColumnName] = sourceEntity._localId;
         }
@@ -28518,8 +28220,8 @@ class SyncInRepositoryChecker {
                 throw new Error(`message.data.history is not an object`);
             }
             let historyRepository = history.repository;
-            const repositoryErrorPrefix = `Serialized RepositorySynchronizationData.history.repository should be`;
-            const isRepositoryCreationEqualityErrorPrefix = `if RepositorySynchronizationData.history.isRepositoryCreation ===`;
+            const repositoryErrorPrefix = `Serialized SyncRepositoryData.history.repository should be`;
+            const isRepositoryCreationEqualityErrorPrefix = `if SyncRepositoryData.history.isRepositoryCreation ===`;
             if (history.isRepositoryCreation) {
                 if (typeof historyRepository !== 'object') {
                     throw new Error(`${repositoryErrorPrefix} an object
@@ -28571,7 +28273,7 @@ class SyncInRepositoryChecker {
             if (typeof historyRepository !== 'object') {
                 throw new Error(`Repository with GUID ${historyRepository} is not
 	present and cannot be synced
-	This RepositorySynchronizationData is for an existing repository and that
+	This SyncRepositoryData is for an existing repository and that
 	repository must already be loaded in this database for this message to be
 	processed.`);
             }
@@ -28893,19 +28595,19 @@ class SyncInTerminalChecker {
                 }
                 if (typeof terminal.owner !== 'number') {
                     throw new Error(`Expecting "in-message index" (number)
-					in 'terminal.owner' of RepositorySynchronizationData.terminals`);
+					in 'terminal.owner' of SyncRepositoryData.terminals`);
                 }
                 if (typeof terminal.GUID !== 'string' || terminal.GUID.length !== 36) {
-                    throw new Error(`Invalid 'terminal.GUID' in RepositorySynchronizationData.terminals`);
+                    throw new Error(`Invalid 'terminal.GUID' in SyncRepositoryData.terminals`);
                 }
                 if (terminal.isLocal !== undefined) {
-                    throw new Error(`'terminal.isLocal' cannot defined in RepositorySynchronizationData.terminals`);
+                    throw new Error(`'terminal.isLocal' cannot defined in SyncRepositoryData.terminals`);
                 }
                 terminal.isLocal = false;
                 const owner = data.userAccounts[terminal.owner];
                 if (!owner) {
                     throw new Error(`Did not find userAccount for terminal.owner with "in-message index" ${terminal.owner}
-						for RepositorySynchronizationData.terminals`);
+						for SyncRepositoryData.terminals`);
                 }
                 terminal.owner = owner;
                 terminalGUIDs.push(terminal.GUID);
@@ -29417,14 +29119,14 @@ class Stage1SyncedInDataProcessor {
 }
 
 class Stage2SyncedInDataProcessor {
-    async applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap) {
+    async applyChangesToDb(stage1Result, applicationsByDbApplicationVersion_LocalIdMap) {
         const context = {};
-        await this.performCreates(stage1Result.recordCreations, applicationsByApplicationVersion_LocalIdMap, context);
-        await this.performUpdates(stage1Result.recordUpdates, applicationsByApplicationVersion_LocalIdMap, context);
-        await this.performDeletes(stage1Result.recordDeletions, applicationsByApplicationVersion_LocalIdMap, context);
+        await this.performCreates(stage1Result.recordCreations, applicationsByDbApplicationVersion_LocalIdMap, context);
+        await this.performUpdates(stage1Result.recordUpdates, applicationsByDbApplicationVersion_LocalIdMap, context);
+        await this.performDeletes(stage1Result.recordDeletions, applicationsByDbApplicationVersion_LocalIdMap, context);
     }
     /**
-     * Remote changes come in with ApplicationVersion_LocalIds not Application_Indexes, so it makes
+     * Remote changes come in with DbApplicationVersion_LocalIds not DbApplication_Indexes, so it makes
      * sense to keep this structure.  NOTE: only one version of a given application is
      * processed at one time:
      *
@@ -29432,12 +29134,12 @@ class Stage2SyncedInDataProcessor {
      *  Terminal itself must first be upgraded to newer application versions, before changes
      *  for that application version are processed.
      *
-     *  To tie in a given ApplicationVersion_LocalId to its Application_Index an additional mapping data
+     *  To tie in a given DbApplicationVersion_LocalId to its DbApplication_Index an additional mapping data
      *  structure is passed in.
      */
-    async performCreates(recordCreations, applicationsByApplicationVersion_LocalIdMap, context) {
+    async performCreates(recordCreations, applicationsByDbApplicationVersion_LocalIdMap, context) {
         for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
-            const applicationIndex = applicationsByApplicationVersion_LocalIdMap
+            const applicationIndex = applicationsByDbApplicationVersion_LocalIdMap
                 .get(applicationVersionId).index;
             for (const [tableIndex, creationInTableMap] of creationInApplicationMap) {
                 const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
@@ -29530,13 +29232,13 @@ class Stage2SyncedInDataProcessor {
         });
         return nonIdColumns;
     }
-    async performUpdates(recordUpdates, applicationsByApplicationVersion_LocalIdMap, context) {
+    async performUpdates(recordUpdates, applicationsByDbApplicationVersion_LocalIdMap, context) {
         const finalUpdateMap = new Map();
         const recordUpdateStage = [];
         // Build the final update data structure
         for (const [applicationVersionId, applicationUpdateMap] of recordUpdates) {
             const finalApplicationUpdateMap = this.datastructureUtils.ensureChildJsMap(finalUpdateMap, applicationVersionId);
-            const applicationIndex = applicationsByApplicationVersion_LocalIdMap
+            const applicationIndex = applicationsByDbApplicationVersion_LocalIdMap
                 .get(applicationVersionId).index;
             for (const [tableIndex, tableUpdateMap] of applicationUpdateMap) {
                 const finalTableUpdateMap = this.datastructureUtils.ensureChildJsMap(finalApplicationUpdateMap, tableIndex);
@@ -29571,17 +29273,17 @@ class Stage2SyncedInDataProcessor {
         await this.recordUpdateStageDao.insertValues(recordUpdateStage, context);
         // Perform the updates
         for (const [applicationVersionId, updateMapForApplication] of finalUpdateMap) {
-            const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId);
+            const application = applicationsByDbApplicationVersion_LocalIdMap.get(applicationVersionId);
             for (const [tableIndex, updateMapForTable] of updateMapForApplication) {
                 await this.runUpdatesForTable(application.index, applicationVersionId, tableIndex, updateMapForTable, context);
             }
         }
         await this.recordUpdateStageDao.delete(context);
     }
-    async performDeletes(recordDeletions, applicationsByApplicationVersion_LocalIdMap, context) {
+    async performDeletes(recordDeletions, applicationsByDbApplicationVersion_LocalIdMap, context) {
         const trackedRepoGUIDSet = new Set();
         for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {
-            const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId);
+            const application = applicationsByDbApplicationVersion_LocalIdMap.get(applicationVersionId);
             for (const [tableIndex, deletionInTableMap] of deletionInApplicationMap) {
                 const dbEntity = this.airportDatabase.applications[application.index].currentVersion[0]
                     .applicationVersion.entities[tableIndex];
@@ -29617,7 +29319,7 @@ class Stage2SyncedInDataProcessor {
      * Get the record key map (RecordKeyMap = RepositoryId -> Actor_LocalId
      * -> ActorRecordId) for the recordUpdateMap (the specified combination
      * of columns/values being updated)
-     * @param {Map<ApplicationColumn_Index, RecordUpdate>} recordUpdateMap
+     * @param {Map<DbColumn_Index, RecordUpdate>} recordUpdateMap
      * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap
      * @returns {RecordKeyMap}
      */
@@ -29658,8 +29360,8 @@ class Stage2SyncedInDataProcessor {
      * Run all updates for a particular table.  One update per updated column combination
      * is run.
      *
-     * @param {Application_Index} applicationIndex
-     * @param {ApplicationEntity_TableIndex} tableIndex
+     * @param {DbApplication_Index} applicationIndex
+     * @param {DbEntity_TableIndex} tableIndex
      * @param {ColumnUpdateKeyMap} updateKeyMap
      * @returns {Promise<void>}
      */
@@ -29877,14 +29579,14 @@ class TwoStageSyncedInDataProcessor {
     async syncMessages(messages, newAndUpdatedRepositoriesAndRecords, transaction, context) {
         this.aggregateHistoryRecords(messages, transaction);
         await this.repositoryDao.insert(newAndUpdatedRepositoriesAndRecords.missingRepositories, context);
-        const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersion_LocalIdMap } = await this.getDataStructures(messages);
+        const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByDbApplicationVersion_LocalIdMap } = await this.getDataStructures(messages);
         await this.repositoryMemberDao.insert(newAndUpdatedRepositoriesAndRecords.newMembers, context);
         await this.repositoryMemberInvitationDao.insert(newAndUpdatedRepositoriesAndRecords.newRepositoryMemberInvitations, context);
         await this.repositoryMemberAcceptanceDao.insert(newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances, context);
         for (const newRepositoryMemberAcceptance of newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances) {
             await this.repositoryMemberDao.updatePublicSigningKey(newRepositoryMemberAcceptance.invitationPublicSigningKey, newRepositoryMemberAcceptance.acceptingRepositoryMember.memberPublicSigningKey, context);
         }
-        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersion_LocalIdMap, context);
+        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByDbApplicationVersion_LocalIdMap, context);
     }
     aggregateHistoryRecords(messages, transaction) {
         const transactionHistory = transaction.transactionHistory;
@@ -29935,7 +29637,7 @@ class TwoStageSyncedInDataProcessor {
     }
     async getDataStructures(messages) {
         const repositoryTransactionHistoryMapByRepositoryId = new Map();
-        const applicationsByApplicationVersion_LocalIdMap = new Map();
+        const applicationsByDbApplicationVersion_LocalIdMap = new Map();
         const actorMapById = new Map();
         const repoTransHistories = [];
         for (const message of messages) {
@@ -29946,7 +29648,7 @@ class TwoStageSyncedInDataProcessor {
                 actorMapById.set(actor._localId, actor);
             }
             for (const applicationVersion of data.applicationVersions) {
-                applicationsByApplicationVersion_LocalIdMap.set(applicationVersion._localId, applicationVersion.application);
+                applicationsByDbApplicationVersion_LocalIdMap.set(applicationVersion._localId, applicationVersion.application);
             }
         }
         for (const [_, repoTransHistories] of repositoryTransactionHistoryMapByRepositoryId) {
@@ -29956,10 +29658,10 @@ class TwoStageSyncedInDataProcessor {
         return {
             actorMapById,
             repositoryTransactionHistoryMapByRepositoryId,
-            applicationsByApplicationVersion_LocalIdMap
+            applicationsByDbApplicationVersion_LocalIdMap
         };
     }
-    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersion_LocalIdMap, context) {
+    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByDbApplicationVersion_LocalIdMap, context) {
         const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById);
         let allSyncConflicts = [];
         let allSyncConflictValues = [];
@@ -29971,7 +29673,7 @@ class TwoStageSyncedInDataProcessor {
                 }
             }
         }
-        await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap);
+        await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByDbApplicationVersion_LocalIdMap);
         if (allSyncConflicts.length) {
             await this.synchronizationConflictDao.insert(allSyncConflicts, context);
         }
@@ -30650,7 +30352,7 @@ groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
     applicationRelationDao: ApplicationRelationDao,
     applicationUtils: ApplicationUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     dictionary: Dictionary,
     repositoryDao: RepositoryDao,
 });
@@ -30692,11 +30394,11 @@ class ActiveQueries {
         this.queries = new Map();
     }
     add(portableQuery, cachedSqlQuery) {
-        const serializedJSONQuery = JSON.stringify(portableQuery.jsonQuery);
+        const serializedJSONQuery = JSON.stringify(portableQuery.query);
         this.queries.set(serializedJSONQuery, cachedSqlQuery);
     }
     remove(portableQuery) {
-        const serializedJSONQuery = JSON.stringify(portableQuery.jsonQuery);
+        const serializedJSONQuery = JSON.stringify(portableQuery.query);
         this.queries.delete(serializedJSONQuery);
     }
     markQueriesToRerun(applicationMap, trackedRepoGUIDSet) {
@@ -30908,9 +30610,9 @@ class AbstractEntityOrderByParser {
     getCommonOrderByFragment(orderByFields) {
         return orderByFields.map((orderByField) => {
             switch (orderByField.so) {
-                case SortOrder.ASCENDING:
+                case QuerySortOrder.ASCENDING:
                     return `${orderByField.fa} ASC`;
-                case SortOrder.DESCENDING:
+                case QuerySortOrder.DESCENDING:
                     return `${orderByField.fa} DESC`;
             }
         })
@@ -30964,7 +30666,7 @@ class EntityOrderByParser extends AbstractEntityOrderByParser {
         // Perform breadth-first SELECT clause traversal
         while ((currentSelectFragment = selectFragmentQueue.shift())
             && (currentJoinNode = joinNodeQueue.shift())) {
-            const tableAlias = this.relationManager.getAlias(currentJoinNode.jsonRelation);
+            const tableAlias = this.relationManager.getAlias(currentJoinNode.queryRelation);
             const dbEntity = qEntityMapByAlias[tableAlias].__driver__.dbEntity;
             const currentEntityOrderBy = [];
             orderBy = orderBy.filter((orderByField) => {
@@ -31007,9 +30709,9 @@ class EntityOrderByParser extends AbstractEntityOrderByParser {
                     const dbRelation = dbProperty.relation[0];
                     const dbEntity = dbRelation.relationEntity;
                     const matchingNodes = currentJoinNode.childNodes.filter(childNode => {
-                        const jsonRelation = childNode.jsonRelation;
-                        return jsonRelation.si === dbEntity.applicationVersion.application.index
-                            && jsonRelation.ti === dbEntity.index;
+                        const queryRelation = childNode.queryRelation;
+                        return queryRelation.si === dbEntity.applicationVersion.application.index
+                            && queryRelation.ti === dbEntity.index;
                     });
                     if (!matchingNodes.length) {
                         return;
@@ -31053,7 +30755,7 @@ class EntityOrderByParser extends AbstractEntityOrderByParser {
                 if (!inputOrderByPropertyNameSet[idColumnName]) {
                     finalOrderByColumnsFragments.push({
                         fa: `${tableAlias}.${idColumnName}`,
-                        so: SortOrder.ASCENDING
+                        so: QuerySortOrder.ASCENDING
                     });
                 }
             }
@@ -31063,7 +30765,7 @@ class EntityOrderByParser extends AbstractEntityOrderByParser {
                 if (!inputOrderByPropertyNameSet[columnName]) {
                     finalOrderByColumnsFragments.push({
                         fa: `${tableAlias}.${columnName}`,
-                        so: SortOrder.ASCENDING
+                        so: QuerySortOrder.ASCENDING
                     });
                 }
             });
@@ -31076,8 +30778,8 @@ class EntityOrderByParser extends AbstractEntityOrderByParser {
             if (!joinTreeNode) {
                 return false;
             }
-            if (orderByField.si === joinTreeNode.jsonRelation.si
-                && orderByField.ti === joinTreeNode.jsonRelation.ti) {
+            if (orderByField.si === joinTreeNode.queryRelation.si
+                && orderByField.ti === joinTreeNode.queryRelation.ti) {
                 return true;
             }
         } while (joinTreeNode.parentNode);
@@ -31099,9 +30801,9 @@ class ExactOrderByParser {
         return orderBy.map((orderByField) => {
             this.validator.validateAliasedFieldAccess(orderByField.fa);
             switch (orderByField.so) {
-                case SortOrder.ASCENDING:
+                case QuerySortOrder.ASCENDING:
                     return `${orderByField.fa} ASC`;
-                case SortOrder.DESCENDING:
+                case QuerySortOrder.DESCENDING:
                     return `${orderByField.fa} DESC`;
             }
         })
@@ -31181,7 +30883,7 @@ class MappedOrderByParser {
             for (let alias in currentSelectFragmentFieldSet) {
                 currentEntityOrderBy.push({
                     fa: alias,
-                    so: SortOrder.ASCENDING
+                    so: QuerySortOrder.ASCENDING
                 });
             }
             let entityOrderByFragments = this.buildOrderByFragmentForEntity(currentEntityOrderBy);
@@ -31196,9 +30898,9 @@ class MappedOrderByParser {
         return orderByFields.map((orderByField) => {
             this.validator.validateAliasedFieldAccess(orderByField.fa);
             switch (orderByField.so) {
-                case SortOrder.ASCENDING:
+                case QuerySortOrder.ASCENDING:
                     return `${orderByField.fa} ASC`;
-                case SortOrder.DESCENDING:
+                case QuerySortOrder.DESCENDING:
                     return `${orderByField.fa} DESC`;
             }
         });
@@ -31907,7 +31609,7 @@ class SQLWhereBase {
         this.parameterReferences = [];
         this.fieldMap = new globalThis.ApplicationMap();
         this.qEntityMapByAlias = {};
-        this.jsonRelationMapByAlias = {};
+        this.queryRelationMapByAlias = {};
     }
     getParameters(parameterMap, //,
     context) {
@@ -31967,16 +31669,16 @@ class SQLWhereBase {
                 .join(', ');
         }
         if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.ot) {
-            throw new Error(`Object Type is not defined in JSONClauseField`);
+            throw new Error(`Object Type is not defined in QueryFieldClause`);
         }
         const aField = clauseField;
         let qEntity;
         switch (clauseField.ot) {
-            case JSONClauseObjectType.FIELD_FUNCTION:
+            case QueryClauseObjectType.FIELD_FUNCTION:
                 return this.getFieldFunctionValue(aField, defaultCallback, context);
-            case JSONClauseObjectType.DISTINCT_FUNCTION:
+            case QueryClauseObjectType.DISTINCT_FUNCTION:
                 throw new Error(`Distinct function cannot be nested.`);
-            case JSONClauseObjectType.EXISTS_FUNCTION: {
+            case QueryClauseObjectType.EXISTS_FUNCTION: {
                 if (clauseType !== ClauseType.WHERE_CLAUSE) {
                     throw new Error(`Exists can only be used as a top function in a WHERE clause.`);
                 }
@@ -31986,26 +31688,26 @@ class SQLWhereBase {
                 }
                 return `EXISTS(${subQuerySql})`;
             }
-            case JSONClauseObjectType.FIELD: {
+            case QueryClauseObjectType.FIELD: {
                 qEntity = this.qEntityMapByAlias[aField.ta];
                 this.qValidator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityPropertyColumnName(qEntity, aField.ci, context);
                 this.addField(aField.si, aField.ti, aField.ci);
                 return this.getComplexColumnFragment(aField, columnName, context);
             }
-            case JSONClauseObjectType.FIELD_QUERY: {
-                let jsonFieldSqlSubQuery = aField.fieldSubQuery;
+            case QueryClauseObjectType.FIELD_QUERY: {
+                let fieldSubQuery = aField.fieldSubQuery;
                 if (aField.S) {
-                    jsonFieldSqlSubQuery = aField;
+                    fieldSubQuery = aField;
                 }
-                const { parameterReferences, subQuerySql } = this.subStatementSqlGenerator.getFieldQuerySql(jsonFieldSqlSubQuery, this.dialect, this.qEntityMapByAlias, context);
+                const { parameterReferences, subQuerySql } = this.subStatementSqlGenerator.getFieldQuerySql(fieldSubQuery, this.dialect, this.qEntityMapByAlias, context);
                 if (parameterReferences.length) {
                     this.parameterReferences = this.parameterReferences.concat(parameterReferences);
                 }
                 this.qValidator.addSubQueryAlias(aField.fa);
                 return `(${subQuerySql})`;
             }
-            case JSONClauseObjectType.MANY_TO_ONE_RELATION: {
+            case QueryClauseObjectType.MANY_TO_ONE_RELATION: {
                 qEntity = this.qEntityMapByAlias[aField.ta];
                 this.qValidator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityManyToOneColumnName(qEntity, aField.ci, context);
@@ -32199,23 +31901,23 @@ class SQLNoJoinQuery extends SQLWhereBase {
  * Created by Papa on 10/2/2016.
  */
 class SQLDelete extends SQLNoJoinQuery {
-    constructor(jsonDelete, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
-        super(airportDatabase.applications[jsonDelete.DF.si].currentVersion[0]
-            .applicationVersion.entities[jsonDelete.DF.ti], dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
-        this.jsonDelete = jsonDelete;
+    constructor(deleteQuery, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
+        super(airportDatabase.applications[deleteQuery.DF.si].currentVersion[0]
+            .applicationVersion.entities[deleteQuery.DF.ti], dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+        this.deleteQuery = deleteQuery;
     }
     toSQL(fieldMap, context) {
-        let { tableFragment } = this.getFromFragment(this.jsonDelete.DF, fieldMap, true, context);
+        let { tableFragment } = this.getFromFragment(this.deleteQuery.DF, fieldMap, true, context);
         let whereFragment = '';
-        let jsonQuery = this.jsonDelete;
-        if (jsonQuery.W) {
-            whereFragment = this.getWHEREFragment(jsonQuery.W, '', context);
+        let queryDelete = this.deleteQuery;
+        if (queryDelete.W) {
+            whereFragment = this.getWHEREFragment(queryDelete.W, '', context);
             whereFragment = `
 WHERE
 ${whereFragment}`;
             // TODO: following might be needed for some RDBMS, does not work for SqLite
             // Replace the root entity alias reference with the table name
-            // let tableAlias = this.relationManager.getAlias(this.jsonDelete.DF)
+            // let tableAlias = this.relationManager.getAlias(this.deleteQuery.DF)
             // let tableName = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
             // whereFragment = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
         }
@@ -32229,21 +31931,21 @@ FROM
  * Created by Papa on 11/17/2016.
  */
 class SQLInsertValues extends SQLNoJoinQuery {
-    constructor(jsonInsertValues, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context
+    constructor(insertValuesQuery, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context
     // repository?: IRepository
     ) {
-        super(airportDatabase.applications[jsonInsertValues.II.si].currentVersion[0]
-            .applicationVersion.entities[jsonInsertValues.II.ti], dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
-        this.jsonInsertValues = jsonInsertValues;
+        super(airportDatabase.applications[insertValuesQuery.II.si].currentVersion[0]
+            .applicationVersion.entities[insertValuesQuery.II.ti], dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+        this.insertValuesQuery = insertValuesQuery;
     }
     toSQL(fieldMap, context) {
-        if (!this.jsonInsertValues.II) {
+        if (!this.insertValuesQuery.II) {
             throw new Error(`Expecting exactly one table in INSERT INTO clause`);
         }
         this.qValidator.validateInsertQEntity(this.dbEntity);
-        let { columnMap, tableFragment } = this.getFromFragment(this.jsonInsertValues.II, fieldMap, false, context, false);
-        let columnsFragment = this.getColumnsFragment(this.dbEntity, this.jsonInsertValues.C, columnMap);
-        let valuesFragment = this.getValuesFragment(this.jsonInsertValues.V, context);
+        let { columnMap, tableFragment } = this.getFromFragment(this.insertValuesQuery.II, fieldMap, false, context, false);
+        let columnsFragment = this.getColumnsFragment(this.dbEntity, this.insertValuesQuery.C, columnMap);
+        let valuesFragment = this.getValuesFragment(this.insertValuesQuery.V, context);
         return `INSERT INTO
 ${tableFragment} ${columnsFragment}
 VALUES
@@ -32307,9 +32009,9 @@ class EntityDefaults {
  * String based SQL query.
  */
 class SQLQuery extends SQLWhereBase {
-    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
+    constructor(query, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
         super(dbEntity, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
-        this.jsonQuery = jsonQuery;
+        this.query = query;
         this.queryResultType = queryResultType;
         this.relationManager = relationManager;
         this.entityDefaults = new EntityDefaults();
@@ -32392,17 +32094,17 @@ on '${leftDbEntity.applicationVersion.application.name}.${leftDbEntity.name}.${d
  * Created by Papa on 10/2/2016.
  */
 class SQLUpdate extends SQLNoJoinQuery {
-    constructor(jsonUpdate, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
-        super(airportDatabase.applications[jsonUpdate.U.si].currentVersion[0]
-            .applicationVersion.entities[jsonUpdate.U.ti], dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
-        this.jsonUpdate = jsonUpdate;
+    constructor(updateQuery, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
+        super(airportDatabase.applications[updateQuery.U.si].currentVersion[0]
+            .applicationVersion.entities[updateQuery.U.ti], dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+        this.updateQuery = updateQuery;
     }
     toSQL(internalFragments, fieldMap, context) {
-        if (!this.jsonUpdate.U) {
+        if (!this.updateQuery.U) {
             throw new Error(`Expecting exactly one table in UPDATE clause`);
         }
-        let { columnMap, tableFragment } = this.getFromFragment(this.jsonUpdate.U, fieldMap, false, context);
-        let setFragment = this.getSetFragment(this.jsonUpdate.S, columnMap, context);
+        let { columnMap, tableFragment } = this.getFromFragment(this.updateQuery.U, fieldMap, false, context);
+        let setFragment = this.getSetFragment(this.updateQuery.S, columnMap, context);
         if (internalFragments.SET && internalFragments.SET.length) {
             setFragment += ',' + internalFragments.SET.map(internalSetFragment => {
                 columnMap.ensure(internalSetFragment.column.index);
@@ -32412,14 +32114,14 @@ class SQLUpdate extends SQLNoJoinQuery {
                 .join(',');
         }
         let whereFragment = '';
-        let jsonQuery = this.jsonUpdate;
-        if (jsonQuery.W) {
-            whereFragment = this.getWHEREFragment(jsonQuery.W, '', context);
+        let updateQuery = this.updateQuery;
+        if (updateQuery.W) {
+            whereFragment = this.getWHEREFragment(updateQuery.W, '', context);
             whereFragment = `WHERE
 ${whereFragment}`;
             // TODO: following might be needed for some RDBMS, does not work for SqLite
             // Replace the root entity alias reference with the table name
-            // let tableAlias = this.relationManager.getAlias(this.jsonUpdate.U)
+            // let tableAlias = this.relationManager.getAlias(this.updateQuery.U)
             // let tableName  = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
             // whereFragment  = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
         }
@@ -32457,17 +32159,17 @@ ${whereFragment}`;
     }
     isManyToOneRelation(value) {
         return typeof value === 'object'
-            && value.ot === JSONClauseObjectType.MANY_TO_ONE_RELATION;
+            && value.ot === QueryClauseObjectType.MANY_TO_ONE_RELATION;
     }
     addManyToOneMappings(parentMapping) {
         let mappings = [];
         const value = parentMapping.value;
         if (typeof value === 'object' &&
             (!value.ot
-                || value.ot === JSONClauseObjectType.MANY_TO_ONE_RELATION)) {
+                || value.ot === QueryClauseObjectType.MANY_TO_ONE_RELATION)) {
             for (const key in value) {
                 if (key === 'ot'
-                    && value[key] === JSONClauseObjectType.MANY_TO_ONE_RELATION) {
+                    && value[key] === QueryClauseObjectType.MANY_TO_ONE_RELATION) {
                     continue;
                 }
                 const mapping = {
@@ -32487,12 +32189,12 @@ ${whereFragment}`;
 }
 
 class SqlFunctionField {
-    constructor(jsonClauseField) {
-        this.jsonClauseField = jsonClauseField;
+    constructor(queryFieldClause) {
+        this.queryFieldClause = queryFieldClause;
         // Test
     }
     getValue(sqlValueProvider, context) {
-        return sqlValueProvider.getFieldFunctionValue(this.jsonClauseField, null, context);
+        return sqlValueProvider.getFieldFunctionValue(this.queryFieldClause, null, context);
     }
 }
 
@@ -32500,8 +32202,8 @@ class SqlFunctionField {
  * Created by Papa on 10/28/2016.
  */
 class NonEntitySQLQuery extends SQLQuery {
-    constructor(jsonQuery, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(jsonQuery, null, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(nonEntityQuery, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(nonEntityQuery, null, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
     }
     addQEntityMapByAlias(sourceMap) {
         for (let alias in sourceMap) {
@@ -32509,61 +32211,61 @@ class NonEntitySQLQuery extends SQLQuery {
         }
     }
     toSQL(internalFragments, context) {
-        let jsonQuery = this.jsonQuery;
+        let nonEntityQuery = this.query;
         let joinNodeMap = {};
-        this.joinTrees = this.buildFromJoinTree(jsonQuery.F, joinNodeMap, context);
-        let selectFragment = this.getSELECTFragment(false, jsonQuery.S, internalFragments, context);
+        this.joinTrees = this.buildFromJoinTree(nonEntityQuery.F, joinNodeMap, context);
+        let selectFragment = this.getSELECTFragment(false, nonEntityQuery.S, internalFragments, context);
         let fromFragment = this.getFROMFragments(this.joinTrees, context);
         let whereFragment = '';
-        if (jsonQuery.W) {
+        if (nonEntityQuery.W) {
             whereFragment = `
 WHERE
-	${this.getWHEREFragment(jsonQuery.W, '', context)}`;
+	${this.getWHEREFragment(nonEntityQuery.W, '', context)}`;
         }
         let groupByFragment = '';
-        if (jsonQuery.GB && jsonQuery.GB.length) {
+        if (nonEntityQuery.GB && nonEntityQuery.GB.length) {
             groupByFragment = `
 GROUP BY
-	${this.getGroupByFragment(jsonQuery.GB)}`;
+	${this.getGroupByFragment(nonEntityQuery.GB)}`;
         }
         let havingFragment = '';
-        if (jsonQuery.H) {
+        if (nonEntityQuery.H) {
             havingFragment = `
 HAVING
-	${this.getWHEREFragment(jsonQuery.H, '', context)}`;
+	${this.getWHEREFragment(nonEntityQuery.H, '', context)}`;
         }
         let orderByFragment = '';
-        if (jsonQuery.OB && jsonQuery.OB.length) {
+        if (nonEntityQuery.OB && nonEntityQuery.OB.length) {
             orderByFragment = `
 ORDER BY
-	${this.orderByParser.getOrderByFragment(jsonQuery.S, jsonQuery.OB)}`;
+	${this.orderByParser.getOrderByFragment(nonEntityQuery.S, nonEntityQuery.OB)}`;
         }
         let offsetFragment = '';
-        if (jsonQuery.O) {
-            offsetFragment = this.sqlQueryAdapter.getOffsetFragment(jsonQuery.O);
+        if (nonEntityQuery.O) {
+            offsetFragment = this.sqlQueryAdapter.getOffsetFragment(nonEntityQuery.O);
         }
         let limitFragment = '';
-        if (jsonQuery.L) {
-            offsetFragment = this.sqlQueryAdapter.getLimitFragment(jsonQuery.L);
+        if (nonEntityQuery.L) {
+            offsetFragment = this.sqlQueryAdapter.getLimitFragment(nonEntityQuery.L);
         }
         return `SELECT
 	${selectFragment}
 FROM
 ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragment}${offsetFragment}${limitFragment}
-${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
+${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
     }
-    buildFromJoinTree(joinRelations, joinNodeMap, context) {
-        let jsonTrees = [];
-        let jsonTree;
+    buildFromJoinTree(queryRelations, joinNodeMap, context) {
+        let joinTreeNodes = [];
+        let joinTreeNode;
         // For entity queries it is possible to have a query with no from clause, in this case
         // make the query entity the root tree node
-        if (joinRelations.length < 1) {
+        if (queryRelations.length < 1) {
             throw new Error(`FROM clause must have entries for non-Entity queries`);
         }
-        let firstRelation = joinRelations[0];
+        let firstRelation = queryRelations[0];
         switch (firstRelation.rt) {
-            case JSONRelationType.SUB_QUERY_ROOT:
-            case JSONRelationType.ENTITY_ROOT:
+            case QueryRelationType.SUB_QUERY_ROOT:
+            case QueryRelationType.ENTITY_ROOT:
                 break;
             default:
                 throw new Error(`First table in FROM clause cannot be joined`);
@@ -32572,23 +32274,23 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
         this.qValidator.validateReadFromEntity(firstRelation);
         let firstEntity = this.relationManager.createRelatedQEntity(firstRelation, context);
         this.qEntityMapByAlias[alias] = firstEntity;
-        jsonTree = new JoinTreeNode(firstRelation, [], null);
-        jsonTrees.push(jsonTree);
-        joinNodeMap[alias] = jsonTree;
-        for (let i = 1; i < joinRelations.length; i++) {
+        joinTreeNode = new JoinTreeNode(firstRelation, [], null);
+        joinTreeNodes.push(joinTreeNode);
+        joinNodeMap[alias] = joinTreeNode;
+        for (let i = 1; i < queryRelations.length; i++) {
             let rightEntity;
-            let joinRelation = joinRelations[i];
+            let joinRelation = queryRelations[i];
             if (!joinRelation.jt) {
                 throw new Error(`Table ${i + 1} in FROM clause is missing joinType`);
             }
             this.qValidator.validateReadFromEntity(joinRelation);
             alias = this.relationManager.getAlias(joinRelation);
             switch (joinRelation.rt) {
-                case JSONRelationType.SUB_QUERY_ROOT:
+                case QueryRelationType.SUB_QUERY_ROOT:
                     let view = this.addFieldsToView(joinRelation, alias, context);
                     this.qEntityMapByAlias[alias] = view;
                     continue;
-                case JSONRelationType.ENTITY_ROOT:
+                case QueryRelationType.ENTITY_ROOT:
                     // Non-Joined table
                     let nonJoinedEntity = this.relationManager.createRelatedQEntity(joinRelation, context);
                     this.qEntityMapByAlias[alias] = nonJoinedEntity;
@@ -32596,29 +32298,29 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
                     if (joinNodeMap[alias]) {
                         throw new Error(`Alias '${alias}' used more than once in the FROM clause.`);
                     }
-                    jsonTrees.push(anotherTree);
+                    joinTreeNodes.push(anotherTree);
                     joinNodeMap[alias] = anotherTree;
                     continue;
-                case JSONRelationType.ENTITY_APPLICATION_RELATION:
+                case QueryRelationType.ENTITY_APPLICATION_RELATION:
                     if (!joinRelation.ri) {
                         throw new Error(`Table ${i + 1} in FROM clause is missing relationPropertyName`);
                     }
                     rightEntity = this.relationManager.createRelatedQEntity(joinRelation, context);
                     break;
-                case JSONRelationType.SUB_QUERY_JOIN_ON:
+                case QueryRelationType.SUB_QUERY_JOIN_ON:
                     if (!joinRelation.joinWhereClause) {
                         this.warn(`View ${i + 1} in FROM clause is missing joinWhereClause`);
                     }
                     rightEntity = this.addFieldsToView(joinRelation, alias, context);
                     break;
-                case JSONRelationType.ENTITY_JOIN_ON:
+                case QueryRelationType.ENTITY_JOIN_ON:
                     if (!joinRelation.joinWhereClause) {
                         this.warn(`Table ${i + 1} in FROM clause is missing joinWhereClause`);
                     }
                     rightEntity = this.relationManager.createRelatedQEntity(joinRelation, context);
                     break;
                 default:
-                    throw new Error(`Unknown JSONRelationType ${joinRelation.rt}`);
+                    throw new Error(`Unknown QueryRelationType ${joinRelation.rt}`);
             }
             let parentAlias = this.relationManager.getParentAlias(joinRelation);
             if (!joinNodeMap[parentAlias]) {
@@ -32638,7 +32340,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
             }
             joinNodeMap[alias] = rightNode;
         }
-        return jsonTrees;
+        return joinTreeNodes;
     }
     addFieldsToView(viewJoinRelation, viewAlias, context) {
         let view = new QTree(viewJoinRelation.fromClausePosition, null);
@@ -32681,12 +32383,12 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
         let dbProperty;
         let dbColumn;
         switch (fieldJson.ot) {
-            case JSONClauseObjectType.FIELD_FUNCTION:
+            case QueryClauseObjectType.FIELD_FUNCTION:
                 view[alias] = new SqlFunctionField(fieldJson);
                 throw new Error('Not implemented');
-            case JSONClauseObjectType.EXISTS_FUNCTION:
+            case QueryClauseObjectType.EXISTS_FUNCTION:
                 throw new Error(`Exists function cannot be used in SELECT clause.`);
-            case JSONClauseObjectType.FIELD:
+            case QueryClauseObjectType.FIELD:
                 dbEntity = this.airportDatabase.applications[fieldJson.si].currentVersion[0]
                     .applicationVersion.entities[fieldJson.ti];
                 dbProperty = dbEntity.properties[fieldJson.pi];
@@ -32712,22 +32414,22 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
                         throw new Error(`Unknown SQLDataType: ${fieldJson.dt}.`);
                 }
                 break;
-            case JSONClauseObjectType.FIELD_QUERY:
+            case QueryClauseObjectType.FIELD_QUERY:
                 let fieldQuery = fieldJson;
                 this.addFieldToViewForSelect(view, viewAlias, fieldPrefix, fieldQuery.S, alias, alias, context);
                 break;
-            case JSONClauseObjectType.DISTINCT_FUNCTION:
+            case QueryClauseObjectType.DISTINCT_FUNCTION:
                 this.addFieldsToViewForSelect(view, viewAlias, fieldJson.v, fieldPrefix, forFieldQueryAlias, context);
                 hasDistinctClause = true;
                 break;
-            case JSONClauseObjectType.MANY_TO_ONE_RELATION:
+            case QueryClauseObjectType.MANY_TO_ONE_RELATION:
                 throw new Error(`@ManyToOne fields cannot be directly in a SELECT clause.
 					Please select a non-relational field within the relation.`);
             // let relation =
             // <QField<any>><any>QMetadataUtils.getRelationByColumnIndex(this.dbFacade.getQEntityByIndex(fieldJson.ti),
             // fieldJson.ci); view[alias] = relation.getInstance(view); break;
             default:
-                throw new Error(`Unexpected type property on JSONClauseField: ${fieldJson.ot}.`);
+                throw new Error(`Unexpected type property on QueryFieldClause: ${fieldJson.ot}.`);
         }
         return hasDistinctClause;
     }
@@ -32751,15 +32453,15 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
     }
     getFROMFragment(parentTree, currentTree, context) {
         let fromFragment = '\t';
-        let currentRelation = currentTree.jsonRelation;
+        let currentRelation = currentTree.queryRelation;
         let currentAlias = this.relationManager.getAlias(currentRelation);
         let qEntity = this.qEntityMapByAlias[currentAlias];
         if (!parentTree) {
             switch (currentRelation.rt) {
-                case JSONRelationType.ENTITY_ROOT:
+                case QueryRelationType.ENTITY_ROOT:
                     fromFragment += `${this.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context)} ${currentAlias}`;
                     break;
-                case JSONRelationType.SUB_QUERY_ROOT:
+                case QueryRelationType.SUB_QUERY_ROOT:
                     let viewRelation = currentRelation;
                     const { parameterReferences, subQuerySql } = this.subStatementSqlGenerator.getTreeQuerySql(viewRelation.subQuery, this.dialect, context);
                     if (parameterReferences.length) {
@@ -32772,7 +32474,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
             }
         }
         else {
-            let parentRelation = parentTree.jsonRelation;
+            let parentRelation = parentTree.queryRelation;
             let parentAlias = this.relationManager.getAlias(parentRelation);
             let leftEntity = this.qEntityMapByAlias[parentAlias];
             let rightEntity = this.qEntityMapByAlias[currentAlias];
@@ -32795,15 +32497,15 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
             let errorPrefix = 'Error building FROM: ';
             let joinOnClause;
             switch (currentRelation.rt) {
-                case JSONRelationType.ENTITY_JOIN_ON:
+                case QueryRelationType.ENTITY_JOIN_ON:
                     let joinRelation = currentRelation;
                     joinOnClause = this.getWHEREFragment(joinRelation.joinWhereClause, '\t', context);
                     fromFragment += `\t${joinTypeString} ${this.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context)} ${currentAlias} ON\n${joinOnClause}`;
                     break;
-                case JSONRelationType.ENTITY_APPLICATION_RELATION:
+                case QueryRelationType.ENTITY_APPLICATION_RELATION:
                     fromFragment += this.getEntityApplicationRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, context);
                     break;
-                case JSONRelationType.SUB_QUERY_JOIN_ON:
+                case QueryRelationType.SUB_QUERY_JOIN_ON:
                     let viewJoinRelation = currentRelation;
                     const { parameterReferences, subQuerySql } = this.subStatementSqlGenerator.getTreeQuerySql(viewJoinRelation.subQuery, this.dialect, context);
                     if (parameterReferences.length) {
@@ -32834,9 +32536,9 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
         return orderBy.map((orderByField) => {
             this.qValidator.validateAliasedFieldAccess(orderByField.fa);
             switch (orderByField.so) {
-                case SortOrder.ASCENDING:
+                case QuerySortOrder.ASCENDING:
                     return `${orderByField.fa} ASC`;
-                case SortOrder.DESCENDING:
+                case QuerySortOrder.DESCENDING:
                     return `${orderByField.fa} DESC`;
             }
         })
@@ -32848,8 +32550,8 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
  * Created by Papa on 10/29/2016.
  */
 class FieldSQLQuery extends NonEntitySQLQuery {
-    constructor(jsonQuery, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(jsonQuery, dialect, QueryResultType.FIELD, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(queryField, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(queryField, dialect, QueryResultType.FIELD, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
         this.orderByParser = new ExactOrderByParser(qValidator);
     }
     async parseQueryResults(results, internalFragments, queryResultType, context, bridgedQueryConfiguration) {
@@ -32859,7 +32561,7 @@ class FieldSQLQuery extends NonEntitySQLQuery {
         }
         parsedResults = [];
         results.forEach((result) => {
-            let parsedResult = this.parseQueryResult(this.jsonQuery.S, result, [0]);
+            let parsedResult = this.parseQueryResult(this.query.S, result, [0]);
             parsedResults.push(parsedResult);
         });
         return parsedResults;
@@ -32870,7 +32572,7 @@ class FieldSQLQuery extends NonEntitySQLQuery {
         }
         {
             let distinctClause = selectClauseFragment;
-            if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
+            if (distinctClause.ot == QueryClauseObjectType.DISTINCT_FUNCTION) {
                 let distinctSelect = this.getSELECTFragment(nested, distinctClause.appliedFunctions[0].p[0], internalFragments, context);
                 return `DISTINCT ${distinctSelect}`;
             }
@@ -32892,8 +32594,8 @@ class FieldSQLQuery extends NonEntitySQLQuery {
  * Created by Papa on 10/28/2016.
  */
 class TreeSQLQuery extends NonEntitySQLQuery {
-    constructor(jsonQuery, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(jsonQuery, dialect, QueryResultType.TREE, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(treeQuery, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(treeQuery, dialect, QueryResultType.TREE, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
         this.queryParser = new TreeQueryResultParser(applicationUtils, entityStateManager, utils);
         this.orderByParser = new MappedOrderByParser(qValidator);
     }
@@ -32912,7 +32614,7 @@ class TreeSQLQuery extends NonEntitySQLQuery {
         parsedResults = [];
         results.forEach((result) => {
             let aliasCache = new AliasCache();
-            let parsedResult = this.parseQueryResult(this.jsonQuery.S, result, [0], aliasCache, aliasCache.getFollowingAlias());
+            let parsedResult = this.parseQueryResult(this.query.S, result, [0], aliasCache, aliasCache.getFollowingAlias());
             {
                 parsedResults.push(parsedResult);
             }
@@ -32922,7 +32624,7 @@ class TreeSQLQuery extends NonEntitySQLQuery {
     }
     getSELECTFragment(nested, selectClauseFragment, internalFragments, context) {
         const distinctClause = selectClauseFragment;
-        if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
+        if (distinctClause.ot == QueryClauseObjectType.DISTINCT_FUNCTION) {
             if (nested) {
                 throw new Error(`Cannot have DISTINCT specified in a nested SELECT clause`);
             }
@@ -32972,7 +32674,7 @@ class TreeSQLQuery extends NonEntitySQLQuery {
         }
         {
             let distinctClause = selectClauseFragment;
-            if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
+            if (distinctClause.ot == QueryClauseObjectType.DISTINCT_FUNCTION) {
                 return this.parseQueryResult(distinctClause.appliedFunctions[0].p[0], resultRow, nextFieldIndex, aliasCache, entityAlias);
             }
         }
@@ -32981,15 +32683,15 @@ class TreeSQLQuery extends NonEntitySQLQuery {
             if (selectClauseFragment[propertyName] === undefined) {
                 continue;
             }
-            let jsonClauseField = selectClauseFragment[propertyName];
-            let dataType = jsonClauseField.dt;
+            let queryFieldClause = selectClauseFragment[propertyName];
+            let dataType = queryFieldClause.dt;
             // Must be a sub-query
             if (!dataType) {
-                let childResultObject = this.parseQueryResult(jsonClauseField, resultRow, nextFieldIndex, aliasCache, aliasCache.getFollowingAlias());
+                let childResultObject = this.parseQueryResult(queryFieldClause, resultRow, nextFieldIndex, aliasCache, aliasCache.getFollowingAlias());
                 this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, propertyName, childResultObject);
             }
             else {
-                let propertyValue = this.sqlQueryAdapter.getResultCellValue(resultRow, jsonClauseField.fa, nextFieldIndex[0], dataType, null);
+                let propertyValue = this.sqlQueryAdapter.getResultCellValue(resultRow, queryFieldClause.fa, nextFieldIndex[0], dataType, null);
                 this.queryParser.addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue);
             }
             nextFieldIndex[0]++;
@@ -32999,8 +32701,8 @@ class TreeSQLQuery extends NonEntitySQLQuery {
 }
 
 class SubStatementSqlGenerator {
-    getTreeQuerySql(jsonTreeQuery, dialect, context) {
-        let mappedSqlQuery = new TreeSQLQuery(jsonTreeQuery, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
+    getTreeQuerySql(treeQuery, dialect, context) {
+        let mappedSqlQuery = new TreeSQLQuery(treeQuery, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
         const subQuerySql = mappedSqlQuery.toSQL({}, context);
         const parameterReferences = mappedSqlQuery.parameterReferences;
         return {
@@ -33008,8 +32710,8 @@ class SubStatementSqlGenerator {
             subQuerySql
         };
     }
-    getFieldQuerySql(jsonFieldSqlSubQuery, dialect, qEntityMapByAlias, context) {
-        let fieldSqlQuery = new FieldSQLQuery(jsonFieldSqlSubQuery, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
+    getFieldQuerySql(fieldSubQuery, dialect, qEntityMapByAlias, context) {
+        let fieldSqlQuery = new FieldSQLQuery(fieldSubQuery, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
         fieldSqlQuery.addQEntityMapByAlias(qEntityMapByAlias);
         const subQuerySql = fieldSqlQuery.toSQL({}, context);
         const parameterReferences = fieldSqlQuery.parameterReferences;
@@ -33027,8 +32729,8 @@ class SubStatementSqlGenerator {
  * Represents SQL String query with Entity tree Select clause.
  */
 class EntitySQLQuery extends SQLQuery {
-    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, objectResultParserFactory, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context, graphQueryConfiguration) {
-        super(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+    constructor(queryEntity, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, objectResultParserFactory, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context, graphQueryConfiguration) {
+        super(queryEntity, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.objectResultParserFactory = objectResultParserFactory;
         this.graphQueryConfiguration = graphQueryConfiguration;
         this.columnAliases = new AliasCache();
@@ -33036,23 +32738,23 @@ class EntitySQLQuery extends SQLQuery {
             throw new Error(`"strict" configuration is not yet implemented for 
 			QueryResultType.ENTITY_GRAPH`);
         }
-        this.finalSelectTree = this.setupSelectFields(this.jsonQuery.S, dbEntity, context);
-        this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, relationManager, jsonQuery.OB);
+        this.finalSelectTree = this.setupSelectFields(this.query.S, dbEntity, context);
+        this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, relationManager, queryEntity.OB);
     }
     toSQL(internalFragments, context) {
         let joinNodeMap = {};
-        this.joinTree = this.buildFromJoinTree(this.jsonQuery.F, joinNodeMap, context);
+        this.joinTree = this.buildFromJoinTree(this.query.F, joinNodeMap, context);
         let selectFragment = this.getSELECTFragment(this.dbEntity, this.finalSelectTree, this.joinTree, context);
         let fromFragment = this.getFROMFragment(null, this.joinTree, context);
         let whereFragment = '';
-        let jsonQuery = this.jsonQuery;
-        if (jsonQuery.W) {
+        let entityQuery = this.query;
+        if (entityQuery.W) {
             whereFragment = `
 WHERE
-${this.getWHEREFragment(jsonQuery.W, '', context)}`;
+${this.getWHEREFragment(entityQuery.W, '', context)}`;
         }
         let orderByFragment = '';
-        if (jsonQuery.OB && jsonQuery.OB.length) {
+        if (entityQuery.OB && entityQuery.OB.length) {
             orderByFragment = `
 ORDER BY
 ${this.orderByParser.getOrderByFragment(this.joinTree, this.qEntityMapByAlias, context)}`;
@@ -33061,7 +32763,7 @@ ${this.orderByParser.getOrderByFragment(this.joinTree, this.qEntityMapByAlias, c
 	${selectFragment}
 FROM
 ${fromFragment}${whereFragment}${orderByFragment}
-${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
+${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
     }
     /**
      * If bridging is not applied:
@@ -33085,7 +32787,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
         let lastResult;
         for (let i = 0; i < results.length; i++) {
             let result = results[i];
-            let entityAlias = this.relationManager.getAlias(this.joinTree.jsonRelation);
+            let entityAlias = this.relationManager.getAlias(this.joinTree.queryRelation);
             this.columnAliases.reset();
             let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, [0], context);
             if (!lastResult) {
@@ -33097,10 +32799,10 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
             lastResult = parsedResult;
             this.queryParser.flushRow();
         }
-        return this.queryParser.bridge(parsedResults, this.jsonQuery.S, context);
+        return this.queryParser.bridge(parsedResults, this.query.S, context);
     }
     buildFromJoinTree(joinRelations, joinNodeMap, context) {
-        let jsonTree;
+        let joinTreeNode;
         // For entity queries it is possible to have a query with no from clause, in this case
         // make the query entity the root tree node
         if (joinRelations.length < 1) {
@@ -33110,7 +32812,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
                 fromClausePosition: [],
                 jt: null,
                 ri: null,
-                rt: JSONRelationType.ENTITY_ROOT,
+                rt: QueryRelationType.ENTITY_ROOT,
                 rep: 'r_',
                 si: this.dbEntity.applicationVersion._localId
             };
@@ -33118,23 +32820,23 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
         }
         let firstRelation = joinRelations[0];
         switch (firstRelation.rt) {
-            case JSONRelationType.ENTITY_ROOT:
+            case QueryRelationType.ENTITY_ROOT:
                 break;
-            case JSONRelationType.SUB_QUERY_ROOT:
-            case JSONRelationType.SUB_QUERY_JOIN_ON:
+            case QueryRelationType.SUB_QUERY_ROOT:
+            case QueryRelationType.SUB_QUERY_JOIN_ON:
                 throw new Error(`Entity query's FROM clause cannot contain sub-queries`);
-            case JSONRelationType.ENTITY_JOIN_ON:
+            case QueryRelationType.ENTITY_JOIN_ON:
                 throw new Error(`Entity queries cannot use JOIN ON`);
             default:
                 throw new Error(`First table in FROM clause cannot be result of a join`);
         }
-        // if (firstRelation.rt !== JSONRelationType.ENTITY_ROOT) {
+        // if (firstRelation.rt !== QueryRelationType.ENTITY_ROOT) {
         // 	throw new Error(`First table in FROM clause cannot be joined`)
         // }
         let alias = this.relationManager.getAlias(firstRelation);
         let firstEntity = this.relationManager.createRelatedQEntity(firstRelation, context);
         this.qEntityMapByAlias[alias] = firstEntity;
-        this.jsonRelationMapByAlias[alias] = firstRelation;
+        this.queryRelationMapByAlias[alias] = firstRelation;
         // In entity queries the first entity must always be the same as the query entity
         const firstDbEntity = firstEntity.__driver__.dbEntity;
         // if (firstEntity.constructor != this.rootQEntity.constructor) {
@@ -33144,16 +32846,16 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
 			expecting:
 			'${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}'`);
         }
-        jsonTree = new JoinTreeNode(firstRelation, [], null);
-        joinNodeMap[alias] = jsonTree;
+        joinTreeNode = new JoinTreeNode(firstRelation, [], null);
+        joinNodeMap[alias] = joinTreeNode;
         for (let i = 1; i < joinRelations.length; i++) {
             let joinRelation = joinRelations[i];
             switch (joinRelation.rt) {
-                case JSONRelationType.ENTITY_ROOT:
+                case QueryRelationType.ENTITY_ROOT:
                     throw new Error(`All Entity query tables after the first must be joined`);
-                case JSONRelationType.SUB_QUERY_JOIN_ON:
+                case QueryRelationType.SUB_QUERY_JOIN_ON:
                     throw new Error(`Entity queries FROM clause cannot contain sub-queries`);
-                case JSONRelationType.ENTITY_JOIN_ON:
+                case QueryRelationType.ENTITY_JOIN_ON:
                     throw new Error(`Entity queries cannot use JOIN ON`);
             }
             if (!joinRelation.ri && joinRelation.ri !== 0) {
@@ -33171,7 +32873,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
             alias = this.relationManager.getAlias(joinRelation);
             let rightEntity = this.relationManager.createRelatedQEntity(joinRelation, context);
             this.qEntityMapByAlias[alias] = rightEntity;
-            this.jsonRelationMapByAlias[alias] = firstRelation;
+            this.queryRelationMapByAlias[alias] = firstRelation;
             if (!rightEntity) {
                 throw new Error(`Could not find entity ${joinRelation.ti} for 
 				table ${i + 1} in FROM clause`);
@@ -33181,7 +32883,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
             }
             joinNodeMap[alias] = rightNode;
         }
-        return jsonTree;
+        return joinTreeNode;
     }
     parseQueryResult(selectClauseFragment, entityAlias, currentJoinNode, resultRow, nextColumnIndex, context) {
         // Return blanks, primitives and Dates directly
@@ -33244,7 +32946,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
                 }
                 else {
                     const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation);
-                    const childEntityAlias = this.relationManager.getAlias(childJoinNode.jsonRelation);
+                    const childEntityAlias = this.relationManager.getAlias(childJoinNode.queryRelation);
                     const relationQEntity = this.qEntityMapByAlias[childEntityAlias];
                     const relationDbEntity = relationQEntity.__driver__.dbEntity;
                     let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextColumnIndex, context);
@@ -33398,7 +33100,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
         return selectFragment;
     }
     getSELECTFragment(dbEntity, selectClauseFragment, joinTree, context, parentProperty) {
-        const tableAlias = this.relationManager.getAlias(joinTree.jsonRelation);
+        const tableAlias = this.relationManager.getAlias(joinTree.queryRelation);
         let selectSqlFragments = [];
         this.entityStateManager.isStub(selectClauseFragment);
         const defaults = this.entityDefaults.getForAlias(tableAlias);
@@ -33437,7 +33139,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
     }
     getFROMFragment(parentTree, currentTree, context) {
         let fromFragment = '\t';
-        let currentRelation = currentTree.jsonRelation;
+        let currentRelation = currentTree.queryRelation;
         let currentAlias = this.relationManager.getAlias(currentRelation);
         let qEntity = this.qEntityMapByAlias[currentAlias];
         if (!qEntity) {
@@ -33446,7 +33148,7 @@ Please make sure that all entities present in the SELECT: {...} clause
 are specified in the FROM: [...] clause, with the SAME nesting pattern as
 in the SELECT: {...} clause.  The non-matching SELECT clause is:
 
-${getErrorMessageSelectStatement(this.jsonQuery.S)}
+${getErrorMessageSelectStatement(this.query.S)}
 
 `);
         }
@@ -33455,7 +33157,7 @@ ${getErrorMessageSelectStatement(this.jsonQuery.S)}
             fromFragment += `${tableName} ${currentAlias}`;
         }
         else {
-            let parentRelation = parentTree.jsonRelation;
+            let parentRelation = parentTree.queryRelation;
             let parentAlias = this.relationManager.getAlias(parentRelation);
             let leftEntity = this.qEntityMapByAlias[parentAlias];
             let rightEntity = this.qEntityMapByAlias[currentAlias];
@@ -33476,7 +33178,7 @@ ${getErrorMessageSelectStatement(this.jsonQuery.S)}
             }
             let errorPrefix = 'Error building FROM: ';
             switch (currentRelation.rt) {
-                case JSONRelationType.ENTITY_APPLICATION_RELATION:
+                case QueryRelationType.ENTITY_APPLICATION_RELATION:
                     fromFragment += this.getEntityApplicationRelationFromJoin(leftEntity, rightEntity, currentRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, context);
                     break;
                 default:
@@ -33498,8 +33200,8 @@ ${getErrorMessageSelectStatement(this.jsonQuery.S)}
  * Represents SQL String query with flat (aka traditional) Select clause.
  */
 class SheetSQLQuery extends NonEntitySQLQuery {
-    constructor(jsonQuery, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(jsonQuery, dialect, QueryResultType.SHEET, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(querySheet, dialect, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(querySheet, dialect, QueryResultType.SHEET, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
         this.orderByParser = new ExactOrderByParser(qValidator);
     }
     async parseQueryResults(results, internalFragments, queryResultType, context, bridgedQueryConfiguration) {
@@ -33509,7 +33211,7 @@ class SheetSQLQuery extends NonEntitySQLQuery {
         }
         parsedResults = [];
         results.forEach((result) => {
-            let parsedResult = this.parseQueryResult(this.jsonQuery.S, result, [0], internalFragments);
+            let parsedResult = this.parseQueryResult(this.query.S, result, [0], internalFragments);
             parsedResults.push(parsedResult);
         });
         return parsedResults;
@@ -33520,7 +33222,7 @@ class SheetSQLQuery extends NonEntitySQLQuery {
         }
         {
             let distinctClause = selectClauseFragment;
-            if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
+            if (distinctClause.ot == QueryClauseObjectType.DISTINCT_FUNCTION) {
                 let distinctSelect = this.getSELECTFragment(nested, distinctClause.appliedFunctions[0].p[0], internalFragments, context);
                 return `DISTINCT ${distinctSelect}`;
             }
@@ -33578,7 +33280,7 @@ class IdGenerator {
         });
     }
     doPopulateTransactionHistory_LocalIdColumns(resolve) {
-        if (Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__ && Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__.currentVersion) {
+        if (Q_airport____at_airport_slash_holding_dash_pattern$1.__dbDbApplication__ && Q_airport____at_airport_slash_holding_dash_pattern$1.__dbDbApplication__.currentVersion) {
             const transactionHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
             const repoTransHistoryDbEntity = this.getHoldingPatternDbEntity('RepositoryTransactionHistory');
             const operationHistoryDbEntity = this.getHoldingPatternDbEntity('OperationHistory');
@@ -33613,7 +33315,7 @@ class IdGenerator {
     async generateEntityIds() {
     }
     getHoldingPatternDbEntity(holdingPatternEntityName) {
-        return Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__.currentVersion[0].applicationVersion
+        return Q_airport____at_airport_slash_holding_dash_pattern$1.__dbDbApplication__.currentVersion[0].applicationVersion
             .entityMapByName[holdingPatternEntityName];
     }
 }
@@ -33659,14 +33361,14 @@ Entity:          ${table.name}
         if (table.tableConfig && table.tableConfig.name) {
             theTableName = table.tableConfig.name;
         }
-        let fullApplication_Name;
+        let fullDbApplication_Name;
         if (application.fullName) {
-            fullApplication_Name = application.fullName;
+            fullDbApplication_Name = application.fullName;
         }
         else {
-            fullApplication_Name = this.dbApplicationUtils.getApplication_FullName(application);
+            fullDbApplication_Name = this.dbApplicationUtils.getDbApplication_FullName(application);
         }
-        return this.composeTableName(fullApplication_Name, theTableName, context);
+        return this.composeTableName(fullDbApplication_Name, theTableName, context);
     }
     async internalSetupTransaction(transaction, context) {
         await this.ensureContext(context);
@@ -33734,11 +33436,11 @@ Entity:          ${table.name}
     }
     async insertValues(portableQuery, context, cachedSqlQueryId) {
         let fieldMap = new globalThis.SyncApplicationMap();
-        const splitValues = this.splitValues(portableQuery.jsonQuery.V, context);
+        const splitValues = this.splitValues(portableQuery.query.V, context);
         let numVals = 0;
         for (const V of splitValues) {
             let sqlInsertValues = new SQLInsertValues({
-                ...portableQuery.jsonQuery,
+                ...portableQuery.query,
                 V
             }, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             let sql = sqlInsertValues.toSQL(fieldMap, context);
@@ -33751,7 +33453,7 @@ Entity:          ${table.name}
     }
     async deleteWhere(portableQuery, context) {
         let fieldMap = new globalThis.SyncApplicationMap();
-        let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+        let sqlDelete = new SQLDelete(portableQuery.query, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
         let sql = sqlDelete.toSQL(fieldMap, context);
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
         let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
@@ -33761,7 +33463,7 @@ Entity:          ${table.name}
     }
     async updateWhere(portableQuery, internalFragments, context) {
         let fieldMap = new globalThis.SyncApplicationMap();
-        let sqlUpdate = new SQLUpdate(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+        let sqlUpdate = new SQLUpdate(portableQuery.query, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
         let sql = sqlUpdate.toSQL(internalFragments, fieldMap, context);
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
         const numAffectedRows = await this.executeNative(sql, parameters, context);
@@ -33779,7 +33481,7 @@ Entity:          ${table.name}
         return results;
     }
     getSQLQuery(portableQuery, context) {
-        let jsonQuery = portableQuery.jsonQuery;
+        let query = portableQuery.query;
         let dialect = this.getDialect(context);
         let resultType = portableQuery.queryResultType;
         const QueryResType = QueryResultType;
@@ -33788,13 +33490,13 @@ Entity:          ${table.name}
             case QueryResType.ENTITY_TREE:
                 const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
                     .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
-                return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.objectResultParserFactory, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+                return new EntitySQLQuery(query, dbEntity, dialect, resultType, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.objectResultParserFactory, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.FIELD:
-                return new FieldSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+                return new FieldSQLQuery(query, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.SHEET:
-                return new SheetSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+                return new SheetSQLQuery(query, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.TREE:
-                return new TreeSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+                return new TreeSQLQuery(query, dialect, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.RAW:
             default:
                 throw new Error(`Unknown QueryResultType: ${resultType}`);
@@ -33835,7 +33537,7 @@ Entity:          ${table.name}
 class QValidator {
     validateInsertQEntity(dbEntity) {
     }
-    validateReadFromEntity(relation) {
+    validateReadFromEntity(queryRelation) {
     }
     validateReadProperty(dbColumn) {
     }
@@ -33873,7 +33575,7 @@ fuelHydrantSystem.setDependencies(SqlDriver, {
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: ApplicationUtils,
     appTrackerUtils: AppTrackerUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
     objectResultParserFactory: ObjectResultParserFactory,
     observableQueryAdapter: ObservableQueryAdapter,
@@ -34011,11 +33713,11 @@ class RepositoryTransactionHistory {
         this.operationHistory = [];
         // Tracked only in the Terminal database where originally added, for the
         // purpose of sending out synchronization messages
-        // IS resent in RepositorySynchronizationMessage
+        // IS resent in SyncRepositoryMessage
         this.newRepositoryMemberInvitations = [];
         // Tracked only in the Terminal database where originally added, for the
         // purpose of sending out synchronization messages
-        // IS resent in RepositorySynchronizationMessage
+        // IS resent in SyncRepositoryMessage
         this.newRepositoryMemberAcceptances = [];
         // Tracked only in the Terminal database where originally added, for the
         // purpose of sending out synchronization messages
@@ -34023,7 +33725,7 @@ class RepositoryTransactionHistory {
         this.newRepositoryMemberUpdates = [];
         // Tracked only in the Terminal database where originally added, for the
         // purpose of sending out synchronization messages
-        // IS NOT resent in RepositorySynchronizationMessage
+        // IS NOT resent in SyncRepositoryMessage
         this.newRepositoryMembers = [];
         if (!data) {
             return;
@@ -34481,7 +34183,7 @@ const Q_airport____at_airport_slash_flight_dash_recorder = {
     name: '@airport/flight-recorder'
 };
 function airport____at_airport_slash_flight_dash_recorder_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_flight_dash_recorder.__dbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_flight_dash_recorder.__dbDbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
     globalThis.airApi.setQApp(Q_airport____at_airport_slash_flight_dash_recorder);
@@ -34782,7 +34484,7 @@ class InternalRecordManager {
         await this.transactionManager.transactInternal(async (_transaction, context) => {
             await this.updateDomain(application, context);
             let actorMapForDomain = this.terminalStore
-                .getApplicationActorMapByDomainAndApplication_Names().get(application.domain);
+                .getApplicationActorMapByDomainAndDbApplication_Names().get(application.domain);
             let actors;
             if (actorMapForDomain) {
                 actors = actorMapForDomain.get(application.name);
@@ -34794,7 +34496,7 @@ class InternalRecordManager {
             // TODO: add request object
             const userSession = await this.terminalSessionManager.getUserSession();
             let actor = await this.actorDao
-                .findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(application.domain, application.name, userSession.userAccount.accountPublicSigningKey, frameworkActor.terminal.GUID);
+                .findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(application.domain, application.name, userSession.userAccount.accountPublicSigningKey, frameworkActor.terminal.GUID);
             let anApplication = await this.applicationDao.findByIndex(application.lastIds.applications + 1);
             if (!actor) {
                 actor = {
@@ -34828,7 +34530,7 @@ class InternalRecordManager {
             terminal.owner = userAccount;
             terminal.isLocal = true;
             terminal.GUID = v4();
-            const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(firstApp.domain, firstApp.name);
+            const application = await this.applicationDao.findOneByDomain_NameAndDbApplication_Name(firstApp.domain, firstApp.name);
             const actor = new Actor$1();
             actor.application = application;
             actor.userAccount = userAccount;
@@ -35172,23 +34874,23 @@ class TransactionalReceiver {
             case IsolateMessageType.APP_INITIALIZING:
                 let initConnectionMessage = message;
                 const application = initConnectionMessage.jsonApplication;
-                const fullApplication_Name = this.dbApplicationUtils.
-                    getApplication_FullName(application);
-                const messageApplication_FullName = this.dbApplicationUtils.
-                    getApplication_FullNameFromDomainAndName(message.domain, message.application);
-                if (fullApplication_Name !== messageApplication_FullName) {
+                const fullDbApplication_Name = this.dbApplicationUtils.
+                    getDbApplication_FullName(application);
+                const messageDbApplication_FullName = this.dbApplicationUtils.
+                    getDbApplication_FullNameFromDomainAndName(message.domain, message.application);
+                if (fullDbApplication_Name !== messageDbApplication_FullName) {
                     theResult = null;
                     break;
                 }
                 if (this.terminalStore.getReceiver().initializingApps
-                    .has(fullApplication_Name)) {
+                    .has(fullDbApplication_Name)) {
                     return {
                         theErrorMessage,
                         theResult
                     };
                 }
                 this.terminalStore.getReceiver().initializingApps
-                    .add(fullApplication_Name);
+                    .add(fullDbApplication_Name);
                 // FIXME: initalize ahead of time, at Isolate Loading
                 await this.databaseManager.initFeatureApplications({}, [application]);
                 await this.internalRecordManager.ensureApplicationRecords(application, {});
@@ -35196,14 +34898,14 @@ class TransactionalReceiver {
                 break;
             case IsolateMessageType.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps;
-                initializedApps.add(message.fullApplication_Name);
+                initializedApps.add(message.fullDbApplication_Name);
                 return {
                     theErrorMessage,
                     theResult
                 };
             case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
-                theResult = this.terminalStore.getLatestApplicationVersionMapByApplication_FullName()
-                    .get(message.fullApplication_Name);
+                theResult = this.terminalStore.getLatestApplicationVersionMapByDbApplication_FullName()
+                    .get(message.fullDbApplication_Name);
                 break;
             }
             case IsolateMessageType.RETRIEVE_DOMAIN: {
@@ -35361,11 +35063,11 @@ class TransactionalReceiver {
                 return actor;
             }
             const terminal = this.terminalStore.getTerminal();
-            actor = await this.actorDao.findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(message.domain, message.application, userSession.userAccount.accountPublicSigningKey, terminal.GUID);
+            actor = await this.actorDao.findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(message.domain, message.application, userSession.userAccount.accountPublicSigningKey, terminal.GUID);
             if (actor) {
                 return actor;
             }
-            const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(message.domain, message.application);
+            const application = await this.applicationDao.findOneByDomain_NameAndDbApplication_Name(message.domain, message.application);
             actor = {
                 _localId: null,
                 application,
@@ -35586,7 +35288,7 @@ class AbstractMutationManager {
         return {
             applicationIndex,
             tableIndex,
-            jsonQuery: query.toJSON(this.queryUtils, this.fieldUtils, this.relationManager),
+            query: query.toQuery(this.queryUtils, this.fieldUtils, this.relationManager),
             parameterMap: query.getParameters(),
             queryResultType,
             trackedRepoGUIDs: Array.from(query.trackedRepoGUIDSet),
@@ -35673,7 +35375,7 @@ class DatabaseManager {
         await this.transactionManager.transactInternal(async (_transaction, context) => {
             const firstApp = BLUEPRINT[0];
             const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
-                .getApplication_FullName(firstApp), 'PACKAGES', context);
+                .getDbApplication_FullName(firstApp), 'PACKAGES', context);
             await this.installStarterApplication(false, hydrate, context);
             if (!hydrate) {
                 await this.internalRecordManager.initTerminal(firstApp, context);
@@ -35696,7 +35398,7 @@ class DatabaseManager {
         const applicationsToCreate = [];
         for (const jsonApplication of jsonApplications) {
             const existingApplication = existingApplicationMap.get(this.dbApplicationUtils
-                .getApplication_FullName(jsonApplication));
+                .getDbApplication_FullName(jsonApplication));
             if (existingApplication) {
                 jsonApplication.lastIds =
                     existingApplication.versions[0].jsonApplication.lastIds;
@@ -35734,16 +35436,16 @@ class DeleteManager {
             return await deleteCommand;
         }
         const selectCascadeTree = this.getCascadeSubTree(dbEntity);
-        const jsonDelete = portableQuery.jsonQuery;
-        const jsonSelect = {
+        const queryDelete = portableQuery.query;
+        const queryEntity = {
             S: selectCascadeTree,
-            F: [jsonDelete.DF],
-            W: jsonDelete.W,
+            F: [queryDelete.DF],
+            W: queryDelete.W,
         };
         const portableSelect = {
             applicationIndex: portableQuery.applicationIndex,
             tableIndex: portableQuery.tableIndex,
-            jsonQuery: jsonSelect,
+            query: queryEntity,
             queryResultType: QueryResultType.ENTITY_TREE,
             parameterMap: portableQuery.parameterMap,
             // values: portableQuery.values,
@@ -35930,9 +35632,9 @@ class InsertManager {
     async insertValuesGetLocalIds(portableQuery, actor, transaction, rootTransaction, context) {
         return await this.internalInsertValues(portableQuery, actor, transaction, rootTransaction, context, true);
     }
-    verifyNoGeneratedColumns(dbEntity, jsonInsertValues, errorPrefix) {
-        for (let i = 0; i < jsonInsertValues.C.length; i++) {
-            const columnIndex = jsonInsertValues.C[i];
+    verifyNoGeneratedColumns(dbEntity, queryInsertValues, errorPrefix) {
+        for (let i = 0; i < queryInsertValues.C.length; i++) {
+            const columnIndex = queryInsertValues.C[i];
             const dbColumn = dbEntity.columns[columnIndex];
             if (dbColumn.isGenerated) {
                 throw new Error(errorPrefix +
@@ -35947,10 +35649,10 @@ class InsertManager {
         const errorPrefix = `Error inserting into '${dbEntity.name}'.'
 `;
         this.validateValueRowLength(portableQuery, errorPrefix);
-        const jsonInsertValues = portableQuery.jsonQuery;
+        const queryInsertValues = portableQuery.query;
         const columnIndexSet = {};
         let inStatementIndex = 0;
-        for (const columnIndex of jsonInsertValues.C) {
+        for (const columnIndex of queryInsertValues.C) {
             if (columnIndex < 0 || columnIndex >= dbEntity.columns.length) {
                 throw new Error(errorPrefix +
                     `Invalid column index: ${columnIndex}`);
@@ -35961,7 +35663,7 @@ class InsertManager {
 appears more than once in the Columns clause`);
             }
             let rowNumber = 1;
-            for (let row of jsonInsertValues.V) {
+            for (let row of queryInsertValues.V) {
                 if (row[inStatementIndex] === undefined) {
                     throw new Error(errorPrefix +
                         `
@@ -35974,13 +35676,13 @@ appears more than once in the Columns clause`);
             columnIndexSet[columnIndex] = true;
         }
         let columnsToPopulate;
-        const insertValues = portableQuery.jsonQuery;
+        const insertValues = portableQuery.query;
         if (dbEntity.isAirEntity) {
             columnsToPopulate = this.ensureAirEntityIdValues(actor, dbEntity, insertValues, errorPrefix, transaction, context);
         }
         let generatedColumns;
         if (!transaction.isSync || context.generateOnSync) {
-            generatedColumns = this.verifyNoGeneratedColumns(dbEntity, portableQuery.jsonQuery, errorPrefix);
+            generatedColumns = this.verifyNoGeneratedColumns(dbEntity, portableQuery.query, errorPrefix);
         }
         let _localIds;
         let systemWideOperationId;
@@ -35998,7 +35700,7 @@ appears more than once in the Columns clause`);
         return getIds ? _localIds : numberOfInsertedRecords;
     }
     async validateValueRowLength(portableQuery, errorPrefix) {
-        const values = portableQuery.jsonQuery.V;
+        const values = portableQuery.query.V;
         if (!values.length) {
             throw new Error(errorPrefix + `no colum values provided`);
         }
@@ -36015,8 +35717,8 @@ appears more than once in the Columns clause`);
             }
         }
     }
-    async ensureGeneratedValues(dbEntity, jsonInsertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix) {
-        const values = jsonInsertValues.V;
+    async ensureGeneratedValues(dbEntity, queryInsertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix) {
+        const values = queryInsertValues.V;
         const idColumns = dbEntity.idColumns;
         const allIds = [];
         for (const _entityValues of values) {
@@ -36034,7 +35736,7 @@ appears more than once in the Columns clause`);
             }
             let isActorIdColumn = false;
             let inStatementColumnIndex;
-            const matchingColumns = jsonInsertValues.C.filter((columnIndex, index) => {
+            const matchingColumns = queryInsertValues.C.filter((columnIndex, index) => {
                 if (columnIndex === idColumn.index) {
                     inStatementColumnIndex = index;
                     return true;
@@ -36044,8 +35746,8 @@ appears more than once in the Columns clause`);
                 // Actor Id cannot be in the insert statement
                 if (idColumn._localId === actorIdColumn._localId) {
                     isActorIdColumn = true;
-                    inStatementColumnIndex = jsonInsertValues.C.length;
-                    jsonInsertValues.C.push(actorIdColumn.index);
+                    inStatementColumnIndex = queryInsertValues.C.length;
+                    queryInsertValues.C.push(actorIdColumn.index);
                 }
                 else {
                     throw new Error(errorPrefix +
@@ -36082,13 +35784,13 @@ appears more than once in the Columns clause`);
         const generatedColumnIndexes = [];
         // let numAddedColumns                    = 0
         for (const generatedColumn of generatedColumns) {
-            // const matchingColumns = jsonInsertValues.C.filter(
+            // const matchingColumns = queryInsertValues.C.filter(
             // 	columnIndex => columnIndex === generatedColumn.index)
             // if (!matchingColumns.length) {
-            // TODO: verify that it is OK to mutate the JsonInsertValues query
-            jsonInsertValues.C.length;
-            generatedColumnIndexes.push(jsonInsertValues.C.length);
-            jsonInsertValues.C.push(generatedColumn.index);
+            // TODO: verify that it is OK to mutate the QueryInsertValues query
+            queryInsertValues.C.length;
+            generatedColumnIndexes.push(queryInsertValues.C.length);
+            queryInsertValues.C.push(generatedColumn.index);
             // numAddedColumns++
             continue;
         }
@@ -36108,7 +35810,7 @@ appears more than once in the Columns clause`);
             });
         });
         if (!dbEntity.isLocal) {
-            jsonInsertValues.C.push(sysWideOperationIdColumn.index);
+            queryInsertValues.C.push(sysWideOperationIdColumn.index);
             values.forEach(entityValues => {
                 entityValues.push(systemWideOperationId);
             });
@@ -36141,7 +35843,7 @@ appears more than once in the Columns clause`);
         // }
         return allIds;
     }
-    ensureAirEntityIdValues(actor, dbEntity, jsonInsertValues, errorPrefix, transaction, context) {
+    ensureAirEntityIdValues(actor, dbEntity, queryInsertValues, errorPrefix, transaction, context) {
         const airEntityColumns = this.dictionary.AirEntity.columns;
         const actorIdColumn = dbEntity.idColumnMap[airEntityColumns.ACTOR_LID];
         const actorRecordIdColumn = dbEntity.idColumnMap[airEntityColumns.ACTOR_RECORD_ID];
@@ -36151,8 +35853,8 @@ appears more than once in the Columns clause`);
         let foundActorIdColumn = false;
         let foundActorRecordIdColumn = false;
         let foundSystemWideOperationIdColumn = false;
-        for (let i = 0; i < jsonInsertValues.C.length; i++) {
-            const columnIndex = jsonInsertValues.C[i];
+        for (let i = 0; i < queryInsertValues.C.length; i++) {
+            const columnIndex = queryInsertValues.C[i];
             switch (columnIndex) {
                 case actorIdColumn.index:
                     foundActorIdColumn = true;
@@ -36204,10 +35906,10 @@ You must provide a valid REPOSITORY_LID value for Repository entities.`;
                     `SYSTEM_WIDE_OPERATION_ID must be provided for sync operations.`);
             }
         }
-        for (const entityValues of jsonInsertValues.V) {
-            if (entityValues.length !== jsonInsertValues.C.length) {
+        for (const entityValues of queryInsertValues.V) {
+            if (entityValues.length !== queryInsertValues.C.length) {
                 throw new Error(errorPrefix +
-                    `Number of columns (${jsonInsertValues.C.length}) does not match number of values (${entityValues.length}).
+                    `Number of columns (${queryInsertValues.C.length}) does not match number of values (${entityValues.length}).
 				`);
             }
             let repositoryId = entityValues[repositoryIdColumnQueryIndex];
@@ -36222,7 +35924,7 @@ You must provide a valid REPOSITORY_LID value for Repository entities.`;
                         continue;
                 }
                 const value = entityValues[i];
-                const columnIndex = jsonInsertValues.C[i];
+                const columnIndex = queryInsertValues.C[i];
                 const dbColumn = dbEntity.columns[columnIndex];
                 if (dbColumn.notNull && value === null) {
                     throw new Error(errorPrefix +
@@ -36252,7 +35954,7 @@ and cannot have NULL values.`);
      * @returns {Promise<void>}
      */
     async addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, transaction, rootTransaction, context) {
-        const jsonInsertValues = portableQuery.jsonQuery;
+        const queryInsertValues = portableQuery.query;
         let operationsByRepo = [];
         let repoTransHistories = [];
         const airEntityColumns = this.dictionary.AirEntity.columns;
@@ -36262,8 +35964,8 @@ and cannot have NULL values.`);
         let repositoryIdColumnNumber;
         let actorIdColumnNumber;
         let actorRecordIdColumnNumber;
-        for (const columnNumber in jsonInsertValues.C) {
-            const columnIndex = jsonInsertValues.C[columnNumber];
+        for (const columnNumber in queryInsertValues.C) {
+            const columnIndex = queryInsertValues.C[columnNumber];
             switch (columnIndex) {
                 case repositoryIdIndex:
                     repositoryIdColumnNumber = columnNumber;
@@ -36277,7 +35979,7 @@ and cannot have NULL values.`);
             }
         }
         // Rows may belong to different repositories
-        for (const row of jsonInsertValues.V) {
+        for (const row of queryInsertValues.V) {
             const repositoryId = row[repositoryIdColumnNumber];
             // const repo           = await repoManager.getRepository(repositoryId)
             let repositoryTransactionHistory = repoTransHistories[repositoryId];
@@ -36293,13 +35995,13 @@ and cannot have NULL values.`);
             const _actorRecordId = row[actorRecordIdColumnNumber];
             const actorId = row[actorIdColumnNumber];
             const recordHistory = this.operationHistoryDuo.startRecordHistory(operationHistory, actorId, _actorRecordId);
-            for (const columnNumber in jsonInsertValues.C) {
+            for (const columnNumber in queryInsertValues.C) {
                 if (columnNumber === repositoryIdColumnNumber
                     || columnNumber === actorIdColumnNumber
                     || columnNumber === actorRecordIdColumnNumber) {
                     continue;
                 }
-                const columnIndex = jsonInsertValues.C[columnNumber];
+                const columnIndex = queryInsertValues.C[columnNumber];
                 const dbColumn = dbEntity.columns[columnIndex];
                 const newValue = row[columnNumber];
                 this.recordHistoryDuo.addNewValue(recordHistory, dbColumn, newValue);
@@ -36875,7 +36577,7 @@ class UpdateManager {
             // TODO: Entity based updates already have all of the new values being
             // updated, detect the type of update and if entity just pull out
             // the new values from them
-            await this.addNewValueHistory(portableQuery.jsonQuery, recordHistoryMap, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, transaction, context);
+            await this.addNewValueHistory(portableQuery.query, recordHistoryMap, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, transaction, context);
             context.dbEntity = previousDbEntity;
         }
         return numUpdatedRows;
@@ -36887,19 +36589,19 @@ class UpdateManager {
         }
         const qEntity = this.airportDatabase
             .qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
-        const jsonUpdate = portableQuery.jsonQuery;
-        const getSheetSelectFromSetClauseResult = this.queryUtils.getSheetSelectFromSetClause(context.dbEntity, qEntity, jsonUpdate.S, errorPrefix);
+        const queryUpdate = portableQuery.query;
+        const getSheetSelectFromSetClauseResult = this.queryUtils.getSheetSelectFromSetClause(context.dbEntity, qEntity, queryUpdate.S, errorPrefix);
         const sheetQuery = new SheetQuery(null);
-        const jsonSelectClause = sheetQuery.nonDistinctSelectClauseToJSON(getSheetSelectFromSetClauseResult.selectClause, this.queryUtils, this.fieldUtils, this.relationManager);
-        const jsonSelect = {
-            S: jsonSelectClause,
-            F: [jsonUpdate.U],
-            W: jsonUpdate.W,
+        const querySelectClause = sheetQuery.rawToQueryNonDistinctSelectClause(getSheetSelectFromSetClauseResult.selectClause, this.queryUtils, this.fieldUtils, this.relationManager);
+        const querySheet = {
+            S: querySelectClause,
+            F: [queryUpdate.U],
+            W: queryUpdate.W,
         };
         const portableSelect = {
             applicationIndex: portableQuery.applicationIndex,
             tableIndex: portableQuery.tableIndex,
-            jsonQuery: jsonSelect,
+            query: querySheet,
             queryResultType: QueryResultType.SHEET,
             parameterMap: portableQuery.parameterMap,
             // values: portableQuery.values,
@@ -36937,7 +36639,7 @@ class UpdateManager {
         }
         return [recordHistoryMapByRecordId, getSheetSelectFromSetClauseResult];
     }
-    async addNewValueHistory(jsonUpdate, recordHistoryMapByRecordId, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, transaction, context) {
+    async addNewValueHistory(queryUpdate, recordHistoryMapByRecordId, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, transaction, context) {
         const qEntity = this.airportDatabase.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
         const sheetQuery = new SheetQuery({
             FROM: [
@@ -36970,7 +36672,7 @@ class UpdateManager {
                 const actorId = updatedRecord[resultSetIndexByColumnIndex.get(repositorySheetSelectInfo.actorIdColumnIndex)];
                 const _actorRecordId = updatedRecord[resultSetIndexByColumnIndex.get(repositorySheetSelectInfo.actorRecordIdColumnIndex)];
                 const recordHistory = recordHistoryMapByRecordId[repositoryId][actorId][_actorRecordId];
-                for (const columnName in jsonUpdate.S) {
+                for (const columnName in queryUpdate.S) {
                     const dbColumn = context.dbEntity.columnMap[columnName];
                     const value = updatedRecord[resultSetIndexByColumnIndex.get(dbColumn.index)];
                     if (value === undefined) {
@@ -37246,10 +36948,10 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
     optimizePersistOperations(orderedDependencies, context) {
         let operationNodes = [];
         let processedNodes = [];
-        let operationsByApplication_Index = [];
+        let operationsByDbApplication_Index = [];
         for (const node of orderedDependencies) {
             const dbEntity = node.dbEntity;
-            const applicationOperationNodes = this.datastructureUtils.ensureChildArray(operationsByApplication_Index, dbEntity.applicationVersion.application.index);
+            const applicationOperationNodes = this.datastructureUtils.ensureChildArray(operationsByDbApplication_Index, dbEntity.applicationVersion.application.index);
             let entityOperations = applicationOperationNodes[dbEntity.index];
             if (!entityOperations) {
                 entityOperations = {
@@ -38191,21 +37893,21 @@ must always have a value for all entity operations.`);
 // interface is generic, unless already known to contain entity objects.)
 class QueryParameterDeserializer {
     deserialize(parameters, query, entityStateManager) {
-        if (parameters.length !== query.jsonQuery.parameters.length) {
-            throw new Error(`Wrong number of parameters for ${query.dbEntity.name}.${query.jsonQuery.queryName}
+        if (parameters.length !== query.query.parameters.length) {
+            throw new Error(`Wrong number of parameters for ${query.dbEntity.name}.${query.query.queryName}
             Received:  ${parameters.length}
-            Expecting: ${query.jsonQuery.parameters.length}
+            Expecting: ${query.query.parameters.length}
             `);
         }
         const deserializedParameters = [];
         for (let i = 0; i < parameters.length; i++) {
-            const deserializedParameter = this.deserializeParameter(parameters[i], query.jsonQuery.parameters[i], i + 1, query, entityStateManager);
+            const deserializedParameter = this.deserializeParameter(parameters[i], query.query.parameters[i], i + 1, query, entityStateManager);
             deserializedParameters.push(deserializedParameter);
         }
         return deserializedParameters;
     }
-    deserializeParameter(parameter, jsonQueryParameter, parameterIndex, query, entityStateManager) {
-        switch (jsonQueryParameter.type) {
+    deserializeParameter(parameter, queryParameter, parameterIndex, query, entityStateManager) {
+        switch (queryParameter.type) {
             case SQLDataType.BOOLEAN:
                 this.checkTypeOfParameter(parameter, 'boolean', parameterIndex, query);
                 break;
@@ -38214,7 +37916,7 @@ class QueryParameterDeserializer {
                     // || parameter[entityStateManager.getStateFieldName()] !== EntityState.RESULT_DATE
                     || !parameter.value) {
                     throw new Error(`Invalid Serialized Date format for:
-                    ${query.dbEntity.name}.${query.jsonQuery.queryName}
+                    ${query.dbEntity.name}.${query.query.queryName}
                     parameter #: ${parameterIndex}
         got: ${JSON.stringify(parameter)}
                     `);
@@ -38224,7 +37926,7 @@ class QueryParameterDeserializer {
                 }
                 catch (e) {
                     throw new Error(`Invalid Serialized Date format for:
-                    ${query.dbEntity.name}.${query.jsonQuery.queryName}
+                    ${query.dbEntity.name}.${query.query.queryName}
                     parameter #: ${parameterIndex}
         got: ${JSON.stringify(parameter)}
                     `);
@@ -38238,9 +37940,9 @@ class QueryParameterDeserializer {
                 break;
             default:
                 throw new Error(`Unsupported parameter type for:
-                ${query.dbEntity.name}.${query.jsonQuery.queryName}
+                ${query.dbEntity.name}.${query.query.queryName}
                 parameter #: ${parameterIndex}
-    got: ${jsonQueryParameter.type}
+    got: ${queryParameter.type}
                 `);
         }
         return parameter;
@@ -38249,7 +37951,7 @@ class QueryParameterDeserializer {
         const typeOfParameter = typeof parameter;
         if (typeOfParameter !== expectedParameterType) {
             throw new Error(`Expecting a '${expectedParameterType}' parameter for:
-            ${query.dbEntity.name}.${query.jsonQuery.queryName}
+            ${query.dbEntity.name}.${query.query.queryName}
             parameter #: ${parameterIndex}
 got: ${typeOfParameter}
             `);
@@ -38410,7 +38112,7 @@ terminal.setDependencies(DatabaseManager, {
     airportDatabase: AIRPORT_DATABASE,
     applicationDao: ApplicationDao,
     applicationInitializer: APPLICATION_INITIALIZER,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     internalRecordManager: InternalRecordManager,
     storeDriver: STORE_DRIVER,
     transactionalServer: TRANSACTIONAL_SERVER,
@@ -38510,7 +38212,7 @@ REPOSITORY_LOADER.setDependencies({
 terminal.setDependencies(StructuralEntityValidator, {
     applicationUtils: ApplicationUtils,
     crossRepositoryRelationManager: CrossRepositoryRelationManager,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
 });
@@ -38535,7 +38237,7 @@ TRANSACTIONAL_RECEIVER.setDependencies({
     actorDao: ActorDao,
     applicationDao: ApplicationDao,
     databaseManager: DatabaseManager,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     internalRecordManager: InternalRecordManager,
     localApiServer: LOCAL_API_SERVER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
@@ -39928,7 +39630,7 @@ class QueryFacade {
     }
     getPortableQuery(query, queryResultType, context) {
         return {
-            jsonQuery: query.toJSON(this.queryUtils, this.fieldUtils, this.relationManager),
+            query: query.toQuery(this.queryUtils, this.fieldUtils, this.relationManager),
             parameterMap: query.getParameters(),
             queryResultType,
             applicationIndex: context.dbEntity.applicationVersion.application.index,
@@ -40029,27 +39731,27 @@ class AirportDatabase {
     }
     getCurrentDbApplicationVersion(domainName, applicationName) {
         const applicationFullName = this.dbApplicationUtils
-            .getApplication_FullNameFromDomainAndName(domainName, applicationName);
+            .getDbApplication_FullNameFromDomainAndName(domainName, applicationName);
         return this.QM[applicationFullName]
-            .__dbApplication__.currentVersion[0].applicationVersion;
+            .__dbDbApplication__.currentVersion[0].applicationVersion;
     }
     getDbEntity(domainName, applicationName, entityName) {
         const dbApplicationVersion = this.getCurrentDbApplicationVersion(domainName, applicationName);
         return dbApplicationVersion.entityMapByName[entityName];
     }
     setQApp(qApplication) {
-        const fullApplication_Name = this.dbApplicationUtils
-            .getApplication_FullName(qApplication);
-        const existingQApp = this.QM[fullApplication_Name];
+        const fullDbApplication_Name = this.dbApplicationUtils
+            .getDbApplication_FullName(qApplication);
+        const existingQApp = this.QM[fullDbApplication_Name];
         if (existingQApp) {
-            const dbApplication = existingQApp.__dbApplication__;
+            const dbApplication = existingQApp.__dbDbApplication__;
             if (dbApplication) {
-                qApplication.__dbApplication__ = dbApplication;
+                qApplication.__dbDbApplication__ = dbApplication;
                 this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.qApplications, this.appliationUtils, this.relationManager);
                 this.Q[dbApplication.index] = qApplication;
             }
         }
-        this.QM[fullApplication_Name] = qApplication;
+        this.QM[fullDbApplication_Name] = qApplication;
     }
     getAccumulator(applicationDomain, applicationName) {
         return new EntityAccumulator(applicationDomain, applicationName, this.entityMap);
@@ -40135,8 +39837,8 @@ QUERY_FACADE.setClass(QueryFacade);
 
 class NoOpApplicationBuilder extends SqlSchemaBuilder {
     async createApplication(jsonApplication, context) {
-        const applicationName = IOC.getSync(DbApplicationUtils).
-            getApplication_FullName(jsonApplication);
+        const applicationName = IOC.getSync(ImplApplicationUtils).
+            getDbApplication_FullName(jsonApplication);
         const createApplicationStatement = `CREATE APPLICATION ${applicationName}`;
         await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [], context, false);
     }
@@ -40149,10 +39851,10 @@ class NoOpApplicationBuilder extends SqlSchemaBuilder {
     async buildAllSequences(jsonApplications, context) {
         let allSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
-                getApplication_FullName(jsonApplication)];
+            const qApplication = this.airportDatabase.QM[IOC.getSync(ImplApplicationUtils).
+                getDbApplication_FullName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-                allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
+                allSequences = allSequences.concat(this.buildSequences(qApplication.__dbDbApplication__, jsonEntity));
             }
         }
         return allSequences;
@@ -40160,10 +39862,10 @@ class NoOpApplicationBuilder extends SqlSchemaBuilder {
     stageSequences(jsonApplications, context) {
         let stagedSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
-                getApplication_FullName(jsonApplication)];
+            const qApplication = this.airportDatabase.QM[IOC.getSync(ImplApplicationUtils).
+                getDbApplication_FullName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-                stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
+                stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbDbApplication__, jsonEntity));
             }
         }
         return stagedSequences;
@@ -40391,7 +40093,7 @@ class NoOpSqlDriver extends SqlDriver {
     async setupTransaction(context, parentTransaction) {
         return Promise.resolve(undefined);
     }
-    getSelectQuerySuffix(jsonQuery, context) {
+    getSelectQuerySuffix(query, context) {
         return '';
     }
     executeNative(sql, parameters, context) {
@@ -40439,8 +40141,8 @@ class ApplicationQueryGenerator {
             for (const operationName in operations) {
                 const operation = operations[operationName];
                 switch (operation.type) {
-                    case OperationType.DELETE:
-                    case OperationType.SAVE:
+                    case DbOperationType.DELETE:
+                    case DbOperationType.SAVE:
                         break;
                     default:
                         // its a query
@@ -40470,8 +40172,8 @@ class ApplicationQueryGenerator {
             for (const operationName in operations) {
                 const operation = operations[operationName];
                 switch (operation.type) {
-                    case OperationType.DELETE:
-                    case OperationType.SAVE:
+                    case DbOperationType.DELETE:
+                    case DbOperationType.SAVE:
                         break;
                     default:
                         // its a query
@@ -40492,7 +40194,7 @@ class ApplicationQueryGenerator {
         const functionEndRegex = /\s*\}\);\s*$/;
         queryJavascript = queryJavascript.replace(functionStartRegex, '');
         queryJavascript = queryJavascript.replace(functionEndRegex, '');
-        const [airDb, dbApplicationUtils] = await IOC.get(AIRPORT_DATABASE, DbApplicationUtils);
+        const [airDb, dbApplicationUtils] = await IOC.get(AIRPORT_DATABASE, ImplApplicationUtils);
         for (const functionName in airDb.functions) {
             const regex = new RegExp(`\\s*${functionName}\\(`);
             queryJavascript = queryJavascript
@@ -40508,12 +40210,12 @@ class ApplicationQueryGenerator {
         const queryFunction = new Function(...functionConstructorParams);
         const [queryFunctionParameters, queryParameters] = this.getQueryFunctionParameters(queryDefinition, jsonApplication, airDb, dbApplicationUtils);
         const rawQuery = queryFunction(...queryFunctionParameters);
-        const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(DbApplicationUtils, Lookup, QUERY_FACADE);
+        const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(ImplApplicationUtils, Lookup, QUERY_FACADE);
         const context = lookup.ensureContext(null);
         const qApplication = airDb.QM[dbAppliationUtils.
-            getApplication_FullName(jsonApplication)];
-        const dbApplicationVersion = qApplication.__dbApplication__
-            .versions[qApplication.__dbApplication__.versions.length - 1];
+            getDbApplication_FullName(jsonApplication)];
+        const dbApplicationVersion = qApplication.__dbDbApplication__
+            .versions[qApplication.__dbDbApplication__.versions.length - 1];
         context.dbEntity = dbApplicationVersion.entityMapByName[entityName];
         await queryFacade.ensureContext(context);
         const queryResultType = this.getQueryResultType(queryDefinition.type);
@@ -40530,7 +40232,7 @@ class ApplicationQueryGenerator {
             parameterMap[parameterAlias] = parameterFieldMapByAlias[parameterAlias].index;
         }
         return {
-            jsonQuery: portableQuery.jsonQuery,
+            query: portableQuery.query,
             parameterMap,
             queryResultType: portableQuery.queryResultType,
             tableIndex: portableQuery.tableIndex
@@ -40597,7 +40299,7 @@ class ApplicationQueryGenerator {
                     break;
                 case QueryInputKind.Q:
                     Q = airDb.QM[dbApplicationUtils.
-                        getApplication_FullName(jsonApplication)];
+                        getDbApplication_FullName(jsonApplication)];
                     queryFunctionParameters.push(Q);
                     break;
                 case QueryInputKind.QENTITY:
@@ -40614,18 +40316,18 @@ class ApplicationQueryGenerator {
     }
     getQueryResultType(operationType) {
         switch (operationType) {
-            case OperationType.FIND_ONE_GRAPH:
-            case OperationType.FIND_GRAPH:
-            case OperationType.SEARCH_ONE_GRAPH:
-            case OperationType.SEARCH_GRAPH:
+            case DbOperationType.FIND_ONE_GRAPH:
+            case DbOperationType.FIND_GRAPH:
+            case DbOperationType.SEARCH_ONE_GRAPH:
+            case DbOperationType.SEARCH_GRAPH:
                 return QueryResultType.ENTITY_GRAPH;
-            case OperationType.FIND_ONE_TREE:
-            case OperationType.FIND_TREE:
-            case OperationType.SEARCH_ONE_TREE:
-            case OperationType.SEARCH_TREE:
+            case DbOperationType.FIND_ONE_TREE:
+            case DbOperationType.FIND_TREE:
+            case DbOperationType.SEARCH_ONE_TREE:
+            case DbOperationType.SEARCH_TREE:
                 return QueryResultType.ENTITY_TREE;
             default:
-                throw new Error(`Unexpected OperationType: '${operationType}'.`);
+                throw new Error(`Unexpected DbOperationType: '${operationType}'.`);
         }
     }
 }
@@ -40735,7 +40437,7 @@ export class SQDI${this.classSuffix}<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
-	ApplicationEntity_LocalId extends IEntityIdProperties,
+	DbEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends ${this.classSuffix}<Entity,
@@ -40743,7 +40445,7 @@ export class SQDI${this.classSuffix}<Entity,
 		EntityCreate,
 		EntityUpdateColumns,
 		EntityUpdateProperties,
-		ApplicationEntity_LocalId,
+		DbEntity_LocalId,
 		EntityCascadeGraph,
 		IQE> {
 
@@ -40787,7 +40489,7 @@ ${baseClassDefinitions}`;
         this.addImport([
             {
                 asName: 'DbEntityId',
-                sourceName: 'ApplicationEntity_LocalId'
+                sourceName: 'DbEntity_LocalId'
             }
         ], '@airport/ground-control');
         this.addImport([
@@ -40888,7 +40590,7 @@ ${baseClassDefinitions}`;
         this.addImport([
             {
                 asName: 'DbEntityId',
-                sourceName: 'ApplicationEntity_LocalId'
+                sourceName: 'DbEntity_LocalId'
             }
         ], '@airport/ground-control');
         this.addImport([
@@ -40953,10 +40655,10 @@ class ApplicationRelationResolver {
             let relatedOneToManys;
             let relationIndexedEntity;
             let relationEntityName;
-            let crossApplication = aRelation.referencedApplication_Index || aRelation.referencedApplication_Index === 0;
+            let crossApplication = aRelation.referencedDbApplication_Index || aRelation.referencedDbApplication_Index === 0;
             if (crossApplication) {
                 relationIndexedEntity = indexedApplication.application
-                    .referencedApplications[aRelation.referencedApplication_Index].dbApplication.currentVersion[0]
+                    .referencedApplications[aRelation.referencedDbApplication_Index].dbApplication.currentVersion[0]
                     .applicationVersion.entityMapByName[aRelation.entityName];
                 relationEntityName = relationIndexedEntity.name;
                 relationIndexedEntity.isLocal;
@@ -41633,7 +41335,7 @@ class ${entityCandidate.docEntry.name}
             }
         }
         let entityName;
-        let referencedApplication_Index;
+        let referencedDbApplication_Index;
         if (!aProperty.entity) {
             if (!aProperty.fromProject) {
                 throw new Error(`Neither entity nor source project was specified 
@@ -41652,7 +41354,7 @@ class ${entityCandidate.docEntry.name}
                 };
                 referencedApplicationsByProjectName[aProperty.fromProject] = applicationReference;
             }
-            referencedApplication_Index = applicationReference.index;
+            referencedDbApplication_Index = applicationReference.index;
             const propertyType = aProperty.nonArrayType;
             let relatedEntity = applicationReference.dbApplication.currentVersion[0]
                 .applicationVersion.entityMapByName[propertyType];
@@ -41688,7 +41390,7 @@ class ${entityCandidate.docEntry.name}
             manyToOne,
             oneToMany,
             relationType,
-            referencedApplication_Index,
+            referencedDbApplication_Index,
             relationMustBeSingleIdEntity,
             // repositoryJoin,
             sRelationColumns
@@ -42486,7 +42188,7 @@ class QEntityBuilder extends QCoreEntityBuilder {
         // 	interfaceGenericAndExtends = ` extends ${parentEntityQType}`
         // }
         let classSource = `/**
- * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
+ * Query Entity Query Definition (used for Q.DbEntity_Name).
  */
 export interface ${qName}<IQE extends ${qName} = any>${interfaceGenericAndExtends}<IQE | ${qName}>
 {
@@ -42976,7 +42678,7 @@ export default Q_${this.applicationFullName}
 export function ${this.applicationFullName}_diSet(
 	dbEntityId: number
 ): boolean {
-	return globalThis.airApi.dS(Q_${this.applicationFullName}.__dbApplication__, dbEntityId)
+	return globalThis.airApi.dS(Q_${this.applicationFullName}.__dbDbApplication__, dbEntityId)
 }
 if (globalThis.airApi) {
   globalThis.airApi.setQApp(Q_${this.applicationFullName})
@@ -42985,7 +42687,7 @@ if (globalThis.airApi) {
         // export function duoDiSet(
         // 	dbEntityId: number
         // ): boolean {
-        // 	return globalThis.airApi.ddS(Q.__dbApplication__, dbEntityId)
+        // 	return globalThis.airApi.ddS(Q.__dbDbApplication__, dbEntityId)
         // }
     }
 }
@@ -43179,24 +42881,24 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
                 };
             }
             else {
-                let relationTableApplication_Index;
-                let relationApplication_Index;
+                let relationTableDbApplication_Index;
+                let relationDbApplication_Index;
                 let relationTableIndex;
                 let relatedIndexedEntity;
-                if (sRelation.referencedApplication_Index || sRelation.referencedApplication_Index === 0) {
-                    relationTableApplication_Index = sRelation.referencedApplication_Index;
-                    const relatedDbApplication = sIndexedApplication.application.referencedApplications[sRelation.referencedApplication_Index];
-                    relationApplication_Index = relatedDbApplication.index;
+                if (sRelation.referencedDbApplication_Index || sRelation.referencedDbApplication_Index === 0) {
+                    relationTableDbApplication_Index = sRelation.referencedDbApplication_Index;
+                    const relatedDbApplication = sIndexedApplication.application.referencedApplications[sRelation.referencedDbApplication_Index];
+                    relationDbApplication_Index = relatedDbApplication.index;
                     relatedIndexedEntity = relatedDbApplication.dbApplication
                         .currentVersion[0].applicationVersion.entityMapByName[sRelation.entityName];
                     relationTableIndex = relatedIndexedEntity.index;
                 }
                 else {
                     relatedIndexedEntity = sIndexedApplication.entityMapByName[sRelation.entityName];
-                    relationApplication_Index = null;
+                    relationDbApplication_Index = null;
                     relationTableIndex = relatedIndexedEntity.entity.tableIndex;
                 }
-                this.buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationApplication_Index, relationTableIndex, columns);
+                this.buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationDbApplication_Index, relationTableIndex, columns);
                 const relation = {
                     // addToJoinFunction: sRelation.addToJoinFunction,
                     foreignKey: sRelation.foreignKey,
@@ -43211,7 +42913,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
                         index: index
                     },
                     relationTableIndex,
-                    relationTableApplication_Index,
+                    relationTableDbApplication_Index,
                     sinceVersion: 1
                 };
                 relations[sRelation.index] = relation;
@@ -43230,7 +42932,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
         });
         return [properties, relations];
     }
-    buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationApplication_Index, relationTableIndex, columns) {
+    buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationDbApplication_Index, relationTableIndex, columns) {
         switch (sRelation.relationType) {
             case EntityRelationType.MANY_TO_ONE:
                 break;
@@ -43260,7 +42962,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
             const column = columns[ownColumnIndex];
             column.manyRelationColumnRefs.push({
                 manyRelationIndex: sRelation.index,
-                oneApplication_Index: relationApplication_Index,
+                oneDbApplication_Index: relationDbApplication_Index,
                 oneTableIndex: relationTableIndex,
                 oneRelationIndex: sRelationColumn.oneSideRelationIndex,
                 oneColumnIndex: relationColumnIndex,
@@ -43833,24 +43535,24 @@ class JsonApplicationChecker {
         this.applicationReferenceChecker.appTrackerUtils.dictionary = new Dictionary();
     }
     checkFrameworkReferences(jsonApplication, indexedApplication) {
-        this.applicationReferenceChecker.checkFrameworkReferences(jsonApplication, (jsonApplication, jsonApplicationVersion, jsonRelation) => {
+        this.applicationReferenceChecker.checkFrameworkReferences(jsonApplication, (jsonApplication, jsonApplicationVersion, queryRelation) => {
             let relatedJsonApplication;
             let relatedJsonEntity;
-            if (jsonRelation.relationTableApplication_Index
-                || jsonRelation.relationTableApplication_Index === 0) {
+            if (queryRelation.relationTableDbApplication_Index
+                || queryRelation.relationTableDbApplication_Index === 0) {
                 const referencedApplication = jsonApplicationVersion
-                    .referencedApplications[jsonRelation.relationTableApplication_Index];
+                    .referencedApplications[queryRelation.relationTableDbApplication_Index];
                 // References are by name only since they are loaded from source by name
                 // thus a given Applicaiton shouldn't be referencing two other applications
                 // with the same names
                 relatedJsonApplication = indexedApplication.referencedApplicationsByName[referencedApplication.name].dbApplication;
                 const relatedApplicationVersion = relatedJsonApplication
                     .versions[relatedJsonApplication.versions.length - 1];
-                relatedJsonEntity = relatedApplicationVersion.entities[jsonRelation.relationTableIndex];
+                relatedJsonEntity = relatedApplicationVersion.entities[queryRelation.relationTableIndex];
             }
             else {
                 relatedJsonApplication = jsonApplication;
-                relatedJsonEntity = jsonApplicationVersion.entities[jsonRelation.relationTableIndex];
+                relatedJsonEntity = jsonApplicationVersion.entities[queryRelation.relationTableIndex];
             }
             return {
                 relatedJsonApplication,
@@ -43950,8 +43652,8 @@ function emitFiles(entityMapByName, configuration, applicationMapByProjectName) 
     const [jsonApplication, indexedApplication] = applicationBuilder.build(configuration.airport.domain, applicationMapByProjectName, entityOperationMap);
     const applicationChecker = new JsonApplicationChecker();
     applicationChecker.checkFrameworkReferences(jsonApplication, indexedApplication);
-    const applicationFullName = IOC.getSync(DbApplicationUtils).
-        getApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
+    const applicationFullName = IOC.getSync(ImplApplicationUtils).
+        getDbApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
     const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
     const entityVInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'vInterfaces.ts');
     const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder, entityQInterfaceListingBuilder, entityVInterfaceListingBuilder);
@@ -44048,16 +43750,16 @@ propertyDocEntry //
 ) {
     switch (propertyDocEntry.primitive) {
         case 'boolean':
-            return 'JSONRawBooleanOperation';
+            return 'RawBooleanOperation';
         case 'Date':
-            return 'JSONRawDateOperation';
+            return 'RawDateOperation';
         case 'number':
-            return 'JSONRawNumberOperation';
+            return 'RawNumberOperation';
         case 'string':
         case 'Json':
-            return 'JSONRawStringOperation';
+            return 'RawStringOperation';
         case 'any':
-            return 'JSONRawUntypedOperation';
+            return 'RawUntypedOperation';
         default:
             throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`);
     }
@@ -44255,5 +43957,5 @@ async function generate() {
     console.log('DONE AIRport generation');
 }
 
-export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DbApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GeneratedSummaryBuilder, GlobalCandidates, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, InjectionFileBuilder, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpApplicationBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
+export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GeneratedSummaryBuilder, GlobalCandidates, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplApplicationBuilder, ImplementationFileBuilder, ImportManager, InjectionFileBuilder, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpApplicationBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
 //# sourceMappingURL=index.mjs.map

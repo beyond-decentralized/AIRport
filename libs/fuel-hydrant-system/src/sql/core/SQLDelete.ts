@@ -3,8 +3,8 @@ import {
 	IQMetadataUtils,
 	IUtils
 } from '@airport/air-traffic-control'
-import { IApplicationUtils, IEntityStateManager, JsonDelete, SyncApplicationMap } from '@airport/ground-control'
-import { IQueryUtils, IRelationManager } from '@airport/tarmaq-query'
+import { IApplicationUtils, IEntityStateManager, QueryDelete, SyncApplicationMap } from '@airport/ground-control'
+import { IQueryUtils, IQueryRelationManager } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
@@ -21,7 +21,7 @@ export class SQLDelete
 	extends SQLNoJoinQuery {
 
 	constructor(
-		public jsonDelete: JsonDelete,
+		public deleteQuery: QueryDelete,
 		dialect: SQLDialect,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
@@ -29,15 +29,15 @@ export class SQLDelete
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		relationManager: IRelationManager,
+		relationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementSqlGenerator: ISubStatementSqlGenerator,
 		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
-		super(airportDatabase.applications[jsonDelete.DF.si].currentVersion[0]
-			.applicationVersion.entities[jsonDelete.DF.ti], dialect,
+		super(airportDatabase.applications[deleteQuery.DF.si].currentVersion[0]
+			.applicationVersion.entities[deleteQuery.DF.ti], dialect,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -58,17 +58,17 @@ export class SQLDelete
 	): string {
 		let {
 			tableFragment
-		} = this.getFromFragment(this.jsonDelete.DF, fieldMap, true, context)
+		} = this.getFromFragment(this.deleteQuery.DF, fieldMap, true, context)
 		let whereFragment = ''
-		let jsonQuery = this.jsonDelete
-		if (jsonQuery.W) {
-			whereFragment = this.getWHEREFragment(jsonQuery.W, '', context)
+		let queryDelete = this.deleteQuery
+		if (queryDelete.W) {
+			whereFragment = this.getWHEREFragment(queryDelete.W, '', context)
 			whereFragment = `
 WHERE
 ${whereFragment}`
 			// TODO: following might be needed for some RDBMS, does not work for SqLite
 			// Replace the root entity alias reference with the table name
-			// let tableAlias = this.relationManager.getAlias(this.jsonDelete.DF)
+			// let tableAlias = this.relationManager.getAlias(this.deleteQuery.DF)
 			// let tableName = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
 			// whereFragment = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
 		}

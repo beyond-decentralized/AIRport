@@ -12,14 +12,14 @@ import {
 import {
     IActor,
     IAppTrackerUtils,
-    IDbApplicationUtils
+    DbApplicationUtils
 } from '@airport/ground-control';
 import {
     IApiCallContext,
     IApiIMI,
     IConnectionInitializedIMI,
     IDatabaseManager,
-    IGetLatestApplicationVersionByApplication_NameIMI,
+    IGetLatestApplicationVersionByDbApplication_NameIMI,
     IInitConnectionIMI,
     IIsolateMessage,
     IIsolateMessageOut,
@@ -59,7 +59,7 @@ export abstract class TransactionalReceiver {
     databaseManager: IDatabaseManager
 
     @Inject()
-    dbApplicationUtils: IDbApplicationUtils
+    dbApplicationUtils: DbApplicationUtils
 
     @Inject()
     internalRecordManager: IInternalRecordManager
@@ -141,24 +141,24 @@ export abstract class TransactionalReceiver {
             case IsolateMessageType.APP_INITIALIZING:
                 let initConnectionMessage: IInitConnectionIMI = message as any
                 const application: JsonApplicationWithLastIds = initConnectionMessage.jsonApplication
-                const fullApplication_Name = this.dbApplicationUtils.
-                    getApplication_FullName(application)
-                const messageApplication_FullName = this.dbApplicationUtils.
-                    getApplication_FullNameFromDomainAndName(message.domain, message.application)
-                if (fullApplication_Name !== messageApplication_FullName) {
+                const fullDbApplication_Name = this.dbApplicationUtils.
+                    getDbApplication_FullName(application)
+                const messageDbApplication_FullName = this.dbApplicationUtils.
+                    getDbApplication_FullNameFromDomainAndName(message.domain, message.application)
+                if (fullDbApplication_Name !== messageDbApplication_FullName) {
                     theResult = null
                     break
                 }
 
                 if (this.terminalStore.getReceiver().initializingApps
-                    .has(fullApplication_Name)) {
+                    .has(fullDbApplication_Name)) {
                     return {
                         theErrorMessage,
                         theResult
                     }
                 }
                 this.terminalStore.getReceiver().initializingApps
-                    .add(fullApplication_Name)
+                    .add(fullDbApplication_Name)
 
                 // FIXME: initalize ahead of time, at Isolate Loading
                 await this.databaseManager.initFeatureApplications({}, [application])
@@ -170,14 +170,14 @@ export abstract class TransactionalReceiver {
                 break
             case IsolateMessageType.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps
-                initializedApps.add((message as any as IConnectionInitializedIMI).fullApplication_Name)
+                initializedApps.add((message as any as IConnectionInitializedIMI).fullDbApplication_Name)
                 return {
                     theErrorMessage,
                     theResult
                 }
             case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
-                theResult = this.terminalStore.getLatestApplicationVersionMapByApplication_FullName()
-                    .get((message as any as IGetLatestApplicationVersionByApplication_NameIMI).fullApplication_Name)
+                theResult = this.terminalStore.getLatestApplicationVersionMapByDbApplication_FullName()
+                    .get((message as any as IGetLatestApplicationVersionByDbApplication_NameIMI).fullDbApplication_Name)
                 break
             }
             case IsolateMessageType.RETRIEVE_DOMAIN: {
@@ -417,7 +417,7 @@ export abstract class TransactionalReceiver {
             }
 
             const terminal = this.terminalStore.getTerminal()
-            actor = await this.actorDao.findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(
+            actor = await this.actorDao.findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(
                 message.domain,
                 message.application,
                 userSession.userAccount.accountPublicSigningKey,
@@ -427,7 +427,7 @@ export abstract class TransactionalReceiver {
                 return actor
             }
 
-            const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(message.domain, message.application)
+            const application = await this.applicationDao.findOneByDomain_NameAndDbApplication_Name(message.domain, message.application)
             actor = {
                 _localId: null,
                 application,

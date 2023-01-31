@@ -1,7 +1,7 @@
-import { JsonFieldQuery, Repository_GUID, Repository_LocalId } from "@airport/ground-control";
-import { IEntityAliases } from "../core/entity/Aliases";
-import { IQOrderableField } from "../core/field/Field";
-import { RawFieldQuery } from "../query/facade/FieldQuery";
+import { QueryField, Repository_GUID, Repository_LocalId } from "@airport/ground-control";
+import { IEntityAliases } from "../core/entity/IAliases";
+import { IQOrderableField } from "../core/field/IQFieldInternal";
+import { RawFieldQuery } from "../query/facade/RawFieldQuery";
 import { IQueryUtils } from './IQueryUtils'
 
 export interface IFieldUtils {
@@ -12,6 +12,6 @@ export interface IFieldUtils {
 		trackedRepoGUIDSet: Set<Repository_GUID>,
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils
-	): JsonFieldQuery;
+	): QueryField;
 
 }

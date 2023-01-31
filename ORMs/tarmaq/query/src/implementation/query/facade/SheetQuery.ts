@@ -1,7 +1,7 @@
-import { JsonSheetQuery, Repository_GUID, Repository_LocalId } from '@airport/ground-control'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { IQuery } from '../../../definition/query/facade/Query'
-import { RawSheetQuery } from '../../../definition/query/facade/SheetQuery'
+import { QuerySheet, Repository_GUID, Repository_LocalId } from '@airport/ground-control'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { IReadQuery } from '../../../definition/query/facade/RawReadQuery'
+import { RawSheetQuery } from '../../../definition/query/facade/RawSheetQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { EntityAliases } from '../../core/entity/Aliases'
@@ -17,7 +17,7 @@ import {
 
 export class SheetQuery
 	extends DistinguishableQuery
-	implements IQuery {
+	implements IReadQuery {
 
 	constructor(
 		public rawQuery: RawSheetQuery,
@@ -27,11 +27,11 @@ export class SheetQuery
 		super(new EntityAliases(), trackedRepoGUIDSet, trackedRepoLocalIdSet)
 	}
 
-	nonDistinctSelectClauseToJSON(
+	rawToQueryNonDistinctSelectClause(
 		rawSelect: any[],
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
+		relationManager: IQueryRelationManager
 	): any {
 		if (!(rawSelect instanceof Array)) {
 			throw new Error(`Flat Queries an array of fields in SELECT clause.`)
@@ -42,31 +42,31 @@ export class SheetQuery
 			}
 			this.columnAliases.entityAliases.getNextAlias(
 				selectField.q.__driver__.getRootJoinEntity())
-			const jsonClauseField = selectField.toJSON(
+			const queryFieldClause = selectField.toQueryFragment(
 				this.columnAliases, true,
 				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 				queryUtils, fieldUtils, relationManager)
 
-			return jsonClauseField
+			return queryFieldClause
 		})
 	}
 
-	toJSON(
+	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JsonSheetQuery {
-		let select = this.selectClauseToJSON(
+		relationManager: IQueryRelationManager
+	): QuerySheet {
+		let select = this.rawToQuerySelectClause(
 			this.rawQuery.SELECT,
 			queryUtils, fieldUtils, relationManager)
 
-		let jsonFieldQuery: JsonSheetQuery = {
+		let querySheet: QuerySheet = {
 			S: select,
 			forUpdate: this.rawQuery.FOR_UPDATE
 		}
 
-		return <JsonSheetQuery>this.getNonEntityQuery(
-			this.rawQuery, jsonFieldQuery, null,
+		return <QuerySheet>this.getNonEntityQuery(
+			this.rawQuery, querySheet, null,
 			queryUtils, fieldUtils, relationManager)
 	}
 

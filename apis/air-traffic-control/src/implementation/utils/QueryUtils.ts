@@ -13,8 +13,8 @@ import {
 	Dictionary,
 	IAirEntity,
 	IApplicationUtils,
-	JSONBaseOperation,
-	JSONValueOperation,
+	QueryBaseOperation,
+	QueryValueOperation,
 	OperationCategory,
 	Repository_GUID,
 	Repository_LocalId,
@@ -37,11 +37,11 @@ import {
 	IQFieldInternal,
 	IQNumberField,
 	IQStringField,
+	IQueryRelationManager,
 	IQueryUtils,
 	IQUntypedField,
-	IRelationManager,
-	JSONLogicalOperation,
-	JSONRawValueOperation,
+	QueryLogicalOperation,
+	RawValueOperation,
 	OR,
 	QEntity,
 	QEntityConstructor,
@@ -51,7 +51,7 @@ import {
 	RepositorySheetSelectInfo,
 	wrapPrimitive
 } from '@airport/tarmaq-query'
-import { IAirportDatabase, QAppInternal } from '../../definition/AirportDatabase'
+import { IAirportDatabase, QAppInternal } from '../../definition/IAirportDatabase'
 
 @Injected()
 export class QueryUtils
@@ -76,7 +76,7 @@ export class QueryUtils
 	qEntityUtils: IQEntityUtils
 
 	@Inject()
-	relationManager: IRelationManager
+	queryRelationManager: IQueryRelationManager
 
 	@Inject()
 	airEntityUtils: IAirEntityUtils
@@ -86,7 +86,7 @@ export class QueryUtils
 			// | IQAirEntityRelation<Entity, IQ>
 			| AirEntityId | string,
 		toObject: IQ // | IQRelation<IQ>
-	): JSONLogicalOperation {
+	): QueryLogicalOperation {
 		if (!entityOrId) {
 			throw new Error(`null entity/Id is passed into 'equals' method`)
 		}
@@ -117,7 +117,7 @@ export class QueryUtils
 	in<Entity extends IAirEntity, IQ extends IQAirEntity>(
 		entitiesOrIds: (Entity | AirEntityId | string)[],
 		toObject: IQ // | IQRelation<IQ>
-	): JSONLogicalOperation {
+	): QueryLogicalOperation {
 		if (!entitiesOrIds || !entitiesOrIds.length) {
 			throw new Error(`null entity/Id array is passed into 'IN' method`)
 		}
@@ -143,7 +143,7 @@ export class QueryUtils
 	equalsInternal<IQ extends IQEntity>(
 		entityId: string | number,
 		toObject: IQ // | IQRelation<IQ>
-	): JSONBaseOperation {
+	): QueryBaseOperation {
 		const columnField = this.getGetSingleColumnRelationField(
 			toObject)
 
@@ -153,7 +153,7 @@ export class QueryUtils
 	inInternal<IQ extends IQEntity>(
 		entityIds: (string | number)[],
 		toObject: IQ // | IQRelation<IQ>
-	): JSONBaseOperation {
+	): QueryBaseOperation {
 		if (!entityIds || !entityIds.length) {
 			throw new Error(`null or empty Id array is passed into 'IN' method`)
 		}
@@ -219,34 +219,34 @@ is supported only for single columm relations
 		}
 	}
 
-	whereClauseToJSON(
-		whereClause: JSONBaseOperation,
+	whereClauseToQueryOperation(
+		whereClause: QueryBaseOperation,
 		columnAliases: IFieldColumnAliases<any>,
 		trackedRepoGUIDSet: Set<Repository_GUID>,
 		trackedRepoLocalIdSet: Set<Repository_LocalId>
-	): JSONBaseOperation {
+	): QueryBaseOperation {
 		if (!whereClause) {
 			return null
 		}
-		let operation: JSONBaseOperation = whereClause
-		let jsonOperation: JSONBaseOperation = {
+		let operation: QueryBaseOperation = whereClause
+		let queryOperation: QueryBaseOperation = {
 			c: operation.c,
 			o: operation.o
 		}
 		switch (operation.c) {
 			case OperationCategory.LOGICAL:
-				let logicalOperation = <JSONLogicalOperation>operation
-				let jsonLogicalOperation = <JSONLogicalOperation>jsonOperation
+				let logicalOperation = <QueryLogicalOperation>operation
+				let queryLogicalOperation = <QueryLogicalOperation>queryOperation
 				switch (operation.o) {
 					case SqlOperator.NOT:
-						jsonLogicalOperation.v = this.whereClauseToJSON(
-							<JSONBaseOperation>logicalOperation.v, columnAliases,
+						queryLogicalOperation.v = this.whereClauseToQueryOperation(
+							<QueryBaseOperation>logicalOperation.v, columnAliases,
 							trackedRepoGUIDSet, trackedRepoLocalIdSet)
 						break
 					case SqlOperator.AND:
 					case SqlOperator.OR:
-						jsonLogicalOperation.v = (<JSONBaseOperation[]>logicalOperation.v).map((value) =>
-							this.whereClauseToJSON(value, columnAliases,
+						queryLogicalOperation.v = (<QueryBaseOperation[]>logicalOperation.v).map((value) =>
+							this.whereClauseToQueryOperation(value, columnAliases,
 								trackedRepoGUIDSet, trackedRepoLocalIdSet)
 						)
 						break
@@ -257,22 +257,22 @@ is supported only for single columm relations
 			case OperationCategory.FUNCTION:
 				// TODO: verify that cast of Q object is valid
 				let functionOperation: QExistsFunction<any> = <QExistsFunction<any>><any>operation
-				let query = functionOperation.getQuery()
-				let jsonQuery = IOC.getSync(ENTITY_UTILS).getTreeQuery(
-					query, columnAliases.entityAliases).toJSON(this,
-						this.fieldUtils, this.relationManager)
-				jsonOperation = functionOperation.toJSON(jsonQuery)
+				let subQuery = functionOperation.getQuery()
+				let query = IOC.getSync(ENTITY_UTILS).getTreeQuery(
+					subQuery, columnAliases.entityAliases).toQuery(this,
+						this.fieldUtils, this.queryRelationManager)
+				queryOperation = functionOperation.toQueryFragment(query)
 				break
 			case OperationCategory.BOOLEAN:
 			case OperationCategory.DATE:
 			case OperationCategory.NUMBER:
 			case OperationCategory.STRING:
 			case OperationCategory.UNTYPED:
-				let valueOperation: JSONRawValueOperation<any> = <JSONRawValueOperation<any>>operation
+				let valueOperation: RawValueOperation<any> = <RawValueOperation<any>>operation
 				// All Non logical or exists operations are value operations (equals, IS_NULL, LIKE,
 				// etc.)
-				let jsonValueOperation: JSONValueOperation = <JSONValueOperation>jsonOperation
-				jsonValueOperation.l = this.convertLRValue(
+				let queryValueOperation: QueryValueOperation = <QueryValueOperation>queryOperation
+				queryValueOperation.l = this.convertLRValue(
 					valueOperation.l, columnAliases,
 					trackedRepoGUIDSet, trackedRepoLocalIdSet)
 				if (operation.o === SqlOperator.IS_NOT_NULL
@@ -281,12 +281,12 @@ is supported only for single columm relations
 				}
 				let rValue = valueOperation.r
 				if (rValue instanceof Array) {
-					jsonValueOperation.r = rValue.map((anRValue) => {
+					queryValueOperation.r = rValue.map((anRValue) => {
 						return this.convertLRValue(anRValue, columnAliases,
 							trackedRepoGUIDSet, trackedRepoLocalIdSet)
 					})
 				} else {
-					jsonValueOperation.r = this.convertLRValue(rValue, columnAliases,
+					queryValueOperation.r = this.convertLRValue(rValue, columnAliases,
 						trackedRepoGUIDSet, trackedRepoLocalIdSet)
 				}
 				for (const trackedRepoGUID of valueOperation.trackedRepoGUIDs) {
@@ -298,7 +298,7 @@ is supported only for single columm relations
 				break
 		}
 
-		return jsonOperation
+		return queryOperation
 	}
 
 	getQEntityConstructor<IQE extends IQEntity>(
@@ -502,9 +502,9 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 				throw new Error(`'undefined' is not a valid L or R value`)
 			default:
 				if (value instanceof QOperableField) {
-					return value.toJSON(columnAliases, false,
+					return value.toQueryFragment(columnAliases, false,
 						trackedRepoGUIDSet, trackedRepoLocalIdSet,
-						this, this.fieldUtils, this.relationManager)
+						this, this.fieldUtils, this.queryRelationManager)
 				} // Must be a Field Query
 				else {
 					let rawFieldQuery: RawFieldQuery<any> = value

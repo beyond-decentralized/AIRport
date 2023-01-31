@@ -1,15 +1,15 @@
 import {
-	JSONEntityRelation,
-	JsonEntityUpdateColumns,
-	JsonUpdate
+	QueryEntityRelation,
+	QueryUpdateColumns,
+	QueryUpdate
 } from '@airport/ground-control'
-import { IEntityAliases } from '../../../definition/core/entity/Aliases'
+import { IEntityAliases } from '../../../definition/core/entity/IAliases'
 import {
 	IQEntity
-} from '../../../definition/core/entity/Entity'
+} from '../../../definition/core/entity/IQEntity'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { AbstractRawUpdate } from '../../../definition/query/facade/Update'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { AbstractRawUpdate } from '../../../definition/query/facade/RawUpdate'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { EntityAliases } from '../../core/entity/Aliases'
@@ -26,30 +26,30 @@ export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractR
 			entityAliases.getNewFieldColumnAliases())
 	}
 
-	toJSON(
+	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JsonUpdate<JsonEntityUpdateColumns> {
+		relationManager: IQueryRelationManager
+	): QueryUpdate<QueryUpdateColumns> {
 		return {
-			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.UPDATE)
-				.__driver__.getRelationJson(this.columnAliases,
+			U: <QueryEntityRelation>(<IQEntityInternal><any>this.rawUpdate.UPDATE)
+				.__driver__.getQueryRelation(this.columnAliases,
 					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 					queryUtils, fieldUtils, relationManager),
-			S: this.setToJSON(this.rawUpdate.SET,
+			S: this.rawToQuerySetClause(this.rawUpdate.SET,
 				queryUtils, fieldUtils, relationManager),
-			W: queryUtils.whereClauseToJSON(
+			W: queryUtils.whereClauseToQueryOperation(
 				this.rawUpdate.WHERE, this.columnAliases,
 				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
 		}
 	}
 
 
-	protected abstract setToJSON(
+	protected abstract rawToQuerySetClause(
 		set: any,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JsonEntityUpdateColumns;
+		relationManager: IQueryRelationManager
+	): QueryUpdateColumns;
 
 }

@@ -12,10 +12,10 @@ import {
 } from '@airport/airport-code'
 import {
 	DbApplication,
-	IDbApplicationUtils,
+	DbApplicationUtils,
 	JsonApplication,
-	JsonApplicationColumn,
-	JsonApplicationEntity,
+	JsonColumn,
+	JsonEntity,
 	QueryType,
 	SQLDataType
 } from '@airport/ground-control'
@@ -32,8 +32,8 @@ export class MySqlSchemaBuilder
 		jsonApplication: JsonApplication,
 		context: IContext,
 	): Promise<void> {
-		const fullApplication_Name = this.dbApplicationUtils.getApplication_FullName(jsonApplication)
-		const createApplicationStatement = `CREATE SCHEMA ${fullApplication_Name}`
+		const fullDbApplication_Name = this.dbApplicationUtils.getDbApplication_FullName(jsonApplication)
+		const createApplicationStatement = `CREATE SCHEMA ${fullDbApplication_Name}`
 
 		await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [],
 			context, false)
@@ -41,8 +41,8 @@ export class MySqlSchemaBuilder
 
 	getColumnSuffix(
 		jsonApplication: JsonApplication,
-		jsonEntity: JsonApplicationEntity,
-		jsonColumn: JsonApplicationColumn
+		jsonEntity: JsonEntity,
+		jsonColumn: JsonColumn
 	): string {
 		let primaryKeySuffix = ''
 		if (jsonColumn.notNull
@@ -77,7 +77,7 @@ export class MySqlSchemaBuilder
 
 	getCreateTableSuffix(
 		jsonApplication: JsonApplication,
-		jsonEntity: JsonApplicationEntity
+		jsonEntity: JsonEntity
 	): string {
 		return ``
 	}
@@ -91,9 +91,9 @@ export class MySqlSchemaBuilder
 		let allSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
 			const qApplication = this.airportDatabase.QM[this.dbApplicationUtils
-				.getApplication_FullName(jsonApplication)] as QAppInternal
+				.getDbApplication_FullName(jsonApplication)] as QAppInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
+				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbDbApplication__, jsonEntity))
 			}
 		}
 
@@ -111,9 +111,9 @@ export class MySqlSchemaBuilder
 		let stagedSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
 			const qApplication = this.airportDatabase.QM[this.dbApplicationUtils
-				.getApplication_FullName(jsonApplication)] as QAppInternal
+				.getDbApplication_FullName(jsonApplication)] as QAppInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
+				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbDbApplication__, jsonEntity))
 			}
 		}
 
@@ -122,7 +122,7 @@ export class MySqlSchemaBuilder
 
 	buildSequences(
 		dbApplication: DbApplication,
-		jsonEntity: JsonApplicationEntity,
+		jsonEntity: JsonEntity,
 	): ISequence[] {
 		const sequences: ISequence[] = []
 		for (const jsonColumn of jsonEntity.columns) {

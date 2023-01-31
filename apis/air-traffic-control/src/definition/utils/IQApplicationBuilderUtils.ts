@@ -1,7 +1,7 @@
 import { QApp } from "@airport/aviation-communication"
-import { ApplicationEntity_TableIndex, Application_Index, DbApplication, DbEntity, IApplicationUtils } from "@airport/ground-control"
-import { IRelationManager } from "@airport/tarmaq-query"
-import { QAppInternal } from "../AirportDatabase"
+import { DbEntity_TableIndex, DbApplication_Index, DbApplication, DbEntity, IApplicationUtils } from "@airport/ground-control"
+import { IQueryRelationManager } from "@airport/tarmaq-query"
+import { QAppInternal } from "../IAirportDatabase"
 
 export interface DbApplicationWithDependencies {
 	application: DbApplication
@@ -10,12 +10,12 @@ export interface DbApplicationWithDependencies {
 
 export interface DbApplicationDependency {
 	appWithDependencies?: DbApplicationWithDependencies
-	index: Application_Index
+	index: DbApplication_Index
 }
 
 export interface DbEntityWithDependencies {
 	entity: DbEntity
-	dependencies: Set<ApplicationEntity_TableIndex>
+	dependencies: Set<DbEntity_TableIndex>
 }
 
 export interface IQApplicationBuilderUtils {
@@ -25,7 +25,7 @@ export interface IQApplicationBuilderUtils {
 		qApplication: QAppInternal,
 		allQApps: QApp[],
 		appliationUtils: IApplicationUtils,
-		relationManager: IRelationManager,
+		relationManager: IQueryRelationManager,
 	): void
 
 	orderApplicationsInOrderOfPrecedence(
@@ -34,7 +34,7 @@ export interface IQApplicationBuilderUtils {
 
 	applicationDependsOn(
 		dependantApplication: DbApplicationWithDependencies,
-		dependsOnApplication_Index: Application_Index
+		dependsOnDbApplication_Index: DbApplication_Index
 	): boolean
 
 }

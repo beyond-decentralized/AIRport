@@ -1,12 +1,12 @@
 import { IDependencyInjectionToken, InversionOfControl } from "@airport/direction-indicator"
-import { DbEntity, DbRelation, JoinType, JSONBaseOperation, JSONEntityRelation, JSONJoinRelation, JSONRelation, JSONRelationType, Repository_GUID, Repository_LocalId } from "@airport/ground-control"
-import { IFieldColumnAliases } from "../../../definition/core/entity/Aliases"
-import { IFrom, IQEntity } from "../../../definition/core/entity/Entity"
+import { DbEntity, DbRelation, JoinType, QueryBaseOperation, QueryEntityRelation, QueryJoinRelation, QueryRelation, QueryRelationType, Repository_GUID, Repository_LocalId } from "@airport/ground-control"
+import { IFieldColumnAliases } from "../../../definition/core/entity/IAliases"
+import { IFrom, IQEntity } from "../../../definition/core/entity/IQEntity"
 import { IQEntityDriver, IQEntityInternal } from "../../../definition/core/entity/IQEntityDriver"
-import { IRelationManager } from "../../../definition/core/entity/IRelationManager"
-import { IJoinFields } from "../../../definition/core/entity/Joins"
-import { IQInternalRelation } from "../../../definition/core/entity/Relation"
-import { IQOperableFieldInternal } from "../../../definition/core/field/OperableField"
+import { IQueryRelationManager } from "../../../definition/core/entity/IQueryRelationManager"
+import { IJoinFields } from "../../../definition/core/entity/IJoins"
+import { IQInternalRelation } from "../../../definition/core/entity/IQRelation"
+import { IQOperableFieldInternal } from "../../../definition/core/field/IQOperableField"
 import { IEntityUtils } from "../../../definition/utils/IEntityUtils"
 import { IFieldUtils } from "../../../definition/utils/IFieldUtils"
 import { IQueryUtils } from "../../../definition/utils/IQueryUtils"
@@ -16,20 +16,20 @@ export class QEntityDriver<IQE extends IQEntity = any>
     implements IQEntityDriver<IQE> {
 
     childQEntities: IQEntityInternal[] = []
-    entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any> } = {}
+    entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, QueryBaseOperation, any, any> } = {}
     entityRelations: IQInternalRelation<any>[] = []
     entityRelationMapByIndex: { [relationPropertyIndex: number]: IQInternalRelation<any> }
-    idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[] = []
-    allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[] = []
+    idColumns: IQOperableFieldInternal<any, QueryBaseOperation, any, any>[] = []
+    allColumns: IQOperableFieldInternal<any, QueryBaseOperation, any, any>[] = []
     relations: IQInternalRelation<any>[] = []
     currentChildIndex = -1
-    joinWhereClause: JSONBaseOperation
+    joinWhereClause: QueryBaseOperation
     parentJoinEntity: IQEntityInternal
 
     constructor(
         public dbEntity: DbEntity,
         private queryUtils: IQueryUtils,
-        private relationManager: IRelationManager,
+        private relationManager: IQueryRelationManager,
         public fromClausePosition: number[] = [],
         public dbRelation: DbRelation = null,
         public joinType: JoinType = null,
@@ -60,7 +60,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
         this.entityRelations[relation.parentRelationIndex] = relation;
     }
 
-    addEntityField<T, IQF extends IQOperableFieldInternal<T, JSONBaseOperation, any, any>>(
+    addEntityField<T, IQF extends IQOperableFieldInternal<T, QueryBaseOperation, any, any>>(
         field: IQF
     ): void {
         this.entityFieldMap[field.fieldName] = field;
@@ -73,17 +73,17 @@ export class QEntityDriver<IQE extends IQEntity = any>
     }
 */
 
-    getRelationJson(
+    getQueryRelation(
         columnAliases: IFieldColumnAliases<any>,
         trackedRepoGUIDSet: Set<Repository_GUID>,
         trackedRepoLocalIdSet: Set<Repository_LocalId>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
-        relationManager: IRelationManager
-    ): JSONRelation {
+        relationManager: IQueryRelationManager
+    ): QueryRelation {
         // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
         // see ApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
-        let jsonRelation: JSONRelation = {
+        let QueryRelation: QueryRelation = {
             currentChildIndex: this.currentChildIndex,
             ti: this.dbEntity.index,
             fromClausePosition: this.fromClausePosition,
@@ -93,47 +93,47 @@ export class QEntityDriver<IQE extends IQEntity = any>
             si: this.dbEntity.applicationVersion.application.index
         }
         if (this.joinWhereClause) {
-            this.getJoinRelationJson(<JSONJoinRelation>jsonRelation, columnAliases,
+            this.getJoinRelationQuery(<QueryJoinRelation>QueryRelation, columnAliases,
                 trackedRepoGUIDSet, trackedRepoLocalIdSet,
                 queryUtils, fieldUtils, relationManager)
         } else if (this.dbRelation) {
-            this.getEntityRelationJson(<JSONEntityRelation>jsonRelation)
+            this.getEntityRelationQuery(<QueryEntityRelation>QueryRelation)
         } else {
-            this.getRootRelationJson(jsonRelation, columnAliases,
+            this.getRootRelationQuery(QueryRelation, columnAliases,
                 trackedRepoGUIDSet, trackedRepoLocalIdSet,
                 queryUtils, fieldUtils, relationManager)
         }
-        return jsonRelation
+        return QueryRelation
     }
 
-    getJoinRelationJson(
-        jsonRelation: JSONJoinRelation,
+    getJoinRelationQuery(
+        QueryRelation: QueryJoinRelation,
         columnAliases: IFieldColumnAliases<any>,
         trackedRepoGUIDSet: Set<Repository_GUID>,
         trackedRepoLocalIdSet: Set<Repository_LocalId>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
-        relationManager: IRelationManager
-    ): JSONJoinRelation {
-        jsonRelation.rt = JSONRelationType.ENTITY_JOIN_ON
-        jsonRelation.joinWhereClause = queryUtils.whereClauseToJSON(
+        relationManager: IQueryRelationManager
+    ): QueryJoinRelation {
+        QueryRelation.rt = QueryRelationType.ENTITY_JOIN_ON
+        QueryRelation.joinWhereClause = queryUtils.whereClauseToQueryOperation(
             this.joinWhereClause, columnAliases,
             trackedRepoGUIDSet, trackedRepoLocalIdSet)
 
-        return jsonRelation
+        return QueryRelation
     }
 
-    getEntityRelationJson(
-        jsonRelation: JSONEntityRelation,
+    getEntityRelationQuery(
+        QueryRelation: QueryEntityRelation,
         // columnAliases: FieldColumnAliases,
         // queryUtils: IQueryUtils,
         // fieldUtils: IFieldUtils
-    ): JSONEntityRelation {
-        jsonRelation.rt = JSONRelationType.ENTITY_APPLICATION_RELATION
-        jsonRelation.ri = this.dbRelation.index
+    ): QueryEntityRelation {
+        QueryRelation.rt = QueryRelationType.ENTITY_APPLICATION_RELATION
+        QueryRelation.ri = this.dbRelation.index
 
         // if (!this.dbRelation.whereJoinTable) {
-        return jsonRelation
+        return QueryRelation
         // }
         // let otmQEntity;
         // let mtoQEntity;
@@ -151,27 +151,27 @@ export class QEntityDriver<IQE extends IQEntity = any>
         // }
         //
         // let joinWhereClause = this.dbRelation.whereJoinTable.addToJoinFunction(otmQEntity,
-        // mtoQEntity, this.airportDb, this.airportDb.F); jsonRelation.joinWhereClause    =
-        // this.utils.Query.whereClauseToJSON(joinWhereClause, columnAliases);
-        // jsonRelation.joinWhereClauseOperator   = this.dbRelation.joinFunctionWithOperator;  return
-        // jsonRelation;
+        // mtoQEntity, this.airportDb, this.airportDb.F); QueryRelation.joinWhereClause    =
+        // this.utils.Query.whereClauseToQueryOperation(joinWhereClause, columnAliases);
+        // QueryRelation.joinWhereClauseOperator   = this.dbRelation.joinFunctionWithOperator;  return
+        // QueryRelation;
     }
 
-    getRootRelationJson(
-        jsonRelation: JSONRelation,
+    getRootRelationQuery(
+        QueryRelation: QueryRelation,
         columnAliases: IFieldColumnAliases<any>,
         trackedRepoGUIDSet: Set<Repository_GUID>,
         trackedRepoLocalIdSet: Set<Repository_LocalId>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
-        relationManager: IRelationManager
-    ): JSONJoinRelation {
-        jsonRelation.rt = (globalThis.IOC as InversionOfControl)
+        relationManager: IQueryRelationManager
+    ): QueryJoinRelation {
+        QueryRelation.rt = (globalThis.IOC as InversionOfControl)
             .getSync(globalThis.ENTITY_UTILS as IDependencyInjectionToken<IEntityUtils>)
             // Removes circular dependency at code initialization time 
-            .isQTree(this) ? JSONRelationType.SUB_QUERY_ROOT : JSONRelationType.ENTITY_ROOT
+            .isQTree(this) ? QueryRelationType.SUB_QUERY_ROOT : QueryRelationType.ENTITY_ROOT
 
-        return jsonRelation
+        return QueryRelation
     }
 
 
@@ -216,7 +216,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
 
         for (const entityRelation of this.entityRelations) {
             const propertyName = ApplicationUtils.getIPropertyWithRelationIndex(
-                entityRelation.parentApplication_Index,
+                entityRelation.parentDbApplication_Index,
                 entityRelation.parentTableIndex,
                 entityRelation.parentRelationIndex,
             ).name;

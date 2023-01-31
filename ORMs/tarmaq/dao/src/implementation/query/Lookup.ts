@@ -3,13 +3,13 @@ import {
 } from '@airport/direction-indicator';
 import { QueryResultType } from '@airport/ground-control';
 import { Inject, Injected } from '@airport/direction-indicator';
-import { ILookup } from '../../definition/query/Lookup';
+import { ILookup } from '../../definition/query/ILookup';
 import {
 	IAbstractQuery,
 	IEntityQueryContext,
 	IEntityUtils,
 	IQueryContext,
-	RawQuery
+	RawReadQuery
 } from '@airport/tarmaq-query';
 import { IQueryFacade } from '../../definition/IDatabaseFacade';
 import { IDao } from '../../definition/IDao';
@@ -29,11 +29,11 @@ export class LookupProxy
 	}
 
 	async lookup(
-		rawQuery: RawQuery | { (...args: any[]): RawQuery },
+		rawQuery: RawReadQuery | { (...args: any[]): RawReadQuery },
 		queryResultType: QueryResultType,
 		search: boolean,
 		one: boolean,
-		QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery,
+		QueryClass: new (rawNonEntityQuery: RawReadQuery) => IAbstractQuery,
 		context: IEntityQueryContext,
 		mapResults?: boolean
 	): Promise<any> {
@@ -60,11 +60,11 @@ export class Lookup
 	}
 
 	async lookup(
-		rawQuery: RawQuery | { (...args: any[]): RawQuery },
+		rawQuery: RawReadQuery | { (...args: any[]): RawReadQuery },
 		queryResultType: QueryResultType,
 		search: boolean,
 		one: boolean,
-		QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery,
+		QueryClass: new (rawNonEntityQuery: RawReadQuery) => IAbstractQuery,
 		context: IQueryContext
 	): Promise<any> {
 		let query: IAbstractQuery;

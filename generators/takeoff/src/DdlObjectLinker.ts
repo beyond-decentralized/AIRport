@@ -3,11 +3,11 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import type {
-	ApplicationColumn_LocalId,
-	Domain_LocalId,
-	ApplicationProperty_LocalId,
-	ApplicationRelation_LocalId,
-	Application_Index,
+	DbColumn_LocalId,
+	DbDomain_LocalId,
+	DbProperty_LocalId,
+	DbRelation_LocalId,
+	DbApplication_Index,
 	DbDomain,
 	DbApplicationVersion,
 	DbApplication,
@@ -61,12 +61,12 @@ export class DdlObjectLinker
 		latestApplicationVersions: DbApplicationVersion[],
 		applicationReferences: DbApplicationReference[]
 	): void {
-		const domainMapById: Map<Domain_LocalId, DbDomain> = new Map()
+		const domainMapById: Map<DbDomain_LocalId, DbDomain> = new Map()
 		domains.forEach((domain: DbDomain) => {
 			domainMapById.set(domain._localId, domain)
 		})
 
-		const applicationMapByIndex: Map<Application_Index, DbApplication> = new Map()
+		const applicationMapByIndex: Map<DbApplication_Index, DbApplication> = new Map()
 		applications.forEach((application: DbApplication) => {
 			applicationMapByIndex.set(application.index, application)
 			const domain = domainMapById.get(application.domain._localId)
@@ -145,9 +145,9 @@ export class DdlObjectLinker
 		relations: DbRelation[],
 		entityArrayById: DbEntity[]
 	): {
-		propertyMapById: Map<ApplicationProperty_LocalId, DbProperty>, relationMapById: Map<ApplicationRelation_LocalId, DbRelation>
+		propertyMapById: Map<DbProperty_LocalId, DbProperty>, relationMapById: Map<DbRelation_LocalId, DbRelation>
 	} {
-		const propertyMapById: Map<ApplicationProperty_LocalId, DbProperty> = new Map()
+		const propertyMapById: Map<DbProperty_LocalId, DbProperty> = new Map()
 
 		properties.forEach((property: DbProperty) => {
 			// Entity is already property wired in
@@ -162,7 +162,7 @@ export class DdlObjectLinker
 			propertyMapById.set(property._localId, property)
 		})
 
-		const relationMapById: Map<ApplicationRelation_LocalId, DbRelation> = new Map()
+		const relationMapById: Map<DbRelation_LocalId, DbRelation> = new Map()
 		relations.forEach((relation: DbRelation) => {
 			const entity = entityArrayById[relation.entity._localId]
 			entity.relations[relation.index] = relation
@@ -191,12 +191,12 @@ export class DdlObjectLinker
 	}
 
 	private linkColumns(
-		propertyMapById: Map<ApplicationProperty_LocalId, DbProperty>,
-		relationMapById: Map<ApplicationRelation_LocalId, DbRelation>,
+		propertyMapById: Map<DbProperty_LocalId, DbProperty>,
+		relationMapById: Map<DbRelation_LocalId, DbRelation>,
 		allDdlObjects: AllDdlObjects,
 		entityArrayById: DbEntity[]
 	) {
-		const columnMapById: Map<ApplicationColumn_LocalId, DbColumn> = new Map()
+		const columnMapById: Map<DbColumn_LocalId, DbColumn> = new Map()
 		allDdlObjects.all.columns.forEach((column: DbColumn) => {
 			columnMapById.set(column._localId, column)
 		})

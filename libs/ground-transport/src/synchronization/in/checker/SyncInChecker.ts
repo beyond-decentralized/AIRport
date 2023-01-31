@@ -10,19 +10,19 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { ApplicationEntity_LocalId, ApplicationRelation_Index, Application_Name, DbRelation, Domain_Name, IDatastructureUtils, KeyUtils, RepositorySynchronizationData, RepositorySynchronizationMessage, Repository_GUID, Repository_LocalId } from '@airport/ground-control';
+import { DbEntity_LocalId, DbRelation_Index, DbApplication_Name, DbRelation, DbDomain_Name, IDatastructureUtils, KeyUtils, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, Repository_LocalId } from '@airport/ground-control';
 import { ITerminalStore } from '@airport/terminal-map';
 
 export interface ISyncInChecker {
 
 	checkData(
-		message: RepositorySynchronizationMessage,
+		message: SyncRepositoryMessage,
 		context: IContext
 	): Promise<IDataCheckResult>
 
 	checkReferencedApplicationRelations(
-		data: RepositorySynchronizationData,
-		applicationCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>,
+		data: SyncRepositoryData,
+		applicationCheckMap: Map<DbDomain_Name, Map<DbApplication_Name, IApplicationVersionCheckRecord>>,
 		context: IContext
 	): Promise<void>
 
@@ -66,7 +66,7 @@ export class SyncInChecker
 	 * Check the message and load all required auxiliary entities.
 	 */
 	async checkData(
-		message: RepositorySynchronizationMessage,
+		message: SyncRepositoryMessage,
 		context: IContext
 	): Promise<IDataCheckResult> {
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
@@ -129,13 +129,13 @@ export class SyncInChecker
 	}
 
 	async checkReferencedApplicationRelations(
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		_context: IContext
 	): Promise<void> {
 		// TODO: check referencedApplicationRelations
 		data.referencedApplicationVersions
 		const applicationEntityMap = await this.syncInDataChecker.populateApplicationEntityMap(data.referencedApplicationVersions)
-		const applicationRelationMap: Map<ApplicationEntity_LocalId, Map<ApplicationRelation_Index, DbRelation>> = new Map()
+		const applicationRelationMap: Map<DbEntity_LocalId, Map<DbRelation_Index, DbRelation>> = new Map()
 
 		for (let i = 0; i < data.referencedApplicationRelations.length; i++) {
 			const referencedRelation = data.referencedApplicationRelations[i]

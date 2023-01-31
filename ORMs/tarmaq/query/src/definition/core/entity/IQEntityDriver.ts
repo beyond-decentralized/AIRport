@@ -1,12 +1,12 @@
-import { DbEntity, DbRelation, JoinType, JSONBaseOperation, JSONRelation, Repository_GUID, Repository_LocalId } from "@airport/ground-control";
+import { DbEntity, DbRelation, JoinType, QueryBaseOperation, QueryRelation, Repository_GUID, Repository_LocalId } from "@airport/ground-control";
 import { IFieldUtils } from "../../utils/IFieldUtils";
 import { IQueryUtils } from "../../utils/IQueryUtils";
-import { IQOperableFieldInternal } from "../field/OperableField";
-import { IFieldColumnAliases } from "./Aliases";
-import { IFrom, IQEntity } from "./Entity";
-import { IRelationManager } from "./IRelationManager";
-import { IJoinFields } from "./Joins";
-import { IQInternalRelation } from "./Relation";
+import { IQOperableFieldInternal } from "../field/IQOperableField";
+import { IFieldColumnAliases } from "./IAliases";
+import { IFrom, IQEntity } from "./IQEntity";
+import { IQueryRelationManager } from "./IQueryRelationManager";
+import { IJoinFields } from "./IJoins";
+import { IQInternalRelation } from "./IQRelation";
 
 export interface IQEntityInternal<QE extends IQEntity<any> = any>
     extends IQEntity<QE> {
@@ -16,22 +16,22 @@ export interface IQEntityInternal<QE extends IQEntity<any> = any>
 }
 export interface IQEntityDriver<QE extends IQEntity<any> = any> {
 
-    allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
+    allColumns: IQOperableFieldInternal<any, QueryBaseOperation, any, any>[];
     childQEntities: IQEntityInternal[]
     currentChildIndex: number;
     dbEntity: DbEntity;
     dbRelation: DbRelation;
-    entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any> };
+    entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, QueryBaseOperation, any, any> };
     entityRelations: IQInternalRelation<any>[];
     fromClausePosition: number[];
-    idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
+    idColumns: IQOperableFieldInternal<any, QueryBaseOperation, any, any>[];
     joinType: JoinType;
-    joinWhereClause: JSONBaseOperation;
+    joinWhereClause: QueryBaseOperation;
     parentJoinEntity: IQEntityInternal;
     relations: IQInternalRelation<any>[];
 
     /*
-    addEntityField<IQF extends IQOperableFieldInternal<any, JSONBaseOperation, any, any>>(
+    addEntityField<IQF extends IQOperableFieldInternal<any, QueryBaseOperation, any, any>>(
         field: IQF
     ): void;
 
@@ -42,14 +42,14 @@ export interface IQEntityDriver<QE extends IQEntity<any> = any> {
 
     getInstance(): IQEntityInternal<QE>;
 
-    getRelationJson(
+    getQueryRelation(
         columnAliases: IFieldColumnAliases<any>,
         trackedRepoGUIDSet: Set<Repository_GUID>,
         trackedRepoLocalIdSet: Set<Repository_LocalId>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
-        relationManager: IRelationManager
-    ): JSONRelation;
+        relationManager: IQueryRelationManager
+    ): QueryRelation;
 
     // getRelationPropertyName(): string;
 

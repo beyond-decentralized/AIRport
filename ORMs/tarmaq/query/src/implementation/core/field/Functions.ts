@@ -1,19 +1,19 @@
 import {
-	JSONBaseOperation,
-	JSONClauseField,
-	JSONClauseObject,
-	JSONClauseObjectType,
-	JSONFunctionOperation,
-	JSONSqlFunctionCall,
-	JsonTreeQuery,
+	QueryBaseOperation,
+	QueryFieldClause,
+	QueryBaseClause,
+	QueryClauseObjectType,
+	QueryFunctionOperation,
+	QueryFunctionCall,
+	QueryTree,
 	OperationCategory,
 	SQLDataType,
 	SqlFunction,
 	SqlOperator
 }                          from '@airport/ground-control'
-import {IQUntypedField}    from '../../../definition/core/field/UntypedField'
-import {IQBooleanField}    from '../../../definition/core/field/BooleanField'
-import {IQDateField}       from '../../../definition/core/field/DateField'
+import {IQUntypedField}    from '../../../definition/core/field/IQUntypedField'
+import {IQBooleanField}    from '../../../definition/core/field/IQBooleanField'
+import {IQDateField}       from '../../../definition/core/field/IQDateField'
 import {
 	absFunction,
 	addFunction,
@@ -46,16 +46,16 @@ import {
 	ucaseFunction,
 	unionAllFunction,
 	unionFunction
-}                          from '../../../definition/core/field/Functions'
-import {IQNumberField}     from '../../../definition/core/field/NumberField'
-import {IQOperableField}   from '../../../definition/core/field/OperableField'
-import {IQStringField}     from '../../../definition/core/field/StringField'
-import {RawFieldQuery}     from '../../../definition/query/facade/FieldQuery'
-import {RawNonEntityQuery} from '../../../definition/query/facade/NonEntityQuery'
+}                          from '../../../definition/core/field/IQFunctions'
+import {IQNumberField}     from '../../../definition/core/field/IQNumberField'
+import {IQOperableField}   from '../../../definition/core/field/IQOperableField'
+import {IQStringField}     from '../../../definition/core/field/IQStringField'
+import {RawFieldQuery}     from '../../../definition/query/facade/RawFieldQuery'
+import {RawNonEntityQuery} from '../../../definition/query/facade/RawNonEntityQuery'
 import {
 	ITreeEntity,
 	RawTreeQuery
-}                          from '../../../definition/query/facade/TreeQuery'
+}                          from '../../../definition/query/facade/RawTreeQuery'
 import {IAppliable}        from './Appliable'
 import {
 	QBooleanField,
@@ -88,7 +88,7 @@ import {
 function getSqlFunctionCall(
 	sqlFunction: SqlFunction,
 	parameters?: any[]
-): JSONSqlFunctionCall {
+): QueryFunctionCall {
 	if (parameters) {
 		parameters = parameters.map((parameter) => {
 			switch (typeof parameter) {
@@ -403,9 +403,9 @@ export const DISTINCT: distinctFunction = function <ISelect>(
 export class QDistinctFunction<ISelect>
 	extends StandAloneFunction
 	implements IQDistinctFunction<ISelect>,
-	           IAppliable<JSONClauseObject, any> {
+	           IAppliable<QueryBaseClause, any> {
 
-	__appliedFunctions__: JSONSqlFunctionCall[] = []
+	__appliedFunctions__: QueryFunctionCall[] = []
 
 	constructor(
 		private selectClause: ISelect
@@ -420,7 +420,7 @@ export class QDistinctFunction<ISelect>
 	}
 
 	applySqlFunction(
-		sqlFunctionCall: JSONSqlFunctionCall
+		sqlFunctionCall: QueryFunctionCall
 	): any {
 		this.__appliedFunctions__.push(sqlFunctionCall)
 		return this
@@ -430,9 +430,9 @@ export class QDistinctFunction<ISelect>
 		return this.selectClause
 	}
 
-	toJSON(
+	toQueryFragment(
 		parsedSelectClause?: any
-	): JSONClauseField {
+	): QueryFieldClause {
 		if (this.__appliedFunctions__.length != 1) {
 			throw new Error(`Not expecting and parent or child functions on "distinct"`)
 		}
@@ -446,7 +446,7 @@ export class QDistinctFunction<ISelect>
 			appliedFunctions: appliedFunctions,
 			dt: null,
 			fa: null,
-			ot: JSONClauseObjectType.DISTINCT_FUNCTION,
+			ot: QueryClauseObjectType.DISTINCT_FUNCTION,
 			v: <any>parsedSelectClause
 		}
 	}
@@ -466,10 +466,10 @@ export const EXISTS: existsFunction = function <IME extends ITreeEntity>(
 export class QExistsFunction<IME extends ITreeEntity>
 	extends StandAloneFunction
 	implements IQExistsFunction,
-	           IAppliable<JSONClauseObject, any>,
-	           JSONBaseOperation {
+	           IAppliable<QueryBaseClause, any>,
+	           QueryBaseOperation {
 
-	__appliedFunctions__: JSONSqlFunctionCall[] = []
+	__appliedFunctions__: QueryFunctionCall[] = []
 	operator                                    = SqlOperator.EXISTS
 	o                                           = SqlOperator.EXISTS
 	category                                    = OperationCategory.FUNCTION
@@ -482,7 +482,7 @@ export class QExistsFunction<IME extends ITreeEntity>
 	}
 
 	applySqlFunction(
-		sqlFunctionCall: JSONSqlFunctionCall
+		sqlFunctionCall: QueryFunctionCall
 	): any {
 		this.__appliedFunctions__.push(sqlFunctionCall)
 		return this
@@ -492,9 +492,9 @@ export class QExistsFunction<IME extends ITreeEntity>
 		return this.subQuery
 	}
 
-	toJSON(
-		parsedQuery?: JsonTreeQuery
-	): JSONFunctionOperation {
+	toQueryFragment(
+		parsedQuery?: QueryTree
+	): QueryFunctionOperation {
 		if (this.__appliedFunctions__.length != 1) {
 			throw new Error(`Not expecting and parent or child functions on "exists"`)
 		}
@@ -506,10 +506,10 @@ export class QExistsFunction<IME extends ITreeEntity>
 		]
 		return {
 			c: this.category,
-			ob: <JSONClauseObject>{
+			ob: <QueryBaseClause>{
 				appliedFunctions: appliedFunctions,
 				dt: null,
-				ot: JSONClauseObjectType.EXISTS_FUNCTION,
+				ot: QueryClauseObjectType.EXISTS_FUNCTION,
 				v: <any>parsedQuery
 			},
 			o: this.operator

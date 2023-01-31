@@ -6,7 +6,7 @@ import {
 	ISqlValueProvider,
 } from '@airport/fuel-hydrant-system';
 import {
-	JSONSqlFunctionCall,
+	QueryFunctionCall,
 	SQLDataType,
 	SqlFunction
 } from '@airport/ground-control';
@@ -137,7 +137,7 @@ export class MySqlFunctionAdaptor
 	extends AbstractFunctionAdaptor {
 
 	getFunctionCall(
-		jsonFunctionCall: JSONSqlFunctionCall,
+		jsonFunctionCall: QueryFunctionCall,
 		value: string,
 		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
 		sqlValueProvider: ISqlValueProvider,
@@ -244,7 +244,7 @@ export class MySqlFunctionAdaptor
 					return 'null';
 				}
 				if (val instanceof Date) {
-					return val.toJSON();
+					return val.toQueryFragment();
 				}
 				throw new Error(`Unsupported value for conversion to string.`);
 			default:

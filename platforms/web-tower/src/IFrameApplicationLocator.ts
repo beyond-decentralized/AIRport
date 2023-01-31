@@ -14,19 +14,19 @@ export class IFrameApplicationLocator
     @Inject()
     transactionalConnector: IIframeTransactionalConnector
 
-    async locateLatestApplicationVersionByApplication_Name(
-        fullApplication_Name: string,
+    async locateLatestApplicationVersionByDbApplication_Name(
+        fullDbApplication_Name: string,
         terminalStore: ITerminalStore,
     ): Promise<DbApplicationVersion> {
         let applicationVersion = terminalStore
-            .getLatestApplicationVersionMapByApplication_FullName()
-            .get(fullApplication_Name)
+            .getLatestApplicationVersionMapByDbApplication_FullName()
+            .get(fullDbApplication_Name)
 
         if (applicationVersion) {
             return applicationVersion
         }
 
         return await this.transactionalConnector
-            .getLatestApplicationVersionMapByApplication_FullName(fullApplication_Name)
+            .getLatestApplicationVersionMapByDbApplication_FullName(fullDbApplication_Name)
     }
 }

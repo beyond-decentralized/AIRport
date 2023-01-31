@@ -1,6 +1,6 @@
 import {
-	JSONFieldInOrderBy,
-	SortOrder
+	QueryFieldInOrderBy,
+	QuerySortOrder
 }                                from '@airport/ground-control'
 import {IValidator}              from '../validation/Validator'
 import {INonEntityOrderByParser} from './AbstractEntityOrderByParser'
@@ -19,15 +19,15 @@ export class ExactOrderByParser
 
 	getOrderByFragment(
 		rootSelectClauseFragment: any,
-		orderBy: JSONFieldInOrderBy[]
+		orderBy: QueryFieldInOrderBy[]
 	): string {
 		return orderBy.map(
 			(orderByField) => {
 				this.validator.validateAliasedFieldAccess(orderByField.fa)
 				switch (orderByField.so) {
-					case SortOrder.ASCENDING:
+					case QuerySortOrder.ASCENDING:
 						return `${orderByField.fa} ASC`
-					case SortOrder.DESCENDING:
+					case QuerySortOrder.DESCENDING:
 						return `${orderByField.fa} DESC`
 				}
 			})

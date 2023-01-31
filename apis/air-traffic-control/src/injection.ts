@@ -1,6 +1,6 @@
 import { AIR_ENTITY_UTILS, ContainerAccessor } from '@airport/direction-indicator'
 import {
-	DbApplicationUtils,
+	ImplApplicationUtils,
 	Dictionary,
 	ENTITY_STATE_MANAGER,
 	SEQUENCE_GENERATOR,
@@ -25,9 +25,9 @@ import { QMetadataUtils } from './implementation/utils/QMetadataUtils'
 import { ApplicationUtils } from './implementation/utils/ApplicationUtils'
 import { FieldUtils } from './implementation/utils/FieldUtils'
 import { DatabaseStore } from './implementation/DatabaseStore'
-import { IAirportDatabase } from './definition/AirportDatabase'
+import { IAirportDatabase } from './definition/IAirportDatabase'
 import { RelationManager } from './implementation/RelationManager'
-import { IRepositoryLoader } from './definition/RepositoryLoader'
+import { IRepositoryLoader } from './definition/IRepositoryLoader'
 import { QApplicationBuilderUtils } from './implementation/utils/QApplicationBuilderUtils'
 import { airTrafficControl } from './injectionLibrary'
 import { Utils } from './implementation/Utils'
@@ -51,7 +51,7 @@ AIRPORT_DATABASE.setDependencies({
 	databaseFacade: DATABASE_FACADE,
 	databaseStore: DatabaseStore,
 	dictionary: Dictionary,
-	dbApplicationUtils: DbApplicationUtils,
+	dbApplicationUtils: ImplApplicationUtils,
 	find: NonEntityFind,
 	findOne: NonEntityFindOne,
 	qApplicationBuilderUtils: QApplicationBuilderUtils,

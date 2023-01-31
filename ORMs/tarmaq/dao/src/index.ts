@@ -1,13 +1,13 @@
-export * from './definition/query/EntityFind'
-export * from './definition/query/EntityFindOne'
-export * from './definition/query/EntityLookup'
-export * from './definition/query/EntitySearch'
-export * from './definition/query/EntitySearchOne'
-export * from './definition/query/Lookup'
-export * from './definition/query/NonEntityFind'
-export * from './definition/query/NonEntityFindOne'
-export * from './definition/query/NonEntitySearch'
-export * from './definition/query/NonEntitySearchOne'
+export * from './definition/query/IEntityFind'
+export * from './definition/query/IEntityFindOne'
+export * from './definition/query/IEntityLookup'
+export * from './definition/query/IEntitySearch'
+export * from './definition/query/IEntitySearchOne'
+export * from './definition/query/ILookup'
+export * from './definition/query/INonEntityFind'
+export * from './definition/query/INonEntityFindOne'
+export * from './definition/query/INonEntitySearch'
+export * from './definition/query/INonEntitySearchOne'
 export * from './definition/IDao'
 export * from './definition/IDatabaseFacade'
 export * from './definition/IFieldsSelect'
@@ -33,7 +33,7 @@ import { DbApplication } from '@airport/ground-control';
 
 export function diSet(
     dbApplication: DbApplication,
-    dbEntityId: number // ApplicationEntity_LocalId
+    dbEntityId: number // DbEntity_LocalId
 ): boolean {
     if ((!globalThis.inAppMode && !globalThis.SEQ_GEN)
         || !dbApplication) {

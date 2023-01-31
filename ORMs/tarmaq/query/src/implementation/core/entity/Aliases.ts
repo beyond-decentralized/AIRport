@@ -4,13 +4,13 @@ import {
 	IFieldColumnAliases,
 	IParameterAliases,
 	Parameter
-} from '../../../definition/core/entity/Aliases'
+} from '../../../definition/core/entity/IAliases'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver';
 import {
 	IQFieldInternal,
 	IQOrderableField
-}                         from "../../../definition/core/field/Field";
-import {IQFunction}       from "../../../definition/core/field/Functions";
+}                         from "../../../definition/core/field/IQFieldInternal";
+import {IQFunction}       from "../../../definition/core/field/IQFunctions";
 
 /**
  * Created by Papa on 10/18/2016.

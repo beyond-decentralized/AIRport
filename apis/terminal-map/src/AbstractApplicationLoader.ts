@@ -1,7 +1,7 @@
-import { IApiRegistry, JsonApplicationWithLastIds, LastIds } from '@airport/air-traffic-control'
+import { IApiRegistry, JsonApplicationWithLastIds, ILastIds } from '@airport/air-traffic-control'
 import { Inject, Injected } from '@airport/direction-indicator'
-import { IApplicationInitializer } from './core/ApplicationInitializer'
-import { IApplicationLoader } from './isolate/ApplicationLoader'
+import { IApplicationInitializer } from './core/IApplicationInitializer'
+import { IApplicationLoader } from './isolate/IApplicationLoader'
 import { ITerminalStore } from './store/TerminalStore'
 
 @Injected()
@@ -26,7 +26,7 @@ export class AbstractApplicationLoader
     }
 
     async load(
-        lastIds: LastIds
+        lastIds: ILastIds
     ): Promise<void> {
         if (this.initializing) {
             return

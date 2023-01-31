@@ -14,7 +14,7 @@ import { lib } from '@airport/direction-indicator'
 import {
     AppTrackerUtils,
     DatastructureUtils,
-    DbApplicationUtils,
+    ImplApplicationUtils,
     Dictionary,
     ENTITY_STATE_MANAGER,
     QUERY_PARAMETER_DESERIALIZER,
@@ -115,7 +115,7 @@ terminal.setDependencies(DatabaseManager, {
     airportDatabase: AIRPORT_DATABASE,
     applicationDao: ApplicationDao,
     applicationInitializer: APPLICATION_INITIALIZER,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     internalRecordManager: InternalRecordManager,
     storeDriver: STORE_DRIVER,
     transactionalServer: TRANSACTIONAL_SERVER,
@@ -227,7 +227,7 @@ REPOSITORY_LOADER.setDependencies({
 terminal.setDependencies(StructuralEntityValidator, {
     applicationUtils: ApplicationUtils,
     crossRepositoryRelationManager: CrossRepositoryRelationManager,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
 })
@@ -255,7 +255,7 @@ TRANSACTIONAL_RECEIVER.setDependencies({
     actorDao: ActorDao,
     applicationDao: ApplicationDao,
     databaseManager: DatabaseManager,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     internalRecordManager: InternalRecordManager,
     localApiServer: LOCAL_API_SERVER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,

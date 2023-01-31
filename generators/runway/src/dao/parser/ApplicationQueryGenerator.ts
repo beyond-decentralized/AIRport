@@ -6,17 +6,17 @@ import {
 import { QApp } from '@airport/aviation-communication'
 import { IOC } from '@airport/direction-indicator';
 import {
-	IApplicationQuery,
+	PortableApplicationQuery,
 	JsonFormattedQuery,
 	JsonOperation,
 	JsonApplication,
-	OperationType,
+	DbOperationType,
 	QueryInputKind,
-	QueryParameter,
+	IQueryParameter,
 	QueryParameterType,
 	QueryResultType,
-	IDbApplicationUtils,
-	DbApplicationUtils
+	DbApplicationUtils,
+	ImplApplicationUtils
 } from '@airport/ground-control';
 import {
 	Lookup,
@@ -62,8 +62,8 @@ export class ApplicationQueryGenerator {
 			for (const operationName in operations) {
 				const operation = operations[operationName];
 				switch (operation.type) {
-					case OperationType.DELETE:
-					case OperationType.SAVE:
+					case DbOperationType.DELETE:
+					case DbOperationType.SAVE:
 						break;
 					default:
 						// its a query
@@ -73,8 +73,8 @@ export class ApplicationQueryGenerator {
 						const query = await this.getApplicationQuery(queryDefinition, entityName,
 							jsonApplication);
 
-						const inputs: QueryParameter[] = queryDefinition.inputs.filter(input =>
-							(input as QueryParameter).type === QueryInputKind.PARAMETER) as any;
+						const inputs: IQueryParameter[] = queryDefinition.inputs.filter(input =>
+							(input as IQueryParameter).type === QueryInputKind.PARAMETER) as any;
 
 						inputs.forEach(input => {
 							if (!input.isArray) {
@@ -108,8 +108,8 @@ export class ApplicationQueryGenerator {
 			for (const operationName in operations) {
 				const operation = operations[operationName];
 				switch (operation.type) {
-					case OperationType.DELETE:
-					case OperationType.SAVE:
+					case DbOperationType.DELETE:
+					case DbOperationType.SAVE:
 						break;
 					default:
 						// its a query
@@ -131,7 +131,7 @@ export class ApplicationQueryGenerator {
 		queryDefinition: JsonFormattedQueryWithExpression,
 		entityName: string,
 		jsonApplication: JsonApplication,
-	): Promise<IApplicationQuery> {
+	): Promise<PortableApplicationQuery> {
 		const queryTypescript = queryDefinition.expression.getText();
 		let queryJavascript = tsc.transpile(queryTypescript);
 		const functionStartRegex = /\(\s*function \s*\(\s*[\w,\s]*\)\s*\{\s*/;
@@ -139,7 +139,7 @@ export class ApplicationQueryGenerator {
 		queryJavascript = queryJavascript.replace(functionStartRegex, '');
 		queryJavascript = queryJavascript.replace(functionEndRegex, '');
 
-		const [airDb, dbApplicationUtils] = await IOC.get(AIRPORT_DATABASE, DbApplicationUtils);
+		const [airDb, dbApplicationUtils] = await IOC.get(AIRPORT_DATABASE, ImplApplicationUtils);
 		for (const functionName in airDb.functions) {
 			const regex = new RegExp(`\\s*${functionName}\\(`);
 			queryJavascript = queryJavascript
@@ -161,12 +161,12 @@ export class ApplicationQueryGenerator {
 		const rawQuery = queryFunction(...queryFunctionParameters);
 
 		const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(
-			DbApplicationUtils, Lookup, QUERY_FACADE);
+			ImplApplicationUtils, Lookup, QUERY_FACADE);
 		const context = lookup.ensureContext(null);
 		const qApplication: QAppInternal = airDb.QM[dbAppliationUtils.
-			getApplication_FullName(jsonApplication)];
-		const dbApplicationVersion = qApplication.__dbApplication__
-			.versions[qApplication.__dbApplication__.versions.length - 1];
+			getDbApplication_FullName(jsonApplication)];
+		const dbApplicationVersion = qApplication.__dbDbApplication__
+			.versions[qApplication.__dbDbApplication__.versions.length - 1];
 		context.dbEntity = dbApplicationVersion.entityMapByName[entityName];
 		await queryFacade.ensureContext(context);
 		const queryResultType = this.getQueryResultType(queryDefinition.type);
@@ -187,7 +187,7 @@ export class ApplicationQueryGenerator {
 		}
 
 		return {
-			jsonQuery: portableQuery.jsonQuery,
+			query: portableQuery.query,
 			parameterMap,
 			queryResultType: portableQuery.queryResultType,
 			tableIndex: portableQuery.tableIndex
@@ -198,11 +198,11 @@ export class ApplicationQueryGenerator {
 		queryDefinition: JsonFormattedQueryWithExpression,
 		jsonApplication: JsonApplication,
 		airDb: IAirportDatabase,
-		dbApplicationUtils: IDbApplicationUtils
+		dbApplicationUtils: DbApplicationUtils
 	): [any[], { index: number, parameter: IQOperableField<any, any, any, any> }[]] {
 		const queryFunctionParameters = [];
 		const queryParameters = [];
-		let parameter: QueryParameter;
+		let parameter: IQueryParameter;
 		let queryParameter: IQOperableField<any, any, any, any>;
 		let lastBooleanParameter = false;
 		let lastNumberParameter = 0;
@@ -212,7 +212,7 @@ export class ApplicationQueryGenerator {
 		for (const input of queryDefinition.inputs) {
 			switch (input.type) {
 				case QueryInputKind.PARAMETER:
-					parameter = input as QueryParameter;
+					parameter = input as IQueryParameter;
 					switch (parameter.parameterType) {
 						case QueryParameterType.BOOLEAN:
 							lastBooleanParameter = !lastBooleanParameter;
@@ -257,7 +257,7 @@ export class ApplicationQueryGenerator {
 					break;
 				case QueryInputKind.Q:
 					Q = airDb.QM[dbApplicationUtils.
-						getApplication_FullName(jsonApplication)];
+						getDbApplication_FullName(jsonApplication)];
 					queryFunctionParameters.push(Q);
 					break;
 				case QueryInputKind.QENTITY:
@@ -278,21 +278,21 @@ export class ApplicationQueryGenerator {
 	}
 
 	private getQueryResultType(
-		operationType: OperationType
+		operationType: DbOperationType
 	): QueryResultType {
 		switch (operationType) {
-			case OperationType.FIND_ONE_GRAPH:
-			case OperationType.FIND_GRAPH:
-			case OperationType.SEARCH_ONE_GRAPH:
-			case OperationType.SEARCH_GRAPH:
+			case DbOperationType.FIND_ONE_GRAPH:
+			case DbOperationType.FIND_GRAPH:
+			case DbOperationType.SEARCH_ONE_GRAPH:
+			case DbOperationType.SEARCH_GRAPH:
 				return QueryResultType.ENTITY_GRAPH;
-			case OperationType.FIND_ONE_TREE:
-			case OperationType.FIND_TREE:
-			case OperationType.SEARCH_ONE_TREE:
-			case OperationType.SEARCH_TREE:
+			case DbOperationType.FIND_ONE_TREE:
+			case DbOperationType.FIND_TREE:
+			case DbOperationType.SEARCH_ONE_TREE:
+			case DbOperationType.SEARCH_TREE:
 				return QueryResultType.ENTITY_TREE;
 			default:
-				throw new Error(`Unexpected OperationType: '${operationType}'.`);
+				throw new Error(`Unexpected DbOperationType: '${operationType}'.`);
 		}
 	}
 }

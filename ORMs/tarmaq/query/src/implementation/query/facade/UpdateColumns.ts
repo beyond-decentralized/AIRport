@@ -1,10 +1,10 @@
 import {
 	IEntityUpdateColumns,
 	IQEntity
-} from '../../../definition/core/entity/Entity'
+} from '../../../definition/core/entity/IQEntity'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { RawUpdateColumns } from '../../../definition/query/facade/Update'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { RawUpdateColumns } from '../../../definition/query/facade/RawUpdate'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { QField } from '../../core/field/Field'
@@ -20,11 +20,11 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 		super(rawUpdate)
 	}
 
-	protected setToJSON(
+	protected rawToQuerySetClause(
 		set: any,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
+		relationManager: IQueryRelationManager
 	): IEUC {
 		const setClause: IEUC = <IEUC>{}
 		const dbEntity = (<IQEntityInternal><any>this.rawUpdate.UPDATE)
@@ -51,10 +51,10 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 				`)
 			}
 			value = wrapPrimitive(value)
-			if (!value.toJSON) {
+			if (!value.toQueryFragment) {
 				throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${dbEntity.name}`
 			}
-			setClause[columnName] = (<QField<any>>value).toJSON(
+			setClause[columnName] = (<QField<any>>value).toQueryFragment(
 				this.columnAliases, false,
 				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 				queryUtils, fieldUtils, relationManager)

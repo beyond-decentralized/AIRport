@@ -9,7 +9,7 @@ import {
 	PropertyDecorator
 } from '@airport/direction-indicator'
 import {
-	ApplicationEntity_LocalId as DbEntityId,
+	DbEntity_LocalId as DbEntityId,
 	IEntityStateManager,
 	IAirEntity,
 	ISaveResult,
@@ -32,7 +32,7 @@ import { Observable } from 'rxjs';
 import { IDao } from '../definition/IDao';
 import { IDatabaseFacade } from '../definition/IDatabaseFacade';
 import { IEntityDatabaseFacade } from '../definition/IEntityDatabaseFacade';
-import { ILookup } from '../definition/query/Lookup';
+import { ILookup } from '../definition/query/ILookup';
 import { EntityDatabaseFacade } from './EntityDatabaseFacade';
 import { doEnsureContext } from './query/Lookup';
 import { FieldsSelect } from './FieldsSelect';
@@ -47,11 +47,11 @@ export abstract class Dao<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
-	ApplicationEntity_LocalId extends IEntityIdProperties,
+	DbEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	QE extends IQEntity>
 	implements IDao<Entity, EntitySelect, EntityCreate,
-	EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId,
+	EntityUpdateColumns, EntityUpdateProperties, DbEntity_LocalId,
 	EntityCascadeGraph, QE> {
 
 	static BaseSave<EntitySelect extends IEntitySelectProperties>(
@@ -78,7 +78,7 @@ export abstract class Dao<Entity,
 	updateCacheManager: IUpdateCacheManager
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
-		EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId,
+		EntityUpdateColumns, EntityUpdateProperties, DbEntity_LocalId,
 		EntityCascadeGraph, QE>
 
 	SELECT: IFieldsSelect<EntitySelect>
@@ -88,12 +88,12 @@ export abstract class Dao<Entity,
 		Q: QApp,
 		private internal = false
 	) {
-		const dbEntity = Q.__dbApplication__.currentVersion[0]
+		const dbEntity = Q.__dbDbApplication__.currentVersion[0]
 			.applicationVersion.entities[dbEntityId];
 		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
 		this.db = new EntityDatabaseFacade<Entity,
 			EntitySelect, EntityCreate,
-			EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId,
+			EntityUpdateColumns, EntityUpdateProperties, DbEntity_LocalId,
 			EntityCascadeGraph, QE>(
 				dbEntity, Q, this)
 		this.SELECT = new FieldsSelect(dbEntity)
@@ -117,14 +117,14 @@ export abstract class Dao<Entity,
 	}
 
 	exists(
-		entityId: ApplicationEntity_LocalId,
+		entityId: DbEntity_LocalId,
 		context?: IContext,
 	): Promise<boolean> {
 		throw new Error(`Not Implemented`);
 	}
 
 	async findAll(
-		entityIds?: ApplicationEntity_LocalId[],
+		entityIds?: DbEntity_LocalId[],
 		context?: IContext,
 		cacheForUpdate: boolean = false,
 	): Promise<Entity[]> {
@@ -138,7 +138,7 @@ export abstract class Dao<Entity,
 	}
 
 	async findAllAsTrees(
-		entityIds?: ApplicationEntity_LocalId[],
+		entityIds?: DbEntity_LocalId[],
 		context?: IContext,
 		cacheForUpdate: boolean = false,
 	): Promise<Entity[]> {

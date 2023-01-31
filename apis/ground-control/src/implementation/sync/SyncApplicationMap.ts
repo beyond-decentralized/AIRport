@@ -1,5 +1,5 @@
-import { Application_Index } from "../../definition/application/Application";
-import { DbEntity } from "../../definition/application/Entity";
+import { DbApplication_Index } from "../../definition/application/DbApplication";
+import { DbEntity } from "../../definition/application/DbEntity";
 import { ApplicationMap } from "../query/ApplicationMap";
 import { TableMap } from "../query/TableMap";
 import { SyncColumnMap } from "./SyncColumnMap";
@@ -8,7 +8,7 @@ import { SyncTableMap } from "./SyncTableMap";
 export class SyncApplicationMap extends ApplicationMap {
 
 	constructor(
-		applicationMap?: { [applicationIndex: Application_Index]: TableMap }
+		applicationMap?: { [applicationIndex: DbApplication_Index]: TableMap }
 	) {
 		super(applicationMap);
 	}

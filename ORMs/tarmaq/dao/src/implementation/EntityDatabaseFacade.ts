@@ -18,8 +18,8 @@ import {
   Repository_GUID
 } from '@airport/ground-control';
 import { IEntityDatabaseFacade } from '../definition/IEntityDatabaseFacade';
-import { IEntityFind } from '../definition/query/EntityFind';
-import { IEntityFindOne } from '../definition/query/EntityFindOne';
+import { IEntityFind } from '../definition/query/IEntityFind';
+import { IEntityFindOne } from '../definition/query/IEntityFindOne';
 import { IDao } from '../definition/IDao';
 import { EntityFind } from './query/EntityFind';
 import { EntityFindOne } from './query/EntityFindOne';
@@ -35,12 +35,12 @@ export class EntityDatabaseFacade<Entity,
   EntityCreate extends IEntityCreateProperties,
   EntityUpdateColumns extends IEntityUpdateColumns,
   EntityUpdateProperties extends IEntityUpdateProperties,
-  ApplicationEntity_LocalId extends IEntityIdProperties,
+  DbEntity_LocalId extends IEntityIdProperties,
   EntityCascadeGraph extends IEntityCascadeGraph,
   IQ extends IQEntity>
   implements IEntityDatabaseFacade<Entity, EntitySelect,
   EntityCreate, EntityUpdateColumns,
-  EntityUpdateProperties, ApplicationEntity_LocalId,
+  EntityUpdateProperties, DbEntity_LocalId,
   EntityCascadeGraph, IQ> {
 
   find: IEntityFind<Entity, Array<Entity>, EntitySelect>;
@@ -56,7 +56,7 @@ export class EntityDatabaseFacade<Entity,
     private Q: QApp,
     protected dao: IDao<Entity, EntitySelect,
       EntityCreate, EntityUpdateColumns,
-      EntityUpdateProperties, ApplicationEntity_LocalId,
+      EntityUpdateProperties, DbEntity_LocalId,
       EntityCascadeGraph, IQ>
   ) {
     this.find = new EntityFind<Entity, Array<Entity>, EntitySelect>(

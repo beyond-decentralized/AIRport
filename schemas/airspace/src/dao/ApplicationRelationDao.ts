@@ -1,30 +1,30 @@
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import {
-	ApplicationProperty_LocalId,
-	ApplicationRelation_LocalId,
+	DbProperty_LocalId,
+	DbRelation_LocalId,
 	DbRelation,
 	IDatastructureUtils
 } from '@airport/ground-control'
 import { Y } from '@airport/tarmaq-query'
 import {
-	BaseApplicationRelationDao,
-	IBaseApplicationRelationDao,
-	QApplicationRelation,
-	QApplicationEntity,
-	QApplicationVersion,
-	QApplication,
+	BaseDdlRelationDao,
+	IBaseDdlRelationDao,
+	QDdlRelation,
+	QDdlEntity,
+	QDdlApplicationVersion,
+	QDdlApplication,
 } from '../generated/generated'
 import Q from '../generated/qApplication'
 
 export interface IApplicationRelationDao
-	extends IBaseApplicationRelationDao {
+	extends IBaseDdlRelationDao {
 
 	findAllForProperties(
-		propertyIds: ApplicationProperty_LocalId[]
+		propertyIds: DbProperty_LocalId[]
 	): Promise<DbRelation[]>
 
 	findAllByLocalIdsWithApplications(
-		localIds: ApplicationRelation_LocalId[]
+		localIds: DbRelation_LocalId[]
 	): Promise<DbRelation[]>
 
 	insert(
@@ -36,16 +36,16 @@ export interface IApplicationRelationDao
 
 @Injected()
 export class ApplicationRelationDao
-	extends BaseApplicationRelationDao
+	extends BaseDdlRelationDao
 	implements IApplicationRelationDao {
 
 	@Inject()
 	datastructureUtils: IDatastructureUtils
 
 	async findAllForProperties(
-		propertyIds: ApplicationProperty_LocalId[]
+		propertyIds: DbProperty_LocalId[]
 	): Promise<DbRelation[]> {
-		let r: QApplicationRelation
+		let r: QDdlRelation
 
 		return this.db.find.tree({
 			SELECT: {},
@@ -57,12 +57,12 @@ export class ApplicationRelationDao
 	}
 
 	async findAllByLocalIdsWithApplications(
-		localIds: ApplicationRelation_LocalId[]
+		localIds: DbRelation_LocalId[]
 	): Promise<DbRelation[]> {
-		let r: QApplicationRelation,
-			e: QApplicationEntity,
-			av: QApplicationVersion,
-			a: QApplication
+		let r: QDdlRelation,
+			e: QDdlEntity,
+			av: QDdlApplicationVersion,
+			a: QDdlApplication
 
 		return this.db.find.tree({
 			SELECT: {
@@ -94,7 +94,7 @@ export class ApplicationRelationDao
 		applicationRelations: DbRelation[],
 		context: IContext
 	): Promise<void> {
-		let sr: QApplicationRelation;
+		let sr: QDdlRelation;
 		const VALUES = []
 		for (const applicationRelation of applicationRelations) {
 			VALUES.push([

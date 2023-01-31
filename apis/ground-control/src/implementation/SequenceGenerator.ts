@@ -1,7 +1,7 @@
 import { IContext } from "@airport/direction-indicator";
-import { DbEntity } from "../definition/application/Entity";
-import { DbColumn } from "../definition/application/Property";
-import { DbSequence } from "../definition/application/Sequence";
+import { DbEntity } from "../definition/application/DbEntity";
+import { DbColumn } from "../definition/application/DbProperty";
+import { DbSequence } from "../definition/application/DbSequence";
 
 /**
 * Sequence generator is needed at Airport initialization time. A Dao

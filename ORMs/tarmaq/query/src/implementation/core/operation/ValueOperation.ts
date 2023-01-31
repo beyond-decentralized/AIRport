@@ -1,12 +1,12 @@
 import { IDependencyInjectionToken, InversionOfControl } from "@airport/direction-indicator";
 import { Dictionary, OperationCategory, Repository_GUID, Repository_LocalId, SqlOperator } from "@airport/ground-control";
-import { IQOperableField } from "../../../definition/core/field/OperableField";
-import { IValueOperation, JSONRawValueOperation } from "../../../definition/core/operation/Operation";
-import { RawFieldQuery } from "../../../definition/query/facade/FieldQuery";
+import { IQOperableField } from "../../../definition/core/field/IQOperableField";
+import { IValueOperation, RawValueOperation } from "../../../definition/core/operation/IValueOperation";
+import { RawFieldQuery } from "../../../definition/query/facade/RawFieldQuery";
 import { Operation } from "./Operation";
 
 export abstract class ValueOperation<T extends boolean | string | number | Date,
-	JRO extends JSONRawValueOperation<IQF>,
+	JRO extends RawValueOperation<IQF>,
 	IQF extends IQOperableField<any, any, any, any>>
 	extends Operation
 	implements IValueOperation<T, JRO, IQF> {
@@ -25,7 +25,7 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		lValue: IQF,
 		rValue: T | IQF | RawFieldQuery<IQF>
 	): JRO {
-		const jsonRawValueOperation = <JRO>{
+		const rawValueOperation = <JRO>{
 			c: this.category,
 			l: lValue,
 			o: SqlOperator.EQUALS,
@@ -35,16 +35,16 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		this.addTrackedRepoIDs(
 			lValue,
 			rValue,
-			jsonRawValueOperation
+			rawValueOperation
 		)
 
-		return jsonRawValueOperation
+		return rawValueOperation
 	}
 
 	private addTrackedRepoIDs(
 		lValue: IQF,
 		rValue: T | T[] | IQF | RawFieldQuery<IQF>,
-		jsonRawValueOperation: JRO
+		rawValueOperation: JRO
 	): void {
 		const dictionary = (globalThis.IOC as InversionOfControl)
 			.getSync(this.dictionaryToken)
@@ -56,7 +56,7 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 			} else if (rValue instanceof Array) {
 				trackedRepoGUIDs = rValue as string[]
 			}
-			jsonRawValueOperation.trackedRepoGUIDs = trackedRepoGUIDs
+			rawValueOperation.trackedRepoGUIDs = trackedRepoGUIDs
 		} else if (dictionary.isRepositoryLIDColumn(lValue.dbProperty, lValue.dbColumn)) {
 			let trackedRepoLIDs: Repository_LocalId[]
 			if (typeof rValue === 'number') {
@@ -64,7 +64,7 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 			} else if (rValue instanceof Array) {
 				trackedRepoLIDs = rValue as number[]
 			}
-			jsonRawValueOperation.trackedRepoLocalIds = trackedRepoLIDs
+			rawValueOperation.trackedRepoLocalIds = trackedRepoLIDs
 		}
 	}
 
@@ -114,7 +114,7 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		lValue: IQF,
 		rValue: T[] | IQF | RawFieldQuery<IQF>
 	): JRO {
-		const jsonRawValueOperation = <JRO>{
+		const rawValueOperation = <JRO>{
 			c: this.category,
 			l: lValue,
 			o: SqlOperator.IN,
@@ -124,10 +124,10 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		this.addTrackedRepoIDs(
 			lValue,
 			rValue,
-			jsonRawValueOperation
+			rawValueOperation
 		)
 
-		return jsonRawValueOperation
+		return rawValueOperation
 	}
 
 	lessThan(

@@ -15,7 +15,7 @@ import {
 	SequenceGeneratorDecorator,
 	TraditionalServerSeqDecorator,
 	TransientDecorator
-} from '../definition/ColumnDecorators'
+} from '../definition/IColumnDecorators'
 
 /**
  * Created by Papa on 8/20/2016.
@@ -66,7 +66,7 @@ export const JoinColumns: JoinColumnsDecorator = function (joinColumnConfigurati
 	(
 		otm: QOtm, // One-to-Many IQEntity
 		mto: QMto // Many-to-One IQEntity
-	): JSONBaseOperation;
+	): QueryBaseOperation;
 }
  */
 

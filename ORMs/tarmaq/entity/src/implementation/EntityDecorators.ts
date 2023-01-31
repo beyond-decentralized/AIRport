@@ -1,9 +1,9 @@
 import {
 	EntityDecorator,
 	MappedSuperclassDecorator,
-	ApplicationEntity_TableConfiguration,
+	DbEntity_TableConfiguration,
 	TableDecorator
-} from '../definition/EntityDecorators'
+} from '../definition/IEntityDecorators'
 
 /**
  * Created by Papa on 8/20/2016.
@@ -16,7 +16,7 @@ export const Entity: EntityDecorator = function () {
 }
 
 export const Table: TableDecorator = function (
-	tableConfiguration?: ApplicationEntity_TableConfiguration
+	tableConfiguration?: DbEntity_TableConfiguration
 ) {
 	return function (constructor: Function) {
 		// No runtime logic required.

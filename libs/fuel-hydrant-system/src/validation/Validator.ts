@@ -2,12 +2,12 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	ApplicationColumn_Index,
+	DbColumn_Index,
 	DbColumn,
 	DbEntity,
-	JSONRelation,
-	Application_Index,
-	ApplicationEntity_TableIndex
+	QueryRelation,
+	DbApplication_Index,
+	DbEntity_TableIndex
 } from '@airport/ground-control'
 
 /**
@@ -17,7 +17,7 @@ import {
 export interface IValidator {
 
 	validateReadFromEntity(
-		relation: JSONRelation
+		queryRelation: QueryRelation
 	): void;
 
 	validateReadProperty(
@@ -38,15 +38,15 @@ export interface IValidator {
 	): void;
 
 	validateReadQEntityProperty(
-		applicationIndex: Application_Index,
-		tableIndex: ApplicationEntity_TableIndex,
-		columnIndex: ApplicationColumn_Index,
+		applicationIndex: DbApplication_Index,
+		tableIndex: DbEntity_TableIndex,
+		columnIndex: DbColumn_Index,
 	): void;
 
 	validateReadQEntityManyToOneRelation(
-		applicationIndex: Application_Index,
-		tableIndex: ApplicationEntity_TableIndex,
-		columnIndex: ApplicationColumn_Index,
+		applicationIndex: DbApplication_Index,
+		tableIndex: DbEntity_TableIndex,
+		columnIndex: DbColumn_Index,
 	): void;
 
 	addFunctionAlias(functionAlias: string): void;
@@ -65,7 +65,9 @@ export class QValidator
 	): void {
 	}
 
-	validateReadFromEntity(relation: JSONRelation) {
+	validateReadFromEntity(
+		queryRelation: QueryRelation
+	) {
 	}
 
 	validateReadProperty(
@@ -85,16 +87,16 @@ export class QValidator
 	}
 
 	validateReadQEntityProperty(
-		applicationIndex: Application_Index,
-		tableIndex: ApplicationEntity_TableIndex,
-		columnIndex: ApplicationColumn_Index,
+		applicationIndex: DbApplication_Index,
+		tableIndex: DbEntity_TableIndex,
+		columnIndex: DbColumn_Index,
 	): void {
 	}
 
 	validateReadQEntityManyToOneRelation(
-		applicationIndex: Application_Index,
-		tableIndex: ApplicationEntity_TableIndex,
-		columnIndex: ApplicationColumn_Index,
+		applicationIndex: DbApplication_Index,
+		tableIndex: DbEntity_TableIndex,
+		columnIndex: DbColumn_Index,
 	): void {
 	}
 

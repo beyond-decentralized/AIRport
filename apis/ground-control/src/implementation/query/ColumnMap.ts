@@ -1,11 +1,11 @@
-import { ApplicationEntity_TableIndex } from "../../definition/application/Entity";
-import { ApplicationColumn_Index } from "../../definition/application/Property";
+import { DbEntity_TableIndex } from "../../definition/application/DbEntity";
+import { DbColumn_Index } from "../../definition/application/DbProperty";
 
 export class ColumnMap {
-	columnMap: { [columnIndex: ApplicationColumn_Index]: boolean } = {};
+	columnMap: { [columnIndex: DbColumn_Index]: boolean } = {};
 
 	constructor(
-		public tableIndex: ApplicationEntity_TableIndex,
+		public tableIndex: DbEntity_TableIndex,
 		allColumns: boolean = false
 	) {
 		if (allColumns) {
@@ -13,7 +13,7 @@ export class ColumnMap {
 		}
 	}
 
-	ensure(columnIndex: ApplicationColumn_Index): void {
+	ensure(columnIndex: DbColumn_Index): void {
 		this.columnMap[columnIndex] = true;
 	}
 

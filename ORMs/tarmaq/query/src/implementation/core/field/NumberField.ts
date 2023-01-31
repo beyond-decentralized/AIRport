@@ -1,21 +1,21 @@
 import {
 	DbColumn,
 	DbProperty,
-	JSONClauseField,
-	JSONClauseObjectType,
+	QueryFieldClause,
+	QueryClauseObjectType,
 	Repository_GUID,
 	Repository_LocalId,
 	SQLDataType
 } from '@airport/ground-control';
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver';
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager';
-import { IQFunction } from '../../../definition/core/field/Functions';
-import { IQNumberField } from '../../../definition/core/field/NumberField';
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager';
+import { IQFunction } from '../../../definition/core/field/IQFunctions';
+import { IQNumberField } from '../../../definition/core/field/IQNumberField';
 import {
 	INumberOperation,
-	JSONRawNumberOperation
-} from '../../../definition/core/operation/NumberOperation';
-import { RawFieldQuery } from '../../../definition/query/facade/FieldQuery';
+	RawNumberOperation
+} from '../../../definition/core/operation/INumberOperation';
+import { RawFieldQuery } from '../../../definition/query/facade/RawFieldQuery';
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils';
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils';
 import { FieldColumnAliases } from '../entity/Aliases';
@@ -31,14 +31,14 @@ export interface IQNumberEntityField
 }
 
 export class QNumberField
-	extends QOperableField<number, JSONRawNumberOperation, INumberOperation, IQNumberField>
+	extends QOperableField<number, RawNumberOperation, INumberOperation, IQNumberField>
 	implements IQNumberField {
 
 	constructor(
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
 		q: IQEntityInternal,
-		objectType: JSONClauseObjectType = JSONClauseObjectType.FIELD
+		objectType: QueryClauseObjectType = QueryClauseObjectType.FIELD
 	) {
 		super(dbColumn, dbProperty, q, objectType, new NumberOperation());
 	}
@@ -60,32 +60,32 @@ export class QNumberFunction<T extends number | number[] = number>
 		public value: T | RawFieldQuery<IQNumberField>,
 		protected isQueryParameter: boolean = false
 	) {
-		super(<any>{ type: SQLDataType.NUMBER }, null, null, JSONClauseObjectType.FIELD_FUNCTION);
+		super(<any>{ type: SQLDataType.NUMBER }, null, null, QueryClauseObjectType.FIELD_FUNCTION);
 	}
 
 	getInstance(): QNumberFunction {
 		return this.copyFunctions(new QNumberFunction(this.value as number, this.isQueryParameter));
 	}
 
-	toJSON(
+	toQueryFragment(
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
 		trackedRepoGUIDSet: Set<Repository_GUID>,
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JSONClauseField {
-		let json = this.operableFunctionToJson(
+		relationManager: IQueryRelationManager
+	): QueryFieldClause {
+		let queryFieldClause = this.rawToQueryOperableFunction(
 			this, columnAliases, forSelectClause,
 			trackedRepoGUIDSet, trackedRepoLocalIdSet,
 			queryUtils, fieldUtils, relationManager);
 
 		if (this.isQueryParameter) {
-			this.parameterAlias = <string>json.v;
+			this.parameterAlias = <string>queryFieldClause.v;
 		}
 
-		return json;
+		return queryFieldClause;
 	}
 }
 

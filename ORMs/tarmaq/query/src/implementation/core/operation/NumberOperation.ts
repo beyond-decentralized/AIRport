@@ -1,9 +1,9 @@
 import {OperationCategory} from "@airport/ground-control";
-import {IQNumberField}     from "../../../definition/core/field/NumberField";
+import {IQNumberField}     from "../../../definition/core/field/IQNumberField";
 import {
 	INumberOperation,
-	JSONRawNumberOperation
-}                          from "../../../definition/core/operation/NumberOperation";
+	RawNumberOperation
+}                          from "../../../definition/core/operation/INumberOperation";
 import {ValueOperation}    from "./ValueOperation";
 
 /**
@@ -11,7 +11,7 @@ import {ValueOperation}    from "./ValueOperation";
  */
 
 export class NumberOperation
-	extends ValueOperation<number, JSONRawNumberOperation, IQNumberField> implements INumberOperation {
+	extends ValueOperation<number, RawNumberOperation, IQNumberField> implements INumberOperation {
 
 	constructor() {
 		super(OperationCategory.NUMBER);

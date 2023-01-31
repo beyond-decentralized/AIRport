@@ -10,11 +10,11 @@ import {
   DbSequence,
   EntityRelationType,
   IApplicationReferenceUtils,
-  IDbApplicationUtils,
+  DbApplicationUtils,
   JsonApplication,
-  JsonApplicationColumn,
-  JsonApplicationEntity,
-  JsonApplicationRelation,
+  JsonColumn,
+  JsonEntity,
+  JsonRelation,
   JsonApplicationVersion,
   PropertyReference,
   QueryType,
@@ -35,7 +35,7 @@ export abstract class SqlSchemaBuilder
   applicationReferenceUtils: IApplicationReferenceUtils
 
   @Inject()
-  dbApplicationUtils: IDbApplicationUtils
+  dbApplicationUtils: DbApplicationUtils
 
   @Inject()
   sequenceDao: ISequenceDao
@@ -73,10 +73,10 @@ export abstract class SqlSchemaBuilder
       (
         jsonApplication: JsonApplication,
         jsonApplicationVersion: JsonApplicationVersion,
-        jsonRelation: JsonApplicationRelation
+        queryRelation: JsonRelation
       ) => {
         return this.getRelationInfo(jsonApplication, jsonApplicationVersion,
-          jsonRelation, existingApplicationMap, newJsonApplicationMap,
+          queryRelation, existingApplicationMap, newJsonApplicationMap,
           relatedJsonApplicationMap)
       }
     )
@@ -91,13 +91,13 @@ export abstract class SqlSchemaBuilder
   async buildTable(
     jsonApplication: JsonApplication,
     jsonApplicationVersion: JsonApplicationVersion,
-    jsonEntity: JsonApplicationEntity,
+    jsonEntity: JsonEntity,
     existingApplicationMap: Map<string, DbApplication>,
     context: IContext,
   ): Promise<void> {
     const primaryKeyColumnNames: string[] = [];
     const tableColumnsDdl: string[] = jsonEntity.columns.map((
-      jsonColumn: JsonApplicationColumn,
+      jsonColumn: JsonColumn,
     ) => {
       let columnDdl = `${jsonColumn.name} ${this.getColumnSuffix(jsonApplication, jsonEntity, jsonColumn)}`;
 
@@ -157,46 +157,46 @@ export abstract class SqlSchemaBuilder
   private getRelationInfo(
     jsonApplication: JsonApplication,
     jsonApplicationVersion: JsonApplicationVersion,
-    jsonRelation: JsonApplicationRelation,
+    queryRelation: JsonRelation,
     existingApplicationMap: Map<string, DbApplication>,
     newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>,
     relatedJsonApplicationMap: Map<string, JsonApplication>
   ): {
     relatedJsonApplication: JsonApplication,
-    relatedJsonEntity: JsonApplicationEntity
+    relatedJsonEntity: JsonEntity
   } {
     let relatedJsonApplication: JsonApplication
-    let relatedJsonEntity: JsonApplicationEntity
-    if (jsonRelation.relationTableApplication_Index
-      || jsonRelation.relationTableApplication_Index === 0) {
+    let relatedJsonEntity: JsonEntity
+    if (queryRelation.relationTableDbApplication_Index
+      || queryRelation.relationTableDbApplication_Index === 0) {
       const referencedApplication = jsonApplicationVersion
-        .referencedApplications[jsonRelation.relationTableApplication_Index]
-      let relatedApplication_FullName = this.dbApplicationUtils
-        .getApplication_FullNameFromDomainAndName(
+        .referencedApplications[queryRelation.relationTableDbApplication_Index]
+      let relatedDbApplication_FullName = this.dbApplicationUtils
+        .getDbApplication_FullNameFromDomainAndName(
           referencedApplication.domain, referencedApplication.name
         )
-      relatedJsonApplication = relatedJsonApplicationMap.get(relatedApplication_FullName)
+      relatedJsonApplication = relatedJsonApplicationMap.get(relatedDbApplication_FullName)
       if (!relatedJsonApplication) {
-        const relatedApplication = existingApplicationMap.get(relatedApplication_FullName)
+        const relatedApplication = existingApplicationMap.get(relatedDbApplication_FullName)
         if (relatedApplication) {
           // FIXME: this should be looked up though currentVersion - make sure it's populated
           // relatedJsonApplication = relatedApplication.currentVersion[0].applicationVersion.jsonApplication
           relatedJsonApplication = relatedApplication.versions[0].jsonApplication
         } else {
-          relatedJsonApplication = newJsonApplicationMap.get(relatedApplication_FullName)
+          relatedJsonApplication = newJsonApplicationMap.get(relatedDbApplication_FullName)
         }
         if (!relatedJsonApplication) {
-          throw new Error(`Could not find related application ${relatedApplication_FullName}
+          throw new Error(`Could not find related application ${relatedDbApplication_FullName}
           in either existing applications or newly installing applications.`)
         }
-        relatedJsonApplicationMap.set(relatedApplication_FullName, relatedJsonApplication)
+        relatedJsonApplicationMap.set(relatedDbApplication_FullName, relatedJsonApplication)
       }
       const relatedApplicationVersion: JsonApplicationVersion = relatedJsonApplication
         .versions[relatedJsonApplication.versions.length - 1]
-      relatedJsonEntity = relatedApplicationVersion.entities[jsonRelation.relationTableIndex]
+      relatedJsonEntity = relatedApplicationVersion.entities[queryRelation.relationTableIndex]
     } else {
       relatedJsonApplication = jsonApplication
-      relatedJsonEntity = jsonApplicationVersion.entities[jsonRelation.relationTableIndex]
+      relatedJsonEntity = jsonApplicationVersion.entities[queryRelation.relationTableIndex]
     }
 
     return {
@@ -214,7 +214,7 @@ export abstract class SqlSchemaBuilder
   async buildForeignKeys(
     jsonApplication: JsonApplication,
     jsonApplicationVersion: JsonApplicationVersion,
-    jsonEntity: JsonApplicationEntity,
+    jsonEntity: JsonEntity,
     existingApplicationMap: Map<string, DbApplication>,
     newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>,
     relatedJsonApplicationMap: Map<string, JsonApplication>,
@@ -228,21 +228,21 @@ export abstract class SqlSchemaBuilder
     const tableName = this.storeDriver.getTableName(
       jsonApplication, jsonApplicationVersion.integerVersion, jsonEntity, context);
 
-    for (const jsonRelation of jsonEntity.relations) {
-      if (jsonRelation.relationType !== EntityRelationType.MANY_TO_ONE) {
+    for (const queryRelation of jsonEntity.relations) {
+      if (queryRelation.relationType !== EntityRelationType.MANY_TO_ONE) {
         continue
       }
 
       const {
         relatedJsonApplication, relatedJsonEntity
       } = this.getRelationInfo(jsonApplication, applicationVersion,
-        jsonRelation, existingApplicationMap,
+        queryRelation, existingApplicationMap,
         newJsonApplicationMap, relatedJsonApplicationMap)
 
       let foreignKeyColumnNames = []
       for (const jsonColumn of jsonEntity.columns) {
         for (const propertyRef of jsonColumn.propertyRefs) {
-          if (propertyRef.index === jsonRelation.propertyRef.index) {
+          if (propertyRef.index === queryRelation.propertyRef.index) {
             foreignKeyColumnNames.push(jsonColumn.name)
             break
           }
@@ -296,18 +296,18 @@ export abstract class SqlSchemaBuilder
 
   abstract getColumnSuffix(
     jsonApplication: JsonApplication,
-    jsonEntity: JsonApplicationEntity,
-    column: JsonApplicationColumn,
+    jsonEntity: JsonEntity,
+    column: JsonColumn,
   ): string
 
   abstract getCreateTableSuffix(
     jsonApplication: JsonApplication,
-    jsonEntity: JsonApplicationEntity,
+    jsonEntity: JsonEntity,
   ): string
 
   protected isPrimaryKeyColumn(
-    jsonEntity: JsonApplicationEntity,
-    jsonColumn: JsonApplicationColumn,
+    jsonEntity: JsonEntity,
+    jsonColumn: JsonColumn,
   ): boolean {
     return jsonColumn.propertyRefs.some((
       propertyRef: PropertyReference,
@@ -324,8 +324,8 @@ export abstract class SqlSchemaBuilder
 
   /*
   protected abstract isForeignKey(
-    jsonEntity: JsonApplicationEntity,
-    jsonColumn: JsonApplicationColumn
+    jsonEntity: JsonEntity,
+    jsonColumn: JsonColumn
   ): boolean
   */
 

@@ -1,5 +1,5 @@
-import { ApplicationEntity_TableIndex } from "../../definition/application/Entity";
-import { Application_Index } from "../../definition/application/Application";
+import { DbEntity_TableIndex } from "../../definition/application/DbEntity";
+import { DbApplication_Index } from "../../definition/application/DbApplication";
 import { ColumnMap } from "../query/ColumnMap";
 import {
 	TableMap
@@ -14,14 +14,14 @@ export class SyncTableMap
 	extends TableMap {
 
 	constructor(
-		applicationIndex: Application_Index,
+		applicationIndex: DbApplication_Index,
 		tableMap: { [tableIndex: string]: ColumnMap }
 	) {
 		super(applicationIndex, tableMap);
 	}
 
 	ensureEntity(
-		tableIndex: ApplicationEntity_TableIndex,
+		tableIndex: DbEntity_TableIndex,
 		allColumns: boolean = false
 	): SyncColumnMap {
 		return super.ensure(tableIndex, allColumns,

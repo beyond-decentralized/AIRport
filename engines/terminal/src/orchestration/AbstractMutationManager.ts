@@ -6,14 +6,14 @@ import {
   IQEntityInternal,
   IQueryUtils,
   RawInsertValues,
-  IRelationManager,
+  IQueryRelationManager,
 } from '@airport/tarmaq-query';
 import {
   Inject,
   Injected
 } from '@airport/direction-indicator'
 import { IContext } from '@airport/direction-indicator';
-import { DbColumn, IApplicationUtils, JsonQuery, PortableQuery, QueryResultType } from '@airport/ground-control';
+import { DbColumn, IApplicationUtils, Query, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { ITransaction } from '@airport/terminal-map';
 
 interface IColumnValueLookup {
@@ -33,7 +33,7 @@ export class AbstractMutationManager {
   queryUtils: IQueryUtils
 
   @Inject()
-  relationManager: IRelationManager
+  relationManager: IQueryRelationManager
 
   protected getPortableQuery(
     applicationIndex: number,
@@ -44,7 +44,7 @@ export class AbstractMutationManager {
     return {
       applicationIndex,
       tableIndex,
-      jsonQuery: <JsonQuery>query.toJSON(
+      query: <Query>query.toQuery(
         this.queryUtils, this.fieldUtils, this.relationManager),
       parameterMap: query.getParameters(),
       queryResultType,

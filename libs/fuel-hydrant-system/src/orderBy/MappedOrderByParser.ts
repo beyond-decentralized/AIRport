@@ -1,7 +1,7 @@
 import {
-	JSONClauseField,
-	JSONFieldInOrderBy,
-	SortOrder
+	QueryFieldClause,
+	QueryFieldInOrderBy,
+	QuerySortOrder
 }                                from '@airport/ground-control'
 import {IValidator}              from '../validation/Validator'
 import {INonEntityOrderByParser} from './AbstractEntityOrderByParser'
@@ -47,10 +47,10 @@ export class MappedOrderByParser
 	 */
 	getOrderByFragment(
 		rootSelectClauseFragment: any,
-		originalOrderBy: JSONFieldInOrderBy[]
+		originalOrderBy: QueryFieldInOrderBy[]
 	): string {
 		let orderByFragments: string[]    = []
-		let orderBy: JSONFieldInOrderBy[] = []
+		let orderBy: QueryFieldInOrderBy[] = []
 		if (originalOrderBy) {
 			orderBy = originalOrderBy.slice()
 		}
@@ -65,7 +65,7 @@ export class MappedOrderByParser
 			let currentSelectFragmentFieldSet: { [alias: string]: boolean } = {}
 
 			for (let propertyName in currentSelectFragment) {
-				let field: JSONClauseField = currentSelectFragment[propertyName]
+				let field: QueryFieldClause = currentSelectFragment[propertyName]
 				if (!field.appliedFunctions) {
 					selectFragmentQueue.push(field)
 					continue
@@ -73,7 +73,7 @@ export class MappedOrderByParser
 				currentSelectFragmentFieldSet[field.fa] = true
 			}
 
-			let currentEntityOrderBy: JSONFieldInOrderBy[] = []
+			let currentEntityOrderBy: QueryFieldInOrderBy[] = []
 
 			// First add the fields specified in the query Order By clause for this entity, in the
 			// order they are specified
@@ -90,7 +90,7 @@ export class MappedOrderByParser
 			for (let alias in currentSelectFragmentFieldSet) {
 				currentEntityOrderBy.push({
 					fa: alias,
-					so: SortOrder.ASCENDING
+					so: QuerySortOrder.ASCENDING
 				})
 			}
 
@@ -106,14 +106,14 @@ export class MappedOrderByParser
 	}
 
 	buildOrderByFragmentForEntity(
-		orderByFields: JSONFieldInOrderBy[]
+		orderByFields: QueryFieldInOrderBy[]
 	): string[] {
 		return orderByFields.map((orderByField) => {
 			this.validator.validateAliasedFieldAccess(orderByField.fa)
 			switch (orderByField.so) {
-				case SortOrder.ASCENDING:
+				case QuerySortOrder.ASCENDING:
 					return `${orderByField.fa} ASC`
-				case SortOrder.DESCENDING:
+				case QuerySortOrder.DESCENDING:
 					return `${orderByField.fa} DESC`
 			}
 		})

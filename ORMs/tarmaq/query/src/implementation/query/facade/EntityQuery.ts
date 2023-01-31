@@ -1,18 +1,18 @@
 import {
-	JSONEntityFieldInOrderBy,
-	JsonEntityQuery,
-	JSONEntityRelation,
-	JsonLimitedEntityQuery,
+	QueryEntityFieldInOrderBy,
+	QueryEntity,
+	QueryEntityRelation,
+	QueryEntityLimited,
 	Repository_GUID
 } from '@airport/ground-control'
-import { IEntitySelectProperties } from '../../../definition/core/entity/Entity'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { IFieldInOrderBy } from '../../../definition/core/field/FieldInOrderBy'
+import { IEntitySelectProperties } from '../../../definition/core/entity/IQEntity'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { IFieldInOrderBy } from '../../../definition/core/field/IFieldInOrderBy'
 import {
 	RawEntityQuery,
 	RawLimitedEntityQuery
-} from '../../../definition/query/facade/EntityQuery'
-import { IQuery } from '../../../definition/query/facade/Query'
+} from '../../../definition/query/facade/RawEntityQuery'
+import { IReadQuery } from '../../../definition/query/facade/RawReadQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { EntityAliases } from '../../core/entity/Aliases'
@@ -26,7 +26,7 @@ import { MappableQuery } from './MappableQuery'
 
 export class EntityQuery<IEP extends IEntitySelectProperties>
 	extends MappableQuery
-	implements IQuery {
+	implements IReadQuery {
 
 	constructor(
 		protected rawQuery: RawEntityQuery<IEP>,
@@ -37,39 +37,39 @@ export class EntityQuery<IEP extends IEntitySelectProperties>
 		this.isHierarchicalEntityQuery = true
 	}
 
-	toJSON(
+	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JsonEntityQuery<IEP> {
+		relationManager: IQueryRelationManager
+	): QueryEntity<IEP> {
 		return {
-			S: this.selectClauseToJSON(
+			S: this.rawToQuerySelectClause(
 				this.rawQuery.SELECT,
 				queryUtils, fieldUtils, relationManager),
-			F: <JSONEntityRelation[]>this.fromClauseToJSON(
+			F: <QueryEntityRelation[]>this.rawToQueryFromClause(
 				this.rawQuery.FROM,
 				queryUtils, fieldUtils, relationManager),
 			forUpdate: this.rawQuery.FOR_UPDATE,
-			W: queryUtils.whereClauseToJSON(
+			W: queryUtils.whereClauseToQueryOperation(
 				this.rawQuery.WHERE, this.columnAliases,
 				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet),
-			OB: this.orderByClauseToJSON(this.rawQuery.ORDER_BY)
+			OB: this.orderByClauseToQuery(this.rawQuery.ORDER_BY)
 		}
 	}
 
-	protected nonDistinctSelectClauseToJSON(rawSelect: any): any {
+	protected rawToQueryNonDistinctSelectClause(rawSelect: any): any {
 		for (let field in rawSelect) {
 			let value = rawSelect[field]
 			if (value instanceof QField) {
 				throw new Error(`Field References cannot be used in Entity Queries`)
 			} else if (value instanceof Object && !(value instanceof Date)) {
-				this.nonDistinctSelectClauseToJSON(value)
+				this.rawToQueryNonDistinctSelectClause(value)
 			}
 		}
 		return rawSelect
 	}
 
-	protected orderByClauseToJSON(orderBy: IFieldInOrderBy<any>[]): JSONEntityFieldInOrderBy[] {
+	protected orderByClauseToQuery(orderBy: IFieldInOrderBy<any>[]): QueryEntityFieldInOrderBy[] {
 		if (!orderBy || !orderBy.length) {
 			return null
 		}
@@ -90,18 +90,18 @@ export class LimitedEntityQuery<IEP extends IEntitySelectProperties>
 		this.isHierarchicalEntityQuery = false
 	}
 
-	toJSON(
+	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JsonLimitedEntityQuery<IEP> {
-		let limitedJsonEntity: JsonLimitedEntityQuery<IEP> = super.toJSON(
+		relationManager: IQueryRelationManager
+	): QueryEntityLimited<IEP> {
+		let queryEntityLimited: QueryEntityLimited<IEP> = super.toQuery(
 			queryUtils, fieldUtils, relationManager
 		)
-		limitedJsonEntity.L = this.rawQuery.LIMIT
-		limitedJsonEntity.O = this.rawQuery.OFFSET
+		queryEntityLimited.L = this.rawQuery.LIMIT
+		queryEntityLimited.O = this.rawQuery.OFFSET
 
-		return limitedJsonEntity
+		return queryEntityLimited
 	}
 
 }

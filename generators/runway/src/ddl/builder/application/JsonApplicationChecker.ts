@@ -1,5 +1,5 @@
 import { JsonApplicationWithApi } from "@airport/air-traffic-control";
-import { ApplicationReferenceUtils, AppTrackerUtils, Dictionary, JsonApplication, JsonApplicationRelation, JsonApplicationVersion } from "@airport/ground-control";
+import { ApplicationReferenceUtils, AppTrackerUtils, Dictionary, JsonApplication, JsonRelation, JsonApplicationVersion } from "@airport/ground-control";
 import { SIndexedApplication } from "./SApplication";
 
 export interface IJsonApplicationChecker {
@@ -31,14 +31,14 @@ export class JsonApplicationChecker
             (
                 jsonApplication: JsonApplication,
                 jsonApplicationVersion: JsonApplicationVersion,
-                jsonRelation: JsonApplicationRelation
+                queryRelation: JsonRelation
             ) => {
                 let relatedJsonApplication
                 let relatedJsonEntity
-                if (jsonRelation.relationTableApplication_Index
-                    || jsonRelation.relationTableApplication_Index === 0) {
+                if (queryRelation.relationTableDbApplication_Index
+                    || queryRelation.relationTableDbApplication_Index === 0) {
                     const referencedApplication = jsonApplicationVersion
-                        .referencedApplications[jsonRelation.relationTableApplication_Index]
+                        .referencedApplications[queryRelation.relationTableDbApplication_Index]
 
                     // References are by name only since they are loaded from source by name
                     // thus a given Applicaiton shouldn't be referencing two other applications
@@ -47,10 +47,10 @@ export class JsonApplicationChecker
 
                     const relatedApplicationVersion = relatedJsonApplication
                         .versions[relatedJsonApplication.versions.length - 1]
-                    relatedJsonEntity = relatedApplicationVersion.entities[jsonRelation.relationTableIndex]
+                    relatedJsonEntity = relatedApplicationVersion.entities[queryRelation.relationTableIndex]
                 } else {
                     relatedJsonApplication = jsonApplication
-                    relatedJsonEntity = jsonApplicationVersion.entities[jsonRelation.relationTableIndex]
+                    relatedJsonEntity = jsonApplicationVersion.entities[queryRelation.relationTableIndex]
                 }
 
                 return {

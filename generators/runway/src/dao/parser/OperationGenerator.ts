@@ -3,8 +3,8 @@ import {
 	JsonOperation,
 	JsonOperationRule,
 	JsonPersistRule,
-	OperationType,
-	QueryInput,
+	DbOperationType,
+	IQueryInput,
 	QueryInputKind,
 	QueryParameterType
 } from '@airport/ground-control';
@@ -71,7 +71,7 @@ export function visitDaoFile(
 			case tsc.SyntaxKind.ExtendsKeyword: {
 				extendedBaseClass = (heritageClause.types[0].expression as any).escapedText;
 				if (!extendedBaseClass.startsWith('Base') || !extendedBaseClass.endsWith('Dao')) {
-					throw new Error(`Dao ${daoName} must extends the Base{ApplicationEntity_Name}Dao class.`);
+					throw new Error(`Dao ${daoName} must extends the Base{DbEntity_Name}Dao class.`);
 				}
 				entityName = extendedBaseClass.substring(4, extendedBaseClass.length - 3);
 				break;
@@ -84,7 +84,7 @@ export function visitDaoFile(
 	}
 
 	if (!entityName) {
-		throw new Error(`The '${daoName}' Dao must extend the Base{ApplicationEntity_Name}Dao class.`);
+		throw new Error(`The '${daoName}' Dao must extend the Base{DbEntity_Name}Dao class.`);
 	}
 
 	if (file.hasDao) {
@@ -260,11 +260,11 @@ Following decorators are currently supported for ${daoName}:
 				switch (decoratorNameParts[2]) {
 					case 'Graph':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, OperationType.FIND_GRAPH);
+							entityName, memberName, DbOperationType.FIND_GRAPH);
 						break;
 					case 'Tree':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, OperationType.FIND_TREE);
+							entityName, memberName, DbOperationType.FIND_TREE);
 						break;
 				}
 				break;
@@ -272,11 +272,11 @@ Following decorators are currently supported for ${daoName}:
 				switch (decoratorNameParts[2]) {
 					case 'Graph':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, OperationType.FIND_ONE_GRAPH);
+							entityName, memberName, DbOperationType.FIND_ONE_GRAPH);
 						break;
 					case 'Tree':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, OperationType.FIND_ONE_TREE);
+							entityName, memberName, DbOperationType.FIND_ONE_TREE);
 						break;
 				}
 				break;
@@ -284,11 +284,11 @@ Following decorators are currently supported for ${daoName}:
 				switch (decoratorNameParts[2]) {
 					case 'Graph':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, OperationType.SEARCH_GRAPH);
+							entityName, memberName, DbOperationType.SEARCH_GRAPH);
 						break;
 					case 'Tree':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, OperationType.SEARCH_TREE);
+							entityName, memberName, DbOperationType.SEARCH_TREE);
 						break;
 				}
 				break;
@@ -296,11 +296,11 @@ Following decorators are currently supported for ${daoName}:
 				switch (decoratorNameParts[2]) {
 					case 'Graph':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, OperationType.SEARCH_ONE_GRAPH);
+							entityName, memberName, DbOperationType.SEARCH_ONE_GRAPH);
 						break;
 					case 'Tree':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, OperationType.SEARCH_ONE_TREE);
+							entityName, memberName, DbOperationType.SEARCH_ONE_TREE);
 						break;
 				}
 				break;
@@ -446,7 +446,7 @@ function serializeSave(
 	// decorator.expression.arguments[0].kind = 193 ObjectLiteralExpression
 	const rules: ts.ObjectLiteralExpression = decorator.expression.arguments[0];
 	const operationRule: JsonPersistRule = {
-		type: OperationType.SAVE
+		type: DbOperationType.SAVE
 	};
 	serializeRules(rules, operationRule);
 
@@ -460,10 +460,10 @@ function serializeQuery(
 	decoratorName,
 	entityName: string,
 	memberName: string,
-	type: OperationType.FIND_GRAPH | OperationType.FIND_TREE
-		| OperationType.FIND_ONE_GRAPH | OperationType.FIND_ONE_TREE
-		| OperationType.SEARCH_GRAPH | OperationType.SEARCH_TREE
-		| OperationType.SEARCH_ONE_GRAPH | OperationType.SEARCH_ONE_TREE
+	type: DbOperationType.FIND_GRAPH | DbOperationType.FIND_TREE
+		| DbOperationType.FIND_ONE_GRAPH | DbOperationType.FIND_ONE_TREE
+		| DbOperationType.SEARCH_GRAPH | DbOperationType.SEARCH_TREE
+		| DbOperationType.SEARCH_ONE_GRAPH | DbOperationType.SEARCH_ONE_TREE
 ) {
 	const expression = decorator.expression.arguments[0];
 
@@ -500,7 +500,7 @@ function serializeQuery(
 		return 0;
 	});
 
-	const inputs: QueryInput[] = queryInputs.map((
+	const inputs: IQueryInput[] = queryInputs.map((
 		input,
 		index: number
 	) => {
@@ -532,7 +532,7 @@ function serializeQuery(
 					name,
 				};
 			default:
-				throw new Error('Unsupported QueryInputKind in QueryInput.type: ' + typeInfo.type);
+				throw new Error('Unsupported QueryInputKind in IQueryInput.type: ' + typeInfo.type);
 		}
 	});
 
@@ -661,7 +661,7 @@ function serializeDelete(
 	// decorator.expression.arguments[0].kind = 193 ObjectLiteralExpression
 	const rules: ts.ObjectLiteralExpression = decorator.expression.arguments[0];
 	const operationRule: JsonPersistRule = {
-		type: OperationType.DELETE
+		type: DbOperationType.DELETE
 	};
 	serializeRules(rules, operationRule);
 

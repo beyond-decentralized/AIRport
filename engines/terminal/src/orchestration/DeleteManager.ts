@@ -1,6 +1,6 @@
 import {
 	IAirportDatabase,
-	ISystemWideOperationIdUtils,
+	DbSystemWideOperationIdUtils,
 	IUtils
 } from '@airport/air-traffic-control'
 import {
@@ -18,8 +18,8 @@ import {
 	IApplicationUtils,
 	IDatastructureUtils,
 	IRootTransaction,
-	JsonDelete,
-	JsonEntityQuery,
+	QueryDelete,
+	QueryEntity,
 	PortableQuery,
 	QueryResultType,
 } from '@airport/ground-control'
@@ -69,7 +69,7 @@ export class DeleteManager
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 
 	@Inject()
-	systemWideOperationIdUtils: ISystemWideOperationIdUtils
+	systemWideOperationIdUtils: DbSystemWideOperationIdUtils
 
 	@Inject()
 	utils: IUtils
@@ -92,16 +92,16 @@ export class DeleteManager
 
 		const selectCascadeTree: any = this.getCascadeSubTree(
 			dbEntity)
-		const jsonDelete = <JsonDelete>portableQuery.jsonQuery
-		const jsonSelect: JsonEntityQuery<any> = {
+		const queryDelete = <QueryDelete>portableQuery.query
+		const queryEntity: QueryEntity<any> = {
 			S: selectCascadeTree,
-			F: [jsonDelete.DF],
-			W: jsonDelete.W,
+			F: [queryDelete.DF],
+			W: queryDelete.W,
 		}
 		const portableSelect = {
 			applicationIndex: portableQuery.applicationIndex,
 			tableIndex: portableQuery.tableIndex,
-			jsonQuery: jsonSelect,
+			query: queryEntity,
 			queryResultType: QueryResultType.ENTITY_TREE,
 			parameterMap: portableQuery.parameterMap,
 			// values: portableQuery.values,

@@ -1,6 +1,6 @@
-import { Application_Index } from "../application/Application";
-import { ApplicationEntity_TableIndex, DbEntity } from "../application/Entity";
-import { DbColumn, DbRelation } from "../application/Property";
+import { DbApplication_Index } from "../application/DbApplication";
+import { DbEntity_TableIndex, DbEntity } from "../application/DbEntity";
+import { DbColumn, DbRelation } from "../application/DbProperty";
 import { CRUDOperation } from "../core/operation/Operation";
 import { ChangeType } from "../data/ChangeType";
 
@@ -22,8 +22,8 @@ export interface IApplicationUtils {
   ): string[][]
 
   getDbEntity(
-    applicationIndex: Application_Index,
-    tableIndex: ApplicationEntity_TableIndex
+    applicationIndex: DbApplication_Index,
+    tableIndex: DbEntity_TableIndex
   ): DbEntity;
 
   getEntityConstructor(

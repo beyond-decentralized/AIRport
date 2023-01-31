@@ -3,11 +3,11 @@ import {
 } from '@airport/air-traffic-control'
 import { IContext, Injected } from '@airport/direction-indicator';
 import {
-	ApplicationColumn_Index,
-	JSONBaseOperation,
-	Application_Index,
-	ApplicationVersion_LocalId,
-	ApplicationEntity_TableIndex,
+	DbColumn_Index,
+	QueryBaseOperation,
+	DbApplication_Index,
+	DbApplicationVersion_LocalId,
+	DbEntity_TableIndex,
 	Dictionary,
 	Repository_LocalId,
 	Actor_LocalId,
@@ -30,12 +30,12 @@ import Q from '../generated/qApplication'
 export type RecordUpdateStageValue = any;
 
 export type RecordUpdateStageValues = [
-	ApplicationVersion_LocalId,
-	ApplicationEntity_TableIndex,
+	DbApplicationVersion_LocalId,
+	DbEntity_TableIndex,
 	Repository_LocalId,
 	Actor_LocalId,
 	ActorRecordId,
-	ApplicationColumn_Index,
+	DbColumn_Index,
 	RecordUpdateStageValue
 ];
 
@@ -48,11 +48,11 @@ export interface IRecordUpdateStageDao
 	): Promise<number[][]>;
 
 	updateEntityWhereIds(
-		applicationIndex: Application_Index,
-		applicationVersionId: ApplicationVersion_LocalId,
-		tableIndex: ApplicationEntity_TableIndex,
+		applicationIndex: DbApplication_Index,
+		applicationVersionId: DbApplicationVersion_LocalId,
+		tableIndex: DbEntity_TableIndex,
 		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>,
-		updatedColumnIndexes: ApplicationColumn_Index[],
+		updatedColumnIndexes: DbColumn_Index[],
 		context: IContext
 	): Promise<void>;
 
@@ -102,21 +102,21 @@ export class RecordUpdateStageDao
 	}
 
 	async updateEntityWhereIds(
-		applicationIndex: Application_Index,
-		applicationVersionId: ApplicationVersion_LocalId,
-		tableIndex: ApplicationEntity_TableIndex,
+		applicationIndex: DbApplication_Index,
+		applicationVersionId: DbApplicationVersion_LocalId,
+		tableIndex: DbEntity_TableIndex,
 		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>,
-		updatedColumnIndexes: ApplicationColumn_Index[],
+		updatedColumnIndexes: DbColumn_Index[],
 		context: IContext
 	): Promise<void> {
 		const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
 			.applicationVersion.entities[tableIndex]
 		const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name]
 
-		const repositoryEquals: JSONBaseOperation[] = []
+		const repositoryEquals: QueryBaseOperation[] = []
 		const AirEntity = this.dictionary.AirEntity
 		for (const [repositoryId, idsForRepository] of idMap) {
-			const actorEquals: JSONBaseOperation[] = []
+			const actorEquals: QueryBaseOperation[] = []
 			for (const [actorId, idsForActor] of idsForRepository) {
 				actorEquals.push(AND(
 					qEntity[AirEntity.properties.actor]._localId.equals(actorId),

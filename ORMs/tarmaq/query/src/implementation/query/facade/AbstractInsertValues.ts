@@ -2,10 +2,10 @@ import {
 	DbColumn,
 	DbEntity
 } from '@airport/ground-control'
-import { IEntityAliases } from '../../../definition/core/entity/Aliases'
-import { IQEntity } from '../../../definition/core/entity/Entity'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { AbstractRawInsertValues } from '../../../definition/query/facade/InsertValues'
+import { IEntityAliases } from '../../../definition/core/entity/IAliases'
+import { IQEntity } from '../../../definition/core/entity/IQEntity'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { AbstractRawInsertValues } from '../../../definition/query/facade/RawInsertValues'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { EntityAliases } from '../../core/entity/Aliases'
@@ -58,12 +58,12 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 		}
 	}
 
-	protected valuesToJSON(
+	protected rawToQueryValuesClause(
 		valueSets: any[][],
 		dbColumns: DbColumn[],
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
+		relationManager: IQueryRelationManager
 	): any[][] {
 		// let currentValueIndex = -1;
 		// this.values           = [];
@@ -83,7 +83,7 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 					// this.values.push(getPrimitiveValue(value));
 					// return ++currentValueIndex;
 				} else {
-					return (<QField<any>>value).toJSON(
+					return (<QField<any>>value).toQueryFragment(
 						this.columnAliases, false,
 						this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 						queryUtils, fieldUtils, relationManager)

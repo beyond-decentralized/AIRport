@@ -5,7 +5,7 @@ import {
 	IEntitySelectProperties,
 	RawEntityQuery
 } from '@airport/tarmaq-query'
-import { IEntityFindOne } from '../../definition/query/EntityFindOne'
+import { IEntityFindOne } from '../../definition/query/IEntityFindOne'
 import { EntityLookup } from './EntityLookup'
 
 export interface IEntityFindOneInternal<Entity, IESP extends IEntitySelectProperties>

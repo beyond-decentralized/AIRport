@@ -7,27 +7,27 @@ import {
 } from '@airport/tarmaq-query'
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import {
-	Domain_Name,
-	Application_Index,
-	Application_Name,
+	DbDomain_Name,
+	DbApplication_Index,
+	DbApplication_Name,
 	ApplicationStatus,
-	ApplicationVersion_LocalId,
-	Application_FullName,
+	DbApplicationVersion_LocalId,
+	DbApplication_FullName,
 	IDatastructureUtils,
 	DbApplication
 } from '@airport/ground-control'
 import {
-	BaseApplicationDao,
-	IBaseApplicationDao,
-	QDomain,
-	QApplication,
-	QApplicationCurrentVersion,
-	QApplicationVersion
+	BaseDdlApplicationDao,
+	IBaseDdlApplicationDao,
+	QDdlDomain,
+	QDdlApplication,
+	QDdlApplicationCurrentVersion,
+	QDdlApplicationVersion
 } from '../generated/generated'
-import Q from '../generated/qApplication'
+import Q from '../generated/QApplication'
 
 import { IAirportDatabase } from '@airport/air-traffic-control'
-import { Application } from '../ddl/ddl'
+import { DdlApplication } from '../ddl/application/DdlApplication'
 
 export interface DbApplicationLookupRecord {
 	index: number
@@ -42,42 +42,42 @@ export interface DbApplicationLookupRecord {
 }
 
 export interface IApplicationDao
-	extends IBaseApplicationDao {
+	extends IBaseDdlApplicationDao {
 
 	findAllActive(): Promise<DbApplication[]>;
 
 	findAllWithJson(): Promise<DbApplication[]>;
 
 	findMapByVersionIds(
-		applicationVersionIds: ApplicationVersion_LocalId[]
-	): Promise<Map<Application_Index, DbApplication>>;
+		applicationVersionIds: DbApplicationVersion_LocalId[]
+	): Promise<Map<DbApplication_Index, DbApplication>>;
 
 	findMaxVersionedMapByApplicationAndDomain_Names(
-		applicationDomain_Names: Domain_Name[],
-		applicationNames: Application_Name[]
-	): Promise<Map<Domain_Name, Map<Application_Name, DbApplicationLookupRecord>>>;
+		applicationDomain_Names: DbDomain_Name[],
+		applicationNames: DbApplication_Name[]
+	): Promise<Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationLookupRecord>>>;
 
 	setStatusByIndexes(
-		indexes: Application_Index[],
+		indexes: DbApplication_Index[],
 		status: ApplicationStatus
 	): Promise<void>;
 
 	findMapByFullNames(
-		fullApplication_Names: Application_FullName[]
-	): Promise<Map<Application_FullName, DbApplication>>
+		fullDbApplication_Names: DbApplication_FullName[]
+	): Promise<Map<DbApplication_FullName, DbApplication>>
 
-	findByDomain_NamesAndApplication_Names(
+	findByDomain_NamesAndDbApplication_Names(
 		domainNames: string[],
 		applicationNames: string[]
 	): Promise<DbApplication[]>
 
-	findOneByDomain_NameAndApplication_Name(
+	findOneByDomain_NameAndDbApplication_Name(
 		domainName: string,
 		applicationName: string
 	): Promise<DbApplication>
 
 	findByIndex(
-		index: Application_Index
+		index: DbApplication_Index
 	): Promise<DbApplication>
 
 	insert(
@@ -89,7 +89,7 @@ export interface IApplicationDao
 
 @Injected()
 export class ApplicationDao
-	extends BaseApplicationDao
+	extends BaseDdlApplicationDao
 	implements IApplicationDao {
 
 	@Inject()
@@ -100,7 +100,7 @@ export class ApplicationDao
 
 	async findAllActive()
 		: Promise<DbApplication[]> {
-		let s: QApplication
+		let s: QDdlApplication
 
 		return this.db.find.tree({
 			SELECT: {},
@@ -112,10 +112,10 @@ export class ApplicationDao
 
 	async findAllWithJson()
 		: Promise<DbApplication[]> {
-		let a: QApplication
-		let av: QApplicationVersion
+		let a: QDdlApplication
+		let av: QDdlApplicationVersion
 		// FIXME: this should be don through currentVersion - verify that it get's populated and switch
-		let cv: QApplicationCurrentVersion
+		let cv: QDdlApplicationCurrentVersion
 
 		return this.db.find.tree({
 			SELECT: {
@@ -141,13 +141,13 @@ export class ApplicationDao
 	}
 
 	async findMapByVersionIds(
-		applicationVersionIds: ApplicationVersion_LocalId[]
-	): Promise<Map<ApplicationVersion_LocalId, DbApplication>> {
+		applicationVersionIds: DbApplicationVersion_LocalId[]
+	): Promise<Map<DbApplicationVersion_LocalId, DbApplication>> {
 
-		const applicationMapByIndex: Map<ApplicationVersion_LocalId, DbApplication> = new Map()
+		const applicationMapByIndex: Map<DbApplicationVersion_LocalId, DbApplication> = new Map()
 
-		let s: QApplication,
-			sv: QApplicationVersion
+		let s: QDdlApplication,
+			sv: QDdlApplicationVersion
 		const applications = await this.db.find.tree({
 			SELECT: {
 				index: Y,
@@ -180,7 +180,7 @@ export class ApplicationDao
 		return applicationMapByIndex
 	}
 
-	async findMaxIndex(): Promise<Application_Index> {
+	async findMaxIndex(): Promise<DbApplication_Index> {
 
 		const s = Q.Application
 		return await this.airportDatabase.findOne.field({
@@ -192,16 +192,16 @@ export class ApplicationDao
 	}
 
 	async findMaxVersionedMapByApplicationAndDomain_Names(
-		applicationDomain_Names: Domain_Name[],
-		applicationNames: Application_Name[]
-	): Promise<Map<Domain_Name, Map<Application_Name, DbApplicationLookupRecord>>> {
+		applicationDomain_Names: DbDomain_Name[],
+		applicationNames: DbApplication_Name[]
+	): Promise<Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationLookupRecord>>> {
 
-		const maxVersionedMapByApplicationAndDomain_Names: Map<Domain_Name, Map<Application_Name, DbApplicationLookupRecord>>
+		const maxVersionedMapByApplicationAndDomain_Names: Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationLookupRecord>>
 			= new Map()
 
-		let sv: QApplicationVersion
-		let s: QApplication
-		let d: QDomain
+		let sv: QDdlApplicationVersion
+		let s: QDdlApplication
+		let d: QDdlDomain
 		let sMaV
 		let sMiV
 
@@ -287,10 +287,10 @@ export class ApplicationDao
 	}
 
 	async setStatusByIndexes(
-		indexes: Application_Index[],
+		indexes: DbApplication_Index[],
 		status: ApplicationStatus
 	): Promise<void> {
-		let s: QApplication
+		let s: QDdlApplication
 		await this.db.updateWhere({
 			UPDATE: s = Q.Application,
 			SET: {
@@ -301,18 +301,18 @@ export class ApplicationDao
 	}
 
 	async findMapByFullNames(
-		fullApplication_Names: Application_FullName[]
-	): Promise<Map<Application_FullName, DbApplication>> {
-		const mapByFullName: Map<Application_FullName, DbApplication> = new Map()
+		fullDbApplication_Names: DbApplication_FullName[]
+	): Promise<Map<DbApplication_FullName, DbApplication>> {
+		const mapByFullName: Map<DbApplication_FullName, DbApplication> = new Map()
 
-		let s: QApplication
+		let s: QDdlApplication
 
 		const records = await this.db.find.tree({
 			SELECT: {},
 			FROM: [
 				s = Q.Application
 			],
-			WHERE: s.fullName.IN(fullApplication_Names)
+			WHERE: s.fullName.IN(fullDbApplication_Names)
 		})
 
 		for (const record of records) {
@@ -322,12 +322,12 @@ export class ApplicationDao
 		return mapByFullName
 	}
 
-	async findByDomain_NamesAndApplication_Names(
+	async findByDomain_NamesAndDbApplication_Names(
 		domainNames: string[],
 		applicationNames: string[]
 	): Promise<DbApplication[]> {
-		let s: QApplication
-		let d: QDomain
+		let s: QDdlApplication
+		let d: QDdlDomain
 
 		return await this.db.find.tree({
 			SELECT: {
@@ -350,12 +350,12 @@ export class ApplicationDao
 		})
 	}
 
-	async findOneByDomain_NameAndApplication_Name(
+	async findOneByDomain_NameAndDbApplication_Name(
 		domainName: string,
 		applicationName: string
-	): Promise<Application> {
-		let s: QApplication
-		let d: QDomain
+	): Promise<DdlApplication> {
+		let s: QDdlApplication
+		let d: QDdlDomain
 
 		return await this.db.findOne.tree({
 			SELECT: {
@@ -378,10 +378,10 @@ export class ApplicationDao
 	}
 
 	async findByIndex(
-		index: Application_Index
+		index: DbApplication_Index
 	): Promise<DbApplication> {
-		let a: QApplication;
-		let d: QDomain;
+		let a: QDdlApplication;
+		let d: QDdlDomain;
 		return await this.db.findOne.tree({
 			SELECT: {
 				...ALL_FIELDS,
@@ -399,7 +399,7 @@ export class ApplicationDao
 		applications: DbApplication[],
 		context: IContext
 	): Promise<void> {
-		let a: QApplication;
+		let a: QDdlApplication;
 		const VALUES = []
 		for (const application of applications) {
 			VALUES.push([

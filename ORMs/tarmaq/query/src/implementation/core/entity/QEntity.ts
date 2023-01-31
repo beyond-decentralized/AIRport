@@ -16,12 +16,12 @@ import {
 	IFrom,
 	IQAirEntity,
 	IQEntity,
-} from '../../../definition/core/entity/Entity'
-import { IJoinFields } from '../../../definition/core/entity/Joins'
-import { JSONLogicalOperation } from '../../../definition/core/operation/LogicalOperation'
+} from '../../../definition/core/entity/IQEntity'
+import { IJoinFields } from '../../../definition/core/entity/IJoins'
+import { QueryLogicalOperation } from '../../../definition/core/operation/ILogicalOperation'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { IEntityQueryDatabaseFacade } from '../../../definition/core/IEntityQueryDatabaseFacade'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
 import { IQEntityDriver, IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 
 /**
@@ -54,7 +54,7 @@ export interface QEntityConstructor<IQE extends IQEntity> {
 	new(
 		dbEntity: DbEntity,
 		queryUtils: IQueryUtils,
-		relationManager: IRelationManager,
+		relationManager: IQueryRelationManager,
 		fromClausePosition?: number[],
 		dbRelation?: DbRelation,
 		joinType?: JoinType,
@@ -67,7 +67,7 @@ export interface QEntityConstructor<IQE extends IQEntity> {
 export function QEntity<IEntity, IQE extends IQEntity>(
 	dbEntity: DbEntity,
 	queryUtils: IQueryUtils,
-	relationManager: IRelationManager,
+	relationManager: IQueryRelationManager,
 	fromClausePosition: number[] = [],
 	dbRelation = null,
 	joinType: JoinType = null,
@@ -97,7 +97,7 @@ QEntity.prototype.equals = function <Entity extends IAirEntity, IQ extends IQEnt
 	entity: Entity
 		| IQAirEntity
 		| AirEntityId | string
-): JSONLogicalOperation {
+): QueryLogicalOperation {
 	return (globalThis.IOC as InversionOfControl)
 		.getSync(globalThis.QUERY_UTILS as IDependencyInjectionToken<IQueryUtils>)
 		.equals(entity, this)
@@ -106,7 +106,7 @@ QEntity.prototype.equals = function <Entity extends IAirEntity, IQ extends IQEnt
 QEntity.prototype.in = function <Entity extends IAirEntity, IQ extends IQEntityInternal>(
 	entities: (Entity
 		| AirEntityId | string)[]
-): JSONLogicalOperation {
+): QueryLogicalOperation {
 	return (globalThis.IOC as InversionOfControl)
 		.getSync(globalThis.QUERY_UTILS as IDependencyInjectionToken<IQueryUtils>)
 		.in(entities, this)

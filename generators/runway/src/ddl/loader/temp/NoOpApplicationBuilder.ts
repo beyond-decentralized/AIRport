@@ -6,16 +6,13 @@ import {
 } from '@airport/direction-indicator';
 import {
 	DbApplication,
-	DbApplicationUtils,
+	ImplApplicationUtils,
 	JsonApplication,
-	JsonApplicationColumn,
-	JsonApplicationEntity,
+	JsonColumn,
+	JsonEntity,
 	QueryType
 } from '@airport/ground-control';
 import { SqlSchemaBuilder } from '@airport/takeoff';
-import {
-	IStoreDriver
-} from '@airport/terminal-map';
 
 export class NoOpApplicationBuilder
 	extends SqlSchemaBuilder {
@@ -24,8 +21,8 @@ export class NoOpApplicationBuilder
 		jsonApplication: JsonApplication,
 		context: IContext,
 	): Promise<void> {
-		const applicationName = IOC.getSync(DbApplicationUtils).
-			getApplication_FullName(jsonApplication);
+		const applicationName = IOC.getSync(ImplApplicationUtils).
+			getDbApplication_FullName(jsonApplication);
 		const createApplicationStatement = `CREATE APPLICATION ${applicationName}`;
 
 		await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [],
@@ -34,15 +31,15 @@ export class NoOpApplicationBuilder
 
 	getColumnSuffix(
 		jsonApplication: JsonApplication,
-		jsonEntity: JsonApplicationEntity,
-		jsonColumn: JsonApplicationColumn
+		jsonEntity: JsonEntity,
+		jsonColumn: JsonColumn
 	): string {
 		return '';
 	}
 
 	getCreateTableSuffix(
 		jsonApplication: JsonApplication,
-		jsonEntity: JsonApplicationEntity
+		jsonEntity: JsonEntity
 	): string {
 		return ``;
 	}
@@ -53,10 +50,10 @@ export class NoOpApplicationBuilder
 	): Promise<any[]> {
 		let allSequences: any[] = [];
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
-				getApplication_FullName(jsonApplication)] as QAppInternal;
+			const qApplication = this.airportDatabase.QM[IOC.getSync(ImplApplicationUtils).
+				getDbApplication_FullName(jsonApplication)] as QAppInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
+				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbDbApplication__, jsonEntity));
 			}
 		}
 
@@ -69,10 +66,10 @@ export class NoOpApplicationBuilder
 	): any[] {
 		let stagedSequences: any[] = [];
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
-				getApplication_FullName(jsonApplication)] as QAppInternal;
+			const qApplication = this.airportDatabase.QM[IOC.getSync(ImplApplicationUtils).
+				getDbApplication_FullName(jsonApplication)] as QAppInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
+				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbDbApplication__, jsonEntity));
 			}
 		}
 
@@ -81,7 +78,7 @@ export class NoOpApplicationBuilder
 
 	buildSequences(
 		dbApplication: DbApplication,
-		jsonEntity: JsonApplicationEntity,
+		jsonEntity: JsonEntity,
 	): any[] {
 		const sequences: any[] = [];
 		for (const jsonColumn of jsonEntity.columns) {

@@ -1,6 +1,6 @@
-import { ApplicationEntity_TableIndex } from "../../definition/application/Entity";
-import { ApplicationColumn_Index } from "../../definition/application/Property";
-import { ApplicationVersion_LocalId } from "../../definition/application/Application";
+import { DbEntity_TableIndex } from "../../definition/application/DbEntity";
+import { DbColumn_Index } from "../../definition/application/DbProperty";
+import { DbApplicationVersion_LocalId } from "../../definition/application/DbApplication";
 import { ColumnMap } from "./ColumnMap";
 
 /**
@@ -12,13 +12,13 @@ globalThis.ALL_TABLE_COLUMNS = '__ALL_TABLE_COLUMNS__';
 export class TableMap {
 
 	constructor(
-		public applicationVersionId: ApplicationVersion_LocalId,
-		public tableMap: { [tableIndex: ApplicationEntity_TableIndex]: ColumnMap } = {}
+		public applicationVersionId: DbApplicationVersion_LocalId,
+		public tableMap: { [tableIndex: DbEntity_TableIndex]: ColumnMap } = {}
 	) {
 	}
 
 	ensure(
-		tableIndex: ApplicationEntity_TableIndex,
+		tableIndex: DbEntity_TableIndex,
 		allColumns: boolean = false,
 		ColumnMapConstructor = globalThis.ColumnMap as typeof ColumnMap,
 	): ColumnMap {
@@ -32,8 +32,8 @@ export class TableMap {
 	}
 
 	existsByStructure(
-		tableIndex: ApplicationEntity_TableIndex,
-		columnIndex: ApplicationColumn_Index
+		tableIndex: DbEntity_TableIndex,
+		columnIndex: DbColumn_Index
 	): boolean {
 		let tableColumnMap = this.tableMap[tableIndex];
 		if (!tableColumnMap) {

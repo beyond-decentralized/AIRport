@@ -13,7 +13,7 @@ import {
 	SheetQuery,
 	TreeQuery
 } from '@airport/tarmaq-query';
-import { INonEntityFindOne } from '../../definition/query/NonEntityFindOne';
+import { INonEntityFindOne } from '../../definition/query/INonEntityFindOne';
 import { Lookup } from './Lookup';
 
 /**

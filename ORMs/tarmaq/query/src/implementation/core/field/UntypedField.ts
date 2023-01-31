@@ -1,20 +1,20 @@
 import {
 	DbColumn,
 	DbProperty,
-	JSONClauseField,
-	JSONClauseObjectType,
+	QueryFieldClause,
+	QueryClauseObjectType,
 	Repository_GUID,
 	Repository_LocalId,
 } from '@airport/ground-control'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { IQFunction } from '../../../definition/core/field/Functions'
-import { IQUntypedField } from '../../../definition/core/field/UntypedField'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { IQFunction } from '../../../definition/core/field/IQFunctions'
+import { IQUntypedField } from '../../../definition/core/field/IQUntypedField'
 import {
 	IUntypedOperation,
-	JSONRawUntypedOperation
-} from '../../../definition/core/operation/UntypedOperation'
-import { RawFieldQuery } from '../../../definition/query/facade/FieldQuery'
+	RawUntypedOperation
+} from '../../../definition/core/operation/IUntypedOperation'
+import { RawFieldQuery } from '../../../definition/query/facade/RawFieldQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { FieldColumnAliases } from '../entity/Aliases'
@@ -30,14 +30,14 @@ export interface IQUntypedEntityField
 }
 
 export class QUntypedField
-	extends QOperableField<number | string, JSONRawUntypedOperation, IUntypedOperation, IQUntypedField>
+	extends QOperableField<number | string, RawUntypedOperation, IUntypedOperation, IQUntypedField>
 	implements IQUntypedField {
 
 	constructor(
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
 		q: IQEntityInternal,
-		objectType: JSONClauseObjectType = JSONClauseObjectType.FIELD
+		objectType: QueryClauseObjectType = QueryClauseObjectType.FIELD
 	) {
 		super(dbColumn, dbProperty, q, objectType, new UntypedOperation())
 	}
@@ -49,7 +49,7 @@ export class QUntypedField
 
 	like(
 		value: string | IQUntypedField | RawFieldQuery<IQUntypedField> | { (...args: any[]): RawFieldQuery<IQUntypedField> }
-	): JSONRawUntypedOperation {
+	): RawUntypedOperation {
 		if (value instanceof Function) {
 			value = value()
 		}
@@ -68,8 +68,8 @@ export class QUntypedFunction
 		public value: number | string | RawFieldQuery<any>,
 		private isQueryParameter: boolean = false
 	) {
-		// super(<any>{type: SQLDataType.ANY}, null, null, JSONClauseObjectType.FIELD_FUNCTION)
-		super(<any>{ type: null }, null, null, JSONClauseObjectType.FIELD_FUNCTION)
+		// super(<any>{type: SQLDataType.ANY}, null, null, QueryClauseObjectType.FIELD_FUNCTION)
+		super(<any>{ type: null }, null, null, QueryClauseObjectType.FIELD_FUNCTION)
 		throw new Error(`Untyped data type is not supported`)
 	}
 
@@ -77,24 +77,24 @@ export class QUntypedFunction
 		return this.copyFunctions(new QUntypedFunction(this.value))
 	}
 
-	toJSON(
+	toQueryFragment(
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
 		trackedRepoGUIDSet: Set<Repository_GUID>,
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JSONClauseField {
-		let json = this.operableFunctionToJson(
+		relationManager: IQueryRelationManager
+	): QueryFieldClause {
+		let queryFieldClause = this.rawToQueryOperableFunction(
 			this, columnAliases, forSelectClause,
 			trackedRepoGUIDSet, trackedRepoLocalIdSet,
 			queryUtils, fieldUtils, relationManager)
 
 		if (this.isQueryParameter) {
-			this.parameterAlias = <string>json.v
+			this.parameterAlias = <string>queryFieldClause.v
 		}
 
-		return json
+		return queryFieldClause
 	}
 }

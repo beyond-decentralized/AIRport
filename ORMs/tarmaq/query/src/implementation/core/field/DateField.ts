@@ -1,21 +1,21 @@
 import {
 	DbColumn,
 	DbProperty,
-	JSONClauseField,
-	JSONClauseObjectType,
+	QueryFieldClause,
+	QueryClauseObjectType,
 	Repository_GUID,
 	Repository_LocalId,
 	SQLDataType
 } from '@airport/ground-control';
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver';
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager';
-import { IQDateField } from '../../../definition/core/field/DateField';
-import { IQFunction } from '../../../definition/core/field/Functions';
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager';
+import { IQDateField } from '../../../definition/core/field/IQDateField';
+import { IQFunction } from '../../../definition/core/field/IQFunctions';
 import {
 	IDateOperation,
-	JSONRawDateOperation
-} from '../../../definition/core/operation/DateOperation';
-import { RawFieldQuery } from '../../../definition/query/facade/FieldQuery';
+	RawDateOperation
+} from '../../../definition/core/operation/IDateOperation';
+import { RawFieldQuery } from '../../../definition/query/facade/RawFieldQuery';
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils';
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils';
 import { FieldColumnAliases } from '../entity/Aliases';
@@ -31,14 +31,14 @@ export interface IQDateEntityField
 }
 
 export class QDateField
-	extends QOperableField<Date, JSONRawDateOperation, IDateOperation, IQDateField>
+	extends QOperableField<Date, RawDateOperation, IDateOperation, IQDateField>
 	implements IQDateField {
 
 	constructor(
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
 		q: IQEntityInternal,
-		objectType: JSONClauseObjectType = JSONClauseObjectType.FIELD
+		objectType: QueryClauseObjectType = QueryClauseObjectType.FIELD
 	) {
 		super(dbColumn, dbProperty, q, objectType, new DateOperation());
 	}
@@ -60,32 +60,32 @@ export class QDateFunction<T extends Date | Date[] = Date>
 		public value: T | RawFieldQuery<QDateField>,
 		protected isQueryParameter: boolean = false
 	) {
-		super(<any>{ type: SQLDataType.DATE }, null, null, JSONClauseObjectType.FIELD_FUNCTION);
+		super(<any>{ type: SQLDataType.DATE }, null, null, QueryClauseObjectType.FIELD_FUNCTION);
 	}
 
 	getInstance(): QDateFunction {
 		return this.copyFunctions(new QDateFunction(this.value as Date, this.isQueryParameter));
 	}
 
-	toJSON(
+	toQueryFragment(
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
 		trackedRepoGUIDSet: Set<Repository_GUID>,
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JSONClauseField {
-		let json = this.operableFunctionToJson(
+		relationManager: IQueryRelationManager
+	): QueryFieldClause {
+		let queryFieldClause = this.rawToQueryOperableFunction(
 			this, columnAliases, forSelectClause,
 			trackedRepoGUIDSet, trackedRepoLocalIdSet,
 			queryUtils, fieldUtils, relationManager);
 
 		if (this.isQueryParameter) {
-			this.parameterAlias = <string>json.v;
+			this.parameterAlias = <string>queryFieldClause.v;
 		}
 
-		return json;
+		return queryFieldClause;
 	}
 }
 

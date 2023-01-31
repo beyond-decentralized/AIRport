@@ -1,8 +1,8 @@
 import { SyncApplicationMap } from "../../implementation/sync/SyncApplicationMap";
 import { SyncColumnMap } from "../../implementation/sync/SyncColumnMap";
-import { DbApplicationVersion } from "../application/Application";
-import { DbEntity } from "../application/Entity";
-import { ApplicationColumn_Index, DbColumn } from "../application/Property";
+import { DbApplicationVersion } from "../application/DbApplication";
+import { DbEntity } from "../application/DbEntity";
+import { DbColumn_Index, DbColumn } from "../application/DbProperty";
 import { ChangeType } from "../data/ChangeType";
 import { RepositoryTransactionType, TransactionType } from "../data/sync/TransactionType";
 import { ActorRecordId, IActor, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, IRepositoryMemberUpdate, RepositoryMemberInvitation_PrivateSigningKey, Repository_IsPublic, Repository_LocalId, SystemWideOperationId } from "../core/types";
@@ -148,7 +148,7 @@ export interface ISynchronizationConflict {
 export interface ISynchronizationConflictValues {
 
     // Id Properties
-    columnIndex: ApplicationColumn_Index;
+    columnIndex: DbColumn_Index;
 
     // Id Relations
     synchronizationConflict: ISynchronizationConflict;

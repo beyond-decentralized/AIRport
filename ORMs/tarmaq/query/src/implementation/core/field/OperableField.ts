@@ -1,15 +1,15 @@
 import {
 	DbColumn,
 	DbProperty,
-	JSONClauseObjectType
+	QueryClauseObjectType
 } from "@airport/ground-control";
 import { IQEntityInternal } from "../../../definition/core/entity/IQEntityDriver";
-import { IQOperableField, IQOperableFieldInternal } from "../../../definition/core/field/OperableField";
+import { IQOperableField, IQOperableFieldInternal } from "../../../definition/core/field/IQOperableField";
 import {
 	IValueOperation,
-	JSONRawValueOperation
-} from "../../../definition/core/operation/Operation";
-import { RawFieldQuery } from "../../../definition/query/facade/FieldQuery";
+	RawValueOperation
+} from "../../../definition/core/operation/IValueOperation";
+import { RawFieldQuery } from "../../../definition/query/facade/RawFieldQuery";
 import { QField } from "./Field";
 
 /**
@@ -17,7 +17,7 @@ import { QField } from "./Field";
  */
 
 export abstract class QOperableField<T,
-	JO extends JSONRawValueOperation<IQF>,
+	JO extends RawValueOperation<IQF>,
 	IO extends IValueOperation<T, JO, IQF>,
 	IQF extends IQOperableField<T, JO, IO, IQF>>
 	extends QField<IQF>
@@ -27,7 +27,7 @@ export abstract class QOperableField<T,
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
 		q: IQEntityInternal,
-		objectType: JSONClauseObjectType,
+		objectType: QueryClauseObjectType,
 		public operation: IO,
 	) {
 		super(dbColumn, dbProperty, q, objectType);

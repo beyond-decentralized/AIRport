@@ -1,11 +1,11 @@
 import {
 	IAirportDatabase,
-	ISystemWideOperationIdUtils
+	DbSystemWideOperationIdUtils
 } from '@airport/air-traffic-control'
 import {
 	IFieldUtils,
 	IQueryUtils,
-	IRelationManager,
+	IQueryRelationManager,
 	RepositorySheetSelectInfo,
 	SheetQuery
 } from '@airport/tarmaq-query'
@@ -15,13 +15,13 @@ import {
 } from '@airport/direction-indicator'
 import {
 	ChangeType,
-	ApplicationColumn_Index,
+	DbColumn_Index,
 	DbColumn,
 	Dictionary,
 	InternalFragments,
 	IRootTransaction,
-	JsonSheetQuery,
-	JsonUpdate,
+	QuerySheet,
+	QueryUpdate,
 	PortableQuery,
 	QueryResultType,
 	IDatastructureUtils,
@@ -74,13 +74,13 @@ export class UpdateManager
 	recordHistoryDuo: IRecordHistoryDuo
 
 	@Inject()
-	relationManager: IRelationManager
+	relationManager: IQueryRelationManager
 
 	@Inject()
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 
 	@Inject()
-	systemWideOperationIdUtils: ISystemWideOperationIdUtils
+	systemWideOperationIdUtils: DbSystemWideOperationIdUtils
 
 	async updateValues(
 		portableQuery: PortableQuery,
@@ -133,7 +133,7 @@ export class UpdateManager
 			// updated, detect the type of update and if entity just pull out
 			// the new values from them
 			await this.addNewValueHistory(
-				<JsonUpdate<any>>portableQuery.jsonQuery,
+				<QueryUpdate<any>>portableQuery.query,
 				recordHistoryMap, systemWideOperationId,
 				repositorySheetSelectInfo, errorPrefix,
 				transaction, context)
@@ -162,25 +162,25 @@ export class UpdateManager
 
 		const qEntity = this.airportDatabase
 			.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
-		const jsonUpdate: JsonUpdate<any> = <JsonUpdate<any>>portableQuery.jsonQuery
+		const queryUpdate: QueryUpdate<any> = <QueryUpdate<any>>portableQuery.query
 		const getSheetSelectFromSetClauseResult = this.queryUtils.getSheetSelectFromSetClause(
-			context.dbEntity, qEntity, jsonUpdate.S, errorPrefix)
+			context.dbEntity, qEntity, queryUpdate.S, errorPrefix)
 
 		const sheetQuery = new SheetQuery(null)
 
-		const jsonSelectClause = sheetQuery.nonDistinctSelectClauseToJSON(
+		const querySelectClause = sheetQuery.rawToQueryNonDistinctSelectClause(
 			getSheetSelectFromSetClauseResult.selectClause,
 			this.queryUtils, this.fieldUtils, this.relationManager)
 
-		const jsonSelect: JsonSheetQuery = {
-			S: jsonSelectClause,
-			F: [jsonUpdate.U],
-			W: jsonUpdate.W,
+		const querySheet: QuerySheet = {
+			S: querySelectClause,
+			F: [queryUpdate.U],
+			W: queryUpdate.W,
 		}
 		const portableSelect: PortableQuery = {
 			applicationIndex: portableQuery.applicationIndex,
 			tableIndex: portableQuery.tableIndex,
-			jsonQuery: jsonSelect,
+			query: querySheet,
 			queryResultType: QueryResultType.SHEET,
 			parameterMap: portableQuery.parameterMap,
 			// values: portableQuery.values,
@@ -241,7 +241,7 @@ export class UpdateManager
 	}
 
 	private async addNewValueHistory(
-		jsonUpdate: JsonUpdate<any>,
+		queryUpdate: QueryUpdate<any>,
 		recordHistoryMapByRecordId: RecordHistoryMap,
 		systemWideOperationId: SystemWideOperationId,
 		repositorySheetSelectInfo: RepositorySheetSelectInfo,
@@ -265,7 +265,7 @@ export class UpdateManager
 		let portableSelect = this.queryFacade.getPortableQuery(
 			sheetQuery, QueryResultType.SHEET, context)
 
-		const resultSetIndexByColumnIndex: Map<ApplicationColumn_Index, number> = new Map()
+		const resultSetIndexByColumnIndex: Map<DbColumn_Index, number> = new Map()
 
 		const selectDbColumns: DbColumn[] = []
 		let i = 0
@@ -300,7 +300,7 @@ export class UpdateManager
 					repositorySheetSelectInfo.actorRecordIdColumnIndex)]
 				const recordHistory = recordHistoryMapByRecordId
 				[repositoryId][actorId][_actorRecordId]
-				for (const columnName in jsonUpdate.S) {
+				for (const columnName in queryUpdate.S) {
 					const dbColumn = context.dbEntity.columnMap[columnName]
 					const value = updatedRecord[resultSetIndexByColumnIndex.get(dbColumn.index)]
 

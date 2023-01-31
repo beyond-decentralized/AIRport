@@ -6,7 +6,7 @@ import {
     MODULUS, MULTIPLY, NOW, REPLACE, ROUND, SUBTRACT, SUM,
     TRIM, UCASE, UNION, UNION_ALL
 } from "@airport/tarmaq-query";
-import { IDatabaseState } from "../definition/DatabaseState";
+import { IDatabaseState } from "../definition/IDatabaseState";
 
 export const databaseState: IDatabaseState = {
     applications: [],

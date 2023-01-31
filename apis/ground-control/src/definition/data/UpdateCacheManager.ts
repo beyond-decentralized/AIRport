@@ -1,5 +1,5 @@
-import { DbEntity } from "../application/Entity"
-import { ISaveResult } from "../query/SaveResult"
+import { DbEntity } from "../application/DbEntity"
+import { ISaveResult } from "../query/ISaveResult"
 
 export interface IUpdateCacheManager {
 

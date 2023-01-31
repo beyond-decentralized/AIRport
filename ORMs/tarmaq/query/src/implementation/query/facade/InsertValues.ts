@@ -1,15 +1,15 @@
 import {
 	DbColumn,
-	JSONEntityRelation,
-	JsonInsertValues
+	QueryEntityRelation,
+	QueryInsertValues
 } from '@airport/ground-control'
 import {
 	IQEntity
-} from '../../../definition/core/entity/Entity'
+} from '../../../definition/core/entity/IQEntity'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { IQOperableFieldInternal } from '../../../definition/core/field/OperableField'
-import { RawInsertValues } from '../../../definition/query/facade/InsertValues'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { IQOperableFieldInternal } from '../../../definition/core/field/IQOperableField'
+import { RawInsertValues } from '../../../definition/query/facade/RawInsertValues'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { AbstractInsertValues } from './AbstractInsertValues'
@@ -22,14 +22,14 @@ import { AbstractInsertValues } from './AbstractInsertValues'
 export class InsertValues<IQE extends IQEntity>
 	extends AbstractInsertValues<IQE, RawInsertValues<IQE>> {
 
-	toJSON(
+	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JsonInsertValues {
+		relationManager: IQueryRelationManager
+	): QueryInsertValues {
 		const driver = (<IQEntityInternal><any>this.rawInsertValues.INSERT_INTO)
 			.__driver__
-		const insertInto = driver.getRelationJson(
+		const insertInto = driver.getQueryRelation(
 			this.columnAliases,
 			this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 			queryUtils, fieldUtils, relationManager)
@@ -54,9 +54,9 @@ export class InsertValues<IQE extends IQEntity>
 		}
 
 		return {
-			II: insertInto as JSONEntityRelation,
+			II: insertInto as QueryEntityRelation,
 			C: columnIndexes,
-			V: this.valuesToJSON(
+			V: this.rawToQueryValuesClause(
 				this.rawInsertValues.VALUES, dbColumns,
 				queryUtils, fieldUtils, relationManager)
 		}

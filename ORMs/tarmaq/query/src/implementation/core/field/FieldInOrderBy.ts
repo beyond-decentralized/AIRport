@@ -1,11 +1,11 @@
 import {
-	JSONEntityFieldInOrderBy,
-	JSONFieldInOrderBy,
-	SortOrder
+	QueryEntityFieldInOrderBy,
+	QueryFieldInOrderBy,
+	QuerySortOrder
 } from "@airport/ground-control";
-import { IFieldColumnAliases } from "../../../definition/core/entity/Aliases";
-import { IQOrderableField } from "../../../definition/core/field/Field";
-import { IFieldInOrderBy } from "../../../definition/core/field/FieldInOrderBy";
+import { IFieldColumnAliases } from "../../../definition/core/entity/IAliases";
+import { IQOrderableField } from "../../../definition/core/field/IQFieldInternal";
+import { IFieldInOrderBy } from "../../../definition/core/field/IFieldInOrderBy";
 import type { QField } from "./Field";
 
 /**
@@ -18,11 +18,11 @@ export class FieldInOrderBy<IQF extends IQOrderableField<IQF>>
 
 	constructor(
 		public field: IQOrderableField<IQF>,
-		public sortOrder: SortOrder
+		public sortOrder: QuerySortOrder
 	) {
 	}
 
-	toJSON(columnAliases: IFieldColumnAliases<IQF>): JSONFieldInOrderBy {
+	toQueryFragment(columnAliases: IFieldColumnAliases<IQF>): QueryFieldInOrderBy {
 		if (!columnAliases.hasAliasFor(this.field)) {
 			throw new Error(`Field used in ORDER_BY clause is not present in SELECT clause`);
 		}
@@ -32,7 +32,7 @@ export class FieldInOrderBy<IQF extends IQOrderableField<IQF>>
 		};
 	}
 
-	toEntityJSON(): JSONEntityFieldInOrderBy {
+	toEntityJSON(): QueryEntityFieldInOrderBy {
 		let qField = <QField<IQF>>this.field;
 		return {
 			fa: undefined,

@@ -8,11 +8,11 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	ApplicationColumn_Index,
-	JSONBaseOperation,
-	Application_Index,
-	ApplicationVersion_LocalId,
-	ApplicationEntity_TableIndex,
+	DbColumn_Index,
+	QueryBaseOperation,
+	DbApplication_Index,
+	DbApplicationVersion_LocalId,
+	DbEntity_TableIndex,
 	DbColumn,
 	DbEntity,
 	Dictionary,
@@ -43,7 +43,7 @@ export interface IStage2SyncedInDataProcessor {
 
 	applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
+		applicationsByDbApplicationVersion_LocalIdMap: Map<DbApplicationVersion_LocalId, DbApplication>,
 	): Promise<void>;
 
 }
@@ -51,18 +51,18 @@ export interface IStage2SyncedInDataProcessor {
 interface ColumnValueUpdate {
 	childColumnUpdateKeyMap: ColumnUpdateKeyMap;
 	recordKeyMap: RecordKeyMap;
-	updatedColumns: ApplicationColumn_Index[];
+	updatedColumns: DbColumn_Index[];
 }
 
 interface ColumnUpdateKeyMap
-	extends Map<ApplicationColumn_Index, ColumnValueUpdate> {
+	extends Map<DbColumn_Index, ColumnValueUpdate> {
 }
 
 interface RecordKeyMap
 	extends Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>> {
 }
 
-type ColumnIndexAndValue = [ApplicationColumn_Index, any];
+type ColumnIndexAndValue = [DbColumn_Index, any];
 
 @Injected()
 export class Stage2SyncedInDataProcessor
@@ -88,20 +88,20 @@ export class Stage2SyncedInDataProcessor
 
 	async applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
+		applicationsByDbApplicationVersion_LocalIdMap: Map<DbApplicationVersion_LocalId, DbApplication>,
 	): Promise<void> {
 		const context: IOperationContext = {} as any
 
 		await this.performCreates(stage1Result.recordCreations,
-			applicationsByApplicationVersion_LocalIdMap, context)
+			applicationsByDbApplicationVersion_LocalIdMap, context)
 		await this.performUpdates(stage1Result.recordUpdates,
-			applicationsByApplicationVersion_LocalIdMap, context)
+			applicationsByDbApplicationVersion_LocalIdMap, context)
 		await this.performDeletes(stage1Result.recordDeletions,
-			applicationsByApplicationVersion_LocalIdMap, context)
+			applicationsByDbApplicationVersion_LocalIdMap, context)
 	}
 
 	/**
-	 * Remote changes come in with ApplicationVersion_LocalIds not Application_Indexes, so it makes
+	 * Remote changes come in with DbApplicationVersion_LocalIds not DbApplication_Indexes, so it makes
 	 * sense to keep this structure.  NOTE: only one version of a given application is
 	 * processed at one time:
 	 *
@@ -109,19 +109,19 @@ export class Stage2SyncedInDataProcessor
 	 *  Terminal itself must first be upgraded to newer application versions, before changes
 	 *  for that application version are processed.
 	 *
-	 *  To tie in a given ApplicationVersion_LocalId to its Application_Index an additional mapping data
+	 *  To tie in a given DbApplicationVersion_LocalId to its DbApplication_Index an additional mapping data
 	 *  structure is passed in.
 	 */
 
 	private async performCreates(
-		recordCreations: Map<ApplicationVersion_LocalId,
-			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
-				Map<ActorRecordId, Map<ApplicationColumn_Index, any>>>>>>,
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
+		recordCreations: Map<DbApplicationVersion_LocalId,
+			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
+				Map<ActorRecordId, Map<DbColumn_Index, any>>>>>>,
+		applicationsByDbApplicationVersion_LocalIdMap: Map<DbApplicationVersion_LocalId, DbApplication>,
 		context: IOperationContext
 	): Promise<void> {
 		for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
-			const applicationIndex = applicationsByApplicationVersion_LocalIdMap
+			const applicationIndex = applicationsByDbApplicationVersion_LocalIdMap
 				.get(applicationVersionId).index
 
 			for (const [tableIndex, creationInTableMap] of creationInApplicationMap) {
@@ -172,7 +172,7 @@ export class Stage2SyncedInDataProcessor
 									currentNonIdColumnArrayIndex++
 									nonIdColumn = nonIdColumns[currentNonIdColumnArrayIndex]
 								}
-								const qColumn: IQOperableFieldInternal<any, JSONBaseOperation, any, any>
+								const qColumn: IQOperableFieldInternal<any, QueryBaseOperation, any, any>
 									= qEntity.__driver__.allColumns[columnIndex]
 								if (creatingColumns) {
 									columns.push(qColumn)
@@ -231,21 +231,21 @@ export class Stage2SyncedInDataProcessor
 	}
 
 	private async performUpdates(
-		recordUpdates: Map<ApplicationVersion_LocalId,
-			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
-				Map<ActorRecordId, Map<ApplicationColumn_Index, RecordUpdate>>>>>>,
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
+		recordUpdates: Map<DbApplicationVersion_LocalId,
+			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
+				Map<ActorRecordId, Map<DbColumn_Index, RecordUpdate>>>>>>,
+		applicationsByDbApplicationVersion_LocalIdMap: Map<DbApplicationVersion_LocalId, DbApplication>,
 		context: IOperationContext
 	): Promise<void> {
 		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
-		const finalUpdateMap: Map<ApplicationVersion_LocalId, Map<ApplicationEntity_TableIndex, ColumnUpdateKeyMap>> = new Map()
+		const finalUpdateMap: Map<DbApplicationVersion_LocalId, Map<DbEntity_TableIndex, ColumnUpdateKeyMap>> = new Map()
 		const recordUpdateStage: RecordUpdateStageValues[] = []
 
 		// Build the final update data structure
 		for (const [applicationVersionId, applicationUpdateMap] of recordUpdates) {
 			const finalApplicationUpdateMap = this.datastructureUtils.ensureChildJsMap(
 				finalUpdateMap, applicationVersionId)
-			const applicationIndex = applicationsByApplicationVersion_LocalIdMap
+			const applicationIndex = applicationsByDbApplicationVersion_LocalIdMap
 				.get(applicationVersionId).index
 
 			for (const [tableIndex, tableUpdateMap] of applicationUpdateMap) {
@@ -292,7 +292,7 @@ export class Stage2SyncedInDataProcessor
 
 		// Perform the updates
 		for (const [applicationVersionId, updateMapForApplication] of finalUpdateMap) {
-			const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId)
+			const application = applicationsByDbApplicationVersion_LocalIdMap.get(applicationVersionId)
 			for (const [tableIndex, updateMapForTable] of updateMapForApplication) {
 				await this.runUpdatesForTable(application.index, applicationVersionId,
 					tableIndex, updateMapForTable, context)
@@ -303,26 +303,26 @@ export class Stage2SyncedInDataProcessor
 	}
 
 	private async performDeletes(
-		recordDeletions: Map<ApplicationVersion_LocalId,
-			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
+		recordDeletions: Map<DbApplicationVersion_LocalId,
+			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Set<ActorRecordId>>>>>,
-		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, DbApplication>,
+		applicationsByDbApplicationVersion_LocalIdMap: Map<DbApplicationVersion_LocalId, DbApplication>,
 		context: IOperationContext
 	): Promise<void> {
 		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
 
 		for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {
-			const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId)
+			const application = applicationsByDbApplicationVersion_LocalIdMap.get(applicationVersionId)
 
 			for (const [tableIndex, deletionInTableMap] of deletionInApplicationMap) {
 				const dbEntity = this.airportDatabase.applications[application.index].currentVersion[0]
 					.applicationVersion.entities[tableIndex]
 				const qEntity = this.airportDatabase.qApplications[application.index][dbEntity.name]
 				let numClauses = 0
-				let repositoryWhereFragments: JSONBaseOperation[] = []
+				let repositoryWhereFragments: QueryBaseOperation[] = []
 
 				for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
-					let actorWhereFragments: JSONBaseOperation[] = []
+					let actorWhereFragments: QueryBaseOperation[] = []
 
 					for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
 						numClauses++
@@ -360,16 +360,16 @@ export class Stage2SyncedInDataProcessor
 	 * Get the record key map (RecordKeyMap = RepositoryId -> Actor_LocalId
 	 * -> ActorRecordId) for the recordUpdateMap (the specified combination
 	 * of columns/values being updated)
-	 * @param {Map<ApplicationColumn_Index, RecordUpdate>} recordUpdateMap
+	 * @param {Map<DbColumn_Index, RecordUpdate>} recordUpdateMap
 	 * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap
 	 * @returns {RecordKeyMap}
 	 */
 	private getRecordKeyMap(
-		recordUpdateMap: Map<ApplicationColumn_Index, RecordUpdate>, // combination of columns/values
+		recordUpdateMap: Map<DbColumn_Index, RecordUpdate>, // combination of columns/values
 		// being updated
 		finalTableUpdateMap: ColumnUpdateKeyMap, // the map of updates for a table
 	): RecordKeyMap {
-		const updatedColumns: ApplicationColumn_Index[] = []
+		const updatedColumns: DbColumn_Index[] = []
 		for (const columnIndex of recordUpdateMap.keys()) {
 			updatedColumns.push(columnIndex)
 		}
@@ -410,15 +410,15 @@ export class Stage2SyncedInDataProcessor
 	 * Run all updates for a particular table.  One update per updated column combination
 	 * is run.
 	 *
-	 * @param {Application_Index} applicationIndex
-	 * @param {ApplicationEntity_TableIndex} tableIndex
+	 * @param {DbApplication_Index} applicationIndex
+	 * @param {DbEntity_TableIndex} tableIndex
 	 * @param {ColumnUpdateKeyMap} updateKeyMap
 	 * @returns {Promise<void>}
 	 */
 	private async runUpdatesForTable(
-		applicationIndex: Application_Index,
-		applicationVersionId: ApplicationVersion_LocalId,
-		tableIndex: ApplicationEntity_TableIndex,
+		applicationIndex: DbApplication_Index,
+		applicationVersionId: DbApplicationVersion_LocalId,
+		tableIndex: DbEntity_TableIndex,
 		updateKeyMap: ColumnUpdateKeyMap,
 		context: IContext
 	) {

@@ -1,6 +1,6 @@
 import { Injected } from "@airport/direction-indicator";
-import { DbEntity } from "../../application/Entity";
-import { DbColumn, DbProperty } from "../../application/Property";
+import { DbEntity } from "../../application/DbEntity";
+import { DbColumn, DbProperty } from "../../application/DbProperty";
 
 export type Primitive = boolean | Date | number | string;
 

@@ -10,7 +10,7 @@ import { IdGenerator } from './store/IdGenerator'
 import { QValidator } from './validation/Validator'
 import { SqlDriver } from './store/SqlDriver'
 import { STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/terminal-map'
-import { AppTrackerUtils, DatastructureUtils, DbApplicationUtils, ENTITY_STATE_MANAGER, SEQUENCE_GENERATOR } from '@airport/ground-control'
+import { AppTrackerUtils, DatastructureUtils, ImplApplicationUtils, ENTITY_STATE_MANAGER, SEQUENCE_GENERATOR } from '@airport/ground-control'
 import {
     AIRPORT_DATABASE, ApplicationUtils, QMetadataUtils, RelationManager, Utils
 } from '@airport/air-traffic-control'
@@ -43,7 +43,7 @@ fuelHydrantSystem.setDependencies(SqlDriver as any, {
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: ApplicationUtils,
     appTrackerUtils: AppTrackerUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
     objectResultParserFactory: ObjectResultParserFactory,
     observableQueryAdapter: ObservableQueryAdapter,

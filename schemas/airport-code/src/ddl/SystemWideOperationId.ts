@@ -1,4 +1,4 @@
-import { ISystemWideOperationId, SystemWideOperationId_Id } from '@airport/ground-control'
+import { DbSystemWideOperationId, SystemWideOperationId_Id } from '@airport/ground-control'
 import {
 	Column,
 	DbNumber,
@@ -14,7 +14,7 @@ import {
 @Entity()
 @Table({ name: 'SYSTEM_WIDE_OPERATION_LIDS' })
 export class SystemWideOperationId
-	implements ISystemWideOperationId {
+	implements DbSystemWideOperationId {
 
 	@Id()
 	@Column({ name: 'SYSTEM_WIDE_OPERATION_LID', nullable: false })

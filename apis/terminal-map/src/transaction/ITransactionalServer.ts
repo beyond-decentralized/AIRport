@@ -9,8 +9,8 @@ import { Observable } from 'rxjs'
 import {
 	ICredentials,
 	ITransactionCredentials
-} from '../Credentials'
-import { IQueryOperationContext } from '../processing/OperationContext'
+} from '../ICredentials'
+import { IQueryOperationContext } from '../processing/IOperationContext'
 
 export interface ITransactionalServer {
 

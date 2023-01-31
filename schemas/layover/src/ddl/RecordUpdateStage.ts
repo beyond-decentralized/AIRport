@@ -9,7 +9,7 @@ import {
 	Table
 } from '@airport/tarmaq-entity'
 import { ActorRecordId, IRecordUpdateStage, RecordUpdateStage_LocalId } from '@airport/ground-control';
-import { ApplicationColumn, ApplicationEntity, ApplicationVersion } from '@airport/airspace/dist/app/bundle';
+import { DdlColumn, DdlEntity, DdlApplicationVersion } from '@airport/airspace/dist/app/bundle';
 import { Actor, Repository } from '@airport/holding-pattern/dist/app/bundle';
 
 /**
@@ -38,19 +38,19 @@ export class RecordUpdateStage
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'APPLICATION_VERSION_LID',
-		referencedColumnName: 'APPLICATION_VERSION_LID'
+		name: 'DB_APPLICATION_VERSION_LID',
+		referencedColumnName: 'DB_APPLICATION_VERSION_LID'
 	})
-	applicationVersion: ApplicationVersion
+	applicationVersion: DdlApplicationVersion
 
 	@ManyToOne()
 	// FIXME: verify that these records don't make it into serialized
 	// repository ledger (and hence, that using local ids is safe)
 	@JoinColumn({
-		name: 'APPLICATION_ENTITY_LID',
-		referencedColumnName: 'APPLICATION_ENTITY_LID'
+		name: 'DB_ENTITY_LID',
+		referencedColumnName: 'DB_ENTITY_LID'
 	})
-	entity: ApplicationEntity
+	entity: DdlEntity
 
 	@ManyToOne()
 	@JoinColumn({
@@ -70,9 +70,9 @@ export class RecordUpdateStage
 	// FIXME: verify that these records don't make it into serialized
 	// repository ledger (and hence, that using local ids is safe)
 	@JoinColumn({
-		name: 'APPLICATION_COLUMN_LID',
-		referencedColumnName: 'APPLICATION_COLUMN_LID'
+		name: 'DB_COLUMN_LID',
+		referencedColumnName: 'DB_COLUMN_LID'
 	})
-	column: ApplicationColumn
+	column: DdlColumn
 
 }

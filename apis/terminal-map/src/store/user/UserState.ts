@@ -4,7 +4,7 @@ import { Injected } from "@airport/direction-indicator"
 import { IRootTransaction, IUserAccount } from "@airport/ground-control"
 import { Subject } from "rxjs"
 import { ITransaction } from "../../transaction/ITransaction"
-import { internalUserState } from "./theUserState"
+import { internalUserState } from "./internalUserState"
 
 export interface IUserSession {
     currentRootTransaction: IRootTransaction

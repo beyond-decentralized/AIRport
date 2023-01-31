@@ -1,6 +1,6 @@
 import {
 	IQueryContext
-} from '../../definition/query/QueryContext';
+} from '../../definition/query/IQueryContext';
 
 
 export interface IQueryContextLoader {

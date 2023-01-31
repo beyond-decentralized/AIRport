@@ -6,7 +6,7 @@ import {
 	ManyToOne,
 	Table
 } from '@airport/tarmaq-entity'
-import { ApplicationColumn_Index, ISynchronizationConflictValues } from '@airport/ground-control'
+import { DbColumn_Index, ISynchronizationConflictValues } from '@airport/ground-control'
 import { SynchronizationConflict } from './SynchronizationConflict'
 
 @Entity()
@@ -24,6 +24,6 @@ export class SynchronizationConflictValues
 
 	@Id()
 	@DbNumber()
-	columnIndex: ApplicationColumn_Index
+	columnIndex: DbColumn_Index
 
 }

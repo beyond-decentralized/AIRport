@@ -62,10 +62,10 @@ export class ApplicationRelationResolver {
 			let relationEntityIsLocal
 			let relationIndexedEntity: SIndexedEntity | DbEntity
 			let relationEntityName: string
-			let crossApplication = aRelation.referencedApplication_Index || aRelation.referencedApplication_Index === 0
+			let crossApplication = aRelation.referencedDbApplication_Index || aRelation.referencedDbApplication_Index === 0
 			if (crossApplication) {
 				relationIndexedEntity = indexedApplication.application
-					.referencedApplications[aRelation.referencedApplication_Index].dbApplication.currentVersion[0]
+					.referencedApplications[aRelation.referencedDbApplication_Index].dbApplication.currentVersion[0]
 					.applicationVersion.entityMapByName[aRelation.entityName]
 				relationEntityName = relationIndexedEntity.name
 				relationEntityIsLocal = relationIndexedEntity.isLocal

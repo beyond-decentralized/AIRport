@@ -1,6 +1,6 @@
 import { IActor, ITransactionHistory, Repository_GUID, Repository_LocalId, SyncApplicationMap } from '@airport/ground-control'
-import { IStoreDriver } from '../core/data/StoreDriver'
-import { ITransactionCredentials } from '../Credentials'
+import { IStoreDriver } from '../core/data/IStoreDriver'
+import { ITransactionCredentials } from '../ICredentials'
 
 export interface ITransactionInitiator {
 	application: string

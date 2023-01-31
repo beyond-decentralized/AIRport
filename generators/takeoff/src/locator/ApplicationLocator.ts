@@ -1,6 +1,6 @@
 import {
 	DbApplicationVersion,
-	IDbApplicationUtils,
+	DbApplicationUtils,
 	JsonApplication
 } from '@airport/ground-control'
 import {
@@ -18,8 +18,8 @@ export interface IApplicationLocator {
 		terminalStore: ITerminalStore
 	): DbApplicationVersion
 
-	locateLatestApplicationVersionByApplication_Name(
-		fullApplication_Name: string,
+	locateLatestApplicationVersionByDbApplication_Name(
+		fullDbApplication_Name: string,
 		terminalStore: ITerminalStore,
 	): Promise<DbApplicationVersion>
 
@@ -30,7 +30,7 @@ export class ApplicationLocator
 	implements IApplicationLocator {
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	dbApplicationUtils: DbApplicationUtils
 
 	// private terminalStore: ITerminalStore
 
@@ -43,12 +43,12 @@ export class ApplicationLocator
 		if (!applicationVersionsForDomain_Name) {
 			return null
 		}
-		const fullApplication_Name = this.dbApplicationUtils.
-			getApplication_FullNameFromDomainAndName(
+		const fullDbApplication_Name = this.dbApplicationUtils.
+			getDbApplication_FullNameFromDomainAndName(
 				jsonApplication.domain,
 				jsonApplication.name
 			)
-		const latestApplicationVersionForApplication = applicationVersionsForDomain_Name.get(fullApplication_Name)
+		const latestApplicationVersionForApplication = applicationVersionsForDomain_Name.get(fullDbApplication_Name)
 
 		const jsonApplicationVersion = jsonApplication.versions[0]
 
@@ -60,12 +60,12 @@ export class ApplicationLocator
 		return latestApplicationVersionForApplication
 	}
 
-	async locateLatestApplicationVersionByApplication_Name(
-		fullApplication_Name: string,
+	async locateLatestApplicationVersionByDbApplication_Name(
+		fullDbApplication_Name: string,
 		terminalStore: ITerminalStore,
 	): Promise<DbApplicationVersion> {
-		return terminalStore.getLatestApplicationVersionMapByApplication_FullName()
-			.get(fullApplication_Name)
+		return terminalStore.getLatestApplicationVersionMapByDbApplication_FullName()
+			.get(fullDbApplication_Name)
 	}
 
 }

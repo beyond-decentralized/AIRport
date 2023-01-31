@@ -1,4 +1,4 @@
-import {DatabaseObjectConfiguration} from "@airport/ground-control";
+import {DbObjectConfiguration} from "@airport/ground-control";
 import {
 	SColumn,
 	SProperty,
@@ -49,7 +49,7 @@ export interface SEntity {
 	/**
 	 * Table configuration object.
 	 */
-	table: DatabaseObjectConfiguration<any>;
+	table: DbObjectConfiguration<any>;
 
 	/**
 	 * Application specific index of the table represented by the entity.

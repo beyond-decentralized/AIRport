@@ -6,16 +6,16 @@ import {
 import {
 	Actor_GUID,
 	Actor_LocalId,
-	Application_Name,
-	Domain_Name,
+	DbApplication_Name,
+	DbDomain_Name,
 	IActor,
 	IDatastructureUtils,
-	JSONBaseOperation,
+	QueryBaseOperation,
 	Terminal_GUID,
 } from '@airport/ground-control'
 import {
-	QApplication,
-	QDomain
+	QDdlApplication,
+	QDdlDomain
 } from '@airport/airspace/dist/app/bundle'
 import {
 	QTerminal,
@@ -41,9 +41,9 @@ export interface IActorDao
 		actor_localIds: Actor_LocalId[],
 	): Promise<IActor[]>
 
-	findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(
-		domainName: Domain_Name,
-		applicationName: Application_Name,
+	findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(
+		domainName: DbDomain_Name,
+		applicationName: DbApplication_Name,
 		accountPublicSigningKey: UserAccount_PublicSigningKey,
 		terminalGUID: Terminal_GUID
 	): Promise<IActor>
@@ -75,15 +75,15 @@ export class ActorDao
 		) => a._localId.IN(actorIds))
 	}
 
-	async findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(
-		domainName: Domain_Name,
-		applicationName: Application_Name,
+	async findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(
+		domainName: DbDomain_Name,
+		applicationName: DbApplication_Name,
 		accountPublicSigningKey: UserAccount_PublicSigningKey,
 		terminalGUID: Terminal_GUID
 	): Promise<IActor> {
 		let act: QActor
-		let application: QApplication
-		let domain: QDomain
+		let application: QDdlApplication
+		let domain: QDdlDomain
 		let terminal: QTerminal
 		let userAccount: QUserAccount
 		return await this.db.findOne.tree({
@@ -183,10 +183,10 @@ export class ActorDao
 	private async findWithDetailsAndGlobalIdsByWhereClause(
 		getWhereClause: (
 			a: QActor
-		) => JSONBaseOperation
+		) => QueryBaseOperation
 	): Promise<IActor[]> {
 		let a: QActor
-		let ap: QApplication
+		let ap: QDdlApplication
 		let t: QTerminal
 		const _localId = Y
 		const username = Y

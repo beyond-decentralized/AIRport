@@ -13,7 +13,7 @@ import {
 import { IDatabaseFacade } from './IDatabaseFacade'
 import { IEntityDatabaseFacade } from './IEntityDatabaseFacade'
 import { IFieldsSelect } from './IFieldsSelect'
-import { ILookup } from './query/Lookup'
+import { ILookup } from './query/ILookup'
 
 export type OperationName = string
 
@@ -25,7 +25,7 @@ export interface IDao<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
-	ApplicationEntity_LocalId extends IEntityIdProperties,
+	DbEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity> {
 
@@ -40,7 +40,7 @@ export interface IDao<Entity,
 	}
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
-		EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, IQE>
+		EntityUpdateColumns, EntityUpdateProperties, DbEntity_LocalId, EntityCascadeGraph, IQE>
 
 
 	SELECT: IFieldsSelect<EntitySelect>
@@ -54,17 +54,17 @@ export interface IDao<Entity,
 	): Promise<number>;
 
 	exists(
-		entityId: ApplicationEntity_LocalId,
+		entityId: DbEntity_LocalId,
 		context?: IContext
 	): Promise<boolean>;
 
 	findAll(
-		entityIds?: ApplicationEntity_LocalId[],
+		entityIds?: DbEntity_LocalId[],
 		context?: IContext
 	): Promise<Entity[]>;
 
 	findAllAsTrees(
-		entityIds?: ApplicationEntity_LocalId[],
+		entityIds?: DbEntity_LocalId[],
 		context?: IContext
 	): Promise<Entity[]>;
 

@@ -1,15 +1,15 @@
 import {
-	JsonNonEntityQuery,
-	JsonTreeQuery,
+	QueryNonEntity,
+	QueryTree,
 	Repository_GUID
 } from '@airport/ground-control'
-import { IEntityAliases } from '../../../definition/core/entity/Aliases'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { IQuery } from '../../../definition/query/facade/Query'
+import { IEntityAliases } from '../../../definition/core/entity/IAliases'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { IReadQuery } from '../../../definition/query/facade/RawReadQuery'
 import {
 	ITreeEntity,
 	RawTreeQuery
-} from '../../../definition/query/facade/TreeQuery'
+} from '../../../definition/query/facade/RawTreeQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { EntityAliases } from '../../core/entity/Aliases'
@@ -17,7 +17,7 @@ import { MappableQuery } from './MappableQuery'
 
 export class TreeQuery<ITE extends ITreeEntity>
 	extends MappableQuery
-	implements IQuery {
+	implements IReadQuery {
 
 	constructor(
 		public rawQuery: RawTreeQuery<ITE>,
@@ -27,23 +27,23 @@ export class TreeQuery<ITE extends ITreeEntity>
 		super(entityAliases, trackedRepoGUIDSet)
 	}
 
-	toJSON(
+	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JsonTreeQuery {
-		let jsonMappedQuery: JsonTreeQuery
-			= <JsonTreeQuery>this.getNonEntityQuery(this.rawQuery, <any>{}, (
-				jsonQuery: JsonNonEntityQuery
+		relationManager: IQueryRelationManager
+	): QueryTree {
+		let queryTree: QueryTree
+			= <QueryTree>this.getNonEntityQuery(this.rawQuery, <any>{}, (
+				nonEntityQuery: QueryNonEntity
 			) => {
-				jsonQuery.S = this.selectClauseToJSON(
+				nonEntityQuery.S = this.rawToQuerySelectClause(
 					this.rawQuery.SELECT,
 					queryUtils, fieldUtils, relationManager)
-				jsonQuery.forUpdate = this.rawQuery.FOR_UPDATE
+				nonEntityQuery.forUpdate = this.rawQuery.FOR_UPDATE
 
 			}, queryUtils, fieldUtils, relationManager)
 
-		return jsonMappedQuery
+		return queryTree
 	}
 
 }

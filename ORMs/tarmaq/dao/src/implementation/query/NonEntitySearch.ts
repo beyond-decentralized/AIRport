@@ -20,7 +20,7 @@ import {
 	Observable,
 	from
 } from 'rxjs';
-import { INonEntitySearch } from '../../definition/query/NonEntitySearch';
+import { INonEntitySearch } from '../../definition/query/INonEntitySearch';
 import { Lookup } from './Lookup';
 
 /**

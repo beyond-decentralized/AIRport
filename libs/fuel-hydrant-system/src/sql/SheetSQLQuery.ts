@@ -7,13 +7,13 @@ import {
 	IApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
-	JSONClauseField,
-	JSONClauseObjectType,
-	JsonSheetQuery,
+	QueryFieldClause,
+	QueryClauseObjectType,
+	QuerySheet,
 	QueryResultType,
 	SQLDataType
 } from '@airport/ground-control'
-import { IQueryUtils, IRelationManager } from '@airport/tarmaq-query'
+import { IQueryUtils, IQueryRelationManager } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
@@ -32,10 +32,10 @@ import { NonEntitySQLQuery } from './NonEntitySQLQuery'
  * Represents SQL String query with flat (aka traditional) Select clause.
  */
 export class SheetSQLQuery
-	extends NonEntitySQLQuery<JsonSheetQuery> {
+	extends NonEntitySQLQuery<QuerySheet> {
 
 	constructor(
-		jsonQuery: JsonSheetQuery,
+		querySheet: QuerySheet,
 		dialect: SQLDialect,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
@@ -43,14 +43,14 @@ export class SheetSQLQuery
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		relationManager: IRelationManager,
+		relationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementQueryGenerator: ISubStatementSqlGenerator,
 		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
-		super(jsonQuery, dialect, QueryResultType.SHEET,
+		super(querySheet, dialect, QueryResultType.SHEET,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -82,7 +82,7 @@ export class SheetSQLQuery
 		let lastResult
 		results.forEach((result) => {
 			let parsedResult = this.parseQueryResult(
-				this.jsonQuery.S, result, [0], internalFragments)
+				this.query.S, result, [0], internalFragments)
 			parsedResults.push(parsedResult)
 		})
 
@@ -99,8 +99,8 @@ export class SheetSQLQuery
 			throw new Error(`SELECT clause is not defined for a Flat Query`)
 		}
 		{
-			let distinctClause = <JSONClauseField>selectClauseFragment
-			if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
+			let distinctClause = <QueryFieldClause>selectClauseFragment
+			if (distinctClause.ot == QueryClauseObjectType.DISTINCT_FUNCTION) {
 				let distinctSelect = this.getSELECTFragment(
 					nested, distinctClause.appliedFunctions[0].p[0], internalFragments,
 					context)
@@ -112,7 +112,7 @@ export class SheetSQLQuery
 		}
 
 		let fieldIndex = 0
-		let selectSqlFragment = selectClauseFragment.map((field: JSONClauseField) => {
+		let selectSqlFragment = selectClauseFragment.map((field: QueryFieldClause) => {
 			return this.getFieldSelectFragment(field, ClauseType.NON_MAPPED_SELECT_CLAUSE,
 				null, fieldIndex++, context)
 		})
@@ -137,7 +137,7 @@ export class SheetSQLQuery
 		nextFieldIndex: number[],
 		internalFragments: InternalFragments
 	): any {
-		const resultsFromSelect = selectClauseFragment.map((field: JSONClauseField) => {
+		const resultsFromSelect = selectClauseFragment.map((field: QueryFieldClause) => {
 			let propertyValue = this.sqlQueryAdapter.getResultCellValue(
 				resultRow, field.fa, nextFieldIndex[0], field.dt, null)
 			nextFieldIndex[0]++

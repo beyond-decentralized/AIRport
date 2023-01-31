@@ -1,21 +1,21 @@
 import {
 	DbColumn,
 	DbProperty,
-	JSONClauseField,
-	JSONClauseObjectType,
+	QueryFieldClause,
+	QueryClauseObjectType,
 	Repository_GUID,
 	Repository_LocalId,
 	SQLDataType
 } from '@airport/ground-control'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { IQBooleanField } from '../../../definition/core/field/BooleanField'
-import { IQFunction } from '../../../definition/core/field/Functions'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { IQBooleanField } from '../../../definition/core/field/IQBooleanField'
+import { IQFunction } from '../../../definition/core/field/IQFunctions'
 import {
 	IBooleanOperation,
-	JSONRawBooleanOperation
-} from '../../../definition/core/operation/BooleanOperation'
-import { RawFieldQuery } from '../../../definition/query/facade/FieldQuery'
+	RawBooleanOperation
+} from '../../../definition/core/operation/IBooleanOperation'
+import { RawFieldQuery } from '../../../definition/query/facade/RawFieldQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { FieldColumnAliases } from '../entity/Aliases'
@@ -31,14 +31,14 @@ export interface IQBooleanEntityField
 }
 
 export class QBooleanField
-	extends QOperableField<boolean, JSONRawBooleanOperation, IBooleanOperation, IQBooleanField>
+	extends QOperableField<boolean, RawBooleanOperation, IBooleanOperation, IQBooleanField>
 	implements IQBooleanField {
 
 	constructor(
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
 		q: IQEntityInternal,
-		objectType: JSONClauseObjectType = JSONClauseObjectType.FIELD
+		objectType: QueryClauseObjectType = QueryClauseObjectType.FIELD
 	) {
 		super(dbColumn, dbProperty, q, objectType, new BooleanOperation())
 	}
@@ -62,32 +62,32 @@ export class QBooleanFunction
 		public value: boolean | RawFieldQuery<QBooleanField>,
 		private isQueryParameter: boolean = false
 	) {
-		super(<any>{ type: SQLDataType.BOOLEAN }, null, null, JSONClauseObjectType.FIELD_FUNCTION)
+		super(<any>{ type: SQLDataType.BOOLEAN }, null, null, QueryClauseObjectType.FIELD_FUNCTION)
 	}
 
 	getInstance(): QBooleanFunction {
 		return this.copyFunctions(new QBooleanFunction(this.value))
 	}
 
-	toJSON(
+	toQueryFragment(
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
 		trackedRepoGUIDSet: Set<Repository_GUID>,
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JSONClauseField {
-		let json = this.operableFunctionToJson(
+		relationManager: IQueryRelationManager
+	): QueryFieldClause {
+		let queryFieldClause = this.rawToQueryOperableFunction(
 			this, columnAliases, forSelectClause,
 			trackedRepoGUIDSet, trackedRepoLocalIdSet,
 			queryUtils, fieldUtils, relationManager)
 
 		if (this.isQueryParameter) {
-			this.parameterAlias = <string>json.v
+			this.parameterAlias = <string>queryFieldClause.v
 		}
 
-		return json
+		return queryFieldClause
 	}
 
 }

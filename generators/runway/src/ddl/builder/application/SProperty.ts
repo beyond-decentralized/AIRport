@@ -1,11 +1,11 @@
 import {
-	ApplicationColumn_Index,
-	DatabaseForeignKey,
-	DatabaseManyToOneElements,
-	DatabaseOneToManyElements,
+	DbColumn_Index,
+	DbForeignKey,
+	DbManyToOneElements,
+	DbOneToManyElements,
 	EntityRelationType,
-	ApplicationProperty_Index,
-	ApplicationReferenceByIndex
+	DbProperty_Index,
+	DbApplicationReferenceByIndex
 } from '@airport/ground-control';
 
 /**
@@ -58,12 +58,12 @@ export interface SRelation {
 	/**
 	 * Index of the application of the related entity (if not local).
 	 */
-	referencedApplication_Index?: number;
+	referencedDbApplication_Index?: number;
 
 	/**
 	 * Explicitly defined foreign key (if any)
 	 */
-	foreignKey?: DatabaseForeignKey;
+	foreignKey?: DbForeignKey;
 
 	/**
 	 * Relation index.
@@ -73,12 +73,12 @@ export interface SRelation {
 	/**
 	 * Many-to-One configuration object (or 'true' if @ManyToOne but no object is present).
 	 */
-	manyToOne?: DatabaseManyToOneElements;
+	manyToOne?: DbManyToOneElements;
 
 	/**
 	 * One-to-Many configuration object (if @OneToMany)
 	 */
-	oneToMany?: DatabaseOneToManyElements;
+	oneToMany?: DbOneToManyElements;
 
 	/**
 	 * Type of the relation (Many-to-One or One-to-Many)
@@ -117,7 +117,7 @@ export interface SRelation {
  * A column in a application table.
  */
 export interface SColumn
-	extends ApplicationReferenceByIndex<ApplicationColumn_Index> {
+	extends DbApplicationReferenceByIndex<DbColumn_Index> {
 
 	/**
 	 * How many _localIds to allocate for a sequence at a time.
@@ -157,7 +157,7 @@ export interface SColumn
 	/**
 	 * Properties that are mapped to this column.
 	 */
-	propertyRefs: ApplicationProperty_Index[];
+	propertyRefs: DbProperty_Index[];
 
 	// The scale of a decimal (digits after the floating point)
 	scale?: number;

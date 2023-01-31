@@ -1,9 +1,9 @@
 import {
-	JSONClauseObject,
-	JSONFunctionOperation,
-	JSONSqlFunctionCall
+	QueryBaseClause,
+	QueryFunctionOperation,
+	QueryFunctionCall
 }                         from "@airport/ground-control";
-import {IQOrderableField} from "../../../definition/core/field/Field";
+import {IQOrderableField} from "../../../definition/core/field/IQFieldInternal";
 
 /**
  * Created by Papa on 1/6/2017.
@@ -12,13 +12,13 @@ import {IQOrderableField} from "../../../definition/core/field/Field";
 /**
  * A field (or part of a query) to which SQL functions can be applied to.
  */
-export interface IAppliable<JCO extends JSONClauseObject, IQF extends IQOrderableField<IQF>> {
+export interface IAppliable<JCO extends QueryBaseClause, IQF extends IQOrderableField<IQF>> {
 	// Functions applied to the field (in order of application)
-	__appliedFunctions__: JSONSqlFunctionCall[];
+	__appliedFunctions__: QueryFunctionCall[];
 
 	// API for applying a SQL function
-	applySqlFunction(sqlFunctionCall: JSONSqlFunctionCall): IQF;
+	applySqlFunction(sqlFunctionCall: QueryFunctionCall): IQF;
 
 	// API for serializing the field with the applied function
-	toJSON(...args: any[]): JCO | JSONFunctionOperation;
+	toQueryFragment(...args: any[]): JCO | QueryFunctionOperation;
 }

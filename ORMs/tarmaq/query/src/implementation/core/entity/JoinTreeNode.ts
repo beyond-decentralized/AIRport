@@ -1,12 +1,12 @@
 import {
 	DbRelation,
 	JoinType,
-	JSONEntityRelation,
-	JSONRelation,
-	JSONRelationType,
-	ApplicationRelation_Index,
-	Application_Index,
-	ApplicationEntity_TableIndex
+	QueryEntityRelation,
+	QueryRelation,
+	QueryRelationType,
+	DbRelation_Index,
+	DbApplication_Index,
+	DbEntity_TableIndex
 } from "@airport/ground-control";
 
 /**
@@ -17,7 +17,7 @@ import {
 export class JoinTreeNode {
 
 	constructor(
-		public jsonRelation: JSONRelation,
+		public queryRelation: QueryRelation,
 		public childNodes: JoinTreeNode[],
 		public parentNode: JoinTreeNode
 	) {
@@ -26,7 +26,7 @@ export class JoinTreeNode {
 	addChildNode(
 		joinTreeNode: JoinTreeNode
 	): void {
-		let childFromClausePositionArray = joinTreeNode.jsonRelation.fromClausePosition;
+		let childFromClausePositionArray = joinTreeNode.queryRelation.fromClausePosition;
 		let childPosition                = childFromClausePositionArray[childFromClausePositionArray.length - 1];
 		this.childNodes[childPosition]   = joinTreeNode;
 	}
@@ -42,12 +42,12 @@ export class JoinTreeNode {
 	}
 
 	getEntityRelationChildNodeByIndexes(
-		applicationIndex: Application_Index,
-		tableIndex: ApplicationEntity_TableIndex,
-		relationIndex: ApplicationRelation_Index
+		applicationIndex: DbApplication_Index,
+		tableIndex: DbEntity_TableIndex,
+		relationIndex: DbRelation_Index
 	): JoinTreeNode {
 		let matchingNodes = this.childNodes.filter((childNode) => {
-			return (<JSONEntityRelation>childNode.jsonRelation).ri === relationIndex;
+			return (<QueryEntityRelation>childNode.queryRelation).ri === relationIndex;
 		});
 		switch (matchingNodes.length) {
 			case 0:
@@ -59,25 +59,25 @@ export class JoinTreeNode {
 		}
 		// No node matched, this must be reference to a sub-entity in SELECT clause (in a Entity
 		// query)
-		let childPosition = this.jsonRelation.fromClausePosition.slice();
+		let childPosition = this.queryRelation.fromClausePosition.slice();
 		childPosition.push(this.childNodes.length);
 		let rootEntityPrefix;
 		if (this.parentNode) {
-			rootEntityPrefix = this.parentNode.jsonRelation.rep;
+			rootEntityPrefix = this.parentNode.queryRelation.rep;
 		} else {
-			rootEntityPrefix = this.jsonRelation.rep;
+			rootEntityPrefix = this.queryRelation.rep;
 		}
-		let jsonEntityRelation: JSONEntityRelation = {
+		let queryEntityRelation: QueryEntityRelation = {
 			currentChildIndex: 0,
 			fromClausePosition: childPosition,
 			ti: tableIndex,
 			jt: JoinType.LEFT_JOIN,
-			rt: JSONRelationType.ENTITY_APPLICATION_RELATION,
+			rt: QueryRelationType.ENTITY_APPLICATION_RELATION,
 			rep: rootEntityPrefix,
 			ri: relationIndex,
 			si: applicationIndex
 		};
-		let childTreeNode                          = new JoinTreeNode(jsonEntityRelation, [], this);
+		let childTreeNode                          = new JoinTreeNode(queryEntityRelation, [], this);
 		this.addChildNode(childTreeNode);
 
 		return childTreeNode;

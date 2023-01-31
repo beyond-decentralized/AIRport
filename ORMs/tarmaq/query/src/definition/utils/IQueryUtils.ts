@@ -1,10 +1,10 @@
 import { AirEntityId } from "@airport/aviation-communication";
-import { DbColumn, DbEntity, IAirEntity, JSONBaseOperation, Repository_GUID, Repository_LocalId, SQLDataType } from "@airport/ground-control";
+import { DbColumn, DbEntity, IAirEntity, QueryBaseOperation, Repository_GUID, Repository_LocalId, SQLDataType } from "@airport/ground-control";
 import { QEntityConstructor } from "../../implementation/core/entity/QEntity";
-import { IFieldColumnAliases } from "../core/entity/Aliases";
-import { IEntityIdProperties, IQAirEntity, IQEntity } from "../core/entity/Entity";
-import { IQFieldInternal } from "../core/field/Field";
-import { JSONLogicalOperation } from "../core/operation/LogicalOperation";
+import { IFieldColumnAliases } from "../core/entity/IAliases";
+import { IEntityIdProperties, IQAirEntity, IQEntity } from "../core/entity/IQEntity";
+import { IQFieldInternal } from "../core/field/IQFieldInternal";
+import { QueryLogicalOperation } from "../core/operation/ILogicalOperation";
 
 export interface ManyToOneColumnMapping {
 	tableIndex: number;
@@ -39,7 +39,7 @@ export interface IQueryUtils {
 			// | IQAirEntityRelation<Entity, IQ> 
 			| AirEntityId | string,
 		toObject: IQ // | IQRelation<IQ>
-	): JSONLogicalOperation
+	): QueryLogicalOperation
 
 	in<Entity extends IAirEntity, IQ extends IQAirEntity>(
 		entitiesOrIds: (Entity
@@ -48,24 +48,24 @@ export interface IQueryUtils {
 			| AirEntityId | string)[],
 		toObject: IQ
 		// | IQRelation<IQ>
-	): JSONLogicalOperation
+	): QueryLogicalOperation
 
 	equalsInternal<IQ extends IQEntity>(
 		entityId: string | number,
 		toObject: IQ // | IQRelation<IQ>
-	): JSONBaseOperation
+	): QueryBaseOperation
 
 	inInternal<IQ extends IQEntity>(
 		entityIds: (string | number)[],
 		toObject: IQ // | IQRelation<IQ>
-	): JSONBaseOperation
+	): QueryBaseOperation
 
-	whereClauseToJSON(
-		whereClause: JSONBaseOperation,
+	whereClauseToQueryOperation(
+		whereClause: QueryBaseOperation,
 		columnAliases: IFieldColumnAliases<any>,
 		trackedRepositoryGUIDSet: Set<Repository_GUID>,
 		trackedRepositoryLocalIdSet: Set<Repository_LocalId>
-	): JSONBaseOperation
+	): QueryBaseOperation
 
 	getQEntityConstructor<IQE extends IQEntity>(
 		dbEntity: DbEntity

@@ -3,19 +3,19 @@ import {
 	DbProperty,
 	DbRelation,
 	EntityRelationType,
-	JSONBaseOperation,
-	JSONEntityRelation,
-	JsonEntityUpdateColumns,
-	JsonUpdate,
+	QueryBaseOperation,
+	QueryEntityRelation,
+	QueryUpdateColumns,
+	QueryUpdate,
 	Repository_GUID
 } from '@airport/ground-control'
 import {
 	IEntityUpdateProperties,
 	IQEntity
-} from '../../../definition/core/entity/Entity'
+} from '../../../definition/core/entity/IQEntity'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
-import { RawUpdate } from '../../../definition/query/facade/Update'
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { RawUpdate } from '../../../definition/query/facade/RawUpdate'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { wrapPrimitive } from '../../core/field/WrapperFunctions'
@@ -36,49 +36,49 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 		super(rawUpdate)
 	}
 
-	toJSON(
+	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JsonUpdate<JsonEntityUpdateColumns> {
+		relationManager: IQueryRelationManager
+	): QueryUpdate<QueryUpdateColumns> {
 		return {
-			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.UPDATE)
-				.__driver__.getRelationJson(
+			U: <QueryEntityRelation>(<IQEntityInternal><any>this.rawUpdate.UPDATE)
+				.__driver__.getQueryRelation(
 					this.columnAliases,
 					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 					queryUtils, fieldUtils, relationManager),
-			S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
-			W: queryUtils.whereClauseToJSON(
+			S: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
+			W: queryUtils.whereClauseToQueryOperation(
 				this.rawUpdate.WHERE, this.columnAliases,
 				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
 		}
 	}
 
-	protected setToJSON(
+	protected rawToQuerySetClause(
 		rawSet: IEUP,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JsonEntityUpdateColumns {
-		const jsonSetClause: { [columnName: string]: JSONBaseOperation } = {}
+		relationManager: IQueryRelationManager
+	): QueryUpdateColumns {
+		const querySetClause: { [columnName: string]: QueryBaseOperation } = {}
 		const dbEntity = (<IQEntityInternal><any>this.rawUpdate.UPDATE).__driver__.dbEntity
 		const dbPropertyMap = dbEntity.propertyMap
 
-		this.setEntityFragmentsToJSON(rawSet, jsonSetClause, [],
+		this.rawToQuerySetEntityFragments(rawSet, querySetClause, [],
 			dbPropertyMap, [], queryUtils, fieldUtils, relationManager)
 
-		return jsonSetClause
+		return querySetClause
 	}
 
-	private setEntityFragmentsToJSON(
+	private rawToQuerySetEntityFragments(
 		rawSetFragment: IEUP,
-		jsonSetClause: { [columnName: string]: JSONBaseOperation },
+		querySetClause: { [columnName: string]: QueryBaseOperation },
 		dbPropertyChain: DbProperty[],
 		dbPropertyMap: { [name: string]: DbProperty },
 		childDbRelationChain: DbRelation[],
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
+		relationManager: IQueryRelationManager
 	): void {
 		const isTopLevelFragment = !dbPropertyMap.length
 		for (const propertyName in rawSetFragment) {
@@ -114,22 +114,22 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 			const childDbPropertyChain = [...dbPropertyChain]
 			childDbPropertyChain.push(dbProperty)
 
-			this.setFragmentToJSON(rawSetFragment, jsonSetClause,
+			this.rawToQuerySetFragment(rawSetFragment, querySetClause,
 				childDbPropertyChain, propertyName, childDbRelationChain,
 				queryUtils, fieldUtils, relationManager)
 		}
 
 	}
 
-	private setFragmentToJSON(
+	private rawToQuerySetFragment(
 		rawSetFragment: IEUP,
-		jsonSetClause: { [columnName: string]: JSONBaseOperation },
+		querySetClause: { [columnName: string]: QueryBaseOperation },
 		dbPropertyChain: DbProperty[],
 		propertyName: string,
 		dbRelationChain: DbRelation[],
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
+		relationManager: IQueryRelationManager
 	): void {
 		const dbProperty: DbProperty = dbPropertyChain[dbPropertyChain.length - 1]
 		const dbEntity = dbProperty.entity
@@ -141,7 +141,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 		}
 		value = wrapPrimitive(value)
 		// If this is not a nested object definition
-		if (value.toJSON) {
+		if (value.toQueryFragment) {
 
 			if (dbProperty.propertyColumns.length !== 1) {
 				throw new Error(`
@@ -170,7 +170,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 					}
 				}
 
-				if (jsonSetClause[dbColumn.name]) {
+				if (querySetClause[dbColumn.name]) {
 					const firstProperty = dbPropertyChain[0]
 					throw new Error(`
 ${this.getPropertyChainDesription(dbPropertyChain)}
@@ -182,7 +182,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 		which has already been set in this update statement (above).
 				`)
 				}
-				jsonSetClause[dbColumn.name] = value.toJSON(
+				querySetClause[dbColumn.name] = value.toQueryFragment(
 					this.columnAliases, false, queryUtils, fieldUtils, relationManager)
 				return
 			}
@@ -197,9 +197,9 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 
 				switch (dbRelation.relationType) {
 					case EntityRelationType.MANY_TO_ONE: {
-						this.setEntityFragmentsToJSON(
+						this.rawToQuerySetEntityFragments(
 							value,
-							jsonSetClause,
+							querySetClause,
 							dbPropertyChain,
 							dbRelation.relationEntity.propertyMap,
 							childDbRelationChain,

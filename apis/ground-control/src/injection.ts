@@ -1,7 +1,7 @@
 import { lib } from '@airport/direction-indicator';
-import { DbApplicationUtils } from './implementation/query/DbApplicationUtils';
+import { ImplApplicationUtils } from './implementation/query/ImplApplicationUtils';
 import { ISequenceGenerator } from './implementation/SequenceGenerator';
-import { IEntityStateManager } from './definition/core/operation/EntityStateManager';
+import { IEntityStateManager } from './definition/core/operation/IEntityStateManager';
 import { ITransactionalConnector } from './definition/ITransactionalConnector';
 import { IUpdateCacheManager } from './definition/data/UpdateCacheManager';
 import { KeyUtils } from './implementation/utils/KeyUtils';
@@ -9,15 +9,15 @@ import { AppTrackerUtils } from './implementation/utils/AppTrackerUtils';
 import { Dictionary } from './definition/core/entity/Dictionary';
 import { DatastructureUtils } from './implementation/utils/DatastructureUtils';
 import { ApplicationReferenceUtils } from './implementation/utils/ApplicationReferenceUtils';
-import { IOperationDeserializer } from './definition/serialize/OperationDeserializer';
-import { IQueryParameterDeserializer } from './definition/serialize/QueryParameterDeserializer';
-import { IQueryResultsSerializer } from './definition/serialize/QueryResultsSerializer';
+import { IOperationDeserializer } from './definition/serialize/IOperationDeserializer';
+import { IQueryParameterDeserializer } from './definition/serialize/IQueryParameterDeserializer';
+import { IQueryResultsSerializer } from './definition/serialize/IQueryResultsSerializer';
 
 const groundControl = lib('ground-control')
 
 groundControl.register(
     ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils,
-    DbApplicationUtils, Dictionary, KeyUtils
+    ImplApplicationUtils, Dictionary, KeyUtils
 )
 
 export const ENTITY_STATE_MANAGER = groundControl.token<IEntityStateManager>('EntityStateManager')
@@ -37,5 +37,5 @@ groundControl.setDependencies(AppTrackerUtils, {
 })
 
 TRANSACTIONAL_CONNECTOR.setDependencies({
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
 })

@@ -1,9 +1,9 @@
 import {OperationCategory,} from "@airport/ground-control";
-import {IQBooleanField}     from "../../../definition/core/field/BooleanField";
+import {IQBooleanField}     from "../../../definition/core/field/IQBooleanField";
 import {
 	IBooleanOperation,
-	JSONRawBooleanOperation
-}                           from "../../../definition/core/operation/BooleanOperation";
+	RawBooleanOperation
+}                           from "../../../definition/core/operation/IBooleanOperation";
 import {ValueOperation}     from "./ValueOperation";
 
 /**
@@ -11,7 +11,7 @@ import {ValueOperation}     from "./ValueOperation";
  */
 
 export class BooleanOperation
-	extends ValueOperation<boolean, JSONRawBooleanOperation, IQBooleanField> implements IBooleanOperation {
+	extends ValueOperation<boolean, RawBooleanOperation, IQBooleanField> implements IBooleanOperation {
 
 	constructor() {
 		super(OperationCategory.BOOLEAN);

@@ -24,7 +24,7 @@ export class SequenceDao
 	implements ISequenceDao { 
 
 	static diSet(): boolean {
-		return Q.__dbApplication__ && !!Q.__dbApplication__.currentVersion[0]
+		return Q.__dbDbApplication__ && !!Q.__dbDbApplication__.currentVersion[0]
 			.applicationVersion.entities[0]
 	}
 

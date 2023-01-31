@@ -4,7 +4,7 @@ import {
 } from '@airport/direction-indicator'
 import { IClient } from "@airway/client";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
-import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponseFragment, Repository_GUID } from '@airport/ground-control';
+import { SyncRepositoryMessage, SyncRepositoryReadResponseFragment, Repository_GUID } from '@airport/ground-control';
 
 @Injected()
 export class DebugSynchronizationAdapter
@@ -16,13 +16,13 @@ export class DebugSynchronizationAdapter
     async getTransactionsForRepository(
         repositoryGUID: Repository_GUID,
         sinceSyncTimestamp?: number
-    ): Promise<RepositorySynchronizationMessage[]> {
+    ): Promise<SyncRepositoryMessage[]> {
         const location = this.getLocation(repositoryGUID)
-        const response: RepositorySynchronizationReadResponseFragment[]
+        const response: SyncRepositoryReadResponseFragment[]
             = await this.client.getRepositoryTransactions(
                 location, repositoryGUID, sinceSyncTimestamp)
 
-        const messages: RepositorySynchronizationMessage[] = []
+        const messages: SyncRepositoryMessage[] = []
 
         // NOTE: syncTimestamp is populated here because file sharing mechanisms
         // (IPFS) won't be able to modify the messages themselves
@@ -43,7 +43,7 @@ export class DebugSynchronizationAdapter
 
     async sendTransactions(
         repositoryGUID: Repository_GUID,
-        messagesForRepository: RepositorySynchronizationMessage[]
+        messagesForRepository: SyncRepositoryMessage[]
     ): Promise<boolean> {
         let allSent = true
         try {
@@ -60,7 +60,7 @@ export class DebugSynchronizationAdapter
 
     async sendTransactionsForRepository(
         repositoryGUID: Repository_GUID,
-        messages: RepositorySynchronizationMessage[]
+        messages: SyncRepositoryMessage[]
     ): Promise<boolean> {
         if (!messages || !messages.length) {
             return false

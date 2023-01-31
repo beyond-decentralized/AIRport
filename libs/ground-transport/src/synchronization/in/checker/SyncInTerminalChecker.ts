@@ -6,12 +6,12 @@ import {
 import {
 	ITerminalDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
-import { ITerminal, RepositorySynchronizationData, Terminal_GUID } from '@airport/ground-control'
+import { ITerminal, SyncRepositoryData, Terminal_GUID } from '@airport/ground-control'
 
 export interface ISyncInTerminalChecker {
 
 	ensureTerminals(
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		context: IContext
 	): Promise<boolean>
 
@@ -25,7 +25,7 @@ export class SyncInTerminalChecker
 	terminalDao: ITerminalDao
 
 	async ensureTerminals(
-		data: RepositorySynchronizationData,
+		data: SyncRepositoryData,
 		context: IContext
 	): Promise<boolean> {
 		try {
@@ -38,20 +38,20 @@ export class SyncInTerminalChecker
 				}
 				if (typeof terminal.owner !== 'number') {
 					throw new Error(`Expecting "in-message index" (number)
-					in 'terminal.owner' of RepositorySynchronizationData.terminals`)
+					in 'terminal.owner' of SyncRepositoryData.terminals`)
 				}
 				if (typeof terminal.GUID !== 'string' || terminal.GUID.length !== 36) {
-					throw new Error(`Invalid 'terminal.GUID' in RepositorySynchronizationData.terminals`)
+					throw new Error(`Invalid 'terminal.GUID' in SyncRepositoryData.terminals`)
 				}
 				if (terminal.isLocal !== undefined) {
-					throw new Error(`'terminal.isLocal' cannot defined in RepositorySynchronizationData.terminals`)
+					throw new Error(`'terminal.isLocal' cannot defined in SyncRepositoryData.terminals`)
 				}
 				terminal.isLocal = false
 				const owner = data.userAccounts[terminal.owner as any]
 				if (!owner) {
 					throw new Error(
 						`Did not find userAccount for terminal.owner with "in-message index" ${terminal.owner}
-						for RepositorySynchronizationData.terminals`);
+						for SyncRepositoryData.terminals`);
 				}
 				terminal.owner = owner
 				terminalGUIDs.push(terminal.GUID)

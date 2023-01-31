@@ -26,7 +26,7 @@ import {
 } from 'rxjs/operators'
 import { IWebApplicationInitializer } from './WebApplicationInitializer'
 import { IWebMessageReceiver } from './WebMessageReceiver'
-import { DbApplication, IDbApplicationUtils } from '@airport/ground-control'
+import { DbApplication, DbApplicationUtils } from '@airport/ground-control'
 import { JsonApplicationVersionWithApi } from '@airport/air-traffic-control'
 
 @Injected()
@@ -38,7 +38,7 @@ export class WebTransactionalReceiver
 	applicationInitializer: IWebApplicationInitializer
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	dbApplicationUtils: DbApplicationUtils
 
 	@Inject()
 	localApiServer: ILocalAPIServer
@@ -226,16 +226,16 @@ export class WebTransactionalReceiver
 			...message
 		}
 		return await this.startApiCall(messageCopy, context, async () => {
-			const fullApplication_Name = this.dbApplicationUtils.
-				getApplication_FullNameFromDomainAndName(
+			const fullDbApplication_Name = this.dbApplicationUtils.
+				getDbApplication_FullNameFromDomainAndName(
 					message.domain, message.application)
-			const frameWindow = this.getFrameWindow(fullApplication_Name)
+			const frameWindow = this.getFrameWindow(fullDbApplication_Name)
 			if (frameWindow) {
 				messageCopy.transactionId = context.transaction.id
 				// Forward the request to the correct application iframe
 				frameWindow.postMessage(messageCopy, '*')
 			} else {
-				throw new Error(`No Application IFrame found for: ${fullApplication_Name}`)
+				throw new Error(`No Application IFrame found for: ${fullDbApplication_Name}`)
 			}
 		})
 	}
@@ -309,13 +309,13 @@ export class WebTransactionalReceiver
 		const priorTransactionId = internalCredentials.transactionId
 		try {
 			internalCredentials.transactionId = context.transaction.id
-			const fullApplication_Name = this.dbApplicationUtils
-				.getApplication_FullNameFromDomainAndName(
+			const fullDbApplication_Name = this.dbApplicationUtils
+				.getDbApplication_FullNameFromDomainAndName(
 					message.domain, message.application)
 			const application: DbApplication = this.terminalStore
-				.getApplicationMapByFullName().get(fullApplication_Name)
+				.getApplicationMapByFullName().get(fullDbApplication_Name)
 			if (!application) {
-				throw new Error(`Could not find AIRport Framework Application: ${fullApplication_Name}`)
+				throw new Error(`Could not find AIRport Framework Application: ${fullDbApplication_Name}`)
 			}
 			payload = await this.localApiServer.coreHandleRequest(messageCopy,
 				(application.currentVersion[0].applicationVersion.jsonApplication.versions[0] as JsonApplicationVersionWithApi).api, context)
@@ -401,11 +401,11 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		const fullApplication_Name = this.dbApplicationUtils.
-			getApplication_FullNameFromDomainAndName(
+		const fullDbApplication_Name = this.dbApplicationUtils.
+			getDbApplication_FullNameFromDomainAndName(
 				message.domain, message.application)
 
-		let numPendingMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplication_Name)
+		let numPendingMessagesForApplication = webReciever.pendingApplicationCounts.get(fullDbApplication_Name)
 		if (!numPendingMessagesForApplication) {
 			numPendingMessagesForApplication = 0
 		}
@@ -415,10 +415,10 @@ export class WebTransactionalReceiver
 		}
 
 		webReciever.pendingHostCounts.set(message.domain, numPendingMessagesFromHost + 1)
-		webReciever.pendingApplicationCounts.set(fullApplication_Name, numPendingMessagesForApplication + 1)
+		webReciever.pendingApplicationCounts.set(fullDbApplication_Name, numPendingMessagesForApplication + 1)
 
 		if (!await this.applicationInitializer.isApplicationIsInstalled(
-			message.domain, fullApplication_Name)) {
+			message.domain, fullDbApplication_Name)) {
 			this.relyToClientWithError(message, `Application is not installed`)
 			return
 		}
@@ -468,10 +468,10 @@ export class WebTransactionalReceiver
 	}
 
 	private getFrameWindow(
-		fullApplication_Name: string
+		fullDbApplication_Name: string
 	) {
 		const iframe: HTMLIFrameElement = document
-			.getElementsByName(fullApplication_Name) as any
+			.getElementsByName(fullDbApplication_Name) as any
 		if (!iframe || !iframe[0]) {
 			return null
 		}
@@ -481,8 +481,8 @@ export class WebTransactionalReceiver
 	private replyToClientRequest(
 		message: ILocalAPIResponse
 	) {
-		const fullApplication_Name = this.dbApplicationUtils.
-			getApplication_FullNameFromDomainAndName(
+		const fullDbApplication_Name = this.dbApplicationUtils.
+			getDbApplication_FullNameFromDomainAndName(
 				message.domain, message.application)
 		const webReciever = this.terminalStore.getWebReceiver()
 
@@ -490,7 +490,7 @@ export class WebTransactionalReceiver
 		if (numMessagesFromHost > 0) {
 			webReciever.pendingHostCounts.set(message.domain, numMessagesFromHost - 1)
 		}
-		let numMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplication_Name)
+		let numMessagesForApplication = webReciever.pendingApplicationCounts.get(fullDbApplication_Name)
 		if (numMessagesForApplication > 0) {
 			webReciever.pendingApplicationCounts.set(message.domain, numMessagesForApplication - 1)
 		}
@@ -516,13 +516,13 @@ export class WebTransactionalReceiver
 
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		const fullApplication_Name = this.dbApplicationUtils.
-			getApplication_FullNameFromDomainAndName(
+		const fullDbApplication_Name = this.dbApplicationUtils.
+			getDbApplication_FullNameFromDomainAndName(
 				message.domain, message.application)
 		// Only accept requests from https protocol
 		if (!messageOrigin.startsWith("https")
-			// and from application domains that match the fullApplication_Name
-			|| applicationDomain !== fullApplication_Name + webReciever.domainPrefix) {
+			// and from application domains that match the fullDbApplication_Name
+			|| applicationDomain !== fullDbApplication_Name + webReciever.domainPrefix) {
 			return false
 		}
 		// Only accept requests from '${applicationName}.${mainDomain_Name}'
@@ -534,15 +534,15 @@ export class WebTransactionalReceiver
 			return false
 		}
 		const applicationDomainFirstFragment = applicationDomainFragments[0]
-		// check application domain-embedded signature and fullApplication_Name in message
+		// check application domain-embedded signature and fullDbApplication_Name in message
 		// and make sure they result in a match
-		if (applicationDomainFirstFragment !== fullApplication_Name) {
+		if (applicationDomainFirstFragment !== fullDbApplication_Name) {
 			return false
 		}
 
 		// Make sure the application is installed
 		return !!this.terminalStore.getApplicationInitializer()
-			.applicationWindowMap.get(fullApplication_Name)
+			.applicationWindowMap.get(fullDbApplication_Name)
 	}
 
 	private async handleIsolateMessage(
@@ -556,12 +556,12 @@ export class WebTransactionalReceiver
 
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		const fullApplication_Name = this.dbApplicationUtils.
-			getApplication_FullNameFromDomainAndName(
+		const fullDbApplication_Name = this.dbApplicationUtils.
+			getDbApplication_FullNameFromDomainAndName(
 				message.domain, message.application)
 		switch (message.type) {
 			case IsolateMessageType.SEARCH_UNSUBSCRIBE:
-				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplication_Name)
+				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullDbApplication_Name)
 				if (!isolateSubscriptionMap) {
 					return
 				}
@@ -585,7 +585,7 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		let shemaDomain_Name = fullApplication_Name + '.' + webReciever.localDomain
+		let shemaDomain_Name = fullDbApplication_Name + '.' + webReciever.localDomain
 		switch (message.type) {
 			case IsolateMessageType.SEARCH:
 			case IsolateMessageType.SEARCH_ONE:
@@ -596,10 +596,10 @@ export class WebTransactionalReceiver
 					})
 				)
 				const subscription = observableDataResult.result.subscribe()
-				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplication_Name)
+				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullDbApplication_Name)
 				if (!isolateSubscriptionMap) {
 					isolateSubscriptionMap = new Map()
-					webReciever.subsriptionMap.set(fullApplication_Name, isolateSubscriptionMap)
+					webReciever.subsriptionMap.set(fullDbApplication_Name, isolateSubscriptionMap)
 				}
 				isolateSubscriptionMap.set(message.id, subscription)
 				return

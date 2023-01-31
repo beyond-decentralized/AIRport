@@ -1,17 +1,17 @@
 import { IContext, Injected } from '@airport/direction-indicator'
-import { ApplicationVersion_LocalId, DbApplicationReference } from '@airport/ground-control'
+import { DbApplicationVersion_LocalId, DbApplicationReference } from '@airport/ground-control'
 import {
-	BaseApplicationReferenceDao,
-	IBaseApplicationReferenceDao,
-	QApplicationReference,
+	BaseDdlApplicationReferenceDao,
+	IBaseDdlApplicationReferenceDao,
+	QDdlApplicationReference,
 } from '../generated/generated'
 import Q from '../generated/qApplication'
 
 export interface IApplicationReferenceDao
-	extends IBaseApplicationReferenceDao {
+	extends IBaseDdlApplicationReferenceDao {
 
 	findAllForApplicationVersions(
-		applicationVersionIds: ApplicationVersion_LocalId[]
+		applicationVersionIds: DbApplicationVersion_LocalId[]
 	): Promise<DbApplicationReference[]>
 
 	insert(
@@ -23,13 +23,13 @@ export interface IApplicationReferenceDao
 
 @Injected()
 export class ApplicationReferenceDao
-	extends BaseApplicationReferenceDao
+	extends BaseDdlApplicationReferenceDao
 	implements IApplicationReferenceDao {
 
 	async findAllForApplicationVersions(
-		applicationVersionIds: ApplicationVersion_LocalId[]
+		applicationVersionIds: DbApplicationVersion_LocalId[]
 	): Promise<DbApplicationReference[]> {
-		let sr: QApplicationReference
+		let sr: QDdlApplicationReference
 
 		return await this.db.find.tree({
 			SELECT: {},
@@ -44,7 +44,7 @@ export class ApplicationReferenceDao
 		applicationReferences: DbApplicationReference[],
 		context: IContext
 	): Promise<void> {
-		let sr: QApplicationReference;
+		let sr: QDdlApplicationReference;
 		const VALUES = []
 		for (const applicationReference of applicationReferences) {
 			VALUES.push([

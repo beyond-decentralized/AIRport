@@ -1,7 +1,7 @@
 import { InternalUserAccount } from "@airport/aviation-communication";
-import { Application_FullName, DbApplication } from "../application/Application";
-import { DbEntity } from "../application/Entity";
-import { DbRelation } from "../application/Property";
+import { DbApplication_FullName, DbApplication } from "../application/DbApplication";
+import { DbEntity } from "../application/DbEntity";
+import { DbRelation } from "../application/DbProperty";
 import { IRepositoryTransactionHistory } from "../synchronization/synchronizationTypes";
 
 export interface IRootTransaction {
@@ -70,7 +70,7 @@ export interface IRepository
 	// Non-Id Properties
 	ageSuitability?: AgeSuitability;
 	createdAt?: CreatedAt;
-	fullApplicationName?: Application_FullName;
+	fullApplicationName?: DbApplication_FullName;
 	immutable?: Repository_Immutable;
 	isPublic?: Repository_IsPublic;
 	name?: Repository_Name;

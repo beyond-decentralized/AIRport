@@ -1,14 +1,14 @@
 import { OperationCategory, SqlOperator } from "@airport/ground-control";
-import { IQUntypedField } from "../../../definition/core/field/UntypedField";
-import { IUntypedOperation, JSONRawUntypedOperation } from "../../../definition/core/operation/UntypedOperation";
-import { RawFieldQuery } from "../../../definition/query/facade/FieldQuery";
+import { IQUntypedField } from "../../../definition/core/field/IQUntypedField";
+import { IUntypedOperation, RawUntypedOperation } from "../../../definition/core/operation/IUntypedOperation";
+import { RawFieldQuery } from "../../../definition/query/facade/RawFieldQuery";
 import { ValueOperation } from "./ValueOperation";
 
 /**
  * Created by papa on 7/13/17.
  */
 
-export class UntypedOperation extends ValueOperation<number | string, JSONRawUntypedOperation, IQUntypedField>
+export class UntypedOperation extends ValueOperation<number | string, RawUntypedOperation, IQUntypedField>
 	implements IUntypedOperation {
 
 	constructor() {
@@ -20,7 +20,7 @@ export class UntypedOperation extends ValueOperation<number | string, JSONRawUnt
 		rValue: string | IQUntypedField | RawFieldQuery<IQUntypedField>
 		// TODO: implement ReqExp
 		//| RegExp
-	): JSONRawUntypedOperation {
+	): RawUntypedOperation {
 		return {
 			c: this.category,
 			l: lValue,

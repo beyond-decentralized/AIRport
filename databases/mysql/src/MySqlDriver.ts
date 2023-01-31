@@ -8,7 +8,7 @@ import {
 } from '@airport/fuel-hydrant-system';
 import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
 import {
-  JsonQuery,
+  Query,
   QueryType,
   SQLDataType
 } from '@airport/ground-control';
@@ -127,10 +127,10 @@ WHERE
   }
 
   getSelectQuerySuffix(
-    jsonQuery: JsonQuery,
+    query: Query,
     context: IFuelHydrantContext
   ): string {
-    if (jsonQuery.forUpdate) {
+    if (query.forUpdate) {
       return 'FOR UPDATE'
     }
     return ''

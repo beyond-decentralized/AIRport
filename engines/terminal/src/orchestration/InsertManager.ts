@@ -1,6 +1,6 @@
 import {
 	IAirportDatabase,
-	ISystemWideOperationIdUtils,
+	DbSystemWideOperationIdUtils,
 } from '@airport/air-traffic-control'
 import {
 	Inject,
@@ -12,7 +12,7 @@ import {
 	DbEntity,
 	Dictionary,
 	IRootTransaction,
-	JsonInsertValues,
+	QueryInsertValues,
 	PortableQuery,
 	ISequenceGenerator,
 	SystemWideOperationId,
@@ -61,7 +61,7 @@ export class InsertManager
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 
 	@Inject()
-	systemWideOperationIdUtils: ISystemWideOperationIdUtils
+	systemWideOperationIdUtils: DbSystemWideOperationIdUtils
 
 	@Inject()
 	sequenceGenerator: ISequenceGenerator
@@ -93,11 +93,11 @@ export class InsertManager
 
 	verifyNoGeneratedColumns(
 		dbEntity: DbEntity,
-		jsonInsertValues: JsonInsertValues,
+		queryInsertValues: QueryInsertValues,
 		errorPrefix: string
 	): DbColumn[] {
-		for (let i = 0; i < jsonInsertValues.C.length; i++) {
-			const columnIndex = jsonInsertValues.C[i]
+		for (let i = 0; i < queryInsertValues.C.length; i++) {
+			const columnIndex = queryInsertValues.C[i]
 
 			const dbColumn = dbEntity.columns[columnIndex]
 
@@ -128,11 +128,11 @@ export class InsertManager
 
 		this.validateValueRowLength(portableQuery, errorPrefix)
 
-		const jsonInsertValues = portableQuery.jsonQuery as JsonInsertValues
+		const queryInsertValues = portableQuery.query as QueryInsertValues
 
 		const columnIndexSet = {}
 		let inStatementIndex = 0
-		for (const columnIndex of jsonInsertValues.C) {
+		for (const columnIndex of queryInsertValues.C) {
 			if (columnIndex < 0 || columnIndex >= dbEntity.columns.length) {
 				throw new Error(errorPrefix +
 					`Invalid column index: ${columnIndex}`)
@@ -143,7 +143,7 @@ export class InsertManager
 appears more than once in the Columns clause`)
 			}
 			let rowNumber = 1
-			for (let row of jsonInsertValues.V) {
+			for (let row of queryInsertValues.V) {
 				if (row[inStatementIndex] === undefined) {
 					throw new Error(errorPrefix +
 						`
@@ -158,7 +158,7 @@ appears more than once in the Columns clause`)
 
 		let columnsToPopulate: ColumnsToPopulate
 
-		const insertValues = <JsonInsertValues>portableQuery.jsonQuery
+		const insertValues = <QueryInsertValues>portableQuery.query
 
 		if (dbEntity.isAirEntity) {
 			columnsToPopulate = this.ensureAirEntityIdValues(actor, dbEntity,
@@ -168,7 +168,7 @@ appears more than once in the Columns clause`)
 		let generatedColumns
 		if (!transaction.isSync || context.generateOnSync) {
 			generatedColumns = this.verifyNoGeneratedColumns(dbEntity,
-				<JsonInsertValues>portableQuery.jsonQuery, errorPrefix)
+				<QueryInsertValues>portableQuery.query, errorPrefix)
 		}
 
 		let _localIds
@@ -202,7 +202,7 @@ appears more than once in the Columns clause`)
 		portableQuery: PortableQuery,
 		errorPrefix: string
 	) {
-		const values = (portableQuery.jsonQuery as JsonInsertValues).V;
+		const values = (portableQuery.query as QueryInsertValues).V;
 		if (!values.length) {
 			throw new Error(errorPrefix + `no colum values provided`)
 		}
@@ -225,14 +225,14 @@ appears more than once in the Columns clause`)
 
 	private async ensureGeneratedValues(
 		dbEntity: DbEntity,
-		jsonInsertValues: JsonInsertValues,
+		queryInsertValues: QueryInsertValues,
 		actor: IActor,
 		columnsToPopulate: ColumnsToPopulate,
 		generatedColumns: DbColumn[],
 		systemWideOperationId: SystemWideOperationId,
 		errorPrefix: string
 	): Promise<Record_LocalId[] | Record_LocalId[][]> {
-		const values = jsonInsertValues.V
+		const values = queryInsertValues.V
 		const idColumns = dbEntity.idColumns
 
 		const allIds: Record_LocalId[][] = []
@@ -255,7 +255,7 @@ appears more than once in the Columns clause`)
 
 			let isActorIdColumn = false
 			let inStatementColumnIndex: number
-			const matchingColumns = jsonInsertValues.C.filter(
+			const matchingColumns = queryInsertValues.C.filter(
 				(
 					columnIndex,
 					index
@@ -269,8 +269,8 @@ appears more than once in the Columns clause`)
 				// Actor Id cannot be in the insert statement
 				if (idColumn._localId === actorIdColumn._localId) {
 					isActorIdColumn = true
-					inStatementColumnIndex = jsonInsertValues.C.length
-					jsonInsertValues.C.push(actorIdColumn.index)
+					inStatementColumnIndex = queryInsertValues.C.length
+					queryInsertValues.C.push(actorIdColumn.index)
 				} else {
 					throw new Error(errorPrefix +
 						`Could not find @Id column ${dbEntity.name}.${idColumn.name} in
@@ -308,13 +308,13 @@ appears more than once in the Columns clause`)
 		const generatedColumnIndexes: number[] = []
 		// let numAddedColumns                    = 0
 		for (const generatedColumn of generatedColumns) {
-			// const matchingColumns = jsonInsertValues.C.filter(
+			// const matchingColumns = queryInsertValues.C.filter(
 			// 	columnIndex => columnIndex === generatedColumn.index)
 			// if (!matchingColumns.length) {
-			// TODO: verify that it is OK to mutate the JsonInsertValues query
-			const generatedIdColumnIndex = jsonInsertValues.C.length
-			generatedColumnIndexes.push(jsonInsertValues.C.length)
-			jsonInsertValues.C.push(generatedColumn.index)
+			// TODO: verify that it is OK to mutate the QueryInsertValues query
+			const generatedIdColumnIndex = queryInsertValues.C.length
+			generatedColumnIndexes.push(queryInsertValues.C.length)
+			queryInsertValues.C.push(generatedColumn.index)
 			// numAddedColumns++
 			continue
 			// }
@@ -361,7 +361,7 @@ appears more than once in the Columns clause`)
 		})
 
 		if (!dbEntity.isLocal) {
-			jsonInsertValues.C.push(sysWideOperationIdColumn.index)
+			queryInsertValues.C.push(sysWideOperationIdColumn.index)
 			values.forEach(
 				entityValues => {
 					entityValues.push(systemWideOperationId)
@@ -402,7 +402,7 @@ appears more than once in the Columns clause`)
 	private ensureAirEntityIdValues(
 		actor: IActor,
 		dbEntity: DbEntity,
-		jsonInsertValues: JsonInsertValues,
+		queryInsertValues: QueryInsertValues,
 		errorPrefix: string,
 		transaction: ITransaction,
 		context: IOperationContext
@@ -419,8 +419,8 @@ appears more than once in the Columns clause`)
 		let foundActorRecordIdColumn = false
 		let foundSystemWideOperationIdColumn = false
 
-		for (let i = 0; i < jsonInsertValues.C.length; i++) {
-			const columnIndex = jsonInsertValues.C[i]
+		for (let i = 0; i < queryInsertValues.C.length; i++) {
+			const columnIndex = queryInsertValues.C[i]
 			switch (columnIndex) {
 				case actorIdColumn.index:
 					foundActorIdColumn = true
@@ -476,10 +476,10 @@ You must provide a valid REPOSITORY_LID value for Repository entities.`
 			}
 		}
 
-		for (const entityValues of jsonInsertValues.V) {
-			if (entityValues.length !== jsonInsertValues.C.length) {
+		for (const entityValues of queryInsertValues.V) {
+			if (entityValues.length !== queryInsertValues.C.length) {
 				throw new Error(errorPrefix +
-					`Number of columns (${jsonInsertValues.C.length}) does not match number of values (${entityValues.length}).
+					`Number of columns (${queryInsertValues.C.length}) does not match number of values (${entityValues.length}).
 				`)
 			}
 
@@ -497,7 +497,7 @@ You must provide a valid REPOSITORY_LID value for Repository entities.`
 				}
 				const value = entityValues[i]
 
-				const columnIndex = jsonInsertValues.C[i]
+				const columnIndex = queryInsertValues.C[i]
 				const dbColumn = dbEntity.columns[columnIndex]
 
 				if (dbColumn.notNull && value === null) {
@@ -538,7 +538,7 @@ and cannot have NULL values.`)
 		rootTransaction: IRootTransaction,
 		context: IOperationContext
 	): Promise<void> {
-		const jsonInsertValues = <JsonInsertValues>portableQuery.jsonQuery
+		const queryInsertValues = <QueryInsertValues>portableQuery.query
 
 		let operationsByRepo: IOperationHistory[] = []
 		let repoTransHistories: IRepositoryTransactionHistory[] = []
@@ -551,8 +551,8 @@ and cannot have NULL values.`)
 		let repositoryIdColumnNumber
 		let actorIdColumnNumber
 		let actorRecordIdColumnNumber
-		for (const columnNumber in jsonInsertValues.C) {
-			const columnIndex = jsonInsertValues.C[columnNumber]
+		for (const columnNumber in queryInsertValues.C) {
+			const columnIndex = queryInsertValues.C[columnNumber]
 			switch (columnIndex) {
 				case repositoryIdIndex:
 					repositoryIdColumnNumber = columnNumber
@@ -567,7 +567,7 @@ and cannot have NULL values.`)
 		}
 
 		// Rows may belong to different repositories
-		for (const row of jsonInsertValues.V) {
+		for (const row of queryInsertValues.V) {
 			const repositoryId = row[repositoryIdColumnNumber]
 			// const repo           = await repoManager.getRepository(repositoryId)
 			let repositoryTransactionHistory = repoTransHistories[repositoryId]
@@ -590,13 +590,13 @@ and cannot have NULL values.`)
 			const recordHistory = this.operationHistoryDuo.startRecordHistory(
 				operationHistory, actorId, _actorRecordId)
 
-			for (const columnNumber in jsonInsertValues.C) {
+			for (const columnNumber in queryInsertValues.C) {
 				if (columnNumber === repositoryIdColumnNumber
 					|| columnNumber === actorIdColumnNumber
 					|| columnNumber === actorRecordIdColumnNumber) {
 					continue
 				}
-				const columnIndex = jsonInsertValues.C[columnNumber]
+				const columnIndex = queryInsertValues.C[columnNumber]
 				const dbColumn = dbEntity.columns[columnIndex]
 				const newValue = row[columnNumber]
 				this.recordHistoryDuo.addNewValue(recordHistory, dbColumn, newValue)

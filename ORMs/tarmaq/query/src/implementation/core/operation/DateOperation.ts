@@ -1,6 +1,6 @@
 import { OperationCategory } from "@airport/ground-control";
-import { IQDateField } from "../../../definition/core/field/DateField";
-import { IDateOperation, JSONRawDateOperation } from "../../../definition/core/operation/DateOperation";
+import { IQDateField } from "../../../definition/core/field/IQDateField";
+import { IDateOperation, RawDateOperation } from "../../../definition/core/operation/IDateOperation";
 import { ValueOperation } from "./ValueOperation";
 
 /**
@@ -8,7 +8,7 @@ import { ValueOperation } from "./ValueOperation";
  */
 
 export class DateOperation
-	extends ValueOperation<Date, JSONRawDateOperation, IQDateField> implements IDateOperation {
+	extends ValueOperation<Date, RawDateOperation, IQDateField> implements IDateOperation {
 
 	constructor() {
 		super(OperationCategory.DATE);

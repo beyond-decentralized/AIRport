@@ -4,14 +4,14 @@ import {
 } from './TerminalStore'
 import { Subject, Subscription } from 'rxjs'
 import { ITransaction } from '../transaction/ITransaction'
-import { ITransactionCredentials } from '../Credentials'
-import { Application_FullName, DbApplication, DbDomain, DbSequence, IActor, IAppTrackerUtils, ITerminal } from '@airport/ground-control'
-import { IMessageInRecord } from './ApplicationState'
-import { LastIds } from '@airport/air-traffic-control'
+import { ITransactionCredentials } from '../ICredentials'
+import { DbApplication_FullName, DbApplication, DbDomain, DbSequence, IActor, IAppTrackerUtils, ITerminal } from '@airport/ground-control'
+import { IMessageInRecord } from './IApplicationState'
+import { ILastIds } from '@airport/air-traffic-control'
 
 export interface IReceiverState {
-	initializingApps: Set<Application_FullName>
-	initializedApps: Set<Application_FullName>
+	initializingApps: Set<DbApplication_FullName>
+	initializedApps: Set<DbApplication_FullName>
 }
 
 export interface IWebReceiverState {
@@ -45,20 +45,20 @@ export interface ISequenceGeneratorState {
 }
 
 export interface IApplicationInitializerState {
-	applicationWindowMap: Map<Application_FullName, Window>
-	initializingApplicationMap: Map<Application_FullName, boolean>
+	applicationWindowMap: Map<DbApplication_FullName, Window>
+	initializingApplicationMap: Map<DbApplication_FullName, boolean>
 }
 
 export interface ITerminalState {
 	applicationActors: IActor[]
 	applicationInitializer: IApplicationInitializerState
-	applicationMapByFullName: Map<Application_FullName, DbApplication>
+	applicationMapByFullName: Map<DbApplication_FullName, DbApplication>
 	applications: DbApplication[]
 	domains: DbDomain[]
 	frameworkActor: IActor
 	internalConnector: InternalConnectorState
 	isServer: boolean
-	lastIds: LastIds
+	lastIds: ILastIds
 	receiver: IReceiverState
 	sequenceGenerator: ISequenceGeneratorState
 	terminal: ITerminal

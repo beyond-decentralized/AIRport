@@ -7,7 +7,7 @@ import {
 	DbEntity,
 	IApplicationUtils,
 	IEntityStateManager,
-	JSONEntityRelation,
+	QueryEntityRelation,
 	SyncApplicationMap,
 	SyncColumnMap
 } from '@airport/ground-control'
@@ -15,7 +15,7 @@ import {
 	IQEntity,
 	IQEntityInternal,
 	IQueryUtils,
-	IRelationManager,
+	IQueryRelationManager,
 	QEntity
 } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
@@ -42,7 +42,7 @@ export abstract class SQLNoJoinQuery
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		protected relationManager: IRelationManager,
+		protected relationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementSqlGenerator: ISubStatementSqlGenerator,
@@ -64,7 +64,7 @@ export abstract class SQLNoJoinQuery
 	}
 
 	protected getFromFragment(
-		fromRelation: JSONEntityRelation,
+		fromRelation: QueryEntityRelation,
 		fieldMap: SyncApplicationMap,
 		syncAllFields: boolean,
 		context: IFuelHydrantContext,

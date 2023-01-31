@@ -1,7 +1,7 @@
 import {
-	JSONClauseField,
-	JSONClauseObject,
-	JSONSqlFunctionCall,
+	QueryFieldClause,
+	QueryBaseClause,
+	QueryFunctionCall,
 	SQLDataType
 }                          from '@airport/ground-control'
 import {
@@ -60,7 +60,7 @@ export interface ISqlValueProvider {
 	): string;
 
 	getFieldFunctionValue(
-		aField: JSONClauseField,
+		aField: QueryFieldClause,
 		defaultCallback: () => string,
 		context: IFuelHydrantContext,
 	): string;
@@ -70,7 +70,7 @@ export interface ISqlValueProvider {
 export interface ISQLFunctionAdaptor {
 
 	getFunctionCalls(
-		clause: JSONClauseObject,
+		clause: QueryBaseClause,
 		innerValue: string,
 		qEntityMapByAlias: { [alias: string]: IQEntityInternal },
 		sqlValueProvider: ISqlValueProvider,
@@ -78,7 +78,7 @@ export interface ISQLFunctionAdaptor {
 	): string;
 
 	getFunctionCall(
-		jsonFunctionCall: JSONSqlFunctionCall,
+		jsonFunctionCall: QueryFunctionCall,
 		value: string,
 		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
 		sqlValueProvider: ISqlValueProvider,
@@ -91,7 +91,7 @@ export abstract class AbstractFunctionAdaptor
 	implements ISQLFunctionAdaptor {
 
 	getFunctionCalls(
-		clause: JSONClauseObject,
+		clause: QueryBaseClause,
 		innerValue: string,
 		qEntityMapByAlias: { [alias: string]: IQEntityInternal },
 		sqlValueProvider: ISqlValueProvider,
@@ -106,7 +106,7 @@ export abstract class AbstractFunctionAdaptor
 	}
 
 	abstract getFunctionCall(
-		jsonFunctionCall: JSONSqlFunctionCall,
+		jsonFunctionCall: QueryFunctionCall,
 		value: string,
 		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
 		sqlValueProvider: ISqlValueProvider,

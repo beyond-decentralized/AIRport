@@ -12,7 +12,7 @@ import {
 	Terminal,
 	UserAccount
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
-import { Application } from '@airport/airspace/dist/app/bundle';
+import { DdlApplication } from '@airport/airspace/dist/app/bundle';
 import { Actor_GUID, Actor_LocalId, IActor } from '@airport/ground-control';
 
 
@@ -48,10 +48,10 @@ export class Actor
 
 	@ManyToOne()
 	@JoinColumn({
-		name: "APPLICATION_INDEX",
-		referencedColumnName: "APPLICATION_INDEX"
+		name: "DB_APPLICATION_INDEX",
+		referencedColumnName: "DB_APPLICATION_INDEX"
 	})
-	application?: Application
+	application?: DdlApplication
 
 	// This should be tracked in RepositoryTransactionHistory - keeping actors focused on Apps
 	// @ManyToOne()

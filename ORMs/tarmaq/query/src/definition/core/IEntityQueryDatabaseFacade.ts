@@ -3,9 +3,9 @@ import {
     ISaveResult
 } from '@airport/ground-control'
 import { IEntityContext } from '@airport/tarmaq-entity';
-import { RawDelete } from '../query/facade/Delete';
-import { RawInsertColumnValues, RawInsertValues } from '../query/facade/InsertValues';
-import { RawUpdate, RawUpdateColumns } from '../query/facade/Update';
+import { RawDelete } from '../query/facade/RawDelete';
+import { RawInsertColumnValues, RawInsertValues } from '../query/facade/RawInsertValues';
+import { RawUpdate, RawUpdateColumns } from '../query/facade/RawUpdate';
 
 import {
     IEntityCascadeGraph,
@@ -15,7 +15,7 @@ import {
     IEntityUpdateColumns,
     IEntityUpdateProperties,
     IQEntity
-} from './entity/Entity'
+} from './entity/IQEntity'
 
 /**
  * Facade for all DB operations related to a particular Entity.
@@ -25,7 +25,7 @@ export interface IEntityQueryDatabaseFacade<IEntity,
     EntityCreateProperties extends IEntityCreateProperties,
     EntityUpdateColumns extends IEntityUpdateColumns,
     EntityUpdateProperties extends IEntityUpdateProperties,
-    ApplicationEntity_LocalId extends IEntityIdProperties,
+    DbEntity_LocalId extends IEntityIdProperties,
     EntityCascadeGraph extends IEntityCascadeGraph,
     IQ extends IQEntity> {
 

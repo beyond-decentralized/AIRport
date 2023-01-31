@@ -1,14 +1,14 @@
 import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	IApplicationUtils,
-	JSONEntityRelation,
-	JSONRelation
+	QueryEntityRelation,
+	QueryRelation
 } from '@airport/ground-control'
-import { IQEntityDriver, IQEntityInternal, IQueryUtils, IRelationManager, IRelationManagerContext } from '@airport/tarmaq-query'
+import { IQEntityDriver, IQEntityInternal, IQueryUtils, IQueryRelationManager, IQueryRelationManagerContext } from '@airport/tarmaq-query'
 
 @Injected()
 export class RelationManager
-	implements IRelationManager {
+	implements IQueryRelationManager {
 
 	@Inject()
 	applicationUtils: IApplicationUtils
@@ -24,24 +24,24 @@ export class RelationManager
 	}
 
 	getAlias(
-		jsonRelation: JSONRelation
+		queryRelation: QueryRelation
 	): string {
-		return this.getPositionAlias(jsonRelation.rep, jsonRelation.fromClausePosition)
+		return this.getPositionAlias(queryRelation.rep, queryRelation.fromClausePosition)
 	}
 
 	getParentAlias(
-		jsonRelation: JSONRelation
+		queryRelation: QueryRelation
 	): string {
-		let fromClausePosition = jsonRelation.fromClausePosition
+		let fromClausePosition = queryRelation.fromClausePosition
 		if (fromClausePosition.length === 0) {
 			throw new Error(`Cannot find alias of a parent entity for the root entity`)
 		}
-		return this.getPositionAlias(jsonRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1))
+		return this.getPositionAlias(queryRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1))
 	}
 
 	createRelatedQEntity<IQ extends IQEntityInternal>(
-		joinRelation: JSONRelation,
-		context: IRelationManagerContext,
+		joinRelation: QueryRelation,
+		context: IQueryRelationManagerContext,
 	): IQ {
 		const dbEntity = this.applicationUtils.getDbEntity(
 			joinRelation.si, joinRelation.ti)
@@ -52,7 +52,7 @@ export class RelationManager
 			this.queryUtils,
 			this,
 			joinRelation.fromClausePosition,
-			dbEntity.relations[(<JSONEntityRelation>joinRelation).ri],
+			dbEntity.relations[(<QueryEntityRelation>joinRelation).ri],
 			joinRelation.jt)
 	}
 

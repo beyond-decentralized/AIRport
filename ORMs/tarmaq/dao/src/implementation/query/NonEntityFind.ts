@@ -1,7 +1,7 @@
 import { IContext, Injected } from '@airport/direction-indicator';
 import { QueryResultType } from '@airport/ground-control';
 import { DistinguishableQuery, FieldQuery, IQOrderableField, IQueryContext, ITreeEntity, RawFieldQuery, RawNonEntityQuery, RawSheetQuery, RawTreeQuery, SheetQuery, TreeQuery } from '@airport/tarmaq-query';
-import { INonEntityFind } from '../../definition/query/NonEntityFind';
+import { INonEntityFind } from '../../definition/query/INonEntityFind';
 import { Lookup } from './Lookup';
 
 /**

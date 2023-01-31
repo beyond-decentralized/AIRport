@@ -1,21 +1,21 @@
 import {
 	DbColumn,
 	DbProperty,
-	JSONClauseField,
-	JSONClauseObjectType,
+	QueryFieldClause,
+	QueryClauseObjectType,
 	Repository_GUID,
 	Repository_LocalId,
 	SQLDataType
 } from '@airport/ground-control';
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver';
-import { IRelationManager } from '../../../definition/core/entity/IRelationManager';
-import { IQFunction } from '../../../definition/core/field/Functions';
-import { IQStringField } from '../../../definition/core/field/StringField';
+import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager';
+import { IQFunction } from '../../../definition/core/field/IQFunctions';
+import { IQStringField } from '../../../definition/core/field/IQStringField';
 import {
 	IStringOperation,
-	JSONRawStringOperation
-} from '../../../definition/core/operation/StringOperation';
-import { RawFieldQuery } from '../../../definition/query/facade/FieldQuery';
+	RawStringOperation
+} from '../../../definition/core/operation/IStringOperation';
+import { RawFieldQuery } from '../../../definition/query/facade/RawFieldQuery';
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils';
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils';
 import { FieldColumnAliases } from '../entity/Aliases';
@@ -31,14 +31,14 @@ export interface IQStringEntityField
 }
 
 export class QStringField
-	extends QOperableField<string, JSONRawStringOperation, IStringOperation, IQStringField>
+	extends QOperableField<string, RawStringOperation, IStringOperation, IQStringField>
 	implements IQStringField {
 
 	constructor(
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
 		q: IQEntityInternal,
-		objectType: JSONClauseObjectType = JSONClauseObjectType.FIELD
+		objectType: QueryClauseObjectType = QueryClauseObjectType.FIELD
 	) {
 		super(dbColumn, dbProperty, q, objectType, new StringOperation());
 	}
@@ -50,7 +50,7 @@ export class QStringField
 
 	LIKE(
 		value: string | IQStringField | RawFieldQuery<IQStringField> | { (...args: any[]): RawFieldQuery<IQStringField> }
-	): JSONRawStringOperation {
+	): RawStringOperation {
 		if (value instanceof Function) {
 			value = value();
 		}
@@ -69,32 +69,32 @@ export class QStringFunction<T extends string | string[] = string>
 		public value: T | RawFieldQuery<any>,
 		protected isQueryParameter: boolean = false
 	) {
-		super(<any>{ type: SQLDataType.STRING }, null, null, JSONClauseObjectType.FIELD_FUNCTION);
+		super(<any>{ type: SQLDataType.STRING }, null, null, QueryClauseObjectType.FIELD_FUNCTION);
 	}
 
 	getInstance(): QStringFunction {
 		return this.copyFunctions(new QStringFunction(this.value as string, this.isQueryParameter));
 	}
 
-	toJSON(
+	toQueryFragment(
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
 		trackedRepoGUIDSet: Set<Repository_GUID>,
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JSONClauseField {
-		let json = this.operableFunctionToJson(
+		relationManager: IQueryRelationManager
+	): QueryFieldClause {
+		let queryFieldClause = this.rawToQueryOperableFunction(
 			this, columnAliases, forSelectClause,
 			trackedRepoGUIDSet, trackedRepoLocalIdSet,
 			queryUtils, fieldUtils, relationManager);
 
 		if (this.isQueryParameter) {
-			this.parameterAlias = <string>json.v;
+			this.parameterAlias = <string>queryFieldClause.v;
 		}
 
-		return json;
+		return queryFieldClause;
 	}
 }
 

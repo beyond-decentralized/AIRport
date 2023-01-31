@@ -56,7 +56,7 @@ import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdap
 import {
     AppTrackerUtils,
     DatastructureUtils,
-    DbApplicationUtils,
+    ImplApplicationUtils,
     Dictionary,
     KeyUtils,
     SEQUENCE_GENERATOR
@@ -153,7 +153,7 @@ groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
     applicationRelationDao: ApplicationRelationDao,
     applicationUtils: ApplicationUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    dbApplicationUtils: ImplApplicationUtils,
     dictionary: Dictionary,
     repositoryDao: RepositoryDao,
 })

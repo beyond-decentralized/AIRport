@@ -5,7 +5,7 @@ import {
 	Observable,
 	from
 } from 'rxjs';
-import { IEntitySearchOne } from '../../definition/query/EntitySearchOne';
+import { IEntitySearchOne } from '../../definition/query/IEntitySearchOne';
 import { EntityLookup } from './EntityLookup';
 
 export interface IEntitySearchOneInternal<Entity, IESP extends IEntitySelectProperties>
