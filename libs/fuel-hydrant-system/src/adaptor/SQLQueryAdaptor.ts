@@ -78,7 +78,7 @@ export interface ISQLFunctionAdaptor {
 	): string;
 
 	getFunctionCall(
-		jsonFunctionCall: QueryFunctionCall,
+		queryFunctionCall: QueryFunctionCall,
 		value: string,
 		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
 		sqlValueProvider: ISqlValueProvider,
@@ -106,7 +106,7 @@ export abstract class AbstractFunctionAdaptor
 	}
 
 	abstract getFunctionCall(
-		jsonFunctionCall: QueryFunctionCall,
+		queryFunctionCall: QueryFunctionCall,
 		value: string,
 		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
 		sqlValueProvider: ISqlValueProvider,

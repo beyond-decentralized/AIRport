@@ -70,7 +70,7 @@ export class TreeResultParser
 			return true
 		}
 
-		// Types are guaranteed to be the same, sortOrder:
+		// Types are guaranteed to be the same, so:
 
 		// If the last property is not there or is falsy
 		if (!lastObject[propertyName]) {
