@@ -10,7 +10,8 @@ import {
 	QueryFieldClause,
 	QueryClauseObjectType,
 	QueryTree,
-	QueryResultType
+	QueryResultType,
+	Dictionary
 } from '@airport/ground-control'
 import { AliasCache, IQueryUtils, IQueryRelationManager } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
@@ -36,6 +37,7 @@ export class TreeSQLQuery
 	constructor(
 		treeQuery: QueryTree,
 		dialect: SQLDialect,
+		dictionary: Dictionary,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
 		queryUtils: IQueryUtils,
@@ -49,7 +51,9 @@ export class TreeSQLQuery
 		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
-		super(treeQuery, dialect, QueryResultType.TREE,
+		super(treeQuery,
+			dialect, QueryResultType.TREE,
+			dictionary,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -90,7 +94,9 @@ export class TreeSQLQuery
 		let lastResult
 		results.forEach((result) => {
 			let aliasCache = new AliasCache()
-			let parsedResult = this.parseQueryResult(this.query.S, result, [0], aliasCache, aliasCache.getFollowingAlias())
+			let parsedResult = this.parseQueryResult(
+				this.query.SELECT, result, [0], aliasCache,
+				aliasCache.getFollowingAlias())
 			if (!lastResult) {
 				parsedResults.push(parsedResult)
 			} else if (lastResult !== parsedResult) {
@@ -110,13 +116,13 @@ export class TreeSQLQuery
 		context: IFuelHydrantContext,
 	): string {
 		const distinctClause = <QueryFieldClause>selectClauseFragment
-		if (distinctClause.ot == QueryClauseObjectType.DISTINCT_FUNCTION) {
+		if (distinctClause.objectType == QueryClauseObjectType.DISTINCT_FUNCTION) {
 			if (nested) {
 				throw new Error(
 					`Cannot have DISTINCT specified in a nested SELECT clause`)
 			}
 			const distinctSelect = this.getSELECTFragment(
-				nested, distinctClause.appliedFunctions[0].p[0], internalFragments, context)
+				nested, distinctClause.appliedFunctions[0].functionParameters[0], internalFragments, context)
 			return `DISTINCT ${distinctSelect}`
 		}
 
@@ -176,8 +182,8 @@ export class TreeSQLQuery
 		}
 		{
 			let distinctClause = <QueryFieldClause>selectClauseFragment
-			if (distinctClause.ot == QueryClauseObjectType.DISTINCT_FUNCTION) {
-				return this.parseQueryResult(distinctClause.appliedFunctions[0].p[0], resultRow, nextFieldIndex, aliasCache, entityAlias)
+			if (distinctClause.objectType == QueryClauseObjectType.DISTINCT_FUNCTION) {
+				return this.parseQueryResult(distinctClause.appliedFunctions[0].functionParameters[0], resultRow, nextFieldIndex, aliasCache, entityAlias)
 			}
 		}
 
@@ -188,7 +194,7 @@ export class TreeSQLQuery
 				continue
 			}
 			let queryFieldClause: QueryFieldClause = selectClauseFragment[propertyName]
-			let dataType = queryFieldClause.dt
+			let dataType = queryFieldClause.dataType
 			// Must be a sub-query
 			if (!dataType) {
 				let childResultObject = this.parseQueryResult(
@@ -201,11 +207,13 @@ export class TreeSQLQuery
 				this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, propertyName, childResultObject)
 			} else {
 				let propertyValue = this.sqlQueryAdapter.getResultCellValue(
-					resultRow, queryFieldClause.fa, nextFieldIndex[0], dataType, null)
+					resultRow, queryFieldClause.fieldAlias, nextFieldIndex[0], dataType, null)
 				this.queryParser.addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue)
 			}
 			nextFieldIndex[0]++
 		}
+
+		this.trackRepositoryIds(resultRow)
 
 		return this.queryParser.flushEntity(
 			entityAlias,

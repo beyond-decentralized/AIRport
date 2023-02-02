@@ -11,7 +11,8 @@ import {
 	QueryClauseObjectType,
 	QuerySheet,
 	QueryResultType,
-	SQLDataType
+	SQLDataType,
+	Dictionary,
 } from '@airport/ground-control'
 import { IQueryUtils, IQueryRelationManager } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
@@ -34,9 +35,12 @@ import { NonEntitySQLQuery } from './NonEntitySQLQuery'
 export class SheetSQLQuery
 	extends NonEntitySQLQuery<QuerySheet> {
 
+	selectClauseFragment: QueryFieldClause[]
+
 	constructor(
 		querySheet: QuerySheet,
 		dialect: SQLDialect,
+		dictionary: Dictionary,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
 		queryUtils: IQueryUtils,
@@ -50,7 +54,9 @@ export class SheetSQLQuery
 		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
-		super(querySheet, dialect, QueryResultType.SHEET,
+		super(querySheet,
+			dialect, QueryResultType.SHEET,
+			dictionary,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -79,10 +85,9 @@ export class SheetSQLQuery
 			return parsedResults
 		}
 		parsedResults = []
-		let lastResult
 		results.forEach((result) => {
 			let parsedResult = this.parseQueryResult(
-				this.query.S, result, [0], internalFragments)
+				this.query.SELECT, result, [0], internalFragments)
 			parsedResults.push(parsedResult)
 		})
 
@@ -91,7 +96,7 @@ export class SheetSQLQuery
 
 	protected getSELECTFragment(
 		nested: boolean,
-		selectClauseFragment: any,
+		selectClauseFragment: QueryFieldClause[] | QueryFieldClause,
 		internalFragments: InternalFragments,
 		context: IFuelHydrantContext,
 	): string {
@@ -100,9 +105,9 @@ export class SheetSQLQuery
 		}
 		{
 			let distinctClause = <QueryFieldClause>selectClauseFragment
-			if (distinctClause.ot == QueryClauseObjectType.DISTINCT_FUNCTION) {
+			if (distinctClause.objectType == QueryClauseObjectType.DISTINCT_FUNCTION) {
 				let distinctSelect = this.getSELECTFragment(
-					nested, distinctClause.appliedFunctions[0].p[0], internalFragments,
+					nested, distinctClause.appliedFunctions[0].functionParameters[0], internalFragments,
 					context)
 				return `DISTINCT ${distinctSelect}`
 			}
@@ -110,6 +115,8 @@ export class SheetSQLQuery
 		if (!(selectClauseFragment instanceof Array)) {
 			throw new Error(`SELECT clause for a Flat Query must be an Array`)
 		}
+
+		this.selectClauseFragment = selectClauseFragment
 
 		let fieldIndex = 0
 		let selectSqlFragment = selectClauseFragment.map((field: QueryFieldClause) => {
@@ -137,10 +144,11 @@ export class SheetSQLQuery
 		nextFieldIndex: number[],
 		internalFragments: InternalFragments
 	): any {
-		const resultsFromSelect = selectClauseFragment.map((field: QueryFieldClause) => {
+		const resultsFromSelect: any[] = this.selectClauseFragment.map((field: QueryFieldClause) => {
 			let propertyValue = this.sqlQueryAdapter.getResultCellValue(
-				resultRow, field.fa, nextFieldIndex[0], field.dt, null)
+				resultRow, field.fieldAlias, nextFieldIndex[0], field.dataType, null)
 			nextFieldIndex[0]++
+
 			return propertyValue
 		})
 		const selectClause = internalFragments.SELECT
@@ -154,6 +162,8 @@ export class SheetSQLQuery
 				nextFieldIndex[0]++
 			}
 		}
+
+		this.trackRepositoryIds(resultsFromSelect)
 
 		return resultsFromSelect
 	}

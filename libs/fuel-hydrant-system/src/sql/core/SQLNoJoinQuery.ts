@@ -5,6 +5,7 @@ import {
 } from '@airport/air-traffic-control'
 import {
 	DbEntity,
+	Dictionary,
 	IApplicationUtils,
 	IEntityStateManager,
 	QueryEntityRelation,
@@ -36,6 +37,7 @@ export abstract class SQLNoJoinQuery
 	constructor(
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
+		dictionary: Dictionary,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
 		queryUtils: IQueryUtils,
@@ -50,6 +52,7 @@ export abstract class SQLNoJoinQuery
 		context: IFuelHydrantContext,
 	) {
 		super(dbEntity, dialect,
+			dictionary,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -76,16 +79,16 @@ export abstract class SQLNoJoinQuery
 		if (!fromRelation) {
 			throw new Error(`Expecting exactly one table in UPDATE/DELETE clause`)
 		}
-		if (fromRelation.ri || fromRelation.jt) {
+		if (fromRelation.relationIndex || fromRelation.joinType) {
 			throw new Error(`Table in UPDATE/DELETE clause cannot be joined`)
 		}
 
-		const firstDbEntity: DbEntity = this.airportDatabase.applications[fromRelation.si]
-			.currentVersion[0].applicationVersion.entities[fromRelation.ti]
+		const firstDbEntity: DbEntity = this.airportDatabase.applications[fromRelation.applicationIndex]
+			.currentVersion[0].applicationVersion.entities[fromRelation.entityIndex]
 		const columnMap = fieldMap.ensureEntity(firstDbEntity, syncAllFields)
 		let tableName = this.storeDriver.getEntityTableName(firstDbEntity, context)
-		if (fromRelation.si !== this.dbEntity.applicationVersion.application.index
-			|| fromRelation.ti !== this.dbEntity.index) {
+		if (fromRelation.applicationIndex !== this.dbEntity.applicationVersion.application.index
+			|| fromRelation.entityIndex !== this.dbEntity.index) {
 			throw new Error(`Unexpected table in UPDATE/DELETE clause: 
 			'${tableName}',
 			expecting: '${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}'`)

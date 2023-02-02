@@ -7,6 +7,7 @@ import {
 	DbColumn,
 	DbEntity,
 	DbProperty,
+	Dictionary,
 	EntityRelationType,
 	EntityState,
 	IApplicationUtils,
@@ -70,6 +71,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
 		queryResultType: QueryResultType,
+		dictionary: Dictionary,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
 		queryUtils: IQueryUtils,
@@ -86,6 +88,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 		protected graphQueryConfiguration?: GraphQueryConfiguration
 	) {
 		super(queryEntity, dbEntity, dialect, queryResultType,
+			dictionary,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -102,8 +105,8 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 			throw new Error(`"strict" configuration is not yet implemented for 
 			QueryResultType.ENTITY_GRAPH`)
 		}
-		this.finalSelectTree = this.setupSelectFields(this.query.S, dbEntity, context)
-		this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, relationManager, queryEntity.OB)
+		this.finalSelectTree = this.setupSelectFields(this.query.SELECT, dbEntity, context)
+		this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, relationManager, queryEntity.ORDER_BY)
 	}
 
 	toSQL(
@@ -112,19 +115,19 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 	): string {
 		let joinNodeMap: { [alias: string]: JoinTreeNode } = {}
 
-		this.joinTree = this.buildFromJoinTree(this.query.F, joinNodeMap, context)
+		this.joinTree = this.buildFromJoinTree(this.query.FROM, joinNodeMap, context)
 
 		let selectFragment = this.getSELECTFragment(this.dbEntity, this.finalSelectTree, this.joinTree, context)
 		let fromFragment = this.getFROMFragment(null, this.joinTree, context)
 		let whereFragment = ''
 		let entityQuery = this.query
-		if (entityQuery.W) {
+		if (entityQuery.WHERE) {
 			whereFragment = `
 WHERE
-${this.getWHEREFragment(entityQuery.W, '', context)}`
+${this.getWHEREFragment(entityQuery.WHERE, '', context)}`
 		}
 		let orderByFragment = ''
-		if (entityQuery.OB && entityQuery.OB.length) {
+		if (entityQuery.ORDER_BY && entityQuery.ORDER_BY.length) {
 			orderByFragment = `
 ORDER BY
 ${this.orderByParser.getOrderByFragment(this.joinTree, this.qEntityMapByAlias, context)}`
@@ -168,7 +171,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 			let result = results[i]
 			let entityAlias = this.relationManager.getAlias(this.joinTree.queryRelation)
 			this.columnAliases.reset()
-			let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, [0], context)
+			let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, { index: 0 }, context)
 			if (!lastResult) {
 				parsedResults.push(parsedResult)
 			} else if (lastResult !== parsedResult) {
@@ -178,7 +181,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 			this.queryParser.flushRow()
 		}
 
-		return this.queryParser.bridge(parsedResults, this.query.S, context)
+		return this.queryParser.bridge(parsedResults, this.query.SELECT, context)
 	}
 
 	protected buildFromJoinTree(
@@ -192,20 +195,20 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 		if (joinRelations.length < 1) {
 			let onlyJsonRelation: QueryEntityRelation = {
 				currentChildIndex: 0,
-				ti: this.dbEntity.index,
+				entityIndex: this.dbEntity.index,
 				fromClausePosition: [],
-				jt: null,
-				ri: null,
-				rt: QueryRelationType.ENTITY_ROOT,
-				rep: 'r_',
-				si: this.dbEntity.applicationVersion._localId
+				joinType: null,
+				relationIndex: null,
+				relationType: QueryRelationType.ENTITY_ROOT,
+				rootEntityPrefix: 'r_',
+				applicationIndex: this.dbEntity.applicationVersion._localId
 			}
 			joinRelations.push(onlyJsonRelation)
 		}
 
 		let firstRelation = joinRelations[0]
 
-		switch (firstRelation.rt) {
+		switch (firstRelation.relationType) {
 			case QueryRelationType.ENTITY_ROOT:
 				break
 			case QueryRelationType.SUB_QUERY_ROOT:
@@ -217,7 +220,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 				throw new Error(`First table in FROM clause cannot be result of a join`)
 		}
 
-		// if (firstRelation.rt !== QueryRelationType.ENTITY_ROOT) {
+		// if (firstRelation.relationType !== QueryRelationType.ENTITY_ROOT) {
 		// 	throw new Error(`First table in FROM clause cannot be joined`)
 		// }
 
@@ -241,7 +244,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 		for (let i = 1; i < joinRelations.length; i++) {
 
 			let joinRelation = joinRelations[i]
-			switch (joinRelation.rt) {
+			switch (joinRelation.relationType) {
 				case QueryRelationType.ENTITY_ROOT:
 					throw new Error(`All Entity query tables after the first must be joined`)
 				case QueryRelationType.SUB_QUERY_JOIN_ON:
@@ -251,7 +254,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 				default:
 					break
 			}
-			if (!joinRelation.ri && joinRelation.ri !== 0) {
+			if (!joinRelation.relationIndex && joinRelation.relationIndex !== 0) {
 				throw new Error(`Table ${i + 1} in FROM clause is missing 
 				relationPropertyName`)
 			}
@@ -269,7 +272,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 			this.qEntityMapByAlias[alias] = rightEntity
 			this.queryRelationMapByAlias[alias] = firstRelation
 			if (!rightEntity) {
-				throw new Error(`Could not find entity ${joinRelation.ti} for 
+				throw new Error(`Could not find entity ${joinRelation.entityIndex} for 
 				table ${i + 1} in FROM clause`)
 			}
 			if (joinNodeMap[alias]) {
@@ -286,13 +289,17 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 		entityAlias: string,
 		currentJoinNode: JoinTreeNode,
 		resultRow: any,
-		nextColumnIndex: number[],
+		nextColumn: {
+			index: number
+		},
 		context: IFuelHydrantContext,
 	): any {
 		// Return blanks, primitives and Dates directly
 		if (!resultRow || !(resultRow instanceof Object) || resultRow instanceof Date) {
 			return resultRow
 		}
+
+		this.trackRepositoryIds(resultRow)
 
 		let numNonNullColumns = 0
 
@@ -308,13 +315,13 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 				const defaultValue = this.entityDefaults.getForAlias(entityAlias)[propertyName]
 
 				const dbColumn = dbProperty.propertyColumns[0].column
-				const propertyValue = this.sqlQueryAdapter.getResultCellValue(
-					resultRow, columnAlias, nextColumnIndex[0], dbColumn.type as SQLDataType, defaultValue)
+				const columnValue = this.sqlQueryAdapter.getResultCellValue(
+					resultRow, columnAlias, nextColumn.index, dbColumn.type as SQLDataType, defaultValue)
 				if (this.queryParser.addProperty(entityAlias, resultObject,
-					dbColumn.type as SQLDataType, propertyName, propertyValue)) {
+					dbColumn.type as SQLDataType, propertyName, columnValue)) {
 					numNonNullColumns++
 				}
-				nextColumnIndex[0]++
+				nextColumn.index++
 			} else {
 				const childSelectClauseFragment = selectClauseFragment[propertyName]
 				const dbRelation = dbProperty.relation[0]
@@ -331,17 +338,20 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 							) => {
 								const columnAlias = this.columnAliases.getFollowingAlias()
 								let value = this.sqlQueryAdapter.getResultCellValue(
-									resultRow, columnAlias, nextColumnIndex[0], dbColumn.type as SQLDataType, null)
+									resultRow, columnAlias, nextColumn.index, dbColumn.type as SQLDataType, null)
 								relationInfos.push({
 									propertyNameChains: propertyNameChains,
 									sqlDataType: dbColumn.type as SQLDataType,
 									value
 								})
 								if (this.utils.objectExists(value)) {
+									if (this.dictionary.isRepositoryLIDColumn(dbProperty, dbColumn)) {
+										this.resultsRepositories_LocalIdSet.add(value)
+									}
 									haveRelationValues = true
 									numNonNullColumns++
 								}
-								nextColumnIndex[0]++
+								nextColumn.index++
 							})
 							if (haveRelationValues) {
 								this.queryParser.bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, childDbEntity, relationInfos, context)
@@ -362,7 +372,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 					const relationQEntity = this.qEntityMapByAlias[childEntityAlias]
 					const relationDbEntity = relationQEntity.__driver__.dbEntity
 
-					let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextColumnIndex, context)
+					let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextColumn, context)
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
 							if (childResultObject) {
@@ -586,7 +596,7 @@ Please make sure that all entities present in the SELECT: {...} clause
 are specified in the FROM: [...] clause, with the SAME nesting pattern as
 in the SELECT: {...} clause.  The non-matching SELECT clause is:
 
-${getErrorMessageSelectStatement(this.query.S)}
+${getErrorMessageSelectStatement(this.query.SELECT)}
 
 `)
 
@@ -603,7 +613,7 @@ ${getErrorMessageSelectStatement(this.query.S)}
 			let rightEntity = this.qEntityMapByAlias[currentAlias]
 
 			let joinTypeString
-			switch (currentRelation.jt) {
+			switch (currentRelation.joinType) {
 				case JoinType.FULL_JOIN:
 					throw new Error(`Full Joins are not allowed in Entity queries.`)
 				case JoinType.INNER_JOIN:
@@ -615,11 +625,11 @@ ${getErrorMessageSelectStatement(this.query.S)}
 				case JoinType.RIGHT_JOIN:
 					throw new Error(`Right Joins are not allowed in Entity queries.`)
 				default:
-					throw new Error(`Unsupported join type: ${currentRelation.jt}`)
+					throw new Error(`Unsupported join type: ${currentRelation.joinType}`)
 			}
 
 			let errorPrefix = 'Error building FROM: '
-			switch (currentRelation.rt) {
+			switch (currentRelation.relationType) {
 				case QueryRelationType.ENTITY_APPLICATION_RELATION:
 					fromFragment += this.getEntityApplicationRelationFromJoin(leftEntity, rightEntity,
 						<QueryEntityRelation>currentRelation, parentRelation, currentAlias, parentAlias,

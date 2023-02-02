@@ -4,6 +4,7 @@ import {
 	IUtils,
 } from '@airport/air-traffic-control'
 import {
+	Dictionary,
 	IApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
@@ -37,6 +38,7 @@ export class SQLUpdate
 	constructor(
 		public updateQuery: QueryUpdate<IEntityUpdateProperties>,
 		dialect: SQLDialect,
+		dictionary: Dictionary,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
 		queryUtils: IQueryUtils,
@@ -50,8 +52,9 @@ export class SQLUpdate
 		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
-		super(airportDatabase.applications[updateQuery.U.si].currentVersion[0]
-			.applicationVersion.entities[updateQuery.U.ti], dialect,
+		super(airportDatabase.applications[updateQuery.UPDATE.applicationIndex].currentVersion[0]
+			.applicationVersion.entities[updateQuery.UPDATE.entityIndex], dialect,
+			dictionary,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -71,14 +74,14 @@ export class SQLUpdate
 		fieldMap: SyncApplicationMap,
 		context: IFuelHydrantContext,
 	): string {
-		if (!this.updateQuery.U) {
+		if (!this.updateQuery.UPDATE) {
 			throw new Error(`Expecting exactly one table in UPDATE clause`)
 		}
 		let {
 			columnMap,
 			tableFragment
-		} = this.getFromFragment(this.updateQuery.U, fieldMap, false, context)
-		let setFragment = this.getSetFragment(this.updateQuery.S, columnMap, context)
+		} = this.getFromFragment(this.updateQuery.UPDATE, fieldMap, false, context)
+		let setFragment = this.getSetFragment(this.updateQuery.SELECT, columnMap, context)
 		if (internalFragments.SET && internalFragments.SET.length) {
 			setFragment += ',' + internalFragments.SET.map(
 				internalSetFragment => {
@@ -90,14 +93,14 @@ export class SQLUpdate
 		}
 		let whereFragment = ''
 		let updateQuery = this.updateQuery
-		if (updateQuery.W) {
-			whereFragment = this.getWHEREFragment(updateQuery.W, '',
+		if (updateQuery.WHERE) {
+			whereFragment = this.getWHEREFragment(updateQuery.WHERE, '',
 				context)
 			whereFragment = `WHERE
 ${whereFragment}`
 			// TODO: following might be needed for some RDBMS, does not work for SqLite
 			// Replace the root entity alias reference with the table name
-			// let tableAlias = this.relationManager.getAlias(this.updateQuery.U)
+			// let tableAlias = this.relationManager.getAlias(this.updateQuery.UPDATE)
 			// let tableName  = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
 			// whereFragment  = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
 		}
@@ -152,7 +155,7 @@ ${whereFragment}`
 		value: any
 	): boolean {
 		return typeof value === 'object'
-			&& value.ot === QueryClauseObjectType.MANY_TO_ONE_RELATION
+			&& value.objectType === QueryClauseObjectType.MANY_TO_ONE_RELATION
 	}
 
 	private addManyToOneMappings(
@@ -161,15 +164,15 @@ ${whereFragment}`
 		let mappings: ManyToOneColumnMapping[] = []
 		const value = parentMapping.value
 		if (typeof value === 'object' &&
-			(!value.ot
-				|| value.ot === QueryClauseObjectType.MANY_TO_ONE_RELATION)) {
+			(!value.objectType
+				|| value.objectType === QueryClauseObjectType.MANY_TO_ONE_RELATION)) {
 			for (const key in value) {
 				if (key === 'ot'
 					&& value[key] === QueryClauseObjectType.MANY_TO_ONE_RELATION) {
 					continue
 				}
 				const mapping: ManyToOneColumnMapping = {
-					tableIndex: parentMapping.tableIndex,
+					entityIndex: parentMapping.entityIndex,
 					propertyChain: parentMapping.propertyChain.concat([key]),
 					value: value[key]
 				}

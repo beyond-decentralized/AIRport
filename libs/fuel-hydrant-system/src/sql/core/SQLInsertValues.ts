@@ -1,6 +1,7 @@
 import { IAirportDatabase, IQMetadataUtils, IUtils } from '@airport/air-traffic-control'
 import {
 	DbEntity,
+	Dictionary,
 	IApplicationUtils,
 	IEntityStateManager,
 	QueryInsertValues,
@@ -30,6 +31,7 @@ export class SQLInsertValues
 	constructor(
 		public insertValuesQuery: QueryInsertValues,
 		dialect: SQLDialect,
+		dictionary: Dictionary,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
 		queryUtils: IQueryUtils,
@@ -44,8 +46,9 @@ export class SQLInsertValues
 		context: IFuelHydrantContext
 		// repository?: IRepository
 	) {
-		super(airportDatabase.applications[insertValuesQuery.II.si].currentVersion[0]
-			.applicationVersion.entities[insertValuesQuery.II.ti], dialect,
+		super(airportDatabase.applications[insertValuesQuery.INSERT_INTO.applicationIndex].currentVersion[0]
+			.applicationVersion.entities[insertValuesQuery.INSERT_INTO.entityIndex], dialect,
+			dictionary,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -64,17 +67,17 @@ export class SQLInsertValues
 		fieldMap: SyncApplicationMap,
 		context: IFuelHydrantContext
 	): string {
-		if (!this.insertValuesQuery.II) {
+		if (!this.insertValuesQuery.INSERT_INTO) {
 			throw new Error(`Expecting exactly one table in INSERT INTO clause`)
 		}
 		this.qValidator.validateInsertQEntity(this.dbEntity)
 		let {
 			columnMap,
 			tableFragment
-		} = this.getFromFragment(this.insertValuesQuery.II, fieldMap, false, context, false)
-		let columnsFragment = this.getColumnsFragment(this.dbEntity, this.insertValuesQuery.C, columnMap)
+		} = this.getFromFragment(this.insertValuesQuery.INSERT_INTO, fieldMap, false, context, false)
+		let columnsFragment = this.getColumnsFragment(this.dbEntity, this.insertValuesQuery.COLUMNS, columnMap)
 		let valuesFragment = this.getValuesFragment(
-			this.insertValuesQuery.V, context)
+			this.insertValuesQuery.VALUES, context)
 
 		return `INSERT INTO
 ${tableFragment} ${columnsFragment}

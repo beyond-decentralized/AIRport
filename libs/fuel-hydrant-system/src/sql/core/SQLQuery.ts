@@ -16,8 +16,8 @@ import {
 	ApplicationMap,
 	SqlOperator,
 	IEntityStateManager,
-	Repository_LocalId,
-	IApplicationUtils
+	IApplicationUtils,
+	Dictionary
 } from '@airport/ground-control'
 import {
 	IQEntityInternal,
@@ -67,14 +67,13 @@ export abstract class SQLQuery<JQ extends Query>
 	extends SQLWhereBase {
 
 	protected entityDefaults: EntityDefaults = new EntityDefaults()
-	inputRepositoryIds: Set<Repository_LocalId> = new Set()
-	resultsRepositoryIds: Set<Repository_LocalId> = new Set()
 
 	constructor(
 		protected query: JQ,
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
 		protected queryResultType: QueryResultType,
+		dictionary: Dictionary,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
 		queryUtils: IQueryUtils,
@@ -89,6 +88,7 @@ export abstract class SQLQuery<JQ extends Query>
 		context: IFuelHydrantContext,
 	) {
 		super(dbEntity, dialect,
+			dictionary,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -104,14 +104,6 @@ export abstract class SQLQuery<JQ extends Query>
 
 	getFieldMap(): ApplicationMap {
 		return this.fieldMap
-	}
-
-	getInputRepositoryIds(): Set<Repository_LocalId> {
-		return this.inputRepositoryIds
-	}
-
-	getResultsRepositoryIds(): Set<Repository_LocalId> {
-		return this.resultsRepositoryIds
 	}
 
 	abstract toSQL(
@@ -144,7 +136,7 @@ export abstract class SQLQuery<JQ extends Query>
 		joinNodeMap: { [alias: string]: JoinTreeNode },
 		context: IFuelHydrantContext,
 		applicationIndex?: number,
-		tableIndex?: number
+		entityIndex?: number
 	): JoinTreeNode | JoinTreeNode[];
 
 	protected getEntityApplicationRelationFromJoin(
@@ -162,7 +154,7 @@ export abstract class SQLQuery<JQ extends Query>
 
 		const leftDbEntity = leftQEntity.__driver__.dbEntity
 		const rightDbEntity = rightQEntity.__driver__.dbEntity
-		const dbRelation = leftDbEntity.relations[entityRelation.ri]
+		const dbRelation = leftDbEntity.relations[entityRelation.relationIndex]
 
 		let relationColumns: DbRelationColumn[]
 		switch (dbRelation.relationType) {

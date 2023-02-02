@@ -10,7 +10,9 @@ import {
 	QueryFieldClause,
 	QueryClauseObjectType,
 	QueryField,
-	QueryResultType
+	QueryResultType,
+	Dictionary,
+	DbEntity
 } from '@airport/ground-control'
 import { IQueryUtils, IQueryRelationManager } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
@@ -30,9 +32,12 @@ import { NonEntitySQLQuery } from './NonEntitySQLQuery'
 export class FieldSQLQuery
 	extends NonEntitySQLQuery<QueryField> {
 
+	selectClauseField: QueryFieldClause
+
 	constructor(
 		queryField: QueryField,
 		dialect: SQLDialect,
+		dictionary: Dictionary,
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
 		queryUtils: IQueryUtils,
@@ -46,7 +51,9 @@ export class FieldSQLQuery
 		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
-		super(queryField, dialect, QueryResultType.FIELD,
+		super(queryField,
+			dialect, QueryResultType.FIELD,
+			dictionary,
 			airportDatabase,
 			applicationUtils,
 			queryUtils,
@@ -75,9 +82,9 @@ export class FieldSQLQuery
 			return parsedResults
 		}
 		parsedResults = []
-		let lastResult
 		results.forEach((result) => {
-			let parsedResult = this.parseQueryResult(this.query.S, result, [0])
+			let parsedResult = this.parseQueryResult(
+				this.selectClauseField, result, [0])
 			parsedResults.push(parsedResult)
 		})
 
@@ -86,7 +93,7 @@ export class FieldSQLQuery
 
 	protected getSELECTFragment(
 		nested: boolean,
-		selectClauseFragment: any,
+		selectClauseFragment: QueryFieldClause,
 		internalFragments: InternalFragments,
 		context: IFuelHydrantContext,
 	): string {
@@ -95,32 +102,38 @@ export class FieldSQLQuery
 		}
 		{
 			let distinctClause = <QueryFieldClause>selectClauseFragment
-			if (distinctClause.ot == QueryClauseObjectType.DISTINCT_FUNCTION) {
+			if (distinctClause.objectType == QueryClauseObjectType.DISTINCT_FUNCTION) {
 				let distinctSelect = this.getSELECTFragment(
-					nested, distinctClause.appliedFunctions[0].p[0], internalFragments, context)
+					nested, distinctClause.appliedFunctions[0].functionParameters[0],
+					internalFragments, context)
 				return `DISTINCT ${distinctSelect}`
 			}
 		}
 
-		let field = <QueryFieldClause>selectClauseFragment
+		this.selectClauseField = <QueryFieldClause>selectClauseFragment
 		let fieldIndex = 0
 		let selectSqlFragment = this.getFieldSelectFragment(
-			field, ClauseType.NON_MAPPED_SELECT_CLAUSE,
+			this.selectClauseField, ClauseType.NON_MAPPED_SELECT_CLAUSE,
 			null, fieldIndex++, context)
+
 		return selectSqlFragment
 	}
 
 	protected parseQueryResult(
-		selectClauseFragment: any,
+		selectClauseFragment: QueryFieldClause,
 		resultRow: any,
 		nextFieldIndex: number[],
 	): any {
-		let field = <QueryFieldClause>selectClauseFragment
-		let propertyValue = this.sqlQueryAdapter.getResultCellValue(
-			resultRow, field.fa, nextFieldIndex[0], field.dt, null)
+		let columnValue = this.sqlQueryAdapter.getResultCellValue(
+			resultRow, this.selectClauseField.fieldAlias,
+			nextFieldIndex[0], this.selectClauseField.dataType,
+			null)
+
 		nextFieldIndex[0]++
 
-		return propertyValue
+		this.trackRepositoryIds([columnValue])
+
+		return columnValue
 	}
 
 }

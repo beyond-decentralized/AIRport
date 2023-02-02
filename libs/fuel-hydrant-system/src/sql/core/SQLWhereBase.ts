@@ -25,7 +25,11 @@ import {
 	SqlOperator,
 	DbEntity_TableIndex,
 	IEntityStateManager,
-	IApplicationUtils
+	IApplicationUtils,
+	Dictionary,
+	DbProperty,
+	Repository_LocalId,
+	Repository_GUID
 } from '@airport/ground-control'
 import {
 	IQEntityInternal,
@@ -39,6 +43,15 @@ import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import { IValidator } from '../../validation/Validator'
 import { SQLDialect } from './SQLQuery'
 import { ISubStatementSqlGenerator } from './SubStatementSqlGenerator'
+
+interface ISelectColumnInfo {
+
+	dbEntity: DbEntity
+	dbProperty: DbProperty
+	dbColumn: DbColumn
+
+}
+
 
 /**
  * Created by Papa on 10/2/2016.
@@ -60,9 +73,14 @@ export abstract class SQLWhereBase
 	protected qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal } = {}
 	protected queryRelationMapByAlias: { [entityAlias: string]: QueryEntityRelation } = {}
 
+	protected selectColumnInfos: ISelectColumnInfo[] = []
+	resultsRepositories_LocalIdSet: Set<Repository_LocalId> = new Set()
+	resultsRepositories_GUIDSet: Set<Repository_GUID> = new Set()
+
 	constructor(
 		protected dbEntity: DbEntity,
 		protected dialect: SQLDialect,
+		protected dictionary: Dictionary,
 		protected airportDatabase: IAirportDatabase,
 		protected applicationUtils: IApplicationUtils,
 		protected queryUtils: IQueryUtils,
@@ -124,7 +142,8 @@ export abstract class SQLWhereBase
 		defaultCallback: () => string,
 		context: IFuelHydrantContext,
 	): string {
-		let aValue = aField.v
+		this.selectColumnInfos.push(null)
+		let aValue = aField.value
 		if (this.isParameterReference(aValue)) {
 			let stringValue = <string>aValue
 			this.parameterReferences.push(stringValue)
@@ -136,7 +155,7 @@ export abstract class SQLWhereBase
 		aValue = this.sqlQueryAdapter.getFunctionAdaptor()
 			.getFunctionCalls(
 				aField, aValue, this.qEntityMapByAlias, this, context)
-		this.qValidator.addFunctionAlias(aField.fa)
+		this.qValidator.addFunctionAlias(aField.fieldAlias)
 
 		return aValue
 	}
@@ -147,6 +166,7 @@ export abstract class SQLWhereBase
 		defaultCallback: () => string,
 		context: IFuelHydrantContext,
 	): string {
+		this.selectColumnInfos.push(null)
 		let columnName
 		if (!clauseField) {
 			throw new Error(`Missing Clause Field definition`)
@@ -157,13 +177,13 @@ export abstract class SQLWhereBase
 					clauseFieldMember, clauseType, defaultCallback, context))
 				.join(', ')
 		}
-		if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.ot) {
+		if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.objectType) {
 			throw new Error(`Object Type is not defined in QueryFieldClause`)
 		}
 
 		const aField = <QueryFieldClause>clauseField
 		let qEntity: IQEntityInternal
-		switch (clauseField.ot) {
+		switch (clauseField.objectType) {
 			case QueryClauseObjectType.FIELD_FUNCTION:
 				return this.getFieldFunctionValue(aField, defaultCallback, context)
 			case QueryClauseObjectType.DISTINCT_FUNCTION:
@@ -176,25 +196,29 @@ export abstract class SQLWhereBase
 				const {
 					parameterReferences,
 					subQuerySql
-				} = this.subStatementSqlGenerator.getTreeQuerySql(<QueryTree>aField.v, this.dialect, context)
+				} = this.subStatementSqlGenerator.getTreeQuerySql(<QueryTree>aField.value, this.dialect, context)
 				if (parameterReferences.length) {
 					this.parameterReferences = this.parameterReferences.concat(parameterReferences)
 				}
 				return `EXISTS(${subQuerySql})`
 			}
+			// It is possible that Repository GUID or LID may be returned here
 			case <any>QueryClauseObjectType.FIELD: {
-				qEntity = this.qEntityMapByAlias[aField.ta]
+				qEntity = this.qEntityMapByAlias[aField.tableAlias]
 				this.qValidator.validateReadQEntityProperty(
-					aField.si, aField.ti, aField.ci)
+					aField.applicationIndex, aField.entityIndex, aField.columnIndex)
 				columnName = this.getEntityPropertyColumnName(
-					qEntity, aField.ci, context)
-				this.addField(aField.si, aField.ti, aField.ci)
+					qEntity, aField.columnIndex, context)
+
+				this.addSelectColumnInfo(aField)
+
+				this.addField(aField.applicationIndex, aField.entityIndex, aField.columnIndex)
 				return this.getComplexColumnFragment(aField, columnName,
 					context)
 			}
 			case QueryClauseObjectType.FIELD_QUERY: {
 				let fieldSubQuery: QueryField = aField.fieldSubQuery
-				if ((<QueryField><any>aField).S) {
+				if ((<QueryField><any>aField).SELECT) {
 					fieldSubQuery = <any>aField
 				}
 				const {
@@ -205,15 +229,19 @@ export abstract class SQLWhereBase
 				if (parameterReferences.length) {
 					this.parameterReferences = this.parameterReferences.concat(parameterReferences)
 				}
-				this.qValidator.addSubQueryAlias(aField.fa)
+				this.qValidator.addSubQueryAlias(aField.fieldAlias)
 				return `(${subQuerySql})`
 			}
+			// It is possible that Repository GUID or LID may be returned here
 			case QueryClauseObjectType.MANY_TO_ONE_RELATION: {
-				qEntity = this.qEntityMapByAlias[aField.ta]
+				qEntity = this.qEntityMapByAlias[aField.tableAlias]
 				this.qValidator.validateReadQEntityManyToOneRelation(
-					aField.si, aField.ti, aField.ci)
-				columnName = this.getEntityManyToOneColumnName(qEntity, aField.ci, context)
-				this.addField(aField.si, aField.ti, aField.ci)
+					aField.applicationIndex, aField.entityIndex, aField.columnIndex)
+				columnName = this.getEntityManyToOneColumnName(qEntity, aField.columnIndex, context)
+				this.addField(aField.applicationIndex, aField.entityIndex, aField.columnIndex)
+
+				this.addSelectColumnInfo(aField)
+
 				return this.getComplexColumnFragment(aField, columnName, context)
 			}
 			// must be a nested object
@@ -222,6 +250,48 @@ export abstract class SQLWhereBase
 					`Nested objects only allowed in the mapped SELECT clause.`
 				}
 				return defaultCallback()
+			}
+		}
+	}
+
+	private addSelectColumnInfo(
+		aField: QueryFieldClause
+	): void {
+		const dbEntity = this.airportDatabase.applications[aField.applicationIndex]
+			.currentVersion[0].applicationVersion.entities[aField.entityIndex];
+		const dbProperty = dbEntity.properties[aField.propertyIndex]
+		const dbColumn = dbEntity.properties[aField.columnIndex]
+		this.selectColumnInfos[this.selectColumnInfos.length - 1]
+			= {
+			dbColumn,
+			dbEntity,
+			dbProperty
+		}
+	}
+
+	protected trackRepositoryIds(
+		resultsFromSelect: any[]
+	): void {
+		if (resultsFromSelect.length !== this.selectColumnInfos.length) {
+			throw new Error(`Unexpected number of columns in the result set.
+Expecting: ${this.selectColumnInfos.length}
+Returned:  ${resultsFromSelect.length}
+`)
+		}
+
+		for (let i = 0; i < resultsFromSelect.length; i++) {
+			const selectColumnInfo = this.selectColumnInfos[i]
+			if (!selectColumnInfo) {
+				continue
+			}
+			const columnValue = resultsFromSelect[i]
+
+			if (this.dictionary.isRepositoryGUIDProperty(
+				selectColumnInfo.dbProperty)) {
+				this.resultsRepositories_GUIDSet.add(columnValue)
+			} else if (this.dictionary.isRepositoryLIDColumn(
+				selectColumnInfo.dbProperty, selectColumnInfo.dbColumn)) {
+				this.resultsRepositories_LocalIdSet.add(columnValue)
 			}
 		}
 	}
@@ -269,7 +339,7 @@ export abstract class SQLWhereBase
 		}
 		nestingPrefix = `${nestingPrefix}\t`
 
-		switch (operation.c) {
+		switch (operation.operationCategory) {
 			case OperationCategory.LOGICAL:
 				return this.getLogicalWhereFragment(
 					<QueryLogicalOperation>operation, nestingPrefix, context)
@@ -280,22 +350,22 @@ export abstract class SQLWhereBase
 			case OperationCategory.UNTYPED:
 				let valueOperation = <QueryValueOperation>operation
 				let lValueSql = this.getFieldValue(
-					valueOperation.l, ClauseType.WHERE_CLAUSE, null, context)
-				if (valueOperation.o === SqlOperator.IS_NOT_NULL
-					|| valueOperation.o === SqlOperator.IS_NULL) {
-					let operator = this.applyOperator(valueOperation.o, null)
+					valueOperation.leftSideValue, ClauseType.WHERE_CLAUSE, null, context)
+				if (valueOperation.operator === SqlOperator.IS_NOT_NULL
+					|| valueOperation.operator === SqlOperator.IS_NULL) {
+					let operator = this.applyOperator(valueOperation.operator, null)
 					whereFragment += `${lValueSql}${operator}`
 				} else {
 					let rValueSql = this.getFieldValue(
-						valueOperation.r, ClauseType.WHERE_CLAUSE, null, context)
-					let rValueWithOperator = this.applyOperator(valueOperation.o, rValueSql)
+						valueOperation.rightSideValue, ClauseType.WHERE_CLAUSE, null, context)
+					let rValueWithOperator = this.applyOperator(valueOperation.operator, rValueSql)
 					whereFragment += `${lValueSql}${rValueWithOperator}`
 				}
 				break
 			case OperationCategory.FUNCTION:
 				let functionOperation = <QueryFunctionOperation><any>operation
 				whereFragment = this.getFieldValue(
-					functionOperation.ob, ClauseType.WHERE_CLAUSE, null, context)
+					functionOperation.object, ClauseType.WHERE_CLAUSE, null, context)
 				// exists function and maybe others
 				break
 		}
@@ -322,10 +392,10 @@ export abstract class SQLWhereBase
 
 	protected addField(
 		applicationIndex: DbApplication_Index,
-		tableIndex: DbEntity_TableIndex,
+		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index,
 	): void {
-		this.fieldMap.ensure(applicationIndex, tableIndex)
+		this.fieldMap.ensure(applicationIndex, entityIndex)
 			.ensure(columnIndex)
 	}
 
@@ -345,7 +415,7 @@ export abstract class SQLWhereBase
 		columnName: string,
 		context: IFuelHydrantContext,
 	): string {
-		let selectSqlFragment = `${value.ta}.${columnName}`
+		let selectSqlFragment = `${value.tableAlias}.${columnName}`
 		selectSqlFragment = this.sqlQueryAdapter.getFunctionAdaptor()
 			.getFunctionCalls(value, selectSqlFragment, this.qEntityMapByAlias,
 				this, context)
@@ -368,7 +438,7 @@ export abstract class SQLWhereBase
 		context: IFuelHydrantContext,
 	) {
 		let operator
-		switch (operation.o) {
+		switch (operation.operator) {
 			case SqlOperator.AND:
 				operator = 'AND'
 				break
@@ -377,12 +447,12 @@ export abstract class SQLWhereBase
 				break
 			case SqlOperator.NOT:
 				const whereFragment = this.getWHEREFragment(
-					<QueryBaseOperation>operation.v, nestingPrefix, context)
+					<QueryBaseOperation>operation.value, nestingPrefix, context)
 				return ` NOT (${whereFragment})`
 			default:
-				throw new Error(`Unknown logical operator: ${operation.o}`)
+				throw new Error(`Unknown logical operator: ${operation.operator}`)
 		}
-		let childOperations = <QueryBaseOperation[]>operation.v
+		let childOperations = <QueryBaseOperation[]>operation.value
 		if (!(childOperations instanceof Array)) {
 			throw new Error(
 				`Expecting an array of child operations as a value for operator ${operator}, 

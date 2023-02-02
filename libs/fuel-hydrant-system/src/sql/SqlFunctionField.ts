@@ -1,5 +1,5 @@
-import {QueryFieldClause}   from '@airport/ground-control'
-import {ISqlValueProvider} from '../adaptor/SQLQueryAdaptor'
+import { QueryFieldClause } from '@airport/ground-control'
+import { ISqlValueProvider } from '../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
 
 export interface ISqlFunctionField {

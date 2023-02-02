@@ -31254,7 +31254,7 @@ class TreeResultParser extends AbstractObjectResultParser {
         if (!resultObject) {
             return true;
         }
-        // Types are guaranteed to be the same, sortOrder:
+        // Types are guaranteed to be the same, so:
         // If the last property is not there or is falsy
         if (!lastObject[propertyName]) {
             this.objectEqualityMap[entityAlias] = !resultObject[propertyName];
@@ -31609,6 +31609,9 @@ class SQLWhereBase {
         this.fieldMap = new globalThis.ApplicationMap();
         this.qEntityMapByAlias = {};
         this.queryRelationMapByAlias = {};
+        this.selectColumnInfos = [];
+        this.resultsRepositories_LocalIdSet = new Set();
+        this.resultsRepositories_GUIDSet = new Set();
     }
     getParameters(parameterMap, //,
     context) {
@@ -31643,6 +31646,7 @@ class SQLWhereBase {
         return this.getFieldValue(rawValue, ClauseType.FUNCTION_CALL, null, context);
     }
     getFieldFunctionValue(aField, defaultCallback, context) {
+        this.selectColumnInfos.push(null);
         let aValue = aField.value;
         if (this.isParameterReference(aValue)) {
             let stringValue = aValue;
@@ -31658,6 +31662,7 @@ class SQLWhereBase {
         return aValue;
     }
     getFieldValue(clauseField, clauseType, defaultCallback, context) {
+        this.selectColumnInfos.push(null);
         let columnName;
         if (!clauseField) {
             throw new Error(`Missing Clause Field definition`);
@@ -31687,10 +31692,12 @@ class SQLWhereBase {
                 }
                 return `EXISTS(${subQuerySql})`;
             }
+            // It is possible that Repository GUID or LID may be returned here
             case QueryClauseObjectType.FIELD: {
                 qEntity = this.qEntityMapByAlias[aField.tableAlias];
                 this.qValidator.validateReadQEntityProperty(aField.applicationIndex, aField.entityIndex, aField.columnIndex);
                 columnName = this.getEntityPropertyColumnName(qEntity, aField.columnIndex, context);
+                this.addSelectColumnInfo(aField);
                 this.addField(aField.applicationIndex, aField.entityIndex, aField.columnIndex);
                 return this.getComplexColumnFragment(aField, columnName, context);
             }
@@ -31706,17 +31713,52 @@ class SQLWhereBase {
                 this.qValidator.addSubQueryAlias(aField.fieldAlias);
                 return `(${subQuerySql})`;
             }
+            // It is possible that Repository GUID or LID may be returned here
             case QueryClauseObjectType.MANY_TO_ONE_RELATION: {
                 qEntity = this.qEntityMapByAlias[aField.tableAlias];
                 this.qValidator.validateReadQEntityManyToOneRelation(aField.applicationIndex, aField.entityIndex, aField.columnIndex);
                 columnName = this.getEntityManyToOneColumnName(qEntity, aField.columnIndex, context);
                 this.addField(aField.applicationIndex, aField.entityIndex, aField.columnIndex);
+                this.addSelectColumnInfo(aField);
                 return this.getComplexColumnFragment(aField, columnName, context);
             }
             // must be a nested object
             default: {
                 if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE) ;
                 return defaultCallback();
+            }
+        }
+    }
+    addSelectColumnInfo(aField) {
+        const dbEntity = this.airportDatabase.applications[aField.applicationIndex]
+            .currentVersion[0].applicationVersion.entities[aField.entityIndex];
+        const dbProperty = dbEntity.properties[aField.propertyIndex];
+        const dbColumn = dbEntity.properties[aField.columnIndex];
+        this.selectColumnInfos[this.selectColumnInfos.length - 1]
+            = {
+                dbColumn,
+                dbEntity,
+                dbProperty
+            };
+    }
+    trackRepositoryIds(resultsFromSelect) {
+        if (resultsFromSelect.length !== this.selectColumnInfos.length) {
+            throw new Error(`Unexpected number of columns in the result set.
+Expecting: ${this.selectColumnInfos.length}
+Returned:  ${resultsFromSelect.length}
+`);
+        }
+        for (let i = 0; i < resultsFromSelect.length; i++) {
+            const selectColumnInfo = this.selectColumnInfos[i];
+            if (!selectColumnInfo) {
+                continue;
+            }
+            const columnValue = resultsFromSelect[i];
+            if (this.dictionary.isRepositoryGUIDProperty(selectColumnInfo.dbProperty)) {
+                this.resultsRepositories_GUIDSet.add(columnValue);
+            }
+            else if (this.dictionary.isRepositoryLIDColumn(selectColumnInfo.dbProperty, selectColumnInfo.dbColumn)) {
+                this.resultsRepositories_LocalIdSet.add(columnValue);
             }
         }
     }
@@ -32014,8 +32056,6 @@ class SQLQuery extends SQLWhereBase {
         this.queryResultType = queryResultType;
         this.relationManager = relationManager;
         this.entityDefaults = new EntityDefaults();
-        this.resultsRepositories_LocalIdSet = new Set();
-        this.resultsRepositories_GUIDSet = new Set();
     }
     getFieldMap() {
         return this.fieldMap;
@@ -32195,8 +32235,8 @@ class SqlFunctionField {
  * Created by Papa on 10/28/2016.
  */
 class NonEntitySQLQuery extends SQLQuery {
-    constructor(nonEntityQuery, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(nonEntityQuery, null, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(nonEntityQuery, dbEntity, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(nonEntityQuery, dbEntity, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
     }
     addQEntityMapByAlias(sourceMap) {
         for (let alias in sourceMap) {
@@ -32543,8 +32583,8 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
  * Created by Papa on 10/29/2016.
  */
 class FieldSQLQuery extends NonEntitySQLQuery {
-    constructor(queryField, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(queryField, dialect, QueryResultType.FIELD, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(queryField, dbEntity, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(queryField, dbEntity, dialect, QueryResultType.FIELD, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
         this.orderByParser = new ExactOrderByParser(qValidator);
     }
     async parseQueryResults(results, internalFragments, queryResultType, context, bridgedQueryConfiguration) {
@@ -32554,7 +32594,7 @@ class FieldSQLQuery extends NonEntitySQLQuery {
         }
         parsedResults = [];
         results.forEach((result) => {
-            let parsedResult = this.parseQueryResult(this.query.SELECT, result, [0]);
+            let parsedResult = this.parseQueryResult(this.selectClauseField, result, [0]);
             parsedResults.push(parsedResult);
         });
         return parsedResults;
@@ -32570,16 +32610,16 @@ class FieldSQLQuery extends NonEntitySQLQuery {
                 return `DISTINCT ${distinctSelect}`;
             }
         }
-        let field = selectClauseFragment;
+        this.selectClauseField = selectClauseFragment;
         let fieldIndex = 0;
-        let selectSqlFragment = this.getFieldSelectFragment(field, ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++, context);
+        let selectSqlFragment = this.getFieldSelectFragment(this.selectClauseField, ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++, context);
         return selectSqlFragment;
     }
     parseQueryResult(selectClauseFragment, resultRow, nextFieldIndex) {
-        let field = selectClauseFragment;
-        let propertyValue = this.sqlQueryAdapter.getResultCellValue(resultRow, field.fieldAlias, nextFieldIndex[0], field.dataType, null);
+        let columnValue = this.sqlQueryAdapter.getResultCellValue(resultRow, this.selectClauseField.fieldAlias, nextFieldIndex[0], this.selectClauseField.dataType, null);
         nextFieldIndex[0]++;
-        return propertyValue;
+        this.trackRepositoryIds([columnValue]);
+        return columnValue;
     }
 }
 
@@ -32588,7 +32628,7 @@ class FieldSQLQuery extends NonEntitySQLQuery {
  */
 class TreeSQLQuery extends NonEntitySQLQuery {
     constructor(treeQuery, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(treeQuery, dialect, QueryResultType.TREE, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+        super(treeQuery, null, dialect, QueryResultType.TREE, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
         this.queryParser = new TreeQueryResultParser(applicationUtils, entityStateManager, utils);
         this.orderByParser = new MappedOrderByParser(qValidator);
     }
@@ -32689,6 +32729,7 @@ class TreeSQLQuery extends NonEntitySQLQuery {
             }
             nextFieldIndex[0]++;
         }
+        this.trackRepositoryIds(resultRow);
         return this.queryParser.flushEntity(entityAlias, resultObject);
     }
 }
@@ -32704,7 +32745,10 @@ class SubStatementSqlGenerator {
         };
     }
     getFieldQuerySql(fieldSubQuery, dialect, qEntityMapByAlias, context) {
-        let fieldSqlQuery = new FieldSQLQuery(fieldSubQuery, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
+        const fieldSelect = fieldSubQuery.SELECT;
+        const dbEntity = this.airportDatabase.applications[fieldSelect.applicationIndex]
+            .currentVersion[0].applicationVersion.entities[fieldSelect.entityIndex];
+        let fieldSqlQuery = new FieldSQLQuery(fieldSubQuery, dbEntity, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
         fieldSqlQuery.addQEntityMapByAlias(qEntityMapByAlias);
         const subQuerySql = fieldSqlQuery.toSQL({}, context);
         const parameterReferences = fieldSqlQuery.parameterReferences;
@@ -32782,7 +32826,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
             let result = results[i];
             let entityAlias = this.relationManager.getAlias(this.joinTree.queryRelation);
             this.columnAliases.reset();
-            let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, [0], context);
+            let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, { index: 0 }, context);
             if (!lastResult) {
                 parsedResults.push(parsedResult);
             }
@@ -32878,11 +32922,12 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
         }
         return joinTreeNode;
     }
-    parseQueryResult(selectClauseFragment, entityAlias, currentJoinNode, resultRow, nextColumnIndex, context) {
+    parseQueryResult(selectClauseFragment, entityAlias, currentJoinNode, resultRow, nextColumn, context) {
         // Return blanks, primitives and Dates directly
         if (!resultRow || !(resultRow instanceof Object) || resultRow instanceof Date) {
             return resultRow;
         }
+        this.trackRepositoryIds(resultRow);
         let numNonNullColumns = 0;
         let qEntity = this.qEntityMapByAlias[entityAlias];
         const dbEntity = qEntity.__driver__.dbEntity;
@@ -32893,17 +32938,11 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                 const columnAlias = this.columnAliases.getFollowingAlias();
                 const defaultValue = this.entityDefaults.getForAlias(entityAlias)[propertyName];
                 const dbColumn = dbProperty.propertyColumns[0].column;
-                const columnValue = this.sqlQueryAdapter.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, defaultValue);
+                const columnValue = this.sqlQueryAdapter.getResultCellValue(resultRow, columnAlias, nextColumn.index, dbColumn.type, defaultValue);
                 if (this.queryParser.addProperty(entityAlias, resultObject, dbColumn.type, propertyName, columnValue)) {
-                    if (this.dictionary.isRepositoryGUIDProperty(dbProperty)) {
-                        this.resultsRepositories_GUIDSet.add(columnValue);
-                    }
-                    else if (this.dictionary.isRepositoryLIDColumn(dbProperty, dbColumn)) {
-                        this.resultsRepositories_LocalIdSet.add(columnValue);
-                    }
                     numNonNullColumns++;
                 }
-                nextColumnIndex[0]++;
+                nextColumn.index++;
             }
             else {
                 const childSelectClauseFragment = selectClauseFragment[propertyName];
@@ -32916,7 +32955,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                             let relationInfos = [];
                             this.applicationUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
                                 const columnAlias = this.columnAliases.getFollowingAlias();
-                                let value = this.sqlQueryAdapter.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, null);
+                                let value = this.sqlQueryAdapter.getResultCellValue(resultRow, columnAlias, nextColumn.index, dbColumn.type, null);
                                 relationInfos.push({
                                     propertyNameChains: propertyNameChains,
                                     sqlDataType: dbColumn.type,
@@ -32929,7 +32968,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                                     haveRelationValues = true;
                                     numNonNullColumns++;
                                 }
-                                nextColumnIndex[0]++;
+                                nextColumn.index++;
                             });
                             if (haveRelationValues) {
                                 this.queryParser.bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, childDbEntity, relationInfos, context);
@@ -32951,7 +32990,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                     const childEntityAlias = this.relationManager.getAlias(childJoinNode.queryRelation);
                     const relationQEntity = this.qEntityMapByAlias[childEntityAlias];
                     const relationDbEntity = relationQEntity.__driver__.dbEntity;
-                    let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextColumnIndex, context);
+                    let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextColumn, context);
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
                             if (childResultObject) {
@@ -33203,7 +33242,7 @@ ${getErrorMessageSelectStatement(this.query.SELECT)}
  */
 class SheetSQLQuery extends NonEntitySQLQuery {
     constructor(querySheet, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(querySheet, dialect, QueryResultType.SHEET, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+        super(querySheet, null, dialect, QueryResultType.SHEET, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
         this.orderByParser = new ExactOrderByParser(qValidator);
     }
     async parseQueryResults(results, internalFragments, queryResultType, context, bridgedQueryConfiguration) {
@@ -33232,6 +33271,7 @@ class SheetSQLQuery extends NonEntitySQLQuery {
         if (!(selectClauseFragment instanceof Array)) {
             throw new Error(`SELECT clause for a Flat Query must be an Array`);
         }
+        this.selectClauseFragment = selectClauseFragment;
         let fieldIndex = 0;
         let selectSqlFragment = selectClauseFragment.map((field) => {
             return this.getFieldSelectFragment(field, ClauseType.NON_MAPPED_SELECT_CLAUSE, null, fieldIndex++, context);
@@ -33249,7 +33289,7 @@ class SheetSQLQuery extends NonEntitySQLQuery {
         return selectSqlFragment;
     }
     parseQueryResult(selectClauseFragment, resultRow, nextFieldIndex, internalFragments) {
-        const resultsFromSelect = selectClauseFragment.map((field) => {
+        const resultsFromSelect = this.selectClauseFragment.map((field) => {
             let propertyValue = this.sqlQueryAdapter.getResultCellValue(resultRow, field.fieldAlias, nextFieldIndex[0], field.dataType, null);
             nextFieldIndex[0]++;
             return propertyValue;
@@ -33262,6 +33302,7 @@ class SheetSQLQuery extends NonEntitySQLQuery {
                 nextFieldIndex[0]++;
             }
         }
+        this.trackRepositoryIds(resultsFromSelect);
         return resultsFromSelect;
     }
 }
@@ -33487,14 +33528,18 @@ Entity:          ${table.name}
         let dialect = this.getDialect(context);
         let resultType = portableQuery.queryResultType;
         const QueryResType = QueryResultType;
+        let dbEntity;
         switch (resultType) {
             case QueryResType.ENTITY_GRAPH:
             case QueryResType.ENTITY_TREE:
-                const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
+                dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
                     .currentVersion[0].applicationVersion.entities[portableQuery.entityIndex];
                 return new EntitySQLQuery(query, dbEntity, dialect, resultType, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.objectResultParserFactory, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.FIELD:
-                return new FieldSQLQuery(query, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+                const fieldSelect = query.SELECT;
+                dbEntity = this.airportDatabase.applications[fieldSelect.applicationIndex]
+                    .currentVersion[0].applicationVersion.entities[fieldSelect.entityIndex];
+                return new FieldSQLQuery(query, dbEntity, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.SHEET:
                 return new SheetSQLQuery(query, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.TREE:

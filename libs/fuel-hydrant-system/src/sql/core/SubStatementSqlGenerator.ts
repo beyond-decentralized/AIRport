@@ -8,6 +8,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
+	Dictionary,
 	IApplicationUtils,
 	IEntityStateManager,
 	QueryField,
@@ -60,6 +61,9 @@ export class SubStatementSqlGenerator
 	applicationUtils: IApplicationUtils
 
 	@Inject()
+	dictionary: Dictionary
+
+	@Inject()
 	entityStateManager: IEntityStateManager
 
 	@Inject()
@@ -93,6 +97,7 @@ export class SubStatementSqlGenerator
 	} {
 		let mappedSqlQuery = new TreeSQLQuery(
 			treeQuery, dialect,
+			this.dictionary,
 			this.airportDatabase,
 			this.applicationUtils,
 			this.queryUtils,
@@ -125,7 +130,9 @@ export class SubStatementSqlGenerator
 		subQuerySql: string
 	} {
 		let fieldSqlQuery = new FieldSQLQuery(
-			fieldSubQuery, dialect,
+			fieldSubQuery,
+			dialect,
+			this.dictionary,
 			this.airportDatabase,
 			this.applicationUtils,
 			this.queryUtils,

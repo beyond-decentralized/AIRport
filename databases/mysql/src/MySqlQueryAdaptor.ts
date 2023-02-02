@@ -244,7 +244,7 @@ export class MySqlFunctionAdaptor
 					return 'null';
 				}
 				if (val instanceof Date) {
-					return val.toQueryFragment();
+					return val.toJSON();
 				}
 				throw new Error(`Unsupported value for conversion to string.`);
 			default:
