@@ -16,7 +16,7 @@ export class AIRportApi {
     async getRootRepositories(): Promise<IRepository[]> {
         const repositoryDao = await IOC.get(RepositoryDao)
 
-        return await repositoryDao.findRootRepositories()
+        return await repositoryDao.findRepositories()
     }
 
     async getRepository(
@@ -24,7 +24,7 @@ export class AIRportApi {
     ): Promise<IRepository> {
         const repositoryDao = await IOC.get(RepositoryDao)
 
-        return await repositoryDao.findRepository(repositoryGUID)
+        return await repositoryDao.findRepositoryWithReferences(repositoryGUID)
     }
 
     async signUp(

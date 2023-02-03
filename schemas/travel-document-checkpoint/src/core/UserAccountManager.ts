@@ -20,7 +20,6 @@ export interface IUserAccountManager {
 
     addUserAccount(
         username: string,
-        email: string,
         publicMetaSigningKey: string,
         context: IContext
     ): Promise<IAddUserAccountResponse>

@@ -2,6 +2,7 @@ import {
 	IMessageSigningManager
 } from '@airbridge/keyring/dist/app/bundle'
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -13,12 +14,22 @@ import {
 	IRepositoryTransactionHistoryDao
 } from '@airport/holding-pattern/dist/app/bundle'
 import { ISynchronizationAdapterLoader } from '../../adapters/SynchronizationAdapterLoader'
+import { RepositoryReferenceCreator } from '../RepositoryReferenceCreator'
 import { ISyncOutDataSerializer } from './converter/SyncOutDataSerializer'
 
 export interface ISynchronizationOutManager {
 
-	synchronizeOut(
-		repositoryTransactionHistories: IRepositoryTransactionHistory[]
+	getSynchronizationMessages(
+		repositoryTransactionHistories: IRepositoryTransactionHistory[],
+		context: IContext
+	): Promise<{
+		historiesToSend: IRepositoryTransactionHistory[],
+		messages: SyncRepositoryMessage[]
+	}>
+
+	sendMessages(
+		historiesToSend: IRepositoryTransactionHistory[],
+		messages: SyncRepositoryMessage[]
 	): Promise<void>
 
 }
@@ -37,6 +48,9 @@ export class SynchronizationOutManager
 	repositoryDao: IRepositoryDao
 
 	@Inject()
+	repositoryReferenceCreator: RepositoryReferenceCreator
+
+	@Inject()
 	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
 
 	@Inject()
@@ -45,9 +59,13 @@ export class SynchronizationOutManager
 	@Inject()
 	syncOutDataSerializer: ISyncOutDataSerializer
 
-	async synchronizeOut(
-		repositoryTransactionHistories: IRepositoryTransactionHistory[]
-	): Promise<void> {
+	async getSynchronizationMessages(
+		repositoryTransactionHistories: IRepositoryTransactionHistory[],
+		context: IContext
+	): Promise<{
+		historiesToSend: IRepositoryTransactionHistory[],
+		messages: SyncRepositoryMessage[]
+	}> {
 		await this.loadHistoryRepositories(repositoryTransactionHistories)
 		const {
 			historiesToSend,
@@ -57,6 +75,25 @@ export class SynchronizationOutManager
 
 		this.messageSigningManager.signMessages(messages)
 
+		await this.repositoryReferenceCreator.create(messages, context)
+
+		for (const message of messages) {
+			for (const referencedRepository of message.data.referencedRepositories) {
+				delete referencedRepository._localId
+			}
+			delete message.data.history.repository._localId
+		}
+
+		return {
+			historiesToSend,
+			messages
+		}
+	}
+
+	async sendMessages(
+		historiesToSend: IRepositoryTransactionHistory[],
+		messages: SyncRepositoryMessage[]
+	): Promise<void> {
 		const groupMessageMap = this.groupMessagesByRepository(
 			messages, historiesToSend)
 

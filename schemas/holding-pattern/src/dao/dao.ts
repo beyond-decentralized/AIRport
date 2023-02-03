@@ -6,3 +6,4 @@ export * from './repository/member/RepositoryMemberAcceptanceDao';
 export * from './repository/member/RepositoryMemberDao';
 export * from './repository/member/RepositoryMemberInvitationDao';
 export * from './repository/RepositoryDao';
+export * from './repository/RepositoryReferenceDao';

@@ -317,15 +317,27 @@ parent transactions.
 				}
 			}
 
-			await transaction.commit(null, context);
 
-			let transactionHistory = transaction.transactionHistory;
+			let transactionHistory = transaction.transactionHistory
 			if (!context.doNotRecordHistory && !transaction.isSync) {
+				const {
+					historiesToSend,
+					messages
+				} = await this.synchronizationOutManager.getSynchronizationMessages(
+					transactionHistory.repositoryTransactionHistories, context
+				)
+				await transaction.commit(null, context)
+
 				if (!parentTransaction && transactionHistory.allRecordHistory.length) {
-					await this.synchronizationOutManager.synchronizeOut(
-						transactionHistory.repositoryTransactionHistories)
+					await this.synchronizationOutManager.sendMessages(
+						historiesToSend,
+						messages
+					)
 				}
+			} else {
+				await transaction.commit(null, context)
 			}
+
 			if (!parentTransaction) {
 				await this.clearUserSessionRootTransaction(transaction)
 			}

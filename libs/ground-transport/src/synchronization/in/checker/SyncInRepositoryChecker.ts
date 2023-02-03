@@ -544,6 +544,9 @@ is not present in the message.`)
 		if (!repository.source || typeof repository.source !== 'string') {
 			throw new Error(`Invalid 'repository.source'`)
 		}
+		if (typeof repository.name !== 'string') {
+			throw new Error(`Invalid 'repository.name'`)
+		}
 		if (typeof repository.GUID !== 'string' || repository.GUID.length !== 36) {
 			throw new Error(`Invalid 'repository.GUID'`)
 		}

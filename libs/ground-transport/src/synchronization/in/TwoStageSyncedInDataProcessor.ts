@@ -20,14 +20,14 @@ import {
 	IRepositoryDao,
 	IRepositoryTransactionHistoryDuo,
 	RepositoryMemberAcceptanceDao,
-	RepositoryMemberDao
+	RepositoryMemberDao,
+	RepositoryReferenceDao
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	ISynchronizationConflictDao,
 	ISynchronizationConflictValuesDao,
 } from '@airport/layover'
 import {
-	ITerminalStore,
 	ITransaction
 } from '@airport/terminal-map'
 import { ISyncRepoTransHistory } from './SyncInUtils'
@@ -39,6 +39,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import { INewAndUpdatedRepositoriesAndRecords as INewAndUpdatedRepositoriesAndRecords } from './checker/SyncInRepositoryChecker'
+import { RepositoryReferenceCreator } from '../RepositoryReferenceCreator'
 
 /**
  * Synchronizes incoming data and records message conflicts in two processing stages.
@@ -77,6 +78,12 @@ export class TwoStageSyncedInDataProcessor
 	repositoryMemberInvitationDao: RepositoryMemberAcceptanceDao
 
 	@Inject()
+	repositoryReferenceCreator: RepositoryReferenceCreator
+
+	@Inject()
+	repositoryReferenceDao: RepositoryReferenceDao
+
+	@Inject()
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 
 	@Inject()
@@ -102,14 +109,14 @@ export class TwoStageSyncedInDataProcessor
 	): Promise<void> {
 		this.aggregateHistoryRecords(messages, transaction)
 
-		await this.repositoryDao.insert(newAndUpdatedRepositoriesAndRecords.missingRepositories, context)
+		await this.insertNewRepositoryInfo(
+			messages,
+			newAndUpdatedRepositoriesAndRecords,
+			context
+		)
 
 		const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByDbApplicationVersion_LocalIdMap }
 			= await this.getDataStructures(messages)
-
-		await this.repositoryMemberDao.insert(newAndUpdatedRepositoriesAndRecords.newMembers, context)
-		await this.repositoryMemberInvitationDao.insert(newAndUpdatedRepositoriesAndRecords.newRepositoryMemberInvitations, context)
-		await this.repositoryMemberAcceptanceDao.insert(newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances, context)
 
 		for (const newRepositoryMemberAcceptance of
 			newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances) {
@@ -124,11 +131,34 @@ export class TwoStageSyncedInDataProcessor
 			applicationsByDbApplicationVersion_LocalIdMap, context)
 	}
 
+	private async insertNewRepositoryInfo(
+		messages: SyncRepositoryMessage[],
+		newAndUpdatedRepositoriesAndRecords: INewAndUpdatedRepositoriesAndRecords,
+		context: IContext
+	): Promise<void> {
+		await this.repositoryDao.insert(
+			newAndUpdatedRepositoriesAndRecords.missingRepositories,
+			context)
+
+		await this.repositoryMemberDao.insert(
+			newAndUpdatedRepositoriesAndRecords.newMembers, context)
+		await this.repositoryMemberInvitationDao.insert(
+			newAndUpdatedRepositoriesAndRecords.newRepositoryMemberInvitations,
+			context)
+		await this.repositoryMemberAcceptanceDao.insert(
+			newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances,
+			context)
+
+		await this.repositoryReferenceCreator.create(
+			messages, context)
+
+	}
+
 	private aggregateHistoryRecords(
 		messages: SyncRepositoryMessage[],
 		transaction: ITransaction
 	): void {
-		const transactionHistory = transaction.transactionHistory;
+		const transactionHistory = transaction.transactionHistory
 		transactionHistory.transactionType = TransactionType.REMOTE_SYNC
 
 		// split messages by repository and record actor information

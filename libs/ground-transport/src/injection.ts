@@ -44,6 +44,7 @@ import {
     RepositoryMemberAcceptanceDao,
     RepositoryMemberDao,
     RepositoryMemberInvitationDao,
+    RepositoryReferenceDao,
     RepositoryTransactionHistoryDao,
     RepositoryTransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
@@ -64,10 +65,12 @@ import {
 import { DATABASE_FACADE } from '@airport/tarmaq-dao'
 import { Client } from '@airway/client'
 import { MessageSigningManager } from '@airbridge/keyring/dist/app/bundle'
+import { RepositoryReferenceCreator } from './synchronization/RepositoryReferenceCreator'
 
 const groundTransport = lib('ground-transport')
 
 groundTransport.register(
+    RepositoryReferenceCreator,
     Stage1SyncedInDataProcessor, Stage2SyncedInDataProcessor, SyncInActorChecker,
     SyncInChecker, SyncInDataChecker, SyncInTerminalChecker,
     SyncInRepositoryChecker, SyncInApplicationChecker, SyncInApplicationVersionChecker,
@@ -75,8 +78,13 @@ groundTransport.register(
     SynchronizationOutManager, SyncOutDataSerializer, TwoStageSyncedInDataProcessor,
     DebugSynchronizationAdapter, SynchronizationAdapterLoader
 )
+
 groundTransport.setDependencies(DebugSynchronizationAdapter, {
     client: Client
+})
+groundTransport.setDependencies(RepositoryReferenceCreator, {
+    datastructureUtils: DatastructureUtils,
+    repositoryReferenceDao: RepositoryReferenceDao
 })
 groundTransport.setDependencies(Stage1SyncedInDataProcessor, {
     actorDao: ActorDao,
@@ -175,6 +183,7 @@ groundTransport.setDependencies(SynchronizationOutManager, {
     datastructureUtils: DatastructureUtils,
     messageSigningManager: MessageSigningManager,
     repositoryDao: RepositoryDao,
+    repositoryReferenceCreator: RepositoryReferenceCreator,
     repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
     synchronizationAdapterLoader: SynchronizationAdapterLoader,
     syncOutDataSerializer: SyncOutDataSerializer
@@ -187,6 +196,7 @@ groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
     repositoryMemberAcceptanceDao: RepositoryMemberAcceptanceDao,
     repositoryMemberDao: RepositoryMemberDao,
     repositoryMemberInvitationDao: RepositoryMemberInvitationDao,
+    repositoryReferenceCreator: RepositoryReferenceCreator,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     stage1SyncedInDataProcessor: Stage1SyncedInDataProcessor,
     stage2SyncedInDataProcessor: Stage2SyncedInDataProcessor,

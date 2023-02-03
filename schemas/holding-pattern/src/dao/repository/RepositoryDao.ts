@@ -4,14 +4,12 @@ import {
 	Y
 } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
-import { IRepository, Repository_GUID, Repository_LocalId, Repository_Source, TransactionType } from '@airport/ground-control'
-import {
-	QUserAccount
-} from '@airport/travel-document-checkpoint/dist/app/bundle'
+import { IRepository, Repository_GUID, Repository_LocalId, TransactionType } from '@airport/ground-control'
 import {
 	BaseRepositoryDao,
 	IBaseRepositoryDao,
 	QRepository,
+	QRepositoryReference,
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
 } from '../../generated/generated'
@@ -29,9 +27,13 @@ export interface IRepositoryDao
 		repositoryLocalIds: Repository_LocalId[]
 	): Promise<IRepository[]>
 
-	findRootRepositories(): Promise<IRepository[]>
+	findRepositories(): Promise<IRepository[]>
 
 	findRepository(
+		repositoryGUID: Repository_GUID
+	): Promise<IRepository>
+
+	findRepositoryWithReferences(
 		repositoryGUID: Repository_GUID
 	): Promise<IRepository>
 
@@ -65,7 +67,7 @@ export class RepositoryDao
 	extends BaseRepositoryDao
 	implements IRepositoryDao {
 
-	async findRootRepositories(): Promise<IRepository[]> {
+	async findRepositories(): Promise<IRepository[]> {
 		let r: QRepository
 
 		const repositories = await this._find({
@@ -117,11 +119,44 @@ export class RepositoryDao
 		return repository as IRepository
 	}
 
+	async findRepositoryWithReferences(
+		repositoryGUID: Repository_GUID
+	): Promise<IRepository> {
+		let r: QRepository,
+			rr: QRepositoryReference
+
+		const repository = await this._findOne({
+			SELECT: {
+				'*': Y,
+				_localId: Y,
+				ageSuitability: Y,
+				createdAt: Y,
+				GUID: Y,
+				isPublic: Y,
+				owner: {
+					username: Y,
+				},
+				referencedRepositories: {
+					referencedRepository: {}
+				},
+				uiEntryUri: Y
+			},
+			FROM: [
+				r = Q.Repository,
+				r.owner.LEFT_JOIN(),
+				rr = r.referencedRepositories.LEFT_JOIN(),
+				rr.referencedRepository.LEFT_JOIN()
+			],
+			WHERE: r.GUID.equals(repositoryGUID)
+		})
+
+		return repository as IRepository
+	}
+
 	async getRepositoryLoadInfo(
 		repositoryGUID: Repository_GUID,
 		context: IContext
 	): Promise<IRepository> {
-
 		let r: QRepository
 		let rth: QRepositoryTransactionHistory
 		let th: QTransactionHistory
@@ -151,6 +186,7 @@ export class RepositoryDao
 		let r: QRepository
 		const _localId = Y
 		const GUID = Y
+
 		return await this.db.find.tree({
 			SELECT: {
 				_localId,
@@ -174,6 +210,7 @@ export class RepositoryDao
 		repositoryIds: Repository_LocalId[]
 	): Promise<IRepository[]> {
 		let r: QRepository
+
 		return await this.db.find.tree({
 			SELECT: {
 				_localId: Y,
@@ -198,8 +235,8 @@ export class RepositoryDao
 	async findWithOwnerBy_LocalIdIn(
 		repository_localIds: Repository_LocalId[]
 	): Promise<IRepository[]> {
-		let r: QRepository,
-			o: QUserAccount
+		let r: QRepository
+
 		return await this.db.find.graph({
 			SELECT: {
 				_localId: Y,
@@ -225,6 +262,7 @@ export class RepositoryDao
 		repositoryGUIDs: Repository_GUID[]
 	): Promise<IRepository[]> {
 		let r: QRepository
+
 		return await this.db.find.tree({
 			SELECT: {
 				_localId: Y,
@@ -246,6 +284,7 @@ export class RepositoryDao
 		repositoryLocalIds: Repository_LocalId[]
 	): Promise<IRepository[]> {
 		let r: QRepository
+
 		return await this.db.find.tree({
 			SELECT: {
 				_localId: Y,
@@ -269,7 +308,7 @@ export class RepositoryDao
 		repositories: IRepository[],
 		context: IContext
 	): Promise<void> {
-		let r: QRepository;
+		let r: QRepository
 		const VALUES = []
 		for (const repository of repositories) {
 			VALUES.push([

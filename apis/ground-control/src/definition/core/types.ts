@@ -85,6 +85,8 @@ export interface IRepository
 	country?: ICountry
 	state?: IState
 	metroArea?: IMetroArea
+	referencedRepositories?: IRepositoryReference[]
+	referencedInRepositories?: IRepositoryReference[]
 	repositoryMembers?: IRepositoryMember[]
 	repositoryTransactionHistory?: IRepositoryTransactionHistory[]
 	repositoryApplications?: IRepositoryApplication[]
@@ -96,6 +98,13 @@ export interface IRepository
 	// Transient Properties
 
 	// Public Methods
+
+}
+
+export interface IRepositoryReference {
+
+	referencingRepository?: IRepository
+	referencedRepository?: IRepository
 
 }
 

@@ -14,8 +14,8 @@ export class RepositoryApi {
     repositoryManager: IRepositoryManager
 
     @Api()
-    async findRootRepositories(): Promise<IRepository[]> {
-        return await this.repositoryDao.findRootRepositories()
+    async findRepositories(): Promise<IRepository[]> {
+        return await this.repositoryDao.findRepositories()
     }
 
     async findRepository(

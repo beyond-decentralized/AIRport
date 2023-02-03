@@ -29,6 +29,7 @@ import { RepositoryTerminal } from "./RepositoryTerminal";
 import { RepositoryApplication } from "./RepositoryApplication";
 import { AgeSuitability, DbApplication_FullName, CreatedAt, IRepository, Repository_GUID, Repository_Immutable, Repository_IsPublic, Repository_LocalId, Repository_Name, Repository_Source, Repository_UiEntryUri } from "@airport/ground-control";
 import { RepositoryMember } from "./member/RepositoryMember";
+import { RepositoryReference } from "./RepositoryReference";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -123,6 +124,12 @@ export class Repository
 		referencedColumnName: 'METRO_AREA_ID', nullable: true
 	})
 	metroArea?: MetroArea
+
+	@OneToMany({ mappedBy: 'referencingRepository' })
+	referencedRepositories?: RepositoryReference[] = []
+
+	@OneToMany({ mappedBy: 'referencedRepository' })
+	referencedInRepositories?: RepositoryReference[] = []
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryMembers?: RepositoryMember[] = []

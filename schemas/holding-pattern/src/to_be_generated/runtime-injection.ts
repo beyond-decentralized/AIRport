@@ -15,6 +15,7 @@ import { TransactionHistoryDuo } from '../duo/history/TransactionHistoryDuo'
 import { application } from './app-declaration'
 import { DatastructureUtils, Dictionary } from '@airport/ground-control'
 import { IRepositoryManager, TERMINAL_SESSION_MANAGER } from '@airport/terminal-map'
+import { RepositoryReferenceDao } from '../dao/repository/RepositoryReferenceDao'
 
 export const holdingPattern = app(application)
 
@@ -24,7 +25,7 @@ holdingPattern.register(
     ActorDao, OperationHistoryDuo, RecordHistoryDuo,
     RecordHistoryNewValueDao, RecordHistoryNewValueDuo,
     RecordHistoryOldValueDao, RecordHistoryOldValueDuo,
-    RepositoryDao, RepositoryMemberDao,
+    RepositoryDao, RepositoryMemberDao, RepositoryReferenceDao,
     RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo,
     TransactionHistoryDuo, RepositoryApi
 )
