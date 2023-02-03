@@ -26,7 +26,7 @@ import {
 } from 'rxjs/operators'
 import { IWebApplicationInitializer } from './WebApplicationInitializer'
 import { IWebMessageReceiver } from './WebMessageReceiver'
-import { DbApplication, DbApplicationUtils } from '@airport/ground-control'
+import { DbApplication, IDbApplicationUtils } from '@airport/ground-control'
 import { JsonApplicationVersionWithApi } from '@airport/air-traffic-control'
 
 @Injected()
@@ -38,7 +38,7 @@ export class WebTransactionalReceiver
 	applicationInitializer: IWebApplicationInitializer
 
 	@Inject()
-	dbApplicationUtils: DbApplicationUtils
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	localApiServer: ILocalAPIServer

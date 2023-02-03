@@ -21,6 +21,7 @@ import {
 	IRepositoryTransactionHistoryDuo,
 	RepositoryMemberAcceptanceDao,
 	RepositoryMemberDao,
+	RepositoryMemberInvitationDao,
 	RepositoryReferenceDao
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
@@ -75,7 +76,7 @@ export class TwoStageSyncedInDataProcessor
 	repositoryMemberDao: RepositoryMemberDao
 
 	@Inject()
-	repositoryMemberInvitationDao: RepositoryMemberAcceptanceDao
+	repositoryMemberInvitationDao: RepositoryMemberInvitationDao
 
 	@Inject()
 	repositoryReferenceCreator: RepositoryReferenceCreator

@@ -1,9 +1,11 @@
 import { Injected } from '@airport/direction-indicator';
 import { DbApplication_FullName } from '../../definition/application/DbApplication';
 import { DbColumn_Name } from '../../definition/application/DbProperty';
+import { IDbApplicationUtils } from '../../definition/query/IDbApplicationUtils';
 
 @Injected()
-export class ImplApplicationUtils {
+export class DbApplicationUtils
+	implements IDbApplicationUtils {
 
 	getDbApplication_FullName({
 		domain,

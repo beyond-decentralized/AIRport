@@ -1,3 +1,4 @@
+import { DbVersionedObject } from '@airport/ground-control'
 import {
 	JoinColumn,
 	ManyToOne,
@@ -6,7 +7,8 @@ import {
 import { DdlApplicationVersion } from './DdlApplicationVersion'
 
 @MappedSuperclass()
-export class DdlVersionedObject {
+export class DdlVersionedObject
+	implements DbVersionedObject {
 
 	@ManyToOne()
 	@JoinColumn({
@@ -27,6 +29,6 @@ export class DdlVersionedObject {
 		name: 'SINCE_DB_APPLICATION_VERSION_LID',
 		referencedColumnName: 'DB_APPLICATION_VERSION_LID', nullable: false
 	})
-	sinceVersion?: DdlApplicationVersion
+	sinceVersion: DdlApplicationVersion
 
 }

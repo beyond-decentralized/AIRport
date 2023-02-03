@@ -53,19 +53,19 @@ export class DdlEntity
 	//
 	@Column({ name: 'TABLE_INDEX', nullable: false })
 	@DbNumber()
-	index?: DbEntity_TableIndex
+	index: DbEntity_TableIndex
 
 	@Column({ name: 'IS_LOCAL', nullable: false })
 	@DbBoolean()
-	isLocal?: DbEntity_IsLocal
+	isLocal: DbEntity_IsLocal
 
 	@Column({ name: 'IS_AIR_ENTITY', nullable: false })
 	@DbBoolean()
-	isAirEntity?: DbEntity_IsAirEntity
+	isAirEntity: DbEntity_IsAirEntity
 
 	@Column({ name: 'NAME', nullable: false })
 	@DbString()
-	name?: DbEntity_Name
+	name: DbEntity_Name
 
 	@Column({ name: 'TABLE_CONFIGURATION', nullable: false })
 	@Json()
@@ -80,14 +80,14 @@ export class DdlEntity
 		name: 'DB_APPLICATION_VERSION_LID',
 		referencedColumnName: 'DB_APPLICATION_VERSION_LID', nullable: false
 	})
-	applicationVersion?: DdlApplicationVersion
+	applicationVersion: DdlApplicationVersion
 
 	//
 	// One-to-Many's
 	//
 
 	@OneToMany({ mappedBy: 'entity' })
-	columns?: DdlColumn[] = []
+	columns: DdlColumn[] = []
 
 	// TODO: implement if needed
 	// @OneToMany()
@@ -102,7 +102,7 @@ export class DdlEntity
 	// idColumns: ApplicationColumn[];
 
 	@OneToMany({ mappedBy: 'entity' })
-	properties?: DdlProperty[] = []
+	properties: DdlProperty[] = []
 
 	@OneToMany({ mappedBy: 'entity' })
 	relations?: DdlRelation[] = []

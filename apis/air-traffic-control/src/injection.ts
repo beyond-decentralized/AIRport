@@ -1,6 +1,6 @@
 import { AIR_ENTITY_UTILS, ContainerAccessor } from '@airport/direction-indicator'
 import {
-	ImplApplicationUtils,
+	DbApplicationUtils,
 	Dictionary,
 	ENTITY_STATE_MANAGER,
 	SEQUENCE_GENERATOR,
@@ -51,7 +51,7 @@ AIRPORT_DATABASE.setDependencies({
 	databaseFacade: DATABASE_FACADE,
 	databaseStore: DatabaseStore,
 	dictionary: Dictionary,
-	dbApplicationUtils: ImplApplicationUtils,
+	dbApplicationUtils: DbApplicationUtils,
 	find: NonEntityFind,
 	findOne: NonEntityFindOne,
 	qApplicationBuilderUtils: QApplicationBuilderUtils,

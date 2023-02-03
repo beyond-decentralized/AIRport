@@ -23,11 +23,11 @@ export class Type
     @Id()
     @Column({ name: 'TYPE_ID', nullable: false })
     @DbNumber()
-    id?: Type_Id
+    id: Type_Id
 
     @Column({ name: 'TYPE_NAME', nullable: false })
     @DbString()
-    name?: Type_Name
+    name: Type_Name
 
     @OneToMany({ mappedBy: 'type' })
     typeClassifications?: TypeClassification[]

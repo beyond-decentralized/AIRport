@@ -14,9 +14,9 @@ import {
 	DbApplication_FullName,
 	ApplicationStatus,
 	DbApplication_Name,
-	DbApplication_GUID,
 	DbApplication_Scope,
-	DbApplication
+	DbApplication,
+	DbApplication_PublicSigningKey
 } from '@airport/ground-control';
 import { DdlDomain } from './DdlDomain';
 import { DdlApplicationCurrentVersion } from './DdlApplicationCurrentVersion';
@@ -34,38 +34,34 @@ export class DdlApplication
 	@Column({ name: 'DB_APPLICATION_INDEX', nullable: false })
 	index: DbApplication_Index
 
-	@Column({ name: 'GUID', nullable: false })
-	@DbString()
-	GUID?: DbApplication_GUID
-
 	@Column({ name: 'SCOPE', nullable: false })
 	@DbString()
-	scope?: DbApplication_Scope;
+	scope: DbApplication_Scope;
 
 	@Column({ name: 'APPLICATION_NAME', nullable: false })
 	@DbString()
-	name?: DbApplication_Name;
+	name: DbApplication_Name;
 
 	@Column({ name: 'APPLICATION_FULL_NAME', nullable: false })
 	@DbString()
-	fullName?: DbApplication_FullName;
+	fullName: DbApplication_FullName;
 
 	@Column({ name: 'STATUS', nullable: false })
 	@DbString()
-	status?: ApplicationStatus;
+	status: ApplicationStatus;
 
-	@Column({ name: 'SIGNATURE', nullable: false })
+	@Column({ name: 'PUBLIC_SIGNING_KEY', nullable: false })
 	@DbString()
-	signature?: string;
+	publicSigningKey: DbApplication_PublicSigningKey
 
 	@ManyToOne()
 	@JoinColumn({ name: 'DB_DOMAIN_LID', referencedColumnName: 'DB_DOMAIN_LID', nullable: false })
-	domain?: DdlDomain;
+	domain: DdlDomain;
 
 	@OneToMany({ mappedBy: 'application' })
-	versions?: DdlApplicationVersion[] = [];
+	versions: DdlApplicationVersion[] = [];
 
 	@OneToMany({ mappedBy: 'application' })
-	currentVersion?: DdlApplicationCurrentVersion[] = [];
+	currentVersion: DdlApplicationCurrentVersion[] = [];
 
 }

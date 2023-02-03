@@ -1,4 +1,4 @@
-import { DdlRelation } from "@airport/airspace";
+import { DdlRelation } from "@airport/airspace/dist/app/bundle";
 import { ICrossRepositoryRelationLedger } from "@airport/ground-control";
 import { Repository } from "@airport/holding-pattern";
 import { InternalAirEntity } from "@airport/holding-pattern/dist/app/bundle";

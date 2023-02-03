@@ -37,14 +37,14 @@ export class OperationHistory
 
 	@Column({ name: 'ORDER_NUMBER', nullable: false })
 	@DbNumber()
-	orderNumber?: OperationHistory_OrderNumber
+	orderNumber: OperationHistory_OrderNumber
 
 	@Column({ name: 'CHANGE_TYPE', nullable: false })
 	@DbString()
-	changeType?: ChangeType
+	changeType: ChangeType
 
 	// This field is local to the device only, when copied to new device this value is re-created
-	@Column({ name: 'SYSTEM_WIDE_OPERATION_LID', nullable: false })
+	@Column({ name: 'SYSTEM_WIDE_OPERATION_LID' })
 	@DbNumber()
 	systemWideOperationId?: SystemWideOperationId
 
@@ -53,7 +53,7 @@ export class OperationHistory
 		name: 'DB_ENTITY_LID',
 		referencedColumnName: 'DB_ENTITY_LID', nullable: false
 	})
-	entity?: DdlEntity
+	entity: DdlEntity
 
 	@ManyToOne()
 	@JoinColumn({
@@ -61,9 +61,9 @@ export class OperationHistory
 		referencedColumnName: 'REPOSITORY_TRANSACTION_HISTORY_LID',
 		nullable: false
 	})
-	repositoryTransactionHistory?: RepositoryTransactionHistory
+	repositoryTransactionHistory: RepositoryTransactionHistory
 
 	@OneToMany({ mappedBy: 'operationHistory' })
-	recordHistory?: RecordHistory[] = []
+	recordHistory: RecordHistory[] = []
 
 }

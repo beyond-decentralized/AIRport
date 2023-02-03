@@ -11,7 +11,7 @@ import {
 	DbDomain,
 	DbDomain_Name,
 	IAirEntity,
-	DbApplicationUtils,
+	IDbApplicationUtils,
 	ISaveResult,
 	ITransactionalConnector,
 	PortableQuery
@@ -61,7 +61,7 @@ export class IframeTransactionalConnector
 	applicationStore: IApplicationStore
 
 	@Inject()
-	dbApplicationUtils: DbApplicationUtils
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	localApiServer: ILocalAPIServer

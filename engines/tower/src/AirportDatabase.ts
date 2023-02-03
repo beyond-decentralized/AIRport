@@ -17,7 +17,7 @@ import {
 	DbEntity,
 	Dictionary,
 	IApplicationUtils,
-	DbApplicationUtils,
+	IDbApplicationUtils,
 	ISaveResult,
 } from '@airport/ground-control';
 import {
@@ -86,7 +86,7 @@ export class AirportDatabase
 	dictionary: Dictionary
 
 	@Inject()
-	dbApplicationUtils: DbApplicationUtils
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	find: INonEntityFind

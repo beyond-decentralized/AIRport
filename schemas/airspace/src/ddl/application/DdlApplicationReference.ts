@@ -37,6 +37,6 @@ export class DdlApplicationReference
 
 	@Column({ name: 'DB_APPLICATION_REFERENCE_INDEX', nullable: false })
 	@DbNumber()
-	index?: DbApplicationReference_Index
+	index: DbApplicationReference_Index
 
 }

@@ -44,27 +44,27 @@ export class RepositoryTransactionHistory
 
 	@Column({ name: 'REPOSITORY_TRANSACTION_TYPE', nullable: false })
 	@DbString()
-	repositoryTransactionType?: RepositoryTransactionType = RepositoryTransactionType.LOCAL
+	repositoryTransactionType: RepositoryTransactionType = RepositoryTransactionType.LOCAL
 
 	@Column({ name: 'SAVE_TIMESTAMP', nullable: false })
 	@DbNumber()
-	saveTimestamp?: RepositoryTransactionHistory_SaveTimestamp
+	saveTimestamp: RepositoryTransactionHistory_SaveTimestamp
 
-	@Column({ name: 'SYNC_TIMESTAMP', nullable: false })
+	@Column({ name: 'SYNC_TIMESTAMP' })
 	@DbNumber()
 	syncTimestamp?: RepositoryTransactionHistory_SyncTimestamp
 
 	@Column({ name: "GUID", nullable: false })
 	@DbString()
-	GUID?: RepositoryTransactionHistory_GUID
+	GUID: RepositoryTransactionHistory_GUID
 
 	@Column({ name: "IS_REPOSITORY_CREATION", nullable: false })
 	@DbBoolean()
-	isRepositoryCreation?: RepositoryTransactionHistory_IsRepositoryCreation
+	isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation
 
 	@Column({ name: "IS_PUBLIC" })
 	@DbBoolean()
-	isPublic?: Repository_IsPublic
+	isPublic: Repository_IsPublic
 
 	// Present only for Repository invitation acceptances and only
 	// in the database of the Terminal where the invitation is accepted
@@ -78,7 +78,7 @@ export class RepositoryTransactionHistory
 		referencedColumnName: 'ACTOR_LID',
 		nullable: false
 	})
-	actor?: Actor
+	actor: Actor
 
 	@ManyToOne()
 	@JoinColumn({
@@ -92,17 +92,17 @@ export class RepositoryTransactionHistory
 		name: 'REPOSITORY_LID',
 		referencedColumnName: 'REPOSITORY_LID', nullable: false
 	})
-	repository?: Repository
+	repository: Repository
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'TRANSACTION_HISTORY_LID',
 		referencedColumnName: 'TRANSACTION_HISTORY_LID', nullable: false
 	})
-	transactionHistory?: TransactionHistory
+	transactionHistory: TransactionHistory
 
 	@OneToMany({ mappedBy: 'repositoryTransactionHistory' })
-	operationHistory?: OperationHistory[] = []
+	operationHistory: OperationHistory[] = []
 
 	// Tracked only in the Terminal database where originally added, for the
 	// purpose of sending out synchronization messages

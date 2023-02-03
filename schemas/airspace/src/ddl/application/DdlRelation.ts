@@ -39,14 +39,14 @@ export class DdlRelation
 
 	@DbNumber()
 	@Column({ name: 'DB_RELATION_INDEX', nullable: false })
-	index?: DbRelation_Index
+	index: DbRelation_Index
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'DB_PROPERTY_LID',
 		referencedColumnName: 'DB_PROPERTY_LID', nullable: false
 	})
-	property?: DdlProperty
+	property: DdlProperty
 
 	@Json()
 	@Column({ name: 'FOREIGN_KEY' })
@@ -62,13 +62,13 @@ export class DdlRelation
 
 	@DbString()
 	@Column({ name: 'RELATION_TYPE', nullable: false })
-	relationType?: EntityRelationType
+	relationType: EntityRelationType
 
 	// @Column({name: "IS_REPOSITORY_JOIN"})
 	// isRepositoryJoin: boolean;
 
 	@Column({ name: 'IS_LID', nullable: false })
-	isId?: boolean
+	isId: boolean
 
 	// @Column({name: "ADD_TO_JOIN_FUNCTION"})
 	// addToJoinFunction: string;
@@ -81,14 +81,14 @@ export class DdlRelation
 		name: 'DB_ENTITY_LID',
 		referencedColumnName: 'DB_ENTITY_LID', nullable: false
 	})
-	entity?: DdlEntity
+	entity: DdlEntity
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'RELATION_DB_ENTITY_LID',
 		referencedColumnName: 'DB_ENTITY_LID', nullable: false
 	})
-	relationEntity?: DdlEntity
+	relationEntity: DdlEntity
 
 	@OneToMany({ mappedBy: 'manyRelation' })
 	manyRelationColumns?: DdlRelationColumn[] = []

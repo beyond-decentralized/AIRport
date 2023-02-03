@@ -37,25 +37,25 @@ export class DdlProperty
 
 	@DbNumber()
 	@Column({ name: 'PROPERTY_INDEX', nullable: false })
-	index?: DbProperty_Index
+	index: DbProperty_Index
 
 	@DbString()
 	@Column({ name: 'NAME', nullable: false })
-	name?: DbProperty_Name
+	name: DbProperty_Name
 
 	@DbBoolean()
 	@Column({ name: 'IS_LID', nullable: false })
-	isId?: DbProperty_IsId
+	isId: DbProperty_IsId
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'DB_ENTITY_LID',
 		referencedColumnName: 'DB_ENTITY_LID', nullable: false
 	})
-	entity?: DdlEntity
+	entity: DdlEntity
 
 	@OneToMany({ mappedBy: 'property' })
-	propertyColumns?: DdlPropertyColumn[] = []
+	propertyColumns: DdlPropertyColumn[] = []
 
 	@OneToMany({ mappedBy: 'property' })
 	relation?: DdlRelation[] = []

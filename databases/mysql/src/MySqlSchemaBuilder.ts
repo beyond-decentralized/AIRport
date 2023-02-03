@@ -12,7 +12,6 @@ import {
 } from '@airport/airport-code'
 import {
 	DbApplication,
-	DbApplicationUtils,
 	JsonApplication,
 	JsonColumn,
 	JsonEntity,

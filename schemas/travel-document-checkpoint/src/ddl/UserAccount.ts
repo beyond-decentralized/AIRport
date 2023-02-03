@@ -22,10 +22,10 @@ export class UserAccount
 	// doubles as the GUID
 	@Column({ name: 'ACCOUNT_PUBLIC_SIGNING_KEY', nullable: false })
 	@DbString()
-	accountPublicSigningKey?: UserAccount_PublicSigningKey
+	accountPublicSigningKey: UserAccount_PublicSigningKey
 
 	@Column({ name: "USERNAME", nullable: false })
 	@DbString()
-	username?: UserAccount_Username;
+	username: UserAccount_Username;
 
 }

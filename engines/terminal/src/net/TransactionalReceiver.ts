@@ -12,7 +12,8 @@ import {
 import {
     IActor,
     IAppTrackerUtils,
-    DbApplicationUtils
+    IDbApplicationUtils,
+    ITerminal
 } from '@airport/ground-control';
 import {
     IApiCallContext,
@@ -59,7 +60,7 @@ export abstract class TransactionalReceiver {
     databaseManager: IDatabaseManager
 
     @Inject()
-    dbApplicationUtils: DbApplicationUtils
+    dbApplicationUtils: IDbApplicationUtils
 
     @Inject()
     internalRecordManager: IInternalRecordManager
@@ -382,14 +383,16 @@ export abstract class TransactionalReceiver {
     ): Promise<void> {
         message.transactionId = context.transaction.id
 
+        const terminal: ITerminal = {
+            ...this.WITH_ID,
+            GUID: actor.terminal.GUID
+        } as any
+
         message.actor = {
             ...this.WITH_ID,
             application: actor.application,
             GUID: actor.GUID,
-            terminal: {
-                ...this.WITH_ID,
-                GUID: actor.terminal.GUID
-            },
+            terminal,
             userAccount: {
                 ...this.WITH_ID,
                 accountPublicSigningKey: actor.userAccount.accountPublicSigningKey,

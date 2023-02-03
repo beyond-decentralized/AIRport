@@ -28,21 +28,21 @@ export class Country
 
     @DbString()
     @Column({ name: 'ABBREVIATION', nullable: false })
-    abbreviation?: Country_Abbreviation
+    abbreviation: Country_Abbreviation
 
     @DbString()
     @Column({ name: 'COUNTRY_NAME', nullable: false })
-    name?: Country_Name
+    name: Country_Name
 
     @ManyToOne()
     @JoinColumn({
         name: 'CONTINENT_ID',
         referencedColumnName: 'CONTINENT_ID'
     })
-    continent?: Continent
+    continent: Continent
 
     @OneToMany({ mappedBy: 'country' })
-    states?: State[]
+    states: State[]
 
     @OneToMany({ mappedBy: 'country' })
     userAccounts?: UserAccount[]

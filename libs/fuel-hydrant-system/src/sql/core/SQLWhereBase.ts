@@ -260,7 +260,7 @@ export abstract class SQLWhereBase
 		const dbEntity = this.airportDatabase.applications[aField.applicationIndex]
 			.currentVersion[0].applicationVersion.entities[aField.entityIndex];
 		const dbProperty = dbEntity.properties[aField.propertyIndex]
-		const dbColumn = dbEntity.properties[aField.columnIndex]
+		const dbColumn = dbEntity.columns[aField.columnIndex]
 		this.selectColumnInfos[this.selectColumnInfos.length - 1]
 			= {
 			dbColumn,

@@ -21,7 +21,7 @@ export class RepositoryReference
 		name: 'REFERENCING_REPOSITORY_LID',
 		referencedColumnName: 'REPOSITORY_LID'
 	})
-	referencingRepository?: Repository
+	referencingRepository: Repository
 
 	@Id()
 	@ManyToOne()
@@ -29,6 +29,6 @@ export class RepositoryReference
 		name: 'REFERENCED_REPOSITORY_LID',
 		referencedColumnName: 'REPOSITORY_LID'
 	})
-	referencedRepository?: Repository
+	referencedRepository: Repository
 
 }

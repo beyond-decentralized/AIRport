@@ -15,8 +15,8 @@ export interface InternalUserAccount {
     // Non-Id Properties
 
     // doubles as the GUID
-    accountPublicSigningKey?: UserAccount_PublicSigningKey;
-    username?: UserAccount_Username;
+    accountPublicSigningKey: UserAccount_PublicSigningKey;
+    username: UserAccount_Username;
 
     // Non-Id Relations
 

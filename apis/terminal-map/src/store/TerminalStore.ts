@@ -3,7 +3,6 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	DbApplication_Signature,
 	DbDomain_Name,
 	JsonApplication_Name,
 	DbApplication_Name,
@@ -188,7 +187,7 @@ export class TerminalStore
 			terminal => terminal.domains);
 		this.getDomainMapByName = this.selectorManager.createSelector(this.getDomains,
 			domains => {
-				const domainsByName: Map<DbApplication_Signature, DbDomain> = new Map()
+				const domainsByName: Map<DbDomain_Name, DbDomain> = new Map()
 				for (const domain of domains) {
 					domainsByName.set(domain.name, domain)
 				}

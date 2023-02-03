@@ -4,7 +4,7 @@ import {
 }                           from "../DbApplication";
 import {ILinkingDictionary} from "./ILinkingDictionary";
 
-export interface DbApplicationBuilder {
+export interface IDbApplicationBuilder {
 
 	buildDbApplicationWithoutReferences(
 		jsonApplication: JsonApplication,

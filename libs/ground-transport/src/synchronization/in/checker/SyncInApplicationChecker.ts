@@ -1,4 +1,4 @@
-import { DbApplication_Name, ApplicationStatus, DbDomain, DbApplication, SyncRepositoryData } from '@airport/ground-control';
+import { DbApplication_Name, ApplicationStatus, DbDomain, DbApplication, SyncRepositoryData, IDbApplicationUtils } from '@airport/ground-control';
 import {
     IDomainDao,
     IApplicationDao
@@ -18,7 +18,7 @@ export interface IDomainCheckRecord {
 export interface IApplicationCheckRecord {
     found?: boolean
     applicationName: DbApplication_Name
-    application?: DbApplication;
+    application?: DbApplication
 }
 
 export interface ISyncInApplicationChecker {
@@ -36,6 +36,9 @@ export class SyncInApplicationChecker
 
     @Inject()
     applicationDao: IApplicationDao
+
+    @Inject()
+    dbApplicationUtils: IDbApplicationUtils
 
     @Inject()
     domainDao: IDomainDao
@@ -110,12 +113,17 @@ export class SyncInApplicationChecker
                 }
                 let domain = domainCheckMap.get(domainName).domain
                 let application: DbApplication = {
+                    currentVersion: null,
                     domain,
+                    fullName: this.dbApplicationUtils.getDbApplication_FullNameFromDomainAndName(
+                        domainName, name
+                    ),
                     index: null,
                     name,
                     scope: 'private',
                     status: ApplicationStatus.STUB,
-                    signature: 'localhost'
+                    publicSigningKey: 'localhost',
+                    versions: []
                 }
                 applicationCheck.application = application
                 applicationsToCreate.push(application)
@@ -165,7 +173,7 @@ export class SyncInApplicationChecker
             }
             if (!applicationChecksForDomain.has(application.name)) {
                 applicationChecksForDomain.set(application.name, {
-                    applicationName: application.name,
+                    applicationName: application.name
                 })
             }
             let domainCheck = domainCheckMap.get(domain.name)

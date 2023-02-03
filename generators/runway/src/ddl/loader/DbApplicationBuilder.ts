@@ -1,5 +1,5 @@
 import { IOC } from '@airport/direction-indicator';
-import { DatastructureUtils, DbApplicationBuilder, ImplApplicationUtils } from '@airport/ground-control';
+import { DatastructureUtils, IDbApplicationBuilder, DbApplicationUtils } from '@airport/ground-control';
 import { ILinkingDictionary } from '@airport/ground-control';
 import {
 	DbEntity,
@@ -22,8 +22,8 @@ import {
 	JsonApplication,
 } from '@airport/ground-control';
 
-export class ImplApplicationBuilder
-	implements DbApplicationBuilder {
+export class DbApplicationBuilder
+	implements IDbApplicationBuilder {
 
 	datastructureUtils = new DatastructureUtils()
 
@@ -48,6 +48,7 @@ export class ImplApplicationBuilder
 			entities,
 			entityMapByName,
 			integerVersion: currentJsonApplicationVersion.integerVersion,
+			jsonApplication: null,
 			majorVersion: parseInt(versionParts[0]),
 			minorVersion: parseInt(versionParts[1]),
 			patchVersion: parseInt(versionParts[2]),
@@ -56,6 +57,7 @@ export class ImplApplicationBuilder
 			references,
 			referencesMapByName,
 			application: undefined,
+			signature: currentJsonApplicationVersion.signature,
 			versionString,
 		};
 		const dbApplicationCurrentVersion: DbApplicationCurrentVersion = {
@@ -71,13 +73,12 @@ export class ImplApplicationBuilder
 		const dbApplication: DbApplication = {
 			currentVersion: [dbApplicationCurrentVersion],
 			domain: dbDomain,
-			fullName: IOC.getSync(ImplApplicationUtils).
+			fullName: IOC.getSync(DbApplicationUtils).
 				getDbApplication_FullNameFromDomainAndName(dbDomain.name, jsonApplication.name),
 			index: allApplications.length,
 			name: jsonApplication.name,
 			scope: null,
-			signature: null,
-			sinceVersion: dbApplicationVersion,
+			publicSigningKey: jsonApplication.publicSigningKey,
 			status: ApplicationStatus.CURRENT,
 			versions: [dbApplicationVersion]
 		};

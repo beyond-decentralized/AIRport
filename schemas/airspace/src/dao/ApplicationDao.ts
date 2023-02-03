@@ -406,7 +406,7 @@ export class ApplicationDao
 				application.index, application.domain._localId, application.scope,
 				application.fullName, application.name,
 				// application.packageName,
-				application.status, application.signature
+				application.status, application.publicSigningKey
 			])
 		}
 		await this.db.insertValuesGenerateIds({
@@ -419,7 +419,7 @@ export class ApplicationDao
 				a.name,
 				// a.packageName,
 				a.status,
-				a.signature
+				a.publicSigningKey
 			],
 			VALUES
 		}, context)

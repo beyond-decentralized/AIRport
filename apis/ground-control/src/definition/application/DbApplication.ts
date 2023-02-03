@@ -7,13 +7,12 @@ import { ApplicationStatus } from './ApplicationStatus';
 
 export type DbApplication_LocalId = number;
 export type DbApplication_Name = string; // Just the name of the application, without the Domain Name
-export type DbApplication_Signature = string;
+export type DbApplication_PublicSigningKey = string; // Just the name of the application, without the Domain Name
 export type DbDomain_LocalId = number;
 export type DbDomain_Name = string;
 export type DbApplication_FullName = string; // Domain & Application Names
 export type JsonApplication_Name = string;
 export type DbApplication_Index = number;
-export type DbApplication_GUID = string;
 export type DbApplication_Scope = 'private' | 'public' | null | string;
 // NOTE: DbApplication_Name contains DbDomain_Name as a prefix DOMAIN_NAME___APPLICATION_NAME
 export type DbApplicationReference_Index = number;
@@ -22,13 +21,14 @@ export type DbApplicationVersion_IntegerVersion = number;
 export type DbApplicationVersion_MajorVersion = number;
 export type DbApplicationVersion_MinorVersion = number;
 export type DbApplicationVersion_PatchVersion = number;
+export type DbApplicationVersion_Signature = string;
 export type DbApplicationVersion_VersionString = string;
 
 export interface DbDomain {
 
 	_localId: DbDomain_LocalId
 
-	name?: DbDomain_Name
+	name: DbDomain_Name
 
 	applications?: DbApplication[]
 }
@@ -50,6 +50,8 @@ export interface JsonApplication
 	 */
 	name: JsonApplication_Name;
 
+	publicSigningKey: DbApplication_PublicSigningKey
+
 	/**
 	 * Versions by integer version
 	 */
@@ -60,34 +62,31 @@ export interface JsonApplication
 /**
  * A application with additional indexes (maps).
  */
-export interface DbApplication
-	extends DbObject {
+export interface DbApplication {
 
 	index: DbApplication_Index
 
-	currentVersion?: DbApplicationCurrentVersion[];
+	currentVersion: DbApplicationCurrentVersion[];
 
 	/**
 	 * Domain of the application ('public' if published).
 	 */
-	domain?: DbDomain;
+	domain: DbDomain;
 
-	name?: DbApplication_Name;
+	name: DbApplication_Name;
 
-	fullName?: DbApplication_FullName
+	fullName: DbApplication_FullName
 
-	GUID?: DbApplication_GUID
+	publicSigningKey: DbApplication_PublicSigningKey
 
-	scope?: DbApplication_Scope;
+	scope: DbApplication_Scope;
 
-	signature?: DbApplication_Signature
-
-	status?: ApplicationStatus
+	status: ApplicationStatus
 
 	/**
 	 * Versions by integer version
 	 */
-	versions?: DbApplicationVersion[];
+	versions: DbApplicationVersion[];
 
 }
 
@@ -126,13 +125,18 @@ export interface JsonApplicationVersion
 	 */
 	referencedApplications: JsonApplication[];
 
+	/**
+	 * Cryptographic application signature
+	 */
+	signature: DbApplicationVersion_Signature
+
 }
 
-export interface DbObject {
+export interface DbVersionedObject {
 
 	deprecatedSinceVersion?: DbApplicationVersion
 	removedInVersion?: DbApplicationVersion
-	sinceVersion?: DbApplicationVersion
+	sinceVersion: DbApplicationVersion
 
 }
 
@@ -193,48 +197,29 @@ export interface DbApplicationVersion
 	 */
 	referencedByMapByName?: { [applicationName: string]: DbApplicationReference };
 
-	jsonApplication?: JsonApplication
+	jsonApplication: JsonApplication
 
-	integerVersion?: DbApplicationVersion_IntegerVersion
+	integerVersion: DbApplicationVersion_IntegerVersion
 
-	versionString?: DbApplicationVersion_VersionString;
+	versionString: DbApplicationVersion_VersionString;
 
-	majorVersion?: DbApplicationVersion_MajorVersion;
+	majorVersion: DbApplicationVersion_MajorVersion;
 
-	minorVersion?: DbApplicationVersion_MinorVersion;
+	minorVersion: DbApplicationVersion_MinorVersion;
 
-	patchVersion?: DbApplicationVersion_PatchVersion;
+	patchVersion: DbApplicationVersion_PatchVersion;
 
-	application?: DbApplication;
+	signature: DbApplicationVersion_Signature
+
+	application: DbApplication;
 
 }
 
 export interface DbApplicationReference
-	extends DbObject {
+	extends DbVersionedObject {
 
-	index?: DbApplicationReference_Index;
+	index: DbApplicationReference_Index;
 	ownApplicationVersion: DbApplicationVersion;
 	referencedApplicationVersion: DbApplicationVersion;
 
-}
-
-/**
- * A physical terminal on a given device.  A device can
- * have multiple databases.  For example when loading an old repository
- * that went though a number of incompatible application upgrades, that
- * repository will have to be loaded in a different terminal and then
- * upgraded.
- *
- * The default terminal keeps track of all databases on a device.  Each
- * other terminal will have only itself as the entry this this table.
- *
- * Each terminal can have different set of applications.
- *
- * @externs
- */
-export interface DbDatabase {
-	name: string;
-	applications: DbApplication[];
-	applicationMapByName: { [name: string]: DbApplication };
-	storeType: number;
 }

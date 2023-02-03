@@ -11,7 +11,7 @@ import {
 import {
 	DbApplication,
 	DbApplication_FullName,
-	DbApplicationUtils,
+	IDbApplicationUtils,
 	ISequenceGenerator,
 	JsonApplication,
 	IAppTrackerUtils
@@ -61,7 +61,7 @@ export abstract class ApplicationInitializer
 	appTrackerUtils: IAppTrackerUtils
 
 	@Inject()
-	dbApplicationUtils: DbApplicationUtils
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	queryObjectInitializer: IQueryObjectInitializer

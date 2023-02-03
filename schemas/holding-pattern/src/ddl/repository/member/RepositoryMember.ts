@@ -41,19 +41,19 @@ export class RepositoryMember
 
     @Column({ name: 'IS_OWNER', nullable: false })
     @DbBoolean()
-    isOwner?: RepositoryMember_IsOwner
+    isOwner: RepositoryMember_IsOwner
 
     @Column({ name: 'IS_ADMINISTRATOR', nullable: false })
     @DbBoolean()
-    isAdministrator?: RepositoryMember_IsAdministrator
+    isAdministrator: RepositoryMember_IsAdministrator
 
     @Column({ name: 'CAN_WRITE', nullable: false })
     @DbBoolean()
-    canWrite?: RepositoryMember_CanWrite
+    canWrite: RepositoryMember_CanWrite
 
     @Column({ name: 'STATUS', nullable: false })
     @DbNumber()
-    status?: RepositoryMember_Status
+    status: RepositoryMember_Status
 
     @ManyToOne()
     @JoinColumn({
@@ -61,7 +61,7 @@ export class RepositoryMember
         referencedColumnName: 'REPOSITORY_LID',
         nullable: false
     })
-    repository?: Repository
+    repository: Repository
 
     // When the member is first invited to the repository
     // there is no UserAccount associated with it
@@ -70,7 +70,7 @@ export class RepositoryMember
         name: 'USER_ACCOUNT_LID',
         referencedColumnName: 'USER_ACCOUNT_LID'
     })
-    userAccount?: UserAccount
+    userAccount: UserAccount
 
     // Only populated in the database of the Terminal
     // where the RepositoryTransactionHistory was originally

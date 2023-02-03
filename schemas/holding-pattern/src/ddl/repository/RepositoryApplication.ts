@@ -5,7 +5,7 @@ import {
 	ManyToOne,
 	Table
 } from "@airport/tarmaq-entity";
-import { DdlApplication } from "@airport/airspace";
+import { DdlApplication } from "@airport/airspace/dist/app/bundle";
 import { Repository } from './Repository'
 import { IRepositoryApplication } from "@airport/ground-control";
 

@@ -45,14 +45,14 @@ export class RecordHistory
 
 	@Column({ name: 'ACTOR_RECORD_ID', nullable: false })
 	@DbNumber()
-	_actorRecordId?: ActorRecordId
+	_actorRecordId: ActorRecordId
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'ACTOR_LID',
 		referencedColumnName: 'ACTOR_LID', nullable: false
 	})
-	actor?: Actor
+	actor: Actor
 
 	@ManyToOne()
 	@JoinColumn({
@@ -60,7 +60,7 @@ export class RecordHistory
 		referencedColumnName: 'OPERATION_HISTORY_LID',
 		nullable: false
 	})
-	operationHistory?: OperationHistory
+	operationHistory: OperationHistory
 
 	@OneToMany({ mappedBy: 'recordHistory' })
 	newValues?: RecordHistoryNewValue[] = []

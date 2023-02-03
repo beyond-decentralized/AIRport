@@ -2,7 +2,7 @@ import {
 	ApplicationStatus,
 	DbDomain_Name,
 	DbApplication_FullName,
-	DbApplicationUtils,
+	IDbApplicationUtils,
 	DbColumn_IdIndex,
 	JsonApplication,
 	IDatastructureUtils,
@@ -57,7 +57,7 @@ export class ApplicationComposer
 	datastructureUtils: IDatastructureUtils
 
 	@Inject()
-	dbApplicationUtils: DbApplicationUtils
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	domainRetriever: IDomainRetriever
@@ -168,7 +168,8 @@ export class ApplicationComposer
 			if (!domain._localId) {
 				domain._localId = ++this.terminalStore.getLastIds().domains
 			}
-			const applicationVersion = newApplicationVersionMapByDbApplication_Name.get(application.fullName)
+			const applicationVersion = newApplicationVersionMapByDbApplication_Name
+				.get(application.fullName)
 			if (!applicationVersion._localId) {
 				applicationVersion._localId = ++this.terminalStore.getLastIds().applicationVersions
 				applicationVersion.jsonApplication = jsonApplication
@@ -176,16 +177,21 @@ export class ApplicationComposer
 
 			this.composeApplicationEntities(jsonApplication, applicationVersion,
 				newEntitiesMapByDbApplication_Name, added.entities)
-			this.composeApplicationProperties(jsonApplication, added.properties, newPropertiesMap,
+			this.composeApplicationProperties(jsonApplication, applicationVersion,
+				added.properties, newPropertiesMap,
 				newEntitiesMapByDbApplication_Name)
-			await this.composeApplicationRelations(jsonApplication, added.relations, newRelationsMap,
+			await this.composeApplicationRelations(jsonApplication, applicationVersion,
+				added.relations, newRelationsMap,
 				newEntitiesMapByDbApplication_Name, newPropertiesMap, newApplicationReferenceMap,
 				terminalStore, allDdlObjects
 			)
-			this.composeApplicationColumns(jsonApplication, added.columns, newColumnsMap,
+			this.composeApplicationColumns(
+				jsonApplication, applicationVersion,
+				added.columns, newColumnsMap,
 				added.propertyColumns, newEntitiesMapByDbApplication_Name, newPropertiesMap)
 			await this.composeApplicationRelationColumns(
-				jsonApplication, added.relationColumns, newApplicationVersionMapByDbApplication_Name,
+				jsonApplication, applicationVersion,
+				added.relationColumns, newApplicationVersionMapByDbApplication_Name,
 				newApplicationReferenceMap, newRelationsMap,
 				newColumnsMap, terminalStore, allDdlObjects)
 		}
@@ -346,13 +352,15 @@ export class ApplicationComposer
 		let application = applicationMapByFullName.get(fullDbApplication_Name)
 		if (!application) {
 			application = {
+				currentVersion: [],
 				domain,
 				index: null,
 				fullName: fullDbApplication_Name,
 				name: jsonApplication.name,
 				scope: 'public',
-				signature: 'localhost',
+				publicSigningKey: 'localhost',
 				status: ApplicationStatus.CURRENT,
+				versions: []
 			};
 			allApplications.push(application);
 			newApplications.push(application);
@@ -380,6 +388,7 @@ export class ApplicationComposer
 				majorVersion: parseInt(versionParts[0]),
 				minorVersion: parseInt(versionParts[1]),
 				patchVersion: parseInt(versionParts[2]),
+				signature: applicationVersion.signature,
 				application,
 				jsonApplication,
 				entities: [],
@@ -430,9 +439,11 @@ export class ApplicationComposer
 			const lastJsonApplicationVersion
 				= jsonApplication.versions[jsonApplication.versions.length - 1];
 			const applicationReferences: DbApplicationReference[]
-				= this.datastructureUtils.ensureChildArray(newApplicationReferenceMap, applicationName);
+				= this.datastructureUtils.ensureChildArray(
+					newApplicationReferenceMap, applicationName);
 			const applicationReferenceLookup: Set<number>
-				= this.datastructureUtils.ensureChildJsSet(newApplicationReferenceLookup, applicationName);
+				= this.datastructureUtils.ensureChildJsSet(
+					newApplicationReferenceLookup, applicationName);
 
 			for (const jsonReferencedApplication of lastJsonApplicationVersion.referencedApplications) {
 				const referencedDbApplication_FullName = this.dbApplicationUtils.
@@ -453,15 +464,17 @@ export class ApplicationComposer
 						newApplicationVersionMapByDbApplication_Name.set(referencedDbApplication_FullName, referencedApplicationVersion);
 					}
 				}
-				const applicationReference: DbApplicationReference = {
-					index: jsonReferencedApplication.index,
-					ownApplicationVersion,
-					referencedApplicationVersion
-				};
 				if (!applicationReferenceLookup.has(jsonReferencedApplication.index)) {
 					applicationReferenceLookup.add(jsonReferencedApplication.index)
-					newApplicationReferences.push(applicationReference);
-					applicationReferences.push(applicationReference);
+					const applicationReference: DbApplicationReference = {
+						index: jsonReferencedApplication.index,
+						ownApplicationVersion,
+						referencedApplicationVersion,
+						// FIXME: when Application versioning is added, properly set sinceVersion
+						sinceVersion: ownApplicationVersion
+					}
+					newApplicationReferences.push(applicationReference)
+					applicationReferences.push(applicationReference)
 				}
 			}
 		}
@@ -494,13 +507,15 @@ export class ApplicationComposer
 				isAirEntity: jsonEntity.isAirEntity,
 				name: jsonEntity.name,
 				tableConfig: jsonEntity.tableConfig,
-				// columns: [],
+				columns: [],
 				// columnMap: {},
 				// idColumns: [],
 				// idColumnMap: {},
 				// relations: [],
-				// properties: [],
-				// propertyMap: {}
+				properties: [],
+				// propertyMap: {},
+				// FIXME: when Application versioning is added, properly set sinceVersion
+				sinceVersion: applicationVersion
 			};
 			// applicationVersion.entities.push(entity)
 			newApplicationEntities.push(entity);
@@ -512,6 +527,7 @@ export class ApplicationComposer
 
 	private composeApplicationProperties(
 		jsonApplication: JsonApplication,
+		applicationVersion: DbApplicationVersion,
 		newProperties: DbProperty[],
 		newPropertiesMap: Map<DbApplication_FullName, DbProperty[][]>,
 		newEntitiesMapByDbApplication_Name: Map<DbApplication_FullName, DbEntity[]>,
@@ -541,6 +557,9 @@ export class ApplicationComposer
 					entity,
 					name: jsonProperty.name,
 					isId: jsonProperty.isId,
+					propertyColumns: [],
+					// FIXME: when Application versioning is added, properly set sinceVersion
+					sinceVersion: applicationVersion
 				};
 				propertiesForEntity[index] = property;
 				index++;
@@ -551,6 +570,7 @@ export class ApplicationComposer
 
 	private async composeApplicationRelations(
 		jsonApplication: JsonApplication,
+		applicationVersion: DbApplicationVersion,
 		newRelations: DbRelation[],
 		newRelationsMap: Map<DbApplication_FullName, DbRelation[][]>,
 		newEntitiesMapByDbApplication_Name: Map<DbApplication_FullName, DbEntity[]>,
@@ -614,7 +634,9 @@ export class ApplicationComposer
 					relationEntity,
 					relationType: queryRelation.relationType,
 					// oneRelationColumns: [],
-					// manyRelationColumns: []
+					// manyRelationColumns: [],
+					// FIXME: when Application versioning is added, properly set sinceVersion
+					sinceVersion: applicationVersion
 				};
 				// property.relation               = [relation]
 				// relationEntity.relations.push(relation)
@@ -628,6 +650,7 @@ export class ApplicationComposer
 
 	private composeApplicationColumns(
 		jsonApplication: JsonApplication,
+		applicationVersion: DbApplicationVersion,
 		newColumns: DbColumn[],
 		newColumnsMap: Map<DbApplication_FullName, DbColumn[][]>,
 		newPropertyColumns: DbPropertyColumn[],
@@ -678,6 +701,8 @@ export class ApplicationComposer
 					precision: jsonColumn.precision,
 					propertyColumns: [],
 					scale: jsonColumn.scale,
+					// FIXME: when Application versioning is added, properly set sinceVersion
+					sinceVersion: applicationVersion,
 					type: jsonColumn.type,
 				};
 				columnsForTable[index] = column;
@@ -689,7 +714,9 @@ export class ApplicationComposer
 					const property = propertiesForEntity[propertyReference.index];
 					const propertyColumn: DbPropertyColumn = {
 						column,
-						property
+						property,
+						// FIXME: when Application versioning is added, properly set sinceVersion
+						sinceVersion: applicationVersion,
 					};
 					newPropertyColumns.push(propertyColumn);
 				});
@@ -699,6 +726,7 @@ export class ApplicationComposer
 
 	private async composeApplicationRelationColumns(
 		jsonApplication: JsonApplication,
+		applicationVersion: DbApplicationVersion,
 		newRelationColumns: DbRelationColumn[],
 		newApplicationVersionMapByDbApplication_Name: Map<DbApplication_FullName, DbApplicationVersion>,
 		newApplicationReferenceMap: Map<DbApplication_FullName, DbApplicationReference[]>,
@@ -776,7 +804,9 @@ export class ApplicationComposer
 						oneColumn,
 						oneRelation,
 						// FIXME: figure out how to many OneToMany-only relations
-						parentRelation: manyRelation
+						parentRelation: manyRelation,
+						// FIXME: when Application versioning is added, properly set sinceVersion
+						sinceVersion: applicationVersion,
 					};
 					// manyRelation.manyRelationColumns.push(relationColumn)
 					// if (!jsonRelationColumn.oneDbApplication_Index) {

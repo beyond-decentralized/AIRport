@@ -50,44 +50,44 @@ export class Repository
 
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
-	ageSuitability?: AgeSuitability
+	ageSuitability: AgeSuitability
 
 	@Column({ name: "CREATED_AT", nullable: false })
 	@DbDate()
-	createdAt?: CreatedAt
+	createdAt: CreatedAt
 
 	@Column({ name: "FULL_APPLICATION_NAME", nullable: false })
 	@DbString()
-	fullApplicationName?: DbApplication_FullName
+	fullApplicationName: DbApplication_FullName
 
 	@Column({ name: "GUID", nullable: false })
 	@DbString()
-	GUID?: Repository_GUID
+	GUID: Repository_GUID
 
 	@Column({ name: "IMMUTABLE", nullable: false })
 	@DbBoolean()
-	immutable?: Repository_Immutable
+	immutable: Repository_Immutable
 
 	@Column({ name: "IS_PUBLIC", nullable: false })
 	@DbBoolean()
-	isPublic?: Repository_IsPublic
+	isPublic: Repository_IsPublic
 
 	@Column({ name: "NAME", nullable: false })
 	@DbString()
-	name?: Repository_Name
+	name: Repository_Name
 
 	@Column({ name: "SOURCE", nullable: false })
 	@DbString()
-	source?: Repository_Source
+	source: Repository_Source
 
-	@Column({ name: "UI_ENTRY_URI", nullable: true })
+	@Column({ name: "UI_ENTRY_URI", nullable: false })
 	@DbString()
-	uiEntryUri?: Repository_UiEntryUri
+	uiEntryUri: Repository_UiEntryUri
 
 	// Local-only, represents state of the repository
 	// false if only a reference stub is loaded
 	@Column({ name: 'IS_LOADED', nullable: false })
-	isLoaded?: boolean = true
+	isLoaded: boolean = true
 
 	@ManyToOne()
 	@JoinColumn({
@@ -95,7 +95,7 @@ export class Repository
 		referencedColumnName: 'USER_ACCOUNT_LID',
 		nullable: false
 	})
-	owner?: UserAccount;
+	owner: UserAccount;
 
 	@ManyToOne()
 	@JoinColumn({
@@ -126,16 +126,16 @@ export class Repository
 	metroArea?: MetroArea
 
 	@OneToMany({ mappedBy: 'referencingRepository' })
-	referencedRepositories?: RepositoryReference[] = []
+	referencedRepositories: RepositoryReference[] = []
 
 	@OneToMany({ mappedBy: 'referencedRepository' })
-	referencedInRepositories?: RepositoryReference[] = []
+	referencedInRepositories: RepositoryReference[] = []
 
 	@OneToMany({ mappedBy: 'repository' })
-	repositoryMembers?: RepositoryMember[] = []
+	repositoryMembers: RepositoryMember[] = []
 
 	@OneToMany({ mappedBy: 'repository' })
-	repositoryTransactionHistory?: RepositoryTransactionHistory[] = [];
+	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryApplications?: RepositoryApplication[] = []

@@ -17,7 +17,7 @@ import {
 	Dictionary,
 	IActor,
 	IApplicationUtils,
-	DbApplicationUtils,
+	IDbApplicationUtils,
 	IOperationHistory,
 	IRecordHistory,
 	IRecordHistoryNewValue,
@@ -34,7 +34,8 @@ import {
 	SyncRepositoryMessage,
 	RepositoryTransactionType,
 	Repository_LocalId,
-	Terminal_GUID
+	Terminal_GUID,
+	DbRelation
 } from "@airport/ground-control";
 import {
 	IActorDao,
@@ -53,6 +54,10 @@ export interface ISyncOutDataSerializer {
 
 export interface IWithId {
 	_localId: number
+}
+export interface IWithIdAndActor
+	extends IWithId {
+	actor: IActor
 }
 export interface IWithRecordHistory
 	extends IWithId {
@@ -109,7 +114,7 @@ export class SyncOutDataSerializer
 	applicationRelationDao: IApplicationRelationDao
 
 	@Inject()
-	dbApplicationUtils: DbApplicationUtils
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	dictionary: Dictionary
@@ -118,6 +123,7 @@ export class SyncOutDataSerializer
 	repositoryDao: IRepositoryDao
 
 	WITH_ID: IWithId = {} as any
+	WITH_ID_AND_ACTOR_ID: IWithIdAndActor = {} as any
 	WITH_RECORD_HISTORY: IWithRecordHistory = {} as any
 	WITH_INDEX: IWithIndex = {} as any
 
@@ -284,7 +290,7 @@ export class SyncOutDataSerializer
 			let newRepositoryMember: IRepositoryMember = {
 				...this.WITH_ID,
 				memberPublicSigningKey: repositoryMember.memberPublicSigningKey
-			}
+			} as any
 			if (addFullRecord) {
 				newRepositoryMember = {
 					...newRepositoryMember,
@@ -385,6 +391,7 @@ export class SyncOutDataSerializer
 			data.terminals[inMessageIndex] = {
 				...this.WITH_ID,
 				GUID: terminal.GUID,
+				isLocal: false,
 				owner: inMessageUserAccountLookup.inMessageIndexesById.get(terminal.owner.accountPublicSigningKey) as any
 			}
 		}
@@ -444,15 +451,19 @@ export class SyncOutDataSerializer
 			}
 			lookups.referencedApplicationVersions[referencedApplicationVersionInMessageIndex] = referencedApplicationVersion
 
-			data.referencedApplicationRelations.push({
+			const entity: DbEntity = {
+				...this.WITH_ID,
+				index: applicationRelation.entity.index,
+				applicationVersion: referencedApplicationVersionInMessageIndex
+			} as any
+
+			const dbRelation: DbRelation = {
 				...this.WITH_ID,
 				index: applicationRelation.index,
-				entity: {
-					...this.WITH_ID,
-					index: applicationRelation.entity.index,
-					applicationVersion: referencedApplicationVersionInMessageIndex
-				}
-			})
+				entity
+			} as any
+
+			data.referencedApplicationRelations.push(dbRelation)
 		}
 	}
 
@@ -471,7 +482,7 @@ export class SyncOutDataSerializer
 				...this.WITH_ID,
 				application: applicationInMessageIndex as any,
 				integerVersion: applicationVersion.integerVersion
-			}
+			} as any
 		}
 	}
 
@@ -494,7 +505,7 @@ export class SyncOutDataSerializer
 					name: application.domain.name
 				},
 				name: application.name
-			}
+			} as any
 		}
 
 		return inMessageIndex
@@ -525,7 +536,7 @@ export class SyncOutDataSerializer
 		}
 
 		const member = this.addRepositoryMemberToMessage(
-			repositoryTransactionHistory,
+			repositoryTransactionHistory.member,
 			data,
 			lookups,
 			repositoryTransactionHistory.isRepositoryCreation
@@ -533,7 +544,7 @@ export class SyncOutDataSerializer
 
 		this.serializeNewRepositoryMembers(repositoryTransactionHistory, data, lookups)
 
-		return {
+		const serializedRepositoryTransactionHistory: IRepositoryTransactionHistory = {
 			...this.WITH_ID,
 			actor: this.getActorInMessageIndex(repositoryTransactionHistory.actor, lookups),
 			GUID: repositoryTransactionHistory.GUID,
@@ -547,8 +558,16 @@ export class SyncOutDataSerializer
 			newRepositoryMemberAcceptances: this.serializeRepositoryMemberAcceptances(
 				repositoryTransactionHistory, data, lookups),
 			newRepositoryMemberInvitations: this.serializeRepositoryMemberInvitations(
-				repositoryTransactionHistory, data, lookups)
+				repositoryTransactionHistory, data, lookups),
+			transactionHistory: null,
+			repositoryTransactionType: RepositoryTransactionType.REMOTE
 		}
+
+		// Not needed in serialized version of object that is shared
+		delete serializedRepositoryTransactionHistory.transactionHistory
+		delete serializedRepositoryTransactionHistory.repositoryTransactionType
+
+		return serializedRepositoryTransactionHistory
 	}
 
 	private serializeHistoryRepository(
@@ -588,7 +607,7 @@ export class SyncOutDataSerializer
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
-	): IRepositoryMember[] {
+	): IRepositoryMemberAcceptance[] {
 		const serializedRepositoryMemberAcceptances: IRepositoryMemberAcceptance[] = []
 		for (const newRepositoryMemberAcceptance of repositoryTransactionHistory
 			.newRepositoryMemberAcceptances) {
@@ -612,7 +631,7 @@ export class SyncOutDataSerializer
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
-	): IRepositoryMember[] {
+	): IRepositoryMemberInvitation[] {
 		const serializedRepositoryMemberInvitations: IRepositoryMemberInvitation[] = []
 		for (const newRepositoryMemberInvitation of repositoryTransactionHistory
 			.newRepositoryMemberInvitations) {
@@ -645,7 +664,7 @@ export class SyncOutDataSerializer
 				repositoryTransactionHistory, recordHistory, dbEntity, data, lookups))
 		}
 
-		const entity = operationHistory.entity
+		const historyEntity = operationHistory.entity
 		// Should be populated - coming from TerminalStore
 		// if (typeof entity !== 'object') {
 		// 	throw new Error(`OperationHistory.entity must be populated`)
@@ -653,7 +672,7 @@ export class SyncOutDataSerializer
 		// if (typeof entity.index !== 'number') {
 		// 	throw new Error(`OperationHistory.entity.index must be present`)
 		// }
-		const applicationVersion = entity.applicationVersion
+		const applicationVersion = historyEntity.applicationVersion
 		// Should be populated - coming from TerminalStore
 		// if (typeof applicationVersion !== 'object') {
 		// 	throw new Error(`OperationHistory.entity.applicationVersion must be populated`)
@@ -671,16 +690,26 @@ export class SyncOutDataSerializer
 		}
 		lookups.applicationVersions[applicationVersionInMessageIndex] = applicationVersion
 
-		return {
+		const entity: DbEntity = {
+			...this.WITH_ID,
+			applicationVersion: applicationVersionInMessageIndex,
+			index: operationHistory.entity.index
+		} as any
+
+		const serializedOperationHistory: IOperationHistory = {
 			...this.WITH_ID,
 			changeType: operationHistory.changeType,
-			entity: {
-				...this.WITH_ID,
-				applicationVersion: applicationVersionInMessageIndex,
-				index: operationHistory.entity.index
-			},
-			recordHistory: serializedRecordHistory
+			entity,
+			recordHistory: serializedRecordHistory,
+			orderNumber: null,
+			repositoryTransactionHistory: null
 		}
+
+		// Not needed in serialized version of object that is shared
+		delete serializedOperationHistory.orderNumber
+		delete serializedOperationHistory.repositoryTransactionHistory
+
+		return serializedOperationHistory
 	}
 
 	private serializeRecordHistory(
@@ -714,11 +743,11 @@ export class SyncOutDataSerializer
 		// }
 		const baseObject: {
 			_localId: number,
-			actor?: IActor,
+			actor: IActor,
 			newValues?: IRecordHistoryNewValue[],
 			oldValues?: IRecordHistoryOldValue[]
 		} = {
-			...this.WITH_ID,
+			...this.WITH_ID_AND_ACTOR_ID,
 		}
 		if (actor._localId !== repositoryTransactionHistory.actor._localId) {
 			baseObject.actor = this.getActorInMessageIndex(actor, lookups)
@@ -733,6 +762,8 @@ export class SyncOutDataSerializer
 		return {
 			...baseObject,
 			_actorRecordId: recordHistory._actorRecordId,
+			actor: null,
+			operationHistory: null
 		}
 	}
 
@@ -872,7 +903,7 @@ export class SyncOutDataSerializer
 			owner,
 			source: repository.source,
 			GUID: repository.GUID
-		}
+		} as any
 	}
 
 }

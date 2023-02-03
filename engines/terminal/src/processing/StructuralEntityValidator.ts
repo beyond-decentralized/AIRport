@@ -3,7 +3,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	DbApplicationUtils,
+	IDbApplicationUtils,
 	DbColumn,
 	DbEntity,
 	DbProperty,
@@ -36,7 +36,7 @@ export class StructuralEntityValidator
 	crossRepositoryRelationManager: ICrossRepositoryRelationManager
 
 	@Inject()
-	dbApplicationUtils: DbApplicationUtils
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	dictionary: Dictionary

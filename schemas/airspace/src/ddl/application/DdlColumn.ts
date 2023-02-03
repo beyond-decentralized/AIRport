@@ -49,7 +49,7 @@ export class DdlColumn
 	// FIXME: disallow SQL keywords in names (for columns, etc.), like 'INDEX', etc.
 	@Column({ name: 'COLUMN_INDEX', nullable: false })
 	@DbNumber()
-	index?: DbColumn_Index;
+	index: DbColumn_Index;
 
 	/**
 	 * Index of the ID (within the entity)
@@ -60,7 +60,7 @@ export class DdlColumn
 
 	@Column({ name: 'IS_GENERATED', nullable: false })
 	@DbBoolean()
-	isGenerated?: DbColumn_IsGenerated;
+	isGenerated: DbColumn_IsGenerated;
 
 	@Column({ name: 'ALLOCATION_SIZE' })
 	@DbNumber()
@@ -68,11 +68,11 @@ export class DdlColumn
 
 	@Column({ name: 'NAME', nullable: false })
 	@DbString()
-	name?: DbColumn_Name;
+	name: DbColumn_Name;
 
 	@Column({ name: 'NOT_NULL', nullable: false })
 	@DbBoolean()
-	notNull?: DbColumn_NotNull;
+	notNull: DbColumn_NotNull;
 
 	@Column({ name: 'PRECISION' })
 	@DbNumber()
@@ -84,17 +84,17 @@ export class DdlColumn
 
 	@Column({ name: 'TYPE', nullable: false })
 	@DbString()
-	type?: SQLDataType;
+	type: SQLDataType;
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'DB_ENTITY_LID',
 		referencedColumnName: 'DB_ENTITY_LID', nullable: false
 	})
-	entity?: DdlEntity;
+	entity: DdlEntity;
 
 	@OneToMany({ mappedBy: 'column' })
-	propertyColumns?: DdlPropertyColumn[] = [];
+	propertyColumns: DdlPropertyColumn[] = [];
 
 	@OneToMany({ mappedBy: 'manyColumn' })
 	manyRelationColumns?: DdlRelationColumn[] = [];

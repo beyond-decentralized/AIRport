@@ -42,34 +42,37 @@ export class DdlApplicationVersion
 
 	@Column({ name: 'INTEGER_VERSION', nullable: false })
 	@DbNumber()
-	integerVersion?: DbApplicationVersion_IntegerVersion
+	integerVersion: DbApplicationVersion_IntegerVersion
 
 	@Column({ name: 'VERSION_STRING', nullable: false })
 	@DbString()
-	versionString?: DbApplicationVersion_VersionString
+	versionString: DbApplicationVersion_VersionString
 
 	@Column({ name: 'MAJOR_VERSION', nullable: false })
 	@DbNumber()
-	majorVersion?: DbApplicationVersion_MajorVersion
+	majorVersion: DbApplicationVersion_MajorVersion
 
 	@Column({ name: 'MINOR_VERSION', nullable: false })
 	@DbNumber()
-	minorVersion?: DbApplicationVersion_MinorVersion
+	minorVersion: DbApplicationVersion_MinorVersion
 
 	@Column({ name: 'PATCH_VERSION', nullable: false })
 	@DbNumber()
-	patchVersion?: DbApplicationVersion_PatchVersion
+	patchVersion: DbApplicationVersion_PatchVersion
 
-	// FIXME: keep track of applications by signature also
 	// FIXME: revisit application tracking when versioning is implemented
 	// better to track everything by names
 	@Column({ name: 'JSON_APPLICATION', nullable: false })
 	@Json()
-	jsonApplication?: JsonApplicationWithLastIds
+	jsonApplication: JsonApplicationWithLastIds
+
+	@Column({ name: 'SIGNATURE', nullable: false })
+	@DbString()
+	signature: string;
 
 	@ManyToOne()
 	@JoinColumn({ name: 'DB_APPLICATION_INDEX', nullable: false })
-	application?: DdlApplication
+	application: DdlApplication
 
 	@OneToMany({ mappedBy: 'applicationVersion' })
 	entities?: DdlEntity[] = []

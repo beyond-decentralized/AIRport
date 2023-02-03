@@ -26,13 +26,13 @@ export class RepositoryMemberUpdate
 
     @Column({ name: 'CREATED_AT', nullable: false })
     @DbNumber()
-    createdAt?: CreatedAt
+    createdAt: CreatedAt
 
-    @Column({ name: 'IS_ADMINISTRATOR', nullable: false })
+    @Column({ name: 'IS_ADMINISTRATOR' })
     @DbBoolean()
     isAdministrator?: RepositoryMember_IsAdministrator
 
-    @Column({ name: 'CAN_WRITE', nullable: false })
+    @Column({ name: 'CAN_WRITE' })
     @DbBoolean()
     canWrite?: RepositoryMember_CanWrite
 
@@ -42,7 +42,7 @@ export class RepositoryMemberUpdate
         referencedColumnName: 'REPOSITORY_MEMBER_LID',
         nullable: false
     })
-    updatedRepositoryMember?: RepositoryMember
+    updatedRepositoryMember: RepositoryMember
 
     // Only populated in the database of the terminal
     // where the RepositoryTransactionHistory was originally

@@ -16,7 +16,7 @@ import {
 	DbEntity,
 	DbDomain_Name,
 	DbApplication_FullName,
-	DbApplicationUtils,
+	IDbApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
 	QueryDelete,
@@ -84,7 +84,7 @@ export abstract class SqlStoreDriver
 	dictionary: Dictionary
 
 	@Inject()
-	dbApplicationUtils: DbApplicationUtils
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	entityStateManager: IEntityStateManager

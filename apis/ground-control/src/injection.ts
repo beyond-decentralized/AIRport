@@ -1,5 +1,5 @@
 import { lib } from '@airport/direction-indicator';
-import { ImplApplicationUtils } from './implementation/query/ImplApplicationUtils';
+import { DbApplicationUtils } from './implementation/query/DbApplicationUtils';
 import { ISequenceGenerator } from './implementation/SequenceGenerator';
 import { IEntityStateManager } from './definition/core/operation/IEntityStateManager';
 import { ITransactionalConnector } from './definition/ITransactionalConnector';
@@ -17,7 +17,7 @@ const groundControl = lib('ground-control')
 
 groundControl.register(
     ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils,
-    ImplApplicationUtils, Dictionary, KeyUtils
+    DbApplicationUtils, Dictionary, KeyUtils
 )
 
 export const ENTITY_STATE_MANAGER = groundControl.token<IEntityStateManager>('EntityStateManager')
@@ -37,5 +37,5 @@ groundControl.setDependencies(AppTrackerUtils, {
 })
 
 TRANSACTIONAL_CONNECTOR.setDependencies({
-    dbApplicationUtils: ImplApplicationUtils,
+    dbApplicationUtils: DbApplicationUtils,
 })

@@ -27,19 +27,19 @@ export class Sequence
 	@Id()
 	@Column({ name: 'TABLE_INDEX', nullable: false })
 	@DbNumber()
-	entityIndex?: DbEntity_TableIndex
+	entityIndex: DbEntity_TableIndex
 
 	@Id()
 	@Column({ name: 'COLUMN_INDEX', nullable: false })
 	@DbNumber()
-	columnIndex?: DbColumn_Index
+	columnIndex: DbColumn_Index
 
 	@Column({ name: 'SEQUENCE_INCREMENT_BY', nullable: false })
 	@DbNumber()
-	incrementBy?: SequenceIncrementBy
+	incrementBy: SequenceIncrementBy
 
 	@Column({ name: 'CURRENT_VALUE', nullable: false })
 	@DbNumber()
-	currentValue?: SequenceCurrentValue
+	currentValue: SequenceCurrentValue
 
 }

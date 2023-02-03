@@ -15,8 +15,8 @@ import {
 	IQueryParameter,
 	QueryParameterType,
 	QueryResultType,
-	DbApplicationUtils,
-	ImplApplicationUtils
+	IDbApplicationUtils,
+	DbApplicationUtils
 } from '@airport/ground-control';
 import {
 	Lookup,
@@ -139,7 +139,7 @@ export class ApplicationQueryGenerator {
 		queryJavascript = queryJavascript.replace(functionStartRegex, '');
 		queryJavascript = queryJavascript.replace(functionEndRegex, '');
 
-		const [airDb, dbApplicationUtils] = await IOC.get(AIRPORT_DATABASE, ImplApplicationUtils);
+		const [airDb, dbApplicationUtils] = await IOC.get(AIRPORT_DATABASE, DbApplicationUtils);
 		for (const functionName in airDb.functions) {
 			const regex = new RegExp(`\\s*${functionName}\\(`);
 			queryJavascript = queryJavascript
@@ -161,7 +161,7 @@ export class ApplicationQueryGenerator {
 		const rawQuery = queryFunction(...queryFunctionParameters);
 
 		const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(
-			ImplApplicationUtils, Lookup, QUERY_FACADE);
+			DbApplicationUtils, Lookup, QUERY_FACADE);
 		const context = lookup.ensureContext(null);
 		const qApplication: QAppInternal = airDb.QM[dbAppliationUtils.
 			getDbApplication_FullName(jsonApplication)];
@@ -198,7 +198,7 @@ export class ApplicationQueryGenerator {
 		queryDefinition: JsonFormattedQueryWithExpression,
 		jsonApplication: JsonApplication,
 		airDb: IAirportDatabase,
-		dbApplicationUtils: DbApplicationUtils
+		dbApplicationUtils: IDbApplicationUtils
 	): [any[], { index: number, parameter: IQOperableField<any, any, any, any> }[]] {
 		const queryFunctionParameters = [];
 		const queryParameters = [];

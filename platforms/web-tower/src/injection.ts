@@ -1,5 +1,5 @@
 import { API_CLIENT } from '@airport/direction-indicator'
-import { ImplApplicationUtils, TRANSACTIONAL_CONNECTOR } from "@airport/ground-control";
+import { DbApplicationUtils, TRANSACTIONAL_CONNECTOR } from "@airport/ground-control";
 import { APPLICATION_LOCATOR } from "@airport/takeoff";
 import { APPLICATION_INITIALIZER, APPLICATION_LOADER, DOMAIN_RETRIEVER, LOCAL_API_SERVER, TerminalStore } from "@airport/terminal-map";
 import { ApplicationStore } from '@airport/tower';
@@ -25,7 +25,7 @@ TRANSACTIONAL_CONNECTOR.setClass(IframeTransactionalConnector)
 TRANSACTIONAL_CONNECTOR.setDependencies({
     applicationLoader: APPLICATION_LOADER,
     applicationStore: ApplicationStore,
-    dbApplicationUtils: ImplApplicationUtils,
+    dbApplicationUtils: DbApplicationUtils,
     localApiServer: LOCAL_API_SERVER,
     terminalStore: TerminalStore
 })

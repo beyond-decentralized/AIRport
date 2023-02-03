@@ -1,7 +1,7 @@
 import { DbApplication_FullName } from "../application/DbApplication"
 import { DbColumn_Name } from "../application/DbProperty"
 
-export interface DbApplicationUtils {
+export interface IDbApplicationUtils {
 
     getDbApplication_FullName({
         domain,

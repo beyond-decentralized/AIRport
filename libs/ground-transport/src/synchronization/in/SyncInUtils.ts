@@ -41,12 +41,12 @@ export enum ApplicationComparisonResult {
 export interface ISyncRepoTransHistory
 	extends IRepositoryTransactionHistory {
 	isLocal?: boolean;
-	operationHistory?: ISyncOperationHistory[];
+	operationHistory: ISyncOperationHistory[];
 }
 
 export interface ISyncOperationHistory
 	extends IOperationHistory {
-	recordHistory?: ISyncRecordHistory[];
+	recordHistory: ISyncRecordHistory[];
 }
 
 export interface ISyncRecordHistory

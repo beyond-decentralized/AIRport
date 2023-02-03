@@ -1,6 +1,6 @@
 import {
 	DbApplicationVersion,
-	DbApplicationUtils,
+	IDbApplicationUtils,
 	JsonApplication
 } from '@airport/ground-control'
 import {
@@ -30,7 +30,7 @@ export class ApplicationLocator
 	implements IApplicationLocator {
 
 	@Inject()
-	dbApplicationUtils: DbApplicationUtils
+	dbApplicationUtils: IDbApplicationUtils
 
 	// private terminalStore: ITerminalStore
 

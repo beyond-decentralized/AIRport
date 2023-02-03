@@ -43,10 +43,10 @@ export class TransactionHistory
 
 	@Column({ name: 'TRANSACTION_TYPE', nullable: false })
 	@DbString()
-	transactionType?: TransactionType
+	transactionType: TransactionType
 
 	@OneToMany({ mappedBy: 'transactionHistory' })
-	repositoryTransactionHistories?: RepositoryTransactionHistory[]
+	repositoryTransactionHistories: RepositoryTransactionHistory[]
 
 	@Transient()
 	repositoryTransactionHistoryMap?: { [repositoryId: number]: IRepositoryTransactionHistory }

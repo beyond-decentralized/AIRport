@@ -30,11 +30,11 @@ export class Database
 
     @DbString()
     @Column({ name: 'DATABASE_DOMAIN', nullable: false })
-    domain?: Database_Domain
+    domain: Database_Domain
 
     @DbString()
     @Column({ name: 'DATABASE_GUID', nullable: false })
-    GUID?: Database_GUID
+    GUID: Database_GUID
 
     @ManyToOne()
     @JoinColumn({

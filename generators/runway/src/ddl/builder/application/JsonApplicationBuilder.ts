@@ -157,6 +157,7 @@ export class JsonApplicationBuilder {
 			domain,
 			index: null,
 			name: sIndexedApplication.application.name,
+			publicSigningKey: null,
 			sinceVersion: 1,
 			versions: [{
 				api: currentApplicationApi,
@@ -168,14 +169,17 @@ export class JsonApplicationBuilder {
 					domain: sApplicationReference.dbApplication.domain.name,
 					index: sApplicationReference.index,
 					name: sApplicationReference.dbApplication.name,
+					publicSigningKey: sApplicationReference.dbApplication.publicSigningKey,
 					sinceVersion: 1,
 					versions: [{
 						entities: null,
 						integerVersion: 1,
 						referencedApplications: null,
+						signature: null,
 						versionString: '1.0.0'
 					}]
 				})),
+				signature: null,
 				versionString: '1.0.0'
 			}]
 		};

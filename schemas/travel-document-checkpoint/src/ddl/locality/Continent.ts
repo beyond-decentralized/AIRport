@@ -19,14 +19,14 @@ export class Continent
     @Id()
     @DbNumber()
     @Column({ name: 'CONTINENT_ID', nullable: false })
-    id?: Continent_Id
+    id: Continent_Id
 
     @DbString()
     @Column({ name: 'CONTINENT_NAME', nullable: false })
-    name?: Continent_Name
+    name: Continent_Name
 
     @OneToMany({ mappedBy: 'continent' })
-    countries?: Country[]
+    countries: Country[]
 
     @OneToMany({ mappedBy: 'continent' })
     userAccounts?: UserAccount[]

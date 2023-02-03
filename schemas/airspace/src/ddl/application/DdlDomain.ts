@@ -26,7 +26,7 @@ export class DdlDomain
 
 	@DbString()
 	@Column({ name: 'DOMAIN_NAME', nullable: false })
-	name?: DbDomain_Name
+	name: DbDomain_Name
 
 	@OneToMany({ mappedBy: 'domain' })
 	applications?: DdlApplication[]

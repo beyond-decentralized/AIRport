@@ -27,11 +27,11 @@ export class RepositoryMemberInvitation
 
     @Column({ name: 'CREATED_AT', nullable: false })
     @DbDate()
-    createdAt?: CreatedAt
+    createdAt: CreatedAt
 
     @Column({ name: 'INVITATION_PUBLIC_SIGNING_KEY', nullable: false })
     @DbString()
-    invitationPublicSigningKey?: RepositoryMemberInvitation_PublicSigningKey
+    invitationPublicSigningKey: RepositoryMemberInvitation_PublicSigningKey
 
     @ManyToOne()
     @JoinColumn({
@@ -39,7 +39,7 @@ export class RepositoryMemberInvitation
         referencedColumnName: 'REPOSITORY_MEMBER_LID',
         nullable: false
     })
-    invitedRepositoryMember?: RepositoryMember
+    invitedRepositoryMember: RepositoryMember
 
     // Only populated in the database of the terminal
     // where the RepositoryTransactionHistory was originally

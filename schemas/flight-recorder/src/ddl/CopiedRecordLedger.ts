@@ -1,4 +1,4 @@
-import { DdlEntity } from "@airport/airspace";
+import { DdlEntity } from "@airport/airspace/dist/app/bundle";
 import { ActorRecordId, ICopiedRecordLedger } from "@airport/ground-control";
 import { Actor, InternalAirEntity, Repository } from "@airport/holding-pattern/dist/app/bundle";
 import { Column, DbNumber, Entity, JoinColumn, ManyToOne, Table } from "@airport/tarmaq-entity";

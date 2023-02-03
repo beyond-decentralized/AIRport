@@ -4,7 +4,7 @@ import {
 	JsonApplication_Name,
 	DbApplication_Name,
 	DbApplication_FullName,
-	DbApplicationUtils,
+	IDbApplicationUtils,
 	IDatastructureUtils,
 	DbApplication,
 } from '@airport/ground-control'
@@ -59,7 +59,7 @@ export class ApplicationChecker
 	datastructureUtils: IDatastructureUtils
 
 	@Inject()
-	dbApplicationUtils: DbApplicationUtils
+	dbApplicationUtils: IDbApplicationUtils
 
 	async check(
 		jsonApplication: JsonApplication

@@ -27,17 +27,17 @@ export class MetroArea
     id: MetroArea_Id;
 
     @DbString()
-    name?: MetroArea_Name
+    name: MetroArea_Name
 
     @ManyToOne()
     @JoinColumn({
         name: 'COUNTRY_ID',
         referencedColumnName: 'COUNTRY_ID'
     })
-    country?: Country
+    country: Country
 
     @OneToMany({ mappedBy: 'metroArea' })
-    metroAreaStates?: MetroAreaState[]
+    metroAreaStates: MetroAreaState[]
 
     @OneToMany({ mappedBy: 'metroArea' })
     userAccounts?: UserAccount[]

@@ -18,14 +18,14 @@ export interface DbSequence {
 
 	// Id Properties
 	applicationIndex: DbApplication_Index
-	entityIndex?: DbEntity_TableIndex
-	columnIndex?: DbColumn_Index
+	entityIndex: DbEntity_TableIndex
+	columnIndex: DbColumn_Index
 
 	// Id Relations
 
 	// Non-Id Properties
-	incrementBy?: SequenceIncrementBy
-	currentValue?: SequenceCurrentValue
+	incrementBy: SequenceIncrementBy
+	currentValue: SequenceCurrentValue
 
 	// Non-Id Relations
 

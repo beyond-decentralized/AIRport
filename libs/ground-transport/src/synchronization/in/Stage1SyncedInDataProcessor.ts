@@ -381,7 +381,10 @@ export class Stage1SyncedInDataProcessor
 					repositoryLocalId,
 					recordHistory,
 					{
-						_localId: remoteDeleteRecordHistoryLocalId
+						_actorRecordId: null,
+						_localId: remoteDeleteRecordHistoryLocalId,
+						actor: null,
+						operationHistory: null
 					},
 					syncConflictMapByRepoId
 				)
@@ -447,7 +450,10 @@ export class Stage1SyncedInDataProcessor
 						repositoryLocalId,
 						recordHistory,
 						{
-							_localId: localDeleteRecordHistoryLocalId
+							_actorRecordId: null,
+							_localId: localDeleteRecordHistoryLocalId,
+							actor: null,
+							operationHistory: null
 						},
 						syncConflictMapByRepoId
 					)
@@ -467,7 +473,10 @@ export class Stage1SyncedInDataProcessor
 						repositoryLocalId,
 						recordHistory,
 						{
-							_localId: remoteDeleteRecordHistoryLocalId
+							_actorRecordId: null,
+							_localId: remoteDeleteRecordHistoryLocalId,
+							actor: null,
+							operationHistory: null
 						},
 						syncConflictMapByRepoId
 					)
@@ -511,10 +520,16 @@ export class Stage1SyncedInDataProcessor
 								SynchronizationConflict_Type.REMOTE_UPDATE_LOCALLY_UPDATED,
 								repositoryLocalId,
 								{
+									_actorRecordId: null,
 									_localId: recordUpdate.recordHistoryLocalId,
+									actor: null,
+									operationHistory: null
 								},
 								{
-									_localId: remoteDeleteRecordHistoryLocalId
+									_actorRecordId: null,
+									_localId: remoteDeleteRecordHistoryLocalId,
+									actor: null,
+									operationHistory: null
 								},
 								syncConflictMapByRepoId
 							)
@@ -716,14 +731,17 @@ export class Stage1SyncedInDataProcessor
 		overwrittenRecordHistory: IRecordHistory,
 		overwritingRecordHistory: IRecordHistory
 	): ISynchronizationConflict {
+		let repository: any = {
+			_localId: repositoryLocalId
+		}
 		return {
 			_localId: null,
+			acknowledged: false,
 			overwrittenRecordHistory,
 			overwritingRecordHistory,
-			repository: {
-				_localId: repositoryLocalId
-			},
-			type: synchronizationConflictType
+			repository,
+			type: synchronizationConflictType,
+			values: []
 		}
 	}
 

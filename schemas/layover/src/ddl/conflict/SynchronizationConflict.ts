@@ -26,9 +26,11 @@ export class SynchronizationConflict
 	@Column({ name: 'SYNCHRONIZATION_CONFLICT_LID' })
 	_localId: SynchronizationConflict_Id;
 
+	@Column({ name: 'TYPE' })
 	@DbString()
 	type: SynchronizationConflict_Type;
 
+	@Column({ name: 'ACKNOWLEDGED' })
 	@DbBoolean()
 	acknowledged: SynchronizationConflict_Acknowledged;
 

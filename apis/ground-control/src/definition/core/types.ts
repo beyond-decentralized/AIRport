@@ -30,14 +30,14 @@ export interface IActor {
 	// Id Relations
 
 	// Non-Id Properties
-	GUID?: Actor_GUID
+	GUID: Actor_GUID
 
 	// Non-Id Relations
-	userAccount?: IUserAccount
+	userAccount: IUserAccount
 
-	terminal?: ITerminal
+	terminal: ITerminal
 
-	application?: DbApplication
+	application: DbApplication
 
 	// Transient Properties
 
@@ -56,8 +56,8 @@ export type Repository_Name = string;
 export type Repository_Source = string;
 export type Repository_UiEntryUri = string;
 export interface IRepositoryIdentifier {
-	GUID?: Repository_GUID;
-	source?: Repository_Source;
+	GUID: Repository_GUID;
+	source: Repository_Source;
 }
 export interface IRepository
 	extends IRepositoryIdentifier {
@@ -68,27 +68,27 @@ export interface IRepository
 	// Id Relations
 
 	// Non-Id Properties
-	ageSuitability?: AgeSuitability;
-	createdAt?: CreatedAt;
-	fullApplicationName?: DbApplication_FullName;
-	immutable?: Repository_Immutable;
-	isPublic?: Repository_IsPublic;
-	name?: Repository_Name;
-	uiEntryUri?: Repository_UiEntryUri;
+	ageSuitability: AgeSuitability;
+	createdAt: CreatedAt;
+	fullApplicationName: DbApplication_FullName;
+	immutable: Repository_Immutable;
+	isPublic: Repository_IsPublic;
+	name: Repository_Name;
+	uiEntryUri: Repository_UiEntryUri;
 	// Local-only, represents state of the repository
 	// false if only a reference stub is loaded
-	isLoaded?: boolean
+	isLoaded: boolean
 
 	// Non-Id Relations
-	owner?: IUserAccount;
+	owner: IUserAccount;
 	continent?: IContinent
 	country?: ICountry
 	state?: IState
 	metroArea?: IMetroArea
-	referencedRepositories?: IRepositoryReference[]
-	referencedInRepositories?: IRepositoryReference[]
-	repositoryMembers?: IRepositoryMember[]
-	repositoryTransactionHistory?: IRepositoryTransactionHistory[]
+	referencedRepositories: IRepositoryReference[]
+	referencedInRepositories: IRepositoryReference[]
+	repositoryMembers: IRepositoryMember[]
+	repositoryTransactionHistory: IRepositoryTransactionHistory[]
 	repositoryApplications?: IRepositoryApplication[]
 	repositoryClients?: IRepositoryClient[]
 	repositoryDatabases?: IRepositoryDatabase[]
@@ -103,8 +103,8 @@ export interface IRepository
 
 export interface IRepositoryReference {
 
-	referencingRepository?: IRepository
-	referencedRepository?: IRepository
+	referencingRepository: IRepository
+	referencedRepository: IRepository
 
 }
 
@@ -134,8 +134,8 @@ export type Database_GUID = string
 export interface IDatabase {
 
 	_localId: Database_LocalId
-	domain?: Database_Domain
-	GUID?: Database_GUID
+	domain: Database_Domain
+	GUID: Database_GUID
 	continent?: IContinent
 	country?: ICountry
 	state?: IState
@@ -171,8 +171,8 @@ export type Client_GUID = string
 export interface IClient {
 
 	_localId: Client_LocalId
-	domain?: Client_Domain
-	GUID?: Client_GUID
+	domain: Client_Domain
+	GUID: Client_GUID
 	continent?: IContinent
 	country?: ICountry
 	state?: IState
@@ -204,18 +204,18 @@ export enum RepositoryMember_Status {
 export interface IRepositoryMember {
 
 	_localId: RepositoryMember_LocalId
-	canWrite?: RepositoryMember_CanWrite
+	canWrite: RepositoryMember_CanWrite
 	invitations?: IRepositoryMemberInvitation[]
-	isOwner?: RepositoryMember_IsOwner
-	isAdministrator?: RepositoryMember_IsAdministrator
+	isOwner: RepositoryMember_IsOwner
+	isAdministrator: RepositoryMember_IsAdministrator
 	// doubles as the GUID
 	memberPublicSigningKey?: RepositoryMember_PublicSigningKey
-	repository?: IRepository
+	repository: IRepository
 	updates?: IRepositoryMemberUpdate[]
-	status?: RepositoryMember_Status
+	status: RepositoryMember_Status
 	// When the member is first invited to the repository
 	// there is no UserAccount associated with it
-	userAccount?: IUserAccount
+	userAccount: IUserAccount
 	// Only populated in the database of the terminal
 	// where the RepositoryTransactionHistory was originally
 	// created (for the purpose of being able to reconstruct
@@ -232,9 +232,9 @@ export type RepositoryMemberInvitation_PublicSigningKey = string
 export interface IRepositoryMemberInvitation {
 
 	_localId: RepositoryMemberUpdate_LocalId
-	createdAt?: CreatedAt
-	invitationPublicSigningKey?: RepositoryMemberInvitation_PublicSigningKey
-	invitedRepositoryMember?: IRepositoryMember
+	createdAt: CreatedAt
+	invitationPublicSigningKey: RepositoryMemberInvitation_PublicSigningKey
+	invitedRepositoryMember: IRepositoryMember
 	// Only populated in the database of the terminal
 	// where the RepositoryTransactionHistory was originally
 	// created (for the purpose of being able to reconstruct
@@ -249,9 +249,9 @@ export type RepositoryMemberAcceptance_Signature = string
 export class IRepositoryMemberAcceptance {
 
 	_localId: RepositoryMemberAcceptance_LocalId
-	createdAt?: CreatedAt
-	invitationPublicSigningKey?: RepositoryMemberInvitation_PublicSigningKey
-	acceptingRepositoryMember?: IRepositoryMember
+	createdAt: CreatedAt
+	invitationPublicSigningKey: RepositoryMemberInvitation_PublicSigningKey
+	acceptingRepositoryMember: IRepositoryMember
 	// Only populated in the database of the terminal
 	// where the RepositoryTransactionHistory was originally
 	// created (for the purpose of being able to reconstruct
@@ -266,9 +266,9 @@ export interface IRepositoryMemberUpdate {
 
 	_localId: RepositoryMemberUpdate_LocalId
 	canWrite?: RepositoryMember_CanWrite
-	createdAt?: CreatedAt
+	createdAt: CreatedAt
 	isAdministrator?: RepositoryMember_IsAdministrator
-	updatedRepositoryMember?: IRepositoryMember
+	updatedRepositoryMember: IRepositoryMember
 	// Only populated in the database of the terminal
 	// where the RepositoryTransactionHistory was originally
 	// created (for the purpose of being able to reconstruct
@@ -287,12 +287,12 @@ export interface IAirEntity {
 
 	// Id Relations
 	actor?: IActor;
-	repository?: IRepository;
+	repository: IRepository;
 
 	// Non-Id Properties
-	ageSuitability?: AgeSuitability;
+	ageSuitability: AgeSuitability;
 	copied?: AirEntity_Copied;
-	createdAt?: CreatedAt;
+	createdAt: CreatedAt;
 	systemWideOperationId?: SystemWideOperationId;
 
 	// Transient Properties
@@ -315,9 +315,9 @@ export type MetroArea_Name = string;
 export interface IMetroArea {
 
 	id: MetroArea_Id
-	name?: MetroArea_Name
-	country?: ICountry
-	metroAreaStates?: IMetroAreaState[]
+	name: MetroArea_Name
+	country: ICountry
+	metroAreaStates: IMetroAreaState[]
 	userAccounts?: IUserAccount[]
 
 }
@@ -328,10 +328,10 @@ export type State_Id = number;
 export type State_Name = string;
 export interface IState {
 	id: State_Id;
-	abbreviation?: State_Abbreviation;
-	name?: State_Name;
-	country?: ICountry;
-	metroAreaStates?: IMetroAreaState[];
+	abbreviation: State_Abbreviation;
+	name: State_Name;
+	country: ICountry;
+	metroAreaStates: IMetroAreaState[];
 	userAccounts?: IUserAccount[];
 }
 
@@ -340,19 +340,19 @@ export type Country_Id = number;
 export type Country_Name = string;
 export interface ICountry {
 	id: Country_Id;
-	abbreviation?: Country_Abbreviation
-	name?: Country_Name
-	continent?: IContinent
-	states?: IState[]
+	abbreviation: Country_Abbreviation
+	name: Country_Name
+	continent: IContinent
+	states: IState[]
 	userAccounts?: IUserAccount[]
 }
 
 export type Continent_Id = number;
 export type Continent_Name = string;
 export interface IContinent {
-	id?: Continent_Id;
-	name?: Continent_Name
-	countries?: ICountry[]
+	id: Continent_Id;
+	name: Continent_Name
+	countries: ICountry[]
 	userAccounts?: IUserAccount[]
 }
 
@@ -362,8 +362,8 @@ export type Classification_Name = string
  * Classification of Generic Types (which can be applied to any entities)
  */
 export interface IClassification {
-	id?: Classification_Id
-	name?: Classification_Name
+	id: Classification_Id
+	name: Classification_Name
 }
 
 export interface ITypeClassification {
@@ -378,8 +378,8 @@ export type Type_Name = string
  * Generic Type (can be applied to any entities)
  */
 export interface IType {
-	id?: Type_Id
-	name?: Type_Name
+	id: Type_Id
+	name: Type_Name
 	typeClassifications?: ITypeClassification[]
 }
 
@@ -399,11 +399,13 @@ export type Terminal_GUID = string;
  */
 export interface ITerminal {
 	_localId: Terminal_LocalId
-	GUID?: Terminal_GUID
-	owner?: IUserAccount
-	isLocal?: Terminal_IsLocal
+	GUID: Terminal_GUID
+	owner: IUserAccount
+	isLocal: Terminal_IsLocal
 	continent?: IContinent
 	country?: ICountry
+	state?: IState
+	metroArea?: IMetroArea
 	terminalTypes?: ITerminalType[]
 }
 

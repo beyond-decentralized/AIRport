@@ -10,7 +10,7 @@ import {
   DbSequence,
   EntityRelationType,
   IApplicationReferenceUtils,
-  DbApplicationUtils,
+  IDbApplicationUtils,
   JsonApplication,
   JsonColumn,
   JsonEntity,
@@ -35,7 +35,7 @@ export abstract class SqlSchemaBuilder
   applicationReferenceUtils: IApplicationReferenceUtils
 
   @Inject()
-  dbApplicationUtils: DbApplicationUtils
+  dbApplicationUtils: IDbApplicationUtils
 
   @Inject()
   sequenceDao: ISequenceDao

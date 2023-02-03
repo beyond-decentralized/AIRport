@@ -9,7 +9,7 @@ import {
 	IContext
 } from '@airport/direction-indicator';
 import {
-	DbApplication_FullName, DbApplication, DbApplicationUtils, JsonApplication,
+	DbApplication_FullName, DbApplication, IDbApplicationUtils, JsonApplication,
 } from '@airport/ground-control';
 import {
 	Actor,
@@ -39,7 +39,7 @@ export class DatabaseManager
 	applicationInitializer: IApplicationInitializer
 
 	@Inject()
-	dbApplicationUtils: DbApplicationUtils
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	internalRecordManager: IInternalRecordManager

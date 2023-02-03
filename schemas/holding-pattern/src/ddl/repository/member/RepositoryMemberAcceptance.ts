@@ -27,12 +27,12 @@ export class RepositoryMemberAcceptance
 
     @Column({ name: 'CREATED_AT', nullable: false })
     @DbDate()
-    createdAt?: CreatedAt
+    createdAt: CreatedAt
 
     // Copied to acceptance for tracking purposes
     @Column({ name: 'INVITATION_PUBLIC_SIGNING_KEY', nullable: false })
     @DbString()
-    invitationPublicSigningKey?: RepositoryMemberInvitation_PublicSigningKey
+    invitationPublicSigningKey: RepositoryMemberInvitation_PublicSigningKey
 
     @ManyToOne()
     @JoinColumn({
@@ -40,7 +40,7 @@ export class RepositoryMemberAcceptance
         referencedColumnName: 'REPOSITORY_MEMBER_LID',
         nullable: false
     })
-    acceptingRepositoryMember?: RepositoryMember
+    acceptingRepositoryMember: RepositoryMember
 
     // Only populated in the database of the terminal
     // where the RepositoryTransactionHistory was originally

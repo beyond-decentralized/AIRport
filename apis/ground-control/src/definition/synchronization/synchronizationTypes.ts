@@ -21,18 +21,18 @@ export type RepositoryTransactionHistory_GUID = string;
 export interface IRepositoryTransactionHistory {
 
     _localId: RepositoryTransactionHistory_LocalId
-    actor?: IActor
-    repositoryTransactionType?: RepositoryTransactionType
-    saveTimestamp?: RepositoryTransactionHistory_SaveTimestamp
+    actor: IActor
+    repositoryTransactionType: RepositoryTransactionType
+    saveTimestamp: RepositoryTransactionHistory_SaveTimestamp
     syncTimestamp?: RepositoryTransactionHistory_SyncTimestamp
-    GUID?: RepositoryTransactionHistory_GUID
-    isPublic?: Repository_IsPublic
-    isRepositoryCreation?: RepositoryTransactionHistory_IsRepositoryCreation
+    GUID: RepositoryTransactionHistory_GUID
+    isPublic: Repository_IsPublic
+    isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation
     member: IRepositoryMember
     modifiedRepository_LocalIdSet?: Set<Repository_LocalId>
-    repository?: IRepository
-    transactionHistory?: ITransactionHistory
-    operationHistory?: IOperationHistory[]
+    repository: IRepository
+    transactionHistory: ITransactionHistory
+    operationHistory: IOperationHistory[]
     newRepositoryMemberAcceptances?: IRepositoryMemberAcceptance[]
     newRepositoryMemberInvitations?: IRepositoryMemberInvitation[]
     newRepositoryMemberUpdates?: IRepositoryMemberUpdate[]
@@ -46,8 +46,8 @@ export type TransactionHistory_LocalId = number
 export interface ITransactionHistory {
 
     _localId: TransactionHistory_LocalId
-    transactionType?: TransactionType
-    repositoryTransactionHistories?: IRepositoryTransactionHistory[]
+    transactionType: TransactionType
+    repositoryTransactionHistories: IRepositoryTransactionHistory[]
     repositoryTransactionHistoryMap?: { [repositoryLocalId: Repository_LocalId]: IRepositoryTransactionHistory }
     applicationMap?: SyncApplicationMap
     allOperationHistory?: IOperationHistory[]
@@ -68,12 +68,12 @@ export type OperationHistory_OrderNumber = number;
 export interface IOperationHistory {
 
     _localId: OperationHistory_LocalId
-    orderNumber?: OperationHistory_OrderNumber
-    changeType?: ChangeType
+    orderNumber: OperationHistory_OrderNumber
+    changeType: ChangeType
     systemWideOperationId?: SystemWideOperationId
-    entity?: DbEntity
-    repositoryTransactionHistory?: IRepositoryTransactionHistory
-    recordHistory?: IRecordHistory[]
+    entity: DbEntity
+    repositoryTransactionHistory: IRepositoryTransactionHistory
+    recordHistory: IRecordHistory[]
 
 }
 
@@ -84,9 +84,9 @@ export type RecordHistory_LocalId = number;
 export interface IRecordHistory {
 
     _localId: RecordHistory_LocalId
-    _actorRecordId?: ActorRecordId
-    actor?: IActor
-    operationHistory?: IOperationHistory
+    _actorRecordId: ActorRecordId
+    actor: IActor
+    operationHistory: IOperationHistory
     newValues?: IRecordHistoryNewValue[]
     oldValues?: IRecordHistoryOldValue[]
     tableColumnMap?: SyncColumnMap
@@ -130,14 +130,14 @@ export interface ISynchronizationConflict {
     // Id Relations
 
     // Non-Id Properties
-    type?: SynchronizationConflict_Type;
-    acknowledged?: SynchronizationConflict_Acknowledged;
+    type: SynchronizationConflict_Type;
+    acknowledged: SynchronizationConflict_Acknowledged;
 
     // Non-Id Relations
-    repository?: IRepository;
-    overwrittenRecordHistory?: IRecordHistory;
-    overwritingRecordHistory?: IRecordHistory;
-    values?: ISynchronizationConflictValues[];
+    repository: IRepository;
+    overwrittenRecordHistory: IRecordHistory;
+    overwritingRecordHistory: IRecordHistory;
+    values: ISynchronizationConflictValues[];
 
     // Transient Properties
 

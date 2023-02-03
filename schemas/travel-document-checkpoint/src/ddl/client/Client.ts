@@ -31,11 +31,11 @@ export class Client
 
     @DbString()
     @Column({ name: 'CLIENT_DOMAIN', nullable: false })
-    domain?: Client_Domain
+    domain: Client_Domain
 
     @DbString()
     @Column({ name: 'CLIENT_GUID', nullable: false })
-    GUID?: Client_GUID
+    GUID: Client_GUID
 
     @ManyToOne()
     @JoinColumn({

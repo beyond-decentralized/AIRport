@@ -1,7 +1,7 @@
 import {
 	DbApplication,
 	DbEntity_LocalId,
-	ImplApplicationUtils,
+	DbApplicationUtils,
 } from '@airport/ground-control';
 import * as fs from 'fs';
 import * as ts from 'typescript';
@@ -156,7 +156,7 @@ function emitFiles(
 
 	applicationChecker.checkFrameworkReferences(jsonApplication, indexedApplication)
 
-	const applicationFullName = IOC.getSync(ImplApplicationUtils).
+	const applicationFullName = IOC.getSync(DbApplicationUtils).
 		getDbApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
 
 	const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');

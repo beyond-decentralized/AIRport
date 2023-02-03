@@ -28,7 +28,7 @@ export class Actor
 
 	@Column({ name: 'GUID', nullable: false })
 	@DbString()
-	GUID?: Actor_GUID
+	GUID: Actor_GUID
 
 	@ManyToOne()
 	@JoinColumn({
@@ -36,7 +36,7 @@ export class Actor
 		referencedColumnName: 'USER_ACCOUNT_LID',
 		nullable: false
 	})
-	userAccount?: UserAccount
+	userAccount: UserAccount
 
 	@ManyToOne()
 	@JoinColumn({
@@ -44,14 +44,14 @@ export class Actor
 		referencedColumnName: 'TERMINAL_LID',
 		nullable: false
 	})
-	terminal?: Terminal
+	terminal: Terminal
 
 	@ManyToOne()
 	@JoinColumn({
 		name: "DB_APPLICATION_INDEX",
 		referencedColumnName: "DB_APPLICATION_INDEX"
 	})
-	application?: DdlApplication
+	application: DdlApplication
 
 	// This should be tracked in RepositoryTransactionHistory - keeping actors focused on Apps
 	// @ManyToOne()

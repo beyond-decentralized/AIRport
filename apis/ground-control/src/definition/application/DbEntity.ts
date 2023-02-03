@@ -12,7 +12,7 @@ import {
 	DbApplicationReferenceByIndex
 } from './DbProperty'
 import {
-	DbObject,
+	DbVersionedObject,
 	DbApplicationVersion,
 	JsonObject
 } from './DbApplication'
@@ -84,7 +84,7 @@ export interface JsonEntity
  */
 export interface DbEntity
 	extends DbApplicationReferenceByIndex<DbEntity_TableIndex>,
-	DbObject {
+	DbVersionedObject {
 
 	_localId: DbEntity_LocalId
 
@@ -96,7 +96,7 @@ export interface DbEntity
 	/**
 	 * Array of all columns in the entity by index.
 	 */
-	columns?: DbColumn[];
+	columns: DbColumn[];
 
 	/**
 	 * Map of all columns in the entity by name.
@@ -111,17 +111,17 @@ export interface DbEntity
 	/*
 	 * Is this entity local-only (does not extend AirEntity)
 	 */
-	isLocal?: DbEntity_IsLocal;
+	isLocal: DbEntity_IsLocal;
 
 	/**
 	 * Does this entity extend AirEntity or LocalAirEntity
 	 */
-	isAirEntity?: DbEntity_IsAirEntity;
+	isAirEntity: DbEntity_IsAirEntity;
 
 	/**
 	 * Name of the entity.
 	 */
-	name?: DbEntity_Name;
+	name: DbEntity_Name;
 
 	/**
 	 * Map of all properties in the entity by name.
@@ -131,7 +131,7 @@ export interface DbEntity
 	/**
 	 * Array of all properties in the entity by index.
 	 */
-	properties?: DbProperty[];
+	properties: DbProperty[];
 
 	/**
 	 * Relations by their table relation indexes.
@@ -146,7 +146,7 @@ export interface DbEntity
 	/**
 	 * Indexed application reference
 	 */
-	applicationVersion?: DbApplicationVersion;
+	applicationVersion: DbApplicationVersion;
 
 	relationReferences?: DbRelation[]
 

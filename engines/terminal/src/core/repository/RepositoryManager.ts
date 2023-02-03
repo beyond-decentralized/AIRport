@@ -185,7 +185,7 @@ already contains a new repository.`)
 			source: 'DEVSERVR',
 			uiEntryUri: null,
 			GUID,
-		}
+		} as any
 
 		await this.repositoryDao.save(repository, context)
 

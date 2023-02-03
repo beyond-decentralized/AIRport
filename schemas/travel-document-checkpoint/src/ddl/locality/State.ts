@@ -27,20 +27,20 @@ export class State
     id: State_Id;
 
     @DbString()
-    abbreviation?: State_Abbreviation
+    abbreviation: State_Abbreviation
 
     @DbString()
-    name?: State_Name
+    name: State_Name
 
     @ManyToOne()
     @JoinColumn({
         name: 'COUNTRY_ID',
         referencedColumnName: 'COUNTRY_ID'
     })
-    country?: Country
+    country: Country
 
     @OneToMany({ mappedBy: 'state' })
-    metroAreaStates?: MetroAreaState[]
+    metroAreaStates: MetroAreaState[]
 
     @OneToMany({ mappedBy: 'state' })
     userAccounts?: UserAccount[]

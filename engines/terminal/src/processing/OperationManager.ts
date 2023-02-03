@@ -161,10 +161,13 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 		const rootDbEntity = context.dbEntity
 		let saveActor: IActor = {
 			_localId: actor._localId,
+			application: null,
 			GUID: actor.GUID,
+			terminal: null,
 			userAccount: actor.userAccount ? {
 				_localId: null,
-				accountPublicSigningKey: actor.userAccount.accountPublicSigningKey
+				accountPublicSigningKey: actor.userAccount.accountPublicSigningKey,
+				username: actor.userAccount.username
 			} : null
 		}
 		let newRepository: IRepository
@@ -177,9 +180,10 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 				source: context.rootTransaction.newRepository.source,
 				owner: actor.userAccount ? {
 					_localId: null,
-					accountPublicSigningKey: actor.userAccount.accountPublicSigningKey
+					accountPublicSigningKey: actor.userAccount.accountPublicSigningKey,
+					username: actor.userAccount.username
 				} : null
-			}
+			} as any
 		}
 		const saveResult: ISaveResult = {
 			actor: saveActor,

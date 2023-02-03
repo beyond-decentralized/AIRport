@@ -21,10 +21,10 @@ export class Classification
     @Id()
     @Column({ name: 'CLASSIFICATION_ID', nullable: false })
     @DbNumber()
-    id?: Classification_Id
+    id: Classification_Id
 
     @Column({ name: 'NAME', nullable: false })
     @DbString()
-    name?: Classification_Name
+    name: Classification_Name
 
 }

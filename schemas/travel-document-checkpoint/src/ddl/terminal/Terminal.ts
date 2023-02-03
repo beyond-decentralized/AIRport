@@ -41,18 +41,18 @@ export class Terminal
 
 	@Column({ name: 'TERMINAL_GUID', nullable: false })
 	@DbString()
-	GUID?: Terminal_GUID
+	GUID: Terminal_GUID
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'OWNER_USER_ACCOUNT_LID',
 		referencedColumnName: 'USER_ACCOUNT_LID', nullable: true
 	})
-	owner?: UserAccount
+	owner: UserAccount
 
 	@Column({ name: 'IS_LOCAL', nullable: false })
 	@DbBoolean()
-	isLocal?: Terminal_IsLocal = false
+	isLocal: Terminal_IsLocal = false
 
 	@ManyToOne()
 	@JoinColumn({

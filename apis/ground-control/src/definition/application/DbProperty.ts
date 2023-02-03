@@ -1,7 +1,7 @@
 import {
 	DbForeignKey,
 	DbManyToOneElements,
-	DbObject,
+	DbVersionedObject,
 	DbOneToManyElements,
 	EntityRelationType,
 	JsonObject,
@@ -63,19 +63,19 @@ export interface JsonProperty
 
 export interface DbProperty
 	extends DbApplicationReferenceByIndex<DbProperty_Index>,
-	DbObject {
+	DbVersionedObject {
 
 	_localId: DbProperty_LocalId
-	entity?: DbEntity;
-	name?: DbProperty_Name;
-	isId?: DbProperty_IsId;
-	propertyColumns?: DbPropertyColumn[];
+	entity: DbEntity;
+	name: DbProperty_Name;
+	isId: DbProperty_IsId;
+	propertyColumns: DbPropertyColumn[];
 	relation?: DbRelation[];
 
 }
 
 export interface DbPropertyColumn
-	extends DbObject {
+	extends DbVersionedObject {
 
 	column: DbColumn;
 	property: DbProperty;
@@ -143,29 +143,29 @@ export interface IdKeyArrayByIdColumnIndex
 
 export interface DbColumn
 	extends DbApplicationReferenceByIndex<DbColumn_Index>,
-	DbObject {
+	DbVersionedObject {
 
 	_localId: DbColumn_LocalId
 
 	allocationSize?: DbColumn_AllocationSize
 
-	entity?: DbEntity
+	entity: DbEntity
 
 	/**
 	 * Id index of this column (if it's an ID column).
 	 */
 	idIndex?: DbColumn_Index
 
-	isGenerated?: DbColumn_IsGenerated
+	isGenerated: DbColumn_IsGenerated
 
 	/**
 	 * In which ManyToOne relations is this column present.
 	 */
 	manyRelationColumns?: DbRelationColumn[]
 
-	name?: DbColumn_Name
+	name: DbColumn_Name
 
-	notNull?: DbColumn_NotNull
+	notNull: DbColumn_NotNull
 
 	/**
 	 * In which OneToMany relations is this column present.
@@ -177,14 +177,14 @@ export interface DbColumn
 	/**
 	 * In which properties is this column present.
 	 */
-	propertyColumns?: DbPropertyColumn[]
+	propertyColumns: DbPropertyColumn[]
 
 	propertyColumnMap?: { [propertyIndex: number]: DbPropertyColumn }
 
 	// The scale of a decimal (digits after the floating point)
 	scale?: number;
 
-	type?: SQLDataType
+	type: SQLDataType
 
 }
 
@@ -193,7 +193,7 @@ export interface DbApplicationReferenceByIndex<ID extends number> {
 	/**
 	 * Index of the referenced object.
 	 */
-	index?: ID;
+	index: ID;
 
 }
 
@@ -272,13 +272,13 @@ export interface JsonRelation
 
 export interface DbRelation
 	extends DbApplicationReferenceByIndex<DbRelation_Index>,
-	DbObject {
+	DbVersionedObject {
 
 	_localId: DbRelation_LocalId
 
-	entity?: DbEntity
+	entity: DbEntity
 	foreignKey?: DbForeignKey
-	isId?: boolean;
+	isId: boolean;
 	/**
 	 * Not needed - all joins to and from Repository entities are automatically repository
 	 * joins
@@ -288,9 +288,9 @@ export interface DbRelation
 	manyToOneElems?: DbManyToOneElements;
 	oneRelationColumns?: DbRelationColumn[];
 	oneToManyElems?: DbOneToManyElements;
-	property?: DbProperty;
-	relationEntity?: DbEntity;
-	relationType?: EntityRelationType;
+	property: DbProperty;
+	relationEntity: DbEntity;
+	relationType: EntityRelationType;
 	// addToJoinFunction?: string; // Serialized function to add to the join
 	// joinFunctionWithOperator?: number; // How to add the function to the join
 	// whereJoinTable?: WhereJoinTableDeserialized;
@@ -315,7 +315,7 @@ export interface JsonRelationColumn
 }
 
 export interface DbRelationColumn
-	extends DbObject {
+	extends DbVersionedObject {
 
 	_localId: DbRelationColumn_LocalId;
 
