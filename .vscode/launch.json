@@ -71,40 +71,6 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "flight-recorder-dos",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\flight-recorder\\generate.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\flight-recorder",
-            "runtimeArgs": [
-                "--experimental-specifier-resolution=node",
-                "--preserve-symlinks"
-            ]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "flight-recorder-sh",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/schemas/flight-recorder/generate.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}/schemas/flight-recorder",
-            "runtimeArgs": [
-                "--experimental-specifier-resolution=node",
-                "--preserve-symlinks"
-            ]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
             "name": "holding-pattern-dos",
             "skipFiles": [
                 "<node_internals>/**"

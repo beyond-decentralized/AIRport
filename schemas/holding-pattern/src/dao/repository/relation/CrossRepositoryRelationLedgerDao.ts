@@ -1,5 +1,5 @@
 import { Injected } from "@airport/direction-indicator";
-import { BaseCrossRepositoryRelationLedgerDao } from "../generated/baseDaos";
+import { BaseCrossRepositoryRelationLedgerDao } from "../../../generated/baseDaos";
 
 @Injected()
 export class CrossRepositoryRelationLedgerDao

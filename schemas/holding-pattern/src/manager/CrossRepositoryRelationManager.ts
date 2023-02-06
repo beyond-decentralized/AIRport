@@ -1,7 +1,7 @@
 import { Injected } from "@airport/direction-indicator"
 import { DbRelation, IAirEntity } from "@airport/ground-control"
-import { CopiedRecordLedger } from "../ddl/CopiedRecordLedger"
-import { CrossRepositoryRelationLedger } from "../ddl/CrossRepositoryRelationLedger"
+import { CopiedRecordLedger } from "../ddl/repository/relation/CopiedRecordLedger"
+import { CrossRepositoryRelationLedger } from "../ddl/repository/relation/CrossRepositoryRelationLedger"
 
 export interface IAddedLedgerRecords {
     manySideRepositoryLedger: CrossRepositoryRelationLedger

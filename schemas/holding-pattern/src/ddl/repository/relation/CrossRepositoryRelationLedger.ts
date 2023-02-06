@@ -1,8 +1,8 @@
 import { DdlRelation } from "@airport/airspace/dist/app/bundle";
 import { ICrossRepositoryRelationLedger } from "@airport/ground-control";
-import { Repository } from "@airport/holding-pattern";
-import { InternalAirEntity } from "@airport/holding-pattern/dist/app/bundle";
 import { Entity, JoinColumn, ManyToOne, Table } from "@airport/tarmaq-entity";
+import { InternalAirEntity } from "../../infrastructure/InternalAirEntity";
+import { Repository } from "../Repository";
 
 @Entity()
 @Table({ name: 'CROSS_REPOSITORY_RELATION_LEDGER' })

@@ -16,13 +16,20 @@ import { application } from './app-declaration'
 import { DatastructureUtils, Dictionary } from '@airport/ground-control'
 import { IRepositoryManager, TERMINAL_SESSION_MANAGER } from '@airport/terminal-map'
 import { RepositoryReferenceDao } from '../dao/repository/RepositoryReferenceDao'
+import { CopiedRecordLedgerDao, CrossRepositoryRelationLedgerDao, LocalCopyReplacementLedgerDao } from './holding-pattern.runtime-index'
+import { CrossRepositoryRelationManager } from '../manager/CrossRepositoryRelationManager'
 
 export const holdingPattern = app(application)
 
 export const REPOSITORY_MANAGER = holdingPattern.token<IRepositoryManager>('RepositoryManager')
 
 holdingPattern.register(
-    ActorDao, OperationHistoryDuo, RecordHistoryDuo,
+    ActorDao,
+    CopiedRecordLedgerDao,
+    CrossRepositoryRelationLedgerDao,
+    CrossRepositoryRelationManager,
+    LocalCopyReplacementLedgerDao,
+    OperationHistoryDuo, RecordHistoryDuo,
     RecordHistoryNewValueDao, RecordHistoryNewValueDuo,
     RecordHistoryOldValueDao, RecordHistoryOldValueDuo,
     RepositoryDao, RepositoryMemberDao, RepositoryReferenceDao,

@@ -15,5 +15,4 @@ Combines:
 - @airport/holding-pattern
 - @airport/layover
 - @airport/session-state
-- @airport/flight-recorder
 - @airbridge/keyring

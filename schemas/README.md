@@ -10,9 +10,6 @@ Schema for recording AIRport schemas themselves.
 [final-approach](./final-approach)
 Core runtime dependencies for Apps (curently only AirEntity).
 
-[flight-recorder](./flight-recorder)
-Ledger tables for cross-repository loading.
-
 [holding-pattern](./holding-pattern)
 Core repository schema.
 

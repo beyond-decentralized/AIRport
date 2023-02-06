@@ -213,16 +213,17 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 			}
 		}
 
-		const flightRecorderDbApp = this.airportDatabase.applications.filter(
-			dbApplication => dbApplication.domain.name === 'airport'
-				&& dbApplication.name === '@airport/flight-recorder'
+		const holdingPatternApp = this.airportDatabase.applications.filter(
+			dbApplication => dbApplication.domain.name === this.dictionary.airport.DOMAIN_NAME
+				&& dbApplication.name === this.dictionary.airport.apps.HOLDING_PATTERN.name
 		)[0]
-		// context.dbEntity = flightRecorderDbApp.currentVersion[0].applicationVersion.entityMapByName['CopiedRecordLedger']
+		// context.dbEntity = holdingPatternApp.currentVersion[0].applicationVersion.entityMapByName['CopiedRecordLedger']
 		// await this.internalCreate(
 		// 	validationContext.copiedRecordLedgers, actor, transaction, rootTransaction,
 		// 	saveResult, context, true)
 
-		context.dbEntity = flightRecorderDbApp.currentVersion[0].applicationVersion.entityMapByName['CrossRepositoryRelationLedger']
+		context.dbEntity = holdingPatternApp.currentVersion[0].applicationVersion
+			.entityMapByName[this.dictionary.CrossRepositoryRelationLedger.name]
 		await this.internalCreate(
 			validationContext.crossRepositoryRelationLedgers, actor, transaction, rootTransaction,
 			saveResult, context, true)

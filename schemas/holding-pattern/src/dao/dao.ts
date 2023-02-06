@@ -5,5 +5,8 @@ export * from './infrastructure/ActorDao';
 export * from './repository/member/RepositoryMemberAcceptanceDao';
 export * from './repository/member/RepositoryMemberDao';
 export * from './repository/member/RepositoryMemberInvitationDao';
+export * from './repository/relation/CopiedRecordLedgerDao';
+export * from './repository/relation/CrossRepositoryRelationLedgerDao';
+export * from './repository/relation/LocalCopyReplacementLedgerDao';
 export * from './repository/RepositoryDao';
 export * from './repository/RepositoryReferenceDao';

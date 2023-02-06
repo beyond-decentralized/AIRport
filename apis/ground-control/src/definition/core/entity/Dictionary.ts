@@ -57,27 +57,6 @@ export class Dictionary {
 					}
 				}
 			},
-			/*
-			FLIGHT_RECORDER: {
-				name: '@airport/flight-recorder',
-				entities: {
-					CopiedRecordLedger: {
-						name: 'CopiedRecordLedger',
-						columns: {
-							COPY_ACTOR_LID: 'COPY_ACTOR_LID',
-							COPY_REPOSITORY_LID: 'COPY_REPOSITORY_LID',
-						}
-					},
-					CrossRepositoryRelationLedger: {
-						name: 'CrossRepositoryRelationLedger',
-						columns: {
-							RELATION_LID: 'MANY_SIDE_APPLICATION_RELATION_LID',
-							RELATED_REPOSITORY_LID: 'MANY_SIDE_REPOSITORY_LID',
-						}
-					}
-				}
-			},
-			*/
 			HOLDING_PATTERN: {
 				name: '@airport/holding-pattern',
 				entities: {
@@ -90,6 +69,9 @@ export class Dictionary {
 						properties: {
 							userAccount: 'userAccount'
 						}
+					},
+					CrossRepositoryRelationLedger: {
+						name: 'CrossRepositoryRelationLedger'
 					},
 					InternalAirEntity: {
 						name: 'InternalAirEntity'
@@ -152,6 +134,7 @@ export class Dictionary {
 	Actor = this.airport.apps.HOLDING_PATTERN.entities.Actor
 	AirEntity = this.airport.apps.FINAL_APPROACH.entities.AirEntity
 	ApplicationRelation = this.airport.apps.AIRSPACE.entities.ApplicationRelation
+	CrossRepositoryRelationLedger = this.airport.apps.HOLDING_PATTERN.entities.CrossRepositoryRelationLedger
 	InternalAirEntity = this.airport.apps.HOLDING_PATTERN.entities.InternalAirEntity
 	// CopiedRecordLedger = this.airport.apps.FLIGHT_RECORDER.entities.CopiedRecordLedger
 	// CrossRepositoryRelationLedger = this.airport.apps.FLIGHT_RECORDER.entities.CrossRepositoryRelationLedger

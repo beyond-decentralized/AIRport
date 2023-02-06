@@ -862,27 +862,6 @@ class Dictionary {
                         }
                     }
                 },
-                /*
-                FLIGHT_RECORDER: {
-                    name: '@airport/flight-recorder',
-                    entities: {
-                        CopiedRecordLedger: {
-                            name: 'CopiedRecordLedger',
-                            columns: {
-                                COPY_ACTOR_LID: 'COPY_ACTOR_LID',
-                                COPY_REPOSITORY_LID: 'COPY_REPOSITORY_LID',
-                            }
-                        },
-                        CrossRepositoryRelationLedger: {
-                            name: 'CrossRepositoryRelationLedger',
-                            columns: {
-                                RELATION_LID: 'MANY_SIDE_APPLICATION_RELATION_LID',
-                                RELATED_REPOSITORY_LID: 'MANY_SIDE_REPOSITORY_LID',
-                            }
-                        }
-                    }
-                },
-                */
                 HOLDING_PATTERN: {
                     name: '@airport/holding-pattern',
                     entities: {
@@ -895,6 +874,9 @@ class Dictionary {
                             properties: {
                                 userAccount: 'userAccount'
                             }
+                        },
+                        CrossRepositoryRelationLedger: {
+                            name: 'CrossRepositoryRelationLedger'
                         },
                         InternalAirEntity: {
                             name: 'InternalAirEntity'
@@ -954,6 +936,7 @@ class Dictionary {
         this.Actor = this.airport.apps.HOLDING_PATTERN.entities.Actor;
         this.AirEntity = this.airport.apps.FINAL_APPROACH.entities.AirEntity;
         this.ApplicationRelation = this.airport.apps.AIRSPACE.entities.ApplicationRelation;
+        this.CrossRepositoryRelationLedger = this.airport.apps.HOLDING_PATTERN.entities.CrossRepositoryRelationLedger;
         this.InternalAirEntity = this.airport.apps.HOLDING_PATTERN.entities.InternalAirEntity;
         // CopiedRecordLedger = this.airport.apps.FLIGHT_RECORDER.entities.CopiedRecordLedger
         // CrossRepositoryRelationLedger = this.airport.apps.FLIGHT_RECORDER.entities.CrossRepositoryRelationLedger
@@ -9863,13 +9846,13 @@ class SystemWideOperationId {
 class TerminalRun {
 }
 
-const __constructors__$8 = {
+const __constructors__$7 = {
     Sequence,
     SystemWideOperationId,
     TerminalRun
 };
 const Q_airport____at_airport_slash_airport_dash_code = {
-    __constructors__: __constructors__$8,
+    __constructors__: __constructors__$7,
     domain: 'airport',
     name: '@airport/airport-code'
 };
@@ -9881,12 +9864,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$6 extends Dao {
+class SQDIDao$5 extends Dao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_airport_dash_code);
     }
 }
-class BaseSequenceDao extends SQDIDao$6 {
+class BaseSequenceDao extends SQDIDao$5 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -9901,7 +9884,7 @@ BaseSequenceDao.Find = new DaoQueryDecorators();
 BaseSequenceDao.FindOne = new DaoQueryDecorators();
 BaseSequenceDao.Search = new DaoQueryDecorators();
 BaseSequenceDao.SearchOne = new DaoQueryDecorators();
-class BaseSystemWideOperationIdDao extends SQDIDao$6 {
+class BaseSystemWideOperationIdDao extends SQDIDao$5 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -9916,7 +9899,7 @@ BaseSystemWideOperationIdDao.Find = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.FindOne = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.Search = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.SearchOne = new DaoQueryDecorators();
-class BaseTerminalRunDao extends SQDIDao$6 {
+class BaseTerminalRunDao extends SQDIDao$5 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10083,12 +10066,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$5 extends Dao {
+class SQDIDao$4 extends Dao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_airspace$1);
     }
 }
-class BaseDdlApplicationDao extends SQDIDao$5 {
+class BaseDdlApplicationDao extends SQDIDao$4 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10103,7 +10086,7 @@ BaseDdlApplicationDao.Find = new DaoQueryDecorators();
 BaseDdlApplicationDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlApplicationCurrentVersionDao extends SQDIDao$5 {
+class BaseDdlApplicationCurrentVersionDao extends SQDIDao$4 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10118,7 +10101,7 @@ BaseDdlApplicationCurrentVersionDao.Find = new DaoQueryDecorators();
 BaseDdlApplicationCurrentVersionDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationCurrentVersionDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationCurrentVersionDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlApplicationReferenceDao extends SQDIDao$5 {
+class BaseDdlApplicationReferenceDao extends SQDIDao$4 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10133,7 +10116,7 @@ BaseDdlApplicationReferenceDao.Find = new DaoQueryDecorators();
 BaseDdlApplicationReferenceDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationReferenceDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationReferenceDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlApplicationVersionDao extends SQDIDao$5 {
+class BaseDdlApplicationVersionDao extends SQDIDao$4 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10148,7 +10131,7 @@ BaseDdlApplicationVersionDao.Find = new DaoQueryDecorators();
 BaseDdlApplicationVersionDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationVersionDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationVersionDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlColumnDao extends SQDIDao$5 {
+class BaseDdlColumnDao extends SQDIDao$4 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10163,7 +10146,7 @@ BaseDdlColumnDao.Find = new DaoQueryDecorators();
 BaseDdlColumnDao.FindOne = new DaoQueryDecorators();
 BaseDdlColumnDao.Search = new DaoQueryDecorators();
 BaseDdlColumnDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlDomainDao extends SQDIDao$5 {
+class BaseDdlDomainDao extends SQDIDao$4 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10178,7 +10161,7 @@ BaseDdlDomainDao.Find = new DaoQueryDecorators();
 BaseDdlDomainDao.FindOne = new DaoQueryDecorators();
 BaseDdlDomainDao.Search = new DaoQueryDecorators();
 BaseDdlDomainDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlEntityDao extends SQDIDao$5 {
+class BaseDdlEntityDao extends SQDIDao$4 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10193,7 +10176,7 @@ BaseDdlEntityDao.Find = new DaoQueryDecorators();
 BaseDdlEntityDao.FindOne = new DaoQueryDecorators();
 BaseDdlEntityDao.Search = new DaoQueryDecorators();
 BaseDdlEntityDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlPropertyDao extends SQDIDao$5 {
+class BaseDdlPropertyDao extends SQDIDao$4 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10208,7 +10191,7 @@ BaseDdlPropertyDao.Find = new DaoQueryDecorators();
 BaseDdlPropertyDao.FindOne = new DaoQueryDecorators();
 BaseDdlPropertyDao.Search = new DaoQueryDecorators();
 BaseDdlPropertyDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlPropertyColumnDao extends SQDIDao$5 {
+class BaseDdlPropertyColumnDao extends SQDIDao$4 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10223,7 +10206,7 @@ BaseDdlPropertyColumnDao.Find = new DaoQueryDecorators();
 BaseDdlPropertyColumnDao.FindOne = new DaoQueryDecorators();
 BaseDdlPropertyColumnDao.Search = new DaoQueryDecorators();
 BaseDdlPropertyColumnDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlRelationDao extends SQDIDao$5 {
+class BaseDdlRelationDao extends SQDIDao$4 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10238,7 +10221,7 @@ BaseDdlRelationDao.Find = new DaoQueryDecorators();
 BaseDdlRelationDao.FindOne = new DaoQueryDecorators();
 BaseDdlRelationDao.Search = new DaoQueryDecorators();
 BaseDdlRelationDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlRelationColumnDao extends SQDIDao$5 {
+class BaseDdlRelationColumnDao extends SQDIDao$4 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -10409,7 +10392,7 @@ class ApplicationColumnDao extends BaseDdlColumnDao {
     }
 }
 
-const __constructors__$7 = {
+const __constructors__$6 = {
     DdlApplication,
     DdlApplicationCurrentVersion,
     DdlApplicationReference,
@@ -10424,7 +10407,7 @@ const __constructors__$7 = {
     DdlVersionedObject
 };
 const Q_airport____at_airport_slash_airspace = {
-    __constructors__: __constructors__$7,
+    __constructors__: __constructors__$6,
     domain: 'airport',
     name: '@airport/airspace'
 };
@@ -11138,14 +11121,14 @@ class ApplicationVersionDao extends BaseDdlApplicationVersionDao {
     }
 }
 
-const application$5 = {
+const application$4 = {
     name: '@airport/airspace',
     domain: {
         name: 'airport'
     }
 };
 
-const airspace = app(application$5);
+const airspace = app(application$4);
 airspace.register(DomainDao, ApplicationColumnDao, ApplicationDao, ApplicationEntityDao, ApplicationPropertyColumnDao, ApplicationPropertyDao, ApplicationReferenceDao, ApplicationRelationColumnDao, ApplicationRelationDao, ApplicationVersionDao);
 airspace.setDependencies(ApplicationColumnDao, {
     datastructureUtils: DatastructureUtils
@@ -13351,9 +13334,21 @@ class RepositoryTerminal$1 {
 class RepositoryType$1 {
 }
 
-const __constructors__$6 = {
+class CopiedRecordLedger$1 extends InternalAirEntity$1 {
+}
+
+class CrossRepositoryRelationLedger$1 extends InternalAirEntity$1 {
+}
+
+class LocalCopyReplacementLedger$1 {
+}
+
+const __constructors__$5 = {
     Actor: Actor$1,
+    CopiedRecordLedger: CopiedRecordLedger$1,
+    CrossRepositoryRelationLedger: CrossRepositoryRelationLedger$1,
     InternalAirEntity: InternalAirEntity$1,
+    LocalCopyReplacementLedger: LocalCopyReplacementLedger$1,
     OperationHistory: OperationHistory$1,
     RecordHistory: RecordHistory$1,
     RecordHistoryNewValue: RecordHistoryNewValue$1,
@@ -13373,7 +13368,7 @@ const __constructors__$6 = {
     TransactionHistory: TransactionHistory$1
 };
 const Q_airport____at_airport_slash_holding_dash_pattern$1 = {
-    __constructors__: __constructors__$6,
+    __constructors__: __constructors__$5,
     domain: 'airport',
     name: '@airport/holding-pattern'
 };
@@ -13385,12 +13380,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$4 extends Dao {
+class SQDIDao$3 extends Dao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_holding_dash_pattern$1);
     }
 }
-class BaseActorDao extends SQDIDao$4 {
+class BaseActorDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13405,7 +13400,52 @@ BaseActorDao.Find = new DaoQueryDecorators();
 BaseActorDao.FindOne = new DaoQueryDecorators();
 BaseActorDao.Search = new DaoQueryDecorators();
 BaseActorDao.SearchOne = new DaoQueryDecorators();
-class BaseOperationHistoryDao extends SQDIDao$4 {
+class BaseCopiedRecordLedgerDao extends SQDIDao$3 {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(18);
+    }
+    constructor() {
+        super(18);
+    }
+}
+BaseCopiedRecordLedgerDao.Find = new DaoQueryDecorators();
+BaseCopiedRecordLedgerDao.FindOne = new DaoQueryDecorators();
+BaseCopiedRecordLedgerDao.Search = new DaoQueryDecorators();
+BaseCopiedRecordLedgerDao.SearchOne = new DaoQueryDecorators();
+class BaseCrossRepositoryRelationLedgerDao extends SQDIDao$3 {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(19);
+    }
+    constructor() {
+        super(19);
+    }
+}
+BaseCrossRepositoryRelationLedgerDao.Find = new DaoQueryDecorators();
+BaseCrossRepositoryRelationLedgerDao.FindOne = new DaoQueryDecorators();
+BaseCrossRepositoryRelationLedgerDao.Search = new DaoQueryDecorators();
+BaseCrossRepositoryRelationLedgerDao.SearchOne = new DaoQueryDecorators();
+class BaseLocalCopyReplacementLedgerDao extends SQDIDao$3 {
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(20);
+    }
+    constructor() {
+        super(20);
+    }
+}
+BaseLocalCopyReplacementLedgerDao.Find = new DaoQueryDecorators();
+BaseLocalCopyReplacementLedgerDao.FindOne = new DaoQueryDecorators();
+BaseLocalCopyReplacementLedgerDao.Search = new DaoQueryDecorators();
+BaseLocalCopyReplacementLedgerDao.SearchOne = new DaoQueryDecorators();
+class BaseOperationHistoryDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13420,7 +13460,7 @@ BaseOperationHistoryDao.Find = new DaoQueryDecorators();
 BaseOperationHistoryDao.FindOne = new DaoQueryDecorators();
 BaseOperationHistoryDao.Search = new DaoQueryDecorators();
 BaseOperationHistoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRecordHistoryDao extends SQDIDao$4 {
+class BaseRecordHistoryDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13435,7 +13475,7 @@ BaseRecordHistoryDao.Find = new DaoQueryDecorators();
 BaseRecordHistoryDao.FindOne = new DaoQueryDecorators();
 BaseRecordHistoryDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRecordHistoryNewValueDao extends SQDIDao$4 {
+class BaseRecordHistoryNewValueDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13450,7 +13490,7 @@ BaseRecordHistoryNewValueDao.Find = new DaoQueryDecorators();
 BaseRecordHistoryNewValueDao.FindOne = new DaoQueryDecorators();
 BaseRecordHistoryNewValueDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryNewValueDao.SearchOne = new DaoQueryDecorators();
-class BaseRecordHistoryOldValueDao extends SQDIDao$4 {
+class BaseRecordHistoryOldValueDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13465,7 +13505,7 @@ BaseRecordHistoryOldValueDao.Find = new DaoQueryDecorators();
 BaseRecordHistoryOldValueDao.FindOne = new DaoQueryDecorators();
 BaseRecordHistoryOldValueDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryOldValueDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryDao extends SQDIDao$4 {
+class BaseRepositoryDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13480,7 +13520,7 @@ BaseRepositoryDao.Find = new DaoQueryDecorators();
 BaseRepositoryDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryDao.Search = new DaoQueryDecorators();
 BaseRepositoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryApplicationDao extends SQDIDao$4 {
+class BaseRepositoryApplicationDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13495,7 +13535,7 @@ BaseRepositoryApplicationDao.Find = new DaoQueryDecorators();
 BaseRepositoryApplicationDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryApplicationDao.Search = new DaoQueryDecorators();
 BaseRepositoryApplicationDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryClientDao extends SQDIDao$4 {
+class BaseRepositoryClientDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13510,7 +13550,7 @@ BaseRepositoryClientDao.Find = new DaoQueryDecorators();
 BaseRepositoryClientDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryClientDao.Search = new DaoQueryDecorators();
 BaseRepositoryClientDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryDatabaseDao extends SQDIDao$4 {
+class BaseRepositoryDatabaseDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13525,7 +13565,7 @@ BaseRepositoryDatabaseDao.Find = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.Search = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryMemberDao extends SQDIDao$4 {
+class BaseRepositoryMemberDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13540,7 +13580,7 @@ BaseRepositoryMemberDao.Find = new DaoQueryDecorators();
 BaseRepositoryMemberDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryMemberDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryMemberAcceptanceDao extends SQDIDao$4 {
+class BaseRepositoryMemberAcceptanceDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13555,7 +13595,7 @@ BaseRepositoryMemberAcceptanceDao.Find = new DaoQueryDecorators();
 BaseRepositoryMemberAcceptanceDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryMemberAcceptanceDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberAcceptanceDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryMemberInvitationDao extends SQDIDao$4 {
+class BaseRepositoryMemberInvitationDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13570,7 +13610,7 @@ BaseRepositoryMemberInvitationDao.Find = new DaoQueryDecorators();
 BaseRepositoryMemberInvitationDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryMemberInvitationDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberInvitationDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryMemberUpdateDao extends SQDIDao$4 {
+class BaseRepositoryMemberUpdateDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13585,7 +13625,7 @@ BaseRepositoryMemberUpdateDao.Find = new DaoQueryDecorators();
 BaseRepositoryMemberUpdateDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryMemberUpdateDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberUpdateDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryReferenceDao extends SQDIDao$4 {
+class BaseRepositoryReferenceDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13600,7 +13640,7 @@ BaseRepositoryReferenceDao.Find = new DaoQueryDecorators();
 BaseRepositoryReferenceDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryReferenceDao.Search = new DaoQueryDecorators();
 BaseRepositoryReferenceDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryTerminalDao extends SQDIDao$4 {
+class BaseRepositoryTerminalDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13615,7 +13655,7 @@ BaseRepositoryTerminalDao.Find = new DaoQueryDecorators();
 BaseRepositoryTerminalDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryTerminalDao.Search = new DaoQueryDecorators();
 BaseRepositoryTerminalDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryTransactionHistoryDao extends SQDIDao$4 {
+class BaseRepositoryTransactionHistoryDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13630,7 +13670,7 @@ BaseRepositoryTransactionHistoryDao.Find = new DaoQueryDecorators();
 BaseRepositoryTransactionHistoryDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryTransactionHistoryDao.Search = new DaoQueryDecorators();
 BaseRepositoryTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryTypeDao extends SQDIDao$4 {
+class BaseRepositoryTypeDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -13645,7 +13685,7 @@ BaseRepositoryTypeDao.Find = new DaoQueryDecorators();
 BaseRepositoryTypeDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryTypeDao.Search = new DaoQueryDecorators();
 BaseRepositoryTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseTransactionHistoryDao extends SQDIDao$4 {
+class BaseTransactionHistoryDao extends SQDIDao$3 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14083,6 +14123,15 @@ class RepositoryMemberInvitationDao extends BaseRepositoryMemberInvitationDao {
             repositoryMemberInvitation._localId = _localIds[i][0];
         }
     }
+}
+
+class CopiedRecordLedgerDao extends BaseCopiedRecordLedgerDao {
+}
+
+class CrossRepositoryRelationLedgerDao extends BaseCrossRepositoryRelationLedgerDao {
+}
+
+class LocalCopyReplacementLedgerDao extends BaseLocalCopyReplacementLedgerDao {
 }
 
 class RepositoryDao extends BaseRepositoryDao {
@@ -14528,6 +14577,42 @@ class TransactionHistoryDuo {
     }
 }
 
+class CrossRepositoryRelationManager {
+    addCopiedRecordLedger(manySideRelation, manySideEntity, copiedEntity) {
+        const copiedRecordLedger = new CopiedRecordLedger$1();
+        copiedRecordLedger.repository = manySideEntity.repository;
+        copiedRecordLedger.copyAppEntity = manySideRelation.relationEntity;
+        copiedRecordLedger.copyActorRecordId = copiedEntity._actorRecordId;
+        copiedRecordLedger.copyActor = copiedEntity.actor;
+        copiedRecordLedger.copyRepository = copiedEntity.repository;
+        return copiedRecordLedger;
+    }
+    addRecords(manySideRelation, manySideEntity, copiedEntity) {
+        let oneSideRelation;
+        let oneSideDbEntity = manySideRelation.relationEntity;
+        for (const oneSideEntityDbRelation of oneSideDbEntity.relations) {
+            if (oneSideEntityDbRelation.oneToManyElems.mappedBy === manySideRelation.property.name) {
+                oneSideRelation = oneSideEntityDbRelation;
+                break;
+            }
+        }
+        const oneSideRepositoryLedger = this.getLedger(oneSideRelation, manySideEntity);
+        oneSideRepositoryLedger.repository = copiedEntity.repository;
+        const manySideRepositoryLedger = this.getLedger(manySideRelation, copiedEntity);
+        manySideRepositoryLedger.repository = manySideEntity.repository;
+        return {
+            manySideRepositoryLedger,
+            oneSideRepositoryLedger
+        };
+    }
+    getLedger(relation, relatedEntity) {
+        const crossRepositoryRelationLedger = new CrossRepositoryRelationLedger$1();
+        crossRepositoryRelationLedger.relation = relation;
+        crossRepositoryRelationLedger.relatedRepository = relatedEntity.repository;
+        return crossRepositoryRelationLedger;
+    }
+}
+
 class RepositoryApi$1 {
     async findRepositories() {
         return await this.repositoryDao.findRepositories();
@@ -14548,16 +14633,16 @@ class RepositoryApi$1 {
     }
 }
 
-const application$4 = {
+const application$3 = {
     name: '@airport/holding-pattern',
     domain: {
         name: 'airport'
     }
 };
 
-const holdingPattern = app(application$4);
+const holdingPattern = app(application$3);
 const REPOSITORY_MANAGER = holdingPattern.token('RepositoryManager');
-holdingPattern.register(ActorDao, OperationHistoryDuo, RecordHistoryDuo, RecordHistoryNewValueDao, RecordHistoryNewValueDuo, RecordHistoryOldValueDao, RecordHistoryOldValueDuo, RepositoryDao, RepositoryMemberDao, RepositoryReferenceDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo, TransactionHistoryDuo, RepositoryApi$1);
+holdingPattern.register(ActorDao, CopiedRecordLedgerDao, CrossRepositoryRelationLedgerDao, CrossRepositoryRelationManager, LocalCopyReplacementLedgerDao, OperationHistoryDuo, RecordHistoryDuo, RecordHistoryNewValueDao, RecordHistoryNewValueDuo, RecordHistoryOldValueDao, RecordHistoryOldValueDuo, RepositoryDao, RepositoryMemberDao, RepositoryReferenceDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo, TransactionHistoryDuo, RepositoryApi$1);
 holdingPattern.setDependencies(ActorDao, {
     datastructureUtils: DatastructureUtils
 });
@@ -14676,7 +14761,7 @@ class TypeClassification {
 class UserAccount {
 }
 
-const __constructors__$5 = {
+const __constructors__$4 = {
     Classification,
     Client: Client$1,
     ClientType,
@@ -14694,7 +14779,7 @@ const __constructors__$5 = {
     UserAccount
 };
 const Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint = {
-    __constructors__: __constructors__$5,
+    __constructors__: __constructors__$4,
     domain: 'airport',
     name: '@airport/travel-document-checkpoint'
 };
@@ -14706,12 +14791,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$3 extends Dao {
+class SQDIDao$2 extends Dao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint);
     }
 }
-class BaseClassificationDao extends SQDIDao$3 {
+class BaseClassificationDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14726,7 +14811,7 @@ BaseClassificationDao.Find = new DaoQueryDecorators();
 BaseClassificationDao.FindOne = new DaoQueryDecorators();
 BaseClassificationDao.Search = new DaoQueryDecorators();
 BaseClassificationDao.SearchOne = new DaoQueryDecorators();
-class BaseClientDao extends SQDIDao$3 {
+class BaseClientDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14741,7 +14826,7 @@ BaseClientDao.Find = new DaoQueryDecorators();
 BaseClientDao.FindOne = new DaoQueryDecorators();
 BaseClientDao.Search = new DaoQueryDecorators();
 BaseClientDao.SearchOne = new DaoQueryDecorators();
-class BaseClientTypeDao extends SQDIDao$3 {
+class BaseClientTypeDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14756,7 +14841,7 @@ BaseClientTypeDao.Find = new DaoQueryDecorators();
 BaseClientTypeDao.FindOne = new DaoQueryDecorators();
 BaseClientTypeDao.Search = new DaoQueryDecorators();
 BaseClientTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseContinentDao extends SQDIDao$3 {
+class BaseContinentDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14771,7 +14856,7 @@ BaseContinentDao.Find = new DaoQueryDecorators();
 BaseContinentDao.FindOne = new DaoQueryDecorators();
 BaseContinentDao.Search = new DaoQueryDecorators();
 BaseContinentDao.SearchOne = new DaoQueryDecorators();
-class BaseCountryDao extends SQDIDao$3 {
+class BaseCountryDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14786,7 +14871,7 @@ BaseCountryDao.Find = new DaoQueryDecorators();
 BaseCountryDao.FindOne = new DaoQueryDecorators();
 BaseCountryDao.Search = new DaoQueryDecorators();
 BaseCountryDao.SearchOne = new DaoQueryDecorators();
-class BaseDatabaseDao extends SQDIDao$3 {
+class BaseDatabaseDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14801,7 +14886,7 @@ BaseDatabaseDao.Find = new DaoQueryDecorators();
 BaseDatabaseDao.FindOne = new DaoQueryDecorators();
 BaseDatabaseDao.Search = new DaoQueryDecorators();
 BaseDatabaseDao.SearchOne = new DaoQueryDecorators();
-class BaseDatabaseTypeDao extends SQDIDao$3 {
+class BaseDatabaseTypeDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14816,7 +14901,7 @@ BaseDatabaseTypeDao.Find = new DaoQueryDecorators();
 BaseDatabaseTypeDao.FindOne = new DaoQueryDecorators();
 BaseDatabaseTypeDao.Search = new DaoQueryDecorators();
 BaseDatabaseTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseMetroAreaDao extends SQDIDao$3 {
+class BaseMetroAreaDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14831,7 +14916,7 @@ BaseMetroAreaDao.Find = new DaoQueryDecorators();
 BaseMetroAreaDao.FindOne = new DaoQueryDecorators();
 BaseMetroAreaDao.Search = new DaoQueryDecorators();
 BaseMetroAreaDao.SearchOne = new DaoQueryDecorators();
-class BaseMetroAreaStateDao extends SQDIDao$3 {
+class BaseMetroAreaStateDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14846,7 +14931,7 @@ BaseMetroAreaStateDao.Find = new DaoQueryDecorators();
 BaseMetroAreaStateDao.FindOne = new DaoQueryDecorators();
 BaseMetroAreaStateDao.Search = new DaoQueryDecorators();
 BaseMetroAreaStateDao.SearchOne = new DaoQueryDecorators();
-class BaseStateDao extends SQDIDao$3 {
+class BaseStateDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14861,7 +14946,7 @@ BaseStateDao.Find = new DaoQueryDecorators();
 BaseStateDao.FindOne = new DaoQueryDecorators();
 BaseStateDao.Search = new DaoQueryDecorators();
 BaseStateDao.SearchOne = new DaoQueryDecorators();
-class BaseTerminalDao extends SQDIDao$3 {
+class BaseTerminalDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14876,7 +14961,7 @@ BaseTerminalDao.Find = new DaoQueryDecorators();
 BaseTerminalDao.FindOne = new DaoQueryDecorators();
 BaseTerminalDao.Search = new DaoQueryDecorators();
 BaseTerminalDao.SearchOne = new DaoQueryDecorators();
-class BaseTerminalTypeDao extends SQDIDao$3 {
+class BaseTerminalTypeDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14891,7 +14976,7 @@ BaseTerminalTypeDao.Find = new DaoQueryDecorators();
 BaseTerminalTypeDao.FindOne = new DaoQueryDecorators();
 BaseTerminalTypeDao.Search = new DaoQueryDecorators();
 BaseTerminalTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseTypeDao extends SQDIDao$3 {
+class BaseTypeDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14906,7 +14991,7 @@ BaseTypeDao.Find = new DaoQueryDecorators();
 BaseTypeDao.FindOne = new DaoQueryDecorators();
 BaseTypeDao.Search = new DaoQueryDecorators();
 BaseTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseTypeClassificationDao extends SQDIDao$3 {
+class BaseTypeClassificationDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -14921,7 +15006,7 @@ BaseTypeClassificationDao.Find = new DaoQueryDecorators();
 BaseTypeClassificationDao.FindOne = new DaoQueryDecorators();
 BaseTypeClassificationDao.Search = new DaoQueryDecorators();
 BaseTypeClassificationDao.SearchOne = new DaoQueryDecorators();
-class BaseUserAccountDao extends SQDIDao$3 {
+class BaseUserAccountDao extends SQDIDao$2 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -15033,14 +15118,14 @@ class UserAccountDao extends BaseUserAccountDao {
     }
 }
 
-const application$3 = {
+const application$2 = {
     name: '@airport/travel-document-checkpoint',
     domain: {
         name: 'airport'
     }
 };
 
-const travelDocumentCheckpoint = app(application$3);
+const travelDocumentCheckpoint = app(application$2);
 travelDocumentCheckpoint.register(TerminalDao, UserAccountApi, UserAccountDao, UserAccountManager);
 travelDocumentCheckpoint.setDependencies(TerminalDao, {
     airportDatabase: AIRPORT_DATABASE,
@@ -15060,7 +15145,7 @@ travelDocumentCheckpoint.setDependencies(UserAccountManager, {
 });
 
 /* eslint-disable */
-const APPLICATION$7 = {
+const APPLICATION$6 = {
     "domain": "airport",
     "index": null,
     "name": "@airport/airport-code",
@@ -15360,7 +15445,7 @@ const APPLICATION$7 = {
 };
 
 /* eslint-disable */
-const APPLICATION$6 = {
+const APPLICATION$5 = {
     "domain": "airport",
     "index": null,
     "name": "@airport/airspace",
@@ -18710,7 +18795,7 @@ const APPLICATION$6 = {
 };
 
 /* eslint-disable */
-const APPLICATION$5 = {
+const APPLICATION$4 = {
     "domain": "airport",
     "index": null,
     "name": "@airport/travel-document-checkpoint",
@@ -21031,7 +21116,7 @@ const APPLICATION$5 = {
 };
 
 /* eslint-disable */
-const APPLICATION$4 = {
+const APPLICATION$3 = {
     "domain": "airport",
     "index": null,
     "name": "@airport/holding-pattern",
@@ -24738,6 +24823,756 @@ const APPLICATION$4 = {
                         "name": "REPOSITORY_OPERATION_HISTORY",
                         "columnIndexes": []
                     }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 0,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ACTOR_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "ACTOR_RECORD_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "AGE_SUITABILITY",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "CREATED_AT",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "DATE"
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "SYSTEM_WIDE_OPERATION_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "COPY_ACTOR_RECORD_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 7,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneDbApplication_Index": 1,
+                                    "oneTableIndex": 5,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "COPY_DB_ENTITY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 7
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 8,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 3,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 0,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "COPY_ACTOR_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 8
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 9,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 4,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "COPY_REPOSITORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 9
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        },
+                        {
+                            "index": 2
+                        }
+                    ],
+                    "index": 18,
+                    "isLocal": false,
+                    "isAirEntity": true,
+                    "name": "CopiedRecordLedger",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_actorRecordId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "actor",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": true,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 3
+                            },
+                            "index": 3,
+                            "isId": false,
+                            "name": "ageSuitability",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 4
+                            },
+                            "index": 4,
+                            "isId": false,
+                            "name": "createdAt",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 5
+                            },
+                            "index": 5,
+                            "isId": false,
+                            "name": "systemWideOperationId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 6
+                            },
+                            "index": 6,
+                            "isId": false,
+                            "name": "copyActorRecordId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 7,
+                            "isId": false,
+                            "name": "copyAppEntity",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 8,
+                            "isId": false,
+                            "name": "copyActor",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 9,
+                            "isId": false,
+                            "name": "copyRepository",
+                            "relationRef": {
+                                "index": 4
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 7
+                            },
+                            "relationTableIndex": 5,
+                            "relationTableDbApplication_Index": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 8
+                            },
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 9
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "COPIED_RECORD_LEDGER",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 0,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ACTOR_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "ACTOR_RECORD_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "AGE_SUITABILITY",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "CREATED_AT",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "DATE"
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "SYSTEM_WIDE_OPERATION_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneDbApplication_Index": 1,
+                                    "oneTableIndex": 1,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ONE_SIDE_APPLICATION_RELATION_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 7,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 3,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "RELATION_REPOSITORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 7
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        },
+                        {
+                            "index": 2
+                        }
+                    ],
+                    "index": 19,
+                    "isLocal": false,
+                    "isAirEntity": true,
+                    "name": "CrossRepositoryRelationLedger",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_actorRecordId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "actor",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": true,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 3
+                            },
+                            "index": 3,
+                            "isId": false,
+                            "name": "ageSuitability",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 4
+                            },
+                            "index": 4,
+                            "isId": false,
+                            "name": "createdAt",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 5
+                            },
+                            "index": 5,
+                            "isId": false,
+                            "name": "systemWideOperationId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
+                            "isId": false,
+                            "name": "relation",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 7,
+                            "isId": false,
+                            "name": "relatedRepository",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 6
+                            },
+                            "relationTableIndex": 1,
+                            "relationTableDbApplication_Index": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 7
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "CROSS_REPOSITORY_RELATION_LEDGER",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 18,
+                                    "oneColumnIndex": 2,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ACTOR_RECORD_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 18,
+                                    "oneColumnIndex": 1,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ACTOR_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 18,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        },
+                        {
+                            "index": 2
+                        }
+                    ],
+                    "index": 20,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "LocalCopyReplacementLedger",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "copiedRecordLedger",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 18,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "LOCAL_COPY_REPLACEMENT_LEDGER",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
                 }
             ],
             "integerVersion": 1,
@@ -24782,7 +25617,7 @@ const APPLICATION$4 = {
 };
 
 /* eslint-disable */
-const APPLICATION$3 = {
+const APPLICATION$2 = {
     "domain": "airport",
     "index": null,
     "name": "@airport/layover",
@@ -25470,7 +26305,7 @@ const APPLICATION$3 = {
 };
 
 /* eslint-disable */
-const APPLICATION$2 = {
+const APPLICATION$1 = {
     "domain": "airport",
     "index": null,
     "name": "@airport/session-state",
@@ -25493,818 +26328,6 @@ const APPLICATION$2 = {
             "entities": [],
             "integerVersion": 1,
             "referencedApplications": [],
-            "signature": null,
-            "versionString": "1.0.0"
-        }
-    ]
-};
-
-/* eslint-disable */
-const APPLICATION$1 = {
-    "domain": "airport",
-    "index": null,
-    "name": "@airport/flight-recorder",
-    "publicSigningKey": null,
-    "sinceVersion": 1,
-    "versions": [
-        {
-            "api": {
-                "apiObjectMap": {}
-            },
-            "entities": [
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 1,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 1,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "ACTOR_RECORD_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "AGE_SUITABILITY",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "CREATED_AT",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "DATE"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "SYSTEM_WIDE_OPERATION_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "COPY_ACTOR_RECORD_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 7,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": 0,
-                                    "oneTableIndex": 5,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COPY_DB_ENTITY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 8,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": 1,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COPY_ACTOR_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 8
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 9,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 4,
-                                    "oneDbApplication_Index": 1,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COPY_REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 9
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        },
-                        {
-                            "index": 2
-                        }
-                    ],
-                    "index": 0,
-                    "isLocal": false,
-                    "isAirEntity": true,
-                    "name": "CopiedRecordLedger",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_actorRecordId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "name": "actor",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": true,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 3,
-                            "isId": false,
-                            "name": "ageSuitability",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 4
-                            },
-                            "index": 4,
-                            "isId": false,
-                            "name": "createdAt",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 5
-                            },
-                            "index": 5,
-                            "isId": false,
-                            "name": "systemWideOperationId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 6
-                            },
-                            "index": 6,
-                            "isId": false,
-                            "name": "copyActorRecordId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 7,
-                            "isId": false,
-                            "name": "copyAppEntity",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 8,
-                            "isId": false,
-                            "name": "copyActor",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 9,
-                            "isId": false,
-                            "name": "copyRepository",
-                            "relationRef": {
-                                "index": 4
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 0,
-                            "relationTableDbApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableDbApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 7
-                            },
-                            "relationTableIndex": 5,
-                            "relationTableDbApplication_Index": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 8
-                            },
-                            "relationTableIndex": 0,
-                            "relationTableDbApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 9
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableDbApplication_Index": 1,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "COPIED_RECORD_LEDGER",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 1,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 1,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "ACTOR_RECORD_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "AGE_SUITABILITY",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "CREATED_AT",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "DATE"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "SYSTEM_WIDE_OPERATION_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": 0,
-                                    "oneTableIndex": 1,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ONE_SIDE_APPLICATION_RELATION_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 7,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": 1,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "RELATION_REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        },
-                        {
-                            "index": 2
-                        }
-                    ],
-                    "index": 1,
-                    "isLocal": false,
-                    "isAirEntity": true,
-                    "name": "CrossRepositoryRelationLedger",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_actorRecordId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "name": "actor",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": true,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 3,
-                            "isId": false,
-                            "name": "ageSuitability",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 4
-                            },
-                            "index": 4,
-                            "isId": false,
-                            "name": "createdAt",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 5
-                            },
-                            "index": 5,
-                            "isId": false,
-                            "name": "systemWideOperationId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "name": "relation",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 7,
-                            "isId": false,
-                            "name": "relatedRepository",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 0,
-                            "relationTableDbApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableDbApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 6
-                            },
-                            "relationTableIndex": 1,
-                            "relationTableDbApplication_Index": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 7
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableDbApplication_Index": 1,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "CROSS_REPOSITORY_RELATION_LEDGER",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 2,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_RECORD_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 1,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        },
-                        {
-                            "index": 2
-                        }
-                    ],
-                    "index": 2,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "LocalCopyReplacementLedger",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "copiedRecordLedger",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 0,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "LOCAL_COPY_REPLACEMENT_LEDGER",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                }
-            ],
-            "integerVersion": 1,
-            "referencedApplications": [
-                {
-                    "domain": "airport",
-                    "index": 0,
-                    "name": "@airport/airspace",
-                    "publicSigningKey": null,
-                    "sinceVersion": 1,
-                    "versions": [
-                        {
-                            "entities": null,
-                            "integerVersion": 1,
-                            "referencedApplications": null,
-                            "signature": null,
-                            "versionString": "1.0.0"
-                        }
-                    ]
-                },
-                {
-                    "domain": "airport",
-                    "index": 1,
-                    "name": "@airport/holding-pattern",
-                    "publicSigningKey": null,
-                    "sinceVersion": 1,
-                    "versions": [
-                        {
-                            "entities": null,
-                            "integerVersion": 1,
-                            "referencedApplications": null,
-                            "signature": null,
-                            "versionString": "1.0.0"
-                        }
-                    ]
-                }
-            ],
             "signature": null,
             "versionString": "1.0.0"
         }
@@ -27055,7 +27078,6 @@ const APPLICATION = {
 };
 
 const BLUEPRINT = [
-    APPLICATION$7,
     APPLICATION$6,
     APPLICATION$5,
     APPLICATION$4,
@@ -27096,13 +27118,13 @@ var ApplicationChangeStatus;
 class RecordUpdateStage {
 }
 
-const __constructors__$4 = {
+const __constructors__$3 = {
     RecordUpdateStage,
     SynchronizationConflict,
     SynchronizationConflictValues
 };
 const Q_airport____at_airport_slash_layover = {
-    __constructors__: __constructors__$4,
+    __constructors__: __constructors__$3,
     domain: 'airport',
     name: '@airport/layover'
 };
@@ -27114,12 +27136,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$2 extends Dao {
+class SQDIDao$1 extends Dao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_layover);
     }
 }
-class BaseRecordUpdateStageDao extends SQDIDao$2 {
+class BaseRecordUpdateStageDao extends SQDIDao$1 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -27134,7 +27156,7 @@ BaseRecordUpdateStageDao.Find = new DaoQueryDecorators();
 BaseRecordUpdateStageDao.FindOne = new DaoQueryDecorators();
 BaseRecordUpdateStageDao.Search = new DaoQueryDecorators();
 BaseRecordUpdateStageDao.SearchOne = new DaoQueryDecorators();
-class BaseSynchronizationConflictDao extends SQDIDao$2 {
+class BaseSynchronizationConflictDao extends SQDIDao$1 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -27149,7 +27171,7 @@ BaseSynchronizationConflictDao.Find = new DaoQueryDecorators();
 BaseSynchronizationConflictDao.FindOne = new DaoQueryDecorators();
 BaseSynchronizationConflictDao.Search = new DaoQueryDecorators();
 BaseSynchronizationConflictDao.SearchOne = new DaoQueryDecorators();
-class BaseSynchronizationConflictValuesDao extends SQDIDao$2 {
+class BaseSynchronizationConflictValuesDao extends SQDIDao$1 {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -27476,12 +27498,12 @@ RepositoryKey = __decorate$1([
     Table()
 ], RepositoryKey);
 
-const __constructors__$3 = {
+const __constructors__$2 = {
     KeyRing,
     RepositoryKey
 };
 const Q_airbridge____at_airbridge_slash_keyring = {
-    __constructors__: __constructors__$3,
+    __constructors__: __constructors__$2,
     domain: 'airbridge',
     name: '@airbridge/keyring'
 };
@@ -27493,12 +27515,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$1 extends Dao {
+class SQDIDao extends Dao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airbridge____at_airbridge_slash_keyring);
     }
 }
-class BaseKeyRingDao extends SQDIDao$1 {
+class BaseKeyRingDao extends SQDIDao {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -27513,7 +27535,7 @@ BaseKeyRingDao.Find = new DaoQueryDecorators();
 BaseKeyRingDao.FindOne = new DaoQueryDecorators();
 BaseKeyRingDao.Search = new DaoQueryDecorators();
 BaseKeyRingDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryKeyDao extends SQDIDao$1 {
+class BaseRepositoryKeyDao extends SQDIDao {
     static Save(config) {
         return Dao.BaseSave(config);
     }
@@ -27566,7 +27588,7 @@ RepositoryKeyDao = __decorate$1([
     Injected()
 ], RepositoryKeyDao);
 
-const application$2 = {
+const application$1 = {
     name: '@airbridge/keyring',
     domain: {
         name: 'airbridge'
@@ -27580,7 +27602,7 @@ let KeyRingManager = class KeyRingManager {
         if (!keyRing) {
             const keyRingContext = {
                 ...context,
-                applicationFullName: this.dbApplicationUtils.getDbApplication_FullName(application$2),
+                applicationFullName: this.dbApplicationUtils.getDbApplication_FullName(application$1),
                 newRepositoryGUID: 'DEVSERVR_' + userPrivateKey,
                 forKeyRingRepository: true
             };
@@ -27692,7 +27714,7 @@ MessageSigningManager = __decorate$1([
     Injected()
 ], MessageSigningManager);
 
-const keyring = app(application$2);
+const keyring = app(application$1);
 keyring.register(KeyRingDao, KeyRingManager, MessageSigningManager, RepositoryKeyDao);
 keyring.setDependencies(KeyRingManager, {
     dbApplicationUtils: DbApplicationUtils,
@@ -34058,7 +34080,7 @@ class ApiProxy {
     }
 }
 
-const application$1 = {
+const application = {
     name: '@airport/holding-pattern',
     domain: {
         name: 'airport'
@@ -34072,7 +34094,7 @@ const application$1 = {
 // @Injected()
 class RepositoryApi extends ApiProxy {
     constructor() {
-        super(application$1);
+        super(application);
     }
     async findRepositories() {
         return await this.proxy.findRepositories();
@@ -34281,9 +34303,21 @@ class RepositoryTerminal {
 class RepositoryType {
 }
 
-const __constructors__$2 = {
+class CopiedRecordLedger extends InternalAirEntity {
+}
+
+class CrossRepositoryRelationLedger extends InternalAirEntity {
+}
+
+class LocalCopyReplacementLedger {
+}
+
+const __constructors__$1 = {
     Actor,
+    CopiedRecordLedger,
+    CrossRepositoryRelationLedger,
     InternalAirEntity,
+    LocalCopyReplacementLedger,
     OperationHistory,
     RecordHistory,
     RecordHistoryNewValue,
@@ -34303,7 +34337,7 @@ const __constructors__$2 = {
     TransactionHistory
 };
 const Q_airport____at_airport_slash_holding_dash_pattern = {
-    __constructors__: __constructors__$2,
+    __constructors__: __constructors__$1,
     domain: 'airport',
     name: '@airport/holding-pattern'
 };
@@ -34312,7 +34346,7 @@ if (globalThis.airApi) {
 }
 
 for (let apiStub of [RepositoryApi]) {
-    apiStub.application = application$1;
+    apiStub.application = application;
 }
 
 /******************************************************************************
@@ -34577,9 +34611,9 @@ SSOManager = __decorate([
     Injected()
 ], SSOManager);
 
-const __constructors__$1 = {};
+const __constructors__ = {};
 const Q_bridge____at_airbridge_slash_sso = {
-    __constructors__: __constructors__$1,
+    __constructors__,
     domain: 'bridge',
     name: '@airbridge/sso'
 };
@@ -34605,139 +34639,6 @@ sso.setDependencies(SSOManager, {
     userAccountManager: UserAccountManager,
     userStore: UserStore
 });
-
-class CopiedRecordLedger extends InternalAirEntity$1 {
-}
-
-class LocalCopyReplacementLedger {
-}
-
-class CrossRepositoryRelationLedger extends InternalAirEntity$1 {
-}
-
-const __constructors__ = {
-    CopiedRecordLedger,
-    CrossRepositoryRelationLedger,
-    LocalCopyReplacementLedger
-};
-const Q_airport____at_airport_slash_flight_dash_recorder = {
-    __constructors__,
-    domain: 'airport',
-    name: '@airport/flight-recorder'
-};
-function airport____at_airport_slash_flight_dash_recorder_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_flight_dash_recorder.__dbDbApplication__, dbEntityId);
-}
-if (globalThis.airApi) {
-    globalThis.airApi.setQApp(Q_airport____at_airport_slash_flight_dash_recorder);
-}
-
-// Application Q object Dependency Injection readiness detection Dao
-class SQDIDao extends Dao {
-    constructor(dbEntityId) {
-        super(dbEntityId, Q_airport____at_airport_slash_flight_dash_recorder);
-    }
-}
-class BaseCopiedRecordLedgerDao extends SQDIDao {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_flight_dash_recorder_diSet(0);
-    }
-    constructor() {
-        super(0);
-    }
-}
-BaseCopiedRecordLedgerDao.Find = new DaoQueryDecorators();
-BaseCopiedRecordLedgerDao.FindOne = new DaoQueryDecorators();
-BaseCopiedRecordLedgerDao.Search = new DaoQueryDecorators();
-BaseCopiedRecordLedgerDao.SearchOne = new DaoQueryDecorators();
-class BaseCrossRepositoryRelationLedgerDao extends SQDIDao {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_flight_dash_recorder_diSet(1);
-    }
-    constructor() {
-        super(1);
-    }
-}
-BaseCrossRepositoryRelationLedgerDao.Find = new DaoQueryDecorators();
-BaseCrossRepositoryRelationLedgerDao.FindOne = new DaoQueryDecorators();
-BaseCrossRepositoryRelationLedgerDao.Search = new DaoQueryDecorators();
-BaseCrossRepositoryRelationLedgerDao.SearchOne = new DaoQueryDecorators();
-class BaseLocalCopyReplacementLedgerDao extends SQDIDao {
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_flight_dash_recorder_diSet(2);
-    }
-    constructor() {
-        super(2);
-    }
-}
-BaseLocalCopyReplacementLedgerDao.Find = new DaoQueryDecorators();
-BaseLocalCopyReplacementLedgerDao.FindOne = new DaoQueryDecorators();
-BaseLocalCopyReplacementLedgerDao.Search = new DaoQueryDecorators();
-BaseLocalCopyReplacementLedgerDao.SearchOne = new DaoQueryDecorators();
-
-class CopiedRecordLedgerDao extends BaseCopiedRecordLedgerDao {
-}
-
-class CrossRepositoryRelationLedgerDao extends BaseCrossRepositoryRelationLedgerDao {
-}
-
-class LocalCopyReplacementLedgerDao extends BaseLocalCopyReplacementLedgerDao {
-}
-
-class CrossRepositoryRelationManager {
-    addCopiedRecordLedger(manySideRelation, manySideEntity, copiedEntity) {
-        const copiedRecordLedger = new CopiedRecordLedger();
-        copiedRecordLedger.repository = manySideEntity.repository;
-        copiedRecordLedger.copyAppEntity = manySideRelation.relationEntity;
-        copiedRecordLedger.copyActorRecordId = copiedEntity._actorRecordId;
-        copiedRecordLedger.copyActor = copiedEntity.actor;
-        copiedRecordLedger.copyRepository = copiedEntity.repository;
-        return copiedRecordLedger;
-    }
-    addRecords(manySideRelation, manySideEntity, copiedEntity) {
-        let oneSideRelation;
-        let oneSideDbEntity = manySideRelation.relationEntity;
-        for (const oneSideEntityDbRelation of oneSideDbEntity.relations) {
-            if (oneSideEntityDbRelation.oneToManyElems.mappedBy === manySideRelation.property.name) {
-                oneSideRelation = oneSideEntityDbRelation;
-                break;
-            }
-        }
-        const oneSideRepositoryLedger = this.getLedger(oneSideRelation, manySideEntity);
-        oneSideRepositoryLedger.repository = copiedEntity.repository;
-        const manySideRepositoryLedger = this.getLedger(manySideRelation, copiedEntity);
-        manySideRepositoryLedger.repository = manySideEntity.repository;
-        return {
-            manySideRepositoryLedger,
-            oneSideRepositoryLedger
-        };
-    }
-    getLedger(relation, relatedEntity) {
-        const crossRepositoryRelationLedger = new CrossRepositoryRelationLedger();
-        crossRepositoryRelationLedger.relation = relation;
-        crossRepositoryRelationLedger.relatedRepository = relatedEntity.repository;
-        return crossRepositoryRelationLedger;
-    }
-}
-
-const application = {
-    name: '@airport/flight-recorder',
-    domain: {
-        name: 'airport'
-    }
-};
-
-const flightRecorder = app(application);
-flightRecorder.register(CopiedRecordLedgerDao, LocalCopyReplacementLedgerDao, CrossRepositoryRelationLedgerDao, CrossRepositoryRelationManager);
 
 class RepositoryLoader {
     /*
@@ -37729,13 +37630,14 @@ in top level objects (that are passed into '...Dao.save(...)')`);
                 await this.internalUpdate(operation.entities, actor, transaction, rootTransaction, saveResult, context);
             }
         }
-        const flightRecorderDbApp = this.airportDatabase.applications.filter(dbApplication => dbApplication.domain.name === 'airport'
-            && dbApplication.name === '@airport/flight-recorder')[0];
-        // context.dbEntity = flightRecorderDbApp.currentVersion[0].applicationVersion.entityMapByName['CopiedRecordLedger']
+        const holdingPatternApp = this.airportDatabase.applications.filter(dbApplication => dbApplication.domain.name === this.dictionary.airport.DOMAIN_NAME
+            && dbApplication.name === this.dictionary.airport.apps.HOLDING_PATTERN.name)[0];
+        // context.dbEntity = holdingPatternApp.currentVersion[0].applicationVersion.entityMapByName['CopiedRecordLedger']
         // await this.internalCreate(
         // 	validationContext.copiedRecordLedgers, actor, transaction, rootTransaction,
         // 	saveResult, context, true)
-        context.dbEntity = flightRecorderDbApp.currentVersion[0].applicationVersion.entityMapByName['CrossRepositoryRelationLedger'];
+        context.dbEntity = holdingPatternApp.currentVersion[0].applicationVersion
+            .entityMapByName[this.dictionary.CrossRepositoryRelationLedger.name];
         await this.internalCreate(validationContext.crossRepositoryRelationLedgers, actor, transaction, rootTransaction, saveResult, context, true);
         context.dbEntity = rootDbEntity;
         return saveResult;

@@ -29,6 +29,7 @@ import {
 } from '@airport/ground-transport'
 import {
     ActorDao,
+    CrossRepositoryRelationManager,
     OperationHistoryDuo,
     RecordHistoryDuo,
     RepositoryDao,
@@ -75,7 +76,6 @@ import { RepositoryManager } from './core/repository/RepositoryManager'
 import { IdGenerator } from '@airport/fuel-hydrant-system'
 import { ObservableQueryAdapter } from '@airport/flight-number'
 import { RepositoryMaintenanceManager } from '@airbridge/sso/dist/app/bundle'
-import { CrossRepositoryRelationManager } from '@airport/flight-recorder/dist/app/bundle'
 
 const terminal = lib('terminal')
 

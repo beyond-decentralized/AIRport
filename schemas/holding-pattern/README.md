@@ -14,9 +14,16 @@ Contains:
 Actor   -   A User, using a specific Client, that performs operations via
 a specific Application at a specific Terminal 
 
-AirEntity   - superclass for all entities
+InternalAirEntity   - superclass for all internal AIR entities
 
 Repository  - unit of data in AIRport
+    *   member/RepositoryMember
+    *   member/RepositoryMemberAcceptance
+    *   member/RepositoryMemberInvitation
+    *   member/RepositoryMemberUpdate
+    *   relation/CopiedRecordLedger
+    *   relation/CrossRepositoryRelationLedger
+    *   relation/LocalCopyReplacementLedger
     *   RepositoryApplication
     *   RepositoryClient
     *   RepositoryDatabase

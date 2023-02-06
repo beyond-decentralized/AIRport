@@ -23,7 +23,7 @@ import {
 } from '@airport/terminal-map'
 import {
 	ICrossRepositoryRelationManager
-} from '@airport/flight-recorder/dist/app/bundle'
+} from '@airport/holding-pattern/dist/app/bundle'
 
 @Injected()
 export class StructuralEntityValidator
