@@ -7,11 +7,15 @@ process.argv.forEach(function (val, _index, _array) {
     mode = val;
 });
 
-processFile('../../schemas/airspace/package.json', mode)
-processFile('../../schemas/holding-pattern/package.json', mode)
-processFile('../../schemas/travel-document-checkpoint/package.json', mode)
+processFile('../../schemas/airspace/package.json', 'airspace', mode)
+processFile('../../schemas/holding-pattern/package.json', 'holding-pattern', mode)
+processFile('../../schemas/travel-document-checkpoint/package.json', 'travel-document-checkpoint', mode)
 
-export function processFile(filePath) {
+export function processFile(
+    filePath,
+    prefix,
+    mode
+) {
     let rawdata = fs.readFileSync(filePath);
     let packageJson = JSON.parse(rawdata);
 
@@ -22,9 +26,9 @@ export function processFile(filePath) {
         packageJson.types = "dist/app/bundle.d.ts"
     } else if (mode === 'external') {
         // Switch back to client bundles
-        packageJson.main = "dist/esm/index.mjs"
-        packageJson.module = "dist/esm/index.mjs"
-        packageJson.types = "dist/esm/index.d.ts"
+        packageJson.main = `dist/esm/${prefix}.index.mjs`
+        packageJson.module = `dist/esm/${prefix}.index.mjs`
+        packageJson.types = `dist/esm/${prefix}.index.d.ts`
     } else {
         throw new Error('Unknown mode: ' + mode)
     }

@@ -12,7 +12,7 @@ const packageJson = require("./package.json");
 
 export default [
     {
-        input: 'src/to_be_generated/runtime-index.ts',
+        input: 'src/to_be_generated/flight-recorder.runtime-index.ts',
         output: {
             sourcemap: true,
             format: 'esm',
@@ -74,7 +74,7 @@ export default [
         }
     },
     {
-        input: "src/to_be_generated/api-index.ts",
+        input: "src/to_be_generated/flight-recorder.api-index.ts",
         output: [
             {
                 file: packageJson.main,
@@ -106,7 +106,7 @@ export default [
         },
     },
     {
-        input: "dist/app/to_be_generated/runtime-index.d.ts",
+        input: "dist/app/to_be_generated/flight-recorder.runtime-index.d.ts",
         output: [{
             file: "dist/app/bundle.d.ts",
             format: "esm",
@@ -115,9 +115,9 @@ export default [
         plugins: [dts()],
     },
     {
-        input: "dist/esm/to_be_generated/api-index.d.ts",
+        input: "dist/esm/to_be_generated/flight-recorder.api-index.d.ts",
         output: [{
-            file: "dist/esm/index.d.ts",
+            file: "dist/esm/flight-recorder.index.d.ts",
             format: "esm",
             sourcemap: true,
         }],

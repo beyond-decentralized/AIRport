@@ -15,12 +15,12 @@
   "peerDependencies": {
     "typescript": "^4.5.2"
   },
-  "main": "dist/index.js",
+  "main": "dist/taxiway.index.js",
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "tsc"
   },
-  "types": "dist/index.d.ts"
+  "types": "dist/taxiway.index.d.ts"
 }

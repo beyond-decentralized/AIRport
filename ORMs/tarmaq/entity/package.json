@@ -20,8 +20,8 @@
     "typescript": "^4.5.2",
     "tslib": "^2.0.0"
   },
-  "main": "dist/esm/index.mjs",
-  "module": "dist/esm/index.mjs",
+  "main": "dist/esm/tarmaq.entity.index.mjs",
+  "module": "dist/esm/tarmaq.entity.index.mjs",
   "files": [
     "dist"
   ],
@@ -29,5 +29,5 @@
     "dev": "rollup -c ./rollup.config.js -w",
     "build": "rollup -c ./rollup.config.js"
   },
-  "types": "dist/esm/index.d.ts"
+  "types": "dist/esm/tarmaq.entity.index.d.ts"
 }

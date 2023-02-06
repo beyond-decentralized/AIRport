@@ -12,7 +12,7 @@ const packageJson = require("./package.json");
 
 export default [
     {
-        input: 'src/index.ts',
+        input: 'src/fuel-hydrant-system.index.ts',
         output: [
             {
                 file: packageJson.module,

@@ -36,9 +36,9 @@
     "typescript": "^4.5.2",
     "tslib": "^2.0.0"
   },
-  "main": "dist/esm/index.mjs",
-  "module": "dist/esm/index.mjs",
-  "browser": "dist/esm/index.mjs",
+  "main": "dist/esm/holding-pattern.index.mjs",
+  "module": "dist/esm/holding-pattern.index.mjs",
+  "browser": "dist/esm/holding-pattern.index.mjs",
   "app": "dist/app/bundle.mjs",
   "files": [
     "dist"
@@ -49,5 +49,5 @@
     "prebuild": "node generate.mjs",
     "build": "rollup -c ./rollup.config.js"
   },
-  "types": "dist/esm/index.d.ts"
+  "types": "dist/esm/holding-pattern.index.d.ts"
 }

@@ -2000,7 +2000,8 @@ class KeyUtils {
 }
 
 const groundControl = lib('ground-control');
-groundControl.register(ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, Dictionary, KeyUtils);
+groundControl.register(ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, KeyUtils);
+const DICTIONARY = groundControl.token(Dictionary);
 const ENTITY_STATE_MANAGER = groundControl.token('EntityStateManager');
 const OPERATION_DESERIALIZER = groundControl.token('OperationDeserializer');
 const QUERY_PARAMETER_DESERIALIZER = groundControl.token('QueryParameterDeserializer');
@@ -2017,6 +2018,7 @@ groundControl.setDependencies(AppTrackerUtils, {
 TRANSACTIONAL_CONNECTOR.setDependencies({
     dbApplicationUtils: DbApplicationUtils,
 });
+globalThis.DICTIONARY = DICTIONARY;
 
 function forEach$1(collection, callback) {
     if (collection instanceof Map) {
@@ -4599,8 +4601,6 @@ class ValueOperation extends Operation {
     constructor(category) {
         super(category);
         this.category = category;
-        this.dictionaryToken = globalThis.AIRPORT_DOMAIN
-            .app('ground-control').token('Dictionary');
     }
     equals(lValue, rValue) {
         const rawValueOperation = {
@@ -4614,7 +4614,7 @@ class ValueOperation extends Operation {
     }
     addTrackedRepoIDs(lValue, rValue, rawValueOperation) {
         const dictionary = globalThis.IOC
-            .getSync(this.dictionaryToken);
+            .getSync(globalThis.DICTIONARY);
         if (dictionary.isRepositoryGUIDProperty(lValue.dbProperty)) {
             let trackedRepoGUIDs;
             if (typeof rValue === 'string') {
@@ -26316,6 +26316,7 @@ const APPLICATION = {
     "domain": "airbridge",
     "index": null,
     "name": "@airbridge/keyring",
+    "publicSigningKey": null,
     "sinceVersion": 1,
     "versions": [
         {
@@ -26331,8 +26332,8 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 0,
-                                    "oneTableIndex": 9,
+                                    "oneDbApplication_Index": 0,
+                                    "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -26353,7 +26354,7 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26501,7 +26502,7 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
@@ -26524,7 +26525,7 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 1,
@@ -26547,7 +26548,7 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
+                                    "oneDbApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 2,
@@ -26699,7 +26700,7 @@ const APPLICATION = {
                                 "index": 1
                             },
                             "relationTableIndex": 0,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -26709,8 +26710,8 @@ const APPLICATION = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 9,
-                            "relationTableApplication_Index": 0,
+                            "relationTableIndex": 10,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -26739,8 +26740,8 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplication_Index": 0,
-                                    "oneTableIndex": 9,
+                                    "oneDbApplication_Index": 0,
+                                    "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -26761,7 +26762,7 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": 0,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26992,7 +26993,7 @@ const APPLICATION = {
                                 "index": 1
                             },
                             "relationTableIndex": 0,
-                            "relationTableApplication_Index": 0,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -27002,8 +27003,8 @@ const APPLICATION = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 9,
-                            "relationTableApplication_Index": 0,
+                            "relationTableIndex": 10,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -27034,17 +27035,20 @@ const APPLICATION = {
                     "domain": "airport",
                     "index": 0,
                     "name": "@airport/holding-pattern",
+                    "publicSigningKey": null,
                     "sinceVersion": 1,
                     "versions": [
                         {
                             "entities": null,
                             "integerVersion": 1,
                             "referencedApplications": null,
+                            "signature": null,
                             "versionString": "1.0.0"
                         }
                     ]
                 }
             ],
+            "signature": null,
             "versionString": "1.0.0"
         }
     ]
@@ -27061,7 +27065,7 @@ const BLUEPRINT = [
     APPLICATION
 ];
 
-var index = /*#__PURE__*/Object.freeze({
+var blueprint_index = /*#__PURE__*/Object.freeze({
 	__proto__: null,
 	BLUEPRINT: BLUEPRINT
 });
@@ -27482,7 +27486,7 @@ const Q_airbridge____at_airbridge_slash_keyring = {
     name: '@airbridge/keyring'
 };
 function airbridge____at_airbridge_slash_keyring_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airbridge____at_airbridge_slash_keyring.__dbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airbridge____at_airbridge_slash_keyring.__dbDbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
     globalThis.airApi.setQApp(Q_airbridge____at_airbridge_slash_keyring);
@@ -33764,13 +33768,14 @@ class SqlStoreDriver {
         const domainName = typeof application.domain === 'string'
             ? application.domain
             : application.domain.name;
-        const actorApplication = context.transaction.actor.application;
-        if (!this.appTrackerUtils.isInternalDomain(actorApplication.domain.name)) {
+        const transaction = context.transaction;
+        if (!this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)
+            && !this.appTrackerUtils.isInternalDomain(transaction.actor.application.domain.name)) {
             const entityHasExternalAccessPermissions = this.appTrackerUtils.entityHasExternalAccessPermissions(domainName, application.name, applicationIntegerVersion, table.name);
             if (!entityHasExternalAccessPermissions) {
                 throw new Error(`
-Domain:          ${actorApplication.domain.name}
-Application:     ${actorApplication.name}
+Domain:          ${transaction.actor.application.domain.name}
+Application:     ${transaction.actor.application.name}
 
 has no permissions to access:
 
@@ -35851,7 +35856,7 @@ class DatabaseManager {
         this.transactionalServer.tempActor = null;
     }
     async installStarterApplication(stage, hydrate, context) {
-        const schemasDefinitions = await Promise.resolve().then(function () { return index; });
+        const schemasDefinitions = await Promise.resolve().then(function () { return blueprint_index; });
         const schemas = schemasDefinitions.BLUEPRINT;
         if (stage) {
             await this.applicationInitializer.stage(schemas, context);

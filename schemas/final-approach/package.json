@@ -34,9 +34,9 @@
     "typescript": "^4.5.2",
     "tslib": "^2.0.0"
   },
-  "main": "dist/esm/index.mjs",
-  "module": "dist/esm/index.mjs",
-  "browser": "dist/esm/index.mjs",
+  "main": "dist/esm/final-approach.index.mjs",
+  "module": "dist/esm/final-approach.index.mjs",
+  "browser": "dist/esm/final-approach.index.mjs",
   "app": "dist/app/bundle.mjs",
   "files": [
     "dist"
@@ -47,5 +47,5 @@
     "prebuild": "node generate.mjs",
     "build": "rollup -c ./rollup.config.js"
   },
-  "types": "dist/esm/index.d.ts"
+  "types": "dist/esm/final-approach.index.d.ts"
 }

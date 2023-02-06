@@ -12,7 +12,7 @@ const production = false;
 
 export default [
     {
-        input: "src/index.ts",
+        input: "src/server.index.ts",
         output: [
             {
                 file: packageJson.main,
@@ -32,7 +32,7 @@ export default [
         ],
     },
     {
-        input: "src/index.ts",
+        input: "src/server.index.ts",
         output: [
             {
                 file: packageJson.module,
@@ -53,8 +53,8 @@ export default [
         ],
     },
     {
-        input: "dist/esm/index.d.ts",
-        output: [{ file: "dist/index.d.ts", format: "esm" }],
+        input: "dist/esm/server.index.d.ts",
+        output: [{ file: "dist/server.index.d.ts", format: "esm" }],
         plugins: [dts()],
     },
 ];

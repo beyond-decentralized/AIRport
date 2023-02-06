@@ -11,7 +11,7 @@ const production = !process.env.ROLLUP_WATCH;
 
 export default [
     {
-        input: "src/index.ts",
+        input: "src/api.index.ts",
         output: [
             {
                 file: packageJson.main,
@@ -37,8 +37,8 @@ export default [
         ],
     },
     {
-        input: "dist/esm/index.d.ts",
-        output: [{ file: "dist/index.d.ts", format: "esm" }],
+        input: "dist/esm/api.index.d.ts",
+        output: [{ file: "dist/api.index.d.ts", format: "esm" }],
         plugins: [dts()],
     },
 ];

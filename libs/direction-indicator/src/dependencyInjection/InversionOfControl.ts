@@ -1,7 +1,7 @@
 import { addClasses } from "../classes";
 import { DEPENDENCY_INJECTION } from "./RootContainer";
 import { IDependencyInjectionToken } from "./interfaces/Token";
-import { AUTOPILOT_API_LOADER } from "../injection";
+import { AUTOPILOT_API_LOADER } from "../direction-indicator.injection";
 import { IAutopilotApiLoader } from "../autopilot/IAutopilotApiLoader";
 
 export class InversionOfControl {

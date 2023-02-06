@@ -12,7 +12,7 @@ const packageJson = require("./package.json");
 
 export default [
     {
-        input: 'src/index.ts',
+        input: 'src/web-tower.index.ts',
         output: [
             {
                 file: packageJson.module,

@@ -8,7 +8,7 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 const production = false;
 
 export default {
-	input: 'src/index.ts',
+	input: 'src/vhf-radio.index.ts',
 	output: {
 		sourcemap: true,
 		format: 'iife',

@@ -12,7 +12,7 @@ const packageJson = require("./package.json");
 
 export default [
     {
-        input: 'src/index.ts',
+        input: 'src/aviation-communication.index.ts',
         output: [
             {
                 file: packageJson.module,

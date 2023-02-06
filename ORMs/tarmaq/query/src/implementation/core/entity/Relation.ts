@@ -11,7 +11,7 @@ import { IQAirEntity } from '../../../definition/core/entity/IQEntity'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
 import { QueryLogicalOperation } from '../../../definition/core/operation/ILogicalOperation'
-import { QUERY_UTILS } from '../../../injection'
+import { QUERY_UTILS } from '../../../tarmaq.query.injection'
 import { QEntityUtils } from '../../utils/QEntityUtils'
 import { AND, OR } from '../operation/LogicalOperation'
 

@@ -6,7 +6,7 @@ import {
 	EntityRelationType,
 	JsonObject,
 	SQLDataType
-} from '../../index';
+} from '../../ground-control.index';
 import {
 	DbEntity,
 	DbEntity_TableIndex
