@@ -11,10 +11,6 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 	extends Operation
 	implements IValueOperation<T, JRO, IQF> {
 
-	private dictionaryToken: IDependencyInjectionToken<Dictionary> =
-		globalThis.AIRPORT_DOMAIN
-			.app('ground-control').token('Dictionary')
-
 	constructor(
 		public category: OperationCategory
 	) {
@@ -47,7 +43,7 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		rawValueOperation: JRO
 	): void {
 		const dictionary = (globalThis.IOC as InversionOfControl)
-			.getSync(this.dictionaryToken)
+			.getSync(globalThis.DICTIONARY as IDependencyInjectionToken<Dictionary>)
 
 		if (dictionary.isRepositoryGUIDProperty(lValue.dbProperty)) {
 			let trackedRepoGUIDs: Repository_GUID[]
