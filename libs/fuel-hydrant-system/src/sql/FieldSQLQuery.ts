@@ -11,8 +11,7 @@ import {
 	QueryClauseObjectType,
 	QueryField,
 	QueryResultType,
-	Dictionary,
-	DbEntity
+	Dictionary
 } from '@airport/ground-control'
 import { IQueryUtils, IQueryRelationManager } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
