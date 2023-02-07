@@ -38,12 +38,12 @@ export class QNullFunction
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryFieldClause {
 		return this.rawToQueryOperableFunction(
 			this, columnAliases, forSelectClause,
 			trackedRepoGUIDSet, trackedRepoLocalIdSet,
-			queryUtils, fieldUtils, relationManager)
+			queryUtils, fieldUtils, queryRelationManager)
 	}
 
 }

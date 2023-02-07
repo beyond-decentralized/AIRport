@@ -117,7 +117,7 @@ takeoff.setDependencies(QueryEntityClassCreator, {
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: ApplicationUtils,
     qApplicationBuilderUtils: QApplicationBuilderUtils,
-    relationManager: QueryRelationManager,
+    queryRelationManager: QueryRelationManager,
 })
 
 takeoff.setDependencies(QueryObjectInitializer, {

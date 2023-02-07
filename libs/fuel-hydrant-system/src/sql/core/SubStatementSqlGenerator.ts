@@ -70,13 +70,13 @@ export class SubStatementSqlGenerator
 	qMetadataUtils: IQMetadataUtils
 
 	@Inject()
+	queryRelationManager: IQueryRelationManager
+
+	@Inject()
 	queryUtils: IQueryUtils
 
 	@Inject()
 	qValidator: IValidator
-
-	@Inject()
-	relationManager: IQueryRelationManager
 
 	@Inject()
 	sqlQueryAdapter: ISQLQueryAdaptor
@@ -104,7 +104,7 @@ export class SubStatementSqlGenerator
 			this.entityStateManager,
 			this.qMetadataUtils,
 			this.qValidator,
-			this.relationManager,
+			this.queryRelationManager,
 			this.sqlQueryAdapter,
 			this.storeDriver,
 			this,
@@ -139,7 +139,7 @@ export class SubStatementSqlGenerator
 			this.entityStateManager,
 			this.qMetadataUtils,
 			this.qValidator,
-			this.relationManager,
+			this.queryRelationManager,
 			this.sqlQueryAdapter,
 			this.storeDriver,
 			this,

@@ -54,7 +54,7 @@ export interface QEntityConstructor<IQE extends IQEntity> {
 	new(
 		dbEntity: DbEntity,
 		queryUtils: IQueryUtils,
-		relationManager: IQueryRelationManager,
+		queryRelationManager: IQueryRelationManager,
 		fromClausePosition?: number[],
 		dbRelation?: DbRelation,
 		joinType?: JoinType,
@@ -67,13 +67,13 @@ export interface QEntityConstructor<IQE extends IQEntity> {
 export function QEntity<IEntity, IQE extends IQEntity>(
 	dbEntity: DbEntity,
 	queryUtils: IQueryUtils,
-	relationManager: IQueryRelationManager,
+	queryRelationManager: IQueryRelationManager,
 	fromClausePosition: number[] = [],
 	dbRelation = null,
 	joinType: JoinType = null,
 	QDriver: { new(...args: any[]): IQEntityDriver<IQE> } = globalThis.QEntityDriver
 ) {
-	this.__driver__ = new QDriver(dbEntity, queryUtils, relationManager,
+	this.__driver__ = new QDriver(dbEntity, queryUtils, queryRelationManager,
 		fromClausePosition, dbRelation, joinType, this)
 }
 

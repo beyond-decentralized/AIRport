@@ -98,7 +98,7 @@ export class AirportDatabase
 	qApplicationBuilderUtils: IQApplicationBuilderUtils
 
 	@Inject()
-	relationManager: IQueryRelationManager
+	queryRelationManager: IQueryRelationManager
 
 	@Inject()
 	search: INonEntitySearch
@@ -150,7 +150,7 @@ export class AirportDatabase
 		const applicationFullName = this.dbApplicationUtils
 			.getDbApplication_FullNameFromDomainAndName(domainName, applicationName)
 		return (this.QM[applicationFullName] as QAppInternal)
-			.__dbDbApplication__.currentVersion[0].applicationVersion
+			.__dbApplication__.currentVersion[0].applicationVersion
 	}
 
 	getDbEntity(
@@ -173,11 +173,11 @@ export class AirportDatabase
 			.getDbApplication_FullName(qApplication)
 		const existingQApp = this.QM[fullDbApplication_Name]
 		if (existingQApp) {
-			const dbApplication = existingQApp.__dbDbApplication__
+			const dbApplication = existingQApp.__dbApplication__
 			if (dbApplication) {
-				qApplication.__dbDbApplication__ = dbApplication
+				qApplication.__dbApplication__ = dbApplication
 				this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.qApplications,
-					this.appliationUtils, this.relationManager)
+					this.appliationUtils, this.queryRelationManager)
 				this.Q[dbApplication.index] = qApplication
 			}
 		}

@@ -51,7 +51,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 	/**
 	 protected getFieldKey() {
 		let rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.parentQ.getRootJoinEntity());
-		let key = `${relationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
+		let key = `${queryRelationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
 		return key;
 	}
 	 */
@@ -70,7 +70,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryFieldClause {
 		let alias;
 		if (forSelectClause) {
@@ -86,13 +86,13 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			appliedFunctions: this.appliedFunctionsToJson(
 				this.__appliedFunctions__, columnAliases,
 				trackedRepoGUIDSet, trackedRepoLocalIdSet,
-				queryUtils, fieldUtils, relationManager),
+				queryUtils, fieldUtils, queryRelationManager),
 			applicationIndex: this.dbProperty.entity.applicationVersion._localId,
 			entityIndex: this.dbProperty.entity.index,
 			fieldAlias: alias,
 			propertyIndex: this.dbProperty.index,
 			columnIndex: this.dbColumn.index,
-			tableAlias: relationManager.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
+			tableAlias: queryRelationManager.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
 			objectType: this.objectType,
 			dataType: this.dbColumn.type as SQLDataType
 		};
@@ -134,7 +134,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryFieldClause {
 		let alias;
 		if (forSelectClause) {
@@ -144,7 +144,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			appliedFunctions: this.appliedFunctionsToJson(
 				this.__appliedFunctions__, columnAliases,
 				trackedRepoGUIDSet, trackedRepoLocalIdSet,
-				queryUtils, fieldUtils, relationManager
+				queryUtils, fieldUtils, queryRelationManager
 			),
 			fieldAlias: alias,
 			objectType: this.objectType,
@@ -152,7 +152,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			value: this.valueToJSON(functionObject, columnAliases,
 				false, true,
 				trackedRepoGUIDSet, trackedRepoLocalIdSet,
-				queryUtils, fieldUtils, relationManager)
+				queryUtils, fieldUtils, queryRelationManager)
 		};
 	}
 
@@ -168,7 +168,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryFunctionCall[] {
 		if (!appliedFunctions) {
 			return appliedFunctions;
@@ -177,7 +177,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			return this.functionCallToJson(
 				appliedFunction, columnAliases,
 				trackedRepoGUIDSet, trackedRepoLocalIdSet,
-				queryUtils, fieldUtils, relationManager);
+				queryUtils, fieldUtils, queryRelationManager);
 		});
 	}
 
@@ -188,7 +188,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryFunctionCall {
 		let parameters;
 		if (functionCall.functionParameters) {
@@ -197,7 +197,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 					parameter, columnAliases,
 					false, false,
 					trackedRepoGUIDSet, trackedRepoLocalIdSet,
-					queryUtils, fieldUtils, relationManager);
+					queryUtils, fieldUtils, queryRelationManager);
 			});
 		}
 		return {
@@ -215,7 +215,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): string | QueryFieldClause | QueryField {
 		if (!functionObject) {
 			throw new Error(`Function object must be provided to valueToJSON function.`);
@@ -224,7 +224,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 			return functionObject.toQueryFragment(
 				columnAliases, forSelectClause,
 				trackedRepoGUIDSet, trackedRepoLocalIdSet,
-				queryUtils, fieldUtils, relationManager);
+				queryUtils, fieldUtils, queryRelationManager);
 		}
 
 		let value = (functionObject as IQFunction<any>).value;
@@ -263,7 +263,7 @@ boolean | Date | Date[] | number | number[] | string | string[]
 				.getNextAlias(functionObject as IQFunction<any>)
 		}
 		if (value instanceof QField) {
-			return value.toQueryFragment(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager)
+			return value.toQueryFragment(columnAliases, forSelectClause, queryUtils, fieldUtils, queryRelationManager)
 		}
 		// must be a field sub-query
 		let rawFieldQuery: RawFieldQuery<any> = value

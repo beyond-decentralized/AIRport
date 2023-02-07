@@ -34,7 +34,7 @@ export interface IReadQuery {
 	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): Query;
 }
 

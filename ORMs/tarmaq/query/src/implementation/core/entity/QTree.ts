@@ -58,12 +58,12 @@ export class QTreeDriver
         trackedRepoLocalIdSet: Set<Repository_LocalId>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
-        relationManager: IQueryRelationManager
+        queryRelationManager: IQueryRelationManager
     ): QueryViewJoinRelation {
         queryRelation = <QueryViewJoinRelation>super.getJoinRelationQuery(
             queryRelation, columnAliases,
             trackedRepoGUIDSet, trackedRepoLocalIdSet,
-            queryUtils, fieldUtils, relationManager)
+            queryUtils, fieldUtils, queryRelationManager)
         queryRelation.relationType = QueryRelationType.SUB_QUERY_JOIN_ON
         queryRelation.subQuery =
             // Removes circular dependency at code initialization time 
@@ -71,7 +71,7 @@ export class QTreeDriver
                 globalThis.ENTITY_UTILS as IDependencyInjectionToken<IEntityUtils>
             ).getTreeQuery(
                 this.subQuery, columnAliases.entityAliases)
-                .toQuery(queryUtils, fieldUtils, relationManager)
+                .toQuery(queryUtils, fieldUtils, queryRelationManager)
 
         return queryRelation
     }
@@ -83,12 +83,12 @@ export class QTreeDriver
         trackedRepoLocalIdSet: Set<Repository_LocalId>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
-        relationManager: IQueryRelationManager
+        queryRelationManager: IQueryRelationManager
     ): QueryViewJoinRelation {
         queryRelation = <QueryViewJoinRelation>super.getJoinRelationQuery(
             queryRelation, columnAliases,
             trackedRepoGUIDSet, trackedRepoLocalIdSet,
-            queryUtils, fieldUtils, relationManager)
+            queryUtils, fieldUtils, queryRelationManager)
         queryRelation.relationType = QueryRelationType.SUB_QUERY_ROOT
         queryRelation.subQuery =
             // Removes circular dependency at code initialization time 
@@ -96,7 +96,7 @@ export class QTreeDriver
                 globalThis.ENTITY_UTILS as IDependencyInjectionToken<IEntityUtils>
             ).getTreeQuery(
                 this.subQuery, columnAliases.entityAliases)
-                .toQuery(queryUtils, fieldUtils, relationManager)
+                .toQuery(queryUtils, fieldUtils, queryRelationManager)
 
         return queryRelation
     }

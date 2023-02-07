@@ -58,6 +58,9 @@ export class QueryUtils
 	implements IQueryUtils {
 
 	@Inject()
+	airEntityUtils: IAirEntityUtils
+
+	@Inject()
 	airportDatabase: IAirportDatabase
 
 	@Inject()
@@ -77,9 +80,6 @@ export class QueryUtils
 
 	@Inject()
 	queryRelationManager: IQueryRelationManager
-
-	@Inject()
-	airEntityUtils: IAirEntityUtils
 
 	equals<Entity extends IAirEntity, IQ extends IQAirEntity>(
 		entityOrId: Entity | IQAirEntity

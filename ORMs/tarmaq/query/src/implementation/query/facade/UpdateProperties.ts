@@ -3,11 +3,11 @@ import {
 	DbProperty,
 	DbRelation,
 	EntityRelationType,
-	QueryBaseOperation,
 	QueryEntityRelation,
 	QueryUpdateColumns,
 	QueryUpdate,
-	Repository_GUID
+	Repository_GUID,
+	QueryBaseClause
 } from '@airport/ground-control'
 import {
 	IEntityUpdateProperties,
@@ -18,6 +18,7 @@ import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRel
 import { RawUpdate } from '../../../definition/query/facade/RawUpdate'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
+import { QField } from '../../../tarmaq.query.index'
 import { wrapPrimitive } from '../../core/field/wrapperFunctions'
 import { AbstractUpdate } from './AbstractUpdate'
 
@@ -39,15 +40,15 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryUpdate<QueryUpdateColumns> {
 		return {
 			UPDATE: <QueryEntityRelation>(<IQEntityInternal><any>this.rawUpdate.UPDATE)
 				.__driver__.getQueryRelation(
 					this.columnAliases,
 					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
-					queryUtils, fieldUtils, relationManager),
-			SELECT: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
+					queryUtils, fieldUtils, queryRelationManager),
+			SELECT: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, queryRelationManager),
 			WHERE: queryUtils.whereClauseToQueryOperation(
 				this.rawUpdate.WHERE, this.columnAliases,
 				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
@@ -58,27 +59,27 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 		rawSet: IEUP,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryUpdateColumns {
-		const querySetClause: { [columnName: string]: QueryBaseOperation } = {}
+		const querySetClause: { [columnName: string]: QueryBaseClause } = {}
 		const dbEntity = (<IQEntityInternal><any>this.rawUpdate.UPDATE).__driver__.dbEntity
 		const dbPropertyMap = dbEntity.propertyMap
 
 		this.rawToQuerySetEntityFragments(rawSet, querySetClause, [],
-			dbPropertyMap, [], queryUtils, fieldUtils, relationManager)
+			dbPropertyMap, [], queryUtils, fieldUtils, queryRelationManager)
 
 		return querySetClause
 	}
 
 	private rawToQuerySetEntityFragments(
 		rawSetFragment: IEUP,
-		querySetClause: { [columnName: string]: QueryBaseOperation },
+		querySetClause: { [columnName: string]: QueryBaseClause },
 		dbPropertyChain: DbProperty[],
 		dbPropertyMap: { [name: string]: DbProperty },
 		childDbRelationChain: DbRelation[],
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): void {
 		const isTopLevelFragment = !dbPropertyMap.length
 		for (const propertyName in rawSetFragment) {
@@ -116,25 +117,25 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 
 			this.rawToQuerySetFragment(rawSetFragment, querySetClause,
 				childDbPropertyChain, propertyName, childDbRelationChain,
-				queryUtils, fieldUtils, relationManager)
+				queryUtils, fieldUtils, queryRelationManager)
 		}
 
 	}
 
 	private rawToQuerySetFragment(
 		rawSetFragment: IEUP,
-		querySetClause: { [columnName: string]: QueryBaseOperation },
+		querySetClause: { [columnName: string]: QueryBaseClause },
 		dbPropertyChain: DbProperty[],
 		propertyName: string,
 		dbRelationChain: DbRelation[],
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): void {
 		const dbProperty: DbProperty = dbPropertyChain[dbPropertyChain.length - 1]
 		const dbEntity = dbProperty.entity
 
-		let value = rawSetFragment[propertyName]
+		let value: QField<any> = rawSetFragment[propertyName]
 		if (value === undefined) {
 			delete rawSetFragment[propertyName]
 			return
@@ -183,7 +184,10 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 				`)
 				}
 				querySetClause[dbColumn.name] = value.toQueryFragment(
-					this.columnAliases, false, queryUtils, fieldUtils, relationManager)
+					this.columnAliases, false,
+					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
+					queryUtils, fieldUtils,
+					queryRelationManager)
 				return
 			}
 		}
@@ -198,14 +202,14 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 				switch (dbRelation.relationType) {
 					case EntityRelationType.MANY_TO_ONE: {
 						this.rawToQuerySetEntityFragments(
-							value,
+							value as any,
 							querySetClause,
 							dbPropertyChain,
 							dbRelation.relationEntity.propertyMap,
 							childDbRelationChain,
 							queryUtils,
 							fieldUtils,
-							relationManager
+							queryRelationManager
 						)
 						break
 					}

@@ -4384,8 +4384,8 @@ class FieldColumnAliases extends AliasMap {
     }
 }
 
-function QEntity(dbEntity, queryUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = globalThis.QEntityDriver) {
-    this.__driver__ = new QDriver(dbEntity, queryUtils, relationManager, fromClausePosition, dbRelation, joinType, this);
+function QEntity(dbEntity, queryUtils, queryRelationManager, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = globalThis.QEntityDriver) {
+    this.__driver__ = new QDriver(dbEntity, queryUtils, queryRelationManager, fromClausePosition, dbRelation, joinType, this);
 }
 QEntity.prototype.FULL_JOIN = function (right) {
     return this.__driver__.join(right, JoinType.FULL_JOIN);
@@ -4473,11 +4473,11 @@ class LogicalOperation extends Operation {
  * When calling:
  *   Q...Relation.base.constructor.call(this, relation, qEntity)
  */
-function QRelation(dbRelation, parentQ, applicationUtils, relationManager) {
+function QRelation(dbRelation, parentQ, applicationUtils, queryRelationManager) {
     this.dbRelation = dbRelation;
     this.parentQ = parentQ;
     this.applicationUtils = applicationUtils;
-    this.relationManager = relationManager;
+    this.queryRelationManager = queryRelationManager;
 }
 QRelation.prototype.INNER_JOIN = function () {
     const newQEntity = this.getNewQEntity(JoinType.INNER_JOIN);
@@ -4518,17 +4518,17 @@ QRelation.prototype.nullOrNot = function (isNull) {
 QRelation.prototype.getNewQEntity = function (joinType) {
     const dbEntity = this.dbRelation.relationEntity;
     const qEntityConstructor = this.applicationUtils.getQEntityConstructor(this.dbRelation.relationEntity);
-    let newQEntity = new qEntityConstructor(dbEntity, this.applicationUtils, this.relationManager, this.relationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType, this.applicationUtils, this.relationManager);
+    let newQEntity = new qEntityConstructor(dbEntity, this.applicationUtils, this.queryRelationManager, this.queryRelationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType, this.applicationUtils, this.queryRelationManager);
     newQEntity.__driver__.parentJoinEntity = this.parentQ;
     return newQEntity;
 };
-function QAirEntityRelation(dbRelation, parentQ, applicationUtils, relationManager) {
-    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, relationManager);
+function QAirEntityRelation(dbRelation, parentQ, applicationUtils, queryRelationManager) {
+    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, queryRelationManager);
 }
 const qAirEntityRelationMethods = {};
 extend(QRelation, QAirEntityRelation, qAirEntityRelationMethods);
-function QManyToOneAirEntityRelation(dbRelation, parentQ, applicationUtils, relationManager) {
-    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, relationManager);
+function QManyToOneAirEntityRelation(dbRelation, parentQ, applicationUtils, queryRelationManager) {
+    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, queryRelationManager);
 }
 const qManyToOneAirEntityRelationMethods = {
     equals: function (entity) {
@@ -4539,8 +4539,8 @@ const qManyToOneAirEntityRelationMethods = {
     }
 };
 extend(QAirEntityRelation, QManyToOneAirEntityRelation, qManyToOneAirEntityRelationMethods);
-function QManyToOneInternalRelation(dbRelation, parentQ, applicationUtils, relationManager) {
-    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, relationManager);
+function QManyToOneInternalRelation(dbRelation, parentQ, applicationUtils, queryRelationManager) {
+    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, queryRelationManager);
 }
 const qManyToOneInternalRelationMethods = {
     equals: function (entityId) {
@@ -4747,7 +4747,7 @@ class QField {
     /**
      protected getFieldKey() {
         let rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.parentQ.getRootJoinEntity());
-        let key = `${relationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
+        let key = `${queryRelationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
         return key;
     }
      */
@@ -4756,7 +4756,7 @@ class QField {
         appliedField.__appliedFunctions__.push(sqlFunctionCall);
         return appliedField;
     }
-    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
@@ -4769,13 +4769,13 @@ class QField {
             rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.q.__driver__.getRootJoinEntity());
         }
         let queryFieldClause = {
-            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
+            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager),
             applicationIndex: this.dbProperty.entity.applicationVersion._localId,
             entityIndex: this.dbProperty.entity.index,
             fieldAlias: alias,
             propertyIndex: this.dbProperty.index,
             columnIndex: this.dbColumn.index,
-            tableAlias: relationManager.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
+            tableAlias: queryRelationManager.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
             objectType: this.objectType,
             dataType: this.dbColumn.type
         };
@@ -4796,36 +4796,36 @@ class QField {
         appliedField.__fieldSubQuery__ = subQuery;
         return appliedField;
     }
-    rawToQueryOperableFunction(functionObject, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+    rawToQueryOperableFunction(functionObject, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
         }
         return {
-            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
+            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager),
             fieldAlias: alias,
             objectType: this.objectType,
             dataType: this.dbColumn.type,
-            value: this.valueToJSON(functionObject, columnAliases, false, true, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager)
+            value: this.valueToJSON(functionObject, columnAliases, false, true, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager)
         };
     }
     copyFunctions(field) {
         field.__appliedFunctions__ = this.__appliedFunctions__.slice();
         return field;
     }
-    appliedFunctionsToJson(appliedFunctions, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+    appliedFunctionsToJson(appliedFunctions, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
         if (!appliedFunctions) {
             return appliedFunctions;
         }
         return appliedFunctions.map((appliedFunction) => {
-            return this.functionCallToJson(appliedFunction, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+            return this.functionCallToJson(appliedFunction, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         });
     }
-    functionCallToJson(functionCall, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+    functionCallToJson(functionCall, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
         let parameters;
         if (functionCall.functionParameters) {
             parameters = functionCall.functionParameters.map((parameter) => {
-                return this.valueToJSON(parameter, columnAliases, false, false, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+                return this.valueToJSON(parameter, columnAliases, false, false, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
             });
         }
         return {
@@ -4833,12 +4833,12 @@ class QField {
             functionParameters: parameters
         };
     }
-    valueToJSON(functionObject, columnAliases, forSelectClause, fromFunctionObject, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+    valueToJSON(functionObject, columnAliases, forSelectClause, fromFunctionObject, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
         if (!functionObject) {
             throw new Error(`Function object must be provided to valueToJSON function.`);
         }
         if (!fromFunctionObject && functionObject instanceof QField) {
-            return functionObject.toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+            return functionObject.toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         }
         let value = functionObject.value;
         switch (typeof value) {
@@ -4879,7 +4879,7 @@ boolean | Date | Date[] | number | number[] | string | string[]
                 .getNextAlias(functionObject as IQFunction<any>)
         }
         if (value instanceof QField) {
-            return value.toQueryFragment(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager)
+            return value.toQueryFragment(columnAliases, forSelectClause, queryUtils, fieldUtils, queryRelationManager)
         }
         // must be a field sub-query
         let rawFieldQuery: RawFieldQuery<any> = value
@@ -4973,8 +4973,8 @@ class QBooleanFunction extends QBooleanField {
     getInstance() {
         return this.copyFunctions(new QBooleanFunction(this.value));
     }
-    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        let queryFieldClause = this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
+        let queryFieldClause = this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = queryFieldClause.value;
         }
@@ -5008,8 +5008,8 @@ class QDateFunction extends QDateField {
     getInstance() {
         return this.copyFunctions(new QDateFunction(this.value, this.isQueryParameter));
     }
-    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        let queryFieldClause = this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
+        let queryFieldClause = this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = queryFieldClause.value;
         }
@@ -5052,8 +5052,8 @@ class QNumberFunction extends QNumberField {
     getInstance() {
         return this.copyFunctions(new QNumberFunction(this.value, this.isQueryParameter));
     }
-    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        let queryFieldClause = this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
+        let queryFieldClause = this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = queryFieldClause.value;
         }
@@ -5113,8 +5113,8 @@ class QStringFunction extends QStringField {
     getInstance() {
         return this.copyFunctions(new QStringFunction(this.value, this.isQueryParameter));
     }
-    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        let queryFieldClause = this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
+        let queryFieldClause = this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = queryFieldClause.value;
         }
@@ -5184,7 +5184,7 @@ class QEntityUtils {
                 throw new Error(`Unsupported data type for property ${entity.applicationVersion.application.name}.${entity.name}.${property.name}`);
         }
     }
-    getQRelation(entity, property, q, allQApps, applicationUtils, relationManager) {
+    getQRelation(entity, property, q, allQApps, applicationUtils, queryRelationManager) {
         const relation = property.relation[0];
         switch (relation.relationType) {
             case EntityRelationType.MANY_TO_ONE:
@@ -5192,13 +5192,13 @@ class QEntityUtils {
                 const relationApplication = relationEntity.applicationVersion.application;
                 const qIdRelationConstructor = allQApps[relationApplication.index]
                     .__qIdRelationConstructors__[relationEntity.index];
-                return new qIdRelationConstructor(relation.relationEntity, relation, q, applicationUtils, relationManager);
+                return new qIdRelationConstructor(relation.relationEntity, relation, q, applicationUtils, queryRelationManager);
             case EntityRelationType.ONE_TO_MANY:
                 if (entity.isAirEntity) {
-                    return new QAirEntityOneToManyRelation(relation, q, applicationUtils, relationManager);
+                    return new QAirEntityOneToManyRelation(relation, q, applicationUtils, queryRelationManager);
                 }
                 else {
-                    return new QOneToManyRelation(relation, q, applicationUtils, relationManager);
+                    return new QOneToManyRelation(relation, q, applicationUtils, queryRelationManager);
                 }
             default:
                 throw new Error(`Unknown EntityRelationType: ${relation.relationType}.`);
@@ -5206,13 +5206,13 @@ class QEntityUtils {
     }
     getQEntityConstructor(allQApps) {
         // ChildQEntity refers to the constructor
-        var ChildQEntity = function (entity, applicationUtils, relationManager, nextChildJoinPosition, dbRelation, joinType) {
-            ChildQEntity.base.constructor.call(this, entity, applicationUtils, relationManager, nextChildJoinPosition, dbRelation, joinType);
+        var ChildQEntity = function (entity, applicationUtils, queryRelationManager, nextChildJoinPosition, dbRelation, joinType) {
+            ChildQEntity.base.constructor.call(this, entity, applicationUtils, queryRelationManager, nextChildJoinPosition, dbRelation, joinType);
             const qEntityUtils = IOC.getSync(QEntityUtils);
             entity.properties.forEach((property) => {
                 let qFieldOrRelation;
                 if (property.relation && property.relation.length) {
-                    qFieldOrRelation = qEntityUtils.getQRelation(entity, property, this, allQApps, applicationUtils, relationManager);
+                    qFieldOrRelation = qEntityUtils.getQRelation(entity, property, this, allQApps, applicationUtils, queryRelationManager);
                     for (const propertyColumn of property.propertyColumns) {
                         qEntityUtils.addColumnQField(entity, property, this, propertyColumn.column);
                     }
@@ -5243,8 +5243,8 @@ class QEntityUtils {
         return qFieldOrRelation;
     }
     getQEntityIdRelationConstructor(dbEntity) {
-        function QEntityIdRelation(entity, relation, qEntity, appliationUtils, relationManager) {
-            QEntityIdRelation.base.constructor.call(this, relation, qEntity, appliationUtils, relationManager);
+        function QEntityIdRelation(entity, relation, qEntity, appliationUtils, queryRelationManager) {
+            QEntityIdRelation.base.constructor.call(this, relation, qEntity, appliationUtils, queryRelationManager);
             const qEntityUtils = IOC.getSync(QEntityUtils);
             qEntityUtils.getQEntityIdFields(this, entity, qEntity, relation.property);
             // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
@@ -5417,10 +5417,10 @@ class JoinFields {
 }
 
 class QEntityDriver {
-    constructor(dbEntity, queryUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, qEntity) {
+    constructor(dbEntity, queryUtils, queryRelationManager, fromClausePosition = [], dbRelation = null, joinType = null, qEntity) {
         this.dbEntity = dbEntity;
         this.queryUtils = queryUtils;
-        this.relationManager = relationManager;
+        this.queryRelationManager = queryRelationManager;
         this.fromClausePosition = fromClausePosition;
         this.dbRelation = dbRelation;
         this.joinType = joinType;
@@ -5436,7 +5436,7 @@ class QEntityDriver {
     getInstance() {
         const qEntityConstructor = this.queryUtils
             .getQEntityConstructor(this.dbEntity);
-        let instance = new qEntityConstructor(this.dbEntity, this.queryUtils, this.relationManager, this.fromClausePosition, this.dbRelation, this.joinType);
+        let instance = new qEntityConstructor(this.dbEntity, this.queryUtils, this.queryRelationManager, this.fromClausePosition, this.dbRelation, this.joinType);
         instance.__driver__.currentChildIndex = this.currentChildIndex;
         instance.__driver__.joinWhereClause = this.joinWhereClause;
         instance.__driver__.entityFieldMap = this.entityFieldMap;
@@ -5461,7 +5461,7 @@ class QEntityDriver {
         return QMetadataUtils.getRelationPropertyName(QMetadataUtils.getRelationByIndex(this.qEntity, this.relationIndex));
     }
 */
-    getQueryRelation(columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+    getQueryRelation(columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
         // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
         // see ApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
         let QueryRelation = {
@@ -5474,17 +5474,17 @@ class QEntityDriver {
             applicationIndex: this.dbEntity.applicationVersion.application.index
         };
         if (this.joinWhereClause) {
-            this.getJoinRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+            this.getJoinRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         }
         else if (this.dbRelation) {
             this.getEntityRelationQuery(QueryRelation);
         }
         else {
-            this.getRootRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+            this.getRootRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         }
         return QueryRelation;
     }
-    getJoinRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+    getJoinRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
         QueryRelation.relationType = QueryRelationType.ENTITY_JOIN_ON;
         QueryRelation.joinWhereClause = queryUtils.whereClauseToQueryOperation(this.joinWhereClause, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
         return QueryRelation;
@@ -5516,7 +5516,7 @@ class QEntityDriver {
         // QueryRelation.joinWhereClauseOperator   = this.dbRelation.joinFunctionWithOperator;  return
         // QueryRelation;
     }
-    getRootRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
+    getRootRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
         QueryRelation.relationType = globalThis.IOC
             .getSync(globalThis.ENTITY_UTILS)
             // Removes circular dependency at code initialization time 
@@ -5530,7 +5530,7 @@ class QEntityDriver {
         let joinChild = right
             .__driver__.getInstance();
         joinChild.__driver__.currentChildIndex = 0;
-        let nextChildPosition = this.relationManager.getNextChildJoinPosition(this);
+        let nextChildPosition = this.queryRelationManager.getNextChildJoinPosition(this);
         joinChild.__driver__.fromClausePosition = nextChildPosition;
         joinChild.__driver__.joinType = joinType;
         joinChild.__driver__.parentJoinEntity = this.qEntity;
@@ -5626,22 +5626,22 @@ class QTreeDriver extends QEntityDriver {
     // getRelationPropertyName(): string {
     // 	throw new Error(`not implemented`);
     // }
-    getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        queryRelation = super.getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+    getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
+        queryRelation = super.getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         queryRelation.relationType = QueryRelationType.SUB_QUERY_JOIN_ON;
         queryRelation.subQuery =
             // Removes circular dependency at code initialization time 
             globalThis.IOC.getSync(globalThis.ENTITY_UTILS).getTreeQuery(this.subQuery, columnAliases.entityAliases)
-                .toQuery(queryUtils, fieldUtils, relationManager);
+                .toQuery(queryUtils, fieldUtils, queryRelationManager);
         return queryRelation;
     }
-    getRootRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        queryRelation = super.getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+    getRootRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
+        queryRelation = super.getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         queryRelation.relationType = QueryRelationType.SUB_QUERY_ROOT;
         queryRelation.subQuery =
             // Removes circular dependency at code initialization time 
             globalThis.IOC.getSync(globalThis.ENTITY_UTILS).getTreeQuery(this.subQuery, columnAliases.entityAliases)
-                .toQuery(queryUtils, fieldUtils, relationManager);
+                .toQuery(queryUtils, fieldUtils, queryRelationManager);
         return queryRelation;
     }
 }
@@ -5657,8 +5657,8 @@ class QNullFunction extends QField {
     getInstance() {
         return this.copyFunctions(new QNullFunction());
     }
-    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager) {
-        return this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+    toQueryFragment(columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
+        return this.rawToQueryOperableFunction(this, columnAliases, forSelectClause, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
     }
 }
 
@@ -6184,8 +6184,8 @@ class AbstractQuery {
     ) {
         return this.entityAliases.getParams().getParameters();
     }
-    getNonEntityQuery(rawQuery, queryNonEntity, createSelectCallback, queryUtils, fieldUtils, relationManager) {
-        let from = this.rawToQueryFromClause(rawQuery.FROM, queryUtils, fieldUtils, relationManager);
+    getNonEntityQuery(rawQuery, queryNonEntity, createSelectCallback, queryUtils, fieldUtils, queryRelationManager) {
+        let from = this.rawToQueryFromClause(rawQuery.FROM, queryUtils, fieldUtils, queryRelationManager);
         queryNonEntity.FROM = from;
         if (createSelectCallback) {
             createSelectCallback(queryNonEntity);
@@ -6198,7 +6198,7 @@ class AbstractQuery {
         queryNonEntity.OFFSET = rawQuery.OFFSET;
         return queryNonEntity;
     }
-    rawToQueryFromClause(fromClause, queryUtils, fieldUtils, relationManager) {
+    rawToQueryFromClause(fromClause, queryUtils, fieldUtils, queryRelationManager) {
         if (!fromClause) {
             if (this.isEntityQuery) {
                 return [];
@@ -6217,7 +6217,7 @@ class AbstractQuery {
                 }
             }
             return fromEntity.__driver__
-                .getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+                .getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         });
     }
     groupByClauseToQuery(groupBy) {
@@ -6276,7 +6276,7 @@ class AbstractInsertValues extends AbstractQuery {
 				Entity: ${dbColumn.entity.name}`);
         }
     }
-    rawToQueryValuesClause(valueSets, dbColumns, queryUtils, fieldUtils, relationManager) {
+    rawToQueryValuesClause(valueSets, dbColumns, queryUtils, fieldUtils, queryRelationManager) {
         // let currentValueIndex = -1;
         // this.values           = [];
         return valueSets.map((valueSet, rowIndex) => {
@@ -6290,7 +6290,7 @@ class AbstractInsertValues extends AbstractQuery {
                     // return ++currentValueIndex;
                 }
                 else {
-                    return value.toQueryFragment(this.columnAliases, false, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+                    return value.toQueryFragment(this.columnAliases, false, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
                 }
             });
         });
@@ -6302,11 +6302,11 @@ class AbstractUpdate extends AbstractQuery {
         super(entityAliases, entityAliases.getNewFieldColumnAliases());
         this.rawUpdate = rawUpdate;
     }
-    toQuery(queryUtils, fieldUtils, relationManager) {
+    toQuery(queryUtils, fieldUtils, queryRelationManager) {
         return {
             UPDATE: this.rawUpdate.UPDATE
-                .__driver__.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
-            SELECT: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
+                .__driver__.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager),
+            SELECT: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, queryRelationManager),
             WHERE: queryUtils.whereClauseToQueryOperation(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
         };
     }
@@ -6320,10 +6320,10 @@ class Delete extends AbstractQuery {
         super(entityAliases, entityAliases.getNewFieldColumnAliases());
         this.rawDelete = rawDelete;
     }
-    toQuery(queryUtils, fieldUtils, relationManager) {
+    toQuery(queryUtils, fieldUtils, queryRelationManager) {
         return {
             DELETE_FROM: this.rawDelete.DELETE_FROM
-                .__driver__.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
+                .__driver__.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager),
             WHERE: queryUtils.whereClauseToQueryOperation(this.rawDelete.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
         };
     }
@@ -6338,17 +6338,17 @@ class DistinguishableQuery extends AbstractQuery {
         super(entityAliases, entityAliases.getNewFieldColumnAliases(), trackedRepoGUIDSet, trackedRepoLidSet);
         this.isHierarchicalEntityQuery = false;
     }
-    rawToQuerySelectClause(rawSelect, queryUtils, fieldUtils, relationManager) {
+    rawToQuerySelectClause(rawSelect, queryUtils, fieldUtils, queryRelationManager) {
         if (rawSelect instanceof QDistinctFunction) {
             if (this.isHierarchicalEntityQuery) {
                 throw new Error(`Distinct cannot be used in SELECT of Hierarchical/Bridged Entity queries.`);
             }
             let rawInnerSelect = rawSelect.getSelectClause();
-            let innerSelect = this.rawToQueryNonDistinctSelectClause(rawInnerSelect, queryUtils, fieldUtils, relationManager);
+            let innerSelect = this.rawToQueryNonDistinctSelectClause(rawInnerSelect, queryUtils, fieldUtils, queryRelationManager);
             return rawSelect.toQueryFragment(innerSelect);
         }
         else {
-            return this.rawToQueryNonDistinctSelectClause(rawSelect, queryUtils, fieldUtils, relationManager);
+            return this.rawToQueryNonDistinctSelectClause(rawSelect, queryUtils, fieldUtils, queryRelationManager);
         }
     }
 }
@@ -6361,7 +6361,7 @@ const FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE = `Entity SELECT clauses can only con
  * A query whose SELECT facade is a collection of properties.
  */
 class MappableQuery extends DistinguishableQuery {
-    rawToQueryNonDistinctSelectClause(rawSelect, queryUtils, fieldUtils, relationManager) {
+    rawToQueryNonDistinctSelectClause(rawSelect, queryUtils, fieldUtils, queryRelationManager) {
         let select = {};
         for (let property in rawSelect) {
             let value = rawSelect[property];
@@ -6373,7 +6373,7 @@ class MappableQuery extends DistinguishableQuery {
                 // In that case the last one will set the alias for all of them.
                 // Because the alias only matters for GROUP_BY and ORDER_BY
                 // that is OK.
-                select[property] = value.toQueryFragment(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+                select[property] = value.toQueryFragment(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
             }
             else if (value instanceof QOneToManyRelation
                 || value instanceof QAirEntityOneToManyRelation) {
@@ -6396,7 +6396,7 @@ class MappableQuery extends DistinguishableQuery {
                             }
                             else {
                                 isChildObject = true;
-                                select[property] = this.rawToQueryNonDistinctSelectClause(value, queryUtils, fieldUtils, relationManager);
+                                select[property] = this.rawToQueryNonDistinctSelectClause(value, queryUtils, fieldUtils, queryRelationManager);
                             }
                     }
                 }
@@ -6421,10 +6421,10 @@ class EntityQuery extends MappableQuery {
         this.isEntityQuery = true;
         this.isHierarchicalEntityQuery = true;
     }
-    toQuery(queryUtils, fieldUtils, relationManager) {
+    toQuery(queryUtils, fieldUtils, queryRelationManager) {
         return {
-            SELECT: this.rawToQuerySelectClause(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager),
-            FROM: this.rawToQueryFromClause(this.rawQuery.FROM, queryUtils, fieldUtils, relationManager),
+            SELECT: this.rawToQuerySelectClause(this.rawQuery.SELECT, queryUtils, fieldUtils, queryRelationManager),
+            FROM: this.rawToQueryFromClause(this.rawQuery.FROM, queryUtils, fieldUtils, queryRelationManager),
             forUpdate: this.rawQuery.FOR_UPDATE,
             WHERE: queryUtils.whereClauseToQueryOperation(this.rawQuery.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet),
             ORDER_BY: this.orderByClauseToQuery(this.rawQuery.ORDER_BY)
@@ -6457,8 +6457,8 @@ class LimitedEntityQuery extends EntityQuery {
         this.rawQuery = rawQuery;
         this.isHierarchicalEntityQuery = false;
     }
-    toQuery(queryUtils, fieldUtils, relationManager) {
-        let queryEntityLimited = super.toQuery(queryUtils, fieldUtils, relationManager);
+    toQuery(queryUtils, fieldUtils, queryRelationManager) {
+        let queryEntityLimited = super.toQuery(queryUtils, fieldUtils, queryRelationManager);
         queryEntityLimited.LIMIT = this.rawQuery.LIMIT;
         queryEntityLimited.OFFSET = this.rawQuery.OFFSET;
         return queryEntityLimited;
@@ -6478,23 +6478,23 @@ class FieldQuery extends DistinguishableQuery {
         super(entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
         this.rawQuery = rawQuery;
     }
-    rawToQueryNonDistinctSelectClause(rawSelect, queryUtils, fieldUtils, relationManager) {
+    rawToQueryNonDistinctSelectClause(rawSelect, queryUtils, fieldUtils, queryRelationManager) {
         if (!(this.rawQuery.SELECT instanceof QField)) {
             throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
         }
         this.columnAliases.entityAliases.getNextAlias(this.rawQuery.SELECT.q.__driver__.getRootJoinEntity());
-        const queryClauseField = this.rawQuery.SELECT.toQueryFragment(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+        const queryClauseField = this.rawQuery.SELECT.toQueryFragment(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         return queryClauseField;
     }
-    toQuery(queryUtils, fieldUtils, relationManager) {
-        let select = this.rawToQuerySelectClause(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager);
+    toQuery(queryUtils, fieldUtils, queryRelationManager) {
+        let select = this.rawToQuerySelectClause(this.rawQuery.SELECT, queryUtils, fieldUtils, queryRelationManager);
         let queryField = {
             SELECT: select,
             forUpdate: this.rawQuery.FOR_UPDATE,
             objectType: QueryClauseObjectType.FIELD_QUERY,
             dataType: this.getClauseDataType()
         };
-        return this.getNonEntityQuery(this.rawQuery, queryField, null, queryUtils, fieldUtils, relationManager);
+        return this.getNonEntityQuery(this.rawQuery, queryField, null, queryUtils, fieldUtils, queryRelationManager);
     }
     getClauseDataType() {
         let selectField = this.rawQuery.SELECT;
@@ -6524,9 +6524,9 @@ class FieldQuery extends DistinguishableQuery {
 
 // FIXME: add support for a full blown INSERT VALUES, with expression support for VALUES
 class InsertColumnValues extends AbstractInsertValues {
-    toQuery(queryUtils, fieldUtils, relationManager) {
+    toQuery(queryUtils, fieldUtils, queryRelationManager) {
         const entityDriver = this.rawInsertValues.INSERT_INTO.__driver__;
-        const insertInto = entityDriver.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+        const insertInto = entityDriver.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         const columnMap = entityDriver.dbEntity.columnMap;
         const dbColumns = [];
         const columnIndexes = this.columnIndexes ? this.columnIndexes : this.rawInsertValues.columns.map((columnName) => {
@@ -6538,7 +6538,7 @@ class InsertColumnValues extends AbstractInsertValues {
         return {
             INSERT_INTO: insertInto,
             COLUMNS: columnIndexes,
-            VALUES: this.rawToQueryValuesClause(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager)
+            VALUES: this.rawToQueryValuesClause(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, queryRelationManager)
         };
     }
 }
@@ -6548,10 +6548,10 @@ class InsertColumnValues extends AbstractInsertValues {
  */
 // FIXME: add support for a full blown INSERT VALUES, with expression support for VALUES
 class InsertValues extends AbstractInsertValues {
-    toQuery(queryUtils, fieldUtils, relationManager) {
+    toQuery(queryUtils, fieldUtils, queryRelationManager) {
         const driver = this.rawInsertValues.INSERT_INTO
             .__driver__;
-        const insertInto = driver.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+        const insertInto = driver.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         const dbColumns = [];
         let columnIndexes;
         if (this.columnIndexes) {
@@ -6573,7 +6573,7 @@ class InsertValues extends AbstractInsertValues {
         return {
             INSERT_INTO: insertInto,
             COLUMNS: columnIndexes,
-            VALUES: this.rawToQueryValuesClause(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager)
+            VALUES: this.rawToQueryValuesClause(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, queryRelationManager)
         };
     }
 }
@@ -6586,7 +6586,7 @@ class SheetQuery extends DistinguishableQuery {
         super(new EntityAliases(), trackedRepoGUIDSet, trackedRepoLocalIdSet);
         this.rawQuery = rawQuery;
     }
-    rawToQueryNonDistinctSelectClause(rawSelect, queryUtils, fieldUtils, relationManager) {
+    rawToQueryNonDistinctSelectClause(rawSelect, queryUtils, fieldUtils, queryRelationManager) {
         if (!(rawSelect instanceof Array)) {
             throw new Error(`Flat Queries an array of fields in SELECT clause.`);
         }
@@ -6595,17 +6595,17 @@ class SheetQuery extends DistinguishableQuery {
                 throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
             }
             this.columnAliases.entityAliases.getNextAlias(selectField.q.__driver__.getRootJoinEntity());
-            const queryFieldClause = selectField.toQueryFragment(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+            const queryFieldClause = selectField.toQueryFragment(this.columnAliases, true, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
             return queryFieldClause;
         });
     }
-    toQuery(queryUtils, fieldUtils, relationManager) {
-        let select = this.rawToQuerySelectClause(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager);
+    toQuery(queryUtils, fieldUtils, queryRelationManager) {
+        let select = this.rawToQuerySelectClause(this.rawQuery.SELECT, queryUtils, fieldUtils, queryRelationManager);
         let querySheet = {
             SELECT: select,
             forUpdate: this.rawQuery.FOR_UPDATE
         };
-        return this.getNonEntityQuery(this.rawQuery, querySheet, null, queryUtils, fieldUtils, relationManager);
+        return this.getNonEntityQuery(this.rawQuery, querySheet, null, queryUtils, fieldUtils, queryRelationManager);
     }
 }
 
@@ -6614,11 +6614,11 @@ class TreeQuery extends MappableQuery {
         super(entityAliases, trackedRepoGUIDSet);
         this.rawQuery = rawQuery;
     }
-    toQuery(queryUtils, fieldUtils, relationManager) {
+    toQuery(queryUtils, fieldUtils, queryRelationManager) {
         let queryTree = this.getNonEntityQuery(this.rawQuery, {}, (nonEntityQuery) => {
-            nonEntityQuery.SELECT = this.rawToQuerySelectClause(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager);
+            nonEntityQuery.SELECT = this.rawToQuerySelectClause(this.rawQuery.SELECT, queryUtils, fieldUtils, queryRelationManager);
             nonEntityQuery.forUpdate = this.rawQuery.FOR_UPDATE;
-        }, queryUtils, fieldUtils, relationManager);
+        }, queryUtils, fieldUtils, queryRelationManager);
         return queryTree;
     }
 }
@@ -6627,7 +6627,7 @@ class UpdateColumns extends AbstractUpdate {
     constructor(rawUpdate) {
         super(rawUpdate);
     }
-    rawToQuerySetClause(set, queryUtils, fieldUtils, relationManager) {
+    rawToQuerySetClause(set, queryUtils, fieldUtils, queryRelationManager) {
         const setClause = {};
         const dbEntity = this.rawUpdate.UPDATE
             .__driver__.dbEntity;
@@ -6656,7 +6656,7 @@ class UpdateColumns extends AbstractUpdate {
             if (!value.toQueryFragment) {
                 throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${dbEntity.name}`;
             }
-            setClause[columnName] = value.toQueryFragment(this.columnAliases, false, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager);
+            setClause[columnName] = value.toQueryFragment(this.columnAliases, false, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
         }
         return setClause;
     }
@@ -6670,22 +6670,22 @@ class UpdateProperties extends AbstractUpdate {
     constructor(rawUpdate, trackedRepoGUIDSet) {
         super(rawUpdate);
     }
-    toQuery(queryUtils, fieldUtils, relationManager) {
+    toQuery(queryUtils, fieldUtils, queryRelationManager) {
         return {
             UPDATE: this.rawUpdate.UPDATE
-                .__driver__.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, relationManager),
-            SELECT: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
+                .__driver__.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager),
+            SELECT: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, queryRelationManager),
             WHERE: queryUtils.whereClauseToQueryOperation(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
         };
     }
-    rawToQuerySetClause(rawSet, queryUtils, fieldUtils, relationManager) {
+    rawToQuerySetClause(rawSet, queryUtils, fieldUtils, queryRelationManager) {
         const querySetClause = {};
         const dbEntity = this.rawUpdate.UPDATE.__driver__.dbEntity;
         const dbPropertyMap = dbEntity.propertyMap;
-        this.rawToQuerySetEntityFragments(rawSet, querySetClause, [], dbPropertyMap, [], queryUtils, fieldUtils, relationManager);
+        this.rawToQuerySetEntityFragments(rawSet, querySetClause, [], dbPropertyMap, [], queryUtils, fieldUtils, queryRelationManager);
         return querySetClause;
     }
-    rawToQuerySetEntityFragments(rawSetFragment, querySetClause, dbPropertyChain, dbPropertyMap, childDbRelationChain, queryUtils, fieldUtils, relationManager) {
+    rawToQuerySetEntityFragments(rawSetFragment, querySetClause, dbPropertyChain, dbPropertyMap, childDbRelationChain, queryUtils, fieldUtils, queryRelationManager) {
         const isTopLevelFragment = !dbPropertyMap.length;
         for (const propertyName in rawSetFragment) {
             const dbProperty = dbPropertyMap[propertyName];
@@ -6718,10 +6718,10 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
             }
             const childDbPropertyChain = [...dbPropertyChain];
             childDbPropertyChain.push(dbProperty);
-            this.rawToQuerySetFragment(rawSetFragment, querySetClause, childDbPropertyChain, propertyName, childDbRelationChain, queryUtils, fieldUtils, relationManager);
+            this.rawToQuerySetFragment(rawSetFragment, querySetClause, childDbPropertyChain, propertyName, childDbRelationChain, queryUtils, fieldUtils, queryRelationManager);
         }
     }
-    rawToQuerySetFragment(rawSetFragment, querySetClause, dbPropertyChain, propertyName, dbRelationChain, queryUtils, fieldUtils, relationManager) {
+    rawToQuerySetFragment(rawSetFragment, querySetClause, dbPropertyChain, propertyName, dbRelationChain, queryUtils, fieldUtils, queryRelationManager) {
         const dbProperty = dbPropertyChain[dbPropertyChain.length - 1];
         const dbEntity = dbProperty.entity;
         let value = rawSetFragment[propertyName];
@@ -6767,7 +6767,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 		which has already been set in this update statement (above).
 				`);
                 }
-                querySetClause[dbColumn.name] = value.toQueryFragment(this.columnAliases, false, queryUtils, fieldUtils, relationManager);
+                querySetClause[dbColumn.name] = value.toQueryFragment(this.columnAliases, false, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
                 return;
             }
         }
@@ -6779,7 +6779,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
                 childDbRelationChain.push(dbRelation);
                 switch (dbRelation.relationType) {
                     case EntityRelationType.MANY_TO_ONE: {
-                        this.rawToQuerySetEntityFragments(value, querySetClause, dbPropertyChain, dbRelation.relationEntity.propertyMap, childDbRelationChain, queryUtils, fieldUtils, relationManager);
+                        this.rawToQuerySetEntityFragments(value, querySetClause, dbPropertyChain, dbRelation.relationEntity.propertyMap, childDbRelationChain, queryUtils, fieldUtils, queryRelationManager);
                         break;
                     }
                     case EntityRelationType.ONE_TO_MANY:
@@ -8056,8 +8056,8 @@ function defaultCompare(a, b) {
 
 const airApi = {
     setQApp: function (qApplication) { },
-    dS: function (__dbDbApplication__, dbEntityId) { return true; },
-    ddS: function (__dbDbApplication__, dbEntityId) { return true; }
+    dS: function (__dbApplication__, dbEntityId) { return true; },
+    ddS: function (__dbApplication__, dbEntityId) { return true; }
 };
 function loadGlobalAirApi() {
     globalThis.airApi = airApi;
@@ -8473,7 +8473,7 @@ class Dao {
     }
     constructor(dbEntityId, Q, internal = false) {
         this.internal = internal;
-        const dbEntity = Q.__dbDbApplication__.currentVersion[0]
+        const dbEntity = Q.__dbApplication__.currentVersion[0]
             .applicationVersion.entities[dbEntityId];
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
         this.db = new EntityDatabaseFacade(dbEntity, Q, this);
@@ -9115,12 +9115,12 @@ ENTITY_UTILS.setClass(EntityUtils);
 class FieldUtils {
     getFieldQueryJson(fieldSubQuery, entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils) {
         let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
-        return subSelectQuery.toQuery(queryUtils, this, this.relationManager);
+        return subSelectQuery.toQuery(queryUtils, this, this.queryRelationManager);
     }
 }
 
 class QApplicationBuilderUtils {
-    setQAppEntities(application, qApplication, allQApps, appliationUtils, relationManager) {
+    setQAppEntities(application, qApplication, allQApps, appliationUtils, queryRelationManager) {
         // const entities = orderEntitiesByIdDependencies(application.currentVersion[0].applicationVersion.entities,
         // application)
         qApplication.__qIdRelationConstructors__ = [];
@@ -9168,7 +9168,7 @@ class QApplicationBuilderUtils {
                 .filter(propertyName => propertyName === entity.name).length) {
                 Object.defineProperty(qApplication, entity.name, {
                     get: function () {
-                        return new this.__qConstructors__[entity.index](entity, appliationUtils, relationManager);
+                        return new this.__qConstructors__[entity.index](entity, appliationUtils, queryRelationManager);
                     }
                 });
             }
@@ -9765,7 +9765,7 @@ AIRPORT_DATABASE.setDependencies({
     find: NonEntityFind,
     findOne: NonEntityFindOne,
     qApplicationBuilderUtils: QApplicationBuilderUtils,
-    relationManager: QueryRelationManager,
+    queryRelationManager: QueryRelationManager,
     search: NonEntitySearch,
     searchOne: NonEntitySearchOne
 });
@@ -9786,7 +9786,7 @@ DATABASE_FACADE.setDependencies({
     updateCacheManager: UPDATE_CACHE_MANAGER
 });
 airTrafficControl.setDependencies(FieldUtils, {
-    relationManager: QueryRelationManager
+    queryRelationManager: QueryRelationManager
 });
 airTrafficControl.setDependencies(Lookup, {
     entityUtils: ENTITY_UTILS,
@@ -9801,7 +9801,7 @@ airTrafficControl.setDependencies(QMetadataUtils, {
 QUERY_FACADE.setDependencies({
     fieldUtils: FieldUtils,
     queryUtils: QUERY_UTILS,
-    relationManager: QueryRelationManager,
+    queryRelationManager: QueryRelationManager,
     transactionalConnector: TRANSACTIONAL_CONNECTOR
 });
 QUERY_UTILS.setDependencies({
@@ -9810,7 +9810,7 @@ QUERY_UTILS.setDependencies({
     dictionary: Dictionary,
     entityUtils: ENTITY_UTILS,
     fieldUtils: FieldUtils,
-    relationManager: QueryRelationManager,
+    queryRelationManager: QueryRelationManager,
     airEntityUtils: AIR_ENTITY_UTILS
 });
 airTrafficControl.setDependencies(QueryRelationManager, {
@@ -9921,7 +9921,7 @@ class TerminalRunDao extends BaseTerminalRunDao {
 
 class SequenceDao extends BaseSequenceDao {
     static diSet() {
-        return Q_airport____at_airport_slash_airport_dash_code.__dbDbApplication__ && !!Q_airport____at_airport_slash_airport_dash_code.__dbDbApplication__.currentVersion[0]
+        return Q_airport____at_airport_slash_airport_dash_code.__dbApplication__ && !!Q_airport____at_airport_slash_airport_dash_code.__dbApplication__.currentVersion[0]
             .applicationVersion.entities[0];
     }
     async incrementCurrentValues(context) {
@@ -12902,20 +12902,20 @@ class QueryEntityClassCreator {
         let qApplication = this.airportDatabase.QM[dbApplication.fullName];
         // If the Application API source has already been loaded
         if (qApplication) {
-            qApplication.__dbDbApplication__ = dbApplication;
+            qApplication.__dbApplication__ = dbApplication;
         }
         else {
             qApplication = {
                 __constructors__: {},
                 __qConstructors__: {},
-                __dbDbApplication__: dbApplication,
+                __dbApplication__: dbApplication,
                 name: dbApplication.name,
                 domain: dbApplication.domain.name
             };
             this.airportDatabase.QM[dbApplication.fullName] = qApplication;
         }
         this.airportDatabase.Q[dbApplication.index] = qApplication;
-        this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.airportDatabase.qApplications, this.applicationUtils, this.relationManager);
+        this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.airportDatabase.qApplications, this.applicationUtils, this.queryRelationManager);
         return qApplication;
     }
 }
@@ -13049,7 +13049,7 @@ takeoff.setDependencies(QueryEntityClassCreator, {
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: ApplicationUtils,
     qApplicationBuilderUtils: QApplicationBuilderUtils,
-    relationManager: QueryRelationManager,
+    queryRelationManager: QueryRelationManager,
 });
 takeoff.setDependencies(QueryObjectInitializer, {
     ddlObjectLinker: DdlObjectLinker,
@@ -31009,11 +31009,11 @@ setTimeout(() => {
 }, 2000);
 
 class AbstractEntityOrderByParser {
-    constructor(rootSelectClauseFragment, airportDatabase, qValidator, relationManager, orderBy) {
+    constructor(rootSelectClauseFragment, airportDatabase, qValidator, queryRelationManager, orderBy) {
         this.rootSelectClauseFragment = rootSelectClauseFragment;
         this.airportDatabase = airportDatabase;
         this.qValidator = qValidator;
-        this.relationManager = relationManager;
+        this.queryRelationManager = queryRelationManager;
         this.orderBy = orderBy;
     }
     getCommonOrderByFragment(orderByFields) {
@@ -31075,7 +31075,7 @@ class EntityOrderByParser extends AbstractEntityOrderByParser {
         // Perform breadth-first SELECT clause traversal
         while ((currentSelectFragment = selectFragmentQueue.shift())
             && (currentJoinNode = joinNodeQueue.shift())) {
-            const tableAlias = this.relationManager.getAlias(currentJoinNode.queryRelation);
+            const tableAlias = this.queryRelationManager.getAlias(currentJoinNode.queryRelation);
             const dbEntity = qEntityMapByAlias[tableAlias].__driver__.dbEntity;
             const currentEntityOrderBy = [];
             orderBy = orderBy.filter((orderByField) => {
@@ -32314,9 +32314,9 @@ Returned:  ${resultsFromSelect.length}
  * Created by Papa on 10/2/2016.
  */
 class SQLNoJoinQuery extends SQLWhereBase {
-    constructor(dbEntity, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
+    constructor(dbEntity, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
         super(dbEntity, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
-        this.relationManager = relationManager;
+        this.queryRelationManager = queryRelationManager;
     }
     getFromFragment(fromRelation, fieldMap, syncAllFields, context, addAs = true) {
         if (!fromRelation) {
@@ -32335,8 +32335,8 @@ class SQLNoJoinQuery extends SQLWhereBase {
 			'${tableName}',
 			expecting: '${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}'`);
         }
-        const firstQEntity = new QEntity(firstDbEntity, this.queryUtils, this.relationManager);
-        const tableAlias = this.relationManager.getAlias(fromRelation);
+        const firstQEntity = new QEntity(firstDbEntity, this.queryUtils, this.queryRelationManager);
+        const tableAlias = this.queryRelationManager.getAlias(fromRelation);
         this.qEntityMapByAlias[tableAlias] = firstQEntity;
         let fromFragment = `\t${tableName}`;
         if (addAs) {
@@ -32353,9 +32353,9 @@ class SQLNoJoinQuery extends SQLWhereBase {
  * Created by Papa on 10/2/2016.
  */
 class SQLDelete extends SQLNoJoinQuery {
-    constructor(deleteQuery, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
+    constructor(deleteQuery, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
         super(airportDatabase.applications[deleteQuery.DELETE_FROM.applicationIndex].currentVersion[0]
-            .applicationVersion.entities[deleteQuery.DELETE_FROM.entityIndex], dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+            .applicationVersion.entities[deleteQuery.DELETE_FROM.entityIndex], dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.deleteQuery = deleteQuery;
     }
     toSQL(fieldMap, context) {
@@ -32369,7 +32369,7 @@ WHERE
 ${whereFragment}`;
             // TODO: following might be needed for some RDBMS, does not work for SqLite
             // Replace the root entity alias reference with the table name
-            // let tableAlias = this.relationManager.getAlias(this.deleteQuery.DELETE_FROM)
+            // let tableAlias = this.queryRelationManager.getAlias(this.deleteQuery.DELETE_FROM)
             // let tableName = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
             // whereFragment = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
         }
@@ -32383,11 +32383,11 @@ FROM
  * Created by Papa on 11/17/2016.
  */
 class SQLInsertValues extends SQLNoJoinQuery {
-    constructor(insertValuesQuery, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context
+    constructor(insertValuesQuery, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context
     // repository?: IRepository
     ) {
         super(airportDatabase.applications[insertValuesQuery.INSERT_INTO.applicationIndex].currentVersion[0]
-            .applicationVersion.entities[insertValuesQuery.INSERT_INTO.entityIndex], dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+            .applicationVersion.entities[insertValuesQuery.INSERT_INTO.entityIndex], dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.insertValuesQuery = insertValuesQuery;
     }
     toSQL(fieldMap, context) {
@@ -32461,11 +32461,11 @@ class EntityDefaults {
  * String based SQL query.
  */
 class SQLQuery extends SQLWhereBase {
-    constructor(query, dbEntity, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
+    constructor(query, dbEntity, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
         super(dbEntity, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.query = query;
         this.queryResultType = queryResultType;
-        this.relationManager = relationManager;
+        this.queryRelationManager = queryRelationManager;
         this.entityDefaults = new EntityDefaults();
     }
     getFieldMap() {
@@ -32538,9 +32538,9 @@ on '${leftDbEntity.applicationVersion.application.name}.${leftDbEntity.name}.${d
  * Created by Papa on 10/2/2016.
  */
 class SQLUpdate extends SQLNoJoinQuery {
-    constructor(updateQuery, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
+    constructor(updateQuery, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
         super(airportDatabase.applications[updateQuery.UPDATE.applicationIndex].currentVersion[0]
-            .applicationVersion.entities[updateQuery.UPDATE.entityIndex], dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+            .applicationVersion.entities[updateQuery.UPDATE.entityIndex], dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.updateQuery = updateQuery;
     }
     toSQL(internalFragments, fieldMap, context) {
@@ -32565,7 +32565,7 @@ class SQLUpdate extends SQLNoJoinQuery {
 ${whereFragment}`;
             // TODO: following might be needed for some RDBMS, does not work for SqLite
             // Replace the root entity alias reference with the table name
-            // let tableAlias = this.relationManager.getAlias(this.updateQuery.UPDATE)
+            // let tableAlias = this.queryRelationManager.getAlias(this.updateQuery.UPDATE)
             // let tableName  = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
             // whereFragment  = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
         }
@@ -32646,8 +32646,8 @@ class SqlFunctionField {
  * Created by Papa on 10/28/2016.
  */
 class NonEntitySQLQuery extends SQLQuery {
-    constructor(nonEntityQuery, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(nonEntityQuery, null, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(nonEntityQuery, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(nonEntityQuery, null, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
     }
     addQEntityMapByAlias(sourceMap) {
         for (let alias in sourceMap) {
@@ -32714,9 +32714,9 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
             default:
                 throw new Error(`First table in FROM clause cannot be joined`);
         }
-        let alias = this.relationManager.getAlias(firstRelation);
+        let alias = this.queryRelationManager.getAlias(firstRelation);
         this.qValidator.validateReadFromEntity(firstRelation);
-        let firstEntity = this.relationManager.createRelatedQEntity(firstRelation, context);
+        let firstEntity = this.queryRelationManager.createRelatedQEntity(firstRelation, context);
         this.qEntityMapByAlias[alias] = firstEntity;
         joinTreeNode = new JoinTreeNode(firstRelation, [], null);
         joinTreeNodes.push(joinTreeNode);
@@ -32728,7 +32728,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                 throw new Error(`Table ${i + 1} in FROM clause is missing joinType`);
             }
             this.qValidator.validateReadFromEntity(joinRelation);
-            alias = this.relationManager.getAlias(joinRelation);
+            alias = this.queryRelationManager.getAlias(joinRelation);
             switch (joinRelation.relationType) {
                 case QueryRelationType.SUB_QUERY_ROOT:
                     let view = this.addFieldsToView(joinRelation, alias, context);
@@ -32736,7 +32736,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                     continue;
                 case QueryRelationType.ENTITY_ROOT:
                     // Non-Joined table
-                    let nonJoinedEntity = this.relationManager.createRelatedQEntity(joinRelation, context);
+                    let nonJoinedEntity = this.queryRelationManager.createRelatedQEntity(joinRelation, context);
                     this.qEntityMapByAlias[alias] = nonJoinedEntity;
                     let anotherTree = new JoinTreeNode(joinRelation, [], null);
                     if (joinNodeMap[alias]) {
@@ -32749,7 +32749,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                     if (!joinRelation.relationIndex) {
                         throw new Error(`Table ${i + 1} in FROM clause is missing relationPropertyName`);
                     }
-                    rightEntity = this.relationManager.createRelatedQEntity(joinRelation, context);
+                    rightEntity = this.queryRelationManager.createRelatedQEntity(joinRelation, context);
                     break;
                 case QueryRelationType.SUB_QUERY_JOIN_ON:
                     if (!joinRelation.joinWhereClause) {
@@ -32761,12 +32761,12 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                     if (!joinRelation.joinWhereClause) {
                         this.warn(`Table ${i + 1} in FROM clause is missing joinWhereClause`);
                     }
-                    rightEntity = this.relationManager.createRelatedQEntity(joinRelation, context);
+                    rightEntity = this.queryRelationManager.createRelatedQEntity(joinRelation, context);
                     break;
                 default:
                     throw new Error(`Unknown QueryRelationType ${joinRelation.relationType}`);
             }
-            let parentAlias = this.relationManager.getParentAlias(joinRelation);
+            let parentAlias = this.queryRelationManager.getParentAlias(joinRelation);
             if (!joinNodeMap[parentAlias]) {
                 throw new Error(`Missing parent entity for alias ${parentAlias}, on table ${i + 1} in FROM clause. 
 					NOTE: sub-queries in FROM clause cannot reference parent FROM tables.`);
@@ -32898,7 +32898,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
     getFROMFragment(parentTree, currentTree, context) {
         let fromFragment = '\t';
         let currentRelation = currentTree.queryRelation;
-        let currentAlias = this.relationManager.getAlias(currentRelation);
+        let currentAlias = this.queryRelationManager.getAlias(currentRelation);
         let qEntity = this.qEntityMapByAlias[currentAlias];
         if (!parentTree) {
             switch (currentRelation.relationType) {
@@ -32919,7 +32919,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
         }
         else {
             let parentRelation = parentTree.queryRelation;
-            let parentAlias = this.relationManager.getAlias(parentRelation);
+            let parentAlias = this.queryRelationManager.getAlias(parentRelation);
             let leftEntity = this.qEntityMapByAlias[parentAlias];
             let rightEntity = this.qEntityMapByAlias[currentAlias];
             let joinTypeString;
@@ -32994,8 +32994,8 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
  * Created by Papa on 10/29/2016.
  */
 class FieldSQLQuery extends NonEntitySQLQuery {
-    constructor(queryField, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(queryField, dialect, QueryResultType.FIELD, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(queryField, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(queryField, dialect, QueryResultType.FIELD, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
         this.orderByParser = new ExactOrderByParser(qValidator);
     }
     async parseQueryResults(results, internalFragments, queryResultType, context, bridgedQueryConfiguration) {
@@ -33038,8 +33038,8 @@ class FieldSQLQuery extends NonEntitySQLQuery {
  * Created by Papa on 10/28/2016.
  */
 class TreeSQLQuery extends NonEntitySQLQuery {
-    constructor(treeQuery, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(treeQuery, dialect, QueryResultType.TREE, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(treeQuery, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(treeQuery, dialect, QueryResultType.TREE, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
         this.queryParser = new TreeQueryResultParser(applicationUtils, entityStateManager, utils);
         this.orderByParser = new MappedOrderByParser(qValidator);
     }
@@ -33147,7 +33147,7 @@ class TreeSQLQuery extends NonEntitySQLQuery {
 
 class SubStatementSqlGenerator {
     getTreeQuerySql(treeQuery, dialect, context) {
-        let mappedSqlQuery = new TreeSQLQuery(treeQuery, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
+        let mappedSqlQuery = new TreeSQLQuery(treeQuery, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.queryRelationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
         const subQuerySql = mappedSqlQuery.toSQL({}, context);
         const parameterReferences = mappedSqlQuery.parameterReferences;
         return {
@@ -33156,7 +33156,7 @@ class SubStatementSqlGenerator {
         };
     }
     getFieldQuerySql(fieldSubQuery, dialect, qEntityMapByAlias, context) {
-        let fieldSqlQuery = new FieldSQLQuery(fieldSubQuery, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
+        let fieldSqlQuery = new FieldSQLQuery(fieldSubQuery, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.queryRelationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
         fieldSqlQuery.addQEntityMapByAlias(qEntityMapByAlias);
         const subQuerySql = fieldSqlQuery.toSQL({}, context);
         const parameterReferences = fieldSqlQuery.parameterReferences;
@@ -33174,8 +33174,8 @@ class SubStatementSqlGenerator {
  * Represents SQL String query with Entity tree Select clause.
  */
 class EntitySQLQuery extends SQLQuery {
-    constructor(queryEntity, dbEntity, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, objectResultParserFactory, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context, graphQueryConfiguration) {
-        super(queryEntity, dbEntity, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
+    constructor(queryEntity, dbEntity, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, objectResultParserFactory, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context, graphQueryConfiguration) {
+        super(queryEntity, dbEntity, dialect, queryResultType, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.objectResultParserFactory = objectResultParserFactory;
         this.graphQueryConfiguration = graphQueryConfiguration;
         this.columnAliases = new AliasCache();
@@ -33184,7 +33184,7 @@ class EntitySQLQuery extends SQLQuery {
 			QueryResultType.ENTITY_GRAPH`);
         }
         this.finalSelectTree = this.setupSelectFields(this.query.SELECT, dbEntity, context);
-        this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, relationManager, queryEntity.ORDER_BY);
+        this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, queryRelationManager, queryEntity.ORDER_BY);
     }
     toSQL(internalFragments, context) {
         let joinNodeMap = {};
@@ -33232,7 +33232,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
         let lastResult;
         for (let i = 0; i < results.length; i++) {
             let result = results[i];
-            let entityAlias = this.relationManager.getAlias(this.joinTree.queryRelation);
+            let entityAlias = this.queryRelationManager.getAlias(this.joinTree.queryRelation);
             this.columnAliases.reset();
             let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, { index: 0 }, context);
             if (!lastResult) {
@@ -33278,8 +33278,8 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
         // if (firstRelation.relationType !== QueryRelationType.ENTITY_ROOT) {
         // 	throw new Error(`First table in FROM clause cannot be joined`)
         // }
-        let alias = this.relationManager.getAlias(firstRelation);
-        let firstEntity = this.relationManager.createRelatedQEntity(firstRelation, context);
+        let alias = this.queryRelationManager.getAlias(firstRelation);
+        let firstEntity = this.queryRelationManager.createRelatedQEntity(firstRelation, context);
         this.qEntityMapByAlias[alias] = firstEntity;
         this.queryRelationMapByAlias[alias] = firstRelation;
         // In entity queries the first entity must always be the same as the query entity
@@ -33307,7 +33307,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                 throw new Error(`Table ${i + 1} in FROM clause is missing 
 				relationPropertyName`);
             }
-            let parentAlias = this.relationManager.getParentAlias(joinRelation);
+            let parentAlias = this.queryRelationManager.getParentAlias(joinRelation);
             if (!joinNodeMap[parentAlias]) {
                 throw new Error(`Missing parent entity for alias ${parentAlias}, 
 				on table ${i + 1} in FROM clause`);
@@ -33315,8 +33315,8 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
             let leftNode = joinNodeMap[parentAlias];
             let rightNode = new JoinTreeNode(joinRelation, [], leftNode);
             leftNode.addChildNode(rightNode);
-            alias = this.relationManager.getAlias(joinRelation);
-            let rightEntity = this.relationManager.createRelatedQEntity(joinRelation, context);
+            alias = this.queryRelationManager.getAlias(joinRelation);
+            let rightEntity = this.queryRelationManager.createRelatedQEntity(joinRelation, context);
             this.qEntityMapByAlias[alias] = rightEntity;
             this.queryRelationMapByAlias[alias] = firstRelation;
             if (!rightEntity) {
@@ -33395,7 +33395,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                 }
                 else {
                     const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation);
-                    const childEntityAlias = this.relationManager.getAlias(childJoinNode.queryRelation);
+                    const childEntityAlias = this.queryRelationManager.getAlias(childJoinNode.queryRelation);
                     const relationQEntity = this.qEntityMapByAlias[childEntityAlias];
                     const relationDbEntity = relationQEntity.__driver__.dbEntity;
                     let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextColumn, context);
@@ -33549,7 +33549,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
         return selectFragment;
     }
     getSELECTFragment(dbEntity, selectClauseFragment, joinTree, context, parentProperty) {
-        const tableAlias = this.relationManager.getAlias(joinTree.queryRelation);
+        const tableAlias = this.queryRelationManager.getAlias(joinTree.queryRelation);
         let selectSqlFragments = [];
         this.entityStateManager.isStub(selectClauseFragment);
         const defaults = this.entityDefaults.getForAlias(tableAlias);
@@ -33589,7 +33589,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
     getFROMFragment(parentTree, currentTree, context) {
         let fromFragment = '\t';
         let currentRelation = currentTree.queryRelation;
-        let currentAlias = this.relationManager.getAlias(currentRelation);
+        let currentAlias = this.queryRelationManager.getAlias(currentRelation);
         let qEntity = this.qEntityMapByAlias[currentAlias];
         if (!qEntity) {
             throw new Error(`Select clause doesn't match the from clause.
@@ -33607,7 +33607,7 @@ ${getErrorMessageSelectStatement(this.query.SELECT)}
         }
         else {
             let parentRelation = parentTree.queryRelation;
-            let parentAlias = this.relationManager.getAlias(parentRelation);
+            let parentAlias = this.queryRelationManager.getAlias(parentRelation);
             let leftEntity = this.qEntityMapByAlias[parentAlias];
             let rightEntity = this.qEntityMapByAlias[currentAlias];
             let joinTypeString;
@@ -33649,8 +33649,8 @@ ${getErrorMessageSelectStatement(this.query.SELECT)}
  * Represents SQL String query with flat (aka traditional) Select clause.
  */
 class SheetSQLQuery extends NonEntitySQLQuery {
-    constructor(querySheet, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(querySheet, dialect, QueryResultType.SHEET, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+    constructor(querySheet, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(querySheet, dialect, QueryResultType.SHEET, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
         this.orderByParser = new ExactOrderByParser(qValidator);
     }
     async parseQueryResults(results, internalFragments, queryResultType, context, bridgedQueryConfiguration) {
@@ -33731,7 +33731,7 @@ class IdGenerator {
         });
     }
     doPopulateTransactionHistory_LocalIdColumns(resolve) {
-        if (Q_airport____at_airport_slash_holding_dash_pattern$1.__dbDbApplication__ && Q_airport____at_airport_slash_holding_dash_pattern$1.__dbDbApplication__.currentVersion) {
+        if (Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__ && Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__.currentVersion) {
             const transactionHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
             const repoTransHistoryDbEntity = this.getHoldingPatternDbEntity('RepositoryTransactionHistory');
             const operationHistoryDbEntity = this.getHoldingPatternDbEntity('OperationHistory');
@@ -33766,7 +33766,7 @@ class IdGenerator {
     async generateEntityIds() {
     }
     getHoldingPatternDbEntity(holdingPatternEntityName) {
-        return Q_airport____at_airport_slash_holding_dash_pattern$1.__dbDbApplication__.currentVersion[0].applicationVersion
+        return Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__.currentVersion[0].applicationVersion
             .entityMapByName[holdingPatternEntityName];
     }
 }
@@ -33894,7 +33894,7 @@ Entity:          ${table.name}
             let sqlInsertValues = new SQLInsertValues({
                 ...portableQuery.query,
                 VALUES
-            }, this.getDialect(context), this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+            }, this.getDialect(context), this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.queryRelationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             let sql = sqlInsertValues.toSQL(fieldMap, context);
             let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
             numVals += await this.executeNative(sql, parameters, context);
@@ -33905,7 +33905,7 @@ Entity:          ${table.name}
     }
     async deleteWhere(portableQuery, context) {
         let fieldMap = new globalThis.SyncApplicationMap();
-        let sqlDelete = new SQLDelete(portableQuery.query, this.getDialect(context), this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+        let sqlDelete = new SQLDelete(portableQuery.query, this.getDialect(context), this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.queryRelationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
         let sql = sqlDelete.toSQL(fieldMap, context);
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
         let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
@@ -33915,7 +33915,7 @@ Entity:          ${table.name}
     }
     async updateWhere(portableQuery, internalFragments, context) {
         let fieldMap = new globalThis.SyncApplicationMap();
-        let sqlUpdate = new SQLUpdate(portableQuery.query, this.getDialect(context), this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+        let sqlUpdate = new SQLUpdate(portableQuery.query, this.getDialect(context), this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.queryRelationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
         let sql = sqlUpdate.toSQL(internalFragments, fieldMap, context);
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
         const numAffectedRows = await this.executeNative(sql, parameters, context);
@@ -33942,13 +33942,13 @@ Entity:          ${table.name}
             case QueryResType.ENTITY_TREE:
                 const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
                     .currentVersion[0].applicationVersion.entities[portableQuery.entityIndex];
-                return new EntitySQLQuery(query, dbEntity, dialect, resultType, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.objectResultParserFactory, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+                return new EntitySQLQuery(query, dbEntity, dialect, resultType, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.objectResultParserFactory, this.qMetadataUtils, this.qValidator, this.queryRelationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.FIELD:
-                return new FieldSQLQuery(query, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+                return new FieldSQLQuery(query, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.queryRelationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.SHEET:
-                return new SheetSQLQuery(query, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+                return new SheetSQLQuery(query, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.queryRelationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.TREE:
-                return new TreeSQLQuery(query, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
+                return new TreeSQLQuery(query, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.queryRelationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
             case QueryResType.RAW:
             default:
                 throw new Error(`Unknown QueryResultType: ${resultType}`);
@@ -34036,7 +34036,7 @@ STORE_DRIVER.setDependencies({
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,
-    relationManager: QueryRelationManager,
+    queryRelationManager: QueryRelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     subStatementSqlGenerator: SubStatementSqlGenerator,
     transactionManager: TRANSACTION_MANAGER,
@@ -34050,7 +34050,7 @@ fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,
-    relationManager: QueryRelationManager,
+    queryRelationManager: QueryRelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     storeDriver: STORE_DRIVER,
     utils: Utils
@@ -35634,7 +35634,7 @@ class AbstractMutationManager {
         return {
             applicationIndex,
             entityIndex,
-            query: query.toQuery(this.queryUtils, this.fieldUtils, this.relationManager),
+            query: query.toQuery(this.queryUtils, this.fieldUtils, this.queryRelationManager),
             parameterMap: query.getParameters(),
             queryResultType,
             trackedRepoGUIDs: Array.from(query.trackedRepoGUIDSet),
@@ -36942,7 +36942,7 @@ class UpdateManager {
         const queryUpdate = portableQuery.query;
         const getSheetSelectFromSetClauseResult = this.queryUtils.getSheetSelectFromSetClause(context.dbEntity, qEntity, queryUpdate.SELECT, errorPrefix);
         const sheetQuery = new SheetQuery(null);
-        const querySelectClause = sheetQuery.rawToQueryNonDistinctSelectClause(getSheetSelectFromSetClauseResult.selectClause, this.queryUtils, this.fieldUtils, this.relationManager);
+        const querySelectClause = sheetQuery.rawToQueryNonDistinctSelectClause(getSheetSelectFromSetClauseResult.selectClause, this.queryUtils, this.fieldUtils, this.queryRelationManager);
         const querySheet = {
             SELECT: querySelectClause,
             FROM: [queryUpdate.UPDATE],
@@ -38456,7 +38456,7 @@ terminal.setDependencies(AbstractMutationManager, {
     applicationUtils: ApplicationUtils,
     fieldUtils: FieldUtils,
     queryUtils: QUERY_UTILS,
-    relationManager: QueryRelationManager
+    queryRelationManager: QueryRelationManager
 });
 terminal.setDependencies(TransactionalReceiver, {
     appTrackerUtils: AppTrackerUtils,
@@ -38621,7 +38621,7 @@ terminal.setDependencies(UpdateManager, {
     queryFacade: QUERY_FACADE,
     queryUtils: QUERY_UTILS,
     recordHistoryDuo: RecordHistoryDuo,
-    relationManager: QueryRelationManager,
+    queryRelationManager: QueryRelationManager,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     systemWideOperationIdUtils: SystemWideOperationIdUtils,
 });
@@ -39985,7 +39985,7 @@ class QueryFacade {
     }
     getPortableQuery(query, queryResultType, context) {
         return {
-            query: query.toQuery(this.queryUtils, this.fieldUtils, this.relationManager),
+            query: query.toQuery(this.queryUtils, this.fieldUtils, this.queryRelationManager),
             parameterMap: query.getParameters(),
             queryResultType,
             applicationIndex: context.dbEntity.applicationVersion.application.index,
@@ -40088,7 +40088,7 @@ class AirportDatabase {
         const applicationFullName = this.dbApplicationUtils
             .getDbApplication_FullNameFromDomainAndName(domainName, applicationName);
         return this.QM[applicationFullName]
-            .__dbDbApplication__.currentVersion[0].applicationVersion;
+            .__dbApplication__.currentVersion[0].applicationVersion;
     }
     getDbEntity(domainName, applicationName, entityName) {
         const dbApplicationVersion = this.getCurrentDbApplicationVersion(domainName, applicationName);
@@ -40099,10 +40099,10 @@ class AirportDatabase {
             .getDbApplication_FullName(qApplication);
         const existingQApp = this.QM[fullDbApplication_Name];
         if (existingQApp) {
-            const dbApplication = existingQApp.__dbDbApplication__;
+            const dbApplication = existingQApp.__dbApplication__;
             if (dbApplication) {
-                qApplication.__dbDbApplication__ = dbApplication;
-                this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.qApplications, this.appliationUtils, this.relationManager);
+                qApplication.__dbApplication__ = dbApplication;
+                this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.qApplications, this.appliationUtils, this.queryRelationManager);
                 this.Q[dbApplication.index] = qApplication;
             }
         }
@@ -40209,7 +40209,7 @@ class NoOpApplicationBuilder extends SqlSchemaBuilder {
             const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
                 getDbApplication_FullName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-                allSequences = allSequences.concat(this.buildSequences(qApplication.__dbDbApplication__, jsonEntity));
+                allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
         }
         return allSequences;
@@ -40220,7 +40220,7 @@ class NoOpApplicationBuilder extends SqlSchemaBuilder {
             const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
                 getDbApplication_FullName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-                stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbDbApplication__, jsonEntity));
+                stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
         }
         return stagedSequences;
@@ -40569,8 +40569,8 @@ class ApplicationQueryGenerator {
         const context = lookup.ensureContext(null);
         const qApplication = airDb.QM[dbAppliationUtils.
             getDbApplication_FullName(jsonApplication)];
-        const dbApplicationVersion = qApplication.__dbDbApplication__
-            .versions[qApplication.__dbDbApplication__.versions.length - 1];
+        const dbApplicationVersion = qApplication.__dbApplication__
+            .versions[qApplication.__dbApplication__.versions.length - 1];
         context.dbEntity = dbApplicationVersion.entityMapByName[entityName];
         await queryFacade.ensureContext(context);
         const queryResultType = this.getQueryResultType(queryDefinition.type);
@@ -43033,7 +43033,7 @@ export default Q_${this.applicationFullName}
 export function ${this.applicationFullName}_diSet(
 	dbEntityId: number
 ): boolean {
-	return globalThis.airApi.dS(Q_${this.applicationFullName}.__dbDbApplication__, dbEntityId)
+	return globalThis.airApi.dS(Q_${this.applicationFullName}.__dbApplication__, dbEntityId)
 }
 if (globalThis.airApi) {
   globalThis.airApi.setQApp(Q_${this.applicationFullName})
@@ -43042,7 +43042,7 @@ if (globalThis.airApi) {
         // export function duoDiSet(
         // 	dbEntityId: number
         // ): boolean {
-        // 	return globalThis.airApi.ddS(Q.__dbDbApplication__, dbEntityId)
+        // 	return globalThis.airApi.ddS(Q.__dbApplication__, dbEntityId)
         // }
     }
 }

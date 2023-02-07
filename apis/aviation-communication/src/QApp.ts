@@ -3,17 +3,17 @@ export const airApi = {
         qApplication: QApp
     ) { },
     dS: function (
-        __dbDbApplication__,
+        __dbApplication__,
         dbEntityId: number
     ): boolean { return true },
     ddS: function (
-        __dbDbApplication__,
+        __dbApplication__,
         dbEntityId: number
     ): boolean { return true }
 }
 
 export interface QApp {
-    __dbDbApplication__?
+    __dbApplication__?
     domain: string;
     name: string;
 

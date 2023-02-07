@@ -29,15 +29,15 @@ export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractR
 	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryUpdate<QueryUpdateColumns> {
 		return {
 			UPDATE: <QueryEntityRelation>(<IQEntityInternal><any>this.rawUpdate.UPDATE)
 				.__driver__.getQueryRelation(this.columnAliases,
 					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
-					queryUtils, fieldUtils, relationManager),
+					queryUtils, fieldUtils, queryRelationManager),
 			SELECT: this.rawToQuerySetClause(this.rawUpdate.SET,
-				queryUtils, fieldUtils, relationManager),
+				queryUtils, fieldUtils, queryRelationManager),
 			WHERE: queryUtils.whereClauseToQueryOperation(
 				this.rawUpdate.WHERE, this.columnAliases,
 				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
@@ -49,7 +49,7 @@ export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractR
 		set: any,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryUpdateColumns;
 
 }

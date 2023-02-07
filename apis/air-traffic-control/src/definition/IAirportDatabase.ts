@@ -187,5 +187,5 @@ export interface QAppInternal
   __constructors__?: { [name: string]: EntityConstructor }
   __qConstructors__?: { [name: string]: QEntityConstructor<any> };
   __qIdRelationConstructors__?: typeof QRelation[];
-  __dbDbApplication__?: DbApplication;
+  __dbApplication__?: DbApplication;
 }

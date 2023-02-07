@@ -33,7 +33,7 @@ export abstract class DistinguishableQuery
 		rawSelect: any,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): any {
 		if (rawSelect instanceof QDistinctFunction) {
 			if (this.isHierarchicalEntityQuery) {
@@ -41,11 +41,11 @@ export abstract class DistinguishableQuery
 			}
 			let rawInnerSelect = rawSelect.getSelectClause()
 			let innerSelect = this.rawToQueryNonDistinctSelectClause(
-				rawInnerSelect, queryUtils, fieldUtils, relationManager)
+				rawInnerSelect, queryUtils, fieldUtils, queryRelationManager)
 			return rawSelect.toQueryFragment(innerSelect)
 		} else {
 			return this.rawToQueryNonDistinctSelectClause(
-				rawSelect, queryUtils, fieldUtils, relationManager)
+				rawSelect, queryUtils, fieldUtils, queryRelationManager)
 		}
 	}
 
@@ -53,7 +53,7 @@ export abstract class DistinguishableQuery
 		rawSelect: any,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): any;
 
 }

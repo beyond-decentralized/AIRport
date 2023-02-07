@@ -29,7 +29,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
     constructor(
         public dbEntity: DbEntity,
         private queryUtils: IQueryUtils,
-        private relationManager: IQueryRelationManager,
+        private queryRelationManager: IQueryRelationManager,
         public fromClausePosition: number[] = [],
         public dbRelation: DbRelation = null,
         public joinType: JoinType = null,
@@ -42,7 +42,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
             .getQEntityConstructor<IQE>(this.dbEntity)
 
         let instance: IQE & IQEntityInternal = new qEntityConstructor(this.dbEntity,
-            this.queryUtils, this.relationManager,
+            this.queryUtils, this.queryRelationManager,
             this.fromClausePosition, this.dbRelation, this.joinType) as any
 
         instance.__driver__.currentChildIndex = this.currentChildIndex
@@ -79,7 +79,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
         trackedRepoLocalIdSet: Set<Repository_LocalId>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
-        relationManager: IQueryRelationManager
+        queryRelationManager: IQueryRelationManager
     ): QueryRelation {
         // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
         // see ApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
@@ -95,13 +95,13 @@ export class QEntityDriver<IQE extends IQEntity = any>
         if (this.joinWhereClause) {
             this.getJoinRelationQuery(<QueryJoinRelation>QueryRelation, columnAliases,
                 trackedRepoGUIDSet, trackedRepoLocalIdSet,
-                queryUtils, fieldUtils, relationManager)
+                queryUtils, fieldUtils, queryRelationManager)
         } else if (this.dbRelation) {
             this.getEntityRelationQuery(<QueryEntityRelation>QueryRelation)
         } else {
             this.getRootRelationQuery(QueryRelation, columnAliases,
                 trackedRepoGUIDSet, trackedRepoLocalIdSet,
-                queryUtils, fieldUtils, relationManager)
+                queryUtils, fieldUtils, queryRelationManager)
         }
         return QueryRelation
     }
@@ -113,7 +113,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
         trackedRepoLocalIdSet: Set<Repository_LocalId>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
-        relationManager: IQueryRelationManager
+        queryRelationManager: IQueryRelationManager
     ): QueryJoinRelation {
         QueryRelation.relationType = QueryRelationType.ENTITY_JOIN_ON
         QueryRelation.joinWhereClause = queryUtils.whereClauseToQueryOperation(
@@ -164,7 +164,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
         trackedRepoLocalIdSet: Set<Repository_LocalId>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
-        relationManager: IQueryRelationManager
+        queryRelationManager: IQueryRelationManager
     ): QueryJoinRelation {
         QueryRelation.relationType = (globalThis.IOC as InversionOfControl)
             .getSync(globalThis.ENTITY_UTILS as IDependencyInjectionToken<IEntityUtils>)
@@ -186,7 +186,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
         let joinChild: IQEntityInternal = (<IQEntityInternal><any>right)
             .__driver__.getInstance()
         joinChild.__driver__.currentChildIndex = 0
-        let nextChildPosition = this.relationManager.getNextChildJoinPosition(this)
+        let nextChildPosition = this.queryRelationManager.getNextChildJoinPosition(this)
         joinChild.__driver__.fromClausePosition = nextChildPosition
         joinChild.__driver__.joinType = joinType
         joinChild.__driver__.parentJoinEntity = this.qEntity

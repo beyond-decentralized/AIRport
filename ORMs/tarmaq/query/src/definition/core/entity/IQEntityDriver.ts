@@ -48,7 +48,7 @@ export interface IQEntityDriver<QE extends IQEntity<any> = any> {
         trackedRepoLocalIdSet: Set<Repository_LocalId>,
         queryUtils: IQueryUtils,
         fieldUtils: IFieldUtils,
-        relationManager: IQueryRelationManager
+        queryRelationManager: IQueryRelationManager
     ): QueryRelation;
 
     // getRelationPropertyName(): string;

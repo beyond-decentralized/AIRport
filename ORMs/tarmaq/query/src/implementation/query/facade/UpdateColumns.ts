@@ -24,7 +24,7 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 		set: any,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): IEUC {
 		const setClause: IEUC = <IEUC>{}
 		const dbEntity = (<IQEntityInternal><any>this.rawUpdate.UPDATE)
@@ -57,7 +57,7 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 			setClause[columnName] = (<QField<any>>value).toQueryFragment(
 				this.columnAliases, false,
 				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
-				queryUtils, fieldUtils, relationManager)
+				queryUtils, fieldUtils, queryRelationManager)
 		}
 
 		return setClause

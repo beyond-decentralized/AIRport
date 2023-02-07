@@ -79,7 +79,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 		protected objectResultParserFactory: IObjectResultParserFactory,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		relationManager: IQueryRelationManager,
+		queryRelationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementSqlGenerator: ISubStatementSqlGenerator,
@@ -95,7 +95,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 			entityStateManager,
 			qMetadataUtils,
 			qValidator,
-			relationManager,
+			queryRelationManager,
 			sqlQueryAdapter,
 			storeDriver,
 			subStatementSqlGenerator,
@@ -106,7 +106,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 			QueryResultType.ENTITY_GRAPH`)
 		}
 		this.finalSelectTree = this.setupSelectFields(this.query.SELECT, dbEntity, context)
-		this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, relationManager, queryEntity.ORDER_BY)
+		this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, queryRelationManager, queryEntity.ORDER_BY)
 	}
 
 	toSQL(
@@ -169,7 +169,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 		let lastResult
 		for (let i = 0; i < results.length; i++) {
 			let result = results[i]
-			let entityAlias = this.relationManager.getAlias(this.joinTree.queryRelation)
+			let entityAlias = this.queryRelationManager.getAlias(this.joinTree.queryRelation)
 			this.columnAliases.reset()
 			let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, { index: 0 }, context)
 			if (!lastResult) {
@@ -224,8 +224,8 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 		// 	throw new Error(`First table in FROM clause cannot be joined`)
 		// }
 
-		let alias = this.relationManager.getAlias(firstRelation)
-		let firstEntity = this.relationManager.createRelatedQEntity(firstRelation, context)
+		let alias = this.queryRelationManager.getAlias(firstRelation)
+		let firstEntity = this.queryRelationManager.createRelatedQEntity(firstRelation, context)
 		this.qEntityMapByAlias[alias] = firstEntity
 		this.queryRelationMapByAlias[alias] = firstRelation
 		// In entity queries the first entity must always be the same as the query entity
@@ -258,7 +258,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 				throw new Error(`Table ${i + 1} in FROM clause is missing 
 				relationPropertyName`)
 			}
-			let parentAlias = this.relationManager.getParentAlias(joinRelation)
+			let parentAlias = this.queryRelationManager.getParentAlias(joinRelation)
 			if (!joinNodeMap[parentAlias]) {
 				throw new Error(`Missing parent entity for alias ${parentAlias}, 
 				on table ${i + 1} in FROM clause`)
@@ -267,8 +267,8 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 			let rightNode = new JoinTreeNode(joinRelation, [], leftNode)
 			leftNode.addChildNode(rightNode)
 
-			alias = this.relationManager.getAlias(joinRelation)
-			let rightEntity = this.relationManager.createRelatedQEntity(joinRelation, context)
+			alias = this.queryRelationManager.getAlias(joinRelation)
+			let rightEntity = this.queryRelationManager.createRelatedQEntity(joinRelation, context)
 			this.qEntityMapByAlias[alias] = rightEntity
 			this.queryRelationMapByAlias[alias] = firstRelation
 			if (!rightEntity) {
@@ -368,7 +368,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 					}
 				} else {
 					const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation)
-					const childEntityAlias = this.relationManager.getAlias(childJoinNode.queryRelation)
+					const childEntityAlias = this.queryRelationManager.getAlias(childJoinNode.queryRelation)
 					const relationQEntity = this.qEntityMapByAlias[childEntityAlias]
 					const relationDbEntity = relationQEntity.__driver__.dbEntity
 
@@ -540,7 +540,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 		context: IFuelHydrantContext,
 		parentProperty?: DbProperty,
 	): string[] {
-		const tableAlias = this.relationManager.getAlias(joinTree.queryRelation)
+		const tableAlias = this.queryRelationManager.getAlias(joinTree.queryRelation)
 		let selectSqlFragments = []
 
 		let isStubProperty = this.entityStateManager.isStub(selectClauseFragment)
@@ -588,7 +588,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 	): string {
 		let fromFragment = '\t'
 		let currentRelation = currentTree.queryRelation
-		let currentAlias = this.relationManager.getAlias(currentRelation)
+		let currentAlias = this.queryRelationManager.getAlias(currentRelation)
 		let qEntity = this.qEntityMapByAlias[currentAlias]
 		if (!qEntity) {
 			throw new Error(`Select clause doesn't match the from clause.
@@ -607,7 +607,7 @@ ${getErrorMessageSelectStatement(this.query.SELECT)}
 			fromFragment += `${tableName} ${currentAlias}`
 		} else {
 			let parentRelation = parentTree.queryRelation
-			let parentAlias = this.relationManager.getAlias(parentRelation)
+			let parentAlias = this.queryRelationManager.getAlias(parentRelation)
 			let leftEntity = this.qEntityMapByAlias[parentAlias]
 
 			let rightEntity = this.qEntityMapByAlias[currentAlias]

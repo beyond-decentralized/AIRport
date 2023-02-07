@@ -63,7 +63,7 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 		dbColumns: DbColumn[],
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): any[][] {
 		// let currentValueIndex = -1;
 		// this.values           = [];
@@ -86,7 +86,7 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 					return (<QField<any>>value).toQueryFragment(
 						this.columnAliases, false,
 						this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
-						queryUtils, fieldUtils, relationManager)
+						queryUtils, fieldUtils, queryRelationManager)
 				}
 			})
 		})

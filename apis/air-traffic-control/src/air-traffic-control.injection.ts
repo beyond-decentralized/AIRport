@@ -55,7 +55,7 @@ AIRPORT_DATABASE.setDependencies({
 	find: NonEntityFind,
 	findOne: NonEntityFindOne,
 	qApplicationBuilderUtils: QApplicationBuilderUtils,
-	relationManager: QueryRelationManager,
+	queryRelationManager: QueryRelationManager,
 	search: NonEntitySearch,
 	searchOne: NonEntitySearchOne
 })
@@ -76,7 +76,7 @@ DATABASE_FACADE.setDependencies({
 	updateCacheManager: UPDATE_CACHE_MANAGER
 })
 airTrafficControl.setDependencies(FieldUtils, {
-	relationManager: QueryRelationManager
+	queryRelationManager: QueryRelationManager
 })
 airTrafficControl.setDependencies(Lookup, {
 	entityUtils: ENTITY_UTILS,
@@ -91,7 +91,7 @@ airTrafficControl.setDependencies(QMetadataUtils, {
 QUERY_FACADE.setDependencies({
 	fieldUtils: FieldUtils,
 	queryUtils: QUERY_UTILS,
-	relationManager: QueryRelationManager,
+	queryRelationManager: QueryRelationManager,
 	transactionalConnector: TRANSACTIONAL_CONNECTOR
 })
 QUERY_UTILS.setDependencies({
@@ -100,7 +100,7 @@ QUERY_UTILS.setDependencies({
 	dictionary: Dictionary,
 	entityUtils: ENTITY_UTILS,
 	fieldUtils: FieldUtils,
-	relationManager: QueryRelationManager,
+	queryRelationManager: QueryRelationManager,
 	airEntityUtils: AIR_ENTITY_UTILS
 })
 airTrafficControl.setDependencies(QueryRelationManager, {

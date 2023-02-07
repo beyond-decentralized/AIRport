@@ -52,7 +52,7 @@ STORE_DRIVER.setDependencies({
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,
-    relationManager: QueryRelationManager,
+    queryRelationManager: QueryRelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     subStatementSqlGenerator: SubStatementSqlGenerator,
     transactionManager: TRANSACTION_MANAGER,
@@ -67,7 +67,7 @@ fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,
-    relationManager: QueryRelationManager,
+    queryRelationManager: QueryRelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     storeDriver: STORE_DRIVER,
     utils: Utils

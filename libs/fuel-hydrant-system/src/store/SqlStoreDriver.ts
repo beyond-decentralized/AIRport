@@ -99,13 +99,13 @@ export abstract class SqlStoreDriver
 	qMetadataUtils: IQMetadataUtils
 
 	@Inject()
+	queryRelationManager: IQueryRelationManager
+
+	@Inject()
 	queryUtils: IQueryUtils
 
 	@Inject()
 	qValidator: IValidator
-
-	@Inject()
-	relationManager: IQueryRelationManager
 
 	@Inject()
 	sqlQueryAdapter: ISQLQueryAdaptor
@@ -327,7 +327,7 @@ Entity:          ${table.name}
 				this.entityStateManager,
 				this.qMetadataUtils,
 				this.qValidator,
-				this.relationManager,
+				this.queryRelationManager,
 				this.sqlQueryAdapter,
 				this,
 				this.subStatementSqlGenerator,
@@ -360,7 +360,7 @@ Entity:          ${table.name}
 			this.entityStateManager,
 			this.qMetadataUtils,
 			this.qValidator,
-			this.relationManager,
+			this.queryRelationManager,
 			this.sqlQueryAdapter,
 			this,
 			this.subStatementSqlGenerator,
@@ -392,7 +392,7 @@ Entity:          ${table.name}
 			this.entityStateManager,
 			this.qMetadataUtils,
 			this.qValidator,
-			this.relationManager,
+			this.queryRelationManager,
 			this.sqlQueryAdapter,
 			this,
 			this.subStatementSqlGenerator,
@@ -451,7 +451,7 @@ Entity:          ${table.name}
 					this.objectResultParserFactory,
 					this.qMetadataUtils,
 					this.qValidator,
-					this.relationManager,
+					this.queryRelationManager,
 					this.sqlQueryAdapter,
 					this,
 					this.subStatementSqlGenerator,
@@ -466,7 +466,7 @@ Entity:          ${table.name}
 					this.entityStateManager,
 					this.qMetadataUtils,
 					this.qValidator,
-					this.relationManager,
+					this.queryRelationManager,
 					this.sqlQueryAdapter,
 					this,
 					this.subStatementSqlGenerator,
@@ -481,7 +481,7 @@ Entity:          ${table.name}
 					this.entityStateManager,
 					this.qMetadataUtils,
 					this.qValidator,
-					this.relationManager,
+					this.queryRelationManager,
 					this.sqlQueryAdapter,
 					this,
 					this.subStatementSqlGenerator,
@@ -496,7 +496,7 @@ Entity:          ${table.name}
 					this.entityStateManager,
 					this.qMetadataUtils,
 					this.qValidator,
-					this.relationManager,
+					this.queryRelationManager,
 					this.sqlQueryAdapter,
 					this,
 					this.subStatementSqlGenerator,

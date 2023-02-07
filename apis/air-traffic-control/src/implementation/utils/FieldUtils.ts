@@ -15,7 +15,7 @@ export class FieldUtils
 	implements IFieldUtils {
 
 	@Inject()
-	relationManager: IQueryRelationManager
+	queryRelationManager: IQueryRelationManager
 
 	FieldQuery: typeof FieldQuery
 
@@ -29,6 +29,6 @@ export class FieldUtils
 		let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases,
 			trackedRepoGUIDSet, trackedRepoLocalIdSet)
 
-		return subSelectQuery.toQuery(queryUtils, this, this.relationManager)
+		return subSelectQuery.toQuery(queryUtils, this, this.queryRelationManager)
 	}
 }

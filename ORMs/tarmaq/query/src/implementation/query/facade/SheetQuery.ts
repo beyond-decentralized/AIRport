@@ -31,7 +31,7 @@ export class SheetQuery
 		rawSelect: any[],
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): any {
 		if (!(rawSelect instanceof Array)) {
 			throw new Error(`Flat Queries an array of fields in SELECT clause.`)
@@ -45,7 +45,7 @@ export class SheetQuery
 			const queryFieldClause = selectField.toQueryFragment(
 				this.columnAliases, true,
 				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
-				queryUtils, fieldUtils, relationManager)
+				queryUtils, fieldUtils, queryRelationManager)
 
 			return queryFieldClause
 		})
@@ -54,11 +54,11 @@ export class SheetQuery
 	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QuerySheet {
 		let select = this.rawToQuerySelectClause(
 			this.rawQuery.SELECT,
-			queryUtils, fieldUtils, relationManager)
+			queryUtils, fieldUtils, queryRelationManager)
 
 		let querySheet: QuerySheet = {
 			SELECT: select,
@@ -67,7 +67,7 @@ export class SheetQuery
 
 		return <QuerySheet>this.getNonEntityQuery(
 			this.rawQuery, querySheet, null,
-			queryUtils, fieldUtils, relationManager)
+			queryUtils, fieldUtils, queryRelationManager)
 	}
 
 }

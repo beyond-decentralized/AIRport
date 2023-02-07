@@ -27,7 +27,7 @@ export class QueryEntityClassCreator
 	qApplicationBuilderUtils: IQApplicationBuilderUtils
 
 	@Inject()
-	relationManager: IQueryRelationManager
+	queryRelationManager: IQueryRelationManager
 
 	createAll(
 		applications: DbApplication[]
@@ -44,12 +44,12 @@ export class QueryEntityClassCreator
 		let qApplication: QAppInternal = this.airportDatabase.QM[dbApplication.fullName] as QAppInternal
 		// If the Application API source has already been loaded
 		if (qApplication) {
-			qApplication.__dbDbApplication__ = dbApplication
+			qApplication.__dbApplication__ = dbApplication
 		} else {
 			qApplication = {
 				__constructors__: {},
 				__qConstructors__: {},
-				__dbDbApplication__: dbApplication,
+				__dbApplication__: dbApplication,
 				name: dbApplication.name,
 				domain: dbApplication.domain.name
 			}
@@ -58,7 +58,7 @@ export class QueryEntityClassCreator
 		this.airportDatabase.Q[dbApplication.index] = qApplication
 		this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication,
 			this.airportDatabase.qApplications,
-			this.applicationUtils, this.relationManager)
+			this.applicationUtils, this.queryRelationManager)
 
 		return qApplication
 	}

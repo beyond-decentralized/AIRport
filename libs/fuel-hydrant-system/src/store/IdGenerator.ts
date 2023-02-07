@@ -72,7 +72,7 @@ export class IdGenerator
 	}
 
 	doPopulateTransactionHistory_LocalIdColumns(resolve): void {
-		if (Q.__dbDbApplication__ && Q.__dbDbApplication__.currentVersion) {
+		if (Q.__dbApplication__ && Q.__dbApplication__.currentVersion) {
 			const transactionHistoryDbEntity =
 				this.getHoldingPatternDbEntity('TransactionHistory')
 			const repoTransHistoryDbEntity =
@@ -135,7 +135,7 @@ export class IdGenerator
 	private getHoldingPatternDbEntity(
 		holdingPatternEntityName: string
 	): DbEntity {
-		return Q.__dbDbApplication__.currentVersion[0].applicationVersion
+		return Q.__dbApplication__.currentVersion[0].applicationVersion
 			.entityMapByName[holdingPatternEntityName]
 	}
 

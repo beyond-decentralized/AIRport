@@ -88,7 +88,7 @@ export abstract class Dao<Entity,
 		Q: QApp,
 		private internal = false
 	) {
-		const dbEntity = Q.__dbDbApplication__.currentVersion[0]
+		const dbEntity = Q.__dbApplication__.currentVersion[0]
 			.applicationVersion.entities[dbEntityId];
 		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
 		this.db = new EntityDatabaseFacade<Entity,

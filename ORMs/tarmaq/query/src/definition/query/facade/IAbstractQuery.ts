@@ -14,7 +14,7 @@ export interface IAbstractQuery {
 	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryWhereBase
 
 }

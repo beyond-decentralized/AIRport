@@ -68,13 +68,13 @@ export class UpdateManager
 	queryFacade: IQueryFacade
 
 	@Inject()
+	queryRelationManager: IQueryRelationManager
+
+	@Inject()
 	queryUtils: IQueryUtils
 
 	@Inject()
 	recordHistoryDuo: IRecordHistoryDuo
-
-	@Inject()
-	relationManager: IQueryRelationManager
 
 	@Inject()
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
@@ -170,7 +170,7 @@ export class UpdateManager
 
 		const querySelectClause = sheetQuery.rawToQueryNonDistinctSelectClause(
 			getSheetSelectFromSetClauseResult.selectClause,
-			this.queryUtils, this.fieldUtils, this.relationManager)
+			this.queryUtils, this.fieldUtils, this.queryRelationManager)
 
 		const querySheet: QuerySheet = {
 			SELECT: querySelectClause,

@@ -53,7 +53,7 @@ export class NoOpApplicationBuilder
 			const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
 				getDbApplication_FullName(jsonApplication)] as QAppInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbDbApplication__, jsonEntity));
+				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
 			}
 		}
 
@@ -69,7 +69,7 @@ export class NoOpApplicationBuilder
 			const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
 				getDbApplication_FullName(jsonApplication)] as QAppInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbDbApplication__, jsonEntity));
+				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
 			}
 		}
 

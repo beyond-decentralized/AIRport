@@ -83,12 +83,12 @@ export class QStringFunction<T extends string | string[] = string>
 		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryFieldClause {
 		let queryFieldClause = this.rawToQueryOperableFunction(
 			this, columnAliases, forSelectClause,
 			trackedRepoGUIDSet, trackedRepoLocalIdSet,
-			queryUtils, fieldUtils, relationManager);
+			queryUtils, fieldUtils, queryRelationManager);
 
 		if (this.isQueryParameter) {
 			this.parameterAlias = <string>queryFieldClause.value;

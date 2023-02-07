@@ -30,7 +30,7 @@ export class TreeQuery<ITE extends ITreeEntity>
 	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryTree {
 		let queryTree: QueryTree
 			= <QueryTree>this.getNonEntityQuery(this.rawQuery, <any>{}, (
@@ -38,10 +38,10 @@ export class TreeQuery<ITE extends ITreeEntity>
 			) => {
 				nonEntityQuery.SELECT = this.rawToQuerySelectClause(
 					this.rawQuery.SELECT,
-					queryUtils, fieldUtils, relationManager)
+					queryUtils, fieldUtils, queryRelationManager)
 				nonEntityQuery.forUpdate = this.rawQuery.FOR_UPDATE
 
-			}, queryUtils, fieldUtils, relationManager)
+			}, queryUtils, fieldUtils, queryRelationManager)
 
 		return queryTree
 	}

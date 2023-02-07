@@ -53,7 +53,7 @@ export class QEntityUtils implements IQEntityUtils {
         q: IQEntityInternal,
         allQApps: QApp[],
         applicationUtils: IApplicationUtils,
-        relationManager: IQueryRelationManager
+        queryRelationManager: IQueryRelationManager
     ): IQRelation<typeof q> {
         const relation = property.relation[0]
         switch (relation.relationType) {
@@ -64,14 +64,14 @@ export class QEntityUtils implements IQEntityUtils {
                     = allQApps[relationApplication.index]
                         .__qIdRelationConstructors__[relationEntity.index]
                 return new qIdRelationConstructor(
-                    relation.relationEntity, relation, q, applicationUtils, relationManager)
+                    relation.relationEntity, relation, q, applicationUtils, queryRelationManager)
             case EntityRelationType.ONE_TO_MANY:
                 if (entity.isAirEntity) {
                     return new QAirEntityOneToManyRelation(relation, q,
-                        applicationUtils, relationManager)
+                        applicationUtils, queryRelationManager)
                 } else {
                     return new QOneToManyRelation(relation, q,
-                        applicationUtils, relationManager)
+                        applicationUtils, queryRelationManager)
                 }
             default:
                 throw new Error(`Unknown EntityRelationType: ${relation.relationType}.`)
@@ -86,13 +86,13 @@ export class QEntityUtils implements IQEntityUtils {
         var ChildQEntity = function (
             entity: DbEntity,
             applicationUtils: IApplicationUtils,
-            relationManager: IQueryRelationManager,
+            queryRelationManager: IQueryRelationManager,
             nextChildJoinPosition: number[],
             dbRelation: DbRelation,
             joinType: JoinType
         ) {
             (<any>ChildQEntity).base.constructor.call(
-                this, entity, applicationUtils, relationManager,
+                this, entity, applicationUtils, queryRelationManager,
                 nextChildJoinPosition, dbRelation, joinType)
 
             const qEntityUtils = IOC.getSync(QEntityUtils)
@@ -104,7 +104,7 @@ export class QEntityUtils implements IQEntityUtils {
 
                 if (property.relation && property.relation.length) {
                     qFieldOrRelation = qEntityUtils.getQRelation(entity, property,
-                        this, allQApps, applicationUtils, relationManager)
+                        this, allQApps, applicationUtils, queryRelationManager)
                     for (const propertyColumn of property.propertyColumns) {
                         qEntityUtils.addColumnQField(entity, property, this, propertyColumn.column)
                     }
@@ -154,10 +154,10 @@ export class QEntityUtils implements IQEntityUtils {
             relation: DbRelation,
             qEntity: IQEntityInternal,
             appliationUtils: IApplicationUtils,
-            relationManager: IQueryRelationManager,
+            queryRelationManager: IQueryRelationManager,
         ) {
             (<any>QEntityIdRelation).base.constructor.call(
-                this, relation, qEntity, appliationUtils, relationManager)
+                this, relation, qEntity, appliationUtils, queryRelationManager)
 
             const qEntityUtils = IOC.getSync(QEntityUtils)
 

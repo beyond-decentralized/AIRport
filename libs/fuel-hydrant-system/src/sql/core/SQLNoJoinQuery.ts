@@ -44,7 +44,7 @@ export abstract class SQLNoJoinQuery
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		protected relationManager: IQueryRelationManager,
+		protected queryRelationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementSqlGenerator: ISubStatementSqlGenerator,
@@ -94,9 +94,9 @@ export abstract class SQLNoJoinQuery
 			expecting: '${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}'`)
 		}
 
-		const firstQEntity: IQEntity = new QEntity(firstDbEntity, this.queryUtils, this.relationManager)
+		const firstQEntity: IQEntity = new QEntity(firstDbEntity, this.queryUtils, this.queryRelationManager)
 
-		const tableAlias = this.relationManager.getAlias(fromRelation)
+		const tableAlias = this.queryRelationManager.getAlias(fromRelation)
 		this.qEntityMapByAlias[tableAlias] = firstQEntity as IQEntityInternal
 		let fromFragment = `\t${tableName}`
 		if (addAs) {

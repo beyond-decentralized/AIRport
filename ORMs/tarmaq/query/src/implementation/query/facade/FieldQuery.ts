@@ -52,7 +52,7 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 		rawSelect: any,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): any {
 		if (!(this.rawQuery.SELECT instanceof QField)) {
 			throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE)
@@ -61,7 +61,7 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 		const queryClauseField = (<QField<any>><any>this.rawQuery.SELECT).toQueryFragment(
 			this.columnAliases, true,
 			this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
-			queryUtils, fieldUtils, relationManager)
+			queryUtils, fieldUtils, queryRelationManager)
 
 		return queryClauseField
 	}
@@ -69,12 +69,12 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryField {
 
 		let select = this.rawToQuerySelectClause(
 			this.rawQuery.SELECT,
-			queryUtils, fieldUtils, relationManager)
+			queryUtils, fieldUtils, queryRelationManager)
 
 		let queryField: QueryField = {
 			SELECT: select,
@@ -85,7 +85,7 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 
 		return <QueryField>this.getNonEntityQuery(
 			this.rawQuery, queryField, null,
-			queryUtils, fieldUtils, relationManager)
+			queryUtils, fieldUtils, queryRelationManager)
 	}
 
 

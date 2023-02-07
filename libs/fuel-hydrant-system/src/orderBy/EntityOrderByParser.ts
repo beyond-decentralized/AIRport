@@ -72,7 +72,7 @@ export class EntityOrderByParser
 			(currentSelectFragment = selectFragmentQueue.shift())
 			&& (currentJoinNode = joinNodeQueue.shift())) {
 
-			const tableAlias = this.relationManager.getAlias(currentJoinNode.queryRelation)
+			const tableAlias = this.queryRelationManager.getAlias(currentJoinNode.queryRelation)
 			const dbEntity: DbEntity = qEntityMapByAlias[tableAlias].__driver__.dbEntity
 
 			const currentEntityOrderBy = []

@@ -30,12 +30,12 @@ export function QRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
-	relationManager: IQueryRelationManager
+	queryRelationManager: IQueryRelationManager
 ) {
 	this.dbRelation = dbRelation
 	this.parentQ = parentQ
 	this.applicationUtils = applicationUtils
-	this.relationManager = relationManager
+	this.queryRelationManager = queryRelationManager
 }
 
 QRelation.prototype.INNER_JOIN = function <IQ extends IQEntityInternal>(): IQ {
@@ -98,12 +98,12 @@ QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinT
 	let newQEntity: IQEntityInternal = new qEntityConstructor(
 		dbEntity,
 		this.applicationUtils,
-		this.relationManager,
-		this.relationManager.getNextChildJoinPosition(this.parentQ.__driver__),
+		this.queryRelationManager,
+		this.queryRelationManager.getNextChildJoinPosition(this.parentQ.__driver__),
 		this.dbRelation,
 		joinType,
 		this.applicationUtils,
-		this.relationManager
+		this.queryRelationManager
 	)
 	newQEntity.__driver__.parentJoinEntity = this.parentQ
 	return <IQ>newQEntity
@@ -115,10 +115,10 @@ export function QAirEntityRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
-	relationManager: IQueryRelationManager,
+	queryRelationManager: IQueryRelationManager,
 ) {
 	(<any>QAirEntityRelation).base.constructor.call(
-		this, dbRelation, parentQ, applicationUtils, relationManager)
+		this, dbRelation, parentQ, applicationUtils, queryRelationManager)
 }
 
 export const qAirEntityRelationMethods = {
@@ -131,10 +131,10 @@ export function QManyToOneAirEntityRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
-	relationManager: IQueryRelationManager,
+	queryRelationManager: IQueryRelationManager,
 ) {
 	(<any>QAirEntityRelation).base.constructor.call(
-		this, dbRelation, parentQ, applicationUtils, relationManager)
+		this, dbRelation, parentQ, applicationUtils, queryRelationManager)
 }
 
 export const qManyToOneAirEntityRelationMethods = {
@@ -162,10 +162,10 @@ export function QManyToOneInternalRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
-	relationManager: IQueryRelationManager,
+	queryRelationManager: IQueryRelationManager,
 ) {
 	(<any>QAirEntityRelation).base.constructor.call(
-		this, dbRelation, parentQ, applicationUtils, relationManager)
+		this, dbRelation, parentQ, applicationUtils, queryRelationManager)
 }
 
 export const qManyToOneInternalRelationMethods = {

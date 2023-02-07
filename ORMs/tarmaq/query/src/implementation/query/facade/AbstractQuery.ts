@@ -55,7 +55,7 @@ export abstract class AbstractQuery
 	abstract toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryWhereBase;
 
 	protected getNonEntityQuery(
@@ -64,10 +64,10 @@ export abstract class AbstractQuery
 		createSelectCallback: { (queryNonEntity: QueryNonEntity): void },
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryNonEntity {
 		let from = this.rawToQueryFromClause(rawQuery.FROM,
-			queryUtils, fieldUtils, relationManager)
+			queryUtils, fieldUtils, queryRelationManager)
 		queryNonEntity.FROM = from
 		if (createSelectCallback) {
 			createSelectCallback(queryNonEntity)
@@ -91,7 +91,7 @@ export abstract class AbstractQuery
 		fromClause: (IFrom | IEntityRelationFrom | RawTreeQuery<any>)[],
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryRelation[] {
 		if (!fromClause) {
 			if (this.isEntityQuery) {
@@ -112,7 +112,7 @@ export abstract class AbstractQuery
 			return (fromEntity as IQEntityInternal).__driver__
 				.getQueryRelation(this.columnAliases,
 					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
-					queryUtils, fieldUtils, relationManager)
+					queryUtils, fieldUtils, queryRelationManager)
 		})
 	}
 

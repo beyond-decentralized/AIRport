@@ -73,7 +73,7 @@ export abstract class NonEntitySQLQuery<JNEQ extends QueryNonEntity>
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		relationManager: IQueryRelationManager,
+		queryRelationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementQueryGenerator: ISubStatementSqlGenerator,
@@ -90,7 +90,7 @@ export abstract class NonEntitySQLQuery<JNEQ extends QueryNonEntity>
 			entityStateManager,
 			qMetadataUtils,
 			qValidator,
-			relationManager,
+			queryRelationManager,
 			sqlQueryAdapter,
 			storeDriver,
 			subStatementQueryGenerator,
@@ -183,9 +183,9 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 				throw new Error(`First table in FROM clause cannot be joined`)
 		}
 
-		let alias = this.relationManager.getAlias(firstRelation)
+		let alias = this.queryRelationManager.getAlias(firstRelation)
 		this.qValidator.validateReadFromEntity(firstRelation)
-		let firstEntity = this.relationManager.createRelatedQEntity(
+		let firstEntity = this.queryRelationManager.createRelatedQEntity(
 			firstRelation, context)
 		this.qEntityMapByAlias[alias] = firstEntity
 		joinTreeNode = new JoinTreeNode(firstRelation, [], null)
@@ -199,7 +199,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 				throw new Error(`Table ${i + 1} in FROM clause is missing joinType`)
 			}
 			this.qValidator.validateReadFromEntity(joinRelation)
-			alias = this.relationManager.getAlias(joinRelation)
+			alias = this.queryRelationManager.getAlias(joinRelation)
 			switch (joinRelation.relationType) {
 				case QueryRelationType.SUB_QUERY_ROOT:
 					let view = this.addFieldsToView(
@@ -208,7 +208,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 					continue
 				case QueryRelationType.ENTITY_ROOT:
 					// Non-Joined table
-					let nonJoinedEntity = this.relationManager.createRelatedQEntity(
+					let nonJoinedEntity = this.queryRelationManager.createRelatedQEntity(
 						joinRelation, context)
 					this.qEntityMapByAlias[alias] = nonJoinedEntity
 					let anotherTree = new JoinTreeNode(joinRelation, [], null)
@@ -224,7 +224,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 						throw new Error(
 							`Table ${i + 1} in FROM clause is missing relationPropertyName`)
 					}
-					rightEntity = this.relationManager.createRelatedQEntity(
+					rightEntity = this.queryRelationManager.createRelatedQEntity(
 						joinRelation, context)
 					break
 				case QueryRelationType.SUB_QUERY_JOIN_ON:
@@ -237,13 +237,13 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 					if (!(<QueryJoinRelation>joinRelation).joinWhereClause) {
 						this.warn(`Table ${i + 1} in FROM clause is missing joinWhereClause`)
 					}
-					rightEntity = this.relationManager.createRelatedQEntity(
+					rightEntity = this.queryRelationManager.createRelatedQEntity(
 						joinRelation, context)
 					break
 				default:
 					throw new Error(`Unknown QueryRelationType ${joinRelation.relationType}`)
 			}
-			let parentAlias = this.relationManager.getParentAlias(joinRelation)
+			let parentAlias = this.queryRelationManager.getParentAlias(joinRelation)
 			if (!joinNodeMap[parentAlias]) {
 				throw new Error(
 					`Missing parent entity for alias ${parentAlias}, on table ${i + 1} in FROM clause. 
@@ -441,7 +441,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 	): string {
 		let fromFragment = '\t'
 		let currentRelation = currentTree.queryRelation
-		let currentAlias = this.relationManager.getAlias(currentRelation)
+		let currentAlias = this.queryRelationManager.getAlias(currentRelation)
 		let qEntity = this.qEntityMapByAlias[currentAlias]
 
 		if (!parentTree) {
@@ -467,7 +467,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 			}
 		} else {
 			let parentRelation = parentTree.queryRelation
-			let parentAlias = this.relationManager.getAlias(parentRelation)
+			let parentAlias = this.queryRelationManager.getAlias(parentRelation)
 			let leftEntity = this.qEntityMapByAlias[parentAlias]
 
 			let rightEntity = this.qEntityMapByAlias[currentAlias]

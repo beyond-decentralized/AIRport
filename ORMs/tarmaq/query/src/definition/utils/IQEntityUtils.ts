@@ -27,7 +27,7 @@ export interface IQEntityUtils {
         q: IQEntityInternal,
         allQApps: QApp[],
         applicationUtils: IApplicationUtils,
-        relationManager: IQueryRelationManager
+        queryRelationManager: IQueryRelationManager
     ): IQRelation<typeof q>
 
     getQEntityConstructor(

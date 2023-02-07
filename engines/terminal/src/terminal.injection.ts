@@ -102,7 +102,7 @@ terminal.setDependencies(AbstractMutationManager, {
     applicationUtils: ApplicationUtils,
     fieldUtils: FieldUtils,
     queryUtils: QUERY_UTILS,
-    relationManager: QueryRelationManager
+    queryRelationManager: QueryRelationManager
 })
 
 terminal.setDependencies(TransactionalReceiver as any, {
@@ -286,7 +286,7 @@ terminal.setDependencies(UpdateManager, {
     queryFacade: QUERY_FACADE,
     queryUtils: QUERY_UTILS,
     recordHistoryDuo: RecordHistoryDuo,
-    relationManager: QueryRelationManager,
+    queryRelationManager: QueryRelationManager,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     systemWideOperationIdUtils: SystemWideOperationIdUtils,
 })

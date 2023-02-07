@@ -25,7 +25,7 @@ export abstract class MappableQuery
 		rawSelect: any,
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): any {
 		let select = {}
 
@@ -42,7 +42,7 @@ export abstract class MappableQuery
 				select[property] = value.toQueryFragment(
 					this.columnAliases, true,
 					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
-					queryUtils, fieldUtils, relationManager)
+					queryUtils, fieldUtils, queryRelationManager)
 			} else if (value instanceof QOneToManyRelation
 				|| value instanceof QAirEntityOneToManyRelation) {
 				throw new Error(`@OneToMany relation objects can cannot be used in SELECT clauses`)
@@ -65,7 +65,7 @@ export abstract class MappableQuery
 							} else {
 								isChildObject = true
 								select[property] = this.rawToQueryNonDistinctSelectClause(
-									value, queryUtils, fieldUtils, relationManager)
+									value, queryUtils, fieldUtils, queryRelationManager)
 							}
 					}
 				} finally {

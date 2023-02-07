@@ -25,7 +25,7 @@ export interface IQApplicationBuilderUtils {
 		qApplication: QAppInternal,
 		allQApps: QApp[],
 		appliationUtils: IApplicationUtils,
-		relationManager: IQueryRelationManager,
+		queryRelationManager: IQueryRelationManager,
 	): void
 
 	orderApplicationsInOrderOfPrecedence(

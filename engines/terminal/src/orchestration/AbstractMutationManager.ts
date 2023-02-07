@@ -30,10 +30,10 @@ export class AbstractMutationManager {
   fieldUtils: IFieldUtils
 
   @Inject()
-  queryUtils: IQueryUtils
+  queryRelationManager: IQueryRelationManager
 
   @Inject()
-  relationManager: IQueryRelationManager
+  queryUtils: IQueryUtils
 
   protected getPortableQuery(
     applicationIndex: number,
@@ -45,7 +45,7 @@ export class AbstractMutationManager {
       applicationIndex,
       entityIndex,
       query: <Query>query.toQuery(
-        this.queryUtils, this.fieldUtils, this.relationManager),
+        this.queryUtils, this.fieldUtils, this.queryRelationManager),
       parameterMap: query.getParameters(),
       queryResultType,
       trackedRepoGUIDs: Array.from(query.trackedRepoGUIDSet),

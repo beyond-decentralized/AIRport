@@ -30,7 +30,7 @@ export class SQLDelete
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		relationManager: IQueryRelationManager,
+		queryRelationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementSqlGenerator: ISubStatementSqlGenerator,
@@ -45,7 +45,7 @@ export class SQLDelete
 			entityStateManager,
 			qMetadataUtils,
 			qValidator,
-			relationManager,
+			queryRelationManager,
 			sqlQueryAdapter,
 			storeDriver,
 			subStatementSqlGenerator,
@@ -69,7 +69,7 @@ WHERE
 ${whereFragment}`
 			// TODO: following might be needed for some RDBMS, does not work for SqLite
 			// Replace the root entity alias reference with the table name
-			// let tableAlias = this.relationManager.getAlias(this.deleteQuery.DELETE_FROM)
+			// let tableAlias = this.queryRelationManager.getAlias(this.deleteQuery.DELETE_FROM)
 			// let tableName = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
 			// whereFragment = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
 		}

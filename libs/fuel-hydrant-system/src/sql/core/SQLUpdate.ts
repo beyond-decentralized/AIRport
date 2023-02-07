@@ -45,7 +45,7 @@ export class SQLUpdate
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		relationManager: IQueryRelationManager,
+		queryRelationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementSqlGenerator: ISubStatementSqlGenerator,
@@ -61,7 +61,7 @@ export class SQLUpdate
 			entityStateManager,
 			qMetadataUtils,
 			qValidator,
-			relationManager,
+			queryRelationManager,
 			sqlQueryAdapter,
 			storeDriver,
 			subStatementSqlGenerator,
@@ -100,7 +100,7 @@ export class SQLUpdate
 ${whereFragment}`
 			// TODO: following might be needed for some RDBMS, does not work for SqLite
 			// Replace the root entity alias reference with the table name
-			// let tableAlias = this.relationManager.getAlias(this.updateQuery.UPDATE)
+			// let tableAlias = this.queryRelationManager.getAlias(this.updateQuery.UPDATE)
 			// let tableName  = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
 			// whereFragment  = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
 		}

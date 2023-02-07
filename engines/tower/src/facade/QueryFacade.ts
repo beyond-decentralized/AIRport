@@ -29,10 +29,10 @@ export class QueryFacade
 	fieldUtils: IFieldUtils
 
 	@Inject()
-	queryUtils: IQueryUtils
+	queryRelationManager: IQueryRelationManager
 
 	@Inject()
-	relationManager: IQueryRelationManager
+	queryUtils: IQueryUtils
 
 	@Inject()
 	transactionalConnector: ITransactionalConnector
@@ -68,7 +68,7 @@ export class QueryFacade
 	): PortableQuery {
 		return {
 			query: <Query>query.toQuery(
-				this.queryUtils, this.fieldUtils, this.relationManager),
+				this.queryUtils, this.fieldUtils, this.queryRelationManager),
 			parameterMap: query.getParameters(),
 			queryResultType,
 			applicationIndex: context.dbEntity.applicationVersion.application.index,

@@ -80,7 +80,7 @@ export abstract class SQLQuery<JQ extends Query>
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		protected relationManager: IQueryRelationManager,
+		protected queryRelationManager: IQueryRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementSqlGenerator: ISubStatementSqlGenerator,

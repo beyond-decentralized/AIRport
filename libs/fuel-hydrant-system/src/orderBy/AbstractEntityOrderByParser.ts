@@ -42,7 +42,7 @@ export abstract class AbstractEntityOrderByParser {
 		protected rootSelectClauseFragment: any,
 		protected airportDatabase: IAirportDatabase,
 		protected qValidator: IValidator,
-		protected relationManager: IQueryRelationManager,
+		protected queryRelationManager: IQueryRelationManager,
 		protected orderBy?: QueryEntityFieldInOrderBy[]
 	) {
 	}

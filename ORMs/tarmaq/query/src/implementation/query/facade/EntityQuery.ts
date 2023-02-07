@@ -40,15 +40,15 @@ export class EntityQuery<IEP extends IEntitySelectProperties>
 	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryEntity<IEP> {
 		return {
 			SELECT: this.rawToQuerySelectClause(
 				this.rawQuery.SELECT,
-				queryUtils, fieldUtils, relationManager),
+				queryUtils, fieldUtils, queryRelationManager),
 			FROM: <QueryEntityRelation[]>this.rawToQueryFromClause(
 				this.rawQuery.FROM,
-				queryUtils, fieldUtils, relationManager),
+				queryUtils, fieldUtils, queryRelationManager),
 			forUpdate: this.rawQuery.FOR_UPDATE,
 			WHERE: queryUtils.whereClauseToQueryOperation(
 				this.rawQuery.WHERE, this.columnAliases,
@@ -93,10 +93,10 @@ export class LimitedEntityQuery<IEP extends IEntitySelectProperties>
 	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryEntityLimited<IEP> {
 		let queryEntityLimited: QueryEntityLimited<IEP> = super.toQuery(
-			queryUtils, fieldUtils, relationManager
+			queryUtils, fieldUtils, queryRelationManager
 		)
 		queryEntityLimited.LIMIT = this.rawQuery.LIMIT
 		queryEntityLimited.OFFSET = this.rawQuery.OFFSET

@@ -32,14 +32,14 @@ export class Delete<IQE extends IQEntity>
 	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryDelete {
 		return {
 			DELETE_FROM: <QueryEntityRelation>(<IQEntityInternal><any>this.rawDelete.DELETE_FROM)
 				.__driver__.getQueryRelation(
 					this.columnAliases,
 					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
-					queryUtils, fieldUtils, relationManager),
+					queryUtils, fieldUtils, queryRelationManager),
 			WHERE: queryUtils.whereClauseToQueryOperation(this.rawDelete.WHERE, this.columnAliases,
 				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
 		}

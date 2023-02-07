@@ -23,7 +23,7 @@ export class QApplicationBuilderUtils
 		qApplication: QAppInternal,
 		allQApps: QApp[],
 		appliationUtils: IApplicationUtils,
-		relationManager: IQueryRelationManager,
+		queryRelationManager: IQueryRelationManager,
 	): void {
 		// const entities = orderEntitiesByIdDependencies(application.currentVersion[0].applicationVersion.entities,
 		// application)
@@ -84,7 +84,7 @@ export class QApplicationBuilderUtils
 				Object.defineProperty(qApplication, entity.name, {
 					get: function () {
 						return new this.__qConstructors__[entity.index](
-							entity, appliationUtils, relationManager)
+							entity, appliationUtils, queryRelationManager)
 					}
 				})
 			}

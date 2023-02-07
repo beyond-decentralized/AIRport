@@ -25,14 +25,14 @@ export class InsertValues<IQE extends IQEntity>
 	toQuery(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils,
-		relationManager: IQueryRelationManager
+		queryRelationManager: IQueryRelationManager
 	): QueryInsertValues {
 		const driver = (<IQEntityInternal><any>this.rawInsertValues.INSERT_INTO)
 			.__driver__
 		const insertInto = driver.getQueryRelation(
 			this.columnAliases,
 			this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
-			queryUtils, fieldUtils, relationManager)
+			queryUtils, fieldUtils, queryRelationManager)
 		const dbColumns: DbColumn[] = []
 		let columnIndexes: number[]
 		if (this.columnIndexes) {
@@ -58,7 +58,7 @@ export class InsertValues<IQE extends IQEntity>
 			COLUMNS: columnIndexes,
 			VALUES: this.rawToQueryValuesClause(
 				this.rawInsertValues.VALUES, dbColumns,
-				queryUtils, fieldUtils, relationManager)
+				queryUtils, fieldUtils, queryRelationManager)
 		}
 	}
 
