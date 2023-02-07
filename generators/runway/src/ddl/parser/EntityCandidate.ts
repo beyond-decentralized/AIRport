@@ -65,6 +65,7 @@ export class EntityCandidate {
 	private getPropertiesOfType(
 		isId: boolean
 	): PropertyDocEntry[] {
+		let i = 0;
 		return this.docEntry.properties.filter((
 			property,
 			index
@@ -72,7 +73,7 @@ export class EntityCandidate {
 			if (property.isTransient) {
 				return false
 			}
-			property.index     = index
+			property.index     = i++
 			const idDecorators = property.decorators.filter(
 				decorator => {
 					return decorator.name === 'Id'

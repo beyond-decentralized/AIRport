@@ -2156,11 +2156,12 @@ class EntityCandidate {
         return this.getPropertiesOfType(false);
     }
     getPropertiesOfType(isId) {
+        let i = 0;
         return this.docEntry.properties.filter((property, index) => {
             if (property.isTransient) {
                 return false;
             }
-            property.index = index;
+            property.index = i++;
             const idDecorators = property.decorators.filter(decorator => {
                 return decorator.name === 'Id';
             });
@@ -24906,7 +24907,7 @@ const APPLICATION$3 = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 5
+                                    "index": 4
                                 }
                             ],
                             "sinceVersion": 1,
@@ -24920,7 +24921,7 @@ const APPLICATION$3 = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 6
+                                    "index": 5
                                 }
                             ],
                             "sinceVersion": 1,
@@ -25256,7 +25257,7 @@ const APPLICATION$3 = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 5
+                                    "index": 4
                                 }
                             ],
                             "sinceVersion": 1,
@@ -25270,7 +25271,7 @@ const APPLICATION$3 = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 6
+                                    "index": 5
                                 }
                             ],
                             "sinceVersion": 1,
@@ -25289,7 +25290,7 @@ const APPLICATION$3 = {
                                 }
                             ],
                             "name": "ONE_SIDE_APPLICATION_RELATION_LID",
-                            "notNull": false,
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 6
@@ -26429,7 +26430,7 @@ const APPLICATION = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 5
+                                    "index": 4
                                 }
                             ],
                             "sinceVersion": 1,
@@ -26443,7 +26444,7 @@ const APPLICATION = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 6
+                                    "index": 5
                                 }
                             ],
                             "sinceVersion": 1,
@@ -26837,7 +26838,7 @@ const APPLICATION = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 5
+                                    "index": 4
                                 }
                             ],
                             "sinceVersion": 1,
@@ -26851,7 +26852,7 @@ const APPLICATION = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 6
+                                    "index": 5
                                 }
                             ],
                             "sinceVersion": 1,
