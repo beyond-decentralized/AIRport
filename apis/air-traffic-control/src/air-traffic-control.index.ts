@@ -21,7 +21,7 @@ export * from './implementation/utils/QMetadataUtils';
 export * from './implementation/utils/QueryUtils';
 export * from './implementation/databaseState';
 export * from './implementation/DatabaseStore';
-export * from './implementation/RelationManager';
+export * from './implementation/QueryRelationManager';
 export * from './implementation/utils/SystemWideOperationIdUtils';
 export * from './implementation/Utils';
 export * from './air-traffic-control.coreInjection';

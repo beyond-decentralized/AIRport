@@ -12,7 +12,7 @@ import { SqlStoreDriver } from './store/SqlStoreDriver'
 import { STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/terminal-map'
 import { AppTrackerUtils, DatastructureUtils, DbApplicationUtils, ENTITY_STATE_MANAGER, SEQUENCE_GENERATOR, Dictionary } from '@airport/ground-control/dist/esm/ground-control.index'
 import {
-    AIRPORT_DATABASE, ApplicationUtils, QMetadataUtils, RelationManager, Utils
+    AIRPORT_DATABASE, ApplicationUtils, QMetadataUtils, QueryRelationManager, Utils
 } from '@airport/air-traffic-control'
 import { ActiveQueries, ObservableQueryAdapter } from '@airport/flight-number'
 import { QUERY_UTILS } from '@airport/tarmaq-query'
@@ -52,7 +52,7 @@ STORE_DRIVER.setDependencies({
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,
-    relationManager: RelationManager,
+    relationManager: QueryRelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     subStatementSqlGenerator: SubStatementSqlGenerator,
     transactionManager: TRANSACTION_MANAGER,
@@ -67,7 +67,7 @@ fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,
-    relationManager: RelationManager,
+    relationManager: QueryRelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     storeDriver: STORE_DRIVER,
     utils: Utils

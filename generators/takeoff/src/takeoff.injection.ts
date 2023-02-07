@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE, ApplicationUtils, QApplicationBuilderUtils, RelationManager } from '@airport/air-traffic-control'
+import { AIRPORT_DATABASE, ApplicationUtils, QApplicationBuilderUtils, QueryRelationManager } from '@airport/air-traffic-control'
 import { SequenceDao } from '@airport/takeoff/node_modules/@airport/airport-code/dist/esm/airport-code.index'
 import {
     ApplicationColumnDao,
@@ -117,7 +117,7 @@ takeoff.setDependencies(QueryEntityClassCreator, {
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: ApplicationUtils,
     qApplicationBuilderUtils: QApplicationBuilderUtils,
-    relationManager: RelationManager,
+    relationManager: QueryRelationManager,
 })
 
 takeoff.setDependencies(QueryObjectInitializer, {

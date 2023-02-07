@@ -3,7 +3,7 @@ import {
     ApplicationUtils,
     FieldUtils,
     QMetadataUtils,
-    RelationManager,
+    QueryRelationManager,
     REPOSITORY_LOADER,
     SystemWideOperationIdUtils,
     Utils
@@ -102,7 +102,7 @@ terminal.setDependencies(AbstractMutationManager, {
     applicationUtils: ApplicationUtils,
     fieldUtils: FieldUtils,
     queryUtils: QUERY_UTILS,
-    relationManager: RelationManager
+    relationManager: QueryRelationManager
 })
 
 terminal.setDependencies(TransactionalReceiver as any, {
@@ -286,7 +286,7 @@ terminal.setDependencies(UpdateManager, {
     queryFacade: QUERY_FACADE,
     queryUtils: QUERY_UTILS,
     recordHistoryDuo: RecordHistoryDuo,
-    relationManager: RelationManager,
+    relationManager: QueryRelationManager,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     systemWideOperationIdUtils: SystemWideOperationIdUtils,
 })

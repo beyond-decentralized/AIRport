@@ -26,7 +26,7 @@ import { ApplicationUtils } from './implementation/utils/ApplicationUtils'
 import { FieldUtils } from './implementation/utils/FieldUtils'
 import { DatabaseStore } from './implementation/DatabaseStore'
 import { IAirportDatabase } from './definition/IAirportDatabase'
-import { RelationManager } from './implementation/RelationManager'
+import { QueryRelationManager } from './implementation/QueryRelationManager'
 import { IRepositoryLoader } from './definition/IRepositoryLoader'
 import { QApplicationBuilderUtils } from './implementation/utils/QApplicationBuilderUtils'
 import { airTrafficControl } from './air-traffic-control.injectionLibrary'
@@ -37,7 +37,7 @@ import { IApiValidator } from './api/ApiValidator'
 
 airTrafficControl.register(
 	ApplicationUtils, DatabaseStore, FieldUtils,
-	QApplicationBuilderUtils, QMetadataUtils, RelationManager,
+	QApplicationBuilderUtils, QMetadataUtils, QueryRelationManager,
 	SystemWideOperationIdUtils
 )
 
@@ -55,7 +55,7 @@ AIRPORT_DATABASE.setDependencies({
 	find: NonEntityFind,
 	findOne: NonEntityFindOne,
 	qApplicationBuilderUtils: QApplicationBuilderUtils,
-	relationManager: RelationManager,
+	relationManager: QueryRelationManager,
 	search: NonEntitySearch,
 	searchOne: NonEntitySearchOne
 })
@@ -76,7 +76,7 @@ DATABASE_FACADE.setDependencies({
 	updateCacheManager: UPDATE_CACHE_MANAGER
 })
 airTrafficControl.setDependencies(FieldUtils, {
-	relationManager: RelationManager
+	relationManager: QueryRelationManager
 })
 airTrafficControl.setDependencies(Lookup, {
 	entityUtils: ENTITY_UTILS,
@@ -91,7 +91,7 @@ airTrafficControl.setDependencies(QMetadataUtils, {
 QUERY_FACADE.setDependencies({
 	fieldUtils: FieldUtils,
 	queryUtils: QUERY_UTILS,
-	relationManager: RelationManager,
+	relationManager: QueryRelationManager,
 	transactionalConnector: TRANSACTIONAL_CONNECTOR
 })
 QUERY_UTILS.setDependencies({
@@ -100,10 +100,10 @@ QUERY_UTILS.setDependencies({
 	dictionary: Dictionary,
 	entityUtils: ENTITY_UTILS,
 	fieldUtils: FieldUtils,
-	relationManager: RelationManager,
+	relationManager: QueryRelationManager,
 	airEntityUtils: AIR_ENTITY_UTILS
 })
-airTrafficControl.setDependencies(RelationManager, {
+airTrafficControl.setDependencies(QueryRelationManager, {
 	applicationUtils: ApplicationUtils,
 	queryUtils: QUERY_UTILS
 })

@@ -9629,7 +9629,7 @@ class DatabaseStore {
     }
 }
 
-class RelationManager {
+class QueryRelationManager {
     getPositionAlias(rootEntityPrefix, fromClausePosition) {
         return `${rootEntityPrefix}_${fromClausePosition.join('_')}`;
     }
@@ -9751,7 +9751,7 @@ ENTITY_UTILS.setDependencies({
 });
 QUERY_UTILS.setClass(QueryUtils);
 
-airTrafficControl.register(ApplicationUtils, DatabaseStore, FieldUtils, QApplicationBuilderUtils, QMetadataUtils, RelationManager, SystemWideOperationIdUtils);
+airTrafficControl.register(ApplicationUtils, DatabaseStore, FieldUtils, QApplicationBuilderUtils, QMetadataUtils, QueryRelationManager, SystemWideOperationIdUtils);
 const AIRPORT_DATABASE = airTrafficControl.token('AirportDatabase');
 const API_REGISTRY = airTrafficControl.token('ApiRegistry');
 const API_VALIDATOR = airTrafficControl.token('ApiValidator');
@@ -9765,7 +9765,7 @@ AIRPORT_DATABASE.setDependencies({
     find: NonEntityFind,
     findOne: NonEntityFindOne,
     qApplicationBuilderUtils: QApplicationBuilderUtils,
-    relationManager: RelationManager,
+    relationManager: QueryRelationManager,
     search: NonEntitySearch,
     searchOne: NonEntitySearchOne
 });
@@ -9786,7 +9786,7 @@ DATABASE_FACADE.setDependencies({
     updateCacheManager: UPDATE_CACHE_MANAGER
 });
 airTrafficControl.setDependencies(FieldUtils, {
-    relationManager: RelationManager
+    relationManager: QueryRelationManager
 });
 airTrafficControl.setDependencies(Lookup, {
     entityUtils: ENTITY_UTILS,
@@ -9801,7 +9801,7 @@ airTrafficControl.setDependencies(QMetadataUtils, {
 QUERY_FACADE.setDependencies({
     fieldUtils: FieldUtils,
     queryUtils: QUERY_UTILS,
-    relationManager: RelationManager,
+    relationManager: QueryRelationManager,
     transactionalConnector: TRANSACTIONAL_CONNECTOR
 });
 QUERY_UTILS.setDependencies({
@@ -9810,10 +9810,10 @@ QUERY_UTILS.setDependencies({
     dictionary: Dictionary,
     entityUtils: ENTITY_UTILS,
     fieldUtils: FieldUtils,
-    relationManager: RelationManager,
+    relationManager: QueryRelationManager,
     airEntityUtils: AIR_ENTITY_UTILS
 });
-airTrafficControl.setDependencies(RelationManager, {
+airTrafficControl.setDependencies(QueryRelationManager, {
     applicationUtils: ApplicationUtils,
     queryUtils: QUERY_UTILS
 });
@@ -13049,7 +13049,7 @@ takeoff.setDependencies(QueryEntityClassCreator, {
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: ApplicationUtils,
     qApplicationBuilderUtils: QApplicationBuilderUtils,
-    relationManager: RelationManager,
+    relationManager: QueryRelationManager,
 });
 takeoff.setDependencies(QueryObjectInitializer, {
     ddlObjectLinker: DdlObjectLinker,
@@ -34036,7 +34036,7 @@ STORE_DRIVER.setDependencies({
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,
-    relationManager: RelationManager,
+    relationManager: QueryRelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     subStatementSqlGenerator: SubStatementSqlGenerator,
     transactionManager: TRANSACTION_MANAGER,
@@ -34050,7 +34050,7 @@ fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,
-    relationManager: RelationManager,
+    relationManager: QueryRelationManager,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     storeDriver: STORE_DRIVER,
     utils: Utils
@@ -38456,7 +38456,7 @@ terminal.setDependencies(AbstractMutationManager, {
     applicationUtils: ApplicationUtils,
     fieldUtils: FieldUtils,
     queryUtils: QUERY_UTILS,
-    relationManager: RelationManager
+    relationManager: QueryRelationManager
 });
 terminal.setDependencies(TransactionalReceiver, {
     appTrackerUtils: AppTrackerUtils,
@@ -38621,7 +38621,7 @@ terminal.setDependencies(UpdateManager, {
     queryFacade: QUERY_FACADE,
     queryUtils: QUERY_UTILS,
     recordHistoryDuo: RecordHistoryDuo,
-    relationManager: RelationManager,
+    relationManager: QueryRelationManager,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     systemWideOperationIdUtils: SystemWideOperationIdUtils,
 });

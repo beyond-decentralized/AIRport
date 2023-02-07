@@ -7,7 +7,7 @@ import {
 import { IQEntityDriver, IQEntityInternal, IQueryUtils, IQueryRelationManager, IQueryRelationManagerContext } from '@airport/tarmaq-query'
 
 @Injected()
-export class RelationManager
+export class QueryRelationManager
 	implements IQueryRelationManager {
 
 	@Inject()
