@@ -13,7 +13,8 @@ export class CrossRepositoryRelationLedger
     @ManyToOne()
     @JoinColumn({
         name: 'ONE_SIDE_APPLICATION_RELATION_LID',
-        referencedColumnName: 'DB_RELATION_LID'
+        referencedColumnName: 'DB_RELATION_LID',
+        nullable: false
     })
     relation: DdlRelation
 
