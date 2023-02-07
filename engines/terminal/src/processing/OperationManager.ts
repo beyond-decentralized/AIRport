@@ -19,7 +19,6 @@ import {
 } from '@airport/direction-indicator'
 import {
 	DbColumn,
-	DbProperty,
 	Dictionary,
 	EntityRelationType,
 	IActor,
@@ -30,8 +29,7 @@ import {
 	IRootTransaction,
 	ISaveResult,
 	QueryValueOperation,
-	PortableQuery,
-	Repository_GUID
+	PortableQuery
 } from '@airport/ground-control'
 import {
 	ICascadeGraphVerifier,
