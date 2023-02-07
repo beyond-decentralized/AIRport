@@ -3,7 +3,7 @@ import {
 	QueryFunctionOperation,
 	QueryFunctionCall
 }                         from "@airport/ground-control";
-import {IQOrderableField} from "../../../definition/core/field/IQFieldInternal";
+import {IQOrderableField} from "./IQFieldInternal";
 
 /**
  * Created by Papa on 1/6/2017.

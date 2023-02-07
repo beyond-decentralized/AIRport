@@ -9,30 +9,30 @@ import {
 } from '@airport/ground-control';
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver';
 import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager';
-import { IQDateField } from '../../../definition/core/field/IQDateField';
 import { IQFunction } from '../../../definition/core/field/IQFunctions';
+import { IQStringField } from '../../../definition/core/field/IQStringField';
 import {
-	IDateOperation,
-	RawDateOperation
-} from '../../../definition/core/operation/IDateOperation';
+	IStringOperation,
+	RawStringOperation
+} from '../../../definition/core/operation/IStringOperation';
 import { RawFieldQuery } from '../../../definition/query/facade/RawFieldQuery';
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils';
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils';
-import { FieldColumnAliases } from '../entity/Aliases';
-import { DateOperation } from '../operation/DateOperation';
-import { QOperableField } from './OperableField';
+import { FieldColumnAliases } from '../entity/aliases';
+import { StringOperation } from '../operation/StringOperation';
+import { QOperableField } from './QOperableField';
 
 /**
  * Created by Papa on 8/11/2016.
  */
 
-export interface IQDateEntityField
-	extends IQDateField {
+export interface IQStringEntityField
+	extends IQStringField {
 }
 
-export class QDateField
-	extends QOperableField<Date, RawDateOperation, IDateOperation, IQDateField>
-	implements IQDateField {
+export class QStringField
+	extends QOperableField<string, RawStringOperation, IStringOperation, IQStringField>
+	implements IQStringField {
 
 	constructor(
 		dbColumn: DbColumn,
@@ -40,31 +40,40 @@ export class QDateField
 		q: IQEntityInternal,
 		objectType: QueryClauseObjectType = QueryClauseObjectType.FIELD
 	) {
-		super(dbColumn, dbProperty, q, objectType, new DateOperation());
+		super(dbColumn, dbProperty, q, objectType, new StringOperation());
 	}
 
-	getInstance(qEntity: IQEntityInternal = this.q): QDateField {
+	getInstance(qEntity: IQEntityInternal = this.q): QStringField {
 		return this.copyFunctions(
-			new QDateField(this.dbColumn, this.dbProperty, qEntity, this.objectType));
+			new QStringField(this.dbColumn, this.dbProperty, qEntity, this.objectType));
+	}
+
+	LIKE(
+		value: string | IQStringField | RawFieldQuery<IQStringField> | { (...args: any[]): RawFieldQuery<IQStringField> }
+	): RawStringOperation {
+		if (value instanceof Function) {
+			value = value();
+		}
+		return this.operation.LIKE(<any>this, value);
 	}
 
 }
 
-export class QDateFunction<T extends Date | Date[] = Date>
-	extends QDateField
+export class QStringFunction<T extends string | string[] = string>
+	extends QStringField
 	implements IQFunction<T | RawFieldQuery<any>> {
 
 	parameterAlias: string;
 
 	constructor(
-		public value: T | RawFieldQuery<QDateField>,
+		public value: T | RawFieldQuery<any>,
 		protected isQueryParameter: boolean = false
 	) {
-		super(<any>{ type: SQLDataType.DATE }, null, null, QueryClauseObjectType.FIELD_FUNCTION);
+		super(<any>{ type: SQLDataType.STRING }, null, null, QueryClauseObjectType.FIELD_FUNCTION);
 	}
 
-	getInstance(): QDateFunction {
-		return this.copyFunctions(new QDateFunction(this.value as Date, this.isQueryParameter));
+	getInstance(): QStringFunction {
+		return this.copyFunctions(new QStringFunction(this.value as string, this.isQueryParameter));
 	}
 
 	toQueryFragment(
@@ -89,18 +98,18 @@ export class QDateFunction<T extends Date | Date[] = Date>
 	}
 }
 
-export class QDateArrayFunction
-	extends QDateFunction<Date[]> {
+export class QStringArrayFunction
+	extends QStringFunction<string[]> {
 
 	constructor(
-		public value: Date[] | RawFieldQuery<any>,
+		public value: string[] | RawFieldQuery<any>,
 		isQueryParameter?: boolean
 	) {
 		super(value, isQueryParameter);
 	}
 
-	getInstance(): QDateFunction<any> {
-		return this.copyFunctions(new QDateArrayFunction(this.value as Date[],
+	getInstance(): QStringFunction<any> {
+		return this.copyFunctions(new QStringArrayFunction(this.value as string[],
 			this.isQueryParameter));
 	}
 

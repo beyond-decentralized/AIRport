@@ -4,8 +4,8 @@ import { IReadQuery } from '../../../definition/query/facade/RawReadQuery'
 import { RawSheetQuery } from '../../../definition/query/facade/RawSheetQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
-import { EntityAliases } from '../../core/entity/Aliases'
-import { QField } from '../../core/field/Field'
+import { EntityAliases } from '../../core/entity/aliases'
+import { QField } from '../../core/field/QField'
 import {
 	DistinguishableQuery,
 	NON_ENTITY_SELECT_ERROR_MESSAGE,

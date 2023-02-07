@@ -2,7 +2,7 @@ import { AirEntityId } from '@airport/aviation-communication'
 import { IJoinFields } from './IJoins'
 import { IQManyToOneAirEntityRelation } from './IQRelation'
 import { QueryLogicalOperation } from '../operation/ILogicalOperation'
-import { IQNumberEntityField } from '../../../implementation/core/field/NumberField'
+import { IQNumberEntityField } from '../../../implementation/core/field/QNumberField'
 import { IQEntityInternal } from './IQEntityDriver'
 
 /**

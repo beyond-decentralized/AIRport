@@ -3,8 +3,8 @@ import { IEntityAliases } from '../../../definition/core/entity/IAliases'
 import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
-import { EntityAliases } from '../../core/entity/Aliases'
-import { QDistinctFunction } from '../../core/field/Functions'
+import { EntityAliases } from '../../core/entity/aliases'
+import { QDistinctFunction } from '../../core/field/functions'
 import { AbstractQuery } from './AbstractQuery'
 
 /**

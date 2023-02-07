@@ -6,7 +6,7 @@ import {
 import { IFieldColumnAliases } from "../../../definition/core/entity/IAliases";
 import { IQOrderableField } from "../../../definition/core/field/IQFieldInternal";
 import { IFieldInOrderBy } from "../../../definition/core/field/IFieldInOrderBy";
-import type { QField } from "./Field";
+import type { QField } from "./QField";
 
 /**
  * Created by Papa on 10/16/2016.

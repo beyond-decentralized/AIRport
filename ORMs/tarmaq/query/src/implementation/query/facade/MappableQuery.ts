@@ -1,8 +1,8 @@
 import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
-import { QOneToManyRelation, QAirEntityOneToManyRelation } from '../../core/entity/OneToManyRelation'
-import { QField } from '../../core/field/Field'
+import { QOneToManyRelation, QAirEntityOneToManyRelation } from '../../core/entity/QOneToManyRelation'
+import { QField } from '../../core/field/QField'
 import {
 	DistinguishableQuery,
 	NON_ENTITY_SELECT_ERROR_MESSAGE

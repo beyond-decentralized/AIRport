@@ -12,11 +12,11 @@ import {
 	numFunction,
 	strFunction
 }                         from '../../../definition/core/field/IQWrapperFunctions'
-import {QBooleanFunction} from './BooleanField'
-import {QDateFunction}    from './DateField'
-import {QNullFunction}    from './NullFunction'
-import {QNumberFunction}  from './NumberField'
-import {QStringFunction}  from './StringField'
+import {QBooleanFunction} from './QBooleanField'
+import {QDateFunction}    from './QDateField'
+import {QNullFunction}    from './QNullFunction'
+import {QNumberFunction}  from './QNumberField'
+import {QStringFunction}  from './QStringField'
 
 /**
  * Created by Papa on 12/31/2016.

@@ -16,7 +16,7 @@ import {
 	RawTreeQuery
 } from "../../definition/query/facade/RawTreeQuery";
 import { ENTITY_UTILS } from '../../tarmaq.query.injection';
-import type { QField } from "./field/Field";
+import type { QField } from "./field/QField";
 
 /**
  * Created by Papa on 10/25/2016.

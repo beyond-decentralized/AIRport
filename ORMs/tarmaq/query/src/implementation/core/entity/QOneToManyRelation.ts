@@ -2,7 +2,7 @@ import { extend } from '@airport/direction-indicator'
 import { DbRelation, IApplicationUtils } from '@airport/ground-control'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
-import { QRelation, QAirEntityRelation } from './Relation'
+import { QRelation, QAirEntityRelation } from './QRelation'
 
 /**
  * Created by Papa on 10/25/2016.

@@ -12,13 +12,13 @@ import { IQStringField } from "../../definition/core/field/IQStringField";
 import { IQUntypedField } from "../../definition/core/field/IQUntypedField";
 import { IQEntityUtils } from "../../definition/utils/IQEntityUtils";
 import { QEntity } from "../core/entity/QEntity";
-import { QAirEntityOneToManyRelation, QOneToManyRelation } from "../core/entity/OneToManyRelation";
-import { QManyToOneAirEntityRelation, QManyToOneInternalRelation, QRelation } from "../core/entity/Relation";
-import { QBooleanField } from "../core/field/BooleanField";
-import { QDateField } from "../core/field/DateField";
-import { QNumberField } from "../core/field/NumberField";
-import { QStringField } from "../core/field/StringField";
-import { QUntypedField } from "../core/field/UntypedField";
+import { QAirEntityOneToManyRelation, QOneToManyRelation } from "../core/entity/QOneToManyRelation";
+import { QManyToOneAirEntityRelation, QManyToOneInternalRelation, QRelation } from "../core/entity/QRelation";
+import { QBooleanField } from "../core/field/QBooleanField";
+import { QDateField } from "../core/field/QDateField";
+import { QNumberField } from "../core/field/QNumberField";
+import { QStringField } from "../core/field/QStringField";
+import { QUntypedField } from "../core/field/QUntypedField";
 import { IQEntityInternal } from "../../definition/core/entity/IQEntityDriver";
 
 @Injected()

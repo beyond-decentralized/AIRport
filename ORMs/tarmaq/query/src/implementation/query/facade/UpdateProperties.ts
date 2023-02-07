@@ -18,7 +18,7 @@ import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRel
 import { RawUpdate } from '../../../definition/query/facade/RawUpdate'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
-import { wrapPrimitive } from '../../core/field/WrapperFunctions'
+import { wrapPrimitive } from '../../core/field/wrapperFunctions'
 import { AbstractUpdate } from './AbstractUpdate'
 
 /**

@@ -12,7 +12,7 @@ import {
 } from '../../../definition/query/facade/RawTreeQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
-import { EntityAliases } from '../../core/entity/Aliases'
+import { EntityAliases } from '../../core/entity/aliases'
 import { MappableQuery } from './MappableQuery'
 
 export class TreeQuery<ITE extends ITreeEntity>

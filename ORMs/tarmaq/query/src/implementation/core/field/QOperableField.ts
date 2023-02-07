@@ -10,7 +10,7 @@ import {
 	RawValueOperation
 } from "../../../definition/core/operation/IValueOperation";
 import { RawFieldQuery } from "../../../definition/query/facade/RawFieldQuery";
-import { QField } from "./Field";
+import { QField } from "./QField";
 
 /**
  * Created by Papa on 10/25/2016.

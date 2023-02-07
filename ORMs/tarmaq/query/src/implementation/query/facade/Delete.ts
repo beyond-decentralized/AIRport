@@ -11,7 +11,7 @@ import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRel
 import { RawDelete } from '../../../definition/query/facade/RawDelete'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
-import { EntityAliases } from '../../core/entity/Aliases'
+import { EntityAliases } from '../../core/entity/aliases'
 import { AbstractQuery } from './AbstractQuery'
 
 /**

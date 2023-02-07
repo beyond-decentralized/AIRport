@@ -15,8 +15,8 @@ import {
 import { IReadQuery } from '../../../definition/query/facade/RawReadQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
-import { EntityAliases } from '../../core/entity/Aliases'
-import { QField } from '../../core/field/Field'
+import { EntityAliases } from '../../core/entity/aliases'
+import { QField } from '../../core/field/QField'
 import { FieldInOrderBy } from '../../core/field/FieldInOrderBy'
 import { MappableQuery } from './MappableQuery'
 

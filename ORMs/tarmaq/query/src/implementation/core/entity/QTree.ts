@@ -1,7 +1,7 @@
 import { QueryRelationType, QueryViewJoinRelation, Repository_GUID, Repository_LocalId } from "@airport/ground-control";
 import { IFieldColumnAliases } from "../../../definition/core/entity/IAliases";
 import { RawTreeQuery } from "../../../definition/query/facade/RawTreeQuery";
-import { FieldColumnAliases } from "./Aliases";
+import { FieldColumnAliases } from "./aliases";
 import { IQueryUtils } from "../../../definition/utils/IQueryUtils";
 import { IFieldUtils } from "../../../definition/utils/IFieldUtils";
 import { IQueryRelationManager } from "../../../definition/core/entity/IQueryRelationManager";

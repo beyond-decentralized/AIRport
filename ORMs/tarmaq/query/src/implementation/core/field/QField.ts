@@ -22,8 +22,8 @@ import { IQFunction } from '../../../definition/core/field/IQFunctions';
 import { RawFieldQuery } from '../../../definition/query/facade/RawFieldQuery';
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils';
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils';
-import { FieldColumnAliases } from '../entity/Aliases';
-import { IAppliable } from './Appliable';
+import { FieldColumnAliases } from '../entity/aliases';
+import { IAppliable } from '../../../definition/core/field/IAppliable';
 import { FieldInOrderBy } from './FieldInOrderBy';
 
 /**

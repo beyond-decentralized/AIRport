@@ -9,7 +9,7 @@ import { IQNumberField } from "../core/field/IQNumberField";
 import { IQStringField } from "../core/field/IQStringField";
 import { IQUntypedField } from "../core/field/IQUntypedField";
 import { QEntity } from "../../implementation/core/entity/QEntity";
-import { QRelation } from "../../implementation/core/entity/Relation";
+import { QRelation } from "../../implementation/core/entity/QRelation";
 import { IQEntityInternal } from "../core/entity/IQEntityDriver";
 
 export interface IQEntityUtils {

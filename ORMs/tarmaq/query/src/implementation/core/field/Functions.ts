@@ -56,34 +56,30 @@ import {
 	ITreeEntity,
 	RawTreeQuery
 } from '../../../definition/query/facade/RawTreeQuery'
-import { IAppliable } from './Appliable'
+import { IAppliable } from '../../../definition/core/field/IAppliable'
 import {
 	QBooleanField,
 	QBooleanFunction
-} from './BooleanField'
+} from './QBooleanField'
 import {
 	QDateField,
 	QDateFunction
-} from './DateField'
+} from './QDateField'
 import {
 	QNumberField,
 	QNumberFunction
-} from './NumberField'
-import { QOperableField } from './OperableField'
+} from './QNumberField'
+import { QOperableField } from './QOperableField'
 import {
 	QStringField,
 	QStringFunction
-} from './StringField'
-import {
-	QUntypedField,
-	QUntypedFunction
-} from './UntypedField'
+} from './QStringField'
 import {
 	bool,
 	date,
 	num,
 	str
-} from './WrapperFunctions'
+} from './wrapperFunctions'
 
 function getSqlFunctionCall(
 	sqlFunction: SqlFunction,

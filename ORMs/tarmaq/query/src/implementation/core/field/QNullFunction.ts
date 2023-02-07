@@ -9,8 +9,8 @@ import { IQFunction } from '../../../definition/core/field/IQFunctions'
 import { RawFieldQuery } from '../../../definition/query/facade/RawFieldQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
-import { FieldColumnAliases } from '../entity/Aliases'
-import { QField } from './Field'
+import { FieldColumnAliases } from '../entity/aliases'
+import { QField } from './QField'
 
 /**
  * Created by Papa on 11/29/2016.
