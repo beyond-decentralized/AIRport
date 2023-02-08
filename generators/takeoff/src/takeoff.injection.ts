@@ -1,16 +1,16 @@
 import { AIRPORT_DATABASE, ApplicationUtils, QApplicationBuilderUtils, QueryRelationManager } from '@airport/air-traffic-control'
 import { SequenceDao } from '@airport/takeoff/node_modules/@airport/airport-code/dist/esm/airport-code.index'
 import {
-    ApplicationColumnDao,
-    ApplicationDao,
-    ApplicationEntityDao,
-    ApplicationPropertyColumnDao,
-    ApplicationPropertyDao,
-    ApplicationReferenceDao,
-    ApplicationRelationColumnDao,
-    ApplicationRelationDao,
-    ApplicationVersionDao,
-    DomainDao
+    DbColumnDao,
+    DbApplicationDao,
+    DbEntityDao,
+    DbPropertyColumnDao,
+    DbPropertyDao,
+    DbApplicationReferenceDao,
+    DbRelationColumnDao,
+    DbRelationDao,
+    DbApplicationVersionDao,
+    DbDomainDao
 } from '@airport/airspace/dist/app/bundle'
 import { lib } from '@airport/direction-indicator/dist/esm/direction-indicator.index'
 import { ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, SEQUENCE_GENERATOR } from '@airport/ground-control'
@@ -48,7 +48,7 @@ takeoff.setDependencies(ApplicationInitializer as any, {
     applicationBuilder: APPLICATION_BUILDER,
     applicationChecker: ApplicationChecker,
     applicationComposer: ApplicationComposer,
-    applicationDao: ApplicationDao,
+    dbApplicationDao: DbApplicationDao,
     applicationLocator: ApplicationLocator,
     applicationRecorder: ApplicationRecorder,
     appTrackerUtils: AppTrackerUtils,
@@ -64,7 +64,7 @@ APPLICATION_BUILDER.setDependencies({
 })
 
 takeoff.setDependencies(ApplicationChecker, {
-    applicationDao: ApplicationDao,
+    dbApplicationDao: DbApplicationDao,
     datastructureUtils: DatastructureUtils,
     dbApplicationUtils: DbApplicationUtils
 })
@@ -82,17 +82,17 @@ takeoff.setDependencies(ApplicationLocator, {
 })
 
 takeoff.setDependencies(ApplicationRecorder, {
-    applicationColumnDao: ApplicationColumnDao,
-    applicationDao: ApplicationDao,
-    applicationEntityDao: ApplicationEntityDao,
-    applicationPropertyColumnDao: ApplicationPropertyColumnDao,
-    applicationPropertyDao: ApplicationPropertyDao,
+    dbColumnDao: DbColumnDao,
+    dbApplicationDao: DbApplicationDao,
+    dbEntityDao: DbEntityDao,
+    dbPropertyColumnDao: DbPropertyColumnDao,
+    dbPropertyDao: DbPropertyDao,
     applicationRecorder: ApplicationRecorder,
-    applicationReferenceDao: ApplicationReferenceDao,
-    applicationRelationColumnDao: ApplicationRelationColumnDao,
-    applicationRelationDao: ApplicationRelationDao,
-    applicationVersionDao: ApplicationVersionDao,
-    domainDao: DomainDao,
+    dbApplicationReferenceDao: DbApplicationReferenceDao,
+    dbRelationColumnDao: DbRelationColumnDao,
+    dbRelationDao: DbRelationDao,
+    dbApplicationVersionDao: DbApplicationVersionDao,
+    dbDomainDao: DbDomainDao,
     transactionManager: TRANSACTION_MANAGER
 })
 
@@ -101,16 +101,16 @@ takeoff.setDependencies(DdlObjectLinker, {
 })
 
 takeoff.setDependencies(DdlObjectRetriever, {
-    applicationColumnDao: ApplicationColumnDao,
-    applicationDao: ApplicationDao,
-    applicationEntityDao: ApplicationEntityDao,
-    applicationPropertyColumnDao: ApplicationPropertyColumnDao,
-    applicationPropertyDao: ApplicationPropertyDao,
-    applicationReferenceDao: ApplicationReferenceDao,
-    applicationRelationColumnDao: ApplicationRelationColumnDao,
-    applicationRelationDao: ApplicationRelationDao,
-    applicationVersionDao: ApplicationVersionDao,
-    domainDao: DomainDao
+    dbColumnDao: DbColumnDao,
+    dbApplicationDao: DbApplicationDao,
+    dbEntityDao: DbEntityDao,
+    dbPropertyColumnDao: DbPropertyColumnDao,
+    dbPropertyDao: DbPropertyDao,
+    dbApplicationReferenceDao: DbApplicationReferenceDao,
+    dbRelationColumnDao: DbRelationColumnDao,
+    dbRelationDao: DbRelationDao,
+    dbApplicationVersionDao: DbApplicationVersionDao,
+    dbDomainDao: DbDomainDao
 })
 
 takeoff.setDependencies(QueryEntityClassCreator, {

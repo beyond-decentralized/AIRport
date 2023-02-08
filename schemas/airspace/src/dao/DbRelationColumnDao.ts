@@ -5,7 +5,7 @@ import { BaseDdlRelationColumnDao, IBaseDdlRelationColumnDao } from '../generate
 import { QDdlRelationColumn } from '../generated/qInterfaces'
 import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
 
-export interface IApplicationRelationColumnDao
+export interface IDbRelationColumnDao
 	extends IBaseDdlRelationColumnDao {
 
 	findAllForColumns(
@@ -20,9 +20,9 @@ export interface IApplicationRelationColumnDao
 }
 
 @Injected()
-export class ApplicationRelationColumnDao
+export class DbRelationColumnDao
 	extends BaseDdlRelationColumnDao
-	implements IApplicationRelationColumnDao {
+	implements IDbRelationColumnDao {
 
 	async findAllForColumns(
 		columnIds: DbColumn_LocalId[]

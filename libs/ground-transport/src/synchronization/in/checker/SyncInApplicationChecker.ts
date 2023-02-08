@@ -1,7 +1,7 @@
 import { DbApplication_Name, ApplicationStatus, DbDomain, DbApplication, SyncRepositoryData, IDbApplicationUtils } from '@airport/ground-control';
 import {
-    IDomainDao,
-    IApplicationDao
+    IDbDomainDao,
+    IDbApplicationDao
 } from "@airport/airspace/dist/app/bundle";
 import {
     IContext,
@@ -35,13 +35,13 @@ export class SyncInApplicationChecker
     implements ISyncInApplicationChecker {
 
     @Inject()
-    applicationDao: IApplicationDao
+    dbApplicationDao: IDbApplicationDao
 
     @Inject()
     dbApplicationUtils: IDbApplicationUtils
 
     @Inject()
-    domainDao: IDomainDao
+    dbDomainDao: IDbDomainDao
 
     async ensureApplications(
         data: SyncRepositoryData,
@@ -71,7 +71,7 @@ export class SyncInApplicationChecker
         const { allDbApplication_Names, domainCheckMap, domainNames, applicationCheckMap }
             = this.getNames(data)
 
-        const applications = await this.applicationDao
+        const applications = await this.dbApplicationDao
             .findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names)
 
         for (let application of applications) {
@@ -102,7 +102,7 @@ export class SyncInApplicationChecker
             domainsToCreate.push(domain)
         }
         if (domainsToCreate.length) {
-            await this.domainDao.insert(domainsToCreate)
+            await this.dbDomainDao.insert(domainsToCreate)
         }
 
         let applicationsToCreate: DbApplication[] = []
@@ -131,7 +131,7 @@ export class SyncInApplicationChecker
         }
 
         if (applicationsToCreate.length) {
-            await this.applicationDao.insert(applicationsToCreate, context)
+            await this.dbApplicationDao.insert(applicationsToCreate, context)
         }
 
         return applicationCheckMap

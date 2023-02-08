@@ -5,7 +5,7 @@ import { BaseDdlApplicationVersionDao, IBaseDdlApplicationVersionDao } from '../
 import { QDdlApplication, QDdlApplicationVersion, QDdlDomain } from '../generated/qInterfaces'
 import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
 
-export interface IApplicationVersionDao
+export interface IDbApplicationVersionDao
 	extends IBaseDdlApplicationVersionDao {
 
 	findAllActiveOrderByDbApplication_IndexAndId(): Promise<DbApplicationVersion[]>
@@ -23,9 +23,9 @@ export interface IApplicationVersionDao
 }
 
 @Injected()
-export class ApplicationVersionDao
+export class DbApplicationVersionDao
 	extends BaseDdlApplicationVersionDao
-	implements IApplicationVersionDao {
+	implements IDbApplicationVersionDao {
 
 	/*
 	async findAllLatestForDbApplication_Indexes(

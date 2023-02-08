@@ -9,7 +9,7 @@ import {
 	DbApplication,
 } from '@airport/ground-control'
 import {
-	IApplicationDao
+	IDbApplicationDao
 } from '@airport/airspace/dist/app/bundle'
 import {
 	Inject,
@@ -53,7 +53,7 @@ export class ApplicationChecker
 	implements IApplicationChecker {
 
 	@Inject()
-	applicationDao: IApplicationDao
+	dbApplicationDao: IDbApplicationDao
 
 	@Inject()
 	datastructureUtils: IDatastructureUtils
@@ -217,7 +217,7 @@ export class ApplicationChecker
 		if (!fullDbApplication_Names.length) {
 			existingApplicationMapByName = new Map()
 		} else {
-			existingApplicationMapByName = await this.applicationDao.findMapByFullNames(fullDbApplication_Names)
+			existingApplicationMapByName = await this.dbApplicationDao.findMapByFullNames(fullDbApplication_Names)
 		}
 
 		return {

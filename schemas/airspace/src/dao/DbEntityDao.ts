@@ -4,7 +4,7 @@ import { BaseDdlEntityDao, IBaseDdlEntityDao } from '../generated/baseDaos'
 import { Q_airport____at_airport_slash_airspace } from '../generated/qApplication'
 import { QDdlEntity } from '../generated/qInterfaces'
 
-export interface IApplicationEntityDao
+export interface IDbEntityDao
 	extends IBaseDdlEntityDao {
 
 	findAllForApplicationVersions(
@@ -19,9 +19,9 @@ export interface IApplicationEntityDao
 }
 
 @Injected()
-export class ApplicationEntityDao
+export class DbEntityDao
 	extends BaseDdlEntityDao
-	implements IApplicationEntityDao {
+	implements IDbEntityDao {
 
 	async findAllForApplicationVersions(
 		applicationVersionIds: DbApplicationVersion_LocalId[]

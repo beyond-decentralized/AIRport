@@ -1,5 +1,5 @@
 import {
-	IApplicationVersionDao
+	IDbApplicationVersionDao
 } from '@airport/airspace/dist/app/bundle'
 import {
 	IContext,
@@ -31,7 +31,7 @@ export class SyncInApplicationVersionChecker
 	implements ISyncInApplicationVersionChecker {
 
 	@Inject()
-	applicationVersionDao: IApplicationVersionDao
+	dbApplicationVersionDao: IDbApplicationVersionDao
 
 	@Inject()
 	applicationInitializer: IApplicationInitializer
@@ -101,7 +101,7 @@ export class SyncInApplicationVersionChecker
 		allDbApplication_Names: DbApplication_Name[],
 		applicationVersionCheckMap: Map<DbDomain_Name, Map<DbApplication_Name, IApplicationVersionCheckRecord>>
 	): Promise<void> {
-		const existingApplicationVersions = await this.applicationVersionDao
+		const existingApplicationVersions = await this.dbApplicationVersionDao
 			.findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names)
 
 		let lastDomainName

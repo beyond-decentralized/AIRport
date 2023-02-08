@@ -41,7 +41,7 @@ import { IInternalRecordManager } from '../data/InternalRecordManager';
 import { IEntityContext } from '@airport/tarmaq-entity';
 import { ActorDao } from '@airport/holding-pattern/dist/app/bundle';
 import { v4 as guidv4 } from "uuid";
-import { ApplicationDao } from '@airport/airspace/dist/app/bundle';
+import { DbApplicationDao } from '@airport/airspace/dist/app/bundle';
 import { JsonApplicationWithLastIds } from '@airport/air-traffic-control';
 
 @Injected()
@@ -51,7 +51,7 @@ export abstract class TransactionalReceiver {
     actorDao: ActorDao
 
     @Inject()
-    applicationDao: ApplicationDao
+    dbApplicationDao: DbApplicationDao
 
     @Inject()
     appTrackerUtils: IAppTrackerUtils
@@ -430,7 +430,7 @@ export abstract class TransactionalReceiver {
                 return actor
             }
 
-            const application = await this.applicationDao.findOneByDomain_NameAndDbApplication_Name(message.domain, message.application)
+            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(message.domain, message.application)
             actor = {
                 _localId: null,
                 application,

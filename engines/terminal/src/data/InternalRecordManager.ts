@@ -16,8 +16,8 @@ import {
 } from "@airport/holding-pattern/dist/app/bundle";
 import { ITransactionManager, TerminalStore } from "@airport/terminal-map";
 import {
-    IDomainDao,
-    IApplicationDao
+    IDbDomainDao,
+    IDbApplicationDao
 } from "@airport/airspace/dist/app/bundle";
 import {
     Terminal,
@@ -53,10 +53,10 @@ export class InternalRecordManager
     actorDao: IActorDao
 
     @Inject()
-    applicationDao: IApplicationDao
+    dbApplicationDao: IDbApplicationDao
 
     @Inject()
-    domainDao: IDomainDao
+    dbDomainDao: IDbDomainDao
 
     @Inject()
     entityStateManager: IEntityStateManager
@@ -99,7 +99,7 @@ export class InternalRecordManager
                     application.domain, application.name,
                     userSession.userAccount.accountPublicSigningKey, frameworkActor.terminal.GUID)
 
-            let anApplication: DbApplication = await this.applicationDao.findByIndex(
+            let anApplication: DbApplication = await this.dbApplicationDao.findByIndex(
                 application.lastIds.applications + 1);
             if (!actor) {
                 actor = {
@@ -144,7 +144,7 @@ export class InternalRecordManager
             terminal.isLocal = true;
             terminal.GUID = guidv4();
 
-            const application = await this.applicationDao.findOneByDomain_NameAndDbApplication_Name(
+            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(
                 firstApp.domain, firstApp.name)
 
             const actor: IActor = new Actor();
@@ -173,7 +173,7 @@ export class InternalRecordManager
         if (domain && this.entityStateManager.getOriginalValues(domain)) {
             return domain
         }
-        let dbDomain = await this.domainDao.findByName(application.domain)
+        let dbDomain = await this.dbDomainDao.findByName(application.domain)
         let updatedDomain
         if (domain) {
             if (dbDomain) {
@@ -189,7 +189,7 @@ export class InternalRecordManager
                     _localId: null,
                     name: application.domain,
                 }
-                await this.domainDao.save(updatedDomain, context)
+                await this.dbDomainDao.save(updatedDomain, context)
             }
         }
         if (!updatedDomain) {

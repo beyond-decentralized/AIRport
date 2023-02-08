@@ -8,7 +8,7 @@ import {
     SystemWideOperationIdUtils,
     Utils
 } from '@airport/air-traffic-control'
-import { ApplicationDao, DomainDao } from '@airport/airspace/dist/app/bundle'
+import { DbApplicationDao, DbDomainDao } from '@airport/airspace/dist/app/bundle'
 import { HISTORY_MANAGER, LOCAL_API_SERVER, TerminalStore, TERMINAL_SESSION_MANAGER, UserStore } from '@airport/terminal-map'
 import { lib } from '@airport/direction-indicator'
 import {
@@ -113,7 +113,7 @@ terminal.setDependencies(TransactionalReceiver as any, {
 
 terminal.setDependencies(DatabaseManager, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationDao: ApplicationDao,
+    dbApplicationDao: DbApplicationDao,
     applicationInitializer: APPLICATION_INITIALIZER,
     dbApplicationUtils: DbApplicationUtils,
     internalRecordManager: InternalRecordManager,
@@ -164,8 +164,8 @@ terminal.setDependencies(InsertManager, {
 
 terminal.setDependencies(InternalRecordManager, {
     actorDao: ActorDao,
-    applicationDao: ApplicationDao,
-    domainDao: DomainDao,
+    dbApplicationDao: DbApplicationDao,
+    dbDomainDao: DbDomainDao,
     entityStateManager: ENTITY_STATE_MANAGER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TerminalStore,
@@ -253,7 +253,7 @@ TRANSACTION_MANAGER.setDependencies({
 
 TRANSACTIONAL_RECEIVER.setDependencies({
     actorDao: ActorDao,
-    applicationDao: ApplicationDao,
+    dbApplicationDao: DbApplicationDao,
     databaseManager: DatabaseManager,
     dbApplicationUtils: DbApplicationUtils,
     internalRecordManager: InternalRecordManager,

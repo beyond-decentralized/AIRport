@@ -82,7 +82,7 @@ export class QEntityDriver<IQE extends IQEntity = any>
         queryRelationManager: IQueryRelationManager
     ): QueryRelation {
         // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
-        // see ApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
+        // see DbApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
         let QueryRelation: QueryRelation = {
             currentChildIndex: this.currentChildIndex,
             entityIndex: this.dbEntity.index,

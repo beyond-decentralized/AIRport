@@ -34,7 +34,7 @@ export interface DbApplicationLookupRecord {
 	patchVersion: number
 }
 
-export interface IApplicationDao
+export interface IDbApplicationDao
 	extends IBaseDdlApplicationDao {
 
 	findAllActive(): Promise<DbApplication[]>;
@@ -81,9 +81,9 @@ export interface IApplicationDao
 }
 
 @Injected()
-export class ApplicationDao
+export class DbApplicationDao
 	extends BaseDdlApplicationDao
-	implements IApplicationDao {
+	implements IDbApplicationDao {
 
 	@Inject()
 	airportDatabase: IAirportDatabase

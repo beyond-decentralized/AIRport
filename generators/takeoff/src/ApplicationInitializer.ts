@@ -24,7 +24,7 @@ import {
 	ITransactionManager
 } from '@airport/terminal-map';
 import {
-	IApplicationDao
+	IDbApplicationDao
 } from '@airport/airspace/dist/app/bundle';
 import { ISchemaBuilder } from './builder/ISchemaBuilder';
 import { IApplicationChecker } from './checker/ApplicationChecker';
@@ -49,7 +49,7 @@ export abstract class ApplicationInitializer
 	applicationComposer: IApplicationComposer
 
 	@Inject()
-	applicationDao: IApplicationDao
+	dbApplicationDao: IDbApplicationDao
 
 	@Inject()
 	applicationLocator: IApplicationLocator
@@ -120,7 +120,7 @@ export abstract class ApplicationInitializer
 
 		const existingApplicationMap: Map<DbApplication_FullName, DbApplication> = new Map()
 		if (loadExistingApplications) {
-			const applications = await this.applicationDao.findAllWithJson()
+			const applications = await this.dbApplicationDao.findAllWithJson()
 			for (const application of applications) {
 				existingApplicationMap.set(application.fullName, application)
 			}

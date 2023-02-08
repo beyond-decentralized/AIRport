@@ -4,7 +4,7 @@ import { BaseDdlApplicationReferenceDao, IBaseDdlApplicationReferenceDao } from 
 import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
 import { QDdlApplicationReference } from '../generated/qInterfaces'
 
-export interface IApplicationReferenceDao
+export interface IDbApplicationReferenceDao
 	extends IBaseDdlApplicationReferenceDao {
 
 	findAllForApplicationVersions(
@@ -19,9 +19,9 @@ export interface IApplicationReferenceDao
 }
 
 @Injected()
-export class ApplicationReferenceDao
+export class DbApplicationReferenceDao
 	extends BaseDdlApplicationReferenceDao
-	implements IApplicationReferenceDao {
+	implements IDbApplicationReferenceDao {
 
 	async findAllForApplicationVersions(
 		applicationVersionIds: DbApplicationVersion_LocalId[]

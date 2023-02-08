@@ -14,7 +14,7 @@ import {
 import {
 	Actor,
 } from '@airport/holding-pattern/dist/app/bundle';
-import { IApplicationDao } from '@airport/airspace/dist/app/bundle';
+import { IDbApplicationDao } from '@airport/airspace/dist/app/bundle';
 import {
 	IApplicationInitializer,
 	IDatabaseManager,
@@ -33,7 +33,7 @@ export class DatabaseManager
 	airportDatabase: IAirportDatabase
 
 	@Inject()
-	applicationDao: IApplicationDao
+	dbApplicationDao: IDbApplicationDao
 
 	@Inject()
 	applicationInitializer: IApplicationInitializer
@@ -108,7 +108,7 @@ export class DatabaseManager
 		context: IContext,
 		jsonApplications?: JsonApplicationWithLastIds[]
 	): Promise<void> {
-		const applications = await this.applicationDao.findAllWithJson()
+		const applications = await this.dbApplicationDao.findAllWithJson()
 		const existingApplicationMap: Map<DbApplication_FullName, DbApplication> = new Map()
 		for (const application of applications) {
 			existingApplicationMap.set(application.fullName, application)

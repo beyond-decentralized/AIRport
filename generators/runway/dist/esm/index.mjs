@@ -5450,7 +5450,7 @@ class QEntityDriver {
 */
     getQueryRelation(columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
         // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
-        // see ApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
+        // see DbApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
         let QueryRelation = {
             currentChildIndex: this.currentChildIndex,
             entityIndex: this.dbEntity.index,
@@ -10225,7 +10225,7 @@ BaseDdlRelationColumnDao.FindOne = new DaoQueryDecorators();
 BaseDdlRelationColumnDao.Search = new DaoQueryDecorators();
 BaseDdlRelationColumnDao.SearchOne = new DaoQueryDecorators();
 
-class DomainDao extends BaseDdlDomainDao {
+class DbDomainDao extends BaseDdlDomainDao {
     async findByIdIn(domainIds) {
         let d;
         return await this.db.find.tree({
@@ -10326,7 +10326,7 @@ class DomainDao extends BaseDdlDomainDao {
     }
 }
 
-class ApplicationColumnDao extends BaseDdlColumnDao {
+class DbColumnDao extends BaseDdlColumnDao {
     async findAllForEntities(entityIds) {
         let c;
         return this.db.find.tree({
@@ -10380,7 +10380,7 @@ class ApplicationColumnDao extends BaseDdlColumnDao {
     }
 }
 
-class ApplicationDao extends BaseDdlApplicationDao {
+class DbApplicationDao extends BaseDdlApplicationDao {
     async findAllActive() {
         return this.db.find.tree({
             SELECT: {},
@@ -10642,7 +10642,7 @@ class ApplicationDao extends BaseDdlApplicationDao {
     }
 }
 
-class ApplicationEntityDao extends BaseDdlEntityDao {
+class DbEntityDao extends BaseDdlEntityDao {
     async findAllForApplicationVersions(applicationVersionIds) {
         let se;
         return await this.db.find.tree({
@@ -10686,7 +10686,7 @@ class ApplicationEntityDao extends BaseDdlEntityDao {
     }
 }
 
-class ApplicationPropertyColumnDao extends BaseDdlPropertyColumnDao {
+class DbPropertyColumnDao extends BaseDdlPropertyColumnDao {
     async findAllForColumns(columnIds) {
         let rc;
         return this.db.find.tree({
@@ -10722,7 +10722,7 @@ class ApplicationPropertyColumnDao extends BaseDdlPropertyColumnDao {
     }
 }
 
-class ApplicationPropertyDao extends BaseDdlPropertyDao {
+class DbPropertyDao extends BaseDdlPropertyDao {
     async findAllForEntities(entityIds) {
         let p;
         return this.db.find.tree({
@@ -10763,7 +10763,7 @@ class ApplicationPropertyDao extends BaseDdlPropertyDao {
     }
 }
 
-class ApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
+class DbApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
     async findAllForApplicationVersions(applicationVersionIds) {
         let sr;
         return await this.db.find.tree({
@@ -10802,7 +10802,7 @@ class ApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
     }
 }
 
-class ApplicationRelationColumnDao extends BaseDdlRelationColumnDao {
+class DbRelationColumnDao extends BaseDdlRelationColumnDao {
     async findAllForColumns(columnIds) {
         let rc;
         return this.db.find.tree({
@@ -10847,7 +10847,7 @@ class ApplicationRelationColumnDao extends BaseDdlRelationColumnDao {
     }
 }
 
-class ApplicationRelationDao extends BaseDdlRelationDao {
+class DbRelationDao extends BaseDdlRelationDao {
     async findAllForProperties(propertyIds) {
         let r;
         return this.db.find.tree({
@@ -10924,7 +10924,7 @@ class ApplicationRelationDao extends BaseDdlRelationDao {
     }
 }
 
-class ApplicationVersionDao extends BaseDdlApplicationVersionDao {
+class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
     /*
     async findAllLatestForDbApplication_Indexes(
         applicationIndexes: DbApplication_Index[]
@@ -11094,11 +11094,11 @@ const application$3 = {
 };
 
 const airspace = app(application$3);
-airspace.register(DomainDao, ApplicationColumnDao, ApplicationDao, ApplicationEntityDao, ApplicationPropertyColumnDao, ApplicationPropertyDao, ApplicationReferenceDao, ApplicationRelationColumnDao, ApplicationRelationDao, ApplicationVersionDao);
-airspace.setDependencies(ApplicationColumnDao, {
+airspace.register(DbDomainDao, DbColumnDao, DbApplicationDao, DbEntityDao, DbPropertyColumnDao, DbPropertyDao, DbApplicationReferenceDao, DbRelationColumnDao, DbRelationDao, DbApplicationVersionDao);
+airspace.setDependencies(DbColumnDao, {
     datastructureUtils: DatastructureUtils
 });
-airspace.setDependencies(ApplicationDao, {
+airspace.setDependencies(DbApplicationDao, {
     airportDatabase: AIRPORT_DATABASE,
     datastructureUtils: DatastructureUtils
 });
@@ -11745,7 +11745,7 @@ class ApplicationChecker {
             existingApplicationMapByName = new Map();
         }
         else {
-            existingApplicationMapByName = await this.applicationDao.findMapByFullNames(fullDbApplication_Names);
+            existingApplicationMapByName = await this.dbApplicationDao.findMapByFullNames(fullDbApplication_Names);
         }
         return {
             coreDomainAndDbApplication_NamesByDbApplication_Name,
@@ -12359,17 +12359,17 @@ class ApplicationRecorder {
         await this.transactionManager.transactInternal(async () => {
             // FIXME: add support for real application versioning
             this.setDefaultVersioning(ddlObjects);
-            const domainDao = await this.getdomainDaoAsync();
-            await domainDao.checkAndInsertIfNeeded(ddlObjects.domains, context);
-            await this.applicationDao.insert(ddlObjects.applications, context);
-            await this.applicationVersionDao.insert(ddlObjects.applicationVersions, context);
-            await this.applicationReferenceDao.insert(ddlObjects.applicationReferences, context);
-            await this.applicationEntityDao.insert(ddlObjects.entities, context);
-            await this.applicationPropertyDao.insert(ddlObjects.properties, context);
-            await this.applicationRelationDao.insert(ddlObjects.relations, context);
-            await this.applicationColumnDao.insert(ddlObjects.columns, context);
-            await this.applicationPropertyColumnDao.insert(ddlObjects.propertyColumns, context);
-            await this.applicationRelationColumnDao.insert(ddlObjects.relationColumns, context);
+            const dbDomainDao = await this.getdomainDaoAsync();
+            await dbDomainDao.checkAndInsertIfNeeded(ddlObjects.domains, context);
+            await this.dbApplicationDao.insert(ddlObjects.applications, context);
+            await this.dbApplicationVersionDao.insert(ddlObjects.applicationVersions, context);
+            await this.dbApplicationReferenceDao.insert(ddlObjects.applicationReferences, context);
+            await this.dbEntityDao.insert(ddlObjects.entities, context);
+            await this.dbPropertyDao.insert(ddlObjects.properties, context);
+            await this.dbRelationDao.insert(ddlObjects.relations, context);
+            await this.dbColumnDao.insert(ddlObjects.columns, context);
+            await this.dbPropertyColumnDao.insert(ddlObjects.propertyColumns, context);
+            await this.dbRelationColumnDao.insert(ddlObjects.relationColumns, context);
         }, null, context);
     }
     setDefaultVersioning(ddlObjects) {
@@ -12441,7 +12441,7 @@ class ApplicationInitializer {
             getApplicationsWithValidDependencies(jsonApplications, checkDependencies);
         const existingApplicationMap = new Map();
         if (loadExistingApplications) {
-            const applications = await this.applicationDao.findAllWithJson();
+            const applications = await this.dbApplicationDao.findAllWithJson();
             for (const application of applications) {
                 existingApplicationMap.set(application.fullName, application);
             }
@@ -12770,7 +12770,7 @@ class DdlObjectLinker {
 
 class DdlObjectRetriever {
     async retrieveDdlObjects() {
-        const applications = await this.applicationDao.findAllActive();
+        const applications = await this.dbApplicationDao.findAllActive();
         const applicationIndexes = [];
         const domainIdSet = new Set();
         applications.forEach(application => {
@@ -12780,8 +12780,8 @@ class DdlObjectRetriever {
         applications.sort((application1, application2) => {
             return application1.index - application2.index;
         });
-        const domains = await this.domainDao.findByIdIn(Array.from(domainIdSet));
-        const allApplicationVersions = await this.applicationVersionDao
+        const domains = await this.dbDomainDao.findByIdIn(Array.from(domainIdSet));
+        const allApplicationVersions = await this.dbApplicationVersionDao
             .findAllActiveOrderByDbApplication_IndexAndId();
         let lastDbApplication_Index;
         // const allApplicationVersionsByIds: DbApplicationVersion[] = []
@@ -12796,9 +12796,9 @@ class DdlObjectRetriever {
             applicationVersions.push(applicationVersion);
         }
         const latestDbApplicationVersion_LocalIds = latestApplicationVersions.map(applicationVersion => applicationVersion._localId);
-        const applicationReferences = await this.applicationReferenceDao
+        const applicationReferences = await this.dbApplicationReferenceDao
             .findAllForApplicationVersions(latestDbApplicationVersion_LocalIds);
-        const entities = await this.applicationEntityDao
+        const entities = await this.dbEntityDao
             .findAllForApplicationVersions(latestDbApplicationVersion_LocalIds);
         const entityIds = entities.map(entity => entity._localId);
         /*
@@ -12810,17 +12810,17 @@ class DdlObjectRetriever {
         return entity._localId
     })
          */
-        const properties = await this.applicationPropertyDao
+        const properties = await this.dbPropertyDao
             .findAllForEntities(entityIds);
         const propertyIds = properties.map(property => property._localId);
-        const relations = await this.applicationRelationDao
+        const relations = await this.dbRelationDao
             .findAllForProperties(propertyIds);
-        const columns = await this.applicationColumnDao
+        const columns = await this.dbColumnDao
             .findAllForEntities(entityIds);
         const columnIds = columns.map(column => column._localId);
-        const propertyColumns = await this.applicationPropertyColumnDao
+        const propertyColumns = await this.dbPropertyColumnDao
             .findAllForColumns(columnIds);
-        const relationColumns = await this.applicationRelationColumnDao
+        const relationColumns = await this.dbRelationColumnDao
             .findAllForColumns(columnIds);
         const lastTerminalState = this.terminalStore.getTerminalState();
         const lastIds = {
@@ -12952,7 +12952,7 @@ takeoff.setDependencies(ApplicationInitializer, {
     applicationBuilder: APPLICATION_BUILDER,
     applicationChecker: ApplicationChecker,
     applicationComposer: ApplicationComposer,
-    applicationDao: ApplicationDao,
+    dbApplicationDao: DbApplicationDao,
     applicationLocator: ApplicationLocator,
     applicationRecorder: ApplicationRecorder,
     appTrackerUtils: AppTrackerUtils,
@@ -12966,7 +12966,7 @@ APPLICATION_BUILDER.setDependencies({
     airportDatabase: AIRPORT_DATABASE
 });
 takeoff.setDependencies(ApplicationChecker, {
-    applicationDao: ApplicationDao,
+    dbApplicationDao: DbApplicationDao,
     datastructureUtils: DatastructureUtils,
     dbApplicationUtils: DbApplicationUtils
 });
@@ -12981,33 +12981,33 @@ takeoff.setDependencies(ApplicationLocator, {
     dbApplicationUtils: DbApplicationUtils,
 });
 takeoff.setDependencies(ApplicationRecorder, {
-    applicationColumnDao: ApplicationColumnDao,
-    applicationDao: ApplicationDao,
-    applicationEntityDao: ApplicationEntityDao,
-    applicationPropertyColumnDao: ApplicationPropertyColumnDao,
-    applicationPropertyDao: ApplicationPropertyDao,
+    dbColumnDao: DbColumnDao,
+    dbApplicationDao: DbApplicationDao,
+    dbEntityDao: DbEntityDao,
+    dbPropertyColumnDao: DbPropertyColumnDao,
+    dbPropertyDao: DbPropertyDao,
     applicationRecorder: ApplicationRecorder,
-    applicationReferenceDao: ApplicationReferenceDao,
-    applicationRelationColumnDao: ApplicationRelationColumnDao,
-    applicationRelationDao: ApplicationRelationDao,
-    applicationVersionDao: ApplicationVersionDao,
-    domainDao: DomainDao,
+    dbApplicationReferenceDao: DbApplicationReferenceDao,
+    dbRelationColumnDao: DbRelationColumnDao,
+    dbRelationDao: DbRelationDao,
+    dbApplicationVersionDao: DbApplicationVersionDao,
+    dbDomainDao: DbDomainDao,
     transactionManager: TRANSACTION_MANAGER
 });
 takeoff.setDependencies(DdlObjectLinker, {
     terminalStore: TerminalStore
 });
 takeoff.setDependencies(DdlObjectRetriever, {
-    applicationColumnDao: ApplicationColumnDao,
-    applicationDao: ApplicationDao,
-    applicationEntityDao: ApplicationEntityDao,
-    applicationPropertyColumnDao: ApplicationPropertyColumnDao,
-    applicationPropertyDao: ApplicationPropertyDao,
-    applicationReferenceDao: ApplicationReferenceDao,
-    applicationRelationColumnDao: ApplicationRelationColumnDao,
-    applicationRelationDao: ApplicationRelationDao,
-    applicationVersionDao: ApplicationVersionDao,
-    domainDao: DomainDao
+    dbColumnDao: DbColumnDao,
+    dbApplicationDao: DbApplicationDao,
+    dbEntityDao: DbEntityDao,
+    dbPropertyColumnDao: DbPropertyColumnDao,
+    dbPropertyDao: DbPropertyDao,
+    dbApplicationReferenceDao: DbApplicationReferenceDao,
+    dbRelationColumnDao: DbRelationColumnDao,
+    dbRelationDao: DbRelationDao,
+    dbApplicationVersionDao: DbApplicationVersionDao,
+    dbDomainDao: DbDomainDao
 });
 takeoff.setDependencies(QueryEntityClassCreator, {
     airportDatabase: AIRPORT_DATABASE,
@@ -27853,7 +27853,7 @@ class SyncInApplicationChecker {
     }
     async checkApplicationsAndDomains(data, context) {
         const { allDbApplication_Names, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(data);
-        const applications = await this.applicationDao
+        const applications = await this.dbApplicationDao
             .findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names);
         for (let application of applications) {
             let domainName = application.domain.name;
@@ -27881,7 +27881,7 @@ class SyncInApplicationChecker {
             domainsToCreate.push(domain);
         }
         if (domainsToCreate.length) {
-            await this.domainDao.insert(domainsToCreate);
+            await this.dbDomainDao.insert(domainsToCreate);
         }
         let applicationsToCreate = [];
         for (let [domainName, applicationChecksByName] of applicationCheckMap) {
@@ -27906,7 +27906,7 @@ class SyncInApplicationChecker {
             }
         }
         if (applicationsToCreate.length) {
-            await this.applicationDao.insert(applicationsToCreate, context);
+            await this.dbApplicationDao.insert(applicationsToCreate, context);
         }
         return applicationCheckMap;
     }
@@ -28003,7 +28003,7 @@ class SyncInApplicationVersionChecker {
         return applicationVersionCheckMap;
     }
     async setApplicationVersions(domainNames, allDbApplication_Names, applicationVersionCheckMap) {
-        const existingApplicationVersions = await this.applicationVersionDao
+        const existingApplicationVersions = await this.dbApplicationVersionDao
             .findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names);
         let lastDomainName;
         let lastApplicationName;
@@ -30201,7 +30201,7 @@ class SyncOutDataSerializer {
         for (let applicationRelationLocalId of lookups.referencedApplicationRelationIndexesById.keys()) {
             applicationRelationIdsToFindBy.push(applicationRelationLocalId);
         }
-        const applicationRelations = await this.applicationRelationDao
+        const applicationRelations = await this.dbRelationDao
             .findAllByLocalIdsWithApplications(applicationRelationIdsToFindBy);
         for (const applicationRelation of applicationRelations) {
             const referencedApplicationVersion = applicationRelation.entity.applicationVersion;
@@ -30679,12 +30679,12 @@ groundTransport.setDependencies(SyncInActorChecker, {
     actorDao: ActorDao,
 });
 groundTransport.setDependencies(SyncInApplicationChecker, {
-    applicationDao: ApplicationDao,
+    dbApplicationDao: DbApplicationDao,
     dbApplicationUtils: DbApplicationUtils,
-    domainDao: DomainDao
+    dbDomainDao: DbDomainDao
 });
 groundTransport.setDependencies(SyncInApplicationVersionChecker, {
-    applicationVersionDao: ApplicationVersionDao,
+    dbApplicationVersionDao: DbApplicationVersionDao,
     applicationInitializer: APPLICATION_INITIALIZER
 });
 groundTransport.setDependencies(SyncInChecker, {
@@ -30721,7 +30721,7 @@ groundTransport.setDependencies(SyncInUtils, {
 });
 groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
-    applicationRelationDao: ApplicationRelationDao,
+    dbRelationDao: DbRelationDao,
     applicationUtils: ApplicationUtils,
     dbApplicationUtils: DbApplicationUtils,
     dictionary: Dictionary,
@@ -34512,7 +34512,7 @@ class InternalRecordManager {
             const userSession = await this.terminalSessionManager.getUserSession();
             let actor = await this.actorDao
                 .findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(application.domain, application.name, userSession.userAccount.accountPublicSigningKey, frameworkActor.terminal.GUID);
-            let anApplication = await this.applicationDao.findByIndex(application.lastIds.applications + 1);
+            let anApplication = await this.dbApplicationDao.findByIndex(application.lastIds.applications + 1);
             if (!actor) {
                 actor = {
                     _localId: null,
@@ -34545,7 +34545,7 @@ class InternalRecordManager {
             terminal.owner = userAccount;
             terminal.isLocal = true;
             terminal.GUID = v4();
-            const application = await this.applicationDao.findOneByDomain_NameAndDbApplication_Name(firstApp.domain, firstApp.name);
+            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(firstApp.domain, firstApp.name);
             const actor = new Actor();
             actor.application = application;
             actor.userAccount = userAccount;
@@ -34566,7 +34566,7 @@ class InternalRecordManager {
         if (domain && this.entityStateManager.getOriginalValues(domain)) {
             return domain;
         }
-        let dbDomain = await this.domainDao.findByName(application.domain);
+        let dbDomain = await this.dbDomainDao.findByName(application.domain);
         let updatedDomain;
         if (domain) {
             if (dbDomain) {
@@ -34583,7 +34583,7 @@ class InternalRecordManager {
                     _localId: null,
                     name: application.domain,
                 };
-                await this.domainDao.save(updatedDomain, context);
+                await this.dbDomainDao.save(updatedDomain, context);
             }
         }
         if (!updatedDomain) {
@@ -35083,7 +35083,7 @@ class TransactionalReceiver {
             if (actor) {
                 return actor;
             }
-            const application = await this.applicationDao.findOneByDomain_NameAndDbApplication_Name(message.domain, message.application);
+            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(message.domain, message.application);
             actor = {
                 _localId: null,
                 application,
@@ -35406,7 +35406,7 @@ class DatabaseManager {
         return this.initialized;
     }
     async initFeatureApplications(context, jsonApplications) {
-        const applications = await this.applicationDao.findAllWithJson();
+        const applications = await this.dbApplicationDao.findAllWithJson();
         const existingApplicationMap = new Map();
         for (const application of applications) {
             existingApplicationMap.set(application.fullName, application);
@@ -38135,7 +38135,7 @@ terminal.setDependencies(TransactionalReceiver, {
 });
 terminal.setDependencies(DatabaseManager, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationDao: ApplicationDao,
+    dbApplicationDao: DbApplicationDao,
     applicationInitializer: APPLICATION_INITIALIZER,
     dbApplicationUtils: DbApplicationUtils,
     internalRecordManager: InternalRecordManager,
@@ -38180,8 +38180,8 @@ terminal.setDependencies(InsertManager, {
 });
 terminal.setDependencies(InternalRecordManager, {
     actorDao: ActorDao,
-    applicationDao: ApplicationDao,
-    domainDao: DomainDao,
+    dbApplicationDao: DbApplicationDao,
+    dbDomainDao: DbDomainDao,
     entityStateManager: ENTITY_STATE_MANAGER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TerminalStore,
@@ -38260,7 +38260,7 @@ TRANSACTION_MANAGER.setDependencies({
 });
 TRANSACTIONAL_RECEIVER.setDependencies({
     actorDao: ActorDao,
-    applicationDao: ApplicationDao,
+    dbApplicationDao: DbApplicationDao,
     databaseManager: DatabaseManager,
     dbApplicationUtils: DbApplicationUtils,
     internalRecordManager: InternalRecordManager,

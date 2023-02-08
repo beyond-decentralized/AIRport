@@ -10,7 +10,7 @@ import { BaseDdlRelationDao, IBaseDdlRelationDao } from '../generated/baseDaos'
 import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
 import { QDdlApplication, QDdlApplicationVersion, QDdlEntity, QDdlRelation } from '../generated/qInterfaces'
 
-export interface IApplicationRelationDao
+export interface IDbRelationDao
 	extends IBaseDdlRelationDao {
 
 	findAllForProperties(
@@ -29,9 +29,9 @@ export interface IApplicationRelationDao
 }
 
 @Injected()
-export class ApplicationRelationDao
+export class DbRelationDao
 	extends BaseDdlRelationDao
-	implements IApplicationRelationDao {
+	implements IDbRelationDao {
 
 	@Inject()
 	datastructureUtils: IDatastructureUtils

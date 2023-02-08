@@ -8,7 +8,7 @@ import { BaseDdlDomainDao, IBaseDdlDomainDao } from '../generated/baseDaos'
 import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
 import { QDdlDomain } from '../generated/qInterfaces'
 
-export interface IDomainDao
+export interface IDbDomainDao
 	extends IBaseDdlDomainDao {
 
 	findByIdIn(
@@ -43,9 +43,9 @@ export interface IDomainDao
 }
 
 @Injected()
-export class DomainDao
+export class DbDomainDao
 	extends BaseDdlDomainDao
-	implements IDomainDao {
+	implements IDbDomainDao {
 
 	async findByIdIn(
 		domainIds: DbDomain_LocalId[]

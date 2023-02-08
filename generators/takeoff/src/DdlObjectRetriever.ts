@@ -3,16 +3,16 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IDomainDao,
-	IApplicationColumnDao,
-	IApplicationDao,
-	IApplicationEntityDao,
-	IApplicationPropertyColumnDao,
-	IApplicationPropertyDao,
-	IApplicationReferenceDao,
-	IApplicationRelationColumnDao,
-	IApplicationRelationDao,
-	IApplicationVersionDao
+	IDbDomainDao,
+	IDbColumnDao,
+	IDbApplicationDao,
+	IDbEntityDao,
+	IDbPropertyColumnDao,
+	IDbPropertyDao,
+	IDbApplicationReferenceDao,
+	IDbRelationColumnDao,
+	IDbRelationDao,
+	IDbApplicationVersionDao
 } from '@airport/airspace/dist/app/bundle'
 import {
 	DbDomain_LocalId,
@@ -35,40 +35,40 @@ export class DdlObjectRetriever
 	implements IDdlObjectRetriever {
 
 	@Inject()
-	applicationColumnDao: IApplicationColumnDao
+	dbColumnDao: IDbColumnDao
 
 	@Inject()
-	applicationDao: IApplicationDao
+	dbApplicationDao: IDbApplicationDao
 
 	@Inject()
-	applicationEntityDao: IApplicationEntityDao
+	dbEntityDao: IDbEntityDao
 
 	@Inject()
-	applicationPropertyColumnDao: IApplicationPropertyColumnDao
+	dbPropertyColumnDao: IDbPropertyColumnDao
 
 	@Inject()
-	applicationPropertyDao: IApplicationPropertyDao
+	dbPropertyDao: IDbPropertyDao
 
 	@Inject()
-	applicationReferenceDao: IApplicationReferenceDao
+	dbApplicationReferenceDao: IDbApplicationReferenceDao
 
 	@Inject()
-	applicationRelationColumnDao: IApplicationRelationColumnDao
+	dbRelationColumnDao: IDbRelationColumnDao
 
 	@Inject()
-	applicationRelationDao: IApplicationRelationDao
+	dbRelationDao: IDbRelationDao
 
 	@Inject()
-	applicationVersionDao: IApplicationVersionDao
+	dbApplicationVersionDao: IDbApplicationVersionDao
 
 	@Inject()
-	domainDao: IDomainDao
+	dbDomainDao: IDbDomainDao
 
 	@Inject()
 	terminalStore: ITerminalStore
 
 	async retrieveDdlObjects(): Promise<DdlObjects> {
-		const applications = await this.applicationDao.findAllActive()
+		const applications = await this.dbApplicationDao.findAllActive()
 		const applicationIndexes: DbApplication_Index[] = []
 		const domainIdSet: Set<DbDomain_LocalId> = new Set()
 		applications.forEach(
@@ -83,9 +83,9 @@ export class DdlObjectRetriever
 			return application1.index - application2.index
 		})
 
-		const domains = await this.domainDao.findByIdIn(Array.from(domainIdSet))
+		const domains = await this.dbDomainDao.findByIdIn(Array.from(domainIdSet))
 
-		const allApplicationVersions = await this.applicationVersionDao
+		const allApplicationVersions = await this.dbApplicationVersionDao
 			.findAllActiveOrderByDbApplication_IndexAndId()
 
 		let lastDbApplication_Index: DbApplication_Index
@@ -104,10 +104,10 @@ export class DdlObjectRetriever
 		const latestDbApplicationVersion_LocalIds = latestApplicationVersions.map(
 			applicationVersion => applicationVersion._localId)
 
-		const applicationReferences = await this.applicationReferenceDao
+		const applicationReferences = await this.dbApplicationReferenceDao
 			.findAllForApplicationVersions(latestDbApplicationVersion_LocalIds)
 
-		const entities = await this.applicationEntityDao
+		const entities = await this.dbEntityDao
 			.findAllForApplicationVersions(latestDbApplicationVersion_LocalIds)
 		const entityIds = entities.map(
 			entity => entity._localId)
@@ -121,23 +121,23 @@ export class DdlObjectRetriever
 	})
 		 */
 
-		const properties = await this.applicationPropertyDao
+		const properties = await this.dbPropertyDao
 			.findAllForEntities(entityIds)
 		const propertyIds = properties.map(
 			property => property._localId)
 
-		const relations = await this.applicationRelationDao
+		const relations = await this.dbRelationDao
 			.findAllForProperties(propertyIds)
 
-		const columns = await this.applicationColumnDao
+		const columns = await this.dbColumnDao
 			.findAllForEntities(entityIds)
 		const columnIds = columns.map(
 			column => column._localId)
 
-		const propertyColumns = await this.applicationPropertyColumnDao
+		const propertyColumns = await this.dbPropertyColumnDao
 			.findAllForColumns(columnIds)
 
-		const relationColumns = await this.applicationRelationColumnDao
+		const relationColumns = await this.dbRelationColumnDao
 			.findAllForColumns(columnIds)
 
 		const lastTerminalState = this.terminalStore.getTerminalState()

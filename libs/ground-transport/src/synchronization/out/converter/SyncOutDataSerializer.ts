@@ -1,4 +1,4 @@
-import { IApplicationRelationDao } from '@airport/airspace/dist/app/bundle';
+import { IDbRelationDao } from '@airport/airspace/dist/app/bundle';
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 import {
 	Inject,
@@ -111,7 +111,7 @@ export class SyncOutDataSerializer
 	applicationUtils: IApplicationUtils
 
 	@Inject()
-	applicationRelationDao: IApplicationRelationDao
+	dbRelationDao: IDbRelationDao
 
 	@Inject()
 	dbApplicationUtils: IDbApplicationUtils
@@ -436,7 +436,7 @@ export class SyncOutDataSerializer
 			applicationRelationIdsToFindBy.push(applicationRelationLocalId)
 		}
 
-		const applicationRelations = await this.applicationRelationDao
+		const applicationRelations = await this.dbRelationDao
 			.findAllByLocalIdsWithApplications(applicationRelationIdsToFindBy)
 
 		for (const applicationRelation of applicationRelations) {
