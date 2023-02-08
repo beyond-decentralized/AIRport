@@ -1,4 +1,4 @@
-import { DomainDao } from '../dao/DomainDao'
+import { DomainDao } from '../dao/DdlDomainDao'
 import { ApplicationColumnDao } from '../dao/ApplicationColumnDao';
 import { ApplicationDao } from '../dao/ApplicationDao';
 import { ApplicationEntityDao } from '../dao/ApplicationEntityDao';

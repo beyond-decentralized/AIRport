@@ -9847,18 +9847,18 @@ class SystemWideOperationId {
 class TerminalRun {
 }
 
-const __constructors__$7 = {
+const __constructors__$6 = {
     Sequence,
     SystemWideOperationId,
     TerminalRun
 };
 const Q_airport____at_airport_slash_airport_dash_code = {
-    __constructors__: __constructors__$7,
+    __constructors__: __constructors__$6,
     domain: 'airport',
     name: '@airport/airport-code'
 };
 function airport____at_airport_slash_airport_dash_code_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_airport_dash_code.__dbDbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_airport_dash_code.__dbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
     globalThis.airApi.setQApp(Q_airport____at_airport_slash_airport_dash_code);
@@ -10060,7 +10060,7 @@ const Q_airport____at_airport_slash_airspace$1 = {
     name: '@airport/airspace'
 };
 function airport____at_airport_slash_airspace_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_airspace$1.__dbDbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_airspace$1.__dbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
     globalThis.airApi.setQApp(Q_airport____at_airport_slash_airspace$1);
@@ -10393,7 +10393,7 @@ class ApplicationColumnDao extends BaseDdlColumnDao {
     }
 }
 
-const __constructors__$6 = {
+const __constructors__$5 = {
     DdlApplication,
     DdlApplicationCurrentVersion,
     DdlApplicationReference,
@@ -10408,7 +10408,7 @@ const __constructors__$6 = {
     DdlVersionedObject
 };
 const Q_airport____at_airport_slash_airspace = {
-    __constructors__: __constructors__$6,
+    __constructors__: __constructors__$5,
     domain: 'airport',
     name: '@airport/airspace'
 };
@@ -11122,14 +11122,14 @@ class ApplicationVersionDao extends BaseDdlApplicationVersionDao {
     }
 }
 
-const application$4 = {
+const application$3 = {
     name: '@airport/airspace',
     domain: {
         name: 'airport'
     }
 };
 
-const airspace = app(application$4);
+const airspace = app(application$3);
 airspace.register(DomainDao, ApplicationColumnDao, ApplicationDao, ApplicationEntityDao, ApplicationPropertyColumnDao, ApplicationPropertyDao, ApplicationReferenceDao, ApplicationRelationColumnDao, ApplicationRelationDao, ApplicationVersionDao);
 airspace.setDependencies(ApplicationColumnDao, {
     datastructureUtils: DatastructureUtils
@@ -13145,13 +13145,13 @@ function v4(options, buf, offset) {
 /**
  * Marks a group of mutation history changes.
  */
-class OperationHistory$1 {
+class OperationHistory {
     constructor() {
         this.recordHistory = [];
     }
 }
 
-class RecordHistory$1 {
+class RecordHistory {
     constructor() {
         this.newValues = [];
         this.oldValues = [];
@@ -13169,7 +13169,7 @@ class RecordHistory$1 {
  * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
  * also be required.
  */
-class RecordHistoryNewValue$1 {
+class RecordHistoryNewValue {
 }
 
 /**
@@ -13183,7 +13183,7 @@ class RecordHistoryNewValue$1 {
  * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
  * also be required.
  */
-class RecordHistoryOldValue$1 {
+class RecordHistoryOldValue {
 }
 
 /**
@@ -13193,7 +13193,7 @@ class RecordHistoryOldValue$1 {
  * An entry in repository Transaction History/Log.
  * The main synchronization unit exchanged between terminals.
  */
-class RepositoryTransactionHistory$1 {
+class RepositoryTransactionHistory {
     constructor(data) {
         this.repositoryTransactionType = RepositoryTransactionType.LOCAL;
         this.operationHistory = [];
@@ -13227,7 +13227,7 @@ class RepositoryTransactionHistory$1 {
 /**
  * Created by Papa on 5/1/2017./
  */
-class TransactionHistory$1 {
+class TransactionHistory {
     constructor() {
         this.applicationMap = new globalThis.SyncApplicationMap();
         this.allOperationHistory = [];
@@ -13240,14 +13240,14 @@ class TransactionHistory$1 {
     }
 }
 
-class Actor$1 {
+class Actor {
 }
 
 /**
  * Created by Papa on 2/17/2017.
  */
 // Used withint the framework because it imports from '@airport/travel-document-checkpoint/dist/app/bundle'
-class InternalAirEntity$1 {
+class InternalAirEntity {
     constructor(entityId) {
         this.ageSuitability = 0;
         // TODO: if and when records are copied, make this a column
@@ -13284,7 +13284,7 @@ class InternalAirEntity$1 {
 /**
  * Created by Papa on 2/9/2017.
  */
-class Repository$1 {
+class Repository {
     constructor() {
         this._localId = null;
         // Local-only, represents state of the repository
@@ -13302,88 +13302,88 @@ class Repository$1 {
     }
 }
 
-class RepositoryApplication$1 {
+class RepositoryApplication {
 }
 
-class RepositoryClient$1 {
+class RepositoryClient {
 }
 
-class RepositoryDatabase$1 {
+class RepositoryDatabase {
 }
 
-class RepositoryReference$1 {
+class RepositoryReference {
 }
 
-class RepositoryMember$1 {
+class RepositoryMember {
     constructor() {
         this.updates = [];
     }
 }
 
-class RepositoryMemberAcceptance$1 {
+class RepositoryMemberAcceptance {
 }
 
-class RepositoryMemberInvitation$1 {
+class RepositoryMemberInvitation {
 }
 
-class RepositoryMemberUpdate$1 {
+class RepositoryMemberUpdate {
 }
 
-class RepositoryTerminal$1 {
+class RepositoryTerminal {
 }
 
-class RepositoryType$1 {
+class RepositoryType {
 }
 
-class CopiedRecordLedger$1 extends InternalAirEntity$1 {
+class CopiedRecordLedger extends InternalAirEntity {
 }
 
-class CrossRepositoryRelationLedger$1 extends InternalAirEntity$1 {
+class CrossRepositoryRelationLedger extends InternalAirEntity {
 }
 
-class LocalCopyReplacementLedger$1 {
+class LocalCopyReplacementLedger {
 }
 
-const __constructors__$5 = {
-    Actor: Actor$1,
-    CopiedRecordLedger: CopiedRecordLedger$1,
-    CrossRepositoryRelationLedger: CrossRepositoryRelationLedger$1,
-    InternalAirEntity: InternalAirEntity$1,
-    LocalCopyReplacementLedger: LocalCopyReplacementLedger$1,
-    OperationHistory: OperationHistory$1,
-    RecordHistory: RecordHistory$1,
-    RecordHistoryNewValue: RecordHistoryNewValue$1,
-    RecordHistoryOldValue: RecordHistoryOldValue$1,
-    Repository: Repository$1,
-    RepositoryApplication: RepositoryApplication$1,
-    RepositoryClient: RepositoryClient$1,
-    RepositoryDatabase: RepositoryDatabase$1,
-    RepositoryMember: RepositoryMember$1,
-    RepositoryMemberAcceptance: RepositoryMemberAcceptance$1,
-    RepositoryMemberInvitation: RepositoryMemberInvitation$1,
-    RepositoryMemberUpdate: RepositoryMemberUpdate$1,
-    RepositoryReference: RepositoryReference$1,
-    RepositoryTerminal: RepositoryTerminal$1,
-    RepositoryTransactionHistory: RepositoryTransactionHistory$1,
-    RepositoryType: RepositoryType$1,
-    TransactionHistory: TransactionHistory$1
+const __constructors__$4 = {
+    Actor,
+    CopiedRecordLedger,
+    CrossRepositoryRelationLedger,
+    InternalAirEntity,
+    LocalCopyReplacementLedger,
+    OperationHistory,
+    RecordHistory,
+    RecordHistoryNewValue,
+    RecordHistoryOldValue,
+    Repository,
+    RepositoryApplication,
+    RepositoryClient,
+    RepositoryDatabase,
+    RepositoryMember,
+    RepositoryMemberAcceptance,
+    RepositoryMemberInvitation,
+    RepositoryMemberUpdate,
+    RepositoryReference,
+    RepositoryTerminal,
+    RepositoryTransactionHistory,
+    RepositoryType,
+    TransactionHistory
 };
-const Q_airport____at_airport_slash_holding_dash_pattern$1 = {
-    __constructors__: __constructors__$5,
+const Q_airport____at_airport_slash_holding_dash_pattern = {
+    __constructors__: __constructors__$4,
     domain: 'airport',
     name: '@airport/holding-pattern'
 };
 function airport____at_airport_slash_holding_dash_pattern_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_holding_dash_pattern$1.__dbDbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_holding_dash_pattern.__dbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
-    globalThis.airApi.setQApp(Q_airport____at_airport_slash_holding_dash_pattern$1);
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_holding_dash_pattern);
 }
 
 // Application Q object Dependency Injection readiness detection Dao
 class SQDIDao$3 extends Dao {
     constructor(dbEntityId) {
-        super(dbEntityId, Q_airport____at_airport_slash_holding_dash_pattern$1);
+        super(dbEntityId, Q_airport____at_airport_slash_holding_dash_pattern);
     }
 }
 class BaseActorDao extends SQDIDao$3 {
@@ -13708,7 +13708,7 @@ class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                rhnv = Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistoryNewValue
+                rhnv = Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryNewValue
             ],
             WHERE: rhnv.recordHistory._localId.IN(RecordHistory_LocalIds)
         });
@@ -13721,7 +13721,7 @@ class RecordHistoryOldValueDao extends BaseRecordHistoryOldValueDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                rhov = Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistoryOldValue
+                rhov = Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryOldValue
             ],
             WHERE: rhov.recordHistory._localId.IN(RecordHistory_LocalIds)
         });
@@ -13750,14 +13750,14 @@ class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDa
                 GUID: Y
             },
             FROM: [
-                rth = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryTransactionHistory
+                rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory
             ],
             WHERE: rth.GUID.IN(GUIDs)
         });
     }
     async findAllLocalChangesForRecordIds(changedRecordIds) {
         const repositoryTransactionHistoryMapByRepositoryId = new Map();
-        const rth = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryTransactionHistory;
+        const rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory;
         const th = rth.transactionHistory.INNER_JOIN();
         const oh = rth.operationHistory.LEFT_JOIN();
         const ae = oh.entity.LEFT_JOIN();
@@ -13836,7 +13836,7 @@ class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDa
     async updateSyncTimestamp(repositoryTransactionHistory) {
         let rth;
         await this.db.updateWhere({
-            UPDATE: rth = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryTransactionHistory,
+            UPDATE: rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory,
             SET: {
                 syncTimestamp: repositoryTransactionHistory.syncTimestamp
             },
@@ -13871,7 +13871,7 @@ class ActorDao extends BaseActorDao {
                 GUID: Y
             },
             FROM: [
-                act = Q_airport____at_airport_slash_holding_dash_pattern$1.Actor,
+                act = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
                 application = act.application.LEFT_JOIN(),
                 domain = application.domain.LEFT_JOIN(),
                 terminal = act.terminal.LEFT_JOIN(),
@@ -13885,7 +13885,7 @@ class ActorDao extends BaseActorDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                a = Q_airport____at_airport_slash_holding_dash_pattern$1.Actor
+                a = Q_airport____at_airport_slash_holding_dash_pattern.Actor
             ],
             WHERE: a.GUID.IN(actorGUIDs)
         });
@@ -13901,7 +13901,7 @@ class ActorDao extends BaseActorDao {
                 }
             },
             FROM: [
-                a = Q_airport____at_airport_slash_holding_dash_pattern$1.Actor,
+                a = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
                 a.userAccount.LEFT_JOIN()
             ],
             WHERE: a._localId.IN(actor_localIds)
@@ -13917,7 +13917,7 @@ class ActorDao extends BaseActorDao {
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: a = Q_airport____at_airport_slash_holding_dash_pattern$1.Actor,
+            INSERT_INTO: a = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
             columns: [
                 a.GUID,
                 a.application.index,
@@ -13962,7 +13962,7 @@ class ActorDao extends BaseActorDao {
                 }
             },
             FROM: [
-                a = Q_airport____at_airport_slash_holding_dash_pattern$1.Actor,
+                a = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
                 ap = a.application.LEFT_JOIN(),
                 ap.domain.LEFT_JOIN(),
                 t = a.terminal.LEFT_JOIN(),
@@ -13986,7 +13986,7 @@ class RepositoryMemberAcceptanceDao extends BaseRepositoryMemberAcceptanceDao {
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: rma = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryMemberAcceptance,
+            INSERT_INTO: rma = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMemberAcceptance,
             columns: [
                 rma.createdAt,
                 rma.acceptingRepositoryMember._localId,
@@ -14010,7 +14010,7 @@ class RepositoryMemberDao extends BaseRepositoryMemberDao {
                 userAccount: {}
             },
             FROM: [
-                rm = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryMember,
+                rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
                 rm.userAccount.LEFT_JOIN()
             ],
             WHERE: rm.memberPublicSigningKey.IN(memberPublicSigningKeys)
@@ -14021,7 +14021,7 @@ class RepositoryMemberDao extends BaseRepositoryMemberDao {
         return await this._findOne({
             SELECT: {},
             FROM: [
-                rm = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryMember,
+                rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
                 ua = rm.userAccount.LEFT_JOIN()
             ],
             WHERE: AND(rm.repository.equals(repositoryLocalId), ua.accountPublicSigningKey.equals(accountPublicSigningKey))
@@ -14032,7 +14032,7 @@ class RepositoryMemberDao extends BaseRepositoryMemberDao {
         return await this._findOne({
             SELECT: {},
             FROM: [
-                rm = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryMember
+                rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember
             ],
             WHERE: AND(rm.repository.equals(repositoryLocalId), rm.userAccount.equals(userLocalId))
         });
@@ -14042,7 +14042,7 @@ class RepositoryMemberDao extends BaseRepositoryMemberDao {
         return await this._findOne({
             SELECT: {},
             FROM: [
-                rm = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryMember,
+                rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
                 rmi = rm.invitations.LEFT_JOIN()
             ],
             WHERE: AND(rm.repository.equals(repositoryLocalId), rmi.invitationPublicSigningKey.equals(base64EncodedKeyInvitationPublicSigningKey))
@@ -14061,7 +14061,7 @@ class RepositoryMemberDao extends BaseRepositoryMemberDao {
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: rm = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryMember,
+            INSERT_INTO: rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
             columns: [
                 rm.isOwner,
                 rm.isAdministrator,
@@ -14081,14 +14081,14 @@ class RepositoryMemberDao extends BaseRepositoryMemberDao {
     async updatePublicSigningKey(invitationPublicSigningKey, memberPublicSigningKey, context) {
         let rm, rmi;
         await this.db.updateColumnsWhere({
-            UPDATE: rm = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryMember,
+            UPDATE: rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
             SET: {
                 MEMBER_PUBLIC_SIGNING_KEY: memberPublicSigningKey,
                 STATUS: RepositoryMember_Status.JOINED
             },
             WHERE: EXISTS({
                 FROM: [
-                    rmi = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryMemberInvitation
+                    rmi = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMemberInvitation
                 ],
                 SELECT: rmi._localId,
                 WHERE: AND(rmi.invitedRepositoryMember._localId.equals(rm._localId), rmi.invitationPublicSigningKey.equals(invitationPublicSigningKey))
@@ -14110,7 +14110,7 @@ class RepositoryMemberInvitationDao extends BaseRepositoryMemberInvitationDao {
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: rmi = Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryMemberInvitation,
+            INSERT_INTO: rmi = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMemberInvitation,
             columns: [
                 rmi.createdAt,
                 rmi.invitationPublicSigningKey,
@@ -14151,7 +14151,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 uiEntryUri: Y
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
                 r.owner.INNER_JOIN()
             ]
         });
@@ -14173,7 +14173,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 uiEntryUri: Y
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
                 r.owner.INNER_JOIN()
             ],
             WHERE: r.GUID.equals(repositoryGUID)
@@ -14199,7 +14199,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 uiEntryUri: Y
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
                 r.owner.LEFT_JOIN(),
                 rr = r.referencedRepositories.LEFT_JOIN(),
                 rr.referencedRepository.LEFT_JOIN()
@@ -14220,7 +14220,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 }
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
                 rth = r.repositoryTransactionHistory.INNER_JOIN(),
                 th = rth.transactionHistory.INNER_JOIN()
             ],
@@ -14243,7 +14243,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 uiEntryUri: Y
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
                 r.owner.INNER_JOIN()
             ],
             WHERE: r._localId.IN(repositoryIds)
@@ -14264,7 +14264,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 uiEntryUri: Y
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
                 r.owner.INNER_JOIN()
             ],
             WHERE: r._localId.IN(repositoryIds)
@@ -14285,7 +14285,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 uiEntryUri: Y
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
                 r.owner.INNER_JOIN()
             ],
             WHERE: r._localId.IN(repository_localIds)
@@ -14303,7 +14303,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 uiEntryUri: Y
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository
+                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository
             ],
             WHERE: r.GUID.IN(repositoryGUIDs)
         });
@@ -14320,7 +14320,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 uiEntryUri: Y
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository
+                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository
             ],
             WHERE: OR(r.GUID.IN(repositoryGUIDs), r._localId.IN(repositoryLocalIds))
         });
@@ -14335,7 +14335,7 @@ class RepositoryDao extends BaseRepositoryDao {
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+            INSERT_INTO: r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
             columns: [
                 r.createdAt,
                 r.GUID,
@@ -14354,7 +14354,7 @@ class RepositoryDao extends BaseRepositoryDao {
     async updateUiEntityUri(repositoryGuid, uiEntityUri) {
         let r;
         await this.db.updateColumnsWhere({
-            UPDATE: r = Q_airport____at_airport_slash_holding_dash_pattern$1.Repository,
+            UPDATE: r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
             SET: {
                 UI_ENTRY_URI: uiEntityUri
             },
@@ -14369,7 +14369,7 @@ class RepositoryReferenceDao extends BaseRepositoryReferenceDao {
         return await this._find({
             SELECT: {},
             FROM: [
-                rr = Q_airport____at_airport_slash_holding_dash_pattern$1
+                rr = Q_airport____at_airport_slash_holding_dash_pattern
                     .RepositoryReference
             ],
             WHERE: rr.referencingRepository._localId
@@ -14386,7 +14386,7 @@ class RepositoryReferenceDao extends BaseRepositoryReferenceDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: rr = Q_airport____at_airport_slash_holding_dash_pattern$1
+            INSERT_INTO: rr = Q_airport____at_airport_slash_holding_dash_pattern
                 .RepositoryReference,
             columns: [
                 rr.referencingRepository._localId,
@@ -14433,7 +14433,7 @@ class OperationHistoryDuo {
 
 class RecordHistoryDuo {
     getNewRecord(actorId, _actorRecordId) {
-        const recordHistory = new RecordHistory$1();
+        const recordHistory = new RecordHistory();
         recordHistory._actorRecordId = _actorRecordId;
         recordHistory.actor = {
             _localId: actorId
@@ -14475,7 +14475,7 @@ class RecordHistoryDuo {
 
 class RecordHistoryNewValueDuo {
     getNewRecord(recordHistory, dbColumn, newValue) {
-        const recordHistoryNewValue = new RecordHistoryNewValue$1();
+        const recordHistoryNewValue = new RecordHistoryNewValue();
         recordHistoryNewValue.columnIndex = dbColumn.index;
         recordHistoryNewValue.recordHistory = recordHistory;
         recordHistoryNewValue.newValue = newValue;
@@ -14485,7 +14485,7 @@ class RecordHistoryNewValueDuo {
 
 class RecordHistoryOldValueDuo {
     getNewRecord(recordHistory, dbColumn, oldValue) {
-        const recordHistoryOldValue = new RecordHistoryOldValue$1();
+        const recordHistoryOldValue = new RecordHistoryOldValue();
         recordHistoryOldValue.columnIndex = dbColumn.index;
         recordHistoryOldValue.recordHistory = recordHistory;
         recordHistoryOldValue.oldValue = oldValue;
@@ -14495,14 +14495,14 @@ class RecordHistoryOldValueDuo {
 
 class RepositoryTransactionHistoryDuo {
     getNewRecord(repositoryId, actor, isRepositoryCreation, isPublic) {
-        let repositoryTransactionHistory = new RepositoryTransactionHistory$1();
+        let repositoryTransactionHistory = new RepositoryTransactionHistory();
         let saveTimestamp = new Date().getTime();
         repositoryTransactionHistory.saveTimestamp = saveTimestamp;
         repositoryTransactionHistory.actor = actor;
         repositoryTransactionHistory.GUID = v4();
         repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation;
         repositoryTransactionHistory.isPublic = isPublic;
-        repositoryTransactionHistory.repository = new Repository$1();
+        repositoryTransactionHistory.repository = new Repository();
         repositoryTransactionHistory.repository._localId = repositoryId;
         this.setModifiedRepository_LocalIdSet(repositoryTransactionHistory);
         return repositoryTransactionHistory;
@@ -14556,7 +14556,7 @@ class RepositoryTransactionHistoryDuo {
 
 class TransactionHistoryDuo {
     getNewRecord(transactionType = TransactionType.LOCAL) {
-        let transaction = new TransactionHistory$1();
+        let transaction = new TransactionHistory();
         transaction.transactionType = TransactionType.LOCAL;
         return transaction;
     }
@@ -14580,7 +14580,7 @@ class TransactionHistoryDuo {
 
 class CrossRepositoryRelationManager {
     addCopiedRecordLedger(manySideRelation, manySideEntity, copiedEntity) {
-        const copiedRecordLedger = new CopiedRecordLedger$1();
+        const copiedRecordLedger = new CopiedRecordLedger();
         copiedRecordLedger.repository = manySideEntity.repository;
         copiedRecordLedger.copyAppEntity = manySideRelation.relationEntity;
         copiedRecordLedger.copyActorRecordId = copiedEntity._actorRecordId;
@@ -14607,14 +14607,14 @@ class CrossRepositoryRelationManager {
         };
     }
     getLedger(relation, relatedEntity) {
-        const crossRepositoryRelationLedger = new CrossRepositoryRelationLedger$1();
+        const crossRepositoryRelationLedger = new CrossRepositoryRelationLedger();
         crossRepositoryRelationLedger.relation = relation;
         crossRepositoryRelationLedger.relatedRepository = relatedEntity.repository;
         return crossRepositoryRelationLedger;
     }
 }
 
-class RepositoryApi$1 {
+class RepositoryApi {
     async findRepositories() {
         return await this.repositoryDao.findRepositories();
     }
@@ -14634,23 +14634,23 @@ class RepositoryApi$1 {
     }
 }
 
-const application$3 = {
+const application$2 = {
     name: '@airport/holding-pattern',
     domain: {
         name: 'airport'
     }
 };
 
-const holdingPattern = app(application$3);
+const holdingPattern = app(application$2);
 const REPOSITORY_MANAGER = holdingPattern.token('RepositoryManager');
-holdingPattern.register(ActorDao, CopiedRecordLedgerDao, CrossRepositoryRelationLedgerDao, CrossRepositoryRelationManager, LocalCopyReplacementLedgerDao, OperationHistoryDuo, RecordHistoryDuo, RecordHistoryNewValueDao, RecordHistoryNewValueDuo, RecordHistoryOldValueDao, RecordHistoryOldValueDuo, RepositoryDao, RepositoryMemberDao, RepositoryReferenceDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo, TransactionHistoryDuo, RepositoryApi$1);
+holdingPattern.register(ActorDao, CopiedRecordLedgerDao, CrossRepositoryRelationLedgerDao, CrossRepositoryRelationManager, LocalCopyReplacementLedgerDao, OperationHistoryDuo, RecordHistoryDuo, RecordHistoryNewValueDao, RecordHistoryNewValueDuo, RecordHistoryOldValueDao, RecordHistoryOldValueDuo, RepositoryDao, RepositoryMemberDao, RepositoryReferenceDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo, TransactionHistoryDuo, RepositoryApi);
 holdingPattern.setDependencies(ActorDao, {
     datastructureUtils: DatastructureUtils
 });
 holdingPattern.setDependencies(OperationHistoryDuo, {
     recordHistoryDuo: RecordHistoryDuo,
 });
-holdingPattern.setDependencies(RepositoryApi$1, {
+holdingPattern.setDependencies(RepositoryApi, {
     repositoryDao: RepositoryDao,
     repositoryManager: REPOSITORY_MANAGER,
 });
@@ -14762,7 +14762,7 @@ class TypeClassification {
 class UserAccount {
 }
 
-const __constructors__$4 = {
+const __constructors__$3 = {
     Classification,
     Client: Client$1,
     ClientType,
@@ -14780,12 +14780,12 @@ const __constructors__$4 = {
     UserAccount
 };
 const Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint = {
-    __constructors__: __constructors__$4,
+    __constructors__: __constructors__$3,
     domain: 'airport',
     name: '@airport/travel-document-checkpoint'
 };
 function airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.__dbDbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.__dbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
     globalThis.airApi.setQApp(Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint);
@@ -15119,14 +15119,14 @@ class UserAccountDao extends BaseUserAccountDao {
     }
 }
 
-const application$2 = {
+const application$1 = {
     name: '@airport/travel-document-checkpoint',
     domain: {
         name: 'airport'
     }
 };
 
-const travelDocumentCheckpoint = app(application$2);
+const travelDocumentCheckpoint = app(application$1);
 travelDocumentCheckpoint.register(TerminalDao, UserAccountApi, UserAccountDao, UserAccountManager);
 travelDocumentCheckpoint.setDependencies(TerminalDao, {
     airportDatabase: AIRPORT_DATABASE,
@@ -27119,18 +27119,18 @@ var ApplicationChangeStatus;
 class RecordUpdateStage {
 }
 
-const __constructors__$3 = {
+const __constructors__$2 = {
     RecordUpdateStage,
     SynchronizationConflict,
     SynchronizationConflictValues
 };
 const Q_airport____at_airport_slash_layover = {
-    __constructors__: __constructors__$3,
+    __constructors__: __constructors__$2,
     domain: 'airport',
     name: '@airport/layover'
 };
 function airport____at_airport_slash_layover_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_layover.__dbDbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_layover.__dbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
     globalThis.airApi.setQApp(Q_airport____at_airport_slash_layover);
@@ -27443,7 +27443,7 @@ function __decorate$1(decorators, target, key, desc) {
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 }
 
-let KeyRing = class KeyRing extends InternalAirEntity$1 {
+let KeyRing = class KeyRing extends InternalAirEntity {
     constructor() {
         super(...arguments);
         this.repositoryKeys = [];
@@ -27469,7 +27469,7 @@ KeyRing = __decorate$1([
     Table()
 ], KeyRing);
 
-let RepositoryKey = class RepositoryKey extends InternalAirEntity$1 {
+let RepositoryKey = class RepositoryKey extends InternalAirEntity {
 };
 __decorate$1([
     Column(),
@@ -27499,17 +27499,17 @@ RepositoryKey = __decorate$1([
     Table()
 ], RepositoryKey);
 
-const __constructors__$2 = {
+const __constructors__$1 = {
     KeyRing,
     RepositoryKey
 };
 const Q_airbridge____at_airbridge_slash_keyring = {
-    __constructors__: __constructors__$2,
+    __constructors__: __constructors__$1,
     domain: 'airbridge',
     name: '@airbridge/keyring'
 };
 function airbridge____at_airbridge_slash_keyring_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airbridge____at_airbridge_slash_keyring.__dbDbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airbridge____at_airbridge_slash_keyring.__dbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
     globalThis.airApi.setQApp(Q_airbridge____at_airbridge_slash_keyring);
@@ -27589,7 +27589,7 @@ RepositoryKeyDao = __decorate$1([
     Injected()
 ], RepositoryKeyDao);
 
-const application$1 = {
+const application = {
     name: '@airbridge/keyring',
     domain: {
         name: 'airbridge'
@@ -27603,7 +27603,7 @@ let KeyRingManager = class KeyRingManager {
         if (!keyRing) {
             const keyRingContext = {
                 ...context,
-                applicationFullName: this.dbApplicationUtils.getDbApplication_FullName(application$1),
+                applicationFullName: this.dbApplicationUtils.getDbApplication_FullName(application),
                 newRepositoryGUID: 'DEVSERVR_' + userPrivateKey,
                 forKeyRingRepository: true
             };
@@ -27715,7 +27715,7 @@ MessageSigningManager = __decorate$1([
     Injected()
 ], MessageSigningManager);
 
-const keyring = app(application$1);
+const keyring = app(application);
 keyring.register(KeyRingDao, KeyRingManager, MessageSigningManager, RepositoryKeyDao);
 keyring.setDependencies(KeyRingManager, {
     dbApplicationUtils: DbApplicationUtils,
@@ -33731,7 +33731,7 @@ class IdGenerator {
         });
     }
     doPopulateTransactionHistory_LocalIdColumns(resolve) {
-        if (Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__ && Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__.currentVersion) {
+        if (Q_airport____at_airport_slash_holding_dash_pattern.__dbApplication__ && Q_airport____at_airport_slash_holding_dash_pattern.__dbApplication__.currentVersion) {
             const transactionHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
             const repoTransHistoryDbEntity = this.getHoldingPatternDbEntity('RepositoryTransactionHistory');
             const operationHistoryDbEntity = this.getHoldingPatternDbEntity('OperationHistory');
@@ -33766,7 +33766,7 @@ class IdGenerator {
     async generateEntityIds() {
     }
     getHoldingPatternDbEntity(holdingPatternEntityName) {
-        return Q_airport____at_airport_slash_holding_dash_pattern$1.__dbApplication__.currentVersion[0].applicationVersion
+        return Q_airport____at_airport_slash_holding_dash_pattern.__dbApplication__.currentVersion[0].applicationVersion
             .entityMapByName[holdingPatternEntityName];
     }
 }
@@ -34056,300 +34056,6 @@ fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
     utils: Utils
 });
 
-class ApiProxy {
-    constructor(application) {
-        this.application = application;
-    }
-    get proxy() {
-        // Proxy won't be set by default in UIs, where there is 
-        // no dependency injection or the associated 'init()' call
-        if (!this._proxy) {
-            this.setProxy(globalThis.IOC.getAutopilotApiLoader());
-        }
-        return this._proxy;
-    }
-    init() {
-        this.setProxy(this.__container__.getSync(globalThis.AUTOPILOT_API_LOADER));
-    }
-    setProxy(autopilotApiLoader) {
-        this._proxy = autopilotApiLoader.loadApiAutopilot({
-            application: this.application,
-            descriptor: {
-                interface: this.constructor.name
-            }
-        });
-    }
-}
-
-const application = {
-    name: '@airport/holding-pattern',
-    domain: {
-        name: 'airport'
-    }
-};
-
-// An API stub for other Applications and UIs to use
-// @Injected() is implied but not specified to avoid @airport/direction-indicator
-// dependency in UI API stub (eventually, once it's @airport/autopilot is cleaned
-// up)
-// @Injected()
-class RepositoryApi extends ApiProxy {
-    constructor() {
-        super(application);
-    }
-    async findRepositories() {
-        return await this.proxy.findRepositories();
-    }
-    async create(repositoryName, isPublic) {
-        return await this.proxy.create(repositoryName, isPublic);
-    }
-    async setUiEntryUri(uiEntryUri, repository) {
-        await this.proxy.setUiEntryUri(uiEntryUri, repository);
-    }
-}
-
-/**
- * Created by Papa on 4/17/2017.
- */
-/**
- * Marks a group of mutation history changes.
- */
-class OperationHistory {
-    constructor() {
-        this.recordHistory = [];
-    }
-}
-
-class RecordHistory {
-    constructor() {
-        this.newValues = [];
-        this.oldValues = [];
-    }
-}
-
-/**
- * Created by Papa on 9/15/2016.
- */
-/**
- * Currently, syncing databases are always SqLite dbs.  This means
- * we don't need to store types for values.  If a need arises type
- * specific FieldChange classes can always be added.  Having
- * VARCHAR and NUMBER should suffice for other db implementations.
- * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
- * also be required.
- */
-class RecordHistoryNewValue {
-}
-
-/**
- * Created by Papa on 9/15/2016.
- */
-/**
- * Currently, syncing databases are always SqLite dbs.  This means
- * we don't need to store types for values.  If a need arises type
- * specific FieldChange classes can always be added.  Having
- * VARCHAR and NUMBER should suffice for other db implementations.
- * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
- * also be required.
- */
-class RecordHistoryOldValue {
-}
-
-/**
- * Created by Papa on 9/15/2016.
- */
-/**
- * An entry in repository Transaction History/Log.
- * The main synchronization unit exchanged between terminals.
- */
-class RepositoryTransactionHistory {
-    constructor(data) {
-        this.repositoryTransactionType = RepositoryTransactionType.LOCAL;
-        this.operationHistory = [];
-        // Tracked only in the Terminal database where originally added, for the
-        // purpose of sending out synchronization messages
-        // IS resent in SyncRepositoryMessage
-        this.newRepositoryMemberInvitations = [];
-        // Tracked only in the Terminal database where originally added, for the
-        // purpose of sending out synchronization messages
-        // IS resent in SyncRepositoryMessage
-        this.newRepositoryMemberAcceptances = [];
-        // Tracked only in the Terminal database where originally added, for the
-        // purpose of sending out synchronization messages
-        // IS NOT implemented (currently)
-        this.newRepositoryMemberUpdates = [];
-        // Tracked only in the Terminal database where originally added, for the
-        // purpose of sending out synchronization messages
-        // IS NOT resent in SyncRepositoryMessage
-        this.newRepositoryMembers = [];
-        if (!data) {
-            return;
-        }
-        this._localId = data._localId;
-        this.transactionHistory = data.transactionHistory;
-        this.repository = data.repository;
-        this.saveTimestamp = data.saveTimestamp;
-        this.operationHistory = data.operationHistory;
-    }
-}
-
-/**
- * Created by Papa on 5/1/2017./
- */
-class TransactionHistory {
-    constructor() {
-        this.applicationMap = new globalThis.SyncApplicationMap();
-        this.allOperationHistory = [];
-        this.allRecordHistory = [];
-        this.allRecordHistoryNewValues = [];
-        this.allRecordHistoryOldValues = [];
-        this.allRepositoryMemberAcceptances = [];
-        this.allRepositoryMemberInvitations = [];
-        this.allRepositoryMembers = [];
-    }
-}
-
-class Actor {
-}
-
-/**
- * Created by Papa on 2/17/2017.
- */
-// Used withint the framework because it imports from '@airport/travel-document-checkpoint/dist/app/bundle'
-class InternalAirEntity {
-    constructor(entityId) {
-        this.ageSuitability = 0;
-        // TODO: if and when records are copied, make this a column
-        // @Column({ name: 'COPIED', nullable: false })
-        this.copied = false;
-        this.createdAt = new Date();
-        // Currently TypeScript does not support optional getters/setters
-        // this is a workaround
-        delete this.id;
-        Object.defineProperty(this, 'id', {
-            get() {
-                return globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS).encodeId(this);
-            },
-            set(idString) {
-                globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS).setId(idString, this);
-            }
-        });
-        delete this.isNew;
-        Object.defineProperty(this, 'isNew', {
-            get() {
-                return !!this._actorRecordId;
-            }
-        });
-        delete this.createdBy;
-        Object.defineProperty(this, 'createdBy', {
-            get() {
-                return this.actor.userAccount;
-            }
-        });
-        this.id = entityId;
-    }
-}
-
-/**
- * Created by Papa on 2/9/2017.
- */
-class Repository {
-    constructor() {
-        this._localId = null;
-        // Local-only, represents state of the repository
-        // false if only a reference stub is loaded
-        this.isLoaded = true;
-        this.referencedRepositories = [];
-        this.referencedInRepositories = [];
-        this.repositoryMembers = [];
-        this.repositoryTransactionHistory = [];
-        this.repositoryApplications = [];
-        this.repositoryClients = [];
-        this.repositoryDatabases = [];
-        this.repositoryTerminals = [];
-        this.repositoryTypes = [];
-    }
-}
-
-class RepositoryApplication {
-}
-
-class RepositoryClient {
-}
-
-class RepositoryDatabase {
-}
-
-class RepositoryReference {
-}
-
-class RepositoryMember {
-    constructor() {
-        this.updates = [];
-    }
-}
-
-class RepositoryMemberAcceptance {
-}
-
-class RepositoryMemberInvitation {
-}
-
-class RepositoryMemberUpdate {
-}
-
-class RepositoryTerminal {
-}
-
-class RepositoryType {
-}
-
-class CopiedRecordLedger extends InternalAirEntity {
-}
-
-class CrossRepositoryRelationLedger extends InternalAirEntity {
-}
-
-class LocalCopyReplacementLedger {
-}
-
-const __constructors__$1 = {
-    Actor,
-    CopiedRecordLedger,
-    CrossRepositoryRelationLedger,
-    InternalAirEntity,
-    LocalCopyReplacementLedger,
-    OperationHistory,
-    RecordHistory,
-    RecordHistoryNewValue,
-    RecordHistoryOldValue,
-    Repository,
-    RepositoryApplication,
-    RepositoryClient,
-    RepositoryDatabase,
-    RepositoryMember,
-    RepositoryMemberAcceptance,
-    RepositoryMemberInvitation,
-    RepositoryMemberUpdate,
-    RepositoryReference,
-    RepositoryTerminal,
-    RepositoryTransactionHistory,
-    RepositoryType,
-    TransactionHistory
-};
-const Q_airport____at_airport_slash_holding_dash_pattern = {
-    __constructors__: __constructors__$1,
-    domain: 'airport',
-    name: '@airport/holding-pattern'
-};
-if (globalThis.airApi) {
-    globalThis.airApi.setQApp(Q_airport____at_airport_slash_holding_dash_pattern);
-}
-
-for (let apiStub of [RepositoryApi]) {
-    apiStub.application = application;
-}
-
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -34421,7 +34127,7 @@ let RepositoryMaintenanceManager = class RepositoryMaintenanceManager {
         const base64EncodedKeyInvitationPrivateSigningKey = btoa(invitationSigningKey.private);
         const invitedRepositoryMember = await this.createRepositoryMember(repository, null, false, false, true, false, context);
         const base64EncodedKeyInvitationPublicSigningKey = btoa(invitationSigningKey.public);
-        const repositoryMemberInvitation = new RepositoryMemberInvitation$1();
+        const repositoryMemberInvitation = new RepositoryMemberInvitation();
         repositoryMemberInvitation.createdAt = new Date();
         repositoryMemberInvitation.invitationPublicSigningKey = invitationSigningKey.public;
         repositoryMemberInvitation.invitedRepositoryMember = invitedRepositoryMember;
@@ -34876,7 +34582,7 @@ class InternalRecordManager {
             terminal.isLocal = true;
             terminal.GUID = v4();
             const application = await this.applicationDao.findOneByDomain_NameAndDbApplication_Name(firstApp.domain, firstApp.name);
-            const actor = new Actor$1();
+            const actor = new Actor();
             actor.application = application;
             actor.userAccount = userAccount;
             actor.terminal = terminal;
@@ -35709,7 +35415,7 @@ class DatabaseManager {
     }
     async initNoDb(context, ...applications) {
         this.airportDatabase.load();
-        this.transactionalServer.tempActor = new Actor$1();
+        this.transactionalServer.tempActor = new Actor();
         await this.installStarterApplication(true, false, context);
         await this.applicationInitializer.stage(applications, context);
         this.transactionalServer.tempActor = null;
@@ -35717,7 +35423,7 @@ class DatabaseManager {
     }
     async initWithDb(domainName, context) {
         this.airportDatabase.load();
-        this.transactionalServer.tempActor = new Actor$1();
+        this.transactionalServer.tempActor = new Actor();
         await this.transactionManager.transactInternal(async (_transaction, context) => {
             const firstApp = BLUEPRINT[0];
             const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
@@ -35753,7 +35459,7 @@ class DatabaseManager {
                 applicationsToCreate.push(jsonApplication);
             }
         }
-        this.transactionalServer.tempActor = new Actor$1();
+        this.transactionalServer.tempActor = new Actor();
         await this.applicationInitializer.initialize(applicationsToCreate, context, true, true, true);
         this.transactionalServer.tempActor = null;
     }
@@ -36848,32 +36554,32 @@ ${callHerarchy}
         }
         let applicationMap = transactionHistory.applicationMap;
         const transactionHistoryIds = await this.idGenerator.generateTransactionHistory_LocalIds(transactionHistory.repositoryTransactionHistories.length, transactionHistory.allOperationHistory.length, transactionHistory.allRecordHistory.length);
-        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern$1.TransactionHistory.__driver__.dbEntity, true);
+        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.TransactionHistory.__driver__.dbEntity, true);
         transactionHistory._localId = transactionHistoryIds.transactionHistory_LocalId;
-        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern$1.TransactionHistory, [transactionHistory], context);
-        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryTransactionHistory.__driver__.dbEntity, true);
+        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.TransactionHistory, [transactionHistory], context);
+        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory.__driver__.dbEntity, true);
         transactionHistory.repositoryTransactionHistories.forEach((repositoryTransactionHistory, index) => {
             repositoryTransactionHistory._localId = transactionHistoryIds.repositoryHistory_LocalIds[index];
             repositoryTransactionHistory.transactionHistory = transactionHistory;
         });
-        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern$1.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories, context);
-        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern$1.OperationHistory.__driver__.dbEntity, true);
+        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories, context);
+        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.OperationHistory.__driver__.dbEntity, true);
         transactionHistory.allOperationHistory.forEach((operationHistory, index) => {
             operationHistory._localId = transactionHistoryIds.operationHistory_LocalIds[index];
         });
-        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern$1.OperationHistory, transactionHistory.allOperationHistory, context);
-        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistory.__driver__.dbEntity, true);
+        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.OperationHistory, transactionHistory.allOperationHistory, context);
+        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RecordHistory.__driver__.dbEntity, true);
         transactionHistory.allRecordHistory.forEach((recordHistory, index) => {
             recordHistory._localId = transactionHistoryIds.recordHistory_LocalIds[index];
         });
-        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistory, transactionHistory.allRecordHistory, context);
+        await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.RecordHistory, transactionHistory.allRecordHistory, context);
         if (transactionHistory.allRecordHistoryNewValues.length) {
-            applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistoryNewValue.__driver__.dbEntity, true);
-            await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues, context);
+            applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryNewValue.__driver__.dbEntity, true);
+            await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues, context);
         }
         if (transactionHistory.allRecordHistoryOldValues.length) {
-            applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistoryOldValue.__driver__.dbEntity, true);
-            await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern$1.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues, context);
+            applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryOldValue.__driver__.dbEntity, true);
+            await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues, context);
         }
         if (transactionHistory.allRepositoryMembers.length) {
             await this.repositoryMemberDao

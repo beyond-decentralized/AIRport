@@ -1,7 +1,7 @@
 import { Api } from "@airport/air-traffic-control";
 import { Inject, Injected } from "@airport/direction-indicator";
 import { ITerminalSessionManager } from "@airport/terminal-map";
-import { UserAccount } from "@airport/travel-document-checkpoint";
+import { UserAccount } from "@airport/travel-document-checkpoint/dist/app/bundle";
 
 @Injected()
 export class SessionStateApi {

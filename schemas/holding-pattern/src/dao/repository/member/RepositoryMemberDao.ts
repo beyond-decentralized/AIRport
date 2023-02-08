@@ -2,7 +2,7 @@ import { UserAccount_PublicSigningKey, UserAccount_LocalId } from "@airport/avia
 import { IContext, Injected } from "@airport/direction-indicator";
 import { IRepositoryMember, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Status, Repository_LocalId } from "@airport/ground-control";
 import { AND, EXISTS, Y } from "@airport/tarmaq-query";
-import { QUserAccount } from "@airport/travel-document-checkpoint";
+import { QUserAccount } from "@airport/travel-document-checkpoint/dist/app/bundle";
 import { QRepositoryMember, QRepositoryMemberInvitation } from "../../../generated/qInterfaces";
 import { BaseRepositoryMemberDao } from "../../../generated/baseDaos";
 import Q_airport____at_airport_slash_holding_dash_pattern from "../../../generated/qApplication";

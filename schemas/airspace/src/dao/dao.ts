@@ -1,4 +1,4 @@
-export * from './DomainDao';
+export * from './DdlDomainDao';
 export * from './ApplicationColumnDao';
 export * from './ApplicationDao';
 export * from './ApplicationEntityDao';
