@@ -12,6 +12,7 @@ import { ApplicationReferenceUtils } from './implementation/utils/ApplicationRef
 import { IOperationDeserializer } from './definition/serialize/IOperationDeserializer';
 import { IQueryParameterDeserializer } from './definition/serialize/IQueryParameterDeserializer';
 import { IQueryResultsSerializer } from './definition/serialize/IQueryResultsSerializer';
+import { IApplicationUtils } from './ground-control.index';
 
 const groundControl = lib('ground-control')
 
@@ -20,6 +21,7 @@ groundControl.register(
     DbApplicationUtils, KeyUtils
 )
 
+export const APPLICATION_UTILS = groundControl.token<IApplicationUtils>('ApplicationUtils')
 export const DICTIONARY = groundControl.token<Dictionary>(Dictionary)
 export const ENTITY_STATE_MANAGER = groundControl.token<IEntityStateManager>('EntityStateManager')
 export const OPERATION_DESERIALIZER = groundControl.token<IOperationDeserializer>('OperationDeserializer');

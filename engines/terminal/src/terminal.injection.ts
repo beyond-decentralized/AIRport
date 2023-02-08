@@ -1,9 +1,7 @@
 import {
     AIRPORT_DATABASE,
-    ApplicationUtils,
     FieldUtils,
     QMetadataUtils,
-    QueryRelationManager,
     REPOSITORY_LOADER,
     SystemWideOperationIdUtils,
     Utils
@@ -12,6 +10,7 @@ import { DbApplicationDao, DbDomainDao } from '@airport/airspace/dist/app/bundle
 import { HISTORY_MANAGER, LOCAL_API_SERVER, TerminalStore, TERMINAL_SESSION_MANAGER, UserStore } from '@airport/terminal-map'
 import { lib } from '@airport/direction-indicator'
 import {
+    APPLICATION_UTILS,
     AppTrackerUtils,
     DatastructureUtils,
     DbApplicationUtils,
@@ -42,7 +41,7 @@ import {
     TransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
 import { QUERY_FACADE } from '@airport/tarmaq-dao'
-import { QUERY_UTILS } from '@airport/tarmaq-query'
+import { QUERY_RELATION_MANAGER, QUERY_UTILS } from '@airport/tarmaq-query'
 import {
     APPLICATION_INITIALIZER,
     STORE_DRIVER,
@@ -99,10 +98,10 @@ terminal.register(
 )
 
 terminal.setDependencies(AbstractMutationManager, {
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     fieldUtils: FieldUtils,
     queryUtils: QUERY_UTILS,
-    queryRelationManager: QueryRelationManager
+    queryRelationManager: QUERY_RELATION_MANAGER
 })
 
 terminal.setDependencies(TransactionalReceiver as any, {
@@ -124,7 +123,7 @@ terminal.setDependencies(DatabaseManager, {
 
 terminal.setDependencies(DeleteManager, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     datastructureUtils: DatastructureUtils,
     dictionary: Dictionary,
     historyManager: HISTORY_MANAGER,
@@ -191,7 +190,7 @@ terminal.setDependencies(OnlineManager, {
 
 terminal.setDependencies(OperationManager, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     cascadeGraphVerifier: CascadeGraphVerifier,
     deleteManager: DeleteManager,
     dependencyGraphResolver: DependencyGraphResolver,
@@ -225,7 +224,7 @@ REPOSITORY_LOADER.setDependencies({
 })
 
 terminal.setDependencies(StructuralEntityValidator, {
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     crossRepositoryRelationManager: CrossRepositoryRelationManager,
     dbApplicationUtils: DbApplicationUtils,
     dictionary: Dictionary,
@@ -286,7 +285,7 @@ terminal.setDependencies(UpdateManager, {
     queryFacade: QUERY_FACADE,
     queryUtils: QUERY_UTILS,
     recordHistoryDuo: RecordHistoryDuo,
-    queryRelationManager: QueryRelationManager,
+    queryRelationManager: QUERY_RELATION_MANAGER,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     systemWideOperationIdUtils: SystemWideOperationIdUtils,
 })

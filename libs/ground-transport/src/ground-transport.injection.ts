@@ -17,7 +17,6 @@ import { SynchronizationAdapterLoader } from './adapters/SynchronizationAdapterL
 import { SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer'
 import {
     AIRPORT_DATABASE,
-    ApplicationUtils,
     REPOSITORY_LOADER,
     SystemWideOperationIdUtils,
     Utils
@@ -55,6 +54,7 @@ import {
 } from '@airport/layover'
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter'
 import {
+    APPLICATION_UTILS,
     AppTrackerUtils,
     DatastructureUtils,
     DbApplicationUtils,
@@ -161,7 +161,7 @@ groundTransport.setDependencies(SyncInUtils, {
 groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
     dbRelationDao: DbRelationDao,
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     dbApplicationUtils: DbApplicationUtils,
     dictionary: Dictionary,
     repositoryDao: RepositoryDao,

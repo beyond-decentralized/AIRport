@@ -10,12 +10,12 @@ import { IdGenerator } from './store/IdGenerator'
 import { QValidator } from './validation/Validator'
 import { SqlStoreDriver } from './store/SqlStoreDriver'
 import { STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/terminal-map'
-import { AppTrackerUtils, DatastructureUtils, DbApplicationUtils, ENTITY_STATE_MANAGER, SEQUENCE_GENERATOR, Dictionary } from '@airport/ground-control/dist/esm/ground-control.index'
+import { AppTrackerUtils, DatastructureUtils, DbApplicationUtils, ENTITY_STATE_MANAGER, SEQUENCE_GENERATOR, Dictionary, APPLICATION_UTILS } from '@airport/ground-control/dist/esm/ground-control.index'
 import {
-    AIRPORT_DATABASE, ApplicationUtils, QMetadataUtils, QueryRelationManager, Utils
+    AIRPORT_DATABASE, QMetadataUtils, Utils
 } from '@airport/air-traffic-control'
 import { ActiveQueries, ObservableQueryAdapter } from '@airport/flight-number'
-import { QUERY_UTILS } from '@airport/tarmaq-query'
+import { QUERY_RELATION_MANAGER, QUERY_UTILS } from '@airport/tarmaq-query'
 
 const fuelHydrantSystem = lib('fuel-hydrant-system')
 
@@ -31,7 +31,7 @@ fuelHydrantSystem.setDependencies(IdGenerator, {
 })
 
 fuelHydrantSystem.setDependencies(ObjectResultParserFactory, {
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     datastructureUtils: DatastructureUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
     queryUtils: QUERY_UTILS,
@@ -42,7 +42,7 @@ fuelHydrantSystem.setDependencies(ObjectResultParserFactory, {
 STORE_DRIVER.setDependencies({
     activeQueries: ActiveQueries,
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     appTrackerUtils: AppTrackerUtils,
     dbApplicationUtils: DbApplicationUtils,
     dictionary: Dictionary,
@@ -52,7 +52,7 @@ STORE_DRIVER.setDependencies({
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,
-    queryRelationManager: QueryRelationManager,
+    queryRelationManager: QUERY_RELATION_MANAGER,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     subStatementSqlGenerator: SubStatementSqlGenerator,
     transactionManager: TRANSACTION_MANAGER,
@@ -61,13 +61,13 @@ STORE_DRIVER.setDependencies({
 
 fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,
-    queryRelationManager: QueryRelationManager,
+    queryRelationManager: QUERY_RELATION_MANAGER,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     storeDriver: STORE_DRIVER,
     utils: Utils

@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE, ApplicationUtils, QApplicationBuilderUtils, QueryRelationManager } from '@airport/air-traffic-control'
+import { AIRPORT_DATABASE, QApplicationBuilderUtils } from '@airport/air-traffic-control'
 import { SequenceDao } from '@airport/takeoff/node_modules/@airport/airport-code/dist/esm/airport-code.index'
 import {
     DbColumnDao,
@@ -13,7 +13,7 @@ import {
     DbDomainDao
 } from '@airport/airspace/dist/app/bundle'
 import { lib } from '@airport/direction-indicator/dist/esm/direction-indicator.index'
-import { ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, SEQUENCE_GENERATOR } from '@airport/ground-control'
+import { ApplicationReferenceUtils, APPLICATION_UTILS, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, SEQUENCE_GENERATOR } from '@airport/ground-control'
 import { DOMAIN_RETRIEVER, STORE_DRIVER, TerminalStore, TRANSACTION_MANAGER } from '@airport/terminal-map'
 import { AirportDatabasePopulator } from './AirportDatabasePopulator'
 import { ApplicationInitializer } from './ApplicationInitializer'
@@ -26,6 +26,7 @@ import { QueryEntityClassCreator } from './QueryEntityClassCreator'
 import { QueryObjectInitializer } from './QueryObjectInitializer'
 import { ApplicationComposer } from './recorder/ApplicationComposer'
 import { ApplicationRecorder } from './recorder/ApplicationRecorder'
+import { QUERY_RELATION_MANAGER } from '@airport/tarmaq-query'
 
 const takeoff = lib('takeoff')
 
@@ -115,9 +116,9 @@ takeoff.setDependencies(DdlObjectRetriever, {
 
 takeoff.setDependencies(QueryEntityClassCreator, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     qApplicationBuilderUtils: QApplicationBuilderUtils,
-    queryRelationManager: QueryRelationManager,
+    queryRelationManager: QUERY_RELATION_MANAGER,
 })
 
 takeoff.setDependencies(QueryObjectInitializer, {

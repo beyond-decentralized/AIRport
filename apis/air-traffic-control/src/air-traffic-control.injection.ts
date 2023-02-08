@@ -1,5 +1,6 @@
 import { AIR_ENTITY_UTILS, ContainerAccessor } from '@airport/direction-indicator'
 import {
+	APPLICATION_UTILS,
 	DbApplicationUtils,
 	Dictionary,
 	ENTITY_STATE_MANAGER,
@@ -10,6 +11,7 @@ import {
 import {
 	ENTITY_UTILS,
 	QEntityUtils,
+	QUERY_RELATION_MANAGER,
 	QUERY_UTILS
 } from '@airport/tarmaq-query'
 import {
@@ -22,7 +24,6 @@ import {
 	QUERY_FACADE,
 } from '@airport/tarmaq-dao'
 import { QMetadataUtils } from './implementation/utils/QMetadataUtils'
-import { ApplicationUtils } from './implementation/utils/ApplicationUtils'
 import { FieldUtils } from './implementation/utils/FieldUtils'
 import { DatabaseStore } from './implementation/DatabaseStore'
 import { IAirportDatabase } from './definition/IAirportDatabase'
@@ -34,10 +35,11 @@ import { Utils } from './implementation/Utils'
 import { SystemWideOperationIdUtils } from './implementation/utils/SystemWideOperationIdUtils'
 import { IApiRegistry } from './api/ApiRegistry'
 import { IApiValidator } from './api/ApiValidator'
+import { ApplicationUtils } from './implementation/utils/ApplicationUtils'
 
 airTrafficControl.register(
-	ApplicationUtils, DatabaseStore, FieldUtils,
-	QApplicationBuilderUtils, QMetadataUtils, QueryRelationManager,
+	DatabaseStore, FieldUtils,
+	QApplicationBuilderUtils, QMetadataUtils,
 	SystemWideOperationIdUtils
 )
 
@@ -47,7 +49,7 @@ export const API_VALIDATOR = airTrafficControl.token<IApiValidator>('ApiValidato
 export const REPOSITORY_LOADER = airTrafficControl.token<IRepositoryLoader>('RepositoryLoader')
 
 AIRPORT_DATABASE.setDependencies({
-	appliationUtils: ApplicationUtils,
+	appliationUtils: APPLICATION_UTILS,
 	databaseFacade: DATABASE_FACADE,
 	databaseStore: DatabaseStore,
 	dictionary: Dictionary,
@@ -55,14 +57,15 @@ AIRPORT_DATABASE.setDependencies({
 	find: NonEntityFind,
 	findOne: NonEntityFindOne,
 	qApplicationBuilderUtils: QApplicationBuilderUtils,
-	queryRelationManager: QueryRelationManager,
+	queryRelationManager: QUERY_RELATION_MANAGER,
 	search: NonEntitySearch,
 	searchOne: NonEntitySearchOne
 })
 API_REGISTRY.setDependencies({
 	containerAccessor: ContainerAccessor
 })
-airTrafficControl.setDependencies(ApplicationUtils, {
+APPLICATION_UTILS.setClass(ApplicationUtils)
+APPLICATION_UTILS.setDependencies({
 	airportDatabase: AIRPORT_DATABASE,
 	dictionary: Dictionary,
 	entityStateManager: ENTITY_STATE_MANAGER,
@@ -70,13 +73,13 @@ airTrafficControl.setDependencies(ApplicationUtils, {
 	utils: Utils
 })
 DATABASE_FACADE.setDependencies({
-	applicationUtils: ApplicationUtils,
+	applicationUtils: APPLICATION_UTILS,
 	entityStateManager: ENTITY_STATE_MANAGER,
 	transactionalConnector: TRANSACTIONAL_CONNECTOR,
 	updateCacheManager: UPDATE_CACHE_MANAGER
 })
 airTrafficControl.setDependencies(FieldUtils, {
-	queryRelationManager: QueryRelationManager
+	queryRelationManager: QUERY_RELATION_MANAGER
 })
 airTrafficControl.setDependencies(Lookup, {
 	entityUtils: ENTITY_UTILS,
@@ -91,20 +94,21 @@ airTrafficControl.setDependencies(QMetadataUtils, {
 QUERY_FACADE.setDependencies({
 	fieldUtils: FieldUtils,
 	queryUtils: QUERY_UTILS,
-	queryRelationManager: QueryRelationManager,
+	queryRelationManager: QUERY_RELATION_MANAGER,
 	transactionalConnector: TRANSACTIONAL_CONNECTOR
 })
 QUERY_UTILS.setDependencies({
 	airportDatabase: AIRPORT_DATABASE,
-	applicationUtils: ApplicationUtils,
+	applicationUtils: APPLICATION_UTILS,
 	dictionary: Dictionary,
 	entityUtils: ENTITY_UTILS,
 	fieldUtils: FieldUtils,
-	queryRelationManager: QueryRelationManager,
+	queryRelationManager: QUERY_RELATION_MANAGER,
 	airEntityUtils: AIR_ENTITY_UTILS
 })
-airTrafficControl.setDependencies(QueryRelationManager, {
-	applicationUtils: ApplicationUtils,
+QUERY_RELATION_MANAGER.setClass(QueryRelationManager)
+QUERY_RELATION_MANAGER.setDependencies({
+	applicationUtils: APPLICATION_UTILS,
 	queryUtils: QUERY_UTILS
 })
 airTrafficControl.setDependencies(SystemWideOperationIdUtils, {
@@ -112,6 +116,6 @@ airTrafficControl.setDependencies(SystemWideOperationIdUtils, {
 	sequenceGenerator: SEQUENCE_GENERATOR,
 })
 UPDATE_CACHE_MANAGER.setDependencies({
-	applicationUtils: ApplicationUtils,
+	applicationUtils: APPLICATION_UTILS,
 	entityStateManager: ENTITY_STATE_MANAGER,
 })

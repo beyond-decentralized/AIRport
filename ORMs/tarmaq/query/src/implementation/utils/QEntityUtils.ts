@@ -1,5 +1,5 @@
 import { QApp } from "@airport/aviation-communication";
-import { extend, Injected, IOC } from "@airport/direction-indicator";
+import { extend, Inject, Injected, IOC } from "@airport/direction-indicator";
 import { DbColumn, DbEntity, DbProperty, DbRelation, EntityRelationType, IApplicationUtils, JoinType, SQLDataType } from "@airport/ground-control";
 import { IQEntity } from "../../definition/core/entity/IQEntity";
 import { IQueryRelationManager } from "../../definition/core/entity/IQueryRelationManager";
@@ -20,9 +20,19 @@ import { QNumberField } from "../core/field/QNumberField";
 import { QStringField } from "../core/field/QStringField";
 import { QUntypedField } from "../core/field/QUntypedField";
 import { IQEntityInternal } from "../../definition/core/entity/IQEntityDriver";
+import { IQueryUtils } from "../../definition/utils/IQueryUtils";
 
 @Injected()
 export class QEntityUtils implements IQEntityUtils {
+
+    @Inject()
+    applicationUtils: IApplicationUtils
+
+    @Inject()
+    queryRelationManager: IQueryRelationManager
+
+    @Inject()
+    queryUtils: IQueryUtils
 
     getColumnQField(
         entity: DbEntity,
@@ -51,9 +61,7 @@ export class QEntityUtils implements IQEntityUtils {
         entity: DbEntity,
         property: DbProperty,
         q: IQEntityInternal,
-        allQApps: QApp[],
-        applicationUtils: IApplicationUtils,
-        queryRelationManager: IQueryRelationManager
+        allQApps: QApp[]
     ): IQRelation<typeof q> {
         const relation = property.relation[0]
         switch (relation.relationType) {
@@ -64,14 +72,15 @@ export class QEntityUtils implements IQEntityUtils {
                     = allQApps[relationApplication.index]
                         .__qIdRelationConstructors__[relationEntity.index]
                 return new qIdRelationConstructor(
-                    relation.relationEntity, relation, q, applicationUtils, queryRelationManager)
+                    relation.relationEntity, relation, q, this.applicationUtils, 
+                    this.queryRelationManager, this.queryUtils)
             case EntityRelationType.ONE_TO_MANY:
                 if (entity.isAirEntity) {
                     return new QAirEntityOneToManyRelation(relation, q,
-                        applicationUtils, queryRelationManager)
+                        this.applicationUtils, this.queryRelationManager, this.queryUtils)
                 } else {
                     return new QOneToManyRelation(relation, q,
-                        applicationUtils, queryRelationManager)
+                        this.applicationUtils, this.queryRelationManager, this.queryUtils)
                 }
             default:
                 throw new Error(`Unknown EntityRelationType: ${relation.relationType}.`)
@@ -104,7 +113,7 @@ export class QEntityUtils implements IQEntityUtils {
 
                 if (property.relation && property.relation.length) {
                     qFieldOrRelation = qEntityUtils.getQRelation(entity, property,
-                        this, allQApps, applicationUtils, queryRelationManager)
+                        this, allQApps)
                     for (const propertyColumn of property.propertyColumns) {
                         qEntityUtils.addColumnQField(entity, property, this, propertyColumn.column)
                     }
@@ -155,9 +164,11 @@ export class QEntityUtils implements IQEntityUtils {
             qEntity: IQEntityInternal,
             appliationUtils: IApplicationUtils,
             queryRelationManager: IQueryRelationManager,
+            queryUtils: IQueryUtils
         ) {
             (<any>QEntityIdRelation).base.constructor.call(
-                this, relation, qEntity, appliationUtils, queryRelationManager)
+                this, relation, qEntity, appliationUtils,
+                queryRelationManager, queryUtils)
 
             const qEntityUtils = IOC.getSync(QEntityUtils)
 

@@ -1613,6 +1613,7 @@ class SyncApplicationMap extends ApplicationMap {
                 const columnMapIn = tableMapIn.tableMap[entityIndex];
                 if (!columnMap) {
                     tableMap.tableMap[entityIndex] = columnMapIn;
+                    continue;
                 }
                 for (const columnIndex in columnMapIn.columnMap) {
                     columnMap.columnMap[columnIndex] = true;
@@ -1984,6 +1985,7 @@ class KeyUtils {
 
 const groundControl = lib('ground-control');
 groundControl.register(ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, KeyUtils);
+const APPLICATION_UTILS = groundControl.token('ApplicationUtils');
 const DICTIONARY = groundControl.token(Dictionary);
 const ENTITY_STATE_MANAGER = groundControl.token('EntityStateManager');
 const OPERATION_DESERIALIZER = groundControl.token('OperationDeserializer');
@@ -4504,18 +4506,18 @@ QRelation.prototype.nullOrNot = function (isNull) {
 };
 QRelation.prototype.getNewQEntity = function (joinType) {
     const dbEntity = this.dbRelation.relationEntity;
-    const qEntityConstructor = this.applicationUtils.getQEntityConstructor(this.dbRelation.relationEntity);
-    let newQEntity = new qEntityConstructor(dbEntity, this.applicationUtils, this.queryRelationManager, this.queryRelationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType, this.applicationUtils, this.queryRelationManager);
+    const qEntityConstructor = this.queryUtils.getQEntityConstructor(this.dbRelation.relationEntity);
+    let newQEntity = new qEntityConstructor(dbEntity, this.queryUtils, this.queryRelationManager, this.queryRelationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType);
     newQEntity.__driver__.parentJoinEntity = this.parentQ;
     return newQEntity;
 };
-function QAirEntityRelation(dbRelation, parentQ, applicationUtils, queryRelationManager) {
-    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, queryRelationManager);
+function QAirEntityRelation(dbRelation, parentQ, applicationUtils, queryRelationManager, queryUtils) {
+    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, queryRelationManager, queryUtils);
 }
 const qAirEntityRelationMethods = {};
 extend(QRelation, QAirEntityRelation, qAirEntityRelationMethods);
-function QManyToOneAirEntityRelation(dbRelation, parentQ, applicationUtils, queryRelationManager) {
-    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, queryRelationManager);
+function QManyToOneAirEntityRelation(dbRelation, parentQ, applicationUtils, queryRelationManager, queryUtils) {
+    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, queryRelationManager, queryUtils);
 }
 const qManyToOneAirEntityRelationMethods = {
     equals: function (entity) {
@@ -4526,8 +4528,8 @@ const qManyToOneAirEntityRelationMethods = {
     }
 };
 extend(QAirEntityRelation, QManyToOneAirEntityRelation, qManyToOneAirEntityRelationMethods);
-function QManyToOneInternalRelation(dbRelation, parentQ, applicationUtils, queryRelationManager) {
-    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, queryRelationManager);
+function QManyToOneInternalRelation(dbRelation, parentQ, applicationUtils, queryRelationManager, queryUtils) {
+    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, queryRelationManager, queryUtils);
 }
 const qManyToOneInternalRelationMethods = {
     equals: function (entityId) {
@@ -4549,8 +4551,8 @@ extend(QRelation, QManyToOneInternalRelation, qManyToOneInternalRelationMethods)
  * When calling:
  *   Q...Relation.base.constructor.call(this, relation, qEntity)
  */
-function QOneToManyRelation(dbRelation, parentQ, applicationUtils, repationManager) {
-    QOneToManyRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, repationManager);
+function QOneToManyRelation(dbRelation, parentQ, applicationUtils, repationManager, queryUtils) {
+    QOneToManyRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, repationManager, queryUtils);
 }
 const qOneToManyRelationMethods = {
 /*
@@ -4558,8 +4560,8 @@ yourMethodName: function() {},
 */
 };
 extend(QRelation, QOneToManyRelation, qOneToManyRelationMethods);
-function QAirEntityOneToManyRelation(dbRelation, parentQ, applicationUtils, repationManager) {
-    QAirEntityOneToManyRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, repationManager);
+function QAirEntityOneToManyRelation(dbRelation, parentQ, applicationUtils, repationManager, queryUtils) {
+    QAirEntityOneToManyRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, repationManager, queryUtils);
 }
 const qAirEntityOneToManyRelationMethods = {
 /*
@@ -5171,7 +5173,7 @@ class QEntityUtils {
                 throw new Error(`Unsupported data type for property ${entity.applicationVersion.application.name}.${entity.name}.${property.name}`);
         }
     }
-    getQRelation(entity, property, q, allQApps, applicationUtils, queryRelationManager) {
+    getQRelation(entity, property, q, allQApps) {
         const relation = property.relation[0];
         switch (relation.relationType) {
             case EntityRelationType.MANY_TO_ONE:
@@ -5179,13 +5181,13 @@ class QEntityUtils {
                 const relationApplication = relationEntity.applicationVersion.application;
                 const qIdRelationConstructor = allQApps[relationApplication.index]
                     .__qIdRelationConstructors__[relationEntity.index];
-                return new qIdRelationConstructor(relation.relationEntity, relation, q, applicationUtils, queryRelationManager);
+                return new qIdRelationConstructor(relation.relationEntity, relation, q, this.applicationUtils, this.queryRelationManager, this.queryUtils);
             case EntityRelationType.ONE_TO_MANY:
                 if (entity.isAirEntity) {
-                    return new QAirEntityOneToManyRelation(relation, q, applicationUtils, queryRelationManager);
+                    return new QAirEntityOneToManyRelation(relation, q, this.applicationUtils, this.queryRelationManager, this.queryUtils);
                 }
                 else {
-                    return new QOneToManyRelation(relation, q, applicationUtils, queryRelationManager);
+                    return new QOneToManyRelation(relation, q, this.applicationUtils, this.queryRelationManager, this.queryUtils);
                 }
             default:
                 throw new Error(`Unknown EntityRelationType: ${relation.relationType}.`);
@@ -5199,7 +5201,7 @@ class QEntityUtils {
             entity.properties.forEach((property) => {
                 let qFieldOrRelation;
                 if (property.relation && property.relation.length) {
-                    qFieldOrRelation = qEntityUtils.getQRelation(entity, property, this, allQApps, applicationUtils, queryRelationManager);
+                    qFieldOrRelation = qEntityUtils.getQRelation(entity, property, this, allQApps);
                     for (const propertyColumn of property.propertyColumns) {
                         qEntityUtils.addColumnQField(entity, property, this, propertyColumn.column);
                     }
@@ -5230,8 +5232,8 @@ class QEntityUtils {
         return qFieldOrRelation;
     }
     getQEntityIdRelationConstructor(dbEntity) {
-        function QEntityIdRelation(entity, relation, qEntity, appliationUtils, queryRelationManager) {
-            QEntityIdRelation.base.constructor.call(this, relation, qEntity, appliationUtils, queryRelationManager);
+        function QEntityIdRelation(entity, relation, qEntity, appliationUtils, queryRelationManager, queryUtils) {
+            QEntityIdRelation.base.constructor.call(this, relation, qEntity, appliationUtils, queryRelationManager, queryUtils);
             const qEntityUtils = IOC.getSync(QEntityUtils);
             qEntityUtils.getQEntityIdFields(this, entity, qEntity, relation.property);
             // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
@@ -5328,7 +5330,13 @@ const tarmaqQuery = lib('tarmaq-query');
 // at code initialization time
 tarmaqQuery.register(QEntityUtils);
 const ENTITY_UTILS = tarmaqQuery.token('EntityUtils');
+const QUERY_RELATION_MANAGER = tarmaqQuery.token('QueryRelationManager');
 const QUERY_UTILS = tarmaqQuery.token('QueryUtils');
+tarmaqQuery.setDependencies(QEntityUtils, {
+    applicationUtils: APPLICATION_UTILS,
+    queryRelationManager: QUERY_RELATION_MANAGER,
+    queryUtils: QUERY_UTILS
+});
 globalThis.ENTITY_UTILS = ENTITY_UTILS;
 globalThis.QUERY_UTILS = QUERY_UTILS;
 
@@ -9742,13 +9750,13 @@ ENTITY_UTILS.setDependencies({
 });
 QUERY_UTILS.setClass(QueryUtils);
 
-airTrafficControl.register(ApplicationUtils, DatabaseStore, FieldUtils, QApplicationBuilderUtils, QMetadataUtils, QueryRelationManager, SystemWideOperationIdUtils);
+airTrafficControl.register(DatabaseStore, FieldUtils, QApplicationBuilderUtils, QMetadataUtils, SystemWideOperationIdUtils);
 const AIRPORT_DATABASE = airTrafficControl.token('AirportDatabase');
 const API_REGISTRY = airTrafficControl.token('ApiRegistry');
 const API_VALIDATOR = airTrafficControl.token('ApiValidator');
 const REPOSITORY_LOADER = airTrafficControl.token('RepositoryLoader');
 AIRPORT_DATABASE.setDependencies({
-    appliationUtils: ApplicationUtils,
+    appliationUtils: APPLICATION_UTILS,
     databaseFacade: DATABASE_FACADE,
     databaseStore: DatabaseStore,
     dictionary: Dictionary,
@@ -9756,14 +9764,15 @@ AIRPORT_DATABASE.setDependencies({
     find: NonEntityFind,
     findOne: NonEntityFindOne,
     qApplicationBuilderUtils: QApplicationBuilderUtils,
-    queryRelationManager: QueryRelationManager,
+    queryRelationManager: QUERY_RELATION_MANAGER,
     search: NonEntitySearch,
     searchOne: NonEntitySearchOne
 });
 API_REGISTRY.setDependencies({
     containerAccessor: ContainerAccessor
 });
-airTrafficControl.setDependencies(ApplicationUtils, {
+APPLICATION_UTILS.setClass(ApplicationUtils);
+APPLICATION_UTILS.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
@@ -9771,13 +9780,13 @@ airTrafficControl.setDependencies(ApplicationUtils, {
     utils: Utils
 });
 DATABASE_FACADE.setDependencies({
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
     transactionalConnector: TRANSACTIONAL_CONNECTOR,
     updateCacheManager: UPDATE_CACHE_MANAGER
 });
 airTrafficControl.setDependencies(FieldUtils, {
-    queryRelationManager: QueryRelationManager
+    queryRelationManager: QUERY_RELATION_MANAGER
 });
 airTrafficControl.setDependencies(Lookup, {
     entityUtils: ENTITY_UTILS,
@@ -9792,20 +9801,21 @@ airTrafficControl.setDependencies(QMetadataUtils, {
 QUERY_FACADE.setDependencies({
     fieldUtils: FieldUtils,
     queryUtils: QUERY_UTILS,
-    queryRelationManager: QueryRelationManager,
+    queryRelationManager: QUERY_RELATION_MANAGER,
     transactionalConnector: TRANSACTIONAL_CONNECTOR
 });
 QUERY_UTILS.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     dictionary: Dictionary,
     entityUtils: ENTITY_UTILS,
     fieldUtils: FieldUtils,
-    queryRelationManager: QueryRelationManager,
+    queryRelationManager: QUERY_RELATION_MANAGER,
     airEntityUtils: AIR_ENTITY_UTILS
 });
-airTrafficControl.setDependencies(QueryRelationManager, {
-    applicationUtils: ApplicationUtils,
+QUERY_RELATION_MANAGER.setClass(QueryRelationManager);
+QUERY_RELATION_MANAGER.setDependencies({
+    applicationUtils: APPLICATION_UTILS,
     queryUtils: QUERY_UTILS
 });
 airTrafficControl.setDependencies(SystemWideOperationIdUtils, {
@@ -9813,7 +9823,7 @@ airTrafficControl.setDependencies(SystemWideOperationIdUtils, {
     sequenceGenerator: SEQUENCE_GENERATOR,
 });
 UPDATE_CACHE_MANAGER.setDependencies({
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
 });
 
@@ -13021,9 +13031,9 @@ takeoff.setDependencies(DdlObjectRetriever, {
 });
 takeoff.setDependencies(QueryEntityClassCreator, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     qApplicationBuilderUtils: QApplicationBuilderUtils,
-    queryRelationManager: QueryRelationManager,
+    queryRelationManager: QUERY_RELATION_MANAGER,
 });
 takeoff.setDependencies(QueryObjectInitializer, {
     ddlObjectLinker: DdlObjectLinker,
@@ -30733,7 +30743,7 @@ groundTransport.setDependencies(SyncInUtils, {
 groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
     dbRelationDao: DbRelationDao,
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     dbApplicationUtils: DbApplicationUtils,
     dictionary: Dictionary,
     repositoryDao: RepositoryDao,
@@ -33998,7 +34008,7 @@ fuelHydrantSystem.setDependencies(IdGenerator, {
     sequenceGenerator: SEQUENCE_GENERATOR
 });
 fuelHydrantSystem.setDependencies(ObjectResultParserFactory, {
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     datastructureUtils: DatastructureUtils,
     entityStateManager: ENTITY_STATE_MANAGER,
     queryUtils: QUERY_UTILS,
@@ -34008,7 +34018,7 @@ fuelHydrantSystem.setDependencies(ObjectResultParserFactory, {
 STORE_DRIVER.setDependencies({
     activeQueries: ActiveQueries,
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     appTrackerUtils: AppTrackerUtils,
     dbApplicationUtils: DbApplicationUtils,
     dictionary: Dictionary,
@@ -34018,7 +34028,7 @@ STORE_DRIVER.setDependencies({
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,
-    queryRelationManager: QueryRelationManager,
+    queryRelationManager: QUERY_RELATION_MANAGER,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     subStatementSqlGenerator: SubStatementSqlGenerator,
     transactionManager: TRANSACTION_MANAGER,
@@ -34026,13 +34036,13 @@ STORE_DRIVER.setDependencies({
 });
 fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,
-    queryRelationManager: QueryRelationManager,
+    queryRelationManager: QUERY_RELATION_MANAGER,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     storeDriver: STORE_DRIVER,
     utils: Utils
@@ -38141,10 +38151,10 @@ QUERY_PARAMETER_DESERIALIZER.setClass(QueryParameterDeserializer);
 QUERY_RESULTS_SERIALIZER.setClass(QueryResultsSerializer);
 terminal.register(AbstractMutationManager, TransactionalReceiver, CascadeGraphVerifier, DatabaseManager, DeleteManager, DependencyGraphResolver, EntityGraphReconstructor, InsertManager, InternalRecordManager, OnlineManager, OperationManager, QueryManager, StructuralEntityValidator, UpdateManager);
 terminal.setDependencies(AbstractMutationManager, {
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     fieldUtils: FieldUtils,
     queryUtils: QUERY_UTILS,
-    queryRelationManager: QueryRelationManager
+    queryRelationManager: QUERY_RELATION_MANAGER
 });
 terminal.setDependencies(TransactionalReceiver, {
     appTrackerUtils: AppTrackerUtils,
@@ -38163,7 +38173,7 @@ terminal.setDependencies(DatabaseManager, {
 });
 terminal.setDependencies(DeleteManager, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     datastructureUtils: DatastructureUtils,
     dictionary: Dictionary,
     historyManager: HISTORY_MANAGER,
@@ -38222,7 +38232,7 @@ terminal.setDependencies(OnlineManager, {
 });
 terminal.setDependencies(OperationManager, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     cascadeGraphVerifier: CascadeGraphVerifier,
     deleteManager: DeleteManager,
     dependencyGraphResolver: DependencyGraphResolver,
@@ -38253,7 +38263,7 @@ REPOSITORY_LOADER.setDependencies({
     synchronizationInManager: SynchronizationInManager
 });
 terminal.setDependencies(StructuralEntityValidator, {
-    applicationUtils: ApplicationUtils,
+    applicationUtils: APPLICATION_UTILS,
     crossRepositoryRelationManager: CrossRepositoryRelationManager,
     dbApplicationUtils: DbApplicationUtils,
     dictionary: Dictionary,
@@ -38309,7 +38319,7 @@ terminal.setDependencies(UpdateManager, {
     queryFacade: QUERY_FACADE,
     queryUtils: QUERY_UTILS,
     recordHistoryDuo: RecordHistoryDuo,
-    queryRelationManager: QueryRelationManager,
+    queryRelationManager: QUERY_RELATION_MANAGER,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     systemWideOperationIdUtils: SystemWideOperationIdUtils,
 });

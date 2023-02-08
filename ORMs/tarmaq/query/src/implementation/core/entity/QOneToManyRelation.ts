@@ -2,6 +2,7 @@ import { extend } from '@airport/direction-indicator'
 import { DbRelation, IApplicationUtils } from '@airport/ground-control'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
+import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { QRelation, QAirEntityRelation } from './QRelation'
 
 /**
@@ -20,9 +21,10 @@ export function QOneToManyRelation(
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
 	repationManager: IQueryRelationManager,
+	queryUtils: IQueryUtils
 ) {
 	(<any>QOneToManyRelation).base.constructor.call(this,
-		dbRelation, parentQ, applicationUtils, repationManager)
+		dbRelation, parentQ, applicationUtils, repationManager, queryUtils)
 }
 const qOneToManyRelationMethods = {
 	/*
@@ -36,9 +38,10 @@ export function QAirEntityOneToManyRelation(
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
 	repationManager: IQueryRelationManager,
+	queryUtils: IQueryUtils
 ) {
 	(<any>QAirEntityOneToManyRelation).base.constructor.call(this,
-		dbRelation, parentQ, applicationUtils, repationManager)
+		dbRelation, parentQ, applicationUtils, repationManager, queryUtils)
 }
 const qAirEntityOneToManyRelationMethods = {
 	/*

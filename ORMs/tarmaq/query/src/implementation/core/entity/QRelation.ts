@@ -11,6 +11,7 @@ import { IQAirEntity } from '../../../definition/core/entity/IQEntity'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
 import { QueryLogicalOperation } from '../../../definition/core/operation/ILogicalOperation'
+import { IQueryUtils } from '../../../tarmaq.query.index'
 import { QUERY_UTILS } from '../../../tarmaq.query.injection'
 import { QEntityUtils } from '../../utils/QEntityUtils'
 import { AND, OR } from '../operation/LogicalOperation'
@@ -30,12 +31,14 @@ export function QRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
-	queryRelationManager: IQueryRelationManager
+	queryRelationManager: IQueryRelationManager,
+	queryUtils: IQueryUtils
 ) {
 	this.dbRelation = dbRelation
 	this.parentQ = parentQ
 	this.applicationUtils = applicationUtils
 	this.queryRelationManager = queryRelationManager
+	this.queryUtils = queryUtils
 }
 
 QRelation.prototype.INNER_JOIN = function <IQ extends IQEntityInternal>(): IQ {
@@ -92,18 +95,16 @@ QRelation.prototype.nullOrNot = function (
 QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinType: JoinType): IQ {
 	const dbEntity = this.dbRelation.relationEntity
 
-	const qEntityConstructor = this.applicationUtils.getQEntityConstructor(
+	const qEntityConstructor = this.queryUtils.getQEntityConstructor(
 		this.dbRelation.relationEntity)
 
 	let newQEntity: IQEntityInternal = new qEntityConstructor(
 		dbEntity,
-		this.applicationUtils,
+		this.queryUtils,
 		this.queryRelationManager,
 		this.queryRelationManager.getNextChildJoinPosition(this.parentQ.__driver__),
 		this.dbRelation,
-		joinType,
-		this.applicationUtils,
-		this.queryRelationManager
+		joinType
 	)
 	newQEntity.__driver__.parentJoinEntity = this.parentQ
 	return <IQ>newQEntity
@@ -116,9 +117,11 @@ export function QAirEntityRelation(
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
 	queryRelationManager: IQueryRelationManager,
+	queryUtils: IQueryUtils
 ) {
 	(<any>QAirEntityRelation).base.constructor.call(
-		this, dbRelation, parentQ, applicationUtils, queryRelationManager)
+		this, dbRelation, parentQ, applicationUtils,
+		queryRelationManager, queryUtils)
 }
 
 export const qAirEntityRelationMethods = {
@@ -132,9 +135,11 @@ export function QManyToOneAirEntityRelation(
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
 	queryRelationManager: IQueryRelationManager,
+	queryUtils: IQueryUtils
 ) {
 	(<any>QAirEntityRelation).base.constructor.call(
-		this, dbRelation, parentQ, applicationUtils, queryRelationManager)
+		this, dbRelation, parentQ, applicationUtils,
+		queryRelationManager, queryUtils)
 }
 
 export const qManyToOneAirEntityRelationMethods = {
@@ -163,9 +168,11 @@ export function QManyToOneInternalRelation(
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
 	queryRelationManager: IQueryRelationManager,
+	queryUtils: IQueryUtils
 ) {
 	(<any>QAirEntityRelation).base.constructor.call(
-		this, dbRelation, parentQ, applicationUtils, queryRelationManager)
+		this, dbRelation, parentQ, applicationUtils,
+		queryRelationManager, queryUtils)
 }
 
 export const qManyToOneInternalRelationMethods = {
