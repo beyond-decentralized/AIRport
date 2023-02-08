@@ -1,11 +1,8 @@
 import { IContext, Injected } from '@airport/direction-indicator'
 import { DbApplicationVersion_LocalId, DbApplicationReference } from '@airport/ground-control'
-import {
-	BaseDdlApplicationReferenceDao,
-	IBaseDdlApplicationReferenceDao,
-	QDdlApplicationReference,
-} from '../generated/generated'
-import Q from '../generated/qApplication'
+import { BaseDdlApplicationReferenceDao, IBaseDdlApplicationReferenceDao } from '../generated/baseDaos'
+import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
+import { QDdlApplicationReference } from '../generated/qInterfaces'
 
 export interface IApplicationReferenceDao
 	extends IBaseDdlApplicationReferenceDao {
@@ -34,7 +31,7 @@ export class ApplicationReferenceDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				sr = Q.ApplicationReference
+				sr = Q_airport____at_airport_slash_airspace.ApplicationReference
 			],
 			WHERE: sr.ownApplicationVersion._localId.IN(applicationVersionIds)
 		})
@@ -57,7 +54,7 @@ export class ApplicationReferenceDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: sr = Q.ApplicationReference,
+			INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.ApplicationReference,
 			columns: [
 				sr.ownApplicationVersion._localId,
 				sr.referencedApplicationVersion._localId,

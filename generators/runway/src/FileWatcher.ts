@@ -14,7 +14,6 @@ import { DvoBuilder } from './ddl/builder/DvoBuilder';
 import { QEntityFileBuilder } from './ddl/builder/entity/query/QEntityFileBuilder';
 import { EntityMappingBuilder } from './ddl/builder/EntityMappingBuilder';
 import { GeneratedFileListingBuilder } from './ddl/builder/GeneratedFileListingBuilder';
-import { GeneratedSummaryBuilder } from './ddl/builder/GeneratedSummaryBuilder';
 import { PathBuilder } from './ddl/builder/PathBuilder';
 import { QApplicationBuilder } from './ddl/builder/QApplicationBuilder';
 import { JsonApplicationBuilder } from './ddl/builder/application/JsonApplicationBuilder';
@@ -161,11 +160,7 @@ function emitFiles(
 
 	const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
 	const entityVInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'vInterfaces.ts');
-	const generatedSummaryBuilder = new GeneratedSummaryBuilder(
-		pathBuilder,
-		entityQInterfaceListingBuilder,
-		entityVInterfaceListingBuilder
-	);
+
 	const qApplicationBuilder = new QApplicationBuilder(applicationFullName, pathBuilder, configuration);
 	const daoBuilder = new DaoBuilder(applicationFullName, pathBuilder);
 	const dvoBuilder = new DvoBuilder(applicationFullName, pathBuilder);
@@ -228,7 +223,6 @@ function emitFiles(
 	));
 	fs.writeFileSync(entityQInterfaceListingBuilder.generatedListingFilePath, entityQInterfaceListingBuilder.build());
 	fs.writeFileSync(entityVInterfaceListingBuilder.generatedListingFilePath, entityVInterfaceListingBuilder.build());
-	fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());
 
 	const mappedSuperclassBuilder = new MappedSuperclassBuilder(
 		configuration, entityMapByName);

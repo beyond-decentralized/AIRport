@@ -5,15 +5,9 @@ import {
 } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import { IRepository, Repository_GUID, Repository_LocalId, TransactionType } from '@airport/ground-control'
-import {
-	BaseRepositoryDao,
-	IBaseRepositoryDao,
-	QRepository,
-	QRepositoryReference,
-	QRepositoryTransactionHistory,
-	QTransactionHistory,
-} from '../../generated/generated'
 import Q from '../../generated/qApplication'
+import { BaseRepositoryDao, IBaseRepositoryDao } from '../../generated/baseDaos'
+import { QRepository, QRepositoryReference, QRepositoryTransactionHistory, QTransactionHistory } from '../../generated/qInterfaces'
 
 export interface IRepositoryDao
 	extends IBaseRepositoryDao {

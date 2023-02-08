@@ -11,8 +11,7 @@ import {
 	Dictionary,
 	Repository_LocalId,
 	Actor_LocalId,
-	ActorRecordId,
-	Repository_GUID
+	ActorRecordId
 } from '@airport/ground-control'
 import {
 	AND,
@@ -20,12 +19,9 @@ import {
 	OR,
 } from '@airport/tarmaq-query'
 import { Inject } from 'typedi';
-import {
-	BaseRecordUpdateStageDao,
-	IBaseRecordUpdateStageDao,
-	QRecordUpdateStage
-} from '../generated/generated'
 import Q from '../generated/qApplication'
+import { BaseRecordUpdateStageDao, IBaseRecordUpdateStageDao } from '../generated/baseDaos';
+import { QRecordUpdateStage } from '../generated/qInterfaces';
 
 export type RecordUpdateStageValue = any;
 

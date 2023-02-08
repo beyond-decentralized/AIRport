@@ -1,11 +1,8 @@
 import { IContext, Injected } from '@airport/direction-indicator'
 import { DbColumn_LocalId, DbPropertyColumn } from '@airport/ground-control'
-import {
-	BaseDdlPropertyColumnDao,
-	IBaseDdlPropertyColumnDao,
-	QDdlPropertyColumn,
-} from '../generated/generated'
-import Q from '../generated/qApplication'
+import { BaseDdlPropertyColumnDao, IBaseDdlPropertyColumnDao } from '../generated/baseDaos'
+import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
+import { QDdlPropertyColumn } from '../generated/qInterfaces'
 
 export interface IApplicationPropertyColumnDao
 	extends IBaseDdlPropertyColumnDao {
@@ -31,11 +28,11 @@ export class ApplicationPropertyColumnDao
 		columnIds: DbColumn_LocalId[]
 	): Promise<DbPropertyColumn[]> {
 		let rc: QDdlPropertyColumn
-
+		
 		return this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				rc = Q.ApplicationPropertyColumn
+				rc = Q_airport____at_airport_slash_airspace.ApplicationPropertyColumn
 			],
 			WHERE: rc.column._localId.IN(columnIds)
 		})
@@ -56,7 +53,7 @@ export class ApplicationPropertyColumnDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: spc = Q.ApplicationPropertyColumn,
+			INSERT_INTO: spc = Q_airport____at_airport_slash_airspace.ApplicationPropertyColumn,
 			columns: [
 				spc.column._localId,
 				spc.property._localId,

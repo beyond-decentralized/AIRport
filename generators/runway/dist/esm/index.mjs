@@ -3292,19 +3292,6 @@ Entity file source rule violation:
 				
 				`);
             }
-            if (path.endsWith('./generated/generated')) {
-                throw new Error(`
-Entity file source rule violation:
-		File: ${filePath}
-		
-				Importing from the 'generated' barrel is not currently supported,
-				please import from the specific generated files.
-				
-		Import:
-			${path}
-				
-				`);
-            }
             if (path.endsWith('../index')) {
                 throw new Error(`
 Entity file source rule violation:
@@ -10040,7 +10027,7 @@ class DdlApplicationVersion {
     }
 }
 
-const __constructors__$1$1 = {
+const __constructors__$5 = {
     DdlApplication,
     DdlApplicationCurrentVersion,
     DdlApplicationReference,
@@ -10054,22 +10041,22 @@ const __constructors__$1$1 = {
     DdlRelationColumn,
     DdlVersionedObject
 };
-const Q_airport____at_airport_slash_airspace$1 = {
-    __constructors__: __constructors__$1$1,
+const Q_airport____at_airport_slash_airspace = {
+    __constructors__: __constructors__$5,
     domain: 'airport',
     name: '@airport/airspace'
 };
 function airport____at_airport_slash_airspace_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_airspace$1.__dbApplication__, dbEntityId);
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_airspace.__dbApplication__, dbEntityId);
 }
 if (globalThis.airApi) {
-    globalThis.airApi.setQApp(Q_airport____at_airport_slash_airspace$1);
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_airspace);
 }
 
 // Application Q object Dependency Injection readiness detection Dao
 class SQDIDao$4 extends Dao {
     constructor(dbEntityId) {
-        super(dbEntityId, Q_airport____at_airport_slash_airspace$1);
+        super(dbEntityId, Q_airport____at_airport_slash_airspace);
     }
 }
 class BaseDdlApplicationDao extends SQDIDao$4 {
@@ -10244,7 +10231,7 @@ class DomainDao extends BaseDdlDomainDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                d = Q_airport____at_airport_slash_airspace$1.Domain
+                d = Q_airport____at_airport_slash_airspace.Domain
             ],
             WHERE: d._localId.IN(domainIds)
         });
@@ -10253,7 +10240,7 @@ class DomainDao extends BaseDdlDomainDao {
         let d;
         const domains = await this.db.find.tree({
             SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace$1.Domain],
+            FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
             WHERE: d.name.IN(domainNames)
         });
         const domainMapByNameWithNames = new Map();
@@ -10266,7 +10253,7 @@ class DomainDao extends BaseDdlDomainDao {
         let d;
         return await this.db.findOne.tree({
             SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace$1.Domain],
+            FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
             WHERE: d.name.equals(name)
         });
     }
@@ -10274,7 +10261,7 @@ class DomainDao extends BaseDdlDomainDao {
         let d;
         return await this.db.find.tree({
             SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace$1.Domain],
+            FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
             WHERE: d.name.IN(names)
         });
     }
@@ -10282,7 +10269,7 @@ class DomainDao extends BaseDdlDomainDao {
         let d;
         return await this.db.findOne.tree({
             SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace$1.Domain],
+            FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
             WHERE: d.name.equals(name)
         });
     }
@@ -10309,7 +10296,7 @@ class DomainDao extends BaseDdlDomainDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: d = Q_airport____at_airport_slash_airspace$1.Domain,
+            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.Domain,
             columns: [
                 d._localId,
                 d.name,
@@ -10326,7 +10313,7 @@ class DomainDao extends BaseDdlDomainDao {
             ]);
         }
         const ids = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: d = Q_airport____at_airport_slash_airspace$1.Domain,
+            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.Domain,
             columns: [
                 d.name
             ],
@@ -10345,7 +10332,7 @@ class ApplicationColumnDao extends BaseDdlColumnDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                c = Q_airport____at_airport_slash_airspace$1.ApplicationColumn
+                c = Q_airport____at_airport_slash_airspace.ApplicationColumn
             ],
             WHERE: c.entity._localId.IN(entityIds)
         });
@@ -10371,7 +10358,7 @@ class ApplicationColumnDao extends BaseDdlColumnDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sc = Q_airport____at_airport_slash_airspace$1.ApplicationColumn,
+            INSERT_INTO: sc = Q_airport____at_airport_slash_airspace.ApplicationColumn,
             columns: [
                 sc._localId,
                 sc.index,
@@ -10391,29 +10378,6 @@ class ApplicationColumnDao extends BaseDdlColumnDao {
             VALUES
         }, context);
     }
-}
-
-const __constructors__$5 = {
-    DdlApplication,
-    DdlApplicationCurrentVersion,
-    DdlApplicationReference,
-    DdlApplicationVersion,
-    DdlColumn,
-    DdlDomain,
-    DdlEntity,
-    DdlProperty,
-    DdlPropertyColumn,
-    DdlRelation,
-    DdlRelationColumn,
-    DdlVersionedObject
-};
-const Q_airport____at_airport_slash_airspace = {
-    __constructors__: __constructors__$5,
-    domain: 'airport',
-    name: '@airport/airspace'
-};
-if (globalThis.airApi) {
-    globalThis.airApi.setQApp(Q_airport____at_airport_slash_airspace);
 }
 
 class ApplicationDao extends BaseDdlApplicationDao {
@@ -10684,7 +10648,7 @@ class ApplicationEntityDao extends BaseDdlEntityDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                se = Q_airport____at_airport_slash_airspace$1.ApplicationEntity
+                se = Q_airport____at_airport_slash_airspace.ApplicationEntity
             ],
             WHERE: se.applicationVersion._localId.IN(applicationVersionIds)
         });
@@ -10704,7 +10668,7 @@ class ApplicationEntityDao extends BaseDdlEntityDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: se = Q_airport____at_airport_slash_airspace$1.ApplicationEntity,
+            INSERT_INTO: se = Q_airport____at_airport_slash_airspace.ApplicationEntity,
             columns: [
                 se._localId,
                 se.index,
@@ -10728,7 +10692,7 @@ class ApplicationPropertyColumnDao extends BaseDdlPropertyColumnDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                rc = Q_airport____at_airport_slash_airspace$1.ApplicationPropertyColumn
+                rc = Q_airport____at_airport_slash_airspace.ApplicationPropertyColumn
             ],
             WHERE: rc.column._localId.IN(columnIds)
         });
@@ -10745,7 +10709,7 @@ class ApplicationPropertyColumnDao extends BaseDdlPropertyColumnDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: spc = Q_airport____at_airport_slash_airspace$1.ApplicationPropertyColumn,
+            INSERT_INTO: spc = Q_airport____at_airport_slash_airspace.ApplicationPropertyColumn,
             columns: [
                 spc.column._localId,
                 spc.property._localId,
@@ -10764,7 +10728,7 @@ class ApplicationPropertyDao extends BaseDdlPropertyDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                p = Q_airport____at_airport_slash_airspace$1.ApplicationProperty
+                p = Q_airport____at_airport_slash_airspace.ApplicationProperty
             ],
             WHERE: p.entity._localId.IN(entityIds)
         });
@@ -10783,7 +10747,7 @@ class ApplicationPropertyDao extends BaseDdlPropertyDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sp = Q_airport____at_airport_slash_airspace$1.ApplicationProperty,
+            INSERT_INTO: sp = Q_airport____at_airport_slash_airspace.ApplicationProperty,
             columns: [
                 sp._localId,
                 sp.index,
@@ -10805,7 +10769,7 @@ class ApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                sr = Q_airport____at_airport_slash_airspace$1.ApplicationReference
+                sr = Q_airport____at_airport_slash_airspace.ApplicationReference
             ],
             WHERE: sr.ownApplicationVersion._localId.IN(applicationVersionIds)
         });
@@ -10824,7 +10788,7 @@ class ApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace$1.ApplicationReference,
+            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.ApplicationReference,
             columns: [
                 sr.ownApplicationVersion._localId,
                 sr.referencedApplicationVersion._localId,
@@ -10844,7 +10808,7 @@ class ApplicationRelationColumnDao extends BaseDdlRelationColumnDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                rc = Q_airport____at_airport_slash_airspace$1.ApplicationRelationColumn
+                rc = Q_airport____at_airport_slash_airspace.ApplicationRelationColumn
             ],
             WHERE: OR(rc.oneColumn._localId.IN(columnIds), rc.manyColumn._localId.IN(columnIds))
         });
@@ -10866,7 +10830,7 @@ class ApplicationRelationColumnDao extends BaseDdlRelationColumnDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: src = Q_airport____at_airport_slash_airspace$1.ApplicationRelationColumn,
+            INSERT_INTO: src = Q_airport____at_airport_slash_airspace.ApplicationRelationColumn,
             columns: [
                 src._localId,
                 src.manyColumn._localId,
@@ -10889,7 +10853,7 @@ class ApplicationRelationDao extends BaseDdlRelationDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                r = Q_airport____at_airport_slash_airspace$1.ApplicationRelation
+                r = Q_airport____at_airport_slash_airspace.ApplicationRelation
             ],
             WHERE: r.property._localId.IN(propertyIds)
         });
@@ -10912,7 +10876,7 @@ class ApplicationRelationDao extends BaseDdlRelationDao {
                 }
             },
             FROM: [
-                r = Q_airport____at_airport_slash_airspace$1.ApplicationRelation,
+                r = Q_airport____at_airport_slash_airspace.ApplicationRelation,
                 e = r.entity.LEFT_JOIN(),
                 av = e.applicationVersion.LEFT_JOIN(),
                 a = av.application.LEFT_JOIN(),
@@ -10939,7 +10903,7 @@ class ApplicationRelationDao extends BaseDdlRelationDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace$1.ApplicationRelation,
+            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.ApplicationRelation,
             columns: [
                 sr._localId,
                 sr.index,
@@ -10983,7 +10947,7 @@ class ApplicationVersionDao extends BaseDdlApplicationVersionDao {
         let av, a;
         return await this.db.find.tree({
             FROM: [
-                av = Q_airport____at_airport_slash_airspace$1.ApplicationVersion,
+                av = Q_airport____at_airport_slash_airspace.ApplicationVersion,
                 a = av.application.INNER_JOIN()
             ],
             SELECT: {},
@@ -11010,7 +10974,7 @@ class ApplicationVersionDao extends BaseDdlApplicationVersionDao {
                 }
             },
             FROM: [
-                av = Q_airport____at_airport_slash_airspace$1.ApplicationVersion,
+                av = Q_airport____at_airport_slash_airspace.ApplicationVersion,
                 a = av.application.INNER_JOIN(),
                 d = a.domain.INNER_JOIN()
             ],
@@ -11106,7 +11070,7 @@ class ApplicationVersionDao extends BaseDdlApplicationVersionDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sv = Q_airport____at_airport_slash_airspace$1.ApplicationVersion,
+            INSERT_INTO: sv = Q_airport____at_airport_slash_airspace.ApplicationVersion,
             columns: [
                 sv._localId,
                 sv.integerVersion,
@@ -42523,23 +42487,6 @@ class GeneratedFileListingBuilder {
     }
 }
 
-class GeneratedSummaryBuilder {
-    constructor(pathBuilder, entityQInterfaceListingBuilder, entityVInterfaceListingBuilder) {
-        this.pathBuilder = pathBuilder;
-        this.entityQInterfaceListingBuilder = entityQInterfaceListingBuilder;
-        this.entityVInterfaceListingBuilder = entityVInterfaceListingBuilder;
-        this.generatedListingFilePath = pathBuilder.fullGeneratedDirPath + '/generated.ts';
-    }
-    build() {
-        return `export * from './qApplication';
-export * from './baseDaos';
-export * from './baseDvos';
-${this.entityQInterfaceListingBuilder.generatedFilePaths.length ? "export * from './qInterfaces'" : ""};
-${this.entityVInterfaceListingBuilder.generatedFilePaths.length ? "export * from './vInterfaces'" : ""};
-`;
-    }
-}
-
 /**
  * Created by Papa on 4/28/2016.
  */
@@ -43721,7 +43668,6 @@ function emitFiles(entityMapByName, configuration, applicationMapByProjectName) 
         getDbApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
     const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
     const entityVInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'vInterfaces.ts');
-    const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder, entityQInterfaceListingBuilder, entityVInterfaceListingBuilder);
     const qApplicationBuilder = new QApplicationBuilder(applicationFullName, pathBuilder, configuration);
     const daoBuilder = new DaoBuilder(applicationFullName, pathBuilder);
     const dvoBuilder = new DvoBuilder(applicationFullName, pathBuilder);
@@ -43772,7 +43718,6 @@ function emitFiles(entityMapByName, configuration, applicationMapByProjectName) 
     fs.writeFileSync(qApplicationBuilder.qApplicationFilePath, qApplicationBuilder.build(configuration.airport.domain, indexedApplication.application.name));
     fs.writeFileSync(entityQInterfaceListingBuilder.generatedListingFilePath, entityQInterfaceListingBuilder.build());
     fs.writeFileSync(entityVInterfaceListingBuilder.generatedListingFilePath, entityVInterfaceListingBuilder.build());
-    fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());
     const mappedSuperclassBuilder = new MappedSuperclassBuilder(configuration, entityMapByName);
     const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
     fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
@@ -44022,5 +43967,5 @@ async function generate() {
     console.log('DONE AIRport generation');
 }
 
-export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DbApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GeneratedSummaryBuilder, GlobalCandidates, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, InjectionFileBuilder, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpApplicationBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
+export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DbApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GlobalCandidates, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, InjectionFileBuilder, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpApplicationBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
 //# sourceMappingURL=index.mjs.map

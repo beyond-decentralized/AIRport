@@ -1,11 +1,8 @@
 import { IContext, Injected } from '@airport/direction-indicator';
 import { ISynchronizationConflictValues } from '@airport/ground-control';
-import {
-	BaseSynchronizationConflictValuesDao,
-	IBaseSynchronizationConflictValuesDao,
-	QSynchronizationConflictValues
-} from '../../generated/generated'
 import Q from '../../generated/qApplication'
+import { BaseSynchronizationConflictValuesDao, IBaseSynchronizationConflictValuesDao } from '../../generated/baseDaos';
+import { QSynchronizationConflictValues } from '../../generated/qInterfaces';
 
 export interface ISynchronizationConflictValuesDao
 	extends IBaseSynchronizationConflictValuesDao {

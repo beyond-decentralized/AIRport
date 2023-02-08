@@ -16,18 +16,11 @@ import {
 	IDatastructureUtils,
 	DbApplication
 } from '@airport/ground-control'
-import {
-	BaseDdlApplicationDao,
-	IBaseDdlApplicationDao,
-	QDdlDomain,
-	QDdlApplication,
-	QDdlApplicationCurrentVersion,
-	QDdlApplicationVersion
-} from '../generated/generated'
-import Q from '../generated/QApplication'
-
 import { IAirportDatabase } from '@airport/air-traffic-control'
 import { DdlApplication } from '../ddl/application/DdlApplication'
+import { BaseDdlApplicationDao, IBaseDdlApplicationDao } from '../generated/baseDaos'
+import { QDdlApplication, QDdlApplicationCurrentVersion, QDdlApplicationVersion, QDdlDomain } from '../generated/qInterfaces'
+import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
 
 export interface DbApplicationLookupRecord {
 	index: number
@@ -105,7 +98,7 @@ export class ApplicationDao
 		return this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				s = Q.Application
+				s = Q_airport____at_airport_slash_airspace.Application
 			]
 		})
 	}
@@ -132,7 +125,7 @@ export class ApplicationDao
 				}
 			},
 			FROM: [
-				a = Q.Application,
+				a = Q_airport____at_airport_slash_airspace.Application,
 				// cv = a.currentVersion.INNER_JOIN(),
 				// av = cv.applicationVersion.INNER_JOIN()
 				av = a.versions.INNER_JOIN()
@@ -165,7 +158,7 @@ export class ApplicationDao
 				}
 			},
 			FROM: [
-				s = Q.Application,
+				s = Q_airport____at_airport_slash_airspace.Application,
 				sv = s.versions.INNER_JOIN()
 			],
 			WHERE: sv._localId.IN(applicationVersionIds)
@@ -182,7 +175,7 @@ export class ApplicationDao
 
 	async findMaxIndex(): Promise<DbApplication_Index> {
 
-		const s = Q.Application
+		const s = Q_airport____at_airport_slash_airspace.Application
 		return await this.airportDatabase.findOne.field({
 			SELECT: MAX(s.index),
 			FROM: [
@@ -211,7 +204,7 @@ export class ApplicationDao
 					FROM: [
 						sMaV = tree({
 							FROM: [
-								s = Q.Application,
+								s = Q_airport____at_airport_slash_airspace.Application,
 								sv = s.versions.INNER_JOIN(),
 								d = s.domain.INNER_JOIN()
 							],
@@ -292,7 +285,7 @@ export class ApplicationDao
 	): Promise<void> {
 		let s: QDdlApplication
 		await this.db.updateWhere({
-			UPDATE: s = Q.Application,
+			UPDATE: s = Q_airport____at_airport_slash_airspace.Application,
 			SET: {
 				status
 			},
@@ -310,7 +303,7 @@ export class ApplicationDao
 		const records = await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				s = Q.Application
+				s = Q_airport____at_airport_slash_airspace.Application
 			],
 			WHERE: s.fullName.IN(fullDbApplication_Names)
 		})
@@ -340,7 +333,7 @@ export class ApplicationDao
 				name: Y
 			},
 			FROM: [
-				s = Q.Application,
+				s = Q_airport____at_airport_slash_airspace.Application,
 				d = s.domain.INNER_JOIN()
 			],
 			WHERE: AND(
@@ -367,7 +360,7 @@ export class ApplicationDao
 				name: Y
 			},
 			FROM: [
-				s = Q.Application,
+				s = Q_airport____at_airport_slash_airspace.Application,
 				d = s.domain.INNER_JOIN()
 			],
 			WHERE: AND(
@@ -388,7 +381,7 @@ export class ApplicationDao
 				domain: {}
 			},
 			FROM: [
-				a = Q.Application,
+				a = Q_airport____at_airport_slash_airspace.Application,
 				d = a.domain.INNER_JOIN()
 			],
 			WHERE: a.index.equals(index)
@@ -410,7 +403,7 @@ export class ApplicationDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: a = Q.Application,
+			INSERT_INTO: a = Q_airport____at_airport_slash_airspace.Application,
 			columns: [
 				a.index,
 				a.domain._localId,

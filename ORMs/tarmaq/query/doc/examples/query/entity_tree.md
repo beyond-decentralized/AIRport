@@ -12,7 +12,7 @@
 ```ts
 import { Injected } from '@airport/direction-indicator'
 import { Goal } from '../ddl/ddl'
-import { BaseGoalDao } from '../generated/generated'
+import { BaseGoalDao } from '../generated/baseDaos'
 
 @Injected()
 class GoalDao extends BaseGoalDao {
@@ -33,7 +33,7 @@ class GoalDao extends BaseGoalDao {
 import { Injected } from '@airport/direction-indicator'
 import { Y } from '@airport/tarmaq-query';
 import { Goal } from '../ddl/ddl'
-import { BaseGoalDao } from '../generated/generated'
+import { BaseGoalDao } from '../generated/baseDaos'
 
 @Injected()
 class GoalDao extends BaseGoalDao {

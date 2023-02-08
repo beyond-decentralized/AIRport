@@ -1,10 +1,8 @@
 import { IContext } from '@airport/direction-indicator'
 import { IRepositoryReference, Repository_LocalId } from '@airport/ground-control'
-import {
-    BaseRepositoryReferenceDao,
-    QRepositoryReference,
-    Q_airport____at_airport_slash_holding_dash_pattern
-} from '../../generated/generated'
+import { BaseRepositoryReferenceDao } from '../../generated/baseDaos';
+import Q_airport____at_airport_slash_holding_dash_pattern from '../../generated/qApplication';
+import { QRepositoryReference } from '../../generated/qInterfaces';
 
 export class RepositoryReferenceDao
     extends BaseRepositoryReferenceDao {

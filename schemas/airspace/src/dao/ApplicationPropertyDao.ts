@@ -1,11 +1,8 @@
 import { IContext, Injected } from '@airport/direction-indicator';
 import { DbEntity_LocalId, DbProperty } from '@airport/ground-control'
-import {
-	BaseDdlPropertyDao,
-	IBaseDdlPropertyDao,
-	QDdlProperty,
-} from '../generated/generated'
-import Q from '../generated/qApplication'
+import { BaseDdlPropertyDao, IBaseDdlPropertyDao } from '../generated/baseDaos';
+import Q_airport____at_airport_slash_airspace from '../generated/qApplication';
+import { QDdlProperty } from '../generated/qInterfaces';
 
 export interface IApplicationPropertyDao
 	extends IBaseDdlPropertyDao {
@@ -34,7 +31,7 @@ export class ApplicationPropertyDao
 		return this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				p = Q.ApplicationProperty
+				p = Q_airport____at_airport_slash_airspace.ApplicationProperty
 			],
 			WHERE: p.entity._localId.IN(entityIds)
 		})
@@ -57,7 +54,7 @@ export class ApplicationPropertyDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: sp = Q.ApplicationProperty,
+			INSERT_INTO: sp = Q_airport____at_airport_slash_airspace.ApplicationProperty,
 			columns: [
 				sp._localId,
 				sp.index,

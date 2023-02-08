@@ -34,19 +34,6 @@ Entity file source rule violation:
 				
 				`);
 			}
-			if (path.endsWith('./generated/generated')) {
-				throw new Error(`
-Entity file source rule violation:
-		File: ${filePath}
-		
-				Importing from the 'generated' barrel is not currently supported,
-				please import from the specific generated files.
-				
-		Import:
-			${path}
-				
-				`);
-			}
 			if (path.endsWith('../index')) {
 				throw new Error(`
 Entity file source rule violation:

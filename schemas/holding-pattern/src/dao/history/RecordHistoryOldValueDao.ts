@@ -1,13 +1,8 @@
 import { Injected } from '@airport/direction-indicator'
 import { IRecordHistoryOldValue, RecordHistory_LocalId } from '@airport/ground-control'
-import {
-	BaseRecordHistoryOldValueDao,
-	IBaseRecordHistoryOldValueDao
-} from '../../generated/generated'
-import {
-	QRecordHistoryOldValue,
-} from '../../generated/generated'
+import { BaseRecordHistoryOldValueDao, IBaseRecordHistoryOldValueDao } from '../../generated/baseDaos'
 import Q from '../../generated/qApplication'
+import { QRecordHistoryOldValue } from '../../generated/qInterfaces'
 
 export interface IRecordHistoryOldValueDao
 	extends IBaseRecordHistoryOldValueDao {

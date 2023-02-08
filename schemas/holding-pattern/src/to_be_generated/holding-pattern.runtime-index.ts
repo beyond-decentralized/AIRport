@@ -1,7 +1,11 @@
 export * from '../dao/dao'
 export * from '../duo/duo'
 export * from '../ddl/ddl'
-export * from '../generated/generated'
+export * from '../generated/baseDaos'
+export * from '../generated/baseDvos'
+export * from '../generated/qApplication'
+export * from '../generated/qInterfaces'
+export * from '../generated/vInterfaces'
 export * from '../manager/CrossRepositoryRelationManager'
 
 export * from './holding-pattern.runtime-injection'

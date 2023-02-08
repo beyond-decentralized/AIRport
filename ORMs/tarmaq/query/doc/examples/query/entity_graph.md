@@ -13,7 +13,9 @@
 ```ts
 import { Injected } from '@airport/direction-indicator'
 import { Task } from '../ddl/ddl'
-import { BaseTaskDao, Q, QTask } from '../generated/generated'
+import { BaseTaskDao } from '../generated/baseDaos'
+import { Q } from '../generated/qApplication'
+import { QTask } from '../generated/qInterfaces'
 
 @Injected()
 class TaskDao extends BaseTaskDao {
@@ -36,7 +38,9 @@ class TaskDao extends BaseTaskDao {
 ```ts
 import { Injected } from '@airport/direction-indicator'
 import { Task } from '../ddl/ddl'
-import { BaseTaskDao, Q, QTask } from '../generated/generated'
+import { BaseTaskDao } from '../generated/baseDaos'
+import { Q } from '../generated/qApplication'
+import { QTask } from '../generated/qInterfaces'
 
 @Injected()
 class TaskDao extends BaseTaskDao {
@@ -73,7 +77,9 @@ class TaskDao extends BaseTaskDao {
 ```ts
 import { Injected } from '@airport/direction-indicator'
 import { Goal } from '../ddl/ddl'
-import { BaseGoalDao, Q, QGoal } from '../generated/generated'
+import { BaseGoalDao } from '../generated/baseDaos'
+import { Q } from '../generated/qApplication'
+import { QGoal } from '../generated/qInterfaces'
 
 @Injected()
 class GoalDao extends BaseGoalDao {
@@ -100,7 +106,9 @@ class GoalDao extends BaseGoalDao {
 import { Injected } from '@airport/direction-indicator'
 import { Y } from '@airport/tarmaq-query';
 import { Goal } from '../ddl/ddl'
-import { BaseGoalDao, Q, QGoal, QTask } from '../generated/generated'
+import { BaseGoalDao } from '../generated/baseDaos'
+import { Q } from '../generated/qApplication'
+import { QGoal, QTask } from '../generated/qInterfaces'
 
 @Injected()
 class GoalDao extends BaseGoalDao {

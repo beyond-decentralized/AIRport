@@ -1,12 +1,9 @@
 import { OR } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import { DbColumn_LocalId, DbRelationColumn } from '@airport/ground-control'
-import {
-	BaseDdlRelationColumnDao,
-	IBaseDdlRelationColumnDao,
-	QDdlRelationColumn,
-} from '../generated/generated'
-import Q from '../generated/qApplication'
+import { BaseDdlRelationColumnDao, IBaseDdlRelationColumnDao } from '../generated/baseDaos'
+import { QDdlRelationColumn } from '../generated/qInterfaces'
+import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
 
 export interface IApplicationRelationColumnDao
 	extends IBaseDdlRelationColumnDao {
@@ -35,7 +32,7 @@ export class ApplicationRelationColumnDao
 		return this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				rc = Q.ApplicationRelationColumn
+				rc = Q_airport____at_airport_slash_airspace.ApplicationRelationColumn
 			],
 			WHERE: OR(
 				rc.oneColumn._localId.IN(columnIds),
@@ -64,7 +61,7 @@ export class ApplicationRelationColumnDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: src = Q.ApplicationRelationColumn,
+			INSERT_INTO: src = Q_airport____at_airport_slash_airspace.ApplicationRelationColumn,
 			columns: [
 				src._localId,
 				src.manyColumn._localId,

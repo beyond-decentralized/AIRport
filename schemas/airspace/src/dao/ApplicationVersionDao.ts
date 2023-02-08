@@ -1,14 +1,9 @@
 import { AND, Y } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
-import {
-	BaseDdlApplicationVersionDao,
-	IBaseDdlApplicationVersionDao,
-	QDdlDomain,
-	QDdlApplication,
-	QDdlApplicationVersion
-} from '../generated/generated'
-import Q from '../generated/qApplication'
 import { DbApplication_Name, DbApplicationVersion, DbDomain_Name } from '@airport/ground-control'
+import { BaseDdlApplicationVersionDao, IBaseDdlApplicationVersionDao } from '../generated/baseDaos'
+import { QDdlApplication, QDdlApplicationVersion, QDdlDomain } from '../generated/qInterfaces'
+import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
 
 export interface IApplicationVersionDao
 	extends IBaseDdlApplicationVersionDao {
@@ -57,7 +52,7 @@ export class ApplicationVersionDao
 
 		return await this.db.find.tree({
 			FROM: [
-				av = Q.ApplicationVersion,
+				av = Q_airport____at_airport_slash_airspace.ApplicationVersion,
 				a = av.application.INNER_JOIN()
 			],
 			SELECT: {},
@@ -89,7 +84,7 @@ export class ApplicationVersionDao
 				}
 			},
 			FROM: [
-				av = Q.ApplicationVersion,
+				av = Q_airport____at_airport_slash_airspace.ApplicationVersion,
 				a = av.application.INNER_JOIN(),
 				d = a.domain.INNER_JOIN()
 			],
@@ -192,7 +187,7 @@ export class ApplicationVersionDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: sv = Q.ApplicationVersion,
+			INSERT_INTO: sv = Q_airport____at_airport_slash_airspace.ApplicationVersion,
 			columns: [
 				sv._localId,
 				sv.integerVersion,

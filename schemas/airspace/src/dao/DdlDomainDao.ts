@@ -4,12 +4,9 @@ import {
 	DbDomain_LocalId,
 	DbDomain_Name
 } from '@airport/ground-control'
-import {
-	BaseDdlDomainDao,
-	IBaseDdlDomainDao,
-	QDdlDomain
-} from '../generated/generated'
-import Q from '../generated/qApplication'
+import { BaseDdlDomainDao, IBaseDdlDomainDao } from '../generated/baseDaos'
+import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
+import { QDdlDomain } from '../generated/qInterfaces'
 
 export interface IDomainDao
 	extends IBaseDdlDomainDao {
@@ -58,7 +55,7 @@ export class DomainDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				d = Q.Domain
+				d = Q_airport____at_airport_slash_airspace.Domain
 			],
 			WHERE: d._localId.IN(domainIds)
 		})
@@ -70,7 +67,7 @@ export class DomainDao
 		let d: QDdlDomain
 		const domains = await this.db.find.tree({
 			SELECT: {},
-			FROM: [d = Q.Domain],
+			FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
 			WHERE: d.name.IN(domainNames)
 		})
 
@@ -89,7 +86,7 @@ export class DomainDao
 		let d: QDdlDomain
 		return await this.db.findOne.tree({
 			SELECT: {},
-			FROM: [d = Q.Domain],
+			FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
 			WHERE: d.name.equals(name)
 		})
 	}
@@ -100,7 +97,7 @@ export class DomainDao
 		let d: QDdlDomain
 		return await this.db.find.tree({
 			SELECT: {},
-			FROM: [d = Q.Domain],
+			FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
 			WHERE: d.name.IN(names)
 		})
 	}
@@ -111,7 +108,7 @@ export class DomainDao
 		let d: QDdlDomain
 		return await this.db.findOne.tree({
 			SELECT: {},
-			FROM: [d = Q.Domain],
+			FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
 			WHERE: d.name.equals(name)
 		})
 	}
@@ -142,7 +139,7 @@ export class DomainDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: d = Q.Domain,
+			INSERT_INTO: d = Q_airport____at_airport_slash_airspace.Domain,
 			columns: [
 				d._localId,
 				d.name,
@@ -162,7 +159,7 @@ export class DomainDao
 			])
 		}
 		const ids = await this.db.insertValuesGenerateIds({
-			INSERT_INTO: d = Q.Domain,
+			INSERT_INTO: d = Q_airport____at_airport_slash_airspace.Domain,
 			columns: [
 				d.name
 			],

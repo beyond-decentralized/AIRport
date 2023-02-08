@@ -1,12 +1,9 @@
 import { UserAccount_PublicSigningKey, UserAccount_Username } from '@airport/aviation-communication'
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import { Dictionary, ISequenceGenerator, IUserAccount } from '@airport/ground-control'
-import {
-	BaseUserAccountDao,
-	IBaseUserAccountDao,
-	QUserAccount,
-} from '../generated/generated'
+import { BaseUserAccountDao, IBaseUserAccountDao } from '../generated/baseDaos'
 import Q from '../generated/qApplication'
+import { QUserAccount } from '../generated/qInterfaces'
 
 export interface IUserAccountDao
 	extends IBaseUserAccountDao {

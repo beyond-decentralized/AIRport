@@ -17,17 +17,11 @@ import {
 import {
 	OperationHistory,
 } from '../../ddl/ddl'
-import {
-	BaseRepositoryTransactionHistoryDao,
-	QOperationHistory,
-	QRecordHistory,
-	QRecordHistoryNewValue,
-	QRepositoryTransactionHistory,
-	QTransactionHistory,
-} from '../../generated/generated'
 import Q from '../../generated/qApplication'
 import { QDdlEntity, QDdlApplicationVersion } from '@airport/airspace/dist/app/bundle'
 import { Inject, Injected } from '@airport/direction-indicator'
+import { BaseRepositoryTransactionHistoryDao } from '../../generated/baseDaos'
+import { QOperationHistory, QRecordHistory, QRecordHistoryNewValue, QRepositoryTransactionHistory, QTransactionHistory } from '../../generated/qInterfaces'
 
 export interface IRepositoryTransactionHistoryDao {
 

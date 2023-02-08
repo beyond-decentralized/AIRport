@@ -3,7 +3,7 @@ import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	BaseSequenceDao,
 	IBaseSequenceDao
-} from '../generated/generated'
+} from '../generated/baseDaos'
 import Q from '../generated/qApplication'
 
 

@@ -6,15 +6,9 @@ import {
 	IDatastructureUtils
 } from '@airport/ground-control'
 import { Y } from '@airport/tarmaq-query'
-import {
-	BaseDdlRelationDao,
-	IBaseDdlRelationDao,
-	QDdlRelation,
-	QDdlEntity,
-	QDdlApplicationVersion,
-	QDdlApplication,
-} from '../generated/generated'
-import Q from '../generated/qApplication'
+import { BaseDdlRelationDao, IBaseDdlRelationDao } from '../generated/baseDaos'
+import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
+import { QDdlApplication, QDdlApplicationVersion, QDdlEntity, QDdlRelation } from '../generated/qInterfaces'
 
 export interface IApplicationRelationDao
 	extends IBaseDdlRelationDao {
@@ -50,7 +44,7 @@ export class ApplicationRelationDao
 		return this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				r = Q.ApplicationRelation
+				r = Q_airport____at_airport_slash_airspace.ApplicationRelation
 			],
 			WHERE: r.property._localId.IN(propertyIds)
 		})
@@ -80,7 +74,7 @@ export class ApplicationRelationDao
 				}
 			},
 			FROM: [
-				r = Q.ApplicationRelation,
+				r = Q_airport____at_airport_slash_airspace.ApplicationRelation,
 				e = r.entity.LEFT_JOIN(),
 				av = e.applicationVersion.LEFT_JOIN(),
 				a = av.application.LEFT_JOIN(),
@@ -111,7 +105,7 @@ export class ApplicationRelationDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: sr = Q.ApplicationRelation,
+			INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.ApplicationRelation,
 			columns: [
 				sr._localId,
 				sr.index,

@@ -3,7 +3,9 @@
 ```ts
 import { Inject, Injected } from '@airport/direction-indicator'
 import { AirportDatabase } from '@airport/tower'
-import { BaseTaskDao, Q, QTask } from '../generated/generated'
+import { BaseTaskDao } from '../generated/baseDaos'
+import { Q } from '../generated/qApplication'
+import { QTask } from '../generated/qInterfaces'
 
 @Injected()
 class TaskDao extends BaseTaskDao {

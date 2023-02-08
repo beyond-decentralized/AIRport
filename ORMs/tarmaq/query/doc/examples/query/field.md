@@ -15,7 +15,9 @@
 ```ts
 import { Inject, Injected } from '@airport/direction-indicator'
 import { AirportDatabase } from '@airport/tower'
-import { BaseTaskDao, Q, QTask } from '../generated/generated'
+import { BaseTaskDao } from '../generated/baseDaos'
+import { Q } from '../generated/qApplication'
+import { QTask } from '../generated/qInterfaces'
 
 @Injected()
 class TaskDao extends BaseTaskDao {
@@ -43,7 +45,9 @@ class TaskDao extends BaseTaskDao {
 
 import { Injected } from '@airport/direction-indicator'
 import { AND, field } from '@airport/tarmaq-query'
-import { BaseTaskDao, Q, QTask } from '../generated/generated'
+import { BaseTaskDao } from '../generated/baseDaos'
+import { Q } from '../generated/qApplication'
+import { QTask } from '../generated/qInterfaces'
 
 @Injected()
 class TaskDao extends BaseTaskDao {
@@ -79,7 +83,9 @@ class TaskDao extends BaseTaskDao {
 ```ts
 import { Injected } from '@airport/direction-indicator'
 import { field } from '@airport/tarmaq-query'
-import { BaseTaskDao, Q, QTask } from '../generated/generated'
+import { BaseTaskDao } from '../generated/baseDaos'
+import { Q } from '../generated/qApplication'
+import { QTask } from '../generated/qInterfaces'
 
 @Injected()
 class TaskDao extends BaseTaskDao {

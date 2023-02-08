@@ -21,14 +21,11 @@ import {
 	QTerminal,
 	QUserAccount,
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
-import {
-	BaseActorDao,
-	IBaseActorDao,
-	QActor
-} from '../../generated/generated'
 import Q from '../../generated/qApplication'
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication'
+import { BaseActorDao, IBaseActorDao } from '../../generated/baseDaos'
+import { QActor } from '../../generated/qInterfaces'
 
 export interface IActorDao
 	extends IBaseActorDao {
