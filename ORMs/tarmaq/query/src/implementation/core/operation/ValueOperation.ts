@@ -54,13 +54,13 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 			}
 			rawValueOperation.trackedRepoGUIDs = trackedRepoGUIDs
 		} else if (dictionary.isRepositoryLIDColumn(lValue.dbProperty, lValue.dbColumn)) {
-			let trackedRepoLIDs: Repository_LocalId[]
+			let trackedRepoLocalIds: Repository_LocalId[]
 			if (typeof rValue === 'number') {
-				trackedRepoLIDs = [rValue]
+				trackedRepoLocalIds = [rValue]
 			} else if (rValue instanceof Array) {
-				trackedRepoLIDs = rValue as number[]
+				trackedRepoLocalIds = rValue as number[]
 			}
-			rawValueOperation.trackedRepoLocalIds = trackedRepoLIDs
+			rawValueOperation.trackedRepoLocalIds = trackedRepoLocalIds
 		}
 	}
 

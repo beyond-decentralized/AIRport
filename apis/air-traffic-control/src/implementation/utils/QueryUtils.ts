@@ -289,11 +289,15 @@ is supported only for single columm relations
 					queryValueOperation.rightSideValue = this.convertLRValue(rValue, columnAliases,
 						trackedRepoGUIDSet, trackedRepoLocalIdSet)
 				}
-				for (const trackedRepoGUID of valueOperation.trackedRepoGUIDs) {
-					trackedRepoGUIDSet.add(trackedRepoGUID)
+				if (valueOperation.trackedRepoGUIDs) {
+					for (const trackedRepoGUID of valueOperation.trackedRepoGUIDs) {
+						trackedRepoGUIDSet.add(trackedRepoGUID)
+					}
 				}
-				for (const trackedRepoLocalId of valueOperation.trackedRepoLocalIds) {
-					trackedRepoLocalIdSet.add(trackedRepoLocalId)
+				if (valueOperation.trackedRepoLocalIds) {
+					for (const trackedRepoLocalId of valueOperation.trackedRepoLocalIds) {
+						trackedRepoLocalIdSet.add(trackedRepoLocalId)
+					}
 				}
 				break
 		}

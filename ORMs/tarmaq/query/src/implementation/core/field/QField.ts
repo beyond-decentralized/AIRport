@@ -40,6 +40,8 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 
 	__fieldSubQuery__: RawFieldQuery<IQF>;
 
+
+
 	constructor(
 		public dbColumn: DbColumn,
 		public dbProperty: DbProperty,
