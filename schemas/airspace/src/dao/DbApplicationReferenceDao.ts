@@ -31,7 +31,7 @@ export class DbApplicationReferenceDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				sr = Q_airport____at_airport_slash_airspace.ApplicationReference
+				sr = Q_airport____at_airport_slash_airspace.DdlApplicationReference
 			],
 			WHERE: sr.ownApplicationVersion._localId.IN(applicationVersionIds)
 		})
@@ -54,7 +54,7 @@ export class DbApplicationReferenceDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.ApplicationReference,
+			INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.DdlApplicationReference,
 			columns: [
 				sr.ownApplicationVersion._localId,
 				sr.referencedApplicationVersion._localId,

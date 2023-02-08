@@ -98,7 +98,7 @@ export class DbApplicationDao
 		return this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				s = Q_airport____at_airport_slash_airspace.Application
+				s = Q_airport____at_airport_slash_airspace.DdlApplication
 			]
 		})
 	}
@@ -125,7 +125,7 @@ export class DbApplicationDao
 				}
 			},
 			FROM: [
-				a = Q_airport____at_airport_slash_airspace.Application,
+				a = Q_airport____at_airport_slash_airspace.DdlApplication,
 				// cv = a.currentVersion.INNER_JOIN(),
 				// av = cv.applicationVersion.INNER_JOIN()
 				av = a.versions.INNER_JOIN()
@@ -158,7 +158,7 @@ export class DbApplicationDao
 				}
 			},
 			FROM: [
-				s = Q_airport____at_airport_slash_airspace.Application,
+				s = Q_airport____at_airport_slash_airspace.DdlApplication,
 				sv = s.versions.INNER_JOIN()
 			],
 			WHERE: sv._localId.IN(applicationVersionIds)
@@ -175,7 +175,7 @@ export class DbApplicationDao
 
 	async findMaxIndex(): Promise<DbApplication_Index> {
 
-		const s = Q_airport____at_airport_slash_airspace.Application
+		const s = Q_airport____at_airport_slash_airspace.DdlApplication
 		return await this.airportDatabase.findOne.field({
 			SELECT: MAX(s.index),
 			FROM: [
@@ -204,7 +204,7 @@ export class DbApplicationDao
 					FROM: [
 						sMaV = tree({
 							FROM: [
-								s = Q_airport____at_airport_slash_airspace.Application,
+								s = Q_airport____at_airport_slash_airspace.DdlApplication,
 								sv = s.versions.INNER_JOIN(),
 								d = s.domain.INNER_JOIN()
 							],
@@ -285,7 +285,7 @@ export class DbApplicationDao
 	): Promise<void> {
 		let s: QDdlApplication
 		await this.db.updateWhere({
-			UPDATE: s = Q_airport____at_airport_slash_airspace.Application,
+			UPDATE: s = Q_airport____at_airport_slash_airspace.DdlApplication,
 			SET: {
 				status
 			},
@@ -303,7 +303,7 @@ export class DbApplicationDao
 		const records = await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				s = Q_airport____at_airport_slash_airspace.Application
+				s = Q_airport____at_airport_slash_airspace.DdlApplication
 			],
 			WHERE: s.fullName.IN(fullDbApplication_Names)
 		})
@@ -333,7 +333,7 @@ export class DbApplicationDao
 				name: Y
 			},
 			FROM: [
-				s = Q_airport____at_airport_slash_airspace.Application,
+				s = Q_airport____at_airport_slash_airspace.DdlApplication,
 				d = s.domain.INNER_JOIN()
 			],
 			WHERE: AND(
@@ -360,7 +360,7 @@ export class DbApplicationDao
 				name: Y
 			},
 			FROM: [
-				s = Q_airport____at_airport_slash_airspace.Application,
+				s = Q_airport____at_airport_slash_airspace.DdlApplication,
 				d = s.domain.INNER_JOIN()
 			],
 			WHERE: AND(
@@ -381,7 +381,7 @@ export class DbApplicationDao
 				domain: {}
 			},
 			FROM: [
-				a = Q_airport____at_airport_slash_airspace.Application,
+				a = Q_airport____at_airport_slash_airspace.DdlApplication,
 				d = a.domain.INNER_JOIN()
 			],
 			WHERE: a.index.equals(index)
@@ -403,7 +403,7 @@ export class DbApplicationDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: a = Q_airport____at_airport_slash_airspace.Application,
+			INSERT_INTO: a = Q_airport____at_airport_slash_airspace.DdlApplication,
 			columns: [
 				a.index,
 				a.domain._localId,

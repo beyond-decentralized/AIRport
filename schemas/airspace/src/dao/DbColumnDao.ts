@@ -36,7 +36,7 @@ export class DbColumnDao
 		return this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				c = Q_airport____at_airport_slash_airspace.ApplicationColumn
+				c = Q_airport____at_airport_slash_airspace.DdlColumn
 			],
 			WHERE: c.entity._localId.IN(entityIds)
 		})
@@ -67,7 +67,7 @@ export class DbColumnDao
 		}
 
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: sc = Q_airport____at_airport_slash_airspace.ApplicationColumn,
+			INSERT_INTO: sc = Q_airport____at_airport_slash_airspace.DdlColumn,
 			columns: [
 				sc._localId,
 				sc.index,

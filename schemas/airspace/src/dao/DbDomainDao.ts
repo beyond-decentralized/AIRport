@@ -55,7 +55,7 @@ export class DbDomainDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				d = Q_airport____at_airport_slash_airspace.Domain
+				d = Q_airport____at_airport_slash_airspace.DdlDomain
 			],
 			WHERE: d._localId.IN(domainIds)
 		})
@@ -67,7 +67,7 @@ export class DbDomainDao
 		let d: QDdlDomain
 		const domains = await this.db.find.tree({
 			SELECT: {},
-			FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
+			FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
 			WHERE: d.name.IN(domainNames)
 		})
 
@@ -86,7 +86,7 @@ export class DbDomainDao
 		let d: QDdlDomain
 		return await this.db.findOne.tree({
 			SELECT: {},
-			FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
+			FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
 			WHERE: d.name.equals(name)
 		})
 	}
@@ -97,7 +97,7 @@ export class DbDomainDao
 		let d: QDdlDomain
 		return await this.db.find.tree({
 			SELECT: {},
-			FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
+			FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
 			WHERE: d.name.IN(names)
 		})
 	}
@@ -108,7 +108,7 @@ export class DbDomainDao
 		let d: QDdlDomain
 		return await this.db.findOne.tree({
 			SELECT: {},
-			FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
+			FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
 			WHERE: d.name.equals(name)
 		})
 	}
@@ -139,7 +139,7 @@ export class DbDomainDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: d = Q_airport____at_airport_slash_airspace.Domain,
+			INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
 			columns: [
 				d._localId,
 				d.name,
@@ -159,7 +159,7 @@ export class DbDomainDao
 			])
 		}
 		const ids = await this.db.insertValuesGenerateIds({
-			INSERT_INTO: d = Q_airport____at_airport_slash_airspace.Domain,
+			INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
 			columns: [
 				d.name
 			],

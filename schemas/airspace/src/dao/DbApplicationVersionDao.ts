@@ -35,7 +35,7 @@ export class DbApplicationVersionDao
 
 		return await this.db.find.tree({
 			FROM: [
-				sv = Q.ApplicationVersion
+				sv = Q.DbApplicationVersion
 			],
 			SELECT: {},
 			WHERE: AND(
@@ -52,7 +52,7 @@ export class DbApplicationVersionDao
 
 		return await this.db.find.tree({
 			FROM: [
-				av = Q_airport____at_airport_slash_airspace.ApplicationVersion,
+				av = Q_airport____at_airport_slash_airspace.DdlApplicationVersion,
 				a = av.application.INNER_JOIN()
 			],
 			SELECT: {},
@@ -84,7 +84,7 @@ export class DbApplicationVersionDao
 				}
 			},
 			FROM: [
-				av = Q_airport____at_airport_slash_airspace.ApplicationVersion,
+				av = Q_airport____at_airport_slash_airspace.DdlApplicationVersion,
 				a = av.application.INNER_JOIN(),
 				d = a.domain.INNER_JOIN()
 			],
@@ -129,7 +129,7 @@ export class DbApplicationVersionDao
 				_localId: Y
 			},
 			FROM: [
-				sv = Q.ApplicationVersion,
+				sv = Q.DbApplicationVersion,
 				s = sv.application.INNER_JOIN(),
 				d = s.domain.INNER_JOIN()
 			],
@@ -159,7 +159,7 @@ export class DbApplicationVersionDao
 			FROM: [
 				svMax = tree({
 					FROM: [
-						sv2 = Q.ApplicationVersion
+						sv2 = Q.DbApplicationVersion
 					],
 					SELECT: DISTINCT({
 						integerVersion: max(sv2.integerVersion),
@@ -187,7 +187,7 @@ export class DbApplicationVersionDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: sv = Q_airport____at_airport_slash_airspace.ApplicationVersion,
+			INSERT_INTO: sv = Q_airport____at_airport_slash_airspace.DdlApplicationVersion,
 			columns: [
 				sv._localId,
 				sv.integerVersion,

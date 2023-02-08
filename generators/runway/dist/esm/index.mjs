@@ -10231,7 +10231,7 @@ class DbDomainDao extends BaseDdlDomainDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                d = Q_airport____at_airport_slash_airspace.Domain
+                d = Q_airport____at_airport_slash_airspace.DdlDomain
             ],
             WHERE: d._localId.IN(domainIds)
         });
@@ -10240,7 +10240,7 @@ class DbDomainDao extends BaseDdlDomainDao {
         let d;
         const domains = await this.db.find.tree({
             SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
+            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
             WHERE: d.name.IN(domainNames)
         });
         const domainMapByNameWithNames = new Map();
@@ -10253,7 +10253,7 @@ class DbDomainDao extends BaseDdlDomainDao {
         let d;
         return await this.db.findOne.tree({
             SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
+            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
             WHERE: d.name.equals(name)
         });
     }
@@ -10261,7 +10261,7 @@ class DbDomainDao extends BaseDdlDomainDao {
         let d;
         return await this.db.find.tree({
             SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
+            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
             WHERE: d.name.IN(names)
         });
     }
@@ -10269,7 +10269,7 @@ class DbDomainDao extends BaseDdlDomainDao {
         let d;
         return await this.db.findOne.tree({
             SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.Domain],
+            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
             WHERE: d.name.equals(name)
         });
     }
@@ -10296,7 +10296,7 @@ class DbDomainDao extends BaseDdlDomainDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.Domain,
+            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
             columns: [
                 d._localId,
                 d.name,
@@ -10313,7 +10313,7 @@ class DbDomainDao extends BaseDdlDomainDao {
             ]);
         }
         const ids = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.Domain,
+            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
             columns: [
                 d.name
             ],
@@ -10332,7 +10332,7 @@ class DbColumnDao extends BaseDdlColumnDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                c = Q_airport____at_airport_slash_airspace.ApplicationColumn
+                c = Q_airport____at_airport_slash_airspace.DdlColumn
             ],
             WHERE: c.entity._localId.IN(entityIds)
         });
@@ -10358,7 +10358,7 @@ class DbColumnDao extends BaseDdlColumnDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sc = Q_airport____at_airport_slash_airspace.ApplicationColumn,
+            INSERT_INTO: sc = Q_airport____at_airport_slash_airspace.DdlColumn,
             columns: [
                 sc._localId,
                 sc.index,
@@ -10385,7 +10385,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                Q_airport____at_airport_slash_airspace.Application
+                Q_airport____at_airport_slash_airspace.DdlApplication
             ]
         });
     }
@@ -10406,7 +10406,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                 }
             },
             FROM: [
-                a = Q_airport____at_airport_slash_airspace.Application,
+                a = Q_airport____at_airport_slash_airspace.DdlApplication,
                 // cv = a.currentVersion.INNER_JOIN(),
                 // av = cv.applicationVersion.INNER_JOIN()
                 a.versions.INNER_JOIN()
@@ -10433,7 +10433,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                 }
             },
             FROM: [
-                s = Q_airport____at_airport_slash_airspace.Application,
+                s = Q_airport____at_airport_slash_airspace.DdlApplication,
                 sv = s.versions.INNER_JOIN()
             ],
             WHERE: sv._localId.IN(applicationVersionIds)
@@ -10446,7 +10446,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
         return applicationMapByIndex;
     }
     async findMaxIndex() {
-        const s = Q_airport____at_airport_slash_airspace.Application;
+        const s = Q_airport____at_airport_slash_airspace.DdlApplication;
         return await this.airportDatabase.findOne.field({
             SELECT: MAX(s.index),
             FROM: [
@@ -10467,7 +10467,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                     FROM: [
                         sMaV = tree({
                             FROM: [
-                                s = Q_airport____at_airport_slash_airspace.Application,
+                                s = Q_airport____at_airport_slash_airspace.DdlApplication,
                                 sv = s.versions.INNER_JOIN(),
                                 d = s.domain.INNER_JOIN()
                             ],
@@ -10539,7 +10539,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
     async setStatusByIndexes(indexes, status) {
         let s;
         await this.db.updateWhere({
-            UPDATE: s = Q_airport____at_airport_slash_airspace.Application,
+            UPDATE: s = Q_airport____at_airport_slash_airspace.DdlApplication,
             SET: {
                 status
             },
@@ -10552,7 +10552,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
         const records = await this.db.find.tree({
             SELECT: {},
             FROM: [
-                s = Q_airport____at_airport_slash_airspace.Application
+                s = Q_airport____at_airport_slash_airspace.DdlApplication
             ],
             WHERE: s.fullName.IN(fullDbApplication_Names)
         });
@@ -10575,7 +10575,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                 name: Y
             },
             FROM: [
-                s = Q_airport____at_airport_slash_airspace.Application,
+                s = Q_airport____at_airport_slash_airspace.DdlApplication,
                 d = s.domain.INNER_JOIN()
             ],
             WHERE: AND(d.name.IN(domainNames), s.name.IN(applicationNames))
@@ -10594,7 +10594,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                 name: Y
             },
             FROM: [
-                s = Q_airport____at_airport_slash_airspace.Application,
+                s = Q_airport____at_airport_slash_airspace.DdlApplication,
                 d = s.domain.INNER_JOIN()
             ],
             WHERE: AND(d.name.equals(domainName), s.name.equals(applicationName))
@@ -10608,7 +10608,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                 domain: {}
             },
             FROM: [
-                a = Q_airport____at_airport_slash_airspace.Application,
+                a = Q_airport____at_airport_slash_airspace.DdlApplication,
                 a.domain.INNER_JOIN()
             ],
             WHERE: a.index.equals(index)
@@ -10626,7 +10626,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: a = Q_airport____at_airport_slash_airspace.Application,
+            INSERT_INTO: a = Q_airport____at_airport_slash_airspace.DdlApplication,
             columns: [
                 a.index,
                 a.domain._localId,
@@ -10648,7 +10648,7 @@ class DbEntityDao extends BaseDdlEntityDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                se = Q_airport____at_airport_slash_airspace.ApplicationEntity
+                se = Q_airport____at_airport_slash_airspace.DdlEntity
             ],
             WHERE: se.applicationVersion._localId.IN(applicationVersionIds)
         });
@@ -10668,7 +10668,7 @@ class DbEntityDao extends BaseDdlEntityDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: se = Q_airport____at_airport_slash_airspace.ApplicationEntity,
+            INSERT_INTO: se = Q_airport____at_airport_slash_airspace.DdlEntity,
             columns: [
                 se._localId,
                 se.index,
@@ -10692,7 +10692,7 @@ class DbPropertyColumnDao extends BaseDdlPropertyColumnDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                rc = Q_airport____at_airport_slash_airspace.ApplicationPropertyColumn
+                rc = Q_airport____at_airport_slash_airspace.DbPropertyColumn
             ],
             WHERE: rc.column._localId.IN(columnIds)
         });
@@ -10709,7 +10709,7 @@ class DbPropertyColumnDao extends BaseDdlPropertyColumnDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: spc = Q_airport____at_airport_slash_airspace.ApplicationPropertyColumn,
+            INSERT_INTO: spc = Q_airport____at_airport_slash_airspace.DbPropertyColumn,
             columns: [
                 spc.column._localId,
                 spc.property._localId,
@@ -10728,7 +10728,7 @@ class DbPropertyDao extends BaseDdlPropertyDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                p = Q_airport____at_airport_slash_airspace.ApplicationProperty
+                p = Q_airport____at_airport_slash_airspace.DbPropertyColumn
             ],
             WHERE: p.entity._localId.IN(entityIds)
         });
@@ -10747,7 +10747,7 @@ class DbPropertyDao extends BaseDdlPropertyDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sp = Q_airport____at_airport_slash_airspace.ApplicationProperty,
+            INSERT_INTO: sp = Q_airport____at_airport_slash_airspace.DbPropertyColumn,
             columns: [
                 sp._localId,
                 sp.index,
@@ -10769,7 +10769,7 @@ class DbApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                sr = Q_airport____at_airport_slash_airspace.ApplicationReference
+                sr = Q_airport____at_airport_slash_airspace.DdlApplicationReference
             ],
             WHERE: sr.ownApplicationVersion._localId.IN(applicationVersionIds)
         });
@@ -10788,7 +10788,7 @@ class DbApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.ApplicationReference,
+            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.DdlApplicationReference,
             columns: [
                 sr.ownApplicationVersion._localId,
                 sr.referencedApplicationVersion._localId,
@@ -10808,7 +10808,7 @@ class DbRelationColumnDao extends BaseDdlRelationColumnDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                rc = Q_airport____at_airport_slash_airspace.ApplicationRelationColumn
+                rc = Q_airport____at_airport_slash_airspace.DbRelationColumn
             ],
             WHERE: OR(rc.oneColumn._localId.IN(columnIds), rc.manyColumn._localId.IN(columnIds))
         });
@@ -10830,7 +10830,7 @@ class DbRelationColumnDao extends BaseDdlRelationColumnDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: src = Q_airport____at_airport_slash_airspace.ApplicationRelationColumn,
+            INSERT_INTO: src = Q_airport____at_airport_slash_airspace.DbRelationColumn,
             columns: [
                 src._localId,
                 src.manyColumn._localId,
@@ -10853,7 +10853,7 @@ class DbRelationDao extends BaseDdlRelationDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                r = Q_airport____at_airport_slash_airspace.ApplicationRelation
+                r = Q_airport____at_airport_slash_airspace.DbRelation
             ],
             WHERE: r.property._localId.IN(propertyIds)
         });
@@ -10876,7 +10876,7 @@ class DbRelationDao extends BaseDdlRelationDao {
                 }
             },
             FROM: [
-                r = Q_airport____at_airport_slash_airspace.ApplicationRelation,
+                r = Q_airport____at_airport_slash_airspace.DbRelation,
                 e = r.entity.LEFT_JOIN(),
                 av = e.applicationVersion.LEFT_JOIN(),
                 a = av.application.LEFT_JOIN(),
@@ -10903,7 +10903,7 @@ class DbRelationDao extends BaseDdlRelationDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.ApplicationRelation,
+            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.DbRelation,
             columns: [
                 sr._localId,
                 sr.index,
@@ -10933,7 +10933,7 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
 
         return await this.db.find.tree({
             FROM: [
-                sv = Q.ApplicationVersion
+                sv = Q.DbApplicationVersion
             ],
             SELECT: {},
             WHERE: AND(
@@ -10947,7 +10947,7 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
         let av, a;
         return await this.db.find.tree({
             FROM: [
-                av = Q_airport____at_airport_slash_airspace.ApplicationVersion,
+                av = Q_airport____at_airport_slash_airspace.DdlApplicationVersion,
                 a = av.application.INNER_JOIN()
             ],
             SELECT: {},
@@ -10974,7 +10974,7 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
                 }
             },
             FROM: [
-                av = Q_airport____at_airport_slash_airspace.ApplicationVersion,
+                av = Q_airport____at_airport_slash_airspace.DdlApplicationVersion,
                 a = av.application.INNER_JOIN(),
                 d = a.domain.INNER_JOIN()
             ],
@@ -11015,7 +11015,7 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
                 _localId: Y
             },
             FROM: [
-                sv = Q.ApplicationVersion,
+                sv = Q.DbApplicationVersion,
                 s = sv.application.INNER_JOIN(),
                 d = s.domain.INNER_JOIN()
             ],
@@ -11045,7 +11045,7 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
             FROM: [
                 svMax = tree({
                     FROM: [
-                        sv2 = Q.ApplicationVersion
+                        sv2 = Q.DbApplicationVersion
                     ],
                     SELECT: DISTINCT({
                         integerVersion: max(sv2.integerVersion),
@@ -11070,7 +11070,7 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sv = Q_airport____at_airport_slash_airspace.ApplicationVersion,
+            INSERT_INTO: sv = Q_airport____at_airport_slash_airspace.DdlApplicationVersion,
             columns: [
                 sv._localId,
                 sv.integerVersion,
@@ -12359,7 +12359,7 @@ class ApplicationRecorder {
         await this.transactionManager.transactInternal(async () => {
             // FIXME: add support for real application versioning
             this.setDefaultVersioning(ddlObjects);
-            const dbDomainDao = await this.getdomainDaoAsync();
+            const dbDomainDao = await this.getdbDomainDaoAsync();
             await dbDomainDao.checkAndInsertIfNeeded(ddlObjects.domains, context);
             await this.dbApplicationDao.insert(ddlObjects.applications, context);
             await this.dbApplicationVersionDao.insert(ddlObjects.applicationVersions, context);

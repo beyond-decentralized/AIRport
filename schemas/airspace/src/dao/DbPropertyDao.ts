@@ -31,7 +31,7 @@ export class DbPropertyDao
 		return this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				p = Q_airport____at_airport_slash_airspace.ApplicationProperty
+				p = Q_airport____at_airport_slash_airspace.DbPropertyColumn
 			],
 			WHERE: p.entity._localId.IN(entityIds)
 		})
@@ -54,7 +54,7 @@ export class DbPropertyDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: sp = Q_airport____at_airport_slash_airspace.ApplicationProperty,
+			INSERT_INTO: sp = Q_airport____at_airport_slash_airspace.DbPropertyColumn,
 			columns: [
 				sp._localId,
 				sp.index,

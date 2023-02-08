@@ -31,7 +31,7 @@ export class DbEntityDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				se = Q_airport____at_airport_slash_airspace.ApplicationEntity
+				se = Q_airport____at_airport_slash_airspace.DdlEntity
 			],
 			WHERE: se.applicationVersion._localId.IN(applicationVersionIds)
 		})
@@ -55,7 +55,7 @@ export class DbEntityDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: se = Q_airport____at_airport_slash_airspace.ApplicationEntity,
+			INSERT_INTO: se = Q_airport____at_airport_slash_airspace.DdlEntity,
 			columns: [
 				se._localId,
 				se.index,
