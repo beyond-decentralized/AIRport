@@ -9,7 +9,8 @@ export interface IDbRelationColumnDao
 	extends IBaseDdlRelationColumnDao {
 
 	findAllForColumns(
-		columnIds: DbColumn_LocalId[]
+		columnIds: DbColumn_LocalId[],
+		context: IContext
 	): Promise<DbRelationColumn[]>
 
 	insert(
@@ -25,7 +26,8 @@ export class DbRelationColumnDao
 	implements IDbRelationColumnDao {
 
 	async findAllForColumns(
-		columnIds: DbColumn_LocalId[]
+		columnIds: DbColumn_LocalId[],
+		context: IContext
 	): Promise<DbRelationColumn[]> {
 		let rc: QDdlRelationColumn
 
@@ -38,7 +40,7 @@ export class DbRelationColumnDao
 				rc.oneColumn._localId.IN(columnIds),
 				rc.manyColumn._localId.IN(columnIds)
 			)
-		})
+		}, context)
 	}
 
 	async insert(

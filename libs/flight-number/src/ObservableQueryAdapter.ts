@@ -1,8 +1,8 @@
 import { IRepositoryLoader } from "@airport/air-traffic-control";
-import { Inject, Injected } from "@airport/direction-indicator";
+import { IContext, Inject, Injected } from "@airport/direction-indicator";
 import { IRepository, PortableQuery, Repository_GUID, Repository_LocalId, SyncApplicationMap } from "@airport/ground-control";
 import { IRepositoryDao } from '@airport/holding-pattern/dist/app/bundle'
-import { ITransaction } from "@airport/terminal-map";
+import { ITransaction, ITransactionManager } from "@airport/terminal-map";
 import { Observable, Subject } from "rxjs";
 import { ActiveQueries, CachedSQLQuery, IFieldMapped } from "./ActiveQueries";
 
@@ -37,6 +37,9 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
 
     @Inject()
     repositoryLoader: IRepositoryLoader
+
+    @Inject()
+    transactionManager: ITransactionManager
 
     queriedRepositoryIds: {
         GUIDSet: Set<Repository_GUID>,
@@ -83,62 +86,77 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
             }
             this.repositoryExistenceCheckInProgress = true
 
-            const locallyPresentRepositories = await this.repositoryDao
-                .findByGUIDsAndLocalIds(
-                    Array.from(this.queriedRepositoryIds.GUIDSet),
-                    Array.from(this.queriedRepositoryIds.localIdSet)
+            await this.transactionManager.transactInternal(async (
+                _transaction,
+                context
+            ) => {
+                await this.doCheckExistenceOfQueriedRepositories(
+                    context
                 )
-            const locallyPresentRepositoryMapByGUID:
-                Map<Repository_GUID, IRepository> = new Map()
-            const locallyPresentRepositoryMapByLocalId:
-                Map<Repository_LocalId, IRepository> = new Map()
-            for (const localyPresentRepository of locallyPresentRepositories) {
-                locallyPresentRepositoryMapByGUID.set(
-                    localyPresentRepository.GUID,
-                    localyPresentRepository
-                )
-                locallyPresentRepositoryMapByLocalId.set(
-                    localyPresentRepository._localId,
-                    localyPresentRepository
-                )
-            }
-
-            const locallyMissingRepositoryGUIDSet: Set<Repository_GUID> = new Set()
-            for (const repositoryGUIDToCheck of this.queriedRepositoryIds.GUIDSet.values()) {
-                const locallyPresentRepository = locallyPresentRepositoryMapByGUID
-                    .get(repositoryGUIDToCheck)
-                if (!locallyPresentRepository || !locallyPresentRepository.isLoaded) {
-                    locallyMissingRepositoryGUIDSet.add(repositoryGUIDToCheck)
-                }
-            }
-            for (const repositoryLocalId of this.queriedRepositoryIds.localIdSet.values()) {
-                const locallyPresentRepository = locallyPresentRepositoryMapByLocalId
-                    .get(repositoryLocalId)
-                if (!locallyPresentRepository) {
-                    throw new Error(`Did not find a repository with _localId '${repositoryLocalId}'.`)
-                }
-                if (!locallyPresentRepository.isLoaded) {
-                    locallyMissingRepositoryGUIDSet.add(locallyPresentRepository.GUID)
-                }
-            }
-
-            for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
-                await this.repositoryLoader.loadRepository(
-                    locallyMissingRepositoryGUID,
-                    {
-                        doNotLoadReferences: true
-                    }
-                )
-            }
-
-            this.queriedRepositoryIds.GUIDSet.clear()
-            this.queriedRepositoryIds.localIdSet.clear()
+            }, null, {})
         } catch (e) {
             console.error('Error checking Repositor existence')
             console.error(e)
         } finally {
             this.repositoryExistenceCheckInProgress = false
         }
+    }
+
+    async doCheckExistenceOfQueriedRepositories(
+        context: IContext
+    ): Promise<void> {
+        const locallyPresentRepositories = await this.repositoryDao
+            .findByGUIDsAndLocalIds(
+                Array.from(this.queriedRepositoryIds.GUIDSet),
+                Array.from(this.queriedRepositoryIds.localIdSet),
+                context
+            )
+        const locallyPresentRepositoryMapByGUID:
+            Map<Repository_GUID, IRepository> = new Map()
+        const locallyPresentRepositoryMapByLocalId:
+            Map<Repository_LocalId, IRepository> = new Map()
+        for (const localyPresentRepository of locallyPresentRepositories) {
+            locallyPresentRepositoryMapByGUID.set(
+                localyPresentRepository.GUID,
+                localyPresentRepository
+            )
+            locallyPresentRepositoryMapByLocalId.set(
+                localyPresentRepository._localId,
+                localyPresentRepository
+            )
+        }
+
+        const locallyMissingRepositoryGUIDSet: Set<Repository_GUID> = new Set()
+        for (const repositoryGUIDToCheck of this.queriedRepositoryIds.GUIDSet.values()) {
+            const locallyPresentRepository = locallyPresentRepositoryMapByGUID
+                .get(repositoryGUIDToCheck)
+            if (!locallyPresentRepository || !locallyPresentRepository.isLoaded) {
+                locallyMissingRepositoryGUIDSet.add(repositoryGUIDToCheck)
+            }
+        }
+        for (const repositoryLocalId of this.queriedRepositoryIds.localIdSet.values()) {
+            const locallyPresentRepository = locallyPresentRepositoryMapByLocalId
+                .get(repositoryLocalId)
+            if (!locallyPresentRepository) {
+                throw new Error(`Did not find a repository with _localId '${repositoryLocalId}'.`)
+            }
+            if (!locallyPresentRepository.isLoaded) {
+                locallyMissingRepositoryGUIDSet.add(locallyPresentRepository.GUID)
+            }
+        }
+
+        for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
+            await this.repositoryLoader.loadRepository(
+                locallyMissingRepositoryGUID,
+                {
+                    ...context,
+                    doNotLoadReferences: true
+                }
+            )
+        }
+
+        this.queriedRepositoryIds.GUIDSet.clear()
+        this.queriedRepositoryIds.localIdSet.clear()
     }
 
     wrapInObservable<E>(

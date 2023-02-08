@@ -108,7 +108,7 @@ export class DatabaseManager
 		context: IContext,
 		jsonApplications?: JsonApplicationWithLastIds[]
 	): Promise<void> {
-		const applications = await this.dbApplicationDao.findAllWithJson()
+		const applications = await this.dbApplicationDao.findAllWithJson(context)
 		const existingApplicationMap: Map<DbApplication_FullName, DbApplication> = new Map()
 		for (const application of applications) {
 			existingApplicationMap.set(application.fullName, application)

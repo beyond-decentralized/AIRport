@@ -1,4 +1,5 @@
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -30,7 +31,8 @@ export interface ISignatureCheck {
 export interface ISyncInRepositoryChecker {
 
 	checkRepositoriesAndMembers(
-		message: SyncRepositoryMessage
+		message: SyncRepositoryMessage,
+		context: IContext
 	): Promise<IRepositoriesAndMembersCheckResult>;
 
 }
@@ -46,7 +48,8 @@ export class SyncInRepositoryChecker
 	repositoryMemberDao: RepositoryMemberDao
 
 	async checkRepositoriesAndMembers(
-		message: SyncRepositoryMessage
+		message: SyncRepositoryMessage,
+		context: IContext
 	): Promise<IRepositoriesAndMembersCheckResult> {
 		let missingRepositories: IRepository[] = []
 		let newMembers: IRepositoryMember[] = []
@@ -93,7 +96,8 @@ export class SyncInRepositoryChecker
 				repositoryGUIDs.push(historyRepository as any)
 			}
 
-			const foundRepositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs)
+			const foundRepositories = await this.repositoryDao.findByGUIDs(
+				repositoryGUIDs, context)
 			for (const foundRepository of foundRepositories) {
 				const messageRepositoryIndex = messageRepositoryIndexMap.get(foundRepository.GUID)
 				if (messageRepositoryIndex || messageRepositoryIndex === 0) {
@@ -139,7 +143,7 @@ export class SyncInRepositoryChecker
 				}
 			}
 
-			const memberCheckResult = await this.checkRepositoryMembers(message)
+			const memberCheckResult = await this.checkRepositoryMembers(message, context)
 			signatureChecks = memberCheckResult.signatureChecks
 			newMembers = memberCheckResult.newMembers
 			newRepositoryMemberAcceptances = [memberCheckResult.newRepositoryMemberAcceptance]
@@ -160,7 +164,8 @@ export class SyncInRepositoryChecker
 	}
 
 	private async checkRepositoryMembers(
-		message: SyncRepositoryMessage
+		message: SyncRepositoryMessage,
+		context: IContext
 	): Promise<{
 		newMembers: IRepositoryMember[]
 		newRepositoryMemberAcceptance: IRepositoryMemberAcceptance
@@ -172,8 +177,8 @@ export class SyncInRepositoryChecker
 
 		const newMembers: IRepositoryMember[] = []
 		const existingRepositoryMember = await this.getExistingRepositoryMember(
-			data, inMessageRepositoryMemberMapByPublicSigningKey, newMembers
-		)
+			data, inMessageRepositoryMemberMapByPublicSigningKey, newMembers,
+			context)
 
 		const newRepositoryMemberAcceptance = this
 			.isNewRepositoryMemberAcceptanceMessage(
@@ -456,12 +461,13 @@ is not present in the message.`)
 		data: SyncRepositoryData,
 		repositoryMemberInMessageIndexesMapByPublicSigningKey:
 			Map<RepositoryMember_PublicSigningKey, InMessageIndex>,
-		newMembers: IRepositoryMember[]
+		newMembers: IRepositoryMember[],
+		context: IContext
 	): Promise<IRepositoryMember> {
 		const memberPublicSigningKeys = data.repositoryMembers
 			.map(repositoryMember => repositoryMember.memberPublicSigningKey)
 		const existingMessageRepositoryMembers = await this.repositoryMemberDao
-			.findByMemberPublicSigningKeys(Array.from(memberPublicSigningKeys))
+			.findByMemberPublicSigningKeys(Array.from(memberPublicSigningKeys), context)
 		let existingRepositoryMember: IRepositoryMember
 
 		const history = data.history

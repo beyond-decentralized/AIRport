@@ -47,7 +47,8 @@ export interface IStage1SyncedInDataProcessor {
 
 	performStage1DataProcessing(
 		repositoryTransactionHistoryMapByrepositoryLocalId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
-		actorMayById: Map<Actor_LocalId, IActor>
+		actorMayById: Map<Actor_LocalId, IActor>,
+		context: IContext
 	): Promise<Stage1SyncedInDataProcessingResult>;
 
 }
@@ -89,7 +90,8 @@ export class Stage1SyncedInDataProcessor
 	 */
 	async performStage1DataProcessing(
 		repositoryTransactionHistoryMapByRepositoryLocalId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
-		actorMayById: Map<Actor_LocalId, IActor>
+		actorMayById: Map<Actor_LocalId, IActor>,
+		context: IContext
 	): Promise<Stage1SyncedInDataProcessingResult> {
 		await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryLocalId)
 
@@ -145,7 +147,7 @@ export class Stage1SyncedInDataProcessor
 		const localRepoTransHistoryMapByrepositoryLocalId
 			: Map<Repository_LocalId, ISyncRepoTransHistory[]>
 			= await this.repositoryTransactionHistoryDao
-				.findAllLocalChangesForRecordIds(changedRecordIds)
+				.findAllLocalChangesForRecordIds(changedRecordIds, context)
 		const allLocalRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(
 			allRepoTransHistoryMapByRepoId, localRepoTransHistoryMapByrepositoryLocalId,
 			true)
@@ -164,7 +166,8 @@ export class Stage1SyncedInDataProcessor
 		}
 		if (newlyFoundActorSet.size) {
 			// cache remaining actors
-			const newActors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(Array.from(newlyFoundActorSet))
+			const newActors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(
+				Array.from(newlyFoundActorSet), context)
 			for (const newActor of newActors) {
 				actorMayById.set(newActor._localId, newActor)
 			}

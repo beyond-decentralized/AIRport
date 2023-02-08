@@ -58,7 +58,7 @@ export class SyncInTerminalChecker
 				messageTerminalIndexMap.set(terminal.GUID, i)
 			}
 
-			const terminals = await this.terminalDao.findByGUIDs(terminalGUIDs)
+			const terminals = await this.terminalDao.findByGUIDs(terminalGUIDs, context)
 			const foundTerminalsByGUID: Map<Terminal_GUID, ITerminal> = new Map()
 			for (const terminal of terminals) {
 				foundTerminalsByGUID.set(terminal.GUID, terminal)

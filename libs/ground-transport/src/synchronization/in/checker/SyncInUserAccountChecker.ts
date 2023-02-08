@@ -57,7 +57,8 @@ appears more than once in message.data.userAccounts
 			}
 
 			const userAccounts = await this.userAccountDao
-				.findByAccountPublicSingingKeys(Array.from(userAccountPublicSigningKeySet))
+				.findByAccountPublicSingingKeys(
+					Array.from(userAccountPublicSigningKeySet), context)
 			const foundUserAccountsByPublicSigningKey: Map<UserAccount_PublicSigningKey, IUserAccount>
 				= new Map()
 			for (const userAccount of userAccounts) {

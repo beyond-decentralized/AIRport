@@ -72,7 +72,8 @@ export class SyncInApplicationChecker
             = this.getNames(data)
 
         const applications = await this.dbApplicationDao
-            .findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names)
+            .findByDomain_NamesAndDbApplication_Names(
+                domainNames, allDbApplication_Names, context)
 
         for (let application of applications) {
             let domainName = application.domain.name
@@ -102,7 +103,7 @@ export class SyncInApplicationChecker
             domainsToCreate.push(domain)
         }
         if (domainsToCreate.length) {
-            await this.dbDomainDao.insert(domainsToCreate)
+            await this.dbDomainDao.insert(domainsToCreate, context)
         }
 
         let applicationsToCreate: DbApplication[] = []

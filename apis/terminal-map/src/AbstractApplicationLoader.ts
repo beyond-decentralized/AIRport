@@ -1,5 +1,5 @@
 import { IApiRegistry, JsonApplicationWithLastIds, ILastIds } from '@airport/air-traffic-control'
-import { Inject, Injected } from '@airport/direction-indicator'
+import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import { IApplicationInitializer } from './core/IApplicationInitializer'
 import { IApplicationLoader } from './isolate/IApplicationLoader'
 import { ITerminalStore } from './store/TerminalStore'
@@ -39,7 +39,8 @@ export class AbstractApplicationLoader
             lastIds
         })
 
-        await this.applicationInitializer.initializeForAIRportApp(this.application)
+        await this.applicationInitializer.initializeForAIRportApp(
+            this.application)
 
         this.apiRegistry.initialize(this.application.versions[0].api)
     }

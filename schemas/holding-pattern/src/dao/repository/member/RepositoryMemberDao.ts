@@ -12,7 +12,8 @@ export class RepositoryMemberDao
     extends BaseRepositoryMemberDao {
 
     async findByMemberPublicSigningKeys(
-        memberPublicSigningKeys: RepositoryMember_PublicSigningKey[]
+        memberPublicSigningKeys: RepositoryMember_PublicSigningKey[],
+		context: IContext
     ): Promise<IRepositoryMember[]> {
         let rm: QRepositoryMember,
             ua: QUserAccount
@@ -27,12 +28,13 @@ export class RepositoryMemberDao
                 ua = rm.userAccount.LEFT_JOIN()
             ],
             WHERE: rm.memberPublicSigningKey.IN(memberPublicSigningKeys)
-        })
+        }, context)
     }
 
     async findForRepositoryLocalIdAndAccountPublicSingingKey(
         repositoryLocalId: Repository_LocalId,
-        accountPublicSigningKey: UserAccount_PublicSigningKey
+        accountPublicSigningKey: UserAccount_PublicSigningKey,
+		context: IContext
     ): Promise<IRepositoryMember> {
         let rm: QRepositoryMember,
             ua: QUserAccount
@@ -47,12 +49,13 @@ export class RepositoryMemberDao
                 rm.repository.equals(repositoryLocalId),
                 ua.accountPublicSigningKey.equals(accountPublicSigningKey)
             )
-        })
+        }, context)
     }
 
     async findForRepositoryLocalIdAndUserLocalId(
         repositoryLocalId: Repository_LocalId,
-        userLocalId: UserAccount_LocalId
+        userLocalId: UserAccount_LocalId,
+		context: IContext
     ): Promise<IRepositoryMember> {
         let rm: QRepositoryMember
 
@@ -65,12 +68,13 @@ export class RepositoryMemberDao
                 rm.repository.equals(repositoryLocalId),
                 rm.userAccount.equals(userLocalId)
             )
-        })
+        }, context)
     }
 
     async findForRepositoryLocalIdAndIvitationPublicSigningKey(
         repositoryLocalId: Repository_LocalId,
-        base64EncodedKeyInvitationPublicSigningKey: RepositoryMemberInvitation_PublicSigningKey
+        base64EncodedKeyInvitationPublicSigningKey: RepositoryMemberInvitation_PublicSigningKey,
+		context: IContext
     ): Promise<IRepositoryMember> {
         let rm: QRepositoryMember,
             rmi: QRepositoryMemberInvitation
@@ -85,7 +89,7 @@ export class RepositoryMemberDao
                 rm.repository.equals(repositoryLocalId),
                 rmi.invitationPublicSigningKey.equals(base64EncodedKeyInvitationPublicSigningKey)
             )
-        })
+        }, context)
     }
 
     async insert(
@@ -125,7 +129,7 @@ export class RepositoryMemberDao
     async updatePublicSigningKey(
         invitationPublicSigningKey: RepositoryMemberInvitation_PublicSigningKey,
         memberPublicSigningKey: RepositoryMember_PublicSigningKey,
-        context?: IContext
+        context: IContext
     ): Promise<void> {
         let rm: QRepositoryMember,
             rmi: QRepositoryMemberInvitation;

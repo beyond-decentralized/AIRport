@@ -1,4 +1,4 @@
-import { Inject, Injected } from '@airport/direction-indicator';
+import { IContext, Inject, Injected } from '@airport/direction-indicator';
 import { IActor, IRepositoryTransactionHistory, ITransactionHistory, RepositoryTransactionHistory_IsRepositoryCreation, Repository_IsPublic, Repository_LocalId, TransactionType } from '@airport/ground-control'
 import { ITerminalSessionManager } from '@airport/terminal-map';
 import { RepositoryMemberDao } from '../../dao/repository/member/RepositoryMemberDao';
@@ -18,7 +18,8 @@ export interface ITransactionHistoryDuo {
 		repositoryLocalId: Repository_LocalId,
 		actor: IActor,
 		isRepositoryCreation: boolean,
-		isPublic: Repository_IsPublic
+		isPublic: Repository_IsPublic,
+		context: IContext
 	): Promise<IRepositoryTransactionHistory>
 
 }
@@ -51,7 +52,8 @@ export class TransactionHistoryDuo
 		repositoryLocalId: Repository_LocalId,
 		actor: IActor,
 		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation,
-		isPublic: Repository_IsPublic
+		isPublic: Repository_IsPublic,
+		context: IContext
 	): Promise<IRepositoryTransactionHistory> {
 		let repositoryTransactionHistory: IRepositoryTransactionHistory = transactionHistory.repositoryTransactionHistoryMap[repositoryLocalId]
 
@@ -60,7 +62,8 @@ export class TransactionHistoryDuo
 
 			const repositoryMember = await this.repositoryMemberDao.findForRepositoryLocalIdAndUserLocalId(
 				repositoryLocalId,
-				userSession.userAccount._localId
+				userSession.userAccount._localId,
+				context
 			)
 			if (!repositoryMember) {
 				throw new Error(
@@ -68,7 +71,7 @@ export class TransactionHistoryDuo
 			}
 
 			repositoryTransactionHistory = this.repositoryTransactionHistoryDuo.getNewRecord(
-				repositoryLocalId, actor,  isRepositoryCreation, isPublic)
+				repositoryLocalId, actor, isRepositoryCreation, isPublic)
 			repositoryTransactionHistory.member = repositoryMember
 
 			transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory)

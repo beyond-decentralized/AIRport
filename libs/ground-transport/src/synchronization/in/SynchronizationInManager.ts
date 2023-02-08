@@ -61,7 +61,7 @@ export class SynchronizationInManager
 		const syncTimestamp = new Date().getTime()
 
 		const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
-			.findWhereGUIDsIn([...messageMapByGUID.keys()])
+			.findWhereGUIDsIn([...messageMapByGUID.keys()], context)
 		for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
 			messageMapByGUID.delete(existingRepositoryTransactionHistory.GUID)
 		}

@@ -19,22 +19,25 @@ import {
 } from '../../ddl/ddl'
 import Q from '../../generated/qApplication'
 import { QDdlEntity, QDdlApplicationVersion } from '@airport/airspace/dist/app/bundle'
-import { Inject, Injected } from '@airport/direction-indicator'
+import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import { BaseRepositoryTransactionHistoryDao } from '../../generated/baseDaos'
 import { QOperationHistory, QRecordHistory, QRecordHistoryNewValue, QRepositoryTransactionHistory, QTransactionHistory } from '../../generated/qInterfaces'
 
 export interface IRepositoryTransactionHistoryDao {
 
 	findWhereGUIDsIn(
-		GUIDs: string[]
+		GUIDs: string[],
+		context: IContext
 	): Promise<IRepositoryTransactionHistory[]>
 
 	findAllLocalChangesForRecordIds(
-		changedRecordIds: Map<Repository_LocalId, IChangedRecordIdsForRepository>
+		changedRecordIds: Map<Repository_LocalId, IChangedRecordIdsForRepository>,
+		context: IContext
 	): Promise<Map<Repository_LocalId, IRepositoryTransactionHistory[]>>;
 
 	updateSyncTimestamp(
-		repositoryTransactionHistory: IRepositoryTransactionHistory
+		repositoryTransactionHistory: IRepositoryTransactionHistory,
+		context: IContext
 	): Promise<void>
 
 }
@@ -54,7 +57,8 @@ export class RepositoryTransactionHistoryDao
 
 	/*
 	async clearContentsWhereIdsIn(
-		repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[]
+		repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[],
+		context: IContext
 	): Promise<void> {
 		const rtb: QRepositoryTransactionBlock = Q.QRepositoryTransactionBlock
 		await this.db.updateWhere({
@@ -63,12 +67,13 @@ export class RepositoryTransactionHistoryDao
 				contents: null
 			},
 			WHERE: rtb._localId.IN(repositoryTransactionBlockIds)
-		})
+		}, context)
 	}
 	*/
 
 	async findWhereGUIDsIn(
-		GUIDs: string[]
+		GUIDs: string[],
+		context: IContext
 	): Promise<IRepositoryTransactionHistory[]> {
 		let rth: QRepositoryTransactionHistory
 		return await this.db.find.tree({
@@ -79,11 +84,12 @@ export class RepositoryTransactionHistoryDao
 				rth = Q.RepositoryTransactionHistory
 			],
 			WHERE: rth.GUID.IN(GUIDs)
-		})
+		}, context)
 	}
 
 	async findAllLocalChangesForRecordIds(
-		changedRecordIds: Map<Repository_LocalId, IChangedRecordIdsForRepository>
+		changedRecordIds: Map<Repository_LocalId, IChangedRecordIdsForRepository>,
+		context: IContext
 	): Promise<Map<Repository_LocalId, IRepositoryTransactionHistory[]>> {
 		const repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
 			= new Map()
@@ -164,7 +170,7 @@ export class RepositoryTransactionHistoryDao
 			// ORDER_BY: [
 			// 	rth.repository._localId.ASC()
 			// ]
-		})
+		}, context)
 
 		for (const repoTransHistory of repoTransHistories) {
 			this.datastructureUtils.ensureChildArray(
@@ -188,7 +194,8 @@ export class RepositoryTransactionHistoryDao
 	}
 
 	async updateSyncTimestamp(
-		repositoryTransactionHistory: IRepositoryTransactionHistory
+		repositoryTransactionHistory: IRepositoryTransactionHistory,
+		context: IContext
 	): Promise<void> {
 		let rth: QRepositoryTransactionHistory
 
@@ -198,6 +205,6 @@ export class RepositoryTransactionHistoryDao
 				syncTimestamp: repositoryTransactionHistory.syncTimestamp
 			},
 			WHERE: rth._localId.equals(repositoryTransactionHistory._localId)
-		})
+		}, context)
 	}
 }

@@ -10,7 +10,8 @@ export interface IDbColumnDao
 	extends IBaseDdlColumnDao {
 
 	findAllForEntities(
-		entityIds: DbEntity_LocalId[]
+		entityIds: DbEntity_LocalId[],
+		context: IContext
 	): Promise<DbColumn[]>;
 
 	insert(
@@ -29,7 +30,8 @@ export class DbColumnDao
 	datastructureUtils: IDatastructureUtils
 
 	async findAllForEntities(
-		entityIds: DbEntity_LocalId[]
+		entityIds: DbEntity_LocalId[],
+		context: IContext
 	): Promise<DbColumn[]> {
 		let c: QDdlColumn
 
@@ -39,7 +41,7 @@ export class DbColumnDao
 				c = Q_airport____at_airport_slash_airspace.DdlColumn
 			],
 			WHERE: c.entity._localId.IN(entityIds)
-		})
+		}, context)
 	}
 
 	async insert(

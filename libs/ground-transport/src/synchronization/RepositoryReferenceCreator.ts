@@ -38,8 +38,8 @@ export class RepositoryReferenceCreator {
 
         const existingRepositoryReferences = await this.repositoryReferenceDao
             .findByReferencingRepository_LocalIds(
-                Array.from(repositoryReferenceMapByLocalIds.keys())
-            )
+                Array.from(repositoryReferenceMapByLocalIds.keys()),
+                context)
         for (const existingRepositoryReference of existingRepositoryReferences) {
             const referencesOfRepositoryMap = repositoryReferenceMapByLocalIds
                 .get(existingRepositoryReference.referencingRepository._localId)

@@ -1,4 +1,4 @@
-import { Injected } from '@airport/direction-indicator';
+import { IContext, Injected } from '@airport/direction-indicator';
 import { IRecordHistoryNewValue, RecordHistory_LocalId } from '@airport/ground-control';
 import { BaseRecordHistoryNewValueDao, IBaseRecordHistoryNewValueDao } from '../../generated/baseDaos';
 
@@ -9,7 +9,8 @@ export interface IRecordHistoryNewValueDao
 	extends IBaseRecordHistoryNewValueDao {
 
 	findByRecordHistory_LocalIdIn(
-		RecordHistory_LocalIds: RecordHistory_LocalId[]
+		RecordHistory_LocalIds: RecordHistory_LocalId[],
+		context: IContext
 	): Promise<IRecordHistoryNewValue[]>;
 
 }
@@ -20,7 +21,8 @@ export class RecordHistoryNewValueDao
 	implements IRecordHistoryNewValueDao {
 
 	async findByRecordHistory_LocalIdIn(
-		RecordHistory_LocalIds: RecordHistory_LocalId[]
+		RecordHistory_LocalIds: RecordHistory_LocalId[],
+		context: IContext
 	): Promise<IRecordHistoryNewValue[]> {
 		let rhnv: QRecordHistoryNewValue
 
@@ -30,7 +32,7 @@ export class RecordHistoryNewValueDao
 				rhnv = Q.RecordHistoryNewValue
 			],
 			WHERE: rhnv.recordHistory._localId.IN(RecordHistory_LocalIds)
-		})
+		}, context)
 
 	}
 

@@ -4597,14 +4597,14 @@ class ValueOperation extends Operation {
             rawValueOperation.trackedRepoGUIDs = trackedRepoGUIDs;
         }
         else if (dictionary.isRepositoryLIDColumn(lValue.dbProperty, lValue.dbColumn)) {
-            let trackedRepoLIDs;
+            let trackedRepoLocalIds;
             if (typeof rValue === 'number') {
-                trackedRepoLIDs = [rValue];
+                trackedRepoLocalIds = [rValue];
             }
             else if (rValue instanceof Array) {
-                trackedRepoLIDs = rValue;
+                trackedRepoLocalIds = rValue;
             }
-            rawValueOperation.trackedRepoLocalIds = trackedRepoLIDs;
+            rawValueOperation.trackedRepoLocalIds = trackedRepoLocalIds;
         }
     }
     greaterThan(lValue, rValue) {
@@ -9386,11 +9386,15 @@ is supported only for single columm relations
                 else {
                     queryValueOperation.rightSideValue = this.convertLRValue(rValue, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
                 }
-                for (const trackedRepoGUID of valueOperation.trackedRepoGUIDs) {
-                    trackedRepoGUIDSet.add(trackedRepoGUID);
+                if (valueOperation.trackedRepoGUIDs) {
+                    for (const trackedRepoGUID of valueOperation.trackedRepoGUIDs) {
+                        trackedRepoGUIDSet.add(trackedRepoGUID);
+                    }
                 }
-                for (const trackedRepoLocalId of valueOperation.trackedRepoLocalIds) {
-                    trackedRepoLocalIdSet.add(trackedRepoLocalId);
+                if (valueOperation.trackedRepoLocalIds) {
+                    for (const trackedRepoLocalId of valueOperation.trackedRepoLocalIds) {
+                        trackedRepoLocalIdSet.add(trackedRepoLocalId);
+                    }
                 }
                 break;
         }
@@ -10226,7 +10230,7 @@ BaseDdlRelationColumnDao.Search = new DaoQueryDecorators();
 BaseDdlRelationColumnDao.SearchOne = new DaoQueryDecorators();
 
 class DbDomainDao extends BaseDdlDomainDao {
-    async findByIdIn(domainIds) {
+    async findByIdIn(domainIds, context) {
         let d;
         return await this.db.find.tree({
             SELECT: {},
@@ -10234,47 +10238,47 @@ class DbDomainDao extends BaseDdlDomainDao {
                 d = Q_airport____at_airport_slash_airspace.DdlDomain
             ],
             WHERE: d._localId.IN(domainIds)
-        });
+        }, context);
     }
-    async findMapByNameWithNames(domainNames) {
+    async findMapByNameWithNames(domainNames, context) {
         let d;
         const domains = await this.db.find.tree({
             SELECT: {},
             FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
             WHERE: d.name.IN(domainNames)
-        });
+        }, context);
         const domainMapByNameWithNames = new Map();
         for (const domain of domains) {
             domainMapByNameWithNames.set(domain.name, domain);
         }
         return domainMapByNameWithNames;
     }
-    async findOneByName(name) {
+    async findOneByName(name, context) {
         let d;
         return await this.db.findOne.tree({
             SELECT: {},
             FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
             WHERE: d.name.equals(name)
-        });
+        }, context);
     }
-    async findByNames(names) {
+    async findByNames(names, context) {
         let d;
         return await this.db.find.tree({
             SELECT: {},
             FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
             WHERE: d.name.IN(names)
-        });
+        }, context);
     }
-    async findByName(name) {
+    async findByName(name, context) {
         let d;
         return await this.db.findOne.tree({
             SELECT: {},
             FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
             WHERE: d.name.equals(name)
-        });
+        }, context);
     }
     async checkAndInsertIfNeeded(domains, context) {
-        const existingDomains = await this.findByIdIn(domains.map(domain => domain._localId));
+        const existingDomains = await this.findByIdIn(domains.map(domain => domain._localId), context);
         const existingDomainMap = new Map();
         for (const existingDomain of existingDomains) {
             existingDomainMap.set(existingDomain._localId, existingDomain);
@@ -10304,7 +10308,7 @@ class DbDomainDao extends BaseDdlDomainDao {
             VALUES
         }, context);
     }
-    async insert(domains) {
+    async insert(domains, context) {
         let d;
         const VALUES = [];
         for (const domain of domains) {
@@ -10318,7 +10322,7 @@ class DbDomainDao extends BaseDdlDomainDao {
                 d.name
             ],
             VALUES
-        });
+        }, context);
         for (let i = 0; i < domains.length; i++) {
             let domain = domains[i];
             domain._localId = ids[i][0];
@@ -10327,7 +10331,7 @@ class DbDomainDao extends BaseDdlDomainDao {
 }
 
 class DbColumnDao extends BaseDdlColumnDao {
-    async findAllForEntities(entityIds) {
+    async findAllForEntities(entityIds, context) {
         let c;
         return this.db.find.tree({
             SELECT: {},
@@ -10335,7 +10339,7 @@ class DbColumnDao extends BaseDdlColumnDao {
                 c = Q_airport____at_airport_slash_airspace.DdlColumn
             ],
             WHERE: c.entity._localId.IN(entityIds)
-        });
+        }, context);
     }
     async insert(applicationColumns, context) {
         let sc;
@@ -10381,15 +10385,15 @@ class DbColumnDao extends BaseDdlColumnDao {
 }
 
 class DbApplicationDao extends BaseDdlApplicationDao {
-    async findAllActive() {
+    async findAllActive(context) {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
                 Q_airport____at_airport_slash_airspace.DdlApplication
             ]
-        });
+        }, context);
     }
-    async findAllWithJson() {
+    async findAllWithJson(context) {
         let a;
         return this.db.find.tree({
             SELECT: {
@@ -10411,9 +10415,9 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                 // av = cv.applicationVersion.INNER_JOIN()
                 a.versions.INNER_JOIN()
             ]
-        });
+        }, context);
     }
-    async findMapByVersionIds(applicationVersionIds) {
+    async findMapByVersionIds(applicationVersionIds, context) {
         const applicationMapByIndex = new Map();
         let s, sv;
         const applications = await this.db.find.tree({
@@ -10437,7 +10441,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                 sv = s.versions.INNER_JOIN()
             ],
             WHERE: sv._localId.IN(applicationVersionIds)
-        });
+        }, context);
         for (const application of applications) {
             for (const applicationVersion of application.versions) {
                 applicationMapByIndex.set(applicationVersion._localId, application);
@@ -10445,16 +10449,16 @@ class DbApplicationDao extends BaseDdlApplicationDao {
         }
         return applicationMapByIndex;
     }
-    async findMaxIndex() {
+    async findMaxIndex(context) {
         const s = Q_airport____at_airport_slash_airspace.DdlApplication;
         return await this.airportDatabase.findOne.field({
             SELECT: MAX(s.index),
             FROM: [
                 s
             ]
-        });
+        }, context);
     }
-    async findMaxVersionedMapByApplicationAndDomain_Names(applicationDomain_Names, applicationNames) {
+    async findMaxVersionedMapByApplicationAndDomain_Names(applicationDomain_Names, applicationNames, context) {
         const maxVersionedMapByApplicationAndDomain_Names = new Map();
         let sv;
         let s;
@@ -10529,14 +10533,14 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                 sMiV.majorVersion,
                 sMiV.minorVersion
             ]
-        });
+        }, context);
         for (const applicationLookupRecord of applicationLookupRecords) {
             this.datastructureUtils.ensureChildJsMap(maxVersionedMapByApplicationAndDomain_Names, applicationLookupRecord.domain.name)
                 .set(applicationLookupRecord.name, applicationLookupRecord);
         }
         return maxVersionedMapByApplicationAndDomain_Names;
     }
-    async setStatusByIndexes(indexes, status) {
+    async setStatusByIndexes(indexes, status, context) {
         let s;
         await this.db.updateWhere({
             UPDATE: s = Q_airport____at_airport_slash_airspace.DdlApplication,
@@ -10544,9 +10548,9 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                 status
             },
             WHERE: s.index.IN(indexes)
-        });
+        }, context);
     }
-    async findMapByFullNames(fullDbApplication_Names) {
+    async findMapByFullNames(fullDbApplication_Names, context) {
         const mapByFullName = new Map();
         let s;
         const records = await this.db.find.tree({
@@ -10555,13 +10559,13 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                 s = Q_airport____at_airport_slash_airspace.DdlApplication
             ],
             WHERE: s.fullName.IN(fullDbApplication_Names)
-        });
+        }, context);
         for (const record of records) {
             mapByFullName.set(record.fullName, record);
         }
         return mapByFullName;
     }
-    async findByDomain_NamesAndDbApplication_Names(domainNames, applicationNames) {
+    async findByDomain_NamesAndDbApplication_Names(domainNames, applicationNames, context) {
         let s;
         let d;
         return await this.db.find.tree({
@@ -10579,9 +10583,9 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                 d = s.domain.INNER_JOIN()
             ],
             WHERE: AND(d.name.IN(domainNames), s.name.IN(applicationNames))
-        });
+        }, context);
     }
-    async findOneByDomain_NameAndDbApplication_Name(domainName, applicationName) {
+    async findOneByDomain_NameAndDbApplication_Name(domainName, applicationName, context) {
         let s;
         let d;
         return await this.db.findOne.tree({
@@ -10598,9 +10602,9 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                 d = s.domain.INNER_JOIN()
             ],
             WHERE: AND(d.name.equals(domainName), s.name.equals(applicationName))
-        });
+        }, context);
     }
-    async findByIndex(index) {
+    async findByIndex(index, context) {
         let a;
         return await this.db.findOne.tree({
             SELECT: {
@@ -10612,7 +10616,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
                 a.domain.INNER_JOIN()
             ],
             WHERE: a.index.equals(index)
-        });
+        }, context);
     }
     async insert(applications, context) {
         let a;
@@ -10643,7 +10647,7 @@ class DbApplicationDao extends BaseDdlApplicationDao {
 }
 
 class DbEntityDao extends BaseDdlEntityDao {
-    async findAllForApplicationVersions(applicationVersionIds) {
+    async findAllForApplicationVersions(applicationVersionIds, context) {
         let se;
         return await this.db.find.tree({
             SELECT: {},
@@ -10651,7 +10655,7 @@ class DbEntityDao extends BaseDdlEntityDao {
                 se = Q_airport____at_airport_slash_airspace.DdlEntity
             ],
             WHERE: se.applicationVersion._localId.IN(applicationVersionIds)
-        });
+        }, context);
     }
     async insert(applicationEntities, context) {
         let se;
@@ -10687,7 +10691,7 @@ class DbEntityDao extends BaseDdlEntityDao {
 }
 
 class DbPropertyColumnDao extends BaseDdlPropertyColumnDao {
-    async findAllForColumns(columnIds) {
+    async findAllForColumns(columnIds, context) {
         let rc;
         return this.db.find.tree({
             SELECT: {},
@@ -10695,7 +10699,7 @@ class DbPropertyColumnDao extends BaseDdlPropertyColumnDao {
                 rc = Q_airport____at_airport_slash_airspace.DbPropertyColumn
             ],
             WHERE: rc.column._localId.IN(columnIds)
-        });
+        }, context);
     }
     async insert(applicationPropertyColumns, context) {
         let spc;
@@ -10723,7 +10727,7 @@ class DbPropertyColumnDao extends BaseDdlPropertyColumnDao {
 }
 
 class DbPropertyDao extends BaseDdlPropertyDao {
-    async findAllForEntities(entityIds) {
+    async findAllForEntities(entityIds, context) {
         let p;
         return this.db.find.tree({
             SELECT: {},
@@ -10731,7 +10735,7 @@ class DbPropertyDao extends BaseDdlPropertyDao {
                 p = Q_airport____at_airport_slash_airspace.DbPropertyColumn
             ],
             WHERE: p.entity._localId.IN(entityIds)
-        });
+        }, context);
     }
     async insert(applicationProperties, context) {
         let sp;
@@ -10764,7 +10768,7 @@ class DbPropertyDao extends BaseDdlPropertyDao {
 }
 
 class DbApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
-    async findAllForApplicationVersions(applicationVersionIds) {
+    async findAllForApplicationVersions(applicationVersionIds, context) {
         let sr;
         return await this.db.find.tree({
             SELECT: {},
@@ -10772,7 +10776,7 @@ class DbApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
                 sr = Q_airport____at_airport_slash_airspace.DdlApplicationReference
             ],
             WHERE: sr.ownApplicationVersion._localId.IN(applicationVersionIds)
-        });
+        }, context);
     }
     async insert(applicationReferences, context) {
         let sr;
@@ -10803,7 +10807,7 @@ class DbApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
 }
 
 class DbRelationColumnDao extends BaseDdlRelationColumnDao {
-    async findAllForColumns(columnIds) {
+    async findAllForColumns(columnIds, context) {
         let rc;
         return this.db.find.tree({
             SELECT: {},
@@ -10811,7 +10815,7 @@ class DbRelationColumnDao extends BaseDdlRelationColumnDao {
                 rc = Q_airport____at_airport_slash_airspace.DbRelationColumn
             ],
             WHERE: OR(rc.oneColumn._localId.IN(columnIds), rc.manyColumn._localId.IN(columnIds))
-        });
+        }, context);
     }
     async insert(applicationRelationColumns, context) {
         let src;
@@ -10848,7 +10852,7 @@ class DbRelationColumnDao extends BaseDdlRelationColumnDao {
 }
 
 class DbRelationDao extends BaseDdlRelationDao {
-    async findAllForProperties(propertyIds) {
+    async findAllForProperties(propertyIds, context) {
         let r;
         return this.db.find.tree({
             SELECT: {},
@@ -10856,9 +10860,9 @@ class DbRelationDao extends BaseDdlRelationDao {
                 r = Q_airport____at_airport_slash_airspace.DbRelation
             ],
             WHERE: r.property._localId.IN(propertyIds)
-        });
+        }, context);
     }
-    async findAllByLocalIdsWithApplications(localIds) {
+    async findAllByLocalIdsWithApplications(localIds, context) {
         let r, e, av, a;
         return this.db.find.tree({
             SELECT: {
@@ -10883,7 +10887,7 @@ class DbRelationDao extends BaseDdlRelationDao {
                 a.domain.LEFT_JOIN()
             ],
             WHERE: r._localId.IN(localIds)
-        });
+        }, context);
     }
     async insert(applicationRelations, context) {
         let sr;
@@ -10927,7 +10931,8 @@ class DbRelationDao extends BaseDdlRelationDao {
 class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
     /*
     async findAllLatestForDbApplication_Indexes(
-        applicationIndexes: DbApplication_Index[]
+        applicationIndexes: DbApplication_Index[],
+        context: IContext
     ): Promise<DbApplicationVersion[]> {
         let sv: QAppVersion
 
@@ -10940,10 +10945,10 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
                 sv._localId.IN(this._localIdsForMaxVersionSelect()),
                 sv.application.index.IN(applicationIndexes)
             )
-        })
+        }, context)
     }
     */
-    async findAllActiveOrderByDbApplication_IndexAndId() {
+    async findAllActiveOrderByDbApplication_IndexAndId(context) {
         let av, a;
         return await this.db.find.tree({
             FROM: [
@@ -10955,9 +10960,9 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
                 a.index.ASC(),
                 av._localId.DESC()
             ]
-        });
+        }, context);
     }
-    async findByDomain_NamesAndDbApplication_Names(domainNames, applicationNames) {
+    async findByDomain_NamesAndDbApplication_Names(domainNames, applicationNames, context) {
         let av;
         let a;
         let d;
@@ -10983,12 +10988,13 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
                 d.name.DESC(),
                 a.name.DESC()
             ]
-        });
+        }, context);
     }
     /*
     async findMaxVersionedMapByApplicationAndDomain_Names(
         applicationDomain_Names: DbDomain_Name[],
-        applicationNames: DbApplication_Name[]
+        applicationNames: DbApplication_Name[],
+        context: IContext
     ): Promise<Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationVersion>>> {
         const maxVersionedMapByApplicationAndDomain_Names
                   : Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationVersion>>
@@ -11024,7 +11030,7 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
                 d.name.IN(applicationDomain_Names),
                 s.name.IN(applicationNames)
             ),
-        })
+        }, context)
 
         for (const maxApplicationVersion of maxApplicationVersions) {
             const application = maxApplicationVersion.application
@@ -11037,7 +11043,9 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
         return maxVersionedMapByApplicationAndDomain_Names
     }
 
-    private idsForMaxVersionSelect(): RawFieldQuery<IQNumberField> {
+    private idsForMaxVersionSelect(
+        context: IContext
+    ): RawFieldQuery<IQNumberField> {
         let svMax
         let sv2: QAppVersion
 
@@ -11055,7 +11063,7 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
                 })
             ],
             SELECT: svMax._localId
-        })
+        }, context)
     }
 */
     async insert(applicationVersions, context) {
@@ -11438,6 +11446,7 @@ const HISTORY_MANAGER = terminalMap.token('HistoryManager');
 const LOCAL_API_SERVER = terminalMap.token('LocalAPIServer');
 const STORE_DRIVER = terminalMap.token('StoreDriver');
 const TERMINAL_SESSION_MANAGER = terminalMap.token('TerminalSessionManager');
+globalThis.TERMINAL_SESSION_MANAGER = TERMINAL_SESSION_MANAGER;
 const TRANSACTION_MANAGER = terminalMap.token('TransactionManager');
 const TRANSACTIONAL_RECEIVER = terminalMap.token('TransactionalReceiver');
 const TRANSACTIONAL_SERVER = terminalMap.token('TransactionalServer');
@@ -11654,7 +11663,7 @@ class ApplicationChecker {
     async checkDomain(jsonApplication) {
         // TODO: implement domain checking
     }
-    async checkDependencies(jsonApplications) {
+    async checkDependencies(jsonApplications, context) {
         const allReferencedApplicationMap = new Map();
         const referencedApplicationMapByApplication = new Map();
         for (const jsonApplication of jsonApplications) {
@@ -11666,7 +11675,7 @@ class ApplicationChecker {
             }
         }
         this.pruneInGroupReferences(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication);
-        await this.pruneReferencesToExistingApplications(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication);
+        await this.pruneReferencesToExistingApplications(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication, context);
         const applicationsWithValidDependencies = [];
         const applicationsInNeedOfAdditionalDependencies = [];
         const neededDependencies = [];
@@ -11707,8 +11716,8 @@ class ApplicationChecker {
             }
         }
     }
-    async pruneReferencesToExistingApplications(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication) {
-        const existingApplicationInfo = await this.findExistingApplications(allReferencedApplicationMap);
+    async pruneReferencesToExistingApplications(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication, context) {
+        const existingApplicationInfo = await this.findExistingApplications(allReferencedApplicationMap, context);
         for (const applicationName of existingApplicationInfo.existingApplicationMapByName.keys()) {
             const coreDomainAndDbApplication_Names = existingApplicationInfo.coreDomainAndDbApplication_NamesByDbApplication_Name.get(applicationName);
             // Remove every reference for this existing application
@@ -11726,7 +11735,7 @@ class ApplicationChecker {
             }
         }
     }
-    async findExistingApplications(allReferencedApplicationMap) {
+    async findExistingApplications(allReferencedApplicationMap, context) {
         const fullDbApplication_Names = [];
         const coreDomainAndDbApplication_NamesByDbApplication_Name = new Map();
         for (const [domainName, allReferencedApplicationsForDomain] of allReferencedApplicationMap) {
@@ -11745,7 +11754,8 @@ class ApplicationChecker {
             existingApplicationMapByName = new Map();
         }
         else {
-            existingApplicationMapByName = await this.dbApplicationDao.findMapByFullNames(fullDbApplication_Names);
+            existingApplicationMapByName = await this.dbApplicationDao
+                .findMapByFullNames(fullDbApplication_Names, context);
         }
         return {
             coreDomainAndDbApplication_NamesByDbApplication_Name,
@@ -12423,7 +12433,7 @@ class ApplicationInitializer {
     async hydrate(jsonApplications, context) {
         await this.stage(jsonApplications, context);
         // Hydrate all DDL objects and Sequences
-        const ddlObjects = await this.queryObjectInitializer.initialize();
+        const ddlObjects = await this.queryObjectInitializer.initialize(context);
         this.addNewApplicationVersionsToAll(ddlObjects);
         this.setAirDbApplications(ddlObjects);
         await this.sequenceGenerator.initialize(context);
@@ -12438,10 +12448,10 @@ class ApplicationInitializer {
      */
     async initialize(jsonApplications, context, checkDependencies, loadExistingApplications, areFeatureApps) {
         const applicationsWithValidDependencies = await this.
-            getApplicationsWithValidDependencies(jsonApplications, checkDependencies);
+            getApplicationsWithValidDependencies(jsonApplications, checkDependencies, context);
         const existingApplicationMap = new Map();
         if (loadExistingApplications) {
-            const applications = await this.dbApplicationDao.findAllWithJson();
+            const applications = await this.dbApplicationDao.findAllWithJson(context);
             for (const application of applications) {
                 existingApplicationMap.set(application.fullName, application);
             }
@@ -12525,7 +12535,7 @@ class ApplicationInitializer {
     }
     async initializeForAIRportApp(jsonApplication) {
         const applicationsWithValidDependencies = await this.
-            getApplicationsWithValidDependencies([jsonApplication], false);
+            getApplicationsWithValidDependencies([jsonApplication], false, null);
         const ddlObjects = await this.applicationComposer.compose(applicationsWithValidDependencies, {
             deepTraverseReferences: true,
             terminalStore: this.terminalStore
@@ -12552,7 +12562,7 @@ class ApplicationInitializer {
             }, milliseconds);
         });
     }
-    async getApplicationsWithValidDependencies(jsonApplications, checkDependencies) {
+    async getApplicationsWithValidDependencies(jsonApplications, checkDependencies, context) {
         const jsonApplicationsToInstall = [];
         for (const jsonApplication of jsonApplications) {
             await this.applicationChecker.check(jsonApplication);
@@ -12566,7 +12576,7 @@ class ApplicationInitializer {
         let applicationsWithValidDependencies;
         if (checkDependencies) {
             const applicationReferenceCheckResults = await this.applicationChecker
-                .checkDependencies(jsonApplicationsToInstall);
+                .checkDependencies(jsonApplicationsToInstall, context);
             if (applicationReferenceCheckResults.applicationsInNeedOfAdditionalDependencies.length) {
                 // const
                 for (let i = 0; i < applicationReferenceCheckResults.neededDependencies.length; i++) {
@@ -12769,8 +12779,8 @@ class DdlObjectLinker {
 }
 
 class DdlObjectRetriever {
-    async retrieveDdlObjects() {
-        const applications = await this.dbApplicationDao.findAllActive();
+    async retrieveDdlObjects(context) {
+        const applications = await this.dbApplicationDao.findAllActive(context);
         const applicationIndexes = [];
         const domainIdSet = new Set();
         applications.forEach(application => {
@@ -12780,9 +12790,9 @@ class DdlObjectRetriever {
         applications.sort((application1, application2) => {
             return application1.index - application2.index;
         });
-        const domains = await this.dbDomainDao.findByIdIn(Array.from(domainIdSet));
+        const domains = await this.dbDomainDao.findByIdIn(Array.from(domainIdSet), context);
         const allApplicationVersions = await this.dbApplicationVersionDao
-            .findAllActiveOrderByDbApplication_IndexAndId();
+            .findAllActiveOrderByDbApplication_IndexAndId(context);
         let lastDbApplication_Index;
         // const allApplicationVersionsByIds: DbApplicationVersion[] = []
         const latestApplicationVersions = [];
@@ -12797,9 +12807,9 @@ class DdlObjectRetriever {
         }
         const latestDbApplicationVersion_LocalIds = latestApplicationVersions.map(applicationVersion => applicationVersion._localId);
         const applicationReferences = await this.dbApplicationReferenceDao
-            .findAllForApplicationVersions(latestDbApplicationVersion_LocalIds);
+            .findAllForApplicationVersions(latestDbApplicationVersion_LocalIds, context);
         const entities = await this.dbEntityDao
-            .findAllForApplicationVersions(latestDbApplicationVersion_LocalIds);
+            .findAllForApplicationVersions(latestDbApplicationVersion_LocalIds, context);
         const entityIds = entities.map(entity => entity._localId);
         /*
         const entityIds = entities.map(
@@ -12811,17 +12821,17 @@ class DdlObjectRetriever {
     })
          */
         const properties = await this.dbPropertyDao
-            .findAllForEntities(entityIds);
+            .findAllForEntities(entityIds, context);
         const propertyIds = properties.map(property => property._localId);
         const relations = await this.dbRelationDao
-            .findAllForProperties(propertyIds);
+            .findAllForProperties(propertyIds, context);
         const columns = await this.dbColumnDao
-            .findAllForEntities(entityIds);
+            .findAllForEntities(entityIds, context);
         const columnIds = columns.map(column => column._localId);
         const propertyColumns = await this.dbPropertyColumnDao
-            .findAllForColumns(columnIds);
+            .findAllForColumns(columnIds, context);
         const relationColumns = await this.dbRelationColumnDao
-            .findAllForColumns(columnIds);
+            .findAllForColumns(columnIds, context);
         const lastTerminalState = this.terminalStore.getTerminalState();
         const lastIds = {
             columns: columns.length,
@@ -12926,8 +12936,8 @@ class QueryObjectInitializer {
             ]
         });
     }
-    async initialize() {
-        const ddlObjects = await this.ddlObjectRetriever.retrieveDdlObjects();
+    async initialize(context) {
+        const ddlObjects = await this.ddlObjectRetriever.retrieveDdlObjects(context);
         const allApplicationVersionsByIds = [];
         for (const applicationVersion of ddlObjects.applicationVersions) {
             allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion;
@@ -13667,7 +13677,7 @@ BaseTransactionHistoryDao.Search = new DaoQueryDecorators();
 BaseTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
 
 class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
-    async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds) {
+    async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds, context) {
         let rhnv;
         return await this.db.find.tree({
             SELECT: {},
@@ -13675,12 +13685,12 @@ class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
                 rhnv = Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryNewValue
             ],
             WHERE: rhnv.recordHistory._localId.IN(RecordHistory_LocalIds)
-        });
+        }, context);
     }
 }
 
 class RecordHistoryOldValueDao extends BaseRecordHistoryOldValueDao {
-    async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds) {
+    async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds, context) {
         let rhov;
         return await this.db.find.tree({
             SELECT: {},
@@ -13688,14 +13698,15 @@ class RecordHistoryOldValueDao extends BaseRecordHistoryOldValueDao {
                 rhov = Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryOldValue
             ],
             WHERE: rhov.recordHistory._localId.IN(RecordHistory_LocalIds)
-        });
+        }, context);
     }
 }
 
 class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
     /*
     async clearContentsWhereIdsIn(
-        repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[]
+        repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[],
+        context: IContext
     ): Promise<void> {
         const rtb: QRepositoryTransactionBlock = Q.QRepositoryTransactionBlock
         await this.db.updateWhere({
@@ -13704,10 +13715,10 @@ class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDa
                 contents: null
             },
             WHERE: rtb._localId.IN(repositoryTransactionBlockIds)
-        })
+        }, context)
     }
     */
-    async findWhereGUIDsIn(GUIDs) {
+    async findWhereGUIDsIn(GUIDs, context) {
         let rth;
         return await this.db.find.tree({
             SELECT: {
@@ -13717,9 +13728,9 @@ class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDa
                 rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory
             ],
             WHERE: rth.GUID.IN(GUIDs)
-        });
+        }, context);
     }
-    async findAllLocalChangesForRecordIds(changedRecordIds) {
+    async findAllLocalChangesForRecordIds(changedRecordIds, context) {
         const repositoryTransactionHistoryMapByRepositoryId = new Map();
         const rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory;
         const th = rth.transactionHistory.INNER_JOIN();
@@ -13781,7 +13792,7 @@ class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDa
             // ORDER_BY: [
             // 	rth.repository._localId.ASC()
             // ]
-        });
+        }, context);
         for (const repoTransHistory of repoTransHistories) {
             this.datastructureUtils.ensureChildArray(repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository._localId)
                 .push(repoTransHistory);
@@ -13797,7 +13808,7 @@ class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDa
         }
         return repositoryTransactionHistoryMapByRepositoryId;
     }
-    async updateSyncTimestamp(repositoryTransactionHistory) {
+    async updateSyncTimestamp(repositoryTransactionHistory, context) {
         let rth;
         await this.db.updateWhere({
             UPDATE: rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory,
@@ -13805,15 +13816,15 @@ class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDa
                 syncTimestamp: repositoryTransactionHistory.syncTimestamp
             },
             WHERE: rth._localId.equals(repositoryTransactionHistory._localId)
-        });
+        }, context);
     }
 }
 
 class ActorDao extends BaseActorDao {
-    async findWithDetailsAndGlobalIdsByIds(actorIds) {
-        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a._localId.IN(actorIds));
+    async findWithDetailsAndGlobalIdsByIds(actorIds, context) {
+        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a._localId.IN(actorIds), context);
     }
-    async findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(domainName, applicationName, accountPublicSigningKey, terminalGUID) {
+    async findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(domainName, applicationName, accountPublicSigningKey, terminalGUID, context) {
         let act;
         let application;
         let domain;
@@ -13842,9 +13853,9 @@ class ActorDao extends BaseActorDao {
                 userAccount = act.userAccount.LEFT_JOIN()
             ],
             WHERE: AND(domain.name.equals(domainName), application.name.equals(applicationName), terminal.GUID.equals(terminalGUID), userAccount.accountPublicSigningKey.equals(accountPublicSigningKey))
-        });
+        }, context);
     }
-    async findByGUIDs(actorGUIDs) {
+    async findByGUIDs(actorGUIDs, context) {
         let a;
         return await this.db.find.tree({
             SELECT: {},
@@ -13852,9 +13863,9 @@ class ActorDao extends BaseActorDao {
                 a = Q_airport____at_airport_slash_holding_dash_pattern.Actor
             ],
             WHERE: a.GUID.IN(actorGUIDs)
-        });
+        }, context);
     }
-    async findWithUserAccountBy_LocalIdIn(actor_localIds) {
+    async findWithUserAccountBy_LocalIdIn(actor_localIds, context) {
         let a;
         return await this.db.find.graph({
             SELECT: {
@@ -13869,7 +13880,7 @@ class ActorDao extends BaseActorDao {
                 a.userAccount.LEFT_JOIN()
             ],
             WHERE: a._localId.IN(actor_localIds)
-        });
+        }, context);
     }
     async insert(actors, context) {
         let a;
@@ -13895,7 +13906,7 @@ class ActorDao extends BaseActorDao {
             actor._localId = _localIds[i][0];
         }
     }
-    async findWithDetailsAndGlobalIdsByWhereClause(getWhereClause) {
+    async findWithDetailsAndGlobalIdsByWhereClause(getWhereClause, context) {
         let a;
         let ap;
         let t;
@@ -13934,7 +13945,7 @@ class ActorDao extends BaseActorDao {
                 a.userAccount.LEFT_JOIN()
             ],
             WHERE: getWhereClause(a)
-        });
+        }, context);
     }
 }
 
@@ -13966,7 +13977,7 @@ class RepositoryMemberAcceptanceDao extends BaseRepositoryMemberAcceptanceDao {
 }
 
 class RepositoryMemberDao extends BaseRepositoryMemberDao {
-    async findByMemberPublicSigningKeys(memberPublicSigningKeys) {
+    async findByMemberPublicSigningKeys(memberPublicSigningKeys, context) {
         let rm;
         return await this._find({
             SELECT: {
@@ -13978,9 +13989,9 @@ class RepositoryMemberDao extends BaseRepositoryMemberDao {
                 rm.userAccount.LEFT_JOIN()
             ],
             WHERE: rm.memberPublicSigningKey.IN(memberPublicSigningKeys)
-        });
+        }, context);
     }
-    async findForRepositoryLocalIdAndAccountPublicSingingKey(repositoryLocalId, accountPublicSigningKey) {
+    async findForRepositoryLocalIdAndAccountPublicSingingKey(repositoryLocalId, accountPublicSigningKey, context) {
         let rm, ua;
         return await this._findOne({
             SELECT: {},
@@ -13989,9 +14000,9 @@ class RepositoryMemberDao extends BaseRepositoryMemberDao {
                 ua = rm.userAccount.LEFT_JOIN()
             ],
             WHERE: AND(rm.repository.equals(repositoryLocalId), ua.accountPublicSigningKey.equals(accountPublicSigningKey))
-        });
+        }, context);
     }
-    async findForRepositoryLocalIdAndUserLocalId(repositoryLocalId, userLocalId) {
+    async findForRepositoryLocalIdAndUserLocalId(repositoryLocalId, userLocalId, context) {
         let rm;
         return await this._findOne({
             SELECT: {},
@@ -13999,9 +14010,9 @@ class RepositoryMemberDao extends BaseRepositoryMemberDao {
                 rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember
             ],
             WHERE: AND(rm.repository.equals(repositoryLocalId), rm.userAccount.equals(userLocalId))
-        });
+        }, context);
     }
-    async findForRepositoryLocalIdAndIvitationPublicSigningKey(repositoryLocalId, base64EncodedKeyInvitationPublicSigningKey) {
+    async findForRepositoryLocalIdAndIvitationPublicSigningKey(repositoryLocalId, base64EncodedKeyInvitationPublicSigningKey, context) {
         let rm, rmi;
         return await this._findOne({
             SELECT: {},
@@ -14010,7 +14021,7 @@ class RepositoryMemberDao extends BaseRepositoryMemberDao {
                 rmi = rm.invitations.LEFT_JOIN()
             ],
             WHERE: AND(rm.repository.equals(repositoryLocalId), rmi.invitationPublicSigningKey.equals(base64EncodedKeyInvitationPublicSigningKey))
-        });
+        }, context);
     }
     async insert(repositoryMembers, context) {
         let rm;
@@ -14100,7 +14111,7 @@ class LocalCopyReplacementLedgerDao extends BaseLocalCopyReplacementLedgerDao {
 }
 
 class RepositoryDao extends BaseRepositoryDao {
-    async findRepositories() {
+    async findRepositories(context) {
         let r;
         const repositories = await this._find({
             SELECT: {
@@ -14118,10 +14129,10 @@ class RepositoryDao extends BaseRepositoryDao {
                 r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
                 r.owner.INNER_JOIN()
             ]
-        });
+        }, context);
         return repositories;
     }
-    async findRepository(repositoryGUID) {
+    async findRepository(repositoryGUID, context) {
         let r;
         const repository = await this._findOne({
             SELECT: {
@@ -14141,10 +14152,10 @@ class RepositoryDao extends BaseRepositoryDao {
                 r.owner.INNER_JOIN()
             ],
             WHERE: r.GUID.equals(repositoryGUID)
-        });
+        }, context);
         return repository;
     }
-    async findRepositoryWithReferences(repositoryGUID) {
+    async findRepositoryWithReferences(repositoryGUID, context) {
         let r, rr;
         const repository = await this._findOne({
             SELECT: {
@@ -14169,7 +14180,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 rr.referencedRepository.LEFT_JOIN()
             ],
             WHERE: r.GUID.equals(repositoryGUID)
-        });
+        }, context);
         return repository;
     }
     async getRepositoryLoadInfo(repositoryGUID, context) {
@@ -14191,7 +14202,7 @@ class RepositoryDao extends BaseRepositoryDao {
             WHERE: AND(r.GUID.equals(repositoryGUID), th.transactionType.equals(TransactionType.REMOTE_SYNC))
         }, context);
     }
-    async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
+    async findReposWithDetailsAndSyncNodeIds(repositoryIds, context) {
         let r;
         const _localId = Y;
         const GUID = Y;
@@ -14211,9 +14222,9 @@ class RepositoryDao extends BaseRepositoryDao {
                 r.owner.INNER_JOIN()
             ],
             WHERE: r._localId.IN(repositoryIds)
-        });
+        }, context);
     }
-    async findWithOwnerBy_LocalIds(repositoryIds) {
+    async findWithOwnerBy_LocalIds(repositoryIds, context) {
         let r;
         return await this.db.find.tree({
             SELECT: {
@@ -14232,9 +14243,9 @@ class RepositoryDao extends BaseRepositoryDao {
                 r.owner.INNER_JOIN()
             ],
             WHERE: r._localId.IN(repositoryIds)
-        });
+        }, context);
     }
-    async findWithOwnerBy_LocalIdIn(repository_localIds) {
+    async findWithOwnerBy_LocalIdIn(repository_localIds, context) {
         let r;
         return await this.db.find.graph({
             SELECT: {
@@ -14253,9 +14264,9 @@ class RepositoryDao extends BaseRepositoryDao {
                 r.owner.INNER_JOIN()
             ],
             WHERE: r._localId.IN(repository_localIds)
-        });
+        }, context);
     }
-    async findByGUIDs(repositoryGUIDs) {
+    async findByGUIDs(repositoryGUIDs, context) {
         let r;
         return await this.db.find.tree({
             SELECT: {
@@ -14270,9 +14281,9 @@ class RepositoryDao extends BaseRepositoryDao {
                 r = Q_airport____at_airport_slash_holding_dash_pattern.Repository
             ],
             WHERE: r.GUID.IN(repositoryGUIDs)
-        });
+        }, context);
     }
-    async findByGUIDsAndLocalIds(repositoryGUIDs, repositoryLocalIds) {
+    async findByGUIDsAndLocalIds(repositoryGUIDs, repositoryLocalIds, context) {
         let r;
         return await this.db.find.tree({
             SELECT: {
@@ -14287,7 +14298,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 r = Q_airport____at_airport_slash_holding_dash_pattern.Repository
             ],
             WHERE: OR(r.GUID.IN(repositoryGUIDs), r._localId.IN(repositoryLocalIds))
-        });
+        }, context);
     }
     async insert(repositories, context) {
         let r;
@@ -14315,7 +14326,7 @@ class RepositoryDao extends BaseRepositoryDao {
             repository._localId = _localIds[i][0];
         }
     }
-    async updateUiEntityUri(repositoryGuid, uiEntityUri) {
+    async updateUiEntityUri(repositoryGuid, uiEntityUri, context) {
         let r;
         await this.db.updateColumnsWhere({
             UPDATE: r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
@@ -14323,12 +14334,12 @@ class RepositoryDao extends BaseRepositoryDao {
                 UI_ENTRY_URI: uiEntityUri
             },
             WHERE: r.GUID.equals(repositoryGuid)
-        });
+        }, context);
     }
 }
 
 class RepositoryReferenceDao extends BaseRepositoryReferenceDao {
-    async findByReferencingRepository_LocalIds(repositoryLocalIds) {
+    async findByReferencingRepository_LocalIds(repositoryLocalIds, context) {
         let rr;
         return await this._find({
             SELECT: {},
@@ -14338,7 +14349,7 @@ class RepositoryReferenceDao extends BaseRepositoryReferenceDao {
             ],
             WHERE: rr.referencingRepository._localId
                 .IN(repositoryLocalIds)
-        });
+        }, context);
     }
     async insert(repositoryReferences, context) {
         let rr;
@@ -14524,11 +14535,11 @@ class TransactionHistoryDuo {
         transaction.transactionType = TransactionType.LOCAL;
         return transaction;
     }
-    async getRepositoryTransaction(transactionHistory, repositoryLocalId, actor, isRepositoryCreation, isPublic) {
+    async getRepositoryTransaction(transactionHistory, repositoryLocalId, actor, isRepositoryCreation, isPublic, context) {
         let repositoryTransactionHistory = transactionHistory.repositoryTransactionHistoryMap[repositoryLocalId];
         if (!repositoryTransactionHistory) {
             const userSession = await this.terminalSessionManager.getUserSession();
-            const repositoryMember = await this.repositoryMemberDao.findForRepositoryLocalIdAndUserLocalId(repositoryLocalId, userSession.userAccount._localId);
+            const repositoryMember = await this.repositoryMemberDao.findForRepositoryLocalIdAndUserLocalId(repositoryLocalId, userSession.userAccount._localId, context);
             if (!repositoryMember) {
                 throw new Error(`User '${userSession.userAccount.username}' is not a member of Repository '${repositoryLocalId}'`);
             }
@@ -14580,10 +14591,10 @@ class CrossRepositoryRelationManager {
 
 class RepositoryApi {
     async findRepositories() {
-        return await this.repositoryDao.findRepositories();
+        return await this.repositoryDao.findRepositories(arguments[0]);
     }
     async findRepository(repositoryGUID) {
-        return await this.repositoryDao.findRepository(repositoryGUID);
+        return await this.repositoryDao.findRepository(repositoryGUID, arguments[1]);
     }
     async create(repositoryName, isPublic) {
         let context = arguments[2];
@@ -14594,7 +14605,7 @@ class RepositoryApi {
         return await this.repositoryManager.createRepository(repositoryName, isPublic, context);
     }
     async setUiEntryUri(uiEntryUri, repository) {
-        await this.repositoryManager.setUiEntryUri(uiEntryUri, repository, {});
+        await this.repositoryManager.setUiEntryUri(uiEntryUri, repository, arguments[2]);
     }
 }
 
@@ -14637,7 +14648,7 @@ holdingPattern.setDependencies(TransactionHistoryDuo, {
 
 class UserAccountApi {
     async findUserAccount(accountPublicSingingKey) {
-        const userAccounts = await this.userAccountDao.findByAccountPublicSingingKeys([accountPublicSingingKey]);
+        const userAccounts = await this.userAccountDao.findByAccountPublicSingingKeys([accountPublicSingingKey], arguments[1]);
         if (userAccounts.length) {
             return userAccounts[0];
         }
@@ -14988,7 +14999,7 @@ BaseUserAccountDao.Search = new DaoQueryDecorators();
 BaseUserAccountDao.SearchOne = new DaoQueryDecorators();
 
 class TerminalDao extends BaseTerminalDao {
-    async findByOwnerPublicKeysAndOwnGUIDs(accountPublicSigningKeys, GUIDs) {
+    async findByOwnerPublicKeysAndOwnGUIDs(accountPublicSigningKeys, GUIDs, context) {
         let t, ua;
         return await this.db.find.tree({
             SELECT: {},
@@ -14997,9 +15008,9 @@ class TerminalDao extends BaseTerminalDao {
                 ua = t.owner.LEFT_JOIN()
             ],
             WHERE: AND(ua.accountPublicSigningKey.IN(accountPublicSigningKeys), t.GUID.IN(GUIDs))
-        });
+        }, context);
     }
-    async findByGUIDs(GUIDs) {
+    async findByGUIDs(GUIDs, context) {
         let t;
         return await this.db.find.tree({
             SELECT: {},
@@ -15007,7 +15018,7 @@ class TerminalDao extends BaseTerminalDao {
                 t = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.Terminal
             ],
             WHERE: t.GUID.IN(GUIDs)
-        });
+        }, context);
     }
     async insert(terminals, context) {
         const airport = this.dictionary.airport;
@@ -15037,7 +15048,7 @@ class TerminalDao extends BaseTerminalDao {
 }
 
 class UserAccountDao extends BaseUserAccountDao {
-    async findByUserAccountNames(usernames) {
+    async findByUserAccountNames(usernames, context) {
         let u;
         return await this.db.find.tree({
             SELECT: {},
@@ -15045,9 +15056,9 @@ class UserAccountDao extends BaseUserAccountDao {
                 u = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.UserAccount
             ],
             WHERE: u.username.IN(usernames)
-        });
+        }, context);
     }
-    async findByAccountPublicSingingKeys(accountPublicSingingKeys) {
+    async findByAccountPublicSingingKeys(accountPublicSingingKeys, context) {
         let u;
         return await this.db.find.tree({
             SELECT: {},
@@ -15055,7 +15066,7 @@ class UserAccountDao extends BaseUserAccountDao {
                 u = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.UserAccount
             ],
             WHERE: u.accountPublicSigningKey.IN(accountPublicSingingKeys)
-        });
+        }, context);
     }
     async insert(userAccounts, context) {
         const airport = this.dictionary.airport;
@@ -27782,7 +27793,7 @@ class SyncInActorChecker {
                 // Make sure id field is not in the input
                 delete actor._localId;
             }
-            const actors = await this.actorDao.findByGUIDs(actorGUIDs);
+            const actors = await this.actorDao.findByGUIDs(actorGUIDs, context);
             for (const actor of actors) {
                 const messageUserAccountIndex = messageActorIndexMap.get(actor.GUID);
                 data.actors[messageUserAccountIndex] = actor;
@@ -27854,7 +27865,7 @@ class SyncInApplicationChecker {
     async checkApplicationsAndDomains(data, context) {
         const { allDbApplication_Names, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(data);
         const applications = await this.dbApplicationDao
-            .findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names);
+            .findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names, context);
         for (let application of applications) {
             let domainName = application.domain.name;
             let applicationName = application.name;
@@ -27881,7 +27892,7 @@ class SyncInApplicationChecker {
             domainsToCreate.push(domain);
         }
         if (domainsToCreate.length) {
-            await this.dbDomainDao.insert(domainsToCreate);
+            await this.dbDomainDao.insert(domainsToCreate, context);
         }
         let applicationsToCreate = [];
         for (let [domainName, applicationChecksByName] of applicationCheckMap) {
@@ -27970,7 +27981,7 @@ class SyncInApplicationVersionChecker {
     inMessageApplicationVersions, inMessageApplications, context) {
         let applicationCheckMap;
         try {
-            applicationCheckMap = await this.checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications);
+            applicationCheckMap = await this.checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications, context);
             for (let i = 0; i < inMessageApplicationVersions.length; i++) {
                 const applicationVersion = inMessageApplicationVersions[i];
                 inMessageApplicationVersions[i] = applicationCheckMap
@@ -27984,10 +27995,10 @@ class SyncInApplicationVersionChecker {
         }
         return applicationCheckMap;
     }
-    async checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications) {
+    async checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications, context) {
         const { allApplicationNames: allDbApplication_Names, domainNames, applicationVersionCheckMap } = this
             .getNames(inMessageApplicationVersions, inMessageApplications);
-        await this.setApplicationVersions(domainNames, allDbApplication_Names, applicationVersionCheckMap);
+        await this.setApplicationVersions(domainNames, allDbApplication_Names, applicationVersionCheckMap, context);
         const domainWithNewApp_NameSet = new Set();
         const newApplicationNameSet = new Set();
         for (const [domainName, applicationChecks] of applicationVersionCheckMap) {
@@ -27999,12 +28010,12 @@ class SyncInApplicationVersionChecker {
                 }
             }
         }
-        await this.setApplicationVersions(Array.from(domainWithNewApp_NameSet), Array.from(newApplicationNameSet), applicationVersionCheckMap);
+        await this.setApplicationVersions(Array.from(domainWithNewApp_NameSet), Array.from(newApplicationNameSet), applicationVersionCheckMap, context);
         return applicationVersionCheckMap;
     }
-    async setApplicationVersions(domainNames, allDbApplication_Names, applicationVersionCheckMap) {
+    async setApplicationVersions(domainNames, allDbApplication_Names, applicationVersionCheckMap, context) {
         const existingApplicationVersions = await this.dbApplicationVersionDao
-            .findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names);
+            .findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names, context);
         let lastDomainName;
         let lastApplicationName;
         for (let applicationVersion of existingApplicationVersions) {
@@ -28101,7 +28112,7 @@ class SyncInChecker {
             };
         }
         const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
-            .checkRepositoriesAndMembers(message);
+            .checkRepositoriesAndMembers(message, context);
         if (!repositoryAndMemberCheckResult.isValid) {
             return {
                 isValid: false
@@ -28478,7 +28489,7 @@ Value is for ${relationIdColumn.name} and could find SyncRepositoryData.${inMess
 }
 
 class SyncInRepositoryChecker {
-    async checkRepositoriesAndMembers(message) {
+    async checkRepositoriesAndMembers(message, context) {
         let missingRepositories = [];
         let newMembers = [];
         let newRepositoryMemberAcceptances = [];
@@ -28511,7 +28522,7 @@ class SyncInRepositoryChecker {
                 }
                 repositoryGUIDs.push(historyRepository);
             }
-            const foundRepositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs);
+            const foundRepositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs, context);
             for (const foundRepository of foundRepositories) {
                 const messageRepositoryIndex = messageRepositoryIndexMap.get(foundRepository.GUID);
                 if (messageRepositoryIndex || messageRepositoryIndex === 0) {
@@ -28557,7 +28568,7 @@ class SyncInRepositoryChecker {
                     missingRepositories.push(historyRepository);
                 }
             }
-            const memberCheckResult = await this.checkRepositoryMembers(message);
+            const memberCheckResult = await this.checkRepositoryMembers(message, context);
             signatureChecks = memberCheckResult.signatureChecks;
             newMembers = memberCheckResult.newMembers;
             newRepositoryMemberAcceptances = [memberCheckResult.newRepositoryMemberAcceptance];
@@ -28576,12 +28587,12 @@ class SyncInRepositoryChecker {
             signatureChecks
         };
     }
-    async checkRepositoryMembers(message) {
+    async checkRepositoryMembers(message, context) {
         const data = message.data;
         const inMessageRepositoryMemberMapByPublicSigningKey = this
             .getInMessageRepositoryMemberMap(data);
         const newMembers = [];
-        const existingRepositoryMember = await this.getExistingRepositoryMember(data, inMessageRepositoryMemberMapByPublicSigningKey, newMembers);
+        const existingRepositoryMember = await this.getExistingRepositoryMember(data, inMessageRepositoryMemberMapByPublicSigningKey, newMembers, context);
         const newRepositoryMemberAcceptance = this
             .isNewRepositoryMemberAcceptanceMessage(data, existingRepositoryMember);
         const isNewRepositoryMemberAcceptanceMessage = !!newRepositoryMemberAcceptance;
@@ -28765,11 +28776,11 @@ is not present in the message.`);
             throw new Error(`${errorPrefix} does not have .length === 36`);
         }
     }
-    async getExistingRepositoryMember(data, repositoryMemberInMessageIndexesMapByPublicSigningKey, newMembers) {
+    async getExistingRepositoryMember(data, repositoryMemberInMessageIndexesMapByPublicSigningKey, newMembers, context) {
         const memberPublicSigningKeys = data.repositoryMembers
             .map(repositoryMember => repositoryMember.memberPublicSigningKey);
         const existingMessageRepositoryMembers = await this.repositoryMemberDao
-            .findByMemberPublicSigningKeys(Array.from(memberPublicSigningKeys));
+            .findByMemberPublicSigningKeys(Array.from(memberPublicSigningKeys), context);
         let existingRepositoryMember;
         const history = data.history;
         if (history.isRepositoryCreation) {
@@ -28891,7 +28902,7 @@ class SyncInTerminalChecker {
                 terminalGUIDs.push(terminal.GUID);
                 messageTerminalIndexMap.set(terminal.GUID, i);
             }
-            const terminals = await this.terminalDao.findByGUIDs(terminalGUIDs);
+            const terminals = await this.terminalDao.findByGUIDs(terminalGUIDs, context);
             const foundTerminalsByGUID = new Map();
             for (const terminal of terminals) {
                 foundTerminalsByGUID.set(terminal.GUID, terminal);
@@ -28947,7 +28958,7 @@ appears more than once in message.data.userAccounts
                 messageUserAccountIndexMap.set(userAccount.accountPublicSigningKey, i);
             }
             const userAccounts = await this.userAccountDao
-                .findByAccountPublicSingingKeys(Array.from(userAccountPublicSigningKeySet));
+                .findByAccountPublicSingingKeys(Array.from(userAccountPublicSigningKeySet), context);
             const foundUserAccountsByPublicSigningKey = new Map();
             for (const userAccount of userAccounts) {
                 foundUserAccountsByPublicSigningKey.set(userAccount.accountPublicSigningKey, userAccount);
@@ -28988,7 +28999,7 @@ class Stage1SyncedInDataProcessor {
      * @param {Map<Actor_LocalId, IActor>} actorMayById
      * @returns {Promise<void>}
      */
-    async performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryLocalId, actorMayById) {
+    async performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryLocalId, actorMayById, context) {
         await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryLocalId);
         const changedRecordIds = new Map();
         // query for all local operations on records in a repository (since the earliest
@@ -29029,7 +29040,7 @@ class Stage1SyncedInDataProcessor {
         const allRemoteRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByRepositoryLocalId);
         // find local history for the matching repositories and corresponding time period
         const localRepoTransHistoryMapByrepositoryLocalId = await this.repositoryTransactionHistoryDao
-            .findAllLocalChangesForRecordIds(changedRecordIds);
+            .findAllLocalChangesForRecordIds(changedRecordIds, context);
         const allLocalRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, localRepoTransHistoryMapByrepositoryLocalId, true);
         // Find all actors that modified the locally recorded history, which are not already
         // in the actorMapById collect actors not already in cache
@@ -29044,7 +29055,7 @@ class Stage1SyncedInDataProcessor {
         }
         if (newlyFoundActorSet.size) {
             // cache remaining actors
-            const newActors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(Array.from(newlyFoundActorSet));
+            const newActors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(Array.from(newlyFoundActorSet), context);
             for (const newActor of newActors) {
                 actorMayById.set(newActor._localId, newActor);
             }
@@ -29680,7 +29691,7 @@ class SynchronizationInManager {
     async receiveMessages(messageMapByGUID, context) {
         const syncTimestamp = new Date().getTime();
         const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
-            .findWhereGUIDsIn([...messageMapByGUID.keys()]);
+            .findWhereGUIDsIn([...messageMapByGUID.keys()], context);
         for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
             messageMapByGUID.delete(existingRepositoryTransactionHistory.GUID);
         }
@@ -29962,7 +29973,7 @@ class TwoStageSyncedInDataProcessor {
         };
     }
     async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByDbApplicationVersion_LocalIdMap, context) {
-        const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById);
+        const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById, context);
         let allSyncConflicts = [];
         let allSyncConflictValues = [];
         for (const [_, synchronizationConflicts] of stage1Result.syncConflictMapByRepoId) {
@@ -29997,7 +30008,7 @@ class SyncOutDataSerializer {
         this.WITH_RECORD_HISTORY = {};
         this.WITH_INDEX = {};
     }
-    async serialize(repositoryTransactionHistories) {
+    async serialize(repositoryTransactionHistories, context) {
         let historiesToSend = [];
         const messages = [];
         for (let i = 0; i < repositoryTransactionHistories.length; i++) {
@@ -30005,7 +30016,7 @@ class SyncOutDataSerializer {
             if (repositoryTransactionHistory.repositoryTransactionType !== RepositoryTransactionType.LOCAL) {
                 continue;
             }
-            const message = await this.serializeMessage(repositoryTransactionHistory);
+            const message = await this.serializeMessage(repositoryTransactionHistory, context);
             historiesToSend.push(repositoryTransactionHistory);
             messages.push(message);
         }
@@ -30020,7 +30031,7 @@ class SyncOutDataSerializer {
             lastInMessageIndex: -1
         };
     }
-    async serializeMessage(repositoryTransactionHistory) {
+    async serializeMessage(repositoryTransactionHistory, context) {
         const lookups = {
             actorInMessageIndexesById: new Map(),
             applicationLookup: this.getInMessageEntityLookup(),
@@ -30059,19 +30070,19 @@ class SyncOutDataSerializer {
         };
         data.history = this.serializeRepositoryTransactionHistory(repositoryTransactionHistory, message.data, lookups);
         // TODO: replace db lookups with TerminalState lookups where possible
-        await this.serializeRepositories(repositoryTransactionHistory, data, lookups);
-        await this.serializeActorsUserAccountsAndTerminals(data, lookups);
+        await this.serializeRepositories(repositoryTransactionHistory, data, lookups, context);
+        await this.serializeActorsUserAccountsAndTerminals(data, lookups, context);
         await this.serializeApplicationsAndVersions(data, lookups.applicationLookup, lookups.applicationVersions, data.applicationVersions);
-        await this.serializeReferencedApplicationProperties(data, lookups);
+        await this.serializeReferencedApplicationProperties(data, lookups, context);
         await this.serializeApplicationsAndVersions(data, lookups.applicationLookup, lookups.referencedApplicationVersions, data.referencedApplicationVersions);
         return message;
     }
-    async serializeActorsUserAccountsAndTerminals(data, lookups) {
+    async serializeActorsUserAccountsAndTerminals(data, lookups, context) {
         let actorIdsToFindBy = [];
         for (let actorId of lookups.actorInMessageIndexesById.keys()) {
             actorIdsToFindBy.push(actorId);
         }
-        const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy);
+        const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy, context);
         this.serializeUserAccounts(actors, data, lookups.userAccountLookup);
         this.serializeActorTerminals(actors, data, lookups.terminalLookup, lookups.userAccountLookup);
         for (const actor of actors) {
@@ -30174,13 +30185,13 @@ class SyncOutDataSerializer {
         }
         return inMessageIndex;
     }
-    async serializeRepositories(repositoryTransactionHistory, data, lookups) {
+    async serializeRepositories(repositoryTransactionHistory, data, lookups, context) {
         let repositoryIdsToFindBy = [];
         for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
             repositoryIdsToFindBy.push(repositoryId);
         }
         repositoryIdsToFindBy.push(repositoryTransactionHistory._localId);
-        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(repositoryIdsToFindBy);
+        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(repositoryIdsToFindBy, context);
         for (const repository of repositories) {
             let userAccountInMessageIndex = this.getEntityInMessageIndex(repository.owner, IndexedEntityType.USER_ACCOUNT, lookups.userAccountLookup);
             if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
@@ -30196,13 +30207,13 @@ class SyncOutDataSerializer {
             }
         }
     }
-    async serializeReferencedApplicationProperties(data, lookups) {
+    async serializeReferencedApplicationProperties(data, lookups, context) {
         let applicationRelationIdsToFindBy = [];
         for (let applicationRelationLocalId of lookups.referencedApplicationRelationIndexesById.keys()) {
             applicationRelationIdsToFindBy.push(applicationRelationLocalId);
         }
         const applicationRelations = await this.dbRelationDao
-            .findAllByLocalIdsWithApplications(applicationRelationIdsToFindBy);
+            .findAllByLocalIdsWithApplications(applicationRelationIdsToFindBy, context);
         for (const applicationRelation of applicationRelations) {
             const referencedApplicationVersion = applicationRelation.entity.applicationVersion;
             let referencedApplicationVersionInMessageIndex;
@@ -30520,8 +30531,8 @@ class SyncOutDataSerializer {
 
 class SynchronizationOutManager {
     async getSynchronizationMessages(repositoryTransactionHistories, context) {
-        await this.loadHistoryRepositories(repositoryTransactionHistories);
-        const { historiesToSend, messages } = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories);
+        await this.loadHistoryRepositories(repositoryTransactionHistories, context);
+        const { historiesToSend, messages } = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories, context);
         // await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
         this.messageSigningManager.signMessages(messages);
         await this.repositoryReferenceCreator.create(messages, context);
@@ -30536,15 +30547,15 @@ class SynchronizationOutManager {
             messages
         };
     }
-    async sendMessages(historiesToSend, messages) {
+    async sendMessages(historiesToSend, messages, context) {
         const groupMessageMap = this.groupMessagesByRepository(messages, historiesToSend);
         for (const [repositoryGUID, messagesForRepository] of groupMessageMap) {
             const synchronizationAdapter = await this.synchronizationAdapterLoader.load(repositoryGUID);
             await synchronizationAdapter.sendTransactions(repositoryGUID, messagesForRepository);
         }
-        await this.updateRepositoryTransactionHistories(messages, historiesToSend);
+        await this.updateRepositoryTransactionHistories(messages, historiesToSend, context);
     }
-    async loadHistoryRepositories(repositoryTransactionHistories) {
+    async loadHistoryRepositories(repositoryTransactionHistories, context) {
         const repositoryIdsToLookup = new Set();
         const repositoryMapById = new Map();
         for (const repositoryTransactionHistory of repositoryTransactionHistories) {
@@ -30555,7 +30566,7 @@ class SynchronizationOutManager {
         }
         const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds([
             ...repositoryIdsToLookup.values()
-        ]);
+        ], context);
         for (const repository of repositories) {
             repositoryMapById.set(repository._localId, repository);
         }
@@ -30564,7 +30575,7 @@ class SynchronizationOutManager {
                 repositoryMapById.get(repositoryTransactionHistory.repository._localId);
         }
     }
-    async ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages) {
+    async ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages, context) {
         const repositoryIdsToLookup = new Set();
         const repositoryMapById = new Map();
         for (const repositoryTransactionHistory of repositoryTransactionHistories) {
@@ -30581,7 +30592,7 @@ class SynchronizationOutManager {
         }
         const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds([
             ...repositoryIdsToLookup.values()
-        ]);
+        ], context);
         for (const repository of repositories) {
             repositoryMapById.set(repository._localId, repository);
         }
@@ -30603,13 +30614,13 @@ class SynchronizationOutManager {
         }
         return groupMessageMap;
     }
-    async updateRepositoryTransactionHistories(messages, repositoryTransactionHistories) {
+    async updateRepositoryTransactionHistories(messages, repositoryTransactionHistories, context) {
         for (let i = 0; i < messages.length; i++) {
             const message = messages[i];
             const repositoryTransactionHistory = repositoryTransactionHistories[i];
             if (message.syncTimestamp) {
                 repositoryTransactionHistory.syncTimestamp = message.syncTimestamp;
-                await this.repositoryTransactionHistoryDao.updateSyncTimestamp(repositoryTransactionHistory);
+                await this.repositoryTransactionHistoryDao.updateSyncTimestamp(repositoryTransactionHistory, context);
             }
         }
     }
@@ -30632,7 +30643,7 @@ class RepositoryReferenceCreator {
             }
         }
         const existingRepositoryReferences = await this.repositoryReferenceDao
-            .findByReferencingRepository_LocalIds(Array.from(repositoryReferenceMapByLocalIds.keys()));
+            .findByReferencingRepository_LocalIds(Array.from(repositoryReferenceMapByLocalIds.keys()), context);
         for (const existingRepositoryReference of existingRepositoryReferences) {
             const referencesOfRepositoryMap = repositoryReferenceMapByLocalIds
                 .get(existingRepositoryReference.referencingRepository._localId);
@@ -30851,39 +30862,9 @@ class ObservableQueryAdapter {
                 return;
             }
             this.repositoryExistenceCheckInProgress = true;
-            const locallyPresentRepositories = await this.repositoryDao
-                .findByGUIDsAndLocalIds(Array.from(this.queriedRepositoryIds.GUIDSet), Array.from(this.queriedRepositoryIds.localIdSet));
-            const locallyPresentRepositoryMapByGUID = new Map();
-            const locallyPresentRepositoryMapByLocalId = new Map();
-            for (const localyPresentRepository of locallyPresentRepositories) {
-                locallyPresentRepositoryMapByGUID.set(localyPresentRepository.GUID, localyPresentRepository);
-                locallyPresentRepositoryMapByLocalId.set(localyPresentRepository._localId, localyPresentRepository);
-            }
-            const locallyMissingRepositoryGUIDSet = new Set();
-            for (const repositoryGUIDToCheck of this.queriedRepositoryIds.GUIDSet.values()) {
-                const locallyPresentRepository = locallyPresentRepositoryMapByGUID
-                    .get(repositoryGUIDToCheck);
-                if (!locallyPresentRepository || !locallyPresentRepository.isLoaded) {
-                    locallyMissingRepositoryGUIDSet.add(repositoryGUIDToCheck);
-                }
-            }
-            for (const repositoryLocalId of this.queriedRepositoryIds.localIdSet.values()) {
-                const locallyPresentRepository = locallyPresentRepositoryMapByLocalId
-                    .get(repositoryLocalId);
-                if (!locallyPresentRepository) {
-                    throw new Error(`Did not find a repository with _localId '${repositoryLocalId}'.`);
-                }
-                if (!locallyPresentRepository.isLoaded) {
-                    locallyMissingRepositoryGUIDSet.add(locallyPresentRepository.GUID);
-                }
-            }
-            for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
-                await this.repositoryLoader.loadRepository(locallyMissingRepositoryGUID, {
-                    doNotLoadReferences: true
-                });
-            }
-            this.queriedRepositoryIds.GUIDSet.clear();
-            this.queriedRepositoryIds.localIdSet.clear();
+            await this.transactionManager.transactInternal(async (_transaction, context) => {
+                await this.doCheckExistenceOfQueriedRepositories(context);
+            }, null, {});
         }
         catch (e) {
             console.error('Error checking Repositor existence');
@@ -30892,6 +30873,42 @@ class ObservableQueryAdapter {
         finally {
             this.repositoryExistenceCheckInProgress = false;
         }
+    }
+    async doCheckExistenceOfQueriedRepositories(context) {
+        const locallyPresentRepositories = await this.repositoryDao
+            .findByGUIDsAndLocalIds(Array.from(this.queriedRepositoryIds.GUIDSet), Array.from(this.queriedRepositoryIds.localIdSet), context);
+        const locallyPresentRepositoryMapByGUID = new Map();
+        const locallyPresentRepositoryMapByLocalId = new Map();
+        for (const localyPresentRepository of locallyPresentRepositories) {
+            locallyPresentRepositoryMapByGUID.set(localyPresentRepository.GUID, localyPresentRepository);
+            locallyPresentRepositoryMapByLocalId.set(localyPresentRepository._localId, localyPresentRepository);
+        }
+        const locallyMissingRepositoryGUIDSet = new Set();
+        for (const repositoryGUIDToCheck of this.queriedRepositoryIds.GUIDSet.values()) {
+            const locallyPresentRepository = locallyPresentRepositoryMapByGUID
+                .get(repositoryGUIDToCheck);
+            if (!locallyPresentRepository || !locallyPresentRepository.isLoaded) {
+                locallyMissingRepositoryGUIDSet.add(repositoryGUIDToCheck);
+            }
+        }
+        for (const repositoryLocalId of this.queriedRepositoryIds.localIdSet.values()) {
+            const locallyPresentRepository = locallyPresentRepositoryMapByLocalId
+                .get(repositoryLocalId);
+            if (!locallyPresentRepository) {
+                throw new Error(`Did not find a repository with _localId '${repositoryLocalId}'.`);
+            }
+            if (!locallyPresentRepository.isLoaded) {
+                locallyMissingRepositoryGUIDSet.add(locallyPresentRepository.GUID);
+            }
+        }
+        for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
+            await this.repositoryLoader.loadRepository(locallyMissingRepositoryGUID, {
+                ...context,
+                doNotLoadReferences: true
+            });
+        }
+        this.queriedRepositoryIds.GUIDSet.clear();
+        this.queriedRepositoryIds.localIdSet.clear();
     }
     wrapInObservable(portableQuery, queryCallback) {
         // TODO: checking for presence of a Repository in an Observable
@@ -30959,7 +30976,8 @@ const OBSERVABLE_QUERY_ADAPTER = flightNumber.token('ObservableQueryAdapter');
 OBSERVABLE_QUERY_ADAPTER.setClass(ObservableQueryAdapter);
 OBSERVABLE_QUERY_ADAPTER.setDependencies({
     activeQueries: ActiveQueries,
-    repositoryDao: RepositoryDao
+    repositoryDao: RepositoryDao,
+    transactionManager: TRANSACTION_MANAGER
 });
 globalThis.OBSERVABLE_QUERY_ADAPTER = OBSERVABLE_QUERY_ADAPTER;
 
@@ -34046,7 +34064,7 @@ let RepositoryMaintenanceManager = class RepositoryMaintenanceManager {
     async selfJoinRepository(repositoryGUID) {
         let context = arguments[1];
         const userAccount = await this.terminalSessionManager.getUserAccountFromSession();
-        const repository = await this.repositoryDao.findRepository(repositoryGUID);
+        const repository = await this.repositoryDao.findRepository(repositoryGUID, context);
         if (!repository) {
             throw new Error(`Repository with GUID: ${repositoryGUID} is not found.`);
         }
@@ -34054,7 +34072,7 @@ let RepositoryMaintenanceManager = class RepositoryMaintenanceManager {
             throw new Error(`Cannot self-join a non-public Repository, use the joinRepository method.`);
         }
         const repositoryMember = await this.repositoryMemberDao
-            .findForRepositoryLocalIdAndAccountPublicSingingKey(repository._localId, userAccount.accountPublicSigningKey);
+            .findForRepositoryLocalIdAndAccountPublicSingingKey(repository._localId, userAccount.accountPublicSigningKey, context);
         if (repositoryMember) {
             console.warn(`User ${userAccount.username} is already a member of Repository ${repository.name}`);
             return;
@@ -34064,7 +34082,7 @@ let RepositoryMaintenanceManager = class RepositoryMaintenanceManager {
     async acceptRepositoryMemberInvitation(repositoryGUID, base64EncodedInvitationPrivateSigningKey, base64EncodedInvitationPublicSigningKey) {
         let context = arguments[1];
         const userAccount = await this.terminalSessionManager.getUserAccountFromSession();
-        const repository = await this.repositoryDao.findRepository(repositoryGUID);
+        const repository = await this.repositoryDao.findRepository(repositoryGUID, context);
         if (!repository) {
             throw new Error(`Repository with GUID: ${repositoryGUID} is not found.`);
         }
@@ -34073,7 +34091,7 @@ let RepositoryMaintenanceManager = class RepositoryMaintenanceManager {
         }
         const invitationPublicSigningKey = atob(base64EncodedInvitationPublicSigningKey);
         const acceptingRepositoryMember = await this.repositoryMemberDao
-            .findForRepositoryLocalIdAndIvitationPublicSigningKey(repository._localId, invitationPublicSigningKey);
+            .findForRepositoryLocalIdAndIvitationPublicSigningKey(repository._localId, invitationPublicSigningKey, context);
         if (!acceptingRepositoryMember) {
             throw new Error(`User '${userAccount.username}' is not a member of Repository '${repository.name}'`);
         }
@@ -34415,7 +34433,7 @@ already contains a new repository.`);
             throw new Error(`Only the Application that created a repository may change the uiEntityUri.`);
         }
         repository.uiEntryUri = uiEntryUri;
-        await this.repositoryDao.updateUiEntityUri(repository.GUID, uiEntryUri);
+        await this.repositoryDao.updateUiEntityUri(repository.GUID, uiEntryUri, context);
     }
     goOffline() {
         throw new Error(`not implemented`);
@@ -34511,8 +34529,8 @@ class InternalRecordManager {
             // TODO: add request object
             const userSession = await this.terminalSessionManager.getUserSession();
             let actor = await this.actorDao
-                .findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(application.domain, application.name, userSession.userAccount.accountPublicSigningKey, frameworkActor.terminal.GUID);
-            let anApplication = await this.dbApplicationDao.findByIndex(application.lastIds.applications + 1);
+                .findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(application.domain, application.name, userSession.userAccount.accountPublicSigningKey, frameworkActor.terminal.GUID, context);
+            let anApplication = await this.dbApplicationDao.findByIndex(application.lastIds.applications + 1, context);
             if (!actor) {
                 actor = {
                     _localId: null,
@@ -34545,7 +34563,7 @@ class InternalRecordManager {
             terminal.owner = userAccount;
             terminal.isLocal = true;
             terminal.GUID = v4();
-            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(firstApp.domain, firstApp.name);
+            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(firstApp.domain, firstApp.name, context);
             const actor = new Actor();
             actor.application = application;
             actor.userAccount = userAccount;
@@ -34566,7 +34584,7 @@ class InternalRecordManager {
         if (domain && this.entityStateManager.getOriginalValues(domain)) {
             return domain;
         }
-        let dbDomain = await this.dbDomainDao.findByName(application.domain);
+        let dbDomain = await this.dbDomainDao.findByName(application.domain, context);
         let updatedDomain;
         if (domain) {
             if (dbDomain) {
@@ -35079,11 +35097,11 @@ class TransactionalReceiver {
                 return actor;
             }
             const terminal = this.terminalStore.getTerminal();
-            actor = await this.actorDao.findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(message.domain, message.application, userSession.userAccount.accountPublicSigningKey, terminal.GUID);
+            actor = await this.actorDao.findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(message.domain, message.application, userSession.userAccount.accountPublicSigningKey, terminal.GUID, context);
             if (actor) {
                 return actor;
             }
-            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(message.domain, message.application);
+            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(message.domain, message.application, context);
             actor = {
                 _localId: null,
                 application,
@@ -35406,7 +35424,7 @@ class DatabaseManager {
         return this.initialized;
     }
     async initFeatureApplications(context, jsonApplications) {
-        const applications = await this.dbApplicationDao.findAllWithJson();
+        const applications = await this.dbApplicationDao.findAllWithJson(context);
         const existingApplicationMap = new Map();
         for (const application of applications) {
             existingApplicationMap.set(application.fullName, application);
@@ -35637,7 +35655,7 @@ class HistoryManager {
             isRepositoryCreation = true;
             isPublic = newRepository.isPublic;
         }
-        return await this.transactionHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryLocalId, actor, isRepositoryCreation, isPublic);
+        return await this.transactionHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryLocalId, actor, isRepositoryCreation, isPublic, context);
     }
 }
 
@@ -36039,7 +36057,7 @@ class QueryManager {
         if (!entityArray || !entityArray.length) {
             return entityArray;
         }
-        await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, entityArray);
+        await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, entityArray, context);
         return entityArray;
     }
     async findOne(portableQuery, context, cachedSqlQueryId) {
@@ -36048,7 +36066,7 @@ class QueryManager {
         if (!entity) {
             return entity;
         }
-        await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [entity]);
+        await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [entity], context);
         return entity;
     }
     search(portableQuery, context, cachedSqlQueryId) {
@@ -36058,7 +36076,7 @@ class QueryManager {
                 if (!result || !result.length) {
                     return result;
                 }
-                return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, result);
+                return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, result, context);
             });
         });
     }
@@ -36069,7 +36087,7 @@ class QueryManager {
                 if (!result) {
                     return result;
                 }
-                return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [result])[0];
+                return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [result], context)[0];
             });
         });
     }
@@ -36078,7 +36096,7 @@ class QueryManager {
             await this.repositoryLoader.loadRepository(context.repository.GUID, context);
         }
     }
-    async populateEntityGuidEntitiesAndUserAccounts(portableQuery, entities) {
+    async populateEntityGuidEntitiesAndUserAccounts(portableQuery, entities, context) {
         if (!entities.length) {
             return;
         }
@@ -36092,8 +36110,8 @@ class QueryManager {
         const entityMapByActorRecordId = new Map();
         const actorsToRetrieveUserAccountForByLocalId = new Map();
         this.markEntities(entities, new Set(), entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId, dbEntity);
-        await this.populateActorsAndUserAccounts(entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId);
-        await this.populateRepositories(entityMapByRepositoryLocalId);
+        await this.populateActorsAndUserAccounts(entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId, context);
+        await this.populateRepositories(entityMapByRepositoryLocalId, context);
         return entities;
     }
     markEntities(currentEntities, processedEntitySet, entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId, dbEntity) {
@@ -36155,7 +36173,7 @@ class QueryManager {
         }
         return true;
     }
-    async populateActorsAndUserAccounts(entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId) {
+    async populateActorsAndUserAccounts(entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId, context) {
         const actorIdSet = new Set();
         for (const actorLocalId of entityMapByActorRecordId.keys()) {
             actorIdSet.add(actorLocalId);
@@ -36167,7 +36185,7 @@ class QueryManager {
             return;
         }
         const actorLocalIds = Array.from(actorIdSet);
-        const actors = await this.actorDao.findWithUserAccountBy_LocalIdIn(actorLocalIds);
+        const actors = await this.actorDao.findWithUserAccountBy_LocalIdIn(actorLocalIds, context);
         for (const actor of actors) {
             const entitiesWithoutActorObject = entityMapByActorRecordId.get(actor._localId);
             if (entitiesWithoutActorObject) {
@@ -36181,13 +36199,13 @@ class QueryManager {
             }
         }
     }
-    async populateRepositories(entityMapByRepositoryLocalId) {
+    async populateRepositories(entityMapByRepositoryLocalId, context) {
         const repositoryLocalIds = Array.from(entityMapByRepositoryLocalId.keys());
         if (!repositoryLocalIds.length) {
             return;
         }
         const repositories = await this.repositoryDao
-            .findWithOwnerBy_LocalIdIn(repositoryLocalIds);
+            .findWithOwnerBy_LocalIdIn(repositoryLocalIds, context);
         for (const repository of repositories) {
             const entiesWithoutRepositoryObject = entityMapByRepositoryLocalId.get(repository._localId);
             for (const entity of entiesWithoutRepositoryObject) {
@@ -36390,7 +36408,7 @@ parent transactions.
                 const { historiesToSend, messages } = await this.synchronizationOutManager.getSynchronizationMessages(transactionHistory.repositoryTransactionHistories, context);
                 await transaction.commit(null, context);
                 if (!parentTransaction && transactionHistory.allRecordHistory.length) {
-                    await this.synchronizationOutManager.sendMessages(historiesToSend, messages);
+                    await this.synchronizationOutManager.sendMessages(historiesToSend, messages, context);
                 }
             }
             else {

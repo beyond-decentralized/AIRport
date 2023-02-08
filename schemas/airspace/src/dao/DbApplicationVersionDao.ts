@@ -8,11 +8,14 @@ import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
 export interface IDbApplicationVersionDao
 	extends IBaseDdlApplicationVersionDao {
 
-	findAllActiveOrderByDbApplication_IndexAndId(): Promise<DbApplicationVersion[]>
+	findAllActiveOrderByDbApplication_IndexAndId(
+		context: IContext
+	): Promise<DbApplicationVersion[]>
 
 	findByDomain_NamesAndDbApplication_Names(
 		domainNames: string[],
-		applicationNames: string[]
+		applicationNames: string[],
+		context: IContext
 	): Promise<DbApplicationVersion[]>
 
 	insert(
@@ -29,7 +32,8 @@ export class DbApplicationVersionDao
 
 	/*
 	async findAllLatestForDbApplication_Indexes(
-		applicationIndexes: DbApplication_Index[]
+		applicationIndexes: DbApplication_Index[],
+		context: IContext
 	): Promise<DbApplicationVersion[]> {
 		let sv: QAppVersion
 
@@ -42,11 +46,13 @@ export class DbApplicationVersionDao
 				sv._localId.IN(this._localIdsForMaxVersionSelect()),
 				sv.application.index.IN(applicationIndexes)
 			)
-		})
+		}, context)
 	}
 	*/
 
-	async findAllActiveOrderByDbApplication_IndexAndId(): Promise<DbApplicationVersion[]> {
+	async findAllActiveOrderByDbApplication_IndexAndId(
+		context: IContext
+	): Promise<DbApplicationVersion[]> {
 		let av: QDdlApplicationVersion,
 			a: QDdlApplication
 
@@ -60,12 +66,13 @@ export class DbApplicationVersionDao
 				a.index.ASC(),
 				av._localId.DESC()
 			]
-		})
+		}, context)
 	}
 
 	async findByDomain_NamesAndDbApplication_Names(
 		domainNames: DbDomain_Name[],
-		applicationNames: DbApplication_Name[]
+		applicationNames: DbApplication_Name[],
+		context: IContext
 	): Promise<DbApplicationVersion[]> {
 		let av: QDdlApplicationVersion
 		let a: QDdlApplication
@@ -96,13 +103,14 @@ export class DbApplicationVersionDao
 				d.name.DESC(),
 				a.name.DESC()
 			]
-		})
+		}, context)
 	}
 
 	/*
 	async findMaxVersionedMapByApplicationAndDomain_Names(
 		applicationDomain_Names: DbDomain_Name[],
-		applicationNames: DbApplication_Name[]
+		applicationNames: DbApplication_Name[],
+		context: IContext
 	): Promise<Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationVersion>>> {
 		const maxVersionedMapByApplicationAndDomain_Names
 				  : Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationVersion>>
@@ -138,7 +146,7 @@ export class DbApplicationVersionDao
 				d.name.IN(applicationDomain_Names),
 				s.name.IN(applicationNames)
 			),
-		})
+		}, context)
 
 		for (const maxApplicationVersion of maxApplicationVersions) {
 			const application = maxApplicationVersion.application
@@ -151,7 +159,9 @@ export class DbApplicationVersionDao
 		return maxVersionedMapByApplicationAndDomain_Names
 	}
 
-	private idsForMaxVersionSelect(): RawFieldQuery<IQNumberField> {
+	private idsForMaxVersionSelect(
+		context: IContext
+	): RawFieldQuery<IQNumberField> {
 		let svMax
 		let sv2: QAppVersion
 
@@ -169,7 +179,7 @@ export class DbApplicationVersionDao
 				})
 			],
 			SELECT: svMax._localId
-		})
+		}, context)
 	}
 */
 	async insert(

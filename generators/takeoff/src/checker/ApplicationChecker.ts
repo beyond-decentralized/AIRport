@@ -12,6 +12,7 @@ import {
 	IDbApplicationDao
 } from '@airport/airspace/dist/app/bundle'
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -43,7 +44,8 @@ export interface IApplicationChecker {
 	): Promise<void>
 
 	checkDependencies(
-		jsonApplications: JsonApplication[]
+		jsonApplications: JsonApplication[],
+		context: IContext
 	): Promise<ApplicationReferenceCheckResults>
 
 }
@@ -85,7 +87,8 @@ export class ApplicationChecker
 	}
 
 	async checkDependencies(
-		jsonApplications: JsonApplication[]
+		jsonApplications: JsonApplication[],
+		context: IContext
 	): Promise<ApplicationReferenceCheckResults> {
 		const allReferencedApplicationMap: Map<DbDomain_Name, Map<JsonApplication_Name, JsonApplication>> = new Map()
 
@@ -110,7 +113,8 @@ export class ApplicationChecker
 		}
 
 		this.pruneInGroupReferences(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication)
-		await this.pruneReferencesToExistingApplications(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication)
+		await this.pruneReferencesToExistingApplications(jsonApplications, allReferencedApplicationMap,
+			referencedApplicationMapByApplication, context)
 
 
 		const applicationsWithValidDependencies: JsonApplication[] = []
@@ -168,9 +172,11 @@ export class ApplicationChecker
 		jsonApplications: JsonApplication[],
 		allReferencedApplicationMap: Map<DbDomain_Name, Map<JsonApplication_Name, JsonApplication>>,
 		referencedApplicationMapByApplication:
-			Map<DbDomain_Name, Map<JsonApplication_Name, Map<DbDomain_Name, Map<JsonApplication_Name, JsonApplication>>>>
+			Map<DbDomain_Name, Map<JsonApplication_Name, Map<DbDomain_Name, Map<JsonApplication_Name, JsonApplication>>>>,
+		context: IContext
 	): Promise<void> {
-		const existingApplicationInfo = await this.findExistingApplications(allReferencedApplicationMap)
+		const existingApplicationInfo = await this.findExistingApplications(
+			allReferencedApplicationMap, context)
 
 		for (const applicationName of existingApplicationInfo.existingApplicationMapByName.keys()) {
 			const coreDomainAndDbApplication_Names
@@ -196,7 +202,8 @@ export class ApplicationChecker
 	}
 
 	private async findExistingApplications(
-		allReferencedApplicationMap: Map<DbDomain_Name, Map<JsonApplication_Name, JsonApplication>>
+		allReferencedApplicationMap: Map<DbDomain_Name, Map<JsonApplication_Name, JsonApplication>>,
+		context: IContext
 	): Promise<ExistingApplicationInfo> {
 		const fullDbApplication_Names: DbApplication_FullName[] = []
 		const coreDomainAndDbApplication_NamesByDbApplication_Name: Map<DbApplication_FullName, CoreDomainAndDbApplication_Names> = new Map()
@@ -217,7 +224,8 @@ export class ApplicationChecker
 		if (!fullDbApplication_Names.length) {
 			existingApplicationMapByName = new Map()
 		} else {
-			existingApplicationMapByName = await this.dbApplicationDao.findMapByFullNames(fullDbApplication_Names)
+			existingApplicationMapByName = await this.dbApplicationDao
+				.findMapByFullNames(fullDbApplication_Names, context)
 		}
 
 		return {

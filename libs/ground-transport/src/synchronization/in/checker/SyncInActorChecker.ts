@@ -45,7 +45,7 @@ export class SyncInActorChecker
 				delete actor._localId
 			}
 
-			const actors = await this.actorDao.findByGUIDs(actorGUIDs)
+			const actors = await this.actorDao.findByGUIDs(actorGUIDs, context)
 			for (const actor of actors) {
 				const messageUserAccountIndex = messageActorIndexMap.get(actor.GUID)
 				data.actors[messageUserAccountIndex] = actor

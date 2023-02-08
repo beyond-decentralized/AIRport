@@ -1,5 +1,6 @@
 import { lib } from "@airport/direction-indicator"
 import { RepositoryDao } from "@airport/holding-pattern/dist/app/bundle"
+import { TRANSACTION_MANAGER } from "@airport/terminal-map"
 import { ActiveQueries } from "./ActiveQueries"
 import { IObservableQueryAdapter, ObservableQueryAdapter } from "./ObservableQueryAdapter"
 
@@ -12,7 +13,8 @@ export const OBSERVABLE_QUERY_ADAPTER = flightNumber.token<IObservableQueryAdapt
 OBSERVABLE_QUERY_ADAPTER.setClass(ObservableQueryAdapter)
 OBSERVABLE_QUERY_ADAPTER.setDependencies({
     activeQueries: ActiveQueries,
-    repositoryDao: RepositoryDao
+    repositoryDao: RepositoryDao,
+    transactionManager: TRANSACTION_MANAGER
 })
 
 globalThis.OBSERVABLE_QUERY_ADAPTER = OBSERVABLE_QUERY_ADAPTER

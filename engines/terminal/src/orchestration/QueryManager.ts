@@ -3,6 +3,7 @@ import {
 	IRepositoryLoader
 } from '@airport/air-traffic-control'
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -67,7 +68,7 @@ export class QueryManager
 		}
 
 		await this.populateEntityGuidEntitiesAndUserAccounts(
-			portableQuery, entityArray);
+			portableQuery, entityArray, context);
 
 		return entityArray;
 	}
@@ -86,7 +87,7 @@ export class QueryManager
 		}
 
 		await this.populateEntityGuidEntitiesAndUserAccounts(
-			portableQuery, [entity]);
+			portableQuery, [entity], context);
 
 		return entity
 	}
@@ -105,7 +106,7 @@ export class QueryManager
 							return result
 						}
 						return this.populateEntityGuidEntitiesAndUserAccounts<E>(
-							portableQuery, result)
+							portableQuery, result, context)
 					})
 			}
 		)
@@ -125,7 +126,7 @@ export class QueryManager
 							return result
 						}
 						return this.populateEntityGuidEntitiesAndUserAccounts<E>(
-							portableQuery, [result])[0];
+							portableQuery, [result], context)[0];
 					})
 			}
 		)
@@ -141,7 +142,8 @@ export class QueryManager
 
 	private async populateEntityGuidEntitiesAndUserAccounts<E>(
 		portableQuery: PortableQuery,
-		entities: Array<E>
+		entities: Array<E>,
+		context: IContext
 	): Promise<Array<E>> {
 		if (!entities.length) {
 			return
@@ -163,9 +165,10 @@ export class QueryManager
 
 		await this.populateActorsAndUserAccounts(
 			entityMapByActorRecordId,
-			actorsToRetrieveUserAccountForByLocalId
+			actorsToRetrieveUserAccountForByLocalId,
+			context
 		)
-		await this.populateRepositories(entityMapByRepositoryLocalId)
+		await this.populateRepositories(entityMapByRepositoryLocalId, context)
 
 		return entities
 	}
@@ -260,7 +263,8 @@ export class QueryManager
 
 	private async populateActorsAndUserAccounts(
 		entityMapByActorRecordId: Map<Actor_LocalId, any[]>,
-		actorsToRetrieveUserAccountForByLocalId: Map<Actor_LocalId, IActor>
+		actorsToRetrieveUserAccountForByLocalId: Map<Actor_LocalId, IActor>,
+		context: IContext
 	): Promise<void> {
 		const actorIdSet = new Set<Actor_LocalId>()
 		for (const actorLocalId of entityMapByActorRecordId.keys()) {
@@ -275,7 +279,8 @@ export class QueryManager
 		}
 
 		const actorLocalIds: number[] = Array.from(actorIdSet)
-		const actors = await this.actorDao.findWithUserAccountBy_LocalIdIn(actorLocalIds)
+		const actors = await this.actorDao.findWithUserAccountBy_LocalIdIn(
+			actorLocalIds, context)
 		for (const actor of actors) {
 			const entitiesWithoutActorObject = entityMapByActorRecordId.get(actor._localId)
 			if (entitiesWithoutActorObject) {
@@ -291,7 +296,8 @@ export class QueryManager
 	}
 
 	private async populateRepositories(
-		entityMapByRepositoryLocalId: Map<Repository_LocalId, any[]>
+		entityMapByRepositoryLocalId: Map<Repository_LocalId, any[]>,
+		context: IContext
 	): Promise<void> {
 		const repositoryLocalIds = Array.from(entityMapByRepositoryLocalId.keys())
 
@@ -300,7 +306,7 @@ export class QueryManager
 		}
 
 		const repositories = await this.repositoryDao
-			.findWithOwnerBy_LocalIdIn(repositoryLocalIds)
+			.findWithOwnerBy_LocalIdIn(repositoryLocalIds, context)
 
 		for (const repository of repositories) {
 			const entiesWithoutRepositoryObject = entityMapByRepositoryLocalId.get(repository._localId)

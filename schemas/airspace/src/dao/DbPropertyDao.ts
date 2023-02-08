@@ -8,7 +8,8 @@ export interface IDbPropertyDao
 	extends IBaseDdlPropertyDao {
 
 	findAllForEntities(
-		entityIds: DbEntity_LocalId[]
+		entityIds: DbEntity_LocalId[],
+		context: IContext
 	): Promise<DbProperty[]>;
 
 	insert(
@@ -24,7 +25,8 @@ export class DbPropertyDao
 	implements IDbPropertyDao {
 
 	async findAllForEntities(
-		entityIds: DbEntity_LocalId[]
+		entityIds: DbEntity_LocalId[],
+		context: IContext
 	): Promise<DbProperty[]> {
 		let p: QDdlProperty
 
@@ -34,7 +36,7 @@ export class DbPropertyDao
 				p = Q_airport____at_airport_slash_airspace.DbPropertyColumn
 			],
 			WHERE: p.entity._localId.IN(entityIds)
-		})
+		}, context)
 	}
 
 	async insert(

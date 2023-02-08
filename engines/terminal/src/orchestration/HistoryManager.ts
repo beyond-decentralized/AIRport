@@ -36,7 +36,7 @@ export class HistoryManager
 		}
 		return await this.transactionHistoryDuo.getRepositoryTransaction(
 			transactionHistory, repositoryLocalId,
-			actor, isRepositoryCreation, isPublic)
+			actor, isRepositoryCreation, isPublic, context)
 	}
 
 }

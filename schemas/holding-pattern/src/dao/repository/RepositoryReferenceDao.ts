@@ -8,7 +8,8 @@ export class RepositoryReferenceDao
     extends BaseRepositoryReferenceDao {
 
     async findByReferencingRepository_LocalIds(
-        repositoryLocalIds: Repository_LocalId[]
+        repositoryLocalIds: Repository_LocalId[],
+		context: IContext
     ): Promise<IRepositoryReference[]> {
         let rr: QRepositoryReference
 
@@ -20,7 +21,7 @@ export class RepositoryReferenceDao
             ],
             WHERE: rr.referencingRepository._localId
                 .IN(repositoryLocalIds)
-        })
+        }, context)
     }
 
     async insert(

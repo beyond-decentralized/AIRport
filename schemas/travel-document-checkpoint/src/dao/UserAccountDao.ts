@@ -9,11 +9,13 @@ export interface IUserAccountDao
 	extends IBaseUserAccountDao {
 
 	findByUserAccountNames(
-		usernames: UserAccount_Username[]
+		usernames: UserAccount_Username[],
+		context: IContext
 	): Promise<IUserAccount[]>
 
 	findByAccountPublicSingingKeys(
-		accountPublicSingingKeys: UserAccount_PublicSigningKey[]
+		accountPublicSingingKeys: UserAccount_PublicSigningKey[],
+		context: IContext
 	): Promise<IUserAccount[]>
 
 	insert(
@@ -35,7 +37,8 @@ export class UserAccountDao
 	sequenceGenerator: ISequenceGenerator
 
 	async findByUserAccountNames(
-		usernames: UserAccount_Username[]
+		usernames: UserAccount_Username[],
+		context: IContext
 	): Promise<IUserAccount[]> {
 		let u: QUserAccount
 		return await this.db.find.tree({
@@ -44,11 +47,12 @@ export class UserAccountDao
 				u = Q.UserAccount
 			],
 			WHERE: u.username.IN(usernames)
-		})
+		}, context)
 	}
 
 	async findByAccountPublicSingingKeys(
-		accountPublicSingingKeys: UserAccount_PublicSigningKey[]
+		accountPublicSingingKeys: UserAccount_PublicSigningKey[],
+		context: IContext
 	): Promise<IUserAccount[]> {
 		let u: QUserAccount
 		return await this.db.find.tree({
@@ -57,7 +61,7 @@ export class UserAccountDao
 				u = Q.UserAccount
 			],
 			WHERE: u.accountPublicSigningKey.IN(accountPublicSingingKeys)
-		})
+		}, context)
 	}
 
 	async insert(

@@ -31,22 +31,26 @@ export interface IActorDao
 	extends IBaseActorDao {
 
 	findWithDetailsAndGlobalIdsByIds(
-		actorIds: Actor_LocalId[]
+		actorIds: Actor_LocalId[],
+		context: IContext
 	): Promise<IActor[]>
 
 	findWithUserAccountBy_LocalIdIn(
 		actor_localIds: Actor_LocalId[],
+		context: IContext
 	): Promise<IActor[]>
 
 	findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(
 		domainName: DbDomain_Name,
 		applicationName: DbApplication_Name,
 		accountPublicSigningKey: UserAccount_PublicSigningKey,
-		terminalGUID: Terminal_GUID
+		terminalGUID: Terminal_GUID,
+		context: IContext
 	): Promise<IActor>
 
 	findByGUIDs(
 		actorGUIDs: Actor_GUID[],
+		context: IContext
 	): Promise<IActor[]>
 
 	insert(
@@ -65,18 +69,20 @@ export class ActorDao
 	datastructureUtils: IDatastructureUtils
 
 	async findWithDetailsAndGlobalIdsByIds(
-		actorIds: Actor_LocalId[]
+		actorIds: Actor_LocalId[],
+		context: IContext
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
 			a: QActor,
-		) => a._localId.IN(actorIds))
+		) => a._localId.IN(actorIds), context)
 	}
 
 	async findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(
 		domainName: DbDomain_Name,
 		applicationName: DbApplication_Name,
 		accountPublicSigningKey: UserAccount_PublicSigningKey,
-		terminalGUID: Terminal_GUID
+		terminalGUID: Terminal_GUID,
+		context: IContext
 	): Promise<IActor> {
 		let act: QActor
 		let application: QDdlApplication
@@ -111,11 +117,12 @@ export class ActorDao
 				terminal.GUID.equals(terminalGUID),
 				userAccount.accountPublicSigningKey.equals(accountPublicSigningKey)
 			)
-		})
+		}, context)
 	}
 
 	async findByGUIDs(
 		actorGUIDs: Actor_GUID[],
+		context: IContext
 	): Promise<IActor[]> {
 		let a: QActor
 		return await this.db.find.tree({
@@ -124,11 +131,12 @@ export class ActorDao
 				a = Q.Actor
 			],
 			WHERE: a.GUID.IN(actorGUIDs)
-		})
+		}, context)
 	}
 
 	async findWithUserAccountBy_LocalIdIn(
 		actor_localIds: Actor_LocalId[],
+		context: IContext
 	): Promise<IActor[]> {
 		let a: QActor,
 			u: QUserAccount
@@ -146,7 +154,7 @@ export class ActorDao
 			],
 
 			WHERE: a._localId.IN(actor_localIds)
-		})
+		}, context)
 	}
 
 	async insert(
@@ -180,7 +188,8 @@ export class ActorDao
 	private async findWithDetailsAndGlobalIdsByWhereClause(
 		getWhereClause: (
 			a: QActor
-		) => QueryBaseOperation
+		) => QueryBaseOperation,
+		context: IContext
 	): Promise<IActor[]> {
 		let a: QActor
 		let ap: QDdlApplication
@@ -221,6 +230,6 @@ export class ActorDao
 				a.userAccount.LEFT_JOIN()
 			],
 			WHERE: getWhereClause(a)
-		})
+		}, context)
 	}
 }

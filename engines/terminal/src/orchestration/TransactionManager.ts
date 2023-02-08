@@ -331,7 +331,8 @@ parent transactions.
 				if (!parentTransaction && transactionHistory.allRecordHistory.length) {
 					await this.synchronizationOutManager.sendMessages(
 						historiesToSend,
-						messages
+						messages,
+						context
 					)
 				}
 			} else {

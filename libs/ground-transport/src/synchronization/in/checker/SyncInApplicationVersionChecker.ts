@@ -45,7 +45,7 @@ export class SyncInApplicationVersionChecker
 		let applicationCheckMap
 		try {
 			applicationCheckMap = await this.checkVersionsApplicationsDomains(
-				inMessageApplicationVersions, inMessageApplications);
+				inMessageApplicationVersions, inMessageApplications, context);
 
 			for (let i = 0; i < inMessageApplicationVersions.length; i++) {
 				const applicationVersion = inMessageApplicationVersions[i]
@@ -63,7 +63,8 @@ export class SyncInApplicationVersionChecker
 
 	private async checkVersionsApplicationsDomains(
 		inMessageApplicationVersions: DbApplicationVersion[],
-		inMessageApplications: DbApplication[]
+		inMessageApplications: DbApplication[],
+		context: IContext
 	): Promise<Map<DbDomain_Name, Map<DbApplication_Name, IApplicationVersionCheckRecord>>> {
 		const { allApplicationNames: allDbApplication_Names, domainNames, applicationVersionCheckMap } = this
 			.getNames(inMessageApplicationVersions, inMessageApplications)
@@ -71,7 +72,8 @@ export class SyncInApplicationVersionChecker
 		await this.setApplicationVersions(
 			domainNames,
 			allDbApplication_Names,
-			applicationVersionCheckMap
+			applicationVersionCheckMap,
+			context
 		)
 
 		const domainWithNewApp_NameSet: Set<DbDomain_Name> = new Set()
@@ -90,7 +92,8 @@ export class SyncInApplicationVersionChecker
 		await this.setApplicationVersions(
 			Array.from(domainWithNewApp_NameSet),
 			Array.from(newApplicationNameSet),
-			applicationVersionCheckMap
+			applicationVersionCheckMap,
+			context
 		)
 
 		return applicationVersionCheckMap
@@ -99,10 +102,12 @@ export class SyncInApplicationVersionChecker
 	async setApplicationVersions(
 		domainNames: DbDomain_Name[],
 		allDbApplication_Names: DbApplication_Name[],
-		applicationVersionCheckMap: Map<DbDomain_Name, Map<DbApplication_Name, IApplicationVersionCheckRecord>>
+		applicationVersionCheckMap: Map<DbDomain_Name, Map<DbApplication_Name, IApplicationVersionCheckRecord>>,
+		context: IContext
 	): Promise<void> {
 		const existingApplicationVersions = await this.dbApplicationVersionDao
-			.findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names)
+			.findByDomain_NamesAndDbApplication_Names(
+				domainNames, allDbApplication_Names, context)
 
 		let lastDomainName
 		let lastApplicationName

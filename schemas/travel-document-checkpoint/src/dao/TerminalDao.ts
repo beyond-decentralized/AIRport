@@ -12,11 +12,13 @@ export interface ITerminalDao
 
 	findByOwnerPublicKeysAndOwnGUIDs(
 		accountPublicSigningKeys: UserAccount_PublicSigningKey[],
-		GUIDs: Terminal_GUID[]
+		GUIDs: Terminal_GUID[],
+		context: IContext
 	): Promise<ITerminal[]>;
 
 	findByGUIDs(
-		GUIDs: Terminal_GUID[]
+		GUIDs: Terminal_GUID[],
+		context: IContext
 	): Promise<ITerminal[]>;
 
 	insert(
@@ -42,7 +44,8 @@ export class TerminalDao
 
 	async findByOwnerPublicKeysAndOwnGUIDs(
 		accountPublicSigningKeys: UserAccount_PublicSigningKey[],
-		GUIDs: Terminal_GUID[]
+		GUIDs: Terminal_GUID[],
+		context: IContext
 	): Promise<ITerminal[]> {
 		let t: QTerminal,
 			ua: QUserAccount
@@ -56,11 +59,12 @@ export class TerminalDao
 				ua.accountPublicSigningKey.IN(accountPublicSigningKeys),
 				t.GUID.IN(GUIDs)
 			)
-		})
+		}, context)
 	}
 
 	async findByGUIDs(
 		GUIDs: Terminal_GUID[],
+		context: IContext
 	): Promise<ITerminal[]> {
 		let t: QTerminal
 		return await this.db.find.tree({
@@ -69,7 +73,7 @@ export class TerminalDao
 				t = Q.Terminal
 			],
 			WHERE: t.GUID.IN(GUIDs)
-		})
+		}, context)
 	}
 
 	async insert(

@@ -13,30 +13,38 @@ export interface IRepositoryDao
 	extends IBaseRepositoryDao {
 
 	findByGUIDs(
-		repositoryGUIDs: Repository_GUID[]
+		repositoryGUIDs: Repository_GUID[],
+		context: IContext
 	): Promise<IRepository[]>
 
 	findByGUIDsAndLocalIds(
 		repositoryGUIDs: Repository_GUID[],
-		repositoryLocalIds: Repository_LocalId[]
+		repositoryLocalIds: Repository_LocalId[],
+		context: IContext
 	): Promise<IRepository[]>
 
-	findRepositories(): Promise<IRepository[]>
+	findRepositories(
+		context: IContext
+	): Promise<IRepository[]>
 
 	findRepository(
-		repositoryGUID: Repository_GUID
+		repositoryGUID: Repository_GUID,
+		context: IContext
 	): Promise<IRepository>
 
 	findRepositoryWithReferences(
-		repositoryGUID: Repository_GUID
+		repositoryGUID: Repository_GUID,
+		context: IContext
 	): Promise<IRepository>
 
 	findWithOwnerBy_LocalIds(
-		repositoryIds: Repository_LocalId[]
+		repositoryIds: Repository_LocalId[],
+		context: IContext
 	): Promise<IRepository[]>;
 
 	findWithOwnerBy_LocalIdIn(
-		repository_localIds: Repository_LocalId[]
+		repository_localIds: Repository_LocalId[],
+		context: IContext
 	): Promise<IRepository[]>
 
 	getRepositoryLoadInfo(
@@ -51,7 +59,8 @@ export interface IRepositoryDao
 
 	updateUiEntityUri(
 		repositoryGuid: string,
-		uiEntityUri: string
+		uiEntityUri: string,
+		context: IContext
 	): Promise<void>
 
 }
@@ -61,7 +70,9 @@ export class RepositoryDao
 	extends BaseRepositoryDao
 	implements IRepositoryDao {
 
-	async findRepositories(): Promise<IRepository[]> {
+	async findRepositories(
+		context: IContext
+	): Promise<IRepository[]> {
 		let r: QRepository
 
 		const repositories = await this._find({
@@ -80,13 +91,14 @@ export class RepositoryDao
 				r = Q.Repository,
 				r.owner.INNER_JOIN()
 			]
-		})
+		}, context)
 
 		return repositories as IRepository[]
 	}
 
 	async findRepository(
-		repositoryGUID: Repository_GUID
+		repositoryGUID: Repository_GUID,
+		context: IContext
 	): Promise<IRepository> {
 		let r: QRepository
 
@@ -108,13 +120,14 @@ export class RepositoryDao
 				r.owner.INNER_JOIN()
 			],
 			WHERE: r.GUID.equals(repositoryGUID)
-		})
+		}, context)
 
 		return repository as IRepository
 	}
 
 	async findRepositoryWithReferences(
-		repositoryGUID: Repository_GUID
+		repositoryGUID: Repository_GUID,
+		context: IContext
 	): Promise<IRepository> {
 		let r: QRepository,
 			rr: QRepositoryReference
@@ -142,7 +155,7 @@ export class RepositoryDao
 				rr.referencedRepository.LEFT_JOIN()
 			],
 			WHERE: r.GUID.equals(repositoryGUID)
-		})
+		}, context)
 
 		return repository as IRepository
 	}
@@ -175,7 +188,8 @@ export class RepositoryDao
 	}
 
 	async findReposWithDetailsAndSyncNodeIds(
-		repositoryIds: Repository_LocalId[]
+		repositoryIds: Repository_LocalId[],
+		context: IContext
 	): Promise<IRepository[]> {
 		let r: QRepository
 		const _localId = Y
@@ -197,11 +211,12 @@ export class RepositoryDao
 				r.owner.INNER_JOIN()
 			],
 			WHERE: r._localId.IN(repositoryIds)
-		})
+		}, context)
 	}
 
 	async findWithOwnerBy_LocalIds(
-		repositoryIds: Repository_LocalId[]
+		repositoryIds: Repository_LocalId[],
+		context: IContext
 	): Promise<IRepository[]> {
 		let r: QRepository
 
@@ -223,11 +238,12 @@ export class RepositoryDao
 			],
 			WHERE:
 				r._localId.IN(repositoryIds)
-		})
+		}, context)
 	}
 
 	async findWithOwnerBy_LocalIdIn(
-		repository_localIds: Repository_LocalId[]
+		repository_localIds: Repository_LocalId[],
+		context: IContext
 	): Promise<IRepository[]> {
 		let r: QRepository
 
@@ -249,11 +265,12 @@ export class RepositoryDao
 			],
 			WHERE:
 				r._localId.IN(repository_localIds)
-		})
+		}, context)
 	}
 
 	async findByGUIDs(
-		repositoryGUIDs: Repository_GUID[]
+		repositoryGUIDs: Repository_GUID[],
+		context: IContext
 	): Promise<IRepository[]> {
 		let r: QRepository
 
@@ -270,12 +287,13 @@ export class RepositoryDao
 				r = Q.Repository
 			],
 			WHERE: r.GUID.IN(repositoryGUIDs)
-		})
+		}, context)
 	}
 
 	async findByGUIDsAndLocalIds(
 		repositoryGUIDs: Repository_GUID[],
-		repositoryLocalIds: Repository_LocalId[]
+		repositoryLocalIds: Repository_LocalId[],
+		context: IContext
 	): Promise<IRepository[]> {
 		let r: QRepository
 
@@ -295,7 +313,7 @@ export class RepositoryDao
 				r.GUID.IN(repositoryGUIDs),
 				r._localId.IN(repositoryLocalIds),
 			)
-		})
+		}, context)
 	}
 
 	async insert(
@@ -330,7 +348,8 @@ export class RepositoryDao
 
 	async updateUiEntityUri(
 		repositoryGuid: string,
-		uiEntityUri: string
+		uiEntityUri: string,
+		context: IContext
 	): Promise<void> {
 		let r: QRepository;
 
@@ -340,7 +359,7 @@ export class RepositoryDao
 				UI_ENTRY_URI: uiEntityUri
 			},
 			WHERE: r.GUID.equals(repositoryGuid)
-		})
+		}, context)
 	}
 
 }

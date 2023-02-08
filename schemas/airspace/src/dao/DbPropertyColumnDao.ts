@@ -8,7 +8,8 @@ export interface IDbPropertyColumnDao
 	extends IBaseDdlPropertyColumnDao {
 
 	findAllForColumns(
-		columnIds: DbColumn_LocalId[]
+		columnIds: DbColumn_LocalId[],
+		context: IContext
 	): Promise<DbPropertyColumn[]>
 
 	insert(
@@ -25,7 +26,8 @@ export class DbPropertyColumnDao
 
 
 	async findAllForColumns(
-		columnIds: DbColumn_LocalId[]
+		columnIds: DbColumn_LocalId[],
+		context: IContext
 	): Promise<DbPropertyColumn[]> {
 		let rc: QDdlPropertyColumn
 		
@@ -35,7 +37,7 @@ export class DbPropertyColumnDao
 				rc = Q_airport____at_airport_slash_airspace.DbPropertyColumn
 			],
 			WHERE: rc.column._localId.IN(columnIds)
-		})
+		}, context)
 	}
 
 	async insert(

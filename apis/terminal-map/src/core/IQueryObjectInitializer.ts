@@ -1,8 +1,11 @@
+import { IContext } from "@airport/direction-indicator";
 import { AllDdlObjects } from "./DllObjects";
 
 export interface IQueryObjectInitializer {
 
-	initialize(): Promise<AllDdlObjects>
+	initialize(
+		context: IContext
+	): Promise<AllDdlObjects>
 
 	generateQObjectsAndPopulateStore(
 		allDdlObjects: AllDdlObjects

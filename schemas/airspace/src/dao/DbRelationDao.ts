@@ -14,11 +14,13 @@ export interface IDbRelationDao
 	extends IBaseDdlRelationDao {
 
 	findAllForProperties(
-		propertyIds: DbProperty_LocalId[]
+		propertyIds: DbProperty_LocalId[],
+		context: IContext
 	): Promise<DbRelation[]>
 
 	findAllByLocalIdsWithApplications(
-		localIds: DbRelation_LocalId[]
+		localIds: DbRelation_LocalId[],
+		context: IContext
 	): Promise<DbRelation[]>
 
 	insert(
@@ -37,7 +39,8 @@ export class DbRelationDao
 	datastructureUtils: IDatastructureUtils
 
 	async findAllForProperties(
-		propertyIds: DbProperty_LocalId[]
+		propertyIds: DbProperty_LocalId[],
+		context: IContext
 	): Promise<DbRelation[]> {
 		let r: QDdlRelation
 
@@ -47,11 +50,12 @@ export class DbRelationDao
 				r = Q_airport____at_airport_slash_airspace.DbRelation
 			],
 			WHERE: r.property._localId.IN(propertyIds)
-		})
+		}, context)
 	}
 
 	async findAllByLocalIdsWithApplications(
-		localIds: DbRelation_LocalId[]
+		localIds: DbRelation_LocalId[],
+		context: IContext
 	): Promise<DbRelation[]> {
 		let r: QDdlRelation,
 			e: QDdlEntity,
@@ -81,7 +85,7 @@ export class DbRelationDao
 				a.domain.LEFT_JOIN()
 			],
 			WHERE: r._localId.IN(localIds)
-		})
+		}, context)
 	}
 
 	async insert(

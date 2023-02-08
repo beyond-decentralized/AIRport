@@ -7,6 +7,7 @@ import {
 } from '@airport/terminal-map';
 import { IDdlObjectRetriever } from './DdlObjectRetriever';
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -76,8 +77,9 @@ export class QueryObjectInitializer
 	}
 
 	async initialize(
+		context: IContext
 	): Promise<AllDdlObjects> {
-		const ddlObjects = await this.ddlObjectRetriever.retrieveDdlObjects();
+		const ddlObjects = await this.ddlObjectRetriever.retrieveDdlObjects(context);
 
 		const allApplicationVersionsByIds = []
 

@@ -15,8 +15,9 @@ export class UserAccountApi {
         accountPublicSingingKey: UserAccount_PublicSigningKey
     ): Promise<IUserAccount> {
 
-
-        const userAccounts = await this.userAccountDao.findByAccountPublicSingingKeys([accountPublicSingingKey])
+        const userAccounts = await this.userAccountDao.findByAccountPublicSingingKeys(
+            [accountPublicSingingKey],
+            arguments[1])
 
         if (userAccounts.length) {
             return userAccounts[0]

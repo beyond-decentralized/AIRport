@@ -8,7 +8,8 @@ export interface IDbApplicationReferenceDao
 	extends IBaseDdlApplicationReferenceDao {
 
 	findAllForApplicationVersions(
-		applicationVersionIds: DbApplicationVersion_LocalId[]
+		applicationVersionIds: DbApplicationVersion_LocalId[],
+		context: IContext
 	): Promise<DbApplicationReference[]>
 
 	insert(
@@ -24,7 +25,8 @@ export class DbApplicationReferenceDao
 	implements IDbApplicationReferenceDao {
 
 	async findAllForApplicationVersions(
-		applicationVersionIds: DbApplicationVersion_LocalId[]
+		applicationVersionIds: DbApplicationVersion_LocalId[],
+		context: IContext
 	): Promise<DbApplicationReference[]> {
 		let sr: QDdlApplicationReference
 
@@ -34,7 +36,7 @@ export class DbApplicationReferenceDao
 				sr = Q_airport____at_airport_slash_airspace.DdlApplicationReference
 			],
 			WHERE: sr.ownApplicationVersion._localId.IN(applicationVersionIds)
-		})
+		}, context)
 	}
 
 	async insert(

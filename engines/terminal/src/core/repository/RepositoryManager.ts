@@ -139,7 +139,8 @@ already contains a new repository.`)
 		}
 
 		repository.uiEntryUri = uiEntryUri
-		await this.repositoryDao.updateUiEntityUri(repository.GUID, uiEntryUri)
+		await this.repositoryDao.updateUiEntityUri(
+			repository.GUID, uiEntryUri, context)
 	}
 
 	goOffline(): void {

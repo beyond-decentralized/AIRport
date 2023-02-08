@@ -97,10 +97,11 @@ export class InternalRecordManager
             let actor = await this.actorDao
                 .findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(
                     application.domain, application.name,
-                    userSession.userAccount.accountPublicSigningKey, frameworkActor.terminal.GUID)
+                    userSession.userAccount.accountPublicSigningKey,
+                    frameworkActor.terminal.GUID, context)
 
             let anApplication: DbApplication = await this.dbApplicationDao.findByIndex(
-                application.lastIds.applications + 1);
+                application.lastIds.applications + 1, context);
             if (!actor) {
                 actor = {
                     _localId: null,
@@ -145,7 +146,7 @@ export class InternalRecordManager
             terminal.GUID = guidv4();
 
             const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(
-                firstApp.domain, firstApp.name)
+                firstApp.domain, firstApp.name, context)
 
             const actor: IActor = new Actor();
             actor.application = application;
@@ -173,7 +174,7 @@ export class InternalRecordManager
         if (domain && this.entityStateManager.getOriginalValues(domain)) {
             return domain
         }
-        let dbDomain = await this.dbDomainDao.findByName(application.domain)
+        let dbDomain = await this.dbDomainDao.findByName(application.domain, context)
         let updatedDomain
         if (domain) {
             if (dbDomain) {

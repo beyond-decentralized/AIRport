@@ -8,7 +8,8 @@ export interface IDbEntityDao
 	extends IBaseDdlEntityDao {
 
 	findAllForApplicationVersions(
-		applicationVersionIds: DbApplicationVersion_LocalId[]
+		applicationVersionIds: DbApplicationVersion_LocalId[],
+		context: IContext
 	): Promise<DbEntity[]>
 
 	insert(
@@ -24,7 +25,8 @@ export class DbEntityDao
 	implements IDbEntityDao {
 
 	async findAllForApplicationVersions(
-		applicationVersionIds: DbApplicationVersion_LocalId[]
+		applicationVersionIds: DbApplicationVersion_LocalId[],
+		context: IContext
 	): Promise<DbEntity[]> {
 		let se: QDdlEntity
 
@@ -34,7 +36,7 @@ export class DbEntityDao
 				se = Q_airport____at_airport_slash_airspace.DdlEntity
 			],
 			WHERE: se.applicationVersion._localId.IN(applicationVersionIds)
-		})
+		}, context)
 	}
 
 	async insert(

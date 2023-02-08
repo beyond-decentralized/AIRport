@@ -90,7 +90,7 @@ export abstract class ApplicationInitializer
 		await this.stage(jsonApplications, context);
 		// Hydrate all DDL objects and Sequences
 
-		const ddlObjects = await this.queryObjectInitializer.initialize();
+		const ddlObjects = await this.queryObjectInitializer.initialize(context);
 
 		this.addNewApplicationVersionsToAll(ddlObjects);
 
@@ -116,11 +116,12 @@ export abstract class ApplicationInitializer
 		areFeatureApps: boolean
 	): Promise<void> {
 		const applicationsWithValidDependencies = await this.
-			getApplicationsWithValidDependencies(jsonApplications, checkDependencies)
+			getApplicationsWithValidDependencies(
+				jsonApplications, checkDependencies, context)
 
 		const existingApplicationMap: Map<DbApplication_FullName, DbApplication> = new Map()
 		if (loadExistingApplications) {
-			const applications = await this.dbApplicationDao.findAllWithJson()
+			const applications = await this.dbApplicationDao.findAllWithJson(context)
 			for (const application of applications) {
 				existingApplicationMap.set(application.fullName, application)
 			}
@@ -249,7 +250,8 @@ export abstract class ApplicationInitializer
 		jsonApplication: JsonApplicationWithLastIds
 	): Promise<void> {
 		const applicationsWithValidDependencies = await this.
-			getApplicationsWithValidDependencies([jsonApplication], false)
+			getApplicationsWithValidDependencies(
+				[jsonApplication], false, null)
 
 		const ddlObjects = await this.applicationComposer.compose(
 			applicationsWithValidDependencies, {
@@ -305,7 +307,8 @@ export abstract class ApplicationInitializer
 
 	private async getApplicationsWithValidDependencies(
 		jsonApplications: JsonApplicationWithLastIds[],
-		checkDependencies: boolean
+		checkDependencies: boolean,
+		context: IContext
 	): Promise<JsonApplicationWithLastIds[]> {
 		const jsonApplicationsToInstall: JsonApplication[] = [];
 
@@ -325,7 +328,7 @@ export abstract class ApplicationInitializer
 
 		if (checkDependencies) {
 			const applicationReferenceCheckResults = await this.applicationChecker
-				.checkDependencies(jsonApplicationsToInstall);
+				.checkDependencies(jsonApplicationsToInstall, context);
 
 			if (applicationReferenceCheckResults.applicationsInNeedOfAdditionalDependencies.length) {
 				// const

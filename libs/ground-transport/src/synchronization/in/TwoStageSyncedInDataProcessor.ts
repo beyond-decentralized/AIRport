@@ -268,7 +268,7 @@ export class TwoStageSyncedInDataProcessor
 	): Promise<void> {
 		const stage1Result
 			= await this.stage1SyncedInDataProcessor.performStage1DataProcessing(
-				repositoryTransactionHistoryMapByRepositoryId, actorMayById)
+				repositoryTransactionHistoryMapByRepositoryId, actorMayById, context)
 
 		let allSyncConflicts: ISynchronizationConflict[] = []
 		let allSyncConflictValues: ISynchronizationConflictValues[] = []

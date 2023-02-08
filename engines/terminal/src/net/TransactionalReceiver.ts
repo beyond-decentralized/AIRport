@@ -424,13 +424,15 @@ export abstract class TransactionalReceiver {
                 message.domain,
                 message.application,
                 userSession.userAccount.accountPublicSigningKey,
-                terminal.GUID
+                terminal.GUID,
+                context
             )
             if (actor) {
                 return actor
             }
 
-            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(message.domain, message.application)
+            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(
+                message.domain, message.application, context)
             actor = {
                 _localId: null,
                 application,

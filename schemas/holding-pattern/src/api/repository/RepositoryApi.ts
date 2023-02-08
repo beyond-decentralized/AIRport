@@ -15,13 +15,16 @@ export class RepositoryApi {
 
     @Api()
     async findRepositories(): Promise<IRepository[]> {
-        return await this.repositoryDao.findRepositories()
+        return await this.repositoryDao.findRepositories(arguments[0])
     }
 
     async findRepository(
         repositoryGUID: Repository_GUID
     ): Promise<IRepository> {
-        return await this.repositoryDao.findRepository(repositoryGUID)
+        return await this.repositoryDao.findRepository(
+            repositoryGUID,
+            arguments[1]
+        )
     }
 
     @Api()
@@ -43,7 +46,8 @@ export class RepositoryApi {
         uiEntryUri: string,
         repository: IRepository
     ): Promise<void> {
-        await this.repositoryManager.setUiEntryUri(uiEntryUri, repository, {})
+        await this.repositoryManager.setUiEntryUri(
+            uiEntryUri, repository, arguments[2])
     }
 
 }

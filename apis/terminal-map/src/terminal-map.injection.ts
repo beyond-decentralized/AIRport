@@ -35,6 +35,7 @@ export const HISTORY_MANAGER = terminalMap.token<IHistoryManager>('HistoryManage
 export const LOCAL_API_SERVER = terminalMap.token<ILocalAPIServer>('LocalAPIServer')
 export const STORE_DRIVER = terminalMap.token<IStoreDriver>('StoreDriver');
 export const TERMINAL_SESSION_MANAGER = terminalMap.token<ITerminalSessionManager>('TerminalSessionManager')
+globalThis.TERMINAL_SESSION_MANAGER = TERMINAL_SESSION_MANAGER
 export const TRANSACTION_MANAGER = terminalMap.token<ITransactionManager>('TransactionManager')
 export const TRANSACTIONAL_RECEIVER = terminalMap.token<ITransactionalReceiver>('TransactionalReceiver')
 export const TRANSACTIONAL_SERVER = terminalMap.token<ITransactionalServer>('TransactionalServer')

@@ -95,7 +95,7 @@ export class SyncInChecker
 			}
 		}
 		const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
-			.checkRepositoriesAndMembers(message)
+			.checkRepositoriesAndMembers(message, context)
 		if (!repositoryAndMemberCheckResult.isValid) {
 			return {
 				isValid: false

@@ -1,4 +1,5 @@
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -25,7 +26,9 @@ import { ILastIds } from '@airport/air-traffic-control'
 
 export interface IDdlObjectRetriever {
 
-	retrieveDdlObjects()
+	retrieveDdlObjects(
+		context: IContext
+	)
 		: Promise<DdlObjects>
 
 }
@@ -67,8 +70,10 @@ export class DdlObjectRetriever
 	@Inject()
 	terminalStore: ITerminalStore
 
-	async retrieveDdlObjects(): Promise<DdlObjects> {
-		const applications = await this.dbApplicationDao.findAllActive()
+	async retrieveDdlObjects(
+		context: IContext
+	): Promise<DdlObjects> {
+		const applications = await this.dbApplicationDao.findAllActive(context)
 		const applicationIndexes: DbApplication_Index[] = []
 		const domainIdSet: Set<DbDomain_LocalId> = new Set()
 		applications.forEach(
@@ -83,10 +88,11 @@ export class DdlObjectRetriever
 			return application1.index - application2.index
 		})
 
-		const domains = await this.dbDomainDao.findByIdIn(Array.from(domainIdSet))
+		const domains = await this.dbDomainDao.findByIdIn(
+			Array.from(domainIdSet), context)
 
 		const allApplicationVersions = await this.dbApplicationVersionDao
-			.findAllActiveOrderByDbApplication_IndexAndId()
+			.findAllActiveOrderByDbApplication_IndexAndId(context)
 
 		let lastDbApplication_Index: DbApplication_Index
 		// const allApplicationVersionsByIds: DbApplicationVersion[] = []
@@ -105,10 +111,12 @@ export class DdlObjectRetriever
 			applicationVersion => applicationVersion._localId)
 
 		const applicationReferences = await this.dbApplicationReferenceDao
-			.findAllForApplicationVersions(latestDbApplicationVersion_LocalIds)
+			.findAllForApplicationVersions(
+				latestDbApplicationVersion_LocalIds, context)
 
 		const entities = await this.dbEntityDao
-			.findAllForApplicationVersions(latestDbApplicationVersion_LocalIds)
+			.findAllForApplicationVersions(
+				latestDbApplicationVersion_LocalIds, context)
 		const entityIds = entities.map(
 			entity => entity._localId)
 		/*
@@ -122,23 +130,23 @@ export class DdlObjectRetriever
 		 */
 
 		const properties = await this.dbPropertyDao
-			.findAllForEntities(entityIds)
+			.findAllForEntities(entityIds, context)
 		const propertyIds = properties.map(
 			property => property._localId)
 
 		const relations = await this.dbRelationDao
-			.findAllForProperties(propertyIds)
+			.findAllForProperties(propertyIds, context)
 
 		const columns = await this.dbColumnDao
-			.findAllForEntities(entityIds)
+			.findAllForEntities(entityIds, context)
 		const columnIds = columns.map(
 			column => column._localId)
 
 		const propertyColumns = await this.dbPropertyColumnDao
-			.findAllForColumns(columnIds)
+			.findAllForColumns(columnIds, context)
 
 		const relationColumns = await this.dbRelationColumnDao
-			.findAllForColumns(columnIds)
+			.findAllForColumns(columnIds, context)
 
 		const lastTerminalState = this.terminalStore.getTerminalState()
 

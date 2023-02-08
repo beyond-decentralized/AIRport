@@ -37,40 +37,51 @@ export interface DbApplicationLookupRecord {
 export interface IDbApplicationDao
 	extends IBaseDdlApplicationDao {
 
-	findAllActive(): Promise<DbApplication[]>;
+	findAllActive(
+		context: IContext
+	): Promise<DbApplication[]>;
 
-	findAllWithJson(): Promise<DbApplication[]>;
+	findAllWithJson(
+		context: IContext
+	): Promise<DbApplication[]>;
 
 	findMapByVersionIds(
-		applicationVersionIds: DbApplicationVersion_LocalId[]
+		applicationVersionIds: DbApplicationVersion_LocalId[],
+		context: IContext
 	): Promise<Map<DbApplication_Index, DbApplication>>;
 
 	findMaxVersionedMapByApplicationAndDomain_Names(
 		applicationDomain_Names: DbDomain_Name[],
-		applicationNames: DbApplication_Name[]
+		applicationNames: DbApplication_Name[],
+		context: IContext
 	): Promise<Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationLookupRecord>>>;
 
 	setStatusByIndexes(
 		indexes: DbApplication_Index[],
-		status: ApplicationStatus
+		status: ApplicationStatus,
+		context: IContext
 	): Promise<void>;
 
 	findMapByFullNames(
-		fullDbApplication_Names: DbApplication_FullName[]
+		fullDbApplication_Names: DbApplication_FullName[],
+		context: IContext
 	): Promise<Map<DbApplication_FullName, DbApplication>>
 
 	findByDomain_NamesAndDbApplication_Names(
 		domainNames: string[],
-		applicationNames: string[]
+		applicationNames: string[],
+		context: IContext
 	): Promise<DbApplication[]>
 
 	findOneByDomain_NameAndDbApplication_Name(
 		domainName: string,
-		applicationName: string
+		applicationName: string,
+		context: IContext
 	): Promise<DbApplication>
 
 	findByIndex(
-		index: DbApplication_Index
+		index: DbApplication_Index,
+		context: IContext
 	): Promise<DbApplication>
 
 	insert(
@@ -91,7 +102,9 @@ export class DbApplicationDao
 	@Inject()
 	datastructureUtils: IDatastructureUtils
 
-	async findAllActive()
+	async findAllActive(
+		context: IContext
+	)
 		: Promise<DbApplication[]> {
 		let s: QDdlApplication
 
@@ -100,10 +113,12 @@ export class DbApplicationDao
 			FROM: [
 				s = Q_airport____at_airport_slash_airspace.DdlApplication
 			]
-		})
+		}, context)
 	}
 
-	async findAllWithJson()
+	async findAllWithJson(
+		context: IContext
+	)
 		: Promise<DbApplication[]> {
 		let a: QDdlApplication
 		let av: QDdlApplicationVersion
@@ -130,11 +145,12 @@ export class DbApplicationDao
 				// av = cv.applicationVersion.INNER_JOIN()
 				av = a.versions.INNER_JOIN()
 			]
-		})
+		}, context)
 	}
 
 	async findMapByVersionIds(
-		applicationVersionIds: DbApplicationVersion_LocalId[]
+		applicationVersionIds: DbApplicationVersion_LocalId[],
+		context: IContext
 	): Promise<Map<DbApplicationVersion_LocalId, DbApplication>> {
 
 		const applicationMapByIndex: Map<DbApplicationVersion_LocalId, DbApplication> = new Map()
@@ -162,7 +178,7 @@ export class DbApplicationDao
 				sv = s.versions.INNER_JOIN()
 			],
 			WHERE: sv._localId.IN(applicationVersionIds)
-		})
+		}, context)
 
 		for (const application of applications) {
 			for (const applicationVersion of application.versions) {
@@ -173,7 +189,9 @@ export class DbApplicationDao
 		return applicationMapByIndex
 	}
 
-	async findMaxIndex(): Promise<DbApplication_Index> {
+	async findMaxIndex(
+		context: IContext
+	): Promise<DbApplication_Index> {
 
 		const s = Q_airport____at_airport_slash_airspace.DdlApplication
 		return await this.airportDatabase.findOne.field({
@@ -181,12 +199,13 @@ export class DbApplicationDao
 			FROM: [
 				s
 			]
-		})
+		}, context)
 	}
 
 	async findMaxVersionedMapByApplicationAndDomain_Names(
 		applicationDomain_Names: DbDomain_Name[],
-		applicationNames: DbApplication_Name[]
+		applicationNames: DbApplication_Name[],
+		context: IContext
 	): Promise<Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationLookupRecord>>> {
 
 		const maxVersionedMapByApplicationAndDomain_Names: Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationLookupRecord>>
@@ -267,7 +286,7 @@ export class DbApplicationDao
 				sMiV.majorVersion,
 				sMiV.minorVersion
 			]
-		})
+		}, context)
 
 		for (const applicationLookupRecord of applicationLookupRecords) {
 			this.datastructureUtils.ensureChildJsMap(
@@ -281,7 +300,8 @@ export class DbApplicationDao
 
 	async setStatusByIndexes(
 		indexes: DbApplication_Index[],
-		status: ApplicationStatus
+		status: ApplicationStatus,
+		context: IContext
 	): Promise<void> {
 		let s: QDdlApplication
 		await this.db.updateWhere({
@@ -290,11 +310,12 @@ export class DbApplicationDao
 				status
 			},
 			WHERE: s.index.IN(indexes)
-		})
+		}, context)
 	}
 
 	async findMapByFullNames(
-		fullDbApplication_Names: DbApplication_FullName[]
+		fullDbApplication_Names: DbApplication_FullName[],
+		context: IContext
 	): Promise<Map<DbApplication_FullName, DbApplication>> {
 		const mapByFullName: Map<DbApplication_FullName, DbApplication> = new Map()
 
@@ -306,7 +327,7 @@ export class DbApplicationDao
 				s = Q_airport____at_airport_slash_airspace.DdlApplication
 			],
 			WHERE: s.fullName.IN(fullDbApplication_Names)
-		})
+		}, context)
 
 		for (const record of records) {
 			mapByFullName.set(record.fullName, record)
@@ -317,7 +338,8 @@ export class DbApplicationDao
 
 	async findByDomain_NamesAndDbApplication_Names(
 		domainNames: string[],
-		applicationNames: string[]
+		applicationNames: string[],
+		context: IContext
 	): Promise<DbApplication[]> {
 		let s: QDdlApplication
 		let d: QDdlDomain
@@ -340,12 +362,13 @@ export class DbApplicationDao
 				d.name.IN(domainNames),
 				s.name.IN(applicationNames)
 			)
-		})
+		}, context)
 	}
 
 	async findOneByDomain_NameAndDbApplication_Name(
 		domainName: string,
-		applicationName: string
+		applicationName: string,
+		context: IContext
 	): Promise<DdlApplication> {
 		let s: QDdlApplication
 		let d: QDdlDomain
@@ -367,11 +390,12 @@ export class DbApplicationDao
 				d.name.equals(domainName),
 				s.name.equals(applicationName)
 			)
-		})
+		}, context)
 	}
 
 	async findByIndex(
-		index: DbApplication_Index
+		index: DbApplication_Index,
+		context: IContext
 	): Promise<DbApplication> {
 		let a: QDdlApplication;
 		let d: QDdlDomain;
@@ -385,7 +409,7 @@ export class DbApplicationDao
 				d = a.domain.INNER_JOIN()
 			],
 			WHERE: a.index.equals(index)
-		})
+		}, context)
 	}
 
 	async insert(
