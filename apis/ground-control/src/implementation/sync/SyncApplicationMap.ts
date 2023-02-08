@@ -50,6 +50,7 @@ export class SyncApplicationMap extends ApplicationMap {
 				const columnMapIn = tableMapIn.tableMap[entityIndex]
 				if (!columnMap) {
 					tableMap.tableMap[entityIndex] = columnMapIn
+					continue
 				}
 				for (const columnIndex in columnMapIn.columnMap) {
 					columnMap.columnMap[columnIndex] = true
