@@ -46,7 +46,7 @@ export class TransactionHistory
 	transactionType: TransactionType
 
 	@OneToMany({ mappedBy: 'transactionHistory' })
-	repositoryTransactionHistories: RepositoryTransactionHistory[]
+	repositoryTransactionHistories: RepositoryTransactionHistory[] = []
 
 	@Transient()
 	repositoryTransactionHistoryMap?: { [repositoryId: number]: IRepositoryTransactionHistory }

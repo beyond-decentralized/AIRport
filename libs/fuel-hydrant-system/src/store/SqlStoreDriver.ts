@@ -311,8 +311,13 @@ Entity:          ${table.name}
 		cachedSqlQueryId?: number,
 		// repository?: IRepository
 	): Promise<number> {
+		const query = portableQuery.query as QueryInsertValues
+		if(!query || !query.VALUES || !query.VALUES.length) {
+			return 0
+		}
+
 		let fieldMap: SyncApplicationMap = new globalThis.SyncApplicationMap();
-		const splitValues = this.splitValues((portableQuery.query as QueryInsertValues).VALUES, context);
+		const splitValues = this.splitValues(query.VALUES, context);
 
 		let numVals = 0;
 		for (const VALUES of splitValues) {
