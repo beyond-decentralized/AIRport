@@ -80,7 +80,7 @@ export class Repository
 	@DbString()
 	source: Repository_Source
 
-	@Column({ name: "UI_ENTRY_URI", nullable: false })
+	@Column({ name: "UI_ENTRY_URI" })
 	@DbString()
 	uiEntryUri: Repository_UiEntryUri
 
