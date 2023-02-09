@@ -98,13 +98,14 @@ QUERY_FACADE.setDependencies({
 	transactionalConnector: TRANSACTIONAL_CONNECTOR
 })
 QUERY_UTILS.setDependencies({
+	airEntityUtils: AIR_ENTITY_UTILS,
 	airportDatabase: AIRPORT_DATABASE,
 	applicationUtils: APPLICATION_UTILS,
 	dictionary: Dictionary,
 	entityUtils: ENTITY_UTILS,
 	fieldUtils: FieldUtils,
+	qEntityUtils: QEntityUtils,
 	queryRelationManager: QUERY_RELATION_MANAGER,
-	airEntityUtils: AIR_ENTITY_UTILS
 })
 QUERY_RELATION_MANAGER.setClass(QueryRelationManager)
 QUERY_RELATION_MANAGER.setDependencies({

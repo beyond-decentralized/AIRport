@@ -1,11 +1,13 @@
 import { AirEntityId } from "@airport/aviation-communication";
-import { DbRelation, QueryBaseOperation } from "@airport/ground-control";
+import { DbRelation, IApplicationUtils, QueryBaseOperation } from "@airport/ground-control";
+import { IQueryUtils } from "../../utils/IQueryUtils";
 import { QueryLogicalOperation } from "../operation/ILogicalOperation";
 import {
 	IQAirEntity,
 	IQEntity
 } from './IQEntity';
 import { IQEntityInternal } from "./IQEntityDriver";
+import { IQueryRelationManager } from "./IQueryRelationManager";
 
 /**
  * A concrete ORM relation, limited to INNER and LEFT joins since
@@ -27,6 +29,22 @@ export interface IQRelation<IQ extends IQEntity> {
 	SET b = 1
 	WHERE a.cId =
 	 */
+
+}
+
+/**
+ * A concrete ORM relation, limited to INNER and LEFT joins since
+ * ORM based queries always return trees.
+ */
+export interface IQRelationInternal<IQ extends IQEntity>
+	extends IQRelation<IQ> {
+
+	dbRelation: DbRelation,
+	parentQ: IQEntityInternal,
+	applicationUtils: IApplicationUtils
+	queryRelationManager: IQueryRelationManager
+	queryUtils: IQueryUtils
+
 }
 
 /**

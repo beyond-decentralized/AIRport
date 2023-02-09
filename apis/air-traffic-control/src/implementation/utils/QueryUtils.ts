@@ -18,7 +18,8 @@ import {
 	OperationCategory,
 	Repository_GUID,
 	Repository_LocalId,
-	SqlOperator
+	SqlOperator,
+	DbRelation
 } from '@airport/ground-control'
 import {
 	AND,
@@ -49,7 +50,8 @@ import {
 	QOperableField,
 	RawFieldQuery,
 	RepositorySheetSelectInfo,
-	wrapPrimitive
+	wrapPrimitive,
+	IQRelationInternal
 } from '@airport/tarmaq-query'
 import { IAirportDatabase, QAppInternal } from '../../definition/IAirportDatabase'
 
@@ -142,7 +144,7 @@ export class QueryUtils
 
 	equalsInternal<IQ extends IQEntity>(
 		entityId: string | number,
-		toObject: IQ // | IQRelation<IQ>
+		toObject: IQ | IQRelationInternal<IQ>
 	): QueryBaseOperation {
 		const columnField = this.getGetSingleColumnRelationField(
 			toObject)
@@ -165,24 +167,33 @@ export class QueryUtils
 	}
 
 	getGetSingleColumnRelationField<Entity, IQ extends IQEntity>(
-		toObject: IQ // | IQRelation<IQ>
+		toObject: IQ | IQRelationInternal<IQ>
 	): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField {
-		const qEntity: IQEntityInternal = toObject as any
+		let qEntity: IQEntityInternal
 
-		if (qEntity.__driver__.dbRelation.manyRelationColumns.length > 1) {
+		let dbRelation: DbRelation
+		if ((toObject as IQRelationInternal<IQ>).dbRelation) {
+			const qRelationInternal = toObject as IQRelationInternal<IQ>
+			dbRelation = qRelationInternal.dbRelation
+			qEntity = qRelationInternal.parentQ
+		} else {
+			qEntity = toObject as any
+			dbRelation = qEntity.__driver__.dbRelation
+		}
+
+		if (dbRelation.manyRelationColumns.length > 1) {
 			throw new Error(`
 Currently IN operation on internal (non AirEntity) entities
 is supported only for single columm relations
 			`)
 		}
 
-		qEntity.__driver__.dbRelation.property
-
-		const relationColumn = qEntity.__driver__.dbRelation.manyRelationColumns[0]
+		const relationColumn = dbRelation.manyRelationColumns[0]
 
 		return this.qEntityUtils.getColumnQField(
-			qEntity.__driver__.dbEntity,
-			qEntity.__driver__.dbRelation.property,
+			// qEntity.__driver__.dbEntity,
+			dbRelation.entity,
+			dbRelation.property,
 			qEntity,
 			relationColumn.manyColumn
 		)
