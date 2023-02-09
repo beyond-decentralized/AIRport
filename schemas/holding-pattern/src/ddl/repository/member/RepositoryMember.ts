@@ -78,7 +78,7 @@ export class RepositoryMember
     // and re-send the RepositoryTransactionHistory)
     @ManyToOne()
     @JoinColumn({
-        name: 'REPOSITORY_TRANSACTION_HISTORY_LID',
+        name: 'ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID',
         referencedColumnName: 'REPOSITORY_TRANSACTION_HISTORY_LID'
     })
     addedInRepositoryTransactionHistory?: RepositoryTransactionHistory

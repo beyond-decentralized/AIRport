@@ -1,5 +1,5 @@
 import { IContext, Injected } from "@airport/direction-indicator";
-import { IRepositoryMemberAcceptance } from "@airport/ground-control";
+import { IRepositoryMemberAcceptance, IRepositoryTransactionHistory } from "@airport/ground-control";
 import { BaseRepositoryMemberAcceptanceDao } from "../../../generated/baseDaos";
 import Q_airport____at_airport_slash_holding_dash_pattern from "../../../generated/qApplication";
 import { QRepositoryMemberAcceptance } from "../../../generated/qInterfaces";
@@ -34,6 +34,25 @@ export class RepositoryMemberAcceptanceDao
             let repositoryMemberAcceptance = repositoryMemberAcceptances[i]
             repositoryMemberAcceptance._localId = _localIds[i][0]
         }
+    }
+
+    async updateAddedInRepositoryTransactionHistory(
+        repositoryMemberAcceptances: IRepositoryMemberAcceptance[],
+        repositoryTransactionHistory: IRepositoryTransactionHistory,
+        context: IContext
+    ): Promise<void> {
+        let rma: QRepositoryMemberAcceptance;
+
+        await this.db.updateColumnsWhere({
+            UPDATE: rma = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMemberAcceptance,
+            SET: {
+                ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID: repositoryTransactionHistory._localId
+            },
+            WHERE: rma._localId.IN(
+                repositoryMemberAcceptances.map(repositoryMemberAcceptance =>
+                    repositoryMemberAcceptance._localId)
+            )
+        }, context)
     }
 
 }

@@ -42,13 +42,13 @@ export class RepositoryMemberAcceptance
     })
     acceptingRepositoryMember: RepositoryMember
 
-    // Only populated in the database of the terminal
+    // Only populated in the database of the Terminal
     // where the RepositoryTransactionHistory was originally
     // created (for the purpose of being able to reconstruct
     // and re-send the RepositoryTransactionHistory)
     @ManyToOne()
     @JoinColumn({
-        name: 'REPOSITORY_TRANSACTION_HISTORY_LID',
+        name: 'ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID',
         referencedColumnName: 'REPOSITORY_TRANSACTION_HISTORY_LID'
     })
     addedInRepositoryTransactionHistory?: RepositoryTransactionHistory

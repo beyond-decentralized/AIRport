@@ -523,6 +523,30 @@ ${callHerarchy}
 		await this.doInsertValues(transaction, Q.RepositoryTransactionHistory,
 			transactionHistory.repositoryTransactionHistories, context);
 
+		for (const repositoryTransactionHistory of transactionHistory.repositoryTransactionHistories) {
+			if (repositoryTransactionHistory.newRepositoryMembers.length) {
+				await this.repositoryMemberDao.updateAddedInRepositoryTransactionHistory(
+					repositoryTransactionHistory.newRepositoryMembers,
+					repositoryTransactionHistory,
+					context
+				)
+			}
+			if (repositoryTransactionHistory.newRepositoryMemberInvitations.length) {
+				await this.repositoryMemberAcceptanceDao.updateAddedInRepositoryTransactionHistory(
+					repositoryTransactionHistory.newRepositoryMemberAcceptances,
+					repositoryTransactionHistory,
+					context
+				)
+			}
+			if (repositoryTransactionHistory.newRepositoryMemberAcceptances.length) {
+				await this.repositoryMemberInvitationDao.updateAddedInRepositoryTransactionHistory(
+					repositoryTransactionHistory.newRepositoryMemberInvitations,
+					repositoryTransactionHistory,
+					context
+				)
+			}
+		}
+
 		applicationMap.ensureEntity((<IQEntityInternal><any>Q.OperationHistory).__driver__.dbEntity, true);
 		transactionHistory.allOperationHistory.forEach((
 			operationHistory,

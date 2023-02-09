@@ -1,6 +1,6 @@
 import { UserAccount_PublicSigningKey, UserAccount_LocalId } from "@airport/aviation-communication";
 import { IContext, Injected } from "@airport/direction-indicator";
-import { IRepositoryMember, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Status, Repository_LocalId } from "@airport/ground-control";
+import { IRepositoryMember, IRepositoryTransactionHistory, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Status, Repository_LocalId } from "@airport/ground-control";
 import { AND, EXISTS, Y } from "@airport/tarmaq-query";
 import { QUserAccount } from "@airport/travel-document-checkpoint/dist/app/bundle";
 import { QRepositoryMember, QRepositoryMemberInvitation } from "../../../generated/qInterfaces";
@@ -13,7 +13,7 @@ export class RepositoryMemberDao
 
     async findByMemberPublicSigningKeys(
         memberPublicSigningKeys: RepositoryMember_PublicSigningKey[],
-		context: IContext
+        context: IContext
     ): Promise<IRepositoryMember[]> {
         let rm: QRepositoryMember,
             ua: QUserAccount
@@ -34,7 +34,7 @@ export class RepositoryMemberDao
     async findForRepositoryLocalIdAndAccountPublicSingingKey(
         repositoryLocalId: Repository_LocalId,
         accountPublicSigningKey: UserAccount_PublicSigningKey,
-		context: IContext
+        context: IContext
     ): Promise<IRepositoryMember> {
         let rm: QRepositoryMember,
             ua: QUserAccount
@@ -55,7 +55,7 @@ export class RepositoryMemberDao
     async findForRepositoryLocalIdAndUserLocalId(
         repositoryLocalId: Repository_LocalId,
         userLocalId: UserAccount_LocalId,
-		context: IContext
+        context: IContext
     ): Promise<IRepositoryMember> {
         let rm: QRepositoryMember
 
@@ -74,7 +74,7 @@ export class RepositoryMemberDao
     async findForRepositoryLocalIdAndIvitationPublicSigningKey(
         repositoryLocalId: Repository_LocalId,
         base64EncodedKeyInvitationPublicSigningKey: RepositoryMemberInvitation_PublicSigningKey,
-		context: IContext
+        context: IContext
     ): Promise<IRepositoryMember> {
         let rm: QRepositoryMember,
             rmi: QRepositoryMemberInvitation
@@ -153,4 +153,21 @@ export class RepositoryMemberDao
         }, context)
     }
 
+    async updateAddedInRepositoryTransactionHistory(
+        repositoryMembers: IRepositoryMember[],
+        repositoryTransactionHistory: IRepositoryTransactionHistory,
+        context: IContext
+    ): Promise<void> {
+        let rm: QRepositoryMember;
+
+        await this.db.updateColumnsWhere({
+            UPDATE: rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
+            SET: {
+                ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID: repositoryTransactionHistory._localId
+            },
+            WHERE: rm._localId.IN(
+                repositoryMembers.map(repositoryMember => repositoryMember._localId)
+            )
+        }, context)
+    }
 }

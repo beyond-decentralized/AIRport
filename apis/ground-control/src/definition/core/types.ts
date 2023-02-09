@@ -216,7 +216,7 @@ export interface IRepositoryMember {
 	// When the member is first invited to the repository
 	// there is no UserAccount associated with it
 	userAccount: IUserAccount
-	// Only populated in the database of the terminal
+	// Only populated in the database of the Terminal
 	// where the RepositoryTransactionHistory was originally
 	// created (for the purpose of being able to reconstruct
 	// and re-send the RepositoryTransactionHistory)
@@ -235,7 +235,7 @@ export interface IRepositoryMemberInvitation {
 	createdAt: CreatedAt
 	invitationPublicSigningKey: RepositoryMemberInvitation_PublicSigningKey
 	invitedRepositoryMember: IRepositoryMember
-	// Only populated in the database of the terminal
+	// Only populated in the database of the Terminal
 	// where the RepositoryTransactionHistory was originally
 	// created (for the purpose of being able to reconstruct
 	// and re-send the RepositoryTransactionHistory)
@@ -252,7 +252,7 @@ export class IRepositoryMemberAcceptance {
 	createdAt: CreatedAt
 	invitationPublicSigningKey: RepositoryMemberInvitation_PublicSigningKey
 	acceptingRepositoryMember: IRepositoryMember
-	// Only populated in the database of the terminal
+	// Only populated in the database of the Terminal
 	// where the RepositoryTransactionHistory was originally
 	// created (for the purpose of being able to reconstruct
 	// and re-send the RepositoryTransactionHistory)
@@ -269,7 +269,7 @@ export interface IRepositoryMemberUpdate {
 	createdAt: CreatedAt
 	isAdministrator?: RepositoryMember_IsAdministrator
 	updatedRepositoryMember: IRepositoryMember
-	// Only populated in the database of the terminal
+	// Only populated in the database of the Terminal
 	// where the RepositoryTransactionHistory was originally
 	// created (for the purpose of being able to reconstruct
 	// and re-send the RepositoryTransactionHistory)
