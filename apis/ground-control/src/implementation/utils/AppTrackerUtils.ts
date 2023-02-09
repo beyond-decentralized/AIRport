@@ -100,9 +100,9 @@ export class AppTrackerUtils
         return this.dictionary.INTERNAL_DOMAIN
     }
 
-    async isInternalDomain(
+    isInternalDomain(
         domainName: string
-    ): Promise<boolean> {
+    ): boolean {
         return [
             this.dictionary.airbridge.DOMAIN_NAME,
             this.dictionary.airport.DOMAIN_NAME,

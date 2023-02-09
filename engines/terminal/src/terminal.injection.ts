@@ -173,6 +173,7 @@ terminal.setDependencies(InternalRecordManager, {
 
 REPOSITORY_MANAGER.setClass(RepositoryManager)
 REPOSITORY_MANAGER.setDependencies({
+    appTrackerUtils: AppTrackerUtils,
     dictionary: Dictionary,
     repositoryMaintenanceManager: RepositoryMaintenanceManager,
     repositoryDao: RepositoryDao,

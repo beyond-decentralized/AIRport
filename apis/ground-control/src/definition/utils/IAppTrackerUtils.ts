@@ -6,7 +6,7 @@ export interface IAppTrackerUtils {
 
     isInternalDomain(
         domainName: string
-    ): Promise<boolean>
+    ): boolean
 
     entityHasExternalAccessPermissions(
         checkedDomainName: string,
