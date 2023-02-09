@@ -319,7 +319,8 @@ parent transactions.
 
 
 			let transactionHistory = transaction.transactionHistory
-			if (!context.doNotRecordHistory && !transaction.isSync) {
+			if (!context.doNotRecordHistory && !transaction.isSync
+				&& transactionHistory.repositoryTransactionHistories.length) {
 				const {
 					historiesToSend,
 					messages

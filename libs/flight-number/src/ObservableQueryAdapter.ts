@@ -81,6 +81,9 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
 
     async checkExistenceOfQueriedRepositories(): Promise<void> {
         try {
+            if (!this.queriedRepositoryIds.GUIDSet.size && !this.queriedRepositoryIds.localIdSet.size) {
+                return
+            }
             if (this.repositoryExistenceCheckInProgress) {
                 return
             }
