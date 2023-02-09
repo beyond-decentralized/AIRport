@@ -56,7 +56,7 @@ export class AIRportApi {
                     _transaction: ITransaction,
                     context: IOperationContext & ITransactionContext
                 ) => {
-                    await ssoManager.signUp(userAccountInfo, {}).then()
+                    await ssoManager.signUp(userAccountInfo, context).then()
                 }, null, {})
                 break
             default:
