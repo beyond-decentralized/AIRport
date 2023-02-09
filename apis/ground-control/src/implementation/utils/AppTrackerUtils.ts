@@ -127,7 +127,11 @@ export class AppTrackerUtils
                     continue
                 }
                 for (const versionPermissions of applicationPermissions.versionPermissions) {
-                    if (versionPermissions.integerVersion === checkedApplicationIntegerVersion
+                    if ((!versionPermissions.integerVersion
+                        && !versionPermissions.sinceIntegerVersion
+                        && !versionPermissions.beforeIntegerVersion)
+                        || (versionPermissions.integerVersion
+                            && versionPermissions.integerVersion === checkedApplicationIntegerVersion)
                         || (versionPermissions.sinceIntegerVersion
                             && versionPermissions.sinceIntegerVersion <= checkedApplicationIntegerVersion)
                         || (versionPermissions.beforeIntegerVersion

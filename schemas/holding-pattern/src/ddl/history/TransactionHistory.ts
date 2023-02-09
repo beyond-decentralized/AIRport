@@ -67,12 +67,12 @@ export class TransactionHistory
 	allRecordHistoryOldValues?: IRecordHistoryOldValue[] = []
 
 	@Transient()
-	allRepositoryMemberAcceptances?: IRepositoryMemberAcceptance[] = []
+	remoteRepositoryMemberAcceptances?: IRepositoryMemberAcceptance[] = []
 
 	@Transient()
-	allRepositoryMemberInvitations?: IRepositoryMemberInvitation[] = []
+	remoteRepositoryMemberInvitations?: IRepositoryMemberInvitation[] = []
 
 	@Transient()
-	allRepositoryMembers?: IRepositoryMember[] = []
+	remoteRepositoryMembers?: IRepositoryMember[] = []
 
 }

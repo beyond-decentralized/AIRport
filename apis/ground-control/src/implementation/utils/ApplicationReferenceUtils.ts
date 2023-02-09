@@ -48,7 +48,7 @@ export class ApplicationReferenceUtils
                         relatedJsonApplication, relatedJsonEntity
                     } = getRelationInfo(jsonApplication, applicationVersion,
                         queryRelation)
-                    this.isRelationToAFrameworkEntity(
+                    this.checkForARelationToAFrameworkEntity(
                         relatedJsonApplication,
                         relatedJsonEntity,
                         jsonApplication,
@@ -79,7 +79,7 @@ export class ApplicationReferenceUtils
         return Array.from(relationSet.values())
     }
 
-    private isRelationToAFrameworkEntity(
+    private checkForARelationToAFrameworkEntity(
         relatedJsonApplication: JsonApplication | DbApplication,
         relatedJsonEntity: JsonEntity | DbEntity,
         jsonApplication: JsonApplication,
@@ -92,6 +92,10 @@ export class ApplicationReferenceUtils
         // All non @Id AIR entity references 
         const manyRelationColumnRef = jsonColumn.manyRelationColumnRefs[0]
         const relatedColumn = relatedJsonEntity.columns[manyRelationColumnRef.oneColumnIndex]
+
+        if (!this.appTrackerUtils.isInternalDomain(domainName)) {
+            return
+        }
 
         if (!this.appTrackerUtils.entityHasExternalAccessPermissions(
             domainName,
@@ -114,8 +118,6 @@ From:
           
           `)
         }
-
-        return true
     }
 
 }

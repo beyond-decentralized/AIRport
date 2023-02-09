@@ -395,12 +395,12 @@ parent transactions.
 			.allRecordHistoryNewValues.concat(childTransactionHistory.allRecordHistoryNewValues)
 		parentTransactionHistory.allRecordHistoryOldValues = parentTransactionHistory
 			.allRecordHistoryOldValues.concat(childTransactionHistory.allRecordHistoryOldValues)
-		parentTransactionHistory.allRepositoryMembers = parentTransactionHistory
-			.allRepositoryMembers.concat(childTransactionHistory.allRepositoryMembers)
-		parentTransactionHistory.allRepositoryMemberAcceptances = parentTransactionHistory
-			.allRepositoryMemberAcceptances.concat(childTransactionHistory.allRepositoryMemberAcceptances)
-		parentTransactionHistory.allRepositoryMemberInvitations = parentTransactionHistory
-			.allRepositoryMemberInvitations.concat(childTransactionHistory.allRepositoryMemberInvitations)
+		parentTransactionHistory.remoteRepositoryMembers = parentTransactionHistory
+			.remoteRepositoryMembers.concat(childTransactionHistory.remoteRepositoryMembers)
+		parentTransactionHistory.remoteRepositoryMemberAcceptances = parentTransactionHistory
+			.remoteRepositoryMemberAcceptances.concat(childTransactionHistory.remoteRepositoryMemberAcceptances)
+		parentTransactionHistory.remoteRepositoryMemberInvitations = parentTransactionHistory
+			.remoteRepositoryMemberInvitations.concat(childTransactionHistory.remoteRepositoryMemberInvitations)
 	}
 
 	private checkForCircularDependencies(
@@ -558,17 +558,17 @@ ${callHerarchy}
 				context);
 		}
 
-		if (transactionHistory.allRepositoryMembers.length) {
+		if (transactionHistory.remoteRepositoryMembers.length) {
 			await this.repositoryMemberDao
-				.insert(transactionHistory.allRepositoryMembers, context)
+				.insert(transactionHistory.remoteRepositoryMembers, context)
 		}
-		if (transactionHistory.allRepositoryMemberAcceptances.length) {
+		if (transactionHistory.remoteRepositoryMemberAcceptances.length) {
 			await this.repositoryMemberAcceptanceDao
-				.insert(transactionHistory.allRepositoryMemberAcceptances, context)
+				.insert(transactionHistory.remoteRepositoryMemberAcceptances, context)
 		}
-		if (transactionHistory.allRepositoryMemberInvitations.length) {
+		if (transactionHistory.remoteRepositoryMemberInvitations.length) {
 			await this.repositoryMemberInvitationDao
-				.insert(transactionHistory.allRepositoryMemberInvitations, context)
+				.insert(transactionHistory.remoteRepositoryMemberInvitations, context)
 		}
 
 		return true;

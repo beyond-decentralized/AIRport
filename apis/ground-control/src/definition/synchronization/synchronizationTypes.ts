@@ -54,9 +54,9 @@ export interface ITransactionHistory {
     allRecordHistory?: IRecordHistory[]
     allRecordHistoryNewValues?: IRecordHistoryNewValue[]
     allRecordHistoryOldValues?: IRecordHistoryOldValue[]
-    allRepositoryMemberAcceptances?: IRepositoryMemberAcceptance[]
-    allRepositoryMemberInvitations?: IRepositoryMemberInvitation[]
-    allRepositoryMembers?: IRepositoryMember[]
+    remoteRepositoryMemberAcceptances?: IRepositoryMemberAcceptance[]
+    remoteRepositoryMemberInvitations?: IRepositoryMemberInvitation[]
+    remoteRepositoryMembers?: IRepositoryMember[]
 
 }
 

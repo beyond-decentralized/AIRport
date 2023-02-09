@@ -215,12 +215,12 @@ export class TwoStageSyncedInDataProcessor
 					}
 				})
 			})
-			transactionHistory.allRepositoryMembers = transactionHistory
-				.allRepositoryMembers.concat(repositoryTransactionHistory.newRepositoryMembers)
-			transactionHistory.allRepositoryMemberAcceptances = transactionHistory
-				.allRepositoryMemberAcceptances.concat(repositoryTransactionHistory.newRepositoryMemberAcceptances)
-			transactionHistory.allRepositoryMemberInvitations = transactionHistory
-				.allRepositoryMemberInvitations.concat(repositoryTransactionHistory.newRepositoryMemberInvitations)
+			transactionHistory.remoteRepositoryMembers = transactionHistory
+				.remoteRepositoryMembers.concat(repositoryTransactionHistory.newRepositoryMembers)
+			transactionHistory.remoteRepositoryMemberAcceptances = transactionHistory
+				.remoteRepositoryMemberAcceptances.concat(repositoryTransactionHistory.newRepositoryMemberAcceptances)
+			transactionHistory.remoteRepositoryMemberInvitations = transactionHistory
+				.remoteRepositoryMemberInvitations.concat(repositoryTransactionHistory.newRepositoryMemberInvitations)
 		}
 	}
 
