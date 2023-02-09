@@ -4462,11 +4462,12 @@ class LogicalOperation extends Operation {
  * When calling:
  *   Q...Relation.base.constructor.call(this, relation, qEntity)
  */
-function QRelation(dbRelation, parentQ, applicationUtils, queryRelationManager) {
+function QRelation(dbRelation, parentQ, applicationUtils, queryRelationManager, queryUtils) {
     this.dbRelation = dbRelation;
     this.parentQ = parentQ;
     this.applicationUtils = applicationUtils;
     this.queryRelationManager = queryRelationManager;
+    this.queryUtils = queryUtils;
 }
 QRelation.prototype.INNER_JOIN = function () {
     const newQEntity = this.getNewQEntity(JoinType.INNER_JOIN);
@@ -15424,7 +15425,7 @@ const APPLICATION$6 = {
             ],
             "integerVersion": 1,
             "referencedApplications": [],
-            "signature": null,
+            "signature": "FIXME: sign application versions",
             "versionString": "1.0.0"
         }
     ]
@@ -18774,7 +18775,7 @@ const APPLICATION$5 = {
             ],
             "integerVersion": 1,
             "referencedApplications": [],
-            "signature": null,
+            "signature": "FIXME: sign application versions",
             "versionString": "1.0.0"
         }
     ]
@@ -21095,7 +21096,7 @@ const APPLICATION$4 = {
             ],
             "integerVersion": 1,
             "referencedApplications": [],
-            "signature": null,
+            "signature": "FIXME: sign application versions",
             "versionString": "1.0.0"
         }
     ]
@@ -25574,7 +25575,7 @@ const APPLICATION$3 = {
                             "entities": null,
                             "integerVersion": 1,
                             "referencedApplications": null,
-                            "signature": null,
+                            "signature": "FIXME: sign application versions",
                             "versionString": "1.0.0"
                         }
                     ]
@@ -25590,13 +25591,13 @@ const APPLICATION$3 = {
                             "entities": null,
                             "integerVersion": 1,
                             "referencedApplications": null,
-                            "signature": null,
+                            "signature": "FIXME: sign application versions",
                             "versionString": "1.0.0"
                         }
                     ]
                 }
             ],
-            "signature": null,
+            "signature": "FIXME: sign application versions",
             "versionString": "1.0.0"
         }
     ]
@@ -26262,7 +26263,7 @@ const APPLICATION$2 = {
                             "entities": null,
                             "integerVersion": 1,
                             "referencedApplications": null,
-                            "signature": null,
+                            "signature": "FIXME: sign application versions",
                             "versionString": "1.0.0"
                         }
                     ]
@@ -26278,13 +26279,13 @@ const APPLICATION$2 = {
                             "entities": null,
                             "integerVersion": 1,
                             "referencedApplications": null,
-                            "signature": null,
+                            "signature": "FIXME: sign application versions",
                             "versionString": "1.0.0"
                         }
                     ]
                 }
             ],
-            "signature": null,
+            "signature": "FIXME: sign application versions",
             "versionString": "1.0.0"
         }
     ]
@@ -26314,7 +26315,7 @@ const APPLICATION$1 = {
             "entities": [],
             "integerVersion": 1,
             "referencedApplications": [],
-            "signature": null,
+            "signature": "FIXME: sign application versions",
             "versionString": "1.0.0"
         }
     ]
@@ -27051,13 +27052,13 @@ const APPLICATION = {
                             "entities": null,
                             "integerVersion": 1,
                             "referencedApplications": null,
-                            "signature": null,
+                            "signature": "FIXME: sign application versions",
                             "versionString": "1.0.0"
                         }
                     ]
                 }
             ],
-            "signature": null,
+            "signature": "FIXME: sign application versions",
             "versionString": "1.0.0"
         }
     ]
@@ -42833,11 +42834,13 @@ class JsonApplicationBuilder {
                                 entities: null,
                                 integerVersion: 1,
                                 referencedApplications: null,
-                                signature: null,
+                                // FIXME: sign application versions
+                                signature: 'FIXME: sign application versions',
                                 versionString: '1.0.0'
                             }]
                     })),
-                    signature: null,
+                    // FIXME: sign application versions
+                    signature: 'FIXME: sign application versions',
                     versionString: '1.0.0'
                 }]
         };

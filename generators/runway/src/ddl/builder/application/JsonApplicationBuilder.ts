@@ -175,11 +175,13 @@ export class JsonApplicationBuilder {
 						entities: null,
 						integerVersion: 1,
 						referencedApplications: null,
-						signature: null,
+						// FIXME: sign application versions
+						signature: 'FIXME: sign application versions',
 						versionString: '1.0.0'
 					}]
 				})),
-				signature: null,
+				// FIXME: sign application versions
+				signature: 'FIXME: sign application versions',
 				versionString: '1.0.0'
 			}]
 		};

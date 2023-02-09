@@ -34,7 +34,7 @@ export class DbRelationColumnDao
 		return this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				rc = Q_airport____at_airport_slash_airspace.DbRelationColumn
+				rc = Q_airport____at_airport_slash_airspace.DdlRelationColumn
 			],
 			WHERE: OR(
 				rc.oneColumn._localId.IN(columnIds),
@@ -63,7 +63,7 @@ export class DbRelationColumnDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: src = Q_airport____at_airport_slash_airspace.DbRelationColumn,
+			INSERT_INTO: src = Q_airport____at_airport_slash_airspace.DdlRelationColumn,
 			columns: [
 				src._localId,
 				src.manyColumn._localId,

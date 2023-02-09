@@ -26,6 +26,10 @@ airspace.setDependencies(DbColumnDao, {
     datastructureUtils: DatastructureUtils
 })
 
+airspace.setDependencies(DbRelationDao, {
+    datastructureUtils: DatastructureUtils
+})
+
 airspace.setDependencies(DbApplicationDao, {
     airportDatabase: AIRPORT_DATABASE,
     datastructureUtils: DatastructureUtils

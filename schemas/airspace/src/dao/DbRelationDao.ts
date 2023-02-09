@@ -47,7 +47,7 @@ export class DbRelationDao
 		return this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				r = Q_airport____at_airport_slash_airspace.DbRelation
+				r = Q_airport____at_airport_slash_airspace.DdlRelation
 			],
 			WHERE: r.property._localId.IN(propertyIds)
 		}, context)
@@ -78,7 +78,7 @@ export class DbRelationDao
 				}
 			},
 			FROM: [
-				r = Q_airport____at_airport_slash_airspace.DbRelation,
+				r = Q_airport____at_airport_slash_airspace.DdlRelation,
 				e = r.entity.LEFT_JOIN(),
 				av = e.applicationVersion.LEFT_JOIN(),
 				a = av.application.LEFT_JOIN(),
@@ -109,7 +109,7 @@ export class DbRelationDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.DbRelation,
+			INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.DdlRelation,
 			columns: [
 				sr._localId,
 				sr.index,
