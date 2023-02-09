@@ -8353,68 +8353,68 @@ class EntityDatabaseFacade {
     get FROM() {
         return this.Q[this.dbEntity.name];
     }
-    async insertColumnValues(rawInsertColumnValues, ctx) {
-        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.insertColumnValues(rawInsertColumnValues, ctx);
+    async insertColumnValues(rawInsertColumnValues, context) {
+        return await this.withDbEntity(context, async (databaseFacade, context) => {
+            return await databaseFacade.insertColumnValues(rawInsertColumnValues, context);
         });
     }
-    async insertValues(rawInsertValues, ctx) {
-        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.insertValues(rawInsertValues, ctx);
+    async insertValues(rawInsertValues, context) {
+        return await this.withDbEntity(context, async (databaseFacade, context) => {
+            return await databaseFacade.insertValues(rawInsertValues, context);
         });
     }
-    async insertColumnValuesGenerateIds(rawInsertColumnValues, ctx) {
-        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.insertColumnValuesGenerateIds(rawInsertColumnValues, ctx);
+    async insertColumnValuesGenerateIds(rawInsertColumnValues, context) {
+        return await this.withDbEntity(context, async (databaseFacade, context) => {
+            return await databaseFacade.insertColumnValuesGenerateIds(rawInsertColumnValues, context);
         });
     }
-    async insertValuesGenerateIds(rawInsertValues, ctx) {
-        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.insertValuesGenerateIds(rawInsertValues, ctx);
+    async insertValuesGenerateIds(rawInsertValues, context) {
+        return await this.withDbEntity(context, async (databaseFacade, context) => {
+            return await databaseFacade.insertValuesGenerateIds(rawInsertValues, context);
         });
     }
-    async updateColumnsWhere(rawUpdateColumns, ctx, trackedRepoGUIDSet) {
-        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.updateColumnsWhere(rawUpdateColumns, ctx, trackedRepoGUIDSet);
+    async updateColumnsWhere(rawUpdateColumns, context, trackedRepoGUIDSet) {
+        return await this.withDbEntity(context, async (databaseFacade, context) => {
+            return await databaseFacade.updateColumnsWhere(rawUpdateColumns, context, trackedRepoGUIDSet);
         });
     }
-    async updateWhere(rawUpdate, ctx, trackedRepoGUIDSet) {
-        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.updateWhere(rawUpdate, ctx, trackedRepoGUIDSet);
+    async updateWhere(rawUpdate, context, trackedRepoGUIDSet) {
+        return await this.withDbEntity(context, async (databaseFacade, context) => {
+            return await databaseFacade.updateWhere(rawUpdate, context, trackedRepoGUIDSet);
         });
     }
-    async deleteWhere(rawDelete, ctx, trackedRepoGUIDSet) {
-        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.deleteWhere(rawDelete, ctx, trackedRepoGUIDSet);
+    async deleteWhere(rawDelete, context, trackedRepoGUIDSet) {
+        return await this.withDbEntity(context, async (databaseFacade, context) => {
+            return await databaseFacade.deleteWhere(rawDelete, context, trackedRepoGUIDSet);
         });
     }
-    async save(entity, ctx) {
-        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.save(entity, ctx);
+    async save(entity, context) {
+        return await this.withDbEntity(context, async (databaseFacade, context) => {
+            return await databaseFacade.save(entity, context);
         });
     }
     /**
      * @return ISaveResult object with metadata on saved objects
      */
-    async saveToDestination(repositoryDestination, entity, ctx) {
-        return await this.withDbEntity(ctx, async (databaseFacade, ctx) => {
-            return await databaseFacade.saveToDestination(repositoryDestination, entity, ctx);
+    async saveToDestination(repositoryDestination, entity, context) {
+        return await this.withDbEntity(context, async (databaseFacade, context) => {
+            return await databaseFacade.saveToDestination(repositoryDestination, entity, context);
         });
     }
-    async withDbEntity(ctx, callback) {
-        if (!ctx) {
-            ctx = {};
+    async withDbEntity(context, callback) {
+        if (!context) {
+            context = {};
         }
-        if (!ctx.startedAt) {
-            ctx.startedAt = new Date();
+        if (!context.startedAt) {
+            context.startedAt = new Date();
         }
-        const previousEntity = ctx.dbEntity;
-        ctx.dbEntity = this.dbEntity;
+        const previousEntity = context.dbEntity;
+        context.dbEntity = this.dbEntity;
         try {
-            return await callback(this.dao.databaseFacade, ctx);
+            return await callback(this.dao.databaseFacade, context);
         }
         finally {
-            ctx.dbEntity = previousEntity;
+            context.dbEntity = previousEntity;
         }
     }
 }
@@ -8567,16 +8567,16 @@ class Dao {
     /**
      * The Promise based API for all Entity 'find' (find many) queries.
      */
-    async _find(rawGraphQuery, ctx) {
-        return await this.db.find.graph(rawGraphQuery, ctx);
+    async _find(rawGraphQuery, context) {
+        return await this.db.find.graph(rawGraphQuery, context);
     }
     /**
      * The Promise based API for all Entity 'findOne' that also
      * ensures that the record is unique.  If multiple records
      * are found the ones with older createdAt values are deleted.
      */
-    async _findUnique(rawGraphQuery, ctx) {
-        const records = await this.db.find.graph(rawGraphQuery, ctx);
+    async _findUnique(rawGraphQuery, context) {
+        const records = await this.db.find.graph(rawGraphQuery, context);
         if (!records.length) {
             return null;
         }
@@ -8593,19 +8593,19 @@ class Dao {
     /**
      * The Promise based API for all Entity 'findOne' queries.
      */
-    async _findOne(rawGraphQuery, ctx) {
-        return await this.db.findOne.graph(rawGraphQuery, ctx);
+    async _findOne(rawGraphQuery, context) {
+        return await this.db.findOne.graph(rawGraphQuery, context);
     }
     /**
      * The Observable based API for all Entity 'searchOne' (searchOne many) queries.
      */
-    _search(rawGraphQuery, ctx) {
+    _search(rawGraphQuery, context) {
         throw new Error('Not implemented');
     }
     /**
      * The Observable based API for all Entity 'searchOne' queries.
      */
-    _searchOne(rawGraphQuery, ctx) {
+    _searchOne(rawGraphQuery, context) {
         throw new Error('Not implemented');
     }
     ensureContext(context) {
@@ -10707,7 +10707,7 @@ class DbPropertyColumnDao extends BaseDdlPropertyColumnDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                rc = Q_airport____at_airport_slash_airspace.DbPropertyColumn
+                rc = Q_airport____at_airport_slash_airspace.DdlPropertyColumn
             ],
             WHERE: rc.column._localId.IN(columnIds)
         }, context);
@@ -10724,7 +10724,7 @@ class DbPropertyColumnDao extends BaseDdlPropertyColumnDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: spc = Q_airport____at_airport_slash_airspace.DbPropertyColumn,
+            INSERT_INTO: spc = Q_airport____at_airport_slash_airspace.DdlPropertyColumn,
             columns: [
                 spc.column._localId,
                 spc.property._localId,
@@ -10743,7 +10743,7 @@ class DbPropertyDao extends BaseDdlPropertyDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                p = Q_airport____at_airport_slash_airspace.DbPropertyColumn
+                p = Q_airport____at_airport_slash_airspace.DdlProperty
             ],
             WHERE: p.entity._localId.IN(entityIds)
         }, context);
@@ -10762,7 +10762,7 @@ class DbPropertyDao extends BaseDdlPropertyDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sp = Q_airport____at_airport_slash_airspace.DbPropertyColumn,
+            INSERT_INTO: sp = Q_airport____at_airport_slash_airspace.DdlProperty,
             columns: [
                 sp._localId,
                 sp.index,
@@ -10823,7 +10823,7 @@ class DbRelationColumnDao extends BaseDdlRelationColumnDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                rc = Q_airport____at_airport_slash_airspace.DbRelationColumn
+                rc = Q_airport____at_airport_slash_airspace.DdlRelationColumn
             ],
             WHERE: OR(rc.oneColumn._localId.IN(columnIds), rc.manyColumn._localId.IN(columnIds))
         }, context);
@@ -10845,7 +10845,7 @@ class DbRelationColumnDao extends BaseDdlRelationColumnDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: src = Q_airport____at_airport_slash_airspace.DbRelationColumn,
+            INSERT_INTO: src = Q_airport____at_airport_slash_airspace.DdlRelationColumn,
             columns: [
                 src._localId,
                 src.manyColumn._localId,
@@ -10868,7 +10868,7 @@ class DbRelationDao extends BaseDdlRelationDao {
         return this.db.find.tree({
             SELECT: {},
             FROM: [
-                r = Q_airport____at_airport_slash_airspace.DbRelation
+                r = Q_airport____at_airport_slash_airspace.DdlRelation
             ],
             WHERE: r.property._localId.IN(propertyIds)
         }, context);
@@ -10891,7 +10891,7 @@ class DbRelationDao extends BaseDdlRelationDao {
                 }
             },
             FROM: [
-                r = Q_airport____at_airport_slash_airspace.DbRelation,
+                r = Q_airport____at_airport_slash_airspace.DdlRelation,
                 e = r.entity.LEFT_JOIN(),
                 av = e.applicationVersion.LEFT_JOIN(),
                 a = av.application.LEFT_JOIN(),
@@ -10918,7 +10918,7 @@ class DbRelationDao extends BaseDdlRelationDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.DbRelation,
+            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.DdlRelation,
             columns: [
                 sr._localId,
                 sr.index,
@@ -11085,7 +11085,8 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
                 applicationVersion._localId, applicationVersion.integerVersion,
                 applicationVersion.versionString, applicationVersion.majorVersion,
                 applicationVersion.minorVersion, applicationVersion.patchVersion,
-                applicationVersion.application.index, applicationVersion.jsonApplication
+                applicationVersion.application.index, applicationVersion.jsonApplication,
+                applicationVersion.signature
             ]);
         }
         await this.db.insertValuesGenerateIds({
@@ -11098,23 +11099,27 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
                 sv.minorVersion,
                 sv.patchVersion,
                 sv.application.index,
-                sv.jsonApplication
+                sv.jsonApplication,
+                sv.signature
             ],
             VALUES: VALUES
         }, context);
     }
 }
 
-const application$3 = {
+const application$4 = {
     name: '@airport/airspace',
     domain: {
         name: 'airport'
     }
 };
 
-const airspace = app(application$3);
+const airspace = app(application$4);
 airspace.register(DbDomainDao, DbColumnDao, DbApplicationDao, DbEntityDao, DbPropertyColumnDao, DbPropertyDao, DbApplicationReferenceDao, DbRelationColumnDao, DbRelationDao, DbApplicationVersionDao);
 airspace.setDependencies(DbColumnDao, {
+    datastructureUtils: DatastructureUtils
+});
+airspace.setDependencies(DbRelationDao, {
     datastructureUtils: DatastructureUtils
 });
 airspace.setDependencies(DbApplicationDao, {
@@ -13214,6 +13219,7 @@ class RepositoryTransactionHistory {
  */
 class TransactionHistory {
     constructor() {
+        this.repositoryTransactionHistories = [];
         this.applicationMap = new globalThis.SyncApplicationMap();
         this.allOperationHistory = [];
         this.allRecordHistory = [];
@@ -14620,14 +14626,14 @@ class RepositoryApi {
     }
 }
 
-const application$2 = {
+const application$3 = {
     name: '@airport/holding-pattern',
     domain: {
         name: 'airport'
     }
 };
 
-const holdingPattern = app(application$2);
+const holdingPattern = app(application$3);
 const REPOSITORY_MANAGER = holdingPattern.token('RepositoryManager');
 holdingPattern.register(ActorDao, CopiedRecordLedgerDao, CrossRepositoryRelationLedgerDao, CrossRepositoryRelationManager, LocalCopyReplacementLedgerDao, OperationHistoryDuo, RecordHistoryDuo, RecordHistoryNewValueDao, RecordHistoryNewValueDuo, RecordHistoryOldValueDao, RecordHistoryOldValueDuo, RepositoryDao, RepositoryMemberDao, RepositoryReferenceDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo, TransactionHistoryDuo, RepositoryApi);
 holdingPattern.setDependencies(ActorDao, {
@@ -15105,14 +15111,14 @@ class UserAccountDao extends BaseUserAccountDao {
     }
 }
 
-const application$1 = {
+const application$2 = {
     name: '@airport/travel-document-checkpoint',
     domain: {
         name: 'airport'
     }
 };
 
-const travelDocumentCheckpoint = app(application$1);
+const travelDocumentCheckpoint = app(application$2);
 travelDocumentCheckpoint.register(TerminalDao, UserAccountApi, UserAccountDao, UserAccountManager);
 travelDocumentCheckpoint.setDependencies(TerminalDao, {
     airportDatabase: AIRPORT_DATABASE,
@@ -27539,7 +27545,7 @@ BaseRepositoryKeyDao.Search = new DaoQueryDecorators();
 BaseRepositoryKeyDao.SearchOne = new DaoQueryDecorators();
 
 let KeyRingDao = class KeyRingDao extends BaseKeyRingDao {
-    async findKeyRing(externalPrivateKey) {
+    async findKeyRing(externalPrivateKey, context) {
         let Q = Q_airbridge____at_airbridge_slash_keyring;
         let kr;
         return this._findOne({
@@ -27548,7 +27554,7 @@ let KeyRingDao = class KeyRingDao extends BaseKeyRingDao {
                 kr = Q.KeyRing
             ],
             WHERE: kr.externalPrivateKey.equals(externalPrivateKey)
-        });
+        }, context);
     }
 };
 KeyRingDao = __decorate$1([
@@ -27575,7 +27581,7 @@ RepositoryKeyDao = __decorate$1([
     Injected()
 ], RepositoryKeyDao);
 
-const application = {
+const application$1 = {
     name: '@airbridge/keyring',
     domain: {
         name: 'airbridge'
@@ -27584,12 +27590,12 @@ const application = {
 
 let KeyRingManager = class KeyRingManager {
     async getKeyRing(userPrivateKey, privateMetaSigningKey, context) {
-        await this.repositoryLoader.loadRepository('DEVSERVR_' + userPrivateKey, {});
-        let keyRing = await this.keyRingDao.findKeyRing(userPrivateKey);
+        await this.repositoryLoader.loadRepository('DEVSERVR_' + userPrivateKey, context);
+        let keyRing = await this.keyRingDao.findKeyRing(userPrivateKey, context);
         if (!keyRing) {
             const keyRingContext = {
                 ...context,
-                applicationFullName: this.dbApplicationUtils.getDbApplication_FullName(application),
+                applicationFullName: this.dbApplicationUtils.getDbApplication_FullName(application$1),
                 newRepositoryGUID: 'DEVSERVR_' + userPrivateKey,
                 forKeyRingRepository: true
             };
@@ -27701,7 +27707,7 @@ MessageSigningManager = __decorate$1([
     Injected()
 ], MessageSigningManager);
 
-const keyring = app(application);
+const keyring = app(application$1);
 keyring.register(KeyRingDao, KeyRingManager, MessageSigningManager, RepositoryKeyDao);
 keyring.setDependencies(KeyRingManager, {
     dbApplicationUtils: DbApplicationUtils,
@@ -30869,6 +30875,9 @@ class ObservableQueryAdapter {
     }
     async checkExistenceOfQueriedRepositories() {
         try {
+            if (!this.queriedRepositoryIds.GUIDSet.size && !this.queriedRepositoryIds.localIdSet.size) {
+                return;
+            }
             if (this.repositoryExistenceCheckInProgress) {
                 return;
             }
@@ -32046,11 +32055,13 @@ class SQLWhereBase {
             return this.sqlQueryAdapter.getParameterValue(parameter);
         });
     }
-    getFunctionCallValue(rawValue, context) {
-        return this.getFieldValue(rawValue, ClauseType.FUNCTION_CALL, null, context);
+    getFunctionCallValue(rawValue, recordSelectColumnInfo, context) {
+        return this.getFieldValue(rawValue, ClauseType.FUNCTION_CALL, null, recordSelectColumnInfo, context);
     }
-    getFieldFunctionValue(aField, defaultCallback, context) {
-        this.selectColumnInfos.push(null);
+    getFieldFunctionValue(aField, defaultCallback, recordSelectColumnInfo, context) {
+        if (recordSelectColumnInfo) {
+            this.selectColumnInfos.push(null);
+        }
         let aValue = aField.value;
         if (this.isParameterReference(aValue)) {
             let stringValue = aValue;
@@ -32058,22 +32069,24 @@ class SQLWhereBase {
             aValue = this.sqlQueryAdapter.getParameterReference(this.parameterReferences, stringValue);
         }
         else {
-            aValue = this.getFieldValue(aValue, ClauseType.FUNCTION_CALL, defaultCallback, context);
+            aValue = this.getFieldValue(aValue, ClauseType.FUNCTION_CALL, defaultCallback, recordSelectColumnInfo, context);
         }
         aValue = this.sqlQueryAdapter.getFunctionAdaptor()
             .getFunctionCalls(aField, aValue, this.qEntityMapByAlias, this, context);
         this.qValidator.addFunctionAlias(aField.fieldAlias);
         return aValue;
     }
-    getFieldValue(clauseField, clauseType, defaultCallback, context) {
-        this.selectColumnInfos.push(null);
+    getFieldValue(clauseField, clauseType, defaultCallback, recordSelectColumnInfo, context) {
+        if (recordSelectColumnInfo) {
+            this.selectColumnInfos.push(null);
+        }
         let columnName;
         if (!clauseField) {
             throw new Error(`Missing Clause Field definition`);
         }
         if (clauseField instanceof Array) {
             return clauseField
-                .map((clauseFieldMember) => this.getFieldValue(clauseFieldMember, clauseType, defaultCallback, context))
+                .map((clauseFieldMember) => this.getFieldValue(clauseFieldMember, clauseType, defaultCallback, recordSelectColumnInfo, context))
                 .join(', ');
         }
         if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.objectType) {
@@ -32083,7 +32096,7 @@ class SQLWhereBase {
         let qEntity;
         switch (clauseField.objectType) {
             case QueryClauseObjectType.FIELD_FUNCTION:
-                return this.getFieldFunctionValue(aField, defaultCallback, context);
+                return this.getFieldFunctionValue(aField, defaultCallback, recordSelectColumnInfo, context);
             case QueryClauseObjectType.DISTINCT_FUNCTION:
                 throw new Error(`Distinct function cannot be nested.`);
             case QueryClauseObjectType.EXISTS_FUNCTION: {
@@ -32101,7 +32114,9 @@ class SQLWhereBase {
                 qEntity = this.qEntityMapByAlias[aField.tableAlias];
                 this.qValidator.validateReadQEntityProperty(aField.applicationIndex, aField.entityIndex, aField.columnIndex);
                 columnName = this.getEntityPropertyColumnName(qEntity, aField.columnIndex, context);
-                this.addSelectColumnInfo(aField);
+                if (recordSelectColumnInfo) {
+                    this.addSelectColumnInfoFromField(aField);
+                }
                 this.addField(aField.applicationIndex, aField.entityIndex, aField.columnIndex);
                 return this.getComplexColumnFragment(aField, columnName, context);
             }
@@ -32123,7 +32138,9 @@ class SQLWhereBase {
                 this.qValidator.validateReadQEntityManyToOneRelation(aField.applicationIndex, aField.entityIndex, aField.columnIndex);
                 columnName = this.getEntityManyToOneColumnName(qEntity, aField.columnIndex, context);
                 this.addField(aField.applicationIndex, aField.entityIndex, aField.columnIndex);
-                this.addSelectColumnInfo(aField);
+                if (recordSelectColumnInfo) {
+                    this.addSelectColumnInfoFromField(aField);
+                }
                 return this.getComplexColumnFragment(aField, columnName, context);
             }
             // must be a nested object
@@ -32133,7 +32150,7 @@ class SQLWhereBase {
             }
         }
     }
-    addSelectColumnInfo(aField) {
+    addSelectColumnInfoFromField(aField) {
         const dbEntity = this.airportDatabase.applications[aField.applicationIndex]
             .currentVersion[0].applicationVersion.entities[aField.entityIndex];
         const dbProperty = dbEntity.properties[aField.propertyIndex];
@@ -32144,6 +32161,13 @@ class SQLWhereBase {
                 dbEntity,
                 dbProperty
             };
+    }
+    addSelectColumnInfo(dbEntity, dbProperty, dbColumn) {
+        this.selectColumnInfos.push({
+            dbColumn,
+            dbEntity,
+            dbProperty
+        });
     }
     trackRepositoryIds(resultsFromSelect) {
         if (resultsFromSelect.length !== this.selectColumnInfos.length) {
@@ -32209,21 +32233,21 @@ Returned:  ${resultsFromSelect.length}
             case OperationCategory.STRING:
             case OperationCategory.UNTYPED:
                 let valueOperation = operation;
-                let lValueSql = this.getFieldValue(valueOperation.leftSideValue, ClauseType.WHERE_CLAUSE, null, context);
+                let lValueSql = this.getFieldValue(valueOperation.leftSideValue, ClauseType.WHERE_CLAUSE, null, false, context);
                 if (valueOperation.operator === SqlOperator.IS_NOT_NULL
                     || valueOperation.operator === SqlOperator.IS_NULL) {
                     let operator = this.applyOperator(valueOperation.operator, null);
                     whereFragment += `${lValueSql}${operator}`;
                 }
                 else {
-                    let rValueSql = this.getFieldValue(valueOperation.rightSideValue, ClauseType.WHERE_CLAUSE, null, context);
+                    let rValueSql = this.getFieldValue(valueOperation.rightSideValue, ClauseType.WHERE_CLAUSE, null, false, context);
                     let rValueWithOperator = this.applyOperator(valueOperation.operator, rValueSql);
                     whereFragment += `${lValueSql}${rValueWithOperator}`;
                 }
                 break;
             case OperationCategory.FUNCTION:
                 let functionOperation = operation;
-                whereFragment = this.getFieldValue(functionOperation.object, ClauseType.WHERE_CLAUSE, null, context);
+                whereFragment = this.getFieldValue(functionOperation.object, ClauseType.WHERE_CLAUSE, null, false, context);
                 // exists function and maybe others
                 break;
         }
@@ -32418,7 +32442,7 @@ ${valuesFragment}
                     throw new Error(`An 'undefined' value was provided when inserting into: ${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}`);
                 }
                 else {
-                    const fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE, null, context);
+                    const fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE, null, false, context);
                     return `\n${fieldValue}\n`;
                 }
             });
@@ -32590,7 +32614,7 @@ ${whereFragment}`;
             fieldValue = this.sqlQueryAdapter.getParameterReference(this.parameterReferences, value);
         }
         else {
-            fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE, null, context);
+            fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE, null, false, context);
         }
         setFragments.push(`\t${columnName} = ${fieldValue}`);
     }
@@ -32626,12 +32650,13 @@ ${whereFragment}`;
 }
 
 class SqlFunctionField {
-    constructor(queryFieldClause) {
+    constructor(queryFieldClause, recordSelectColumnInfo) {
         this.queryFieldClause = queryFieldClause;
+        this.recordSelectColumnInfo = recordSelectColumnInfo;
         // Test
     }
     getValue(sqlValueProvider, context) {
-        return sqlValueProvider.getFieldFunctionValue(this.queryFieldClause, null, context);
+        return sqlValueProvider.getFieldFunctionValue(this.queryFieldClause, null, this.recordSelectColumnInfo, context);
     }
 }
 
@@ -32821,7 +32846,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
         let dbColumn;
         switch (fieldJson.objectType) {
             case QueryClauseObjectType.FIELD_FUNCTION:
-                view[alias] = new SqlFunctionField(fieldJson);
+                view[alias] = new SqlFunctionField(fieldJson, true);
                 throw new Error('Not implemented');
             case QueryClauseObjectType.EXISTS_FUNCTION:
                 throw new Error(`Exists function cannot be used in SELECT clause.`);
@@ -32873,7 +32898,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
     getFieldSelectFragment(value, clauseType, nestedObjectCallBack, fieldIndex, context) {
         let columnSelectSqlFragment = this.getFieldValue(value, clauseType, 
         // Nested object processing
-        nestedObjectCallBack, context);
+        nestedObjectCallBack, true, context);
         if (value.fieldAlias !== undefined) {
             columnSelectSqlFragment += ` as ${value.fieldAlias}`;
         }
@@ -33544,7 +33569,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
     getSELECTFragment(dbEntity, selectClauseFragment, joinTree, context, parentProperty) {
         const tableAlias = this.queryRelationManager.getAlias(joinTree.queryRelation);
         let selectSqlFragments = [];
-        this.entityStateManager.isStub(selectClauseFragment);
+        // let isStubProperty = this.entityStateManager.isStub(selectClauseFragment)
         const defaults = this.entityDefaults.getForAlias(tableAlias);
         for (let propertyName in selectClauseFragment) {
             if (propertyName === '__state__') {
@@ -33561,6 +33586,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                     for (const relationColumn of dbRelation.manyRelationColumns) {
                         const dbColumn = relationColumn.manyColumn;
                         this.addFieldFromColumn(dbColumn);
+                        this.addSelectColumnInfo(dbEntity, dbProperty, dbColumn);
                         const columnSelect = this.getSimpleColumnFragment(tableAlias, dbColumn.name);
                         selectSqlFragments.push(`${columnSelect} ${this.columnAliases.getFollowingAlias()}`);
                     }
@@ -33573,6 +33599,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
             else {
                 const dbColumn = dbProperty.propertyColumns[0].column;
                 this.addFieldFromColumn(dbColumn);
+                this.addSelectColumnInfo(dbEntity, dbProperty, dbColumn);
                 const columnSelect = this.getSimpleColumnFragment(tableAlias, dbColumn.name);
                 selectSqlFragments.push(`${columnSelect} ${this.columnAliases.getFollowingAlias()}`);
             }
@@ -33880,8 +33907,12 @@ Entity:          ${table.name}
         }
     }
     async insertValues(portableQuery, context, cachedSqlQueryId) {
+        const query = portableQuery.query;
+        if (!query || !query.VALUES || !query.VALUES.length) {
+            return 0;
+        }
         let fieldMap = new globalThis.SyncApplicationMap();
-        const splitValues = this.splitValues(portableQuery.query.VALUES, context);
+        const splitValues = this.splitValues(query.VALUES, context);
         let numVals = 0;
         for (const VALUES of splitValues) {
             let sqlInsertValues = new SQLInsertValues({
@@ -34321,7 +34352,14 @@ if (globalThis.airApi) {
     globalThis.airApi.setQApp(Q_bridge____at_airbridge_slash_sso);
 }
 
-const sso = domain('airbridge').app('sso');
+const application = {
+    name: '@airbridge/sso',
+    domain: {
+        name: 'airbridge'
+    }
+};
+
+const sso = app(application);
 sso.register(RepositoryMaintenanceManager, SSOManager);
 sso.setDependencies(RepositoryMaintenanceManager, {
     historyManager: HISTORY_MANAGER,
@@ -36415,7 +36453,8 @@ parent transactions.
                 }
             }
             let transactionHistory = transaction.transactionHistory;
-            if (!context.doNotRecordHistory && !transaction.isSync) {
+            if (!context.doNotRecordHistory && !transaction.isSync
+                && transactionHistory.repositoryTransactionHistories.length) {
                 const { historiesToSend, messages } = await this.synchronizationOutManager.getSynchronizationMessages(transactionHistory.repositoryTransactionHistories, context);
                 await transaction.commit(null, context);
                 if (!parentTransaction && transactionHistory.allRecordHistory.length) {

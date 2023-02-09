@@ -158,15 +158,15 @@ export class SqlLiteFunctionAdaptor
 				return `LOWER(${value})`;
 			case SqlFunction.MID:
 				let start = sqlValueProvider.getFunctionCallValue(
-					queryFunctionCall.functionParameters[0], context);
+					queryFunctionCall.functionParameters[0], false, context);
 				let length = sqlValueProvider.getFunctionCallValue(
-					queryFunctionCall.functionParameters[1], context);
+					queryFunctionCall.functionParameters[1], false, context);
 				return `SUBSTR(${value}, ${start}, ${length})`;
 			case SqlFunction.LEN:
 				return `LENGTH(${value})`;
 			case SqlFunction.ROUND:
 				let digits = sqlValueProvider.getFunctionCallValue(
-					queryFunctionCall.functionParameters[0], context);
+					queryFunctionCall.functionParameters[0], false, context);
 				return `ROUND(${value}, ${digits})`;
 			case SqlFunction.NOW:
 				return `DATE('now')`;
@@ -175,16 +175,16 @@ export class SqlLiteFunctionAdaptor
 				for (let i = 0; i < queryFunctionCall.functionParameters.length; i++) {
 					let formatParam = queryFunctionCall.functionParameters[i];
 					formatParam = sqlValueProvider.getFunctionCallValue(
-						formatParam, context);
+						formatParam, false, context);
 					formatCall = `${formatCall}, ${formatParam}`;
 				}
 				formatCall += ')';
 				return formatCall;
 			case SqlFunction.REPLACE:
 				let param1 = sqlValueProvider.getFunctionCallValue(
-					queryFunctionCall.functionParameters[0], context);
+					queryFunctionCall.functionParameters[0], false, context);
 				param2 = sqlValueProvider.getFunctionCallValue(
-					queryFunctionCall.functionParameters[1], context);
+					queryFunctionCall.functionParameters[1], false, context);
 				return `REPLACE('${value}', ${param1}, ${param2})`;
 			case SqlFunction.TRIM:
 				return `TRIM(${value})`;
@@ -194,19 +194,19 @@ export class SqlLiteFunctionAdaptor
 				throw new Error(`Invalid placement of an exists function`);
 			case SqlFunction.DIVIDE:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					queryFunctionCall.functionParameters[0], context);
+					queryFunctionCall.functionParameters[0], false, context);
 				return `${value} / ${param2}`;
 			case SqlFunction.MINUS:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					queryFunctionCall.functionParameters[0], context);
+					queryFunctionCall.functionParameters[0], false, context);
 				return `${value} - ${param2}`;
 			case SqlFunction.MULTIPLY:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					queryFunctionCall.functionParameters[0], context);
+					queryFunctionCall.functionParameters[0], false, context);
 				return `${value} * ${param2}`;
 			case SqlFunction.PLUS:
 				param2 = sqlValueProvider.getFunctionCallValue(
-					queryFunctionCall.functionParameters[0], context);
+					queryFunctionCall.functionParameters[0], false, context);
 				return `${value} + ${param2}`;
 			case SqlFunction.CONCATENATE:
 				return queryFunctionCall.functionParameters.reduce((
@@ -215,7 +215,7 @@ export class SqlLiteFunctionAdaptor
 				) => {
 					let primitiveValue = this.toString(
 						sqlValueProvider.getFunctionCallValue(
-							val, context));
+							val, false, context));
 					return acc + val;
 				}, this.toString(value));
 			case SqlFunction.COALESCE:
