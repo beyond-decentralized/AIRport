@@ -76,14 +76,14 @@ export class EntityDatabaseFacade<Entity,
     rawInsertColumnValues: RawInsertColumnValues<IQE> | {
       (...args: any[]): RawInsertColumnValues<IQE>;
     },
-    ctx?: IEntityContext
+    context?: IEntityContext
   ): Promise<number> {
-    return await this.withDbEntity(ctx, async (
+    return await this.withDbEntity(context, async (
       databaseFacade: IDatabaseFacade,
-      ctx: IEntityContext,
+      context: IEntityContext,
     ) => {
       return await databaseFacade.insertColumnValues(
-        rawInsertColumnValues, ctx);
+        rawInsertColumnValues, context);
     });
   }
 
@@ -91,14 +91,14 @@ export class EntityDatabaseFacade<Entity,
     rawInsertValues: RawInsertValues<IQE> | {
       (...args: any[]): RawInsertValues<IQE>;
     },
-    ctx?: IEntityContext
+    context?: IEntityContext
   ): Promise<number> {
-    return await this.withDbEntity(ctx, async (
+    return await this.withDbEntity(context, async (
       databaseFacade: IDatabaseFacade,
-      ctx: IEntityContext,
+      context: IEntityContext,
     ) => {
       return await databaseFacade.insertValues(
-        rawInsertValues, ctx);
+        rawInsertValues, context);
     }, );
   }
 
@@ -106,14 +106,14 @@ export class EntityDatabaseFacade<Entity,
     rawInsertColumnValues: RawInsertColumnValues<IQE> | {
       (...args: any[]): RawInsertColumnValues<IQE>;
     },
-    ctx?: IEntityContext
+    context?: IEntityContext
   ): Promise<number[] | string[] | number[][] | string[][]> {
-    return await this.withDbEntity(ctx, async (
+    return await this.withDbEntity(context, async (
       databaseFacade: IDatabaseFacade,
-      ctx: IEntityContext,
+      context: IEntityContext,
     ) => {
       return await databaseFacade.insertColumnValuesGenerateIds(
-        rawInsertColumnValues, ctx);
+        rawInsertColumnValues, context);
     });
   }
 
@@ -121,14 +121,14 @@ export class EntityDatabaseFacade<Entity,
     rawInsertValues: RawInsertValues<IQE> | {
       (...args: any[]): RawInsertValues<IQE>;
     },
-    ctx?: IEntityContext
+    context?: IEntityContext
   ): Promise<number[] | string[] | number[][] | string[][]> {
-    return await this.withDbEntity(ctx, async (
+    return await this.withDbEntity(context, async (
       databaseFacade: IDatabaseFacade,
-      ctx: IEntityContext,
+      context: IEntityContext,
     ) => {
       return await databaseFacade.insertValuesGenerateIds(
-        rawInsertValues, ctx);
+        rawInsertValues, context);
     });
   }
 
@@ -137,15 +137,15 @@ export class EntityDatabaseFacade<Entity,
       (...args: any[])
         : RawUpdate<EntityUpdateColumns, IQ>
     },
-    ctx?: IEntityContext,
+    context?: IEntityContext,
 		trackedRepoGUIDSet?: Set<Repository_GUID>
   ): Promise<number> {
-    return await this.withDbEntity(ctx, async (
+    return await this.withDbEntity(context, async (
       databaseFacade: IDatabaseFacade,
-      ctx: IEntityContext,
+      context: IEntityContext,
     ) => {
       return await databaseFacade.updateColumnsWhere(
-        rawUpdateColumns, ctx, trackedRepoGUIDSet);
+        rawUpdateColumns, context, trackedRepoGUIDSet);
     });
   }
 
@@ -154,41 +154,41 @@ export class EntityDatabaseFacade<Entity,
       (...args: any[])
         : RawUpdate<EntityUpdateProperties, IQ>
     },
-    ctx?: IEntityContext,
+    context?: IEntityContext,
 		trackedRepoGUIDSet?: Set<Repository_GUID>
   ): Promise<number> {
-    return await this.withDbEntity(ctx, async (
+    return await this.withDbEntity(context, async (
       databaseFacade: IDatabaseFacade,
-      ctx: IEntityContext,
+      context: IEntityContext,
     ) => {
       return await databaseFacade.updateWhere(
-        rawUpdate, ctx, trackedRepoGUIDSet);
+        rawUpdate, context, trackedRepoGUIDSet);
     });
   }
 
   async deleteWhere(
     rawDelete: RawDelete<IQ> | { (...args: any[]): RawDelete<IQ> },
-    ctx?: IEntityContext,
+    context?: IEntityContext,
 		trackedRepoGUIDSet?: Set<Repository_GUID>
   ): Promise<number> {
-    return await this.withDbEntity(ctx, async (
+    return await this.withDbEntity(context, async (
       databaseFacade: IDatabaseFacade,
-      ctx: IEntityContext,
+      context: IEntityContext,
     ) => {
       return await databaseFacade.deleteWhere(
-        rawDelete, ctx, trackedRepoGUIDSet);
+        rawDelete, context, trackedRepoGUIDSet);
     });
   }
 
   async save(
     entity: EntityCreate,
-    ctx?: IEntityContext,
+    context?: IEntityContext,
   ): Promise<ISaveResult> {
-    return await this.withDbEntity(ctx, async (
+    return await this.withDbEntity(context, async (
       databaseFacade: IDatabaseFacade,
-      ctx: IEntityContext,
+      context: IEntityContext,
     ) => {
-      return await databaseFacade.save(entity, ctx);
+      return await databaseFacade.save(entity, context);
     });
   }
 
@@ -198,38 +198,38 @@ export class EntityDatabaseFacade<Entity,
   async saveToDestination(
     repositoryDestination: string,
     entity: EntityCreate,
-    ctx?: IEntityContext,
+    context?: IEntityContext,
   ): Promise<ISaveResult> {
-    return await this.withDbEntity(ctx, async (
+    return await this.withDbEntity(context, async (
       databaseFacade: IDatabaseFacade,
-      ctx: IEntityContext,
+      context: IEntityContext,
     ) => {
-      return await databaseFacade.saveToDestination(repositoryDestination, entity, ctx);
+      return await databaseFacade.saveToDestination(repositoryDestination, entity, context);
     });
   }
 
   protected async withDbEntity<R>(
-    ctx: IEntityContext,
+    context: IEntityContext,
     callback: {
       (
         databaseFacade: IDatabaseFacade,
-        ctx: IEntityContext,
+        context: IEntityContext,
       ): Promise<R>
     },
   ): Promise<R> {
-    if (!ctx) {
-      ctx = {} as any;
+    if (!context) {
+      context = {} as any;
     }
-    if (!ctx.startedAt) {
-      ctx.startedAt = new Date();
+    if (!context.startedAt) {
+      context.startedAt = new Date();
     }
-    const previousEntity = ctx.dbEntity;
-    ctx.dbEntity = this.dbEntity;
+    const previousEntity = context.dbEntity;
+    context.dbEntity = this.dbEntity;
     try {
 
-      return await callback(this.dao.databaseFacade, ctx);
+      return await callback(this.dao.databaseFacade, context);
     } finally {
-      ctx.dbEntity = previousEntity;
+      context.dbEntity = previousEntity;
     }
   }
 

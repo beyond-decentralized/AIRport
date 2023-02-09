@@ -46,28 +46,28 @@ export interface IDatabaseFacade {
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IEntityContext
+		context: IEntityContext
 	): Promise<number>;
 
 	insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
-		ctx: IEntityContext
+		context: IEntityContext
 	): Promise<number>;
 
 	insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
-		ctx: IEntityContext
+		context: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
-		ctx: IEntityContext
+		context: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
 	/**
@@ -80,7 +80,7 @@ export interface IDatabaseFacade {
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
-		ctx: IEntityContext,
+		context: IEntityContext,
 		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number>;
 
@@ -92,7 +92,7 @@ export interface IDatabaseFacade {
 	 */
 	save<E>(
 		entity: E,
-		ctx: IEntityContext,
+		context: IEntityContext,
 	): Promise<ISaveResult>;
 
 	/**
@@ -104,7 +104,7 @@ export interface IDatabaseFacade {
 	saveToDestination<E>(
 		repositoryDestination: string,
 		entity: E,
-		ctx: IEntityContext,
+		context: IEntityContext,
 	): Promise<ISaveResult>;
 
 	/**
@@ -118,7 +118,7 @@ export interface IDatabaseFacade {
 			| {
 				(...args: any[]): RawUpdateColumns<IEUC, IQE>
 			},
-		ctx: IEntityContext,
+		context: IEntityContext,
 		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number>;
 
@@ -132,7 +132,7 @@ export interface IDatabaseFacade {
 		rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
 			(...args: any[]): RawUpdate<IEUP, IQE>
 		},
-		ctx: IEntityContext,
+		context: IEntityContext,
 		trackedRepoGUIDSet?: Set<Repository_GUID>
 	): Promise<number>;
 
@@ -153,31 +153,31 @@ export interface IQueryFacade {
 	find<E, EntityArray extends Array<E>>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IEntityContext,
+		context: IEntityContext,
 	): Promise<EntityArray>;
 
 	findOne<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IEntityContext,
+		context: IEntityContext,
 	): Promise<E>;
 
 	search<E, EntityArray extends Array<E>>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IEntityContext,
+		context: IEntityContext,
 	): Promise<Observable<EntityArray>>;
 
 	searchOne<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IEntityContext,
+		context: IEntityContext,
 	): Promise<Observable<E>>;
 
 	getPortableQuery<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
-		ctx: IEntityContext
+		context: IEntityContext
 	): PortableQuery;
 
 }

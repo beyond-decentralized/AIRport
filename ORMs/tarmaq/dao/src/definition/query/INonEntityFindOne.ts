@@ -13,7 +13,7 @@ export interface INonEntityFindOne
 	 */
 	tree<ITE extends ITreeEntity>(
 		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<ITE>;
 
 	/**
@@ -21,7 +21,7 @@ export interface INonEntityFindOne
 	 */
 	sheet(
 		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
-		ctx?: IContext
+		context?: IContext
 	): Promise<any[]>;
 
 	/**
@@ -29,7 +29,7 @@ export interface INonEntityFindOne
 	 */
 	field<IQF extends IQOrderableField<IQF>>(
 		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<any>;
 
 }

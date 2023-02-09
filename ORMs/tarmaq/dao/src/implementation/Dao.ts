@@ -236,9 +236,9 @@ export abstract class Dao<Entity,
 	protected async _find(
 		rawGraphQuery: RawEntityQuery<EntitySelect>
 			| { (...args: any[]): RawEntityQuery<EntitySelect> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<Array<Entity>> {
-		return await this.db.find.graph(rawGraphQuery, ctx)
+		return await this.db.find.graph(rawGraphQuery, context)
 	}
 
 	/**
@@ -249,9 +249,9 @@ export abstract class Dao<Entity,
 	protected async _findUnique<E extends IAirEntity & Entity>(
 		rawGraphQuery: RawEntityQuery<EntitySelect>
 			| { (...args: any[]): RawEntityQuery<EntitySelect> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<E> {
-		const records: E[] = await this.db.find.graph(rawGraphQuery, ctx) as any as E[]
+		const records: E[] = await this.db.find.graph(rawGraphQuery, context) as any as E[]
 
 		if (!records.length) {
 			return null
@@ -274,9 +274,9 @@ export abstract class Dao<Entity,
 	 */
 	protected async _findOne(
 		rawGraphQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<Entity> {
-		return await this.db.findOne.graph(rawGraphQuery, ctx)
+		return await this.db.findOne.graph(rawGraphQuery, context)
 	}
 
 	/**
@@ -285,7 +285,7 @@ export abstract class Dao<Entity,
 	protected _search(
 		rawGraphQuery: RawEntityQuery<EntitySelect>
 			| { (...args: any[]): RawEntityQuery<EntitySelect> },
-		ctx?: IContext
+		context?: IContext
 	): Observable<Array<Entity>> {
 		throw new Error('Not implemented')
 	}
@@ -295,7 +295,7 @@ export abstract class Dao<Entity,
 	 */
 	protected _searchOne(
 		rawGraphQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> },
-		ctx?: IContext
+		context?: IContext
 	): Observable<Entity> {
 		throw new Error('Not implemented')
 	}

@@ -20,7 +20,7 @@ export interface INonEntitySearchOne
 	 */
 	tree<ITE extends ITreeEntity>(
 		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> },
-		ctx?: IContext
+		context?: IContext
 	): Observable<ITE>;
 
 	/**
@@ -28,7 +28,7 @@ export interface INonEntitySearchOne
 	 */
 	sheet(
 		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
-		ctx?: IContext
+		context?: IContext
 	): Observable<any[]>;
 
 	/**
@@ -36,7 +36,7 @@ export interface INonEntitySearchOne
 	 */
 	field<IQF extends IQOrderableField<IQF>>(
 		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> },
-		ctx?: IContext
+		context?: IContext
 	): Observable<any>;
 
 }

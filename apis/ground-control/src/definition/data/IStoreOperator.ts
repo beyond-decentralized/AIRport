@@ -36,7 +36,7 @@ export interface IStoreOperator {
 	findOne<E>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		ctx: IContext,
+		context: IContext,
 		cachedSqlQueryId?: number,
 	): Promise<E>;
 

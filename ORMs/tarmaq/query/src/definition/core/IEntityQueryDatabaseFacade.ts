@@ -50,28 +50,28 @@ export interface IEntityQueryDatabaseFacade<IEntity,
         rawInsertValues: RawInsertColumnValues<IQE> | {
             (...args: any[]): RawInsertColumnValues<IQE>;
         },
-        ctx?: IEntityContext
+        context?: IEntityContext
     ): Promise<number>;
 
     insertValues<IQE extends IQEntity>(
         rawInsertValues: RawInsertValues<IQE> | {
             (...args: any[]): RawInsertValues<IQE>;
         },
-        ctx?: IEntityContext
+        context?: IEntityContext
     ): Promise<number>;
 
     insertColumnValuesGenerateIds<IQE extends IQEntity>(
         rawInsertValues: RawInsertColumnValues<IQE> | {
             (...args: any[]): RawInsertColumnValues<IQE>;
         },
-        ctx?: IEntityContext
+        context?: IEntityContext
     ): Promise<number[] | string[] | number[][] | string[][]>;
 
     insertValuesGenerateIds<IQE extends IQEntity>(
         rawInsertValues: RawInsertValues<IQE> | {
             (...args: any[]): RawInsertValues<IQE>;
         },
-        ctx?: IEntityContext
+        context?: IEntityContext
     ): Promise<number[] | string[] | number[][] | string[][]>;
 
     /**
@@ -83,7 +83,7 @@ export interface IEntityQueryDatabaseFacade<IEntity,
     updateColumnsWhere(
         rawUpdateColumns: RawUpdateColumns<EntityUpdateColumns, IQ>
             | { (...args: any[]): RawUpdateColumns<EntityUpdateColumns, IQ> },
-        ctx?: IEntityContext
+        context?: IEntityContext
     ): Promise<number>;
 
     /**
@@ -94,7 +94,7 @@ export interface IEntityQueryDatabaseFacade<IEntity,
      */
     updateWhere(
         rawUpdateProperties: RawUpdate<EntityUpdateProperties, IQ> | { (...args: any[]): RawUpdate<EntityUpdateProperties, IQ> },
-        ctx?: IEntityContext
+        context?: IEntityContext
     ): Promise<number>;
 
     /**
@@ -104,7 +104,7 @@ export interface IEntityQueryDatabaseFacade<IEntity,
      */
     deleteWhere(
         rawDelete: RawDelete<IQ> | { (...args: any[]): RawDelete<IQ> },
-        ctx?: IEntityContext
+        context?: IEntityContext
     ): Promise<number>;
 
     /**
@@ -116,7 +116,7 @@ export interface IEntityQueryDatabaseFacade<IEntity,
      */
     save(
         entity: EntityCreateProperties,
-        ctx?: IEntityContext,
+        context?: IEntityContext,
     ): Promise<ISaveResult>;
 
     /**
@@ -125,7 +125,7 @@ export interface IEntityQueryDatabaseFacade<IEntity,
     saveToDestination(
         repositoryDestination: string,
         entity: EntityCreateProperties,
-        ctx?: IEntityContext,
+        context?: IEntityContext,
     ): Promise<ISaveResult>;
 
 }

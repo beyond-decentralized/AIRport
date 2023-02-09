@@ -15,7 +15,7 @@ export interface ILookup {
 		search: boolean,
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => IAbstractQuery,
-		ctx: IEntityContext,
+		context: IEntityContext,
 		mapResults?: boolean
 	): Promise<any>
 

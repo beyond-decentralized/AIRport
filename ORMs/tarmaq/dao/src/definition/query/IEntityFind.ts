@@ -13,7 +13,7 @@ export interface IEntityFind<Entity, EntityArray extends Array<Entity>, IESP ext
 	 */
 	graph(
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<EntityArray>;
 
 	/**
@@ -21,7 +21,7 @@ export interface IEntityFind<Entity, EntityArray extends Array<Entity>, IESP ext
 	 */
 	tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<EntityArray>;
 
 }

@@ -14,7 +14,7 @@ export interface IEntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 	 */
 	graph(
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		ctx?: IContext
+		context?: IContext
 	): Observable<Entity>;
 
 	/**
@@ -22,7 +22,7 @@ export interface IEntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 	 */
 	tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
-		ctx?: IContext
+		context?: IContext
 	): Observable<Entity>;
 
 }

@@ -13,7 +13,7 @@ export interface INonEntityFind
 	 */
 	tree<ITE extends ITreeEntity>(
 		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<ITE[]>;
 
 	/**
@@ -27,7 +27,7 @@ export interface INonEntityFind
 		callback?: (
 			data: any[][]
 		) => void,
-		ctx?: IContext
+		context?: IContext
 	): Promise<any[][]>;
 
 	/**
@@ -35,7 +35,7 @@ export interface INonEntityFind
 	 */
 	field<IQF extends IQOrderableField<IQF>>(
 		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> },
-		ctx?: IContext
+		context?: IContext
 	): Promise<any[]>;
 
 }

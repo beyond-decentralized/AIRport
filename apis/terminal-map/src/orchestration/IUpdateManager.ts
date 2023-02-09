@@ -9,7 +9,7 @@ export interface IUpdateManager {
         actor: IActor,
         transaction: ITransaction,
         rootTransaction: IRootTransaction,
-        ctx: IOperationContext
+        context: IOperationContext
     ): Promise<number>;
 
 }
