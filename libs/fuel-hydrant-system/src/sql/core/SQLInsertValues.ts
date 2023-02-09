@@ -116,7 +116,8 @@ ${valuesFragment}
 					throw new Error(`An 'undefined' value was provided when inserting into: ${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}`)
 				} else {
 					const fieldValue = this.getFieldValue(
-						value, ClauseType.WHERE_CLAUSE, null, context)
+						value, ClauseType.WHERE_CLAUSE, null,
+						false, context)
 					return `\n${fieldValue}\n`
 				}
 			})

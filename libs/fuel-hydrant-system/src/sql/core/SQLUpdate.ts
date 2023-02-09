@@ -146,7 +146,7 @@ ${whereFragment}`
 				this.parameterReferences, value)
 		} else {
 			fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE,
-				null, context)
+				null, false, context)
 		}
 		setFragments.push(`\t${columnName} = ${fieldValue}`)
 	}

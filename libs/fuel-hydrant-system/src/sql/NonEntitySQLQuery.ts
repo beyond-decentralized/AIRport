@@ -338,7 +338,8 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 		let dbColumn: DbColumn
 		switch (fieldJson.objectType) {
 			case QueryClauseObjectType.FIELD_FUNCTION:
-				view[alias] = new SqlFunctionField(fieldJson)
+				view[alias] = new SqlFunctionField(
+					fieldJson, true)
 				throw new Error('Not implemented')
 			case QueryClauseObjectType.EXISTS_FUNCTION:
 				throw new Error(`Exists function cannot be used in SELECT clause.`)
@@ -359,7 +360,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 					case SQLDataType.NUMBER:
 						view[alias] = new QNumberField(dbColumn, dbProperty,
 							view as IQEntityInternal)
-						break
+						break  
 					case SQLDataType.STRING:
 						view[alias] = new QStringField(dbColumn, dbProperty,
 							view as IQEntityInternal)
@@ -413,7 +414,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 	): string {
 		let columnSelectSqlFragment = this.getFieldValue(value, clauseType,
 			// Nested object processing
-			nestedObjectCallBack, context)
+			nestedObjectCallBack, true, context)
 		if (value.fieldAlias !== undefined) {
 			columnSelectSqlFragment += ` as ${value.fieldAlias}`
 		}

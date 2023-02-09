@@ -543,7 +543,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 		const tableAlias = this.queryRelationManager.getAlias(joinTree.queryRelation)
 		let selectSqlFragments = []
 
-		let isStubProperty = this.entityStateManager.isStub(selectClauseFragment)
+		// let isStubProperty = this.entityStateManager.isStub(selectClauseFragment)
 
 		const defaults = this.entityDefaults.getForAlias(tableAlias)
 		for (let propertyName in selectClauseFragment) {
@@ -561,6 +561,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 					for (const relationColumn of dbRelation.manyRelationColumns) {
 						const dbColumn = relationColumn.manyColumn
 						this.addFieldFromColumn(dbColumn)
+						this.addSelectColumnInfo(dbEntity, dbProperty, dbColumn)
 						const columnSelect = this.getSimpleColumnFragment(tableAlias, dbColumn.name)
 						selectSqlFragments.push(`${columnSelect} ${this.columnAliases.getFollowingAlias()}`)
 					}
@@ -573,6 +574,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 			} else {
 				const dbColumn = dbProperty.propertyColumns[0].column
 				this.addFieldFromColumn(dbColumn)
+				this.addSelectColumnInfo(dbEntity, dbProperty, dbColumn)
 				const columnSelect = this.getSimpleColumnFragment(tableAlias, dbColumn.name)
 				selectSqlFragments.push(`${columnSelect} ${this.columnAliases.getFollowingAlias()}`)
 			}

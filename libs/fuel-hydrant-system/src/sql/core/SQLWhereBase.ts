@@ -130,19 +130,24 @@ export abstract class SQLWhereBase
 
 	getFunctionCallValue(
 		rawValue: any,
+		recordSelectColumnInfo: boolean,
 		context: IFuelHydrantContext,
 	): string {
 		return this.getFieldValue(
-			<QueryFieldClause>rawValue, ClauseType.FUNCTION_CALL, null, context
+			<QueryFieldClause>rawValue, ClauseType.FUNCTION_CALL,
+			null, recordSelectColumnInfo, context
 		)
 	}
 
 	getFieldFunctionValue(
 		aField: QueryFieldClause,
 		defaultCallback: () => string,
+		recordSelectColumnInfo: boolean,
 		context: IFuelHydrantContext,
 	): string {
-		this.selectColumnInfos.push(null)
+		if (recordSelectColumnInfo) {
+			this.selectColumnInfos.push(null)
+		}
 		let aValue = aField.value
 		if (this.isParameterReference(aValue)) {
 			let stringValue = <string>aValue
@@ -150,7 +155,8 @@ export abstract class SQLWhereBase
 			aValue = this.sqlQueryAdapter.getParameterReference(this.parameterReferences, stringValue)
 		} else {
 			aValue = this.getFieldValue(
-				<any>aValue, ClauseType.FUNCTION_CALL, defaultCallback, context)
+				<any>aValue, ClauseType.FUNCTION_CALL,
+				defaultCallback, recordSelectColumnInfo, context)
 		}
 		aValue = this.sqlQueryAdapter.getFunctionAdaptor()
 			.getFunctionCalls(
@@ -164,9 +170,12 @@ export abstract class SQLWhereBase
 		clauseField: QueryBaseClause | QueryFieldClause[] | QueryField,
 		clauseType: ClauseType,
 		defaultCallback: () => string,
+		recordSelectColumnInfo: boolean,
 		context: IFuelHydrantContext,
 	): string {
-		this.selectColumnInfos.push(null)
+		if (recordSelectColumnInfo) {
+			this.selectColumnInfos.push(null)
+		}
 		let columnName
 		if (!clauseField) {
 			throw new Error(`Missing Clause Field definition`)
@@ -174,7 +183,8 @@ export abstract class SQLWhereBase
 		if (clauseField instanceof Array) {
 			return clauseField
 				.map((clauseFieldMember) => this.getFieldValue(
-					clauseFieldMember, clauseType, defaultCallback, context))
+					clauseFieldMember, clauseType, defaultCallback,
+					recordSelectColumnInfo, context))
 				.join(', ')
 		}
 		if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE && !clauseField.objectType) {
@@ -185,7 +195,8 @@ export abstract class SQLWhereBase
 		let qEntity: IQEntityInternal
 		switch (clauseField.objectType) {
 			case QueryClauseObjectType.FIELD_FUNCTION:
-				return this.getFieldFunctionValue(aField, defaultCallback, context)
+				return this.getFieldFunctionValue(aField, defaultCallback,
+					recordSelectColumnInfo, context)
 			case QueryClauseObjectType.DISTINCT_FUNCTION:
 				throw new Error(`Distinct function cannot be nested.`)
 			case QueryClauseObjectType.EXISTS_FUNCTION: {
@@ -210,7 +221,9 @@ export abstract class SQLWhereBase
 				columnName = this.getEntityPropertyColumnName(
 					qEntity, aField.columnIndex, context)
 
-				this.addSelectColumnInfo(aField)
+				if (recordSelectColumnInfo) {
+					this.addSelectColumnInfoFromField(aField)
+				}
 
 				this.addField(aField.applicationIndex, aField.entityIndex, aField.columnIndex)
 				return this.getComplexColumnFragment(aField, columnName,
@@ -240,7 +253,9 @@ export abstract class SQLWhereBase
 				columnName = this.getEntityManyToOneColumnName(qEntity, aField.columnIndex, context)
 				this.addField(aField.applicationIndex, aField.entityIndex, aField.columnIndex)
 
-				this.addSelectColumnInfo(aField)
+				if (recordSelectColumnInfo) {
+					this.addSelectColumnInfoFromField(aField)
+				}
 
 				return this.getComplexColumnFragment(aField, columnName, context)
 			}
@@ -254,19 +269,32 @@ export abstract class SQLWhereBase
 		}
 	}
 
-	private addSelectColumnInfo(
+	private addSelectColumnInfoFromField(
 		aField: QueryFieldClause
 	): void {
 		const dbEntity = this.airportDatabase.applications[aField.applicationIndex]
 			.currentVersion[0].applicationVersion.entities[aField.entityIndex];
 		const dbProperty = dbEntity.properties[aField.propertyIndex]
 		const dbColumn = dbEntity.columns[aField.columnIndex]
+
 		this.selectColumnInfos[this.selectColumnInfos.length - 1]
 			= {
 			dbColumn,
 			dbEntity,
 			dbProperty
 		}
+	}
+
+	protected addSelectColumnInfo(
+		dbEntity: DbEntity,
+		dbProperty: DbProperty,
+		dbColumn: DbColumn
+	): void {
+		this.selectColumnInfos.push({
+			dbColumn,
+			dbEntity,
+			dbProperty
+		})
 	}
 
 	protected trackRepositoryIds(
@@ -350,14 +378,16 @@ Returned:  ${resultsFromSelect.length}
 			case OperationCategory.UNTYPED:
 				let valueOperation = <QueryValueOperation>operation
 				let lValueSql = this.getFieldValue(
-					valueOperation.leftSideValue, ClauseType.WHERE_CLAUSE, null, context)
+					valueOperation.leftSideValue, ClauseType.WHERE_CLAUSE,
+					null, false, context)
 				if (valueOperation.operator === SqlOperator.IS_NOT_NULL
 					|| valueOperation.operator === SqlOperator.IS_NULL) {
 					let operator = this.applyOperator(valueOperation.operator, null)
 					whereFragment += `${lValueSql}${operator}`
 				} else {
 					let rValueSql = this.getFieldValue(
-						valueOperation.rightSideValue, ClauseType.WHERE_CLAUSE, null, context)
+						valueOperation.rightSideValue, ClauseType.WHERE_CLAUSE,
+						null, false, context)
 					let rValueWithOperator = this.applyOperator(valueOperation.operator, rValueSql)
 					whereFragment += `${lValueSql}${rValueWithOperator}`
 				}
@@ -365,7 +395,8 @@ Returned:  ${resultsFromSelect.length}
 			case OperationCategory.FUNCTION:
 				let functionOperation = <QueryFunctionOperation><any>operation
 				whereFragment = this.getFieldValue(
-					functionOperation.object, ClauseType.WHERE_CLAUSE, null, context)
+					functionOperation.object, ClauseType.WHERE_CLAUSE,
+					null, false, context)
 				// exists function and maybe others
 				break
 		}

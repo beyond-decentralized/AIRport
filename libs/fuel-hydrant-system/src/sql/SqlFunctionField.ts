@@ -16,6 +16,7 @@ export class SqlFunctionField
 
 	constructor(
 		public queryFieldClause: QueryFieldClause,
+		private recordSelectColumnInfo: boolean
 	) {
 		// Test
 	}
@@ -25,7 +26,8 @@ export class SqlFunctionField
 		context: IFuelHydrantContext,
 	): string {
 		return sqlValueProvider.getFieldFunctionValue(
-			this.queryFieldClause, null, context)
+			this.queryFieldClause, null,
+			this.recordSelectColumnInfo, context)
 	}
 
 }

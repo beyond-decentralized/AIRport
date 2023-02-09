@@ -56,12 +56,14 @@ export interface ISqlValueProvider {
 
 	getFunctionCallValue(
 		rawValue: any,
+		recordSelectColumnInfo: boolean,
 		context: IFuelHydrantContext,
 	): string;
 
 	getFieldFunctionValue(
 		aField: QueryFieldClause,
 		defaultCallback: () => string,
+		recordSelectColumnInfo: boolean,
 		context: IFuelHydrantContext,
 	): string;
 
