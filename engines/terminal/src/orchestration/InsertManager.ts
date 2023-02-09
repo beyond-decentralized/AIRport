@@ -574,7 +574,7 @@ and cannot have NULL values.`)
 			if (!repositoryTransactionHistory) {
 				repositoryTransactionHistory = await this.historyManager
 					.getRepositoryTransactionHistory(transaction.transactionHistory,
-						repositoryId, actor, context)
+						repositoryId, actor, null, context)
 			}
 
 			let operationHistory = operationsByRepo[repositoryId]

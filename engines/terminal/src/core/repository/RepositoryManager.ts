@@ -98,17 +98,15 @@ already contains a new repository.`)
 			isPublic,
 			context)
 
-		if (!context.forKeyRingRepository) {
-			await this.repositoryMaintenanceManager.createRepositoryMember(
-				repository,
-				userAccount,
-				true,
-				true,
-				true,
-				true,
-				context
-			)
-		}
+		await this.repositoryMaintenanceManager.createRepositoryMember(
+			repository,
+			userAccount,
+			true,
+			true,
+			true,
+			!context.forKeyRingRepository,
+			context
+		)
 
 		if (!isInternalDomain) {
 			userSession.currentRootTransaction.newRepository = repository

@@ -240,7 +240,7 @@ export class DeleteManager
 
 				for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
 					const repositoryTransactionHistory = await this.historyManager.getRepositoryTransactionHistory(
-						transaction.transactionHistory, repositoryId,  actor, context
+						transaction.transactionHistory, repositoryId,  actor, null, context
 					)
 
 					const operationHistory = this.repositoryTransactionHistoryDuo.startOperation(

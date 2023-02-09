@@ -1,5 +1,5 @@
 import { IContext, Inject, Injected } from '@airport/direction-indicator';
-import { IActor, IRepositoryTransactionHistory, ITransactionHistory, RepositoryTransactionHistory_IsRepositoryCreation, Repository_IsPublic, Repository_LocalId, TransactionType } from '@airport/ground-control'
+import { IActor, IRepositoryMember, IRepositoryTransactionHistory, ITransactionHistory, RepositoryTransactionHistory_IsRepositoryCreation, Repository_IsPublic, Repository_LocalId, TransactionType } from '@airport/ground-control'
 import { ITerminalSessionManager } from '@airport/terminal-map';
 import { RepositoryMemberDao } from '../../dao/repository/member/RepositoryMemberDao';
 import {
@@ -19,6 +19,7 @@ export interface ITransactionHistoryDuo {
 		actor: IActor,
 		isRepositoryCreation: boolean,
 		isPublic: Repository_IsPublic,
+		repositoryMember: IRepositoryMember,
 		context: IContext
 	): Promise<IRepositoryTransactionHistory>
 
@@ -53,6 +54,7 @@ export class TransactionHistoryDuo
 		actor: IActor,
 		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation,
 		isPublic: Repository_IsPublic,
+		repositoryMember: IRepositoryMember,
 		context: IContext
 	): Promise<IRepositoryTransactionHistory> {
 		let repositoryTransactionHistory: IRepositoryTransactionHistory = transactionHistory.repositoryTransactionHistoryMap[repositoryLocalId]
@@ -60,14 +62,16 @@ export class TransactionHistoryDuo
 		if (!repositoryTransactionHistory) {
 			const userSession = await this.terminalSessionManager.getUserSession()
 
-			const repositoryMember = await this.repositoryMemberDao.findForRepositoryLocalIdAndUserLocalId(
-				repositoryLocalId,
-				userSession.userAccount._localId,
-				context
-			)
 			if (!repositoryMember) {
-				throw new Error(
-					`User '${userSession.userAccount.username}' is not a member of Repository '${repositoryLocalId}'`)
+				repositoryMember = await this.repositoryMemberDao.findForRepositoryLocalIdAndUserLocalId(
+					repositoryLocalId,
+					userSession.userAccount._localId,
+					context
+				)
+				if (!repositoryMember) {
+					throw new Error(
+						`User '${userSession.userAccount.username}' is not a member of Repository '${repositoryLocalId}'`)
+				}
 			}
 
 			repositoryTransactionHistory = this.repositoryTransactionHistoryDuo.getNewRecord(
