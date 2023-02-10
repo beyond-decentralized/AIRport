@@ -4,11 +4,13 @@ import { DbColumn, DbProperty } from "../../application/DbProperty";
 
 export type Primitive = boolean | Date | number | string;
 
+export type InternalDomainName = 'airbridge' | 'airport' | 'airway'
+
 @Injected()
 export class Dictionary {
 
 	airbridge = {
-		DOMAIN_NAME: 'airbridge' as 'airbridge' | 'airport' | 'airway',
+		DOMAIN_NAME: 'airbridge' as InternalDomainName,
 		apps: {
 			KEYRING: {
 				name: '@airbridge/keyring',
@@ -25,7 +27,7 @@ export class Dictionary {
 	}
 
 	airport = {
-		DOMAIN_NAME: 'airport' as 'airbridge' | 'airport' | 'airway',
+		DOMAIN_NAME: 'airport' as InternalDomainName,
 		apps: {
 			AIRPORT_CODE: {
 				name: '@airport/airport-code',
@@ -138,7 +140,7 @@ export class Dictionary {
 	}
 
 	airway = {
-		DOMAIN_NAME: 'airway' as 'airbridge' | 'airport' | 'airway'
+		DOMAIN_NAME: 'airway' as InternalDomainName
 	}
 
 	INTERNAL_APP = '@airport/terminal'

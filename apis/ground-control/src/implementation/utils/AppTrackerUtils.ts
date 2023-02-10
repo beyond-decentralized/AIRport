@@ -1,9 +1,9 @@
 import { Inject } from "@airport/direction-indicator";
-import { Dictionary } from "../../definition/core/entity/Dictionary";
+import { Dictionary, InternalDomainName } from "../../definition/core/entity/Dictionary";
 import { IAppTrackerUtils } from "../../definition/utils/IAppTrackerUtils";
 
 export interface ExternalPermissionsForDomain {
-    domainName: 'airbride' | 'airport' | 'airway',
+    domainName: InternalDomainName,
     applicationPermissions: Array<{
         applicationName: string,
         versionPermissions: Array<{

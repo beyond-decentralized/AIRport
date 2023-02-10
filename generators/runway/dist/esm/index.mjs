@@ -814,7 +814,20 @@ const IOC = inversionOfControl;
 class Dictionary {
     constructor() {
         this.airbridge = {
-            DOMAIN_NAME: 'airbridge'
+            DOMAIN_NAME: 'airbridge',
+            apps: {
+                KEYRING: {
+                    name: '@airbridge/keyring',
+                    entities: {
+                        KeyRing: {
+                            name: 'KeyRing'
+                        },
+                        RepositoryKey: {
+                            name: 'RepositoryKey'
+                        }
+                    }
+                }
+            }
         };
         this.airport = {
             DOMAIN_NAME: 'airport',
@@ -936,11 +949,12 @@ class Dictionary {
         this.Actor = this.airport.apps.HOLDING_PATTERN.entities.Actor;
         this.AirEntity = this.airport.apps.FINAL_APPROACH.entities.AirEntity;
         this.ApplicationRelation = this.airport.apps.AIRSPACE.entities.ApplicationRelation;
+        // CopiedRecordLedger = this.airport.apps.HOLDING_PATTERN.entities.CopiedRecordLedger
         this.CrossRepositoryRelationLedger = this.airport.apps.HOLDING_PATTERN.entities.CrossRepositoryRelationLedger;
         this.InternalAirEntity = this.airport.apps.HOLDING_PATTERN.entities.InternalAirEntity;
-        // CopiedRecordLedger = this.airport.apps.FLIGHT_RECORDER.entities.CopiedRecordLedger
-        // CrossRepositoryRelationLedger = this.airport.apps.FLIGHT_RECORDER.entities.CrossRepositoryRelationLedger
+        this.KeyRing = this.airbridge.apps.KEYRING.entities.KeyRing;
         this.Repository = this.airport.apps.HOLDING_PATTERN.entities.Repository;
+        this.RepositoryKey = this.airbridge.apps.KEYRING.entities.RepositoryKey;
         this.SystemWideOperationId = this.airport.apps.AIRPORT_CODE.entities.SystemWideOperationId;
         this.Terminal = this.airport.apps.TRAVEL_DOCUMENT_CHECKPOINT.entities.Terminal;
         this.UserAccount = this.airport.apps.TRAVEL_DOCUMENT_CHECKPOINT.entities.UserAccount;
@@ -1070,6 +1084,9 @@ class Dictionary {
     isUserAccount(dbEntity) {
         return this.isEntityType(dbEntity, this.airport.apps.TRAVEL_DOCUMENT_CHECKPOINT, this.UserAccount);
     }
+    isKeyringEntity(dbEntity) {
+        return this.isEntityType(dbEntity, this.airbridge.apps.KEYRING, this.KeyRing, this.airbridge.DOMAIN_NAME) || this.isEntityType(dbEntity, this.airbridge.apps.KEYRING, this.RepositoryKey, this.airbridge.DOMAIN_NAME);
+    }
     isActorRelationColumn(dbColumn) {
         return /.*_AID_[\d]+$/.test(dbColumn.name)
             && !!dbColumn.manyRelationColumns.length;
@@ -1086,9 +1103,9 @@ class Dictionary {
         return dbProperty.entity.isAirEntity
             && this.AirEntity.properties.repository === dbProperty.name;
     }
-    isEntityType(dbEntity, application, entity) {
+    isEntityType(dbEntity, application, entity, expectedDomainName = this.airport.DOMAIN_NAME) {
         const dbApplication = dbEntity.applicationVersion.application;
-        return dbApplication.domain.name === this.airport.DOMAIN_NAME
+        return dbApplication.domain.name === expectedDomainName
             && dbApplication.name === application.name
             && dbEntity.name === entity.name;
     }
@@ -13944,8 +13961,6 @@ class ActorDao extends BaseActorDao {
         let a;
         let ap;
         let t;
-        const _localId = Y;
-        const username = Y;
         const GUID = Y;
         return await this.db.find.tree({
             SELECT: {
@@ -13959,16 +13974,9 @@ class ActorDao extends BaseActorDao {
                 },
                 terminal: {
                     _localId: GUID,
-                    owner: {
-                        username,
-                        GUID,
-                    }
+                    owner: {}
                 },
-                userAccount: {
-                    _localId,
-                    username,
-                    GUID,
-                }
+                userAccount: {}
             },
             FROM: [
                 a = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
@@ -14007,6 +14015,16 @@ class RepositoryMemberAcceptanceDao extends BaseRepositoryMemberAcceptanceDao {
             let repositoryMemberAcceptance = repositoryMemberAcceptances[i];
             repositoryMemberAcceptance._localId = _localIds[i][0];
         }
+    }
+    async updateAddedInRepositoryTransactionHistory(repositoryMemberAcceptances, repositoryTransactionHistory, context) {
+        let rma;
+        await this.db.updateColumnsWhere({
+            UPDATE: rma = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMemberAcceptance,
+            SET: {
+                ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID: repositoryTransactionHistory._localId
+            },
+            WHERE: rma._localId.IN(repositoryMemberAcceptances.map(repositoryMemberAcceptance => repositoryMemberAcceptance._localId))
+        }, context);
     }
 }
 
@@ -14104,6 +14122,16 @@ class RepositoryMemberDao extends BaseRepositoryMemberDao {
             })
         }, context);
     }
+    async updateAddedInRepositoryTransactionHistory(repositoryMembers, repositoryTransactionHistory, context) {
+        let rm;
+        await this.db.updateColumnsWhere({
+            UPDATE: rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
+            SET: {
+                ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID: repositoryTransactionHistory._localId
+            },
+            WHERE: rm._localId.IN(repositoryMembers.map(repositoryMember => repositoryMember._localId))
+        }, context);
+    }
 }
 
 class RepositoryMemberInvitationDao extends BaseRepositoryMemberInvitationDao {
@@ -14132,6 +14160,16 @@ class RepositoryMemberInvitationDao extends BaseRepositoryMemberInvitationDao {
             let repositoryMemberInvitation = repositoryMemberInvitations[i];
             repositoryMemberInvitation._localId = _localIds[i][0];
         }
+    }
+    async updateAddedInRepositoryTransactionHistory(repositoryMemberInvitations, repositoryTransactionHistory, context) {
+        let rmi;
+        await this.db.updateColumnsWhere({
+            UPDATE: rmi = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMemberInvitation,
+            SET: {
+                ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID: repositoryTransactionHistory._localId
+            },
+            WHERE: rmi._localId.IN(repositoryMemberInvitations.map(repositoryMemberInvitation => repositoryMemberInvitation._localId))
+        }, context);
     }
 }
 
@@ -14303,14 +14341,7 @@ class RepositoryDao extends BaseRepositoryDao {
     async findByGUIDs(repositoryGUIDs, context) {
         let r;
         return await this.db.find.tree({
-            SELECT: {
-                _localId: Y,
-                ageSuitability: Y,
-                createdAt: Y,
-                GUID: Y,
-                '*': Y,
-                uiEntryUri: Y
-            },
+            SELECT: {},
             FROM: [
                 r = Q_airport____at_airport_slash_holding_dash_pattern.Repository
             ],
@@ -14373,16 +14404,26 @@ class RepositoryDao extends BaseRepositoryDao {
 }
 
 class RepositoryReferenceDao extends BaseRepositoryReferenceDao {
-    async findByReferencingRepository_LocalIds(repositoryLocalIds, context) {
-        let rr;
+    async findByReferencingRepository_GUIDs(repositoryGUIDs, context) {
+        let rr, r;
         return await this._find({
-            SELECT: {},
+            SELECT: {
+                referencedRepository: {
+                    _localId: Y,
+                    GUID: Y
+                },
+                referencingRepository: {
+                    _localId: Y,
+                    GUID: Y
+                }
+            },
             FROM: [
                 rr = Q_airport____at_airport_slash_holding_dash_pattern
-                    .RepositoryReference
+                    .RepositoryReference,
+                r = rr.referencingRepository.INNER_JOIN(),
+                rr.referencedRepository.INNER_JOIN()
             ],
-            WHERE: rr.referencingRepository._localId
-                .IN(repositoryLocalIds)
+            WHERE: r.GUID.IN(repositoryGUIDs)
         }, context);
     }
     async insert(repositoryReferences, context) {
@@ -23219,7 +23260,7 @@ const APPLICATION$3 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REPOSITORY_TRANSACTION_HISTORY_LID",
+                            "name": "ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -23394,7 +23435,7 @@ const APPLICATION$3 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REPOSITORY_TRANSACTION_HISTORY_LID",
+                            "name": "ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -23583,7 +23624,7 @@ const APPLICATION$3 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REPOSITORY_TRANSACTION_HISTORY_LID",
+                            "name": "ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -23831,7 +23872,7 @@ const APPLICATION$3 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REPOSITORY_TRANSACTION_HISTORY_LID",
+                            "name": "ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -27554,7 +27595,7 @@ KeyRingDao = __decorate$1([
 ], KeyRingDao);
 
 let RepositoryKeyDao = class RepositoryKeyDao extends BaseRepositoryKeyDao {
-    async findByRepositoryGUIDs(internalPrivateSingingKey, repositoryGUIDs) {
+    async findByRepositoryGUIDs(internalPrivateSingingKey, repositoryGUIDs, context) {
         let kr, rk;
         return await this._find({
             SELECT: {
@@ -27562,11 +27603,11 @@ let RepositoryKeyDao = class RepositoryKeyDao extends BaseRepositoryKeyDao {
                 repositoryGUID: Y,
             },
             FROM: [
-                kr = Q_airbridge____at_airbridge_slash_keyring.KeyRing,
-                rk = kr.repositoryKeys.LEFT_JOIN()
+                rk = Q_airbridge____at_airbridge_slash_keyring.RepositoryKey,
+                kr = rk.keyRing.INNER_JOIN()
             ],
-            WHERE: AND(kr.internalPrivateSigningKey.equals(internalPrivateSingingKey), rk.repositoryGUID.IN(repositoryGUIDs))
-        });
+            WHERE: AND(rk.repositoryGUID.IN(repositoryGUIDs), kr.internalPrivateSigningKey.equals(internalPrivateSingingKey))
+        }, context);
     }
 };
 RepositoryKeyDao = __decorate$1([
@@ -27653,22 +27694,29 @@ KeyRingManager = __decorate$1([
 ], KeyRingManager);
 
 let MessageSigningManager = class MessageSigningManager {
-    async signMessages(unsingedMessages) {
+    async signMessages(historiesToSend, unsingedMessages, context) {
         const keyRing = (await this.terminalSessionManager.getUserSession()).keyRing;
         if (!keyRing) {
             throw new Error(`No KeyRing is not set on UserSession.`);
         }
         const repositoryGUIDSet = new Set();
-        for (const unsignedMessage of unsingedMessages) {
-            repositoryGUIDSet.add(unsignedMessage.data.history.repository.GUID);
+        const messagesToSign = [];
+        for (let i = 0; i < historiesToSend.length; i++) {
+            let history = historiesToSend[i];
+            let unsignedMessage = unsingedMessages[i];
+            if (this.dictionary.isKeyringEntity(history.operationHistory[0].entity)) {
+                continue;
+            }
+            repositoryGUIDSet.add(history.repository.GUID);
+            messagesToSign.push(unsignedMessage);
         }
         const repositoryKeys = await this.repositoryKeyDao
-            .findByRepositoryGUIDs(keyRing.internalPrivateSigningKey, Array.from(repositoryGUIDSet));
+            .findByRepositoryGUIDs(keyRing.internalPrivateSigningKey, Array.from(repositoryGUIDSet), context);
         const repositoryKeysByRepositoryGUIDs = new Map();
         for (const repositoryKey of repositoryKeys) {
-            repositoryKeysByRepositoryGUIDs.set(repositoryKey.repository.GUID, repositoryKey);
+            repositoryKeysByRepositoryGUIDs.set(repositoryKey.repositoryGUID, repositoryKey);
         }
-        for (const unsingedMessage of unsingedMessages) {
+        for (const unsingedMessage of messagesToSign) {
             const history = unsingedMessage.data.history;
             const repositoryKey = repositoryKeysByRepositoryGUIDs
                 .get(history.repository.GUID);
@@ -27686,6 +27734,9 @@ let MessageSigningManager = class MessageSigningManager {
         }
     }
 };
+__decorate$1([
+    Inject()
+], MessageSigningManager.prototype, "dictionary", void 0);
 __decorate$1([
     Inject()
 ], MessageSigningManager.prototype, "keyUtils", void 0);
@@ -27711,6 +27762,9 @@ keyring.setDependencies(KeyRingManager, {
     terminalSessionManager: TERMINAL_SESSION_MANAGER
 });
 keyring.setDependencies(MessageSigningManager, {
+    dictionary: Dictionary,
+    keyUtils: KeyUtils,
+    repositoryKeyDao: RepositoryKeyDao,
     terminalSessionManager: TERMINAL_SESSION_MANAGER
 });
 
@@ -28120,6 +28174,12 @@ class SyncInChecker {
                 isValid: false
             };
         }
+        if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(data.applicationVersions, data.applications, context)) {
+            return {
+                isValid: false
+            };
+        }
+        const dataCheckResult = await this.syncInDataChecker.checkData(message, context);
         const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
             .checkRepositoriesAndMembers(message, context);
         if (!repositoryAndMemberCheckResult.isValid) {
@@ -28135,12 +28195,6 @@ class SyncInChecker {
                 };
             }
         }
-        if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(data.applicationVersions, data.applications, context)) {
-            return {
-                isValid: false
-            };
-        }
-        const dataCheckResult = await this.syncInDataChecker.checkData(message, context);
         return {
             ...dataCheckResult,
             ...repositoryAndMemberCheckResult
@@ -28815,6 +28869,9 @@ is not present in the message.`);
     getPublicSigningKeysAndSignatureToCheck(message, isNewRepositoryMemberAcceptanceMessage) {
         const signatureChecks = [];
         const history = message.data.history;
+        if (this.dictionary.isKeyringEntity(history.operationHistory[0].entity)) {
+            return;
+        }
         signatureChecks.push({
             publicSigningKey: history.member.memberPublicSigningKey,
             signatureName: 'memberSignature',
@@ -30012,12 +30069,14 @@ var IndexedEntityType;
 })(IndexedEntityType || (IndexedEntityType = {}));
 class SyncOutDataSerializer {
     constructor() {
+        // @Inject()
+        // repositoryDao: IRepositoryDao
         this.WITH_ID = {};
         this.WITH_ID_AND_ACTOR_ID = {};
         this.WITH_RECORD_HISTORY = {};
         this.WITH_INDEX = {};
     }
-    async serialize(repositoryTransactionHistories, context) {
+    async serialize(repositoryTransactionHistories, repositoryMapById, context) {
         let historiesToSend = [];
         const messages = [];
         for (let i = 0; i < repositoryTransactionHistories.length; i++) {
@@ -30025,7 +30084,7 @@ class SyncOutDataSerializer {
             if (repositoryTransactionHistory.repositoryTransactionType !== RepositoryTransactionType.LOCAL) {
                 continue;
             }
-            const message = await this.serializeMessage(repositoryTransactionHistory, context);
+            const message = await this.serializeMessage(repositoryTransactionHistory, repositoryMapById, context);
             historiesToSend.push(repositoryTransactionHistory);
             messages.push(message);
         }
@@ -30040,7 +30099,7 @@ class SyncOutDataSerializer {
             lastInMessageIndex: -1
         };
     }
-    async serializeMessage(repositoryTransactionHistory, context) {
+    async serializeMessage(repositoryTransactionHistory, repositoryMapById, context) {
         const lookups = {
             actorInMessageIndexesById: new Map(),
             applicationLookup: this.getInMessageEntityLookup(),
@@ -30079,7 +30138,7 @@ class SyncOutDataSerializer {
         };
         data.history = this.serializeRepositoryTransactionHistory(repositoryTransactionHistory, message.data, lookups);
         // TODO: replace db lookups with TerminalState lookups where possible
-        await this.serializeRepositories(repositoryTransactionHistory, data, lookups, context);
+        await this.serializeRepositories(repositoryTransactionHistory, data, lookups, repositoryMapById, context);
         await this.serializeActorsUserAccountsAndTerminals(data, lookups, context);
         await this.serializeApplicationsAndVersions(data, lookups.applicationLookup, lookups.applicationVersions, data.applicationVersions);
         await this.serializeReferencedApplicationProperties(data, lookups, context);
@@ -30194,14 +30253,37 @@ class SyncOutDataSerializer {
         }
         return inMessageIndex;
     }
-    async serializeRepositories(repositoryTransactionHistory, data, lookups, context) {
-        let repositoryIdsToFindBy = [];
+    async serializeRepositories(repositoryTransactionHistory, data, lookups, repositoryMapById, context) {
+        // let repositoryIdsToFindBy: Repository_LocalId[] = []
+        let foundRepositories = [];
         for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
-            repositoryIdsToFindBy.push(repositoryId);
+            const foundRepository = repositoryMapById.get(repositoryId);
+            if (foundRepository) {
+                foundRepositories.push(foundRepository);
+            }
+            else {
+                throw new Error(`Unexpected Repository_LocalId: ${repositoryId}`);
+                // repositoryIdsToFindBy.push(repositoryId)
+            }
         }
-        repositoryIdsToFindBy.push(repositoryTransactionHistory._localId);
-        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(repositoryIdsToFindBy, context);
-        for (const repository of repositories) {
+        const foundRepository = repositoryMapById.get(repositoryTransactionHistory._localId);
+        if (foundRepository) {
+            foundRepositories.push(foundRepository);
+        }
+        else {
+            throw new Error(`Unexpected Repository_LocalId: ${repositoryTransactionHistory._localId}`);
+            // 	repositoryIdsToFindBy.push(repositoryTransactionHistory._localId)
+        }
+        // let repositories = []
+        // if (repositoryIdsToFindBy.length) {
+        // 	repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(
+        // 		repositoryIdsToFindBy, context)
+        // }
+        // foundRepositories = [
+        // 	...repositories,
+        // 	...foundRepositories
+        // ]
+        for (const repository of foundRepositories) {
             let userAccountInMessageIndex = this.getEntityInMessageIndex(repository.owner, IndexedEntityType.USER_ACCOUNT, lookups.userAccountLookup);
             if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
                 const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository._localId);
@@ -30540,10 +30622,11 @@ class SyncOutDataSerializer {
 
 class SynchronizationOutManager {
     async getSynchronizationMessages(repositoryTransactionHistories, context) {
-        await this.loadHistoryRepositories(repositoryTransactionHistories, context);
-        const { historiesToSend, messages } = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories, context);
+        const repositoryMapById = await this
+            .loadHistoryRepositories(repositoryTransactionHistories, context);
+        const { historiesToSend, messages } = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories, repositoryMapById, context);
         // await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
-        this.messageSigningManager.signMessages(messages);
+        await this.messageSigningManager.signMessages(historiesToSend, messages, context);
         await this.repositoryReferenceCreator.create(messages, context);
         for (const message of messages) {
             for (const referencedRepository of message.data.referencedRepositories) {
@@ -30571,7 +30654,7 @@ class SynchronizationOutManager {
             repositoryIdsToLookup.add(repositoryTransactionHistory.repository._localId);
         }
         if (!repositoryIdsToLookup.size) {
-            return;
+            return repositoryMapById;
         }
         const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds([
             ...repositoryIdsToLookup.values()
@@ -30583,6 +30666,7 @@ class SynchronizationOutManager {
             repositoryTransactionHistory.repository =
                 repositoryMapById.get(repositoryTransactionHistory.repository._localId);
         }
+        return repositoryMapById;
     }
     async ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages, context) {
         const repositoryIdsToLookup = new Set();
@@ -30637,34 +30721,59 @@ class SynchronizationOutManager {
 
 class RepositoryReferenceCreator {
     async create(messages, context) {
-        const repositoryReferenceMapByLocalIds = new Map();
+        let repositoryGUIDSetToLookUp = new Set();
         for (const message of messages) {
             const referencingRepository = message.data.history.repository;
-            const referencesOfRepositoryMap = this.datastructureUtils.ensureChildJsMap(repositoryReferenceMapByLocalIds, referencingRepository._localId);
+            if (typeof referencingRepository === 'string') {
+                repositoryGUIDSetToLookUp.add(referencingRepository);
+            }
+        }
+        const foundRepositories = await this.repositoryDao.findByGUIDs(Array.from(repositoryGUIDSetToLookUp), context);
+        const foundRepositoriesByGUIDMap = new Map();
+        for (const foundRepository of foundRepositories) {
+            foundRepositoriesByGUIDMap.set(foundRepository.GUID, foundRepository);
+        }
+        const repositoryReferenceMapByGUIDs = new Map();
+        for (const message of messages) {
+            let referencingRepository = message.data.history.repository;
+            let repositoryGUID;
+            if (typeof referencingRepository === 'string') {
+                repositoryGUID = referencingRepository;
+                referencingRepository = foundRepositoriesByGUIDMap.get(referencingRepository);
+            }
+            else {
+                repositoryGUID = referencingRepository.GUID;
+            }
+            const referencesOfRepositoryMap = this.datastructureUtils.ensureChildJsMap(repositoryReferenceMapByGUIDs, repositoryGUID);
             for (const referencedRepository of message.data.referencedRepositories) {
-                if (referencesOfRepositoryMap.has(referencedRepository._localId)) {
+                if (referencesOfRepositoryMap.has(referencedRepository.GUID)) {
                     continue;
                 }
-                referencesOfRepositoryMap.set(referencedRepository._localId, {
+                referencesOfRepositoryMap.set(referencedRepository.GUID, {
                     referencingRepository,
                     referencedRepository
                 });
             }
         }
+        if (!repositoryReferenceMapByGUIDs.size) {
+            return;
+        }
         const existingRepositoryReferences = await this.repositoryReferenceDao
-            .findByReferencingRepository_LocalIds(Array.from(repositoryReferenceMapByLocalIds.keys()), context);
+            .findByReferencingRepository_GUIDs(Array.from(repositoryReferenceMapByGUIDs.keys()), context);
         for (const existingRepositoryReference of existingRepositoryReferences) {
-            const referencesOfRepositoryMap = repositoryReferenceMapByLocalIds
-                .get(existingRepositoryReference.referencingRepository._localId);
-            referencesOfRepositoryMap.delete(existingRepositoryReference.referencedRepository._localId);
+            const referencesOfRepositoryMap = repositoryReferenceMapByGUIDs
+                .get(existingRepositoryReference.referencingRepository.GUID);
+            referencesOfRepositoryMap.delete(existingRepositoryReference.referencedRepository.GUID);
         }
         const repositoryReferenceArrayToInsert = [];
-        for (const referencesOfRepositoryMap of repositoryReferenceMapByLocalIds.values()) {
+        for (const referencesOfRepositoryMap of repositoryReferenceMapByGUIDs.values()) {
             for (const repositoryReference of referencesOfRepositoryMap.values()) {
                 repositoryReferenceArrayToInsert.push(repositoryReference);
             }
         }
-        await this.repositoryReferenceDao.insert(repositoryReferenceArrayToInsert, context);
+        if (repositoryReferenceArrayToInsert.length) {
+            await this.repositoryReferenceDao.insert(repositoryReferenceArrayToInsert, context);
+        }
     }
 }
 
@@ -30675,6 +30784,7 @@ groundTransport.setDependencies(DebugSynchronizationAdapter, {
 });
 groundTransport.setDependencies(RepositoryReferenceCreator, {
     datastructureUtils: DatastructureUtils,
+    repositoryDao: RepositoryDao,
     repositoryReferenceDao: RepositoryReferenceDao
 });
 groundTransport.setDependencies(Stage1SyncedInDataProcessor, {
@@ -30728,7 +30838,9 @@ groundTransport.setDependencies(SyncInDataChecker, {
     terminalStore: TerminalStore
 });
 groundTransport.setDependencies(SyncInRepositoryChecker, {
+    dictionary: Dictionary,
     repositoryDao: RepositoryDao,
+    repositoryMemberDao: RepositoryMemberDao
 });
 groundTransport.setDependencies(SyncInTerminalChecker, {
     terminalDao: TerminalDao
@@ -36586,6 +36698,17 @@ ${callHerarchy}
             repositoryTransactionHistory.transactionHistory = transactionHistory;
         });
         await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories, context);
+        for (const repositoryTransactionHistory of transactionHistory.repositoryTransactionHistories) {
+            if (repositoryTransactionHistory.newRepositoryMembers.length) {
+                await this.repositoryMemberDao.updateAddedInRepositoryTransactionHistory(repositoryTransactionHistory.newRepositoryMembers, repositoryTransactionHistory, context);
+            }
+            if (repositoryTransactionHistory.newRepositoryMemberInvitations.length) {
+                await this.repositoryMemberAcceptanceDao.updateAddedInRepositoryTransactionHistory(repositoryTransactionHistory.newRepositoryMemberAcceptances, repositoryTransactionHistory, context);
+            }
+            if (repositoryTransactionHistory.newRepositoryMemberAcceptances.length) {
+                await this.repositoryMemberInvitationDao.updateAddedInRepositoryTransactionHistory(repositoryTransactionHistory.newRepositoryMemberInvitations, repositoryTransactionHistory, context);
+            }
+        }
         applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.OperationHistory.__driver__.dbEntity, true);
         transactionHistory.allOperationHistory.forEach((operationHistory, index) => {
             operationHistory._localId = transactionHistoryIds.operationHistory_LocalIds[index];
