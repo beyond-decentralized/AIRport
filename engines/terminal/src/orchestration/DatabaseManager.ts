@@ -108,29 +108,36 @@ export class DatabaseManager
 		context: IContext,
 		jsonApplications?: JsonApplicationWithLastIds[]
 	): Promise<void> {
-		const applications = await this.dbApplicationDao.findAllWithJson(context)
-		const existingApplicationMap: Map<DbApplication_FullName, DbApplication> = new Map()
-		for (const application of applications) {
-			existingApplicationMap.set(application.fullName, application)
-		}
+		let applications: DbApplication[] = []
+		await this.transactionManager.transactInternal(async (
+			_transaction,
+			context
+		) => {
+			applications = await this.dbApplicationDao.findAllWithJson(context)
 
-		const applicationsToCreate: JsonApplicationWithLastIds[] = []
-		for (const jsonApplication of jsonApplications) {
-			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils
-				.getDbApplication_FullName(jsonApplication))
-			if (existingApplication) {
-				jsonApplication.lastIds =
-					(existingApplication.versions[0].jsonApplication as JsonApplicationWithLastIds).lastIds
-			} else {
-				applicationsToCreate.push(jsonApplication)
+			const existingApplicationMap: Map<DbApplication_FullName, DbApplication> = new Map()
+			for (const application of applications) {
+				existingApplicationMap.set(application.fullName, application)
 			}
-		}
 
-		(this.transactionalServer as any).tempActor = new Actor();
-		await this.applicationInitializer.initialize(
-			applicationsToCreate, context, true, true, true);
+			const applicationsToCreate: JsonApplicationWithLastIds[] = []
+			for (const jsonApplication of jsonApplications) {
+				const existingApplication = existingApplicationMap.get(this.dbApplicationUtils
+					.getDbApplication_FullName(jsonApplication))
+				if (existingApplication) {
+					jsonApplication.lastIds =
+						(existingApplication.versions[0].jsonApplication as JsonApplicationWithLastIds).lastIds
+				} else {
+					applicationsToCreate.push(jsonApplication)
+				}
+			}
 
-		(this.transactionalServer as any).tempActor = null;
+			(this.transactionalServer as any).tempActor = new Actor();
+			await this.applicationInitializer.initialize(
+				applicationsToCreate, context, true, true, true);
+
+			(this.transactionalServer as any).tempActor = null;
+		}, null, context)
 	}
 
 	private async installStarterApplication(

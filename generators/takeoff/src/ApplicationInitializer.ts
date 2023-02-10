@@ -162,17 +162,12 @@ export abstract class ApplicationInitializer
 
 		this.setAirDbApplications(allDdlObjects);
 
-		await this.transactionManager.transactInternal(async (
-			_transaction,
-			context
-		) => {
-			const newSequences = await this.applicationBuilder.buildAllSequences(
-				applicationsWithValidDependencies, context);
+		const newSequences = await this.applicationBuilder.buildAllSequences(
+			applicationsWithValidDependencies, context);
 
-			await this.sequenceGenerator.initialize(context, newSequences);
+		await this.sequenceGenerator.initialize(context, newSequences);
 
-			await this.applicationRecorder.record(allDdlObjects.added, context);
-		}, null, context)
+		await this.applicationRecorder.record(allDdlObjects.added, context);
 
 	}
 
@@ -212,7 +207,7 @@ export abstract class ApplicationInitializer
 			return false
 		}
 
-		const isApplicationLoaded = this.isAppLoaded(fullDbApplication_Name)
+		const isApplicationLoaded = await this.isAppLoaded(fullDbApplication_Name)
 
 		if (!isApplicationLoaded) {
 			this.terminalStore.getApplicationInitializer()
