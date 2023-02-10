@@ -1,6 +1,7 @@
 import { IContext, Inject, Injected } from "@airport/direction-indicator";
-import { DatastructureUtils, IRepositoryReference, Repository_GUID, Repository_LocalId, SyncRepositoryMessage } from "@airport/ground-control";
-import { RepositoryReferenceDao } from "@airport/holding-pattern/dist/app/bundle";
+import { DatastructureUtils, IRepositoryReference, Repository_GUID, SyncRepositoryMessage } from "@airport/ground-control";
+import { Repository } from "@airport/holding-pattern";
+import { RepositoryDao, RepositoryReferenceDao } from "@airport/holding-pattern/dist/app/bundle";
 
 @Injected()
 export class RepositoryReferenceCreator {
@@ -9,20 +10,41 @@ export class RepositoryReferenceCreator {
     datastructureUtils: DatastructureUtils
 
     @Inject()
+    repositoryDao: RepositoryDao
+
+    @Inject()
     repositoryReferenceDao: RepositoryReferenceDao
 
     async create(
         messages: SyncRepositoryMessage[],
         context: IContext
     ): Promise<void> {
+        let repositoryGUIDSetToLookUp: Set<Repository_GUID> = new Set()
+
+        for (const message of messages) {
+            const referencingRepository = message.data.history.repository
+            if (typeof referencingRepository === 'string') {
+                repositoryGUIDSetToLookUp.add(referencingRepository)
+            }
+        }
+
+        const foundRepositories = await this.repositoryDao.findByGUIDs(
+            Array.from(repositoryGUIDSetToLookUp), context)
+        const foundRepositoriesByGUIDMap: Map<Repository_GUID, Repository>
+            = new Map()
+        for(const foundRepository of foundRepositories) {
+            foundRepositoriesByGUIDMap.set(foundRepository.GUID, foundRepository)
+        }
+
         const repositoryReferenceMapByGUIDs: Map<Repository_GUID,
             Map<Repository_GUID, IRepositoryReference>>
             = new Map()
         for (const message of messages) {
-            const referencingRepository = message.data.history.repository
+            let referencingRepository = message.data.history.repository
             let repositoryGUID: Repository_GUID
             if (typeof referencingRepository === 'string') {
                 repositoryGUID = referencingRepository
+                referencingRepository = foundRepositoriesByGUIDMap.get(referencingRepository)
             } else {
                 repositoryGUID = referencingRepository.GUID
             }

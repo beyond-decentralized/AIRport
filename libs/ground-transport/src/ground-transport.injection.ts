@@ -84,6 +84,7 @@ groundTransport.setDependencies(DebugSynchronizationAdapter, {
 })
 groundTransport.setDependencies(RepositoryReferenceCreator, {
     datastructureUtils: DatastructureUtils,
+    repositoryDao: RepositoryDao,
     repositoryReferenceDao: RepositoryReferenceDao
 })
 groundTransport.setDependencies(Stage1SyncedInDataProcessor, {

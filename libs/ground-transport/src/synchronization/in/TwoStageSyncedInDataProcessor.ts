@@ -152,7 +152,6 @@ export class TwoStageSyncedInDataProcessor
 
 		await this.repositoryReferenceCreator.create(
 			messages, context)
-
 	}
 
 	private aggregateHistoryRecords(

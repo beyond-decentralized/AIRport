@@ -275,14 +275,7 @@ export class RepositoryDao
 		let r: QRepository
 
 		return await this.db.find.tree({
-			SELECT: {
-				_localId: Y,
-				ageSuitability: Y,
-				createdAt: Y,
-				GUID: Y,
-				'*': Y,
-				uiEntryUri: Y
-			},
+			SELECT: {},
 			FROM: [
 				r = Q.Repository
 			],
