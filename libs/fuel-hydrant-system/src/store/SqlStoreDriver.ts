@@ -161,7 +161,7 @@ export abstract class SqlStoreDriver
 			? application.domain
 			: application.domain.name
 		const transaction = context.transaction
-		if (!this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)
+		if (!context.internal && !this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)
 			&& !this.appTrackerUtils.isInternalDomain(transaction.actor.application.domain.name)) {
 			const entityHasExternalAccessPermissions = this.appTrackerUtils.entityHasExternalAccessPermissions(
 				domainName,
