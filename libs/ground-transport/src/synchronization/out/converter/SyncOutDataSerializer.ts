@@ -47,6 +47,7 @@ export interface ISyncOutDataSerializer {
 
 	serialize(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[],
+		repositoryMapById: Map<Repository_LocalId, IRepository>,
 		context: IContext
 	): Promise<{
 		historiesToSend: IRepositoryTransactionHistory[],
@@ -121,8 +122,8 @@ export class SyncOutDataSerializer
 	@Inject()
 	dictionary: Dictionary
 
-	@Inject()
-	repositoryDao: IRepositoryDao
+	// @Inject()
+	// repositoryDao: IRepositoryDao
 
 	WITH_ID: IWithId = {} as any
 	WITH_ID_AND_ACTOR_ID: IWithIdAndActor = {} as any
@@ -131,6 +132,7 @@ export class SyncOutDataSerializer
 
 	async serialize(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[],
+		repositoryMapById: Map<Repository_LocalId, IRepository>,
 		context: IContext
 	): Promise<{
 		historiesToSend: IRepositoryTransactionHistory[],
@@ -144,7 +146,7 @@ export class SyncOutDataSerializer
 				continue
 			}
 			const message = await this.serializeMessage(
-				repositoryTransactionHistory, context)
+				repositoryTransactionHistory, repositoryMapById, context)
 
 			historiesToSend.push(repositoryTransactionHistory)
 			messages.push(message)
@@ -165,6 +167,7 @@ export class SyncOutDataSerializer
 
 	private async serializeMessage(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
+		repositoryMapById: Map<Repository_LocalId, IRepository>,
 		context: IContext
 	): Promise<SyncRepositoryMessage> {
 		const lookups: InMessageLookupStructures = {
@@ -210,7 +213,8 @@ export class SyncOutDataSerializer
 			repositoryTransactionHistory, message.data, lookups)
 
 		// TODO: replace db lookups with TerminalState lookups where possible
-		await this.serializeRepositories(repositoryTransactionHistory, data, lookups, context)
+		await this.serializeRepositories(repositoryTransactionHistory, data, lookups,
+			repositoryMapById, context)
 		await this.serializeActorsUserAccountsAndTerminals(
 			data, lookups, context)
 		await this.serializeApplicationsAndVersions(data,
@@ -410,17 +414,40 @@ export class SyncOutDataSerializer
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures,
+		repositoryMapById: Map<Repository_LocalId, IRepository>,
 		context: IContext
 	): Promise<void> {
-		let repositoryIdsToFindBy: Repository_LocalId[] = []
+		// let repositoryIdsToFindBy: Repository_LocalId[] = []
+		let foundRepositories: IRepository[] = []
 		for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
-			repositoryIdsToFindBy.push(repositoryId)
+			const foundRepository = repositoryMapById.get(repositoryId)
+			if (foundRepository) {
+				foundRepositories.push(foundRepository)
+			} else {
+				throw new Error(`Unexpected Repository_LocalId: ${repositoryId}`)
+				// repositoryIdsToFindBy.push(repositoryId)
+			}
 		}
-		repositoryIdsToFindBy.push(repositoryTransactionHistory._localId)
-		const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(
-			repositoryIdsToFindBy, context)
 
-		for (const repository of repositories) {
+		const foundRepository = repositoryMapById.get(repositoryTransactionHistory._localId)
+		if (foundRepository) {
+			foundRepositories.push(foundRepository)
+		} else {
+			throw new Error(`Unexpected Repository_LocalId: ${repositoryTransactionHistory._localId}`)
+			// 	repositoryIdsToFindBy.push(repositoryTransactionHistory._localId)
+		}
+
+		// let repositories = []
+		// if (repositoryIdsToFindBy.length) {
+		// 	repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(
+		// 		repositoryIdsToFindBy, context)
+		// }
+		// foundRepositories = [
+		// 	...repositories,
+		// 	...foundRepositories
+		// ]
+
+		for (const repository of foundRepositories) {
 			let userAccountInMessageIndex = this.getEntityInMessageIndex(
 				repository.owner, IndexedEntityType.USER_ACCOUNT, lookups.userAccountLookup)
 			if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {

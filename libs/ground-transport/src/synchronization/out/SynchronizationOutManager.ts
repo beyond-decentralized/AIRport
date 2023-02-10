@@ -67,11 +67,13 @@ export class SynchronizationOutManager
 		historiesToSend: IRepositoryTransactionHistory[],
 		messages: SyncRepositoryMessage[]
 	}> {
-		await this.loadHistoryRepositories(repositoryTransactionHistories, context)
+		const repositoryMapById: Map<Repository_LocalId, IRepository> = await this
+			.loadHistoryRepositories(repositoryTransactionHistories, context)
 		const {
 			historiesToSend,
 			messages
-		} = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories, context)
+		} = await this.syncOutDataSerializer.serialize(
+			repositoryTransactionHistories, repositoryMapById, context)
 		// await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
 
 		this.messageSigningManager.signMessages(messages)
@@ -113,7 +115,7 @@ export class SynchronizationOutManager
 	private async loadHistoryRepositories(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[],
 		context: IContext
-	): Promise<void> {
+	): Promise<Map<Repository_LocalId, IRepository>> {
 		const repositoryIdsToLookup: Set<Repository_LocalId> = new Set()
 		const repositoryMapById: Map<Repository_LocalId, IRepository> = new Map()
 
@@ -122,7 +124,7 @@ export class SynchronizationOutManager
 		}
 
 		if (!repositoryIdsToLookup.size) {
-			return
+			return repositoryMapById
 		}
 
 		const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds([
@@ -135,6 +137,8 @@ export class SynchronizationOutManager
 			repositoryTransactionHistory.repository =
 				repositoryMapById.get(repositoryTransactionHistory.repository._localId)
 		}
+
+		return repositoryMapById
 	}
 
 	private async ensureGlobalRepositoryIdentifiers(
