@@ -32,7 +32,7 @@ export class RepositoryReferenceCreator {
             Array.from(repositoryGUIDSetToLookUp), context)
         const foundRepositoriesByGUIDMap: Map<Repository_GUID, Repository>
             = new Map()
-        for(const foundRepository of foundRepositories) {
+        for (const foundRepository of foundRepositories) {
             foundRepositoriesByGUIDMap.set(foundRepository.GUID, foundRepository)
         }
 
@@ -87,10 +87,12 @@ export class RepositoryReferenceCreator {
             }
         }
 
-        await this.repositoryReferenceDao.insert(
-            repositoryReferenceArrayToInsert,
-            context
-        )
+        if (repositoryReferenceArrayToInsert.length) {
+            await this.repositoryReferenceDao.insert(
+                repositoryReferenceArrayToInsert,
+                context
+            )
+        }
     }
 
 }
