@@ -14,7 +14,7 @@ import {
 } from '@airport/ground-control';
 import { SqlSchemaBuilder } from '@airport/takeoff';
 
-export class NoOpApplicationBuilder
+export class NoOpSchemaBuilder
 	extends SqlSchemaBuilder {
 
 	async createApplication(

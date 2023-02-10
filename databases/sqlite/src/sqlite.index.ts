@@ -1,4 +1,4 @@
 export * from './SqLiteDriver'
 export * from './SqLiteQueryAdaptor'
-export * from './SqLiteApplicationBuilder'
+export * from './SqLiteSchemaBuilder'
 export * from './sqlite.injection'

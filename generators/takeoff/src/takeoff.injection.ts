@@ -39,35 +39,15 @@ const tokens = takeoff.register(
     SqlSchemaBuilder as any,
 )
 
-export const APPLICATION_BUILDER = tokens.ApplicationBuilder
+export const SCHEMA_BUILDER = tokens.ApplicationBuilder
 // Needed as a token in @airport/web-tower (platforms/web-tower)
 export const APPLICATION_LOCATOR = tokens.ApplicationLocator
-
-
-takeoff.setDependencies(ApplicationInitializer as any, {
-    airportDatabase: AIRPORT_DATABASE,
-    applicationBuilder: APPLICATION_BUILDER,
-    applicationChecker: ApplicationChecker,
-    applicationComposer: ApplicationComposer,
-    dbApplicationDao: DbApplicationDao,
-    applicationLocator: ApplicationLocator,
-    applicationRecorder: ApplicationRecorder,
-    appTrackerUtils: AppTrackerUtils,
-    dbApplicationUtils: DbApplicationUtils,
-    queryObjectInitializer: QueryObjectInitializer,
-    sequenceGenerator: SEQUENCE_GENERATOR,
-    terminalStore: TerminalStore,
-    transactionManager: TRANSACTION_MANAGER
-})
-
-APPLICATION_BUILDER.setDependencies({
-    airportDatabase: AIRPORT_DATABASE
-})
 
 takeoff.setDependencies(ApplicationChecker, {
     dbApplicationDao: DbApplicationDao,
     datastructureUtils: DatastructureUtils,
-    dbApplicationUtils: DbApplicationUtils
+    dbApplicationUtils: DbApplicationUtils,
+	transactionManager: TRANSACTION_MANAGER
 })
 
 takeoff.setDependencies(ApplicationComposer, {
@@ -76,6 +56,22 @@ takeoff.setDependencies(ApplicationComposer, {
     dbApplicationUtils: DbApplicationUtils,
     domainRetriever: DOMAIN_RETRIEVER,
     terminalStore: TerminalStore
+})
+
+takeoff.setDependencies(ApplicationInitializer as any, {
+    airportDatabase: AIRPORT_DATABASE,
+    applicationChecker: ApplicationChecker,
+    applicationComposer: ApplicationComposer,
+    dbApplicationDao: DbApplicationDao,
+    applicationLocator: ApplicationLocator,
+    applicationRecorder: ApplicationRecorder,
+    appTrackerUtils: AppTrackerUtils,
+    dbApplicationUtils: DbApplicationUtils,
+    queryObjectInitializer: QueryObjectInitializer,
+    schemaBuilder: SCHEMA_BUILDER,
+    sequenceGenerator: SEQUENCE_GENERATOR,
+    terminalStore: TerminalStore,
+    transactionManager: TRANSACTION_MANAGER
 })
 
 takeoff.setDependencies(ApplicationLocator, {
@@ -126,6 +122,10 @@ takeoff.setDependencies(QueryObjectInitializer, {
     ddlObjectRetriever: DdlObjectRetriever,
     queryEntityClassCreator: QueryEntityClassCreator,
     terminalStore: TerminalStore
+})
+
+SCHEMA_BUILDER.setDependencies({
+    airportDatabase: AIRPORT_DATABASE
 })
 
 takeoff.setDependencies(SqlSchemaBuilder as any, {

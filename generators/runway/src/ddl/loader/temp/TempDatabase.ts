@@ -4,7 +4,7 @@ import {
 	JsonApplication, SEQUENCE_GENERATOR
 } from '@airport/ground-control';
 import {
-	APPLICATION_BUILDER
+	SCHEMA_BUILDER
 } from '@airport/takeoff';
 import {
 	DatabaseManager,
@@ -16,7 +16,7 @@ import {
 	STORE_DRIVER
 } from '@airport/terminal-map';
 import { injectAirportDatabase } from '@airport/tower';
-import { NoOpApplicationBuilder } from './NoOpApplicationBuilder';
+import { NoOpSchemaBuilder } from './NoOpSchemaBuilder';
 import { NoOpSequenceGenerator } from './NoOpSequenceGenerator';
 import { NoOpSqlDriver } from './NoOpSqlDriver';
 
@@ -43,7 +43,7 @@ export class TempDatabase
 		}
 
 		SEQUENCE_GENERATOR.setClass(NoOpSequenceGenerator);
-		APPLICATION_BUILDER.setClass(NoOpApplicationBuilder);
+		SCHEMA_BUILDER.setClass(NoOpSchemaBuilder);
 		STORE_DRIVER.setClass(NoOpSqlDriver);
 		injectAirportDatabase();
 		injectTransactionalServer();

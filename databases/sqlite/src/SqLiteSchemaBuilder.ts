@@ -20,7 +20,7 @@ import {
 import { SqlSchemaBuilder } from '@airport/takeoff';
 
 @Injected()
-export class SqLiteApplicationBuilder
+export class SqLiteSchemaBuilder
   extends SqlSchemaBuilder {
 
   @Inject()

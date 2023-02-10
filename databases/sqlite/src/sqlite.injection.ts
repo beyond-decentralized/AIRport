@@ -1,4 +1,4 @@
-import { APPLICATION_BUILDER } from "@airport/takeoff";
-import { SqLiteApplicationBuilder } from "./SqLiteApplicationBuilder";
+import { SCHEMA_BUILDER } from "@airport/takeoff";
+import { SqLiteSchemaBuilder } from "./SqLiteSchemaBuilder";
 
-APPLICATION_BUILDER.setClass(SqLiteApplicationBuilder)
+SCHEMA_BUILDER.setClass(SqLiteSchemaBuilder)

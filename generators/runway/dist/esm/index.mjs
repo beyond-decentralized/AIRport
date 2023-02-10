@@ -11937,9 +11937,9 @@ class ApplicationComposer {
             }
             this.composeApplicationEntities(jsonApplication, applicationVersion, newEntitiesMapByDbApplication_Name, added.entities);
             this.composeApplicationProperties(jsonApplication, applicationVersion, added.properties, newPropertiesMap, newEntitiesMapByDbApplication_Name);
-            await this.composeApplicationRelations(jsonApplication, applicationVersion, added.relations, newRelationsMap, newEntitiesMapByDbApplication_Name, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects);
+            this.composeApplicationRelations(jsonApplication, applicationVersion, added.relations, newRelationsMap, newEntitiesMapByDbApplication_Name, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects);
             this.composeApplicationColumns(jsonApplication, applicationVersion, added.columns, newColumnsMap, added.propertyColumns, newEntitiesMapByDbApplication_Name, newPropertiesMap);
-            await this.composeApplicationRelationColumns(jsonApplication, applicationVersion, added.relationColumns, newApplicationVersionMapByDbApplication_Name, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects);
+            this.composeApplicationRelationColumns(jsonApplication, applicationVersion, added.relationColumns, newApplicationVersionMapByDbApplication_Name, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects);
         }
         this.addObjects(allDdlObjects.added, allDdlObjects.all);
         for (const applicationVersion of allDdlObjects.all.applicationVersions) {
@@ -11947,7 +11947,7 @@ class ApplicationComposer {
         }
         return allDdlObjects;
     }
-    async getExistingLatestApplicationVersion(referencedDbApplication_Name, allDdlObjects) {
+    getExistingLatestApplicationVersion(referencedDbApplication_Name, allDdlObjects) {
         for (const latestApplicationVersion of allDdlObjects.all.latestApplicationVersions) {
             if (latestApplicationVersion.application.fullName == referencedDbApplication_Name) {
                 return latestApplicationVersion;
@@ -12230,7 +12230,7 @@ class ApplicationComposer {
             }
         });
     }
-    async composeApplicationRelations(jsonApplication, applicationVersion, newRelations, newRelationsMap, newEntitiesMapByDbApplication_Name, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects) {
+    composeApplicationRelations(jsonApplication, applicationVersion, newRelations, newRelationsMap, newEntitiesMapByDbApplication_Name, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects) {
         const applicationName = this.dbApplicationUtils.
             getDbApplication_FullName(jsonApplication);
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
@@ -12257,7 +12257,7 @@ class ApplicationComposer {
                 }
                 let entitiesArray = newEntitiesMapByDbApplication_Name.get(referencedDbApplication_Name);
                 if (!entitiesArray) {
-                    const applicationVersion = await this.getExistingLatestApplicationVersion(referencedDbApplication_Name, allDdlObjects);
+                    const applicationVersion = this.getExistingLatestApplicationVersion(referencedDbApplication_Name, allDdlObjects);
                     entitiesArray = applicationVersion.entities;
                 }
                 const relationEntity = entitiesArray[queryRelation.relationTableIndex];
@@ -12338,7 +12338,7 @@ class ApplicationComposer {
             });
         });
     }
-    async composeApplicationRelationColumns(jsonApplication, applicationVersion, newRelationColumns, newApplicationVersionMapByDbApplication_Name, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects) {
+    composeApplicationRelationColumns(jsonApplication, applicationVersion, newRelationColumns, newApplicationVersionMapByDbApplication_Name, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects) {
         const applicationName = this.dbApplicationUtils.
             getDbApplication_FullName(jsonApplication);
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
@@ -12376,7 +12376,7 @@ class ApplicationComposer {
                         oneTableRelations = newRelationsMap.get(oneRelationApplicationVersion.application.fullName)[jsonRelationColumn.oneTableIndex];
                     }
                     else {
-                        const applicationVersion = await this.getExistingLatestApplicationVersion(referencedDbApplication_Name, allDdlObjects);
+                        const applicationVersion = this.getExistingLatestApplicationVersion(referencedDbApplication_Name, allDdlObjects);
                         const entitiesArray = applicationVersion.entities;
                         const entity = entitiesArray[jsonRelationColumn.oneTableIndex];
                         oneTableColumns = entity.columns;
@@ -12500,10 +12500,12 @@ class ApplicationInitializer {
             getApplicationsWithValidDependencies(jsonApplications, checkDependencies, context);
         const existingApplicationMap = new Map();
         if (loadExistingApplications) {
-            const applications = await this.dbApplicationDao.findAllWithJson(context);
-            for (const application of applications) {
-                existingApplicationMap.set(application.fullName, application);
-            }
+            await this.transactionManager.transactInternal(async (_transaction, context) => {
+                const applications = await this.dbApplicationDao.findAllWithJson(context);
+                for (const application of applications) {
+                    existingApplicationMap.set(application.fullName, application);
+                }
+            }, null, context);
         }
         const newJsonApplicationMap = new Map();
         for (const jsonApplication of jsonApplications) {
@@ -12523,7 +12525,7 @@ class ApplicationInitializer {
                 getDbApplication_FullName(jsonApplication));
             if (!existingApplication) {
                 checkedApplicationsWithValidDependencies.push(jsonApplication);
-                await this.applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, areFeatureApps, context);
+                await this.schemaBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, areFeatureApps, context);
             }
         }
         const allDdlObjects = await this.applicationComposer.compose(checkedApplicationsWithValidDependencies, {
@@ -12533,7 +12535,7 @@ class ApplicationInitializer {
         this.queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects);
         this.setAirDbApplications(allDdlObjects);
         await this.transactionManager.transactInternal(async (_transaction, context) => {
-            const newSequences = await this.applicationBuilder.buildAllSequences(applicationsWithValidDependencies, context);
+            const newSequences = await this.schemaBuilder.buildAllSequences(applicationsWithValidDependencies, context);
             await this.sequenceGenerator.initialize(context, newSequences);
             await this.applicationRecorder.record(allDdlObjects.added, context);
         }, null, context);
@@ -12561,7 +12563,7 @@ class ApplicationInitializer {
         if (applicationInitializing) {
             return false;
         }
-        const isApplicationLoaded = this.isAppLoaded(fullDbApplication_Name);
+        const isApplicationLoaded = await this.isAppLoaded(fullDbApplication_Name);
         if (!isApplicationLoaded) {
             this.terminalStore.getApplicationInitializer()
                 .initializingApplicationMap.set(fullDbApplication_Name, true);
@@ -12601,7 +12603,7 @@ class ApplicationInitializer {
         this.addNewApplicationVersionsToAll(tempDdlObjects);
         this.queryObjectInitializer.generateQObjectsAndPopulateStore(tempDdlObjects);
         this.setAirDbApplications(tempDdlObjects);
-        const newSequences = await this.applicationBuilder.stageSequences(jsonApplications, context);
+        const newSequences = await this.schemaBuilder.stageSequences(jsonApplications, context);
         await this.sequenceGenerator.tempInitialize(context, newSequences);
     }
     async wait(milliseconds) {
@@ -13003,12 +13005,11 @@ class QueryObjectInitializer {
 
 const takeoff = lib('takeoff');
 const tokens = takeoff.register(AirportDatabasePopulator, 'ApplicationBuilder', ApplicationInitializer, ApplicationChecker, ApplicationComposer, ApplicationLocator, ApplicationRecorder, DdlObjectLinker, DdlObjectRetriever, QueryEntityClassCreator, QueryObjectInitializer, SqlSchemaBuilder);
-const APPLICATION_BUILDER = tokens.ApplicationBuilder;
+const SCHEMA_BUILDER = tokens.ApplicationBuilder;
 // Needed as a token in @airport/web-tower (platforms/web-tower)
 tokens.ApplicationLocator;
 takeoff.setDependencies(ApplicationInitializer, {
     airportDatabase: AIRPORT_DATABASE,
-    applicationBuilder: APPLICATION_BUILDER,
     applicationChecker: ApplicationChecker,
     applicationComposer: ApplicationComposer,
     dbApplicationDao: DbApplicationDao,
@@ -13017,11 +13018,12 @@ takeoff.setDependencies(ApplicationInitializer, {
     appTrackerUtils: AppTrackerUtils,
     dbApplicationUtils: DbApplicationUtils,
     queryObjectInitializer: QueryObjectInitializer,
+    schemaBuilder: SCHEMA_BUILDER,
     sequenceGenerator: SEQUENCE_GENERATOR,
     terminalStore: TerminalStore,
     transactionManager: TRANSACTION_MANAGER
 });
-APPLICATION_BUILDER.setDependencies({
+SCHEMA_BUILDER.setDependencies({
     airportDatabase: AIRPORT_DATABASE
 });
 takeoff.setDependencies(ApplicationChecker, {
@@ -35077,7 +35079,7 @@ class TransactionalReceiver {
                 this.terminalStore.getReceiver().initializingApps
                     .add(fullDbApplication_Name);
                 // FIXME: initalize ahead of time, at Isolate Loading
-                await this.databaseManager.initFeatureApplications({}, [application]);
+                await this.databaseManager.initFeatureApplications(context, [application]);
                 await this.internalRecordManager.ensureApplicationRecords(application, {});
                 theResult = application.lastIds;
                 break;
@@ -35576,7 +35578,10 @@ class DatabaseManager {
         return this.initialized;
     }
     async initFeatureApplications(context, jsonApplications) {
-        const applications = await this.dbApplicationDao.findAllWithJson(context);
+        let applications = [];
+        await this.transactionManager.transactInternal(async (_transaction, context) => {
+            applications = await this.dbApplicationDao.findAllWithJson(context);
+        }, null, context);
         const existingApplicationMap = new Map();
         for (const application of applications) {
             existingApplicationMap.set(application.fullName, application);
@@ -40043,7 +40048,7 @@ DATABASE_FACADE.setDependencies({
 });
 QUERY_FACADE.setClass(QueryFacade);
 
-class NoOpApplicationBuilder extends SqlSchemaBuilder {
+class NoOpSchemaBuilder extends SqlSchemaBuilder {
     async createApplication(jsonApplication, context) {
         const applicationName = IOC.getSync(DbApplicationUtils).
             getDbApplication_FullName(jsonApplication);
@@ -40323,7 +40328,7 @@ class TempDatabase {
             return;
         }
         SEQUENCE_GENERATOR.setClass(NoOpSequenceGenerator);
-        APPLICATION_BUILDER.setClass(NoOpApplicationBuilder);
+        SCHEMA_BUILDER.setClass(NoOpSchemaBuilder);
         STORE_DRIVER.setClass(NoOpSqlDriver);
         injectAirportDatabase();
         injectTransactionalServer();
@@ -44152,5 +44157,5 @@ async function generate() {
     console.log('DONE AIRport generation');
 }
 
-export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DbApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GlobalCandidates, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, InjectionFileBuilder, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpApplicationBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
+export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DbApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GlobalCandidates, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, InjectionFileBuilder, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpSchemaBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
 //# sourceMappingURL=index.mjs.map

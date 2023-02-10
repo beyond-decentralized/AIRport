@@ -40,9 +40,6 @@ export abstract class ApplicationInitializer
 	airportDatabase: IAirportDatabase
 
 	@Inject()
-	applicationBuilder: ISchemaBuilder
-
-	@Inject()
 	applicationChecker: IApplicationChecker
 
 	@Inject()
@@ -67,6 +64,9 @@ export abstract class ApplicationInitializer
 	queryObjectInitializer: IQueryObjectInitializer
 
 	@Inject()
+	schemaBuilder: ISchemaBuilder
+
+	@Inject()
 	sequenceGenerator: ISequenceGenerator
 
 	@Inject()
@@ -77,7 +77,7 @@ export abstract class ApplicationInitializer
 
 	addNewApplicationVersionsToAll(
 		ddlObjects: AllDdlObjects
-	) {
+	): void {
 		for (const applicationVersion of ddlObjects.added.applicationVersions) {
 			ddlObjects.allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion;
 		}
@@ -121,10 +121,15 @@ export abstract class ApplicationInitializer
 
 		const existingApplicationMap: Map<DbApplication_FullName, DbApplication> = new Map()
 		if (loadExistingApplications) {
-			const applications = await this.dbApplicationDao.findAllWithJson(context)
-			for (const application of applications) {
-				existingApplicationMap.set(application.fullName, application)
-			}
+			await this.transactionManager.transactInternal(async (
+				_transaction,
+				context
+			) => {
+				const applications = await this.dbApplicationDao.findAllWithJson(context)
+				for (const application of applications) {
+					existingApplicationMap.set(application.fullName, application)
+				}
+			}, null, context)
 		}
 
 		const newJsonApplicationMap: Map<string, JsonApplicationWithLastIds> = new Map()
@@ -140,16 +145,22 @@ export abstract class ApplicationInitializer
 		}
 
 		let checkedApplicationsWithValidDependencies = []
-		for (const jsonApplication of applicationsWithValidDependencies) {
-			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-				getDbApplication_FullName(jsonApplication))
-			if (!existingApplication) {
-				checkedApplicationsWithValidDependencies.push(jsonApplication)
-				await this.applicationBuilder.build(
-					jsonApplication, existingApplicationMap, newJsonApplicationMap,
-					areFeatureApps, context);
+
+		await this.transactionManager.transactInternal(async (
+			_transaction,
+			context
+		) => {
+			for (const jsonApplication of applicationsWithValidDependencies) {
+				const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
+					getDbApplication_FullName(jsonApplication))
+				if (!existingApplication) {
+					checkedApplicationsWithValidDependencies.push(jsonApplication)
+					await this.schemaBuilder.build(
+						jsonApplication, existingApplicationMap, newJsonApplicationMap,
+						areFeatureApps, context);
+				}
 			}
-		}
+		}, null, context)
 
 		const allDdlObjects = await this.applicationComposer.compose(
 			checkedApplicationsWithValidDependencies, {
@@ -162,12 +173,17 @@ export abstract class ApplicationInitializer
 
 		this.setAirDbApplications(allDdlObjects);
 
-		const newSequences = await this.applicationBuilder.buildAllSequences(
-			applicationsWithValidDependencies, context);
+		await this.transactionManager.transactInternal(async (
+			_transaction,
+			context
+		) => {
+			const newSequences = await this.schemaBuilder.buildAllSequences(
+				applicationsWithValidDependencies, context);
 
-		await this.sequenceGenerator.initialize(context, newSequences);
+			await this.sequenceGenerator.initialize(context, newSequences);
 
-		await this.applicationRecorder.record(allDdlObjects.added, context);
+			await this.applicationRecorder.record(allDdlObjects.added, context);
+		}, null, context)
 
 	}
 
@@ -278,7 +294,7 @@ export abstract class ApplicationInitializer
 
 		this.setAirDbApplications(tempDdlObjects);
 
-		const newSequences = await this.applicationBuilder.stageSequences(
+		const newSequences = await this.schemaBuilder.stageSequences(
 			jsonApplications, context);
 
 		await this.sequenceGenerator.tempInitialize(context, newSequences);
@@ -349,7 +365,7 @@ export abstract class ApplicationInitializer
 
 	private setAirDbApplications(
 		ddlObjects: AllDdlObjects
-	) {
+	): void {
 		for (let application of ddlObjects.all.applications) {
 			this.airportDatabase.applications[application.index] = application as DbApplication;
 		}

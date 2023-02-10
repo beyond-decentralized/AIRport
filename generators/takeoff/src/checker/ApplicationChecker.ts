@@ -16,6 +16,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
+import { ITransactionManager } from '@airport/terminal-map';
 
 export interface CoreDomainAndDbApplication_Names {
 
@@ -62,6 +63,9 @@ export class ApplicationChecker
 
 	@Inject()
 	dbApplicationUtils: IDbApplicationUtils
+
+	@Inject()
+	transactionManager: ITransactionManager
 
 	async check(
 		jsonApplication: JsonApplication
@@ -224,8 +228,13 @@ export class ApplicationChecker
 		if (!fullDbApplication_Names.length) {
 			existingApplicationMapByName = new Map()
 		} else {
-			existingApplicationMapByName = await this.dbApplicationDao
-				.findMapByFullNames(fullDbApplication_Names, context)
+			await this.transactionManager.transactInternal(async (
+				_transaction,
+				context
+			) => {
+				existingApplicationMapByName = await this.dbApplicationDao
+					.findMapByFullNames(fullDbApplication_Names, context)
+			}, null, context)
 		}
 
 		return {

@@ -162,7 +162,7 @@ export abstract class TransactionalReceiver {
                     .add(fullDbApplication_Name)
 
                 // FIXME: initalize ahead of time, at Isolate Loading
-                await this.databaseManager.initFeatureApplications({}, [application])
+                await this.databaseManager.initFeatureApplications(context, [application])
 
                 await this.internalRecordManager.ensureApplicationRecords(
                     application, {})
