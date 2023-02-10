@@ -6,7 +6,7 @@ import {
 import {
 	IRepositoryDao, RepositoryMemberDao
 } from '@airport/holding-pattern/dist/app/bundle'
-import { InMessageIndex, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Signature, RepositoryMember_Status, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, Repository_LocalId, UserAccount_Signature } from '@airport/ground-control';
+import { InMessageIndex, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Signature, RepositoryMember_Status, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, Repository_LocalId, UserAccount_Signature, Dictionary } from '@airport/ground-control';
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 
 export interface IRepositoriesAndMembersCheckResult
@@ -40,6 +40,9 @@ export interface ISyncInRepositoryChecker {
 @Injected()
 export class SyncInRepositoryChecker
 	implements ISyncInRepositoryChecker {
+
+	@Inject()
+	dictionary: Dictionary
 
 	@Inject()
 	repositoryDao: IRepositoryDao
@@ -506,6 +509,11 @@ is not present in the message.`)
 		const signatureChecks: ISignatureCheck[] = []
 
 		const history = message.data.history
+
+		if (this.dictionary.isKeyringEntity(history.operationHistory[0].entity)) {
+			return
+		}
+
 		signatureChecks.push({
 			publicSigningKey: history.member.memberPublicSigningKey,
 			signatureName: 'memberSignature',

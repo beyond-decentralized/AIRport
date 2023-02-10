@@ -144,7 +144,9 @@ groundTransport.setDependencies(SyncInDataChecker, {
 })
 
 groundTransport.setDependencies(SyncInRepositoryChecker, {
+	dictionary: Dictionary,
     repositoryDao: RepositoryDao,
+	repositoryMemberDao: RepositoryMemberDao
 })
 
 groundTransport.setDependencies(SyncInTerminalChecker, {

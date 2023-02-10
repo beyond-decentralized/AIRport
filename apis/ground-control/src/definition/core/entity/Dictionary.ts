@@ -8,11 +8,24 @@ export type Primitive = boolean | Date | number | string;
 export class Dictionary {
 
 	airbridge = {
-		DOMAIN_NAME: 'airbridge' as 'airbridge'
+		DOMAIN_NAME: 'airbridge' as 'airbridge' | 'airport' | 'airway',
+		apps: {
+			KEYRING: {
+				name: '@airbridge/keyring',
+				entities: {
+					KeyRing: {
+						name: 'KeyRing'
+					},
+					RepositoryKey: {
+						name: 'RepositoryKey'
+					}
+				}
+			}
+		}
 	}
 
 	airport = {
-		DOMAIN_NAME: 'airport' as 'airport',
+		DOMAIN_NAME: 'airport' as 'airbridge' | 'airport' | 'airway',
 		apps: {
 			AIRPORT_CODE: {
 				name: '@airport/airport-code',
@@ -125,7 +138,7 @@ export class Dictionary {
 	}
 
 	airway = {
-		DOMAIN_NAME: 'airway' as 'airway'
+		DOMAIN_NAME: 'airway' as 'airbridge' | 'airport' | 'airway'
 	}
 
 	INTERNAL_APP = '@airport/terminal'
@@ -134,11 +147,12 @@ export class Dictionary {
 	Actor = this.airport.apps.HOLDING_PATTERN.entities.Actor
 	AirEntity = this.airport.apps.FINAL_APPROACH.entities.AirEntity
 	ApplicationRelation = this.airport.apps.AIRSPACE.entities.ApplicationRelation
+	// CopiedRecordLedger = this.airport.apps.HOLDING_PATTERN.entities.CopiedRecordLedger
 	CrossRepositoryRelationLedger = this.airport.apps.HOLDING_PATTERN.entities.CrossRepositoryRelationLedger
 	InternalAirEntity = this.airport.apps.HOLDING_PATTERN.entities.InternalAirEntity
-	// CopiedRecordLedger = this.airport.apps.FLIGHT_RECORDER.entities.CopiedRecordLedger
-	// CrossRepositoryRelationLedger = this.airport.apps.FLIGHT_RECORDER.entities.CrossRepositoryRelationLedger
+	KeyRing = this.airbridge.apps.KEYRING.entities.KeyRing
 	Repository = this.airport.apps.HOLDING_PATTERN.entities.Repository
+	RepositoryKey = this.airbridge.apps.KEYRING.entities.RepositoryKey
 	SystemWideOperationId = this.airport.apps.AIRPORT_CODE.entities.SystemWideOperationId
 	Terminal = this.airport.apps.TRAVEL_DOCUMENT_CHECKPOINT.entities.Terminal
 	UserAccount = this.airport.apps.TRAVEL_DOCUMENT_CHECKPOINT.entities.UserAccount
@@ -325,6 +339,22 @@ export class Dictionary {
 		)
 	}
 
+	isKeyringEntity(
+		dbEntity: DbEntity
+	): boolean {
+		return this.isEntityType(
+			dbEntity,
+			this.airbridge.apps.KEYRING,
+			this.KeyRing,
+			this.airbridge.DOMAIN_NAME
+		) || this.isEntityType(
+			dbEntity,
+			this.airbridge.apps.KEYRING,
+			this.RepositoryKey,
+			this.airbridge.DOMAIN_NAME
+		)
+	}
+
 	isActorRelationColumn(
 		dbColumn: DbColumn
 	): boolean {
@@ -360,11 +390,12 @@ export class Dictionary {
 		},
 		entity: {
 			name: string
-		}
+		},
+		expectedDomainName = this.airport.DOMAIN_NAME
 	): boolean {
 		const dbApplication = dbEntity.applicationVersion.application
 
-		return dbApplication.domain.name === this.airport.DOMAIN_NAME
+		return dbApplication.domain.name === expectedDomainName
 			&& dbApplication.name === application.name
 			&& dbEntity.name === entity.name
 	}

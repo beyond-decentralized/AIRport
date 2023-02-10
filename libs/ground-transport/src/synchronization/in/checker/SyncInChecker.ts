@@ -94,6 +94,16 @@ export class SyncInChecker
 				isValid: false
 			}
 		}
+
+		if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(
+			data.applicationVersions, data.applications, context)) {
+			return {
+				isValid: false
+			}
+		}
+
+		const dataCheckResult = await this.syncInDataChecker.checkData(message, context)
+
 		const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
 			.checkRepositoriesAndMembers(message, context)
 		if (!repositoryAndMemberCheckResult.isValid) {
@@ -112,15 +122,6 @@ export class SyncInChecker
 				}
 			}
 		}
-
-		if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(
-			data.applicationVersions, data.applications, context)) {
-			return {
-				isValid: false
-			}
-		}
-
-		const dataCheckResult = await this.syncInDataChecker.checkData(message, context)
 
 		return {
 			...dataCheckResult,
