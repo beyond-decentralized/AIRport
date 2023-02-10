@@ -1,5 +1,5 @@
 import { IContext, Inject, Injected } from "@airport/direction-indicator";
-import { DatastructureUtils, IRepositoryReference, Repository_LocalId, SyncRepositoryMessage } from "@airport/ground-control";
+import { DatastructureUtils, IRepositoryReference, Repository_GUID, Repository_LocalId, SyncRepositoryMessage } from "@airport/ground-control";
 import { RepositoryReferenceDao } from "@airport/holding-pattern/dist/app/bundle";
 
 @Injected()
@@ -15,20 +15,26 @@ export class RepositoryReferenceCreator {
         messages: SyncRepositoryMessage[],
         context: IContext
     ): Promise<void> {
-        const repositoryReferenceMapByLocalIds: Map<Repository_LocalId,
-            Map<Repository_LocalId, IRepositoryReference>>
+        const repositoryReferenceMapByGUIDs: Map<Repository_GUID,
+            Map<Repository_GUID, IRepositoryReference>>
             = new Map()
         for (const message of messages) {
             const referencingRepository = message.data.history.repository
+            let repositoryGUID: Repository_GUID
+            if (typeof referencingRepository === 'string') {
+                repositoryGUID = referencingRepository
+            } else {
+                repositoryGUID = referencingRepository.GUID
+            }
             const referencesOfRepositoryMap = this.datastructureUtils.ensureChildJsMap(
-                repositoryReferenceMapByLocalIds,
-                referencingRepository._localId)
+                repositoryReferenceMapByGUIDs,
+                repositoryGUID)
             for (const referencedRepository of message.data.referencedRepositories) {
-                if (referencesOfRepositoryMap.has(referencedRepository._localId)) {
+                if (referencesOfRepositoryMap.has(referencedRepository.GUID)) {
                     continue
                 }
                 referencesOfRepositoryMap.set(
-                    referencedRepository._localId, {
+                    referencedRepository.GUID, {
                     referencingRepository,
                     referencedRepository
                 }
@@ -36,20 +42,24 @@ export class RepositoryReferenceCreator {
             }
         }
 
+        if (!repositoryReferenceMapByGUIDs.size) {
+            return
+        }
+
         const existingRepositoryReferences = await this.repositoryReferenceDao
-            .findByReferencingRepository_LocalIds(
-                Array.from(repositoryReferenceMapByLocalIds.keys()),
+            .findByReferencingRepository_GUIDs(
+                Array.from(repositoryReferenceMapByGUIDs.keys()),
                 context)
         for (const existingRepositoryReference of existingRepositoryReferences) {
-            const referencesOfRepositoryMap = repositoryReferenceMapByLocalIds
-                .get(existingRepositoryReference.referencingRepository._localId)
+            const referencesOfRepositoryMap = repositoryReferenceMapByGUIDs
+                .get(existingRepositoryReference.referencingRepository.GUID)
             referencesOfRepositoryMap.delete(
-                existingRepositoryReference.referencedRepository._localId
+                existingRepositoryReference.referencedRepository.GUID
             )
         }
 
         const repositoryReferenceArrayToInsert: IRepositoryReference[] = []
-        for (const referencesOfRepositoryMap of repositoryReferenceMapByLocalIds.values()) {
+        for (const referencesOfRepositoryMap of repositoryReferenceMapByGUIDs.values()) {
             for (const repositoryReference of referencesOfRepositoryMap.values()) {
                 repositoryReferenceArrayToInsert.push(repositoryReference)
             }

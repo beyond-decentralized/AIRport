@@ -1,26 +1,38 @@
 import { IContext } from '@airport/direction-indicator'
-import { IRepositoryReference, Repository_LocalId } from '@airport/ground-control'
+import { IRepositoryReference, Repository_GUID } from '@airport/ground-control'
+import { Y } from '@airport/tarmaq-query';
 import { BaseRepositoryReferenceDao } from '../../generated/baseDaos';
 import Q_airport____at_airport_slash_holding_dash_pattern from '../../generated/qApplication';
-import { QRepositoryReference } from '../../generated/qInterfaces';
+import { QRepository, QRepositoryReference } from '../../generated/qInterfaces';
 
 export class RepositoryReferenceDao
     extends BaseRepositoryReferenceDao {
 
-    async findByReferencingRepository_LocalIds(
-        repositoryLocalIds: Repository_LocalId[],
-		context: IContext
+    async findByReferencingRepository_GUIDs(
+        repositoryGUIDs: Repository_GUID[],
+        context: IContext
     ): Promise<IRepositoryReference[]> {
-        let rr: QRepositoryReference
+        let rr: QRepositoryReference,
+            r: QRepository
 
         return await this._find({
-            SELECT: {},
+            SELECT: {
+                referencedRepository: {
+                    _localId: Y,
+                    GUID: Y
+                },
+                referencingRepository: {
+                    _localId: Y,
+                    GUID: Y
+                }
+            },
             FROM: [
                 rr = Q_airport____at_airport_slash_holding_dash_pattern
-                    .RepositoryReference
+                    .RepositoryReference,
+                r = rr.referencingRepository.INNER_JOIN(),
+                rr.referencedRepository.INNER_JOIN()
             ],
-            WHERE: rr.referencingRepository._localId
-                .IN(repositoryLocalIds)
+            WHERE: r.GUID.IN(repositoryGUIDs)
         }, context)
     }
 
