@@ -76,7 +76,7 @@ export class SynchronizationOutManager
 			repositoryTransactionHistories, repositoryMapById, context)
 		// await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
 
-		this.messageSigningManager.signMessages(messages)
+		await this.messageSigningManager.signMessages(messages, context)
 
 		await this.repositoryReferenceCreator.create(messages, context)
 
