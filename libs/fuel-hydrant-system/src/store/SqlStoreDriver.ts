@@ -162,7 +162,8 @@ export abstract class SqlStoreDriver
 			: application.domain.name
 		const transaction = context.transaction
 		if (!context.internal && !this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)
-			&& !this.appTrackerUtils.isInternalDomain(transaction.actor.application.domain.name)) {
+			&& !this.appTrackerUtils.isInternalDomain(transaction.actor.application.domain.name)
+			&& this.appTrackerUtils.isInternalDomain(domainName)) {
 			const entityHasExternalAccessPermissions = this.appTrackerUtils.entityHasExternalAccessPermissions(
 				domainName,
 				application.name,
@@ -312,7 +313,7 @@ Entity:          ${table.name}
 		// repository?: IRepository
 	): Promise<number> {
 		const query = portableQuery.query as QueryInsertValues
-		if(!query || !query.VALUES || !query.VALUES.length) {
+		if (!query || !query.VALUES || !query.VALUES.length) {
 			return 0
 		}
 
