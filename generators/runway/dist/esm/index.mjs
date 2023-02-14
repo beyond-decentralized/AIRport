@@ -8172,11 +8172,13 @@ class AirEntityUtils {
     }
 }
 
-// This library is used in UI/Client bundles and does does not include @airport/direction-indicator
+// This library is used in UI/Client bundles which does not include @airport/direction-indicator
 // dependency injection library
-if (globalThis.AIR_ENTITY_UTILS) {
-    globalThis.AIR_ENTITY_UTILS.setClass(AirEntityUtils);
-}
+setTimeout(() => {
+    if (globalThis.AIR_ENTITY_UTILS) {
+        globalThis.AIR_ENTITY_UTILS.setClass(AirEntityUtils);
+    }
+});
 
 class LookupProxy {
     ensureContext(context) {
@@ -14701,11 +14703,10 @@ class RepositoryApi {
         return await this.repositoryDao.findRepository(repositoryGUID, arguments[1]);
     }
     async create(repositoryName, isPublic) {
-        let context = arguments[2];
         if (isPublic === undefined) {
-            context = arguments[1];
             isPublic = false;
         }
+        let context = arguments[2];
         return await this.repositoryManager.createRepository(repositoryName, isPublic, context);
     }
     async setUiEntryUri(uiEntryUri, repository) {
