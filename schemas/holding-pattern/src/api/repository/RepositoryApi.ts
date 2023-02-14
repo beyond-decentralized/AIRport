@@ -32,11 +32,10 @@ export class RepositoryApi {
         repositoryName: string,
         isPublic?: Repository_IsPublic
     ): Promise<IRepository> {
-        let context: IContext = arguments[2]
         if (isPublic === undefined) {
-            context = arguments[1]
             isPublic = false
         }
+        let context: IContext = arguments[2]
         return await this.repositoryManager.createRepository(
             repositoryName, isPublic, context)
     }
