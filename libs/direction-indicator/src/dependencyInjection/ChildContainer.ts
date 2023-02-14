@@ -19,6 +19,8 @@ export class ChildContainer
     // numPendingInits = 0
     // theObjects: any[]  = []
 
+    static sharedObjectMap: Map<string, Map<string, Map<string, any>>> = new Map()
+
     objectMap: Map<string, Map<string, Map<string, any>>> = new Map()
 
     constructor(
@@ -45,9 +47,10 @@ export class ChildContainer
     }
 
     private getObject(
+        objectMap: Map<string, Map<string, Map<string, any>>>,
         token: IDependencyInjectionToken<any> | IFullDITokenDescriptor
     ) {
-        let mapForDomain = this.objectMap.get(token.application.domain.name)
+        let mapForDomain = objectMap.get(token.application.domain.name)
         if (!mapForDomain) {
             return null;
         }
@@ -60,13 +63,14 @@ export class ChildContainer
     }
 
     private setObject(
+        objectMap: Map<string, Map<string, Map<string, any>>>,
         token: IDependencyInjectionToken<any> | IFullDITokenDescriptor,
         object: any
     ) {
-        let mapForDomain = this.objectMap.get(token.application.domain.name)
+        let mapForDomain = objectMap.get(token.application.domain.name)
         if (!mapForDomain) {
             mapForDomain = new Map()
-            this.objectMap.set(token.application.domain.name, mapForDomain)
+            objectMap.set(token.application.domain.name, mapForDomain)
         }
         let mapForApp = mapForDomain.get(token.application.name)
         if (!mapForApp) {
@@ -212,7 +216,20 @@ export class ChildContainer
                 if (firstMissingClassToken || firstDiNotSetClass) {
                     return;
                 }
-                let object = this.getObject(token)
+                const aClass = token.descriptor.class
+                if (!aClass) {
+                    firstMissingClassToken = token;
+                    return;
+                }
+                let objectMap
+                if (aClass.sharedAcrossInjectionScopes) {
+                    objectMap = ChildContainer.sharedObjectMap
+                } else {
+                    objectMap = this.objectMap
+                }
+
+                let object = this.getObject(objectMap, token)
+
                 if (!object) {
                     if (!(token instanceof DependencyInjectionToken)) {
                         throw new Error(`Non-API token lookups must be done
@@ -223,11 +240,6 @@ export class ChildContainer
                     // if (rootObjectPool && rootObjectPool.length) {
                     //     object = rootObjectPool.pop()
                     // } else {
-                    const aClass = token.descriptor.class
-                    if (!aClass) {
-                        firstMissingClassToken = token;
-                        return;
-                    }
                     if (aClass.diSet && !aClass.diSet()) {
                         firstMissingClassToken = token;
                         firstDiNotSetClass = aClass;
@@ -238,15 +250,25 @@ export class ChildContainer
                     // }
 
                     object.__container__ = this
-                    this.setObject(token, object)
+                    this.setObject(objectMap, token, object)
 
-                    if (object.init) {
+                    if (object.init
+                        && !object.__initialized__) {
                         const result = object.init()
                         if (result instanceof Promise) {
-                            result.then(_ => {
-                                object.__initialized__ = true;
-                                console.log(`${token.getPath()} initialized.`);
-                            });
+                            if (object.__initialized__ !== 'initializing') {
+                                object.__initialized__ = 'initializing'
+                                result.then(_ => {
+                                    object.__initialized__ = true;
+                                    console.log(`${token.getPath()} initialized.`);
+                                }).catch(e => {
+                                    console.error(`Error initializing: ${token.getPath()}`)
+                                    console.error(e)
+                                    object.__initialized__ = false;
+                                });
+                            } else {
+                                console.log(`${token.getPath()} is initializing ...`);
+                            }
                         } else {
                             object.__initialized__ = true;
                             console.log(`${token.getPath()} initialized.`);

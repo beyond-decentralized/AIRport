@@ -75,6 +75,8 @@ export interface ITerminalStateContainer {
 export class TerminalState
 	implements ITerminalStateContainer {
 
+	static sharedAcrossInjectionScopes = true
+
 	@Inject()
 	appTrackerUtils: IAppTrackerUtils
 
@@ -82,20 +84,19 @@ export class TerminalState
 
 	init(): void {
 		this.terminalState = globalThis.internalTerminalState
-		let subscription = this.terminalState.subscribe((theState) => {
-			setTimeout(() => {
-				this.terminalState.next({
-					...theState,
-					internalConnector: {
-						...theState.internalConnector,
-						internalCredentials: {
-							...theState.internalConnector.internalCredentials,
-							domain: this.appTrackerUtils.getInternalDomain()
-						}
-					}
-				})
-				subscription.unsubscribe()
-			}, 10)
+		let theState
+		this.terminalState.subscribe((state) => {
+			theState = state
+		}).unsubscribe()
+		this.terminalState.next({
+			...theState,
+			internalConnector: {
+				...theState.internalConnector,
+				internalCredentials: {
+					...theState.internalConnector.internalCredentials,
+					domain: this.appTrackerUtils.getInternalDomain()
+				}
+			}
 		})
 	}
 

@@ -394,10 +394,6 @@ class ChildContainer extends Container {
         super();
         this.rootContainer = rootContainer;
         this.context = context;
-        // TODO: implement continuous upgrading
-        // classes: any[]  = []
-        // numPendingInits = 0
-        // theObjects: any[]  = []
         this.objectMap = new Map();
     }
     getToken(token) {
@@ -410,8 +406,8 @@ class ChildContainer extends Container {
             .getApp(token.application.name)
             .tokenMap.set(token.descriptor.interface, token);
     }
-    getObject(token) {
-        let mapForDomain = this.objectMap.get(token.application.domain.name);
+    getObject(objectMap, token) {
+        let mapForDomain = objectMap.get(token.application.domain.name);
         if (!mapForDomain) {
             return null;
         }
@@ -421,11 +417,11 @@ class ChildContainer extends Container {
         }
         return mapForApp.get(token.descriptor.interface);
     }
-    setObject(token, object) {
-        let mapForDomain = this.objectMap.get(token.application.domain.name);
+    setObject(objectMap, token, object) {
+        let mapForDomain = objectMap.get(token.application.domain.name);
         if (!mapForDomain) {
             mapForDomain = new Map();
-            this.objectMap.set(token.application.domain.name, mapForDomain);
+            objectMap.set(token.application.domain.name, mapForDomain);
         }
         let mapForApp = mapForDomain.get(token.application.name);
         if (!mapForApp) {
@@ -528,7 +524,19 @@ class ChildContainer extends Container {
             if (firstMissingClassToken || firstDiNotSetClass) {
                 return;
             }
-            let object = this.getObject(token);
+            const aClass = token.descriptor.class;
+            if (!aClass) {
+                firstMissingClassToken = token;
+                return;
+            }
+            let objectMap;
+            if (aClass.sharedAcrossInjectionScopes) {
+                objectMap = ChildContainer.sharedObjectMap;
+            }
+            else {
+                objectMap = this.objectMap;
+            }
+            let object = this.getObject(objectMap, token);
             if (!object) {
                 if (!(token instanceof DependencyInjectionToken)) {
                     throw new Error(`Non-API token lookups must be done
@@ -539,11 +547,6 @@ class ChildContainer extends Container {
                 // if (rootObjectPool && rootObjectPool.length) {
                 //     object = rootObjectPool.pop()
                 // } else {
-                const aClass = token.descriptor.class;
-                if (!aClass) {
-                    firstMissingClassToken = token;
-                    return;
-                }
                 if (aClass.diSet && !aClass.diSet()) {
                     firstMissingClassToken = token;
                     firstDiNotSetClass = aClass;
@@ -553,14 +556,25 @@ class ChildContainer extends Container {
                 this.setDependencyGetters(object, token);
                 // }
                 object.__container__ = this;
-                this.setObject(token, object);
-                if (object.init) {
+                this.setObject(objectMap, token, object);
+                if (object.init
+                    && !object.__initialized__) {
                     const result = object.init();
                     if (result instanceof Promise) {
-                        result.then(_ => {
-                            object.__initialized__ = true;
-                            console.log(`${token.getPath()} initialized.`);
-                        });
+                        if (object.__initialized__ !== 'initializing') {
+                            object.__initialized__ = 'initializing';
+                            result.then(_ => {
+                                object.__initialized__ = true;
+                                console.log(`${token.getPath()} initialized.`);
+                            }).catch(e => {
+                                console.error(`Error initializing: ${token.getPath()}`);
+                                console.error(e);
+                                object.__initialized__ = false;
+                            });
+                        }
+                        else {
+                            console.log(`${token.getPath()} is initializing ...`);
+                        }
                     }
                     else {
                         object.__initialized__ = true;
@@ -665,6 +679,11 @@ class ChildContainer extends Container {
         }
     }
 }
+// TODO: implement continuous upgrading
+// classes: any[]  = []
+// numPendingInits = 0
+// theObjects: any[]  = []
+ChildContainer.sharedObjectMap = new Map();
 addClasses([ChildContainer]);
 
 class RootContainer extends Container {
@@ -11192,7 +11211,7 @@ var AirEntityType;
 
 var AppState;
 (function (AppState) {
-    AppState["NOT_INITIALIED"] = "NOT_INITIALIED";
+    AppState["NOT_INITIALIZED"] = "NOT_INITIALIZED";
     AppState["START_INITIALIZING"] = "START_INITIALIZING";
     AppState["INITIALIZING_IN_PROGRESS"] = "INITIALIZING_IN_PROGRESS";
     AppState["INITIALIZED"] = "INITIALIZED";
@@ -11201,29 +11220,29 @@ var AppState;
 class TerminalState {
     init() {
         this.terminalState = globalThis.internalTerminalState;
-        let subscription = this.terminalState.subscribe((theState) => {
-            setTimeout(() => {
-                this.terminalState.next({
-                    ...theState,
-                    internalConnector: {
-                        ...theState.internalConnector,
-                        internalCredentials: {
-                            ...theState.internalConnector.internalCredentials,
-                            domain: this.appTrackerUtils.getInternalDomain()
-                        }
-                    }
-                });
-                subscription.unsubscribe();
-            }, 10);
+        let theState;
+        this.terminalState.subscribe((state) => {
+            theState = state;
+        }).unsubscribe();
+        this.terminalState.next({
+            ...theState,
+            internalConnector: {
+                ...theState.internalConnector,
+                internalCredentials: {
+                    ...theState.internalConnector.internalCredentials,
+                    domain: this.appTrackerUtils.getInternalDomain()
+                }
+            }
         });
     }
 }
+TerminalState.sharedAcrossInjectionScopes = true;
 
 class TerminalStore {
     get state() {
         return this.terminalState.terminalState;
     }
-    async init() {
+    init() {
         this.getTerminalState = this.selectorManager.createRootSelector(this.state);
         this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
         this.getApplicationInitializer = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationInitializer);
@@ -11340,6 +11359,7 @@ class TerminalStore {
     tearDown() {
     }
 }
+TerminalStore.sharedAcrossInjectionScopes = true;
 
 /**
  * For logic classes to be hot-swappable for quick upgrades all state is contained
@@ -11803,8 +11823,10 @@ class ApplicationChecker {
             existingApplicationMapByName = new Map();
         }
         else {
-            existingApplicationMapByName = await this.dbApplicationDao
-                .findMapByFullNames(fullDbApplication_Names, context);
+            await this.transactionManager.transactInternal(async (_transaction, context) => {
+                existingApplicationMapByName = await this.dbApplicationDao
+                    .findMapByFullNames(fullDbApplication_Names, context);
+            }, null, context);
         }
         return {
             coreDomainAndDbApplication_NamesByDbApplication_Name,
@@ -12520,14 +12542,16 @@ class ApplicationInitializer {
             }
         }
         let checkedApplicationsWithValidDependencies = [];
-        for (const jsonApplication of applicationsWithValidDependencies) {
-            const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-                getDbApplication_FullName(jsonApplication));
-            if (!existingApplication) {
-                checkedApplicationsWithValidDependencies.push(jsonApplication);
-                await this.schemaBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, areFeatureApps, context);
+        await this.transactionManager.transactInternal(async (_transaction, context) => {
+            for (const jsonApplication of applicationsWithValidDependencies) {
+                const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
+                    getDbApplication_FullName(jsonApplication));
+                if (!existingApplication) {
+                    checkedApplicationsWithValidDependencies.push(jsonApplication);
+                    await this.schemaBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, areFeatureApps, context);
+                }
             }
-        }
+        }, null, context);
         const allDdlObjects = await this.applicationComposer.compose(checkedApplicationsWithValidDependencies, {
             terminalStore: this.terminalStore
         });
@@ -13008,6 +13032,19 @@ const tokens = takeoff.register(AirportDatabasePopulator, 'ApplicationBuilder', 
 const SCHEMA_BUILDER = tokens.ApplicationBuilder;
 // Needed as a token in @airport/web-tower (platforms/web-tower)
 tokens.ApplicationLocator;
+takeoff.setDependencies(ApplicationChecker, {
+    dbApplicationDao: DbApplicationDao,
+    datastructureUtils: DatastructureUtils,
+    dbApplicationUtils: DbApplicationUtils,
+    transactionManager: TRANSACTION_MANAGER
+});
+takeoff.setDependencies(ApplicationComposer, {
+    applicationLocator: ApplicationLocator,
+    datastructureUtils: DatastructureUtils,
+    dbApplicationUtils: DbApplicationUtils,
+    domainRetriever: DOMAIN_RETRIEVER,
+    terminalStore: TerminalStore
+});
 takeoff.setDependencies(ApplicationInitializer, {
     airportDatabase: AIRPORT_DATABASE,
     applicationChecker: ApplicationChecker,
@@ -13022,21 +13059,6 @@ takeoff.setDependencies(ApplicationInitializer, {
     sequenceGenerator: SEQUENCE_GENERATOR,
     terminalStore: TerminalStore,
     transactionManager: TRANSACTION_MANAGER
-});
-SCHEMA_BUILDER.setDependencies({
-    airportDatabase: AIRPORT_DATABASE
-});
-takeoff.setDependencies(ApplicationChecker, {
-    dbApplicationDao: DbApplicationDao,
-    datastructureUtils: DatastructureUtils,
-    dbApplicationUtils: DbApplicationUtils
-});
-takeoff.setDependencies(ApplicationComposer, {
-    applicationLocator: ApplicationLocator,
-    datastructureUtils: DatastructureUtils,
-    dbApplicationUtils: DbApplicationUtils,
-    domainRetriever: DOMAIN_RETRIEVER,
-    terminalStore: TerminalStore
 });
 takeoff.setDependencies(ApplicationLocator, {
     dbApplicationUtils: DbApplicationUtils,
@@ -13081,6 +13103,9 @@ takeoff.setDependencies(QueryObjectInitializer, {
     ddlObjectRetriever: DdlObjectRetriever,
     queryEntityClassCreator: QueryEntityClassCreator,
     terminalStore: TerminalStore
+});
+SCHEMA_BUILDER.setDependencies({
+    airportDatabase: AIRPORT_DATABASE
 });
 takeoff.setDependencies(SqlSchemaBuilder, {
     airportDatabase: AIRPORT_DATABASE,
@@ -33918,8 +33943,9 @@ class SqlStoreDriver {
             ? application.domain
             : application.domain.name;
         const transaction = context.transaction;
-        if (!this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)
-            && !this.appTrackerUtils.isInternalDomain(transaction.actor.application.domain.name)) {
+        if (!context.internal && !this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)
+            && !this.appTrackerUtils.isInternalDomain(transaction.actor.application.domain.name)
+            && this.appTrackerUtils.isInternalDomain(domainName)) {
             const entityHasExternalAccessPermissions = this.appTrackerUtils.entityHasExternalAccessPermissions(domainName, application.name, applicationIntegerVersion, table.name);
             if (!entityHasExternalAccessPermissions) {
                 throw new Error(`
@@ -35086,6 +35112,7 @@ class TransactionalReceiver {
             case IsolateMessageType.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps;
                 initializedApps.add(message.fullDbApplication_Name);
+                // console.log(`--==<<(( INITIALIZED: ${(message as any as IConnectionInitializedIMI).fullDbApplication_Name}))>>==--`)
                 return {
                     theErrorMessage,
                     theResult
@@ -39871,7 +39898,7 @@ class QueryFacade {
 const applicationState = {
     api: null,
     application: null,
-    appState: AppState.NOT_INITIALIED,
+    appState: AppState.NOT_INITIALIZED,
     domain: null,
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
     // and debugging (https://localhost:3000)
@@ -39891,6 +39918,7 @@ class ApplicationStore {
         return this.applicationState;
     }
 }
+ApplicationStore.sharedAcrossInjectionScopes = true;
 
 class EntityAccumulator {
     constructor(applicationDomain, applicationName, entityMap) {

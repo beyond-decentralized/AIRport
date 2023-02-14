@@ -99,6 +99,8 @@ export interface ITerminalStore {
 export class TerminalStore
 	implements ITerminalStore {
 
+	static sharedAcrossInjectionScopes = true
+
 	@Inject()
 	datastructureUtils: IDatastructureUtils
 
@@ -160,7 +162,7 @@ export class TerminalStore
 
 	getWebReceiver: IMemoizedSelector<IWebReceiverState, ITerminalState>
 
-	async init(): Promise<void> {
+	init(): void {
 		this.getTerminalState = this.selectorManager.createRootSelector(this.state);
 		this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.applicationActors)

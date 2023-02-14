@@ -136,8 +136,10 @@ export class IframeTransactionalConnector
 				this.applicationStore.state.domain = message.domain
 				this.applicationStore.state.application = message.application
 				if (message.type === IsolateMessageType.APP_INITIALIZING) {
-					if (this.applicationStore.state.appState === AppState.NOT_INITIALIED
+					if (this.applicationStore.state.appState === AppState.NOT_INITIALIZED
 						&& message.result) {
+						// console.log(`--==<<(( path: ${window.location.pathname} appState: ${this.applicationStore.state.appState}, domain: ${message.domain}, app: ${message.application} ))>>==--`)
+						// console.log(message.result)
 						let initConnectionIMO: IInitConnectionIMO = message
 						const lastTerminalState = this.terminalStore.getTerminalState()
 						this.terminalStore.state.next({
@@ -335,7 +337,7 @@ export class IframeTransactionalConnector
 	}
 
 	async initializeConnection(): Promise<void> {
-		while (this.applicationStore.state.appState === AppState.NOT_INITIALIED
+		while (this.applicationStore.state.appState === AppState.NOT_INITIALIZED
 			|| this.applicationStore.state.appState === AppState.START_INITIALIZING) {
 			await this.isConnectionInitialized()
 			await this.wait(100)
@@ -481,12 +483,14 @@ export class IframeTransactionalConnector
 
 	private async isConnectionInitialized(): Promise<boolean> {
 		switch (this.applicationStore.state.appState) {
-			case AppState.NOT_INITIALIED:
+			case AppState.NOT_INITIALIZED:
 				break;
 			case AppState.INITIALIZING_IN_PROGRESS:
 				return false
 			case AppState.START_INITIALIZING:
 				this.applicationStore.state.appState = AppState.INITIALIZING_IN_PROGRESS
+				// const lastIds = this.terminalStore.getLastIds()
+				// console.log(` path: ${window.location.pathname} INITIALIZING_IN_PROGRESS appIndex: ${lastIds.applications} ))>>==--`)
 				await this.applicationLoader.load(this.terminalStore.getLastIds())
 				this.applicationStore.state.appState = AppState.INITIALIZED
 				await this.applicationLoader.initialize()

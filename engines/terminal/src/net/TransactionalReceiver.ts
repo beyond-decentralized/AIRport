@@ -172,6 +172,7 @@ export abstract class TransactionalReceiver {
             case IsolateMessageType.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps
                 initializedApps.add((message as any as IConnectionInitializedIMI).fullDbApplication_Name)
+                // console.log(`--==<<(( INITIALIZED: ${(message as any as IConnectionInitializedIMI).fullDbApplication_Name}))>>==--`)
                 return {
                     theErrorMessage,
                     theResult

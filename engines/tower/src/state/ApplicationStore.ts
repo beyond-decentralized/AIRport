@@ -11,6 +11,8 @@ export interface IApplicationStore {
 export class ApplicationStore
     implements IApplicationStore {
 
+    static sharedAcrossInjectionScopes = true
+
     applicationState = theApplicationState
 
     get state(): IApplicationState {

@@ -13,7 +13,7 @@ export interface IObservableMessageInRecord<T> {
     observer?: Observer<T>
 }
 export enum AppState {
-    NOT_INITIALIED = 'NOT_INITIALIED',
+    NOT_INITIALIZED = 'NOT_INITIALIZED',
     START_INITIALIZING = 'START_INITIALIZING',
     INITIALIZING_IN_PROGRESS = 'INITIALIZING_IN_PROGRESS',
     INITIALIZED = 'INITIALIZED'

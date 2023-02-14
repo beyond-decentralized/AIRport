@@ -3,7 +3,7 @@ import { AppState, IApplicationState } from "@airport/terminal-map";
 export const applicationState: IApplicationState = {
     api: null,
     application: null,
-    appState: AppState.NOT_INITIALIED,
+    appState: AppState.NOT_INITIALIZED,
     domain: null,
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
     // and debugging (https://localhost:3000)
