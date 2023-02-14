@@ -72,29 +72,35 @@ export class RepositoryManager
 	): Promise<IRepository> {
 		const userSession = await this.terminalSessionManager.getUserSession()
 
-		let isInternalDomain = this.appTrackerUtils
-			.isInternalDomain(context.transaction.credentials.domain)
-		if (!isInternalDomain && userSession.currentRootTransaction.newRepository) {
+		let haveUserSession = userSession.currentRootTransaction
+			&& userSession.currentTransaction
+		if (haveUserSession && userSession.currentRootTransaction.newRepository) {
 			throw new Error(`Cannot create more than one repository per transaction:
 Attempting to create a new repository and Operation Context
 already contains a new repository.`)
 		}
 
-		const userAccount = isInternalDomain
-			? userSession.userAccount
-			: userSession.currentTransaction.actor.userAccount
+		const userAccount = haveUserSession
+			? userSession.currentTransaction.actor.userAccount
+			: userSession.userAccount
 
 		const repositoryGUID = context.newRepositoryGUID
 			? context.newRepositoryGUID
 			: 'DEVSERVR_' + guidv4()
 
+		let applicationFullName
+		if (haveUserSession) {
+			applicationFullName = userSession.currentTransaction
+				.parentTransaction.actor.application.fullName
+		} else {
+			applicationFullName = context.applicationFullName
+		}
+
 		let repository = await this.createRepositoryRecord(
 			repositoryName,
 			repositoryGUID,
 			userAccount,
-			isInternalDomain
-				? context.applicationFullName
-				: userSession.currentTransaction.actor.application.fullName,
+			applicationFullName,
 			isPublic,
 			context)
 
@@ -108,7 +114,7 @@ already contains a new repository.`)
 			context
 		)
 
-		if (!isInternalDomain) {
+		if (haveUserSession) {
 			userSession.currentRootTransaction.newRepository = repository
 		}
 
@@ -132,7 +138,8 @@ already contains a new repository.`)
 	): Promise<void> {
 		const userSession = await this.terminalSessionManager.getUserSession()
 
-		if (userSession.currentTransaction.actor.application.fullName !== repository.fullApplicationName) {
+		if (userSession.currentTransaction.parentTransaction.actor
+			.application.fullName !== repository.fullApplicationName) {
 			throw new Error(`Only the Application that created a repository may change the uiEntityUri.`);
 		}
 
@@ -159,7 +166,6 @@ already contains a new repository.`)
 	): void {
 		throw new Error(`not implemented`)
 	}
-
 
 	private async createRepositoryRecord(
 		name: string,
