@@ -75,7 +75,7 @@ export class KeyUtils
         const signature = await window.crypto.subtle.sign(
             {
                 name: "ECDSA",
-                hash: { name: "SHA-" + privateKeyBitLength },
+                hash: { name: "SHA-" + this.getHashSize(privateKeyBitLength) },
             },
             signKey,
             encoded
@@ -94,11 +94,13 @@ export class KeyUtils
         const encodedSignature = this.textEncoder.encode(signature);
         const verifyKey = await this.deserializeVerifyKey(publicKey, publicKeyBitLength)
 
+
+
         let isValidSignature = await window.crypto.subtle.verify(
             {
                 name: "ECDSA",
                 hash: {
-                    name: "SHA-" + publicKeyBitLength
+                    name: "SHA-" + this.getHashSize(publicKeyBitLength)
                 },
             },
             verifyKey,
@@ -107,6 +109,16 @@ export class KeyUtils
         );
 
         return isValidSignature;
+    }
+
+    private getHashSize(
+        keyLength: number
+    ): number {
+        if (keyLength <= 384) {
+            return 384
+        }
+
+        return 512
     }
 
     private async serializeKey(

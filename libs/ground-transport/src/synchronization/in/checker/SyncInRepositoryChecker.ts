@@ -510,7 +510,10 @@ is not present in the message.`)
 
 		const history = message.data.history
 
-		if (this.dictionary.isKeyringEntity(history.operationHistory[0].entity)) {
+		// Operation history may not be present if its
+		// a RepositoryMember-only operation
+		const firstOperationHistory = history.operationHistory[0]
+		if (firstOperationHistory && this.dictionary.isKeyringEntity(firstOperationHistory.entity)) {
 			return
 		}
 

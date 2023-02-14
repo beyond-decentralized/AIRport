@@ -429,11 +429,11 @@ export class SyncOutDataSerializer
 			}
 		}
 
-		const foundRepository = repositoryMapById.get(repositoryTransactionHistory._localId)
+		const foundRepository = repositoryMapById.get(repositoryTransactionHistory.repository._localId)
 		if (foundRepository) {
 			foundRepositories.push(foundRepository)
 		} else {
-			throw new Error(`Unexpected Repository_LocalId: ${repositoryTransactionHistory._localId}`)
+			throw new Error(`Unexpected Repository_LocalId: ${repositoryTransactionHistory.repository._localId}`)
 			// 	repositoryIdsToFindBy.push(repositoryTransactionHistory._localId)
 		}
 
