@@ -10,6 +10,7 @@ import {
 	DbDomain_Name,
 	IActor,
 	IDatastructureUtils,
+	IUserAccount,
 	QueryBaseOperation,
 	Terminal_GUID,
 } from '@airport/ground-control'
@@ -55,6 +56,12 @@ export interface IActorDao
 
 	insert(
 		actors: IActor[],
+		context: IContext
+	): Promise<void>
+
+	updateUserAccount(
+		userAccount: IUserAccount,
+		actor: IActor,
 		context: IContext
 	): Promise<void>
 
@@ -183,6 +190,21 @@ export class ActorDao
 			let actor = actors[i]
 			actor._localId = _localIds[i][0]
 		}
+	}
+
+	async updateUserAccount(
+		userAccount: IUserAccount,
+		actor: IActor,
+		context: IContext
+	): Promise<void> {
+		let a: QActor;
+		await this.db.updateColumnsWhere({
+			UPDATE: a = Q.Actor,
+			SET: {
+				USER_ACCOUNT_LID: userAccount._localId
+			},
+			WHERE: a._localId.equals(actor._localId)
+		}, context)
 	}
 
 	private async findWithDetailsAndGlobalIdsByWhereClause(
