@@ -28,12 +28,14 @@ export class RepositoryReferenceCreator {
             }
         }
 
-        const foundRepositories = await this.repositoryDao.findByGUIDs(
-            Array.from(repositoryGUIDSetToLookUp), context)
         const foundRepositoriesByGUIDMap: Map<Repository_GUID, Repository>
             = new Map()
-        for (const foundRepository of foundRepositories) {
-            foundRepositoriesByGUIDMap.set(foundRepository.GUID, foundRepository)
+        if (repositoryGUIDSetToLookUp.size) {
+            const foundRepositories = await this.repositoryDao.findByGUIDs(
+                Array.from(repositoryGUIDSetToLookUp), context)
+            for (const foundRepository of foundRepositories) {
+                foundRepositoriesByGUIDMap.set(foundRepository.GUID, foundRepository)
+            }
         }
 
         const repositoryReferenceMapByGUIDs: Map<Repository_GUID,

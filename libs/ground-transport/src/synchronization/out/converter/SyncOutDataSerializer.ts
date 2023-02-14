@@ -473,6 +473,10 @@ export class SyncOutDataSerializer
 			applicationRelationIdsToFindBy.push(applicationRelationLocalId)
 		}
 
+		if (!applicationRelationIdsToFindBy.length) {
+			return
+		}
+
 		const applicationRelations = await this.dbRelationDao
 			.findAllByLocalIdsWithApplications(applicationRelationIdsToFindBy, context)
 
