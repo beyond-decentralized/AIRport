@@ -162,11 +162,7 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 			application: null,
 			GUID: actor.GUID,
 			terminal: null,
-			userAccount: actor.userAccount ? {
-				_localId: null,
-				accountPublicSigningKey: actor.userAccount.accountPublicSigningKey,
-				username: actor.userAccount.username
-			} : null
+			userAccount: actor.userAccount
 		}
 		let newRepository: IRepository
 		if (context.rootTransaction.newRepository) {
