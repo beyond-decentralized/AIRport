@@ -133,8 +133,6 @@ export class IframeTransactionalConnector
 				await this.handleLocalApiRequest(message as ILocalAPIRequest, origin)
 				return
 			case 'FromDb':
-				this.applicationStore.state.domain = message.domain
-				this.applicationStore.state.application = message.application
 				if (message.type === IsolateMessageType.APP_INITIALIZING) {
 					if (this.applicationStore.state.appState === AppState.NOT_INITIALIZED
 						&& message.result) {
