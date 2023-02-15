@@ -179,7 +179,10 @@ export class TransactionalServer
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		try {
-			await this.transactionManager.commit(credentials, context)
+			await this.transactionManager.commit(credentials, {
+				...context,
+				internal: true
+			})
 			return true
 		} catch (e) {
 			console.error(e)

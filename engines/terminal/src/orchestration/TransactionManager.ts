@@ -319,7 +319,7 @@ parent transactions.
 
 
 			let transactionHistory = transaction.transactionHistory
-			if (!context.doNotRecordHistory && !transaction.isSync
+			if (!parentTransaction && !context.doNotRecordHistory && !transaction.isSync
 				&& transactionHistory.repositoryTransactionHistories.length) {
 				const {
 					historiesToSend,
@@ -329,7 +329,7 @@ parent transactions.
 				)
 				await transaction.commit(null, context)
 
-				if (!parentTransaction && transactionHistory.allRecordHistory.length) {
+				if (transactionHistory.allRecordHistory.length) {
 					await this.synchronizationOutManager.sendMessages(
 						historiesToSend,
 						messages,
@@ -374,17 +374,23 @@ parent transactions.
 	): void {
 		let childTransactionHistory = transaction.transactionHistory
 		let parentTransactionHistory = parentTransaction.transactionHistory
+		for (const repositoryTransactionHistory of childTransactionHistory.repositoryTransactionHistories) {
+			const repositoryLocalId = repositoryTransactionHistory.repository._localId
+			const parentRepositoryTransactionRecord = parentTransactionHistory
+				.repositoryTransactionHistoryMap[repositoryLocalId]
+			if (!parentRepositoryTransactionRecord) {
+				parentTransactionHistory.repositoryTransactionHistoryMap[repositoryLocalId]
+					= repositoryTransactionHistory
+				parentTransactionHistory.repositoryTransactionHistories
+					.push(repositoryTransactionHistory)
+			}
+		}
 		for (const operationHistory of childTransactionHistory.allOperationHistory) {
 			const repositoryLocalId = operationHistory.repositoryTransactionHistory.repository._localId
 			const parentRepositoryTransactionRecord = parentTransactionHistory
 				.repositoryTransactionHistoryMap[repositoryLocalId]
 			if (parentRepositoryTransactionRecord) {
 				operationHistory.repositoryTransactionHistory = parentRepositoryTransactionRecord
-			} else {
-				parentTransactionHistory.repositoryTransactionHistoryMap[repositoryLocalId]
-					= operationHistory.repositoryTransactionHistory
-				parentTransactionHistory.repositoryTransactionHistories
-					.push(operationHistory.repositoryTransactionHistory)
 			}
 		}
 		parentTransactionHistory.allOperationHistory = parentTransactionHistory
@@ -438,7 +444,7 @@ ${callHerarchy}
 		context.transaction = transaction
 		credentials.transactionId = transaction.id
 
-		if (!context.doNotRecordHistory) {
+		if (!context.doNotRecordHistory && !transaction.transactionHistory) {
 			transaction.transactionHistory = this.transactionHistoryDuo.getNewRecord();
 		}
 
@@ -496,16 +502,32 @@ ${callHerarchy}
 		context: ITransactionContext,
 	): Promise<boolean> {
 		let transactionHistory = transaction.transactionHistory;
-		if (!transactionHistory.allRecordHistory.length) {
-			return false;
+
+		if (transactionHistory.remoteRepositoryMembers.length) {
+			await this.repositoryMemberDao
+				.insert(transactionHistory.remoteRepositoryMembers, context)
 		}
-		let applicationMap = transactionHistory.applicationMap;
+		if (transactionHistory.remoteRepositoryMemberAcceptances.length) {
+			await this.repositoryMemberAcceptanceDao
+				.insert(transactionHistory.remoteRepositoryMemberAcceptances, context)
+		}
+		if (transactionHistory.remoteRepositoryMemberInvitations.length) {
+			await this.repositoryMemberInvitationDao
+				.insert(transactionHistory.remoteRepositoryMemberInvitations, context)
+		}
+
+		if (!transactionHistory.repositoryTransactionHistories.length) {
+			return
+		}
 
 		const transactionHistoryIds = await this.idGenerator.generateTransactionHistory_LocalIds(
 			transactionHistory.repositoryTransactionHistories.length,
 			transactionHistory.allOperationHistory.length,
 			transactionHistory.allRecordHistory.length
 		);
+
+
+		let applicationMap = transactionHistory.applicationMap;
 
 		applicationMap.ensureEntity((<IQEntityInternal><any>Q.TransactionHistory).__driver__.dbEntity, true);
 		transactionHistory._localId = transactionHistoryIds.transactionHistory_LocalId;
@@ -547,6 +569,10 @@ ${callHerarchy}
 			}
 		}
 
+		if (!transactionHistory.allRecordHistory.length) {
+			return;
+		}
+
 		applicationMap.ensureEntity((<IQEntityInternal><any>Q.OperationHistory).__driver__.dbEntity, true);
 		transactionHistory.allOperationHistory.forEach((
 			operationHistory,
@@ -581,21 +607,6 @@ ${callHerarchy}
 				Q.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues,
 				context);
 		}
-
-		if (transactionHistory.remoteRepositoryMembers.length) {
-			await this.repositoryMemberDao
-				.insert(transactionHistory.remoteRepositoryMembers, context)
-		}
-		if (transactionHistory.remoteRepositoryMemberAcceptances.length) {
-			await this.repositoryMemberAcceptanceDao
-				.insert(transactionHistory.remoteRepositoryMemberAcceptances, context)
-		}
-		if (transactionHistory.remoteRepositoryMemberInvitations.length) {
-			await this.repositoryMemberInvitationDao
-				.insert(transactionHistory.remoteRepositoryMemberInvitations, context)
-		}
-
-		return true;
 	}
 
 }

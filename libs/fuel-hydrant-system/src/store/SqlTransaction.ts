@@ -62,6 +62,7 @@ export abstract class SqlTransaction
         this.type = driver.type
         if (parentTransaction) {
             parentTransaction.childTransaction = this
+            this.parentTransaction = parentTransaction
         }
     }
 
