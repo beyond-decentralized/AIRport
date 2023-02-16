@@ -6,3 +6,6 @@ export * from '../generated/baseDvos'
 export * from '../generated/qApplication'
 
 export * from './session-state.runtime-injection'
+
+export function loadSessionStateApi() {
+}
