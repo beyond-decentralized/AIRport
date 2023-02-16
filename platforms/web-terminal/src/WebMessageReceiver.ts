@@ -1,9 +1,9 @@
 import {
     Inject,
-    Injected
+    Injected,
+    IOC
 } from '@airport/direction-indicator'
 import { ILocalAPIRequest, ILocalAPIResponse } from "@airport/aviation-communication";
-import { IOC } from "@airport/direction-indicator";
 import { IApiIMI, IIsolateMessage, ITransactionalReceiver, TerminalStore } from "@airport/terminal-map";
 import {
     BroadcastChannel as SoftBroadcastChannel
@@ -81,5 +81,5 @@ export function injectWebReceiver() {
     const terminalStore = IOC.getSync(TerminalStore)
     const webReciever = terminalStore.getWebReceiver()
 
-    webReciever.localDomain = 'localhost:31717'
+    // webReciever.localDomain = 'localhost:31717'
 }

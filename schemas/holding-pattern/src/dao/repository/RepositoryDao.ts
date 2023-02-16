@@ -81,9 +81,7 @@ export class RepositoryDao
 				ageSuitability: Y,
 				createdAt: Y,
 				GUID: Y,
-				owner: {
-					username: Y,
-				},
+				owner: {},
 				'*': Y,
 				uiEntryUri: Y
 			},
@@ -109,9 +107,7 @@ export class RepositoryDao
 				createdAt: Y,
 				GUID: Y,
 				isPublic: Y,
-				owner: {
-					username: Y,
-				},
+				owner: {},
 				'*': Y,
 				uiEntryUri: Y
 			},
@@ -140,9 +136,7 @@ export class RepositoryDao
 				createdAt: Y,
 				GUID: Y,
 				isPublic: Y,
-				owner: {
-					username: Y,
-				},
+				owner: {},
 				referencedRepositories: {
 					referencedRepository: {}
 				},
@@ -201,9 +195,7 @@ export class RepositoryDao
 				ageSuitability: Y,
 				createdAt: Y,
 				GUID,
-				owner: {
-					accountPublicSigningKey: Y
-				},
+				owner: {},
 				uiEntryUri: Y
 			},
 			FROM: [
@@ -226,10 +218,7 @@ export class RepositoryDao
 				ageSuitability: Y,
 				createdAt: Y,
 				GUID: Y,
-				owner: {
-					accountPublicSigningKey: Y,
-					username: Y
-				},
+				owner: {},
 				uiEntryUri: Y
 			},
 			FROM: [
@@ -253,10 +242,7 @@ export class RepositoryDao
 				ageSuitability: Y,
 				createdAt: Y,
 				GUID: Y,
-				owner: {
-					accountPublicSigningKey: Y,
-					username: Y
-				},
+				owner: {},
 				uiEntryUri: Y
 			},
 			FROM: [
