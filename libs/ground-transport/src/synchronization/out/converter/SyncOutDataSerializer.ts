@@ -40,7 +40,8 @@ import {
 } from "@airport/ground-control";
 import {
 	IActorDao,
-	IRepositoryDao
+	IRepositoryDao,
+	RepositoryDao
 } from "@airport/holding-pattern/dist/app/bundle";
 
 export interface ISyncOutDataSerializer {
@@ -121,6 +122,9 @@ export class SyncOutDataSerializer
 
 	@Inject()
 	dictionary: Dictionary
+
+	@Inject()
+	repositoryDao: IRepositoryDao
 
 	// @Inject()
 	// repositoryDao: IRepositoryDao
@@ -417,15 +421,14 @@ export class SyncOutDataSerializer
 		repositoryMapById: Map<Repository_LocalId, IRepository>,
 		context: IContext
 	): Promise<void> {
-		// let repositoryIdsToFindBy: Repository_LocalId[] = []
+		let repositoryIdsToFindBy: Repository_LocalId[] = []
 		let foundRepositories: IRepository[] = []
 		for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
 			const foundRepository = repositoryMapById.get(repositoryId)
 			if (foundRepository) {
 				foundRepositories.push(foundRepository)
 			} else {
-				throw new Error(`Unexpected Repository_LocalId: ${repositoryId}`)
-				// repositoryIdsToFindBy.push(repositoryId)
+				repositoryIdsToFindBy.push(repositoryId)
 			}
 		}
 
@@ -433,19 +436,18 @@ export class SyncOutDataSerializer
 		if (foundRepository) {
 			foundRepositories.push(foundRepository)
 		} else {
-			throw new Error(`Unexpected Repository_LocalId: ${repositoryTransactionHistory.repository._localId}`)
-			// 	repositoryIdsToFindBy.push(repositoryTransactionHistory._localId)
+			repositoryIdsToFindBy.push(repositoryTransactionHistory._localId)
 		}
 
-		// let repositories = []
-		// if (repositoryIdsToFindBy.length) {
-		// 	repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(
-		// 		repositoryIdsToFindBy, context)
-		// }
-		// foundRepositories = [
-		// 	...repositories,
-		// 	...foundRepositories
-		// ]
+		let repositories = []
+		if (repositoryIdsToFindBy.length) {
+			repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(
+				repositoryIdsToFindBy, context)
+		}
+		foundRepositories = [
+			...repositories,
+			...foundRepositories
+		]
 
 		for (const repository of foundRepositories) {
 			let userAccountInMessageIndex = this.getEntityInMessageIndex(
