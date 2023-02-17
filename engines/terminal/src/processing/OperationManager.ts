@@ -172,11 +172,7 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 				GUID: context.rootTransaction.newRepository.GUID,
 				ageSuitability: context.rootTransaction.newRepository.ageSuitability,
 				source: context.rootTransaction.newRepository.source,
-				owner: actor.userAccount ? {
-					_localId: null,
-					accountPublicSigningKey: actor.userAccount.accountPublicSigningKey,
-					username: actor.userAccount.username
-				} : null
+				owner: actor.userAccount
 			} as any
 		}
 		const saveResult: ISaveResult = {

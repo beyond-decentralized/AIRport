@@ -391,14 +391,11 @@ export abstract class TransactionalReceiver {
 
         message.actor = {
             ...this.WITH_ID,
+            _localId: actor._localId,
             application: actor.application,
             GUID: actor.GUID,
             terminal,
-            userAccount: {
-                ...this.WITH_ID,
-                accountPublicSigningKey: actor.userAccount.accountPublicSigningKey,
-                username: actor.userAccount.username
-            }
+            userAccount: actor.userAccount
         }
 
         await nativeHandleCallback()
