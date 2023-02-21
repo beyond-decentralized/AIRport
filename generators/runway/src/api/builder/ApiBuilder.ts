@@ -144,9 +144,13 @@ export class ${apiClass.className} extends ApiProxy<${apiClass.className}> {
             && apiSignature.returnType) {
             returnPrefix = 'return '
         }
+        let awaitPrefix = ''
+        if (apiSignature.returnType.startsWith('Promise')) {
+            awaitPrefix = 'await'
+        }
 
         return `${asyncPrefix} ${apiSignature.name}(${methodParameters}): ${apiSignature.returnType} {
-        ${returnPrefix}await this.proxy.${apiSignature.name}(${apiCallParameters})
+        ${returnPrefix}${awaitPrefix} this.proxy.${apiSignature.name}(${apiCallParameters})
     }`
     }
 }
