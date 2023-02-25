@@ -19,7 +19,7 @@
     "@airport/tower": "0.0.1",
     "@airport/travel-document-checkpoint": "0.0.1",
     "broadcast-channel": "^4.9.0",
-    "rxjs": "~7.4.0",
+    "rxjs": "~7.8.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

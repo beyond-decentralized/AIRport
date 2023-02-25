@@ -11,7 +11,7 @@
     "@airport/tarmaq-query": "0.0.1",
     "@airport/terminal-map": "0.0.1",
     "@airport/tower": "0.0.1",
-    "rxjs": "~7.4.0",
+    "rxjs": "~7.8.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

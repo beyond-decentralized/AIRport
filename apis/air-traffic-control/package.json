@@ -8,7 +8,7 @@
     "@airport/tarmaq-dao": "0.0.1",
     "@airport/tarmaq-entity": "0.0.1",
     "@airport/tarmaq-query": "0.0.1",
-    "rxjs": "~7.4.0"
+    "rxjs": "~7.8.0"
   },
   "devDependencies": {
     "@airport/taxiway": "0.0.1",

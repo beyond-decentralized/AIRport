@@ -16,7 +16,7 @@
     "@airport/tarmaq-query": "0.0.1",
     "@airport/travel-document-checkpoint": "0.0.1",
     "@airway/client": "0.0.1",
-    "rxjs": "~7.4.0",
+    "rxjs": "~7.8.0",
     "@as-com/pson": "^3.0.1"
   },
   "devDependencies": {
