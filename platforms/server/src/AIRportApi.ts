@@ -4,6 +4,7 @@ import { RepositoryDao } from '@airport/holding-pattern/dist/app/bundle';
 import { IOperationContext, ITransaction, ITransactionContext, IUserAccountInfo, TRANSACTION_MANAGER } from '@airport/terminal-map'
 import { DbApplication, IRepository, Repository_GUID } from "@airport/ground-control";
 import { SSOManager } from "@airbridge/sso";
+import { Observable } from "rxjs";
 
 export class AIRportApi {
 
@@ -13,18 +14,14 @@ export class AIRportApi {
         return await dbApplicationDao.findAll()
     }
 
-    async getRootRepositories(): Promise<IRepository[]> {
-        const [repositoryDao, transactionManager] = await IOC.get(RepositoryDao, TRANSACTION_MANAGER)
+    getRepositories(): Observable<IRepository[]> {
+        const transactionManager = IOC.getSync(TRANSACTION_MANAGER)
 
-        let repositories: IRepository[] = []
-        await transactionManager.transactInternal(async (
-            _transaction: ITransaction,
-            context: IOperationContext & ITransactionContext
-        ) => {
-            repositories = await repositoryDao.findRepositories(context)
-        }, null, {})
+        return transactionManager.transactObservableInternal(async (context) => {
+            const repositoryDao = await IOC.get(RepositoryDao)
 
-        return repositories
+            return repositoryDao.searchRepositories(context)
+        }, null, {}, [])
     }
 
     async getRepository(

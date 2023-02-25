@@ -25,6 +25,10 @@ import { EntityFind } from './query/EntityFind';
 import { EntityFindOne } from './query/EntityFindOne';
 import { IDatabaseFacade } from '../definition/IDatabaseFacade';
 import { IEntityContext } from '@airport/tarmaq-entity';
+import { IEntitySearch } from '../definition/query/IEntitySearch';
+import { IEntitySearchOne } from '../definition/query/IEntitySearchOne';
+import { EntitySearch } from './query/EntitySearch';
+import { EntitySearchOne } from './query/EntitySearchOne';
 
 /**
  * Created by Papa on 12/11/2016.
@@ -39,17 +43,17 @@ export class EntityDatabaseFacade<Entity,
   EntityCascadeGraph extends IEntityCascadeGraph,
   IQ extends IQEntity>
   implements IEntityDatabaseFacade<Entity, EntitySelect,
-  EntityCreate, EntityUpdateColumns,
-  EntityUpdateProperties, DbEntity_LocalId,
-  EntityCascadeGraph, IQ> {
+    EntityCreate, EntityUpdateColumns,
+    EntityUpdateProperties, DbEntity_LocalId,
+    EntityCascadeGraph, IQ> {
 
   find: IEntityFind<Entity, Array<Entity>, EntitySelect>;
 
   findOne: IEntityFindOne<Entity, EntitySelect>;
 
-  // search: IEntitySearch<Entity, Array<Entity>, EntitySelect>;
+  search: IEntitySearch<Entity, Array<Entity>, EntitySelect>;
 
-  // searchOne: IEntitySearchOne<Entity, EntitySelect>;
+  searchOne: IEntitySearchOne<Entity, EntitySelect>;
 
   constructor(
     public dbEntity: DbEntity,
@@ -63,9 +67,9 @@ export class EntityDatabaseFacade<Entity,
       this.dbEntity, dao);
     this.findOne = new EntityFindOne<Entity, EntitySelect>(
       this.dbEntity, dao);
-    // this.search = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
-    //   this.dbEntity, updateCacheManager);
-    // this.searchOne = new EntitySearchOne(this.dbEntity, updateCacheManager);
+    this.search = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
+      this.dbEntity, dao);
+    this.searchOne = new EntitySearchOne(this.dbEntity, dao);
   }
 
   get FROM(): IQ {
@@ -99,7 +103,7 @@ export class EntityDatabaseFacade<Entity,
     ) => {
       return await databaseFacade.insertValues(
         rawInsertValues, context);
-    }, );
+    },);
   }
 
   async insertColumnValuesGenerateIds<IQE extends IQEntity>(
@@ -138,7 +142,7 @@ export class EntityDatabaseFacade<Entity,
         : RawUpdate<EntityUpdateColumns, IQ>
     },
     context?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+    trackedRepoGUIDSet?: Set<Repository_GUID>
   ): Promise<number> {
     return await this.withDbEntity(context, async (
       databaseFacade: IDatabaseFacade,
@@ -155,7 +159,7 @@ export class EntityDatabaseFacade<Entity,
         : RawUpdate<EntityUpdateProperties, IQ>
     },
     context?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+    trackedRepoGUIDSet?: Set<Repository_GUID>
   ): Promise<number> {
     return await this.withDbEntity(context, async (
       databaseFacade: IDatabaseFacade,
@@ -169,7 +173,7 @@ export class EntityDatabaseFacade<Entity,
   async deleteWhere(
     rawDelete: RawDelete<IQ> | { (...args: any[]): RawDelete<IQ> },
     context?: IEntityContext,
-		trackedRepoGUIDSet?: Set<Repository_GUID>
+    trackedRepoGUIDSet?: Set<Repository_GUID>
   ): Promise<number> {
     return await this.withDbEntity(context, async (
       databaseFacade: IDatabaseFacade,

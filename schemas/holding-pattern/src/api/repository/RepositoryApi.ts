@@ -2,6 +2,7 @@ import { Api } from "@airport/air-traffic-control";
 import { IContext, Inject, Injected } from "@airport/direction-indicator";
 import { IRepository, Repository_GUID, Repository_IsPublic } from '@airport/ground-control';
 import { IRepositoryManager } from '@airport/terminal-map';
+import { Observable } from "rxjs";
 import { RepositoryDao } from "../../dao/dao";
 
 @Injected()
@@ -14,8 +15,8 @@ export class RepositoryApi {
     repositoryManager: IRepositoryManager
 
     @Api()
-    async findRepositories(): Promise<IRepository[]> {
-        return await this.repositoryDao.findRepositories(arguments[0])
+    searchRepositories(): Observable<IRepository[]> {
+        return this.repositoryDao.searchRepositories(arguments[0])
     }
 
     async findRepository(
@@ -37,7 +38,7 @@ export class RepositoryApi {
         }
         let context: IContext = arguments[2]
         return await this.repositoryManager.createRepository(
-            repositoryName, isPublic, context)
+            repositoryName, false, isPublic, context)
     }
 
     @Api()

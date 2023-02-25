@@ -4,6 +4,7 @@ import {
 } from '@airport/ground-control';
 import { ITransaction } from '../transaction/ITransaction';
 import { ICredentials, ITransactionCredentials } from '../ICredentials';
+import { Observable } from 'rxjs';
 
 export interface IApiCallContext
 	extends IContext {
@@ -42,6 +43,13 @@ export interface ITransactionManager {
 		credentials: ITransactionCredentials,
 		context: IContext
 	): Promise<void>;
+
+	transactObservableInternal<T>(
+		callback: (context: ITransactionContext) => Promise<Observable<T>>,
+		credentials: ITransactionCredentials,
+		context: ITransactionContext,
+		defaultValue?: T
+	): Observable<T>
 
 	startTransaction(
 		credentials: ICredentials,

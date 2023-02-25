@@ -5,13 +5,14 @@ import {
 	RawInsertValues,
 	RawUpdate,
 } from '@airport/tarmaq-query'
-import { IRepository, Repository_IsPublic, UpdateState } from '@airport/ground-control';
+import { IRepository, Repository_Internal, Repository_IsPublic, UpdateState } from '@airport/ground-control';
 import { IContext } from '@airport/direction-indicator';
 
 export interface IRepositoryManager {
 
 	createRepository(
 		repositoryName: string,
+		internal: Repository_Internal,
 		isPublic: Repository_IsPublic,
 		context: IContext
 	): Promise<IRepository>

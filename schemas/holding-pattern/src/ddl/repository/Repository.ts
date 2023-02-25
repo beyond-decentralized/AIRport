@@ -27,7 +27,7 @@ import { RepositoryDatabase } from "./RepositoryDatabase";
 import { RepositoryClient } from "./RepositoryClient";
 import { RepositoryTerminal } from "./RepositoryTerminal";
 import { RepositoryApplication } from "./RepositoryApplication";
-import { AgeSuitability, DbApplication_FullName, CreatedAt, IRepository, Repository_GUID, Repository_Immutable, Repository_IsPublic, Repository_LocalId, Repository_Name, Repository_Source, Repository_UiEntryUri } from "@airport/ground-control";
+import { AgeSuitability, DbApplication_FullName, CreatedAt, IRepository, Repository_GUID, Repository_Immutable, Repository_IsPublic, Repository_LocalId, Repository_Name, Repository_Source, Repository_UiEntryUri, Repository_Internal } from "@airport/ground-control";
 import { RepositoryMember } from "./member/RepositoryMember";
 import { RepositoryReference } from "./RepositoryReference";
 
@@ -67,6 +67,10 @@ export class Repository
 	@Column({ name: "IMMUTABLE", nullable: false })
 	@DbBoolean()
 	immutable: Repository_Immutable
+
+	@Column({ name: "INTERNAL", nullable: false })
+	@DbBoolean()
+	internal: Repository_Internal
 
 	@Column({ name: "IS_PUBLIC", nullable: false })
 	@DbBoolean()

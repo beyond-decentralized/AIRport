@@ -51,8 +51,8 @@ export abstract class Dao<Entity,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	QE extends IQEntity>
 	implements IDao<Entity, EntitySelect, EntityCreate,
-	EntityUpdateColumns, EntityUpdateProperties, DbEntity_LocalId,
-	EntityCascadeGraph, QE> {
+		EntityUpdateColumns, EntityUpdateProperties, DbEntity_LocalId,
+		EntityCascadeGraph, QE> {
 
 	static BaseSave<EntitySelect extends IEntitySelectProperties>(
 		config: EntitySelect
@@ -287,7 +287,7 @@ export abstract class Dao<Entity,
 			| { (...args: any[]): RawEntityQuery<EntitySelect> },
 		context?: IContext
 	): Observable<Array<Entity>> {
-		throw new Error('Not implemented')
+		return this.db.search.graph(rawGraphQuery, context)
 	}
 
 	/**
@@ -297,7 +297,7 @@ export abstract class Dao<Entity,
 		rawGraphQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> },
 		context?: IContext
 	): Observable<Entity> {
-		throw new Error('Not implemented')
+		return this.db.searchOne.graph(rawGraphQuery, context)
 	}
 
 	private ensureContext(

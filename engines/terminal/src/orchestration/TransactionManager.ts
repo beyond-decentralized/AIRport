@@ -33,6 +33,7 @@ import {
 	ITransactionManager,
 	ITransactionManagerState
 } from '@airport/terminal-map';
+import { BehaviorSubject, finalize, Observable, share } from 'rxjs';
 import { AbstractMutationManager } from './AbstractMutationManager';
 
 @Injected()
@@ -110,6 +111,39 @@ export class TransactionManager
 			}
 		}
 		await this.transact(credentials, transactionalCallback, context);
+	}
+
+	transactObservableInternal<T>(
+		callback: (context: ITransactionContext) => Promise<Observable<T>>,
+		credentials: ITransactionCredentials,
+		context: ITransactionContext,
+		defaultValue: T = null
+	): Observable<T> {
+		let unsubscribeCallback: { (): void } = null
+
+		const $internalSubject = new BehaviorSubject(defaultValue)
+
+		const $observable = $internalSubject.pipe(
+			finalize(() => { unsubscribeCallback() }),
+			share()
+		)
+
+		this.transactInternal(async (
+			_transaction: ITransaction,
+			context: ITransactionContext
+		) => {
+			const $internalResults = await callback(context)
+			const internalResultsSubscription = $internalResults.subscribe(
+				repositories => {
+					return $internalSubject.next(repositories)
+				})
+
+			unsubscribeCallback = () => {
+				internalResultsSubscription.unsubscribe()
+			}
+		}, null, {}).then()
+
+		return $observable
 	}
 
 	async transact(

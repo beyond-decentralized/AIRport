@@ -50,6 +50,7 @@ export type CreatedAt = Date
 
 export type Repository_GUID = string;
 export type Repository_Immutable = boolean;
+export type Repository_Internal = boolean;
 export type Repository_IsPublic = boolean;
 export type Repository_LocalId = number;
 export type Repository_Name = string;
@@ -72,6 +73,7 @@ export interface IRepository
 	createdAt: CreatedAt;
 	fullApplicationName: DbApplication_FullName;
 	immutable: Repository_Immutable;
+	internal: Repository_Internal;
 	isPublic: Repository_IsPublic;
 	name: Repository_Name;
 	uiEntryUri: Repository_UiEntryUri;

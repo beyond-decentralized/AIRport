@@ -10,6 +10,7 @@ import {
 	IEntitySelectProperties,
 	RawEntityQuery
 } from '@airport/tarmaq-query'
+import { map, Subject } from 'rxjs'
 import { IDao } from '../../definition/IDao'
 import { IEntityLookup } from '../../definition/query/IEntityLookup'
 import { LookupProxy } from './Lookup'
@@ -73,13 +74,21 @@ export abstract class EntityLookup<Child,
 		rawEntityQuery = IOC.getSync(ENTITY_UTILS)
 			.ensureId(rawEntityQuery)
 
-		const result = await this.lookup(rawEntityQuery, queryResultType,
+		let result = await this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)
-		if (search) {
-			throw new Error(`Search operations are not yet supported`);
-		} else {
+
+		if (!(result instanceof Subject)) {
 			this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity)
+		} else {
+			result = result.pipe(
+				map(observedResult => {
+					this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity)
+
+					return observedResult
+				})
+			)
 		}
+
 		return result
 	}
 

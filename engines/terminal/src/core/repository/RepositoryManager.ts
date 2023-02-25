@@ -28,7 +28,7 @@ import {
 	ITransactionContext,
 } from '@airport/terminal-map'
 import { v4 as guidv4 } from "uuid";
-import { Dictionary, IAppTrackerUtils, IRepository, IUserAccount, Repository_IsPublic, UpdateState } from '@airport/ground-control'
+import { Dictionary, IAppTrackerUtils, IRepository, IUserAccount, Repository_Internal, Repository_IsPublic, UpdateState } from '@airport/ground-control'
 
 /**
  * Created by Papa on 2/12/2017.
@@ -67,6 +67,7 @@ export class RepositoryManager
 
 	async createRepository(
 		repositoryName: string,
+		internal: Repository_Internal,
 		isPublic: Repository_IsPublic,
 		context: IApiCallContext & ITransactionContext
 	): Promise<IRepository> {
@@ -101,6 +102,7 @@ already contains a new repository.`)
 			repositoryGUID,
 			userAccount,
 			applicationFullName,
+			internal,
 			isPublic,
 			context)
 
@@ -172,6 +174,7 @@ already contains a new repository.`)
 		GUID: string,
 		userAccount: IUserAccount,
 		applicationFullName: string,
+		internal: Repository_Internal,
 		isPublic: Repository_IsPublic,
 		context: IApiCallContext & ITransactionContext,
 	): Promise<IRepository> {
@@ -181,6 +184,7 @@ already contains a new repository.`)
 			createdAt: new Date(),
 			fullApplicationName: applicationFullName,
 			immutable: false,
+			internal,
 			isLoaded: true,
 			isPublic,
 			name,

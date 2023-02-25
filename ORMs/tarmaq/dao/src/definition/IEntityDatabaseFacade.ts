@@ -10,6 +10,7 @@ import {
     IEntityUpdateProperties,
     IQEntity
 } from '@airport/tarmaq-query';
+import { IEntitySearch, IEntitySearchOne } from '../tarmaq.dao.index';
 
 /**
  * Facade for all DB operations related to a particular Entity.
@@ -40,5 +41,15 @@ export interface IEntityDatabaseFacade<IEntity,
      * The Promise based API for all Entity 'findOne' queries.
      */
     findOne: IEntityFindOne<IEntity, EntitySelect>;
+
+    /**
+     * The Promise based API for all Entity 'find' (find many) queries.
+     */
+    search: IEntitySearch<IEntity, Array<IEntity>, EntitySelect>;
+
+    /**
+     * The Promise based API for all Entity 'findOne' queries.
+     */
+    searchOne: IEntitySearchOne<IEntity, EntitySelect>;
 
 }

@@ -558,6 +558,9 @@ is not present in the message.`)
 		if (typeof repository.immutable !== 'boolean') {
 			throw new Error(`Invalid 'repository.immutable'`)
 		}
+		if (typeof repository.internal !== 'boolean') {
+			throw new Error(`Invalid 'repository.internal'`)
+		}
 		if (!repository.source || typeof repository.source !== 'string') {
 			throw new Error(`Invalid 'repository.source'`)
 		}

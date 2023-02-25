@@ -8,6 +8,7 @@ import { IRepository, Repository_GUID, Repository_LocalId, TransactionType } fro
 import Q from '../../generated/qApplication'
 import { BaseRepositoryDao, IBaseRepositoryDao } from '../../generated/baseDaos'
 import { QRepository, QRepositoryReference, QRepositoryTransactionHistory, QTransactionHistory } from '../../generated/qInterfaces'
+import { Observable } from 'rxjs'
 
 export interface IRepositoryDao
 	extends IBaseRepositoryDao {
@@ -23,9 +24,9 @@ export interface IRepositoryDao
 		context: IContext
 	): Promise<IRepository[]>
 
-	findRepositories(
+	searchRepositories(
 		context: IContext
-	): Promise<IRepository[]>
+	): Observable<IRepository[]>
 
 	findRepository(
 		repositoryGUID: Repository_GUID,
@@ -70,28 +71,29 @@ export class RepositoryDao
 	extends BaseRepositoryDao
 	implements IRepositoryDao {
 
-	async findRepositories(
+	searchRepositories(
 		context: IContext
-	): Promise<IRepository[]> {
+	): Observable<IRepository[]> {
 		let r: QRepository
 
-		const repositories = await this._find({
+		const repositories = this._search({
 			SELECT: {
+				'*': Y,
 				_localId: Y,
 				ageSuitability: Y,
 				createdAt: Y,
 				GUID: Y,
 				owner: {},
-				'*': Y,
 				uiEntryUri: Y
 			},
 			FROM: [
 				r = Q.Repository,
 				r.owner.INNER_JOIN()
-			]
+			],
+			WHERE: r.internal.equals(false)
 		}, context)
 
-		return repositories as IRepository[]
+		return repositories as any as Observable<IRepository[]>
 	}
 
 	async findRepository(
@@ -126,7 +128,8 @@ export class RepositoryDao
 		context: IContext
 	): Promise<IRepository> {
 		let r: QRepository,
-			rr: QRepositoryReference
+			rr: QRepositoryReference,
+			rir: QRepositoryReference
 
 		const repository = await this._findOne({
 			SELECT: {
@@ -137,6 +140,9 @@ export class RepositoryDao
 				GUID: Y,
 				isPublic: Y,
 				owner: {},
+				referencedInRepositories: {
+					referencingRepository: {}
+				},
 				referencedRepositories: {
 					referencedRepository: {}
 				},
@@ -145,6 +151,8 @@ export class RepositoryDao
 			FROM: [
 				r = Q.Repository,
 				r.owner.LEFT_JOIN(),
+				rir = r.referencedInRepositories.LEFT_JOIN(),
+				rir.referencingRepository.LEFT_JOIN(),
 				rr = r.referencedRepositories.LEFT_JOIN(),
 				rr.referencedRepository.LEFT_JOIN()
 			],
@@ -165,6 +173,7 @@ export class RepositoryDao
 		return await this.db.findOne.tree({
 			SELECT: {
 				immutable: Y,
+				internal: Y,
 				repositoryTransactionHistory: {
 					saveTimestamp: Y
 				}
@@ -304,7 +313,8 @@ export class RepositoryDao
 		for (const repository of repositories) {
 			VALUES.push([
 				repository.createdAt, repository.GUID, repository.ageSuitability,
-				repository.source, repository.immutable, repository.owner._localId,
+				repository.source, repository.immutable, repository.internal,
+				repository.owner._localId,
 			])
 		}
 		const _localIds = await this.db.insertValuesGenerateIds({
@@ -315,6 +325,7 @@ export class RepositoryDao
 				r.ageSuitability,
 				r.source,
 				r.immutable,
+				r.internal,
 				r.owner._localId
 			],
 			VALUES

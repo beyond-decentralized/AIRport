@@ -942,6 +942,7 @@ export class SyncOutDataSerializer
 			ageSuitability: repository.ageSuitability,
 			createdAt: repository.createdAt,
 			immutable: repository.immutable,
+			internal: repository.internal,
 			name: repository.name,
 			owner,
 			source: repository.source,

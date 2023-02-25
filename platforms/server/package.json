@@ -14,7 +14,8 @@
     "@airport/takeoff": "0.0.1",
     "@airport/terminal": "0.0.1",
     "@airport/terminal-map": "0.0.1",
-    "@airport/tower": "0.0.1"
+    "@airport/tower": "0.0.1",
+    "rxjs": "^7.8.0"
   },
   "devDependencies": {
     "@airport/taxiway": "0.0.1",
