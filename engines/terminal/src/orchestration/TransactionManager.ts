@@ -134,8 +134,8 @@ export class TransactionManager
 		) => {
 			const $internalResults = await callback(context)
 			const internalResultsSubscription = $internalResults.subscribe(
-				repositories => {
-					return $internalSubject.next(repositories)
+				results => {
+					return $internalSubject.next(results)
 				})
 
 			unsubscribeCallback = () => {

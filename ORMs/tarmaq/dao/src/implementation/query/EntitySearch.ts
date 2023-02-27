@@ -8,8 +8,7 @@ import {
 	RawEntityQuery
 } from '@airport/tarmaq-query';
 import {
-	Observable,
-	from
+	Observable
 } from 'rxjs';
 import { IEntitySearch } from '../../definition/query/IEntitySearch';
 import { EntityLookup } from './EntityLookup';
@@ -22,7 +21,7 @@ export interface IEntitySearchInternal<Entity, EntityArray extends Array<Entity>
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
 		context?: IContext
-	): Promise<EntityArray>
+	): Observable<EntityArray>
 
 }
 
@@ -37,23 +36,23 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		context?: IContext
 	): Observable<EntityArray> {
-		return from(this.search(rawGraphQuery, QueryResultType.ENTITY_TREE, context));
+		return this.search(rawGraphQuery, QueryResultType.ENTITY_TREE, context);
 	}
 
 	tree(
 		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		context?: IContext
 	): Observable<EntityArray> {
-		return from(this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
+		return this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, context);
 	}
 
-	async search(
+	search(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
 		context?: IContext
-	): Promise<EntityArray> {
-		return await this.entityLookup(rawEntityQuery, queryResultType,
-			true, false, this.ensureContext(context) as IEntityQueryContext);
+	): Observable<EntityArray> {
+		return this.entityLookup(rawEntityQuery, queryResultType, true, false,
+			this.ensureContext(context) as IEntityQueryContext) as Observable<EntityArray>;
 	}
 
 	noCache(): EntitySearch<Entity, Entity[], IESP> {
