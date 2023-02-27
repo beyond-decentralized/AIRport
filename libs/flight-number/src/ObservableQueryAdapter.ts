@@ -2,9 +2,9 @@ import { IRepositoryLoader } from "@airport/air-traffic-control";
 import { IContext, Inject, Injected } from "@airport/direction-indicator";
 import { IRepository, PortableQuery, Repository_GUID, Repository_LocalId, SyncApplicationMap } from "@airport/ground-control";
 import { IRepositoryDao } from '@airport/holding-pattern/dist/app/bundle'
-import { ITransaction, ITransactionManager } from "@airport/terminal-map";
+import { CachedSQLQuery, IFieldMapped, ITransaction, ITransactionManager } from "@airport/terminal-map";
 import { Observable, Subject } from "rxjs";
-import { ActiveQueries, CachedSQLQuery, IFieldMapped } from "./ActiveQueries";
+import { ActiveQueries } from "./ActiveQueries";
 
 export interface IObservableQueryAdapter {
 

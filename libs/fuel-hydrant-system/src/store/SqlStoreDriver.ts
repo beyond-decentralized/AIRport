@@ -8,7 +8,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IActiveQueries, IObservableQueryAdapter
+	IObservableQueryAdapter
 } from '@airport/flight-number';
 import {
 	DbApplication_Name,
@@ -37,6 +37,7 @@ import {
 	Dictionary,
 } from '@airport/ground-control';
 import {
+	IActiveQueries,
 	IStoreDriver,
 	ITransaction,
 	ITransactionContext,
