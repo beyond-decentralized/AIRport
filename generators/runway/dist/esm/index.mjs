@@ -6892,7 +6892,7 @@ ${ending}`;
     }
 }
 
-/*! *****************************************************************************
+/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -6939,7 +6939,7 @@ function __generator(thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -6990,10 +6990,14 @@ function __read(o, n) {
     return ar;
 }
 
-function __spreadArray(to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+function __spreadArray(to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 }
 
 function __await(v) {
@@ -7058,7 +7062,7 @@ var Subscription = (function () {
         this.initialTeardown = initialTeardown;
         this.closed = false;
         this._parentage = null;
-        this._teardowns = null;
+        this._finalizers = null;
     }
     Subscription.prototype.unsubscribe = function () {
         var e_1, _a, e_2, _b;
@@ -7087,23 +7091,23 @@ var Subscription = (function () {
                     _parentage.remove(this);
                 }
             }
-            var initialTeardown = this.initialTeardown;
-            if (isFunction(initialTeardown)) {
+            var initialFinalizer = this.initialTeardown;
+            if (isFunction(initialFinalizer)) {
                 try {
-                    initialTeardown();
+                    initialFinalizer();
                 }
                 catch (e) {
                     errors = e instanceof UnsubscriptionError ? e.errors : [e];
                 }
             }
-            var _teardowns = this._teardowns;
-            if (_teardowns) {
-                this._teardowns = null;
+            var _finalizers = this._finalizers;
+            if (_finalizers) {
+                this._finalizers = null;
                 try {
-                    for (var _teardowns_1 = __values(_teardowns), _teardowns_1_1 = _teardowns_1.next(); !_teardowns_1_1.done; _teardowns_1_1 = _teardowns_1.next()) {
-                        var teardown_1 = _teardowns_1_1.value;
+                    for (var _finalizers_1 = __values(_finalizers), _finalizers_1_1 = _finalizers_1.next(); !_finalizers_1_1.done; _finalizers_1_1 = _finalizers_1.next()) {
+                        var finalizer = _finalizers_1_1.value;
                         try {
-                            execTeardown(teardown_1);
+                            execFinalizer(finalizer);
                         }
                         catch (err) {
                             errors = errors !== null && errors !== void 0 ? errors : [];
@@ -7119,7 +7123,7 @@ var Subscription = (function () {
                 catch (e_2_1) { e_2 = { error: e_2_1 }; }
                 finally {
                     try {
-                        if (_teardowns_1_1 && !_teardowns_1_1.done && (_b = _teardowns_1.return)) _b.call(_teardowns_1);
+                        if (_finalizers_1_1 && !_finalizers_1_1.done && (_b = _finalizers_1.return)) _b.call(_finalizers_1);
                     }
                     finally { if (e_2) throw e_2.error; }
                 }
@@ -7133,7 +7137,7 @@ var Subscription = (function () {
         var _a;
         if (teardown && teardown !== this) {
             if (this.closed) {
-                execTeardown(teardown);
+                execFinalizer(teardown);
             }
             else {
                 if (teardown instanceof Subscription) {
@@ -7142,7 +7146,7 @@ var Subscription = (function () {
                     }
                     teardown._addParent(this);
                 }
-                (this._teardowns = (_a = this._teardowns) !== null && _a !== void 0 ? _a : []).push(teardown);
+                (this._finalizers = (_a = this._finalizers) !== null && _a !== void 0 ? _a : []).push(teardown);
             }
         }
     };
@@ -7164,8 +7168,8 @@ var Subscription = (function () {
         }
     };
     Subscription.prototype.remove = function (teardown) {
-        var _teardowns = this._teardowns;
-        _teardowns && arrRemove(_teardowns, teardown);
+        var _finalizers = this._finalizers;
+        _finalizers && arrRemove(_finalizers, teardown);
         if (teardown instanceof Subscription) {
             teardown._removeParent(this);
         }
@@ -7182,12 +7186,12 @@ function isSubscription(value) {
     return (value instanceof Subscription ||
         (value && 'closed' in value && isFunction(value.remove) && isFunction(value.add) && isFunction(value.unsubscribe)));
 }
-function execTeardown(teardown) {
-    if (isFunction(teardown)) {
-        teardown();
+function execFinalizer(finalizer) {
+    if (isFunction(finalizer)) {
+        finalizer();
     }
     else {
-        teardown.unsubscribe();
+        finalizer.unsubscribe();
     }
 }
 
@@ -7200,13 +7204,16 @@ var config = {
 };
 
 var timeoutProvider = {
-    setTimeout: function () {
+    setTimeout: function (handler, timeout) {
         var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
+        for (var _i = 2; _i < arguments.length; _i++) {
+            args[_i - 2] = arguments[_i];
         }
         var delegate = timeoutProvider.delegate;
-        return ((delegate === null || delegate === void 0 ? void 0 : delegate.setTimeout) || setTimeout).apply(void 0, __spreadArray([], __read(args)));
+        if (delegate === null || delegate === void 0 ? void 0 : delegate.setTimeout) {
+            return delegate.setTimeout.apply(delegate, __spreadArray([handler, timeout], __read(args)));
+        }
+        return setTimeout.apply(void 0, __spreadArray([handler, timeout], __read(args)));
     },
     clearTimeout: function (handle) {
         var delegate = timeoutProvider.delegate;
@@ -7313,52 +7320,88 @@ var Subscriber = (function (_super) {
     };
     return Subscriber;
 }(Subscription));
+var _bind = Function.prototype.bind;
+function bind(fn, thisArg) {
+    return _bind.call(fn, thisArg);
+}
+var ConsumerObserver = (function () {
+    function ConsumerObserver(partialObserver) {
+        this.partialObserver = partialObserver;
+    }
+    ConsumerObserver.prototype.next = function (value) {
+        var partialObserver = this.partialObserver;
+        if (partialObserver.next) {
+            try {
+                partialObserver.next(value);
+            }
+            catch (error) {
+                handleUnhandledError(error);
+            }
+        }
+    };
+    ConsumerObserver.prototype.error = function (err) {
+        var partialObserver = this.partialObserver;
+        if (partialObserver.error) {
+            try {
+                partialObserver.error(err);
+            }
+            catch (error) {
+                handleUnhandledError(error);
+            }
+        }
+        else {
+            handleUnhandledError(err);
+        }
+    };
+    ConsumerObserver.prototype.complete = function () {
+        var partialObserver = this.partialObserver;
+        if (partialObserver.complete) {
+            try {
+                partialObserver.complete();
+            }
+            catch (error) {
+                handleUnhandledError(error);
+            }
+        }
+    };
+    return ConsumerObserver;
+}());
 var SafeSubscriber = (function (_super) {
     __extends(SafeSubscriber, _super);
     function SafeSubscriber(observerOrNext, error, complete) {
         var _this = _super.call(this) || this;
-        var next;
-        if (isFunction(observerOrNext)) {
-            next = observerOrNext;
+        var partialObserver;
+        if (isFunction(observerOrNext) || !observerOrNext) {
+            partialObserver = {
+                next: (observerOrNext !== null && observerOrNext !== void 0 ? observerOrNext : undefined),
+                error: error !== null && error !== void 0 ? error : undefined,
+                complete: complete !== null && complete !== void 0 ? complete : undefined,
+            };
         }
-        else if (observerOrNext) {
-            (next = observerOrNext.next, error = observerOrNext.error, complete = observerOrNext.complete);
+        else {
             var context_1;
             if (_this && config.useDeprecatedNextContext) {
                 context_1 = Object.create(observerOrNext);
                 context_1.unsubscribe = function () { return _this.unsubscribe(); };
+                partialObserver = {
+                    next: observerOrNext.next && bind(observerOrNext.next, context_1),
+                    error: observerOrNext.error && bind(observerOrNext.error, context_1),
+                    complete: observerOrNext.complete && bind(observerOrNext.complete, context_1),
+                };
             }
             else {
-                context_1 = observerOrNext;
+                partialObserver = observerOrNext;
             }
-            next = next === null || next === void 0 ? void 0 : next.bind(context_1);
-            error = error === null || error === void 0 ? void 0 : error.bind(context_1);
-            complete = complete === null || complete === void 0 ? void 0 : complete.bind(context_1);
         }
-        _this.destination = {
-            next: next ? wrapForErrorHandling(next) : noop,
-            error: wrapForErrorHandling(error !== null && error !== void 0 ? error : defaultErrorHandler),
-            complete: complete ? wrapForErrorHandling(complete) : noop,
-        };
+        _this.destination = new ConsumerObserver(partialObserver);
         return _this;
     }
     return SafeSubscriber;
 }(Subscriber));
-function wrapForErrorHandling(handler, instance) {
-    return function () {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        try {
-            handler.apply(void 0, __spreadArray([], __read(args)));
-        }
-        catch (err) {
-            {
-                reportUnhandledError(err);
-            }
-        }
-    };
+function handleUnhandledError(error) {
+    {
+        reportUnhandledError(error);
+    }
 }
 function defaultErrorHandler(err) {
     throw err;
@@ -7428,16 +7471,20 @@ var Observable = (function () {
         var _this = this;
         promiseCtor = getPromiseCtor(promiseCtor);
         return new promiseCtor(function (resolve, reject) {
-            var subscription;
-            subscription = _this.subscribe(function (value) {
-                try {
-                    next(value);
-                }
-                catch (err) {
-                    reject(err);
-                    subscription === null || subscription === void 0 ? void 0 : subscription.unsubscribe();
-                }
-            }, reject, resolve);
+            var subscriber = new SafeSubscriber({
+                next: function (value) {
+                    try {
+                        next(value);
+                    }
+                    catch (err) {
+                        reject(err);
+                        subscriber.unsubscribe();
+                    }
+                },
+                error: reject,
+                complete: resolve,
+            });
+            _this.subscribe(subscriber);
         });
     };
     Observable.prototype._subscribe = function (subscriber) {
@@ -7497,11 +7544,15 @@ function operate(init) {
     };
 }
 
+function createOperatorSubscriber(destination, onNext, onComplete, onError, onFinalize) {
+    return new OperatorSubscriber(destination, onNext, onComplete, onError, onFinalize);
+}
 var OperatorSubscriber = (function (_super) {
     __extends(OperatorSubscriber, _super);
-    function OperatorSubscriber(destination, onNext, onComplete, onError, onFinalize) {
+    function OperatorSubscriber(destination, onNext, onComplete, onError, onFinalize, shouldUnsubscribe) {
         var _this = _super.call(this, destination) || this;
         _this.onFinalize = onFinalize;
+        _this.shouldUnsubscribe = shouldUnsubscribe;
         _this._next = onNext
             ? function (value) {
                 try {
@@ -7542,9 +7593,11 @@ var OperatorSubscriber = (function (_super) {
     }
     OperatorSubscriber.prototype.unsubscribe = function () {
         var _a;
-        var closed = this.closed;
-        _super.prototype.unsubscribe.call(this);
-        !closed && ((_a = this.onFinalize) === null || _a === void 0 ? void 0 : _a.call(this));
+        if (!this.shouldUnsubscribe || this.shouldUnsubscribe()) {
+            var closed_1 = this.closed;
+            _super.prototype.unsubscribe.call(this);
+            !closed_1 && ((_a = this.onFinalize) === null || _a === void 0 ? void 0 : _a.call(this));
+        }
     };
     return OperatorSubscriber;
 }(Subscriber));
@@ -7562,6 +7615,7 @@ var Subject = (function (_super) {
     function Subject() {
         var _this = _super.call(this) || this;
         _this.closed = false;
+        _this.currentObservers = null;
         _this.observers = [];
         _this.isStopped = false;
         _this.hasError = false;
@@ -7584,17 +7638,19 @@ var Subject = (function (_super) {
             var e_1, _a;
             _this._throwIfClosed();
             if (!_this.isStopped) {
-                var copy = _this.observers.slice();
+                if (!_this.currentObservers) {
+                    _this.currentObservers = Array.from(_this.observers);
+                }
                 try {
-                    for (var copy_1 = __values(copy), copy_1_1 = copy_1.next(); !copy_1_1.done; copy_1_1 = copy_1.next()) {
-                        var observer = copy_1_1.value;
+                    for (var _b = __values(_this.currentObservers), _c = _b.next(); !_c.done; _c = _b.next()) {
+                        var observer = _c.value;
                         observer.next(value);
                     }
                 }
                 catch (e_1_1) { e_1 = { error: e_1_1 }; }
                 finally {
                     try {
-                        if (copy_1_1 && !copy_1_1.done && (_a = copy_1.return)) _a.call(copy_1);
+                        if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
                     }
                     finally { if (e_1) throw e_1.error; }
                 }
@@ -7630,7 +7686,7 @@ var Subject = (function (_super) {
     };
     Subject.prototype.unsubscribe = function () {
         this.isStopped = this.closed = true;
-        this.observers = null;
+        this.observers = this.currentObservers = null;
     };
     Object.defineProperty(Subject.prototype, "observed", {
         get: function () {
@@ -7650,10 +7706,17 @@ var Subject = (function (_super) {
         return this._innerSubscribe(subscriber);
     };
     Subject.prototype._innerSubscribe = function (subscriber) {
+        var _this = this;
         var _a = this, hasError = _a.hasError, isStopped = _a.isStopped, observers = _a.observers;
-        return hasError || isStopped
-            ? EMPTY_SUBSCRIPTION
-            : (observers.push(subscriber), new Subscription(function () { return arrRemove(observers, subscriber); }));
+        if (hasError || isStopped) {
+            return EMPTY_SUBSCRIPTION;
+        }
+        this.currentObservers = null;
+        observers.push(subscriber);
+        return new Subscription(function () {
+            _this.currentObservers = null;
+            arrRemove(observers, subscriber);
+        });
     };
     Subject.prototype._checkFinalizedStatuses = function (subscriber) {
         var _a = this, hasError = _a.hasError, thrownError = _a.thrownError, isStopped = _a.isStopped;
@@ -7952,7 +8015,7 @@ function executeSchedule(parentSubscription, scheduler, work, delay, repeat) {
 function observeOn(scheduler, delay) {
     if (delay === void 0) { delay = 0; }
     return operate(function (source, subscriber) {
-        source.subscribe(new OperatorSubscriber(subscriber, function (value) { return executeSchedule(subscriber, scheduler, function () { return subscriber.next(value); }, delay); }, function () { return executeSchedule(subscriber, scheduler, function () { return subscriber.complete(); }, delay); }, function (err) { return executeSchedule(subscriber, scheduler, function () { return subscriber.error(err); }, delay); }));
+        source.subscribe(createOperatorSubscriber(subscriber, function (value) { return executeSchedule(subscriber, scheduler, function () { return subscriber.next(value); }, delay); }, function () { return executeSchedule(subscriber, scheduler, function () { return subscriber.complete(); }, delay); }, function (err) { return executeSchedule(subscriber, scheduler, function () { return subscriber.error(err); }, delay); }));
     });
 }
 
@@ -8072,7 +8135,7 @@ function from(input, scheduler) {
 function map(project, thisArg) {
     return operate(function (source, subscriber) {
         var index = 0;
-        source.subscribe(new OperatorSubscriber(subscriber, function (value) {
+        source.subscribe(createOperatorSubscriber(subscriber, function (value) {
             subscriber.next(project.call(thisArg, value, index++));
         }));
     });
@@ -8084,7 +8147,7 @@ function distinctUntilChanged(comparator, keySelector) {
     return operate(function (source, subscriber) {
         var previousKey;
         var first = true;
-        source.subscribe(new OperatorSubscriber(subscriber, function (value) {
+        source.subscribe(createOperatorSubscriber(subscriber, function (value) {
             var currentKey = keySelector(value);
             if (first || !comparator(previousKey, currentKey)) {
                 first = false;
@@ -8096,6 +8159,97 @@ function distinctUntilChanged(comparator, keySelector) {
 }
 function defaultCompare(a, b) {
     return a === b;
+}
+
+function finalize(callback) {
+    return operate(function (source, subscriber) {
+        try {
+            source.subscribe(subscriber);
+        }
+        finally {
+            subscriber.add(callback);
+        }
+    });
+}
+
+function share(options) {
+    if (options === void 0) { options = {}; }
+    var _a = options.connector, connector = _a === void 0 ? function () { return new Subject(); } : _a, _b = options.resetOnError, resetOnError = _b === void 0 ? true : _b, _c = options.resetOnComplete, resetOnComplete = _c === void 0 ? true : _c, _d = options.resetOnRefCountZero, resetOnRefCountZero = _d === void 0 ? true : _d;
+    return function (wrapperSource) {
+        var connection;
+        var resetConnection;
+        var subject;
+        var refCount = 0;
+        var hasCompleted = false;
+        var hasErrored = false;
+        var cancelReset = function () {
+            resetConnection === null || resetConnection === void 0 ? void 0 : resetConnection.unsubscribe();
+            resetConnection = undefined;
+        };
+        var reset = function () {
+            cancelReset();
+            connection = subject = undefined;
+            hasCompleted = hasErrored = false;
+        };
+        var resetAndUnsubscribe = function () {
+            var conn = connection;
+            reset();
+            conn === null || conn === void 0 ? void 0 : conn.unsubscribe();
+        };
+        return operate(function (source, subscriber) {
+            refCount++;
+            if (!hasErrored && !hasCompleted) {
+                cancelReset();
+            }
+            var dest = (subject = subject !== null && subject !== void 0 ? subject : connector());
+            subscriber.add(function () {
+                refCount--;
+                if (refCount === 0 && !hasErrored && !hasCompleted) {
+                    resetConnection = handleReset(resetAndUnsubscribe, resetOnRefCountZero);
+                }
+            });
+            dest.subscribe(subscriber);
+            if (!connection &&
+                refCount > 0) {
+                connection = new SafeSubscriber({
+                    next: function (value) { return dest.next(value); },
+                    error: function (err) {
+                        hasErrored = true;
+                        cancelReset();
+                        resetConnection = handleReset(reset, resetOnError, err);
+                        dest.error(err);
+                    },
+                    complete: function () {
+                        hasCompleted = true;
+                        cancelReset();
+                        resetConnection = handleReset(reset, resetOnComplete);
+                        dest.complete();
+                    },
+                });
+                innerFrom(source).subscribe(connection);
+            }
+        })(wrapperSource);
+    };
+}
+function handleReset(reset, on) {
+    var args = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        args[_i - 2] = arguments[_i];
+    }
+    if (on === true) {
+        reset();
+        return;
+    }
+    if (on === false) {
+        return;
+    }
+    var onSubscriber = new SafeSubscriber({
+        next: function () {
+            onSubscriber.unsubscribe();
+            reset();
+        },
+    });
+    return innerFrom(on.apply(void 0, __spreadArray([], __read(args)))).subscribe(onSubscriber);
 }
 
 const airApi = {
@@ -8259,12 +8413,15 @@ class EntityLookup extends LookupProxy {
         context.dbEntity = this.dbEntity;
         rawEntityQuery = IOC.getSync(ENTITY_UTILS)
             .ensureId(rawEntityQuery);
-        const result = await this.lookup(rawEntityQuery, queryResultType, search, one, null, context, this.mapResults);
-        if (search) {
-            throw new Error(`Search operations are not yet supported`);
+        let result = await this.lookup(rawEntityQuery, queryResultType, search, one, null, context, this.mapResults);
+        if (!(result instanceof Subject)) {
+            this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity);
         }
         else {
-            this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity);
+            result = result.pipe(map(observedResult => {
+                this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity);
+                return observedResult;
+            }));
         }
         return result;
     }
@@ -8306,6 +8463,41 @@ class EntityFindOne extends EntityLookup {
     }
     noCache() {
         return this.setNoCache(EntityFindOne);
+    }
+}
+
+/**
+ * Created by Papa on 11/12/2016.
+ */
+class EntitySearch extends EntityLookup {
+    graph(rawGraphQuery, context) {
+        return from(this.search(rawGraphQuery, QueryResultType.ENTITY_TREE, context));
+    }
+    tree(rawTreeQuery, context) {
+        return from(this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
+    }
+    async search(rawEntityQuery, queryResultType, context) {
+        return await this.entityLookup(rawEntityQuery, queryResultType, true, false, this.ensureContext(context));
+    }
+    noCache() {
+        return this.setNoCache(EntitySearch);
+    }
+}
+
+/**
+ * Created by Papa on 11/12/2016.
+ */
+class EntitySearchOne extends EntityLookup {
+    graph(rawGraphQuery, context) {
+        return from(this.searchOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context));
+    }
+    tree(rawTreeQuery, context) {
+        return from(this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
+    }
+    // TODO: return Observable from deep within the framework
+    // and detect changes to the underlying data
+    async searchOne(rawEntityQuery, queryResultType, context) {
+        return await this.entityLookup(rawEntityQuery, queryResultType, true, true, this.ensureContext(context));
     }
 }
 
@@ -8388,17 +8580,14 @@ class NonEntitySearchOne extends Lookup {
  * Created by Papa on 12/11/2016.
  */
 class EntityDatabaseFacade {
-    // search: IEntitySearch<Entity, Array<Entity>, EntitySelect>;
-    // searchOne: IEntitySearchOne<Entity, EntitySelect>;
     constructor(dbEntity, Q, dao) {
         this.dbEntity = dbEntity;
         this.Q = Q;
         this.dao = dao;
         this.find = new EntityFind(this.dbEntity, dao);
         this.findOne = new EntityFindOne(this.dbEntity, dao);
-        // this.search = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
-        //   this.dbEntity, updateCacheManager);
-        // this.searchOne = new EntitySearchOne(this.dbEntity, updateCacheManager);
+        this.search = new EntitySearch(this.dbEntity, dao);
+        this.searchOne = new EntitySearchOne(this.dbEntity, dao);
     }
     get FROM() {
         return this.Q[this.dbEntity.name];
@@ -8650,13 +8839,13 @@ class Dao {
      * The Observable based API for all Entity 'searchOne' (searchOne many) queries.
      */
     _search(rawGraphQuery, context) {
-        throw new Error('Not implemented');
+        return this.db.search.graph(rawGraphQuery, context);
     }
     /**
      * The Observable based API for all Entity 'searchOne' queries.
      */
     _searchOne(rawGraphQuery, context) {
-        throw new Error('Not implemented');
+        return this.db.searchOne.graph(rawGraphQuery, context);
     }
     ensureContext(context) {
         return doEnsureContext(context);
@@ -14228,9 +14417,9 @@ class LocalCopyReplacementLedgerDao extends BaseLocalCopyReplacementLedgerDao {
 }
 
 class RepositoryDao extends BaseRepositoryDao {
-    async findRepositories(context) {
+    searchRepositories(context) {
         let r;
-        const repositories = await this._find({
+        const repositories = this._search({
             SELECT: {
                 '*': Y,
                 _localId: Y,
@@ -14707,8 +14896,8 @@ class CrossRepositoryRelationManager {
 }
 
 class RepositoryApi {
-    async findRepositories() {
-        return await this.repositoryDao.findRepositories(arguments[0]);
+    searchRepositories() {
+        return this.repositoryDao.searchRepositories(arguments[0]);
     }
     async findRepository(repositoryGUID) {
         return await this.repositoryDao.findRepository(repositoryGUID, arguments[1]);
@@ -21220,8 +21409,8 @@ const APPLICATION$3 = {
                 "apiObjectMap": {
                     "RepositoryApi": {
                         "operationMap": {
-                            "findRepositories": {
-                                "isAsync": true,
+                            "searchRepositories": {
+                                "isAsync": false,
                                 "parameters": []
                             },
                             "create": {
@@ -25748,6 +25937,337 @@ const APPLICATION$2 = {
                     "columns": [
                         {
                             "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "COLUMNINDEX",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 1,
+                                    "oneRelationIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SYNCHRONIZATION_CONFLICT_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "index": 0,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "SynchronizationConflictValues",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "synchronizationConflict",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 1,
+                            "isId": true,
+                            "name": "columnIndex",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SYNCHRONIZATION_CONFLICT_VALUES",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "SYNCHRONIZATION_CONFLICT_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "TYPE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ACKNOWLEDGED",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneDbApplication_Index": 0,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneDbApplication_Index": 0,
+                                    "oneTableIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "OVERWRITTEN_RECORD_HISTORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneDbApplication_Index": 0,
+                                    "oneTableIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "OVERWRITING_RECORD_HISTORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 1,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "SynchronizationConflict",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "type",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "acknowledged",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "overwrittenRecordHistory",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "name": "overwritingRecordHistory",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
+                            "isId": false,
+                            "name": "values",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 10,
+                            "relationTableDbApplication_Index": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 3,
+                            "relationTableDbApplication_Index": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 5
+                            },
+                            "relationTableIndex": 3,
+                            "relationTableDbApplication_Index": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "synchronizationConflict"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 6
+                            },
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SYNCHRONIZATION_CONFLICT",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "RECORD_UPDATE_STAGE_LID",
@@ -25794,7 +26314,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 0,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25816,7 +26336,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 0,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -25838,7 +26358,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": 1,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25860,7 +26380,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": 1,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25882,7 +26402,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneDbApplication_Index": 0,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -25904,7 +26424,7 @@ const APPLICATION$2 = {
                             "index": 0
                         }
                     ],
-                    "index": 0,
+                    "index": 2,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RecordUpdateStage",
@@ -25991,7 +26511,7 @@ const APPLICATION$2 = {
                                 "index": 3
                             },
                             "relationTableIndex": 7,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -26002,7 +26522,7 @@ const APPLICATION$2 = {
                                 "index": 4
                             },
                             "relationTableIndex": 5,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -26013,7 +26533,7 @@ const APPLICATION$2 = {
                                 "index": 5
                             },
                             "relationTableIndex": 10,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -26024,7 +26544,7 @@ const APPLICATION$2 = {
                                 "index": 6
                             },
                             "relationTableIndex": 0,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -26035,344 +26555,13 @@ const APPLICATION$2 = {
                                 "index": 7
                             },
                             "relationTableIndex": 4,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "RECORD_UPDATE_STAGE",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "COLUMNINDEX",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
-                                    "oneTableIndex": 2,
-                                    "oneRelationIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SYNCHRONIZATION_CONFLICT_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        }
-                    ],
-                    "index": 1,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "SynchronizationConflictValues",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "synchronizationConflict",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 1,
-                            "isId": true,
-                            "name": "columnIndex",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 2,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SYNCHRONIZATION_CONFLICT_VALUES",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "SYNCHRONIZATION_CONFLICT_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "TYPE",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ACKNOWLEDGED",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "BOOLEAN"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 1,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 1,
-                                    "oneTableIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "OVERWRITTEN_RECORD_HISTORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": 1,
-                                    "oneTableIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "OVERWRITING_RECORD_HISTORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 2,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "SynchronizationConflict",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_localId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": false,
-                            "name": "type",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "acknowledged",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "overwrittenRecordHistory",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "name": "overwritingRecordHistory",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "name": "values",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableDbApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 3,
-                            "relationTableDbApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 3,
-                            "relationTableDbApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "synchronizationConflict"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 6
-                            },
-                            "relationTableIndex": 1,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SYNCHRONIZATION_CONFLICT",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -26383,7 +26572,7 @@ const APPLICATION$2 = {
                 {
                     "domain": "airport",
                     "index": 0,
-                    "name": "@airport/airspace",
+                    "name": "@airport/holding-pattern",
                     "publicSigningKey": null,
                     "sinceVersion": 1,
                     "versions": [
@@ -26399,7 +26588,7 @@ const APPLICATION$2 = {
                 {
                     "domain": "airport",
                     "index": 1,
-                    "name": "@airport/holding-pattern",
+                    "name": "@airport/airspace",
                     "publicSigningKey": null,
                     "sinceVersion": 1,
                     "versions": [
@@ -27238,10 +27427,10 @@ class BaseRecordUpdateStageDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_layover_diSet(0);
+        return airport____at_airport_slash_layover_diSet(2);
     }
     constructor() {
-        super(0);
+        super(2);
     }
 }
 BaseRecordUpdateStageDao.Find = new DaoQueryDecorators();
@@ -27253,10 +27442,10 @@ class BaseSynchronizationConflictDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_layover_diSet(2);
+        return airport____at_airport_slash_layover_diSet(1);
     }
     constructor() {
-        super(2);
+        super(1);
     }
 }
 BaseSynchronizationConflictDao.Find = new DaoQueryDecorators();
@@ -27268,10 +27457,10 @@ class BaseSynchronizationConflictValuesDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_layover_diSet(1);
+        return airport____at_airport_slash_layover_diSet(0);
     }
     constructor() {
-        super(1);
+        super(0);
     }
 }
 BaseSynchronizationConflictValuesDao.Find = new DaoQueryDecorators();
@@ -36497,6 +36686,21 @@ class TransactionManager extends AbstractMutationManager {
             };
         }
         await this.transact(credentials, transactionalCallback, context);
+    }
+    transactObservableInternal(callback, credentials, context, defaultValue = null) {
+        let unsubscribeCallback = null;
+        const $internalSubject = new BehaviorSubject(defaultValue);
+        const $observable = $internalSubject.pipe(finalize(() => { unsubscribeCallback(); }), share());
+        this.transactInternal(async (_transaction, context) => {
+            const $internalResults = await callback(context);
+            const internalResultsSubscription = $internalResults.subscribe(repositories => {
+                return $internalSubject.next(repositories);
+            });
+            unsubscribeCallback = () => {
+                internalResultsSubscription.unsubscribe();
+            };
+        }, null, {}).then();
+        return $observable;
     }
     async transact(credentials, transactionalCallback, context) {
         if (context.transaction) {

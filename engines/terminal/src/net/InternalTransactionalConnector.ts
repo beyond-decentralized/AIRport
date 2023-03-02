@@ -41,8 +41,7 @@ they are internal to the AIRport framework).`)
 
     async find<E, EntityArray extends Array<E>>(
         portableQuery: PortableQuery,
-        context: IQueryContext,
-        cachedSqlQueryId?: number,
+        context: IQueryContext
     ): Promise<EntityArray> {
         return await this.transactionalServer.find(
             portableQuery,
@@ -50,15 +49,13 @@ they are internal to the AIRport framework).`)
             {
                 internal: true,
                 ...context as any
-            },
-            cachedSqlQueryId
+            }
         );
     }
 
     async findOne<E>(
         portableQuery: PortableQuery,
-        context: IQueryContext,
-        cachedSqlQueryId?: number,
+        context: IQueryContext
     ): Promise<E> {
         return await this.transactionalServer.findOne(
             portableQuery,
@@ -66,15 +63,13 @@ they are internal to the AIRport framework).`)
             {
                 internal: true,
                 ...context as any
-            },
-            cachedSqlQueryId
+            }
         );
     }
 
     search<E, EntityArray extends Array<E>>(
         portableQuery: PortableQuery,
-        context: IQueryContext,
-        cachedSqlQueryId?: number,
+        context: IQueryContext
     ): Observable<EntityArray> {
         return this.transactionalServer.search(
             portableQuery,
@@ -82,15 +77,13 @@ they are internal to the AIRport framework).`)
             {
                 internal: true,
                 ...context as any
-            },
-            cachedSqlQueryId
+            }
         );
     }
 
     searchOne<E>(
         portableQuery: PortableQuery,
-        context: IQueryContext,
-        cachedSqlQueryId?: number,
+        context: IQueryContext
     ): Observable<E> {
         return this.transactionalServer.searchOne(
             portableQuery,
@@ -98,8 +91,7 @@ they are internal to the AIRport framework).`)
             {
                 internal: true,
                 ...context as any
-            },
-            cachedSqlQueryId
+            }
         );
     }
 

@@ -6,14 +6,12 @@ export interface IQueryManager {
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		context: IQueryOperationContext,
-		cachedSqlQueryId?: number
+		context: IQueryOperationContext
 	): Promise<EntityArray>;
 
 	findOne<E>(
 		portableQuery: PortableQuery,
-		context: IQueryOperationContext,
-		cachedSqlQueryId?: number
+		context: IQueryOperationContext
 	): Promise<E>;
 
 	search<E, EntityArray extends Array<E>>(

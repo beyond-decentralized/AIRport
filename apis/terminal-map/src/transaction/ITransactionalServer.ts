@@ -21,29 +21,25 @@ export interface ITransactionalServer {
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IQueryOperationContext,
-		cachedSqlQueryId?: number
+		context: IQueryOperationContext
 	): Promise<EntityArray>
 
 	findOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IQueryOperationContext,
-		cachedSqlQueryId?: number
+		context: IQueryOperationContext
 	): Promise<E>
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IQueryOperationContext,
-		cachedSqlQueryId?: number
+		context: IQueryOperationContext
 	): Observable<EntityArray>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
-		context: IQueryOperationContext,
-		cachedSqlQueryId?: number
+		context: IQueryOperationContext
 	): Observable<E>
 
 	startTransaction(

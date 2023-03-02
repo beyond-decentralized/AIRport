@@ -103,8 +103,7 @@ export class TransactionalServer
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ITransactionCredentials,
-		context: IQueryOperationContext & ITransactionContext,
-		cachedSqlQueryId?: number,
+		context: IQueryOperationContext & ITransactionContext
 	): Promise<EntityArray> {
 		if (context.transaction || credentials.transactionId) {
 			this.transactionManager.getTransactionFromContextOrCredentials(
@@ -112,14 +111,13 @@ export class TransactionalServer
 		}
 
 		return await this.queryManager.find<E, EntityArray>(
-			portableQuery, context, cachedSqlQueryId);
+			portableQuery, context);
 	}
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ITransactionCredentials,
-		context: IQueryOperationContext & ITransactionContext,
-		cachedSqlQueryId?: number,
+		context: IQueryOperationContext & ITransactionContext
 	): Promise<E> {
 		if (context.transaction || credentials.transactionId) {
 			this.transactionManager.getTransactionFromContextOrCredentials(
@@ -127,14 +125,13 @@ export class TransactionalServer
 		}
 
 		return await this.queryManager.findOne<E>(
-			portableQuery, context, cachedSqlQueryId);
+			portableQuery, context);
 	}
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ITransactionCredentials,
-		context: IQueryOperationContext & ITransactionContext,
-		cachedSqlQueryId?: number,
+		context: IQueryOperationContext & ITransactionContext
 	): Observable<EntityArray> {
 		if (context.transaction || credentials.transactionId) {
 			this.transactionManager.getTransactionFromContextOrCredentials(
@@ -148,8 +145,7 @@ export class TransactionalServer
 	searchOne<E>(
 		portableQuery: PortableQuery,
 		credentials: ITransactionCredentials,
-		context: IQueryOperationContext & ITransactionContext,
-		cachedSqlQueryId?: number,
+		context: IQueryOperationContext & ITransactionContext
 	): Observable<E> {
 		if (context.transaction || credentials.transactionId) {
 			this.transactionManager.getTransactionFromContextOrCredentials(

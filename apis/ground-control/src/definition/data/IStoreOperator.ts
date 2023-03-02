@@ -29,15 +29,13 @@ export interface IStoreOperator {
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		context: IContext,
-		cachedSqlQueryId?: number,
+		context: IContext
 	): Promise<EntityArray>;
 
 	findOne<E>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		context: IContext,
-		cachedSqlQueryId?: number,
+		context: IContext
 	): Promise<E>;
 
 	findNative(
