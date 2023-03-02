@@ -126,7 +126,12 @@ export class UpdateManager
 		const numUpdatedRows = await transaction
 			.updateWhere(portableQuery, internalFragments, context)
 
-		if (!dbEntity.isLocal && !transaction.isSync) {
+		if (dbEntity.isLocal) {
+			if (transaction.transactionHistory) {
+				transaction.transactionHistory.allModifiedColumnsMap
+					.ensureEntity(dbEntity, true)
+			}
+		} else if (!transaction.isSync) {
 			const previousDbEntity = context.dbEntity
 			context.dbEntity = dbEntity
 			// TODO: Entity based updates already have all of the new values being

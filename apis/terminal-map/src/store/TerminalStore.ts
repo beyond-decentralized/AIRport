@@ -15,7 +15,9 @@ import {
 	IActor,
 	DbApplication,
 	DbDomain,
-	ITerminal
+	ITerminal,
+	Repository_LocalId,
+	Repository_GUID
 } from '@airport/ground-control';
 import { Subject } from 'rxjs';
 import {
@@ -31,6 +33,7 @@ import {
 import { ITransactionCredentials } from '../ICredentials';
 import { IMemoizedSelector, ISelectorManager } from './SelectorManager';
 import { ILastIds } from '@airport/air-traffic-control';
+import { CachedSQLQuery, IFieldMapped, SerializedJSONQuery } from '../terminal-map.index';
 
 export interface IPendingTransaction {
 	context,
@@ -39,7 +42,7 @@ export interface IPendingTransaction {
 	resolve
 }
 
-export interface ITerminalStore {
+export interface ITerminalStore<FM extends IFieldMapped = IFieldMapped> {
 
 	state: Subject<ITerminalState>
 
@@ -80,7 +83,13 @@ export interface ITerminalStore {
 
 	getLatestApplicationVersionsByDbApplication_Indexes: IMemoizedSelector<DbApplicationVersion[], ITerminalState>
 
+	getQueries: IMemoizedSelector<Map<SerializedJSONQuery, CachedSQLQuery<FM>>, ITerminalState>
+
 	getReceiver: IMemoizedSelector<IReceiverState, ITerminalState>
+
+	getRepositoryGUIDMapByLocalIds: IMemoizedSelector<Map<Repository_LocalId, Repository_GUID>, ITerminalState>
+
+	getRepositoryLocalIdMapByGUIDs: IMemoizedSelector<Map<Repository_GUID, Repository_LocalId>, ITerminalState>
 
 	getSequenceGenerator: IMemoizedSelector<ISequenceGeneratorState, ITerminalState>
 
@@ -96,8 +105,8 @@ export interface ITerminalStore {
 }
 
 @Injected()
-export class TerminalStore
-	implements ITerminalStore {
+export class TerminalStore<FM extends IFieldMapped = IFieldMapped>
+	implements ITerminalStore<FM> {
 
 	static sharedAcrossInjectionScopes = true
 
@@ -108,9 +117,9 @@ export class TerminalStore
 	selectorManager: ISelectorManager
 
 	@Inject()
-	terminalState: ITerminalStateContainer
+	terminalState: ITerminalStateContainer<FM>
 
-	get state(): Subject<ITerminalState> {
+	get state(): Subject<ITerminalState<FM>> {
 		return this.terminalState.terminalState
 	}
 
@@ -150,13 +159,19 @@ export class TerminalStore
 
 	getLatestApplicationVersionsByDbApplication_Indexes: IMemoizedSelector<DbApplicationVersion[], ITerminalState>;
 
+	getQueries: IMemoizedSelector<Map<SerializedJSONQuery, CachedSQLQuery<FM>>, ITerminalState>
+
 	getReceiver: IMemoizedSelector<IReceiverState, ITerminalState>
+
+	getRepositoryGUIDMapByLocalIds: IMemoizedSelector<Map<Repository_LocalId, Repository_GUID>, ITerminalState>
+
+	getRepositoryLocalIdMapByGUIDs: IMemoizedSelector<Map<Repository_GUID, Repository_LocalId>, ITerminalState>
 
 	getSequenceGenerator: IMemoizedSelector<ISequenceGeneratorState, ITerminalState>
 
 	getTerminal: IMemoizedSelector<ITerminal, ITerminalState>
 
-	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>
+	getTerminalState: IMemoizedSelector<ITerminalState<FM>, ITerminalState<FM>>
 
 	getTransactionManager: IMemoizedSelector<ITransactionManagerState, ITerminalState>
 
@@ -315,8 +330,17 @@ export class TerminalStore
 				return allRelations;
 			});
 
+		this.getQueries = this.selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.queries)
+
 		this.getReceiver = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.receiver)
+
+		this.getRepositoryGUIDMapByLocalIds = this.selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.repositoryGUIDMapByLocalIds)
+
+		this.getRepositoryLocalIdMapByGUIDs = this.selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.repositoryLocalIdMapByGUIDs)
 
 		this.getSequenceGenerator = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.sequenceGenerator)

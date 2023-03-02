@@ -20,7 +20,7 @@ export class LookupProxy
 	ensureContext<C extends IContext = IContext>(
 		context?: C
 	): C {
-		return doEnsureContext<C>(context);
+		return this.dao.lookup.ensureContext<C>(context);
 	}
 
 	constructor(
@@ -56,7 +56,15 @@ export class Lookup
 	ensureContext<C extends IContext = IContext>(
 		context?: C
 	): C {
-		return doEnsureContext(context) as C;
+		if (!context) {
+			context = {} as any;
+		}
+
+		if (!context.startedAt) {
+			context.startedAt = new Date();
+		}
+
+		return context;
 	}
 
 	async lookup(
@@ -102,18 +110,3 @@ export class Lookup
 	}
 
 }
-
-export function doEnsureContext<C extends IContext = IContext>(
-	context?: C
-): C {
-	if (!context) {
-		context = {} as any;
-	}
-
-	if (!context.startedAt) {
-		context.startedAt = new Date();
-	}
-
-	return context;
-}
-

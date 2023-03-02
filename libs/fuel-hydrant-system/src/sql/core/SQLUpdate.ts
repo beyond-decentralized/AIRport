@@ -9,9 +9,7 @@ import {
 	IEntityStateManager,
 	InternalFragments,
 	QueryClauseObjectType,
-	QueryUpdate,
-	SyncApplicationMap,
-	SyncColumnMap
+	QueryUpdate
 } from '@airport/ground-control'
 import {
 	IEntityUpdateProperties,
@@ -71,21 +69,16 @@ export class SQLUpdate
 
 	toSQL(
 		internalFragments: InternalFragments,
-		fieldMap: SyncApplicationMap,
 		context: IFuelHydrantContext,
 	): string {
 		if (!this.updateQuery.UPDATE) {
 			throw new Error(`Expecting exactly one table in UPDATE clause`)
 		}
-		let {
-			columnMap,
-			tableFragment
-		} = this.getFromFragment(this.updateQuery.UPDATE, fieldMap, false, context)
-		let setFragment = this.getSetFragment(this.updateQuery.SELECT, columnMap, context)
+		let tableFragment = this.getFromFragment(this.updateQuery.UPDATE, context)
+		let setFragment = this.getSetFragment(this.updateQuery.SELECT, context)
 		if (internalFragments.SET && internalFragments.SET.length) {
 			setFragment += ',' + internalFragments.SET.map(
 				internalSetFragment => {
-					columnMap.ensure(internalSetFragment.column.index)
 					return `
 	${internalSetFragment.column.name} = ${internalSetFragment.value}`
 				})
@@ -114,7 +107,6 @@ ${whereFragment}`
 
 	protected getSetFragment(
 		setClauseFragment: IEntityUpdateProperties,
-		columnMap: SyncColumnMap,
 		context: IFuelHydrantContext,
 	): string {
 		let setFragments = []
@@ -127,7 +119,6 @@ ${whereFragment}`
 			const updatedDbColumn = this.dbEntity.columnMap[columnName]
 			this.qValidator.validateUpdateColumn(updatedDbColumn)
 			this.addSetFragment(columnName, value, setFragments, context)
-			columnMap.ensure(updatedDbColumn.index)
 		}
 
 		return setFragments.join(', \n')

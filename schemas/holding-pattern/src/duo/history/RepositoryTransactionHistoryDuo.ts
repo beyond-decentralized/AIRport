@@ -8,6 +8,7 @@ import {
 	IRepository,
 	IRepositoryTransactionHistory,
 	IRootTransaction,
+	ITransactionHistory,
 	RepositoryTransactionHistory_IsRepositoryCreation,
 	Repository_IsPublic,
 	Repository_LocalId,
@@ -25,6 +26,7 @@ export interface IRepositoryTransactionHistoryDuo {
 	getNewRecord(
 		repositoryId: Repository_LocalId,
 		actor: IActor,
+		transactionHistory: ITransactionHistory,
 		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation,
 		isPublic: Repository_IsPublic
 	): IRepositoryTransactionHistory;
@@ -62,6 +64,7 @@ export class RepositoryTransactionHistoryDuo
 	getNewRecord(
 		repositoryId: Repository_LocalId,
 		actor: IActor,
+		transactionHistory: ITransactionHistory,
 		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation,
 		isPublic: Repository_IsPublic
 	): IRepositoryTransactionHistory {
@@ -76,6 +79,7 @@ export class RepositoryTransactionHistoryDuo
 		repositoryTransactionHistory.isPublic = isPublic
 		repositoryTransactionHistory.repository = new Repository() as IRepository
 		repositoryTransactionHistory.repository._localId = repositoryId
+		repositoryTransactionHistory.transactionHistory = transactionHistory
 
 		this.setModifiedRepository_LocalIdSet(repositoryTransactionHistory)
 
@@ -86,8 +90,11 @@ export class RepositoryTransactionHistoryDuo
 		repositoryTransactionHistory: IRepositoryTransactionHistory
 	): void {
 		repositoryTransactionHistory.modifiedRepository_LocalIdSet = new Set()
+		const repositoryLocalId = repositoryTransactionHistory.repository._localId
 		repositoryTransactionHistory.modifiedRepository_LocalIdSet
-			.add(repositoryTransactionHistory.repository._localId)
+			.add(repositoryLocalId)
+		repositoryTransactionHistory.transactionHistory.modifiedRepository_LocalIdSet
+			.add(repositoryLocalId)
 	}
 
 	newRecord(

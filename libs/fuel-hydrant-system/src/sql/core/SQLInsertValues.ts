@@ -4,9 +4,7 @@ import {
 	Dictionary,
 	IApplicationUtils,
 	IEntityStateManager,
-	QueryInsertValues,
-	SyncApplicationMap,
-	SyncColumnMap
+	QueryInsertValues
 } from '@airport/ground-control'
 import {
 	IQueryUtils,
@@ -64,18 +62,15 @@ export class SQLInsertValues
 	}
 
 	toSQL(
-		fieldMap: SyncApplicationMap,
 		context: IFuelHydrantContext
 	): string {
 		if (!this.insertValuesQuery.INSERT_INTO) {
 			throw new Error(`Expecting exactly one table in INSERT INTO clause`)
 		}
 		this.qValidator.validateInsertQEntity(this.dbEntity)
-		let {
-			columnMap,
-			tableFragment
-		} = this.getFromFragment(this.insertValuesQuery.INSERT_INTO, fieldMap, false, context, false)
-		let columnsFragment = this.getColumnsFragment(this.dbEntity, this.insertValuesQuery.COLUMNS, columnMap)
+		let tableFragment = this.getFromFragment(
+			this.insertValuesQuery.INSERT_INTO, context, false)
+		let columnsFragment = this.getColumnsFragment(this.dbEntity, this.insertValuesQuery.COLUMNS)
 		let valuesFragment = this.getValuesFragment(
 			this.insertValuesQuery.VALUES, context)
 
@@ -88,15 +83,12 @@ ${valuesFragment}
 
 	protected getColumnsFragment(
 		dbEntity: DbEntity,
-		columns: number[],
-		columnMap: SyncColumnMap
+		columns: number[]
 	): string {
 		if (!columns.length) {
 			return ''
 		}
 		const columnNames = columns.map(columnIndex => {
-			columnMap.ensure(columnIndex)
-
 			return dbEntity.columns[columnIndex].name
 		})
 		return `( ${columnNames.join(', \n')} )`

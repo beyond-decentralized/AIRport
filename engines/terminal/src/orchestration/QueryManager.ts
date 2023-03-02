@@ -56,12 +56,11 @@ export class QueryManager
 
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		context: IQueryOperationContext,
-		cachedSqlQueryId?: number
+		context: IQueryOperationContext
 	): Promise<EntityArray> {
 		await this.ensureRepositoryPresenceAndCurrentState(context)
 
-		const entityArray = await this.storeDriver.find<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
+		const entityArray = await this.storeDriver.find<E, EntityArray>(portableQuery, {}, context)
 
 		if (!entityArray || !entityArray.length) {
 			return entityArray
@@ -75,12 +74,11 @@ export class QueryManager
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
-		context: IQueryOperationContext,
-		cachedSqlQueryId?: number
+		context: IQueryOperationContext
 	): Promise<E> {
 		await this.ensureRepositoryPresenceAndCurrentState(context)
 
-		const entity = await this.storeDriver.findOne<E>(portableQuery, {}, context, cachedSqlQueryId)
+		const entity = await this.storeDriver.findOne<E>(portableQuery, {}, context)
 
 		if (!entity) {
 			return entity
@@ -94,8 +92,7 @@ export class QueryManager
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		context: IQueryOperationContext,
-		cachedSqlQueryId?: number,
+		context: IQueryOperationContext
 	): Observable<EntityArray> {
 		return this.observableQueryAdapter.wrapInObservable(
 			portableQuery,
@@ -108,14 +105,14 @@ export class QueryManager
 						return this.populateEntityGuidEntitiesAndUserAccounts<E>(
 							portableQuery, result, context)
 					})
-			}
+			},
+			context
 		)
 	}
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
-		context: IQueryOperationContext,
-		cachedSqlQueryId?: number,
+		context: IQueryOperationContext
 	): Observable<E> {
 		return this.observableQueryAdapter.wrapInObservable<E>(
 			portableQuery,
@@ -128,7 +125,8 @@ export class QueryManager
 						return this.populateEntityGuidEntitiesAndUserAccounts<E>(
 							portableQuery, [result], context)[0];
 					})
-			}
+			},
+			context
 		)
 	}
 

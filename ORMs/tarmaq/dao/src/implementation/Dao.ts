@@ -34,7 +34,6 @@ import { IDatabaseFacade } from '../definition/IDatabaseFacade';
 import { IEntityDatabaseFacade } from '../definition/IEntityDatabaseFacade';
 import { ILookup } from '../definition/query/ILookup';
 import { EntityDatabaseFacade } from './EntityDatabaseFacade';
-import { doEnsureContext } from './query/Lookup';
 import { FieldsSelect } from './FieldsSelect';
 import { IFieldsSelect } from '../definition/IFieldsSelect';
 
@@ -303,7 +302,7 @@ export abstract class Dao<Entity,
 	private ensureContext(
 		context: IContext,
 	): IEntityContext {
-		return doEnsureContext(context) as IEntityContext;
+		return this.lookup.ensureContext(context) as IEntityContext;
 	}
 
 }

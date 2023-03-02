@@ -1,4 +1,4 @@
-import { SyncApplicationMap } from "../../implementation/sync/SyncApplicationMap";
+import { SyncAllModifiedColumnsMap } from "../../implementation/sync/SyncAllModifiedColumnsMap";
 import { SyncColumnMap } from "../../implementation/sync/SyncColumnMap";
 import { DbApplicationVersion } from "../application/DbApplication";
 import { DbEntity } from "../application/DbEntity";
@@ -46,17 +46,18 @@ export type TransactionHistory_LocalId = number
 export interface ITransactionHistory {
 
     _localId: TransactionHistory_LocalId
-    transactionType: TransactionType
-    repositoryTransactionHistories: IRepositoryTransactionHistory[]
-    repositoryTransactionHistoryMap?: { [repositoryLocalId: Repository_LocalId]: IRepositoryTransactionHistory }
-    applicationMap?: SyncApplicationMap
     allOperationHistory?: IOperationHistory[]
     allRecordHistory?: IRecordHistory[]
     allRecordHistoryNewValues?: IRecordHistoryNewValue[]
     allRecordHistoryOldValues?: IRecordHistoryOldValue[]
+    allModifiedColumnsMap?: SyncAllModifiedColumnsMap
+    modifiedRepository_LocalIdSet?: Set<Repository_LocalId>
+    repositoryTransactionHistories: IRepositoryTransactionHistory[]
+    repositoryTransactionHistoryMap?: { [repositoryLocalId: Repository_LocalId]: IRepositoryTransactionHistory }
     remoteRepositoryMemberAcceptances?: IRepositoryMemberAcceptance[]
     remoteRepositoryMemberInvitations?: IRepositoryMemberInvitation[]
     remoteRepositoryMembers?: IRepositoryMember[]
+    transactionType: TransactionType
 
 }
 

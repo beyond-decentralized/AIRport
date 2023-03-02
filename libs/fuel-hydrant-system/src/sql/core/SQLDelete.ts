@@ -3,7 +3,7 @@ import {
 	IQMetadataUtils,
 	IUtils
 } from '@airport/air-traffic-control'
-import { Dictionary, IApplicationUtils, IEntityStateManager, QueryDelete, SyncApplicationMap } from '@airport/ground-control'
+import { Dictionary, IApplicationUtils, IEntityStateManager, QueryDelete, SyncAllModifiedColumnsMap } from '@airport/ground-control'
 import { IQueryUtils, IQueryRelationManager } from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
@@ -54,12 +54,10 @@ export class SQLDelete
 	}
 
 	toSQL(
-		fieldMap: SyncApplicationMap,
 		context: IFuelHydrantContext,
 	): string {
-		let {
-			tableFragment
-		} = this.getFromFragment(this.deleteQuery.DELETE_FROM, fieldMap, true, context)
+		let tableFragment = this.getFromFragment(
+			this.deleteQuery.DELETE_FROM, context)
 		let whereFragment = ''
 		let queryDelete = this.deleteQuery
 		if (queryDelete.WHERE) {

@@ -20,7 +20,7 @@ import {
 	IRepositoryMemberInvitation,
 	IRepositoryTransactionHistory,
 	ITransactionHistory,
-	SyncApplicationMap,
+	SyncAllModifiedColumnsMap,
 	TransactionHistory_LocalId,
 	TransactionType
 } from '@airport/ground-control'
@@ -52,7 +52,7 @@ export class TransactionHistory
 	repositoryTransactionHistoryMap?: { [repositoryId: number]: IRepositoryTransactionHistory } = {}
 
 	@Transient()
-	applicationMap?: SyncApplicationMap = new globalThis.SyncApplicationMap()
+	allModifiedColumnsMap?: SyncAllModifiedColumnsMap = new globalThis.SyncAllModifiedColumnsMap()
 
 	@Transient()
 	allOperationHistory?: IOperationHistory[] = []

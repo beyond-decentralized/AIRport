@@ -7,7 +7,6 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	DbColumn_Index,
 	DbColumn,
 	DbEntity,
 	QueryBaseOperation,
@@ -20,16 +19,16 @@ import {
 	QueryTree,
 	QueryValueOperation,
 	OperationCategory,
-	DbApplication_Index,
-	ApplicationMap,
 	SqlOperator,
-	DbEntity_TableIndex,
 	IEntityStateManager,
 	IApplicationUtils,
 	Dictionary,
 	DbProperty,
 	Repository_LocalId,
-	Repository_GUID
+	Repository_GUID,
+	DbApplication_Index,
+	DbEntity_TableIndex,
+	DbColumn_Index
 } from '@airport/ground-control'
 import {
 	IQEntityInternal,
@@ -69,7 +68,6 @@ export abstract class SQLWhereBase
 	implements ISqlValueProvider {
 
 	public parameterReferences: (string | number)[] = []
-	protected fieldMap: ApplicationMap = new globalThis.ApplicationMap()
 	protected qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal } = {}
 	protected queryRelationMapByAlias: { [entityAlias: string]: QueryEntityRelation } = {}
 
@@ -417,8 +415,6 @@ Returned:  ${resultsFromSelect.length}
 	protected addFieldFromColumn(
 		dbColumn: DbColumn,
 	): void {
-		const dbEntity = dbColumn.propertyColumns[0].property.entity
-		this.addField(dbEntity.applicationVersion._localId, dbEntity.index, dbColumn.index)
 	}
 
 	protected addField(
@@ -426,8 +422,6 @@ Returned:  ${resultsFromSelect.length}
 		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index,
 	): void {
-		this.fieldMap.ensure(applicationIndex, entityIndex)
-			.ensure(columnIndex)
 	}
 
 	protected warn(warning: string): void {

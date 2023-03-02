@@ -13,11 +13,15 @@ import {
 	Query,
 	QueryRelation,
 	QueryResultType,
-	ApplicationMap,
+	AllModifiedColumnsMap,
 	SqlOperator,
 	IEntityStateManager,
 	IApplicationUtils,
-	Dictionary
+	Dictionary,
+	DbColumn,
+	DbApplication_Index,
+	DbEntity_TableIndex,
+	DbColumn_Index
 } from '@airport/ground-control'
 import {
 	IQEntityInternal,
@@ -67,6 +71,7 @@ export abstract class SQLQuery<JQ extends Query>
 	extends SQLWhereBase {
 
 	protected entityDefaults: EntityDefaults = new EntityDefaults()
+	protected allModifiedColumnsMap: AllModifiedColumnsMap = new AllModifiedColumnsMap()
 
 	constructor(
 		protected query: JQ,
@@ -102,8 +107,8 @@ export abstract class SQLQuery<JQ extends Query>
 			context)
 	}
 
-	getFieldMap(): ApplicationMap {
-		return this.fieldMap
+	getAllModifiedColumnsMap(): AllModifiedColumnsMap {
+		return this.allModifiedColumnsMap
 	}
 
 	abstract toSQL(
@@ -219,6 +224,23 @@ on '${leftDbEntity.applicationVersion.application.name}.${leftDbEntity.name}.${d
 		const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`
 
 		return fromFragment
+	}
+
+	protected addFieldFromColumn(
+		dbColumn: DbColumn,
+	): void {
+		const dbEntity = dbColumn.propertyColumns[0].property.entity
+		this.addField(dbEntity.applicationVersion.application.index,
+			dbEntity.index, dbColumn.index)
+	}
+
+	protected addField(
+		applicationIndex: DbApplication_Index,
+		entityIndex: DbEntity_TableIndex,
+		columnIndex: DbColumn_Index,
+	): void {
+		this.allModifiedColumnsMap.ensure(applicationIndex, entityIndex)
+			.ensure(columnIndex)
 	}
 
 }

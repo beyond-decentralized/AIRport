@@ -4,7 +4,6 @@
   "peerDependencies": {
     "@airport/air-traffic-control": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
-    "@airport/flight-number": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
     "@airport/tarmaq-dao": "0.0.1",

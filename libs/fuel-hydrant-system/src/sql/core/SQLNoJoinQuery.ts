@@ -8,9 +8,7 @@ import {
 	Dictionary,
 	IApplicationUtils,
 	IEntityStateManager,
-	QueryEntityRelation,
-	SyncApplicationMap,
-	SyncColumnMap
+	QueryEntityRelation
 } from '@airport/ground-control'
 import {
 	IQEntity,
@@ -68,14 +66,9 @@ export abstract class SQLNoJoinQuery
 
 	protected getFromFragment(
 		fromRelation: QueryEntityRelation,
-		fieldMap: SyncApplicationMap,
-		syncAllFields: boolean,
 		context: IFuelHydrantContext,
 		addAs: boolean = true
-	): {
-		columnMap: SyncColumnMap,
-		tableFragment: string
-	} {
+	): string {
 		if (!fromRelation) {
 			throw new Error(`Expecting exactly one table in UPDATE/DELETE clause`)
 		}
@@ -85,7 +78,6 @@ export abstract class SQLNoJoinQuery
 
 		const firstDbEntity: DbEntity = this.airportDatabase.applications[fromRelation.applicationIndex]
 			.currentVersion[0].applicationVersion.entities[fromRelation.entityIndex]
-		const columnMap = fieldMap.ensureEntity(firstDbEntity, syncAllFields)
 		let tableName = this.storeDriver.getEntityTableName(firstDbEntity, context)
 		if (fromRelation.applicationIndex !== this.dbEntity.applicationVersion.application.index
 			|| fromRelation.entityIndex !== this.dbEntity.index) {
@@ -98,15 +90,12 @@ export abstract class SQLNoJoinQuery
 
 		const tableAlias = this.queryRelationManager.getAlias(fromRelation)
 		this.qEntityMapByAlias[tableAlias] = firstQEntity as IQEntityInternal
-		let fromFragment = `\t${tableName}`
+		let tableFragment = `\t${tableName}`
 		if (addAs) {
-			fromFragment += ` AS ${tableAlias}`
+			tableFragment += ` AS ${tableAlias}`
 		}
 
-		return {
-			columnMap,
-			tableFragment: fromFragment
-		}
+		return tableFragment
 	}
 
 }

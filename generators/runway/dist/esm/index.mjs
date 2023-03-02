@@ -1586,7 +1586,7 @@ class TableMap {
 }
 globalThis.TableMap = TableMap;
 
-class ApplicationMap {
+class AllModifiedColumnsMap {
     constructor(applicationMap = {}) {
         this.applicationMap = applicationMap;
     }
@@ -1609,7 +1609,7 @@ class ApplicationMap {
         return tableMap.existsByStructure(entityIndex, columnIndex);
     }
 }
-globalThis.ApplicationMap = ApplicationMap;
+globalThis.AllModifiedColumnsMap = AllModifiedColumnsMap;
 
 class SyncColumnMap extends ColumnMap {
     constructor(entityIndex, allColumns = false) {
@@ -1618,28 +1618,28 @@ class SyncColumnMap extends ColumnMap {
 }
 globalThis.SyncColumnMap = SyncColumnMap;
 
-class SyncApplicationMap extends ApplicationMap {
+class SyncAllModifiedColumnsMap extends AllModifiedColumnsMap {
     constructor(applicationMap) {
         super(applicationMap);
     }
     ensureEntity(entity, allColumns = false) {
         return super.ensureEntity(entity, allColumns, globalThis.SyncTableMap);
     }
-    intersects(fieldMap) {
+    intersects(allModifiedColumnsMap) {
         for (const applicationIndex in this.applicationMap) {
-            if (fieldMap.applicationMap[applicationIndex]) {
+            if (allModifiedColumnsMap.applicationMap[applicationIndex]) {
                 const syncTableMap = new globalThis.SyncTableMap(parseInt(applicationIndex), this.applicationMap[applicationIndex].tableMap);
-                if (syncTableMap.intersects(fieldMap.applicationMap[applicationIndex])) {
+                if (syncTableMap.intersects(allModifiedColumnsMap.applicationMap[applicationIndex])) {
                     return true;
                 }
             }
         }
         return false;
     }
-    merge(fieldMap) {
-        for (const applicationIndex in fieldMap.applicationMap) {
+    merge(allModifiedColumnsMap) {
+        for (const applicationIndex in allModifiedColumnsMap.applicationMap) {
             const tableMap = this.applicationMap[applicationIndex];
-            const tableMapIn = fieldMap.applicationMap[applicationIndex];
+            const tableMapIn = allModifiedColumnsMap.applicationMap[applicationIndex];
             if (!tableMap) {
                 this.applicationMap[applicationIndex] = tableMapIn;
                 continue;
@@ -1658,7 +1658,7 @@ class SyncApplicationMap extends ApplicationMap {
         }
     }
 }
-globalThis.SyncApplicationMap = SyncApplicationMap;
+globalThis.SyncAllModifiedColumnsMap = SyncAllModifiedColumnsMap;
 
 var BlockSyncStatus;
 (function (BlockSyncStatus) {
@@ -1709,13 +1709,13 @@ class SyncTableMap extends TableMap {
     ensureEntity(entityIndex, allColumns = false) {
         return super.ensure(entityIndex, allColumns, globalThis.SyncColumnMap);
     }
-    intersects(columnMap) {
+    intersects(otherTableMap) {
         for (let entityIndex in this.tableMap) {
-            if (columnMap.tableMap[entityIndex]) {
+            if (otherTableMap.tableMap[entityIndex]) {
                 let tableColumnMap = this.tableMap[entityIndex];
-                let otherTableColumnMap = columnMap.tableMap[entityIndex];
-                if (tableColumnMap[globalThis.ALL_TABLE_COLUMNS]
-                    || tableColumnMap[globalThis.ALL_TABLE_COLUMNS]) {
+                let otherTableColumnMap = otherTableMap.tableMap[entityIndex];
+                if (tableColumnMap.columnMap[globalThis.ALL_TABLE_COLUMNS]
+                    || otherTableColumnMap.columnMap[globalThis.ALL_TABLE_COLUMNS]) {
                     return true;
                 }
                 for (let columnIndex in tableColumnMap.columnMap) {
@@ -6378,8 +6378,8 @@ class Delete extends AbstractQuery {
  */
 const NON_ENTITY_SELECT_ERROR_MESSAGE = `Unsupported entry in Non-Entity SELECT clause, must be a(n): Entity Field | ManyToOne Relation | primitive wrapped by "bool","date","num","str" | query wrapped by "field"`;
 class DistinguishableQuery extends AbstractQuery {
-    constructor(entityAliases = new EntityAliases(), trackedRepoGUIDSet, trackedRepoLidSet) {
-        super(entityAliases, entityAliases.getNewFieldColumnAliases(), trackedRepoGUIDSet, trackedRepoLidSet);
+    constructor(entityAliases = new EntityAliases(), trackedRepoGUIDSet, trackedRepoLocalIdSet) {
+        super(entityAliases, entityAliases.getNewFieldColumnAliases(), trackedRepoGUIDSet, trackedRepoLocalIdSet);
         this.isHierarchicalEntityQuery = false;
     }
     rawToQuerySelectClause(rawSelect, queryUtils, fieldUtils, queryRelationManager) {
@@ -8342,7 +8342,7 @@ setTimeout(() => {
 
 class LookupProxy {
     ensureContext(context) {
-        return doEnsureContext(context);
+        return this.dao.lookup.ensureContext(context);
     }
     constructor(dao) {
         this.dao = dao;
@@ -8353,7 +8353,13 @@ class LookupProxy {
 }
 class Lookup {
     ensureContext(context) {
-        return doEnsureContext(context);
+        if (!context) {
+            context = {};
+        }
+        if (!context.startedAt) {
+            context.startedAt = new Date();
+        }
+        return context;
     }
     async lookup(rawQuery, queryResultType, search, one, QueryClass, context) {
         let query;
@@ -8390,15 +8396,6 @@ class Lookup {
         return result;
     }
 }
-function doEnsureContext(context) {
-    if (!context) {
-        context = {};
-    }
-    if (!context.startedAt) {
-        context.startedAt = new Date();
-    }
-    return context;
-}
 
 class EntityLookup extends LookupProxy {
     constructor(dbEntity, dao, mapResults = EntityLookup.mapResults) {
@@ -8409,11 +8406,22 @@ class EntityLookup extends LookupProxy {
     setNoCache(ChildClass) {
         return new ChildClass(this.dbEntity, this.dao, this.mapResults);
     }
-    async entityLookup(rawEntityQuery, queryResultType, search, one, context) {
+    entityLookup(rawEntityQuery, queryResultType, search, one, context) {
         context.dbEntity = this.dbEntity;
         rawEntityQuery = IOC.getSync(ENTITY_UTILS)
             .ensureId(rawEntityQuery);
-        let result = await this.lookup(rawEntityQuery, queryResultType, search, one, null, context, this.mapResults);
+        let result = this.lookup(rawEntityQuery, queryResultType, search, one, null, context, this.mapResults);
+        if (result instanceof Subject) {
+            result = this.saveOriginalValues(result, context);
+        }
+        else {
+            result = result.then(theResult => {
+                return this.saveOriginalValues(theResult, context);
+            });
+        }
+        return result;
+    }
+    saveOriginalValues(result, context) {
         if (!(result instanceof Subject)) {
             this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity);
         }
@@ -8471,13 +8479,13 @@ class EntityFindOne extends EntityLookup {
  */
 class EntitySearch extends EntityLookup {
     graph(rawGraphQuery, context) {
-        return from(this.search(rawGraphQuery, QueryResultType.ENTITY_TREE, context));
+        return this.search(rawGraphQuery, QueryResultType.ENTITY_TREE, context);
     }
     tree(rawTreeQuery, context) {
-        return from(this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
+        return this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, context);
     }
-    async search(rawEntityQuery, queryResultType, context) {
-        return await this.entityLookup(rawEntityQuery, queryResultType, true, false, this.ensureContext(context));
+    search(rawEntityQuery, queryResultType, context) {
+        return this.entityLookup(rawEntityQuery, queryResultType, true, false, this.ensureContext(context));
     }
     noCache() {
         return this.setNoCache(EntitySearch);
@@ -8489,15 +8497,13 @@ class EntitySearch extends EntityLookup {
  */
 class EntitySearchOne extends EntityLookup {
     graph(rawGraphQuery, context) {
-        return from(this.searchOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context));
+        return this.searchOne(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context);
     }
     tree(rawTreeQuery, context) {
-        return from(this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context));
+        return this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context);
     }
-    // TODO: return Observable from deep within the framework
-    // and detect changes to the underlying data
-    async searchOne(rawEntityQuery, queryResultType, context) {
-        return await this.entityLookup(rawEntityQuery, queryResultType, true, true, this.ensureContext(context));
+    searchOne(rawEntityQuery, queryResultType, context) {
+        return this.entityLookup(rawEntityQuery, queryResultType, true, true, this.ensureContext(context));
     }
 }
 
@@ -8848,7 +8854,7 @@ class Dao {
         return this.db.searchOne.graph(rawGraphQuery, context);
     }
     ensureContext(context) {
-        return doEnsureContext(context);
+        return this.lookup.ensureContext(context);
     }
 }
 
@@ -11547,7 +11553,10 @@ class TerminalStore {
             }
             return allRelations;
         });
+        this.getQueries = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.queries);
         this.getReceiver = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.receiver);
+        this.getRepositoryGUIDMapByLocalIds = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.repositoryGUIDMapByLocalIds);
+        this.getRepositoryLocalIdMapByGUIDs = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.repositoryLocalIdMapByGUIDs);
         this.getSequenceGenerator = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.sequenceGenerator);
         this.getTerminal = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.terminal);
         this.getTransactionManager = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.transactionManager);
@@ -11593,10 +11602,13 @@ globalThis.internalTerminalState = new BehaviorSubject({
         applications: 0,
         applicationVersions: 0
     },
+    queries: new Map(),
     receiver: {
         initializedApps: new Set(),
         initializingApps: new Set(),
     },
+    repositoryGUIDMapByLocalIds: new Map(),
+    repositoryLocalIdMapByGUIDs: new Map(),
     sequenceGenerator: {
         sequences: [],
         sequenceBlocks: [],
@@ -13478,7 +13490,7 @@ class TransactionHistory {
     constructor() {
         this.repositoryTransactionHistories = [];
         this.repositoryTransactionHistoryMap = {};
-        this.applicationMap = new globalThis.SyncApplicationMap();
+        this.allModifiedColumnsMap = new globalThis.SyncAllModifiedColumnsMap();
         this.allOperationHistory = [];
         this.allRecordHistory = [];
         this.allRecordHistoryNewValues = [];
@@ -14745,10 +14757,17 @@ class RecordHistoryDuo {
         return recordHistoryOldValue;
     }
     ensureModifiedRepositoryLocalIdSet(recordHistory, dbColumn, value) {
+        const repositoryTransactionHistory = recordHistory
+            .operationHistory.repositoryTransactionHistory;
         if (this.dictionary.isRepositoryRelationColumn(dbColumn)) {
-            recordHistory.operationHistory.repositoryTransactionHistory
+            repositoryTransactionHistory
+                .modifiedRepository_LocalIdSet.add(value);
+            repositoryTransactionHistory.transactionHistory
                 .modifiedRepository_LocalIdSet.add(value);
         }
+        repositoryTransactionHistory.transactionHistory
+            .allModifiedColumnsMap.ensureEntity(dbColumn.entity)
+            .ensure(dbColumn.index);
     }
 }
 
@@ -14773,7 +14792,7 @@ class RecordHistoryOldValueDuo {
 }
 
 class RepositoryTransactionHistoryDuo {
-    getNewRecord(repositoryId, actor, isRepositoryCreation, isPublic) {
+    getNewRecord(repositoryId, actor, transactionHistory, isRepositoryCreation, isPublic) {
         let repositoryTransactionHistory = new RepositoryTransactionHistory();
         let saveTimestamp = new Date().getTime();
         repositoryTransactionHistory.saveTimestamp = saveTimestamp;
@@ -14783,13 +14802,17 @@ class RepositoryTransactionHistoryDuo {
         repositoryTransactionHistory.isPublic = isPublic;
         repositoryTransactionHistory.repository = new Repository();
         repositoryTransactionHistory.repository._localId = repositoryId;
+        repositoryTransactionHistory.transactionHistory = transactionHistory;
         this.setModifiedRepository_LocalIdSet(repositoryTransactionHistory);
         return repositoryTransactionHistory;
     }
     setModifiedRepository_LocalIdSet(repositoryTransactionHistory) {
         repositoryTransactionHistory.modifiedRepository_LocalIdSet = new Set();
+        const repositoryLocalId = repositoryTransactionHistory.repository._localId;
         repositoryTransactionHistory.modifiedRepository_LocalIdSet
-            .add(repositoryTransactionHistory.repository._localId);
+            .add(repositoryLocalId);
+        repositoryTransactionHistory.transactionHistory.modifiedRepository_LocalIdSet
+            .add(repositoryLocalId);
     }
     newRecord(data) {
         if (!data) {
@@ -14835,9 +14858,10 @@ class RepositoryTransactionHistoryDuo {
 
 class TransactionHistoryDuo {
     getNewRecord(transactionType = TransactionType.LOCAL) {
-        let transaction = new TransactionHistory();
-        transaction.transactionType = TransactionType.LOCAL;
-        return transaction;
+        const transactionHistory = new TransactionHistory();
+        transactionHistory.modifiedRepository_LocalIdSet = new Set();
+        transactionHistory.transactionType = transactionType;
+        return transactionHistory;
     }
     async getRepositoryTransaction(transactionHistory, repositoryLocalId, actor, isRepositoryCreation, isPublic, repositoryMember, context) {
         let repositoryTransactionHistory = transactionHistory.repositoryTransactionHistoryMap[repositoryLocalId];
@@ -14849,11 +14873,10 @@ class TransactionHistoryDuo {
                     throw new Error(`User '${userSession.userAccount.username}' is not a member of Repository '${repositoryLocalId}'`);
                 }
             }
-            repositoryTransactionHistory = this.repositoryTransactionHistoryDuo.getNewRecord(repositoryLocalId, actor, isRepositoryCreation, isPublic);
+            repositoryTransactionHistory = this.repositoryTransactionHistoryDuo.getNewRecord(repositoryLocalId, actor, transactionHistory, isRepositoryCreation, isPublic);
             repositoryTransactionHistory.member = repositoryMember;
             transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory);
             transactionHistory.repositoryTransactionHistoryMap[repositoryLocalId] = repositoryTransactionHistory;
-            repositoryTransactionHistory.transactionHistory = transactionHistory;
         }
         return repositoryTransactionHistory;
     }
@@ -31167,226 +31190,6 @@ groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
     synchronizationConflictValuesDao: SynchronizationConflictValuesDao
 });
 
-class ActiveQueries {
-    constructor() {
-        this.queries = new Map();
-    }
-    add(portableQuery, cachedSqlQuery) {
-        const serializedJSONQuery = JSON.stringify(portableQuery.query);
-        this.queries.set(serializedJSONQuery, cachedSqlQuery);
-    }
-    remove(portableQuery) {
-        const serializedJSONQuery = JSON.stringify(portableQuery.query);
-        this.queries.delete(serializedJSONQuery);
-    }
-    markQueriesToRerun(applicationMap, trackedRepoGUIDSet) {
-        this.queries.forEach((cachedSqlQuery) => {
-            cachedSqlQuery.rerun = this.shouldQueryBeRerun(cachedSqlQuery, applicationMap, trackedRepoGUIDSet);
-        });
-    }
-    shouldQueryBeRerun(cachedSqlQuery, applicationMap, trackedRepoGUIDSet) {
-        if (cachedSqlQuery.rerun) {
-            // already marked to be re-run
-            return true;
-        }
-        if (!applicationMap.intersects(cachedSqlQuery.sqlQuery.getFieldMap())) {
-            return false;
-        }
-        if (!cachedSqlQuery.trackedRepoGUIDSet.size || !trackedRepoGUIDSet.size) {
-            return true;
-        }
-        for (const repositoryGUID of trackedRepoGUIDSet.values()) {
-            if (cachedSqlQuery.trackedRepoGUIDSet.has(repositoryGUID)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    rerunQueries(fieldMap) {
-        // Add a bit of a wait to let any query-subscribed screens that are closing after
-        // a mutation operation to un-subscribe from those queries.
-        setTimeout(() => {
-            this.queries.forEach((cachedSqlQuery) => {
-                if (cachedSqlQuery.rerun) {
-                    cachedSqlQuery.rerun = false;
-                    cachedSqlQuery.runQuery();
-                }
-            });
-        }, 100);
-    }
-    clearQueriesToRerun() {
-        this.queries.forEach((cachedSqlQuery) => {
-            cachedSqlQuery.rerun = false;
-        });
-    }
-}
-
-class ObservableQueryAdapter {
-    constructor() {
-        this.queriedRepositoryIds = {
-            GUIDSet: new Set(),
-            localIdSet: new Set()
-        };
-        this.repositoryExistenceCheckInProgress = false;
-    }
-    collectAffectedFieldsAndRepositoriesToRerunQueriesBy(portableQuery, fieldMap, transaction) {
-        transaction.fieldMap.merge(fieldMap);
-        const trackedRepoGUIDs = portableQuery.trackedRepoGUIDs;
-        if (trackedRepoGUIDs instanceof Array) {
-            for (const trackedRepoGUID of trackedRepoGUIDs) {
-                if (typeof trackedRepoGUID !== 'string') {
-                    throw new Error(`Invalid Repository GUID`);
-                }
-                transaction.affectedRepository_GUIDSet.add(trackedRepoGUID);
-            }
-        }
-        const trackedRepoLocalIds = portableQuery.trackedRepoLocalIds;
-        if (trackedRepoLocalIds instanceof Array) {
-            for (const trackedRepoLocalId of trackedRepoLocalIds) {
-                if (typeof trackedRepoLocalId !== 'number') {
-                    throw new Error(`Invalid Repository LocalId`);
-                }
-                transaction.affectedRepository_LocalIdSet.add(trackedRepoLocalId);
-            }
-        }
-    }
-    async checkExistenceOfQueriedRepositories() {
-        try {
-            if (!this.queriedRepositoryIds.GUIDSet.size && !this.queriedRepositoryIds.localIdSet.size) {
-                return;
-            }
-            if (this.repositoryExistenceCheckInProgress) {
-                return;
-            }
-            this.repositoryExistenceCheckInProgress = true;
-            await this.transactionManager.transactInternal(async (_transaction, context) => {
-                await this.doCheckExistenceOfQueriedRepositories(context);
-            }, null, {});
-        }
-        catch (e) {
-            console.error('Error checking Repositor existence');
-            console.error(e);
-        }
-        finally {
-            this.repositoryExistenceCheckInProgress = false;
-        }
-    }
-    async doCheckExistenceOfQueriedRepositories(context) {
-        const locallyPresentRepositories = await this.repositoryDao
-            .findByGUIDsAndLocalIds(Array.from(this.queriedRepositoryIds.GUIDSet), Array.from(this.queriedRepositoryIds.localIdSet), context);
-        const locallyPresentRepositoryMapByGUID = new Map();
-        const locallyPresentRepositoryMapByLocalId = new Map();
-        for (const localyPresentRepository of locallyPresentRepositories) {
-            locallyPresentRepositoryMapByGUID.set(localyPresentRepository.GUID, localyPresentRepository);
-            locallyPresentRepositoryMapByLocalId.set(localyPresentRepository._localId, localyPresentRepository);
-        }
-        const locallyMissingRepositoryGUIDSet = new Set();
-        for (const repositoryGUIDToCheck of this.queriedRepositoryIds.GUIDSet.values()) {
-            const locallyPresentRepository = locallyPresentRepositoryMapByGUID
-                .get(repositoryGUIDToCheck);
-            if (!locallyPresentRepository || !locallyPresentRepository.isLoaded) {
-                locallyMissingRepositoryGUIDSet.add(repositoryGUIDToCheck);
-            }
-        }
-        for (const repositoryLocalId of this.queriedRepositoryIds.localIdSet.values()) {
-            const locallyPresentRepository = locallyPresentRepositoryMapByLocalId
-                .get(repositoryLocalId);
-            if (!locallyPresentRepository) {
-                throw new Error(`Did not find a repository with _localId '${repositoryLocalId}'.`);
-            }
-            if (!locallyPresentRepository.isLoaded) {
-                locallyMissingRepositoryGUIDSet.add(locallyPresentRepository.GUID);
-            }
-        }
-        for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
-            await this.repositoryLoader.loadRepository(locallyMissingRepositoryGUID, {
-                ...context,
-                doNotLoadReferences: true
-            });
-        }
-        this.queriedRepositoryIds.GUIDSet.clear();
-        this.queriedRepositoryIds.localIdSet.clear();
-    }
-    wrapInObservable(portableQuery, queryCallback) {
-        // TODO: checking for presence of a Repository in an Observable
-        // await this.ensureRepositoryPresenceAndCurrentState(context)
-        let resultsSubject = new Subject();
-        // FIXME: Remove the query for the list of cached queries, that are checked every
-        //       time a mutation operation is run
-        // let resultsSubject                 = new Subject<E>(() => {
-        // 	if (resultsSubject.subscriptions.length < 1) {
-        // 					// Remove the query for the list of cached queries, that are checked every
-        // 					// time a mutation operation is run
-        // 					this.activeQueries.remove(portableQuery)
-        // 	}
-        // });
-        let trackedRepoGUIDSet = this
-            .trackedRepoGUIDArrayToSet(portableQuery.trackedRepoGUIDs);
-        let trackedRepoLocalIdSet = this
-            .trackedRepoLocalIdArrayToSet(portableQuery.trackedRepoLocalIds);
-        let cachedSqlQuery = {
-            portableQuery,
-            resultsSubject,
-            runQuery: () => {
-                queryCallback().then(augmentedResult => {
-                    resultsSubject.next(augmentedResult);
-                });
-            },
-            trackedRepoGUIDSet,
-            trackedRepoLocalIdSet
-        };
-        this.activeQueries.add(portableQuery, cachedSqlQuery);
-        cachedSqlQuery.runQuery();
-        return resultsSubject;
-    }
-    trackedRepoGUIDArrayToSet(trackedRepoGUIDs) {
-        let trackedRepoGUIDSet = new Set();
-        if (!(trackedRepoGUIDs instanceof Array) || !trackedRepoGUIDs.length) {
-            return;
-        }
-        for (const trackedRepoGUID of trackedRepoGUIDs) {
-            if (typeof trackedRepoGUID !== 'string') {
-                throw new Error(`Invalid Repository GUID`);
-            }
-            trackedRepoGUIDSet.add(trackedRepoGUID);
-        }
-        return trackedRepoGUIDSet;
-    }
-    trackedRepoLocalIdArrayToSet(trackedRepoLocalIds) {
-        let trackedRepoLocalIdSet = new Set();
-        if (!(trackedRepoLocalIds instanceof Array) || !trackedRepoLocalIds.length) {
-            return;
-        }
-        for (const trackedRepoLocalId of trackedRepoLocalIds) {
-            if (typeof trackedRepoLocalId !== 'number') {
-                throw new Error(`Invalid Repository Local Id`);
-            }
-            trackedRepoLocalIdSet.add(trackedRepoLocalId);
-        }
-        return trackedRepoLocalIdSet;
-    }
-}
-
-const flightNumber = lib('flight-number');
-flightNumber.register(ActiveQueries);
-const OBSERVABLE_QUERY_ADAPTER = flightNumber.token('ObservableQueryAdapter');
-OBSERVABLE_QUERY_ADAPTER.setClass(ObservableQueryAdapter);
-OBSERVABLE_QUERY_ADAPTER.setDependencies({
-    activeQueries: ActiveQueries,
-    repositoryDao: RepositoryDao,
-    transactionManager: TRANSACTION_MANAGER
-});
-globalThis.OBSERVABLE_QUERY_ADAPTER = OBSERVABLE_QUERY_ADAPTER;
-
-setTimeout(() => {
-    if (globalThis.repositoryAutoload !== false) {
-        setInterval(() => {
-            globalThis.IOC.get(globalThis.OBSERVABLE_QUERY_ADAPTER).then(observableQueryAdapter => observableQueryAdapter
-                .checkExistenceOfQueriedRepositories().then());
-        }, 300);
-    }
-}, 2000);
-
 class AbstractEntityOrderByParser {
     constructor(rootSelectClauseFragment, airportDatabase, qValidator, queryRelationManager, orderBy) {
         this.rootSelectClauseFragment = rootSelectClauseFragment;
@@ -32396,7 +32199,6 @@ class SQLWhereBase {
         this.utils = utils;
         this.context = context;
         this.parameterReferences = [];
-        this.fieldMap = new globalThis.ApplicationMap();
         this.qEntityMapByAlias = {};
         this.queryRelationMapByAlias = {};
         this.selectColumnInfos = [];
@@ -32635,12 +32437,8 @@ Returned:  ${resultsFromSelect.length}
         return dbEntity.columns[columnIndex].name;
     }
     addFieldFromColumn(dbColumn) {
-        const dbEntity = dbColumn.propertyColumns[0].property.entity;
-        this.addField(dbEntity.applicationVersion._localId, dbEntity.index, dbColumn.index);
     }
     addField(applicationIndex, entityIndex, columnIndex) {
-        this.fieldMap.ensure(applicationIndex, entityIndex)
-            .ensure(columnIndex);
     }
     warn(warning) {
         console.log(warning);
@@ -32712,7 +32510,7 @@ class SQLNoJoinQuery extends SQLWhereBase {
         super(dbEntity, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.queryRelationManager = queryRelationManager;
     }
-    getFromFragment(fromRelation, fieldMap, syncAllFields, context, addAs = true) {
+    getFromFragment(fromRelation, context, addAs = true) {
         if (!fromRelation) {
             throw new Error(`Expecting exactly one table in UPDATE/DELETE clause`);
         }
@@ -32721,7 +32519,6 @@ class SQLNoJoinQuery extends SQLWhereBase {
         }
         const firstDbEntity = this.airportDatabase.applications[fromRelation.applicationIndex]
             .currentVersion[0].applicationVersion.entities[fromRelation.entityIndex];
-        const columnMap = fieldMap.ensureEntity(firstDbEntity, syncAllFields);
         let tableName = this.storeDriver.getEntityTableName(firstDbEntity, context);
         if (fromRelation.applicationIndex !== this.dbEntity.applicationVersion.application.index
             || fromRelation.entityIndex !== this.dbEntity.index) {
@@ -32732,14 +32529,11 @@ class SQLNoJoinQuery extends SQLWhereBase {
         const firstQEntity = new QEntity(firstDbEntity, this.queryUtils, this.queryRelationManager);
         const tableAlias = this.queryRelationManager.getAlias(fromRelation);
         this.qEntityMapByAlias[tableAlias] = firstQEntity;
-        let fromFragment = `\t${tableName}`;
+        let tableFragment = `\t${tableName}`;
         if (addAs) {
-            fromFragment += ` AS ${tableAlias}`;
+            tableFragment += ` AS ${tableAlias}`;
         }
-        return {
-            columnMap,
-            tableFragment: fromFragment
-        };
+        return tableFragment;
     }
 }
 
@@ -32752,8 +32546,8 @@ class SQLDelete extends SQLNoJoinQuery {
             .applicationVersion.entities[deleteQuery.DELETE_FROM.entityIndex], dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.deleteQuery = deleteQuery;
     }
-    toSQL(fieldMap, context) {
-        let { tableFragment } = this.getFromFragment(this.deleteQuery.DELETE_FROM, fieldMap, true, context);
+    toSQL(context) {
+        let tableFragment = this.getFromFragment(this.deleteQuery.DELETE_FROM, context);
         let whereFragment = '';
         let queryDelete = this.deleteQuery;
         if (queryDelete.WHERE) {
@@ -32784,13 +32578,13 @@ class SQLInsertValues extends SQLNoJoinQuery {
             .applicationVersion.entities[insertValuesQuery.INSERT_INTO.entityIndex], dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.insertValuesQuery = insertValuesQuery;
     }
-    toSQL(fieldMap, context) {
+    toSQL(context) {
         if (!this.insertValuesQuery.INSERT_INTO) {
             throw new Error(`Expecting exactly one table in INSERT INTO clause`);
         }
         this.qValidator.validateInsertQEntity(this.dbEntity);
-        let { columnMap, tableFragment } = this.getFromFragment(this.insertValuesQuery.INSERT_INTO, fieldMap, false, context, false);
-        let columnsFragment = this.getColumnsFragment(this.dbEntity, this.insertValuesQuery.COLUMNS, columnMap);
+        let tableFragment = this.getFromFragment(this.insertValuesQuery.INSERT_INTO, context, false);
+        let columnsFragment = this.getColumnsFragment(this.dbEntity, this.insertValuesQuery.COLUMNS);
         let valuesFragment = this.getValuesFragment(this.insertValuesQuery.VALUES, context);
         return `INSERT INTO
 ${tableFragment} ${columnsFragment}
@@ -32798,12 +32592,11 @@ VALUES
 ${valuesFragment}
 `;
     }
-    getColumnsFragment(dbEntity, columns, columnMap) {
+    getColumnsFragment(dbEntity, columns) {
         if (!columns.length) {
             return '';
         }
         const columnNames = columns.map(columnIndex => {
-            columnMap.ensure(columnIndex);
             return dbEntity.columns[columnIndex].name;
         });
         return `( ${columnNames.join(', \n')} )`;
@@ -32861,9 +32654,10 @@ class SQLQuery extends SQLWhereBase {
         this.queryResultType = queryResultType;
         this.queryRelationManager = queryRelationManager;
         this.entityDefaults = new EntityDefaults();
+        this.allModifiedColumnsMap = new AllModifiedColumnsMap();
     }
-    getFieldMap() {
-        return this.fieldMap;
+    getAllModifiedColumnsMap() {
+        return this.allModifiedColumnsMap;
     }
     getEntityApplicationRelationFromJoin(leftQEntity, rightQEntity, entityRelation, parentRelation, currentAlias, parentAlias, joinTypeString, errorPrefix, context) {
         const allJoinOnColumns = [];
@@ -32926,6 +32720,14 @@ on '${leftDbEntity.applicationVersion.application.name}.${leftDbEntity.name}.${d
         const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`;
         return fromFragment;
     }
+    addFieldFromColumn(dbColumn) {
+        const dbEntity = dbColumn.propertyColumns[0].property.entity;
+        this.addField(dbEntity.applicationVersion.application.index, dbEntity.index, dbColumn.index);
+    }
+    addField(applicationIndex, entityIndex, columnIndex) {
+        this.allModifiedColumnsMap.ensure(applicationIndex, entityIndex)
+            .ensure(columnIndex);
+    }
 }
 
 /**
@@ -32937,15 +32739,14 @@ class SQLUpdate extends SQLNoJoinQuery {
             .applicationVersion.entities[updateQuery.UPDATE.entityIndex], dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, queryRelationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.updateQuery = updateQuery;
     }
-    toSQL(internalFragments, fieldMap, context) {
+    toSQL(internalFragments, context) {
         if (!this.updateQuery.UPDATE) {
             throw new Error(`Expecting exactly one table in UPDATE clause`);
         }
-        let { columnMap, tableFragment } = this.getFromFragment(this.updateQuery.UPDATE, fieldMap, false, context);
-        let setFragment = this.getSetFragment(this.updateQuery.SELECT, columnMap, context);
+        let tableFragment = this.getFromFragment(this.updateQuery.UPDATE, context);
+        let setFragment = this.getSetFragment(this.updateQuery.SELECT, context);
         if (internalFragments.SET && internalFragments.SET.length) {
             setFragment += ',' + internalFragments.SET.map(internalSetFragment => {
-                columnMap.ensure(internalSetFragment.column.index);
                 return `
 	${internalSetFragment.column.name} = ${internalSetFragment.value}`;
             })
@@ -32969,7 +32770,7 @@ SET
 ${setFragment}
 ${whereFragment}`;
     }
-    getSetFragment(setClauseFragment, columnMap, context) {
+    getSetFragment(setClauseFragment, context) {
         let setFragments = [];
         for (let columnName in setClauseFragment) {
             let value = setClauseFragment[columnName];
@@ -32980,7 +32781,6 @@ ${whereFragment}`;
             const updatedDbColumn = this.dbEntity.columnMap[columnName];
             this.qValidator.validateUpdateColumn(updatedDbColumn);
             this.addSetFragment(columnName, value, setFragments, context);
-            columnMap.ensure(updatedDbColumn.index);
         }
         return setFragments.join(', \n');
     }
@@ -34245,10 +34045,8 @@ Entity:          ${table.name}
     }
     async commit(transaction, context) {
         await this.ensureContext(context);
-        let commitSucceeded = false;
         try {
             await this.internalCommit(transaction);
-            commitSucceeded = true;
         }
         catch (e) {
             console.error(e);
@@ -34262,12 +34060,6 @@ Entity:          ${table.name}
         }
         finally {
             await this.tearDownTransaction(transaction, context);
-            if (commitSucceeded) {
-                this.activeQueries.rerunQueries(transaction.fieldMap);
-            }
-            else {
-                this.activeQueries.clearQueriesToRerun();
-            }
         }
     }
     async rollback(transaction, context) {
@@ -34281,7 +34073,6 @@ Entity:          ${table.name}
         }
         finally {
             await this.tearDownTransaction(transaction, context);
-            this.activeQueries.clearQueriesToRerun();
         }
     }
     async insertValues(portableQuery, context, cachedSqlQueryId) {
@@ -34289,7 +34080,6 @@ Entity:          ${table.name}
         if (!query || !query.VALUES || !query.VALUES.length) {
             return 0;
         }
-        let fieldMap = new globalThis.SyncApplicationMap();
         const splitValues = this.splitValues(query.VALUES, context);
         let numVals = 0;
         for (const VALUES of splitValues) {
@@ -34297,37 +34087,32 @@ Entity:          ${table.name}
                 ...portableQuery.query,
                 VALUES
             }, this.getDialect(context), this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.queryRelationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
-            let sql = sqlInsertValues.toSQL(fieldMap, context);
+            let sql = sqlInsertValues.toSQL(context);
             let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
             numVals += await this.executeNative(sql, parameters, context);
         }
-        this.observableQueryAdapter
-            .collectAffectedFieldsAndRepositoriesToRerunQueriesBy(portableQuery, fieldMap, context.transaction);
         return numVals;
     }
     async deleteWhere(portableQuery, context) {
-        let fieldMap = new globalThis.SyncApplicationMap();
         let sqlDelete = new SQLDelete(portableQuery.query, this.getDialect(context), this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.queryRelationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
-        let sql = sqlDelete.toSQL(fieldMap, context);
+        let sql = sqlDelete.toSQL(context);
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
         let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
-        this.observableQueryAdapter
-            .collectAffectedFieldsAndRepositoriesToRerunQueriesBy(portableQuery, fieldMap, context.transaction);
         return numberOfAffectedRecords;
     }
     async updateWhere(portableQuery, internalFragments, context) {
-        let fieldMap = new globalThis.SyncApplicationMap();
         let sqlUpdate = new SQLUpdate(portableQuery.query, this.getDialect(context), this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.queryRelationManager, this.sqlQueryAdapter, this, this.subStatementSqlGenerator, this.utils, context);
-        let sql = sqlUpdate.toSQL(internalFragments, fieldMap, context);
+        let sql = sqlUpdate.toSQL(internalFragments, context);
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
         const numAffectedRows = await this.executeNative(sql, parameters, context);
-        this.observableQueryAdapter
-            .collectAffectedFieldsAndRepositoriesToRerunQueriesBy(portableQuery, fieldMap, context.transaction);
         return numAffectedRows;
     }
-    async find(portableQuery, internalFragments, context, cachedSqlQueryId) {
+    async find(portableQuery, internalFragments, context) {
         context = await this.ensureContext(context);
         const sqlQuery = this.getSQLQuery(portableQuery, context);
+        if (context.cachedSqlQuery) {
+            context.cachedSqlQuery.sqlQuery = sqlQuery;
+        }
         const sql = sqlQuery.toSQL(internalFragments, context);
         const parameters = sqlQuery.getParameters(portableQuery.parameterMap, context);
         let results = await this.findNative(sql, parameters, context);
@@ -34356,7 +34141,7 @@ Entity:          ${table.name}
                 throw new Error(`Unknown QueryResultType: ${resultType}`);
         }
     }
-    async findOne(portableQuery, internalFragments, context, cachedSqlQueryId) {
+    async findOne(portableQuery, internalFragments, context) {
         let results = await this.find(portableQuery, internalFragments, context);
         if (results.length > 1) {
             throw new Error(`Expecting a single result, got ${results.length}`);
@@ -34384,7 +34169,8 @@ Entity:          ${table.name}
         return splitValues;
     }
     async ensureContext(context) {
-        return doEnsureContext(context);
+        return this
+            .lookup.ensureContext(context);
     }
 }
 
@@ -34426,15 +34212,14 @@ fuelHydrantSystem.setDependencies(ObjectResultParserFactory, {
 });
 // fuelHydrantSystem.setDependencies(SqlStoreDriver as any, {
 STORE_DRIVER.setDependencies({
-    activeQueries: ActiveQueries,
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: APPLICATION_UTILS,
     appTrackerUtils: AppTrackerUtils,
     dbApplicationUtils: DbApplicationUtils,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
+    lookup: Lookup,
     objectResultParserFactory: ObjectResultParserFactory,
-    observableQueryAdapter: ObservableQueryAdapter,
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,
@@ -34457,6 +34242,237 @@ fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
     storeDriver: STORE_DRIVER,
     utils: Utils
 });
+
+class ActiveQueries {
+    get queries() {
+        return this.terminalStore.getQueries();
+    }
+    add(portableQuery, cachedSqlQuery) {
+        const serializedJSONQuery = JSON.stringify(portableQuery.query);
+        this.queries.set(serializedJSONQuery, cachedSqlQuery);
+    }
+    remove(portableQuery) {
+        const serializedJSONQuery = JSON.stringify(portableQuery.query);
+        this.queries.delete(serializedJSONQuery);
+    }
+    async markQueriesToRerun(allModifiedColumnsMap, trackedRepoLocalIdSet, context) {
+        const repositoryLocalIdMapByGUIDs = this.terminalStore
+            .getRepositoryLocalIdMapByGUIDs();
+        const missingRepositoryGUIDSet = new Set();
+        for (const cachedSqlQuery of this.queries.values()) {
+            for (const repositoryGUID of cachedSqlQuery.trackedRepoGUIDSet.values()) {
+                if (!repositoryLocalIdMapByGUIDs.has(repositoryGUID)) {
+                    missingRepositoryGUIDSet.add(repositoryGUID);
+                }
+            }
+        }
+        if (missingRepositoryGUIDSet.size) {
+            const repositories = await this.repositoryDao
+                .findByGUIDs(Array.from(missingRepositoryGUIDSet), context);
+            const repositoryGUIDMapByLocalIds = this.terminalStore
+                .getRepositoryGUIDMapByLocalIds();
+            for (const repository of repositories) {
+                repositoryGUIDMapByLocalIds.set(repository._localId, repository.GUID);
+                repositoryLocalIdMapByGUIDs.set(repository.GUID, repository._localId);
+            }
+        }
+        for (const cachedSqlQuery of this.queries.values()) {
+            cachedSqlQuery.rerun = this.shouldQueryBeRerun(cachedSqlQuery, allModifiedColumnsMap, trackedRepoLocalIdSet);
+        }
+    }
+    shouldQueryBeRerun(cachedSqlQuery, allModifiedColumnsMap, trackedRepoLocalIdSet) {
+        if (cachedSqlQuery.rerun) {
+            // already marked to be re-run
+            return true;
+        }
+        if (!allModifiedColumnsMap.intersects(cachedSqlQuery.sqlQuery.getAllModifiedColumnsMap())) {
+            return false;
+        }
+        if ((!cachedSqlQuery.trackedRepoGUIDSet.size
+            && cachedSqlQuery.trackedRepoLocalIdSet.size)
+            || !trackedRepoLocalIdSet.size) {
+            return true;
+        }
+        const repositoryGUIDMapByLocalIds = this.terminalStore
+            .getRepositoryGUIDMapByLocalIds();
+        for (const repositoryLocalId of trackedRepoLocalIdSet.values()) {
+            if (cachedSqlQuery.trackedRepoLocalIdSet.has(repositoryLocalId)) {
+                return true;
+            }
+            const repositoryGUID = repositoryGUIDMapByLocalIds.get(repositoryLocalId);
+            if (cachedSqlQuery.trackedRepoGUIDSet.has(repositoryGUID)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    rerunQueries() {
+        // Add a bit of a wait to let any query-subscribed screens that are closing after
+        // a mutation operation to un-subscribe from those queries.
+        setTimeout(() => {
+            this.queries.forEach((cachedSqlQuery) => {
+                if (cachedSqlQuery.rerun) {
+                    cachedSqlQuery.rerun = false;
+                    cachedSqlQuery.runQuery();
+                }
+            });
+        }, 100);
+    }
+    clearQueriesToRerun() {
+        this.queries.forEach((cachedSqlQuery) => {
+            cachedSqlQuery.rerun = false;
+        });
+    }
+}
+
+class ObservableQueryAdapter {
+    constructor() {
+        this.queriedRepositoryIds = {
+            GUIDSet: new Set(),
+            localIdSet: new Set()
+        };
+        this.repositoryExistenceCheckInProgress = false;
+    }
+    async checkExistenceOfQueriedRepositories() {
+        try {
+            if (!this.queriedRepositoryIds.GUIDSet.size && !this.queriedRepositoryIds.localIdSet.size) {
+                return;
+            }
+            if (this.repositoryExistenceCheckInProgress) {
+                return;
+            }
+            this.repositoryExistenceCheckInProgress = true;
+            await this.transactionManager.transactInternal(async (_transaction, context) => {
+                await this.doCheckExistenceOfQueriedRepositories(context);
+            }, null, {});
+        }
+        catch (e) {
+            console.error('Error checking Repositor existence');
+            console.error(e);
+        }
+        finally {
+            this.repositoryExistenceCheckInProgress = false;
+        }
+    }
+    async doCheckExistenceOfQueriedRepositories(context) {
+        const locallyPresentRepositories = await this.repositoryDao
+            .findByGUIDsAndLocalIds(Array.from(this.queriedRepositoryIds.GUIDSet), Array.from(this.queriedRepositoryIds.localIdSet), context);
+        const locallyPresentRepositoryMapByGUID = new Map();
+        const locallyPresentRepositoryMapByLocalId = new Map();
+        for (const localyPresentRepository of locallyPresentRepositories) {
+            locallyPresentRepositoryMapByGUID.set(localyPresentRepository.GUID, localyPresentRepository);
+            locallyPresentRepositoryMapByLocalId.set(localyPresentRepository._localId, localyPresentRepository);
+        }
+        const locallyMissingRepositoryGUIDSet = new Set();
+        for (const repositoryGUIDToCheck of this.queriedRepositoryIds.GUIDSet.values()) {
+            const locallyPresentRepository = locallyPresentRepositoryMapByGUID
+                .get(repositoryGUIDToCheck);
+            if (!locallyPresentRepository || !locallyPresentRepository.isLoaded) {
+                locallyMissingRepositoryGUIDSet.add(repositoryGUIDToCheck);
+            }
+        }
+        for (const repositoryLocalId of this.queriedRepositoryIds.localIdSet.values()) {
+            const locallyPresentRepository = locallyPresentRepositoryMapByLocalId
+                .get(repositoryLocalId);
+            if (!locallyPresentRepository) {
+                throw new Error(`Did not find a repository with _localId '${repositoryLocalId}'.`);
+            }
+            if (!locallyPresentRepository.isLoaded) {
+                locallyMissingRepositoryGUIDSet.add(locallyPresentRepository.GUID);
+            }
+        }
+        for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
+            await this.repositoryLoader.loadRepository(locallyMissingRepositoryGUID, {
+                ...context,
+                doNotLoadReferences: true
+            });
+        }
+        this.queriedRepositoryIds.GUIDSet.clear();
+        this.queriedRepositoryIds.localIdSet.clear();
+    }
+    wrapInObservable(portableQuery, queryCallback, context) {
+        // TODO: checking for presence of a Repository in an Observable
+        // await this.ensureRepositoryPresenceAndCurrentState(context)
+        let resultsSubject = new Subject();
+        // FIXME: Remove the query for the list of cached queries, that are checked every
+        //       time a mutation operation is run
+        // let resultsSubject                 = new Subject<E>(() => {
+        // 	if (resultsSubject.subscriptions.length < 1) {
+        // 					// Remove the query for the list of cached queries, that are checked every
+        // 					// time a mutation operation is run
+        // 					this.activeQueries.remove(portableQuery)
+        // 	}
+        // });
+        let trackedRepoGUIDSet = this
+            .trackedRepoGUIDArrayToSet(portableQuery.trackedRepoGUIDs);
+        let trackedRepoLocalIdSet = this
+            .trackedRepoLocalIdArrayToSet(portableQuery.trackedRepoLocalIds);
+        let cachedSqlQuery = {
+            portableQuery,
+            resultsSubject,
+            runQuery: () => {
+                queryCallback().then(augmentedResult => {
+                    resultsSubject.next(augmentedResult);
+                });
+            },
+            trackedRepoGUIDSet,
+            trackedRepoLocalIdSet
+        };
+        context.cachedSqlQuery = cachedSqlQuery;
+        this.activeQueries.add(portableQuery, cachedSqlQuery);
+        cachedSqlQuery.runQuery();
+        return resultsSubject;
+    }
+    trackedRepoGUIDArrayToSet(trackedRepoGUIDs) {
+        let trackedRepoGUIDSet = new Set();
+        if (!(trackedRepoGUIDs instanceof Array) || !trackedRepoGUIDs.length) {
+            return trackedRepoGUIDSet;
+        }
+        for (const trackedRepoGUID of trackedRepoGUIDs) {
+            if (typeof trackedRepoGUID !== 'string') {
+                throw new Error(`Invalid Repository GUID`);
+            }
+            trackedRepoGUIDSet.add(trackedRepoGUID);
+        }
+        return trackedRepoGUIDSet;
+    }
+    trackedRepoLocalIdArrayToSet(trackedRepoLocalIds) {
+        let trackedRepoLocalIdSet = new Set();
+        if (!(trackedRepoLocalIds instanceof Array) || !trackedRepoLocalIds.length) {
+            return trackedRepoLocalIdSet;
+        }
+        for (const trackedRepoLocalId of trackedRepoLocalIds) {
+            if (typeof trackedRepoLocalId !== 'number') {
+                throw new Error(`Invalid Repository Local Id`);
+            }
+            trackedRepoLocalIdSet.add(trackedRepoLocalId);
+        }
+        return trackedRepoLocalIdSet;
+    }
+}
+
+const flightNumber = lib('flight-number');
+flightNumber.register(ActiveQueries);
+const OBSERVABLE_QUERY_ADAPTER = flightNumber.token('ObservableQueryAdapter');
+flightNumber.setDependencies(ActiveQueries, {
+    terminalStore: TerminalStore
+});
+OBSERVABLE_QUERY_ADAPTER.setClass(ObservableQueryAdapter);
+OBSERVABLE_QUERY_ADAPTER.setDependencies({
+    activeQueries: ActiveQueries,
+    repositoryDao: RepositoryDao,
+    transactionManager: TRANSACTION_MANAGER
+});
+globalThis.OBSERVABLE_QUERY_ADAPTER = OBSERVABLE_QUERY_ADAPTER;
+
+setTimeout(() => {
+    if (globalThis.repositoryAutoload !== false) {
+        setInterval(() => {
+            globalThis.IOC.get(globalThis.OBSERVABLE_QUERY_ADAPTER).then(observableQueryAdapter => observableQueryAdapter
+                .checkExistenceOfQueriedRepositories().then());
+        }, 300);
+    }
+}, 2000);
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -35077,29 +35093,29 @@ class InternalTransactionalConnector {
 Interal Application API requests should be made directly (since
 they are internal to the AIRport framework).`);
     }
-    async find(portableQuery, context, cachedSqlQueryId) {
+    async find(portableQuery, context) {
         return await this.transactionalServer.find(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
-        }, cachedSqlQueryId);
+        });
     }
-    async findOne(portableQuery, context, cachedSqlQueryId) {
+    async findOne(portableQuery, context) {
         return await this.transactionalServer.findOne(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
-        }, cachedSqlQueryId);
+        });
     }
-    search(portableQuery, context, cachedSqlQueryId) {
+    search(portableQuery, context) {
         return this.transactionalServer.search(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
-        }, cachedSqlQueryId);
+        });
     }
-    searchOne(portableQuery, context, cachedSqlQueryId) {
+    searchOne(portableQuery, context) {
         return this.transactionalServer.searchOne(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
-        }, cachedSqlQueryId);
+        });
     }
     async save(entity, context) {
         return await this.transactionalServer.save(entity, this.terminalStore.getInternalConnector().internalCredentials, {
@@ -35599,25 +35615,25 @@ class TransactionalServer {
     async init(context = {}) {
         return await this.transactionManager.initialize('airport', context);
     }
-    async find(portableQuery, credentials, context, cachedSqlQueryId) {
+    async find(portableQuery, credentials, context) {
         if (context.transaction || credentials.transactionId) {
             this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
-        return await this.queryManager.find(portableQuery, context, cachedSqlQueryId);
+        return await this.queryManager.find(portableQuery, context);
     }
-    async findOne(portableQuery, credentials, context, cachedSqlQueryId) {
+    async findOne(portableQuery, credentials, context) {
         if (context.transaction || credentials.transactionId) {
             this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
-        return await this.queryManager.findOne(portableQuery, context, cachedSqlQueryId);
+        return await this.queryManager.findOne(portableQuery, context);
     }
-    search(portableQuery, credentials, context, cachedSqlQueryId) {
+    search(portableQuery, credentials, context) {
         if (context.transaction || credentials.transactionId) {
             this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
         return this.queryManager.search(portableQuery, context);
     }
-    searchOne(portableQuery, credentials, context, cachedSqlQueryId) {
+    searchOne(portableQuery, credentials, context) {
         if (context.transaction || credentials.transactionId) {
             this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
@@ -36017,6 +36033,12 @@ class DeleteManager {
                 for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
                     const repositoryTransactionHistory = await this.historyManager.getRepositoryTransactionHistory(transaction.transactionHistory, repositoryId, actor, null, context);
                     const operationHistory = this.repositoryTransactionHistoryDuo.startOperation(repositoryTransactionHistory, systemWideOperationId, ChangeType.DELETE_ROWS, dbEntity, rootTransaction);
+                    if (dbEntity.isLocal) {
+                        if (transaction.transactionHistory) {
+                            transaction.transactionHistory.allModifiedColumnsMap
+                                .ensureEntity(dbEntity, true);
+                        }
+                    }
                     for (const recordToDelete of entityRecordsToDeleteForRepo) {
                         const recordHistory = this.operationHistoryDuo.startRecordHistory(operationHistory, recordToDelete.actor._localId, recordToDelete._actorRecordId);
                         for (const dbProperty of dbEntity.properties) {
@@ -36171,7 +36193,13 @@ appears more than once in the Columns clause`);
         if ((!transaction.isSync || context.generateOnSync) && ensureGeneratedValues) {
             _localIds = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix);
         }
-        if (!dbEntity.isLocal && !transaction.isSync) {
+        if (dbEntity.isLocal) {
+            if (transaction.transactionHistory) {
+                transaction.transactionHistory.allModifiedColumnsMap
+                    .ensureEntity(dbEntity, true);
+            }
+        }
+        else if (!transaction.isSync) {
             await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, transaction, rootTransaction, context);
         }
         const numberOfInsertedRecords = await transaction.insertValues(portableQuery, context);
@@ -36495,25 +36523,25 @@ and cannot have NULL values.`);
 }
 
 class QueryManager {
-    async find(portableQuery, context, cachedSqlQueryId) {
+    async find(portableQuery, context) {
         await this.ensureRepositoryPresenceAndCurrentState(context);
-        const entityArray = await this.storeDriver.find(portableQuery, {}, context, cachedSqlQueryId);
+        const entityArray = await this.storeDriver.find(portableQuery, {}, context);
         if (!entityArray || !entityArray.length) {
             return entityArray;
         }
         await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, entityArray, context);
         return entityArray;
     }
-    async findOne(portableQuery, context, cachedSqlQueryId) {
+    async findOne(portableQuery, context) {
         await this.ensureRepositoryPresenceAndCurrentState(context);
-        const entity = await this.storeDriver.findOne(portableQuery, {}, context, cachedSqlQueryId);
+        const entity = await this.storeDriver.findOne(portableQuery, {}, context);
         if (!entity) {
             return entity;
         }
         await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [entity], context);
         return entity;
     }
-    search(portableQuery, context, cachedSqlQueryId) {
+    search(portableQuery, context) {
         return this.observableQueryAdapter.wrapInObservable(portableQuery, () => {
             return this.storeDriver.find(portableQuery, {}, context)
                 .then((result) => {
@@ -36522,9 +36550,9 @@ class QueryManager {
                 }
                 return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, result, context);
             });
-        });
+        }, context);
     }
-    searchOne(portableQuery, context, cachedSqlQueryId) {
+    searchOne(portableQuery, context) {
         return this.observableQueryAdapter.wrapInObservable(portableQuery, () => {
             return this.storeDriver.findOne(portableQuery, {}, context)
                 .then((result) => {
@@ -36533,7 +36561,7 @@ class QueryManager {
                 }
                 return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [result], context)[0];
             });
-        });
+        }, context);
     }
     async ensureRepositoryPresenceAndCurrentState(context) {
         if (context.repository && context.repository.GUID) {
@@ -36693,8 +36721,8 @@ class TransactionManager extends AbstractMutationManager {
         const $observable = $internalSubject.pipe(finalize(() => { unsubscribeCallback(); }), share());
         this.transactInternal(async (_transaction, context) => {
             const $internalResults = await callback(context);
-            const internalResultsSubscription = $internalResults.subscribe(repositories => {
-                return $internalSubject.next(repositories);
+            const internalResultsSubscription = $internalResults.subscribe(results => {
+                return $internalSubject.next(results);
             });
             unsubscribeCallback = () => {
                 internalResultsSubscription.unsubscribe();
@@ -36865,11 +36893,18 @@ parent transactions.
             let transactionHistory = transaction.transactionHistory;
             if (!parentTransaction && !context.doNotRecordHistory && !transaction.isSync
                 && transactionHistory.repositoryTransactionHistories.length) {
-                const { historiesToSend, messages } = await this.synchronizationOutManager.getSynchronizationMessages(transactionHistory.repositoryTransactionHistories, context);
-                await transaction.commit(null, context);
-                if (transactionHistory.allRecordHistory.length) {
-                    await this.synchronizationOutManager.sendMessages(historiesToSend, messages, context);
+                await this.activeQueries.markQueriesToRerun(transactionHistory.allModifiedColumnsMap, transactionHistory.modifiedRepository_LocalIdSet, context);
+                if (!transaction.isSync) {
+                    const { historiesToSend, messages } = await this.synchronizationOutManager.getSynchronizationMessages(transactionHistory.repositoryTransactionHistories, context);
+                    await transaction.commit(null, context);
+                    if (transactionHistory.allRecordHistory.length) {
+                        await this.synchronizationOutManager.sendMessages(historiesToSend, messages, context);
+                    }
                 }
+                else {
+                    await transaction.commit(null, context);
+                }
+                this.activeQueries.rerunQueries();
             }
             else {
                 await transaction.commit(null, context);
@@ -36888,6 +36923,7 @@ parent transactions.
         }
     }
     async clearUserSessionRootTransaction(transaction) {
+        this.activeQueries.clearQueriesToRerun();
         // Internal calls don't maintain rootTransaction and can create more than
         // one repository at a time.  APIs exposed externally will never be top
         // level transactions
@@ -36933,6 +36969,13 @@ parent transactions.
             .remoteRepositoryMemberAcceptances.concat(childTransactionHistory.remoteRepositoryMemberAcceptances);
         parentTransactionHistory.remoteRepositoryMemberInvitations = parentTransactionHistory
             .remoteRepositoryMemberInvitations.concat(childTransactionHistory.remoteRepositoryMemberInvitations);
+        parentTransactionHistory.allModifiedColumnsMap
+            .merge(childTransactionHistory.allModifiedColumnsMap);
+        parentTransactionHistory.modifiedRepository_LocalIdSet
+            = new Set([
+                ...parentTransactionHistory.modifiedRepository_LocalIdSet,
+                ...childTransactionHistory.modifiedRepository_LocalIdSet
+            ]);
     }
     checkForCircularDependencies(transaction, credentials) {
         if (this.appTrackerUtils.isInternalDomain(credentials.domain)) {
@@ -37012,11 +37055,11 @@ ${callHerarchy}
             return;
         }
         const transactionHistoryIds = await this.idGenerator.generateTransactionHistory_LocalIds(transactionHistory.repositoryTransactionHistories.length, transactionHistory.allOperationHistory.length, transactionHistory.allRecordHistory.length);
-        let applicationMap = transactionHistory.applicationMap;
-        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.TransactionHistory.__driver__.dbEntity, true);
+        let allModifiedColumnsMap = transactionHistory.allModifiedColumnsMap;
+        allModifiedColumnsMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.TransactionHistory.__driver__.dbEntity, true);
         transactionHistory._localId = transactionHistoryIds.transactionHistory_LocalId;
         await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.TransactionHistory, [transactionHistory], context);
-        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory.__driver__.dbEntity, true);
+        allModifiedColumnsMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory.__driver__.dbEntity, true);
         transactionHistory.repositoryTransactionHistories.forEach((repositoryTransactionHistory, index) => {
             repositoryTransactionHistory._localId = transactionHistoryIds.repositoryHistory_LocalIds[index];
             repositoryTransactionHistory.transactionHistory = transactionHistory;
@@ -37036,22 +37079,22 @@ ${callHerarchy}
         if (!transactionHistory.allRecordHistory.length) {
             return;
         }
-        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.OperationHistory.__driver__.dbEntity, true);
+        allModifiedColumnsMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.OperationHistory.__driver__.dbEntity, true);
         transactionHistory.allOperationHistory.forEach((operationHistory, index) => {
             operationHistory._localId = transactionHistoryIds.operationHistory_LocalIds[index];
         });
         await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.OperationHistory, transactionHistory.allOperationHistory, context);
-        applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RecordHistory.__driver__.dbEntity, true);
+        allModifiedColumnsMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RecordHistory.__driver__.dbEntity, true);
         transactionHistory.allRecordHistory.forEach((recordHistory, index) => {
             recordHistory._localId = transactionHistoryIds.recordHistory_LocalIds[index];
         });
         await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.RecordHistory, transactionHistory.allRecordHistory, context);
         if (transactionHistory.allRecordHistoryNewValues.length) {
-            applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryNewValue.__driver__.dbEntity, true);
+            allModifiedColumnsMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryNewValue.__driver__.dbEntity, true);
             await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues, context);
         }
         if (transactionHistory.allRecordHistoryOldValues.length) {
-            applicationMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryOldValue.__driver__.dbEntity, true);
+            allModifiedColumnsMap.ensureEntity(Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryOldValue.__driver__.dbEntity, true);
             await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues, context);
         }
     }
@@ -37087,7 +37130,13 @@ class UpdateManager {
         }
         const numUpdatedRows = await transaction
             .updateWhere(portableQuery, internalFragments, context);
-        if (!dbEntity.isLocal && !transaction.isSync) {
+        if (dbEntity.isLocal) {
+            if (transaction.transactionHistory) {
+                transaction.transactionHistory.allModifiedColumnsMap
+                    .ensureEntity(dbEntity, true);
+            }
+        }
+        else if (!transaction.isSync) {
             const previousDbEntity = context.dbEntity;
             context.dbEntity = dbEntity;
             // TODO: Entity based updates already have all of the new values being
@@ -38736,6 +38785,7 @@ TERMINAL_SESSION_MANAGER.setDependencies({
     userStore: UserStore
 });
 TRANSACTION_MANAGER.setDependencies({
+    activeQueries: ActiveQueries,
     appTrackerUtils: AppTrackerUtils,
     idGenerator: IdGenerator,
     repositoryMemberAcceptanceDao: RepositoryMemberAcceptanceDao,

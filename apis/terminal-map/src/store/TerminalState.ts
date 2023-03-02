@@ -5,9 +5,10 @@ import {
 import { Subject, Subscription } from 'rxjs'
 import { ITransaction } from '../transaction/ITransaction'
 import { ITransactionCredentials } from '../ICredentials'
-import { DbApplication_FullName, DbApplication, DbDomain, DbSequence, IActor, IAppTrackerUtils, ITerminal } from '@airport/ground-control'
+import { DbApplication_FullName, DbApplication, DbDomain, DbSequence, IActor, IAppTrackerUtils, ITerminal, Repository_LocalId, Repository_GUID } from '@airport/ground-control'
 import { IMessageInRecord } from './IApplicationState'
 import { ILastIds } from '@airport/air-traffic-control'
+import { CachedSQLQuery, IFieldMapped, SerializedJSONQuery } from '../terminal-map.index'
 
 export interface IReceiverState {
 	initializingApps: Set<DbApplication_FullName>
@@ -49,7 +50,7 @@ export interface IApplicationInitializerState {
 	initializingApplicationMap: Map<DbApplication_FullName, boolean>
 }
 
-export interface ITerminalState {
+export interface ITerminalState<FM extends IFieldMapped = IFieldMapped> {
 	applicationActors: IActor[]
 	applicationInitializer: IApplicationInitializerState
 	applicationMapByFullName: Map<DbApplication_FullName, DbApplication>
@@ -59,7 +60,10 @@ export interface ITerminalState {
 	internalConnector: InternalConnectorState
 	isServer: boolean
 	lastIds: ILastIds
+	queries: Map<SerializedJSONQuery, CachedSQLQuery<FM>>
 	receiver: IReceiverState
+	repositoryGUIDMapByLocalIds: Map<Repository_LocalId, Repository_GUID>
+	repositoryLocalIdMapByGUIDs: Map<Repository_GUID, Repository_LocalId>
 	sequenceGenerator: ISequenceGeneratorState
 	terminal: ITerminal
 	transactionManager: ITransactionManagerState
@@ -67,8 +71,8 @@ export interface ITerminalState {
 
 }
 
-export interface ITerminalStateContainer {
-	terminalState: Subject<ITerminalState>
+export interface ITerminalStateContainer<FM extends IFieldMapped = IFieldMapped> {
+	terminalState: Subject<ITerminalState<FM>>
 }
 
 @Injected()

@@ -73,7 +73,7 @@ import { QueryParameterDeserializer } from './serialize/QueryParameterDeserializ
 import { QueryResultsSerializer } from './serialize/QueryResultsSerializer'
 import { RepositoryManager } from './core/repository/RepositoryManager'
 import { IdGenerator } from '@airport/fuel-hydrant-system'
-import { ObservableQueryAdapter } from '@airport/flight-number'
+import { ActiveQueries, ObservableQueryAdapter } from '@airport/flight-number'
 import { RepositoryMaintenanceManager } from '@airbridge/sso/dist/app/bundle'
 
 const terminal = lib('terminal')
@@ -239,6 +239,7 @@ TERMINAL_SESSION_MANAGER.setDependencies({
 })
 
 TRANSACTION_MANAGER.setDependencies({
+    activeQueries: ActiveQueries,
     appTrackerUtils: AppTrackerUtils,
     idGenerator: IdGenerator,
     repositoryMemberAcceptanceDao: RepositoryMemberAcceptanceDao,

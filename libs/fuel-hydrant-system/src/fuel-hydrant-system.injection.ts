@@ -14,8 +14,8 @@ import { AppTrackerUtils, DatastructureUtils, DbApplicationUtils, ENTITY_STATE_M
 import {
     AIRPORT_DATABASE, QMetadataUtils, Utils
 } from '@airport/air-traffic-control'
-import { ActiveQueries, ObservableQueryAdapter } from '@airport/flight-number'
 import { QUERY_RELATION_MANAGER, QUERY_UTILS } from '@airport/tarmaq-query'
+import { Lookup } from '@airport/tarmaq-dao'
 
 const fuelHydrantSystem = lib('fuel-hydrant-system')
 
@@ -40,15 +40,14 @@ fuelHydrantSystem.setDependencies(ObjectResultParserFactory, {
 
 // fuelHydrantSystem.setDependencies(SqlStoreDriver as any, {
 STORE_DRIVER.setDependencies({
-    activeQueries: ActiveQueries,
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: APPLICATION_UTILS,
     appTrackerUtils: AppTrackerUtils,
     dbApplicationUtils: DbApplicationUtils,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
+    lookup: Lookup,
     objectResultParserFactory: ObjectResultParserFactory,
-    observableQueryAdapter: ObservableQueryAdapter,
     qMetadataUtils: QMetadataUtils,
     queryUtils: QUERY_UTILS,
     qValidator: QValidator,

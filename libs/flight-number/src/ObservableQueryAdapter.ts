@@ -1,8 +1,8 @@
 import { IRepositoryLoader } from "@airport/air-traffic-control";
 import { IContext, Inject, Injected } from "@airport/direction-indicator";
-import { IRepository, PortableQuery, Repository_GUID, Repository_LocalId, SyncApplicationMap } from "@airport/ground-control";
+import { IRepository, PortableQuery, Repository_GUID, Repository_LocalId } from "@airport/ground-control";
 import { IRepositoryDao } from '@airport/holding-pattern/dist/app/bundle'
-import { CachedSQLQuery, IFieldMapped, ITransaction, ITransactionManager } from "@airport/terminal-map";
+import { CachedSQLQuery, IFieldMapped, IQueryOperationContext, ITransactionManager } from "@airport/terminal-map";
 import { Observable, Subject } from "rxjs";
 import { ActiveQueries } from "./ActiveQueries";
 
@@ -10,17 +10,12 @@ export interface IObservableQueryAdapter {
 
     checkExistenceOfQueriedRepositories(): Promise<void>
 
-    collectAffectedFieldsAndRepositoriesToRerunQueriesBy(
-        portableQuery: PortableQuery,
-        fieldMap: SyncApplicationMap,
-        transaction: ITransaction
-    ): void
-
     wrapInObservable<E>(
         portableQuery: PortableQuery,
         queryCallback: {
             (): Promise<any>
-        }
+        },
+        context: IQueryOperationContext
     ): Observable<E>
 
 }
@@ -50,34 +45,6 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
         }
 
     repositoryExistenceCheckInProgress = false
-
-    collectAffectedFieldsAndRepositoriesToRerunQueriesBy(
-        portableQuery: PortableQuery,
-        fieldMap: SyncApplicationMap,
-        transaction: ITransaction
-    ): void {
-        transaction.fieldMap.merge(fieldMap)
-
-        const trackedRepoGUIDs = portableQuery.trackedRepoGUIDs
-        if (trackedRepoGUIDs instanceof Array) {
-            for (const trackedRepoGUID of trackedRepoGUIDs) {
-                if (typeof trackedRepoGUID !== 'string') {
-                    throw new Error(`Invalid Repository GUID`)
-                }
-                transaction.affectedRepository_GUIDSet.add(trackedRepoGUID)
-            }
-        }
-
-        const trackedRepoLocalIds = portableQuery.trackedRepoLocalIds
-        if (trackedRepoLocalIds instanceof Array) {
-            for (const trackedRepoLocalId of trackedRepoLocalIds) {
-                if (typeof trackedRepoLocalId !== 'number') {
-                    throw new Error(`Invalid Repository LocalId`)
-                }
-                transaction.affectedRepository_LocalIdSet.add(trackedRepoLocalId)
-            }
-        }
-    }
 
     async checkExistenceOfQueriedRepositories(): Promise<void> {
         try {
@@ -166,7 +133,8 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
         portableQuery: PortableQuery,
         queryCallback: {
             (): Promise<any>
-        }
+        },
+        context: IQueryOperationContext
     ): Observable<E> {
         // TODO: checking for presence of a Repository in an Observable
         // await this.ensureRepositoryPresenceAndCurrentState(context)
@@ -197,6 +165,7 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
             trackedRepoGUIDSet,
             trackedRepoLocalIdSet
         } as any as CachedSQLQuery<SQLQuery>;
+        context.cachedSqlQuery = cachedSqlQuery
 
         this.activeQueries.add(portableQuery, cachedSqlQuery);
 
@@ -210,7 +179,7 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
     ): Set<Repository_GUID> {
         let trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
         if (!(trackedRepoGUIDs instanceof Array) || !trackedRepoGUIDs.length) {
-            return
+            return trackedRepoGUIDSet
         }
 
         for (const trackedRepoGUID of trackedRepoGUIDs) {
@@ -228,7 +197,7 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
     ): Set<Repository_LocalId> {
         let trackedRepoLocalIdSet: Set<Repository_LocalId> = new Set()
         if (!(trackedRepoLocalIds instanceof Array) || !trackedRepoLocalIds.length) {
-            return
+            return trackedRepoLocalIdSet
         }
 
         for (const trackedRepoLocalId of trackedRepoLocalIds) {

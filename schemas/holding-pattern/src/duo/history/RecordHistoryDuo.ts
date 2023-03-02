@@ -110,10 +110,19 @@ export class RecordHistoryDuo
 		dbColumn: DbColumn,
 		value: any
 	): void {
+		const repositoryTransactionHistory = recordHistory
+			.operationHistory.repositoryTransactionHistory
+
 		if (this.dictionary.isRepositoryRelationColumn(dbColumn)) {
-			recordHistory.operationHistory.repositoryTransactionHistory
+			repositoryTransactionHistory
+				.modifiedRepository_LocalIdSet.add(value)
+			repositoryTransactionHistory.transactionHistory
 				.modifiedRepository_LocalIdSet.add(value)
 		}
+
+		repositoryTransactionHistory.transactionHistory
+			.allModifiedColumnsMap.ensureEntity(dbColumn.entity)
+			.ensure(dbColumn.index)
 	}
 
 }

@@ -22,11 +22,11 @@ export abstract class DistinguishableQuery
 	constructor(
 		entityAliases: IEntityAliases = new EntityAliases(),
 		trackedRepoGUIDSet?: Set<Repository_GUID>,
-		trackedRepoLidSet?: Set<Repository_LocalId>,
+		trackedRepoLocalIdSet?: Set<Repository_LocalId>,
 	) {
 		super(entityAliases,
 			entityAliases.getNewFieldColumnAliases(),
-			trackedRepoGUIDSet, trackedRepoLidSet)
+			trackedRepoGUIDSet, trackedRepoLocalIdSet)
 	}
 
 	protected rawToQuerySelectClause(

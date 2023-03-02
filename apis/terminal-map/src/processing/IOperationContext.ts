@@ -2,6 +2,7 @@ import { IContext } from "@airport/direction-indicator";
 import {
     DbEntity, IActor
 } from "@airport/ground-control";
+import { CachedSQLQuery } from "./IActiveQueries";
 
 export interface IOperationContext
     extends IContext {
@@ -15,4 +16,5 @@ export interface IOperationContext
 
 export interface IQueryOperationContext
     extends IOperationContext {
+    cachedSqlQuery?: CachedSQLQuery<any>
 }

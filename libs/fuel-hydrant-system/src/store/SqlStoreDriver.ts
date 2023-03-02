@@ -8,9 +8,6 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IObservableQueryAdapter
-} from '@airport/flight-number';
-import {
 	DbApplication_Name,
 	DbApplication,
 	DbEntity,
@@ -32,12 +29,11 @@ import {
 	SQLDataType,
 	StoreType,
 	IAppTrackerUtils,
-	SyncApplicationMap,
 	IApplicationUtils,
 	Dictionary,
 } from '@airport/ground-control';
 import {
-	IActiveQueries,
+	IQueryOperationContext,
 	IStoreDriver,
 	ITransaction,
 	ITransactionContext,
@@ -60,7 +56,7 @@ import { IValidator } from '../validation/Validator';
 import { ISubStatementSqlGenerator } from '../sql/core/SubStatementSqlGenerator';
 import { IObjectResultParserFactory } from '../result/entity/ObjectResultParserFactory';
 import { IQueryUtils, IQueryRelationManager } from '@airport/tarmaq-query';
-import { doEnsureContext } from '@airport/tarmaq-dao';
+import { ILookup } from '@airport/tarmaq-dao';
 
 /**
  * Created by Papa on 9/9/2016.
@@ -68,9 +64,6 @@ import { doEnsureContext } from '@airport/tarmaq-dao';
 @Injected()
 export abstract class SqlStoreDriver
 	implements IStoreDriver {
-
-	@Inject()
-	activeQueries: IActiveQueries<SQLQuery<any>>
 
 	@Inject()
 	airportDatabase: IAirportDatabase
@@ -91,10 +84,10 @@ export abstract class SqlStoreDriver
 	entityStateManager: IEntityStateManager
 
 	@Inject()
-	objectResultParserFactory: IObjectResultParserFactory
+	lookup: ILookup
 
 	@Inject()
-	observableQueryAdapter: IObservableQueryAdapter
+	objectResultParserFactory: IObjectResultParserFactory
 
 	@Inject()
 	qMetadataUtils: IQMetadataUtils
@@ -258,10 +251,8 @@ Entity:          ${table.name}
 		context?: IFuelHydrantContext,
 	): Promise<void> {
 		await this.ensureContext(context)
-		let commitSucceeded = false
 		try {
 			await this.internalCommit(transaction)
-			commitSucceeded = true
 		} catch (e) {
 			console.error(e)
 			try {
@@ -272,11 +263,6 @@ Entity:          ${table.name}
 			throw e
 		} finally {
 			await this.tearDownTransaction(transaction, context)
-			if (commitSucceeded) {
-				this.activeQueries.rerunQueries(transaction.fieldMap)
-			} else {
-				this.activeQueries.clearQueriesToRerun()
-			}
 		}
 	}
 
@@ -297,7 +283,6 @@ Entity:          ${table.name}
 			// Do not re-throw the exception, rollback is final (at least for now)
 		} finally {
 			await this.tearDownTransaction(transaction, context)
-			this.activeQueries.clearQueriesToRerun()
 		}
 
 	}
@@ -317,8 +302,6 @@ Entity:          ${table.name}
 		if (!query || !query.VALUES || !query.VALUES.length) {
 			return 0
 		}
-
-		let fieldMap: SyncApplicationMap = new globalThis.SyncApplicationMap();
 		const splitValues = this.splitValues(query.VALUES, context);
 
 		let numVals = 0;
@@ -340,15 +323,11 @@ Entity:          ${table.name}
 				this.subStatementSqlGenerator,
 				this.utils,
 				context);
-			let sql = sqlInsertValues.toSQL(fieldMap, context);
+			let sql = sqlInsertValues.toSQL(context);
 			let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
 
 			numVals += await this.executeNative(sql, parameters, context);
 		}
-
-		this.observableQueryAdapter
-			.collectAffectedFieldsAndRepositoriesToRerunQueriesBy(
-				portableQuery, fieldMap, context.transaction)
 
 		return numVals;
 	}
@@ -357,7 +336,6 @@ Entity:          ${table.name}
 		portableQuery: PortableQuery,
 		context: IFuelHydrantContext,
 	): Promise<number> {
-		let fieldMap: SyncApplicationMap = new globalThis.SyncApplicationMap();
 		let sqlDelete = new SQLDelete(
 			<QueryDelete>portableQuery.query, this.getDialect(context),
 			this.dictionary,
@@ -373,13 +351,9 @@ Entity:          ${table.name}
 			this.subStatementSqlGenerator,
 			this.utils,
 			context);
-		let sql = sqlDelete.toSQL(fieldMap, context);
+		let sql = sqlDelete.toSQL(context);
 		let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
 		let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
-
-		this.observableQueryAdapter
-			.collectAffectedFieldsAndRepositoriesToRerunQueriesBy(
-				portableQuery, fieldMap, context.transaction)
 
 		return numberOfAffectedRecords;
 	}
@@ -389,7 +363,6 @@ Entity:          ${table.name}
 		internalFragments: InternalFragments,
 		context: IFuelHydrantContext,
 	): Promise<number> {
-		let fieldMap: SyncApplicationMap = new globalThis.SyncApplicationMap();
 		let sqlUpdate = new SQLUpdate(
 			<QueryUpdate<any>>portableQuery.query, this.getDialect(context),
 			this.dictionary,
@@ -405,14 +378,10 @@ Entity:          ${table.name}
 			this.subStatementSqlGenerator,
 			this.utils,
 			context);
-		let sql = sqlUpdate.toSQL(internalFragments, fieldMap, context);
+		let sql = sqlUpdate.toSQL(internalFragments, context);
 		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
 
 		const numAffectedRows = await this.executeNative(sql, parameters, context);
-
-		this.observableQueryAdapter
-			.collectAffectedFieldsAndRepositoriesToRerunQueriesBy(
-				portableQuery, fieldMap, context.transaction)
 
 		return numAffectedRows
 	}
@@ -420,11 +389,13 @@ Entity:          ${table.name}
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		context: IFuelHydrantContext,
-		cachedSqlQueryId?: number,
+		context: IFuelHydrantContext & IQueryOperationContext
 	): Promise<EntityArray> {
 		context = await this.ensureContext(context);
 		const sqlQuery = this.getSQLQuery(portableQuery, context);
+		if (context.cachedSqlQuery) {
+			context.cachedSqlQuery.sqlQuery = sqlQuery
+		}
 		const sql = sqlQuery.toSQL(internalFragments, context);
 		const parameters = sqlQuery.getParameters(portableQuery.parameterMap, context);
 
@@ -530,8 +501,7 @@ Entity:          ${table.name}
 	async findOne<E>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
-		context: IFuelHydrantContext,
-		cachedSqlQueryId?: number,
+		context: IFuelHydrantContext & IQueryOperationContext
 	): Promise<E> {
 		let results = await this.find(portableQuery, internalFragments, context);
 
@@ -602,8 +572,9 @@ Entity:          ${table.name}
 
 	protected async ensureContext(
 		context: IFuelHydrantContext
-	): Promise<IFuelHydrantContext> {
-		return <IFuelHydrantContext>doEnsureContext(context);
+	): Promise<IFuelHydrantContext & IQueryOperationContext> {
+		return <IFuelHydrantContext & IQueryOperationContext>this
+			.lookup.ensureContext(context);
 	}
 
 }

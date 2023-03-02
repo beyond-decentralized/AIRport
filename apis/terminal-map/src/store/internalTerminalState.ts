@@ -38,10 +38,13 @@ globalThis.internalTerminalState = new BehaviorSubject({
         applications: 0,
         applicationVersions: 0
     },
+    queries: new Map(),
     receiver: {
         initializedApps: new Set(),
         initializingApps: new Set(),
     },
+    repositoryGUIDMapByLocalIds: new Map(),
+    repositoryLocalIdMapByGUIDs: new Map(),
     sequenceGenerator: {
         sequences: [],
         sequenceBlocks: [],

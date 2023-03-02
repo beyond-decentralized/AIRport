@@ -15,10 +15,7 @@ import {
     StoreType,
     IActor,
     ITransactionHistory,
-    IRepositoryMember,
-    SyncApplicationMap,
-    Repository_GUID,
-    Repository_LocalId
+    IRepositoryMember
 } from '@airport/ground-control'
 import {
     IOperationContext,
@@ -35,12 +32,9 @@ export abstract class SqlTransaction
     actor: IActor
     childTransaction: ITransaction
     credentials: ITransactionCredentials
-    fieldMap: SyncApplicationMap = new SyncApplicationMap()
     id: string
     isSync = false
     newRepositoryMembers: IRepositoryMember[] = []
-    affectedRepository_GUIDSet: Set<Repository_GUID> = new Set()
-    affectedRepository_LocalIdSet: Set<Repository_LocalId> = new Set()
     updatedRepositoryMembers: IRepositoryMember[] = []
 
     transactionHistory: ITransactionHistory
@@ -179,19 +173,17 @@ export abstract class SqlTransaction
     async find<E, EntityArray extends Array<E>>(
         portableQuery: PortableQuery,
         internalFragments: InternalFragments,
-        context: IContext,
-        cachedSqlQueryId?: number,
+        context: IContext
     ): Promise<EntityArray> {
-        return await this.driver.find(portableQuery, internalFragments, context, cachedSqlQueryId)
+        return await this.driver.find(portableQuery, internalFragments, context)
     }
 
     async findOne<E>(
         portableQuery: PortableQuery,
         internalFragments: InternalFragments,
-        context: IContext,
-        cachedSqlQueryId?: number,
+        context: IContext
     ): Promise<E> {
-        return await this.driver.findOne(portableQuery, internalFragments, context, cachedSqlQueryId)
+        return await this.driver.findOne(portableQuery, internalFragments, context)
     }
 
     async findNative(

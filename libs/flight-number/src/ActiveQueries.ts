@@ -1,19 +1,30 @@
 import {
+	IContext,
+	Inject,
 	Injected
 } from '@airport/direction-indicator'
 import {
 	PortableQuery,
 	Repository_GUID,
-	SyncApplicationMap
+	Repository_LocalId,
+	SyncAllModifiedColumnsMap
 } from '@airport/ground-control'
-import { CachedSQLQuery, IActiveQueries, IFieldMapped, SerializedJSONQuery } from '@airport/terminal-map'
+import { IRepositoryDao } from '@airport/holding-pattern/dist/app/bundle'
+import { CachedSQLQuery, IActiveQueries, IFieldMapped, ITerminalStore, SerializedJSONQuery } from '@airport/terminal-map'
 
 @Injected()
 export class ActiveQueries<SQLQuery extends IFieldMapped>
 	implements IActiveQueries<SQLQuery> {
 
-	queries: Map<SerializedJSONQuery, CachedSQLQuery<SQLQuery>>
-		= new Map<SerializedJSONQuery, CachedSQLQuery<SQLQuery>>()
+	@Inject()
+	repositoryDao: IRepositoryDao
+
+	@Inject()
+	terminalStore: ITerminalStore
+
+	get queries(): Map<SerializedJSONQuery, CachedSQLQuery<SQLQuery>> {
+		return this.terminalStore.getQueries() as Map<SerializedJSONQuery, CachedSQLQuery<SQLQuery>>
+	}
 
 	add(
 		portableQuery: PortableQuery,
@@ -32,62 +43,93 @@ export class ActiveQueries<SQLQuery extends IFieldMapped>
 		this.queries.delete(serializedJSONQuery)
 	}
 
-	markQueriesToRerun(
-		applicationMap: SyncApplicationMap,
-		trackedRepoGUIDSet: Set<Repository_GUID>
-	): void {
-		this.queries.forEach((cachedSqlQuery) => {
+	async markQueriesToRerun(
+		allModifiedColumnsMap: SyncAllModifiedColumnsMap,
+		trackedRepoLocalIdSet: Set<Repository_LocalId>,
+		context: IContext
+	): Promise<void> {
+		const repositoryLocalIdMapByGUIDs = this.terminalStore
+			.getRepositoryLocalIdMapByGUIDs()
+		const missingRepositoryGUIDSet = new Set<Repository_GUID>()
+		for (const cachedSqlQuery of this.queries.values()) {
+			for (const repositoryGUID of cachedSqlQuery.trackedRepoGUIDSet.values()) {
+				if (!repositoryLocalIdMapByGUIDs.has(repositoryGUID)) {
+					missingRepositoryGUIDSet.add(repositoryGUID)
+				}
+			}
+		}
+		if (missingRepositoryGUIDSet.size) {
+			const repositories = await this.repositoryDao
+				.findByGUIDs(Array.from(missingRepositoryGUIDSet), context)
+			const repositoryGUIDMapByLocalIds = this.terminalStore
+				.getRepositoryGUIDMapByLocalIds()
+			for (const repository of repositories) {
+				repositoryGUIDMapByLocalIds.set(repository._localId, repository.GUID)
+				repositoryLocalIdMapByGUIDs.set(repository.GUID, repository._localId)
+			}
+		}
+
+		for (const cachedSqlQuery of this.queries.values()) {
 			cachedSqlQuery.rerun = this.shouldQueryBeRerun(
-				cachedSqlQuery, applicationMap, trackedRepoGUIDSet)
-		})
+				cachedSqlQuery, allModifiedColumnsMap, trackedRepoLocalIdSet)
+		}
 	}
 
 	private shouldQueryBeRerun(
 		cachedSqlQuery: CachedSQLQuery<SQLQuery>,
-		applicationMap: SyncApplicationMap,
-		trackedRepoGUIDSet: Set<Repository_GUID>,
+		allModifiedColumnsMap: SyncAllModifiedColumnsMap,
+		trackedRepoLocalIdSet: Set<Repository_LocalId>,
 	): boolean {
 		if (cachedSqlQuery.rerun) {
 			// already marked to be re-run
 			return true
 		}
 
-		if (!applicationMap.intersects(cachedSqlQuery.sqlQuery.getFieldMap())) {
+		if (!allModifiedColumnsMap.intersects(cachedSqlQuery.sqlQuery.getAllModifiedColumnsMap())) {
 			return false
 		}
 
-		if (!cachedSqlQuery.trackedRepoGUIDSet.size || !trackedRepoGUIDSet.size) {
+		if ((!cachedSqlQuery.trackedRepoGUIDSet.size
+			&& !cachedSqlQuery.trackedRepoLocalIdSet.size)
+			|| !trackedRepoLocalIdSet.size) {
 			return true
 		}
 
-		for (const repositoryGUID of trackedRepoGUIDSet.values()) {
+		const repositoryGUIDMapByLocalIds = this.terminalStore
+			.getRepositoryGUIDMapByLocalIds()
+		for (const repositoryLocalId of trackedRepoLocalIdSet.values()) {
+			if (cachedSqlQuery.trackedRepoLocalIdSet.has(repositoryLocalId)) {
+				return true
+			}
+			const repositoryGUID = repositoryGUIDMapByLocalIds.get(repositoryLocalId)
 			if (cachedSqlQuery.trackedRepoGUIDSet.has(repositoryGUID)) {
 				return true
 			}
+
 		}
 
 		return false
 	}
 
-	rerunQueries(
-		fieldMap: SyncApplicationMap
-	): void {
+	rerunQueries(): void {
 		// Add a bit of a wait to let any query-subscribed screens that are closing after
 		// a mutation operation to un-subscribe from those queries.
 		setTimeout(() => {
-			this.queries.forEach((cachedSqlQuery) => {
+			for (const cachedSqlQuery of this.queries.values()) {
 				if (cachedSqlQuery.rerun) {
 					cachedSqlQuery.rerun = false
 					cachedSqlQuery.runQuery()
 				}
-			})
+			}
 		}, 100)
 	}
 
 	clearQueriesToRerun(): void {
-		this.queries.forEach((cachedSqlQuery) => {
-			cachedSqlQuery.rerun = false
-		})
+		setTimeout(() => {
+			for (const cachedSqlQuery of this.queries.values()) {
+				cachedSqlQuery.rerun = false
+			}
+		}, 101)
 	}
 
 }

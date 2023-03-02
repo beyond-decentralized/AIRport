@@ -186,7 +186,12 @@ appears more than once in the Columns clause`)
 				systemWideOperationId, errorPrefix)
 		}
 
-		if (!dbEntity.isLocal && !transaction.isSync) {
+		if (dbEntity.isLocal) {
+			if (transaction.transactionHistory) {
+				transaction.transactionHistory.allModifiedColumnsMap
+					.ensureEntity(dbEntity, true)
+			}
+		} else if (!transaction.isSync) {
 			await this.addInsertHistory(
 				dbEntity, portableQuery, actor, systemWideOperationId,
 				transaction, rootTransaction, context)

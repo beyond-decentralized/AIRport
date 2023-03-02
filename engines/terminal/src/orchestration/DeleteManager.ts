@@ -240,13 +240,20 @@ export class DeleteManager
 
 				for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
 					const repositoryTransactionHistory = await this.historyManager.getRepositoryTransactionHistory(
-						transaction.transactionHistory, repositoryId,  actor, null, context
+						transaction.transactionHistory, repositoryId, actor, null, context
 					)
 
 					const operationHistory = this.repositoryTransactionHistoryDuo.startOperation(
 						repositoryTransactionHistory, systemWideOperationId,
 						ChangeType.DELETE_ROWS, dbEntity,
 						rootTransaction)
+
+					if (dbEntity.isLocal) {
+						if (transaction.transactionHistory) {
+							transaction.transactionHistory.allModifiedColumnsMap
+								.ensureEntity(dbEntity, true)
+						}
+					}
 
 					for (const recordToDelete of entityRecordsToDeleteForRepo) {
 						const recordHistory = this.operationHistoryDuo.startRecordHistory(

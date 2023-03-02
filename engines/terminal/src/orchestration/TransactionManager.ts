@@ -22,6 +22,7 @@ import {
 } from '@airport/holding-pattern/dist/app/bundle';
 import { IQEntityInternal } from '@airport/tarmaq-query';
 import {
+	IActiveQueries,
 	IStoreDriver,
 	ITerminalSessionManager,
 	ITerminalStore,
@@ -40,6 +41,9 @@ import { AbstractMutationManager } from './AbstractMutationManager';
 export class TransactionManager
 	extends AbstractMutationManager
 	implements ITransactionManager {
+
+	@Inject()
+	activeQueries: IActiveQueries<any>
 
 	@Inject()
 	appTrackerUtils: IAppTrackerUtils
@@ -351,25 +355,38 @@ parent transactions.
 				}
 			}
 
-
 			let transactionHistory = transaction.transactionHistory
 			if (!parentTransaction && !context.doNotRecordHistory && !transaction.isSync
 				&& transactionHistory.repositoryTransactionHistories.length) {
-				const {
-					historiesToSend,
-					messages
-				} = await this.synchronizationOutManager.getSynchronizationMessages(
-					transactionHistory.repositoryTransactionHistories, context
-				)
-				await transaction.commit(null, context)
 
-				if (transactionHistory.allRecordHistory.length) {
-					await this.synchronizationOutManager.sendMessages(
+				await this.activeQueries.markQueriesToRerun(
+					transactionHistory.allModifiedColumnsMap,
+					transactionHistory.modifiedRepository_LocalIdSet,
+					context
+				)
+
+				if (!transaction.isSync) {
+					const {
 						historiesToSend,
-						messages,
-						context
+						messages
+					} = await this.synchronizationOutManager.getSynchronizationMessages(
+						transactionHistory.repositoryTransactionHistories, context
 					)
+
+					await transaction.commit(null, context)
+
+					if (transactionHistory.allRecordHistory.length) {
+						await this.synchronizationOutManager.sendMessages(
+							historiesToSend,
+							messages,
+							context
+						)
+					}
+				} else {
+					await transaction.commit(null, context)
 				}
+
+				this.activeQueries.rerunQueries()
 			} else {
 				await transaction.commit(null, context)
 			}
@@ -391,6 +408,8 @@ parent transactions.
 	private async clearUserSessionRootTransaction(
 		transaction: ITransaction
 	): Promise<void> {
+		this.activeQueries.clearQueriesToRerun()
+
 		// Internal calls don't maintain rootTransaction and can create more than
 		// one repository at a time.  APIs exposed externally will never be top
 		// level transactions
@@ -441,6 +460,14 @@ parent transactions.
 			.remoteRepositoryMemberAcceptances.concat(childTransactionHistory.remoteRepositoryMemberAcceptances)
 		parentTransactionHistory.remoteRepositoryMemberInvitations = parentTransactionHistory
 			.remoteRepositoryMemberInvitations.concat(childTransactionHistory.remoteRepositoryMemberInvitations)
+		parentTransactionHistory.allModifiedColumnsMap
+			.merge(childTransactionHistory.allModifiedColumnsMap)
+			parentTransactionHistory.modifiedRepository_LocalIdSet
+			 = new Set([
+				...parentTransactionHistory.modifiedRepository_LocalIdSet,
+				...childTransactionHistory.modifiedRepository_LocalIdSet
+			 ])
+
 	}
 
 	private checkForCircularDependencies(
@@ -560,15 +587,13 @@ ${callHerarchy}
 			transactionHistory.allRecordHistory.length
 		);
 
-
-		let applicationMap = transactionHistory.applicationMap;
-
-		applicationMap.ensureEntity((<IQEntityInternal><any>Q.TransactionHistory).__driver__.dbEntity, true);
+		let allModifiedColumnsMap = transactionHistory.allModifiedColumnsMap;
+		allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.TransactionHistory).__driver__.dbEntity, true);
 		transactionHistory._localId = transactionHistoryIds.transactionHistory_LocalId;
 		await this.doInsertValues(transaction, Q.TransactionHistory,
 			[transactionHistory], context);
 
-		applicationMap.ensureEntity((<IQEntityInternal><any>Q.RepositoryTransactionHistory).__driver__.dbEntity, true);
+		allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.RepositoryTransactionHistory).__driver__.dbEntity, true);
 		transactionHistory.repositoryTransactionHistories.forEach((
 			repositoryTransactionHistory,
 			index,
@@ -607,7 +632,7 @@ ${callHerarchy}
 			return;
 		}
 
-		applicationMap.ensureEntity((<IQEntityInternal><any>Q.OperationHistory).__driver__.dbEntity, true);
+		allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.OperationHistory).__driver__.dbEntity, true);
 		transactionHistory.allOperationHistory.forEach((
 			operationHistory,
 			index,
@@ -617,7 +642,7 @@ ${callHerarchy}
 		await this.doInsertValues(transaction, Q.OperationHistory,
 			transactionHistory.allOperationHistory, context);
 
-		applicationMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistory).__driver__.dbEntity, true);
+		allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistory).__driver__.dbEntity, true);
 		transactionHistory.allRecordHistory.forEach((
 			recordHistory,
 			index,
@@ -629,14 +654,14 @@ ${callHerarchy}
 			transactionHistory.allRecordHistory, context);
 
 		if (transactionHistory.allRecordHistoryNewValues.length) {
-			applicationMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryNewValue).__driver__.dbEntity, true);
+			allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryNewValue).__driver__.dbEntity, true);
 			await this.doInsertValues(transaction,
 				Q.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues,
 				context);
 		}
 
 		if (transactionHistory.allRecordHistoryOldValues.length) {
-			applicationMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryOldValue).__driver__.dbEntity, true);
+			allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryOldValue).__driver__.dbEntity, true);
 			await this.doInsertValues(transaction,
 				Q.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues,
 				context);
