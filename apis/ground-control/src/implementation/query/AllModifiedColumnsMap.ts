@@ -7,7 +7,7 @@ import { DbApplicationVersion_LocalId } from "../../definition/application/DbApp
 import { ColumnMap } from "./ColumnMap";
 import { TableMap } from "./TableMap";
 
-export class ApplicationMap {
+export class AllModifiedColumnsMap {
 
 	constructor(
 		public applicationMap: { [applicationVersion_localId: string]: TableMap } = {}
@@ -50,4 +50,4 @@ export class ApplicationMap {
 	}
 
 }
-globalThis.ApplicationMap = ApplicationMap
+globalThis.AllModifiedColumnsMap = AllModifiedColumnsMap

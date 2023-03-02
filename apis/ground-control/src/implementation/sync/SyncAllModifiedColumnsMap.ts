@@ -1,11 +1,11 @@
 import { DbApplication_Index } from "../../definition/application/DbApplication";
 import { DbEntity } from "../../definition/application/DbEntity";
-import { ApplicationMap } from "../query/ApplicationMap";
+import { AllModifiedColumnsMap } from "../query/AllModifiedColumnsMap";
 import { TableMap } from "../query/TableMap";
 import { SyncColumnMap } from "./SyncColumnMap";
 import { SyncTableMap } from "./SyncTableMap";
 
-export class SyncApplicationMap extends ApplicationMap {
+export class SyncAllModifiedColumnsMap extends AllModifiedColumnsMap {
 
 	constructor(
 		applicationMap?: { [applicationIndex: DbApplication_Index]: TableMap }
@@ -21,13 +21,13 @@ export class SyncApplicationMap extends ApplicationMap {
 	}
 
 	intersects(
-		fieldMap: ApplicationMap
+		allModifiedColumnsMap: AllModifiedColumnsMap
 	): boolean {
 		for (const applicationIndex in this.applicationMap) {
-			if (fieldMap.applicationMap[applicationIndex]) {
+			if (allModifiedColumnsMap.applicationMap[applicationIndex]) {
 				const syncTableMap: SyncTableMap = new globalThis.SyncTableMap(
 					parseInt(applicationIndex), this.applicationMap[applicationIndex].tableMap);
-				if (syncTableMap.intersects(fieldMap.applicationMap[applicationIndex])) {
+				if (syncTableMap.intersects(allModifiedColumnsMap.applicationMap[applicationIndex])) {
 					return true;
 				}
 			}
@@ -36,11 +36,11 @@ export class SyncApplicationMap extends ApplicationMap {
 	}
 
 	merge(
-		fieldMap: ApplicationMap
+		allModifiedColumnsMap: AllModifiedColumnsMap
 	): void {
-		for (const applicationIndex in fieldMap.applicationMap) {
+		for (const applicationIndex in allModifiedColumnsMap.applicationMap) {
 			const tableMap = this.applicationMap[applicationIndex]
-			const tableMapIn = fieldMap.applicationMap[applicationIndex]
+			const tableMapIn = allModifiedColumnsMap.applicationMap[applicationIndex]
 			if (!tableMap) {
 				this.applicationMap[applicationIndex] = tableMapIn
 				continue
@@ -60,4 +60,4 @@ export class SyncApplicationMap extends ApplicationMap {
 	}
 
 }
-globalThis.SyncApplicationMap = SyncApplicationMap
+globalThis.SyncAllModifiedColumnsMap = SyncAllModifiedColumnsMap

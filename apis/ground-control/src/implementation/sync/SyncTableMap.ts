@@ -29,14 +29,14 @@ export class SyncTableMap
 	}
 
 	intersects(
-		columnMap: TableMap
+		otherTableMap: TableMap
 	): boolean {
 		for (let entityIndex in this.tableMap) {
-			if (columnMap.tableMap[entityIndex]) {
+			if (otherTableMap.tableMap[entityIndex]) {
 				let tableColumnMap = this.tableMap[entityIndex];
-				let otherTableColumnMap = columnMap.tableMap[entityIndex];
-				if (tableColumnMap[globalThis.ALL_TABLE_COLUMNS]
-					|| tableColumnMap[globalThis.ALL_TABLE_COLUMNS]) {
+				let otherTableColumnMap = otherTableMap.tableMap[entityIndex];
+				if (tableColumnMap.columnMap[globalThis.ALL_TABLE_COLUMNS]
+					|| otherTableColumnMap.columnMap[globalThis.ALL_TABLE_COLUMNS]) {
 					return true;
 				}
 				for (let columnIndex in tableColumnMap.columnMap) {
