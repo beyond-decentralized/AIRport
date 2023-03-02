@@ -15,7 +15,6 @@ import { IQueryUtils } from '../../utils/IQueryUtils';
  * Query input format. All queries extend this format.
  */
 export interface RawReadQuery {
-	FOR_UPDATE?: boolean
 	FROM?: (IFrom | IEntityRelationFrom)[];
 	ORDER_BY?: IFieldInOrderBy<any>[];
 	SELECT: any;
@@ -25,6 +24,10 @@ export interface RawReadQuery {
 export interface RawReadLimitedQuery {
 	LIMIT?: number;
 	OFFSET?: number;
+}
+
+export interface RawReadForUpdateQuery {
+	FOR_UPDATE?: boolean
 }
 
 /**

@@ -8,7 +8,7 @@ import {
 import { IEntityAliases } from '../../../definition/core/entity/IAliases'
 import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
 import { IQOrderableField } from '../../../definition/core/field/IQFieldInternal'
-import { RawFieldQuery } from '../../../definition/query/facade/RawFieldQuery'
+import { RawOneTimeFieldQuery } from '../../../definition/query/facade/RawFieldQuery'
 import { IReadQuery } from '../../../definition/query/facade/RawReadQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
@@ -39,7 +39,7 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 	//		private entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]:
 	// boolean}}
 	constructor(
-		private rawQuery: RawFieldQuery<IQF>,
+		private rawQuery: RawOneTimeFieldQuery<IQF>,
 		entityAliases: IEntityAliases = new EntityAliases(),
 		trackedRepoGUIDSet?: Set<Repository_GUID>,
 		trackedRepoLocalIdSet?: Set<Repository_LocalId>,

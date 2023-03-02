@@ -20,7 +20,8 @@ export interface IEntityLookupInternal<Child,
 	extends IEntityLookup {
 
 	entityLookup(
-		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		rawEntityQuery: RawEntityQuery<IESP>
+			| { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
 		search: boolean,
 		one: boolean,
@@ -63,7 +64,8 @@ export abstract class EntityLookup<Child,
 	}
 
 	entityLookup(
-		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		rawEntityQuery: RawEntityQuery<IESP>
+			| { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
 		search: boolean,
 		one: boolean,

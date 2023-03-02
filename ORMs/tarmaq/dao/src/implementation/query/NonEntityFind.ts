@@ -1,6 +1,6 @@
 import { IContext, Injected } from '@airport/direction-indicator';
 import { QueryResultType } from '@airport/ground-control';
-import { DistinguishableQuery, FieldQuery, IQOrderableField, IQueryContext, ITreeEntity, RawFieldQuery, RawNonEntityQuery, RawSheetQuery, RawTreeQuery, SheetQuery, TreeQuery } from '@airport/tarmaq-query';
+import { DistinguishableQuery, FieldQuery, IQOrderableField, IQueryContext, ITreeEntity, RawNonEntityQuery, RawOneTimeFieldQuery, RawOneTimeNonEntityQuery, RawOneTimeSheetQuery, RawOneTimeTreeQuery, SheetQuery, TreeQuery } from '@airport/tarmaq-query';
 import { INonEntityFind } from '../../definition/query/INonEntityFind';
 import { Lookup } from './Lookup';
 
@@ -13,14 +13,16 @@ export class NonEntityFind
 	implements INonEntityFind {
 
 	field<IQF extends IQOrderableField<IQF>>(
-		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> },
+		rawFieldQuery: RawOneTimeFieldQuery<IQF>
+			| { (...args: any[]): RawOneTimeFieldQuery<any> },
 		context?: IContext
 	): Promise<any[]> {
 		return this.find(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context);
 	}
 
 	sheet(
-		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
+		rawSheetQuery: RawOneTimeSheetQuery
+			| { (...args: any[]): RawOneTimeSheetQuery },
 		cursorSize?: number | ((
 			data: any[]
 		) => void),
@@ -37,14 +39,16 @@ export class NonEntityFind
 	}
 
 	tree<ITE extends ITreeEntity>(
-		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> },
+		rawTreeQuery: RawOneTimeTreeQuery<ITE>
+			| { (...args: any[]): RawOneTimeTreeQuery<any> },
 		context?: IContext
 	): Promise<ITE[]> {
 		return this.find(rawTreeQuery, QueryResultType.TREE, TreeQuery, context);
 	}
 
 	find<IQF extends IQOrderableField<IQF>>(
-		rawNonEntityQuery: RawNonEntityQuery | { (...args: any[]): RawNonEntityQuery },
+		rawNonEntityQuery: RawOneTimeNonEntityQuery
+			| { (...args: any[]): RawOneTimeNonEntityQuery },
 		queryResultType: QueryResultType,
 		QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery,
 		context: IContext

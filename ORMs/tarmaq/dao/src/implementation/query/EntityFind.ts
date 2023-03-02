@@ -3,7 +3,7 @@ import { QueryResultType } from '@airport/ground-control'
 import {
 	IEntityQueryContext,
 	IEntitySelectProperties,
-	RawEntityQuery
+	RawOneTimeEntityQuery
 } from '@airport/tarmaq-query'
 import { IEntityFind } from '../../definition/query/IEntityFind'
 import { EntityLookup } from './EntityLookup'
@@ -13,7 +13,8 @@ export interface IEntityFindInternal<Entity, EntityArray extends Array<Entity>,
 	extends IEntityFind<Entity, EntityArray, IESP> {
 
 	find(
-		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		rawEntityQuery: RawOneTimeEntityQuery<IESP>
+			| { (...args: any[]): RawOneTimeEntityQuery<IESP> },
 		queryResultType: QueryResultType
 	): Promise<EntityArray>
 
@@ -27,21 +28,24 @@ export class EntityFind<Entity, EntityArray extends Array<Entity>, IESP extends 
 	implements IEntityFindInternal<Entity, EntityArray, IESP> {
 
 	async graph(
-		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		rawGraphQuery: RawOneTimeEntityQuery<IESP>
+			| { (...args: any[]): RawOneTimeEntityQuery<IESP> },
 		context?: IContext
 	): Promise<EntityArray> {
 		return await this.find(rawGraphQuery, QueryResultType.ENTITY_GRAPH, context)
 	}
 
 	async tree(
-		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		rawTreeQuery: RawOneTimeEntityQuery<IESP>
+			| { (...args: any[]): RawOneTimeEntityQuery<IESP> },
 		context?: IContext
 	): Promise<EntityArray> {
 		return await this.find(rawTreeQuery, QueryResultType.ENTITY_TREE, context)
 	}
 
 	async find(
-		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		rawEntityQuery: RawOneTimeEntityQuery<IESP>
+			| { (...args: any[]): RawOneTimeEntityQuery<IESP> },
 		queryResultType: QueryResultType,
 		context?: IContext
 	): Promise<EntityArray> {

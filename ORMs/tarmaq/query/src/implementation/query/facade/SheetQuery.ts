@@ -1,7 +1,7 @@
 import { QuerySheet, Repository_GUID, Repository_LocalId } from '@airport/ground-control'
 import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
 import { IReadQuery } from '../../../definition/query/facade/RawReadQuery'
-import { RawSheetQuery } from '../../../definition/query/facade/RawSheetQuery'
+import { RawOneTimeSheetQuery } from '../../../definition/query/facade/RawSheetQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { EntityAliases } from '../../core/entity/aliases'
@@ -20,7 +20,7 @@ export class SheetQuery
 	implements IReadQuery {
 
 	constructor(
-		public rawQuery: RawSheetQuery,
+		public rawQuery: RawOneTimeSheetQuery,
 		trackedRepoGUIDSet?: Set<Repository_GUID>,
 		trackedRepoLocalIdSet?: Set<Repository_LocalId>,
 	) {

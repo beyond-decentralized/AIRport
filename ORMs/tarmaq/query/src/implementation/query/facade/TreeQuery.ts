@@ -8,7 +8,7 @@ import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRel
 import { IReadQuery } from '../../../definition/query/facade/RawReadQuery'
 import {
 	ITreeEntity,
-	RawTreeQuery
+	RawOneTimeTreeQuery
 } from '../../../definition/query/facade/RawTreeQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
@@ -20,7 +20,7 @@ export class TreeQuery<ITE extends ITreeEntity>
 	implements IReadQuery {
 
 	constructor(
-		public rawQuery: RawTreeQuery<ITE>,
+		public rawQuery: RawOneTimeTreeQuery<ITE>,
 		entityAliases: IEntityAliases = new EntityAliases(),
 		trackedRepoGUIDSet?: Set<Repository_GUID>,
 	) {

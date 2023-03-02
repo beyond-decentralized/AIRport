@@ -1,5 +1,5 @@
 import { IEntityRelationFrom } from '../../core/entity/IQEntity';
-import { RawReadLimitedQuery, RawReadQuery } from './RawReadQuery';
+import { RawReadForUpdateQuery, RawReadLimitedQuery, RawReadQuery } from './RawReadQuery';
 
 /**
  * Entity queries are defined in this format.
@@ -10,9 +10,22 @@ export interface RawEntityQuery<EntitySelect>
 	SELECT: EntitySelect;
 }
 
+export interface RawOneTimeEntityQuery<EntitySelect>
+	extends RawEntityQuery<EntitySelect>,
+	RawReadForUpdateQuery {
+}
+
 /**
  * Entity queries with LIMIT and OFFSET clauses are serialized in this format
  */
 export interface RawLimitedEntityQuery<EntitySelect>
-	extends RawEntityQuery<EntitySelect>, RawReadLimitedQuery {
+	extends RawEntityQuery<EntitySelect>,
+	RawReadLimitedQuery,
+	RawReadForUpdateQuery {
+}
+
+export interface RawOneTimeLimitedEntityQuery<EntitySelect>
+	extends RawEntityQuery<EntitySelect>,
+	RawReadLimitedQuery,
+	RawReadForUpdateQuery {
 }

@@ -1,5 +1,5 @@
 import { IContext } from '@airport/direction-indicator'
-import { IEntitySelectProperties, RawEntityQuery } from '@airport/tarmaq-query';
+import { IEntitySelectProperties, RawOneTimeEntityQuery } from '@airport/tarmaq-query';
 import { IEntityLookup } from './IEntityLookup'
 
 /**
@@ -12,7 +12,8 @@ export interface IEntityFindOne<Entity, IESP extends IEntitySelectProperties>
 	 * Returns a Promise for a fully interlinked entity graph.
 	 */
 	graph(
-		rawGraphQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		rawGraphQuery: RawOneTimeEntityQuery<IESP>
+			| { (...args: any[]): RawOneTimeEntityQuery<IESP> },
 		context?: IContext
 	): Promise<Entity>;
 
@@ -20,7 +21,8 @@ export interface IEntityFindOne<Entity, IESP extends IEntitySelectProperties>
 	 * Returns a Promise for a non-interlinked entity tree.
 	 */
 	tree(
-		rawTreeQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
+		rawTreeQuery: RawOneTimeEntityQuery<IESP>
+			| { (...args: any[]): RawOneTimeEntityQuery<IESP> },
 		context?: IContext
 	): Promise<Entity>;
 

@@ -9,8 +9,8 @@ import { IEntitySelectProperties } from '../../../definition/core/entity/IQEntit
 import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
 import { IFieldInOrderBy } from '../../../definition/core/field/IFieldInOrderBy'
 import {
-	RawEntityQuery,
-	RawLimitedEntityQuery
+	RawLimitedEntityQuery,
+	RawOneTimeEntityQuery
 } from '../../../definition/query/facade/RawEntityQuery'
 import { IReadQuery } from '../../../definition/query/facade/RawReadQuery'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
@@ -29,7 +29,7 @@ export class EntityQuery<IEP extends IEntitySelectProperties>
 	implements IReadQuery {
 
 	constructor(
-		protected rawQuery: RawEntityQuery<IEP>,
+		protected rawQuery: RawOneTimeEntityQuery<IEP>,
 		trackedRepoGUIDSet?: Set<Repository_GUID>,
 	) {
 		super(new EntityAliases(), trackedRepoGUIDSet)

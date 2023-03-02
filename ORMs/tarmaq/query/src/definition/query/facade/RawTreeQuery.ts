@@ -1,5 +1,5 @@
 import { IQDistinctFunction } from '../../core/field/IQFunctions';
-import { RawNonEntityQuery } from './RawNonEntityQuery';
+import { RawNonEntityQuery, RawOneTimeNonEntityQuery } from './RawNonEntityQuery';
 
 /**
  * Marker interface for entities in the SELECT clause of a RawTreeQuery,
@@ -12,6 +12,11 @@ export interface ITreeEntity {
 /**
  * Non-Entity Tree query format.
  */
-export interface RawTreeQuery<ITC extends ITreeEntity> extends RawNonEntityQuery {
+export interface RawTreeQuery<ITC extends ITreeEntity>
+	extends RawNonEntityQuery {
+	SELECT: ITC | IQDistinctFunction<ITC>;
+}
+export interface RawOneTimeTreeQuery<ITC extends ITreeEntity>
+	extends RawOneTimeNonEntityQuery {
 	SELECT: ITC | IQDistinctFunction<ITC>;
 }
