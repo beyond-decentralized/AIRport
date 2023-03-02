@@ -151,14 +151,14 @@ export abstract class Dao<Entity,
 	}
 
 	async findOne(
-		AirEntityId: Entity | AirEntityId | string,
+		airEntityId: Entity | AirEntityId | string,
 		forUpdate: boolean = false,
 		context?: IContext
 	): Promise<Entity> {
 		if (!this.db.dbEntity.isAirEntity) {
 			throw new Error(`Dao.findOne can only be called for Repository Entities.`)
 		}
-		const idObject: AirEntityId = AirEntityId as AirEntityId
+		const idObject: AirEntityId = airEntityId as AirEntityId
 
 		let q
 		return await this.db.findOne.graph({

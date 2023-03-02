@@ -6,9 +6,9 @@
     "application": "@airport/layover"
   },
   "peerDependencies": {
+    "@airbridge/validate": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
     "@airport/airgate": "0.0.1",
-    "@airbridge/validate": "0.0.1",
     "@airport/autopilot": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
     "@airport/ground-control": "0.0.1",

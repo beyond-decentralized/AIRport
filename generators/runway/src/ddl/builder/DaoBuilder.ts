@@ -8,14 +8,15 @@ export class DaoBuilder
 		applicationFullName: string,
 		pathBuilder: PathBuilder
 	) {
-		super(applicationFullName, pathBuilder, 'Dao');
+		super(applicationFullName, pathBuilder, 'Dao', 'ObservableDao');
 	}
 
 	protected addImports() {
 		super.addImports();
 		this.addImport([
-			'DaoQueryDecorators',
-			'IDao'
+			`DaoQueryDecorators`,
+			`IObservableDao`,
+			`ObservableDao`
 		], '@airport/tarmaq-dao');
 	}
 
@@ -31,7 +32,7 @@ export class DaoBuilder
 	static Save(
 		config: ${entityName}Graph
 	): PropertyDecorator {
-		return Dao.BaseSave<${entityName}Graph>(config);
+		return ObservableDao.BaseSave<${entityName}Graph>(config);
   }`;
 	}
 

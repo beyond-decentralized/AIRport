@@ -3,9 +3,12 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@airport/air-traffic-control": "0.0.1",
+    "@airport/aviation-communication": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
+    "@airport/tarmaq-dao": "0.0.1",
+    "@airport/tarmaq-query": "0.0.1",
     "@airport/terminal-map": "0.0.1",
     "rxjs": "~7.8.0"
   },

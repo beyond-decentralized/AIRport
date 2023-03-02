@@ -10,8 +10,10 @@ export abstract class UtilityBuilder
 		applicationFullName: string,
 		pathBuilder: PathBuilder,
 		private classSuffix: string,
+		private baseClassSuffix: string = classSuffix,
+		fileNameSuffx = classSuffix
 	) {
-		super('base' + classSuffix + 's', pathBuilder);
+		super('base' + fileNameSuffx + 's', pathBuilder);
 
 		// this.diSet = needsQEntity ? 'diSet' : 'duoDiSet';
 		this.diSet = applicationFullName + '_diSet';
@@ -36,7 +38,7 @@ export class SQDI${this.classSuffix}<Entity,
 	DbEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
-	extends ${this.classSuffix}<Entity,
+	extends ${this.baseClassSuffix}<Entity,
 		EntitySelect,
 		EntityCreate,
 		EntityUpdateColumns,
@@ -83,9 +85,6 @@ ${baseClassDefinitions}`;
 			'IQEntity'
 		], '@airport/tarmaq-query');
 		this.addImport([
-			`${this.classSuffix}`
-		], '@airport/tarmaq-dao');
-		this.addImport([
 			{
 				asName: 'DbEntityId',
 				sourceName: 'DbEntity_LocalId'
@@ -100,7 +99,7 @@ ${baseClassDefinitions}`;
 		return this.entityNames.map(
 			entityName => `
 export interface IBase${entityName}${this.classSuffix}
-  extends I${this.classSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}> {
+  extends I${this.baseClassSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}> {
 }
 
 export class Base${entityName}${this.classSuffix}

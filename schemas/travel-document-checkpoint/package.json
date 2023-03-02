@@ -6,9 +6,9 @@
     "application": "@airport/travel-document-checkpoint"
   },
   "peerDependencies": {
+    "@airbridge/validate": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
     "@airport/airgate": "0.0.1",
-    "@airbridge/validate": "0.0.1",
     "@airport/airspace": "0.0.1",
     "@airport/autopilot": "0.0.1",
     "@airport/aviation-communication": "0.0.1",

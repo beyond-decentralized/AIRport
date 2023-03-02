@@ -8751,11 +8751,11 @@ class Dao {
             FROM: [this.db.FROM],
         }, context);
     }
-    async findOne(AirEntityId, forUpdate = false, context) {
+    async findOne(airEntityId, forUpdate = false, context) {
         if (!this.db.dbEntity.isAirEntity) {
             throw new Error(`Dao.findOne can only be called for Repository Entities.`);
         }
-        const idObject = AirEntityId;
+        const idObject = airEntityId;
         let q;
         return await this.db.findOne.graph({
             SELECT: {
@@ -8868,6 +8868,58 @@ class DaoQueryDecorators {
         return function (target, propertyKey) {
             // No runtime logic required.
         };
+    }
+}
+
+class ObservableDao extends Dao {
+    searchAll(entityIds, context) {
+        if (entityIds) {
+            throw new Error(`Not implemented`);
+        }
+        return this.db.search.graph({
+            SELECT: {},
+            FROM: [this.db.FROM],
+        }, context);
+    }
+    searchAllAsTrees(entityIds, context) {
+        if (entityIds) {
+            throw new Error(`Not implemented`);
+        }
+        return this.db.search.tree({
+            SELECT: {},
+            FROM: [this.db.FROM],
+        }, context);
+    }
+    searchOne(airEntityId, context) {
+        if (!this.db.dbEntity.isAirEntity) {
+            throw new Error(`Dao.findOne can only be called for Repository Entities.`);
+        }
+        const idObject = airEntityId;
+        let q;
+        return this.db.searchOne.graph({
+            SELECT: {
+                '*': Y
+            },
+            FROM: [
+                q = this.db.FROM
+            ],
+            WHERE: q.equals(idObject)
+        }, context);
+    }
+    searchIn(airEntityIds, context) {
+        if (!this.db.dbEntity.isAirEntity) {
+            throw new Error(`Dao.findIn can only be called for Repository Entities.`);
+        }
+        let q;
+        return this.db.search.graph({
+            SELECT: {
+                '*': Y
+            },
+            FROM: [
+                q = this.db.FROM
+            ],
+            WHERE: q.IN(airEntityIds)
+        }, context);
     }
 }
 
@@ -10122,14 +10174,14 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$5 extends Dao {
+class SQDIDao$5 extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_airport_dash_code);
     }
 }
 class BaseSequenceDao extends SQDIDao$5 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airport_dash_code_diSet(0);
@@ -10144,7 +10196,7 @@ BaseSequenceDao.Search = new DaoQueryDecorators();
 BaseSequenceDao.SearchOne = new DaoQueryDecorators();
 class BaseSystemWideOperationIdDao extends SQDIDao$5 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airport_dash_code_diSet(1);
@@ -10159,7 +10211,7 @@ BaseSystemWideOperationIdDao.Search = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.SearchOne = new DaoQueryDecorators();
 class BaseTerminalRunDao extends SQDIDao$5 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airport_dash_code_diSet(2);
@@ -10324,14 +10376,14 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$4 extends Dao {
+class SQDIDao$4 extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_airspace);
     }
 }
 class BaseDdlApplicationDao extends SQDIDao$4 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(9);
@@ -10346,7 +10398,7 @@ BaseDdlApplicationDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlApplicationCurrentVersionDao extends SQDIDao$4 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(8);
@@ -10361,7 +10413,7 @@ BaseDdlApplicationCurrentVersionDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationCurrentVersionDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlApplicationReferenceDao extends SQDIDao$4 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(6);
@@ -10376,7 +10428,7 @@ BaseDdlApplicationReferenceDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationReferenceDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlApplicationVersionDao extends SQDIDao$4 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(7);
@@ -10391,7 +10443,7 @@ BaseDdlApplicationVersionDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationVersionDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlColumnDao extends SQDIDao$4 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(4);
@@ -10406,7 +10458,7 @@ BaseDdlColumnDao.Search = new DaoQueryDecorators();
 BaseDdlColumnDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlDomainDao extends SQDIDao$4 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(10);
@@ -10421,7 +10473,7 @@ BaseDdlDomainDao.Search = new DaoQueryDecorators();
 BaseDdlDomainDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlEntityDao extends SQDIDao$4 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(5);
@@ -10436,7 +10488,7 @@ BaseDdlEntityDao.Search = new DaoQueryDecorators();
 BaseDdlEntityDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlPropertyDao extends SQDIDao$4 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(2);
@@ -10451,7 +10503,7 @@ BaseDdlPropertyDao.Search = new DaoQueryDecorators();
 BaseDdlPropertyDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlPropertyColumnDao extends SQDIDao$4 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(3);
@@ -10466,7 +10518,7 @@ BaseDdlPropertyColumnDao.Search = new DaoQueryDecorators();
 BaseDdlPropertyColumnDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlRelationDao extends SQDIDao$4 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(1);
@@ -10481,7 +10533,7 @@ BaseDdlRelationDao.Search = new DaoQueryDecorators();
 BaseDdlRelationDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlRelationColumnDao extends SQDIDao$4 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(0);
@@ -13642,14 +13694,14 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$3 extends Dao {
+class SQDIDao$3 extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_holding_dash_pattern);
     }
 }
 class BaseActorDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(0);
@@ -13664,7 +13716,7 @@ BaseActorDao.Search = new DaoQueryDecorators();
 BaseActorDao.SearchOne = new DaoQueryDecorators();
 class BaseCopiedRecordLedgerDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(18);
@@ -13679,7 +13731,7 @@ BaseCopiedRecordLedgerDao.Search = new DaoQueryDecorators();
 BaseCopiedRecordLedgerDao.SearchOne = new DaoQueryDecorators();
 class BaseCrossRepositoryRelationLedgerDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(19);
@@ -13694,7 +13746,7 @@ BaseCrossRepositoryRelationLedgerDao.Search = new DaoQueryDecorators();
 BaseCrossRepositoryRelationLedgerDao.SearchOne = new DaoQueryDecorators();
 class BaseLocalCopyReplacementLedgerDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(20);
@@ -13709,7 +13761,7 @@ BaseLocalCopyReplacementLedgerDao.Search = new DaoQueryDecorators();
 BaseLocalCopyReplacementLedgerDao.SearchOne = new DaoQueryDecorators();
 class BaseOperationHistoryDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(17);
@@ -13724,7 +13776,7 @@ BaseOperationHistoryDao.Search = new DaoQueryDecorators();
 BaseOperationHistoryDao.SearchOne = new DaoQueryDecorators();
 class BaseRecordHistoryDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(3);
@@ -13739,7 +13791,7 @@ BaseRecordHistoryDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryDao.SearchOne = new DaoQueryDecorators();
 class BaseRecordHistoryNewValueDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(1);
@@ -13754,7 +13806,7 @@ BaseRecordHistoryNewValueDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryNewValueDao.SearchOne = new DaoQueryDecorators();
 class BaseRecordHistoryOldValueDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(2);
@@ -13769,7 +13821,7 @@ BaseRecordHistoryOldValueDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryOldValueDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(10);
@@ -13784,7 +13836,7 @@ BaseRepositoryDao.Search = new DaoQueryDecorators();
 BaseRepositoryDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryApplicationDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(8);
@@ -13799,7 +13851,7 @@ BaseRepositoryApplicationDao.Search = new DaoQueryDecorators();
 BaseRepositoryApplicationDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryClientDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(6);
@@ -13814,7 +13866,7 @@ BaseRepositoryClientDao.Search = new DaoQueryDecorators();
 BaseRepositoryClientDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryDatabaseDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(5);
@@ -13829,7 +13881,7 @@ BaseRepositoryDatabaseDao.Search = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryMemberDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(14);
@@ -13844,7 +13896,7 @@ BaseRepositoryMemberDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryMemberAcceptanceDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(11);
@@ -13859,7 +13911,7 @@ BaseRepositoryMemberAcceptanceDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberAcceptanceDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryMemberInvitationDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(12);
@@ -13874,7 +13926,7 @@ BaseRepositoryMemberInvitationDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberInvitationDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryMemberUpdateDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(13);
@@ -13889,7 +13941,7 @@ BaseRepositoryMemberUpdateDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberUpdateDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryReferenceDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(9);
@@ -13904,7 +13956,7 @@ BaseRepositoryReferenceDao.Search = new DaoQueryDecorators();
 BaseRepositoryReferenceDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryTerminalDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(7);
@@ -13919,7 +13971,7 @@ BaseRepositoryTerminalDao.Search = new DaoQueryDecorators();
 BaseRepositoryTerminalDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryTransactionHistoryDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(16);
@@ -13934,7 +13986,7 @@ BaseRepositoryTransactionHistoryDao.Search = new DaoQueryDecorators();
 BaseRepositoryTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryTypeDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(4);
@@ -13949,7 +14001,7 @@ BaseRepositoryTypeDao.Search = new DaoQueryDecorators();
 BaseRepositoryTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseTransactionHistoryDao extends SQDIDao$3 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(15);
@@ -15095,14 +15147,14 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$2 extends Dao {
+class SQDIDao$2 extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint);
     }
 }
 class BaseClassificationDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(6);
@@ -15117,7 +15169,7 @@ BaseClassificationDao.Search = new DaoQueryDecorators();
 BaseClassificationDao.SearchOne = new DaoQueryDecorators();
 class BaseClientDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(10);
@@ -15132,7 +15184,7 @@ BaseClientDao.Search = new DaoQueryDecorators();
 BaseClientDao.SearchOne = new DaoQueryDecorators();
 class BaseClientTypeDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(9);
@@ -15147,7 +15199,7 @@ BaseClientTypeDao.Search = new DaoQueryDecorators();
 BaseClientTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseContinentDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(5);
@@ -15162,7 +15214,7 @@ BaseContinentDao.Search = new DaoQueryDecorators();
 BaseContinentDao.SearchOne = new DaoQueryDecorators();
 class BaseCountryDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(4);
@@ -15177,7 +15229,7 @@ BaseCountryDao.Search = new DaoQueryDecorators();
 BaseCountryDao.SearchOne = new DaoQueryDecorators();
 class BaseDatabaseDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(12);
@@ -15192,7 +15244,7 @@ BaseDatabaseDao.Search = new DaoQueryDecorators();
 BaseDatabaseDao.SearchOne = new DaoQueryDecorators();
 class BaseDatabaseTypeDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(11);
@@ -15207,7 +15259,7 @@ BaseDatabaseTypeDao.Search = new DaoQueryDecorators();
 BaseDatabaseTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseMetroAreaDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(1);
@@ -15222,7 +15274,7 @@ BaseMetroAreaDao.Search = new DaoQueryDecorators();
 BaseMetroAreaDao.SearchOne = new DaoQueryDecorators();
 class BaseMetroAreaStateDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(2);
@@ -15237,7 +15289,7 @@ BaseMetroAreaStateDao.Search = new DaoQueryDecorators();
 BaseMetroAreaStateDao.SearchOne = new DaoQueryDecorators();
 class BaseStateDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(3);
@@ -15252,7 +15304,7 @@ BaseStateDao.Search = new DaoQueryDecorators();
 BaseStateDao.SearchOne = new DaoQueryDecorators();
 class BaseTerminalDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(14);
@@ -15267,7 +15319,7 @@ BaseTerminalDao.Search = new DaoQueryDecorators();
 BaseTerminalDao.SearchOne = new DaoQueryDecorators();
 class BaseTerminalTypeDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(13);
@@ -15282,7 +15334,7 @@ BaseTerminalTypeDao.Search = new DaoQueryDecorators();
 BaseTerminalTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseTypeDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(8);
@@ -15297,7 +15349,7 @@ BaseTypeDao.Search = new DaoQueryDecorators();
 BaseTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseTypeClassificationDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(7);
@@ -15312,7 +15364,7 @@ BaseTypeClassificationDao.Search = new DaoQueryDecorators();
 BaseTypeClassificationDao.SearchOne = new DaoQueryDecorators();
 class BaseUserAccountDao extends SQDIDao$2 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(0);
@@ -27440,14 +27492,14 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$1 extends Dao {
+class SQDIDao$1 extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_layover);
     }
 }
 class BaseRecordUpdateStageDao extends SQDIDao$1 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_layover_diSet(2);
@@ -27462,7 +27514,7 @@ BaseRecordUpdateStageDao.Search = new DaoQueryDecorators();
 BaseRecordUpdateStageDao.SearchOne = new DaoQueryDecorators();
 class BaseSynchronizationConflictDao extends SQDIDao$1 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_layover_diSet(1);
@@ -27477,7 +27529,7 @@ BaseSynchronizationConflictDao.Search = new DaoQueryDecorators();
 BaseSynchronizationConflictDao.SearchOne = new DaoQueryDecorators();
 class BaseSynchronizationConflictValuesDao extends SQDIDao$1 {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_layover_diSet(0);
@@ -27815,14 +27867,14 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao extends Dao {
+class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airbridge____at_airbridge_slash_keyring);
     }
 }
 class BaseKeyRingDao extends SQDIDao {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airbridge____at_airbridge_slash_keyring_diSet(1);
@@ -27837,7 +27889,7 @@ BaseKeyRingDao.Search = new DaoQueryDecorators();
 BaseKeyRingDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryKeyDao extends SQDIDao {
     static Save(config) {
-        return Dao.BaseSave(config);
+        return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airbridge____at_airbridge_slash_keyring_diSet(0);
@@ -34289,7 +34341,7 @@ class ActiveQueries {
             return false;
         }
         if ((!cachedSqlQuery.trackedRepoGUIDSet.size
-            && cachedSqlQuery.trackedRepoLocalIdSet.size)
+            && !cachedSqlQuery.trackedRepoLocalIdSet.size)
             || !trackedRepoLocalIdSet.size) {
             return true;
         }
@@ -34310,18 +34362,20 @@ class ActiveQueries {
         // Add a bit of a wait to let any query-subscribed screens that are closing after
         // a mutation operation to un-subscribe from those queries.
         setTimeout(() => {
-            this.queries.forEach((cachedSqlQuery) => {
+            for (const cachedSqlQuery of this.queries.values()) {
                 if (cachedSqlQuery.rerun) {
                     cachedSqlQuery.rerun = false;
                     cachedSqlQuery.runQuery();
                 }
-            });
+            }
         }, 100);
     }
     clearQueriesToRerun() {
-        this.queries.forEach((cachedSqlQuery) => {
-            cachedSqlQuery.rerun = false;
-        });
+        setTimeout(() => {
+            for (const cachedSqlQuery of this.queries.values()) {
+                cachedSqlQuery.rerun = false;
+            }
+        }, 101);
     }
 }
 
@@ -40982,9 +41036,10 @@ class ImplementationFileBuilder extends FileBuilder {
 }
 
 class UtilityBuilder extends ImplementationFileBuilder {
-    constructor(applicationFullName, pathBuilder, classSuffix) {
-        super('base' + classSuffix + 's', pathBuilder);
+    constructor(applicationFullName, pathBuilder, classSuffix, baseClassSuffix = classSuffix, fileNameSuffx = classSuffix) {
+        super('base' + fileNameSuffx + 's', pathBuilder);
         this.classSuffix = classSuffix;
+        this.baseClassSuffix = baseClassSuffix;
         // this.diSet = needsQEntity ? 'diSet' : 'duoDiSet';
         this.diSet = applicationFullName + '_diSet';
     }
@@ -41005,7 +41060,7 @@ export class SQDI${this.classSuffix}<Entity,
 	DbEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
-	extends ${this.classSuffix}<Entity,
+	extends ${this.baseClassSuffix}<Entity,
 		EntitySelect,
 		EntityCreate,
 		EntityUpdateColumns,
@@ -41049,9 +41104,6 @@ ${baseClassDefinitions}`;
             'IQEntity'
         ], '@airport/tarmaq-query');
         this.addImport([
-            `${this.classSuffix}`
-        ], '@airport/tarmaq-dao');
-        this.addImport([
             {
                 asName: 'DbEntityId',
                 sourceName: 'DbEntity_LocalId'
@@ -41064,7 +41116,7 @@ ${baseClassDefinitions}`;
     buildBaseClassDefinitions() {
         return this.entityNames.map(entityName => `
 export interface IBase${entityName}${this.classSuffix}
-  extends I${this.classSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}> {
+  extends I${this.baseClassSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}> {
 }
 
 export class Base${entityName}${this.classSuffix}
@@ -41088,13 +41140,14 @@ export class Base${entityName}${this.classSuffix}
 
 class DaoBuilder extends UtilityBuilder {
     constructor(applicationFullName, pathBuilder) {
-        super(applicationFullName, pathBuilder, 'Dao');
+        super(applicationFullName, pathBuilder, 'Dao', 'ObservableDao');
     }
     addImports() {
         super.addImports();
         this.addImport([
-            'DaoQueryDecorators',
-            'IDao'
+            `DaoQueryDecorators`,
+            `IObservableDao`,
+            `ObservableDao`
         ], '@airport/tarmaq-dao');
     }
     buildStaticProperties(entityName) {
@@ -41107,7 +41160,7 @@ class DaoBuilder extends UtilityBuilder {
 	static Save(
 		config: ${entityName}Graph
 	): PropertyDecorator {
-		return Dao.BaseSave<${entityName}Graph>(config);
+		return ObservableDao.BaseSave<${entityName}Graph>(config);
   }`;
     }
 }

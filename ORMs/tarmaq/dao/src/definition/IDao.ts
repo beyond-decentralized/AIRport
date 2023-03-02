@@ -75,7 +75,7 @@ export interface IDao<Entity,
 	): Promise<Entity>;
 
 	findIn(
-		airEntityId: Entity[] | AirEntityId[] | string[],
+		airEntityIds: Entity[] | AirEntityId[] | string[],
 		forUpdate?: boolean,
 		context?: IContext
 	): Promise<Entity[]>;
