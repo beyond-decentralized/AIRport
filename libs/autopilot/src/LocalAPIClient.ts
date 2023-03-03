@@ -1,21 +1,26 @@
 import {
     ILocalAPIRequest,
-    ILocalAPIResponse
+    ILocalAPIResponse,
+    IObservableLocalAPIRequest,
+    IObservableLocalAPIResponse
 } from "@airport/aviation-communication";
 import { IFullDITokenDescriptor, Inject, Injected } from "@airport/direction-indicator";
 import {
     IOperationSerializer,
     IQueryResultsDeserializer
 } from "@airport/pressurization";
+import { Observable, Subscription } from "rxjs";
 import { v4 as guidv4 } from "uuid";
+import { SubscriptionCountSubject } from "./SubscriptionCountSubject";
 
 export interface ILocalAPIClient {
 
     invokeApiMethod<T = any>(
         fullDIDescriptor: IFullDITokenDescriptor,
         methodName: string,
-        args: any[]
-    ): Promise<void>
+        args: any[],
+        isObservable: boolean
+    ): Promise<T> | Observable<T>
 
     onMessage(callback: (
         message: any
@@ -42,13 +47,17 @@ export class LocalAPIClient
     @Inject()
     queryResultsDeserializer: IQueryResultsDeserializer
 
-    pendingDemoMessageMap: Map<string, IRequestRecord> = new Map();
+    clientIframe: HTMLIFrameElement
 
     demoListenerStarted = false;
 
     lastConnectionReadyCheckMap: Map<string, Map<string, boolean>> = new Map()
 
-    clientIframe: HTMLIFrameElement
+    messageBusSubscription: Subscription
+
+    observableRequestMap: Map<string, SubscriptionCountSubject<any>> = new Map()
+
+    pendingDemoMessageMap: Map<string, IRequestRecord> = new Map();
 
     messageCallback: (
         message: any
@@ -58,6 +67,22 @@ export class LocalAPIClient
         if (_inDemoMode) {
             this.initializeForWeb()
         }
+        this.messageBusSubscription = globalThis.MESSAGE_BUS.subscribe(async (
+            message: IObservableLocalAPIRequest
+        ) => {
+            if (message.category !== 'FromClient') {
+                return
+            }
+            if (_inDemoMode) {
+                this.clientIframe.contentWindow.postMessage(message, _demoServer)
+            } else {
+                throw new Error('Not Implemented')
+            }
+            // switch (message.subscriptionOperation) {
+            //     case 'SUBSCRIBE':
+            //     case 'UNSUBSCRIBE':
+            // }
+        })
     }
 
     private initializeForWeb() {
@@ -101,6 +126,22 @@ export class LocalAPIClient
                     if (!this.hasValidApplicationInfo(message)) {
                         return
                     }
+                    const subscriptionId = (message as IObservableLocalAPIResponse).subscriptionId
+                    if (subscriptionId) {
+                        const requestSubject = this.observableRequestMap.get(subscriptionId)
+                        if (!requestSubject) {
+                            console.error(`Could not find Request Subject for subscriptionId: ${subscriptionId}`)
+                            break
+                        }
+                        try {
+                            const response = this.processResponse(requestSubject.args, message)
+                            requestSubject.next(response)
+                        } catch (e) {
+                            console.error(e)
+                            requestSubject.error(e)
+                        }
+                        break
+                    }
                     let requestDemoMessage = this.pendingDemoMessageMap.get(message.id)
                     if (requestDemoMessage) {
                         requestDemoMessage.resolve(message)
@@ -125,14 +166,30 @@ export class LocalAPIClient
             && typeof message.application === 'string' && message.application.length >= 3
     }
 
-    async invokeApiMethod<T>(
+    invokeApiMethod<T = any>(
         fullDIDescriptor: IFullDITokenDescriptor,
         methodName: string,
-        args: any[]
-    ): Promise<any> {
-        while (!await this.isConnectionReady(fullDIDescriptor)) {
-            await this.wait(301)
+        args: any[],
+        isObservable: boolean
+    ): Promise<T> | Observable<T> {
+        if (isObservable) {
+            const subject = new SubscriptionCountSubject<T>()
+            this.doInvokeApiMethod(fullDIDescriptor,
+                methodName, args, subject).then()
+            return subject
+        } else {
+            return this.doInvokeApiMethod(fullDIDescriptor,
+                methodName, args, null)
         }
+    }
+
+    async doInvokeApiMethod<T>(
+        fullDIDescriptor: IFullDITokenDescriptor,
+        methodName: string,
+        args: any[],
+        subject: SubscriptionCountSubject<any>
+    ): Promise<any> {
+        await this.waitForConnectionToBeReady(fullDIDescriptor)
 
         let serializedParams
         if (_inDemoMode) {
@@ -157,12 +214,34 @@ export class LocalAPIClient
 
         let response: ILocalAPIResponse
 
+        if (subject) {
+            subject.setArgsAndRequest(args, request)
+            this.observableRequestMap.set(subject.subscriptionId, subject)
+            return
+        }
+
         if (_inDemoMode) {
             response = await this.sendDemoRequest(request)
         } else {
             response = await this.sendLocalRequest(request)
         }
 
+        return this.processResponse(args, response)
+
+    }
+
+    private async waitForConnectionToBeReady(
+        fullDIDescriptor: IFullDITokenDescriptor
+    ) {
+        while (!await this.isConnectionReady(fullDIDescriptor)) {
+            await this.wait(301)
+        }
+    }
+
+    private processResponse(
+        args: any[],
+        response: ILocalAPIResponse
+    ): any {
         if (response.errorMessage) {
             throw new Error(response.errorMessage)
         }

@@ -71,6 +71,9 @@ ${apiClassDefinitionCode}`
     private buildClassDefinition(
         apiClass: IApiClass
     ) {
+        const observableMethodNames: string[] = []
+        const apiMethodStubFragment = this.buildApiMethodStubFragment(
+            apiClass, observableMethodNames)
 
         return `
 // An API stub for other Applications and UIs to use
@@ -81,21 +84,22 @@ ${apiClassDefinitionCode}`
 export class ${apiClass.className} extends ApiProxy<${apiClass.className}> {
 
     constructor() {
-        super(application)
+        super(application, [${observableMethodNames.map(methodName => `'${methodName}'`).join(',')}])
     }
         
-            ${this.buildApiMethodStubFragment(apiClass)}
+            ${apiMethodStubFragment}
 }
 `
     }
 
     private buildApiMethodStubFragment(
-        apiClass: IApiClass
+        apiClass: IApiClass,
+        observableMethodNames: string[]
     ): string {
         let methodStubFragment = ''
         for (const apiSignature of apiClass.apiSignatures) {
             methodStubFragment += `
-    ${this.buildApiMethodStub(apiSignature)}
+    ${this.buildApiMethodStub(apiSignature, observableMethodNames)}
 `
         }
 
@@ -103,7 +107,8 @@ export class ${apiClass.className} extends ApiProxy<${apiClass.className}> {
     }
 
     private buildApiMethodStub(
-        apiSignature: IApiSignature
+        apiSignature: IApiSignature,
+        observableMethodNames: string[]
     ): string {
         const asyncPrefix = apiSignature.isAsync ? 'async ' : ''
         let methodParameters = ''
@@ -147,6 +152,15 @@ export class ${apiClass.className} extends ApiProxy<${apiClass.className}> {
         let awaitPrefix = ''
         if (apiSignature.returnType.startsWith('Promise')) {
             awaitPrefix = 'await'
+        } else if (apiSignature.returnType.startsWith('Observable')) {
+            observableMethodNames.push(apiSignature.name)
+        } else if (apiSignature.returnType
+            && apiSignature.returnType !== 'void') {
+            throw new Error(`Unexpected @Api() return type.  Expecting:
+    Promise
+    Observable
+    void
+`)
         }
 
         return `${asyncPrefix} ${apiSignature.name}(${methodParameters}): ${apiSignature.returnType} {

@@ -22,3 +22,9 @@ export interface ILocalAPIRequest<CategoryType = LocalApiRequestCategoryType, A 
     protocol: string
     transactionId?: string
 }
+
+export interface IObservableLocalAPIRequest<CategoryType = LocalApiRequestCategoryType,
+    A = any> extends ILocalAPIRequest {
+    subscriptionId: string
+    subscriptionOperation?: 'SUBSCRIBE' | 'UNSUBSCRIBE'
+}

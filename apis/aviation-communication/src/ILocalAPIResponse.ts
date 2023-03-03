@@ -15,3 +15,8 @@ export interface ILocalAPIResponse {
     protocol: string
     transactionId: string
 }
+
+export interface IObservableLocalAPIResponse
+    extends ILocalAPIResponse {
+    subscriptionId: string
+}

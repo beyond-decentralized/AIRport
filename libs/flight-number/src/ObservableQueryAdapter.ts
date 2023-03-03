@@ -160,6 +160,8 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
             runQuery: () => {
                 queryCallback().then(augmentedResult => {
                     resultsSubject.next(augmentedResult)
+                }).catch(e => {
+                    resultsSubject.error(e)
                 })
             },
             trackedRepoGUIDSet,

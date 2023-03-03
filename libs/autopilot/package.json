@@ -5,6 +5,7 @@
     "@airport/aviation-communication": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
     "@airport/pressurization": "0.0.1",
+    "rxjs": "~7.8.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

@@ -17,7 +17,8 @@ export class AutopilotApiLoader
 
 
     loadApiAutopilot<T>(
-        fullDIDescriptor: IFullDITokenDescriptor
+        fullDIDescriptor: IFullDITokenDescriptor,
+        observableMethodNameSet: Set<string>
     ): T {
         if (!this.lastCallMillisMap.has(fullDIDescriptor)) {
             this.lastCallMillisMap.set(fullDIDescriptor, new Map())
@@ -44,8 +45,9 @@ export class AutopilotApiLoader
     please prevent double submission in UI code`)
                     }
                     mapForToken.set(methodName, nowMillis)
+                    const isObservable = observableMethodNameSet.has(methodName)
                     return _this.apiClient.invokeApiMethod(
-                        fullDIDescriptor, methodName, args);
+                        fullDIDescriptor, methodName, args, isObservable);
                 };
             }
         }) as T;

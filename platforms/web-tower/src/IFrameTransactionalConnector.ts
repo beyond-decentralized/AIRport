@@ -1,4 +1,4 @@
-import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
+import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse, IObservableLocalAPIRequest } from '@airport/aviation-communication';
 import {
 	IContext,
 	IInjected,
@@ -26,7 +26,8 @@ import { AppState, IAddRepositoryIMI, IApplicationLoader, ICallApiIMI, IGetLates
 import { IApplicationStore } from '@airport/tower';
 import {
 	Observable,
-	Observer
+	Observer,
+	Subscription
 } from 'rxjs';
 import { v4 as guidv4 } from "uuid";
 
@@ -70,6 +71,8 @@ export class IframeTransactionalConnector
 	terminalStore: ITerminalStore
 
 	internal = false
+
+	clientSubscriptionMap: Map<string, Subscription> = new Map()
 
 	async processMessage(
 		message: IIsolateMessageOut<any> | ILocalAPIRequest,
@@ -349,6 +352,33 @@ export class IframeTransactionalConnector
 		while (this.applicationStore.state.appState !== AppState.INITIALIZED) {
 			await this.wait(100)
 		}
+		const observableRequest = request as IObservableLocalAPIRequest
+		const subscriptionId = observableRequest.subscriptionId
+		switch (observableRequest.subscriptionOperation) {
+			case 'SUBSCRIBE': {
+				const response = await this.localApiServer.handleRequest(request)
+				const subscription = response.payload.subscribe(payload => {
+					window.parent.postMessage({
+						...response,
+						subscriptionId,
+						payload
+					}, origin)
+				})
+
+				this.clientSubscriptionMap.set(subscriptionId, subscription)
+			}
+			case 'UNSUBSCRIBE': {
+				const subscription = this.clientSubscriptionMap.get(subscriptionId)
+				if (!subscription) {
+					break
+				}
+				subscription.unsubscribe()
+				this.clientSubscriptionMap.delete(subscriptionId)
+				break
+			}
+				return
+		}
+
 		const response = await this.localApiServer.handleRequest(request)
 		window.parent.postMessage(response, origin)
 	}
@@ -379,14 +409,6 @@ export class IframeTransactionalConnector
 				} else {
 					observableMessageRecord.observer.next(message.result)
 				}
-				return
-			case IsolateMessageType.SEARCH_UNSUBSCRIBE:
-				observableMessageRecord = this.applicationStore.state.observableMessageMap.get(message.id)
-				if (!observableMessageRecord || !observableMessageRecord.observer) {
-					return
-				}
-				observableMessageRecord.observer.complete()
-				this.applicationStore.state.pendingMessageMap.delete(message.id)
 				return
 		}
 
@@ -421,6 +443,16 @@ export class IframeTransactionalConnector
 			await this.wait(100)
 		}
 		return await this.sendMessageNoWait(message)
+	}
+
+	private async sendMessageNoReturn<IMessageIn extends IIsolateMessage>(
+		message: IMessageIn
+	): Promise<void> {
+		while (!await this.isConnectionInitialized()) {
+			await this.wait(100)
+		}
+		message.transactionId = (<IInjected>this).__container__.context.id
+		window.parent.postMessage(message, this.applicationStore.state.hostServer)
 	}
 
 	private async sendMessageNoWait<IMessageIn extends IIsolateMessage, ReturnType>(
@@ -458,10 +490,11 @@ export class IframeTransactionalConnector
 		const observable = new Observable((observer: Observer<any>) => {
 			observableMessageRecord.observer = observer
 			return () => {
-				this.sendMessage<IIsolateMessage, null>({
+				this.sendMessageNoReturn<IIsolateMessage>({
 					...coreFields,
 					type: IsolateMessageType.SEARCH_UNSUBSCRIBE
 				}).then()
+				observer.complete()
 			};
 		});
 		window.parent.postMessage(message, this.applicationStore.state.hostServer)

@@ -8332,6 +8332,8 @@ class AirEntityUtils {
     }
 }
 
+globalThis.MESSAGE_BUS = new Subject();
+
 // This library is used in UI/Client bundles which does not include @airport/direction-indicator
 // dependency injection library
 setTimeout(() => {
@@ -34467,6 +34469,8 @@ class ObservableQueryAdapter {
             runQuery: () => {
                 queryCallback().then(augmentedResult => {
                     resultsSubject.next(augmentedResult);
+                }).catch(e => {
+                    resultsSubject.error(e);
                 });
             },
             trackedRepoGUIDSet,
@@ -43682,6 +43686,8 @@ ${enumAndInterfaceDefinitionCode}
 ${apiClassDefinitionCode}`;
     }
     buildClassDefinition(apiClass) {
+        const observableMethodNames = [];
+        const apiMethodStubFragment = this.buildApiMethodStubFragment(apiClass, observableMethodNames);
         return `
 // An API stub for other Applications and UIs to use
 // @Injected() is implied but not specified to avoid @airport/direction-indicator
@@ -43691,23 +43697,23 @@ ${apiClassDefinitionCode}`;
 export class ${apiClass.className} extends ApiProxy<${apiClass.className}> {
 
     constructor() {
-        super(application)
+        super(application, [${observableMethodNames.map(methodName => `'${methodName}'`).join(',')}])
     }
         
-            ${this.buildApiMethodStubFragment(apiClass)}
+            ${apiMethodStubFragment}
 }
 `;
     }
-    buildApiMethodStubFragment(apiClass) {
+    buildApiMethodStubFragment(apiClass, observableMethodNames) {
         let methodStubFragment = '';
         for (const apiSignature of apiClass.apiSignatures) {
             methodStubFragment += `
-    ${this.buildApiMethodStub(apiSignature)}
+    ${this.buildApiMethodStub(apiSignature, observableMethodNames)}
 `;
         }
         return methodStubFragment;
     }
-    buildApiMethodStub(apiSignature) {
+    buildApiMethodStub(apiSignature, observableMethodNames) {
         const asyncPrefix = apiSignature.isAsync ? 'async ' : '';
         let methodParameters = '';
         let apiCallParameters = '';
@@ -43750,6 +43756,17 @@ export class ${apiClass.className} extends ApiProxy<${apiClass.className}> {
         let awaitPrefix = '';
         if (apiSignature.returnType.startsWith('Promise')) {
             awaitPrefix = 'await';
+        }
+        else if (apiSignature.returnType.startsWith('Observable')) {
+            observableMethodNames.push(apiSignature.name);
+        }
+        else if (apiSignature.returnType
+            && apiSignature.returnType !== 'void') {
+            throw new Error(`Unexpected @Api() return type.  Expecting:
+    Promise
+    Observable
+    void
+`);
         }
         return `${asyncPrefix} ${apiSignature.name}(${methodParameters}): ${apiSignature.returnType} {
         ${returnPrefix}${awaitPrefix} this.proxy.${apiSignature.name}(${apiCallParameters})

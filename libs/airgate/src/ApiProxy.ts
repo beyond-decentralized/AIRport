@@ -1,5 +1,7 @@
 export abstract class ApiProxy<Api> {
 
+    observableMethodNameSet: Set<string> = new Set()
+
     private _proxy: Api
 
     constructor(
@@ -8,8 +10,12 @@ export abstract class ApiProxy<Api> {
                 name: string
             },
             name: string
-        }
+        },
+        observableMethodNames: string[]
     ) {
+        for(let observableMethodName of observableMethodNames) {
+            this.observableMethodNameSet.add(observableMethodName)
+        }
     }
 
     get proxy(): Api {
@@ -36,7 +42,7 @@ export abstract class ApiProxy<Api> {
             descriptor: {
                 interface: this.constructor.name
             }
-        })
+        }, this.observableMethodNameSet)
     }
 
 }
