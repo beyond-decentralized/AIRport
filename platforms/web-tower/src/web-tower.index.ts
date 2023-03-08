@@ -13,7 +13,7 @@ export * from "@airport/tower"
 export * from './DomainRetriever'
 export * from './IFrameApplicationInitializer'
 export * from './IFrameApplicationLocator'
-export * from './IFrameInterAppApiClient'
+export * from './IFrameInterAppAPIClient'
 export * from './IFrameTransactionalConnector'
 export * from './setup'
 export * from './web-tower.injection'

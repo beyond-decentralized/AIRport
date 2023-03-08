@@ -2,7 +2,8 @@ import {
     ILocalAPIRequest,
     ILocalAPIResponse,
     IObservableLocalAPIRequest,
-    IObservableLocalAPIResponse
+    IObservableLocalAPIResponse,
+    SubscriptionOperation
 } from "@airport/aviation-communication";
 import { IFullDITokenDescriptor, Inject, Injected } from "@airport/direction-indicator";
 import {
@@ -28,9 +29,9 @@ export interface ILocalAPIClient {
 
 }
 
-let _inDemoMode = true
-// let _demoServer = 'https://turbase.app'
-let _demoServer = 'https://localhost:3000'
+let _inWebMode = true
+// let _webServer = 'https://turbase.app'
+let _webServer = 'https://localhost:3000'
 
 export interface IRequestRecord {
     request: ILocalAPIRequest
@@ -49,7 +50,7 @@ export class LocalAPIClient
 
     clientIframe: HTMLIFrameElement
 
-    demoListenerStarted = false;
+    webListenerStarted = false;
 
     lastConnectionReadyCheckMap: Map<string, Map<string, boolean>> = new Map()
 
@@ -57,31 +58,32 @@ export class LocalAPIClient
 
     observableRequestMap: Map<string, SubscriptionCountSubject<any>> = new Map()
 
-    pendingDemoMessageMap: Map<string, IRequestRecord> = new Map();
+    pendingWebMessageMap: Map<string, IRequestRecord> = new Map();
 
     messageCallback: (
         message: any
     ) => void
 
     init() {
-        if (_inDemoMode) {
+        if (_inWebMode) {
             this.initializeForWeb()
         }
         this.messageBusSubscription = globalThis.MESSAGE_BUS.subscribe(async (
-            message: IObservableLocalAPIRequest
-        ) => {
-            if (message.category !== 'FromClient') {
+            message: {
+                fullDIDescriptor: IFullDITokenDescriptor,
+                request: IObservableLocalAPIRequest
+            }) => {
+            if (message.request.category !== 'FromClient') {
                 return
             }
-            if (_inDemoMode) {
-                this.clientIframe.contentWindow.postMessage(message, _demoServer)
+
+            await this.waitForConnectionToBeReady(message.fullDIDescriptor)
+
+            if (_inWebMode) {
+                this.clientIframe.contentWindow.postMessage(message.request, _webServer)
             } else {
                 throw new Error('Not Implemented')
             }
-            // switch (message.subscriptionOperation) {
-            //     case 'SUBSCRIBE':
-            //     case 'UNSUBSCRIBE':
-            // }
         })
     }
 
@@ -92,7 +94,7 @@ export class LocalAPIClient
             this.clientIframe = htmlElements[0]
         } else {
             this.clientIframe = document.createElement('iframe')
-            this.clientIframe.src = _demoServer + '/client/index.html'
+            this.clientIframe.src = _webServer + '/client/index.html'
             this.clientIframe.name = 'AIRportClient'
             this.clientIframe.style.display = 'none'
             document.body.appendChild(this.clientIframe)
@@ -142,9 +144,9 @@ export class LocalAPIClient
                         }
                         break
                     }
-                    let requestDemoMessage = this.pendingDemoMessageMap.get(message.id)
-                    if (requestDemoMessage) {
-                        requestDemoMessage.resolve(message)
+                    let requestWebMessage = this.pendingWebMessageMap.get(message.id)
+                    if (requestWebMessage) {
+                        requestWebMessage.resolve(message)
                     }
                     break
                 default:
@@ -172,27 +174,8 @@ export class LocalAPIClient
         args: any[],
         isObservable: boolean
     ): Promise<T> | Observable<T> {
-        if (isObservable) {
-            const subject = new SubscriptionCountSubject<T>()
-            this.doInvokeApiMethod(fullDIDescriptor,
-                methodName, args, subject).then()
-            return subject
-        } else {
-            return this.doInvokeApiMethod(fullDIDescriptor,
-                methodName, args, null)
-        }
-    }
-
-    async doInvokeApiMethod<T>(
-        fullDIDescriptor: IFullDITokenDescriptor,
-        methodName: string,
-        args: any[],
-        subject: SubscriptionCountSubject<any>
-    ): Promise<any> {
-        await this.waitForConnectionToBeReady(fullDIDescriptor)
-
         let serializedParams
-        if (_inDemoMode) {
+        if (_inWebMode) {
             serializedParams = args
         } else {
             serializedParams = this.operationSerializer.serializeAsArray(args)
@@ -212,16 +195,35 @@ export class LocalAPIClient
             protocol: window.location.protocol,
         }
 
+        if (isObservable) {
+            (request as IObservableLocalAPIRequest).subscriptionOperation = SubscriptionOperation.OPERATION_SUBSCRIBE
+            const subject = new SubscriptionCountSubject<T>(args, request, fullDIDescriptor)
+
+            if (_inWebMode) {
+                // The postMessage will be peformed during a subscription to the subject
+                // this.clientIframe.contentWindow.postMessage(request, _webServer)
+            } else {
+                throw new Error(`Not implemented`)
+            }
+
+            return subject
+        } else {
+            return this.doInvokeApiMethod(fullDIDescriptor,
+                request, args)
+        }
+    }
+
+    async doInvokeApiMethod<T>(
+        fullDIDescriptor: IFullDITokenDescriptor,
+        request: ILocalAPIRequest,
+        args: any[]
+    ): Promise<any> {
+        await this.waitForConnectionToBeReady(fullDIDescriptor)
+
         let response: ILocalAPIResponse
 
-        if (subject) {
-            subject.setArgsAndRequest(args, request)
-            this.observableRequestMap.set(subject.subscriptionId, subject)
-            return
-        }
-
-        if (_inDemoMode) {
-            response = await this.sendDemoRequest(request)
+        if (_inWebMode) {
+            response = await this.sendWebRequest(request)
         } else {
             response = await this.sendLocalRequest(request)
         }
@@ -247,7 +249,7 @@ export class LocalAPIClient
         }
 
         let payload
-        if (_inDemoMode) {
+        if (_inWebMode) {
             payload = response.payload
         } else {
             if (response.payload) {
@@ -308,8 +310,8 @@ export class LocalAPIClient
             protocol: window.location.protocol,
         }
 
-        if (_inDemoMode) {
-            this.clientIframe.contentWindow.postMessage(request, _demoServer)
+        if (_inWebMode) {
+            this.clientIframe.contentWindow.postMessage(request, _webServer)
             return false
         } else {
             const response = await this.sendLocalRequest(request)
@@ -341,31 +343,31 @@ export class LocalAPIClient
         return await httpResponse.json()
     }
 
-    private async sendDemoRequest(
+    private async sendWebRequest(
         request: ILocalAPIRequest
     ): Promise<ILocalAPIResponse> {
-        if (!this.demoListenerStarted) {
-            this.startDemoListener()
+        if (!this.webListenerStarted) {
+            this.startWebListener()
         }
         const returnValue = new Promise<ILocalAPIResponse>((resolve, reject) => {
-            this.pendingDemoMessageMap.set(request.id, {
+            this.pendingWebMessageMap.set(request.id, {
                 request,
                 resolve,
                 reject
             })
         })
-        this.clientIframe.contentWindow.postMessage(request, _demoServer)
+        this.clientIframe.contentWindow.postMessage(request, _webServer)
 
         return returnValue
     }
 
-    private startDemoListener() {
+    private startWebListener() {
         window.addEventListener("message", event => {
-            this.handleDemoResponse(event.data);
+            this.handleWebResponse(event.data);
         })
     }
 
-    private handleDemoResponse(
+    private handleWebResponse(
         response: ILocalAPIResponse
     ) {
         if (response.domain !== window.location.host) {
@@ -374,7 +376,7 @@ export class LocalAPIClient
         if (response.category !== 'ToClientRedirected') {
             return
         }
-        const pendingRequest = this.pendingDemoMessageMap.get(response.id)
+        const pendingRequest = this.pendingWebMessageMap.get(response.id)
         if (!pendingRequest) {
             return
         }

@@ -11,7 +11,7 @@ export interface ICrossTabCommunicator {
 export class CrossTabCommunicator
     implements ICrossTabCommunicator {
 
-    demoListenerStarted = false;
+    webListenerStarted = false;
 
     clientHost: string
     clientProtocol: string

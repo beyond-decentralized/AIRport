@@ -6,13 +6,13 @@ import { ApplicationStore } from '@airport/tower';
 import { DomainRetriever } from "./DomainRetriever";
 import { IFrameApplicationInitializer } from "./IFrameApplicationInitializer";
 import { IFrameApplicationLocator } from "./IFrameApplicationLocator";
-import { IFrameInterAppPIClient } from "./IFrameInterAppApiClient";
+import { IFrameInterAppAPIClient } from "./IFrameInterAppAPIClient";
 import { IframeTransactionalConnector } from "./IFrameTransactionalConnector";
 
 DOMAIN_RETRIEVER.setClass(DomainRetriever)
 APPLICATION_INITIALIZER.setClass(IFrameApplicationInitializer)
 APPLICATION_LOCATOR.setClass(IFrameApplicationLocator)
-API_CLIENT.setClass(IFrameInterAppPIClient)
+API_CLIENT.setClass(IFrameInterAppAPIClient)
 APPLICATION_LOCATOR.setDependencies({
     transactionalConnector: TRANSACTIONAL_CONNECTOR
 })
