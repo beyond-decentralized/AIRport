@@ -1788,6 +1788,9 @@ class AppTrackerUtils {
         ].indexOf(domainName) > -1;
     }
     entityHasExternalAccessPermissions(checkedDomainName, checkedApplicationName, checkedApplicationIntegerVersion, checkedEntityName, checkedColumnName) {
+        if (!this.isInternalDomain(checkedDomainName)) {
+            return true;
+        }
         for (const domainPermissions of this.EXTERNAL_ACCESS_ENTITIES) {
             if (domainPermissions.domainName !== checkedDomainName) {
                 continue;
@@ -8252,6 +8255,19 @@ function handleReset(reset, on) {
     return innerFrom(on.apply(void 0, __spreadArray([], __read(args)))).subscribe(onSubscriber);
 }
 
+var SubscriptionOperation;
+(function (SubscriptionOperation) {
+    SubscriptionOperation["OPERATION_SUBSCRIBE"] = "OPERATION_SUBSCRIBE";
+    SubscriptionOperation["OPERATION_UNSUBSCRIBE"] = "OPERATION_UNSUBSCRIBE";
+})(SubscriptionOperation || (SubscriptionOperation = {}));
+
+var ObservableOperation;
+(function (ObservableOperation) {
+    ObservableOperation["OBSERABLE_DATAFEED"] = "OBSERABLE_DATAFEED";
+    ObservableOperation["OBSERABLE_SUBSCRIBE"] = "OBSERABLE_SUBSCRIBE";
+    ObservableOperation["OBSERABLE_UNSUBSCRIBE"] = "OBSERABLE_UNSUBSCRIBE";
+})(ObservableOperation || (ObservableOperation = {}));
+
 const airApi = {
     setQApp: function (qApplication) { },
     dS: function (__dbApplication__, dbEntityId) { return true; },
@@ -11451,7 +11467,7 @@ var IsolateMessageType;
     IsolateMessageType["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
     IsolateMessageType["SEARCH"] = "SEARCH";
     IsolateMessageType["SEARCH_ONE"] = "SEARCH_ONE";
-    IsolateMessageType["SEARCH_UNSUBSCRIBE"] = "UNSUBSCRIBE";
+    IsolateMessageType["SEARCH_UNSUBSCRIBE"] = "SEARCH_UNSUBSCRIBE";
     IsolateMessageType["SAVE"] = "SAVE";
     IsolateMessageType["SAVE_TO_DESTINATION"] = "SAVE_TO_DESTINATION";
     IsolateMessageType["UPDATE_VALUES"] = "UPDATE_VALUES";
@@ -26014,337 +26030,6 @@ const APPLICATION$2 = {
                     "columns": [
                         {
                             "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "COLUMNINDEX",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
-                                    "oneTableIndex": 1,
-                                    "oneRelationIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SYNCHRONIZATION_CONFLICT_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        }
-                    ],
-                    "index": 0,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "SynchronizationConflictValues",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "synchronizationConflict",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 1,
-                            "isId": true,
-                            "name": "columnIndex",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 1,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SYNCHRONIZATION_CONFLICT_VALUES",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "SYNCHRONIZATION_CONFLICT_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "TYPE",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ACKNOWLEDGED",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "BOOLEAN"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 0,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 0,
-                                    "oneTableIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "OVERWRITTEN_RECORD_HISTORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": 0,
-                                    "oneTableIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "OVERWRITING_RECORD_HISTORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 1,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "SynchronizationConflict",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_localId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": false,
-                            "name": "type",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "acknowledged",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "overwrittenRecordHistory",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "name": "overwritingRecordHistory",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "name": "values",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableDbApplication_Index": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 3,
-                            "relationTableDbApplication_Index": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 3,
-                            "relationTableDbApplication_Index": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "synchronizationConflict"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 6
-                            },
-                            "relationTableIndex": 0,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SYNCHRONIZATION_CONFLICT",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "RECORD_UPDATE_STAGE_LID",
@@ -26391,7 +26076,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 1,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26413,7 +26098,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 1,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -26435,7 +26120,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": 0,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26457,7 +26142,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": 0,
+                                    "oneDbApplication_Index": 1,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26479,7 +26164,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneDbApplication_Index": 1,
+                                    "oneDbApplication_Index": 0,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -26501,7 +26186,7 @@ const APPLICATION$2 = {
                             "index": 0
                         }
                     ],
-                    "index": 2,
+                    "index": 0,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RecordUpdateStage",
@@ -26588,7 +26273,7 @@ const APPLICATION$2 = {
                                 "index": 3
                             },
                             "relationTableIndex": 7,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -26599,7 +26284,7 @@ const APPLICATION$2 = {
                                 "index": 4
                             },
                             "relationTableIndex": 5,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -26610,7 +26295,7 @@ const APPLICATION$2 = {
                                 "index": 5
                             },
                             "relationTableIndex": 10,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -26621,7 +26306,7 @@ const APPLICATION$2 = {
                                 "index": 6
                             },
                             "relationTableIndex": 0,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -26632,13 +26317,344 @@ const APPLICATION$2 = {
                                 "index": 7
                             },
                             "relationTableIndex": 4,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "RECORD_UPDATE_STAGE",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "COLUMNINDEX",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 2,
+                                    "oneRelationIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "SYNCHRONIZATION_CONFLICT_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "index": 1,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "SynchronizationConflictValues",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "synchronizationConflict",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 1,
+                            "isId": true,
+                            "name": "columnIndex",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 2,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SYNCHRONIZATION_CONFLICT_VALUES",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "SYNCHRONIZATION_CONFLICT_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "TYPE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ACKNOWLEDGED",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneDbApplication_Index": 1,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneDbApplication_Index": 1,
+                                    "oneTableIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "OVERWRITTEN_RECORD_HISTORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneDbApplication_Index": 1,
+                                    "oneTableIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "OVERWRITING_RECORD_HISTORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 2,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "SynchronizationConflict",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "type",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "acknowledged",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "overwrittenRecordHistory",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "name": "overwritingRecordHistory",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
+                            "isId": false,
+                            "name": "values",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 10,
+                            "relationTableDbApplication_Index": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 3,
+                            "relationTableDbApplication_Index": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 5
+                            },
+                            "relationTableIndex": 3,
+                            "relationTableDbApplication_Index": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "synchronizationConflict"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 6
+                            },
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "SYNCHRONIZATION_CONFLICT",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -26649,7 +26665,7 @@ const APPLICATION$2 = {
                 {
                     "domain": "airport",
                     "index": 0,
-                    "name": "@airport/holding-pattern",
+                    "name": "@airport/airspace",
                     "publicSigningKey": null,
                     "sinceVersion": 1,
                     "versions": [
@@ -26665,7 +26681,7 @@ const APPLICATION$2 = {
                 {
                     "domain": "airport",
                     "index": 1,
-                    "name": "@airport/airspace",
+                    "name": "@airport/holding-pattern",
                     "publicSigningKey": null,
                     "sinceVersion": 1,
                     "versions": [
@@ -27504,10 +27520,10 @@ class BaseRecordUpdateStageDao extends SQDIDao$1 {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_layover_diSet(2);
+        return airport____at_airport_slash_layover_diSet(0);
     }
     constructor() {
-        super(2);
+        super(0);
     }
 }
 BaseRecordUpdateStageDao.Find = new DaoQueryDecorators();
@@ -27519,10 +27535,10 @@ class BaseSynchronizationConflictDao extends SQDIDao$1 {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_layover_diSet(1);
+        return airport____at_airport_slash_layover_diSet(2);
     }
     constructor() {
-        super(1);
+        super(2);
     }
 }
 BaseSynchronizationConflictDao.Find = new DaoQueryDecorators();
@@ -27534,10 +27550,10 @@ class BaseSynchronizationConflictValuesDao extends SQDIDao$1 {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_layover_diSet(0);
+        return airport____at_airport_slash_layover_diSet(1);
     }
     constructor() {
-        super(0);
+        super(1);
     }
 }
 BaseSynchronizationConflictValuesDao.Find = new DaoQueryDecorators();
@@ -34043,14 +34059,20 @@ class SqlStoreDriver {
             ? application.domain
             : application.domain.name;
         const transaction = context.transaction;
-        if (!context.internal && !this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)
+        if (!transaction || (!context.internal && !this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)
             && !this.appTrackerUtils.isInternalDomain(transaction.actor.application.domain.name)
-            && this.appTrackerUtils.isInternalDomain(domainName)) {
+            && this.appTrackerUtils.isInternalDomain(domainName))) {
             const entityHasExternalAccessPermissions = this.appTrackerUtils.entityHasExternalAccessPermissions(domainName, application.name, applicationIntegerVersion, table.name);
             if (!entityHasExternalAccessPermissions) {
+                const applicationName = transaction
+                    ? transaction.actor.application.name
+                    : context.credentials.application;
+                const domainName = transaction
+                    ? transaction.actor.application.domain.name
+                    : context.credentials.domain;
                 throw new Error(`
-Domain:          ${transaction.actor.application.domain.name}
-Application:     ${transaction.actor.application.name}
+Domain:          ${domainName}
+Application:     ${applicationName}
 
 has no permissions to access:
 
@@ -35395,6 +35417,7 @@ class TransactionalReceiver {
             };
             let context = {};
             context.startedAt = new Date();
+            context.credentials = credentials;
             const { theErrorMessage, theResult } = await this.doProcessMessage(message, credentials, context);
             errorMessage = theErrorMessage;
             result = theResult;
@@ -39412,7 +39435,7 @@ class LocalAPIServer {
         }
         if (request.args.length > apiOperation.parameters.length) {
             throw new Error(`
-    Too many parameters passed in to @Api() request
+Too many parameters passed in to @Api() request
 Domain:      ${request.domain}
 Application: ${request.application}
 @Api()

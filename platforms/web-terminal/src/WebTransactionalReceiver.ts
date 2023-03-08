@@ -4,7 +4,8 @@ import {
 } from '@airport/direction-indicator'
 import {
 	ILocalAPIRequest,
-	ILocalAPIResponse
+	ILocalAPIResponse,
+	IObservableLocalAPIResponse
 } from '@airport/aviation-communication'
 import {
 	TransactionalReceiver
@@ -151,7 +152,7 @@ export class WebTransactionalReceiver
 				}, message.errorMessage, context).then((success) => {
 					if (interAppApiCallRequest) {
 						interAppApiCallRequest.resolve(message)
-					} else {
+					} else if (!(message as IObservableLocalAPIResponse).observableOperation) {
 						this.replyToClient(
 							message,
 							message.args,
