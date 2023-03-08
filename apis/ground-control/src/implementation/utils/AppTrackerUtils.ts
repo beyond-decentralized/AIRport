@@ -118,6 +118,10 @@ export class AppTrackerUtils
         checkedEntityName: string,
         checkedColumnName?: string
     ): boolean {
+        if (!this.isInternalDomain(checkedDomainName)) {
+            return true
+        }
+
         for (const domainPermissions of this.EXTERNAL_ACCESS_ENTITIES) {
             if (domainPermissions.domainName !== checkedDomainName) {
                 continue
