@@ -1,11 +1,10 @@
-import { ILocalAPIRequest, IObservableLocalAPIRequest } from "@airport/aviation-communication";
+import { ILocalAPIRequest, IObservableLocalAPIRequest, SubscriptionOperation } from "@airport/aviation-communication";
+import { IFullDITokenDescriptor } from "@airport/direction-indicator";
 import { Observer, Subject, Subscription } from "rxjs";
 import { v4 as guidv4 } from 'uuid'
 
 export class SubscriptionCountSubject<T>
     extends Subject<T> {
-
-    args: any[]
 
     subscriptionCount = 0
 
@@ -13,15 +12,21 @@ export class SubscriptionCountSubject<T>
 
     request: IObservableLocalAPIRequest
 
-    setArgsAndRequest(
-        args: any[],
-        request: ILocalAPIRequest
+    constructor(
+        public args: any[],
+        request: ILocalAPIRequest,
+        public fullDIDescriptor: IFullDITokenDescriptor
     ) {
-        this.args = args
+        super()
+        this.args = args;
+        (request as IObservableLocalAPIRequest).subscriptionId = this.subscriptionId
+
         this.request = {
             ...request,
             subscriptionId: this.subscriptionId
         }
+
+        delete this.request.transactionId
     }
 
     subscribe(observerOrNext?: Partial<Observer<T>> | ((value: T) => void)): Subscription;
@@ -31,10 +36,14 @@ export class SubscriptionCountSubject<T>
         error?: ((error: any) => void) | null,
         complete?: (() => void) | null
     ): Subscription {
-        if (this.subscriptionCount == 0) {
+        if (this.subscriptionCount === 0) {
             globalThis.MESSAGE_BUS.next({
-                ...this.request,
-                subscriptionOperation: 'SUBSCRIBE'
+                fullDIDescriptor: this.fullDIDescriptor,
+                request: {
+                    ...this.request,
+                    id: guidv4(),
+                    subscriptionOperation: SubscriptionOperation.OPERATION_SUBSCRIBE
+                }
             })
         }
         this.subscriptionCount++
@@ -49,8 +58,13 @@ export class SubscriptionCountSubject<T>
             return
         }
         globalThis.MESSAGE_BUS.next({
-            ...this.request,
-            subscriptionOperation: 'UNSUBSCRIBE'
+            fullDIDescriptor: this.fullDIDescriptor,
+            request: {
+                ...this.request,
+                id: guidv4(),
+                subscriptionOperation: SubscriptionOperation.OPERATION_UNSUBSCRIBE
+            }
         })
     }
+
 }
