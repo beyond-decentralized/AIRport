@@ -155,9 +155,9 @@ export abstract class SqlStoreDriver
 			? application.domain
 			: application.domain.name
 		const transaction = context.transaction
-		if (!context.internal && !this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)
+		if (!transaction || (!context.internal && !this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)
 			&& !this.appTrackerUtils.isInternalDomain(transaction.actor.application.domain.name)
-			&& this.appTrackerUtils.isInternalDomain(domainName)) {
+			&& this.appTrackerUtils.isInternalDomain(domainName))) {
 			const entityHasExternalAccessPermissions = this.appTrackerUtils.entityHasExternalAccessPermissions(
 				domainName,
 				application.name,
@@ -165,9 +165,15 @@ export abstract class SqlStoreDriver
 				table.name
 			);
 			if (!entityHasExternalAccessPermissions) {
+				const applicationName = transaction
+					? transaction.actor.application.name
+					: context.credentials.application
+				const domainName = transaction
+					? transaction.actor.application.domain.name
+					: context.credentials.domain
 				throw new Error(`
-Domain:          ${transaction.actor.application.domain.name}
-Application:     ${transaction.actor.application.name}
+Domain:          ${domainName}
+Application:     ${applicationName}
 
 has no permissions to access:
 
