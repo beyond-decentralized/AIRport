@@ -101,6 +101,7 @@ export abstract class TransactionalReceiver {
             }
             let context: IContext = {}
             context.startedAt = new Date()
+            context.credentials = credentials
             const {
                 theErrorMessage,
                 theResult
