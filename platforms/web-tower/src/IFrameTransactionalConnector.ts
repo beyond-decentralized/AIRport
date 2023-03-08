@@ -1,4 +1,4 @@
-import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse, IObservableLocalAPIRequest } from '@airport/aviation-communication';
+import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse, IObservableLocalAPIRequest, ObservableOperation, SubscriptionOperation } from '@airport/aviation-communication';
 import {
 	IContext,
 	IInjected,
@@ -355,7 +355,7 @@ export class IframeTransactionalConnector
 		const observableRequest = request as IObservableLocalAPIRequest
 		const subscriptionId = observableRequest.subscriptionId
 		switch (observableRequest.subscriptionOperation) {
-			case 'SUBSCRIBE': {
+			case SubscriptionOperation.OPERATION_SUBSCRIBE: {
 				const response = await this.localApiServer.handleRequest(request)
 				const subscription = response.payload.subscribe(payload => {
 					window.parent.postMessage({
@@ -364,19 +364,27 @@ export class IframeTransactionalConnector
 						payload
 					}, origin)
 				})
-
 				this.clientSubscriptionMap.set(subscriptionId, subscription)
+				window.parent.postMessage({
+					...response,
+					payload: null,
+					observableOperation: ObservableOperation.OBSERABLE_SUBSCRIBE
+				}, origin)
+				return
 			}
-			case 'UNSUBSCRIBE': {
+			case SubscriptionOperation.OPERATION_UNSUBSCRIBE: {
 				const subscription = this.clientSubscriptionMap.get(subscriptionId)
 				if (!subscription) {
-					break
+					return
 				}
 				subscription.unsubscribe()
 				this.clientSubscriptionMap.delete(subscriptionId)
-				break
-			}
+				// No need to send a message back, no transaction is started
+				// for the Unsubscribe operation
 				return
+			}
+			default:
+				break
 		}
 
 		const response = await this.localApiServer.handleRequest(request)

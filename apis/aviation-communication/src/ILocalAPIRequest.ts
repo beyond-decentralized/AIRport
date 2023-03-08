@@ -23,8 +23,13 @@ export interface ILocalAPIRequest<CategoryType = LocalApiRequestCategoryType, A 
     transactionId?: string
 }
 
+export enum SubscriptionOperation {
+    OPERATION_SUBSCRIBE = 'OPERATION_SUBSCRIBE',
+    OPERATION_UNSUBSCRIBE = 'OPERATION_UNSUBSCRIBE'
+}
+
 export interface IObservableLocalAPIRequest<CategoryType = LocalApiRequestCategoryType,
     A = any> extends ILocalAPIRequest {
     subscriptionId: string
-    subscriptionOperation?: 'SUBSCRIBE' | 'UNSUBSCRIBE'
+    subscriptionOperation?: SubscriptionOperation
 }

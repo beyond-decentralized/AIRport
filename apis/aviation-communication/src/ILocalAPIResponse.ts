@@ -1,3 +1,9 @@
+export enum ObservableOperation {
+    OBSERABLE_DATAFEED = 'OBSERABLE_DATAFEED',
+    OBSERABLE_SUBSCRIBE = 'OBSERABLE_SUBSCRIBE',
+    OBSERABLE_UNSUBSCRIBE = 'OBSERABLE_UNSUBSCRIBE'
+}
+
 export interface ILocalAPIResponse {
     __received__?: boolean
     __receivedTime__?: number
@@ -11,6 +17,7 @@ export interface ILocalAPIResponse {
     id: string // GUID
     methodName: string
     objectName: string
+    observableOperation?: ObservableOperation
     payload: any
     protocol: string
     transactionId: string
