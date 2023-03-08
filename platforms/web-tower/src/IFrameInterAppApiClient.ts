@@ -25,10 +25,10 @@ export interface IRequestRecord {
     resolve
 }
 
-const _inDemoMode = true
+const _inWebMode = true
 
 @Injected()
-export class IFrameInterAppPIClient
+export class IFrameInterAppAPIClient
     implements IInterAppAPIClient {
 
     @Inject()
@@ -46,7 +46,7 @@ export class IFrameInterAppPIClient
         args: any[]
     ): Promise<ReturnValue> {
         let serializedParams
-        if (_inDemoMode) {
+        if (_inWebMode) {
             serializedParams = args
         } else {
             serializedParams = this.operationSerializer.serializeAsArray(args)
@@ -63,7 +63,7 @@ export class IFrameInterAppPIClient
         let response = await this.transactionalConnector.callApi(request)
 
         let payload
-        if (_inDemoMode) {
+        if (_inWebMode) {
             payload = response.payload
         } else {
             if (response.payload) {
