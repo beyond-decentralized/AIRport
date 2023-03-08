@@ -17,17 +17,21 @@ export class SyncAllModifiedColumnsMap extends AllModifiedColumnsMap {
 		entity: DbEntity,
 		allColumns: boolean = false
 	): SyncColumnMap {
-		return super.ensureEntity(entity, allColumns, globalThis.SyncTableMap as typeof SyncTableMap);
+		return super.ensureEntity(entity, allColumns,
+			globalThis.SyncTableMap as typeof SyncTableMap);
 	}
 
 	intersects(
 		allModifiedColumnsMap: AllModifiedColumnsMap
 	): boolean {
-		for (const applicationIndex in this.applicationMap) {
-			if (allModifiedColumnsMap.applicationMap[applicationIndex]) {
+		for (const applicationVersionLocalId in this.applicationMap) {
+			if (allModifiedColumnsMap.applicationMap[applicationVersionLocalId]) {
 				const syncTableMap: SyncTableMap = new globalThis.SyncTableMap(
-					parseInt(applicationIndex), this.applicationMap[applicationIndex].tableMap);
-				if (syncTableMap.intersects(allModifiedColumnsMap.applicationMap[applicationIndex])) {
+					parseInt(applicationVersionLocalId),
+					this.applicationMap[applicationVersionLocalId].tableMap);
+				if (syncTableMap.intersects(
+					allModifiedColumnsMap.applicationMap[applicationVersionLocalId]
+				)) {
 					return true;
 				}
 			}
@@ -38,11 +42,11 @@ export class SyncAllModifiedColumnsMap extends AllModifiedColumnsMap {
 	merge(
 		allModifiedColumnsMap: AllModifiedColumnsMap
 	): void {
-		for (const applicationIndex in allModifiedColumnsMap.applicationMap) {
-			const tableMap = this.applicationMap[applicationIndex]
-			const tableMapIn = allModifiedColumnsMap.applicationMap[applicationIndex]
+		for (const applicationVersionLocalId in allModifiedColumnsMap.applicationMap) {
+			const tableMap = this.applicationMap[applicationVersionLocalId]
+			const tableMapIn = allModifiedColumnsMap.applicationMap[applicationVersionLocalId]
 			if (!tableMap) {
-				this.applicationMap[applicationIndex] = tableMapIn
+				this.applicationMap[applicationVersionLocalId] = tableMapIn
 				continue
 			}
 			for (const entityIndex in tableMapIn.tableMap) {
