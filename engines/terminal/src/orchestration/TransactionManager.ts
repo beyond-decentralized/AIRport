@@ -434,6 +434,7 @@ parent transactions.
 			if (!parentRepositoryTransactionRecord) {
 				parentTransactionHistory.repositoryTransactionHistoryMap[repositoryLocalId]
 					= repositoryTransactionHistory
+				repositoryTransactionHistory.transactionHistory = parentTransactionHistory
 				parentTransactionHistory.repositoryTransactionHistories
 					.push(repositoryTransactionHistory)
 			}
@@ -462,11 +463,11 @@ parent transactions.
 			.remoteRepositoryMemberInvitations.concat(childTransactionHistory.remoteRepositoryMemberInvitations)
 		parentTransactionHistory.allModifiedColumnsMap
 			.merge(childTransactionHistory.allModifiedColumnsMap)
-			parentTransactionHistory.modifiedRepository_LocalIdSet
-			 = new Set([
+		parentTransactionHistory.modifiedRepository_LocalIdSet
+			= new Set([
 				...parentTransactionHistory.modifiedRepository_LocalIdSet,
 				...childTransactionHistory.modifiedRepository_LocalIdSet
-			 ])
+			])
 
 	}
 
