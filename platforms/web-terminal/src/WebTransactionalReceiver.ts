@@ -586,17 +586,16 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		let shemaDomain_Name = fullDbApplication_Name + '.' + webReciever.localDomain
 		switch (message.type) {
 			case IsolateMessageType.SEARCH:
 			case IsolateMessageType.SEARCH_ONE:
 				const observableDataResult = <IObservableDataIMO<any>>response
-				observableDataResult.result.pipe(
-					map(value => {
-						window.postMessage(value, shemaDomain_Name)
-					})
-				)
-				const subscription = observableDataResult.result.subscribe()
+				const subscription = observableDataResult.result.subscribe(result => {
+					source.postMessage({
+						...response,
+						result
+					}, '*')
+				})
 				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullDbApplication_Name)
 				if (!isolateSubscriptionMap) {
 					isolateSubscriptionMap = new Map()

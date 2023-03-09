@@ -395,11 +395,6 @@ export class IframeTransactionalConnector
 		message: IIsolateMessageOut<any>,
 		mainDomain: string
 	) {
-		const messageRecord = this.applicationStore.state.pendingMessageMap.get(message.id);
-		if (!messageRecord) {
-			return
-		}
-
 		let observableMessageRecord: IObservableMessageInRecord<any>
 		switch (message.type) {
 			// case IsolateMessageType.APP_INITIALIZING:
@@ -418,6 +413,11 @@ export class IframeTransactionalConnector
 					observableMessageRecord.observer.next(message.result)
 				}
 				return
+		}
+
+		const messageRecord = this.applicationStore.state.pendingMessageMap.get(message.id);
+		if (!messageRecord) {
+			return
 		}
 
 		if (message.errorMessage) {
