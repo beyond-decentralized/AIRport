@@ -15,7 +15,8 @@ export class SubscriptionCountSubject<T>
     constructor(
         public args: any[],
         request: ILocalAPIRequest,
-        public fullDIDescriptor: IFullDITokenDescriptor
+        public fullDIDescriptor: IFullDITokenDescriptor,
+        public observableRequestMap: Map<string, SubscriptionCountSubject<any>>
     ) {
         super()
         this.args = args;
@@ -37,6 +38,7 @@ export class SubscriptionCountSubject<T>
         complete?: (() => void) | null
     ): Subscription {
         if (this.subscriptionCount === 0) {
+            this.observableRequestMap.set(this.subscriptionId, this)
             globalThis.MESSAGE_BUS.next({
                 fullDIDescriptor: this.fullDIDescriptor,
                 request: {
@@ -57,6 +59,7 @@ export class SubscriptionCountSubject<T>
         if (this.subscriptionCount > 0) {
             return
         }
+        this.observableRequestMap.delete(this.subscriptionId)
         globalThis.MESSAGE_BUS.next({
             fullDIDescriptor: this.fullDIDescriptor,
             request: {

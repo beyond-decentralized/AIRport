@@ -367,8 +367,9 @@ export class IframeTransactionalConnector
 				this.clientSubscriptionMap.set(subscriptionId, subscription)
 				window.parent.postMessage({
 					...response,
+					subscriptionId,
 					payload: null,
-					observableOperation: ObservableOperation.OBSERABLE_SUBSCRIBE
+					observableOperation: ObservableOperation.OBSERVABLE_SUBSCRIBE
 				}, origin)
 				return
 			}

@@ -196,8 +196,10 @@ export class LocalAPIClient
         }
 
         if (isObservable) {
-            (request as IObservableLocalAPIRequest).subscriptionOperation = SubscriptionOperation.OPERATION_SUBSCRIBE
-            const subject = new SubscriptionCountSubject<T>(args, request, fullDIDescriptor)
+            (request as IObservableLocalAPIRequest).subscriptionOperation
+                = SubscriptionOperation.OPERATION_SUBSCRIBE
+            const subject = new SubscriptionCountSubject<T>(args, request,
+                fullDIDescriptor, this.observableRequestMap)
 
             if (_inWebMode) {
                 // The postMessage will be peformed during a subscription to the subject

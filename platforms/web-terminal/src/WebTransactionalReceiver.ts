@@ -5,7 +5,8 @@ import {
 import {
 	ILocalAPIRequest,
 	ILocalAPIResponse,
-	IObservableLocalAPIResponse
+	IObservableLocalAPIResponse,
+	ObservableOperation
 } from '@airport/aviation-communication'
 import {
 	TransactionalReceiver
@@ -20,11 +21,9 @@ import {
 	IApiIMI,
 	IsolateMessageType,
 	ILocalAPIRequestIMI,
-	IObservableDataIMO
+	IObservableDataIMO,
+	IWebReceiverState
 } from '@airport/terminal-map'
-import {
-	map
-} from 'rxjs/operators'
 import { IWebApplicationInitializer } from './WebApplicationInitializer'
 import { IWebMessageReceiver } from './WebMessageReceiver'
 import { DbApplication, IDbApplicationUtils } from '@airport/ground-control'
@@ -140,33 +139,66 @@ export class WebTransactionalReceiver
 					source as Window).then()
 				break
 			case 'ToClient':
-				const interAppApiCallRequest = webReciever.pendingInterAppApiCallMessageMap.get(message.id)
-
-				const context: IApiCallContext = {}
-				this.endApiCall({
-					application: message.application,
-					domain: message.domain,
-					methodName: (message as ILocalAPIResponse).methodName,
-					objectName: (message as ILocalAPIResponse).objectName,
-					transactionId: (message as ILocalAPIResponse).transactionId
-				}, message.errorMessage, context).then((success) => {
-					if (interAppApiCallRequest) {
-						interAppApiCallRequest.resolve(message)
-					} else if (!(message as IObservableLocalAPIResponse).observableOperation) {
-						this.replyToClient(
-							message,
-							message.args,
-							success ? message.errorMessage : context.errorMessage,
-							message.payload,
-							message.protocol,
-							success,
-							messageOrigin
-						).then()
-					}
-				})
+				this.handleToClientMessage(message, messageOrigin, webReciever).then()
 				break
 			default:
 				break
+		}
+	}
+
+	private async handleToClientMessage(
+		message: ILocalAPIResponse,
+		messageOrigin: string,
+		webReciever: IWebReceiverState
+	): Promise<void> {
+		const interAppApiCallRequest = webReciever.pendingInterAppApiCallMessageMap.get(message.id)
+
+		const context: IApiCallContext = {}
+		const observableResponse = message as IObservableLocalAPIResponse
+
+		let endApiCall = true
+		let replyToClient = true
+		if (observableResponse.subscriptionId) {
+			endApiCall = false
+			replyToClient = false
+			switch (observableResponse.observableOperation) {
+				case ObservableOperation.OBSERVABLE_SUBSCRIBE:
+					endApiCall = true
+					break
+				case ObservableOperation.OBSERVABLE_UNSUBSCRIBE:
+					break
+				default:
+					replyToClient = true
+					break
+			}
+		}
+
+		let success = true
+		try {
+			if (endApiCall) {
+				await this.endApiCall({
+					application: message.application,
+					domain: message.domain,
+					methodName: message.methodName,
+					objectName: message.objectName,
+					transactionId: message.transactionId
+				}, message.errorMessage, context)
+			}
+		} catch (e) {
+			success = false
+		}
+		if (interAppApiCallRequest) {
+			interAppApiCallRequest.resolve(message)
+		} else if (replyToClient) {
+			await this.replyToClient(
+				message,
+				message.args,
+				success ? message.errorMessage : context.errorMessage,
+				message.payload,
+				message.protocol,
+				success,
+				messageOrigin
+			)
 		}
 	}
 
