@@ -260,15 +260,13 @@ export class LocalAPIClient
             }
         }
 
-        const processecEntities = new Set()
-
         if (payload) {
             this.queryResultsDeserializer.setPropertyDescriptors(payload)
         }
 
         for (let i = 0; i < args.length; i++) {
             this.queryResultsDeserializer
-                .deepCopyProperties(response.args[i], args[i], new Map(), processecEntities)
+                .deepCopyProperties(response.args[i], args[i], new Map())
         }
 
         return payload

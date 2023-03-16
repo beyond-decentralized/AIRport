@@ -72,15 +72,13 @@ export class IFrameInterAppAPIClient
             }
         }
 
-        const processedEntities = new Set()
-
         if (payload) {
-            this.queryResultsDeserializer.setPropertyDescriptors(payload, processedEntities)
+            this.queryResultsDeserializer.setPropertyDescriptors(payload, new Set())
         }
 
         for (let i = 0; i < args.length; i++) {
             this.queryResultsDeserializer
-                .deepCopyProperties(response.args[i], args[i], new Map(), processedEntities)
+                .deepCopyProperties(response.args[i], args[i], new Map())
         }
 
         return payload

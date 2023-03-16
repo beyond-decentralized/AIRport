@@ -33,7 +33,6 @@ export class LocalAPIServer
     async handleRequest(
         request: ILocalAPIRequest<LocalApiRequestCategoryType, IActor>
     ): Promise<ILocalAPIResponse> {
-
         let payload
         let errorMessage: string
         try {
@@ -111,6 +110,5 @@ ${request.objectName}.${request.methodName}
             return result
         }
     }
-
 
 }

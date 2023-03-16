@@ -45,6 +45,7 @@ export const NEW_RECORD_FIELDS = {
 	actor: null,
 	_actorRecordId: null,
 	ageSuitability: 0,
+	createdAt: null,
 	originalActor: null,
 	originalActorRecordId: null,
 	originalRepository: null,

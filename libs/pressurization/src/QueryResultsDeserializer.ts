@@ -19,13 +19,16 @@ export interface IQueryResultsDeserializer {
 	deepCopyProperties<T>(
 		from: T,
 		to: T,
-		fromToMap: Map<T, T>,
-		processedEntities?: Set<any>
+		fromToMap: Map<T, T>
 	): void
 
 	setPropertyDescriptors(
 		object: any,
 		processecEntities?: Set<any>
+	): void
+
+	setPropertyDescriptorsOfAirEntity(
+		object: any
 	): void
 
 }
@@ -164,8 +167,7 @@ export class QueryResultsDeserializer
 	deepCopyProperties<T>(
 		from: T,
 		to: T,
-		fromToMap: Map<T, T>,
-		processedEntities: Set<any> = new Set()
+		fromToMap: Map<T, T>
 	): void {
 		if (!(from instanceof Object)) {
 			return
@@ -187,7 +189,7 @@ export class QueryResultsDeserializer
 				delete to[propertyName]
 			}
 		}
-		this.doSetPropertyDescriptors(to, processedEntities)
+		this.setPropertyDescriptorsOfAirEntity(to)
 	}
 
 	copyObject<T>(
@@ -259,14 +261,12 @@ export class QueryResultsDeserializer
 				this.setPropertyDescriptors(property, processedEntities)
 			}
 		}
-		this.doSetPropertyDescriptors(object, processedEntities)
+		this.setPropertyDescriptorsOfAirEntity(object)
 	}
 
-	private doSetPropertyDescriptors(
-		object: any,
-		processedEntities: Set<any>
+	setPropertyDescriptorsOfAirEntity(
+		object: any
 	): void {
-
 		let objectPrototype = Object.getPrototypeOf(object)
 		if (!Object.getOwnPropertyDescriptor(object, 'id')
 			&& (!objectPrototype
