@@ -44,7 +44,7 @@ export class EntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 		queryResultType: QueryResultType,
 		context?: IContext
 	): Observable<Entity> {
-		return this.entityLookup(rawEntityQuery, queryResultType, true, true,
+		return this.entitySearch(rawEntityQuery, queryResultType, true,
 			this.ensureContext(context) as IEntityQueryContext) as Observable<Entity>;
 	}
 

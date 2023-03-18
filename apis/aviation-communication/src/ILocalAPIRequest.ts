@@ -6,6 +6,15 @@ export interface ICoreLocalApiRequest {
     objectName: string
 }
 
+export interface IBaseObservableLocalAPIRequest {
+    subscriptionId: string
+    subscriptionOperation?: SubscriptionOperation
+}
+
+export interface IObservableCoreLocalAPIRequest
+    extends ICoreLocalApiRequest, IBaseObservableLocalAPIRequest {
+}
+
 export type LocalApiRequestCategoryType =
     'FromClient' | 'FromClientRedirected' | 'IsConnectionReady'
 
@@ -29,7 +38,5 @@ export enum SubscriptionOperation {
 }
 
 export interface IObservableLocalAPIRequest<CategoryType = LocalApiRequestCategoryType,
-    A = any> extends ILocalAPIRequest {
-    subscriptionId: string
-    subscriptionOperation?: SubscriptionOperation
+    A = any> extends ILocalAPIRequest<CategoryType, A>, IBaseObservableLocalAPIRequest {
 }

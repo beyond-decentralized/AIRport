@@ -51,8 +51,8 @@ export class NonEntityFindOne
 		QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery,
 		context: IContext
 	): Promise<any> {
-		return this.lookup(rawNonEntityQuery, queryResultType,
-			false, true, QueryClass,
+		return this.findInternal(rawNonEntityQuery, queryResultType,
+			true, QueryClass,
 			this.ensureContext(context as IQueryContext));
 	}
 

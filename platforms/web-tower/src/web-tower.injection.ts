@@ -17,6 +17,7 @@ APPLICATION_LOCATOR.setDependencies({
     transactionalConnector: TRANSACTIONAL_CONNECTOR
 })
 API_CLIENT.setDependencies({
+    applicationStore: ApplicationStore,
     operationSerializer: globalThis.OPERATION_SERIALIZER,
     queryResultsDeserializer: globalThis.QUERY_RESULTS_DESERIALIZER,
     transactionalConnector: TRANSACTIONAL_CONNECTOR

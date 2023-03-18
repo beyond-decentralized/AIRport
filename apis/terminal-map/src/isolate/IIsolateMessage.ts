@@ -1,5 +1,5 @@
 import { JsonApplicationWithLastIds, ILastIds } from "@airport/air-traffic-control";
-import { ILocalAPIRequest } from "@airport/aviation-communication";
+import { ILocalAPIRequest, ObservableOperation } from "@airport/aviation-communication";
 import {
     PortableQuery
 } from "@airport/ground-control";
@@ -123,6 +123,7 @@ export interface IDataIMO<T>
 
 export interface IObservableDataIMO<T>
     extends IIsolateMessageOut<Observable<T>> {
+    observableOperation: ObservableOperation
 }
 
 export interface IMessageDbEntity {

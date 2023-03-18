@@ -1,4 +1,4 @@
-import { ILocalAPIRequest, IObservableLocalAPIRequest, SubscriptionOperation } from "@airport/aviation-communication";
+import { ICoreLocalApiRequest, ILocalAPIRequest, IObservableCoreLocalAPIRequest, IObservableLocalAPIRequest, SubscriptionOperation } from "@airport/aviation-communication";
 import { IFullDITokenDescriptor } from "@airport/direction-indicator";
 import { Observer, Subject, Subscription } from "rxjs";
 import { v4 as guidv4 } from 'uuid'
@@ -10,13 +10,13 @@ export class SubscriptionCountSubject<T>
 
     subscriptionId = guidv4()
 
-    request: IObservableLocalAPIRequest
+    request: IObservableCoreLocalAPIRequest | IObservableLocalAPIRequest
 
     constructor(
         public args: any[],
-        request: ILocalAPIRequest,
+        request: ICoreLocalApiRequest,
         public fullDIDescriptor: IFullDITokenDescriptor,
-        public observableRequestMap: Map<string, SubscriptionCountSubject<any>>
+        public observableRequestMap: Map<string, Subject<any>>
     ) {
         super()
         this.args = args;
@@ -27,7 +27,7 @@ export class SubscriptionCountSubject<T>
             subscriptionId: this.subscriptionId
         }
 
-        delete this.request.transactionId
+        delete (this.request as IObservableLocalAPIRequest).transactionId
     }
 
     subscribe(observerOrNext?: Partial<Observer<T>> | ((value: T) => void)): Subscription;
@@ -40,6 +40,7 @@ export class SubscriptionCountSubject<T>
         if (this.subscriptionCount === 0) {
             this.observableRequestMap.set(this.subscriptionId, this)
             globalThis.MESSAGE_BUS.next({
+                args: this.args,
                 fullDIDescriptor: this.fullDIDescriptor,
                 request: {
                     ...this.request,

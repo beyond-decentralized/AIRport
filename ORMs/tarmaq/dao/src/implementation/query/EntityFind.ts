@@ -49,9 +49,8 @@ export class EntityFind<Entity, EntityArray extends Array<Entity>, IESP extends 
 		queryResultType: QueryResultType,
 		context?: IContext
 	): Promise<EntityArray> {
-		return await this.entityLookup(rawEntityQuery, queryResultType,
-			false, false,
-			this.ensureContext(context) as IEntityQueryContext)
+		return await this.entityFind(rawEntityQuery, queryResultType,
+			false, this.ensureContext(context) as IEntityQueryContext)
 	}
 
 	noCache(): EntityFind<Entity, Entity[], IESP> {

@@ -1,5 +1,5 @@
 import { IApplicationApi } from "@airport/air-traffic-control"
-import { Observer } from "rxjs"
+import { Observer, Subject } from "rxjs"
 import { IIsolateMessage } from "../isolate/IIsolateMessage"
 
 export interface IMessageInRecord {
@@ -29,7 +29,8 @@ export interface IApplicationState {
     hostServer: string
     // FIXME: tie this in to the hostServer variable
     mainDomain: string
-    observableMessageMap: Map<string, IObservableMessageInRecord<any>>
+    observableApiRequestMap: Map<string, Subject<any>>
+    observableDbToIsolateMessageMap: Map<string, IObservableMessageInRecord<any>>
     pendingMessageMap: Map<string, IMessageInRecord>
 
     messageCallback: (

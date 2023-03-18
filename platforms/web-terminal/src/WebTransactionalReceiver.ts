@@ -29,6 +29,12 @@ import { IWebMessageReceiver } from './WebMessageReceiver'
 import { DbApplication, IDbApplicationUtils } from '@airport/ground-control'
 import { JsonApplicationVersionWithApi } from '@airport/air-traffic-control'
 
+interface IToClientMessageOptions {
+	decrementPendingCounts: boolean
+	endApiCall: boolean
+	replyToClient: boolean
+}
+
 @Injected()
 export class WebTransactionalReceiver
 	extends TransactionalReceiver
@@ -151,28 +157,15 @@ export class WebTransactionalReceiver
 		messageOrigin: string,
 		webReciever: IWebReceiverState
 	): Promise<void> {
-		const interAppApiCallRequest = webReciever.pendingInterAppApiCallMessageMap.get(message.id)
+		const {
+			decrementPendingCounts,
+			endApiCall,
+			replyToClient
+		} = this.getToClientMessageOptions(message)
 
+		const interAppApiCallRequest = webReciever.pendingInterAppApiCallMessageMap
+			.get(message.id)
 		const context: IApiCallContext = {}
-		const observableResponse = message as IObservableLocalAPIResponse
-
-		let endApiCall = true
-		let replyToClient = true
-		if (observableResponse.subscriptionId) {
-			endApiCall = false
-			replyToClient = false
-			switch (observableResponse.observableOperation) {
-				case ObservableOperation.OBSERVABLE_SUBSCRIBE:
-					endApiCall = true
-					break
-				case ObservableOperation.OBSERVABLE_UNSUBSCRIBE:
-					break
-				default:
-					replyToClient = true
-					break
-			}
-		}
-
 		let success = true
 		try {
 			if (endApiCall) {
@@ -187,6 +180,7 @@ export class WebTransactionalReceiver
 		} catch (e) {
 			success = false
 		}
+
 		if (interAppApiCallRequest) {
 			interAppApiCallRequest.resolve(message)
 		} else if (replyToClient) {
@@ -197,8 +191,43 @@ export class WebTransactionalReceiver
 				message.payload,
 				message.protocol,
 				success,
-				messageOrigin
+				messageOrigin,
+				decrementPendingCounts
 			)
+		} else if (decrementPendingCounts) {
+			this.decrementPendingCounts(message)
+		}
+	}
+
+	private getToClientMessageOptions(
+		message: ILocalAPIResponse
+	): IToClientMessageOptions {
+		const observableResponse = message as IObservableLocalAPIResponse
+
+		let decrementPendingCounts = true
+		let endApiCall = true
+		let replyToClient = true
+		if (observableResponse.subscriptionId) {
+			decrementPendingCounts = false
+			endApiCall = false
+			replyToClient = false
+			switch (observableResponse.observableOperation) {
+				case ObservableOperation.OBSERVABLE_SUBSCRIBE:
+					decrementPendingCounts = true
+					endApiCall = true
+					break
+				case ObservableOperation.OBSERVABLE_UNSUBSCRIBE:
+					break
+				default:
+					replyToClient = true
+					break
+			}
+		}
+
+		return {
+			decrementPendingCounts,
+			endApiCall,
+			replyToClient
 		}
 	}
 
@@ -209,7 +238,8 @@ export class WebTransactionalReceiver
 		payload,
 		protocol,
 		success,
-		messageOrigin
+		messageOrigin,
+		decrementPendingCounts: boolean
 	): Promise<void> {
 		const toClientRedirectedMessage: ILocalAPIResponse = {
 			...message,
@@ -238,7 +268,7 @@ export class WebTransactionalReceiver
 				return
 			}
 		}
-		this.replyToClientRequest(toClientRedirectedMessage)
+		this.replyToClientRequest(toClientRedirectedMessage, decrementPendingCounts)
 	}
 
 	onMessage(callback: (
@@ -330,9 +360,13 @@ export class WebTransactionalReceiver
 		context: IApiCallContext & ITransactionContext,
 	): Promise<{
 		errorMessage,
-		payload
+		payload,
+		replyToClient
 	}> {
-		let payload
+		let internalResponse: {
+			isAsync: boolean,
+			result: any
+		}
 		let errorMessage
 		const messageCopy = {
 			...message,
@@ -340,6 +374,9 @@ export class WebTransactionalReceiver
 		}
 		const internalCredentials = this.terminalStore.getInternalConnector().internalCredentials
 		const priorTransactionId = internalCredentials.transactionId
+
+		let replyToClient = true
+
 		try {
 			internalCredentials.transactionId = context.transaction.id
 			const fullDbApplication_Name = this.dbApplicationUtils
@@ -350,8 +387,10 @@ export class WebTransactionalReceiver
 			if (!application) {
 				throw new Error(`Could not find AIRport Framework Application: ${fullDbApplication_Name}`)
 			}
-			payload = await this.localApiServer.coreHandleRequest(messageCopy,
+			internalResponse = await this.localApiServer.coreHandleRequest(messageCopy,
 				(application.currentVersion[0].applicationVersion.jsonApplication.versions[0] as JsonApplicationVersionWithApi).api, context)
+
+			replyToClient = internalResponse.isAsync
 		} catch (e) {
 			errorMessage = e.message ? e.message : e
 			console.error(e)
@@ -374,7 +413,8 @@ export class WebTransactionalReceiver
 
 		return {
 			errorMessage,
-			payload
+			payload: internalResponse? internalResponse.result : null,
+			replyToClient
 		}
 	}
 
@@ -463,15 +503,20 @@ export class WebTransactionalReceiver
 			this.relyToClientWithError(message, context.errorMessage)
 		} else if (startDescriptor.isFramework) {
 			const result = await this.callFrameworkApi(localApiRequest, context)
-			await this.replyToClient(
-				message,
-				message.args,
-				result.errorMessage,
-				result.payload,
-				message.protocol,
-				!result.errorMessage,
-				null
-			)
+			if (result.replyToClient) {
+				await this.replyToClient(
+					message,
+					message.args,
+					result.errorMessage,
+					result.payload,
+					message.protocol,
+					!result.errorMessage,
+					null,
+					true
+				)
+			} else {
+				this.decrementPendingCounts(message)
+			}
 		}
 	}
 
@@ -497,7 +542,7 @@ export class WebTransactionalReceiver
 			transactionId: message.transactionId
 		}
 
-		this.replyToClientRequest(toClientRedirectedMessage)
+		this.replyToClientRequest(toClientRedirectedMessage, true)
 	}
 
 	private getFrameWindow(
@@ -512,7 +557,21 @@ export class WebTransactionalReceiver
 	}
 
 	private replyToClientRequest(
-		message: ILocalAPIResponse
+		message: ILocalAPIResponse,
+		decrementPendingCounts: boolean
+	) {
+		if (decrementPendingCounts) {
+			this.decrementPendingCounts(message)
+		}
+		// Forward the request to the source client
+		if (this.webMessageReceiver.needMessageSerialization()) {
+			// FIXME: serialize message
+		}
+		this.webMessageReceiver.sendMessageToClient(message)
+	}
+
+	private decrementPendingCounts(
+		message: ILocalAPIRequest | ILocalAPIResponse
 	) {
 		const fullDbApplication_Name = this.dbApplicationUtils.
 			getDbApplication_FullNameFromDomainAndName(
@@ -527,12 +586,6 @@ export class WebTransactionalReceiver
 		if (numMessagesForApplication > 0) {
 			webReciever.pendingApplicationCounts.set(message.domain, numMessagesForApplication - 1)
 		}
-
-		// Forward the request to the source client
-		if (this.webMessageReceiver.needMessageSerialization()) {
-			// FIXME: serialize message
-		}
-		this.webMessageReceiver.sendMessageToClient(message)
 	}
 
 	private async messageIsFromValidApp(
@@ -620,11 +673,13 @@ export class WebTransactionalReceiver
 
 		switch (message.type) {
 			case IsolateMessageType.SEARCH:
-			case IsolateMessageType.SEARCH_ONE:
+			case IsolateMessageType.SEARCH_ONE: {
 				const observableDataResult = <IObservableDataIMO<any>>response
+
 				const subscription = observableDataResult.result.subscribe(result => {
 					source.postMessage({
 						...response,
+						observableOperation: ObservableOperation.OBSERVABLE_DATAFEED,
 						result
 					}, '*')
 				})
@@ -634,8 +689,12 @@ export class WebTransactionalReceiver
 					webReciever.subsriptionMap.set(fullDbApplication_Name, isolateSubscriptionMap)
 				}
 				isolateSubscriptionMap.set(message.id, subscription)
-				return
+				break
+			}
+			default: {
+				source.postMessage(response, '*')
+				break
+			}
 		}
-		source.postMessage(response, '*')
 	}
 }

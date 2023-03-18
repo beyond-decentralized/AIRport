@@ -51,8 +51,8 @@ export class EntityFindOne<Entity, IESP extends IEntitySelectProperties>
 		queryResultType: QueryResultType,
 		context?: IContext
 	): Promise<Entity> {
-		return await this.entityLookup(rawEntityQuery, queryResultType,
-			false, true, this.ensureContext(context) as IEntityQueryContext)
+		return await this.entityFind(rawEntityQuery, queryResultType,
+			true, this.ensureContext(context) as IEntityQueryContext)
 	}
 
 	noCache(): EntityFindOne<Entity, IESP> {

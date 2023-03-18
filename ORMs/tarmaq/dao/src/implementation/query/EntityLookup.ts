@@ -10,7 +10,7 @@ import {
 	IEntitySelectProperties,
 	RawEntityQuery
 } from '@airport/tarmaq-query'
-import { map, Observable, Subject } from 'rxjs'
+import { map, Observable } from 'rxjs'
 import { IDao } from '../../definition/IDao'
 import { IEntityLookup } from '../../definition/query/IEntityLookup'
 import { LookupProxy } from './Lookup'
@@ -19,14 +19,21 @@ export interface IEntityLookupInternal<Child,
 	IESP extends IEntitySelectProperties>
 	extends IEntityLookup {
 
-	entityLookup(
+	entityFind(
 		rawEntityQuery: RawEntityQuery<IESP>
 			| { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
-		search: boolean,
 		one: boolean,
 		context: IEntityContext
-	): Promise<any> | Observable<any>
+	): Promise<any>
+
+	entitySearch(
+		rawEntityQuery: RawEntityQuery<IESP>
+			| { (...args: any[]): RawEntityQuery<IESP> },
+		queryResultType: QueryResultType,
+		one: boolean,
+		context: IEntityContext
+	): Observable<any>
 
 	setNoCache(
 		ChildClass: new (
@@ -63,48 +70,48 @@ export abstract class EntityLookup<Child,
 		return new ChildClass(this.dbEntity, this.dao, this.mapResults)
 	}
 
-	entityLookup(
+	async entityFind(
 		rawEntityQuery: RawEntityQuery<IESP>
 			| { (...args: any[]): RawEntityQuery<IESP> },
 		queryResultType: QueryResultType,
-		search: boolean,
 		one: boolean,
 		context: IEntityQueryContext
-	): Promise<any> | Observable<any> {
+	): Promise<any> {
 		context.dbEntity = this.dbEntity
 
 		rawEntityQuery = IOC.getSync(ENTITY_UTILS)
 			.ensureId(rawEntityQuery)
 
-		let result = this.lookup(rawEntityQuery, queryResultType,
-			search, one, null, context, this.mapResults)
+		let result = await this.findInternal(rawEntityQuery, queryResultType,
+			one, null, context, this.mapResults)
 
-		if (result instanceof Subject) {
-			result = this.saveOriginalValues(result, context)
-		} else {
-			result = result.then(theResult => {
-				return this.saveOriginalValues(theResult, context)
-			})
-		}
+		this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity)
 
 		return result
 	}
 
-	private saveOriginalValues(
-		result: any,
+	entitySearch(
+		rawEntityQuery: RawEntityQuery<IESP>
+			| { (...args: any[]): RawEntityQuery<IESP> },
+		queryResultType: QueryResultType,
+		one: boolean,
 		context: IEntityQueryContext
-	): any {
-		if (!(result instanceof Subject)) {
-			this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity)
-		} else {
-			result = result.pipe(
-				map(observedResult => {
-					this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity)
+	): Observable<any> {
+		context.dbEntity = this.dbEntity
 
-					return observedResult
-				})
-			)
-		}
+		rawEntityQuery = IOC.getSync(ENTITY_UTILS)
+			.ensureId(rawEntityQuery)
+
+		let result = this.searchInternal(rawEntityQuery, queryResultType,
+			one, null, context, this.mapResults)
+
+		result = result.pipe(
+			map(observedResult => {
+				this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity)
+
+				return observedResult
+			})
+		)
 
 		return result
 	}

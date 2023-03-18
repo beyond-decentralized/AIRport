@@ -51,7 +51,7 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 		queryResultType: QueryResultType,
 		context?: IContext
 	): Observable<EntityArray> {
-		return this.entityLookup(rawEntityQuery, queryResultType, true, false,
+		return this.entitySearch(rawEntityQuery, queryResultType, false,
 			this.ensureContext(context) as IEntityQueryContext) as Observable<EntityArray>;
 	}
 

@@ -5,8 +5,9 @@ import { AutopilotApiLoader } from './api/AutopilotApiLoader'
 import { LocalAPIClient } from './LocalAPIClient'
 import { UiStateManager } from './UiStateManager'
 
-export * from './LocalAPIClient'
 export * from './api/AutopilotApiLoader'
+export * from './LocalAPIClient'
+export * from './SubscriptionCountSubject'
 export * from './UiStateManager'
 
 // This library is used in UI/Client bundles and does does not include @airport/direction-indicator

@@ -144,12 +144,6 @@ export interface IDatabaseFacade {
 
 export interface IQueryFacade {
 
-	ensureContext<E>(
-		context: IQueryContext
-	): Promise<void>
-
-	// init(): Promise<void>;
-
 	find<E, EntityArray extends Array<E>>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
@@ -166,13 +160,13 @@ export interface IQueryFacade {
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
 		context: IEntityContext,
-	): Promise<Observable<EntityArray>>;
+	): Observable<EntityArray>;
 
 	searchOne<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
 		context: IEntityContext,
-	): Promise<Observable<E>>;
+	): Observable<E>;
 
 	getPortableQuery<E>(
 		query: IAbstractQuery,

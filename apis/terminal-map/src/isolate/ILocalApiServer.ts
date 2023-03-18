@@ -16,6 +16,9 @@ export interface ILocalAPIServer {
         request: ILocalAPIRequest,
         api: IApplicationApi,
         context?: IContext
-    ): Promise<ReturnType>
+    ): Promise<{
+        isAsync: boolean,
+        result: ReturnType
+    }>
 
 }

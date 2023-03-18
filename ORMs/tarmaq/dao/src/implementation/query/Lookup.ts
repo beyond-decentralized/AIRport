@@ -13,6 +13,7 @@ import {
 } from '@airport/tarmaq-query';
 import { IQueryFacade } from '../../definition/IDatabaseFacade';
 import { IDao } from '../../definition/IDao';
+import { Observable } from 'rxjs';
 
 export class LookupProxy
 	implements ILookup {
@@ -28,17 +29,29 @@ export class LookupProxy
 	) {
 	}
 
-	async lookup(
+	async findInternal(
 		rawQuery: RawReadQuery | { (...args: any[]): RawReadQuery },
 		queryResultType: QueryResultType,
-		search: boolean,
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawReadQuery) => IAbstractQuery,
 		context: IEntityQueryContext,
 		mapResults?: boolean
 	): Promise<any> {
-		return await this.dao.lookup.lookup(
-			rawQuery, queryResultType, search, one,
+		return await this.dao.lookup.findInternal(
+			rawQuery, queryResultType, one,
+			QueryClass, context, mapResults);
+	}
+
+	searchInternal(
+		rawQuery: RawReadQuery | { (...args: any[]): RawReadQuery },
+		queryResultType: QueryResultType,
+		one: boolean,
+		QueryClass: new (rawNonEntityQuery: RawReadQuery) => IAbstractQuery,
+		context: IEntityQueryContext,
+		mapResults?: boolean
+	): Observable<any> {
+		return this.dao.lookup.searchInternal(
+			rawQuery, queryResultType, one,
 			QueryClass, context, mapResults);
 	}
 }
@@ -67,14 +80,60 @@ export class Lookup
 		return context;
 	}
 
-	async lookup(
+	async findInternal(
 		rawQuery: RawReadQuery | { (...args: any[]): RawReadQuery },
 		queryResultType: QueryResultType,
-		search: boolean,
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawReadQuery) => IAbstractQuery,
 		context: IQueryContext
 	): Promise<any> {
+
+		let query = this.getQuery(rawQuery, QueryClass)
+		let queryMethod;
+		if (one) {
+			queryMethod = this.queryFacade.findOne;
+		} else {
+			queryMethod = this.queryFacade.find;
+		}
+
+		let result = await queryMethod.call(this.queryFacade, query,
+			queryResultType, context);
+		if (!one && !result) {
+			result = []
+		}
+
+		return result
+	}
+
+	searchInternal(
+		rawQuery: RawReadQuery | { (...args: any[]): RawReadQuery },
+		queryResultType: QueryResultType,
+		one: boolean,
+		QueryClass: new (rawNonEntityQuery: RawReadQuery) => IAbstractQuery,
+		context: IQueryContext
+	): Observable<any> {
+		let query = this.getQuery(rawQuery, QueryClass)
+
+		let queryMethod;
+		if (one) {
+			queryMethod = this.queryFacade.searchOne;
+		} else {
+			queryMethod = this.queryFacade.search;
+		}
+
+		let result = queryMethod.call(this.queryFacade, query,
+			queryResultType, context);
+		if (!one && !result) {
+			result = []
+		}
+
+		return result
+	}
+
+	private getQuery(
+		rawQuery: RawReadQuery | { (...args: any[]): RawReadQuery },
+		QueryClass: new (rawNonEntityQuery: RawReadQuery) => IAbstractQuery
+	): IAbstractQuery {
 		let query: IAbstractQuery;
 		let theRawQuery = this.entityUtils.getRawQuery(rawQuery)
 		this.entityUtils.ensureAllQEntitiesInFromClause(theRawQuery)
@@ -85,28 +144,8 @@ export class Lookup
 		} else {
 			query = this.entityUtils.getEntityQuery(theRawQuery);
 		}
-		let queryMethod;
-		if (search) {
-			if (one) {
-				queryMethod = this.queryFacade.searchOne;
-			} else {
-				queryMethod = this.queryFacade.search;
-			}
-		} else {
-			if (one) {
-				queryMethod = this.queryFacade.findOne;
-			} else {
-				queryMethod = this.queryFacade.find;
-			}
-		}
 
-		let result = await queryMethod.call(this.queryFacade, query,
-			queryResultType, context);
-		if (!one && !result) {
-			result = []
-		}
-
-		return result
+		return query
 	}
 
 }

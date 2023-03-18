@@ -168,12 +168,12 @@ export class LocalAPIClient
             && typeof message.application === 'string' && message.application.length >= 3
     }
 
-    invokeApiMethod<T = any>(
-        fullDIDescriptor: IFullDITokenDescriptor,
+    invokeApiMethod<ReturnType = any>(
+        fullDiDescriptor: IFullDITokenDescriptor,
         methodName: string,
         args: any[],
         isObservable: boolean
-    ): Promise<T> | Observable<T> {
+    ): Promise<ReturnType> | Observable<ReturnType> {
         let serializedParams
         if (_inWebMode) {
             serializedParams = args
@@ -183,23 +183,23 @@ export class LocalAPIClient
 
         const request: ILocalAPIRequest = {
             actor: null,
-            application: fullDIDescriptor.application.name,
+            application: fullDiDescriptor.application.name,
             args: serializedParams,
             category: 'FromClient',
-            domain: fullDIDescriptor.application.domain.name,
+            domain: fullDiDescriptor.application.domain.name,
             hostDomain: null,
             hostProtocol: null,
             id: guidv4(),
             methodName,
-            objectName: fullDIDescriptor.descriptor.interface,
+            objectName: fullDiDescriptor.descriptor.interface,
             protocol: window.location.protocol,
         }
 
         if (isObservable) {
             (request as IObservableLocalAPIRequest).subscriptionOperation
                 = SubscriptionOperation.OPERATION_SUBSCRIBE
-            const subject = new SubscriptionCountSubject<T>(args, request,
-                fullDIDescriptor, this.observableRequestMap)
+            const subject = new SubscriptionCountSubject<ReturnType>(args, request,
+                fullDiDescriptor, this.observableRequestMap)
 
             if (_inWebMode) {
                 // The postMessage will be peformed during a subscription to the subject
@@ -210,7 +210,7 @@ export class LocalAPIClient
 
             return subject
         } else {
-            return this.doInvokeApiMethod(fullDIDescriptor,
+            return this.doInvokeApiMethod(fullDiDescriptor,
                 request, args)
         }
     }

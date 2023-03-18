@@ -33,7 +33,7 @@ export class LocalAPIServer
     async handleRequest(
         request: ILocalAPIRequest<LocalApiRequestCategoryType, IActor>
     ): Promise<ILocalAPIResponse> {
-        let payload
+        let internalResponse
         let errorMessage: string
         try {
             // TODO: this should be inside coreHandleRequest after retrieval
@@ -45,7 +45,7 @@ export class LocalAPIServer
             this.requestManager.actor = request.actor
             this.requestManager.userAccount = request.actor.userAccount
 
-            payload = await this.coreHandleRequest(request, this.applicationStore.state.api)
+            internalResponse = await this.coreHandleRequest(request, this.applicationStore.state.api)
         } catch (e) {
             errorMessage = e.message ? e.message : e
             console.error(e)
@@ -63,7 +63,7 @@ export class LocalAPIServer
             methodName: request.methodName,
             objectName: request.objectName,
             protocol: request.protocol,
-            payload,
+            payload: internalResponse.result,
             transactionId: request.transactionId
         }
 
@@ -74,17 +74,15 @@ export class LocalAPIServer
         request: ILocalAPIRequest<LocalApiRequestCategoryType, IActor>,
         api: IApplicationApi,
         context?: IApiCallContext & ITransactionContext
-    ): Promise<ReturnType> {
+    ): Promise<{
+        isAsync: boolean,
+        result: ReturnType
+    }> {
         const {
             apiObject,
             apiOperation
         } = await this.apiRegistry.findObjectAndOperationForApi(api,
             request.domain, request.application, request.objectName, request.methodName)
-
-        let args = request.args as any
-        if (context) {
-            args = [...request.args, context]
-        }
 
         if (request.args.length > apiOperation.parameters.length) {
             throw new Error(`
@@ -103,11 +101,14 @@ ${request.objectName}.${request.methodName}
             this.queryResultsDeserializer.setPropertyDescriptors(arg)
         }
 
-        const result = apiObject[request.methodName].apply(apiObject, [...request.args, context])
+        let result = apiObject[request.methodName].apply(apiObject, [...request.args, context])
         if (apiOperation.isAsync) {
-            return await result
-        } else {
-            return result
+            result = await result
+        }
+
+        return {
+            isAsync: apiOperation.isAsync,
+            result
         }
     }
 

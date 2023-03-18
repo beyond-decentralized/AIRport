@@ -34,24 +34,24 @@ export class NonEntitySearchOne
 		rawFieldQuery: RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<any> },
 		context?: IContext
 	): Observable<any> {
-		return from(this.searchOne(
-			rawFieldQuery, QueryResultType.FIELD, FieldQuery, context));
+		return this.searchOne(
+			rawFieldQuery, QueryResultType.FIELD, FieldQuery, context);
 	}
 
 	sheet(
 		rawSheetQuery: RawSheetQuery | { (...args: any[]): RawSheetQuery },
 		context?: IContext
 	): Observable<any[]> {
-		return from(this.searchOne(
-			rawSheetQuery, QueryResultType.SHEET, SheetQuery, context));
+		return this.searchOne(
+			rawSheetQuery, QueryResultType.SHEET, SheetQuery, context);
 	}
 
 	tree<ITE extends ITreeEntity>(
 		rawTreeQuery: RawTreeQuery<ITE> | { (...args: any[]): RawTreeQuery<any> },
 		context?: IContext
 	): Observable<ITE> {
-		return from(this.searchOne(
-			rawTreeQuery, QueryResultType.TREE, TreeQuery, context));
+		return this.searchOne(
+			rawTreeQuery, QueryResultType.TREE, TreeQuery, context);
 	}
 
 	searchOne<IQF extends IQOrderableField<IQF>>(
@@ -59,9 +59,9 @@ export class NonEntitySearchOne
 		queryResultType: QueryResultType,
 		QueryClass: new (rawNonEntityQuery: RawNonEntityQuery) => DistinguishableQuery,
 		context: IContext
-	): Promise<any> {
-		return this.lookup(rawNonEntityQuery, queryResultType,
-			true, true, QueryClass,
+	): Observable<any> {
+		return this.searchInternal(rawNonEntityQuery, queryResultType,
+			true, QueryClass,
 			this.ensureContext(context as IQueryContext));
 	}
 

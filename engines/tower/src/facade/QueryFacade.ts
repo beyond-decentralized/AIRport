@@ -42,7 +42,6 @@ export class QueryFacade
 		queryResultType: QueryResultType,
 		context: IQueryContext
 	): Promise<EntityArray> {
-		await this.ensureContext(context);
 		const result = await this.transactionalConnector.find<E, EntityArray>(
 			this.getPortableQuery(query, queryResultType, context), context);
 
@@ -54,7 +53,6 @@ export class QueryFacade
 		queryResultType: QueryResultType,
 		context: IQueryContext
 	): Promise<E> {
-		await this.ensureContext(context);
 		const result = await this.transactionalConnector.findOne<E>(this.getPortableQuery(
 			query, queryResultType, context), context);
 
@@ -79,34 +77,22 @@ export class QueryFacade
 		};
 	}
 
-	// FIXME: merge update caches on the client
-	async search<E, EntityArray extends Array<E>>(
+	search<E, EntityArray extends Array<E>>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
 		context: IQueryContext
-	): Promise<Observable<EntityArray>> {
-		await this.ensureContext(context);
-		let observable = await this.transactionalConnector.search(this.getPortableQuery(
+	): Observable<EntityArray> {
+		return this.transactionalConnector.search<E, EntityArray>(this.getPortableQuery(
 			query, queryResultType, context), context);
-
-		return observable as Observable<EntityArray>;
 	}
 
-	async searchOne<E>(
+	searchOne<E>(
 		query: IAbstractQuery,
 		queryResultType: QueryResultType,
 		context: IQueryContext
-	): Promise<Observable<E>> {
-		await this.ensureContext(context);
-		let observable = await this.transactionalConnector.searchOne(this.getPortableQuery(
+	): Observable<E> {
+		return this.transactionalConnector.searchOne<E>(this.getPortableQuery(
 			query, queryResultType, context), context);
-
-		return observable as Observable<E>;
-	}
-
-	async ensureContext<E>(
-		context: IQueryContext
-	): Promise<void> {
 	}
 
 }

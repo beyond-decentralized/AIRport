@@ -1,6 +1,10 @@
 import {
     ILocalAPIRequest,
-    ILocalAPIResponse
+    ILocalAPIResponse,
+    IObservableLocalAPIRequest,
+    IObservableLocalAPIResponse,
+    ObservableOperation,
+    SubscriptionOperation
 } from "@airport/aviation-communication";
 import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
 
@@ -21,6 +25,7 @@ export class CrossTabCommunicator
     communicationChannel: SoftBroadcastChannel
 
     pendingMessageIdSet: Set<string> = new Set()
+    activeSubscriptionIdSet: Set<string> = new Set()
 
     constructor() {
         this.isNativeBroadcastChannel = typeof BroadcastChannel === 'function'
@@ -50,9 +55,24 @@ export class CrossTabCommunicator
                 this.clientHost = messageOriginFragments[1]
                 this.clientProtocol = messageOriginFragments[0]
             }
+            let observableMessage = message as IObservableLocalAPIRequest;
+            switch (observableMessage.subscriptionOperation) {
+                case SubscriptionOperation.OPERATION_SUBSCRIBE: {
+                    this.activeSubscriptionIdSet.add(observableMessage.subscriptionId)
+                    break
+                }
+                case SubscriptionOperation.OPERATION_UNSUBSCRIBE: {
+                    this.pendingMessageIdSet.delete(observableMessage.subscriptionId)
+                    break;
+                }
+                default: {
+                    // Not an observable message
+                    this.pendingMessageIdSet.add(message.id)
+                    break;
+                }
+            }
             messageCopy.hostDomain = this.clientHost
             messageCopy.hostProtocol = this.clientProtocol
-            this.pendingMessageIdSet.add(message.id)
 
             // FIXME: serialize message if !this.isNativeBroadcastChannel
             this.communicationChannel.postMessage(messageCopy)
@@ -79,11 +99,27 @@ export class CrossTabCommunicator
                 if (message.__received__) {
                     return
                 }
-                if (!this.pendingMessageIdSet.has(message.id)) {
-                    return
+                let observableMessage = message as IObservableLocalAPIResponse
+                switch (observableMessage.observableOperation) {
+                    case ObservableOperation.OBSERVABLE_UNSUBSCRIBE:
+                    case ObservableOperation.OBSERVABLE_SUBSCRIBE: {
+                        break;
+                    }
+                    case ObservableOperation.OBSERVABLE_DATAFEED: {
+                        if (!this.activeSubscriptionIdSet.has(observableMessage
+                            .subscriptionId)) {
+                            return
+                        }
+                        break;
+                    }
+                    default: {
+                        // Not an observable message
+                        if (!this.pendingMessageIdSet.has(message.id)) {
+                            return
+                        }
+                        this.pendingMessageIdSet.delete(message.id)
+                    }
                 }
-
-                this.pendingMessageIdSet.delete(message.id)
 
                 const messageCopy: ILocalAPIResponse = { ...message }
                 message.__received__ = true

@@ -1,4 +1,4 @@
-import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse, IObservableLocalAPIRequest, ObservableOperation, SubscriptionOperation } from '@airport/aviation-communication';
+import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse, IObservableLocalAPIRequest, IObservableLocalAPIResponse, ObservableOperation, SubscriptionOperation } from '@airport/aviation-communication';
 import {
 	IContext,
 	IInjected,
@@ -361,6 +361,7 @@ export class IframeTransactionalConnector
 					window.parent.postMessage({
 						...response,
 						subscriptionId,
+						observableOperation: ObservableOperation.OBSERVABLE_DATAFEED,
 						payload
 					}, origin)
 				})
@@ -371,25 +372,25 @@ export class IframeTransactionalConnector
 					payload: null,
 					observableOperation: ObservableOperation.OBSERVABLE_SUBSCRIBE
 				}, origin)
-				return
+				break
 			}
 			case SubscriptionOperation.OPERATION_UNSUBSCRIBE: {
 				const subscription = this.clientSubscriptionMap.get(subscriptionId)
 				if (!subscription) {
-					return
+					break
 				}
 				subscription.unsubscribe()
 				this.clientSubscriptionMap.delete(subscriptionId)
 				// No need to send a message back, no transaction is started
 				// for the Unsubscribe operation
-				return
-			}
-			default:
 				break
+			}
+			default: {
+				const response = await this.localApiServer.handleRequest(request)
+				window.parent.postMessage(response, origin)
+				break
+			}
 		}
-
-		const response = await this.localApiServer.handleRequest(request)
-		window.parent.postMessage(response, origin)
 	}
 
 	private handleDbToIsolateMessage(
@@ -403,8 +404,8 @@ export class IframeTransactionalConnector
 			// 	this.pendingMessageMap.delete(message.id);
 			// 	return
 			case IsolateMessageType.SEARCH:
-			case IsolateMessageType.SEARCH_ONE:
-				observableMessageRecord = this.applicationStore.state.observableMessageMap.get(message.id)
+			case IsolateMessageType.SEARCH_ONE: {
+				observableMessageRecord = this.applicationStore.state.observableDbToIsolateMessageMap.get(message.id)
 				if (!observableMessageRecord || !observableMessageRecord.observer) {
 					return
 				}
@@ -414,6 +415,23 @@ export class IframeTransactionalConnector
 					observableMessageRecord.observer.next(message.result)
 				}
 				return
+			}
+		}
+
+		const subscriptionId = (message as any as IObservableLocalAPIResponse).subscriptionId
+		if (subscriptionId) {
+			const apiRequestSubject = this.applicationStore.state.observableApiRequestMap.get(subscriptionId)
+			if (!apiRequestSubject) {
+				console.error(`Could not find Observable API Request Subject for subscriptionId: ${subscriptionId}`)
+				return
+			}
+			try {
+				apiRequestSubject.next(message)
+			} catch (e) {
+				console.error(e)
+				apiRequestSubject.error(e)
+			}
+			return
 		}
 
 		const messageRecord = this.applicationStore.state.pendingMessageMap.get(message.id);
@@ -495,8 +513,12 @@ export class IframeTransactionalConnector
 		let observableMessageRecord: IObservableMessageInRecord<T> = {
 			id: coreFields.id
 		}
-		this.applicationStore.state.observableMessageMap.set(coreFields.id, observableMessageRecord)
+		this.applicationStore.state.observableDbToIsolateMessageMap.set(coreFields.id, observableMessageRecord)
 		const observable = new Observable((observer: Observer<any>) => {
+			if (observableMessageRecord.observer) {
+				throw new Error(`Multiple Observers assigned via
+IFrameTransactionalConnector.sendObservableMessage`)
+			}
 			observableMessageRecord.observer = observer
 			return () => {
 				this.sendMessageNoReturn<IIsolateMessage>({
