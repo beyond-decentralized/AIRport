@@ -1,48 +1,42 @@
+import { ILastIds, JsonApplicationWithLastIds } from '@airport/air-traffic-control';
+import { DbApplicationDao } from '@airport/airspace/dist/app/bundle';
+import { Message_Direction, Message_Leg, Message_Type, IApiCallRequestMessage, IApiCallResponseMessage } from '@airport/aviation-communication';
 import {
+    IContext,
     Inject,
     Injected
 } from '@airport/direction-indicator'
 import {
-    ILocalAPIRequest,
-    ILocalAPIResponse
-} from '@airport/aviation-communication';
-import {
-    IContext,
-} from '@airport/direction-indicator';
-import {
+    DbApplicationVersion,
+    DbDomain,
     IActor,
     IAppTrackerUtils,
     IDbApplicationUtils,
     ITerminal
 } from '@airport/ground-control';
+import { ActorDao } from '@airport/holding-pattern/dist/app/bundle';
+import { IEntityContext } from '@airport/tarmaq-entity';
+import { v4 as guidv4 } from "uuid";
 import {
     IApiCallContext,
-    IApiIMI,
-    IConnectionInitializedIMI,
+    IConnectionInitializedMessage,
+    ICredentials,
     IDatabaseManager,
-    IGetLatestApplicationVersionByDbApplication_NameIMI,
-    IInitConnectionIMI,
-    IIsolateMessage,
-    IIsolateMessageOut,
+    IGetLatestApplicationVersionByDbApplication_NameMessage,
+    IInitializeConnectionMessage,
     ILocalAPIServer,
-    IPortableQueryIMI,
+    IPortableQueryMessage,
     IQueryOperationContext,
-    IReadQueryIMI,
-    ISaveIMI,
-    ISaveToDestinationIMI,
-    IsolateMessageType,
+    IReadQueryMessage,
+    IRetrieveDomainMessage,
+    ISaveMessage,
     ITerminalSessionManager,
     ITerminalStore,
     ITransactionalServer,
     ITransactionContext,
-    ITransactionCredentials
+    IApiCredentials
 } from '@airport/terminal-map';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
-import { IEntityContext } from '@airport/tarmaq-entity';
-import { ActorDao } from '@airport/holding-pattern/dist/app/bundle';
-import { v4 as guidv4 } from "uuid";
-import { DbApplicationDao } from '@airport/airspace/dist/app/bundle';
-import { JsonApplicationWithLastIds } from '@airport/air-traffic-control';
 
 @Injected()
 export abstract class TransactionalReceiver {
@@ -81,22 +75,22 @@ export abstract class TransactionalReceiver {
         _localId: number
     } = {} as any
 
-    async processMessage<ReturnType extends IIsolateMessageOut<any>>(
-        message: IIsolateMessage & IApiIMI
-    ): Promise<ReturnType> {
+    async processFromClientMessage(
+        message: IPortableQueryMessage
+        | IReadQueryMessage
+        | ISaveMessage<any>
+    ): Promise<IApiCallResponseMessage> {
         let result: any
         let errorMessage
         try {
             const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.domain)
+                .isInternalDomain(message.serverDomain)
             if (isInternalDomain) {
                 throw new Error(`Internal domains cannot be used in external calls`)
             }
-            let credentials: ITransactionCredentials = {
-                application: message.application,
-                domain: message.domain,
-                methodName: message.methodName,
-                objectName: message.objectName,
+            let credentials: ICredentials = {
+                application: message.clientApplication,
+                domain: message.clientDomain,
                 transactionId: message.transactionId
             }
             let context: IContext = {}
@@ -105,7 +99,7 @@ export abstract class TransactionalReceiver {
             const {
                 theErrorMessage,
                 theResult
-            } = await this.doProcessMessage(
+            } = await this.doProcessFromClientMessage(
                 message,
                 credentials,
                 context
@@ -117,36 +111,36 @@ export abstract class TransactionalReceiver {
             result = null
             errorMessage = error.message
         }
-        return {
-            application: message.application,
-            category: 'FromDb',
-            domain: message.domain,
+        const messageCopy = {
+            ...message,
+            direction: Message_Direction.TO_CLIENT,
             errorMessage,
-            id: message.id,
-            type: message.type,
-            result
+            messageLeg: Message_Leg.FROM_HUB,
+            returnedValue: result
         } as any
+
+        return messageCopy
     }
 
-    private async doProcessMessage<ReturnType extends IIsolateMessageOut<any>>(
-        message: IIsolateMessage & IApiIMI
-            | IPortableQueryIMI | ISaveIMI<any, any>,
-        credentials: ITransactionCredentials,
-        context: IContext
+    async processInternalMessage(
+        message: IGetLatestApplicationVersionByDbApplication_NameMessage
+            | IInitializeConnectionMessage
+            | IRetrieveDomainMessage
     ): Promise<{
         theErrorMessage: string
-        theResult: ReturnType
+        theResult: DbApplicationVersion | DbDomain | ILastIds | null
     }> {
         let theErrorMessage: string = null
         let theResult: any = null
         switch (message.type) {
-            case IsolateMessageType.APP_INITIALIZING:
-                let initConnectionMessage: IInitConnectionIMI = message as any
-                const application: JsonApplicationWithLastIds = initConnectionMessage.jsonApplication
+            case Message_Type.APP_INITIALIZING:
+                const application: JsonApplicationWithLastIds =
+                    (message as IInitializeConnectionMessage).jsonApplication
                 const fullDbApplication_Name = this.dbApplicationUtils.
                     getDbApplication_FullName(application)
                 const messageDbApplication_FullName = this.dbApplicationUtils.
-                    getDbApplication_FullNameFromDomainAndName(message.domain, message.application)
+                    getDbApplication_FullNameFromDomainAndName(
+                        message.clientDomain, message.clientApplication)
                 if (fullDbApplication_Name !== messageDbApplication_FullName) {
                     theResult = null
                     break
@@ -162,7 +156,8 @@ export abstract class TransactionalReceiver {
                 this.terminalStore.getReceiver().initializingApps
                     .add(fullDbApplication_Name)
 
-                // FIXME: initalize ahead of time, at Isolate Loading
+                const context: IContext = {}
+                context.startedAt = new Date()
                 await this.databaseManager.initFeatureApplications(context, [application])
 
                 await this.internalRecordManager.ensureApplicationRecords(
@@ -170,139 +165,146 @@ export abstract class TransactionalReceiver {
 
                 theResult = application.lastIds
                 break
-            case IsolateMessageType.APP_INITIALIZED:
+            case Message_Type.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps
-                initializedApps.add((message as any as IConnectionInitializedIMI).fullDbApplication_Name)
+                initializedApps.add((message as IConnectionInitializedMessage).fullDbApplication_Name)
                 // console.log(`--==<<(( INITIALIZED: ${(message as any as IConnectionInitializedIMI).fullDbApplication_Name}))>>==--`)
                 return {
                     theErrorMessage,
                     theResult
                 }
-            case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
+            case Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                 theResult = this.terminalStore.getLatestApplicationVersionMapByDbApplication_FullName()
-                    .get((message as any as IGetLatestApplicationVersionByDbApplication_NameIMI).fullDbApplication_Name)
+                    .get((message as IGetLatestApplicationVersionByDbApplication_NameMessage)
+                        .fullDbApplication_Name)
                 break
             }
-            case IsolateMessageType.RETRIEVE_DOMAIN: {
+            case Message_Type.RETRIEVE_DOMAIN: {
                 theResult = this.terminalStore.getDomainMapByName()
-                    .get(message.domain)
+                    .get(message.clientDomain)
                 break
             }
-            case IsolateMessageType.DELETE_WHERE:
-                const deleteWhereMessage: IPortableQueryIMI = <IPortableQueryIMI>message
+            default: {
+                return {
+                    theErrorMessage: `Unexpected INTERNAL Message_Type: '${message.type}'`,
+                    theResult
+                }
+            }
+        }
+
+        return {
+            theErrorMessage,
+            theResult,
+        }
+    }
+
+    private async doProcessFromClientMessage(
+        message: IPortableQueryMessage
+            | IReadQueryMessage
+            | ISaveMessage<any>,
+        credentials: ICredentials,
+        context: IContext
+    ): Promise<{
+        theErrorMessage: string
+        theResult: IApiCallResponseMessage | ISaveMessage<any>
+    }> {
+        let theErrorMessage: string = null
+        let theResult: any = null
+        switch (message.type) {
+            case Message_Type.DELETE_WHERE:
                 theResult = await this.transactionalServer.deleteWhere(
-                    deleteWhereMessage.portableQuery,
+                    (message as IPortableQueryMessage).portableQuery,
                     credentials,
                     context
                 )
                 break
-            case IsolateMessageType.FIND:
-                const findMessage: IReadQueryIMI = <IReadQueryIMI>message;
+            case Message_Type.FIND:
                 theResult = await this.transactionalServer.find(
-                    findMessage.portableQuery,
+                    (message as IReadQueryMessage).portableQuery,
                     credentials,
                     {
                         ...context as any,
-                        repository: findMessage.repository
+                        repository: (message as IReadQueryMessage).repository
                     } as IQueryOperationContext
                 )
                 break
-            case IsolateMessageType.FIND_ONE:
-                const findOneMessage: IReadQueryIMI = <IReadQueryIMI>message;
+            case Message_Type.FIND_ONE:
                 theResult = await this.transactionalServer.findOne(
-                    findOneMessage.portableQuery,
+                    (message as IReadQueryMessage).portableQuery,
                     credentials,
                     {
                         ...context as any,
-                        repository: findOneMessage.repository,
+                        repository: (message as IReadQueryMessage).repository,
                     } as IQueryOperationContext
                 )
                 break
-            case IsolateMessageType.INSERT_VALUES:
-                const insertValuesMessage: IPortableQueryIMI = <IPortableQueryIMI>message
+            case Message_Type.INSERT_VALUES:
                 theResult = await this.transactionalServer.insertValues(
-                    insertValuesMessage.portableQuery,
+                    (message as IPortableQueryMessage).portableQuery,
                     credentials,
                     context
                 )
                 break
-            case IsolateMessageType.INSERT_VALUES_GET_IDS:
-                const insertValuesGetIdsMessage: IPortableQueryIMI = <IPortableQueryIMI>message
+            case Message_Type.INSERT_VALUES_GET_IDS:
                 theResult = await this.transactionalServer.insertValuesGetLocalIds(
-                    insertValuesGetIdsMessage.portableQuery,
+                    (message as IPortableQueryMessage).portableQuery,
                     credentials,
                     context
                 )
                 break
-            case IsolateMessageType.SAVE:
-            case IsolateMessageType.SAVE_TO_DESTINATION: {
-                const saveMessage: ISaveIMI<any, any> = <ISaveIMI<any, any>>message
-                if (!saveMessage.dbEntity) {
+            case Message_Type.SAVE: {
+                if (!(message as ISaveMessage<any>).dbEntity) {
                     theErrorMessage = `DbEntity id was not passed in`
                     break
                 }
-                const dbEntityId = saveMessage.dbEntity._localId
+                const dbEntityId = (message as ISaveMessage<any>).dbEntity._localId
                 const dbEntity = this.terminalStore.getAllEntities()[dbEntityId]
                 if (!dbEntity) {
                     theErrorMessage = `Could not find DbEntity with Id ${dbEntityId}`
                     break
                 }
                 (context as IEntityContext).dbEntity = dbEntity as any
-                if (message.type === IsolateMessageType.SAVE) {
-                    theResult = await this.transactionalServer.save(
-                        saveMessage.entity,
-                        credentials,
-                        context as IEntityContext
-                    )
-                } else {
-                    const saveToDestinationMessage: ISaveToDestinationIMI<any, any>
-                        = <ISaveToDestinationIMI<any, any>>message
-                    theResult = await this.transactionalServer.saveToDestination(
-                        saveToDestinationMessage.repositoryDestination,
-                        saveToDestinationMessage.entity,
-                        credentials,
-                        context as IEntityContext
-                    )
-                }
+                theResult = await this.transactionalServer.save(
+                    (message as ISaveMessage<any>).entity,
+                    credentials,
+                    context as IEntityContext
+                )
                 break
             }
-            case IsolateMessageType.SEARCH:
-                const searchMessage: IReadQueryIMI = <IReadQueryIMI>message;
-                theResult = await this.transactionalServer.search(
-                    searchMessage.portableQuery,
+            case Message_Type.SEARCH_ONE_SUBSCRIBE:
+                theResult = await this.transactionalServer.searchOne(
+                    (message as IReadQueryMessage).portableQuery,
                     credentials,
                     {
                         ...context as any,
-                        repository: searchMessage.repository,
+                        repository: (message as IReadQueryMessage).repository,
                     } as IQueryOperationContext
                 )
                 break
-            case IsolateMessageType.SEARCH_ONE:
-                const searchOneMessage: IReadQueryIMI = <IReadQueryIMI>message;
+            case Message_Type.SEARCH_SUBSCRIBE:
                 theResult = await this.transactionalServer.search(
-                    searchOneMessage.portableQuery,
+                    (message as IReadQueryMessage).portableQuery,
                     credentials,
                     {
                         ...context as any,
-                        repository: searchOneMessage.repository,
+                        repository: (message as IReadQueryMessage).repository,
                     } as IQueryOperationContext
                 )
                 break
-            case IsolateMessageType.UPDATE_VALUES:
-                const updateValuesMessage: IPortableQueryIMI = <IPortableQueryIMI>message
+            case Message_Type.UPDATE_VALUES:
                 theResult = await this.transactionalServer.updateValues(
-                    updateValuesMessage.portableQuery,
+                    (message as IPortableQueryMessage).portableQuery,
                     credentials,
                     context
                 )
                 break
             default:
-                // Unexpected IsolateMessageInType
                 return {
-                    theErrorMessage,
+                    theErrorMessage: `Unexpected FROM_CLIENT Message_Type: '${message.type}'`,
                     theResult
                 }
         }
+
         return {
             theErrorMessage,
             theResult,
@@ -310,7 +312,7 @@ export abstract class TransactionalReceiver {
     }
 
     protected abstract nativeStartApiCall(
-        message: ILocalAPIRequest<'FromClientRedirected'>,
+        message: IApiCallRequestMessage,
         context: IApiCallContext
     ): Promise<{
         isFramework?: boolean
@@ -318,45 +320,47 @@ export abstract class TransactionalReceiver {
     }>
 
     protected abstract nativeHandleApiCall(
-        message: ILocalAPIRequest<'FromClientRedirected'>,
+        message: IApiCallRequestMessage,
         context: IApiCallContext
-    ): Promise<ILocalAPIResponse>
+    ): Promise<IApiCallResponseMessage>
 
     protected async startApiCall(
-        message: ILocalAPIRequest<'FromClientRedirected'>,
+        message: IApiCallRequestMessage,
         context: IApiCallContext & ITransactionContext,
         nativeHandleCallback: () => void
     ): Promise<{
         isFramework?: boolean
         isStarted: boolean,
     }> {
-        const transactionCredentials: ITransactionCredentials = {
-            application: message.application,
-            domain: message.domain,
+        const transactionCredentials: IApiCredentials = {
+            application: message.serverApplication,
+            domain: message.serverDomain,
             methodName: message.methodName,
             objectName: message.objectName,
             transactionId: message.transactionId
         }
+        context.credentials = transactionCredentials
 
-        if (!await this.transactionalServer
-            .startTransaction(transactionCredentials, context)) {
-            return {
-                isStarted: false
+        if (!context.isObservableApiCall) {
+            if (!await this.transactionalServer
+                .startTransaction(transactionCredentials, context)) {
+                return {
+                    isStarted: false
+                }
             }
+            const initiator = context.transaction.initiator
+            initiator.application = message.serverApplication
+            initiator.domain = message.serverDomain
+            initiator.methodName = message.methodName
+            initiator.objectName = message.objectName
         }
+
         let actor: IActor = await this.getApiCallActor(message, context)
-
-        const initiator = context.transaction.initiator
-        initiator.application = message.application
-        initiator.domain = message.domain
-        initiator.methodName = message.methodName
-        initiator.objectName = message.objectName
-
         let isFramework = true
         try {
 
             const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.domain)
+                .isInternalDomain(message.serverDomain)
             if (!isInternalDomain) {
                 isFramework = false
                 await this.doNativeHandleCallback(
@@ -364,7 +368,10 @@ export abstract class TransactionalReceiver {
             }
         } catch (e) {
             context.errorMessage = e.message
-            this.transactionalServer.rollback(transactionCredentials, context)
+
+            if (!context.isObservableApiCall) {
+                this.transactionalServer.rollback(transactionCredentials, context)
+            }
 
             return {
                 isStarted: false
@@ -378,12 +385,14 @@ export abstract class TransactionalReceiver {
     }
 
     private async doNativeHandleCallback(
-        message: ILocalAPIRequest<'FromClientRedirected', IActor>,
+        message: IApiCallRequestMessage<IActor>,
         actor: IActor,
         context: IApiCallContext & ITransactionContext,
         nativeHandleCallback: () => void
     ): Promise<void> {
-        message.transactionId = context.transaction.id
+        if (!context.isObservableApiCall) {
+            message.transactionId = context.transaction.id
+        }
 
         const terminal: ITerminal = {
             ...this.WITH_ID,
@@ -403,25 +412,26 @@ export abstract class TransactionalReceiver {
     }
 
     async getApiCallActor(
-        message: ILocalAPIRequest<'FromClientRedirected'>,
+        message: IApiCallRequestMessage,
         context: IApiCallContext & ITransactionContext,
     ): Promise<IActor> {
-        let actor: IActor
         const userSession = await this.terminalSessionManager.getUserSession()
+        let actor: IActor
+
         try {
             const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.domain)
+                .isInternalDomain(message.serverDomain)
             if (isInternalDomain
+                && !context.isObservableApiCall
                 && context.transaction.parentTransaction) {
                 actor = context.transaction.parentTransaction.actor
 
                 return actor
             }
-
             const terminal = this.terminalStore.getTerminal()
             actor = await this.actorDao.findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(
-                message.domain,
-                message.application,
+                message.serverDomain,
+                message.serverApplication,
                 userSession.userAccount.accountPublicSigningKey,
                 terminal.GUID,
                 context
@@ -431,7 +441,7 @@ export abstract class TransactionalReceiver {
             }
 
             const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(
-                message.domain, message.application, context)
+                message.serverDomain, message.serverApplication, context)
             actor = {
                 _localId: null,
                 application,
@@ -443,16 +453,22 @@ export abstract class TransactionalReceiver {
 
             return actor
         } finally {
-            context.transaction.actor = actor
-            userSession.currentTransaction = context.transaction
+            context.actor = actor
+            if (!context.isObservableApiCall) {
+                context.transaction.actor = actor
+                userSession.currentTransaction = context.transaction
+            }
         }
     }
 
     protected async endApiCall(
-        credentials: ITransactionCredentials,
+        credentials: IApiCredentials,
         errorMessage: string,
         context: IApiCallContext
     ): Promise<boolean> {
+        if (context.isObservableApiCall) {
+            return
+        }
         try {
             if (errorMessage) {
                 return await this.transactionalServer.rollback(credentials, context)

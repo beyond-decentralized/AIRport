@@ -4,13 +4,6 @@ import {
     Injected
 } from '@airport/direction-indicator'
 import {
-    ICoreLocalApiRequest,
-    ILocalAPIRequest,
-    IObservableCoreLocalAPIRequest,
-    IObservableLocalAPIRequest,
-    SubscriptionOperation
-} from "@airport/aviation-communication";
-import {
     IFullDITokenDescriptor
 } from "@airport/direction-indicator";
 import {
@@ -20,13 +13,14 @@ import {
     IOperationSerializer,
     IQueryResultsDeserializer
 } from "@airport/pressurization";
-import { SubscriptionCountSubject } from '@airport/autopilot';
-import { Observable, Subscription } from 'rxjs';
+import { ApiClientSubject } from '@airport/autopilot';
 import { IApplicationStore } from '@airport/tower';
-
+import { Observable, Subscription } from 'rxjs';
+import { v4 as guidv4 } from "uuid";
+import { Message_Direction, Message_Leg, Message_Type, IApiCallRequestMessage } from '@airport/aviation-communication';
 
 export interface IRequestRecord {
-    request: ILocalAPIRequest
+    request: IApiCallRequestMessage
     reject
     resolve
 }
@@ -56,7 +50,7 @@ export class IFrameInterAppAPIClient
             message: {
                 args: any[],
                 fullDIDescriptor: IFullDITokenDescriptor,
-                request: IObservableLocalAPIRequest
+                request: IApiCallRequestMessage
             }) => {
 
             await this.doInvokeApiMethod(
@@ -79,18 +73,25 @@ export class IFrameInterAppAPIClient
             serializedParams = this.operationSerializer.serializeAsArray(args)
         }
 
-        const request: ICoreLocalApiRequest = {
-            application: fullDiDescriptor.application.name,
+        const request: IApiCallRequestMessage = {
             args: serializedParams,
-            domain: fullDiDescriptor.application.domain.name,
+            clientApplication: this.applicationStore.state.application,
+            clientDomain: this.applicationStore.state.domain,
+            clientDomainProtocol: location.protocol,
+            direction: Message_Direction.FROM_CLIENT,
+            id: guidv4(),
+            messageLeg: Message_Leg.TO_HUB,
             methodName,
-            objectName: fullDiDescriptor.descriptor.interface
+            objectName: fullDiDescriptor.descriptor.interface,
+            serverApplication: fullDiDescriptor.application.name,
+            serverDomain: fullDiDescriptor.application.domain.name,
+            serverDomainProtocol: 'https',
+            type: Message_Type.API_CALL
         }
 
         if (isObservable) {
-            (request as IObservableCoreLocalAPIRequest).subscriptionOperation
-                = SubscriptionOperation.OPERATION_SUBSCRIBE
-            const subject = new SubscriptionCountSubject<ReturnType>(args, request,
+            request.type = Message_Type.API_SUBSCRIBE
+            const subject = new ApiClientSubject<ReturnType>(args, request,
                 fullDiDescriptor, this.applicationStore.state.observableApiRequestMap)
 
             return subject
@@ -100,23 +101,23 @@ export class IFrameInterAppAPIClient
     }
 
     async doInvokeApiMethod<ReturnType>(
-        request: ICoreLocalApiRequest,
+        request: IApiCallRequestMessage,
         args: any[]
     ): Promise<ReturnType> {
         const response = await this.transactionalConnector.callApi(request)
 
-        let payload
+        let returnedValue
         if (_inWebMode) {
-            payload = response.payload
+            returnedValue = response.returnedValue
         } else {
-            if (response.payload) {
-                payload = this.queryResultsDeserializer
-                    .deserialize(response.payload)
+            if (response.returnedValue) {
+                returnedValue = this.queryResultsDeserializer
+                    .deserialize(response.returnedValue)
             }
         }
 
-        if (payload) {
-            this.queryResultsDeserializer.setPropertyDescriptors(payload, new Set())
+        if (returnedValue) {
+            this.queryResultsDeserializer.setPropertyDescriptors(returnedValue, new Set())
         }
 
         for (let i = 0; i < args.length; i++) {
@@ -124,7 +125,7 @@ export class IFrameInterAppAPIClient
                 .deepCopyProperties(response.args[i], args[i], new Map())
         }
 
-        return payload
+        return returnedValue
     }
 
 

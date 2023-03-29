@@ -20,7 +20,7 @@ import {
 	ITransactionalServer,
 	ITransactionContext,
 	IApiCallContext,
-	ITransactionCredentials,
+	IApiCredentials,
 	ITerminalStore,
 	ITransactionManager,
 	IOperationManager,
@@ -102,61 +102,41 @@ export class TransactionalServer
 
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IQueryOperationContext & ITransactionContext
 	): Promise<EntityArray> {
-		if (context.transaction || credentials.transactionId) {
-			this.transactionManager.getTransactionFromContextOrCredentials(
-				credentials, context)
-		}
-
 		return await this.queryManager.find<E, EntityArray>(
 			portableQuery, context);
 	}
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IQueryOperationContext & ITransactionContext
 	): Promise<E> {
-		if (context.transaction || credentials.transactionId) {
-			this.transactionManager.getTransactionFromContextOrCredentials(
-				credentials, context)
-		}
-
 		return await this.queryManager.findOne<E>(
 			portableQuery, context);
 	}
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IQueryOperationContext & ITransactionContext
 	): Observable<EntityArray> {
-		if (context.transaction || credentials.transactionId) {
-			this.transactionManager.getTransactionFromContextOrCredentials(
-				credentials, context)
-		}
-
 		return this.queryManager.search<E, EntityArray>(
 			portableQuery, context);
 	}
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IQueryOperationContext & ITransactionContext
 	): Observable<E> {
-		if (context.transaction || credentials.transactionId) {
-			this.transactionManager.getTransactionFromContextOrCredentials(
-				credentials, context)
-		}
-
 		return this.queryManager.searchOne<E>(portableQuery, context);
 	}
 
 	async startTransaction(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		try {
@@ -171,7 +151,7 @@ export class TransactionalServer
 	}
 
 	async commit(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		try {
@@ -188,7 +168,7 @@ export class TransactionalServer
 	}
 
 	async rollback(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		try {
@@ -203,7 +183,7 @@ export class TransactionalServer
 
 	async save<E extends IAirEntity, T = E | E[]>(
 		entity: T,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IOperationContext & ITransactionContext,
 	): Promise<ISaveResult> {
 		if (!entity) {
@@ -228,41 +208,10 @@ export class TransactionalServer
 
 		return saveResult
 	}
-
-	async saveToDestination<E extends IAirEntity, T = E | E[]>(
-		repositoryDestination: string,
-		entity: T,
-		credentials: ITransactionCredentials,
-		context: IOperationContext & ITransactionContext,
-	): Promise<ISaveResult> {
-		if (!entity) {
-			return null
-		}
-		if (context.transaction || credentials.transactionId) {
-			this.transactionManager.getTransactionFromContextOrCredentials(
-				credentials, context)
-		}
-
-		const actor = await this.getActor(credentials);
-		context.actor = actor
-
-		let saveResult: ISaveResult
-		await this.transactionManager.transactInternal(async (
-			transaction: ITransaction,
-			context: IOperationContext & ITransactionContext
-		) => {
-			// TODO: save to serialized repository to the specified destination
-			saveResult = await this.operationManager.performSave(
-				entity, actor, transaction, context.rootTransaction, context)
-		}, credentials, context)
-
-		return saveResult
-	}
-
 
 	async insertValues(
 		portableQuery: PortableQuery,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IOperationContext & ITransactionContext,
 		ensureGeneratedValues?: boolean // for internal use only
 	): Promise<number> {
@@ -288,7 +237,7 @@ export class TransactionalServer
 
 	async insertValuesGetLocalIds(
 		portableQuery: PortableQuery,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<number[][]> {
 		if (context.transaction || credentials.transactionId) {
@@ -312,7 +261,7 @@ export class TransactionalServer
 
 	async updateValues(
 		portableQuery: PortableQuery,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<number> {
 		if (context.transaction || credentials.transactionId) {
@@ -336,7 +285,7 @@ export class TransactionalServer
 
 	async deleteWhere(
 		portableQuery: PortableQuery,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<number> {
 		if (context.transaction || credentials.transactionId) {

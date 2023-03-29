@@ -14,7 +14,7 @@
     "@airport/terminal": "0.0.1",
     "@airport/terminal-map": "0.0.1",
     "@airport/tower": "0.0.1",
-    "broadcast-channel": "^4.9.0",
+    "broadcast-channel": "^4.14.0",
     "rxjs": "~7.8.0"
   },
   "devDependencies": {

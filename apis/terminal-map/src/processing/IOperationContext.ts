@@ -17,4 +17,5 @@ export interface IOperationContext
 export interface IQueryOperationContext
     extends IOperationContext {
     cachedSqlQuery?: CachedSQLQuery<any>
+	isObservableApiCall?: boolean
 }

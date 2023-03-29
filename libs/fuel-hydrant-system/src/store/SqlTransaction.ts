@@ -22,7 +22,7 @@ import {
     IStoreDriver,
     ITransaction,
     ITransactionContext,
-    ITransactionCredentials
+    IApiCredentials
 } from '@airport/terminal-map'
 import { v4 as guidv4 } from "uuid";
 
@@ -31,7 +31,7 @@ export abstract class SqlTransaction
 
     actor: IActor
     childTransaction: ITransaction
-    credentials: ITransactionCredentials
+    credentials: IApiCredentials
     id: string
     isSync = false
     newRepositoryMembers: IRepositoryMember[] = []

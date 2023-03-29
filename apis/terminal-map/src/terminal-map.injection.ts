@@ -20,8 +20,8 @@ import { UserStore } from './store/user/UserStore'
 import { ITerminalSessionManager } from './core/ITerminalSessionManager'
 import { AbstractApplicationLoader } from './AbstractApplicationLoader'
 import { IHistoryManager } from './orchestration/HistoryManager'
-import { IApplicationLoader } from './isolate/IApplicationLoader'
-import { ILocalAPIServer } from './isolate/ILocalApiServer'
+import { IApplicationLoader } from './application/IApplicationLoader'
+import { ILocalAPIServer } from './application/ILocalApiServer'
 import { SelectorManager } from './store/SelectorManager'
 
 const terminalMap = lib('terminal-map')

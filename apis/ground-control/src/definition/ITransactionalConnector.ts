@@ -1,4 +1,4 @@
-import { ICoreLocalApiRequest, ILocalAPIResponse } from '@airport/aviation-communication'
+import { IApiCallRequestMessage, IApiCallResponseMessage } from '@airport/aviation-communication'
 import { IContext } from '@airport/direction-indicator'
 import { Observable } from 'rxjs'
 import { IAirEntity } from './core/types'
@@ -11,8 +11,8 @@ export interface ITransactionalConnector {
 	internal: boolean
 
 	callApi(
-		apiInput: ICoreLocalApiRequest
-	): Promise<ILocalAPIResponse>
+		apiInput: IApiCallRequestMessage
+	): Promise<IApiCallResponseMessage>
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
@@ -35,12 +35,6 @@ export interface ITransactionalConnector {
 	): Observable<E>
 
 	save<E extends IAirEntity, T = E | E[]>(
-		entity: T,
-		context?: IContext,
-	): Promise<ISaveResult>
-
-	saveToDestination<E extends IAirEntity, T = E | E[]>(
-		repositoryDestination: string,
 		entity: T,
 		context?: IContext,
 	): Promise<ISaveResult>

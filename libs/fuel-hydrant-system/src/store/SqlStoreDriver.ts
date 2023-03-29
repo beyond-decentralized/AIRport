@@ -155,9 +155,21 @@ export abstract class SqlStoreDriver
 			? application.domain
 			: application.domain.name
 		const transaction = context.transaction
-		if (!transaction || (!context.internal && !this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)
-			&& !this.appTrackerUtils.isInternalDomain(transaction.actor.application.domain.name)
-			&& this.appTrackerUtils.isInternalDomain(domainName))) {
+
+		let actorDomainName, credentialsDomain
+		if (!context.internal) {
+			if (context.isObservableApiCall) {
+				actorDomainName = context.credentials.domain
+				credentialsDomain = actorDomainName
+			} else {
+				actorDomainName = transaction.actor.application.domain.name
+				credentialsDomain = transaction.credentials.domain
+			}
+		}
+
+		if (!context.internal && !this.appTrackerUtils.isInternalDomain(credentialsDomain)
+			&& !this.appTrackerUtils.isInternalDomain(actorDomainName)
+			&& this.appTrackerUtils.isInternalDomain(domainName)) {
 			const entityHasExternalAccessPermissions = this.appTrackerUtils.entityHasExternalAccessPermissions(
 				domainName,
 				application.name,

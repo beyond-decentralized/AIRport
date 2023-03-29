@@ -5,7 +5,7 @@ export interface ICredentials {
 }
 
 // Currently credentials are used in circular Api() call detection only
-export interface ITransactionCredentials
+export interface IApiCredentials
 	extends ICredentials {
 	methodName: string
 	objectName: string

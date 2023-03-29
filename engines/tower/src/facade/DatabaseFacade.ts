@@ -174,25 +174,6 @@ export class DatabaseFacade
 		return saveResult
 	}
 
-	async saveToDestination<E>(
-		repositoryDestination: string,
-		entity: E,
-		context: IEntityContext,
-	): Promise<ISaveResult> {
-		if (!entity) {
-			return null
-		}
-		const entityCopy = await this.preSaveOperations(entity, context, this.transactionalConnector.internal)
-
-		const saveResult = await this.transactionalConnector
-			.saveToDestination(repositoryDestination, entityCopy, context)
-
-		this.updateCacheManager.afterSaveModifications(
-			entity, context.dbEntity, saveResult, new Set())
-
-		return saveResult
-	}
-
 	private async preSaveOperations<E>(
 		entity: E,
 		context: IEntityContext,

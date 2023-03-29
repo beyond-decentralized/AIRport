@@ -6,8 +6,11 @@ import { IInterAppAPIClient } from "./dependencyInjection/InterAppAPIClient";
 const directionIndicator = lib('direction-indicator')
 directionIndicator.register(ContainerAccessor)
 
-export const AIR_ENTITY_UTILS = lib('aviation-communication').token('AirEntityUtils')
+const aviationCommunication = lib('aviation-communication')
+export const AIR_ENTITY_UTILS = aviationCommunication.token('AirEntityUtils')
 globalThis.AIR_ENTITY_UTILS = AIR_ENTITY_UTILS
+export const AIR_MESSAGE_UTILS = aviationCommunication.token('AirMessageUtils')
+globalThis.AIR_MESSAGE_UTILS = AIR_MESSAGE_UTILS
 
 const pressurization = lib('pressurization')
 globalThis.OPERATION_SERIALIZER = pressurization.token('OperationSerializer')

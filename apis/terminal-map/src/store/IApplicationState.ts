@@ -1,17 +1,18 @@
 import { IApplicationApi } from "@airport/air-traffic-control"
-import { Observer, Subject } from "rxjs"
-import { IIsolateMessage } from "../isolate/IIsolateMessage"
+import { IMessage } from "@airport/aviation-communication"
+import { Subject, Subscription } from "rxjs"
 
 export interface IMessageInRecord {
-    message: IIsolateMessage
+    message: IMessage
     reject?
     resolve
 }
 
 export interface IObservableMessageInRecord<T> {
     id: string
-    observer?: Observer<T>
+    subject?: Subject<T>
 }
+
 export enum AppState {
     NOT_INITIALIZED = 'NOT_INITIALIZED',
     START_INITIALIZING = 'START_INITIALIZING',
@@ -23,6 +24,7 @@ export interface IApplicationState {
     api: IApplicationApi
     application: string
     appState: AppState
+    clientSubscriptionMap: Map<string, Subscription>
     domain: string
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
     // and debugging (https://localhost:3000)

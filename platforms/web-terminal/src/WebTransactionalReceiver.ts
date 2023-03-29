@@ -1,33 +1,30 @@
+import { JsonApplicationVersionWithApi } from '@airport/air-traffic-control'
+import { Message_Direction, Message_Leg, Message_Type, IAirEntityUtils, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage } from '@airport/aviation-communication'
 import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import {
-	ILocalAPIRequest,
-	ILocalAPIResponse,
-	IObservableLocalAPIResponse,
-	ObservableOperation
-} from '@airport/aviation-communication'
-import {
-	TransactionalReceiver
-} from '@airport/terminal'
+import { DbApplication, IDbApplicationUtils } from '@airport/ground-control'
 import {
 	ITransactionalReceiver,
 	IApiCallContext,
 	ITransactionContext,
 	ITerminalStore,
 	ILocalAPIServer,
-	IIsolateMessage,
-	IApiIMI,
-	IsolateMessageType,
-	ILocalAPIRequestIMI,
-	IObservableDataIMO,
-	IWebReceiverState
+	IWebReceiverState,
+	IInitializeConnectionMessage,
+	IApiCredentials,
+	IGetLatestApplicationVersionByDbApplication_NameMessage,
+	IRetrieveDomainMessage,
+	IPortableQueryMessage,
+	IReadQueryMessage,
+	ISaveMessage
 } from '@airport/terminal-map'
+import {
+	TransactionalReceiver
+} from '@airport/terminal'
 import { IWebApplicationInitializer } from './WebApplicationInitializer'
-import { IWebMessageReceiver } from './WebMessageReceiver'
-import { DbApplication, IDbApplicationUtils } from '@airport/ground-control'
-import { JsonApplicationVersionWithApi } from '@airport/air-traffic-control'
+import { IWebMessageGateway } from './WebMessageGateway'
 
 interface IToClientMessageOptions {
 	decrementPendingCounts: boolean
@@ -39,6 +36,12 @@ interface IToClientMessageOptions {
 export class WebTransactionalReceiver
 	extends TransactionalReceiver
 	implements ITransactionalReceiver {
+
+	@Inject()
+	airMessageUtils: IAirMessageUtils
+
+	@Inject()
+	airEntityUtils: IAirEntityUtils
 
 	@Inject()
 	applicationInitializer: IWebApplicationInitializer
@@ -53,7 +56,7 @@ export class WebTransactionalReceiver
 	terminalStore: ITerminalStore
 
 	@Inject()
-	webMessageReceiver: IWebMessageReceiver
+	webMessageGateway: IWebMessageGateway
 
 	init() {
 		const ownDomain = window.location.hostname
@@ -73,20 +76,14 @@ export class WebTransactionalReceiver
 	}
 
 	handleClientRequest(
-		message: ILocalAPIRequest
+		message: IApiCallRequestMessage
 	): void {
-		if (!(message instanceof Object) || message.__received__) {
-			return
-		}
-		message.__received__ = true
-
-		// All requests need to have a application signature
-		// to know what application is being communicated to/from
-		if (!this.hasValidApplicationInfo(message)) {
+		if (message.direction !== Message_Direction.FROM_CLIENT) {
+			console.error(`Unexpected message direction '${message.direction}'`)
 			return
 		}
 
-		if (this.webMessageReceiver.needMessageSerialization()) {
+		if (this.webMessageGateway.needMessageSerialization()) {
 			throw new Error("Deserialization is not yet implemented.")
 			// FIXME: deserialize message
 		}
@@ -94,58 +91,60 @@ export class WebTransactionalReceiver
 		const webReciever = this.terminalStore.getWebReceiver()
 
 		if (webReciever.onClientMessageCallback) {
-			const receivedDate = new Date()
-			message.__receivedTime__ = receivedDate.getTime()
 			webReciever.onClientMessageCallback(message)
 		}
 
-		switch (message.category) {
-			case 'FromClient':
-				const fromClientRedirectedMessage: ILocalAPIRequest = {
+		switch (message.type) {
+			case Message_Type.IS_CONNECTION_READY:
+				this.ensureConnectionIsReady(message).then()
+				break
+			default:
+				const fromClientRedirectedMessage: IApiCallRequestMessage = {
 					...message,
-					__received__: false,
-					__receivedTime__: null,
-					category: 'FromClientRedirected'
+					messageLeg: Message_Leg.FROM_HUB
 				}
 				this.handleFromClientRequest(fromClientRedirectedMessage).then()
-				break
-			case 'IsConnectionReady':
-				this.ensureConnectionIsReady(message).then()
 				break
 		}
 	}
 
 	handleAppRequest(
-		message: (IIsolateMessage & IApiIMI) | ILocalAPIResponse,
+		message: IApiCallRequestMessage
+			| IApiCallResponseMessage
+			| IGetLatestApplicationVersionByDbApplication_NameMessage
+			| IInitializeConnectionMessage
+			| IPortableQueryMessage
+			| IReadQueryMessage
+			| IRetrieveDomainMessage
+			| ISaveMessage<any>,
 		messageOrigin: string,
-		source: any
+		source: Window
 	): void {
-		if (message.__received__) {
-			return
-		}
-		message.__received__ = true
-
-		// All requests need to have a application signature
-		// to know what application is being communicated to/from
-		if (!this.hasValidApplicationInfo(message)) {
-			return
-		}
-
 		const webReciever = this.terminalStore.getWebReceiver()
 
 		if (webReciever.onClientMessageCallback) {
-			const receivedDate = new Date()
-			message.__receivedTime__ = receivedDate.getTime()
 			webReciever.onClientMessageCallback(message)
 		}
 
-		switch (message.category) {
-			case 'ToDb':
-				this.handleIsolateMessage(message as (IIsolateMessage & IApiIMI), messageOrigin,
-					source as Window).then()
+		switch (message.direction) {
+			case Message_Direction.FROM_CLIENT:
+				this.handleFromClientMessage(message as
+					IApiCallRequestMessage
+					| IPortableQueryMessage
+					| IReadQueryMessage
+					| ISaveMessage<any>,
+					messageOrigin, source).then()
 				break
-			case 'ToClient':
-				this.handleToClientMessage(message, messageOrigin, webReciever).then()
+			case Message_Direction.INTERNAL:
+				this.handleInternalMessage(message as
+					IGetLatestApplicationVersionByDbApplication_NameMessage
+					| IInitializeConnectionMessage
+					| IRetrieveDomainMessage,
+					messageOrigin, source).then()
+				break
+			case Message_Direction.TO_CLIENT:
+				this.handleToClientMessage(message as IApiCallResponseMessage,
+					messageOrigin, webReciever).then()
 				break
 			default:
 				break
@@ -153,7 +152,7 @@ export class WebTransactionalReceiver
 	}
 
 	private async handleToClientMessage(
-		message: ILocalAPIResponse,
+		message: IApiCallResponseMessage,
 		messageOrigin: string,
 		webReciever: IWebReceiverState
 	): Promise<void> {
@@ -165,17 +164,21 @@ export class WebTransactionalReceiver
 
 		const interAppApiCallRequest = webReciever.pendingInterAppApiCallMessageMap
 			.get(message.id)
-		const context: IApiCallContext = {}
+		const context: IApiCallContext = {
+			isObservableApiCall: this.airEntityUtils.isObservableMessage(message.type)
+		}
+		const credentials: IApiCredentials = {
+			application: message.serverApplication,
+			domain: message.serverDomain,
+			methodName: (message as IApiCallResponseMessage).methodName,
+			objectName: (message as IApiCallResponseMessage).objectName,
+			transactionId: message.transactionId
+		}
+
 		let success = true
 		try {
 			if (endApiCall) {
-				await this.endApiCall({
-					application: message.application,
-					domain: message.domain,
-					methodName: message.methodName,
-					objectName: message.objectName,
-					transactionId: message.transactionId
-				}, message.errorMessage, context)
+				await this.endApiCall(credentials, message.errorMessage, context)
 			}
 		} catch (e) {
 			success = false
@@ -186,10 +189,8 @@ export class WebTransactionalReceiver
 		} else if (replyToClient) {
 			await this.replyToClient(
 				message,
-				message.args,
 				success ? message.errorMessage : context.errorMessage,
-				message.payload,
-				message.protocol,
+				message.returnedValue,
 				success,
 				messageOrigin,
 				decrementPendingCounts
@@ -200,27 +201,29 @@ export class WebTransactionalReceiver
 	}
 
 	private getToClientMessageOptions(
-		message: ILocalAPIResponse
+		message: IApiCallResponseMessage
+			| IInitializeConnectionMessage
 	): IToClientMessageOptions {
-		const observableResponse = message as IObservableLocalAPIResponse
-
 		let decrementPendingCounts = true
 		let endApiCall = true
 		let replyToClient = true
-		if (observableResponse.subscriptionId) {
-			decrementPendingCounts = false
-			endApiCall = false
-			replyToClient = false
-			switch (observableResponse.observableOperation) {
-				case ObservableOperation.OBSERVABLE_SUBSCRIBE:
-					decrementPendingCounts = true
-					endApiCall = true
-					break
-				case ObservableOperation.OBSERVABLE_UNSUBSCRIBE:
-					break
-				default:
-					replyToClient = true
-					break
+		switch (message.type) {
+			case Message_Type.API_SUBSCRIBE: {
+				decrementPendingCounts = true
+				endApiCall = true
+				break
+			}
+			case Message_Type.API_SUBSCRIBTION_DATA: {
+				decrementPendingCounts = false
+				endApiCall = false
+				replyToClient = true
+				break
+			}
+			case Message_Type.API_UNSUBSCRIBE: {
+				decrementPendingCounts = false
+				endApiCall = false
+				replyToClient = false
+				break
 			}
 		}
 
@@ -232,35 +235,23 @@ export class WebTransactionalReceiver
 	}
 
 	private async replyToClient(
-		message: (IIsolateMessage & IApiIMI) | ILocalAPIRequest | ILocalAPIResponse,
-		args,
+		message: IApiCallResponseMessage
+			| IInitializeConnectionMessage,
 		errorMessage,
-		payload,
-		protocol,
+		returnedValue,
 		success,
 		messageOrigin,
 		decrementPendingCounts: boolean
 	): Promise<void> {
-		const toClientRedirectedMessage: ILocalAPIResponse = {
+		const toClientRedirectedMessage: IApiCallResponseMessage | IInitializeConnectionMessage = {
 			...message,
-			__received__: false,
-			__receivedTime__: null,
-			application: message.application,
-			args,
-			category: 'ToClientRedirected',
-			domain: message.domain,
-			errorMessage: errorMessage,
-			hostDomain: (message as ILocalAPIResponse).hostDomain,
-			hostProtocol: (message as ILocalAPIResponse).hostProtocol,
-			methodName: (message as ILocalAPIResponse).methodName,
-			objectName: (message as ILocalAPIResponse).objectName,
-			payload,
-			protocol,
-			transactionId: (message as ILocalAPIResponse).transactionId
+			direction: Message_Direction.TO_CLIENT,
+			messageLeg: Message_Leg.FROM_HUB,
+			returnedValue
 		}
 		if (!success) {
 			toClientRedirectedMessage.errorMessage = errorMessage
-			toClientRedirectedMessage.payload = null
+			toClientRedirectedMessage.returnedValue = null
 		}
 		if (messageOrigin) {
 			if (!await this.messageIsFromValidApp(
@@ -279,7 +270,7 @@ export class WebTransactionalReceiver
 	}
 
 	protected async nativeStartApiCall(
-		message: ILocalAPIRequest<'FromClientRedirected'>,
+		message: IApiCallRequestMessage,
 		context: IApiCallContext & ITransactionContext
 	): Promise<{
 		isFramework?: boolean
@@ -288,50 +279,44 @@ export class WebTransactionalReceiver
 		const messageCopy = {
 			...message
 		}
+
 		return await this.startApiCall(messageCopy, context, async () => {
-			const fullDbApplication_Name = this.dbApplicationUtils.
-				getDbApplication_FullNameFromDomainAndName(
-					message.domain, message.application)
-			const frameWindow = this.getFrameWindow(fullDbApplication_Name)
-			if (frameWindow) {
+			if (!context.isObservableApiCall) {
 				messageCopy.transactionId = context.transaction.id
-				// Forward the request to the correct application iframe
-				frameWindow.postMessage(messageCopy, '*')
-			} else {
-				throw new Error(`No Application IFrame found for: ${fullDbApplication_Name}`)
 			}
+
+			this.webMessageGateway.sendMessageToApp(messageCopy)
 		})
 	}
 
 	protected async nativeHandleApiCall(
-		message: ILocalAPIRequest<'FromClientRedirected'>,
+		message: IApiCallRequestMessage,
 		context: IApiCallContext & ITransactionContext
-	): Promise<ILocalAPIResponse> {
-		const messageCopy: ILocalAPIRequest<'FromClientRedirected'> = {
+	): Promise<IApiCallResponseMessage> {
+		const messageCopy: IApiCallRequestMessage = {
 			...message
 		}
-		delete messageCopy.__received__
-		delete messageCopy.__receivedTime__
-		messageCopy.category = 'FromClientRedirected'
+		messageCopy.messageLeg = Message_Leg.FROM_HUB
 		const startDescriptor = await this.nativeStartApiCall(messageCopy, context);
 		if (!startDescriptor.isStarted) {
 			throw new Error(context.errorMessage)
 		}
 
-		let args, errorMessage, payload, transactionId
+		let args, errorMessage, returnedValue, transactionId
 		if (startDescriptor.isFramework) {
 			const result = await this.callFrameworkApi(message, context)
 			errorMessage = result.errorMessage
-			payload = result.payload
+			returnedValue = result.returnedValue
 			args = message.args
 			transactionId = message.transactionId
 		} else {
-			const replyMessage: ILocalAPIResponse = await new Promise((resolve) => {
+			const replyMessage: IApiCallResponseMessage = await new Promise((resolve) => {
 				this.terminalStore.getWebReceiver().pendingInterAppApiCallMessageMap.set(messageCopy.id, {
 					message: {
 						...messageCopy,
-						category: 'FromDb',
-						type: IsolateMessageType.CALL_API
+						direction: Message_Direction.TO_CLIENT,
+						messageLeg: Message_Leg.FROM_HUB,
+						type: Message_Type.API_CALL
 					},
 					resolve
 				})
@@ -339,16 +324,17 @@ export class WebTransactionalReceiver
 
 			args = replyMessage.args
 			errorMessage = replyMessage.errorMessage
-			payload = replyMessage.payload
+			returnedValue = replyMessage.returnedValue
 			transactionId = replyMessage.transactionId
 		}
 
-		const response: ILocalAPIResponse = {
+		const response: IApiCallResponseMessage = {
 			...messageCopy,
-			category: 'FromDb',
+			direction: Message_Direction.TO_CLIENT,
+			messageLeg: Message_Leg.FROM_HUB,
 			args,
 			errorMessage,
-			payload,
+			returnedValue,
 			transactionId
 		}
 
@@ -356,12 +342,12 @@ export class WebTransactionalReceiver
 	}
 
 	private async callFrameworkApi(
-		message: ILocalAPIRequest<'FromClientRedirected'>,
+		message: IApiCallRequestMessage,
 		context: IApiCallContext & ITransactionContext,
 	): Promise<{
 		errorMessage,
-		payload,
-		replyToClient
+		replyToClient,
+		returnedValue
 	}> {
 		let internalResponse: {
 			isAsync: boolean,
@@ -370,7 +356,7 @@ export class WebTransactionalReceiver
 		let errorMessage
 		const messageCopy = {
 			...message,
-			transactionId: context.transaction.id
+			transactionId: context.isObservableApiCall ? null : context.transaction.id
 		}
 		const internalCredentials = this.terminalStore.getInternalConnector().internalCredentials
 		const priorTransactionId = internalCredentials.transactionId
@@ -378,10 +364,12 @@ export class WebTransactionalReceiver
 		let replyToClient = true
 
 		try {
-			internalCredentials.transactionId = context.transaction.id
+			if (!context.isObservableApiCall) {
+				internalCredentials.transactionId = context.transaction.id
+			}
 			const fullDbApplication_Name = this.dbApplicationUtils
 				.getDbApplication_FullNameFromDomainAndName(
-					message.domain, message.application)
+					message.serverDomain, message.serverApplication)
 			const application: DbApplication = this.terminalStore
 				.getApplicationMapByFullName().get(fullDbApplication_Name)
 			if (!application) {
@@ -397,8 +385,8 @@ export class WebTransactionalReceiver
 		} finally {
 			try {
 				await this.endApiCall({
-					application: message.application,
-					domain: message.domain,
+					application: message.clientApplication,
+					domain: message.clientDomain,
 					methodName: message.methodName,
 					objectName: message.objectName,
 					transactionId: messageCopy.transactionId
@@ -407,21 +395,25 @@ export class WebTransactionalReceiver
 				errorMessage = e.message ? e.message : e
 				console.error(e)
 			} finally {
-				internalCredentials.transactionId = priorTransactionId
+				if (!context.isObservableApiCall) {
+					internalCredentials.transactionId = priorTransactionId
+				}
 			}
 		}
 
 		return {
 			errorMessage,
-			payload: internalResponse? internalResponse.result : null,
-			replyToClient
+			replyToClient,
+			returnedValue: internalResponse ? internalResponse.result : null
 		}
 	}
 
 	private async ensureConnectionIsReady(
-		message: ILocalAPIRequest
+		message: IApiCallRequestMessage
 	): Promise<void> {
-		const applicationIsInstalled = await this.applicationInitializer.ensureApplicationIsInstalled(message.domain, message.application)
+		const applicationIsInstalled = await this.applicationInitializer
+			.ensureApplicationIsInstalled(message.serverDomain,
+				message.serverApplication)
 
 		if (applicationIsInstalled) {
 			this.sendConnectionReadyMessage(message)
@@ -429,43 +421,32 @@ export class WebTransactionalReceiver
 	}
 
 	private sendConnectionReadyMessage(
-		message: ILocalAPIRequest
+		message: IApiCallRequestMessage
 	) {
-		const connectionIsReadyMessage: ILocalAPIResponse = {
-			application: message.application,
+		const connectionIsReadyMessage: IApiCallResponseMessage = {
+			...message,
 			args: message.args,
-			category: 'ConnectionIsReady',
-			domain: message.domain,
+			direction: Message_Direction.TO_CLIENT,
+			messageLeg: Message_Leg.FROM_HUB,
 			errorMessage: null,
-			id: message.id,
-			hostDomain: message.hostDomain,
-			hostProtocol: message.hostProtocol,
-			methodName: message.methodName,
-			objectName: message.objectName,
-			protocol: window.location.protocol,
-			payload: null,
-			transactionId: message.transactionId
+			returnedValue: null,
+			transactionId: message.transactionId,
+			type: Message_Type.CONNECTION_IS_READY
 		};
 
-		if (this.webMessageReceiver.needMessageSerialization()) {
+		if (this.webMessageGateway.needMessageSerialization()) {
 			// FIXME: serialize message
 		}
-		this.webMessageReceiver.sendMessageToClient(connectionIsReadyMessage)
-	}
-
-	private hasValidApplicationInfo(
-		message: (IIsolateMessage & IApiIMI) | ILocalAPIRequest | ILocalAPIResponse
-	) {
-		return typeof message.domain === 'string' && message.domain.length >= 3
-			&& typeof message.application === 'string' && message.application.length >= 3
+		this.webMessageGateway.sendMessageToClient(connectionIsReadyMessage)
 	}
 
 	private async handleFromClientRequest(
-		message: ILocalAPIRequest,
+		message: IApiCallRequestMessage,
 	): Promise<void> {
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		let numPendingMessagesFromHost = webReciever.pendingHostCounts.get(message.domain)
+		let numPendingMessagesFromHost = webReciever.pendingHostCounts
+			.get(message.serverDomain)
 		if (!numPendingMessagesFromHost) {
 			numPendingMessagesFromHost = 0
 		}
@@ -476,7 +457,7 @@ export class WebTransactionalReceiver
 
 		const fullDbApplication_Name = this.dbApplicationUtils.
 			getDbApplication_FullNameFromDomainAndName(
-				message.domain, message.application)
+				message.serverDomain, message.serverApplication)
 
 		let numPendingMessagesForApplication = webReciever.pendingApplicationCounts.get(fullDbApplication_Name)
 		if (!numPendingMessagesForApplication) {
@@ -487,17 +468,19 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		webReciever.pendingHostCounts.set(message.domain, numPendingMessagesFromHost + 1)
+		webReciever.pendingHostCounts.set(message.serverDomain, numPendingMessagesFromHost + 1)
 		webReciever.pendingApplicationCounts.set(fullDbApplication_Name, numPendingMessagesForApplication + 1)
 
 		if (!await this.applicationInitializer.isApplicationIsInstalled(
-			message.domain, fullDbApplication_Name)) {
+			message.serverDomain, fullDbApplication_Name)) {
 			this.relyToClientWithError(message, `Application is not installed`)
 			return
 		}
 
-		const context: IApiCallContext = {}
-		const localApiRequest = message as ILocalAPIRequest<'FromClientRedirected'>
+		const context: IApiCallContext = {
+			isObservableApiCall: this.airEntityUtils.isObservableMessage(message.type)
+		}
+		const localApiRequest = message
 		const startDescriptor = await this.nativeStartApiCall(localApiRequest, context);
 		if (!startDescriptor.isStarted) {
 			this.relyToClientWithError(message, context.errorMessage)
@@ -506,10 +489,8 @@ export class WebTransactionalReceiver
 			if (result.replyToClient) {
 				await this.replyToClient(
 					message,
-					message.args,
 					result.errorMessage,
-					result.payload,
-					message.protocol,
+					result.returnedValue,
 					!result.errorMessage,
 					null,
 					true
@@ -521,75 +502,60 @@ export class WebTransactionalReceiver
 	}
 
 	private relyToClientWithError(
-		message: ILocalAPIRequest,
+		message: IApiCallRequestMessage,
 		errorMessage: string
 	) {
-		const toClientRedirectedMessage: ILocalAPIResponse = {
-			__received__: false,
-			__receivedTime__: null,
-			application: message.application,
-			args: message.args,
-			category: 'ToClientRedirected',
-			domain: message.domain,
+		const toClientRedirectedMessage: IApiCallResponseMessage = {
+			...message,
+			direction: Message_Direction.TO_CLIENT,
+			messageLeg: Message_Leg.FROM_HUB,
 			errorMessage,
 			id: message.id,
-			hostDomain: message.hostDomain,
-			hostProtocol: message.hostProtocol,
-			methodName: message.methodName,
-			objectName: message.objectName,
-			payload: null,
-			protocol: message.protocol,
-			transactionId: message.transactionId
+			returnedValue: null
 		}
 
 		this.replyToClientRequest(toClientRedirectedMessage, true)
 	}
 
-	private getFrameWindow(
-		fullDbApplication_Name: string
-	) {
-		const iframe: HTMLIFrameElement = document
-			.getElementsByName(fullDbApplication_Name) as any
-		if (!iframe || !iframe[0]) {
-			return null
-		}
-		return iframe[0].contentWindow
-	}
-
 	private replyToClientRequest(
-		message: ILocalAPIResponse,
+		message: IApiCallResponseMessage
+			| IInitializeConnectionMessage,
 		decrementPendingCounts: boolean
 	) {
 		if (decrementPendingCounts) {
 			this.decrementPendingCounts(message)
 		}
 		// Forward the request to the source client
-		if (this.webMessageReceiver.needMessageSerialization()) {
+		if (this.webMessageGateway.needMessageSerialization()) {
 			// FIXME: serialize message
 		}
-		this.webMessageReceiver.sendMessageToClient(message)
+		this.webMessageGateway.sendMessageToClient(message)
 	}
 
 	private decrementPendingCounts(
-		message: ILocalAPIRequest | ILocalAPIResponse
+		message: IApiCallRequestMessage
+			| IApiCallResponseMessage
+			| IInitializeConnectionMessage
 	) {
 		const fullDbApplication_Name = this.dbApplicationUtils.
 			getDbApplication_FullNameFromDomainAndName(
-				message.domain, message.application)
+				message.serverDomain, message.serverApplication)
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		let numMessagesFromHost = webReciever.pendingHostCounts.get(message.domain)
+		let numMessagesFromHost = webReciever.pendingHostCounts.get(message.clientDomain)
 		if (numMessagesFromHost > 0) {
-			webReciever.pendingHostCounts.set(message.domain, numMessagesFromHost - 1)
+			webReciever.pendingHostCounts.set(message.clientDomain, numMessagesFromHost - 1)
 		}
-		let numMessagesForApplication = webReciever.pendingApplicationCounts.get(fullDbApplication_Name)
+		let numMessagesForApplication = webReciever.pendingApplicationCounts
+			.get(fullDbApplication_Name)
 		if (numMessagesForApplication > 0) {
-			webReciever.pendingApplicationCounts.set(message.domain, numMessagesForApplication - 1)
+			webReciever.pendingApplicationCounts.set(message.serverDomain,
+				numMessagesForApplication - 1)
 		}
 	}
 
 	private async messageIsFromValidApp(
-		message: IIsolateMessage | ILocalAPIResponse,
+		message: IMessage | IApiCallResponseMessage,
 		messageOrigin: string
 	): Promise<boolean> {
 		const applicationDomain = messageOrigin.split('//')[1]
@@ -604,7 +570,7 @@ export class WebTransactionalReceiver
 
 		const fullDbApplication_Name = this.dbApplicationUtils.
 			getDbApplication_FullNameFromDomainAndName(
-				message.domain, message.application)
+				message.serverDomain, message.serverApplication)
 		// Only accept requests from https protocol
 		if (!messageOrigin.startsWith("https")
 			// and from application domains that match the fullDbApplication_Name
@@ -620,19 +586,42 @@ export class WebTransactionalReceiver
 			return false
 		}
 		const applicationDomainFirstFragment = applicationDomainFragments[0]
+
 		// check application domain-embedded signature and fullDbApplication_Name in message
 		// and make sure they result in a match
 		if (applicationDomainFirstFragment !== fullDbApplication_Name) {
 			return false
 		}
 
-		// Make sure the application is installed
 		return !!this.terminalStore.getApplicationInitializer()
 			.applicationWindowMap.get(fullDbApplication_Name)
 	}
 
-	private async handleIsolateMessage(
-		message: IIsolateMessage & IApiIMI,
+
+	private async handleInternalMessage(
+		message: IGetLatestApplicationVersionByDbApplication_NameMessage
+			| IInitializeConnectionMessage
+			| IRetrieveDomainMessage,
+		messageOrigin: string,
+		source: Window
+	): Promise<void> {
+		if (!await this.messageIsFromValidApp(message, messageOrigin)) {
+			return
+		}
+
+		const result = await this.processInternalMessage(message)
+
+		this.webMessageGateway.sendMessageToWindow({
+			...message,
+			returnedValue: result.theResult as any
+		}, source)
+	}
+
+	private async handleFromClientMessage(
+		message: IApiCallRequestMessage
+			| IPortableQueryMessage
+			| IReadQueryMessage
+			| ISaveMessage<any>,
 		messageOrigin: string,
 		source: Window
 	): Promise<void> {
@@ -644,10 +633,10 @@ export class WebTransactionalReceiver
 
 		const fullDbApplication_Name = this.dbApplicationUtils.
 			getDbApplication_FullNameFromDomainAndName(
-				message.domain, message.application)
+				message.clientDomain, message.clientApplication)
 		switch (message.type) {
-			case IsolateMessageType.SEARCH_UNSUBSCRIBE:
-				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullDbApplication_Name)
+			case Message_Type.SEARCH_UNSUBSCRIBE:
+				let isolateSubscriptionMap = webReciever.subscriptionMap.get(fullDbApplication_Name)
 				if (!isolateSubscriptionMap) {
 					return
 				}
@@ -660,39 +649,43 @@ export class WebTransactionalReceiver
 				return;
 		}
 		let response
-		if (message.type === IsolateMessageType.CALL_API) {
-			response = await this.nativeHandleApiCall(message as any as ILocalAPIRequestIMI, {
+		if (message.type === Message_Type.API_CALL) {
+			response = await this.nativeHandleApiCall(message as IApiCallRequestMessage, {
+				isObservableApiCall: this.airEntityUtils.isObservableMessage(message.type),
 				startedAt: new Date()
 			})
 		} else {
-			response = await this.processMessage(message)
+			response = await this.processFromClientMessage(message as IPortableQueryMessage
+				| IReadQueryMessage
+				| ISaveMessage<any>)
 		}
 		if (!response) {
 			return
 		}
 
+		let type
 		switch (message.type) {
-			case IsolateMessageType.SEARCH:
-			case IsolateMessageType.SEARCH_ONE: {
-				const observableDataResult = <IObservableDataIMO<any>>response
-
-				const subscription = observableDataResult.result.subscribe(result => {
-					source.postMessage({
+			case Message_Type.SEARCH_ONE_SUBSCRIBE:
+				type = Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA
+			case Message_Type.SEARCH_SUBSCRIBE: {
+				type = Message_Type.SEARCH_SUBSCRIBTION_DATA
+				const subscription = response.returnedValue.subscribe(returnedValue => {
+					this.webMessageGateway.sendMessageToWindow({
 						...response,
-						observableOperation: ObservableOperation.OBSERVABLE_DATAFEED,
-						result
-					}, '*')
+						returnedValue,
+						type
+					}, source)
 				})
-				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullDbApplication_Name)
+				let isolateSubscriptionMap = webReciever.subscriptionMap.get(fullDbApplication_Name)
 				if (!isolateSubscriptionMap) {
 					isolateSubscriptionMap = new Map()
-					webReciever.subsriptionMap.set(fullDbApplication_Name, isolateSubscriptionMap)
+					webReciever.subscriptionMap.set(fullDbApplication_Name, isolateSubscriptionMap)
 				}
 				isolateSubscriptionMap.set(message.id, subscription)
 				break
 			}
 			default: {
-				source.postMessage(response, '*')
+				this.webMessageGateway.sendMessageToWindow(response, source)
 				break
 			}
 		}

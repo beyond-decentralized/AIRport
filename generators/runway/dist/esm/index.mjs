@@ -761,8 +761,11 @@ class ContainerAccessor {
 
 const directionIndicator = lib('direction-indicator');
 directionIndicator.register(ContainerAccessor);
-const AIR_ENTITY_UTILS = lib('aviation-communication').token('AirEntityUtils');
+const aviationCommunication = lib('aviation-communication');
+const AIR_ENTITY_UTILS = aviationCommunication.token('AirEntityUtils');
 globalThis.AIR_ENTITY_UTILS = AIR_ENTITY_UTILS;
+const AIR_MESSAGE_UTILS = aviationCommunication.token('AirMessageUtils');
+globalThis.AIR_MESSAGE_UTILS = AIR_MESSAGE_UTILS;
 const pressurization = lib('pressurization');
 globalThis.OPERATION_SERIALIZER = pressurization.token('OperationSerializer');
 const QUERY_RESULTS_DESERIALIZER = pressurization.token('QueryResultsDeserializer');
@@ -8255,27 +8258,43 @@ function handleReset(reset, on) {
     return innerFrom(on.apply(void 0, __spreadArray([], __read(args)))).subscribe(onSubscriber);
 }
 
-var SubscriptionOperation;
-(function (SubscriptionOperation) {
-    SubscriptionOperation["OPERATION_SUBSCRIBE"] = "OPERATION_SUBSCRIBE";
-    SubscriptionOperation["OPERATION_UNSUBSCRIBE"] = "OPERATION_UNSUBSCRIBE";
-})(SubscriptionOperation || (SubscriptionOperation = {}));
-
-var ObservableOperation;
-(function (ObservableOperation) {
-    ObservableOperation["OBSERVABLE_DATAFEED"] = "OBSERVABLE_DATAFEED";
-    ObservableOperation["OBSERVABLE_SUBSCRIBE"] = "OBSERVABLE_SUBSCRIBE";
-    ObservableOperation["OBSERVABLE_UNSUBSCRIBE"] = "OBSERVABLE_UNSUBSCRIBE";
-})(ObservableOperation || (ObservableOperation = {}));
-
-const airApi = {
-    setQApp: function (qApplication) { },
-    dS: function (__dbApplication__, dbEntityId) { return true; },
-    ddS: function (__dbApplication__, dbEntityId) { return true; }
-};
-function loadGlobalAirApi() {
-    globalThis.airApi = airApi;
-}
+var Message_Direction;
+(function (Message_Direction) {
+    Message_Direction["FROM_CLIENT"] = "FROM_CLIENT";
+    Message_Direction["INTERNAL"] = "INTERNAL";
+    Message_Direction["TO_CLIENT"] = "TO_CLIENT";
+})(Message_Direction || (Message_Direction = {}));
+var Message_Leg;
+(function (Message_Leg) {
+    Message_Leg["FROM_HUB"] = "FROM_HUB";
+    Message_Leg["TO_HUB"] = "TO_HUB";
+})(Message_Leg || (Message_Leg = {}));
+var Message_Type;
+(function (Message_Type) {
+    Message_Type["API_CALL"] = "API_CALL";
+    Message_Type["API_SUBSCRIBE"] = "API_SUBSCRIBE";
+    Message_Type["API_SUBSCRIBTION_DATA"] = "API_SUBSCRIBTION_DATA";
+    Message_Type["API_UNSUBSCRIBE"] = "API_UNSUBSCRIBE";
+    Message_Type["APP_INITIALIZED"] = "APP_INITIALIZED";
+    Message_Type["APP_INITIALIZING"] = "APP_INITIALIZING";
+    Message_Type["CONNECTION_IS_READY"] = "CONNECTION_IS_READY";
+    Message_Type["DELETE_WHERE"] = "DELETE_WHERE";
+    Message_Type["FIND"] = "FIND";
+    Message_Type["FIND_ONE"] = "FIND_ONE";
+    Message_Type["GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME"] = "GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME";
+    Message_Type["INSERT_VALUES"] = "INSERT_VALUES";
+    Message_Type["INSERT_VALUES_GET_IDS"] = "INSERT_VALUES_GET_IDS";
+    Message_Type["IS_CONNECTION_READY"] = "IS_CONNECTION_READY";
+    Message_Type["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
+    Message_Type["SAVE"] = "SAVE";
+    Message_Type["SEARCH_ONE_SUBSCRIBE"] = "SEARCH_ONE_SUBSCRIBE";
+    Message_Type["SEARCH_ONE_SUBSCRIBTION_DATA"] = "SEARCH_ONE_SUBSCRIBTION_DATA";
+    Message_Type["SEARCH_ONE_UNSUBSCRIBE"] = "SEARCH_ONE_UNSUBSCRIBE";
+    Message_Type["SEARCH_SUBSCRIBE"] = "SEARCH_SUBSCRIBE";
+    Message_Type["SEARCH_SUBSCRIBTION_DATA"] = "SEARCH_SUBSCRIBTION_DATA";
+    Message_Type["SEARCH_UNSUBSCRIBE"] = "SEARCH_UNSUBSCRIBE";
+    Message_Type["UPDATE_VALUES"] = "UPDATE_VALUES";
+})(Message_Type || (Message_Type = {}));
 
 class AirEntityUtils {
     getCreatedBy(airEntity) {
@@ -8346,15 +8365,143 @@ class AirEntityUtils {
         }
         airEntity._actorRecordId = airEntityId._actorRecordId;
     }
+    isObservableMessage(type) {
+        switch (type) {
+            case Message_Type.API_SUBSCRIBE:
+            case Message_Type.API_SUBSCRIBTION_DATA:
+            case Message_Type.API_UNSUBSCRIBE:
+            case Message_Type.SEARCH_ONE_SUBSCRIBE:
+            case Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
+            case Message_Type.SEARCH_ONE_UNSUBSCRIBE:
+            case Message_Type.SEARCH_SUBSCRIBE:
+            case Message_Type.SEARCH_SUBSCRIBTION_DATA:
+            case Message_Type.SEARCH_UNSUBSCRIBE:
+                return true;
+            default:
+                return false;
+        }
+    }
+}
+
+class AirMessageUtils {
+    getMessageReadySendAttributes() {
+        return {
+            __received__: false,
+            __receivedTime__: null,
+        };
+    }
+    isMessageAlreadyReceived(message) {
+        if (!(message instanceof Object) || message.__received__) {
+            console.error(`Message already recieved:
+${JSON.stringify(message, null, 2)}
+`);
+            return true;
+        }
+        return false;
+    }
+    markMessageAsReceived(message) {
+        message.__received__ = true;
+        const receivedDate = new Date();
+        message.__receivedTime__ = receivedDate.getTime();
+    }
+    prepMessageToSend(message) {
+        delete message.__received__;
+        delete message.__receivedTime__;
+    }
+    validateIncomingMessage(message) {
+        if (this.isMessageAlreadyReceived(message)) {
+            return false;
+        }
+        if (!this.hasValidApplicationInfo(message)) {
+            return false;
+        }
+        this.markMessageAsReceived(message);
+        return true;
+    }
+    hasValidApplicationInfo(message) {
+        let application, domain;
+        // All requests need to have a application signature
+        // to know what application is being communicated to/from
+        switch (message.direction) {
+            case Message_Direction.FROM_CLIENT: {
+                if (!this.isValidDomainNameString(message.clientDomain) || !this.isValidApplicationNameString(message.clientApplication)) {
+                    console.error(`FROM_CLIENT Message does not have valid client domain and application:
+${JSON.stringify(message, null, 2)}
+`);
+                    return false;
+                }
+                domain = message.clientDomain;
+                application = message.clientApplication;
+                break;
+            }
+            case Message_Direction.TO_CLIENT: {
+                if (!this.isValidDomainNameString(message.serverDomain) || !this.isValidApplicationNameString(message.serverApplication)) {
+                    console.error(`FROM_CLIENT Message does not have valid server domain and application:
+${JSON.stringify(message, null, 2)}
+`);
+                    return false;
+                }
+                domain = message.serverDomain;
+                application = message.serverApplication;
+                break;
+            }
+            default: {
+                console.warn(`Unexpected message direction '${message.direction}'
+${JSON.stringify(message, null, 2)}
+`);
+                return false;
+            }
+        }
+        if (domain.indexOf('.') > -1) {
+            console.error(`Invalid Domain name - cannot have periods that would point to invalid subdomains:
+${domain}
+`);
+            return false;
+        }
+        if (application.indexOf('.') > -1) {
+            console.error(`Invalid Application name - cannot have periods that would point to invalid subdomains:
+${application}
+`);
+            return false;
+        }
+        return true;
+    }
+    isFromValidFrameworkDomain(origin) {
+        if (!origin.startsWith("https")) {
+            console.error(`Framework is not running via HTTPS protocol`);
+            return false;
+        }
+        return true;
+    }
+    isValidApplicationNameString(applicationName) {
+        return typeof applicationName === 'string'
+            && applicationName.length >= 3;
+    }
+    isValidDomainNameString(domainName) {
+        return typeof domainName === 'string'
+            && domainName.length >= 3;
+    }
 }
 
 globalThis.MESSAGE_BUS = new Subject();
+
+const airApi = {
+    setQApp: function (qApplication) { },
+    dS: function (__dbApplication__, dbEntityId) { return true; },
+    ddS: function (__dbApplication__, dbEntityId) { return true; }
+};
+function loadGlobalAirApi() {
+    globalThis.airApi = airApi;
+}
 
 // This library is used in UI/Client bundles which does not include @airport/direction-indicator
 // dependency injection library
 setTimeout(() => {
     if (globalThis.AIR_ENTITY_UTILS) {
         globalThis.AIR_ENTITY_UTILS.setClass(AirEntityUtils);
+    }
+    if (globalThis.AIR_MESSAGE_UTILS) {
+        globalThis.AIR_MESSAGE_UTILS.setClass(AirMessageUtils);
     }
 });
 
@@ -8365,8 +8512,11 @@ class LookupProxy {
     constructor(dao) {
         this.dao = dao;
     }
-    async lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults) {
-        return await this.dao.lookup.lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults);
+    async findInternal(rawQuery, queryResultType, one, QueryClass, context, mapResults) {
+        return await this.dao.lookup.findInternal(rawQuery, queryResultType, one, QueryClass, context, mapResults);
+    }
+    searchInternal(rawQuery, queryResultType, one, QueryClass, context, mapResults) {
+        return this.dao.lookup.searchInternal(rawQuery, queryResultType, one, QueryClass, context, mapResults);
     }
 }
 class Lookup {
@@ -8379,7 +8529,37 @@ class Lookup {
         }
         return context;
     }
-    async lookup(rawQuery, queryResultType, search, one, QueryClass, context) {
+    async findInternal(rawQuery, queryResultType, one, QueryClass, context) {
+        let query = this.getQuery(rawQuery, QueryClass);
+        let queryMethod;
+        if (one) {
+            queryMethod = this.queryFacade.findOne;
+        }
+        else {
+            queryMethod = this.queryFacade.find;
+        }
+        let result = await queryMethod.call(this.queryFacade, query, queryResultType, context);
+        if (!one && !result) {
+            result = [];
+        }
+        return result;
+    }
+    searchInternal(rawQuery, queryResultType, one, QueryClass, context) {
+        let query = this.getQuery(rawQuery, QueryClass);
+        let queryMethod;
+        if (one) {
+            queryMethod = this.queryFacade.searchOne;
+        }
+        else {
+            queryMethod = this.queryFacade.search;
+        }
+        let result = queryMethod.call(this.queryFacade, query, queryResultType, context);
+        if (!one && !result) {
+            result = [];
+        }
+        return result;
+    }
+    getQuery(rawQuery, QueryClass) {
         let query;
         let theRawQuery = this.entityUtils.getRawQuery(rawQuery);
         this.entityUtils.ensureAllQEntitiesInFromClause(theRawQuery);
@@ -8390,28 +8570,7 @@ class Lookup {
         else {
             query = this.entityUtils.getEntityQuery(theRawQuery);
         }
-        let queryMethod;
-        if (search) {
-            if (one) {
-                queryMethod = this.queryFacade.searchOne;
-            }
-            else {
-                queryMethod = this.queryFacade.search;
-            }
-        }
-        else {
-            if (one) {
-                queryMethod = this.queryFacade.findOne;
-            }
-            else {
-                queryMethod = this.queryFacade.find;
-            }
-        }
-        let result = await queryMethod.call(this.queryFacade, query, queryResultType, context);
-        if (!one && !result) {
-            result = [];
-        }
-        return result;
+        return query;
     }
 }
 
@@ -8424,31 +8583,23 @@ class EntityLookup extends LookupProxy {
     setNoCache(ChildClass) {
         return new ChildClass(this.dbEntity, this.dao, this.mapResults);
     }
-    entityLookup(rawEntityQuery, queryResultType, search, one, context) {
+    async entityFind(rawEntityQuery, queryResultType, one, context) {
         context.dbEntity = this.dbEntity;
         rawEntityQuery = IOC.getSync(ENTITY_UTILS)
             .ensureId(rawEntityQuery);
-        let result = this.lookup(rawEntityQuery, queryResultType, search, one, null, context, this.mapResults);
-        if (result instanceof Subject) {
-            result = this.saveOriginalValues(result, context);
-        }
-        else {
-            result = result.then(theResult => {
-                return this.saveOriginalValues(theResult, context);
-            });
-        }
+        let result = await this.findInternal(rawEntityQuery, queryResultType, one, null, context, this.mapResults);
+        this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity);
         return result;
     }
-    saveOriginalValues(result, context) {
-        if (!(result instanceof Subject)) {
+    entitySearch(rawEntityQuery, queryResultType, one, context) {
+        context.dbEntity = this.dbEntity;
+        rawEntityQuery = IOC.getSync(ENTITY_UTILS)
+            .ensureId(rawEntityQuery);
+        let result = this.searchInternal(rawEntityQuery, queryResultType, one, null, context, this.mapResults);
+        result = result.pipe(map(observedResult => {
             this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity);
-        }
-        else {
-            result = result.pipe(map(observedResult => {
-                this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity);
-                return observedResult;
-            }));
-        }
+            return observedResult;
+        }));
         return result;
     }
 }
@@ -8465,7 +8616,7 @@ class EntityFind extends EntityLookup {
         return await this.find(rawTreeQuery, QueryResultType.ENTITY_TREE, context);
     }
     async find(rawEntityQuery, queryResultType, context) {
-        return await this.entityLookup(rawEntityQuery, queryResultType, false, false, this.ensureContext(context));
+        return await this.entityFind(rawEntityQuery, queryResultType, false, this.ensureContext(context));
     }
     noCache() {
         return this.setNoCache(EntityFind);
@@ -8485,7 +8636,7 @@ class EntityFindOne extends EntityLookup {
     // TODO: return Observable from deep within the framework
     // and detect changes to the underlying data
     async findOne(rawEntityQuery, queryResultType, context) {
-        return await this.entityLookup(rawEntityQuery, queryResultType, false, true, this.ensureContext(context));
+        return await this.entityFind(rawEntityQuery, queryResultType, true, this.ensureContext(context));
     }
     noCache() {
         return this.setNoCache(EntityFindOne);
@@ -8503,7 +8654,7 @@ class EntitySearch extends EntityLookup {
         return this.search(rawTreeQuery, QueryResultType.ENTITY_TREE, context);
     }
     search(rawEntityQuery, queryResultType, context) {
-        return this.entityLookup(rawEntityQuery, queryResultType, true, false, this.ensureContext(context));
+        return this.entitySearch(rawEntityQuery, queryResultType, false, this.ensureContext(context));
     }
     noCache() {
         return this.setNoCache(EntitySearch);
@@ -8521,7 +8672,7 @@ class EntitySearchOne extends EntityLookup {
         return this.searchOne(rawTreeQuery, QueryResultType.ENTITY_TREE, context);
     }
     searchOne(rawEntityQuery, queryResultType, context) {
-        return this.entityLookup(rawEntityQuery, queryResultType, true, true, this.ensureContext(context));
+        return this.entitySearch(rawEntityQuery, queryResultType, true, this.ensureContext(context));
     }
 }
 
@@ -8542,7 +8693,7 @@ class NonEntityFind extends Lookup {
         return this.find(rawTreeQuery, QueryResultType.TREE, TreeQuery, context);
     }
     find(rawNonEntityQuery, queryResultType, QueryClass, context) {
-        return this.lookup(rawNonEntityQuery, queryResultType, false, false, QueryClass, this.ensureContext(context));
+        return this.findInternal(rawNonEntityQuery, queryResultType, false, QueryClass, this.ensureContext(context));
     }
 }
 
@@ -8560,7 +8711,7 @@ class NonEntityFindOne extends Lookup {
         return this.findOne(rawTreeQuery, QueryResultType.TREE, TreeQuery, context);
     }
     findOne(rawNonEntityQuery, queryResultType, QueryClass, context) {
-        return this.lookup(rawNonEntityQuery, queryResultType, false, true, QueryClass, this.ensureContext(context));
+        return this.findInternal(rawNonEntityQuery, queryResultType, true, QueryClass, this.ensureContext(context));
     }
 }
 
@@ -8569,16 +8720,16 @@ class NonEntityFindOne extends Lookup {
  */
 class NonEntitySearch extends Lookup {
     field(rawFieldQuery, context) {
-        return from(this.search(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context));
+        return this.search(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context);
     }
     sheet(rawSheetQuery, context) {
-        return from(this.search(rawSheetQuery, QueryResultType.SHEET, SheetQuery, context));
+        return this.search(rawSheetQuery, QueryResultType.SHEET, SheetQuery, context);
     }
     tree(rawTreeQuery, context) {
-        return from(this.search(rawTreeQuery, QueryResultType.TREE, TreeQuery, context));
+        return this.search(rawTreeQuery, QueryResultType.TREE, TreeQuery, context);
     }
     search(rawNonEntityQuery, queryResultType, QueryClass, context) {
-        return this.lookup(rawNonEntityQuery, queryResultType, true, false, QueryClass, this.ensureContext(context));
+        return this.searchInternal(rawNonEntityQuery, queryResultType, false, QueryClass, this.ensureContext(context));
     }
 }
 
@@ -8587,16 +8738,16 @@ class NonEntitySearch extends Lookup {
  */
 class NonEntitySearchOne extends Lookup {
     field(rawFieldQuery, context) {
-        return from(this.searchOne(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context));
+        return this.searchOne(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context);
     }
     sheet(rawSheetQuery, context) {
-        return from(this.searchOne(rawSheetQuery, QueryResultType.SHEET, SheetQuery, context));
+        return this.searchOne(rawSheetQuery, QueryResultType.SHEET, SheetQuery, context);
     }
     tree(rawTreeQuery, context) {
-        return from(this.searchOne(rawTreeQuery, QueryResultType.TREE, TreeQuery, context));
+        return this.searchOne(rawTreeQuery, QueryResultType.TREE, TreeQuery, context);
     }
     searchOne(rawNonEntityQuery, queryResultType, QueryClass, context) {
-        return this.lookup(rawNonEntityQuery, queryResultType, true, true, QueryClass, this.ensureContext(context));
+        return this.searchInternal(rawNonEntityQuery, queryResultType, true, QueryClass, this.ensureContext(context));
     }
 }
 
@@ -8654,14 +8805,6 @@ class EntityDatabaseFacade {
     async save(entity, context) {
         return await this.withDbEntity(context, async (databaseFacade, context) => {
             return await databaseFacade.save(entity, context);
-        });
-    }
-    /**
-     * @return ISaveResult object with metadata on saved objects
-     */
-    async saveToDestination(repositoryDestination, entity, context) {
-        return await this.withDbEntity(context, async (databaseFacade, context) => {
-            return await databaseFacade.saveToDestination(repositoryDestination, entity, context);
         });
     }
     async withDbEntity(context, callback) {
@@ -10565,161 +10708,6 @@ BaseDdlRelationColumnDao.FindOne = new DaoQueryDecorators();
 BaseDdlRelationColumnDao.Search = new DaoQueryDecorators();
 BaseDdlRelationColumnDao.SearchOne = new DaoQueryDecorators();
 
-class DbDomainDao extends BaseDdlDomainDao {
-    async findByIdIn(domainIds, context) {
-        let d;
-        return await this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                d = Q_airport____at_airport_slash_airspace.DdlDomain
-            ],
-            WHERE: d._localId.IN(domainIds)
-        }, context);
-    }
-    async findMapByNameWithNames(domainNames, context) {
-        let d;
-        const domains = await this.db.find.tree({
-            SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
-            WHERE: d.name.IN(domainNames)
-        }, context);
-        const domainMapByNameWithNames = new Map();
-        for (const domain of domains) {
-            domainMapByNameWithNames.set(domain.name, domain);
-        }
-        return domainMapByNameWithNames;
-    }
-    async findOneByName(name, context) {
-        let d;
-        return await this.db.findOne.tree({
-            SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
-            WHERE: d.name.equals(name)
-        }, context);
-    }
-    async findByNames(names, context) {
-        let d;
-        return await this.db.find.tree({
-            SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
-            WHERE: d.name.IN(names)
-        }, context);
-    }
-    async findByName(name, context) {
-        let d;
-        return await this.db.findOne.tree({
-            SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
-            WHERE: d.name.equals(name)
-        }, context);
-    }
-    async checkAndInsertIfNeeded(domains, context) {
-        const existingDomains = await this.findByIdIn(domains.map(domain => domain._localId), context);
-        const existingDomainMap = new Map();
-        for (const existingDomain of existingDomains) {
-            existingDomainMap.set(existingDomain._localId, existingDomain);
-        }
-        const newDomains = [];
-        for (const domain of domains) {
-            if (!existingDomainMap.has(domain._localId)) {
-                newDomains.push(domain);
-            }
-        }
-        if (!newDomains.length) {
-            return;
-        }
-        let d;
-        const VALUES = [];
-        for (const domain of newDomains) {
-            VALUES.push([
-                domain._localId, domain.name
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
-            columns: [
-                d._localId,
-                d.name,
-            ],
-            VALUES
-        }, context);
-    }
-    async insert(domains, context) {
-        let d;
-        const VALUES = [];
-        for (const domain of domains) {
-            VALUES.push([
-                domain.name
-            ]);
-        }
-        const ids = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
-            columns: [
-                d.name
-            ],
-            VALUES
-        }, context);
-        for (let i = 0; i < domains.length; i++) {
-            let domain = domains[i];
-            domain._localId = ids[i][0];
-        }
-    }
-}
-
-class DbColumnDao extends BaseDdlColumnDao {
-    async findAllForEntities(entityIds, context) {
-        let c;
-        return this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                c = Q_airport____at_airport_slash_airspace.DdlColumn
-            ],
-            WHERE: c.entity._localId.IN(entityIds)
-        }, context);
-    }
-    async insert(applicationColumns, context) {
-        let sc;
-        const VALUES = [];
-        for (const applicationColumn of applicationColumns) {
-            VALUES.push([
-                applicationColumn._localId, applicationColumn.index,
-                this.datastructureUtils.undefinedToNull(applicationColumn.idIndex),
-                applicationColumn.isGenerated,
-                this.datastructureUtils.undefinedToNull(applicationColumn.allocationSize),
-                applicationColumn.name,
-                applicationColumn.notNull,
-                this.datastructureUtils.undefinedToNull(applicationColumn.precision),
-                this.datastructureUtils.undefinedToNull(applicationColumn.scale),
-                applicationColumn.type,
-                applicationColumn.entity._localId,
-                applicationColumn.deprecatedSinceVersion ? applicationColumn.deprecatedSinceVersion._localId : null,
-                applicationColumn.removedInVersion ? applicationColumn.removedInVersion._localId : null,
-                applicationColumn.sinceVersion ? applicationColumn.sinceVersion._localId : null,
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sc = Q_airport____at_airport_slash_airspace.DdlColumn,
-            columns: [
-                sc._localId,
-                sc.index,
-                sc.idIndex,
-                sc.isGenerated,
-                sc.allocationSize,
-                sc.name,
-                sc.notNull,
-                sc.precision,
-                sc.scale,
-                sc.type,
-                sc.entity._localId,
-                sc.deprecatedSinceVersion._localId,
-                sc.removedInVersion._localId,
-                sc.sinceVersion._localId
-            ],
-            VALUES
-        }, context);
-    }
-}
-
 class DbApplicationDao extends BaseDdlApplicationDao {
     async findAllActive(context) {
         return this.db.find.tree({
@@ -10982,127 +10970,6 @@ class DbApplicationDao extends BaseDdlApplicationDao {
     }
 }
 
-class DbEntityDao extends BaseDdlEntityDao {
-    async findAllForApplicationVersions(applicationVersionIds, context) {
-        let se;
-        return await this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                se = Q_airport____at_airport_slash_airspace.DdlEntity
-            ],
-            WHERE: se.applicationVersion._localId.IN(applicationVersionIds)
-        }, context);
-    }
-    async insert(applicationEntities, context) {
-        let se;
-        const VALUES = [];
-        for (const applicationEntity of applicationEntities) {
-            VALUES.push([
-                applicationEntity._localId, applicationEntity.index,
-                applicationEntity.isLocal, applicationEntity.isAirEntity,
-                applicationEntity.name, applicationEntity.tableConfig,
-                applicationEntity.applicationVersion._localId,
-                applicationEntity.deprecatedSinceVersion ? applicationEntity.deprecatedSinceVersion._localId : null,
-                applicationEntity.removedInVersion ? applicationEntity.removedInVersion._localId : null,
-                applicationEntity.sinceVersion ? applicationEntity.sinceVersion._localId : null,
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: se = Q_airport____at_airport_slash_airspace.DdlEntity,
-            columns: [
-                se._localId,
-                se.index,
-                se.isLocal,
-                se.isAirEntity,
-                se.name,
-                se.tableConfig,
-                se.applicationVersion._localId,
-                se.deprecatedSinceVersion._localId,
-                se.removedInVersion._localId,
-                se.sinceVersion._localId
-            ],
-            VALUES
-        }, context);
-    }
-}
-
-class DbPropertyColumnDao extends BaseDdlPropertyColumnDao {
-    async findAllForColumns(columnIds, context) {
-        let rc;
-        return this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                rc = Q_airport____at_airport_slash_airspace.DdlPropertyColumn
-            ],
-            WHERE: rc.column._localId.IN(columnIds)
-        }, context);
-    }
-    async insert(applicationPropertyColumns, context) {
-        let spc;
-        const VALUES = [];
-        for (const applicationPropertyColumn of applicationPropertyColumns) {
-            VALUES.push([
-                applicationPropertyColumn.column._localId, applicationPropertyColumn.property._localId,
-                applicationPropertyColumn.deprecatedSinceVersion ? applicationPropertyColumn.deprecatedSinceVersion._localId : null,
-                applicationPropertyColumn.removedInVersion ? applicationPropertyColumn.removedInVersion._localId : null,
-                applicationPropertyColumn.sinceVersion ? applicationPropertyColumn.sinceVersion._localId : null,
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: spc = Q_airport____at_airport_slash_airspace.DdlPropertyColumn,
-            columns: [
-                spc.column._localId,
-                spc.property._localId,
-                spc.deprecatedSinceVersion._localId,
-                spc.removedInVersion._localId,
-                spc.sinceVersion._localId
-            ],
-            VALUES
-        }, context);
-    }
-}
-
-class DbPropertyDao extends BaseDdlPropertyDao {
-    async findAllForEntities(entityIds, context) {
-        let p;
-        return this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                p = Q_airport____at_airport_slash_airspace.DdlProperty
-            ],
-            WHERE: p.entity._localId.IN(entityIds)
-        }, context);
-    }
-    async insert(applicationProperties, context) {
-        let sp;
-        const VALUES = [];
-        for (const applicationProperty of applicationProperties) {
-            VALUES.push([
-                applicationProperty._localId, applicationProperty.index,
-                applicationProperty.name, applicationProperty.isId,
-                applicationProperty.entity._localId,
-                applicationProperty.deprecatedSinceVersion ? applicationProperty.deprecatedSinceVersion._localId : null,
-                applicationProperty.removedInVersion ? applicationProperty.removedInVersion._localId : null,
-                applicationProperty.sinceVersion ? applicationProperty.sinceVersion._localId : null,
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sp = Q_airport____at_airport_slash_airspace.DdlProperty,
-            columns: [
-                sp._localId,
-                sp.index,
-                sp.name,
-                sp.isId,
-                sp.entity._localId,
-                sp.deprecatedSinceVersion._localId,
-                sp.removedInVersion._localId,
-                sp.sinceVersion._localId
-            ],
-            VALUES
-        }, context);
-    }
-}
-
 class DbApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
     async findAllForApplicationVersions(applicationVersionIds, context) {
         let sr;
@@ -11133,128 +11000,6 @@ class DbApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
                 sr.ownApplicationVersion._localId,
                 sr.referencedApplicationVersion._localId,
                 sr.index,
-                sr.deprecatedSinceVersion._localId,
-                sr.removedInVersion._localId,
-                sr.sinceVersion._localId
-            ],
-            VALUES
-        }, context);
-    }
-}
-
-class DbRelationColumnDao extends BaseDdlRelationColumnDao {
-    async findAllForColumns(columnIds, context) {
-        let rc;
-        return this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                rc = Q_airport____at_airport_slash_airspace.DdlRelationColumn
-            ],
-            WHERE: OR(rc.oneColumn._localId.IN(columnIds), rc.manyColumn._localId.IN(columnIds))
-        }, context);
-    }
-    async insert(applicationRelationColumns, context) {
-        let src;
-        const VALUES = [];
-        for (const applicationRelationColumn of applicationRelationColumns) {
-            VALUES.push([
-                applicationRelationColumn._localId,
-                applicationRelationColumn.manyColumn ? applicationRelationColumn.manyColumn._localId : null,
-                applicationRelationColumn.oneColumn ? applicationRelationColumn.oneColumn._localId : null,
-                applicationRelationColumn.manyRelation ? applicationRelationColumn.manyRelation._localId : null,
-                applicationRelationColumn.oneRelation ? applicationRelationColumn.oneRelation._localId : null,
-                applicationRelationColumn.parentRelation ? applicationRelationColumn.parentRelation._localId : null,
-                applicationRelationColumn.deprecatedSinceVersion ? applicationRelationColumn.deprecatedSinceVersion._localId : null,
-                applicationRelationColumn.removedInVersion ? applicationRelationColumn.removedInVersion._localId : null,
-                applicationRelationColumn.sinceVersion ? applicationRelationColumn.sinceVersion._localId : null,
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: src = Q_airport____at_airport_slash_airspace.DdlRelationColumn,
-            columns: [
-                src._localId,
-                src.manyColumn._localId,
-                src.oneColumn._localId,
-                src.manyRelation._localId,
-                src.oneRelation._localId,
-                src.parentRelation._localId,
-                src.deprecatedSinceVersion._localId,
-                src.removedInVersion._localId,
-                src.sinceVersion._localId
-            ],
-            VALUES
-        }, context);
-    }
-}
-
-class DbRelationDao extends BaseDdlRelationDao {
-    async findAllForProperties(propertyIds, context) {
-        let r;
-        return this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                r = Q_airport____at_airport_slash_airspace.DdlRelation
-            ],
-            WHERE: r.property._localId.IN(propertyIds)
-        }, context);
-    }
-    async findAllByLocalIdsWithApplications(localIds, context) {
-        let r, e, av, a;
-        return this.db.find.tree({
-            SELECT: {
-                _localId: Y,
-                entity: {
-                    applicationVersion: {
-                        application: {
-                            domain: {
-                                name: Y
-                            },
-                            name: Y
-                        },
-                        integerVersion: Y
-                    }
-                }
-            },
-            FROM: [
-                r = Q_airport____at_airport_slash_airspace.DdlRelation,
-                e = r.entity.LEFT_JOIN(),
-                av = e.applicationVersion.LEFT_JOIN(),
-                a = av.application.LEFT_JOIN(),
-                a.domain.LEFT_JOIN()
-            ],
-            WHERE: r._localId.IN(localIds)
-        }, context);
-    }
-    async insert(applicationRelations, context) {
-        let sr;
-        const VALUES = [];
-        for (const applicationRelation of applicationRelations) {
-            VALUES.push([
-                applicationRelation._localId, applicationRelation.index,
-                applicationRelation.property._localId,
-                this.datastructureUtils.undefinedToNull(applicationRelation.foreignKey),
-                this.datastructureUtils.undefinedToNull(applicationRelation.manyToOneElems),
-                this.datastructureUtils.undefinedToNull(applicationRelation.oneToManyElems),
-                applicationRelation.relationType, applicationRelation.isId,
-                applicationRelation.entity._localId, applicationRelation.relationEntity._localId,
-                applicationRelation.deprecatedSinceVersion ? applicationRelation.deprecatedSinceVersion._localId : null,
-                applicationRelation.removedInVersion ? applicationRelation.removedInVersion._localId : null,
-                applicationRelation.sinceVersion ? applicationRelation.sinceVersion._localId : null,
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.DdlRelation,
-            columns: [
-                sr._localId,
-                sr.index,
-                sr.property._localId,
-                sr.foreignKey,
-                sr.manyToOneElems,
-                sr.oneToManyElems,
-                sr.relationType,
-                sr.isId,
-                sr.entity._localId,
-                sr.relationEntity._localId,
                 sr.deprecatedSinceVersion._localId,
                 sr.removedInVersion._localId,
                 sr.sinceVersion._localId
@@ -11432,6 +11177,404 @@ class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
     }
 }
 
+class DbColumnDao extends BaseDdlColumnDao {
+    async findAllForEntities(entityIds, context) {
+        let c;
+        return this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                c = Q_airport____at_airport_slash_airspace.DdlColumn
+            ],
+            WHERE: c.entity._localId.IN(entityIds)
+        }, context);
+    }
+    async insert(applicationColumns, context) {
+        let sc;
+        const VALUES = [];
+        for (const applicationColumn of applicationColumns) {
+            VALUES.push([
+                applicationColumn._localId, applicationColumn.index,
+                this.datastructureUtils.undefinedToNull(applicationColumn.idIndex),
+                applicationColumn.isGenerated,
+                this.datastructureUtils.undefinedToNull(applicationColumn.allocationSize),
+                applicationColumn.name,
+                applicationColumn.notNull,
+                this.datastructureUtils.undefinedToNull(applicationColumn.precision),
+                this.datastructureUtils.undefinedToNull(applicationColumn.scale),
+                applicationColumn.type,
+                applicationColumn.entity._localId,
+                applicationColumn.deprecatedSinceVersion ? applicationColumn.deprecatedSinceVersion._localId : null,
+                applicationColumn.removedInVersion ? applicationColumn.removedInVersion._localId : null,
+                applicationColumn.sinceVersion ? applicationColumn.sinceVersion._localId : null,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: sc = Q_airport____at_airport_slash_airspace.DdlColumn,
+            columns: [
+                sc._localId,
+                sc.index,
+                sc.idIndex,
+                sc.isGenerated,
+                sc.allocationSize,
+                sc.name,
+                sc.notNull,
+                sc.precision,
+                sc.scale,
+                sc.type,
+                sc.entity._localId,
+                sc.deprecatedSinceVersion._localId,
+                sc.removedInVersion._localId,
+                sc.sinceVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+}
+
+class DbDomainDao extends BaseDdlDomainDao {
+    async findByIdIn(domainIds, context) {
+        let d;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                d = Q_airport____at_airport_slash_airspace.DdlDomain
+            ],
+            WHERE: d._localId.IN(domainIds)
+        }, context);
+    }
+    async findMapByNameWithNames(domainNames, context) {
+        let d;
+        const domains = await this.db.find.tree({
+            SELECT: {},
+            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
+            WHERE: d.name.IN(domainNames)
+        }, context);
+        const domainMapByNameWithNames = new Map();
+        for (const domain of domains) {
+            domainMapByNameWithNames.set(domain.name, domain);
+        }
+        return domainMapByNameWithNames;
+    }
+    async findOneByName(name, context) {
+        let d;
+        return await this.db.findOne.tree({
+            SELECT: {},
+            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
+            WHERE: d.name.equals(name)
+        }, context);
+    }
+    async findByNames(names, context) {
+        let d;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
+            WHERE: d.name.IN(names)
+        }, context);
+    }
+    async findByName(name, context) {
+        let d;
+        return await this.db.findOne.tree({
+            SELECT: {},
+            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
+            WHERE: d.name.equals(name)
+        }, context);
+    }
+    async checkAndInsertIfNeeded(domains, context) {
+        const existingDomains = await this.findByIdIn(domains.map(domain => domain._localId), context);
+        const existingDomainMap = new Map();
+        for (const existingDomain of existingDomains) {
+            existingDomainMap.set(existingDomain._localId, existingDomain);
+        }
+        const newDomains = [];
+        for (const domain of domains) {
+            if (!existingDomainMap.has(domain._localId)) {
+                newDomains.push(domain);
+            }
+        }
+        if (!newDomains.length) {
+            return;
+        }
+        let d;
+        const VALUES = [];
+        for (const domain of newDomains) {
+            VALUES.push([
+                domain._localId, domain.name
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
+            columns: [
+                d._localId,
+                d.name,
+            ],
+            VALUES
+        }, context);
+    }
+    async insert(domains, context) {
+        let d;
+        const VALUES = [];
+        for (const domain of domains) {
+            VALUES.push([
+                domain.name
+            ]);
+        }
+        const ids = await this.db.insertValuesGenerateIds({
+            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
+            columns: [
+                d.name
+            ],
+            VALUES
+        }, context);
+        for (let i = 0; i < domains.length; i++) {
+            let domain = domains[i];
+            domain._localId = ids[i][0];
+        }
+    }
+}
+
+class DbEntityDao extends BaseDdlEntityDao {
+    async findAllForApplicationVersions(applicationVersionIds, context) {
+        let se;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                se = Q_airport____at_airport_slash_airspace.DdlEntity
+            ],
+            WHERE: se.applicationVersion._localId.IN(applicationVersionIds)
+        }, context);
+    }
+    async insert(applicationEntities, context) {
+        let se;
+        const VALUES = [];
+        for (const applicationEntity of applicationEntities) {
+            VALUES.push([
+                applicationEntity._localId, applicationEntity.index,
+                applicationEntity.isLocal, applicationEntity.isAirEntity,
+                applicationEntity.name, applicationEntity.tableConfig,
+                applicationEntity.applicationVersion._localId,
+                applicationEntity.deprecatedSinceVersion ? applicationEntity.deprecatedSinceVersion._localId : null,
+                applicationEntity.removedInVersion ? applicationEntity.removedInVersion._localId : null,
+                applicationEntity.sinceVersion ? applicationEntity.sinceVersion._localId : null,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: se = Q_airport____at_airport_slash_airspace.DdlEntity,
+            columns: [
+                se._localId,
+                se.index,
+                se.isLocal,
+                se.isAirEntity,
+                se.name,
+                se.tableConfig,
+                se.applicationVersion._localId,
+                se.deprecatedSinceVersion._localId,
+                se.removedInVersion._localId,
+                se.sinceVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+}
+
+class DbPropertyColumnDao extends BaseDdlPropertyColumnDao {
+    async findAllForColumns(columnIds, context) {
+        let rc;
+        return this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                rc = Q_airport____at_airport_slash_airspace.DdlPropertyColumn
+            ],
+            WHERE: rc.column._localId.IN(columnIds)
+        }, context);
+    }
+    async insert(applicationPropertyColumns, context) {
+        let spc;
+        const VALUES = [];
+        for (const applicationPropertyColumn of applicationPropertyColumns) {
+            VALUES.push([
+                applicationPropertyColumn.column._localId, applicationPropertyColumn.property._localId,
+                applicationPropertyColumn.deprecatedSinceVersion ? applicationPropertyColumn.deprecatedSinceVersion._localId : null,
+                applicationPropertyColumn.removedInVersion ? applicationPropertyColumn.removedInVersion._localId : null,
+                applicationPropertyColumn.sinceVersion ? applicationPropertyColumn.sinceVersion._localId : null,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: spc = Q_airport____at_airport_slash_airspace.DdlPropertyColumn,
+            columns: [
+                spc.column._localId,
+                spc.property._localId,
+                spc.deprecatedSinceVersion._localId,
+                spc.removedInVersion._localId,
+                spc.sinceVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+}
+
+class DbPropertyDao extends BaseDdlPropertyDao {
+    async findAllForEntities(entityIds, context) {
+        let p;
+        return this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                p = Q_airport____at_airport_slash_airspace.DdlProperty
+            ],
+            WHERE: p.entity._localId.IN(entityIds)
+        }, context);
+    }
+    async insert(applicationProperties, context) {
+        let sp;
+        const VALUES = [];
+        for (const applicationProperty of applicationProperties) {
+            VALUES.push([
+                applicationProperty._localId, applicationProperty.index,
+                applicationProperty.name, applicationProperty.isId,
+                applicationProperty.entity._localId,
+                applicationProperty.deprecatedSinceVersion ? applicationProperty.deprecatedSinceVersion._localId : null,
+                applicationProperty.removedInVersion ? applicationProperty.removedInVersion._localId : null,
+                applicationProperty.sinceVersion ? applicationProperty.sinceVersion._localId : null,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: sp = Q_airport____at_airport_slash_airspace.DdlProperty,
+            columns: [
+                sp._localId,
+                sp.index,
+                sp.name,
+                sp.isId,
+                sp.entity._localId,
+                sp.deprecatedSinceVersion._localId,
+                sp.removedInVersion._localId,
+                sp.sinceVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+}
+
+class DbRelationColumnDao extends BaseDdlRelationColumnDao {
+    async findAllForColumns(columnIds, context) {
+        let rc;
+        return this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                rc = Q_airport____at_airport_slash_airspace.DdlRelationColumn
+            ],
+            WHERE: OR(rc.oneColumn._localId.IN(columnIds), rc.manyColumn._localId.IN(columnIds))
+        }, context);
+    }
+    async insert(applicationRelationColumns, context) {
+        let src;
+        const VALUES = [];
+        for (const applicationRelationColumn of applicationRelationColumns) {
+            VALUES.push([
+                applicationRelationColumn._localId,
+                applicationRelationColumn.manyColumn ? applicationRelationColumn.manyColumn._localId : null,
+                applicationRelationColumn.oneColumn ? applicationRelationColumn.oneColumn._localId : null,
+                applicationRelationColumn.manyRelation ? applicationRelationColumn.manyRelation._localId : null,
+                applicationRelationColumn.oneRelation ? applicationRelationColumn.oneRelation._localId : null,
+                applicationRelationColumn.parentRelation ? applicationRelationColumn.parentRelation._localId : null,
+                applicationRelationColumn.deprecatedSinceVersion ? applicationRelationColumn.deprecatedSinceVersion._localId : null,
+                applicationRelationColumn.removedInVersion ? applicationRelationColumn.removedInVersion._localId : null,
+                applicationRelationColumn.sinceVersion ? applicationRelationColumn.sinceVersion._localId : null,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: src = Q_airport____at_airport_slash_airspace.DdlRelationColumn,
+            columns: [
+                src._localId,
+                src.manyColumn._localId,
+                src.oneColumn._localId,
+                src.manyRelation._localId,
+                src.oneRelation._localId,
+                src.parentRelation._localId,
+                src.deprecatedSinceVersion._localId,
+                src.removedInVersion._localId,
+                src.sinceVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+}
+
+class DbRelationDao extends BaseDdlRelationDao {
+    async findAllForProperties(propertyIds, context) {
+        let r;
+        return this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                r = Q_airport____at_airport_slash_airspace.DdlRelation
+            ],
+            WHERE: r.property._localId.IN(propertyIds)
+        }, context);
+    }
+    async findAllByLocalIdsWithApplications(localIds, context) {
+        let r, e, av, a;
+        return this.db.find.tree({
+            SELECT: {
+                _localId: Y,
+                entity: {
+                    applicationVersion: {
+                        application: {
+                            domain: {
+                                name: Y
+                            },
+                            name: Y
+                        },
+                        integerVersion: Y
+                    }
+                }
+            },
+            FROM: [
+                r = Q_airport____at_airport_slash_airspace.DdlRelation,
+                e = r.entity.LEFT_JOIN(),
+                av = e.applicationVersion.LEFT_JOIN(),
+                a = av.application.LEFT_JOIN(),
+                a.domain.LEFT_JOIN()
+            ],
+            WHERE: r._localId.IN(localIds)
+        }, context);
+    }
+    async insert(applicationRelations, context) {
+        let sr;
+        const VALUES = [];
+        for (const applicationRelation of applicationRelations) {
+            VALUES.push([
+                applicationRelation._localId, applicationRelation.index,
+                applicationRelation.property._localId,
+                this.datastructureUtils.undefinedToNull(applicationRelation.foreignKey),
+                this.datastructureUtils.undefinedToNull(applicationRelation.manyToOneElems),
+                this.datastructureUtils.undefinedToNull(applicationRelation.oneToManyElems),
+                applicationRelation.relationType, applicationRelation.isId,
+                applicationRelation.entity._localId, applicationRelation.relationEntity._localId,
+                applicationRelation.deprecatedSinceVersion ? applicationRelation.deprecatedSinceVersion._localId : null,
+                applicationRelation.removedInVersion ? applicationRelation.removedInVersion._localId : null,
+                applicationRelation.sinceVersion ? applicationRelation.sinceVersion._localId : null,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: sr = Q_airport____at_airport_slash_airspace.DdlRelation,
+            columns: [
+                sr._localId,
+                sr.index,
+                sr.property._localId,
+                sr.foreignKey,
+                sr.manyToOneElems,
+                sr.oneToManyElems,
+                sr.relationType,
+                sr.isId,
+                sr.entity._localId,
+                sr.relationEntity._localId,
+                sr.deprecatedSinceVersion._localId,
+                sr.removedInVersion._localId,
+                sr.sinceVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+}
+
 const application$4 = {
     name: '@airport/airspace',
     domain: {
@@ -11451,27 +11594,6 @@ airspace.setDependencies(DbApplicationDao, {
     airportDatabase: AIRPORT_DATABASE,
     datastructureUtils: DatastructureUtils
 });
-
-var IsolateMessageType;
-(function (IsolateMessageType) {
-    IsolateMessageType["ADD_REPOSITORY"] = "ADD_REPOSITORY";
-    IsolateMessageType["APP_INITIALIZING"] = "APP_INITIALIZING";
-    IsolateMessageType["APP_INITIALIZED"] = "APP_INITIALIZED";
-    IsolateMessageType["CALL_API"] = "CALL_API";
-    IsolateMessageType["DELETE_WHERE"] = "DELETE_WHERE";
-    IsolateMessageType["FIND"] = "FIND";
-    IsolateMessageType["FIND_ONE"] = "FIND_ONE";
-    IsolateMessageType["GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME"] = "GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME";
-    IsolateMessageType["INSERT_VALUES"] = "INSERT_VALUES";
-    IsolateMessageType["INSERT_VALUES_GET_IDS"] = "INSERT_VALUES_GET_IDS";
-    IsolateMessageType["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
-    IsolateMessageType["SEARCH"] = "SEARCH";
-    IsolateMessageType["SEARCH_ONE"] = "SEARCH_ONE";
-    IsolateMessageType["SEARCH_UNSUBSCRIBE"] = "SEARCH_UNSUBSCRIBE";
-    IsolateMessageType["SAVE"] = "SAVE";
-    IsolateMessageType["SAVE_TO_DESTINATION"] = "SAVE_TO_DESTINATION";
-    IsolateMessageType["UPDATE_VALUES"] = "UPDATE_VALUES";
-})(IsolateMessageType || (IsolateMessageType = {}));
 
 /**
  * Created by Papa on 4/16/2017.
@@ -11517,6 +11639,7 @@ class TerminalStore {
     }
     init() {
         this.getTerminalState = this.selectorManager.createRootSelector(this.state);
+        this.getApiSubscriptionMap = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.apiSubscriptionMap);
         this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
         this.getApplicationInitializer = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationInitializer);
         this.getApplicationActorMapByDomainAndDbApplication_Names = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
@@ -11642,6 +11765,7 @@ TerminalStore.sharedAcrossInjectionScopes = true;
  * in one non-reloadable BehaviorSubject.
  */
 globalThis.internalTerminalState = new BehaviorSubject({
+    apiSubscriptionMap: new Map(),
     applicationActors: [],
     applicationInitializer: {
         applicationWindowMap: new Map(),
@@ -11698,7 +11822,7 @@ globalThis.internalTerminalState = new BehaviorSubject({
         pendingApplicationCounts: new Map(),
         pendingHostCounts: new Map(),
         pendingInterAppApiCallMessageMap: new Map(),
-        subsriptionMap: new Map()
+        subscriptionMap: new Map()
     }
 });
 
@@ -34059,9 +34183,20 @@ class SqlStoreDriver {
             ? application.domain
             : application.domain.name;
         const transaction = context.transaction;
-        if (!transaction || (!context.internal && !this.appTrackerUtils.isInternalDomain(transaction.credentials.domain)
-            && !this.appTrackerUtils.isInternalDomain(transaction.actor.application.domain.name)
-            && this.appTrackerUtils.isInternalDomain(domainName))) {
+        let actorDomainName, credentialsDomain;
+        if (!context.internal) {
+            if (context.isObservableApiCall) {
+                actorDomainName = context.credentials.domain;
+                credentialsDomain = actorDomainName;
+            }
+            else {
+                actorDomainName = transaction.actor.application.domain.name;
+                credentialsDomain = transaction.credentials.domain;
+            }
+        }
+        if (!context.internal && !this.appTrackerUtils.isInternalDomain(credentialsDomain)
+            && !this.appTrackerUtils.isInternalDomain(actorDomainName)
+            && this.appTrackerUtils.isInternalDomain(domainName)) {
             const entityHasExternalAccessPermissions = this.appTrackerUtils.entityHasExternalAccessPermissions(domainName, application.name, applicationIntegerVersion, table.name);
             if (!entityHasExternalAccessPermissions) {
                 const applicationName = transaction
@@ -34361,6 +34496,10 @@ class ActiveQueries {
             // already marked to be re-run
             return true;
         }
+        if (!cachedSqlQuery.sqlQuery) {
+            // Query hasn't been invoked yet, no need to re-run it
+            return false;
+        }
         if (!allModifiedColumnsMap.intersects(cachedSqlQuery.sqlQuery.getAllModifiedColumnsMap())) {
             return false;
         }
@@ -34485,11 +34624,15 @@ class ObservableQueryAdapter {
             .trackedRepoGUIDArrayToSet(portableQuery.trackedRepoGUIDs);
         let trackedRepoLocalIdSet = this
             .trackedRepoLocalIdArrayToSet(portableQuery.trackedRepoLocalIds);
+        let queryContext = {
+            ...context,
+            isObservableApiCall: true
+        };
         let cachedSqlQuery = {
             portableQuery,
             resultsSubject,
             runQuery: () => {
-                queryCallback().then(augmentedResult => {
+                queryCallback(queryContext).then(augmentedResult => {
                     resultsSubject.next(augmentedResult);
                 }).catch(e => {
                     resultsSubject.error(e);
@@ -35203,12 +35346,6 @@ they are internal to the AIRport framework).`);
             ...context
         });
     }
-    async saveToDestination(repositoryDestination, entity, context) {
-        return await this.transactionalServer.saveToDestination(repositoryDestination, entity, this.terminalStore.getInternalConnector().internalCredentials, {
-            internal: true,
-            ...context
-        });
-    }
     async insertValues(portableQuery, context, ensureGeneratedValues // For internal use only
     ) {
         return await this.transactionalServer.insertValues(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
@@ -35399,26 +35536,24 @@ class TransactionalReceiver {
     constructor() {
         this.WITH_ID = {};
     }
-    async processMessage(message) {
+    async processFromClientMessage(message) {
         let result;
         let errorMessage;
         try {
             const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.domain);
+                .isInternalDomain(message.serverDomain);
             if (isInternalDomain) {
                 throw new Error(`Internal domains cannot be used in external calls`);
             }
             let credentials = {
-                application: message.application,
-                domain: message.domain,
-                methodName: message.methodName,
-                objectName: message.objectName,
+                application: message.clientApplication,
+                domain: message.clientDomain,
                 transactionId: message.transactionId
             };
             let context = {};
             context.startedAt = new Date();
             context.credentials = credentials;
-            const { theErrorMessage, theResult } = await this.doProcessMessage(message, credentials, context);
+            const { theErrorMessage, theResult } = await this.doProcessFromClientMessage(message, credentials, context);
             errorMessage = theErrorMessage;
             result = theResult;
         }
@@ -35427,27 +35562,25 @@ class TransactionalReceiver {
             result = null;
             errorMessage = error.message;
         }
-        return {
-            application: message.application,
-            category: 'FromDb',
-            domain: message.domain,
+        const messageCopy = {
+            ...message,
+            direction: Message_Direction.TO_CLIENT,
             errorMessage,
-            id: message.id,
-            type: message.type,
-            result
+            messageLeg: Message_Leg.FROM_HUB,
+            returnedValue: result
         };
+        return messageCopy;
     }
-    async doProcessMessage(message, credentials, context) {
+    async processInternalMessage(message) {
         let theErrorMessage = null;
         let theResult = null;
         switch (message.type) {
-            case IsolateMessageType.APP_INITIALIZING:
-                let initConnectionMessage = message;
-                const application = initConnectionMessage.jsonApplication;
+            case Message_Type.APP_INITIALIZING:
+                const application = message.jsonApplication;
                 const fullDbApplication_Name = this.dbApplicationUtils.
                     getDbApplication_FullName(application);
                 const messageDbApplication_FullName = this.dbApplicationUtils.
-                    getDbApplication_FullNameFromDomainAndName(message.domain, message.application);
+                    getDbApplication_FullNameFromDomainAndName(message.clientDomain, message.clientApplication);
                 if (fullDbApplication_Name !== messageDbApplication_FullName) {
                     theResult = null;
                     break;
@@ -35461,12 +35594,13 @@ class TransactionalReceiver {
                 }
                 this.terminalStore.getReceiver().initializingApps
                     .add(fullDbApplication_Name);
-                // FIXME: initalize ahead of time, at Isolate Loading
+                const context = {};
+                context.startedAt = new Date();
                 await this.databaseManager.initFeatureApplications(context, [application]);
                 await this.internalRecordManager.ensureApplicationRecords(application, {});
                 theResult = application.lastIds;
                 break;
-            case IsolateMessageType.APP_INITIALIZED:
+            case Message_Type.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps;
                 initializedApps.add(message.fullDbApplication_Name);
                 // console.log(`--==<<(( INITIALIZED: ${(message as any as IConnectionInitializedIMI).fullDbApplication_Name}))>>==--`)
@@ -35474,87 +35608,87 @@ class TransactionalReceiver {
                     theErrorMessage,
                     theResult
                 };
-            case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
+            case Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                 theResult = this.terminalStore.getLatestApplicationVersionMapByDbApplication_FullName()
-                    .get(message.fullDbApplication_Name);
+                    .get(message
+                    .fullDbApplication_Name);
                 break;
             }
-            case IsolateMessageType.RETRIEVE_DOMAIN: {
+            case Message_Type.RETRIEVE_DOMAIN: {
                 theResult = this.terminalStore.getDomainMapByName()
-                    .get(message.domain);
+                    .get(message.clientDomain);
                 break;
             }
-            case IsolateMessageType.DELETE_WHERE:
-                const deleteWhereMessage = message;
-                theResult = await this.transactionalServer.deleteWhere(deleteWhereMessage.portableQuery, credentials, context);
+            default: {
+                return {
+                    theErrorMessage: `Unexpected INTERNAL Message_Type: '${message.type}'`,
+                    theResult
+                };
+            }
+        }
+        return {
+            theErrorMessage,
+            theResult,
+        };
+    }
+    async doProcessFromClientMessage(message, credentials, context) {
+        let theErrorMessage = null;
+        let theResult = null;
+        switch (message.type) {
+            case Message_Type.DELETE_WHERE:
+                theResult = await this.transactionalServer.deleteWhere(message.portableQuery, credentials, context);
                 break;
-            case IsolateMessageType.FIND:
-                const findMessage = message;
-                theResult = await this.transactionalServer.find(findMessage.portableQuery, credentials, {
+            case Message_Type.FIND:
+                theResult = await this.transactionalServer.find(message.portableQuery, credentials, {
                     ...context,
-                    repository: findMessage.repository
+                    repository: message.repository
                 });
                 break;
-            case IsolateMessageType.FIND_ONE:
-                const findOneMessage = message;
-                theResult = await this.transactionalServer.findOne(findOneMessage.portableQuery, credentials, {
+            case Message_Type.FIND_ONE:
+                theResult = await this.transactionalServer.findOne(message.portableQuery, credentials, {
                     ...context,
-                    repository: findOneMessage.repository,
+                    repository: message.repository,
                 });
                 break;
-            case IsolateMessageType.INSERT_VALUES:
-                const insertValuesMessage = message;
-                theResult = await this.transactionalServer.insertValues(insertValuesMessage.portableQuery, credentials, context);
+            case Message_Type.INSERT_VALUES:
+                theResult = await this.transactionalServer.insertValues(message.portableQuery, credentials, context);
                 break;
-            case IsolateMessageType.INSERT_VALUES_GET_IDS:
-                const insertValuesGetIdsMessage = message;
-                theResult = await this.transactionalServer.insertValuesGetLocalIds(insertValuesGetIdsMessage.portableQuery, credentials, context);
+            case Message_Type.INSERT_VALUES_GET_IDS:
+                theResult = await this.transactionalServer.insertValuesGetLocalIds(message.portableQuery, credentials, context);
                 break;
-            case IsolateMessageType.SAVE:
-            case IsolateMessageType.SAVE_TO_DESTINATION: {
-                const saveMessage = message;
-                if (!saveMessage.dbEntity) {
+            case Message_Type.SAVE: {
+                if (!message.dbEntity) {
                     theErrorMessage = `DbEntity id was not passed in`;
                     break;
                 }
-                const dbEntityId = saveMessage.dbEntity._localId;
+                const dbEntityId = message.dbEntity._localId;
                 const dbEntity = this.terminalStore.getAllEntities()[dbEntityId];
                 if (!dbEntity) {
                     theErrorMessage = `Could not find DbEntity with Id ${dbEntityId}`;
                     break;
                 }
                 context.dbEntity = dbEntity;
-                if (message.type === IsolateMessageType.SAVE) {
-                    theResult = await this.transactionalServer.save(saveMessage.entity, credentials, context);
-                }
-                else {
-                    const saveToDestinationMessage = message;
-                    theResult = await this.transactionalServer.saveToDestination(saveToDestinationMessage.repositoryDestination, saveToDestinationMessage.entity, credentials, context);
-                }
+                theResult = await this.transactionalServer.save(message.entity, credentials, context);
                 break;
             }
-            case IsolateMessageType.SEARCH:
-                const searchMessage = message;
-                theResult = await this.transactionalServer.search(searchMessage.portableQuery, credentials, {
+            case Message_Type.SEARCH_ONE_SUBSCRIBE:
+                theResult = await this.transactionalServer.searchOne(message.portableQuery, credentials, {
                     ...context,
-                    repository: searchMessage.repository,
+                    repository: message.repository,
                 });
                 break;
-            case IsolateMessageType.SEARCH_ONE:
-                const searchOneMessage = message;
-                theResult = await this.transactionalServer.search(searchOneMessage.portableQuery, credentials, {
+            case Message_Type.SEARCH_SUBSCRIBE:
+                theResult = await this.transactionalServer.search(message.portableQuery, credentials, {
                     ...context,
-                    repository: searchOneMessage.repository,
+                    repository: message.repository,
                 });
                 break;
-            case IsolateMessageType.UPDATE_VALUES:
-                const updateValuesMessage = message;
-                theResult = await this.transactionalServer.updateValues(updateValuesMessage.portableQuery, credentials, context);
+            case Message_Type.UPDATE_VALUES:
+                theResult = await this.transactionalServer.updateValues(message.portableQuery, credentials, context);
                 break;
             default:
-                // Unexpected IsolateMessageInType
                 return {
-                    theErrorMessage,
+                    theErrorMessage: `Unexpected FROM_CLIENT Message_Type: '${message.type}'`,
                     theResult
                 };
         }
@@ -35565,28 +35699,31 @@ class TransactionalReceiver {
     }
     async startApiCall(message, context, nativeHandleCallback) {
         const transactionCredentials = {
-            application: message.application,
-            domain: message.domain,
+            application: message.serverApplication,
+            domain: message.serverDomain,
             methodName: message.methodName,
             objectName: message.objectName,
             transactionId: message.transactionId
         };
-        if (!await this.transactionalServer
-            .startTransaction(transactionCredentials, context)) {
-            return {
-                isStarted: false
-            };
+        context.credentials = transactionCredentials;
+        if (!context.isObservableApiCall) {
+            if (!await this.transactionalServer
+                .startTransaction(transactionCredentials, context)) {
+                return {
+                    isStarted: false
+                };
+            }
+            const initiator = context.transaction.initiator;
+            initiator.application = message.serverApplication;
+            initiator.domain = message.serverDomain;
+            initiator.methodName = message.methodName;
+            initiator.objectName = message.objectName;
         }
         let actor = await this.getApiCallActor(message, context);
-        const initiator = context.transaction.initiator;
-        initiator.application = message.application;
-        initiator.domain = message.domain;
-        initiator.methodName = message.methodName;
-        initiator.objectName = message.objectName;
         let isFramework = true;
         try {
             const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.domain);
+                .isInternalDomain(message.serverDomain);
             if (!isInternalDomain) {
                 isFramework = false;
                 await this.doNativeHandleCallback(message, actor, context, nativeHandleCallback);
@@ -35594,7 +35731,9 @@ class TransactionalReceiver {
         }
         catch (e) {
             context.errorMessage = e.message;
-            this.transactionalServer.rollback(transactionCredentials, context);
+            if (!context.isObservableApiCall) {
+                this.transactionalServer.rollback(transactionCredentials, context);
+            }
             return {
                 isStarted: false
             };
@@ -35605,7 +35744,9 @@ class TransactionalReceiver {
         };
     }
     async doNativeHandleCallback(message, actor, context, nativeHandleCallback) {
-        message.transactionId = context.transaction.id;
+        if (!context.isObservableApiCall) {
+            message.transactionId = context.transaction.id;
+        }
         const terminal = {
             ...this.WITH_ID,
             GUID: actor.terminal.GUID
@@ -35621,22 +35762,23 @@ class TransactionalReceiver {
         await nativeHandleCallback();
     }
     async getApiCallActor(message, context) {
-        let actor;
         const userSession = await this.terminalSessionManager.getUserSession();
+        let actor;
         try {
             const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.domain);
+                .isInternalDomain(message.serverDomain);
             if (isInternalDomain
+                && !context.isObservableApiCall
                 && context.transaction.parentTransaction) {
                 actor = context.transaction.parentTransaction.actor;
                 return actor;
             }
             const terminal = this.terminalStore.getTerminal();
-            actor = await this.actorDao.findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(message.domain, message.application, userSession.userAccount.accountPublicSigningKey, terminal.GUID, context);
+            actor = await this.actorDao.findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(message.serverDomain, message.serverApplication, userSession.userAccount.accountPublicSigningKey, terminal.GUID, context);
             if (actor) {
                 return actor;
             }
-            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(message.domain, message.application, context);
+            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(message.serverDomain, message.serverApplication, context);
             actor = {
                 _localId: null,
                 application,
@@ -35648,11 +35790,17 @@ class TransactionalReceiver {
             return actor;
         }
         finally {
-            context.transaction.actor = actor;
-            userSession.currentTransaction = context.transaction;
+            context.actor = actor;
+            if (!context.isObservableApiCall) {
+                context.transaction.actor = actor;
+                userSession.currentTransaction = context.transaction;
+            }
         }
     }
     async endApiCall(credentials, errorMessage, context) {
+        if (context.isObservableApiCall) {
+            return;
+        }
         try {
             if (errorMessage) {
                 return await this.transactionalServer.rollback(credentials, context);
@@ -35697,27 +35845,15 @@ class TransactionalServer {
         return await this.transactionManager.initialize('airport', context);
     }
     async find(portableQuery, credentials, context) {
-        if (context.transaction || credentials.transactionId) {
-            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
-        }
         return await this.queryManager.find(portableQuery, context);
     }
     async findOne(portableQuery, credentials, context) {
-        if (context.transaction || credentials.transactionId) {
-            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
-        }
         return await this.queryManager.findOne(portableQuery, context);
     }
     search(portableQuery, credentials, context) {
-        if (context.transaction || credentials.transactionId) {
-            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
-        }
         return this.queryManager.search(portableQuery, context);
     }
     searchOne(portableQuery, credentials, context) {
-        if (context.transaction || credentials.transactionId) {
-            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
-        }
         return this.queryManager.searchOne(portableQuery, context);
     }
     async startTransaction(credentials, context) {
@@ -35767,22 +35903,6 @@ class TransactionalServer {
         context.actor = actor;
         let saveResult;
         await this.transactionManager.transactInternal(async (transaction, context) => {
-            saveResult = await this.operationManager.performSave(entity, actor, transaction, context.rootTransaction, context);
-        }, credentials, context);
-        return saveResult;
-    }
-    async saveToDestination(repositoryDestination, entity, credentials, context) {
-        if (!entity) {
-            return null;
-        }
-        if (context.transaction || credentials.transactionId) {
-            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
-        }
-        const actor = await this.getActor(credentials);
-        context.actor = actor;
-        let saveResult;
-        await this.transactionManager.transactInternal(async (transaction, context) => {
-            // TODO: save to serialized repository to the specified destination
             saveResult = await this.operationManager.performSave(entity, actor, transaction, context.rootTransaction, context);
         }, credentials, context);
         return saveResult;
@@ -35955,6 +36075,7 @@ class DatabaseManager {
             this.transactionalServer.tempActor = null;
             this.initialized = true;
         }, null, {
+            ...context,
             doNotRecordHistory: true
         });
     }
@@ -36623,25 +36744,23 @@ class QueryManager {
         return entity;
     }
     search(portableQuery, context) {
-        return this.observableQueryAdapter.wrapInObservable(portableQuery, () => {
-            return this.storeDriver.find(portableQuery, {}, context)
-                .then((result) => {
-                if (!result || !result.length) {
-                    return result;
-                }
-                return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, result, context);
-            });
+        return this.observableQueryAdapter.wrapInObservable(portableQuery, async (context) => {
+            await this.ensureRepositoryPresenceAndCurrentState(context);
+            const result = await this.storeDriver.find(portableQuery, {}, context);
+            if (!result || !result.length) {
+                return result;
+            }
+            return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, result, context);
         }, context);
     }
     searchOne(portableQuery, context) {
-        return this.observableQueryAdapter.wrapInObservable(portableQuery, () => {
-            return this.storeDriver.findOne(portableQuery, {}, context)
-                .then((result) => {
-                if (!result) {
-                    return result;
-                }
-                return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [result], context)[0];
-            });
+        return this.observableQueryAdapter.wrapInObservable(portableQuery, async (context) => {
+            await this.ensureRepositoryPresenceAndCurrentState(context);
+            const result = await this.storeDriver.findOne(portableQuery, {}, context);
+            if (!result) {
+                return result;
+            }
+            return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [result], context)[0];
         }, context);
     }
     async ensureRepositoryPresenceAndCurrentState(context) {
@@ -36793,6 +36912,7 @@ class TransactionManager extends AbstractMutationManager {
                 methodName: null,
                 objectName: null
             };
+            context.internal = true;
         }
         await this.transact(credentials, transactionalCallback, context);
     }
@@ -39412,29 +39532,20 @@ class LocalAPIServer {
             console.error(e);
         }
         const response = {
-            application: request.application,
-            args: request.args,
-            category: 'ToClient',
-            domain: request.domain,
+            ...request,
+            direction: Message_Direction.TO_CLIENT,
             errorMessage,
-            id: request.id,
-            hostDomain: request.hostDomain,
-            hostProtocol: request.hostProtocol,
-            methodName: request.methodName,
-            objectName: request.objectName,
-            protocol: request.protocol,
-            payload: internalResponse.result,
-            transactionId: request.transactionId
+            returnedValue: internalResponse.result
         };
         return response;
     }
     async coreHandleRequest(request, api, context) {
-        const { apiObject, apiOperation } = await this.apiRegistry.findObjectAndOperationForApi(api, request.domain, request.application, request.objectName, request.methodName);
+        const { apiObject, apiOperation } = await this.apiRegistry.findObjectAndOperationForApi(api, request.serverDomain, request.serverApplication, request.objectName, request.methodName);
         if (request.args.length > apiOperation.parameters.length) {
             throw new Error(`
     Too many parameters passed in to @Api() request
-Domain:      ${request.domain}
-Application: ${request.application}
+Domain:      ${request.serverDomain}
+Application: ${request.serverApplication}
 @Api()
 ${request.objectName}.${request.methodName}
 `);
@@ -40194,16 +40305,6 @@ class DatabaseFacade {
         this.updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult, new Set());
         return saveResult;
     }
-    async saveToDestination(repositoryDestination, entity, context) {
-        if (!entity) {
-            return null;
-        }
-        const entityCopy = await this.preSaveOperations(entity, context, this.transactionalConnector.internal);
-        const saveResult = await this.transactionalConnector
-            .saveToDestination(repositoryDestination, entityCopy, context);
-        this.updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult, new Set());
-        return saveResult;
-    }
     async preSaveOperations(entity, context, checkGeneratedIds) {
         if (!entity) {
             return null;
@@ -40262,12 +40363,10 @@ class FunctionWrapper {
 
 class QueryFacade {
     async find(query, queryResultType, context) {
-        await this.ensureContext(context);
         const result = await this.transactionalConnector.find(this.getPortableQuery(query, queryResultType, context), context);
         return result;
     }
     async findOne(query, queryResultType, context) {
-        await this.ensureContext(context);
         const result = await this.transactionalConnector.findOne(this.getPortableQuery(query, queryResultType, context), context);
         return result;
     }
@@ -40283,18 +40382,11 @@ class QueryFacade {
             // values: query.values
         };
     }
-    // FIXME: merge update caches on the client
-    async search(query, queryResultType, context) {
-        await this.ensureContext(context);
-        let observable = await this.transactionalConnector.search(this.getPortableQuery(query, queryResultType, context), context);
-        return observable;
+    search(query, queryResultType, context) {
+        return this.transactionalConnector.search(this.getPortableQuery(query, queryResultType, context), context);
     }
-    async searchOne(query, queryResultType, context) {
-        await this.ensureContext(context);
-        let observable = await this.transactionalConnector.searchOne(this.getPortableQuery(query, queryResultType, context), context);
-        return observable;
-    }
-    async ensureContext(context) {
+    searchOne(query, queryResultType, context) {
+        return this.transactionalConnector.searchOne(this.getPortableQuery(query, queryResultType, context), context);
     }
 }
 
@@ -40302,6 +40394,7 @@ const applicationState = {
     api: null,
     application: null,
     appState: AppState.NOT_INITIALIZED,
+    clientSubscriptionMap: new Map(),
     domain: null,
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
     // and debugging (https://localhost:3000)
@@ -40862,7 +40955,6 @@ class ApplicationQueryGenerator {
         const dbApplicationVersion = qApplication.__dbApplication__
             .versions[qApplication.__dbApplication__.versions.length - 1];
         context.dbEntity = dbApplicationVersion.entityMapByName[entityName];
-        await queryFacade.ensureContext(context);
         const queryResultType = this.getQueryResultType(queryDefinition.type);
         const portableQuery = queryFacade.getPortableQuery(new LimitedEntityQuery(rawQuery), queryResultType, context);
         const parameterFieldMapByAlias = {};

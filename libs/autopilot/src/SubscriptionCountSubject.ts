@@ -1,33 +1,15 @@
-import { ICoreLocalApiRequest, ILocalAPIRequest, IObservableCoreLocalAPIRequest, IObservableLocalAPIRequest, SubscriptionOperation } from "@airport/aviation-communication";
-import { IFullDITokenDescriptor } from "@airport/direction-indicator";
 import { Observer, Subject, Subscription } from "rxjs";
-import { v4 as guidv4 } from 'uuid'
 
 export class SubscriptionCountSubject<T>
     extends Subject<T> {
 
     subscriptionCount = 0
 
-    subscriptionId = guidv4()
-
-    request: IObservableCoreLocalAPIRequest | IObservableLocalAPIRequest
-
     constructor(
-        public args: any[],
-        request: ICoreLocalApiRequest,
-        public fullDIDescriptor: IFullDITokenDescriptor,
-        public observableRequestMap: Map<string, Subject<any>>
+        private onFirstSubscriptionCallback: () => void,
+        private onNoSubscriptionCallback: () => void
     ) {
         super()
-        this.args = args;
-        (request as IObservableLocalAPIRequest).subscriptionId = this.subscriptionId
-
-        this.request = {
-            ...request,
-            subscriptionId: this.subscriptionId
-        }
-
-        delete (this.request as IObservableLocalAPIRequest).transactionId
     }
 
     subscribe(observerOrNext?: Partial<Observer<T>> | ((value: T) => void)): Subscription;
@@ -38,37 +20,20 @@ export class SubscriptionCountSubject<T>
         complete?: (() => void) | null
     ): Subscription {
         if (this.subscriptionCount === 0) {
-            this.observableRequestMap.set(this.subscriptionId, this)
-            globalThis.MESSAGE_BUS.next({
-                args: this.args,
-                fullDIDescriptor: this.fullDIDescriptor,
-                request: {
-                    ...this.request,
-                    id: guidv4(),
-                    subscriptionOperation: SubscriptionOperation.OPERATION_SUBSCRIBE
-                }
-            })
+            this.onFirstSubscriptionCallback()
         }
         this.subscriptionCount++
 
         return super.subscribe(observerOrNext as any, error, complete)
     }
 
-    unsubscribe() {
+    unsubscribe(): void {
         super.unsubscribe()
         this.subscriptionCount--
         if (this.subscriptionCount > 0) {
             return
         }
-        this.observableRequestMap.delete(this.subscriptionId)
-        globalThis.MESSAGE_BUS.next({
-            fullDIDescriptor: this.fullDIDescriptor,
-            request: {
-                ...this.request,
-                id: guidv4(),
-                subscriptionOperation: SubscriptionOperation.OPERATION_UNSUBSCRIBE
-            }
-        })
+        this.onNoSubscriptionCallback()
     }
 
 }

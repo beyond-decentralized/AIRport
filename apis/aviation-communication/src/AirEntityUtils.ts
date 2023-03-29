@@ -1,4 +1,5 @@
 import { Injected } from '@airport/direction-indicator'
+import { Message_Type } from './IMessage';
 
 export type UserAccount_PublicSigningKey = string;
 export type UserAccount_LocalId = number;
@@ -57,6 +58,10 @@ export interface IAirEntityUtils {
         idString: string,
         airEntity: AirEntityId
     ): void
+
+    isObservableMessage(
+        type: Message_Type
+    ): boolean
 
 }
 
@@ -143,6 +148,26 @@ export class AirEntityUtils
         }
 
         airEntity._actorRecordId = airEntityId._actorRecordId
+    }
+
+    isObservableMessage(
+        type: Message_Type
+    ): boolean {
+        switch (type) {
+            case Message_Type.API_SUBSCRIBE:
+            case Message_Type.API_SUBSCRIBTION_DATA:
+            case Message_Type.API_UNSUBSCRIBE:
+            case Message_Type.SEARCH_ONE_SUBSCRIBE:
+            case Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
+            case Message_Type.SEARCH_ONE_UNSUBSCRIBE:
+            case Message_Type.SEARCH_SUBSCRIBE:
+            case Message_Type.SEARCH_SUBSCRIBTION_DATA:
+            case Message_Type.SEARCH_UNSUBSCRIBE:
+                return true
+            default:
+                return false
+        }
+
     }
 
 }

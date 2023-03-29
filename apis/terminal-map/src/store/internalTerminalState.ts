@@ -8,6 +8,7 @@ import {
 } from "rxjs";
 
 globalThis.internalTerminalState = new BehaviorSubject({
+    apiSubscriptionMap: new Map(),
     applicationActors: [],
     applicationInitializer: {
         applicationWindowMap: new Map(),
@@ -64,6 +65,6 @@ globalThis.internalTerminalState = new BehaviorSubject({
         pendingApplicationCounts: new Map(),
         pendingHostCounts: new Map(),
         pendingInterAppApiCallMessageMap: new Map(),
-        subsriptionMap: new Map()
+        subscriptionMap: new Map()
     }
 })

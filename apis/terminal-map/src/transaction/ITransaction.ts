@@ -1,6 +1,6 @@
 import { IActor, ITransactionHistory, Repository_GUID, Repository_LocalId, SyncAllModifiedColumnsMap } from '@airport/ground-control'
 import { IStoreDriver } from '../core/data/IStoreDriver'
-import { ITransactionCredentials } from '../ICredentials'
+import { IApiCredentials } from '../ICredentials'
 
 export interface ITransactionInitiator {
 	application: string
@@ -14,7 +14,7 @@ export interface ITransaction
 
 	actor: IActor
 	childTransaction: ITransaction
-	credentials: ITransactionCredentials
+	credentials: IApiCredentials
 	id: string
 	initiator: ITransactionInitiator
 	isSync: boolean

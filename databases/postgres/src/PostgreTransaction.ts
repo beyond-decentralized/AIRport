@@ -5,7 +5,7 @@ import {
 	ICredentials,
 	IOperationContext,
 	ITransaction,
-	ITransactionCredentials
+	IApiCredentials
 } from '@airport/terminal-map'
 import pg from 'pg'
 import pgConnectionString from 'pg-connection-string'
@@ -20,7 +20,7 @@ export class PostgreTransaction
 	extends SqlStoreDriver
 	implements ITransaction {
 
-	credentials: ITransactionCredentials
+	credentials: IApiCredentials
 	isSync = false
 	pool: pg.Pool
 	transactionHistory: ITransactionHistory

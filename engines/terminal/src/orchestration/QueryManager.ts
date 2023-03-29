@@ -96,15 +96,19 @@ export class QueryManager
 	): Observable<EntityArray> {
 		return this.observableQueryAdapter.wrapInObservable(
 			portableQuery,
-			() => {
-				return this.storeDriver.find(portableQuery, {}, context)
-					.then((result: EntityArray) => {
-						if (!result || !result.length) {
-							return result
-						}
-						return this.populateEntityGuidEntitiesAndUserAccounts<E>(
-							portableQuery, result, context)
-					})
+			async (
+				context: IQueryOperationContext
+			) => {
+				await this.ensureRepositoryPresenceAndCurrentState(context)
+
+				const result: any[] = await this.storeDriver.find(portableQuery, {}, context)
+
+				if (!result || !result.length) {
+					return result
+				}
+				return this.populateEntityGuidEntitiesAndUserAccounts<E>(
+					portableQuery, result, context)
+
 			},
 			context
 		)
@@ -116,15 +120,18 @@ export class QueryManager
 	): Observable<E> {
 		return this.observableQueryAdapter.wrapInObservable<E>(
 			portableQuery,
-			() => {
-				return this.storeDriver.findOne(portableQuery, {}, context)
-					.then((result: E) => {
-						if (!result) {
-							return result
-						}
-						return this.populateEntityGuidEntitiesAndUserAccounts<E>(
-							portableQuery, [result], context)[0];
-					})
+			async (
+				context: IQueryOperationContext
+			) => {
+				await this.ensureRepositoryPresenceAndCurrentState(context)
+
+				const result: any = await this.storeDriver.findOne(portableQuery, {}, context)
+
+				if (!result) {
+					return result
+				}
+				return this.populateEntityGuidEntitiesAndUserAccounts<E>(
+					portableQuery, [result], context)[0];
 			},
 			context
 		)

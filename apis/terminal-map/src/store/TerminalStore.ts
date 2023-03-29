@@ -19,7 +19,7 @@ import {
 	Repository_LocalId,
 	Repository_GUID
 } from '@airport/ground-control';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import {
 	IApplicationInitializerState,
 	InternalConnectorState,
@@ -30,14 +30,14 @@ import {
 	ITransactionManagerState,
 	IWebReceiverState
 } from './TerminalState';
-import { ITransactionCredentials } from '../ICredentials';
+import { IApiCredentials } from '../ICredentials';
 import { IMemoizedSelector, ISelectorManager } from './SelectorManager';
 import { ILastIds } from '@airport/air-traffic-control';
 import { CachedSQLQuery, IFieldMapped, SerializedJSONQuery } from '../terminal-map.index';
 
 export interface IPendingTransaction {
 	context,
-	credentials: ITransactionCredentials
+	credentials: IApiCredentials
 	reject
 	resolve
 }
@@ -53,6 +53,8 @@ export interface ITerminalStore<FM extends IFieldMapped = IFieldMapped> {
 	getAllEntities: IMemoizedSelector<DbEntity[], ITerminalState>
 
 	getAllRelations: IMemoizedSelector<DbRelation[], ITerminalState>
+
+	getApiSubscriptionMap: IMemoizedSelector<Map<string, Subscription>, ITerminalState>
 
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
@@ -131,6 +133,8 @@ export class TerminalStore<FM extends IFieldMapped = IFieldMapped>
 
 	getAllRelations: IMemoizedSelector<DbRelation[], ITerminalState>;
 
+	getApiSubscriptionMap: IMemoizedSelector<Map<string, Subscription>, ITerminalState>
+
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
 	getApplicationInitializer: IMemoizedSelector<IApplicationInitializerState, ITerminalState>
@@ -179,6 +183,8 @@ export class TerminalStore<FM extends IFieldMapped = IFieldMapped>
 
 	init(): void {
 		this.getTerminalState = this.selectorManager.createRootSelector(this.state);
+		this.getApiSubscriptionMap = this.selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.apiSubscriptionMap)
 		this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.applicationActors)
 		this.getApplicationInitializer = this.selectorManager.createSelector(this.getTerminalState,

@@ -13,7 +13,9 @@ export interface IObservableQueryAdapter {
     wrapInObservable<E>(
         portableQuery: PortableQuery,
         queryCallback: {
-            (): Promise<any>
+            (
+                context: IQueryOperationContext
+            ): Promise<any>
         },
         context: IQueryOperationContext
     ): Observable<E>
@@ -132,7 +134,9 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
     wrapInObservable<E>(
         portableQuery: PortableQuery,
         queryCallback: {
-            (): Promise<any>
+            (
+                context: IQueryOperationContext
+            ): Promise<any>
         },
         context: IQueryOperationContext
     ): Observable<E> {
@@ -154,11 +158,16 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
         let trackedRepoLocalIdSet: Set<Repository_LocalId> = this
             .trackedRepoLocalIdArrayToSet(portableQuery.trackedRepoLocalIds)
 
+        let queryContext: IQueryOperationContext = {
+            ...context,
+            isObservableApiCall: true
+        }
+
         let cachedSqlQuery: CachedSQLQuery<SQLQuery> = {
             portableQuery,
             resultsSubject,
             runQuery: () => {
-                queryCallback().then(augmentedResult => {
+                queryCallback(queryContext).then(augmentedResult => {
                     resultsSubject.next(augmentedResult)
                 }).catch(e => {
                     resultsSubject.error(e)

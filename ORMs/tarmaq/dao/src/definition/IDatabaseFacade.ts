@@ -96,18 +96,6 @@ export interface IDatabaseFacade {
 	): Promise<ISaveResult>;
 
 	/**
-	 * Ether creates or updates an entity and saves it it a destination
-	 *  - internal API.  Use the API provided by the IEntityDatabaseFacade.
-	 *
-	 * @return ISaveResult object with metadata on saved objects
-	 */
-	saveToDestination<E>(
-		repositoryDestination: string,
-		entity: E,
-		context: IEntityContext,
-	): Promise<ISaveResult>;
-
-	/**
 	 * Updates an entity with a WHERE clause, using a column based set clause
 	 * - internal API.  Use the API provided by the IEntityDatabaseFacade.
 	 *

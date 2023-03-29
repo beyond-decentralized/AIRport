@@ -1,16 +1,20 @@
 import { IContext } from '@airport/direction-indicator';
 import {
+	IActor,
 	IRootTransaction
 } from '@airport/ground-control';
 import { ITransaction } from '../transaction/ITransaction';
-import { ICredentials, ITransactionCredentials } from '../ICredentials';
+import { ICredentials, IApiCredentials } from '../ICredentials';
 import { Observable } from 'rxjs';
 
 export interface IApiCallContext
 	extends IContext {
+	actor?: IActor
 	errorMessage?: string
+	isObservableApiCall?: boolean
 }
-export interface ITransactionContext {
+export interface ITransactionContext
+	extends IContext {
 	doNotRecordHistory?: boolean
 	transaction?: ITransaction
 	rootTransaction?: IRootTransaction
@@ -40,13 +44,13 @@ export interface ITransactionManager {
 
 	transactInternal(
 		callback: ITransactionalCallback,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IContext
 	): Promise<void>;
 
 	transactObservableInternal<T>(
 		callback: (context: ITransactionContext) => Promise<Observable<T>>,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: ITransactionContext,
 		defaultValue?: T
 	): Observable<T>
@@ -57,17 +61,17 @@ export interface ITransactionManager {
 	): Promise<ITransaction>
 
 	rollback(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IContext,
 	): Promise<void>
 
 	getTransactionFromContextOrCredentials(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: ITransactionContext,
 	): ITransaction
 
 	commit(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IContext,
 	): Promise<void>
 

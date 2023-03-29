@@ -8,7 +8,7 @@ import { IEntityContext } from '@airport/tarmaq-entity'
 import { Observable } from 'rxjs'
 import {
 	ICredentials,
-	ITransactionCredentials
+	IApiCredentials
 } from '../ICredentials'
 import { IQueryOperationContext } from '../processing/IOperationContext'
 
@@ -43,55 +43,48 @@ export interface ITransactionalServer {
 	): Observable<E>
 
 	startTransaction(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IContext
 	): Promise<boolean>
 
 	commit(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IContext
 	): Promise<boolean>
 
 	rollback(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: IContext
 	): Promise<boolean>
 
 	save<E extends IAirEntity, T = E | E[]>(
 		entity: T,
-		credentials: ITransactionCredentials,
-		context: IEntityContext,
-	): Promise<ISaveResult>
-
-	saveToDestination<E extends IAirEntity, T = E | E[]>(
-		repositoryDestination: string,
-		entity: T,
-		credentials: ITransactionCredentials,
+		credentials: ICredentials,
 		context: IEntityContext,
 	): Promise<ISaveResult>
 
 	insertValues(
 		portableQuery: PortableQuery,
-		credentials: ITransactionCredentials,
+		credentials: ICredentials,
 		context: IContext,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number>
 
 	insertValuesGetLocalIds(
 		portableQuery: PortableQuery,
-		credentials: ITransactionCredentials,
+		credentials: ICredentials,
 		context: IContext
 	): Promise<number[][]>
 
 	updateValues(
 		portableQuery: PortableQuery,
-		credentials: ITransactionCredentials,
+		credentials: ICredentials,
 		context: IContext
 	): Promise<number>
 
 	deleteWhere(
 		portableQuery: PortableQuery,
-		credentials: ITransactionCredentials,
+		credentials: ICredentials,
 		context: IContext
 	): Promise<number>
 

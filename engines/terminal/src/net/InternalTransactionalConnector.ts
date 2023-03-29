@@ -1,10 +1,8 @@
+import { IApiCallRequestMessage } from '@airport/aviation-communication';
 import {
     Inject,
     Injected
 } from '@airport/direction-indicator'
-import {
-    ILocalAPIRequest
-} from '@airport/aviation-communication';
 import {
     IContext
 } from '@airport/direction-indicator';
@@ -32,7 +30,7 @@ export class InternalTransactionalConnector
     internal = true
 
     callApi<Response>(
-        _: ILocalAPIRequest
+        _: IApiCallRequestMessage
     ): Promise<Response> {
         throw new Error(`InternalTransactionalConnector.callApi should never be called.
 Interal Application API requests should be made directly (since
@@ -104,18 +102,6 @@ they are internal to the AIRport framework).`)
             internal: true,
             ...context
         });
-    }
-
-    async saveToDestination<E extends IAirEntity, T = E | E[]>(
-        repositoryDestination: string,
-        entity: T,
-        context?: IContext,
-    ): Promise<ISaveResult> {
-        return await this.transactionalServer.saveToDestination(repositoryDestination, entity,
-            this.terminalStore.getInternalConnector().internalCredentials, {
-                internal: true,
-                ...context
-            } as any);
     }
 
     async insertValues(

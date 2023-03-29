@@ -1,11 +1,4 @@
-import {
-    ILocalAPIRequest,
-    ILocalAPIResponse,
-    IObservableLocalAPIRequest,
-    IObservableLocalAPIResponse,
-    ObservableOperation,
-    SubscriptionOperation
-} from "@airport/aviation-communication";
+import { AirMessageUtils, Message_Type, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage } from '@airport/aviation-communication';
 import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
 
 export interface ICrossTabCommunicator {
@@ -14,6 +7,8 @@ export interface ICrossTabCommunicator {
 
 export class CrossTabCommunicator
     implements ICrossTabCommunicator {
+
+    airMessageUtils: IAirMessageUtils = new AirMessageUtils()
 
     webListenerStarted = false;
 
@@ -32,14 +27,15 @@ export class CrossTabCommunicator
 
 
         window.addEventListener("message", event => {
-            const message: ILocalAPIRequest = event.data
-            if (message.__received__) {
+            const message: IApiCallRequestMessage = event.data
+
+            if (this.airMessageUtils.isMessageAlreadyReceived(message)) {
                 return
             }
+
             let messageCopy = {
                 ...message
             }
-            message.__received__ = true
 
             const messageOriginFragments = event.origin.split('//')
 
@@ -50,19 +46,17 @@ export class CrossTabCommunicator
             // if (message.domain !== appDomainAndPort) {
             //     return
             // }
-
-            if (message.category === 'IsConnectionReady') {
-                this.clientHost = messageOriginFragments[1]
-                this.clientProtocol = messageOriginFragments[0]
-            }
-            let observableMessage = message as IObservableLocalAPIRequest;
-            switch (observableMessage.subscriptionOperation) {
-                case SubscriptionOperation.OPERATION_SUBSCRIBE: {
-                    this.activeSubscriptionIdSet.add(observableMessage.subscriptionId)
+            switch (message.type) {
+                case Message_Type.IS_CONNECTION_READY:
+                    this.clientHost = messageOriginFragments[1]
+                    this.clientProtocol = messageOriginFragments[0]
+                    break
+                case Message_Type.API_SUBSCRIBE: {
+                    this.activeSubscriptionIdSet.add(message.subscriptionId)
                     break
                 }
-                case SubscriptionOperation.OPERATION_UNSUBSCRIBE: {
-                    this.pendingMessageIdSet.delete(observableMessage.subscriptionId)
+                case Message_Type.API_UNSUBSCRIBE: {
+                    this.pendingMessageIdSet.delete(message.subscriptionId)
                     break;
                 }
                 default: {
@@ -71,8 +65,8 @@ export class CrossTabCommunicator
                     break;
                 }
             }
-            messageCopy.hostDomain = this.clientHost
-            messageCopy.hostProtocol = this.clientProtocol
+            messageCopy.clientDomain = this.clientHost
+            messageCopy.clientDomainProtocol = this.clientProtocol
 
             // FIXME: serialize message if !this.isNativeBroadcastChannel
             this.communicationChannel.postMessage(messageCopy)
@@ -91,22 +85,23 @@ export class CrossTabCommunicator
                 },
             });
 
-            this.communicationChannel.onmessage = (message: ILocalAPIResponse) => {
-                if (!this.clientHost || message.hostDomain !== this.clientHost
-                    || message.hostProtocol !== this.clientProtocol) {
+            this.communicationChannel.onmessage = (message: IApiCallResponseMessage) => {
+                if (!this.clientHost || message.clientDomain !== this.clientHost
+                    || message.clientDomainProtocol !== this.clientProtocol) {
                     return
                 }
-                if (message.__received__) {
+
+                if (this.airMessageUtils.isMessageAlreadyReceived(message)) {
                     return
                 }
-                let observableMessage = message as IObservableLocalAPIResponse
-                switch (observableMessage.observableOperation) {
-                    case ObservableOperation.OBSERVABLE_UNSUBSCRIBE:
-                    case ObservableOperation.OBSERVABLE_SUBSCRIBE: {
+
+                switch (message.type) {
+                    case Message_Type.API_SUBSCRIBE:
+                    case Message_Type.API_UNSUBSCRIBE: {
                         break;
                     }
-                    case ObservableOperation.OBSERVABLE_DATAFEED: {
-                        if (!this.activeSubscriptionIdSet.has(observableMessage
+                    case Message_Type.API_SUBSCRIBTION_DATA: {
+                        if (!this.activeSubscriptionIdSet.has(message
                             .subscriptionId)) {
                             return
                         }
@@ -121,8 +116,7 @@ export class CrossTabCommunicator
                     }
                 }
 
-                const messageCopy: ILocalAPIResponse = { ...message }
-                message.__received__ = true
+                const messageCopy: IApiCallResponseMessage = { ...message }
 
                 // FIXME: deserialize message if !this.isNativeBroadcastChannel
                 window.parent.postMessage(messageCopy, this.clientProtocol + '//' + this.clientHost)

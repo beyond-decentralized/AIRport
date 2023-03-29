@@ -1,7 +1,7 @@
 import { IApiRegistry, JsonApplicationWithLastIds, ILastIds } from '@airport/air-traffic-control'
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import { IApplicationInitializer } from './core/IApplicationInitializer'
-import { IApplicationLoader } from './isolate/IApplicationLoader'
+import { IApplicationLoader } from './application/IApplicationLoader'
 import { ITerminalStore } from './store/TerminalStore'
 
 @Injected()

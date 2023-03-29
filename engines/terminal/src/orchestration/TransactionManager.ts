@@ -29,7 +29,7 @@ import {
 	ITransaction,
 	ITransactionalCallback,
 	ITransactionContext,
-	ITransactionCredentials,
+	IApiCredentials,
 	ITransactionInitiator,
 	ITransactionManager,
 	ITransactionManagerState
@@ -103,7 +103,7 @@ export class TransactionManager
 
 	async transactInternal(
 		transactionalCallback: ITransactionalCallback,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: ITransactionContext
 	): Promise<void> {
 		if (!credentials) {
@@ -113,13 +113,14 @@ export class TransactionManager
 				methodName: null,
 				objectName: null
 			}
+			context.internal = true
 		}
 		await this.transact(credentials, transactionalCallback, context);
 	}
 
 	transactObservableInternal<T>(
 		callback: (context: ITransactionContext) => Promise<Observable<T>>,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: ITransactionContext,
 		defaultValue: T = null
 	): Observable<T> {
@@ -151,7 +152,7 @@ export class TransactionManager
 	}
 
 	async transact(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		transactionalCallback: ITransactionalCallback,
 		context: ITransactionContext,
 	): Promise<void> {
@@ -174,7 +175,7 @@ export class TransactionManager
 	}
 
 	async startTransaction(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: ITransactionContext,
 	): Promise<ITransaction> {
 		if (context.transaction) {
@@ -250,7 +251,7 @@ Only one concurrent transaction is allowed per application.`)
 	}
 
 	private async internalStartTransaction(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		parentTransaction: ITransaction,
 		context: ITransactionContext,
 	): Promise<ITransaction> {
@@ -267,7 +268,7 @@ Only one concurrent transaction is allowed per application.`)
 	}
 
 	async rollback(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: ITransactionContext,
 	): Promise<void> {
 		const transaction = this.getTransactionFromContextOrCredentials(
@@ -286,7 +287,7 @@ Only one concurrent transaction is allowed per application.`)
 	}
 
 	getTransactionFromContextOrCredentials(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: ITransactionContext,
 	): ITransaction {
 		let transaction = context.transaction
@@ -334,7 +335,7 @@ parent transactions.
 	}
 
 	async commit(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: ITransactionContext,
 	): Promise<void> {
 		const transaction = this.getTransactionFromContextOrCredentials(
@@ -473,7 +474,7 @@ parent transactions.
 
 	private checkForCircularDependencies(
 		transaction: ITransaction,
-		credentials: ITransactionCredentials
+		credentials: IApiCredentials
 	): void {
 		if (this.appTrackerUtils.isInternalDomain(credentials.domain)) {
 			return
@@ -497,7 +498,7 @@ ${callHerarchy}
 	}
 
 	private async setupTransaction(
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		transaction: ITransaction,
 		parentTransaction: ITransaction,
 		transactionManagerStore: ITransactionManagerState,
@@ -525,7 +526,7 @@ ${callHerarchy}
 
 	private isSameSource(
 		transaction: ITransaction,
-		credentials: ITransactionCredentials
+		credentials: IApiCredentials
 	): boolean {
 		const initiator = transaction.initiator
 		return initiator.domain === credentials.domain
@@ -535,7 +536,7 @@ ${callHerarchy}
 	}
 
 	private getApiName(
-		nameContainer: ITransactionInitiator | ITransactionCredentials
+		nameContainer: ITransactionInitiator | IApiCredentials
 	) {
 		return `${nameContainer.domain}.${nameContainer.application}.${nameContainer.objectName}.${nameContainer.methodName}`
 	}
@@ -543,7 +544,7 @@ ${callHerarchy}
 	private async clearTransaction(
 		transaction: ITransaction,
 		parentTransaction: ITransaction,
-		credentials: ITransactionCredentials,
+		credentials: IApiCredentials,
 		context: ITransactionContext
 	): Promise<boolean> {
 		const transactionManagerStore = this.terminalStore

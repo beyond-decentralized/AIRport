@@ -1,17 +1,17 @@
 import {
-    ILocalAPIRequest,
-    ILocalAPIResponse
+    IApiCallRequestMessage,
+    IApiCallResponseMessage,
+    IMessage
 } from "@airport/aviation-communication"
-import { IApiIMI, IIsolateMessage } from "../isolate/IIsolateMessage"
 
 export interface ITransactionalReceiver {
 
     handleClientRequest(
-        message: ILocalAPIRequest
+        message: IApiCallRequestMessage
     ): void
 
     handleAppRequest(
-        message: (IIsolateMessage & IApiIMI) | ILocalAPIResponse,
+        message: IMessage | IApiCallResponseMessage,
         messageOrigin: string,
         source: any
     ): void

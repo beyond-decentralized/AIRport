@@ -1,7 +1,6 @@
 # Sheet Query
 
-Sheet Queries return a result table, like a traditional SQL query
-result.
+Sheet Queries return a result table, like a traditional SQL query result.
 
 ## Usage
 

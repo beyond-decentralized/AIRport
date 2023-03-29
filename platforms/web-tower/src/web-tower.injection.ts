@@ -24,6 +24,7 @@ API_CLIENT.setDependencies({
 })
 TRANSACTIONAL_CONNECTOR.setClass(IframeTransactionalConnector)
 TRANSACTIONAL_CONNECTOR.setDependencies({
+    airMessageUtils: globalThis.AIR_MESSAGE_UTILS,
     applicationLoader: APPLICATION_LOADER,
     applicationStore: ApplicationStore,
     dbApplicationUtils: DbApplicationUtils,

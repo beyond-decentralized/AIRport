@@ -85,6 +85,11 @@ export class ActiveQueries<SQLQuery extends IFieldMapped>
 			return true
 		}
 
+		if (!cachedSqlQuery.sqlQuery) {
+			// Query hasn't been invoked yet, no need to re-run it
+			return false
+		}
+
 		if (!allModifiedColumnsMap.intersects(cachedSqlQuery.sqlQuery.getAllModifiedColumnsMap())) {
 			return false
 		}

@@ -196,22 +196,6 @@ export class EntityDatabaseFacade<Entity,
     });
   }
 
-  /**
-   * @return ISaveResult object with metadata on saved objects
-   */
-  async saveToDestination(
-    repositoryDestination: string,
-    entity: EntityCreate,
-    context?: IEntityContext,
-  ): Promise<ISaveResult> {
-    return await this.withDbEntity(context, async (
-      databaseFacade: IDatabaseFacade,
-      context: IEntityContext,
-    ) => {
-      return await databaseFacade.saveToDestination(repositoryDestination, entity, context);
-    });
-  }
-
   protected async withDbEntity<R>(
     context: IEntityContext,
     callback: {

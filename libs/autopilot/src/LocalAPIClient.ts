@@ -1,10 +1,4 @@
-import {
-    ILocalAPIRequest,
-    ILocalAPIResponse,
-    IObservableLocalAPIRequest,
-    IObservableLocalAPIResponse,
-    SubscriptionOperation
-} from "@airport/aviation-communication";
+import { Message_Direction, Message_Leg, Message_Type, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage } from "@airport/aviation-communication";
 import { IFullDITokenDescriptor, Inject, Injected } from "@airport/direction-indicator";
 import {
     IOperationSerializer,
@@ -12,7 +6,7 @@ import {
 } from "@airport/pressurization";
 import { Observable, Subscription } from "rxjs";
 import { v4 as guidv4 } from "uuid";
-import { SubscriptionCountSubject } from "./SubscriptionCountSubject";
+import { ApiClientSubject } from "./ApiClientSubject";
 
 export interface ILocalAPIClient {
 
@@ -34,7 +28,7 @@ let _inWebMode = true
 let _webServer = 'https://localhost:3000'
 
 export interface IRequestRecord {
-    request: ILocalAPIRequest
+    request: IApiCallRequestMessage
     reject
     resolve
 }
@@ -44,7 +38,11 @@ export class LocalAPIClient
     implements ILocalAPIClient {
 
     @Inject()
+    airMessageUtils: IAirMessageUtils
+
+    @Inject()
     operationSerializer: IOperationSerializer
+
     @Inject()
     queryResultsDeserializer: IQueryResultsDeserializer
 
@@ -56,7 +54,7 @@ export class LocalAPIClient
 
     messageBusSubscription: Subscription
 
-    observableRequestMap: Map<string, SubscriptionCountSubject<any>> = new Map()
+    observableRequestMap: Map<string, ApiClientSubject<any>> = new Map()
 
     pendingWebMessageMap: Map<string, IRequestRecord> = new Map();
 
@@ -71,20 +69,30 @@ export class LocalAPIClient
         this.messageBusSubscription = globalThis.MESSAGE_BUS.subscribe(async (
             message: {
                 fullDIDescriptor: IFullDITokenDescriptor,
-                request: IObservableLocalAPIRequest
+                request: IApiCallRequestMessage
             }) => {
-            if (message.request.category !== 'FromClient') {
+            if (message.request.direction !== Message_Direction.FROM_CLIENT) {
                 return
             }
 
             await this.waitForConnectionToBeReady(message.fullDIDescriptor)
 
-            if (_inWebMode) {
-                this.clientIframe.contentWindow.postMessage(message.request, _webServer)
-            } else {
-                throw new Error('Not Implemented')
-            }
+            this.sendMessage(message.request)
         })
+    }
+
+    private sendMessage(
+        message: IMessage
+    ): boolean {
+        this.airMessageUtils.prepMessageToSend(message)
+
+        if (_inWebMode) {
+            this.clientIframe.contentWindow.postMessage(message, _webServer)
+        } else {
+            throw new Error('Not Implemented')
+        }
+
+        return true
     }
 
     private initializeForWeb() {
@@ -101,55 +109,54 @@ export class LocalAPIClient
         }
 
         window.addEventListener("message", event => {
-            const message: ILocalAPIResponse = event.data
-            if (!(message instanceof Object) || message.__received__) {
+            const message: IApiCallResponseMessage = event.data
+
+            if (!this.airMessageUtils.validateIncomingMessage(message)) {
                 return
             }
-            message.__received__ = true
+
+            if (message.direction !== Message_Direction.TO_CLIENT) {
+                return
+            }
 
             if (this.messageCallback) {
-                const receivedDate = new Date()
-                message.__receivedTime__ = receivedDate.getTime()
                 this.messageCallback(message)
             }
 
-            switch (message.category) {
-                case 'ConnectionIsReady':
-                    let checksForDomain = this.lastConnectionReadyCheckMap.get(message.domain)
+            switch (message.type) {
+                case Message_Type.CONNECTION_IS_READY:
+                    let checksForDomain = this.lastConnectionReadyCheckMap.get(message.serverDomain)
                     if (!checksForDomain) {
                         checksForDomain = new Map()
-                        this.lastConnectionReadyCheckMap.set(message.domain, checksForDomain)
+                        this.lastConnectionReadyCheckMap.set(message.serverDomain, checksForDomain)
                     }
-                    checksForDomain.set(message.application, true)
+                    checksForDomain.set(message.serverApplication, true)
                     break
-                case 'ToClientRedirected':
-                    // All requests need to have a application signature
-                    // to know what application is being communicated to/from
-                    if (!this.hasValidApplicationInfo(message)) {
-                        return
-                    }
-                    const subscriptionId = (message as IObservableLocalAPIResponse).subscriptionId
-                    if (subscriptionId) {
-                        const requestSubject = this.observableRequestMap.get(subscriptionId)
-                        if (!requestSubject) {
-                            console.error(`Could not find Request Subject for subscriptionId: ${subscriptionId}`)
-                            break
-                        }
-                        try {
-                            const response = this.processResponse(requestSubject.args, message)
-                            requestSubject.next(response)
-                        } catch (e) {
-                            console.error(e)
-                            requestSubject.error(e)
-                        }
+                case Message_Type.API_SUBSCRIBTION_DATA:
+                    const subscriptionId = message.subscriptionId
+                    if (!subscriptionId) {
+                        console.error(`Could not find subscriptionId: API_SUBSCRIBTION_DATA message`)
                         break
                     }
+                    const requestSubject = this.observableRequestMap.get(subscriptionId)
+                    if (!requestSubject) {
+                        console.error(`Could not find Request Subject for subscriptionId: ${subscriptionId}`)
+                        break
+                    }
+                    try {
+                        const response = this.processResponse(requestSubject.args, message)
+                        requestSubject.next(response)
+                    } catch (e) {
+                        console.error(e)
+                        requestSubject.error(e)
+                    }
+                    break
+
+                default:
                     let requestWebMessage = this.pendingWebMessageMap.get(message.id)
                     if (requestWebMessage) {
                         requestWebMessage.resolve(message)
                     }
-                    break
-                default:
                     break
             }
         }, false)
@@ -159,13 +166,6 @@ export class LocalAPIClient
         message: any
     ) => void) {
         this.messageCallback = callback
-    }
-
-    private hasValidApplicationInfo(
-        message: ILocalAPIResponse
-    ) {
-        return typeof message.domain === 'string' && message.domain.length >= 3
-            && typeof message.application === 'string' && message.application.length >= 3
     }
 
     invokeApiMethod<ReturnType = any>(
@@ -181,29 +181,31 @@ export class LocalAPIClient
             serializedParams = this.operationSerializer.serializeAsArray(args)
         }
 
-        const request: ILocalAPIRequest = {
+        const request: IApiCallRequestMessage = {
             actor: null,
-            application: fullDiDescriptor.application.name,
             args: serializedParams,
-            category: 'FromClient',
-            domain: fullDiDescriptor.application.domain.name,
-            hostDomain: null,
-            hostProtocol: null,
+            direction: Message_Direction.FROM_CLIENT,
             id: guidv4(),
+            messageLeg: Message_Leg.TO_HUB,
             methodName,
+            clientApplication: 'UserInterface',
+            clientDomain: window.location.hostname,
+            clientDomainProtocol: window.location.protocol,
+            serverApplication: fullDiDescriptor.application.name,
+            serverDomain: fullDiDescriptor.application.domain.name,
+            serverDomainProtocol: 'https',
             objectName: fullDiDescriptor.descriptor.interface,
-            protocol: window.location.protocol,
+            type: Message_Type.API_CALL
         }
 
         if (isObservable) {
-            (request as IObservableLocalAPIRequest).subscriptionOperation
-                = SubscriptionOperation.OPERATION_SUBSCRIBE
-            const subject = new SubscriptionCountSubject<ReturnType>(args, request,
+            request.type = Message_Type.API_SUBSCRIBE
+
+            const subject = new ApiClientSubject<ReturnType>(args, request,
                 fullDiDescriptor, this.observableRequestMap)
 
             if (_inWebMode) {
                 // The postMessage will be peformed during a subscription to the subject
-                // this.clientIframe.contentWindow.postMessage(request, _webServer)
             } else {
                 throw new Error(`Not implemented`)
             }
@@ -217,12 +219,12 @@ export class LocalAPIClient
 
     async doInvokeApiMethod<T>(
         fullDIDescriptor: IFullDITokenDescriptor,
-        request: ILocalAPIRequest,
+        request: IApiCallRequestMessage,
         args: any[]
     ): Promise<any> {
         await this.waitForConnectionToBeReady(fullDIDescriptor)
 
-        let response: ILocalAPIResponse
+        let response: IApiCallResponseMessage
 
         if (_inWebMode) {
             response = await this.sendWebRequest(request)
@@ -244,7 +246,7 @@ export class LocalAPIClient
 
     private processResponse(
         args: any[],
-        response: ILocalAPIResponse
+        response: IApiCallResponseMessage
     ): any {
         if (response.errorMessage) {
             throw new Error(response.errorMessage)
@@ -252,11 +254,11 @@ export class LocalAPIClient
 
         let payload
         if (_inWebMode) {
-            payload = response.payload
+            payload = response.returnedValue
         } else {
-            if (response.payload) {
+            if (response.returnedValue) {
                 payload = this.queryResultsDeserializer
-                    .deserialize(response.payload)
+                    .deserialize(response.returnedValue)
             }
         }
 
@@ -285,10 +287,10 @@ export class LocalAPIClient
     private async isConnectionReady<T>(
         fullDIDescriptor: IFullDITokenDescriptor
     ): Promise<boolean> {
-        const domain = fullDIDescriptor.application.domain.name
-        const application = fullDIDescriptor.application.name
-        if (this.lastConnectionReadyCheckMap.get(domain)
-            && this.lastConnectionReadyCheckMap.get(domain).get(application)) {
+        const serverDomain = fullDIDescriptor.application.domain.name
+        const serverApplication = fullDIDescriptor.application.name
+        if (this.lastConnectionReadyCheckMap.get(serverDomain)
+            && this.lastConnectionReadyCheckMap.get(serverDomain).get(serverApplication)) {
             // FIXME: checking every time breaks in inconsistent ways,
             // The whole 'IsConnectionReady' check needs to be done internally
             // in the framework, without sending messages around (that is
@@ -296,36 +298,25 @@ export class LocalAPIClient
             // this.lastConnectionReadyCheckMap.get(domain).delete(application)
             return true
         }
-        let request: ILocalAPIRequest = {
-            actor: null,
-            application,
-            args: [],
-            category: 'IsConnectionReady',
-            domain,
-            hostDomain: null,
-            hostProtocol: null,
-            id: null,
-            methodName: null,
-            objectName: null,
-            protocol: window.location.protocol,
+        let request: IMessage = {
+            clientApplication: 'UserInterface',
+            clientDomain: window.location.hostname,
+            clientDomainProtocol: window.location.protocol,
+            direction: Message_Direction.FROM_CLIENT,
+            id: guidv4(),
+            messageLeg: Message_Leg.TO_HUB,
+            serverApplication,
+            serverDomain,
+            serverDomainProtocol: 'https',
+            type: Message_Type.IS_CONNECTION_READY
         }
 
-        if (_inWebMode) {
-            this.clientIframe.contentWindow.postMessage(request, _webServer)
-            return false
-        } else {
-            const response = await this.sendLocalRequest(request)
-
-            if (response.errorMessage) {
-                return false
-            }
-            return true
-        }
+        return this.sendMessage(request)
     }
 
     private async sendLocalRequest(
-        request: ILocalAPIRequest
-    ): Promise<ILocalAPIResponse> {
+        request: IMessage
+    ): Promise<IApiCallResponseMessage> {
         const httpResponse = await fetch('http://localhost:31817', {
             method: 'PUT',
             mode: 'cors', // no-cors, *cors, same-origin
@@ -344,19 +335,20 @@ export class LocalAPIClient
     }
 
     private async sendWebRequest(
-        request: ILocalAPIRequest
-    ): Promise<ILocalAPIResponse> {
+        request: IApiCallRequestMessage
+    ): Promise<IApiCallResponseMessage> {
         if (!this.webListenerStarted) {
             this.startWebListener()
         }
-        const returnValue = new Promise<ILocalAPIResponse>((resolve, reject) => {
+        const returnValue = new Promise<IApiCallResponseMessage>((resolve, reject) => {
             this.pendingWebMessageMap.set(request.id, {
                 request,
                 resolve,
                 reject
             })
         })
-        this.clientIframe.contentWindow.postMessage(request, _webServer)
+
+        this.sendMessage(request)
 
         return returnValue
     }
@@ -368,18 +360,19 @@ export class LocalAPIClient
     }
 
     private handleWebResponse(
-        response: ILocalAPIResponse
+        response: IApiCallResponseMessage
     ) {
-        if (response.domain !== window.location.host) {
+        if (response.clientDomain !== window.location.host) {
             return
         }
-        if (response.category !== 'ToClientRedirected') {
+        if (response.direction !== Message_Direction.TO_CLIENT) {
             return
         }
         const pendingRequest = this.pendingWebMessageMap.get(response.id)
         if (!pendingRequest) {
             return
         }
+
         if (response.errorMessage) {
             pendingRequest.reject(response.errorMessage)
         } else {

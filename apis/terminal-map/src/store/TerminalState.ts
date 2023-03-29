@@ -4,7 +4,7 @@ import {
 } from './TerminalStore'
 import { Subject, Subscription } from 'rxjs'
 import { ITransaction } from '../transaction/ITransaction'
-import { ITransactionCredentials } from '../ICredentials'
+import { IApiCredentials } from '../ICredentials'
 import { DbApplication_FullName, DbApplication, DbDomain, DbSequence, IActor, IAppTrackerUtils, ITerminal, Repository_LocalId, Repository_GUID } from '@airport/ground-control'
 import { IMessageInRecord } from './IApplicationState'
 import { ILastIds } from '@airport/air-traffic-control'
@@ -25,12 +25,12 @@ export interface IWebReceiverState {
 	pendingApplicationCounts: Map<string, number>
 	pendingHostCounts: Map<string, number>
 	pendingInterAppApiCallMessageMap: Map<string, IMessageInRecord>
-	subsriptionMap: Map<string, Map<string, Subscription>>
+	subscriptionMap: Map<string, Map<string, Subscription>>
 }
 
 export interface InternalConnectorState {
 	dbName: string
-	internalCredentials: ITransactionCredentials
+	internalCredentials: IApiCredentials
 	serverUrl: string
 }
 export interface ITransactionManagerState {
@@ -51,6 +51,7 @@ export interface IApplicationInitializerState {
 }
 
 export interface ITerminalState<FM extends IFieldMapped = IFieldMapped> {
+	apiSubscriptionMap: Map<string, Subscription>
 	applicationActors: IActor[]
 	applicationInitializer: IApplicationInitializerState
 	applicationMapByFullName: Map<DbApplication_FullName, DbApplication>

@@ -2,7 +2,7 @@
   "dependencies": {
     "@airport/aviation-communication": "0.0.1",
     "@airport/pressurization": "0.0.1",
-    "broadcast-channel": "^4.9.0"
+    "broadcast-channel": "^4.14.0"
   },
   "devDependencies": {
     "@airport/taxiway": "0.0.1",

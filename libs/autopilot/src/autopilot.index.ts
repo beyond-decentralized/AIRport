@@ -1,5 +1,5 @@
 
-import { AirEntityUtils } from '@airport/aviation-communication'
+import { AirEntityUtils, AirMessageUtils } from '@airport/aviation-communication'
 import { loadUiPressurisation } from '@airport/pressurization'
 import { AutopilotApiLoader } from './api/AutopilotApiLoader'
 import { LocalAPIClient } from './LocalAPIClient'
@@ -7,6 +7,7 @@ import { UiStateManager } from './UiStateManager'
 
 export * from './api/AutopilotApiLoader'
 export * from './LocalAPIClient'
+export * from './ApiClientSubject'
 export * from './SubscriptionCountSubject'
 export * from './UiStateManager'
 
@@ -35,6 +36,7 @@ export function loadUiAutopilot() {
     }
 
     const airEntityUtils = new AirEntityUtils()
+    const airMessageUtils = new AirMessageUtils()
     const autopilotApiLoader = new AutopilotApiLoader()
     const apiClient = new LocalAPIClient()
     autopilotApiLoader.apiClient = apiClient
@@ -43,6 +45,7 @@ export function loadUiAutopilot() {
         operationSerializer,
         queryResultsDeserializer
     } = loadUiPressurisation();
+    apiClient.airMessageUtils = airMessageUtils
     apiClient.operationSerializer = operationSerializer
     apiClient.queryResultsDeserializer = queryResultsDeserializer
 

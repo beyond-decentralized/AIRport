@@ -1,11 +1,22 @@
-import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse, IObservableLocalAPIRequest, IObservableLocalAPIResponse, ObservableOperation, SubscriptionOperation } from '@airport/aviation-communication';
+import { SubscriptionCountSubject } from '@airport/autopilot';
+import {
+	Message_Direction,
+	Message_Leg,
+	Message_Type,
+	IAirMessageUtils,
+	IApiCallRequestMessage,
+	IApiCallResponseMessage,
+	IMessage,
+	Message_Application,
+	Message_Domain,
+	Message_DomainProtocol
+} from '@airport/aviation-communication';
 import {
 	IContext,
 	IInjected,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-
 import {
 	DbApplicationVersion,
 	DbDomain,
@@ -22,14 +33,22 @@ import {
 import {
 	IQueryContext
 } from '@airport/tarmaq-query';
-import { AppState, IAddRepositoryIMI, IApplicationLoader, ICallApiIMI, IGetLatestApplicationVersionByDbApplication_NameIMI, IInitConnectionIMI, IInitConnectionIMO, IIsolateMessage, IIsolateMessageOut, ILocalAPIServer, IObservableMessageInRecord, IPortableQueryIMI, IReadQueryIMI, IRetrieveDomainIMI, ISaveIMI, IsolateMessageType, ITerminalStore } from '@airport/terminal-map';
-import { IApplicationStore } from '@airport/tower';
 import {
-	Observable,
-	Observer,
-	Subscription
-} from 'rxjs';
-import { v4 as guidv4 } from "uuid";
+	AppState,
+	IApplicationLoader,
+	IGetLatestApplicationVersionByDbApplication_NameMessage,
+	IInitializeConnectionMessage,
+	ILocalAPIServer,
+	IObservableMessageInRecord,
+	IPortableQueryMessage,
+	IReadQueryMessage,
+	IRetrieveDomainMessage,
+	ISaveMessage,
+	ITerminalStore
+} from '@airport/terminal-map';
+import { IApplicationStore } from '@airport/tower';
+import { Observable } from 'rxjs';
+import { v4 as guidv4 } from 'uuid';
 
 export interface IIframeTransactionalConnector
 	extends ITransactionalConnector {
@@ -41,7 +60,7 @@ export interface IIframeTransactionalConnector
 	initializeConnection(): Promise<void>
 
 	processMessage(
-		message: IIsolateMessageOut<any> | ILocalAPIRequest,
+		message: IApiCallRequestMessage,
 		origin: string
 	): Promise<void>
 
@@ -54,6 +73,9 @@ export interface IIframeTransactionalConnector
 @Injected()
 export class IframeTransactionalConnector
 	implements IIframeTransactionalConnector {
+
+	@Inject()
+	airMessageUtils: IAirMessageUtils
 
 	@Inject()
 	applicationLoader: IApplicationLoader
@@ -72,178 +94,96 @@ export class IframeTransactionalConnector
 
 	internal = false
 
-	clientSubscriptionMap: Map<string, Subscription> = new Map()
-
 	async processMessage(
-		message: IIsolateMessageOut<any> | ILocalAPIRequest,
+		message: IApiCallRequestMessage
+			| IApiCallResponseMessage
+			| IInitializeConnectionMessage
+			| IGetLatestApplicationVersionByDbApplication_NameMessage
+			| IRetrieveDomainMessage,
 		origin: string
 	): Promise<void> {
-		if (message.__received__) {
+		if (!this.airMessageUtils.validateIncomingMessage(message)
+			|| !this.airMessageUtils.isFromValidFrameworkDomain(origin)) {
 			return
 		}
-		message.__received__ = true
-		// Filter out any browser plugin messages
-		if (!message.domain || !message.application) {
-			return
-		}
+
 		if (this.applicationStore.state.messageCallback) {
-			const receivedDate = new Date()
-			message.__receivedTime__ = receivedDate.getTime()
 			this.applicationStore.state.messageCallback(message)
 		}
-		if (message.domain.indexOf('.') > -1) {
-			// Invalid Domain name - cannot have periods that would point to invalid subdomains
-			return
-		}
-		if (message.application.indexOf('.') > -1) {
-			// Invalid Application name - cannot have periods that would point to invalid subdomains
-			return
-		}
-		const mainDomain = origin.split('//')[1]
-		const mainDomainFragments = mainDomain.split('.')
-		let startsWithWww = false
-		if (mainDomainFragments[0] === 'www') {
-			mainDomainFragments.splice(0, 1)
-			startsWithWww = true
-		}
-		const domainSuffix = '.' + mainDomainFragments.join('.')
-		const ownDomain = window.location.hostname
-		if (ownDomain !== 'localhost') {
-			// Only accept requests from https protocol
-			if (!origin.startsWith("https")
-				// And only if message has Domain and Application names 
-				|| !message.domain
-				|| !message.application
-				// And if own domain is a direct sub-domain of the message's domain
-				|| ownDomain !== this.dbApplicationUtils.
-					getDbApplication_FullName({
-						domain: message.domain,
-						name: message.application,
-					}) + domainSuffix) {
-				return
+
+		switch (message.direction) {
+			case Message_Direction.FROM_CLIENT: {
+				await this.handleApiRequest(message as IApiCallRequestMessage, origin)
+				break
 			}
-			const ownDomainFragments = ownDomain.split('.')
-			// Only accept requests from 'www.${mainDomain_Name}' or 'www.${mainDomain_Name}'
-			// All 'App' messages must first come from the main domain, which ensures
-			// that the application is installed
-			const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1)
-			if (ownDomainFragments.length !== expectedNumFragments) {
-				return
+			case Message_Direction.INTERNAL: {
+				this.handleInternalMessage(message as
+					IInitializeConnectionMessage
+					| IGetLatestApplicationVersionByDbApplication_NameMessage
+					| IRetrieveDomainMessage)
+				break
 			}
-		}
-		switch (message.category) {
-			case 'FromClientRedirected':
-				await this.handleLocalApiRequest(message as ILocalAPIRequest, origin)
-				return
-			case 'FromDb':
-				if (message.type === IsolateMessageType.APP_INITIALIZING) {
-					if (this.applicationStore.state.appState === AppState.NOT_INITIALIZED
-						&& message.result) {
-						// console.log(`--==<<(( path: ${window.location.pathname} appState: ${this.applicationStore.state.appState}, domain: ${message.domain}, app: ${message.application} ))>>==--`)
-						// console.log(message.result)
-						let initConnectionIMO: IInitConnectionIMO = message
-						const lastTerminalState = this.terminalStore.getTerminalState()
-						this.terminalStore.state.next({
-							...lastTerminalState,
-							lastIds: initConnectionIMO.result
-						})
-						this.applicationStore.state.appState = AppState.START_INITIALIZING
-					}
-					return
-				}
-				this.handleDbToIsolateMessage(message as IIsolateMessageOut<any>, mainDomain)
-				return
-			default:
-				return
+			case Message_Direction.TO_CLIENT: {
+				this.handleToClientMessage(message as IApiCallResponseMessage)
+				break
+			}
 		}
 	}
 
 	async callApi(
-		apiInput: ICoreLocalApiRequest
-	): Promise<ILocalAPIResponse> {
-		return await this.sendMessage<ICallApiIMI, ILocalAPIResponse>({
+		apiInput: IApiCallRequestMessage
+	): Promise<IApiCallResponseMessage> {
+		return await this.sendMessage<IApiCallRequestMessage, IApiCallResponseMessage>({
+			...apiInput,
 			...this.getCoreFields(),
 			actor: null,
-			application: apiInput.application,
-			args: apiInput.args,
-			domain: apiInput.domain,
-			methodName: apiInput.methodName,
-			hostDomain: location.host,
-			hostProtocol: location.protocol,
-			objectName: apiInput.objectName,
-			protocol: location.protocol,
-			type: IsolateMessageType.CALL_API
-		})
-	}
-
-	async addRepository(
-		// url: string,
-		// platform: PlatformType,
-		// platformConfig: string,
-		// distributionStrategy: DistributionStrategy,
-		context: IContext
-	): Promise<number> {
-		return await this.sendMessage<IAddRepositoryIMI, number>({
-			...this.getCoreFields(),
-			// distributionStrategy,
-			// platform,
-			// platformConfig,
-			type: IsolateMessageType.ADD_REPOSITORY,
-			// url
+			type: Message_Type.API_CALL
 		})
 	}
 
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		context: IQueryContext,
-		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		return await this.sendMessage<IReadQueryIMI, EntityArray>({
+		return await this.sendMessage<IReadQueryMessage, EntityArray>({
 			...this.getCoreFields(),
-			cachedSqlQueryId,
 			portableQuery,
 			repository: context.repository,
-			type: IsolateMessageType.FIND
+			type: Message_Type.FIND
 		})
 	}
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
 		context: IQueryContext,
-		cachedSqlQueryId?: number,
 	): Promise<E> {
-		return await this.sendMessage<IReadQueryIMI, E>({
+		return await this.sendMessage<IReadQueryMessage, E>({
 			...this.getCoreFields(),
-			cachedSqlQueryId,
 			portableQuery,
 			repository: context.repository,
-			type: IsolateMessageType.FIND_ONE
+			type: Message_Type.FIND_ONE
 		})
 	}
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		context: IQueryContext,
-		cachedSqlQueryId?: number,
 	): Observable<EntityArray> {
-		return this.sendObservableMessage<E, EntityArray>(
+		return this.sendObservableMessage<EntityArray>(
 			portableQuery,
 			context,
-			IsolateMessageType.SEARCH,
-			cachedSqlQueryId
+			Message_Type.SEARCH_SUBSCRIBE
 		);
 	}
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
-		context: IQueryContext,
-		cachedSqlQueryId?: number,
+		context: IQueryContext
 	): Observable<E> {
-		return this.sendObservableMessage<E, E>(
+		return this.sendObservableMessage<E>(
 			portableQuery,
 			context,
-			IsolateMessageType.SEARCH_ONE,
-			cachedSqlQueryId
+			Message_Type.SEARCH_ONE_SUBSCRIBE
 		);
 	}
 
@@ -252,32 +192,14 @@ export class IframeTransactionalConnector
 		context: IEntityContext,
 	): Promise<ISaveResult> {
 		const dbEntity = context.dbEntity;
-		return await this.sendMessage<ISaveIMI<any, any>, ISaveResult>({
+		return await this.sendMessage<ISaveMessage<any>, ISaveResult>({
 			...this.getCoreFields(),
 			dbEntity: {
 				_localId: dbEntity._localId,
 				_applicationVersionLocalId: dbEntity.applicationVersion._localId
 			},
 			entity,
-			type: IsolateMessageType.SAVE
-		})
-	}
-
-	async saveToDestination<E extends IAirEntity, T = E | E[]>(
-		repositoryDestination: string,
-		entity: T,
-		context?: IContext,
-	): Promise<ISaveResult> {
-		const dbEntity = context.dbEntity;
-		return await this.sendMessage<ISaveIMI<any, any>, ISaveResult>({
-			...this.getCoreFields(),
-			dbEntity: {
-				_localId: dbEntity._localId,
-				_applicationVersionLocalId: dbEntity.applicationVersion._localId
-			},
-			entity,
-			repositoryDestination,
-			type: IsolateMessageType.SAVE_TO_DESTINATION
+			type: Message_Type.SAVE
 		})
 	}
 
@@ -287,10 +209,10 @@ export class IframeTransactionalConnector
 		context: IContext,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number> {
-		return await this.sendMessage<IPortableQueryIMI, number>({
+		return await this.sendMessage<IPortableQueryMessage, number>({
 			...this.getCoreFields(),
 			portableQuery,
-			type: IsolateMessageType.INSERT_VALUES
+			type: Message_Type.INSERT_VALUES
 		})
 	}
 
@@ -298,10 +220,10 @@ export class IframeTransactionalConnector
 		portableQuery: PortableQuery,
 		context: IContext,
 	): Promise<number[][]> {
-		return await this.sendMessage<IPortableQueryIMI, number[][]>({
+		return await this.sendMessage<IPortableQueryMessage, number[][]>({
 			...this.getCoreFields(),
 			portableQuery,
-			type: IsolateMessageType.INSERT_VALUES_GET_IDS
+			type: Message_Type.INSERT_VALUES_GET_IDS
 		})
 	}
 
@@ -309,10 +231,10 @@ export class IframeTransactionalConnector
 		portableQuery: PortableQuery,
 		context: IContext,
 	): Promise<number> {
-		return await this.sendMessage<IPortableQueryIMI, number>({
+		return await this.sendMessage<IPortableQueryMessage, number>({
 			...this.getCoreFields(),
 			portableQuery,
-			type: IsolateMessageType.UPDATE_VALUES
+			type: Message_Type.UPDATE_VALUES
 		})
 	}
 
@@ -320,105 +242,143 @@ export class IframeTransactionalConnector
 		portableQuery: PortableQuery,
 		context: IContext,
 	): Promise<number> {
-		return await this.sendMessage<IPortableQueryIMI, number>({
+		return await this.sendMessage<IPortableQueryMessage, number>({
 			...this.getCoreFields(),
 			portableQuery,
-			type: IsolateMessageType.DELETE_WHERE
+			type: Message_Type.DELETE_WHERE
 		})
 	}
 
 	async getLatestApplicationVersionMapByDbApplication_FullName(
 		fullDbApplication_Name: string
 	): Promise<DbApplicationVersion> {
-		return await this.sendMessageNoWait<IGetLatestApplicationVersionByDbApplication_NameIMI, DbApplicationVersion>({
-			...this.getCoreFields(),
+		return await this.sendMessageAndGetResponse<IGetLatestApplicationVersionByDbApplication_NameMessage, DbApplicationVersion>({
+			...this.getCoreFields(Message_Direction.INTERNAL),
 			fullDbApplication_Name: fullDbApplication_Name,
-			type: IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME
+			type: Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME
 		})
 	}
 
 	async initializeConnection(): Promise<void> {
 		while (this.applicationStore.state.appState === AppState.NOT_INITIALIZED
 			|| this.applicationStore.state.appState === AppState.START_INITIALIZING) {
-			await this.isConnectionInitialized()
 			await this.wait(100)
+			await this.isConnectionInitialized()
 		}
 	}
 
-	private async handleLocalApiRequest(
-		request: ILocalAPIRequest,
+	private async handleInternalMessage(
+		message: IInitializeConnectionMessage
+			| IGetLatestApplicationVersionByDbApplication_NameMessage
+			| IRetrieveDomainMessage
+	) {
+		switch (message.type) {
+			case Message_Type.APP_INITIALIZING: {
+				if (this.applicationStore.state.appState === AppState.NOT_INITIALIZED
+					&& (message as IInitializeConnectionMessage).returnedValue) {
+					// console.log(`--==<<(( path: ${window.location.pathname} appState: ${this.applicationStore.state.appState}, domain: ${message.domain}, app: ${message.application} ))>>==--`)
+					// console.log(message.result)
+					const lastTerminalState = this.terminalStore.getTerminalState()
+					this.terminalStore.state.next({
+						...lastTerminalState,
+						lastIds: (message as IInitializeConnectionMessage).returnedValue
+					})
+					this.applicationStore.state.appState = AppState.START_INITIALIZING
+				}
+				break
+			}
+			case Message_Type.RETRIEVE_DOMAIN:
+			case Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
+				this.completeAsyncMessage(message as
+					IGetLatestApplicationVersionByDbApplication_NameMessage
+					| IRetrieveDomainMessage)
+				break
+			}
+			case Message_Type.APP_INITIALIZED: {
+				// Nothing to do as of now
+				break
+			}
+			default: {
+				console.error(`Invalid INTERNAL message type ${message.type}`)
+				break
+			}
+		}
+	}
+
+	private async handleApiRequest(
+		request: IApiCallRequestMessage,
 		origin: string
 	) {
 		while (this.applicationStore.state.appState !== AppState.INITIALIZED) {
 			await this.wait(100)
 		}
-		const observableRequest = request as IObservableLocalAPIRequest
-		const subscriptionId = observableRequest.subscriptionId
-		switch (observableRequest.subscriptionOperation) {
-			case SubscriptionOperation.OPERATION_SUBSCRIBE: {
+		const subscriptionId = request.subscriptionId
+		const clientSubscriptionMap = this.applicationStore.state.clientSubscriptionMap
+		switch (request.type) {
+			case Message_Type.API_SUBSCRIBE: {
 				const response = await this.localApiServer.handleRequest(request)
-				const subscription = response.payload.subscribe(payload => {
-					window.parent.postMessage({
+				const subscription = response.returnedValue.subscribe(payload => {
+					this.sendMessageToParentWindow({
 						...response,
 						subscriptionId,
-						observableOperation: ObservableOperation.OBSERVABLE_DATAFEED,
-						payload
-					}, origin)
+						type: Message_Type.API_SUBSCRIBTION_DATA,
+						returnedValue: payload
+					} as IApiCallResponseMessage, origin)
 				})
-				this.clientSubscriptionMap.set(subscriptionId, subscription)
-				window.parent.postMessage({
-					...response,
-					subscriptionId,
-					payload: null,
-					observableOperation: ObservableOperation.OBSERVABLE_SUBSCRIBE
-				}, origin)
+				clientSubscriptionMap.set(subscriptionId, subscription)
 				break
 			}
-			case SubscriptionOperation.OPERATION_UNSUBSCRIBE: {
-				const subscription = this.clientSubscriptionMap.get(subscriptionId)
+			case Message_Type.API_UNSUBSCRIBE: {
+				const subscription = clientSubscriptionMap.get(subscriptionId)
 				if (!subscription) {
 					break
 				}
 				subscription.unsubscribe()
-				this.clientSubscriptionMap.delete(subscriptionId)
+				clientSubscriptionMap.delete(subscriptionId)
 				// No need to send a message back, no transaction is started
 				// for the Unsubscribe operation
 				break
 			}
 			default: {
 				const response = await this.localApiServer.handleRequest(request)
-				window.parent.postMessage(response, origin)
+
+				this.sendMessageToParentWindow(response, origin)
 				break
 			}
 		}
 	}
 
-	private handleDbToIsolateMessage(
-		message: IIsolateMessageOut<any>,
-		mainDomain: string
+	private sendMessageToParentWindow(
+		message: IMessage,
+		targetOrigin: string = this.applicationStore.state.hostServer
+	): void {
+		this.airMessageUtils.prepMessageToSend(message)
+
+		window.parent.postMessage(message, targetOrigin)
+	}
+
+	private handleToClientMessage(
+		message: IApiCallResponseMessage,
 	) {
 		let observableMessageRecord: IObservableMessageInRecord<any>
 		switch (message.type) {
-			// case IsolateMessageType.APP_INITIALIZING:
-			// 	this.mainDomain = mainDomain
-			// 	this.pendingMessageMap.delete(message.id);
-			// 	return
-			case IsolateMessageType.SEARCH:
-			case IsolateMessageType.SEARCH_ONE: {
-				observableMessageRecord = this.applicationStore.state.observableDbToIsolateMessageMap.get(message.id)
-				if (!observableMessageRecord || !observableMessageRecord.observer) {
+			case Message_Type.SEARCH_ONE_SUBSCRIBE:
+			case Message_Type.SEARCH_SUBSCRIBE: {
+				observableMessageRecord = this.applicationStore.state
+					.observableDbToIsolateMessageMap.get(message.id)
+				if (!observableMessageRecord || !observableMessageRecord.subject) {
 					return
 				}
 				if (message.errorMessage) {
-					observableMessageRecord.observer.error(message.errorMessage)
+					observableMessageRecord.subject.error(message.errorMessage)
 				} else {
-					observableMessageRecord.observer.next(message.result)
+					observableMessageRecord.subject.next(message.returnedValue)
 				}
 				return
 			}
 		}
 
-		const subscriptionId = (message as any as IObservableLocalAPIResponse).subscriptionId
+		const subscriptionId = message.subscriptionId
 		if (subscriptionId) {
 			const apiRequestSubject = this.applicationStore.state.observableApiRequestMap.get(subscriptionId)
 			if (!apiRequestSubject) {
@@ -426,7 +386,7 @@ export class IframeTransactionalConnector
 				return
 			}
 			try {
-				apiRequestSubject.next(message)
+				apiRequestSubject.next(message.returnedValue)
 			} catch (e) {
 				console.error(e)
 				apiRequestSubject.error(e)
@@ -434,6 +394,14 @@ export class IframeTransactionalConnector
 			return
 		}
 
+		this.completeAsyncMessage(message)
+	}
+
+	private completeAsyncMessage(
+		message: IApiCallResponseMessage
+			| IGetLatestApplicationVersionByDbApplication_NameMessage
+			| IRetrieveDomainMessage
+	) {
 		const messageRecord = this.applicationStore.state.pendingMessageMap.get(message.id);
 		if (!messageRecord) {
 			return
@@ -441,52 +409,66 @@ export class IframeTransactionalConnector
 
 		if (message.errorMessage) {
 			messageRecord.reject(message.errorMessage)
-		} else if (message.type === IsolateMessageType.CALL_API) {
+		} else if (message.type === Message_Type.API_CALL) {
 			messageRecord.resolve(message)
 		} else {
-			messageRecord.resolve(message.result)
+			messageRecord.resolve(message.returnedValue)
 		}
 		this.applicationStore.state.pendingMessageMap.delete(message.id)
 	}
 
-	private getCoreFields(): {
-		application: string,
-		category: 'ToDb',
-		domain: string,
+	private getCoreFields(
+		direction = Message_Direction.FROM_CLIENT
+	): {
+		clientApplication?: Message_Application,
+		clientDomain?: Message_Domain,
+		clientDomainProtocol?: Message_DomainProtocol,
+		direction: Message_Direction,
 		id: string,
+		messageLeg: Message_Leg.TO_HUB,
+		serverApplication?: Message_Application,
+		serverDomain?: Message_Domain,
+		serverDomainProtocol?: Message_DomainProtocol
 	} {
+		let application = this.applicationStore.state.application
+		let domain = this.applicationStore.state.domain
+		let id = guidv4()
+		let messageLeg = Message_Leg.TO_HUB
 		return {
-			application: this.applicationStore.state.application,
-			category: 'ToDb',
-			domain: this.applicationStore.state.domain,
-			id: guidv4(),
+			clientApplication: application,
+			clientDomain: domain,
+			clientDomainProtocol: location.protocol,
+			direction,
+			id,
+			messageLeg
 		}
 	}
 
-	private async sendMessage<IMessageIn extends IIsolateMessage, ReturnType>(
+	private async sendMessage<IMessageIn extends IMessage, ReturnType>(
 		message: IMessageIn
 	): Promise<ReturnType> {
 		while (!await this.isConnectionInitialized()) {
 			await this.wait(100)
 		}
-		return await this.sendMessageNoWait(message)
+		return await this.sendMessageAndGetResponse(message)
 	}
 
-	private async sendMessageNoReturn<IMessageIn extends IIsolateMessage>(
+	private async sendMessageNoReturn<IMessageIn extends IMessage>(
 		message: IMessageIn
 	): Promise<void> {
 		while (!await this.isConnectionInitialized()) {
 			await this.wait(100)
 		}
-		message.transactionId = (<IInjected>this).__container__.context.id
-		window.parent.postMessage(message, this.applicationStore.state.hostServer)
+		// (message as any).subscriptionId = (<IInjected>this).__container__.context.id
+		this.sendMessageToParentWindow(message)
 	}
 
-	private async sendMessageNoWait<IMessageIn extends IIsolateMessage, ReturnType>(
+	private async sendMessageAndGetResponse<IMessageIn extends IMessage, ReturnType>(
 		message: IMessageIn
 	): Promise<ReturnType> {
 		message.transactionId = (<IInjected>this).__container__.context.id
-		window.parent.postMessage(message, this.applicationStore.state.hostServer)
+		this.sendMessageToParentWindow(message)
+
 		return new Promise<ReturnType>((resolve, reject) => {
 			this.applicationStore.state.pendingMessageMap.set(message.id, {
 				message,
@@ -496,10 +478,10 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	private sendObservableMessage<E, T>(
+	private sendObservableMessage<T>(
 		portableQuery: PortableQuery,
 		context: IQueryContext,
-		type: IsolateMessageType,
+		type: Message_Type,
 		cachedSqlQueryId?: number
 	): Observable<T> {
 		const coreFields = this.getCoreFields()
@@ -514,23 +496,21 @@ export class IframeTransactionalConnector
 			id: coreFields.id
 		}
 		this.applicationStore.state.observableDbToIsolateMessageMap.set(coreFields.id, observableMessageRecord)
-		const observable = new Observable((observer: Observer<any>) => {
-			if (observableMessageRecord.observer) {
-				throw new Error(`Multiple Observers assigned via
-IFrameTransactionalConnector.sendObservableMessage`)
-			}
-			observableMessageRecord.observer = observer
-			return () => {
-				this.sendMessageNoReturn<IIsolateMessage>({
-					...coreFields,
-					type: IsolateMessageType.SEARCH_UNSUBSCRIBE
-				}).then()
-				observer.complete()
-			};
-		});
-		window.parent.postMessage(message, this.applicationStore.state.hostServer)
 
-		return observable;
+		const subject = new SubscriptionCountSubject<T>(
+			() => {
+				this.sendMessageToParentWindow(message)
+			},
+			() => {
+				this.sendMessageNoReturn<IMessage>({
+					...coreFields,
+					type: Message_Type.SEARCH_UNSUBSCRIBE
+				}).then()
+			}
+		)
+		observableMessageRecord.subject = subject
+
+		return subject;
 	}
 
 	private wait(
@@ -556,13 +536,13 @@ IFrameTransactionalConnector.sendObservableMessage`)
 				await this.applicationLoader.load(this.terminalStore.getLastIds())
 				this.applicationStore.state.appState = AppState.INITIALIZED
 				await this.applicationLoader.initialize()
-				window.parent.postMessage({
-					...this.getCoreFields(),
+				this.sendMessageToParentWindow({
+					...this.getCoreFields(Message_Direction.INTERNAL),
 					fullDbApplication_Name: this.dbApplicationUtils.
 						getDbApplication_FullName(
 							this.applicationLoader.getApplication()),
-					type: IsolateMessageType.APP_INITIALIZED
-				}, this.applicationStore.state.hostServer)
+					type: Message_Type.APP_INITIALIZED
+				} as IGetLatestApplicationVersionByDbApplication_NameMessage)
 				return true
 			case AppState.INITIALIZED:
 				return true
@@ -572,23 +552,21 @@ IFrameTransactionalConnector.sendObservableMessage`)
 		this.applicationStore.state.domain = jsonApplication.domain
 		this.applicationStore.state.application = jsonApplication.name
 
-		let message: IInitConnectionIMI = {
-			...this.getCoreFields(),
+		this.sendMessageToParentWindow({
+			...this.getCoreFields(Message_Direction.INTERNAL),
 			jsonApplication,
-			type: IsolateMessageType.APP_INITIALIZING
-		}
-
-		window.parent.postMessage(message, this.applicationStore.state.hostServer)
+			type: Message_Type.APP_INITIALIZING
+		} as IInitializeConnectionMessage)
 		return false
 	}
 
 	async retrieveDomain(
 		domainName: DbDomain_Name
 	): Promise<DbDomain> {
-		return await this.sendMessageNoWait<IRetrieveDomainIMI, DbDomain>({
-			...this.getCoreFields(),
+		return await this.sendMessageAndGetResponse<IRetrieveDomainMessage, DbDomain>({
+			...this.getCoreFields(Message_Direction.INTERNAL),
 			domainName,
-			type: IsolateMessageType.RETRIEVE_DOMAIN
+			type: Message_Type.RETRIEVE_DOMAIN
 		})
 	}
 

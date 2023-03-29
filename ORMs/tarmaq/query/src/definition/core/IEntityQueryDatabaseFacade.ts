@@ -119,13 +119,4 @@ export interface IEntityQueryDatabaseFacade<IEntity,
         context?: IEntityContext,
     ): Promise<ISaveResult>;
 
-    /**
-     * @return ISaveResult object with metadata on saved objects
-     */
-    saveToDestination(
-        repositoryDestination: string,
-        entity: EntityCreateProperties,
-        context?: IEntityContext,
-    ): Promise<ISaveResult>;
-
 }

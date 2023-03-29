@@ -1,19 +1,16 @@
 
 import { IApplicationApi } from "@airport/air-traffic-control";
-import {
-    ILocalAPIRequest,
-    ILocalAPIResponse
-} from "@airport/aviation-communication";
+import { IApiCallRequestMessage, IApiCallResponseMessage } from "@airport/aviation-communication";
 import { IContext } from "@airport/direction-indicator";
 
 export interface ILocalAPIServer {
 
     handleRequest(
-        request: ILocalAPIRequest
-    ): Promise<ILocalAPIResponse>
+        request: IApiCallRequestMessage
+    ): Promise<IApiCallResponseMessage>
 
     coreHandleRequest<ReturnType = any>(
-        request: ILocalAPIRequest,
+        request: IApiCallRequestMessage,
         api: IApplicationApi,
         context?: IContext
     ): Promise<{
