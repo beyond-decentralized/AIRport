@@ -77,8 +77,8 @@ export abstract class TransactionalReceiver {
 
     async processFromClientMessage(
         message: IPortableQueryMessage
-        | IReadQueryMessage
-        | ISaveMessage<any>
+            | IReadQueryMessage
+            | ISaveMessage<any>
     ): Promise<IApiCallResponseMessage> {
         let result: any
         let errorMessage
@@ -116,7 +116,10 @@ export abstract class TransactionalReceiver {
             direction: Message_Direction.TO_CLIENT,
             errorMessage,
             messageLeg: Message_Leg.FROM_HUB,
-            returnedValue: result
+            returnedValue: result,
+            serverApplication: message.clientApplication,
+            serverDomain: message.clientDomain,
+            serverDomainProtocol: message.clientDomainProtocol
         } as any
 
         return messageCopy
