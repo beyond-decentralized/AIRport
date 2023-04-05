@@ -27,8 +27,7 @@ TRANSACTIONAL_RECEIVER.setClass(WebTransactionalReceiver)
 TRANSACTIONAL_RECEIVER.setDependencies({
     actorDao: ActorDao,
     dbApplicationDao: DbApplicationDao,
-    airMessageUtils: globalThis.AIR_ENTITY_UTILS,
-    airEntityUtils: AIR_ENTITY_UTILS,
+    airMessageUtils: globalThis.AIR_MESSAGE_UTILS,
     applicationInitializer: APPLICATION_INITIALIZER,
     databaseManager: DatabaseManager,
     dbApplicationUtils: DbApplicationUtils,

@@ -1,6 +1,6 @@
 import { Injected } from "@airport/direction-indicator";
 import { IApiCallRequestMessage } from "./IApiCallMessage";
-import { Message_Direction, IMessage } from "./IMessage";
+import { Message_Direction, IMessage, Message_Type } from "./IMessage";
 
 export interface IAirMessageUtils {
 
@@ -15,6 +15,10 @@ export interface IAirMessageUtils {
 
     isMessageAlreadyReceived(
         message: IMessage | IApiCallRequestMessage
+    ): boolean
+
+    isObservableMessage(
+        type: Message_Type
     ): boolean
 
     markMessageAsReceived(
@@ -56,6 +60,26 @@ ${JSON.stringify(message, null, 2)}
         }
 
         return false
+    }
+
+    isObservableMessage(
+        type: Message_Type
+    ): boolean {
+        switch (type) {
+            case Message_Type.API_SUBSCRIBE:
+            case Message_Type.API_SUBSCRIBTION_DATA:
+            case Message_Type.API_UNSUBSCRIBE:
+            case Message_Type.SEARCH_ONE_SUBSCRIBE:
+            case Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
+            case Message_Type.SEARCH_ONE_UNSUBSCRIBE:
+            case Message_Type.SEARCH_SUBSCRIBE:
+            case Message_Type.SEARCH_SUBSCRIBTION_DATA:
+            case Message_Type.SEARCH_UNSUBSCRIBE:
+                return true
+            default:
+                return false
+        }
+
     }
 
     markMessageAsReceived(
@@ -118,7 +142,7 @@ ${JSON.stringify(message, null, 2)}
                 ) || !this.isValidApplicationNameString(
                     message.serverApplication
                 )) {
-                    console.error(`FROM_CLIENT Message does not have valid server domain and application:
+                    console.error(`TO_CLIENT Message does not have valid server domain and application:
 ${JSON.stringify(message, null, 2)}
 `)
                     return false

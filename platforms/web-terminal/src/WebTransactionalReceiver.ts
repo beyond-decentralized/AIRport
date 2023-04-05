@@ -1,5 +1,5 @@
 import { JsonApplicationVersionWithApi } from '@airport/air-traffic-control'
-import { Message_Direction, Message_Leg, Message_Type, IAirEntityUtils, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage } from '@airport/aviation-communication'
+import { Message_Direction, Message_Leg, Message_Type, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage } from '@airport/aviation-communication'
 import {
 	Inject,
 	Injected
@@ -39,9 +39,6 @@ export class WebTransactionalReceiver
 
 	@Inject()
 	airMessageUtils: IAirMessageUtils
-
-	@Inject()
-	airEntityUtils: IAirEntityUtils
 
 	@Inject()
 	applicationInitializer: IWebApplicationInitializer
@@ -165,7 +162,7 @@ export class WebTransactionalReceiver
 		const interAppApiCallRequest = webReciever.pendingInterAppApiCallMessageMap
 			.get(message.id)
 		const context: IApiCallContext = {
-			isObservableApiCall: this.airEntityUtils.isObservableMessage(message.type)
+			isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type)
 		}
 		const credentials: IApiCredentials = {
 			application: message.serverApplication,
@@ -478,7 +475,7 @@ export class WebTransactionalReceiver
 		}
 
 		const context: IApiCallContext = {
-			isObservableApiCall: this.airEntityUtils.isObservableMessage(message.type)
+			isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type)
 		}
 		const localApiRequest = message
 		const startDescriptor = await this.nativeStartApiCall(localApiRequest, context);
@@ -651,7 +648,7 @@ export class WebTransactionalReceiver
 		let response
 		if (message.type === Message_Type.API_CALL) {
 			response = await this.nativeHandleApiCall(message as IApiCallRequestMessage, {
-				isObservableApiCall: this.airEntityUtils.isObservableMessage(message.type),
+				isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type),
 				startedAt: new Date()
 			})
 		} else {

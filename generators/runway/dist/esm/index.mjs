@@ -8258,44 +8258,6 @@ function handleReset(reset, on) {
     return innerFrom(on.apply(void 0, __spreadArray([], __read(args)))).subscribe(onSubscriber);
 }
 
-var Message_Direction;
-(function (Message_Direction) {
-    Message_Direction["FROM_CLIENT"] = "FROM_CLIENT";
-    Message_Direction["INTERNAL"] = "INTERNAL";
-    Message_Direction["TO_CLIENT"] = "TO_CLIENT";
-})(Message_Direction || (Message_Direction = {}));
-var Message_Leg;
-(function (Message_Leg) {
-    Message_Leg["FROM_HUB"] = "FROM_HUB";
-    Message_Leg["TO_HUB"] = "TO_HUB";
-})(Message_Leg || (Message_Leg = {}));
-var Message_Type;
-(function (Message_Type) {
-    Message_Type["API_CALL"] = "API_CALL";
-    Message_Type["API_SUBSCRIBE"] = "API_SUBSCRIBE";
-    Message_Type["API_SUBSCRIBTION_DATA"] = "API_SUBSCRIBTION_DATA";
-    Message_Type["API_UNSUBSCRIBE"] = "API_UNSUBSCRIBE";
-    Message_Type["APP_INITIALIZED"] = "APP_INITIALIZED";
-    Message_Type["APP_INITIALIZING"] = "APP_INITIALIZING";
-    Message_Type["CONNECTION_IS_READY"] = "CONNECTION_IS_READY";
-    Message_Type["DELETE_WHERE"] = "DELETE_WHERE";
-    Message_Type["FIND"] = "FIND";
-    Message_Type["FIND_ONE"] = "FIND_ONE";
-    Message_Type["GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME"] = "GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME";
-    Message_Type["INSERT_VALUES"] = "INSERT_VALUES";
-    Message_Type["INSERT_VALUES_GET_IDS"] = "INSERT_VALUES_GET_IDS";
-    Message_Type["IS_CONNECTION_READY"] = "IS_CONNECTION_READY";
-    Message_Type["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
-    Message_Type["SAVE"] = "SAVE";
-    Message_Type["SEARCH_ONE_SUBSCRIBE"] = "SEARCH_ONE_SUBSCRIBE";
-    Message_Type["SEARCH_ONE_SUBSCRIBTION_DATA"] = "SEARCH_ONE_SUBSCRIBTION_DATA";
-    Message_Type["SEARCH_ONE_UNSUBSCRIBE"] = "SEARCH_ONE_UNSUBSCRIBE";
-    Message_Type["SEARCH_SUBSCRIBE"] = "SEARCH_SUBSCRIBE";
-    Message_Type["SEARCH_SUBSCRIBTION_DATA"] = "SEARCH_SUBSCRIBTION_DATA";
-    Message_Type["SEARCH_UNSUBSCRIBE"] = "SEARCH_UNSUBSCRIBE";
-    Message_Type["UPDATE_VALUES"] = "UPDATE_VALUES";
-})(Message_Type || (Message_Type = {}));
-
 class AirEntityUtils {
     getCreatedBy(airEntity) {
         return airEntity.actor.userAccount;
@@ -8365,23 +8327,45 @@ class AirEntityUtils {
         }
         airEntity._actorRecordId = airEntityId._actorRecordId;
     }
-    isObservableMessage(type) {
-        switch (type) {
-            case Message_Type.API_SUBSCRIBE:
-            case Message_Type.API_SUBSCRIBTION_DATA:
-            case Message_Type.API_UNSUBSCRIBE:
-            case Message_Type.SEARCH_ONE_SUBSCRIBE:
-            case Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
-            case Message_Type.SEARCH_ONE_UNSUBSCRIBE:
-            case Message_Type.SEARCH_SUBSCRIBE:
-            case Message_Type.SEARCH_SUBSCRIBTION_DATA:
-            case Message_Type.SEARCH_UNSUBSCRIBE:
-                return true;
-            default:
-                return false;
-        }
-    }
 }
+
+var Message_Direction;
+(function (Message_Direction) {
+    Message_Direction["FROM_CLIENT"] = "FROM_CLIENT";
+    Message_Direction["INTERNAL"] = "INTERNAL";
+    Message_Direction["TO_CLIENT"] = "TO_CLIENT";
+})(Message_Direction || (Message_Direction = {}));
+var Message_Leg;
+(function (Message_Leg) {
+    Message_Leg["FROM_HUB"] = "FROM_HUB";
+    Message_Leg["TO_HUB"] = "TO_HUB";
+})(Message_Leg || (Message_Leg = {}));
+var Message_Type;
+(function (Message_Type) {
+    Message_Type["API_CALL"] = "API_CALL";
+    Message_Type["API_SUBSCRIBE"] = "API_SUBSCRIBE";
+    Message_Type["API_SUBSCRIBTION_DATA"] = "API_SUBSCRIBTION_DATA";
+    Message_Type["API_UNSUBSCRIBE"] = "API_UNSUBSCRIBE";
+    Message_Type["APP_INITIALIZED"] = "APP_INITIALIZED";
+    Message_Type["APP_INITIALIZING"] = "APP_INITIALIZING";
+    Message_Type["CONNECTION_IS_READY"] = "CONNECTION_IS_READY";
+    Message_Type["DELETE_WHERE"] = "DELETE_WHERE";
+    Message_Type["FIND"] = "FIND";
+    Message_Type["FIND_ONE"] = "FIND_ONE";
+    Message_Type["GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME"] = "GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME";
+    Message_Type["INSERT_VALUES"] = "INSERT_VALUES";
+    Message_Type["INSERT_VALUES_GET_IDS"] = "INSERT_VALUES_GET_IDS";
+    Message_Type["IS_CONNECTION_READY"] = "IS_CONNECTION_READY";
+    Message_Type["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
+    Message_Type["SAVE"] = "SAVE";
+    Message_Type["SEARCH_ONE_SUBSCRIBE"] = "SEARCH_ONE_SUBSCRIBE";
+    Message_Type["SEARCH_ONE_SUBSCRIBTION_DATA"] = "SEARCH_ONE_SUBSCRIBTION_DATA";
+    Message_Type["SEARCH_ONE_UNSUBSCRIBE"] = "SEARCH_ONE_UNSUBSCRIBE";
+    Message_Type["SEARCH_SUBSCRIBE"] = "SEARCH_SUBSCRIBE";
+    Message_Type["SEARCH_SUBSCRIBTION_DATA"] = "SEARCH_SUBSCRIBTION_DATA";
+    Message_Type["SEARCH_UNSUBSCRIBE"] = "SEARCH_UNSUBSCRIBE";
+    Message_Type["UPDATE_VALUES"] = "UPDATE_VALUES";
+})(Message_Type || (Message_Type = {}));
 
 class AirMessageUtils {
     getMessageReadySendAttributes() {
@@ -8398,6 +8382,22 @@ ${JSON.stringify(message, null, 2)}
             return true;
         }
         return false;
+    }
+    isObservableMessage(type) {
+        switch (type) {
+            case Message_Type.API_SUBSCRIBE:
+            case Message_Type.API_SUBSCRIBTION_DATA:
+            case Message_Type.API_UNSUBSCRIBE:
+            case Message_Type.SEARCH_ONE_SUBSCRIBE:
+            case Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
+            case Message_Type.SEARCH_ONE_UNSUBSCRIBE:
+            case Message_Type.SEARCH_SUBSCRIBE:
+            case Message_Type.SEARCH_SUBSCRIBTION_DATA:
+            case Message_Type.SEARCH_UNSUBSCRIBE:
+                return true;
+            default:
+                return false;
+        }
     }
     markMessageAsReceived(message) {
         message.__received__ = true;
@@ -8423,7 +8423,8 @@ ${JSON.stringify(message, null, 2)}
         // All requests need to have a application signature
         // to know what application is being communicated to/from
         switch (message.direction) {
-            case Message_Direction.FROM_CLIENT: {
+            case Message_Direction.FROM_CLIENT:
+            case Message_Direction.INTERNAL: {
                 if (!this.isValidDomainNameString(message.clientDomain) || !this.isValidApplicationNameString(message.clientApplication)) {
                     console.error(`FROM_CLIENT Message does not have valid client domain and application:
 ${JSON.stringify(message, null, 2)}
@@ -8436,7 +8437,7 @@ ${JSON.stringify(message, null, 2)}
             }
             case Message_Direction.TO_CLIENT: {
                 if (!this.isValidDomainNameString(message.serverDomain) || !this.isValidApplicationNameString(message.serverApplication)) {
-                    console.error(`FROM_CLIENT Message does not have valid server domain and application:
+                    console.error(`TO_CLIENT Message does not have valid server domain and application:
 ${JSON.stringify(message, null, 2)}
 `);
                     return false;
@@ -35567,7 +35568,10 @@ class TransactionalReceiver {
             direction: Message_Direction.TO_CLIENT,
             errorMessage,
             messageLeg: Message_Leg.FROM_HUB,
-            returnedValue: result
+            returnedValue: result,
+            serverApplication: message.clientApplication,
+            serverDomain: message.clientDomain,
+            serverDomainProtocol: message.clientDomainProtocol
         };
         return messageCopy;
     }
