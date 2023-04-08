@@ -1,4 +1,4 @@
-import { AIR_ENTITY_UTILS, lib } from "@airport/direction-indicator";
+import { lib } from "@airport/direction-indicator";
 import { ActorDao } from '@airport/holding-pattern/dist/app/bundle'
 import { DbApplicationDao } from '@airport/airspace/dist/app/bundle'
 import { DatabaseManager, InternalRecordManager } from "@airport/terminal";

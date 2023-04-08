@@ -8419,31 +8419,32 @@ ${JSON.stringify(message, null, 2)}
         return true;
     }
     hasValidApplicationInfo(message) {
-        let application, domain;
+        let application, domain, messageType = 'INTERNAL';
         // All requests need to have a application signature
         // to know what application is being communicated to/from
         switch (message.direction) {
-            case Message_Direction.FROM_CLIENT:
-            case Message_Direction.INTERNAL: {
-                if (!this.isValidDomainNameString(message.clientDomain) || !this.isValidApplicationNameString(message.clientApplication)) {
-                    console.error(`FROM_CLIENT Message does not have valid client domain and application:
-${JSON.stringify(message, null, 2)}
-`);
-                    return false;
-                }
-                domain = message.clientDomain;
-                application = message.clientApplication;
-                break;
-            }
-            case Message_Direction.TO_CLIENT: {
+            case Message_Direction.FROM_CLIENT: {
                 if (!this.isValidDomainNameString(message.serverDomain) || !this.isValidApplicationNameString(message.serverApplication)) {
-                    console.error(`TO_CLIENT Message does not have valid server domain and application:
+                    console.error(`FROM_CLIENT Message does not have valid client domain and application:
 ${JSON.stringify(message, null, 2)}
 `);
                     return false;
                 }
                 domain = message.serverDomain;
                 application = message.serverApplication;
+                break;
+            }
+            case Message_Direction.TO_CLIENT:
+                messageType = 'TO_CLIENT';
+            case Message_Direction.INTERNAL: {
+                if (!this.isValidDomainNameString(message.clientDomain) || !this.isValidApplicationNameString(message.clientApplication)) {
+                    console.error(`${messageType} Message does not have valid server domain and application:
+${JSON.stringify(message, null, 2)}
+`);
+                    return false;
+                }
+                domain = message.clientDomain;
+                application = message.clientApplication;
                 break;
             }
             default: {

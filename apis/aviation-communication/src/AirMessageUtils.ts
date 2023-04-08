@@ -116,39 +116,40 @@ ${JSON.stringify(message, null, 2)}
     private hasValidApplicationInfo(
         message: IMessage
     ): boolean {
-        let application, domain
+        let application, domain, messageType = 'INTERNAL'
         // All requests need to have a application signature
         // to know what application is being communicated to/from
         switch (message.direction) {
-            case Message_Direction.FROM_CLIENT:
-            case Message_Direction.INTERNAL: {
+            case Message_Direction.FROM_CLIENT: {
                 if (!this.isValidDomainNameString(
-                    message.clientDomain
+                    message.serverDomain
                 ) || !this.isValidApplicationNameString(
-                    message.clientApplication
+                    message.serverApplication
                 )) {
                     console.error(`FROM_CLIENT Message does not have valid client domain and application:
 ${JSON.stringify(message, null, 2)}
 `)
                     return false
                 }
-                domain = message.clientDomain
-                application = message.clientApplication
+                domain = message.serverDomain
+                application = message.serverApplication
                 break
             }
-            case Message_Direction.TO_CLIENT: {
+            case Message_Direction.TO_CLIENT:
+                messageType = 'TO_CLIENT'
+            case Message_Direction.INTERNAL: {
                 if (!this.isValidDomainNameString(
-                    message.serverDomain
+                    message.clientDomain
                 ) || !this.isValidApplicationNameString(
-                    message.serverApplication
+                    message.clientApplication
                 )) {
-                    console.error(`TO_CLIENT Message does not have valid server domain and application:
+                    console.error(`${messageType} Message does not have valid server domain and application:
 ${JSON.stringify(message, null, 2)}
 `)
                     return false
                 }
-                domain = message.serverDomain
-                application = message.serverApplication
+                domain = message.clientDomain
+                application = message.clientApplication
                 break
             }
             default: {

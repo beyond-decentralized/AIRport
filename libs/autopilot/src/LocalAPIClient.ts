@@ -66,7 +66,7 @@ export class LocalAPIClient
         if (_inWebMode) {
             this.initializeForWeb()
         }
-        this.messageBusSubscription = globalThis.MESSAGE_BUS.subscribe(async (
+        this.messageBusSubscription = globalThis.MESSAGE_BUS.subscribe((
             message: {
                 fullDIDescriptor: IFullDITokenDescriptor,
                 request: IApiCallRequestMessage
@@ -75,9 +75,9 @@ export class LocalAPIClient
                 return
             }
 
-            await this.waitForConnectionToBeReady(message.fullDIDescriptor)
-
-            this.sendMessage(message.request)
+            this.waitForConnectionToBeReady(message.fullDIDescriptor).then(() => {
+                this.sendMessage(message.request)
+            })
         })
     }
 
@@ -311,7 +311,9 @@ export class LocalAPIClient
             type: Message_Type.IS_CONNECTION_READY
         }
 
-        return this.sendMessage(request)
+        this.sendMessage(request)
+
+        return false
     }
 
     private async sendLocalRequest(
