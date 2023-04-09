@@ -136,8 +136,7 @@ export class IframeTransactionalConnector
 		return await this.sendMessage<IApiCallRequestMessage, IApiCallResponseMessage>({
 			...apiInput,
 			...this.getCoreFields(),
-			actor: null,
-			type: Message_Type.API_CALL
+			actor: null
 		})
 	}
 
@@ -331,6 +330,9 @@ export class IframeTransactionalConnector
 			case Message_Type.API_UNSUBSCRIBE: {
 				const subscription = clientSubscriptionMap.get(subscriptionId)
 				if (!subscription) {
+					console.log(`Could not find subscription for subscriptionId:
+${subscriptionId}
+					`)
 					break
 				}
 				subscription.unsubscribe()
@@ -340,6 +342,13 @@ export class IframeTransactionalConnector
 				break
 			}
 			default: {
+				if(subscriptionId) {
+					console.log(`Found a subscription for an @Api() call that returns a Promise.
+	subscriptionId:
+${subscriptionId}
+					`)
+					break
+				}
 				const response = await this.localApiServer.handleRequest(request)
 
 				this.sendMessageToParentWindow(response, origin)
