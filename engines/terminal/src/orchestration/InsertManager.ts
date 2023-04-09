@@ -120,6 +120,11 @@ export class InsertManager
 		getIds: boolean = false,
 		ensureGeneratedValues: boolean = true
 	): Promise<number | Record_LocalId[] | Record_LocalId[][]> {
+		const values = (portableQuery.query as QueryInsertValues).VALUES
+		if (!values || !values.length) {
+			return getIds ? [] : 0
+		}
+
 		const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
 			.currentVersion[0].applicationVersion.entities[portableQuery.entityIndex]
 

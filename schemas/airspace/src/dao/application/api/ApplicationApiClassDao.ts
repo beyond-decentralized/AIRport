@@ -60,7 +60,7 @@ export class ApplicationApiClassDao
             ])
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: aac = Q_airport____at_airport_slash_airspace.ApplicationApiClasss,
+            INSERT_INTO: aac = Q_airport____at_airport_slash_airspace.ApplicationApiClass,
             columns: [
                 aac._localId,
                 aac.name,

@@ -10807,7 +10807,7 @@ class ApplicationApiClassDao extends BaseApplicationApiClassDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: aac = Q_airport____at_airport_slash_airspace.ApplicationApiClasss,
+            INSERT_INTO: aac = Q_airport____at_airport_slash_airspace.ApplicationApiClass,
             columns: [
                 aac._localId,
                 aac.name,
@@ -12720,6 +12720,7 @@ class ApplicationComposer {
                 entities: [],
                 references: [],
                 referencedBy: [],
+                apiClassMapByName: {},
                 entityMapByName: {},
                 referencesMapByName: {},
                 referencedByMapByName: {},
@@ -13043,7 +13044,8 @@ class ApplicationComposer {
                 _localId: ++this.terminalStore.getLastIds().apiClasses,
                 name: apiClassName,
                 applicationVersion,
-                operations: []
+                operations: [],
+                operationMapByName: {}
             };
             for (const operationName in apiClassDefinition.operationMap) {
                 const apiOperationDefinition = apiClassDefinition.operationMap[operationName];
@@ -37323,6 +37325,10 @@ class InsertManager {
         return dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
     }
     async internalInsertValues(portableQuery, actor, transaction, rootTransaction, context, getIds = false, ensureGeneratedValues = true) {
+        const values = portableQuery.query.VALUES;
+        if (!values || !values.length) {
+            return getIds ? [] : 0;
+        }
         const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
             .currentVersion[0].applicationVersion.entities[portableQuery.entityIndex];
         const errorPrefix = `Error inserting into '${dbEntity.name}'.'

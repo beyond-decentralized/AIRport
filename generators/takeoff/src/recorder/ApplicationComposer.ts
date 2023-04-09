@@ -413,6 +413,7 @@ export class ApplicationComposer
 				entities: [],
 				references: [],
 				referencedBy: [],
+				apiClassMapByName: {},
 				entityMapByName: {},
 				referencesMapByName: {},
 				referencedByMapByName: {},
@@ -858,8 +859,8 @@ export class ApplicationComposer
 				_localId: ++this.terminalStore.getLastIds().apiClasses,
 				name: apiClassName,
 				applicationVersion,
-				operations: []
-
+				operations: [],
+				operationMapByName: {}
 			}
 			for (const operationName in apiClassDefinition.operationMap) {
 				const apiOperationDefinition = apiClassDefinition.operationMap[operationName]
