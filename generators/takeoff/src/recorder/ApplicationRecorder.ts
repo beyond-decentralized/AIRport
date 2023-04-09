@@ -16,6 +16,10 @@ import {
 	IDbRelationDao,
 	IDbApplicationVersionDao,
 	IDbDomainDao,
+	IApplicationApiClassDao,
+	IApplicationApiOperationDao,
+	IApplicationApiParameterDao,
+	IApplicationApiReturnTypeDao,
 } from '@airport/airspace/dist/app/bundle'
 import { DdlObjects, ITransactionManager } from '@airport/terminal-map'
 import { IDao } from '@airport/tarmaq-dao'
@@ -33,6 +37,18 @@ export interface IApplicationRecorder {
 @Injected()
 export class ApplicationRecorder
 	implements IApplicationRecorder {
+
+	@Inject()
+	applicationApiClassDao: IApplicationApiClassDao
+
+	@Inject()
+	applicationApiOperationDao: IApplicationApiOperationDao
+
+	@Inject()
+	applicationApiParameterDao: IApplicationApiParameterDao
+
+	@Inject()
+	applicationApiReturnTypeDao: IApplicationApiReturnTypeDao
 
 	@Inject()
 	dbColumnDao: IDbColumnDao
@@ -87,6 +103,10 @@ export class ApplicationRecorder
 			await this.dbColumnDao.insert(ddlObjects.columns, context)
 			await this.dbPropertyColumnDao.insert(ddlObjects.propertyColumns, context)
 			await this.dbRelationColumnDao.insert(ddlObjects.relationColumns, context)
+			await this.applicationApiReturnTypeDao.insert(ddlObjects.apiReturnTypes, context)
+			await this.applicationApiParameterDao.insert(ddlObjects.apiParameters, context)
+			await this.applicationApiOperationDao.insert(ddlObjects.apiOperations, context)
+			await this.applicationApiClassDao.insert(ddlObjects.apiClasses, context)
 		}, null, context)
 	}
 

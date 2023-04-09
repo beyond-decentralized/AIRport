@@ -1,8 +1,8 @@
 import { IContext, Injected } from '@airport/direction-indicator';
 import { DbEntity_LocalId, DbProperty } from '@airport/ground-control'
-import { BaseDdlPropertyDao, IBaseDdlPropertyDao } from '../generated/baseDaos';
-import Q_airport____at_airport_slash_airspace from '../generated/qApplication';
-import { QDdlProperty } from '../generated/qInterfaces';
+import { BaseDdlPropertyDao, IBaseDdlPropertyDao } from '../../../generated/baseDaos';
+import Q_airport____at_airport_slash_airspace from '../../../generated/qApplication';
+import { QDdlProperty } from '../../../generated/qInterfaces';
 
 export interface IDbPropertyDao
 	extends IBaseDdlPropertyDao {

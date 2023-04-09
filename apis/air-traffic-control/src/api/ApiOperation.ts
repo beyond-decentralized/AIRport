@@ -6,7 +6,6 @@ export interface IApiOperation {
 }
 
 export interface IApiParameter {
-    kind: ApiObjectKind
     isRest: boolean // only applies to the last parameter in the API method
     text: string
 }
@@ -40,18 +39,4 @@ export interface IApiDbEntityParameter
 export interface IApiValueParameter<V = boolean | number | string>
     extends IApiParameter {
     value: V
-}
-
-export enum ApiObjectKind {
-    ARRAY = 'ARRAY',
-    BOOLEAN = 'BOOLEAN',
-    BOOLEAN_VALUE = 'BOOLEAN_VALUE',
-    DATE = 'DATE',
-    DB_ENTITY = 'DB_ENTITY',
-    NUMBER = 'NUMBER',
-    NUMBER_VALUE = 'NUMBER_VALUE',
-    OBJECT = 'OBJECT',
-    STRING = 'STRING',
-    STRING_VALUE = 'STRING_VALUE',
-    TYPE_UNION = 'TYPE_UNION'
 }

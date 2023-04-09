@@ -12,7 +12,7 @@ import {
 	DbDomain_LocalId,
 	DbDomain_Name,
 } from '@airport/ground-control'
-import { DdlApplication } from './DdlApplication'
+import { DdlApplication } from './application/DdlApplication'
 
 @Entity()
 @Table({ name: 'DB_DOMAINS' })

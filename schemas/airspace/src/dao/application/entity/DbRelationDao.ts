@@ -6,9 +6,9 @@ import {
 	IDatastructureUtils
 } from '@airport/ground-control'
 import { Y } from '@airport/tarmaq-query'
-import { BaseDdlRelationDao, IBaseDdlRelationDao } from '../generated/baseDaos'
-import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
-import { QDdlApplication, QDdlApplicationVersion, QDdlEntity, QDdlRelation } from '../generated/qInterfaces'
+import { BaseDdlRelationDao, IBaseDdlRelationDao } from '../../../generated/baseDaos'
+import Q_airport____at_airport_slash_airspace from '../../../generated/qApplication'
+import { QDdlApplication, QDdlApplicationVersion, QDdlEntity, QDdlRelation } from '../../../generated/qInterfaces'
 
 export interface IDbRelationDao
 	extends IBaseDdlRelationDao {

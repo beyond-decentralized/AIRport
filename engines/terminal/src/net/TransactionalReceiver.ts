@@ -335,6 +335,51 @@ export abstract class TransactionalReceiver {
         isFramework?: boolean
         isStarted: boolean,
     }> {
+        const fullDbApplication_Name = this.dbApplicationUtils.
+            getDbApplication_FullNameFromDomainAndName(
+                message.serverDomain, message.serverApplication)
+        const application = this.terminalStore.getApplicationMapByFullName().get(fullDbApplication_Name)
+        if (!application) {
+            console.error(`Application not found
+${fullDbApplication_Name}
+`)
+            return {
+                isStarted: false
+            }
+        }
+
+        const apiClass = application.currentVersion[0].applicationVersion
+            .apiClassMapByName[message.objectName]
+        if (!apiClass) {
+
+            console.error(`Could not find
+            API Class:
+${message.objectName}
+            Application:
+${fullDbApplication_Name}
+`)
+            return {
+                isStarted: false
+            }
+        }
+
+        const apiOperation = apiClass.operationMapByName[message.methodName]
+
+        if (!apiOperation) {
+
+            console.error(`Could not find
+            @Api():
+${message.objectName}.${message.methodName}
+            Application:
+${fullDbApplication_Name}
+`)
+            return {
+                isStarted: false
+            }
+        }
+
+        context.isObservableApiCall = !apiOperation.isAsync
+
         const transactionCredentials: IApiCredentials = {
             application: message.serverApplication,
             domain: message.serverDomain,

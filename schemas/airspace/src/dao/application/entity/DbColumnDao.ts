@@ -2,9 +2,9 @@ import { IContext, Inject, Injected } from '@airport/direction-indicator';
 import {
 	DbEntity_LocalId, DbColumn, IDatastructureUtils
 } from '@airport/ground-control'
-import { BaseDdlColumnDao, IBaseDdlColumnDao } from '../generated/baseDaos';
-import Q_airport____at_airport_slash_airspace from '../generated/qApplication';
-import { QDdlColumn } from '../generated/qInterfaces';
+import { BaseDdlColumnDao, IBaseDdlColumnDao } from '../../../generated/baseDaos';
+import Q_airport____at_airport_slash_airspace from '../../../generated/qApplication';
+import { QDdlColumn } from '../../../generated/qInterfaces';
 
 export interface IDbColumnDao
 	extends IBaseDdlColumnDao {

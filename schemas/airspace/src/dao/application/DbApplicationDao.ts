@@ -17,10 +17,10 @@ import {
 	DbApplication
 } from '@airport/ground-control'
 import { IAirportDatabase } from '@airport/air-traffic-control'
-import { DdlApplication } from '../ddl/application/DdlApplication'
-import { BaseDdlApplicationDao, IBaseDdlApplicationDao } from '../generated/baseDaos'
-import { QDdlApplication, QDdlApplicationCurrentVersion, QDdlApplicationVersion, QDdlDomain } from '../generated/qInterfaces'
-import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
+import { DdlApplication } from '../../ddl/application/DdlApplication'
+import { BaseDdlApplicationDao, IBaseDdlApplicationDao } from '../../generated/baseDaos'
+import { QDdlApplication, QDdlApplicationCurrentVersion, QDdlApplicationVersion, QDdlDomain } from '../../generated/qInterfaces'
+import Q_airport____at_airport_slash_airspace from '../../generated/qApplication'
 
 export interface DbApplicationLookupRecord {
 	index: number

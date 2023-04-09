@@ -18,7 +18,7 @@ import {
 	DbApplication,
 	DbApplication_PublicSigningKey
 } from '@airport/ground-control';
-import { DdlDomain } from './DdlDomain';
+import { DdlDomain } from '../DdlDomain';
 import { DdlApplicationCurrentVersion } from './DdlApplicationCurrentVersion';
 import { DdlApplicationVersion } from './DdlApplicationVersion';
 

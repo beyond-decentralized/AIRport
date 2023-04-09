@@ -28,7 +28,7 @@ import {
 import { DdlEntity } from './DdlEntity';
 import { DdlPropertyColumn } from './DdlPropertyColumn';
 import { DdlRelationColumn } from './DdlRelationColumn';
-import { DdlVersionedObject } from './DdlVersionedObject';
+import { DdlVersionedObject } from '../../DdlVersionedObject';
 
 @Entity()
 @Table({

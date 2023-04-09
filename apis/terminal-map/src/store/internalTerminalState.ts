@@ -6,8 +6,9 @@
 import {
     BehaviorSubject
 } from "rxjs";
+import { ITerminalState } from "./TerminalState";
 
-globalThis.internalTerminalState = new BehaviorSubject({
+globalThis.internalTerminalState = new BehaviorSubject<ITerminalState>({
     apiSubscriptionMap: new Map(),
     applicationActors: [],
     applicationInitializer: {
@@ -30,6 +31,10 @@ globalThis.internalTerminalState = new BehaviorSubject({
     },
     isServer: false,
     lastIds: {
+        apiClasses: 0,
+        apiOperations: 0,
+        apiParameters: 0,
+        apiReturnTypes: 0,
         columns: 0,
         domains: 0,
         entities: 0,

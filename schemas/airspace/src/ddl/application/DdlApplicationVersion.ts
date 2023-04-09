@@ -21,13 +21,17 @@ import {
 	DbApplicationVersion_VersionString,
 	DbApplicationReference,
 	DbEntity,
-	DbApplicationVersion
+	DbApplicationVersion,
+	AppApiClass_Name,
+	AppApiClass,
+	DbEntity_Name,
+	DbApplication_FullName
 } from '@airport/ground-control'
 import { DdlApplication } from './DdlApplication'
-import { DdlEntity } from './DdlEntity'
+import { DdlEntity } from './entity/DdlEntity'
 import { DdlApplicationReference } from './DdlApplicationReference'
 import { JsonApplicationWithLastIds } from '@airport/air-traffic-control'
-
+import { ApplicationApiClass } from './api/ApplicationApiClass'
 
 @Entity()
 @Table({ name: 'DB_APPLICATION_VERSIONS' })
@@ -75,6 +79,9 @@ export class DdlApplicationVersion
 	application: DdlApplication
 
 	@OneToMany({ mappedBy: 'applicationVersion' })
+	apiClasses?: ApplicationApiClass[] = []
+
+	@OneToMany({ mappedBy: 'applicationVersion' })
 	entities?: DdlEntity[] = []
 
 	@OneToMany({ mappedBy: 'ownApplicationVersion' })
@@ -84,12 +91,15 @@ export class DdlApplicationVersion
 	referencedBy?: DdlApplicationReference[] = []
 
 	@Transient()
-	entityMapByName?: { [entityName: string]: DbEntity } = {}
+	apiClassMapByName?: { [apiClassName: AppApiClass_Name]: AppApiClass } = {}
 
 	@Transient()
-	referencesMapByName?: { [fullDbApplication_Name: string]: DbApplicationReference } = {}
+	entityMapByName?: { [entityName: DbEntity_Name]: DbEntity } = {}
 
 	@Transient()
-	referencedByMapByName?: { [fullDbApplication_Name: string]: DbApplicationReference } = {}
+	referencesMapByName?: { [fullDbApplication_Name: DbApplication_FullName]: DbApplicationReference } = {}
+
+	@Transient()
+	referencedByMapByName?: { [fullDbApplication_Name: DbApplication_FullName]: DbApplicationReference } = {}
 
 }

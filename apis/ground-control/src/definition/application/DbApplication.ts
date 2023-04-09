@@ -1,9 +1,11 @@
 import {
 	DbEntity,
+	DbEntity_Name,
 	JsonEntity
 } from './DbEntity';
 import { DbApplicationReferenceByIndex } from './DbProperty';
 import { ApplicationStatus } from './ApplicationStatus';
+import { AppApiClass, AppApiClass_Name } from './AppApi';
 
 export type DbApplication_LocalId = number;
 export type DbApplication_Name = string; // Just the name of the application, without the Domain Name
@@ -166,6 +168,16 @@ export interface DbApplicationVersion
 	_localId: DbApplicationVersion_LocalId;
 
 	/**
+	 * API Classes.
+	 */
+	apiClasses?: AppApiClass[]
+
+	/**
+	 * Map of all API Classes by name.
+	 */
+	apiClassMapByName?: { [apiClassName: AppApiClass_Name]: AppApiClass }
+
+	/**
 	 * Entities by their application table indexes.
 	 */
 	entities?: DbEntity[];
@@ -173,7 +185,7 @@ export interface DbApplicationVersion
 	/**
 	 * Map of all entities by name.
 	 */
-	entityMapByName?: { [entityName: string]: DbEntity };
+	entityMapByName?: { [entityName: DbEntity_Name]: DbEntity };
 
 	/**
 	 * Applications referenced in this application, by terminal index.
@@ -190,12 +202,12 @@ export interface DbApplicationVersion
 	/**
 	 * Map of all referenced applications, by name.
 	 */
-	referencesMapByName?: { [applicationName: string]: DbApplicationReference };
+	referencesMapByName?: { [applicationName: DbApplication_FullName]: DbApplicationReference };
 
 	/**
 	 * Map of all referencing applications, by name.
 	 */
-	referencedByMapByName?: { [applicationName: string]: DbApplicationReference };
+	referencedByMapByName?: { [applicationName: DbApplication_FullName]: DbApplicationReference };
 
 	jsonApplication: JsonApplication
 

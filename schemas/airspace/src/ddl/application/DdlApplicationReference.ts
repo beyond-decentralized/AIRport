@@ -9,7 +9,7 @@ import {
 } from '@airport/tarmaq-entity'
 import { DbApplicationReference_Index, DbApplicationReference } from '@airport/ground-control'
 import { DdlApplicationVersion } from './DdlApplicationVersion'
-import { DdlVersionedObject } from './DdlVersionedObject'
+import { DdlVersionedObject } from '../DdlVersionedObject'
 
 @Entity()
 @Table({

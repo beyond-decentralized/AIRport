@@ -1,9 +1,9 @@
 import { AND, Y } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import { DbApplication_Name, DbApplicationVersion, DbDomain_Name } from '@airport/ground-control'
-import { BaseDdlApplicationVersionDao, IBaseDdlApplicationVersionDao } from '../generated/baseDaos'
-import { QDdlApplication, QDdlApplicationVersion, QDdlDomain } from '../generated/qInterfaces'
-import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
+import { BaseDdlApplicationVersionDao, IBaseDdlApplicationVersionDao } from '../../generated/baseDaos'
+import { QDdlApplication, QDdlApplicationVersion, QDdlDomain } from '../../generated/qInterfaces'
+import Q_airport____at_airport_slash_airspace from '../../generated/qApplication'
 
 export interface IDbApplicationVersionDao
 	extends IBaseDdlApplicationVersionDao {

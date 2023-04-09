@@ -17,6 +17,10 @@ import {
 	DbRelationColumn,
 	DbApplicationCurrentVersion,
 	DbApplicationReference,
+	AppApiClass,
+	AppApiOperation,
+	AppApiParameter,
+	AppApiReturnType,
 } from '@airport/ground-control';
 import {
 	AllDdlObjects,
@@ -94,6 +98,10 @@ export class ApplicationComposer
 		const newColumnsMap: Map<DbApplication_FullName, DbColumn[][]> = new Map()
 
 		const added: DdlObjects = {
+			apiClasses: [],
+			apiOperations: [],
+			apiParameters: [],
+			apiReturnTypes: [],
 			columns: [],
 			domains: [],
 			entities: [],
@@ -108,6 +116,10 @@ export class ApplicationComposer
 		}
 		const allApplicationVersionsByIds: DbApplicationVersion[] = [...terminalStore.getAllApplicationVersionsByIds()];
 		const all: DdlObjects = {
+			apiClasses: [],
+			apiOperations: [],
+			apiParameters: [],
+			apiReturnTypes: [],
 			columns: [], //
 			domains: [], //
 			entities: [], //
@@ -194,6 +206,9 @@ export class ApplicationComposer
 				added.relationColumns, newApplicationVersionMapByDbApplication_Name,
 				newApplicationReferenceMap, newRelationsMap,
 				newColumnsMap, terminalStore, allDdlObjects)
+			this.composeApplicationApis(jsonApplication, applicationVersion,
+				added.apiClasses, added.apiOperations,
+				added.apiParameters, added.apiReturnTypes)
 		}
 
 		this.addObjects(allDdlObjects.added, allDdlObjects.all)
@@ -288,6 +303,10 @@ export class ApplicationComposer
 				toObjects.domains.push(fromDomain)
 			}
 		}
+		toObjects.apiClasses = toObjects.apiClasses.concat(fromObjects.apiClasses)
+		toObjects.apiOperations = toObjects.apiOperations.concat(fromObjects.apiOperations)
+		toObjects.apiParameters = toObjects.apiParameters.concat(fromObjects.apiParameters)
+		toObjects.apiReturnTypes = toObjects.apiReturnTypes.concat(fromObjects.apiReturnTypes)
 		toObjects.entities = toObjects.entities.concat(fromObjects.entities)
 		toObjects.latestApplicationVersions = toObjects.latestApplicationVersions
 			.concat(fromObjects.latestApplicationVersions)
@@ -819,6 +838,61 @@ export class ApplicationComposer
 				manyColumn.manyRelationColumns = []; // relationColumns
 			}
 		}
+	}
+
+	private composeApplicationApis(
+		jsonApplication: JsonApplicationWithLastIds,
+		applicationVersion: DbApplicationVersion,
+		newApiClasses: AppApiClass[],
+		newApiOperations: AppApiOperation[],
+		newApiParameters: AppApiParameter[],
+		newApiReturnTypes: AppApiReturnType[]
+	): void {
+		// TODO: verify that jsonApplication.versions is always ordered ascending
+		const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
+		const apiDefinition = currentApplicationVersion.api;
+		const newApplicationApiClasses: AppApiClass[] = [];
+		for (const apiClassName in apiDefinition.apiObjectMap) {
+			const apiClassDefinition = apiDefinition.apiObjectMap[apiClassName]
+			const apiClass: AppApiClass = {
+				_localId: ++this.terminalStore.getLastIds().apiClasses,
+				name: apiClassName,
+				applicationVersion,
+				operations: []
+
+			}
+			for (const operationName in apiClassDefinition.operationMap) {
+				const apiOperationDefinition = apiClassDefinition.operationMap[operationName]
+				const apiOperation: AppApiOperation = {
+					_localId: ++this.terminalStore.getLastIds().apiOperations,
+					isAsync: apiOperationDefinition.isAsync,
+					name: operationName,
+					apiClass,
+					parameters: [],
+					returnType: []
+				}
+				newApiOperations.push(apiOperation)
+
+				for (let index = 0; index < apiOperationDefinition.parameters.length; index++) {
+					const apiParameterDefinition = apiOperationDefinition.parameters[index]
+					const apiParameter: AppApiParameter = {
+						_localId: ++this.terminalStore.getLastIds().apiParameters,
+						index,
+						isRest: apiParameterDefinition.isRest,
+						operation: apiOperation,
+						text: apiParameterDefinition.text
+					}
+					newApiParameters.push(apiParameter)
+				}
+				apiClass.operations.push(apiOperation)
+				apiClass.operationMapByName[apiOperation.name] = apiOperation
+				// TODO: Add return type
+			}
+			newApplicationApiClasses.push(apiClass);
+			newApiClasses.push(apiClass);
+			applicationVersion.apiClassMapByName[apiClass.name] = apiClass
+		}
+		applicationVersion.apiClasses = newApplicationApiClasses;
 	}
 
 }

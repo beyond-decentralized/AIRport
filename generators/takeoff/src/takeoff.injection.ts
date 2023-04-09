@@ -10,7 +10,11 @@ import {
     DbRelationColumnDao,
     DbRelationDao,
     DbApplicationVersionDao,
-    DbDomainDao
+    DbDomainDao,
+    ApplicationApiClassDao,
+    ApplicationApiOperationDao,
+    ApplicationApiParameterDao,
+    ApplicationApiReturnTypeDao
 } from '@airport/airspace/dist/app/bundle'
 import { lib } from '@airport/direction-indicator/dist/esm/direction-indicator.index'
 import { ApplicationReferenceUtils, APPLICATION_UTILS, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, SEQUENCE_GENERATOR } from '@airport/ground-control'
@@ -47,7 +51,7 @@ takeoff.setDependencies(ApplicationChecker, {
     dbApplicationDao: DbApplicationDao,
     datastructureUtils: DatastructureUtils,
     dbApplicationUtils: DbApplicationUtils,
-	transactionManager: TRANSACTION_MANAGER
+    transactionManager: TRANSACTION_MANAGER
 })
 
 takeoff.setDependencies(ApplicationComposer, {
@@ -79,6 +83,10 @@ takeoff.setDependencies(ApplicationLocator, {
 })
 
 takeoff.setDependencies(ApplicationRecorder, {
+    applicationApiClassDao: ApplicationApiClassDao,
+    applicationApiOperationDao: ApplicationApiOperationDao,
+    applicationApiParameterDao: ApplicationApiParameterDao,
+    applicationApiReturnTypeDao: ApplicationApiReturnTypeDao,
     dbColumnDao: DbColumnDao,
     dbApplicationDao: DbApplicationDao,
     dbEntityDao: DbEntityDao,
@@ -98,6 +106,10 @@ takeoff.setDependencies(DdlObjectLinker, {
 })
 
 takeoff.setDependencies(DdlObjectRetriever, {
+    applicationApiClassDao: ApplicationApiClassDao,
+    // applicationApiOperationDao: ApplicationApiOperationDao,
+    // applicationApiParameterDao: ApplicationApiParameterDao,
+    // applicationApiReturnTypeDao: ApplicationApiReturnTypeDao,
     dbColumnDao: DbColumnDao,
     dbApplicationDao: DbApplicationDao,
     dbEntityDao: DbEntityDao,

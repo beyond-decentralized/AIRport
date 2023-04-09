@@ -1,9 +1,9 @@
 import { OR } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import { DbColumn_LocalId, DbRelationColumn } from '@airport/ground-control'
-import { BaseDdlRelationColumnDao, IBaseDdlRelationColumnDao } from '../generated/baseDaos'
-import { QDdlRelationColumn } from '../generated/qInterfaces'
-import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
+import { BaseDdlRelationColumnDao, IBaseDdlRelationColumnDao } from '../../../generated/baseDaos'
+import { QDdlRelationColumn } from '../../../generated/qInterfaces'
+import Q_airport____at_airport_slash_airspace from '../../../generated/qApplication'
 
 export interface IDbRelationColumnDao
 	extends IBaseDdlRelationColumnDao {

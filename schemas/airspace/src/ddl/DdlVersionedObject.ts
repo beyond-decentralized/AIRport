@@ -4,7 +4,7 @@ import {
 	ManyToOne,
 	MappedSuperclass
 } from '@airport/tarmaq-entity'
-import { DdlApplicationVersion } from './DdlApplicationVersion'
+import { DdlApplicationVersion } from './application/DdlApplicationVersion'
 
 @MappedSuperclass()
 export class DdlVersionedObject

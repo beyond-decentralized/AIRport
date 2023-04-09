@@ -8,7 +8,7 @@ import {
 } from '@airport/tarmaq-entity'
 import { DdlColumn } from './DdlColumn'
 import { DdlProperty } from './DdlProperty'
-import { DdlVersionedObject } from './DdlVersionedObject'
+import { DdlVersionedObject } from '../../DdlVersionedObject'
 
 /**
  * Many-to-Many between Columns and properties

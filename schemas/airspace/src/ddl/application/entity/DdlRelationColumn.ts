@@ -10,7 +10,7 @@ import {
 } from '@airport/tarmaq-entity'
 import { DdlColumn } from './DdlColumn'
 import { DdlRelation } from './DdlRelation'
-import { DdlVersionedObject } from './DdlVersionedObject'
+import { DdlVersionedObject } from '../../DdlVersionedObject'
 
 @Entity()
 @Table({
