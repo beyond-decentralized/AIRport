@@ -50,6 +50,7 @@ export class CrossTabCommunicator
                 case Message_Type.IS_CONNECTION_READY:
                     this.clientHost = messageOriginFragments[1]
                     this.clientProtocol = messageOriginFragments[0]
+                    this.pendingMessageIdSet.add(message.id)
                     break
                 case Message_Type.API_SUBSCRIBE: {
                     this.activeSubscriptionIdSet.add(message.subscriptionId)
@@ -110,6 +111,12 @@ export class CrossTabCommunicator
                     default: {
                         // Not an observable message
                         if (!this.pendingMessageIdSet.has(message.id)) {
+                            console.log(`
+Corresponding message request not found for Message:
+    Id:      ${message.id}
+    Content:
+${JSON.stringify(message)}
+`)
                             return
                         }
                         this.pendingMessageIdSet.delete(message.id)

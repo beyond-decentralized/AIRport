@@ -9125,21 +9125,6 @@ const Api = function () {
     };
 };
 
-var ApiObjectKind;
-(function (ApiObjectKind) {
-    ApiObjectKind["ARRAY"] = "ARRAY";
-    ApiObjectKind["BOOLEAN"] = "BOOLEAN";
-    ApiObjectKind["BOOLEAN_VALUE"] = "BOOLEAN_VALUE";
-    ApiObjectKind["DATE"] = "DATE";
-    ApiObjectKind["DB_ENTITY"] = "DB_ENTITY";
-    ApiObjectKind["NUMBER"] = "NUMBER";
-    ApiObjectKind["NUMBER_VALUE"] = "NUMBER_VALUE";
-    ApiObjectKind["OBJECT"] = "OBJECT";
-    ApiObjectKind["STRING"] = "STRING";
-    ApiObjectKind["STRING_VALUE"] = "STRING_VALUE";
-    ApiObjectKind["TYPE_UNION"] = "TYPE_UNION";
-})(ApiObjectKind || (ApiObjectKind = {}));
-
 class ApplicationUtils {
     getDbEntity(applicationIndex, entityIndex) {
         return this.airportDatabase.applications[applicationIndex].currentVersion[0]
@@ -10419,14 +10404,19 @@ class SequenceDao extends BaseSequenceDao {
 const airportCode = lib('@airport/airport-code');
 airportCode.register(SequenceDao, TerminalRunDao);
 
-class DdlDomain {
+class ApplicationApiClass {
+    constructor() {
+        this.operationMapByName = {};
+    }
 }
 
-class DdlApplication {
-    constructor() {
-        this.versions = [];
-        this.currentVersion = [];
-    }
+class ApplicationApiOperation {
+}
+
+class ApplicationApiParameter {
+}
+
+class ApplicationApiReturnType {
 }
 
 class DdlVersionedObject {
@@ -10440,9 +10430,6 @@ class DdlColumn extends DdlVersionedObject {
         this.oneRelationColumns = [];
         this.propertyColumnMap = {};
     }
-}
-
-class DdlApplicationCurrentVersion {
 }
 
 class DdlEntity extends DdlVersionedObject {
@@ -10487,9 +10474,6 @@ class DdlProperty extends DdlVersionedObject {
 class DdlPropertyColumn extends DdlVersionedObject {
 }
 
-class DdlApplicationReference extends DdlVersionedObject {
-}
-
 class DdlRelation extends DdlVersionedObject {
     constructor() {
         super(...arguments);
@@ -10501,18 +10485,40 @@ class DdlRelation extends DdlVersionedObject {
 class DdlRelationColumn extends DdlVersionedObject {
 }
 
+class DdlApplication {
+    constructor() {
+        this.versions = [];
+        this.currentVersion = [];
+    }
+}
+
+class DdlApplicationCurrentVersion {
+}
+
+class DdlApplicationReference extends DdlVersionedObject {
+}
+
 class DdlApplicationVersion {
     constructor() {
+        this.apiClasses = [];
         this.entities = [];
         this.references = [];
         this.referencedBy = [];
+        this.apiClassMapByName = {};
         this.entityMapByName = {};
         this.referencesMapByName = {};
         this.referencedByMapByName = {};
     }
 }
 
+class DdlDomain {
+}
+
 const __constructors__$5 = {
+    ApplicationApiClass,
+    ApplicationApiOperation,
+    ApplicationApiParameter,
+    ApplicationApiReturnType,
     DdlApplication,
     DdlApplicationCurrentVersion,
     DdlApplicationReference,
@@ -10544,7 +10550,22 @@ class SQDIDao$4 extends ObservableDao {
         super(dbEntityId, Q_airport____at_airport_slash_airspace);
     }
 }
-class BaseDdlApplicationDao extends SQDIDao$4 {
+class BaseApplicationApiClassDao extends SQDIDao$4 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_airspace_diSet(10);
+    }
+    constructor() {
+        super(10);
+    }
+}
+BaseApplicationApiClassDao.Find = new DaoQueryDecorators();
+BaseApplicationApiClassDao.FindOne = new DaoQueryDecorators();
+BaseApplicationApiClassDao.Search = new DaoQueryDecorators();
+BaseApplicationApiClassDao.SearchOne = new DaoQueryDecorators();
+class BaseApplicationApiOperationDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -10553,6 +10574,51 @@ class BaseDdlApplicationDao extends SQDIDao$4 {
     }
     constructor() {
         super(9);
+    }
+}
+BaseApplicationApiOperationDao.Find = new DaoQueryDecorators();
+BaseApplicationApiOperationDao.FindOne = new DaoQueryDecorators();
+BaseApplicationApiOperationDao.Search = new DaoQueryDecorators();
+BaseApplicationApiOperationDao.SearchOne = new DaoQueryDecorators();
+class BaseApplicationApiParameterDao extends SQDIDao$4 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_airspace_diSet(7);
+    }
+    constructor() {
+        super(7);
+    }
+}
+BaseApplicationApiParameterDao.Find = new DaoQueryDecorators();
+BaseApplicationApiParameterDao.FindOne = new DaoQueryDecorators();
+BaseApplicationApiParameterDao.Search = new DaoQueryDecorators();
+BaseApplicationApiParameterDao.SearchOne = new DaoQueryDecorators();
+class BaseApplicationApiReturnTypeDao extends SQDIDao$4 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_airspace_diSet(8);
+    }
+    constructor() {
+        super(8);
+    }
+}
+BaseApplicationApiReturnTypeDao.Find = new DaoQueryDecorators();
+BaseApplicationApiReturnTypeDao.FindOne = new DaoQueryDecorators();
+BaseApplicationApiReturnTypeDao.Search = new DaoQueryDecorators();
+BaseApplicationApiReturnTypeDao.SearchOne = new DaoQueryDecorators();
+class BaseDdlApplicationDao extends SQDIDao$4 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_airspace_diSet(13);
+    }
+    constructor() {
+        super(13);
     }
 }
 BaseDdlApplicationDao.Find = new DaoQueryDecorators();
@@ -10564,10 +10630,10 @@ class BaseDdlApplicationCurrentVersionDao extends SQDIDao$4 {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_airspace_diSet(8);
+        return airport____at_airport_slash_airspace_diSet(12);
     }
     constructor() {
-        super(8);
+        super(12);
     }
 }
 BaseDdlApplicationCurrentVersionDao.Find = new DaoQueryDecorators();
@@ -10594,10 +10660,10 @@ class BaseDdlApplicationVersionDao extends SQDIDao$4 {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_airspace_diSet(7);
+        return airport____at_airport_slash_airspace_diSet(11);
     }
     constructor() {
-        super(7);
+        super(11);
     }
 }
 BaseDdlApplicationVersionDao.Find = new DaoQueryDecorators();
@@ -10624,10 +10690,10 @@ class BaseDdlDomainDao extends SQDIDao$4 {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
-        return airport____at_airport_slash_airspace_diSet(10);
+        return airport____at_airport_slash_airspace_diSet(14);
     }
     constructor() {
-        super(10);
+        super(14);
     }
 }
 BaseDdlDomainDao.Find = new DaoQueryDecorators();
@@ -10709,6 +10775,119 @@ BaseDdlRelationColumnDao.Find = new DaoQueryDecorators();
 BaseDdlRelationColumnDao.FindOne = new DaoQueryDecorators();
 BaseDdlRelationColumnDao.Search = new DaoQueryDecorators();
 BaseDdlRelationColumnDao.SearchOne = new DaoQueryDecorators();
+
+class ApplicationApiClassDao extends BaseApplicationApiClassDao {
+    async findWithAllNestedObjects() {
+        let aac, aao;
+        return await this._find({
+            SELECT: {
+                "*": Y,
+                operations: {
+                    "*": Y,
+                    parameters: {},
+                    returnType: {}
+                }
+            },
+            FROM: [
+                aac = Q_airport____at_airport_slash_airspace.ApplicationApiClass,
+                aao = aac.operations.LEFT_JOIN(),
+                aao.parameters.LEFT_JOIN(),
+                aao.returnType.LEFT_JOIN()
+            ]
+        });
+    }
+    async insert(applicationApiClasses, context) {
+        let aac;
+        const VALUES = [];
+        for (const applicationApiClass of applicationApiClasses) {
+            VALUES.push([
+                applicationApiClass._localId,
+                applicationApiClass.name,
+                applicationApiClass.applicationVersion._localId,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: aac = Q_airport____at_airport_slash_airspace.ApplicationApiClasss,
+            columns: [
+                aac._localId,
+                aac.name,
+                aac.applicationVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+}
+
+class ApplicationApiOperationDao extends BaseApplicationApiOperationDao {
+    async insert(applicationApiOperations, context) {
+        let aao;
+        const VALUES = [];
+        for (const applicationApiOperation of applicationApiOperations) {
+            VALUES.push([
+                applicationApiOperation._localId, applicationApiOperation.isAsync,
+                applicationApiOperation.name, applicationApiOperation.apiClass._localId,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: aao = Q_airport____at_airport_slash_airspace.ApplicationApiOperation,
+            columns: [
+                aao._localId,
+                aao.isAsync,
+                aao.name,
+                aao.apiClass._localId
+            ],
+            VALUES
+        }, context);
+    }
+}
+
+class ApplicationApiParameterDao extends BaseApplicationApiParameterDao {
+    async insert(applicationApiParameters, context) {
+        let aap;
+        const VALUES = [];
+        for (const applicationApiParameter of applicationApiParameters) {
+            VALUES.push([
+                applicationApiParameter._localId, applicationApiParameter.index,
+                applicationApiParameter.isRest, applicationApiParameter.operation._localId,
+                applicationApiParameter.text
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: aap = Q_airport____at_airport_slash_airspace.ApplicationApiParameter,
+            columns: [
+                aap._localId,
+                aap.index,
+                aap.isRest,
+                aap.operation._localId,
+                aap.text
+            ],
+            VALUES
+        }, context);
+    }
+}
+
+class ApplicationApiReturnTypeDao extends BaseApplicationApiReturnTypeDao {
+    async insert(applicationApiReturnTypes, context) {
+        let aart;
+        const VALUES = [];
+        for (const applicationApiReturnType of applicationApiReturnTypes) {
+            VALUES.push([
+                applicationApiReturnType._localId, applicationApiReturnType.isArray,
+                applicationApiReturnType.type
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: aart = Q_airport____at_airport_slash_airspace.ApplicationApiReturnType,
+            columns: [
+                aart._localId,
+                aart.isArray,
+                aart.operation._localId,
+                aart.type
+            ],
+            VALUES
+        }, context);
+    }
+}
 
 class DbApplicationDao extends BaseDdlApplicationDao {
     async findAllActive(context) {
@@ -11233,107 +11412,6 @@ class DbColumnDao extends BaseDdlColumnDao {
     }
 }
 
-class DbDomainDao extends BaseDdlDomainDao {
-    async findByIdIn(domainIds, context) {
-        let d;
-        return await this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                d = Q_airport____at_airport_slash_airspace.DdlDomain
-            ],
-            WHERE: d._localId.IN(domainIds)
-        }, context);
-    }
-    async findMapByNameWithNames(domainNames, context) {
-        let d;
-        const domains = await this.db.find.tree({
-            SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
-            WHERE: d.name.IN(domainNames)
-        }, context);
-        const domainMapByNameWithNames = new Map();
-        for (const domain of domains) {
-            domainMapByNameWithNames.set(domain.name, domain);
-        }
-        return domainMapByNameWithNames;
-    }
-    async findOneByName(name, context) {
-        let d;
-        return await this.db.findOne.tree({
-            SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
-            WHERE: d.name.equals(name)
-        }, context);
-    }
-    async findByNames(names, context) {
-        let d;
-        return await this.db.find.tree({
-            SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
-            WHERE: d.name.IN(names)
-        }, context);
-    }
-    async findByName(name, context) {
-        let d;
-        return await this.db.findOne.tree({
-            SELECT: {},
-            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
-            WHERE: d.name.equals(name)
-        }, context);
-    }
-    async checkAndInsertIfNeeded(domains, context) {
-        const existingDomains = await this.findByIdIn(domains.map(domain => domain._localId), context);
-        const existingDomainMap = new Map();
-        for (const existingDomain of existingDomains) {
-            existingDomainMap.set(existingDomain._localId, existingDomain);
-        }
-        const newDomains = [];
-        for (const domain of domains) {
-            if (!existingDomainMap.has(domain._localId)) {
-                newDomains.push(domain);
-            }
-        }
-        if (!newDomains.length) {
-            return;
-        }
-        let d;
-        const VALUES = [];
-        for (const domain of newDomains) {
-            VALUES.push([
-                domain._localId, domain.name
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
-            columns: [
-                d._localId,
-                d.name,
-            ],
-            VALUES
-        }, context);
-    }
-    async insert(domains, context) {
-        let d;
-        const VALUES = [];
-        for (const domain of domains) {
-            VALUES.push([
-                domain.name
-            ]);
-        }
-        const ids = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
-            columns: [
-                d.name
-            ],
-            VALUES
-        }, context);
-        for (let i = 0; i < domains.length; i++) {
-            let domain = domains[i];
-            domain._localId = ids[i][0];
-        }
-    }
-}
-
 class DbEntityDao extends BaseDdlEntityDao {
     async findAllForApplicationVersions(applicationVersionIds, context) {
         let se;
@@ -11577,6 +11655,107 @@ class DbRelationDao extends BaseDdlRelationDao {
     }
 }
 
+class DbDomainDao extends BaseDdlDomainDao {
+    async findByIdIn(domainIds, context) {
+        let d;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                d = Q_airport____at_airport_slash_airspace.DdlDomain
+            ],
+            WHERE: d._localId.IN(domainIds)
+        }, context);
+    }
+    async findMapByNameWithNames(domainNames, context) {
+        let d;
+        const domains = await this.db.find.tree({
+            SELECT: {},
+            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
+            WHERE: d.name.IN(domainNames)
+        }, context);
+        const domainMapByNameWithNames = new Map();
+        for (const domain of domains) {
+            domainMapByNameWithNames.set(domain.name, domain);
+        }
+        return domainMapByNameWithNames;
+    }
+    async findOneByName(name, context) {
+        let d;
+        return await this.db.findOne.tree({
+            SELECT: {},
+            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
+            WHERE: d.name.equals(name)
+        }, context);
+    }
+    async findByNames(names, context) {
+        let d;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
+            WHERE: d.name.IN(names)
+        }, context);
+    }
+    async findByName(name, context) {
+        let d;
+        return await this.db.findOne.tree({
+            SELECT: {},
+            FROM: [d = Q_airport____at_airport_slash_airspace.DdlDomain],
+            WHERE: d.name.equals(name)
+        }, context);
+    }
+    async checkAndInsertIfNeeded(domains, context) {
+        const existingDomains = await this.findByIdIn(domains.map(domain => domain._localId), context);
+        const existingDomainMap = new Map();
+        for (const existingDomain of existingDomains) {
+            existingDomainMap.set(existingDomain._localId, existingDomain);
+        }
+        const newDomains = [];
+        for (const domain of domains) {
+            if (!existingDomainMap.has(domain._localId)) {
+                newDomains.push(domain);
+            }
+        }
+        if (!newDomains.length) {
+            return;
+        }
+        let d;
+        const VALUES = [];
+        for (const domain of newDomains) {
+            VALUES.push([
+                domain._localId, domain.name
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
+            columns: [
+                d._localId,
+                d.name,
+            ],
+            VALUES
+        }, context);
+    }
+    async insert(domains, context) {
+        let d;
+        const VALUES = [];
+        for (const domain of domains) {
+            VALUES.push([
+                domain.name
+            ]);
+        }
+        const ids = await this.db.insertValuesGenerateIds({
+            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
+            columns: [
+                d.name
+            ],
+            VALUES
+        }, context);
+        for (let i = 0; i < domains.length; i++) {
+            let domain = domains[i];
+            domain._localId = ids[i][0];
+        }
+    }
+}
+
 const application$4 = {
     name: '@airport/airspace',
     domain: {
@@ -11585,7 +11764,7 @@ const application$4 = {
 };
 
 const airspace = app(application$4);
-airspace.register(DbDomainDao, DbColumnDao, DbApplicationDao, DbEntityDao, DbPropertyColumnDao, DbPropertyDao, DbApplicationReferenceDao, DbRelationColumnDao, DbRelationDao, DbApplicationVersionDao);
+airspace.register(ApplicationApiClassDao, ApplicationApiOperationDao, ApplicationApiParameterDao, ApplicationApiReturnTypeDao, DbApplicationDao, DbApplicationReferenceDao, DbApplicationVersionDao, DbColumnDao, DbDomainDao, DbEntityDao, DbPropertyColumnDao, DbPropertyDao, DbRelationColumnDao, DbRelationDao);
 airspace.setDependencies(DbColumnDao, {
     datastructureUtils: DatastructureUtils
 });
@@ -11789,6 +11968,10 @@ globalThis.internalTerminalState = new BehaviorSubject({
     },
     isServer: false,
     lastIds: {
+        apiClasses: 0,
+        apiOperations: 0,
+        apiParameters: 0,
+        apiReturnTypes: 0,
         columns: 0,
         domains: 0,
         entities: 0,
@@ -12295,6 +12478,10 @@ class ApplicationComposer {
         const newRelationsMap = new Map();
         const newColumnsMap = new Map();
         const added = {
+            apiClasses: [],
+            apiOperations: [],
+            apiParameters: [],
+            apiReturnTypes: [],
             columns: [],
             domains: [],
             entities: [],
@@ -12309,6 +12496,10 @@ class ApplicationComposer {
         };
         const allApplicationVersionsByIds = [...terminalStore.getAllApplicationVersionsByIds()];
         const all = {
+            apiClasses: [],
+            apiOperations: [],
+            apiParameters: [],
+            apiReturnTypes: [],
             columns: [],
             domains: [],
             entities: [],
@@ -12367,6 +12558,7 @@ class ApplicationComposer {
             this.composeApplicationRelations(jsonApplication, applicationVersion, added.relations, newRelationsMap, newEntitiesMapByDbApplication_Name, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects);
             this.composeApplicationColumns(jsonApplication, applicationVersion, added.columns, newColumnsMap, added.propertyColumns, newEntitiesMapByDbApplication_Name, newPropertiesMap);
             this.composeApplicationRelationColumns(jsonApplication, applicationVersion, added.relationColumns, newApplicationVersionMapByDbApplication_Name, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects);
+            this.composeApplicationApis(jsonApplication, applicationVersion, added.apiClasses, added.apiOperations, added.apiParameters, added.apiReturnTypes);
         }
         this.addObjects(allDdlObjects.added, allDdlObjects.all);
         for (const applicationVersion of allDdlObjects.all.applicationVersions) {
@@ -12443,6 +12635,10 @@ class ApplicationComposer {
                 toObjects.domains.push(fromDomain);
             }
         }
+        toObjects.apiClasses = toObjects.apiClasses.concat(fromObjects.apiClasses);
+        toObjects.apiOperations = toObjects.apiOperations.concat(fromObjects.apiOperations);
+        toObjects.apiParameters = toObjects.apiParameters.concat(fromObjects.apiParameters);
+        toObjects.apiReturnTypes = toObjects.apiReturnTypes.concat(fromObjects.apiReturnTypes);
         toObjects.entities = toObjects.entities.concat(fromObjects.entities);
         toObjects.latestApplicationVersions = toObjects.latestApplicationVersions
             .concat(fromObjects.latestApplicationVersions);
@@ -12836,6 +13032,51 @@ class ApplicationComposer {
             }
         }
     }
+    composeApplicationApis(jsonApplication, applicationVersion, newApiClasses, newApiOperations, newApiParameters, newApiReturnTypes) {
+        // TODO: verify that jsonApplication.versions is always ordered ascending
+        const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
+        const apiDefinition = currentApplicationVersion.api;
+        const newApplicationApiClasses = [];
+        for (const apiClassName in apiDefinition.apiObjectMap) {
+            const apiClassDefinition = apiDefinition.apiObjectMap[apiClassName];
+            const apiClass = {
+                _localId: ++this.terminalStore.getLastIds().apiClasses,
+                name: apiClassName,
+                applicationVersion,
+                operations: []
+            };
+            for (const operationName in apiClassDefinition.operationMap) {
+                const apiOperationDefinition = apiClassDefinition.operationMap[operationName];
+                const apiOperation = {
+                    _localId: ++this.terminalStore.getLastIds().apiOperations,
+                    isAsync: apiOperationDefinition.isAsync,
+                    name: operationName,
+                    apiClass,
+                    parameters: [],
+                    returnType: []
+                };
+                newApiOperations.push(apiOperation);
+                for (let index = 0; index < apiOperationDefinition.parameters.length; index++) {
+                    const apiParameterDefinition = apiOperationDefinition.parameters[index];
+                    const apiParameter = {
+                        _localId: ++this.terminalStore.getLastIds().apiParameters,
+                        index,
+                        isRest: apiParameterDefinition.isRest,
+                        operation: apiOperation,
+                        text: apiParameterDefinition.text
+                    };
+                    newApiParameters.push(apiParameter);
+                }
+                apiClass.operations.push(apiOperation);
+                apiClass.operationMapByName[apiOperation.name] = apiOperation;
+                // TODO: Add return type
+            }
+            newApplicationApiClasses.push(apiClass);
+            newApiClasses.push(apiClass);
+            applicationVersion.apiClassMapByName[apiClass.name] = apiClass;
+        }
+        applicationVersion.apiClasses = newApplicationApiClasses;
+    }
 }
 
 class ApplicationRecorder {
@@ -12856,6 +13097,10 @@ class ApplicationRecorder {
             await this.dbColumnDao.insert(ddlObjects.columns, context);
             await this.dbPropertyColumnDao.insert(ddlObjects.propertyColumns, context);
             await this.dbRelationColumnDao.insert(ddlObjects.relationColumns, context);
+            await this.applicationApiReturnTypeDao.insert(ddlObjects.apiReturnTypes, context);
+            await this.applicationApiParameterDao.insert(ddlObjects.apiParameters, context);
+            await this.applicationApiOperationDao.insert(ddlObjects.apiOperations, context);
+            await this.applicationApiClassDao.insert(ddlObjects.apiClasses, context);
         }, null, context);
     }
     setDefaultVersioning(ddlObjects) {
@@ -13273,6 +13518,7 @@ class DdlObjectRetriever {
         const domains = await this.dbDomainDao.findByIdIn(Array.from(domainIdSet), context);
         const allApplicationVersions = await this.dbApplicationVersionDao
             .findAllActiveOrderByDbApplication_IndexAndId(context);
+        const applicationVersionMapByLocalId = new Map();
         let lastDbApplication_Index;
         // const allApplicationVersionsByIds: DbApplicationVersion[] = []
         const latestApplicationVersions = [];
@@ -13284,6 +13530,7 @@ class DdlObjectRetriever {
             // allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion
             lastDbApplication_Index = applicationVersion.application.index;
             applicationVersions.push(applicationVersion);
+            applicationVersionMapByLocalId.set(applicationVersion._localId, applicationVersion);
         }
         const latestDbApplicationVersion_LocalIds = latestApplicationVersions.map(applicationVersion => applicationVersion._localId);
         const applicationReferences = await this.dbApplicationReferenceDao
@@ -13312,8 +13559,59 @@ class DdlObjectRetriever {
             .findAllForColumns(columnIds, context);
         const relationColumns = await this.dbRelationColumnDao
             .findAllForColumns(columnIds, context);
+        const apiClasses = await this.applicationApiClassDao.findAll();
+        let apiOperations = [];
+        let apiParameters = [];
+        let apiReturnTypes = [];
+        for (const apiClass of apiClasses) {
+            apiOperations = apiOperations.concat(apiClass.operations);
+            for (const apiOperation of apiOperations) {
+                apiOperation.parameters.sort((a, b) => a.index - b.index);
+                apiParameters = apiParameters.concat(apiOperation.parameters);
+                apiReturnTypes = apiReturnTypes.concat(apiOperation.returnType);
+            }
+        }
+        /*
+        const apiClassMapByLocalId: Map<AppApiClass_LocalId, AppApiClass> = new Map()
+        for (const apiClass of apiClasses) {
+            apiClassMapByLocalId.set(apiClass._localId, apiClass)
+            const applicationVersion = applicationVersionMapByLocalId.get(apiClass.applicationVersion._localId)
+            apiClass.applicationVersion = applicationVersion
+        }
+
+        const apiOperations = await this.applicationApiOperationDao.findAll()
+        const apiOperationMapByLocalId: Map<AppApiOperation_LocalId, AppApiOperation> = new Map()
+        for (const apiOperation of apiOperations) {
+            apiOperationMapByLocalId.set(apiOperation._localId, apiOperation)
+            const apiClass = apiClassMapByLocalId.get(apiOperation.apiClass._localId)
+            apiOperation.apiClass = apiClass
+            apiClass.operations.push(apiOperation)
+        }
+
+        const apiParameters = await this.applicationApiParameterDao.findAll()
+        for (const apiParameter of apiParameters) {
+            const apiOperation = apiOperationMapByLocalId.get(apiParameter.operation._localId)
+            apiParameter.operation = apiOperation
+            apiOperation.parameters.push(apiParameter)
+        }
+
+        const apiReturnTypes = await this.applicationApiReturnTypeDao.findAll()
+        for(const apiReturnType of apiReturnTypes) {
+            const apiOperation = apiOperationMapByLocalId.get(apiReturnType.operation._localId)
+            apiReturnType.operation = apiOperation
+            apiOperation.returnType.push(apiReturnType)
+        }
+
+        for (const apiOperation of apiOperations) {
+            apiOperation.parameters.sort((a, b) => a.index - b.index)
+        }
+        */
         const lastTerminalState = this.terminalStore.getTerminalState();
         const lastIds = {
+            apiClasses: apiClasses.length,
+            apiOperations: apiOperations.length,
+            apiParameters: apiParameters.length,
+            apiReturnTypes: apiReturnTypes.length,
             columns: columns.length,
             domains: domains.length,
             entities: entities.length,
@@ -13328,9 +13626,10 @@ class DdlObjectRetriever {
             lastIds
         });
         return {
-            // allDomains: domains,
-            // allApplications: applications,
-            // allApplicationVersionsByIds,
+            apiClasses,
+            apiOperations,
+            apiParameters,
+            apiReturnTypes,
             columns,
             domains,
             entities,
@@ -13469,6 +13768,10 @@ takeoff.setDependencies(ApplicationLocator, {
     dbApplicationUtils: DbApplicationUtils,
 });
 takeoff.setDependencies(ApplicationRecorder, {
+    applicationApiClassDao: ApplicationApiClassDao,
+    applicationApiOperationDao: ApplicationApiOperationDao,
+    applicationApiParameterDao: ApplicationApiParameterDao,
+    applicationApiReturnTypeDao: ApplicationApiReturnTypeDao,
     dbColumnDao: DbColumnDao,
     dbApplicationDao: DbApplicationDao,
     dbEntityDao: DbEntityDao,
@@ -13486,6 +13789,10 @@ takeoff.setDependencies(DdlObjectLinker, {
     terminalStore: TerminalStore
 });
 takeoff.setDependencies(DdlObjectRetriever, {
+    applicationApiClassDao: ApplicationApiClassDao,
+    // applicationApiOperationDao: ApplicationApiOperationDao,
+    // applicationApiParameterDao: ApplicationApiParameterDao,
+    // applicationApiReturnTypeDao: ApplicationApiReturnTypeDao,
     dbColumnDao: DbColumnDao,
     dbApplicationDao: DbApplicationDao,
     dbEntityDao: DbEntityDao,
@@ -15966,7 +16273,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -15988,7 +16295,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -16010,7 +16317,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -16254,7 +16561,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -16264,7 +16571,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -16274,7 +16581,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -16344,7 +16651,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -16366,7 +16673,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -16388,7 +16695,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -16725,7 +17032,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -16735,7 +17042,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -16745,7 +17052,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -16821,7 +17128,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -16843,7 +17150,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -16865,7 +17172,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17069,7 +17376,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -17079,7 +17386,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -17089,7 +17396,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -17145,7 +17452,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17167,7 +17474,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17189,7 +17496,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17318,7 +17625,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -17328,7 +17635,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -17338,7 +17645,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -17378,7 +17685,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17400,7 +17707,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17422,7 +17729,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17773,7 +18080,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -17783,7 +18090,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -17793,7 +18100,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -17862,7 +18169,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17884,7 +18191,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -17906,7 +18213,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -18012,8 +18319,8 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 3,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
-                                    "oneRelationIndex": 1,
+                                    "oneTableIndex": 11,
+                                    "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -18174,7 +18481,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -18184,7 +18491,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -18194,7 +18501,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -18204,7 +18511,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 9
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -18276,7 +18583,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -18298,7 +18605,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -18320,7 +18627,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -18356,8 +18663,8 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 3,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
-                                    "oneRelationIndex": 2,
+                                    "oneTableIndex": 11,
+                                    "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -18379,8 +18686,8 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 4,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
-                                    "oneRelationIndex": 3,
+                                    "oneTableIndex": 11,
+                                    "oneRelationIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -18472,7 +18779,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -18482,7 +18789,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -18492,7 +18799,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -18502,7 +18809,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -18512,13 +18819,619 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "DB_APPLICATION_REFERENCES",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "allocationSize": 100,
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "APPLICATION_API_PARAMETER_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "PARAMETER_INDEX",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "IS_REST",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "TYPE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 9,
+                                    "oneRelationIndex": 1,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "APPLICATION_API_OPERATION_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 7,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "ApplicationApiParameter",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "index",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "isRest",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "operation",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 3
+                            },
+                            "index": 4,
+                            "isId": false,
+                            "name": "text",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 9,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "APPLICATION_API_PARAMETER",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "allocationSize": 100,
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "APPLICATION_API_RETURN_TYPE_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "IS_ARRAY",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "TYPE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 9,
+                                    "oneRelationIndex": 2,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "APPLICATION_API_OPERATION_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 8,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "ApplicationApiReturnType",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "isArray",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "operation",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 3,
+                            "isId": false,
+                            "name": "type",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 9,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "APPLICATION_API_RETURN_TYPE",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "allocationSize": 100,
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "APPLICATION_API_OPERATION_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "IS_ASYNC",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "NAME",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 10,
+                                    "oneRelationIndex": 1,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "APPLICATION_API_CLASS_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 9,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "ApplicationApiOperation",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "isAsync",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "name",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "apiClass",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "parameters",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "name": "returnType",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "operation"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "operation"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 5
+                            },
+                            "relationTableIndex": 8,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "APPLICATION_API_OPERATION",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "allocationSize": 100,
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "APPLICATION_API_CLASS_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "NAME",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneDbApplication_Index": null,
+                                    "oneTableIndex": 11,
+                                    "oneRelationIndex": 1,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "DB_APPLICATION_VERSION_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 10,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "ApplicationApiClass",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "name",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "applicationVersion",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "operations",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 11,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "apiClass"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 9,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "APPLICATION_API_CLASS",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -18645,7 +19558,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 9,
+                                    "oneTableIndex": 13,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -18667,7 +19580,7 @@ const APPLICATION$5 = {
                             "index": 0
                         }
                     ],
-                    "index": 7,
+                    "index": 11,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "DdlApplicationVersion",
@@ -18756,7 +19669,7 @@ const APPLICATION$5 = {
                         {
                             "index": 9,
                             "isId": false,
-                            "name": "entities",
+                            "name": "apiClasses",
                             "relationRef": {
                                 "index": 1
                             },
@@ -18765,7 +19678,7 @@ const APPLICATION$5 = {
                         {
                             "index": 10,
                             "isId": false,
-                            "name": "references",
+                            "name": "entities",
                             "relationRef": {
                                 "index": 2
                             },
@@ -18774,9 +19687,18 @@ const APPLICATION$5 = {
                         {
                             "index": 11,
                             "isId": false,
-                            "name": "referencedBy",
+                            "name": "references",
                             "relationRef": {
                                 "index": 3
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 12,
+                            "isId": false,
+                            "name": "referencedBy",
+                            "relationRef": {
+                                "index": 4
                             },
                             "sinceVersion": 1
                         }
@@ -18789,7 +19711,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 8
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 13,
                             "sinceVersion": 1
                         },
                         {
@@ -18802,31 +19724,44 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 9
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 10,
                             "sinceVersion": 1
                         },
                         {
                             "index": 2,
                             "isId": false,
                             "oneToManyElems": {
-                                "mappedBy": "ownApplicationVersion"
+                                "mappedBy": "applicationVersion"
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
                                 "index": 10
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
                             "index": 3,
                             "isId": false,
                             "oneToManyElems": {
-                                "mappedBy": "referencedApplicationVersion"
+                                "mappedBy": "ownApplicationVersion"
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
                                 "index": 11
+                            },
+                            "relationTableIndex": 6,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "referencedApplicationVersion"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 12
                             },
                             "relationTableIndex": 6,
                             "sinceVersion": 1
@@ -18848,7 +19783,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 9,
+                                    "oneTableIndex": 13,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -18871,7 +19806,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -18895,7 +19830,7 @@ const APPLICATION$5 = {
                             "index": 1
                         }
                     ],
-                    "index": 8,
+                    "index": 12,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "DdlApplicationCurrentVersion",
@@ -18927,7 +19862,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 13,
                             "sinceVersion": 1
                         },
                         {
@@ -18937,7 +19872,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         }
                     ],
@@ -19040,7 +19975,7 @@ const APPLICATION$5 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneDbApplication_Index": null,
-                                    "oneTableIndex": 10,
+                                    "oneTableIndex": 14,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -19062,7 +19997,7 @@ const APPLICATION$5 = {
                             "index": 0
                         }
                     ],
-                    "index": 9,
+                    "index": 13,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "DdlApplication",
@@ -19157,7 +20092,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 14,
                             "sinceVersion": 1
                         },
                         {
@@ -19170,7 +20105,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -19183,7 +20118,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 8
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 12,
                             "sinceVersion": 1
                         }
                     ],
@@ -19230,7 +20165,7 @@ const APPLICATION$5 = {
                             "index": 0
                         }
                     ],
-                    "index": 10,
+                    "index": 14,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "DdlDomain",
@@ -19274,7 +20209,7 @@ const APPLICATION$5 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 13,
                             "sinceVersion": 1
                         }
                     ],
@@ -21744,7 +22679,7 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneDbApplication_Index": 1,
-                                    "oneTableIndex": 9,
+                                    "oneTableIndex": 13,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -21846,7 +22781,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 13,
                             "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         }
@@ -22734,7 +23669,7 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneDbApplication_Index": 1,
-                                    "oneTableIndex": 9,
+                                    "oneTableIndex": 13,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -22813,7 +23748,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 13,
                             "relationTableDbApplication_Index": 1,
                             "sinceVersion": 1
                         },
@@ -26203,7 +27138,7 @@ const APPLICATION$2 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneDbApplication_Index": 0,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -26398,7 +27333,7 @@ const APPLICATION$2 = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "relationTableDbApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -35703,6 +36638,43 @@ class TransactionalReceiver {
         };
     }
     async startApiCall(message, context, nativeHandleCallback) {
+        const fullDbApplication_Name = this.dbApplicationUtils.
+            getDbApplication_FullNameFromDomainAndName(message.serverDomain, message.serverApplication);
+        const application = this.terminalStore.getApplicationMapByFullName().get(fullDbApplication_Name);
+        if (!application) {
+            console.error(`Application not found
+${fullDbApplication_Name}
+`);
+            return {
+                isStarted: false
+            };
+        }
+        const apiClass = application.currentVersion[0].applicationVersion
+            .apiClassMapByName[message.objectName];
+        if (!apiClass) {
+            console.error(`Could not find
+            API Class:
+${message.objectName}
+            Application:
+${fullDbApplication_Name}
+`);
+            return {
+                isStarted: false
+            };
+        }
+        const apiOperation = apiClass.operationMapByName[message.methodName];
+        if (!apiOperation) {
+            console.error(`Could not find
+            @Api():
+${message.objectName}.${message.methodName}
+            Application:
+${fullDbApplication_Name}
+`);
+            return {
+                isStarted: false
+            };
+        }
+        context.isObservableApiCall = !apiOperation.isAsync;
         const transactionCredentials = {
             application: message.serverApplication,
             domain: message.serverDomain,
