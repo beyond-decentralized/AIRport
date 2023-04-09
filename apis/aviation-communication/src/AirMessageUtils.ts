@@ -126,7 +126,7 @@ ${JSON.stringify(message, null, 2)}
                 ) || !this.isValidApplicationNameString(
                     message.serverApplication
                 )) {
-                    console.error(`FROM_CLIENT Message does not have valid client domain and application:
+                    console.error(`FROM_CLIENT Message does not have valid server domain and application:
 ${JSON.stringify(message, null, 2)}
 `)
                     return false

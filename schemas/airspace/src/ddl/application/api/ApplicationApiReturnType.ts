@@ -20,15 +20,15 @@ export class ApplicationApiReturnType
     @DbBoolean()
     isArray: AppApiReturnType_IsArray
 
+    @Column({ name: 'TYPE' })
+    @DbString()
+    type: AppApiReturnType_Type
+
     @ManyToOne()
     @JoinColumn({
         name: 'APPLICATION_API_OPERATION_LID',
         referencedColumnName: 'APPLICATION_API_OPERATION_LID'
     })
     operation: ApplicationApiOperation
-
-    @Column({ name: 'TYPE' })
-    @DbString()
-    type: AppApiReturnType_Type
 
 }

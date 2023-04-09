@@ -1,8 +1,8 @@
 import { IContext, Injected } from "@airport/direction-indicator";
-import { QApplicationApiOperation } from "../../../../dist/app/bundle";
 import { ApplicationApiOperation } from "../../../ddl/ddl";
 import { BaseApplicationApiOperationDao, IBaseApplicationApiOperationDao } from "../../../generated/baseDaos";
 import Q_airport____at_airport_slash_airspace from "../../../generated/qApplication";
+import { QApplicationApiOperation } from "../../../generated/qInterfaces";
 
 export interface IApplicationApiOperationDao
     extends IBaseApplicationApiOperationDao {
