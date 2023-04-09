@@ -4,8 +4,7 @@
     ".git": true,
     ".history": true,
     "**/node_modules": true,
-    "**/dist": true,
-    "**/generated": true
+    "**/dist": true
   },
   // Controls whether to use global `.gitignore` and `.ignore` files when searching for files. Requires `search.useIgnoreFiles` to be enabled.
   "search.useGlobalIgnoreFiles": true,
@@ -20,7 +19,6 @@
     ".github": true,
     ".history": true,
     ".vscode": true,
-    "**/generated": true,
     "**/.idea": true,
     "**/.rush": true,
     "common": true
