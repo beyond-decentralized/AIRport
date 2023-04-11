@@ -274,7 +274,8 @@ export class WebTransactionalReceiver
 		isStarted: boolean,
 	}> {
 		const messageCopy = {
-			...message
+			...message,
+			messageLeg: Message_Leg.FROM_HUB
 		}
 
 		return await this.startApiCall(messageCopy, context, async () => {
@@ -290,11 +291,7 @@ export class WebTransactionalReceiver
 		message: IApiCallRequestMessage,
 		context: IApiCallContext & ITransactionContext
 	): Promise<IApiCallResponseMessage> {
-		const messageCopy: IApiCallRequestMessage = {
-			...message
-		}
-		messageCopy.messageLeg = Message_Leg.FROM_HUB
-		const startDescriptor = await this.nativeStartApiCall(messageCopy, context);
+		const startDescriptor = await this.nativeStartApiCall(message, context);
 		if (!startDescriptor.isStarted) {
 			throw new Error(context.errorMessage)
 		}
@@ -308,9 +305,9 @@ export class WebTransactionalReceiver
 			transactionId = message.transactionId
 		} else {
 			const replyMessage: IApiCallResponseMessage = await new Promise((resolve) => {
-				this.terminalStore.getWebReceiver().pendingInterAppApiCallMessageMap.set(messageCopy.id, {
+				this.terminalStore.getWebReceiver().pendingInterAppApiCallMessageMap.set(message.id, {
 					message: {
-						...messageCopy,
+						...message,
 						direction: Message_Direction.TO_CLIENT,
 						messageLeg: Message_Leg.FROM_HUB,
 						type: Message_Type.API_CALL
@@ -326,7 +323,7 @@ export class WebTransactionalReceiver
 		}
 
 		const response: IApiCallResponseMessage = {
-			...messageCopy,
+			...message,
 			direction: Message_Direction.TO_CLIENT,
 			messageLeg: Message_Leg.FROM_HUB,
 			args,
@@ -336,6 +333,20 @@ export class WebTransactionalReceiver
 		}
 
 		return response;
+	}
+
+	protected async nativeHandleObservableApiCall(
+		message: IApiCallRequestMessage,
+		context: IApiCallContext & ITransactionContext
+	): Promise<void> {
+		const startDescriptor = await this.nativeStartApiCall(message, context);
+		if (!startDescriptor.isStarted) {
+			throw new Error(context.errorMessage)
+		}
+
+		if (startDescriptor.isFramework) {
+			await this.callFrameworkApi(message, context)
+		}
 	}
 
 	private async callFrameworkApi(
@@ -645,17 +656,32 @@ export class WebTransactionalReceiver
 				isolateSubscriptionMap.delete(message.id)
 				return;
 		}
+
 		let response
-		if (message.type === Message_Type.API_CALL) {
-			response = await this.nativeHandleApiCall(message as IApiCallRequestMessage, {
-				isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type),
-				startedAt: new Date()
-			})
-		} else {
-			response = await this.processFromClientMessage(message as IPortableQueryMessage
-				| IReadQueryMessage
-				| ISaveMessage<any>)
+		switch (message.type) {
+			case Message_Type.API_CALL: {
+				response = await this.nativeHandleApiCall(message as IApiCallRequestMessage, {
+					isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type),
+					startedAt: new Date()
+				})
+				break;
+			}
+			case Message_Type.API_SUBSCRIBE:
+			case Message_Type.API_UNSUBSCRIBE: {
+				await this.nativeHandleObservableApiCall(message as IApiCallRequestMessage, {
+					isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type),
+					startedAt: new Date()
+				})
+				break;
+			}
+			default: {
+				response = await this.processFromClientMessage(message as IPortableQueryMessage
+					| IReadQueryMessage
+					| ISaveMessage<any>)
+				break;
+			}
 		}
+
 		if (!response) {
 			return
 		}
