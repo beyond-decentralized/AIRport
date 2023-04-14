@@ -8419,28 +8419,44 @@ ${JSON.stringify(message, null, 2)}
         return true;
     }
     hasValidApplicationInfo(message) {
-        let application, domain, messageType = 'INTERNAL';
+        let application, domain;
         // All requests need to have a application signature
         // to know what application is being communicated to/from
         switch (message.direction) {
             case Message_Direction.FROM_CLIENT: {
-                if (!this.isValidDomainNameString(message.serverDomain) || !this.isValidApplicationNameString(message.serverApplication)) {
-                    console.error(`FROM_CLIENT Message does not have valid server domain and application:
-${JSON.stringify(message, null, 2)}
-`);
-                    return false;
+                switch (message.type) {
+                    case Message_Type.DELETE_WHERE:
+                    case Message_Type.FIND:
+                    case Message_Type.FIND_ONE:
+                    case Message_Type.INSERT_VALUES:
+                    case Message_Type.INSERT_VALUES_GET_IDS:
+                    case Message_Type.SAVE:
+                    case Message_Type.SEARCH_ONE_SUBSCRIBE:
+                    case Message_Type.SEARCH_ONE_UNSUBSCRIBE:
+                    case Message_Type.SEARCH_SUBSCRIBE:
+                    case Message_Type.SEARCH_SUBSCRIBTION_DATA:
+                    case Message_Type.SEARCH_UNSUBSCRIBE:
+                    case Message_Type.UPDATE_VALUES: {
+                        if (!this.validateDomainAndApplication(message, message.clientDomain, message.clientApplication)) {
+                            return false;
+                        }
+                        domain = message.clientDomain;
+                        application = message.clientApplication;
+                        break;
+                    }
+                    default: {
+                        if (!this.validateDomainAndApplication(message, message.serverDomain, message.serverApplication)) {
+                            return false;
+                        }
+                        domain = message.serverDomain;
+                        application = message.serverApplication;
+                        break;
+                    }
                 }
-                domain = message.serverDomain;
-                application = message.serverApplication;
                 break;
             }
-            case Message_Direction.TO_CLIENT:
-                messageType = 'TO_CLIENT';
-            case Message_Direction.INTERNAL: {
-                if (!this.isValidDomainNameString(message.clientDomain) || !this.isValidApplicationNameString(message.clientApplication)) {
-                    console.error(`${messageType} Message does not have valid server domain and application:
-${JSON.stringify(message, null, 2)}
-`);
+            case Message_Direction.TO_CLIENT:            case Message_Direction.INTERNAL: {
+                if (!this.validateDomainAndApplication(message, message.clientDomain, message.clientApplication)) {
                     return false;
                 }
                 domain = message.clientDomain;
@@ -8463,6 +8479,15 @@ ${domain}
         if (application.indexOf('.') > -1) {
             console.error(`Invalid Application name - cannot have periods that would point to invalid subdomains:
 ${application}
+`);
+            return false;
+        }
+        return true;
+    }
+    validateDomainAndApplication(message, messageDomain, messageApplication) {
+        if (!this.isValidDomainNameString(messageDomain) || !this.isValidApplicationNameString(messageApplication)) {
+            console.error(`${message.direction} Message does not have valid server domain and application:
+${JSON.stringify(message, null, 2)}
 `);
             return false;
         }

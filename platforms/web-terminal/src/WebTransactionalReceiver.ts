@@ -384,7 +384,8 @@ export class WebTransactionalReceiver
 				throw new Error(`Could not find AIRport Framework Application: ${fullDbApplication_Name}`)
 			}
 			internalResponse = await this.localApiServer.coreHandleRequest(messageCopy,
-				(application.currentVersion[0].applicationVersion.jsonApplication.versions[0] as JsonApplicationVersionWithApi).api, context)
+				(application.currentVersion[0].applicationVersion.jsonApplication //
+					.versions[0] as JsonApplicationVersionWithApi).api, context)
 
 			replyToClient = internalResponse.isAsync
 		} catch (e) {
