@@ -12032,7 +12032,8 @@ globalThis.internalTerminalState = new BehaviorSubject({
         pendingApplicationCounts: new Map(),
         pendingHostCounts: new Map(),
         pendingInterAppApiCallMessageMap: new Map(),
-        subscriptionMap: new Map()
+        subscriptionMap: new Map(),
+        subscriptionSourceWindowMap: new Map()
     }
 });
 

@@ -115,7 +115,7 @@ export class WebTransactionalReceiver
 			| IRetrieveDomainMessage
 			| ISaveMessage<any>,
 		messageOrigin: string,
-		source: Window
+		sourceWindow: Window
 	): void {
 		const webReciever = this.terminalStore.getWebReceiver()
 
@@ -130,14 +130,14 @@ export class WebTransactionalReceiver
 					| IPortableQueryMessage
 					| IReadQueryMessage
 					| ISaveMessage<any>,
-					messageOrigin, source).then()
+					messageOrigin, sourceWindow).then()
 				break
 			case Message_Direction.INTERNAL:
 				this.handleInternalMessage(message as
 					IGetLatestApplicationVersionByDbApplication_NameMessage
 					| IInitializeConnectionMessage
 					| IRetrieveDomainMessage,
-					messageOrigin, source).then()
+					messageOrigin, sourceWindow).then()
 				break
 			case Message_Direction.TO_CLIENT:
 				this.handleToClientMessage(message as IApiCallResponseMessage,
@@ -538,7 +538,31 @@ export class WebTransactionalReceiver
 		if (this.webMessageGateway.needMessageSerialization()) {
 			// FIXME: serialize message
 		}
-		this.webMessageGateway.sendMessageToClient(message)
+
+		let sourceWindow
+		if (message.subscriptionId && message.clientApplication !== 'UserInterface') {
+			const fullDbApplication_Name = this.dbApplicationUtils.
+				getDbApplication_FullNameFromDomainAndName(
+					message.clientDomain, message.clientApplication)
+			let isolateSubscriptionSourceWindowMap = this.terminalStore.getWebReceiver()
+				.subscriptionSourceWindowMap.get(fullDbApplication_Name)
+			if (!isolateSubscriptionSourceWindowMap) {
+				console.error(
+					`Message has a subscriptionId and isolateSubscriptionSourceWindowMap
+could not be found for client Application:
+	${fullDbApplication_Name}
+`)
+				return
+			}
+			sourceWindow = isolateSubscriptionSourceWindowMap.get(
+				message.subscriptionId)
+		}
+
+		if (sourceWindow) {
+			this.webMessageGateway.sendMessageToWindow(message, sourceWindow)
+		} else {
+			this.webMessageGateway.sendMessageToClient(message)
+		}
 	}
 
 	private decrementPendingCounts(
@@ -612,7 +636,7 @@ export class WebTransactionalReceiver
 			| IInitializeConnectionMessage
 			| IRetrieveDomainMessage,
 		messageOrigin: string,
-		source: Window
+		sourceWindow: Window
 	): Promise<void> {
 		if (!await this.messageIsFromValidApp(message, messageOrigin)) {
 			return
@@ -623,7 +647,7 @@ export class WebTransactionalReceiver
 		this.webMessageGateway.sendMessageToWindow({
 			...message,
 			returnedValue: result.theResult as any
-		}, source)
+		}, sourceWindow)
 	}
 
 	private async handleFromClientMessage(
@@ -632,7 +656,7 @@ export class WebTransactionalReceiver
 			| IReadQueryMessage
 			| ISaveMessage<any>,
 		messageOrigin: string,
-		source: Window
+		sourceWindow: Window
 	): Promise<void> {
 		if (!await this.messageIsFromValidApp(message, messageOrigin)) {
 			return
@@ -649,12 +673,12 @@ export class WebTransactionalReceiver
 				if (!isolateSubscriptionMap) {
 					return
 				}
-				let subscription = isolateSubscriptionMap.get(message.id)
+				let subscription = isolateSubscriptionMap.get(message.subscriptionId)
 				if (!subscription) {
 					return
 				}
 				subscription.unsubscribe()
-				isolateSubscriptionMap.delete(message.id)
+				isolateSubscriptionMap.delete(message.subscriptionId)
 				return;
 		}
 
@@ -667,8 +691,32 @@ export class WebTransactionalReceiver
 				})
 				break;
 			}
-			case Message_Type.API_SUBSCRIBE:
+			case Message_Type.API_SUBSCRIBE: {
+				let isolateSubscriptionSourceWindowMap = webReciever
+					.subscriptionSourceWindowMap.get(fullDbApplication_Name)
+				if (!isolateSubscriptionSourceWindowMap) {
+					isolateSubscriptionSourceWindowMap = new Map()
+					webReciever.subscriptionSourceWindowMap.set(
+						fullDbApplication_Name, isolateSubscriptionSourceWindowMap)
+				}
+				isolateSubscriptionSourceWindowMap.set(
+					message.subscriptionId, sourceWindow)
+				await this.nativeHandleObservableApiCall(message as IApiCallRequestMessage, {
+					isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type),
+					startedAt: new Date()
+				})
+				break;
+			}
 			case Message_Type.API_UNSUBSCRIBE: {
+				let isolateSubscriptionSourceWindowMap = webReciever
+					.subscriptionSourceWindowMap.get(fullDbApplication_Name)
+				if (!isolateSubscriptionSourceWindowMap) {
+					console.error(`During an API_UNSUBSCRIBE call,
+did not found an entry in subscriptionSourceWindowMap for Application:
+	${fullDbApplication_Name}
+`)
+				}
+				isolateSubscriptionSourceWindowMap.delete(message.subscriptionId)
 				await this.nativeHandleObservableApiCall(message as IApiCallRequestMessage, {
 					isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type),
 					startedAt: new Date()
@@ -698,7 +746,7 @@ export class WebTransactionalReceiver
 						...response,
 						returnedValue,
 						type
-					}, source)
+					}, sourceWindow)
 				})
 				let isolateSubscriptionMap = webReciever.subscriptionMap.get(fullDbApplication_Name)
 				if (!isolateSubscriptionMap) {
@@ -709,7 +757,7 @@ export class WebTransactionalReceiver
 				break
 			}
 			default: {
-				this.webMessageGateway.sendMessageToWindow(response, source)
+				this.webMessageGateway.sendMessageToWindow(response, sourceWindow)
 				break
 			}
 		}

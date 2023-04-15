@@ -26,6 +26,7 @@ export interface IWebReceiverState {
 	pendingHostCounts: Map<string, number>
 	pendingInterAppApiCallMessageMap: Map<string, IMessageInRecord>
 	subscriptionMap: Map<string, Map<string, Subscription>>
+	subscriptionSourceWindowMap: Map<string, Map<string, Window>>
 }
 
 export interface InternalConnectorState {
