@@ -494,11 +494,13 @@ ${subscriptionId}
 		cachedSqlQueryId?: number
 	): Observable<T> {
 		const coreFields = this.getCoreFields()
+		let subscriptionId = context.subscriptionId
 		let message = {
 			...coreFields,
 			cachedSqlQueryId,
 			portableQuery,
 			repository: context.repository,
+			subscriptionId,
 			type
 		}
 		let observableMessageRecord: IObservableMessageInRecord<T> = {
@@ -513,6 +515,7 @@ ${subscriptionId}
 			() => {
 				this.sendMessageNoReturn<IMessage>({
 					...coreFields,
+					subscriptionId,
 					type: Message_Type.SEARCH_UNSUBSCRIBE
 				}).then()
 			}

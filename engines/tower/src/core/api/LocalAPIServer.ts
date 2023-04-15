@@ -88,6 +88,9 @@ ${request.objectName}.${request.methodName}
             this.queryResultsDeserializer.setPropertyDescriptors(arg)
         }
 
+        context.subscriptionId = request.subscriptionId,
+		context.transactionId = request.transactionId
+
         let result = apiObject[request.methodName].apply(apiObject, [...request.args, context])
         if (apiOperation.isAsync) {
             result = await result
