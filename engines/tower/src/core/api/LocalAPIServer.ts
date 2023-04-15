@@ -41,7 +41,8 @@ export class LocalAPIServer
             this.requestManager.actor = request.actor
             this.requestManager.userAccount = request.actor.userAccount
 
-            internalResponse = await this.coreHandleRequest(request, this.applicationStore.state.api)
+            internalResponse = await this.coreHandleRequest(
+                request, this.applicationStore.state.api, {})
         } catch (e) {
             errorMessage = e.message ? e.message : e
             console.error(e)
@@ -87,9 +88,6 @@ ${request.objectName}.${request.methodName}
         for (let arg of request.args) {
             this.queryResultsDeserializer.setPropertyDescriptors(arg)
         }
-
-        context.subscriptionId = request.subscriptionId,
-		context.transactionId = request.transactionId
 
         let result = apiObject[request.methodName].apply(apiObject, [...request.args, context])
         if (apiOperation.isAsync) {

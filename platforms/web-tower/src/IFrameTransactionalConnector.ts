@@ -47,7 +47,7 @@ import {
 	ITerminalStore
 } from '@airport/terminal-map';
 import { IApplicationStore } from '@airport/tower';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { v4 as guidv4 } from 'uuid';
 
 export interface IIframeTransactionalConnector
@@ -369,19 +369,19 @@ ${subscriptionId}
 	private handleToClientMessage(
 		message: IApiCallResponseMessage,
 	) {
-		let observableMessageRecord: IObservableMessageInRecord<any>
+		let observableRequestSubject: Subject<any>
 		switch (message.type) {
 			case Message_Type.SEARCH_ONE_SUBSCRIBE:
 			case Message_Type.SEARCH_SUBSCRIBE: {
-				observableMessageRecord = this.applicationStore.state
-					.observableDbToIsolateMessageMap.get(message.id)
-				if (!observableMessageRecord || !observableMessageRecord.subject) {
+				observableRequestSubject = this.applicationStore.state
+					.observableRequestSubjectMap.get(message.id)
+				if (!observableRequestSubject) {
 					return
 				}
 				if (message.errorMessage) {
-					observableMessageRecord.subject.error(message.errorMessage)
+					observableRequestSubject.error(message.errorMessage)
 				} else {
-					observableMessageRecord.subject.next(message.returnedValue)
+					observableRequestSubject.next(message.returnedValue)
 				}
 				return
 			}
@@ -389,16 +389,16 @@ ${subscriptionId}
 
 		const subscriptionId = message.subscriptionId
 		if (subscriptionId) {
-			const apiRequestSubject = this.applicationStore.state.observableApiRequestMap.get(subscriptionId)
-			if (!apiRequestSubject) {
+			observableRequestSubject = this.applicationStore.state.observableRequestSubjectMap.get(subscriptionId)
+			if (!observableRequestSubject) {
 				console.error(`Could not find Observable API Request Subject for subscriptionId: ${subscriptionId}`)
 				return
 			}
 			try {
-				apiRequestSubject.next(message.returnedValue)
+				observableRequestSubject.next(message.returnedValue)
 			} catch (e) {
 				console.error(e)
-				apiRequestSubject.error(e)
+				observableRequestSubject.error(e)
 			}
 			return
 		}
@@ -494,7 +494,7 @@ ${subscriptionId}
 		cachedSqlQueryId?: number
 	): Observable<T> {
 		const coreFields = this.getCoreFields()
-		let subscriptionId = context.subscriptionId
+		let subscriptionId = (<IInjected>this).__container__.context.id
 		let message = {
 			...coreFields,
 			cachedSqlQueryId,
@@ -503,10 +503,6 @@ ${subscriptionId}
 			subscriptionId,
 			type
 		}
-		let observableMessageRecord: IObservableMessageInRecord<T> = {
-			id: coreFields.id
-		}
-		this.applicationStore.state.observableDbToIsolateMessageMap.set(coreFields.id, observableMessageRecord)
 
 		const subject = new SubscriptionCountSubject<T>(
 			() => {
@@ -520,7 +516,7 @@ ${subscriptionId}
 				}).then()
 			}
 		)
-		observableMessageRecord.subject = subject
+		this.applicationStore.state.observableRequestSubjectMap.set(subscriptionId, subject)
 
 		return subject;
 	}

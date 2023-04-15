@@ -31,7 +31,7 @@ async function processMessage(
         }
     }
 
-    const container = DEPENDENCY_INJECTION.db(message.transactionId)
+    const container = DEPENDENCY_INJECTION.db(containerId)
     try {
         const transactionalConnector: IIframeTransactionalConnector = await container.get(TRANSACTIONAL_CONNECTOR) as any
         await transactionalConnector.processMessage(

@@ -11,8 +11,7 @@ export const applicationState: IApplicationState = {
     hostServer: 'https://localhost:3000',
     // FIXME: tie this in to the hostServer variable
     mainDomain: null,
-    observableApiRequestMap: new Map(),
-    observableDbToIsolateMessageMap: new Map(),
+    observableRequestSubjectMap: new Map(),
     pendingMessageMap: new Map(),
     messageCallback: null,
 }

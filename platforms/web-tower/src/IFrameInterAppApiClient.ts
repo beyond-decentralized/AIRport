@@ -92,7 +92,7 @@ export class IFrameInterAppAPIClient
         if (isObservable) {
             request.type = Message_Type.API_SUBSCRIBE
             const subject = new ApiClientSubject<ReturnType>(args, request,
-                fullDiDescriptor, this.applicationStore.state.observableApiRequestMap)
+                fullDiDescriptor, this.applicationStore.state.observableRequestSubjectMap)
 
             return subject
         }

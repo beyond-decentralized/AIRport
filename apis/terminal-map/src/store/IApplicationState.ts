@@ -31,8 +31,7 @@ export interface IApplicationState {
     hostServer: string
     // FIXME: tie this in to the hostServer variable
     mainDomain: string
-    observableApiRequestMap: Map<string, Subject<any>>
-    observableDbToIsolateMessageMap: Map<string, IObservableMessageInRecord<any>>
+    observableRequestSubjectMap: Map<string, Subject<any>>
     pendingMessageMap: Map<string, IMessageInRecord>
 
     messageCallback: (
