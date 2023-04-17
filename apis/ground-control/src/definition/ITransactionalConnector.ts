@@ -14,6 +14,10 @@ export interface ITransactionalConnector {
 		apiInput: IApiCallRequestMessage
 	): Promise<IApiCallResponseMessage>
 
+	callApiNoReturn(
+		apiInput: IApiCallRequestMessage
+	): Promise<void>
+
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		context?: IAbstractQueryContext

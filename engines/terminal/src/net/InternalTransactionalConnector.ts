@@ -37,6 +37,14 @@ Interal Application API requests should be made directly (since
 they are internal to the AIRport framework).`)
     }
 
+    callApiNoReturn(
+        _: IApiCallRequestMessage
+    ): Promise<void> {
+        throw new Error(`InternalTransactionalConnector.callApiNoReturn should never be called.
+Interal Application API requests should be made directly (since
+they are internal to the AIRport framework).`)
+    }
+
     async find<E, EntityArray extends Array<E>>(
         portableQuery: PortableQuery,
         context: IQueryContext

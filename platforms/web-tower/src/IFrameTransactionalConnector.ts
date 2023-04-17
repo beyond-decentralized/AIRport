@@ -140,6 +140,16 @@ export class IframeTransactionalConnector
 		})
 	}
 
+	async callApiNoReturn(
+		apiInput: IApiCallRequestMessage
+	): Promise<void> {
+		await this.sendMessageNoReturn<IApiCallRequestMessage>({
+			...apiInput,
+			...this.getCoreFields(),
+			actor: null
+		})
+	}
+
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		context: IQueryContext,

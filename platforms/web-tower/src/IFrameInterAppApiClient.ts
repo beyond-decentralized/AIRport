@@ -104,8 +104,20 @@ export class IFrameInterAppAPIClient
         request: IApiCallRequestMessage,
         args: any[]
     ): Promise<ReturnType> {
-        const response = await this.transactionalConnector.callApi(request)
-
+        let response
+        switch(request.type) {
+            case Message_Type.API_SUBSCRIBE:
+            case Message_Type.API_UNSUBSCRIBE:
+            case Message_Type.API_SUBSCRIBTION_DATA: {
+                await this.transactionalConnector.callApiNoReturn(request)
+                return
+            }
+            default: {
+                response = await this.transactionalConnector.callApi(request)
+                break
+            }
+        }
+        
         let returnedValue
         if (_inWebMode) {
             returnedValue = response.returnedValue

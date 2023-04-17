@@ -36281,6 +36281,11 @@ class InternalTransactionalConnector {
 Interal Application API requests should be made directly (since
 they are internal to the AIRport framework).`);
     }
+    callApiNoReturn(_) {
+        throw new Error(`InternalTransactionalConnector.callApiNoReturn should never be called.
+Interal Application API requests should be made directly (since
+they are internal to the AIRport framework).`);
+    }
     async find(portableQuery, context) {
         return await this.transactionalServer.find(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,

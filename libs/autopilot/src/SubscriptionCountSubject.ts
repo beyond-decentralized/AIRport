@@ -1,4 +1,6 @@
-import { Observer, Subject, Subscription } from "rxjs";
+import { Observer, Subject, Subscriber, Subscription } from "rxjs";
+import { SafeSubscriber } from "rxjs/internal/Subscriber";
+import { isSubscription } from "rxjs/internal/Subscription";
 
 export class SubscriptionCountSubject<T>
     extends Subject<T> {
@@ -24,16 +26,60 @@ export class SubscriptionCountSubject<T>
         }
         this.subscriptionCount++
 
-        return super.subscribe(observerOrNext as any, error, complete)
+        if (this.isSubscriber(observerOrNext)) {
+            (observerOrNext as any).__parentUnsubscribe__ = observerOrNext.unsubscribe
+
+            observerOrNext.unsubscribe = () => {
+                (observerOrNext as any).__parentUnsubscribe__()
+                this.handleUnsubscribe();
+            }
+        } else {
+            observerOrNext = new SubscriptionCountSubscriber(this, observerOrNext, error, complete)
+        }
+
+        return super.subscribe(observerOrNext)
     }
 
-    unsubscribe(): void {
-        super.unsubscribe()
+    handleUnsubscribe() {
         this.subscriptionCount--
+        
         if (this.subscriptionCount > 0) {
             return
         }
-        this.onNoSubscriptionCallback()
+        
+        this.onNoSubscriptionCallback();
+    }
+
+    private isObserver<T>(value: any): value is Observer<T> {
+        return value && this.isFunction(value.next)
+            && this.isFunction(value.error) && this.isFunction(value.complete);
+    }
+
+    private isSubscriber<T>(value: any): value is Subscriber<T> {
+        return (value && value instanceof Subscriber)
+            || (this.isObserver(value) && isSubscription(value));
+    }
+
+    private isFunction(value: any): value is (...args: any[]) => any {
+        return typeof value === 'function';
+    }
+
+}
+
+class SubscriptionCountSubscriber<T> extends SafeSubscriber<T> {
+
+    constructor(
+        private subscriptionCountSubject: SubscriptionCountSubject<T>,
+        observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null,
+        error?: ((e?: any) => void) | null,
+        complete?: (() => void) | null
+    ) {
+        super(observerOrNext, error, complete)
+    }
+    
+    unsubscribe(): void {
+        super.unsubscribe()
+        this.subscriptionCountSubject.handleUnsubscribe();
     }
 
 }
