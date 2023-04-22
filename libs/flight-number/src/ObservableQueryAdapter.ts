@@ -177,6 +177,7 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
             trackedRepoLocalIdSet
         } as any as CachedSQLQuery<SQLQuery>;
         context.cachedSqlQuery = cachedSqlQuery
+        queryContext.cachedSqlQuery = cachedSqlQuery
 
         this.activeQueries.add(portableQuery, cachedSqlQuery);
 
