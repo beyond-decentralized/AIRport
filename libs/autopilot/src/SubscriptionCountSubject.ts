@@ -1,9 +1,11 @@
+import { ISubscriptionCountSubject } from "@airport/aviation-communication";
 import { Observer, Subject, Subscriber, Subscription } from "rxjs";
 import { SafeSubscriber } from "rxjs/internal/Subscriber";
 import { isSubscription } from "rxjs/internal/Subscription";
 
 export class SubscriptionCountSubject<T>
-    extends Subject<T> {
+    extends Subject<T>
+    implements ISubscriptionCountSubject<T> {
 
     subscriptionCount = 0
 
@@ -40,13 +42,13 @@ export class SubscriptionCountSubject<T>
         return super.subscribe(observerOrNext)
     }
 
-    handleUnsubscribe() {
+    handleUnsubscribe(): void {
         this.subscriptionCount--
-        
+
         if (this.subscriptionCount > 0) {
             return
         }
-        
+
         this.onNoSubscriptionCallback();
     }
 
@@ -76,7 +78,7 @@ class SubscriptionCountSubscriber<T> extends SafeSubscriber<T> {
     ) {
         super(observerOrNext, error, complete)
     }
-    
+
     unsubscribe(): void {
         super.unsubscribe()
         this.subscriptionCountSubject.handleUnsubscribe();

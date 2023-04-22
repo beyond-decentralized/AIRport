@@ -1266,7 +1266,7 @@ function getSqlDataType(sColumn) {
     }
 }
 
-var EntityState;
+var EntityState$1;
 (function (EntityState) {
     EntityState["CREATE"] = "CREATE";
     EntityState["DATE"] = "DATE";
@@ -1293,7 +1293,7 @@ var EntityState;
     // except for internal APIs
     // RESULT_JSON = 'RESULT_JSON',
     // RESULT_JSON_ARRAY = 'RESULT_JSON_ARRAY'
-})(EntityState || (EntityState = {}));
+})(EntityState$1 || (EntityState$1 = {}));
 
 /**
  * Category of a SQL contentType
@@ -34710,7 +34710,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                 const childSelectClauseFragment = selectClauseFragment[propertyName];
                 const dbRelation = dbProperty.relation[0];
                 const childDbEntity = dbRelation.relationEntity;
-                if (childSelectClauseFragment === null || childSelectClauseFragment.__state__ === EntityState.STUB) {
+                if (childSelectClauseFragment === null || childSelectClauseFragment.__state__ === EntityState$1.STUB) {
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
                             let haveRelationValues = false;
@@ -36645,13 +36645,13 @@ class TransactionalReceiver {
                 break;
             }
             case Message_Type.SEARCH_ONE_SUBSCRIBE:
-                theResult = await this.transactionalServer.searchOne(message.portableQuery, credentials, {
+                theResult = this.transactionalServer.searchOne(message.portableQuery, credentials, {
                     ...context,
                     repository: message.repository,
                 });
                 break;
             case Message_Type.SEARCH_SUBSCRIBE:
-                theResult = await this.transactionalServer.search(message.portableQuery, credentials, {
+                theResult = this.transactionalServer.search(message.portableQuery, credentials, {
                     ...context,
                     repository: message.repository,
                 });
@@ -39770,7 +39770,7 @@ class QueryResultsSerializer {
         operationUniqueId = ++operation.sequence;
         let entityStub = {};
         entityStub[entityStateManager.getUniqueIdFieldName()] = operationUniqueId;
-        entityStub[entityStateManager.getStateFieldName()] = EntityState.STUB;
+        entityStub[entityStateManager.getStateFieldName()] = EntityState$1.STUB;
         operation.stubLookupTable[operationUniqueId] = entityStub;
         let entityCopy = {};
         operation.lookupTable[operationUniqueId] = entity;
@@ -39815,7 +39815,7 @@ class QueryResultsSerializer {
                             value: property.toISOString()
                         };
                         propertyCopy[entityStateManager.getStateFieldName()]
-                            = EntityState.DATE;
+                            = EntityState$1.DATE;
                         break;
                     case SQLDataType.ANY:
                     case SQLDataType.BOOLEAN:
@@ -40473,6 +40473,190 @@ if (globalThis.IOC) {
     });
 }
 
+class AutopilotApiLoader {
+    constructor() {
+        this.lastCallMillisMap = new Map();
+    }
+    loadApiAutopilot(fullDIDescriptor, observableMethodNameSet) {
+        if (!this.lastCallMillisMap.has(fullDIDescriptor)) {
+            this.lastCallMillisMap.set(fullDIDescriptor, new Map());
+        }
+        let _this = this;
+        return new Proxy({}, {
+            get(target, methodName) {
+                let mapForToken = _this.lastCallMillisMap.get(fullDIDescriptor);
+                if (!mapForToken.has(methodName)) {
+                    mapForToken.set(methodName, 0);
+                }
+                switch (methodName) {
+                    case '__initialized__':
+                        return true;
+                    case 'then':
+                        return target;
+                }
+                return function (...args) {
+                    const nowMillis = new Date().getTime();
+                    if (mapForToken.get(methodName) + 300 > nowMillis) {
+                        throw new Error(`
+    ${fullDIDescriptor.descriptor.interface}.${methodName}
+    Double submitting a request in rapid succession,
+    please prevent double submission in UI code`);
+                    }
+                    mapForToken.set(methodName, nowMillis);
+                    const isObservable = observableMethodNameSet.has(methodName);
+                    return _this.apiClient.invokeApiMethod(fullDIDescriptor, methodName, args, isObservable);
+                };
+            }
+        });
+    }
+}
+
+class SubscriptionCountSubject extends Subject {
+    constructor(onFirstSubscriptionCallback, onNoSubscriptionCallback) {
+        super();
+        this.onFirstSubscriptionCallback = onFirstSubscriptionCallback;
+        this.onNoSubscriptionCallback = onNoSubscriptionCallback;
+        this.subscriptionCount = 0;
+    }
+    subscribe(observerOrNext, error, complete) {
+        if (this.subscriptionCount === 0) {
+            this.onFirstSubscriptionCallback();
+        }
+        this.subscriptionCount++;
+        if (this.isSubscriber(observerOrNext)) {
+            observerOrNext.__parentUnsubscribe__ = observerOrNext.unsubscribe;
+            observerOrNext.unsubscribe = () => {
+                observerOrNext.__parentUnsubscribe__();
+                this.handleUnsubscribe();
+            };
+        }
+        else {
+            observerOrNext = new SubscriptionCountSubscriber(this, observerOrNext, error, complete);
+        }
+        return super.subscribe(observerOrNext);
+    }
+    handleUnsubscribe() {
+        this.subscriptionCount--;
+        if (this.subscriptionCount > 0) {
+            return;
+        }
+        this.onNoSubscriptionCallback();
+    }
+    isObserver(value) {
+        return value && this.isFunction(value.next)
+            && this.isFunction(value.error) && this.isFunction(value.complete);
+    }
+    isSubscriber(value) {
+        return (value && value instanceof Subscriber)
+            || (this.isObserver(value) && isSubscription(value));
+    }
+    isFunction(value) {
+        return typeof value === 'function';
+    }
+}
+class SubscriptionCountSubscriber extends SafeSubscriber {
+    constructor(subscriptionCountSubject, observerOrNext, error, complete) {
+        super(observerOrNext, error, complete);
+        this.subscriptionCountSubject = subscriptionCountSubject;
+    }
+    unsubscribe() {
+        super.unsubscribe();
+        this.subscriptionCountSubject.handleUnsubscribe();
+    }
+}
+
+class ApiClientSubject extends SubscriptionCountSubject {
+    constructor(args, request, fullDIDescriptor, cache) {
+        super(() => cache.subscribe(this), () => cache.unsubscribe(this));
+        this.args = args;
+        this.request = request;
+        this.fullDIDescriptor = fullDIDescriptor;
+        this.subscriptionCount = 0;
+        this.subscriptionId = v4();
+        request.subscriptionId = this.subscriptionId;
+        this.request = {
+            ...request,
+            subscriptionId: this.subscriptionId
+        };
+    }
+}
+
+class SubjectCache {
+    constructor() {
+        this.observableRequestMap = new Map();
+        if (globalThis.window) {
+            globalThis.window.addEventListener("pagehide", _ => this.onunload());
+        }
+    }
+    addSubscripton(subscriptionId, subject) {
+        this.observableRequestMap.set(subscriptionId, subject);
+    }
+    getSubject(subscriptionId) {
+        return this.observableRequestMap.get(subscriptionId);
+    }
+    onunload() {
+        for (const apiClientSubject of this.observableRequestMap.values()) {
+            this.unsubscribe(apiClientSubject);
+        }
+    }
+    subscribe(subject) {
+        if (subject instanceof ApiClientSubject) {
+            this.observableRequestMap.set(subject.subscriptionId, subject);
+            globalThis.MESSAGE_BUS.next({
+                args: subject.args,
+                fullDIDescriptor: subject.fullDIDescriptor,
+                request: {
+                    ...subject.request,
+                    id: v4(),
+                    type: Message_Type.API_SUBSCRIBE
+                }
+            });
+        }
+        else {
+            throw new Error(`Can only subscribe "ApiClientSubject"s`);
+        }
+    }
+    unsubscribe(subject) {
+        if (subject instanceof ApiClientSubject) {
+            this.observableRequestMap.delete(subject.subscriptionId);
+            globalThis.MESSAGE_BUS.next({
+                fullDIDescriptor: subject.fullDIDescriptor,
+                request: {
+                    ...subject.request,
+                    id: v4(),
+                    type: Message_Type.API_UNSUBSCRIBE
+                }
+            });
+        }
+        else {
+            subject.unsubscribe();
+        }
+    }
+}
+
+var EntityState;
+(function (EntityState) {
+    EntityState["CREATE"] = "CREATE";
+    EntityState["DATE"] = "DATE";
+    EntityState["DELETE"] = "DELETE";
+    EntityState["PARENT_SCHEMA_ID"] = "PARENT_SCHEMA_LID";
+    EntityState["STUB"] = "STUB";
+    EntityState["UPDATE"] = "UPDATE";
+})(EntityState || (EntityState = {}));
+
+// This library is used in UI/Client bundles and does does not include @airport/direction-indicator
+// dependency injection library
+if (globalThis.IOC) {
+    globalThis.AUTOPILOT_API_LOADER.setClass(AutopilotApiLoader);
+    globalThis.AUTOPILOT_API_LOADER.setDependencies({
+        apiClient: globalThis.API_CLIENT
+    });
+    globalThis.API_CLIENT.setDependencies({
+        operationSerializer: globalThis.OPERATION_SERIALIZER,
+        queryResultsDeserializer: globalThis.QUERY_RESULTS_DESERIALIZER
+    });
+}
+
 class ApiRegistry {
     initialize(applicationApi) {
         this.applicationStore.state.api = applicationApi;
@@ -40609,7 +40793,7 @@ class OperationDeserializer {
         }
         let alreadyDeserializedEntity = operation.lookupTable[operationUniqueId];
         switch (state) {
-            case EntityState.STUB: {
+            case EntityState$1.STUB: {
                 let alreadyDeserializedEntity = operation.lookupTable[operationUniqueId];
                 if (!alreadyDeserializedEntity) {
                     throw new Error(`Could not find an already present entity for
@@ -40659,7 +40843,7 @@ class OperationDeserializer {
                         throw new Error('Json properties cannot be deserialized');
                     case SQLDataType.DATE:
                         if (!(value instanceof Object)
-                            || value[entityStateManager.getStateFieldName()] !== EntityState.DATE
+                            || value[entityStateManager.getStateFieldName()] !== EntityState$1.DATE
                             || !value.value) {
                             throw new Error(`Invalid Serialized Date format for ${dbEntity.name}.${dbProperty.name}`);
                         }
@@ -40692,7 +40876,7 @@ class OperationDeserializer {
             }
             else {
                 valueCopy = {};
-                if (value[entityStateManager.getStateFieldName()] === EntityState.STUB) {
+                if (value[entityStateManager.getStateFieldName()] === EntityState$1.STUB) {
                     throw new Error(`Interlinked object graphs are not supported in @Json() columns 
                     ${dbProperty.entity.name}.${dbProperty.name}`);
                 }
@@ -40856,13 +41040,13 @@ class UpdateCacheManager {
                             }
                         }
                         if (!nestedProperty) {
-                            if (entityState === EntityState.DELETE) {
+                            if (entityState === EntityState$1.DELETE) {
                                 throw new Error(`Entity is marked for deletion but does not have an @Id() property:
             ${propertyNameChain.join('.')}
                                     `);
                             }
                             else {
-                                entityState = EntityState.CREATE;
+                                entityState = EntityState$1.CREATE;
                                 hasId = false;
                                 return true;
                             }
@@ -40905,14 +41089,14 @@ class UpdateCacheManager {
                                     || originalValue === undefined;
                                 if (noValue) {
                                     if (originalValue) {
-                                        entityState = EntityState.UPDATE;
+                                        entityState = EntityState$1.UPDATE;
                                         return true;
                                     }
                                     break;
                                 }
                                 if (noOriginalValue) {
                                     if (value) {
-                                        entityState = EntityState.UPDATE;
+                                        entityState = EntityState$1.UPDATE;
                                         return true;
                                     }
                                     break;
@@ -40921,7 +41105,7 @@ class UpdateCacheManager {
                                 if (typeof value === 'object') {
                                     // If original isn't a nested object
                                     if (typeof originalValue !== 'object') {
-                                        entityState = EntityState.UPDATE;
+                                        entityState = EntityState$1.UPDATE;
                                         return true;
                                     }
                                     // Values should not be dates or json objects, only
@@ -40929,13 +41113,13 @@ class UpdateCacheManager {
                                 }
                                 else if (typeof originalValue === 'object') {
                                     // value is not a nested object but originalValue is
-                                    entityState = EntityState.UPDATE;
+                                    entityState = EntityState$1.UPDATE;
                                     return true;
                                 }
                                 else {
                                     // Both values are primitives (nested _localIds)
                                     if (value !== originalValue) {
-                                        entityState = EntityState.UPDATE;
+                                        entityState = EntityState$1.UPDATE;
                                         return true;
                                     }
                                 }
@@ -40971,7 +41155,7 @@ class UpdateCacheManager {
                             break;
                     }
                     if (propertyValue !== originalValue) {
-                        entityState = EntityState.UPDATE;
+                        entityState = EntityState$1.UPDATE;
                     }
                 }
             }
@@ -40990,10 +41174,10 @@ class UpdateCacheManager {
              */
             if ((hasId && (!checkGeneratedIds || hasGeneratedIds))
                 || originalValuesObject) {
-                entityState = EntityState.PASS_THROUGH;
+                entityState = EntityState$1.PASS_THROUGH;
             }
             else {
-                entityState = EntityState.CREATE;
+                entityState = EntityState$1.CREATE;
             }
         }
         entityCopy[this.entityStateManager.getStateFieldName()] = entityState;
@@ -41120,27 +41304,27 @@ class UpdateCacheManager {
 
 class EntityStateManager {
     isStub(entity) {
-        return this.getEntityState(entity) === EntityState.STUB;
+        return this.getEntityState(entity) === EntityState$1.STUB;
     }
     isParentSchemaId(entity) {
         return this.getEntityState(entity) ===
-            EntityState.PARENT_SCHEMA_ID;
+            EntityState$1.PARENT_SCHEMA_ID;
     }
     isPassThrough(entity) {
-        return this.getEntityState(entity) === EntityState.PASS_THROUGH;
+        return this.getEntityState(entity) === EntityState$1.PASS_THROUGH;
     }
     markAsOfParentSchema(entity) {
         entity[EntityStateManager.STATE_FIELD] =
-            EntityState.PARENT_SCHEMA_ID;
+            EntityState$1.PARENT_SCHEMA_ID;
     }
     markForDeletion(entity) {
-        entity[EntityStateManager.STATE_FIELD] = EntityState.DELETE;
+        entity[EntityStateManager.STATE_FIELD] = EntityState$1.DELETE;
     }
     markToCreate(entity) {
-        entity[EntityStateManager.STATE_FIELD] = EntityState.CREATE;
+        entity[EntityStateManager.STATE_FIELD] = EntityState$1.CREATE;
     }
     markToUpdate(entity) {
-        entity[EntityStateManager.STATE_FIELD] = EntityState.UPDATE;
+        entity[EntityStateManager.STATE_FIELD] = EntityState$1.UPDATE;
     }
     getEntityState(entity) {
         return entity[EntityStateManager.STATE_FIELD];
@@ -41164,31 +41348,31 @@ class EntityStateManager {
         let isCreate, isDelete, isParentSchemaId, isPassThrough, isResultDate, isStub, isUpdate;
         const entityState = this.getEntityState(entity);
         switch (entityState) {
-            case EntityState.CREATE:
+            case EntityState$1.CREATE:
                 isCreate = true;
                 break;
-            case EntityState.DELETE:
+            case EntityState$1.DELETE:
                 isDelete = true;
                 break;
-            case EntityState.PARENT_SCHEMA_ID:
+            case EntityState$1.PARENT_SCHEMA_ID:
                 isParentSchemaId = true;
                 break;
-            case EntityState.PASS_THROUGH:
+            case EntityState$1.PASS_THROUGH:
                 isPassThrough = true;
                 break;
             // case EntityState.RESULT:
             // 	isResult = true
             // 	break
-            case EntityState.DATE:
+            case EntityState$1.DATE:
                 isResultDate = true;
                 break;
             // case EntityState.RESULT_JSON:
             // 	isResultJson = true
             // 	break
-            case EntityState.STUB:
+            case EntityState$1.STUB:
                 isStub = true;
                 break;
-            case EntityState.UPDATE:
+            case EntityState$1.UPDATE:
                 isUpdate = true;
                 break;
             default:
@@ -41207,10 +41391,10 @@ class EntityStateManager {
         };
     }
     setIsDeleted(isDeleted, entity) {
-        entity[EntityStateManager.STATE_FIELD] = EntityState.DELETE;
+        entity[EntityStateManager.STATE_FIELD] = EntityState$1.DELETE;
     }
     isDeleted(entity) {
-        return entity[EntityStateManager.STATE_FIELD] === EntityState.DELETE;
+        return entity[EntityStateManager.STATE_FIELD] === EntityState$1.DELETE;
     }
     getOperationUniqueId(entity, throwIfNotFound = true, dbEntity = null) {
         const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD];
@@ -41235,7 +41419,7 @@ class EntityStateManager {
         entityCopy[EntityStateManager.OPERATION_UNIQUE_ID_FIELD] = operationUniqueId;
     }
     markAsStub(entity) {
-        entity[EntityStateManager.STATE_FIELD] = EntityState.STUB;
+        entity[EntityStateManager.STATE_FIELD] = EntityState$1.STUB;
     }
     getUniqueIdFieldName() {
         return EntityStateManager.OPERATION_UNIQUE_ID_FIELD;
@@ -41415,7 +41599,7 @@ const applicationState = {
     hostServer: 'https://localhost:3000',
     // FIXME: tie this in to the hostServer variable
     mainDomain: null,
-    observableRequestSubjectMap: new Map(),
+    subjectCache: new SubjectCache(),
     pendingMessageMap: new Map(),
     messageCallback: null,
 };

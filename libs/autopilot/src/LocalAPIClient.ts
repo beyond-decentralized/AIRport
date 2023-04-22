@@ -1,4 +1,4 @@
-import { Message_Direction, Message_Leg, Message_Type, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage } from "@airport/aviation-communication";
+import { Message_Direction, Message_Leg, Message_Type, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, ISubjectCache } from "@airport/aviation-communication";
 import { IFullDITokenDescriptor, Inject, Injected } from "@airport/direction-indicator";
 import {
     IOperationSerializer,
@@ -7,6 +7,7 @@ import {
 import { Observable, Subscription } from "rxjs";
 import { v4 as guidv4 } from "uuid";
 import { ApiClientSubject } from "./ApiClientSubject";
+import { SubjectCache } from "./SubjectCache";
 
 export interface ILocalAPIClient {
 
@@ -54,7 +55,7 @@ export class LocalAPIClient
 
     messageBusSubscription: Subscription
 
-    observableRequestMap: Map<string, ApiClientSubject<any>> = new Map()
+    subjectCache: ISubjectCache = new SubjectCache()
 
     pendingWebMessageMap: Map<string, IRequestRecord> = new Map();
 
@@ -138,7 +139,7 @@ export class LocalAPIClient
                         console.error(`Could not find subscriptionId: API_SUBSCRIBTION_DATA message`)
                         break
                     }
-                    const requestSubject = this.observableRequestMap.get(subscriptionId)
+                    const requestSubject = this.subjectCache.getSubject(subscriptionId) as ApiClientSubject<any>
                     if (!requestSubject) {
                         console.error(`Could not find Request Subject for subscriptionId: ${subscriptionId}`)
                         break
@@ -202,7 +203,7 @@ export class LocalAPIClient
             request.type = Message_Type.API_SUBSCRIBE
 
             const subject = new ApiClientSubject<ReturnType>(args, request,
-                fullDiDescriptor, this.observableRequestMap)
+                fullDiDescriptor, this.subjectCache)
 
             if (_inWebMode) {
                 // The postMessage will be peformed during a subscription to the subject

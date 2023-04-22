@@ -276,6 +276,22 @@ export class IframeTransactionalConnector
 		}
 	}
 
+	async retrieveDomain(
+		domainName: DbDomain_Name
+	): Promise<DbDomain> {
+		return await this.sendMessageAndGetResponse<IRetrieveDomainMessage, DbDomain>({
+			...this.getCoreFields(Message_Direction.INTERNAL),
+			domainName,
+			type: Message_Type.RETRIEVE_DOMAIN
+		})
+	}
+
+	onMessage(callback: (
+		message: any
+	) => void) {
+		this.applicationStore.state.messageCallback = callback
+	}
+
 	private async handleInternalMessage(
 		message: IInitializeConnectionMessage
 			| IGetLatestApplicationVersionByDbApplication_NameMessage
@@ -352,7 +368,7 @@ ${subscriptionId}
 				break
 			}
 			default: {
-				if(subscriptionId) {
+				if (subscriptionId) {
 					console.log(`Found a subscription for an @Api() call that returns a Promise.
 	subscriptionId:
 ${subscriptionId}
@@ -384,7 +400,7 @@ ${subscriptionId}
 			case Message_Type.SEARCH_ONE_SUBSCRIBE:
 			case Message_Type.SEARCH_SUBSCRIBE: {
 				observableRequestSubject = this.applicationStore.state
-					.observableRequestSubjectMap.get(message.id)
+					.subjectCache.getSubject(message.subscriptionId)
 				if (!observableRequestSubject) {
 					return
 				}
@@ -399,7 +415,8 @@ ${subscriptionId}
 
 		const subscriptionId = message.subscriptionId
 		if (subscriptionId) {
-			observableRequestSubject = this.applicationStore.state.observableRequestSubjectMap.get(subscriptionId)
+			observableRequestSubject = this.applicationStore.state
+				.subjectCache.getSubject(subscriptionId)
 			if (!observableRequestSubject) {
 				console.error(`Could not find Observable API Request Subject for subscriptionId: ${subscriptionId}`)
 				return
@@ -526,7 +543,8 @@ ${subscriptionId}
 				}).then()
 			}
 		)
-		this.applicationStore.state.observableRequestSubjectMap.set(subscriptionId, subject)
+		this.applicationStore.state.subjectCache
+			.addSubscripton(subscriptionId, subject)
 
 		return subject;
 	}
@@ -576,22 +594,6 @@ ${subscriptionId}
 			type: Message_Type.APP_INITIALIZING
 		} as IInitializeConnectionMessage)
 		return false
-	}
-
-	async retrieveDomain(
-		domainName: DbDomain_Name
-	): Promise<DbDomain> {
-		return await this.sendMessageAndGetResponse<IRetrieveDomainMessage, DbDomain>({
-			...this.getCoreFields(Message_Direction.INTERNAL),
-			domainName,
-			type: Message_Type.RETRIEVE_DOMAIN
-		})
-	}
-
-	onMessage(callback: (
-		message: any
-	) => void) {
-		this.applicationStore.state.messageCallback = callback
 	}
 
 }

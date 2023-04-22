@@ -1,5 +1,5 @@
 import { IApplicationApi } from "@airport/air-traffic-control"
-import { IMessage } from "@airport/aviation-communication"
+import { ISubjectCache, IMessage } from "@airport/aviation-communication"
 import { Subject, Subscription } from "rxjs"
 
 export interface IMessageInRecord {
@@ -31,7 +31,7 @@ export interface IApplicationState {
     hostServer: string
     // FIXME: tie this in to the hostServer variable
     mainDomain: string
-    observableRequestSubjectMap: Map<string, Subject<any>>
+    subjectCache: ISubjectCache
     pendingMessageMap: Map<string, IMessageInRecord>
 
     messageCallback: (

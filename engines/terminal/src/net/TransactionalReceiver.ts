@@ -275,7 +275,7 @@ export abstract class TransactionalReceiver {
                 break
             }
             case Message_Type.SEARCH_ONE_SUBSCRIBE:
-                theResult = await this.transactionalServer.searchOne(
+                theResult = this.transactionalServer.searchOne(
                     (message as IReadQueryMessage).portableQuery,
                     credentials,
                     {
@@ -285,7 +285,7 @@ export abstract class TransactionalReceiver {
                 )
                 break
             case Message_Type.SEARCH_SUBSCRIBE:
-                theResult = await this.transactionalServer.search(
+                theResult = this.transactionalServer.search(
                     (message as IReadQueryMessage).portableQuery,
                     credentials,
                     {
