@@ -52,7 +52,9 @@ export class LocalAPIServer
             ...request,
             direction: Message_Direction.TO_CLIENT,
             errorMessage,
-            returnedValue: internalResponse.result
+            returnedValue: internalResponse
+                ? internalResponse.result
+                : null
         }
 
         return response
