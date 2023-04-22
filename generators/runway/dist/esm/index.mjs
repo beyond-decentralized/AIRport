@@ -35607,6 +35607,7 @@ class ObservableQueryAdapter {
             trackedRepoLocalIdSet
         };
         context.cachedSqlQuery = cachedSqlQuery;
+        queryContext.cachedSqlQuery = cachedSqlQuery;
         this.activeQueries.add(portableQuery, cachedSqlQuery);
         cachedSqlQuery.runQuery();
         return resultsSubject;
@@ -40733,7 +40734,9 @@ class LocalAPIServer {
             ...request,
             direction: Message_Direction.TO_CLIENT,
             errorMessage,
-            returnedValue: internalResponse.result
+            returnedValue: internalResponse
+                ? internalResponse.result
+                : null
         };
         return response;
     }
