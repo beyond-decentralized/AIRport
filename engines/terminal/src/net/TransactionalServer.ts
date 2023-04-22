@@ -105,6 +105,8 @@ export class TransactionalServer
 		credentials: IApiCredentials,
 		context: IQueryOperationContext & ITransactionContext
 	): Promise<EntityArray> {
+		this.ensureTransactionContext(credentials, context)
+		
 		return await this.queryManager.find<E, EntityArray>(
 			portableQuery, context);
 	}
@@ -114,6 +116,8 @@ export class TransactionalServer
 		credentials: IApiCredentials,
 		context: IQueryOperationContext & ITransactionContext
 	): Promise<E> {
+		this.ensureTransactionContext(credentials, context)
+
 		return await this.queryManager.findOne<E>(
 			portableQuery, context);
 	}
@@ -189,10 +193,8 @@ export class TransactionalServer
 		if (!entity) {
 			return null
 		}
-		if (context.transaction || credentials.transactionId) {
-			this.transactionManager.getTransactionFromContextOrCredentials(
-				credentials, context)
-		}
+
+		this.ensureTransactionContext(credentials, context)
 
 		const actor = await this.getActor(credentials);
 		context.actor = actor
@@ -215,10 +217,7 @@ export class TransactionalServer
 		context: IOperationContext & ITransactionContext,
 		ensureGeneratedValues?: boolean // for internal use only
 	): Promise<number> {
-		if (context.transaction || credentials.transactionId) {
-			this.transactionManager.getTransactionFromContextOrCredentials(
-				credentials, context)
-		}
+		this.ensureTransactionContext(credentials, context)
 
 		const actor = await this.getActor(credentials)
 
@@ -240,10 +239,7 @@ export class TransactionalServer
 		credentials: IApiCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<number[][]> {
-		if (context.transaction || credentials.transactionId) {
-			this.transactionManager.getTransactionFromContextOrCredentials(
-				credentials, context)
-		}
+		this.ensureTransactionContext(credentials, context)
 
 		const actor = await this.getActor(credentials)
 
@@ -264,10 +260,7 @@ export class TransactionalServer
 		credentials: IApiCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<number> {
-		if (context.transaction || credentials.transactionId) {
-			this.transactionManager.getTransactionFromContextOrCredentials(
-				credentials, context)
-		}
+		this.ensureTransactionContext(credentials, context)
 
 		const actor = await this.getActor(credentials)
 
@@ -288,10 +281,7 @@ export class TransactionalServer
 		credentials: IApiCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<number> {
-		if (context.transaction || credentials.transactionId) {
-			this.transactionManager.getTransactionFromContextOrCredentials(
-				credentials, context)
-		}
+		this.ensureTransactionContext(credentials, context)
 
 		const actor = await this.getActor(credentials)
 
@@ -305,6 +295,16 @@ export class TransactionalServer
 		}, credentials, context)
 
 		return numDeletedRecords
+	}
+
+	private ensureTransactionContext(
+		credentials: IApiCredentials,
+		context: IOperationContext & ITransactionContext
+	) {
+		if (context.transaction || credentials.transactionId) {
+			this.transactionManager.getTransactionFromContextOrCredentials(
+				credentials, context)
+		}
 	}
 
 	private async getActor(
