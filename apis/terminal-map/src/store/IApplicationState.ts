@@ -1,5 +1,5 @@
 import { IApplicationApi } from "@airport/air-traffic-control"
-import { ISubjectCache, IMessage } from "@airport/aviation-communication"
+import { IClientSubjectCache, IMessage, SubscriptionId, TimeStamp } from "@airport/aviation-communication"
 import { Subject, Subscription } from "rxjs"
 
 export interface IMessageInRecord {
@@ -24,14 +24,17 @@ export interface IApplicationState {
     api: IApplicationApi
     application: string
     appState: AppState
-    clientSubscriptionMap: Map<string, Subscription>
+    clientSubscriptionMap: Map<SubscriptionId, {
+        lastActive: TimeStamp
+        subscription: Subscription
+    }>
     domain: string
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
     // and debugging (https://localhost:3000)
     hostServer: string
     // FIXME: tie this in to the hostServer variable
     mainDomain: string
-    subjectCache: ISubjectCache
+    clientSubjectCache: IClientSubjectCache
     pendingMessageMap: Map<string, IMessageInRecord>
 
     messageCallback: (

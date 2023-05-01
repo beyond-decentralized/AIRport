@@ -9,6 +9,7 @@ import { DbApplication_FullName, DbApplication, DbDomain, DbSequence, IActor, IA
 import { IMessageInRecord } from './IApplicationState'
 import { ILastIds } from '@airport/air-traffic-control'
 import { CachedSQLQuery, IFieldMapped, SerializedJSONQuery } from '../terminal-map.index'
+import { Message_Id, SubscriptionId, TimeStamp } from '@airport/aviation-communication'
 
 export interface IReceiverState {
 	initializingApps: Set<DbApplication_FullName>
@@ -22,11 +23,11 @@ export interface IWebReceiverState {
 	onClientMessageCallback: (
 		message: any
 	) => void
-	pendingApplicationCounts: Map<string, number>
-	pendingHostCounts: Map<string, number>
-	pendingInterAppApiCallMessageMap: Map<string, IMessageInRecord>
-	subscriptionMap: Map<string, Map<string, Subscription>>
-	subscriptionSourceWindowMap: Map<string, Map<string, Window>>
+	pendingInterAppApiCallMessageMap: Map<Message_Id, IMessageInRecord>
+	subscriptionMap: Map<DbApplication_FullName, Map<SubscriptionId, {
+		lastActive: TimeStamp
+		subscription: Subscription
+	}>>
 }
 
 export interface InternalConnectorState {

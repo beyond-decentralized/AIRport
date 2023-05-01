@@ -91,8 +91,8 @@ export class IFrameInterAppAPIClient
 
         if (isObservable) {
             request.type = Message_Type.API_SUBSCRIBE
-            const subject = new ApiClientSubject<ReturnType>(args, request,
-                fullDiDescriptor, this.applicationStore.state.subjectCache)
+            const subject = new ApiClientSubject<ReturnType, IApiCallRequestMessage>(args, request,
+                fullDiDescriptor, this.applicationStore.state.clientSubjectCache)
 
             return subject
         }
@@ -108,7 +108,8 @@ export class IFrameInterAppAPIClient
         switch(request.type) {
             case Message_Type.API_SUBSCRIBE:
             case Message_Type.API_UNSUBSCRIBE:
-            case Message_Type.API_SUBSCRIBTION_DATA: {
+            case Message_Type.API_SUBSCRIPTION_DATA:
+            case Message_Type.SUBSCRIPTION_PING: {
                 await this.transactionalConnector.callApiNoReturn(request)
                 return
             }

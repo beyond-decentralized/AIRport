@@ -1,4 +1,4 @@
-import { Message_Direction, Message_Leg, Message_Type, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, ISubjectCache } from "@airport/aviation-communication";
+import { Message_Direction, Message_Leg, Message_Type, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IClientSubjectCache } from "@airport/aviation-communication";
 import { IFullDITokenDescriptor, Inject, Injected } from "@airport/direction-indicator";
 import {
     IOperationSerializer,
@@ -7,7 +7,7 @@ import {
 import { Observable, Subscription } from "rxjs";
 import { v4 as guidv4 } from "uuid";
 import { ApiClientSubject } from "./ApiClientSubject";
-import { SubjectCache } from "./SubjectCache";
+import { ClientSubjectCache } from "./ClientSubjectCache";
 
 export interface ILocalAPIClient {
 
@@ -55,7 +55,7 @@ export class LocalAPIClient
 
     messageBusSubscription: Subscription
 
-    subjectCache: ISubjectCache = new SubjectCache()
+    clientSubjectCache: IClientSubjectCache = new ClientSubjectCache()
 
     pendingWebMessageMap: Map<string, IRequestRecord> = new Map();
 
@@ -133,13 +133,13 @@ export class LocalAPIClient
                     }
                     checksForDomain.set(message.serverApplication, true)
                     break
-                case Message_Type.API_SUBSCRIBTION_DATA:
+                case Message_Type.API_SUBSCRIPTION_DATA:
                     const subscriptionId = message.subscriptionId
                     if (!subscriptionId) {
-                        console.error(`Could not find subscriptionId: API_SUBSCRIBTION_DATA message`)
+                        console.error(`Could not find subscriptionId: API_SUBSCRIPTION_DATA message`)
                         break
                     }
-                    const requestSubject = this.subjectCache.getSubject(subscriptionId) as ApiClientSubject<any>
+                    const requestSubject = this.clientSubjectCache.getSubject(subscriptionId) as ApiClientSubject<any, any>
                     if (!requestSubject) {
                         console.error(`Could not find Request Subject for subscriptionId: ${subscriptionId}`)
                         break
@@ -202,8 +202,8 @@ export class LocalAPIClient
         if (isObservable) {
             request.type = Message_Type.API_SUBSCRIBE
 
-            const subject = new ApiClientSubject<ReturnType>(args, request,
-                fullDiDescriptor, this.subjectCache)
+            const subject = new ApiClientSubject<ReturnType, IApiCallRequestMessage>(args, request,
+                fullDiDescriptor, this.clientSubjectCache)
 
             if (_inWebMode) {
                 // The postMessage will be peformed during a subscription to the subject

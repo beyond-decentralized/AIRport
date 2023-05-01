@@ -4,6 +4,7 @@ export type Message_DomainProtocol = 'https' | string
 export type Message_Error = string
 export type Message_Id = string
 export type SubscriptionId = string
+export type TimeStamp = number
 export type TransactionId = string
 
 export enum Message_Direction {
@@ -20,7 +21,8 @@ export enum Message_Leg {
 export enum Message_Type {
     API_CALL = 'API_CALL',
     API_SUBSCRIBE = 'API_SUBSCRIBE',
-    API_SUBSCRIBTION_DATA = 'API_SUBSCRIBTION_DATA',
+    API_SUBSCRIPTION_DATA = 'API_SUBSCRIPTION_DATA',
+    SUBSCRIPTION_PING = 'SUBSCRIPTION_PING',
     API_UNSUBSCRIBE = 'API_UNSUBSCRIBE',
     APP_INITIALIZED = 'APP_INITIALIZED',
     APP_INITIALIZING = 'APP_INITIALIZING',
@@ -36,27 +38,30 @@ export enum Message_Type {
     SAVE = 'SAVE',
     SEARCH_ONE_SUBSCRIBE = 'SEARCH_ONE_SUBSCRIBE',
     SEARCH_ONE_SUBSCRIBTION_DATA = 'SEARCH_ONE_SUBSCRIBTION_DATA',
-    SEARCH_ONE_UNSUBSCRIBE = 'SEARCH_ONE_UNSUBSCRIBE',
+    SEARCH_ONE_UNSUBSCRIBE = 'ONE_UNSUBSCRIBE',
     SEARCH_SUBSCRIBE = 'SEARCH_SUBSCRIBE',
     SEARCH_SUBSCRIBTION_DATA = 'SEARCH_SUBSCRIBTION_DATA',
     SEARCH_UNSUBSCRIBE = 'SEARCH_UNSUBSCRIBE',
     UPDATE_VALUES = 'UPDATE_VALUES'
 }
 
-export interface IMessage {
+export interface IMessage extends ICoreRequestFields {
     __received__?: boolean
-    __receivedTime__?: number
-    clientApplication?: Message_Application
-    clientDomain?: Message_Domain
-    clientDomainProtocol?: Message_DomainProtocol
-    direction: Message_Direction
+    __receivedTime__?: TimeStamp
     errorMessage?: Message_Error
-    id: Message_Id
-    messageLeg: Message_Leg
     subscriptionId?: SubscriptionId
-    serverApplication?: Message_Application
-    serverDomain?: Message_Domain
-    serverDomainProtocol?: Message_DomainProtocol
     transactionId?: TransactionId
-    type: Message_Type
+}
+
+export interface ICoreRequestFields {
+    clientApplication?: Message_Application,
+    clientDomain?: Message_Domain,
+    clientDomainProtocol?: Message_DomainProtocol,
+    direction: Message_Direction,
+    id: Message_Id,
+    messageLeg: Message_Leg,
+    serverApplication?: Message_Application,
+    serverDomain?: Message_Domain,
+    serverDomainProtocol?: Message_DomainProtocol,
+    type?: Message_Type
 }

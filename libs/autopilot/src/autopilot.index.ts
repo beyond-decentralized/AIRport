@@ -4,10 +4,10 @@ import { loadUiPressurisation } from '@airport/pressurization'
 import { AutopilotApiLoader } from './api/AutopilotApiLoader'
 import { LocalAPIClient } from './LocalAPIClient'
 import { UiStateManager } from './UiStateManager'
-import { SubjectCache } from './SubjectCache'
+import { ClientSubjectCache } from './ClientSubjectCache'
 
 export * from './ApiClientSubject'
-export * from './SubjectCache'
+export * from './ClientSubjectCache'
 export * from './api/AutopilotApiLoader'
 export * from './LocalAPIClient'
 export * from './SubscriptionCountSubject'
@@ -48,7 +48,6 @@ export function loadUiAutopilot() {
         queryResultsDeserializer
     } = loadUiPressurisation();
     apiClient.airMessageUtils = airMessageUtils
-    apiClient.subjectCache = new SubjectCache()
     apiClient.operationSerializer = operationSerializer
     apiClient.queryResultsDeserializer = queryResultsDeserializer
 

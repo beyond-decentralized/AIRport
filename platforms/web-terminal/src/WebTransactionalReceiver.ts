@@ -1,10 +1,11 @@
 import { JsonApplicationVersionWithApi } from '@airport/air-traffic-control'
 import { Message_Direction, Message_Leg, Message_Type, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage } from '@airport/aviation-communication'
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { DbApplication, IDbApplicationUtils } from '@airport/ground-control'
+import { DbApplication, DbApplication_FullName, IDbApplicationUtils } from '@airport/ground-control'
 import {
 	ITransactionalReceiver,
 	IApiCallContext,
@@ -25,9 +26,9 @@ import {
 } from '@airport/terminal'
 import { IWebApplicationInitializer } from './WebApplicationInitializer'
 import { IWebMessageGateway } from './WebMessageGateway'
+import { Observable } from 'rxjs'
 
 interface IToClientMessageOptions {
-	decrementPendingCounts: boolean
 	endApiCall: boolean
 	replyToClient: boolean
 }
@@ -70,6 +71,36 @@ export class WebTransactionalReceiver
 		const webReciever = this.terminalStore.getWebReceiver()
 		webReciever.domainPrefix = domainPrefix
 		webReciever.mainDomainFragments = mainDomainFragments
+
+		setTimeout(() => {
+			if (globalThis.repositoryAutoload !== false) {
+				setInterval(() => {
+					let lastValidPinMillis = new Date().getTime() - 10000
+					let staleSubscriptionIds = []
+
+
+					const webReciever = this.terminalStore.getWebReceiver()
+					const application_FullName = this
+						.getMessageClientApplication(message)
+
+					let isolateSubscriptionMap = webReciever.subscriptionMap.get(application_FullName)
+					const serverSubscriptionMap = webReciever.subscriptionMap
+					for (const [application_FullName, isolateSubscriptionMap] of serverSubscriptionMap) {
+						for (const [subscriptionId, subscriptionRecord]) {
+							if (subscriptionRecord.lastActive < lastValidPinMillis) {
+								staleSubscriptionIds.push(subscriptionId)
+							}
+						}
+
+						for (const staleSubscriptionId of staleSubscriptionIds) {
+							clientSubscriptionMap.get(staleSubscriptionId).subscription.unsubscribe()
+							clientSubscriptionMap.delete(staleSubscriptionId)
+						}
+					}
+				}, 10000)
+			}
+		}, 2000)
+
 	}
 
 	handleClientRequest(
@@ -114,8 +145,7 @@ export class WebTransactionalReceiver
 			| IReadQueryMessage
 			| IRetrieveDomainMessage
 			| ISaveMessage<any>,
-		messageOrigin: string,
-		sourceWindow: Window
+		messageOrigin: string
 	): void {
 		const webReciever = this.terminalStore.getWebReceiver()
 
@@ -130,14 +160,14 @@ export class WebTransactionalReceiver
 					| IPortableQueryMessage
 					| IReadQueryMessage
 					| ISaveMessage<any>,
-					messageOrigin, sourceWindow).then()
+					messageOrigin).then()
 				break
 			case Message_Direction.INTERNAL:
 				this.handleInternalMessage(message as
 					IGetLatestApplicationVersionByDbApplication_NameMessage
 					| IInitializeConnectionMessage
 					| IRetrieveDomainMessage,
-					messageOrigin, sourceWindow).then()
+					messageOrigin).then()
 				break
 			case Message_Direction.TO_CLIENT:
 				this.handleToClientMessage(message as IApiCallResponseMessage,
@@ -154,7 +184,6 @@ export class WebTransactionalReceiver
 		webReciever: IWebReceiverState
 	): Promise<void> {
 		const {
-			decrementPendingCounts,
 			endApiCall,
 			replyToClient
 		} = this.getToClientMessageOptions(message)
@@ -189,11 +218,8 @@ export class WebTransactionalReceiver
 				success ? message.errorMessage : context.errorMessage,
 				message.returnedValue,
 				success,
-				messageOrigin,
-				decrementPendingCounts
+				messageOrigin
 			)
-		} else if (decrementPendingCounts) {
-			this.decrementPendingCounts(message)
 		}
 	}
 
@@ -201,23 +227,24 @@ export class WebTransactionalReceiver
 		message: IApiCallResponseMessage
 			| IInitializeConnectionMessage
 	): IToClientMessageOptions {
-		let decrementPendingCounts = true
 		let endApiCall = true
 		let replyToClient = true
 		switch (message.type) {
 			case Message_Type.API_SUBSCRIBE: {
-				decrementPendingCounts = true
 				endApiCall = true
 				break
 			}
-			case Message_Type.API_SUBSCRIBTION_DATA: {
-				decrementPendingCounts = false
+			case Message_Type.API_SUBSCRIPTION_DATA: {
 				endApiCall = false
 				replyToClient = true
 				break
 			}
+			case Message_Type.SUBSCRIPTION_PING: {
+				endApiCall = false
+				replyToClient = false
+				break
+			}
 			case Message_Type.API_UNSUBSCRIBE: {
-				decrementPendingCounts = false
 				endApiCall = false
 				replyToClient = false
 				break
@@ -225,7 +252,6 @@ export class WebTransactionalReceiver
 		}
 
 		return {
-			decrementPendingCounts,
 			endApiCall,
 			replyToClient
 		}
@@ -237,8 +263,7 @@ export class WebTransactionalReceiver
 		errorMessage,
 		returnedValue,
 		success,
-		messageOrigin,
-		decrementPendingCounts: boolean
+		messageOrigin
 	): Promise<void> {
 		const toClientRedirectedMessage: IApiCallResponseMessage | IInitializeConnectionMessage = {
 			...message,
@@ -256,7 +281,7 @@ export class WebTransactionalReceiver
 				return
 			}
 		}
-		this.replyToClientRequest(toClientRedirectedMessage, decrementPendingCounts)
+		this.replyToClientRequest(toClientRedirectedMessage)
 	}
 
 	onMessage(callback: (
@@ -282,8 +307,10 @@ export class WebTransactionalReceiver
 			if (!context.isObservableApiCall) {
 				messageCopy.transactionId = context.transaction.id
 			}
+			const application_FullName = this.getMessageServerApplication(
+				message)
 
-			this.webMessageGateway.sendMessageToApp(messageCopy)
+			this.webMessageGateway.sendMessageToApp(application_FullName, messageCopy)
 		})
 	}
 
@@ -338,7 +365,7 @@ export class WebTransactionalReceiver
 	protected async nativeHandleObservableApiCall(
 		message: IApiCallRequestMessage,
 		context: IApiCallContext & ITransactionContext
-	): Promise<void> {
+	): Promise<boolean> {
 		const startDescriptor = await this.nativeStartApiCall(message, context);
 		if (!startDescriptor.isStarted) {
 			throw new Error(context.errorMessage)
@@ -347,6 +374,8 @@ export class WebTransactionalReceiver
 		if (startDescriptor.isFramework) {
 			await this.callFrameworkApi(message, context)
 		}
+
+		return startDescriptor.isFramework
 	}
 
 	private async callFrameworkApi(
@@ -375,9 +404,8 @@ export class WebTransactionalReceiver
 			if (!context.isObservableApiCall) {
 				internalCredentials.transactionId = context.transaction.id
 			}
-			const fullDbApplication_Name = this.dbApplicationUtils
-				.getDbApplication_FullNameFromDomainAndName(
-					message.serverDomain, message.serverApplication)
+			const fullDbApplication_Name = this.getMessageServerApplication(
+				message)
 			const application: DbApplication = this.terminalStore
 				.getApplicationMapByFullName().get(fullDbApplication_Name)
 			if (!application) {
@@ -454,34 +482,11 @@ export class WebTransactionalReceiver
 	): Promise<void> {
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		let numPendingMessagesFromHost = webReciever.pendingHostCounts
-			.get(message.serverDomain)
-		if (!numPendingMessagesFromHost) {
-			numPendingMessagesFromHost = 0
-		}
-		if (numPendingMessagesFromHost > 4) {
-			// Prevent hosts from making local 'Denial of Service' attacks
-			return
-		}
-
-		const fullDbApplication_Name = this.dbApplicationUtils.
-			getDbApplication_FullNameFromDomainAndName(
-				message.serverDomain, message.serverApplication)
-
-		let numPendingMessagesForApplication = webReciever.pendingApplicationCounts.get(fullDbApplication_Name)
-		if (!numPendingMessagesForApplication) {
-			numPendingMessagesForApplication = 0
-		}
-		if (numPendingMessagesForApplication === -1) {
-			// Already could not install the application, may be a DOS attack, return right away
-			return
-		}
-
-		webReciever.pendingHostCounts.set(message.serverDomain, numPendingMessagesFromHost + 1)
-		webReciever.pendingApplicationCounts.set(fullDbApplication_Name, numPendingMessagesForApplication + 1)
+		const application_FullName = this.getMessageServerApplication(
+			message)
 
 		if (!await this.applicationInitializer.isApplicationIsInstalled(
-			message.serverDomain, fullDbApplication_Name)) {
+			message.serverDomain, application_FullName)) {
 			this.relyToClientWithError(message, `Application is not installed`)
 			return
 		}
@@ -501,11 +506,8 @@ export class WebTransactionalReceiver
 					result.errorMessage,
 					result.returnedValue,
 					!result.errorMessage,
-					null,
-					true
+					null
 				)
-			} else {
-				this.decrementPendingCounts(message)
 			}
 		}
 	}
@@ -523,67 +525,25 @@ export class WebTransactionalReceiver
 			returnedValue: null
 		}
 
-		this.replyToClientRequest(toClientRedirectedMessage, true)
+		this.replyToClientRequest(toClientRedirectedMessage)
 	}
 
 	private replyToClientRequest(
 		message: IApiCallResponseMessage
-			| IInitializeConnectionMessage,
-		decrementPendingCounts: boolean
+			| IInitializeConnectionMessage
 	) {
-		if (decrementPendingCounts) {
-			this.decrementPendingCounts(message)
-		}
 		// Forward the request to the source client
 		if (this.webMessageGateway.needMessageSerialization()) {
 			// FIXME: serialize message
 		}
 
-		let sourceWindow
 		if (message.subscriptionId && message.clientApplication !== 'UserInterface') {
-			const fullDbApplication_Name = this.dbApplicationUtils.
-				getDbApplication_FullNameFromDomainAndName(
-					message.clientDomain, message.clientApplication)
-			let isolateSubscriptionSourceWindowMap = this.terminalStore.getWebReceiver()
-				.subscriptionSourceWindowMap.get(fullDbApplication_Name)
-			if (!isolateSubscriptionSourceWindowMap) {
-				console.error(
-					`Message has a subscriptionId and isolateSubscriptionSourceWindowMap
-could not be found for client Application:
-	${fullDbApplication_Name}
-`)
-				return
-			}
-			sourceWindow = isolateSubscriptionSourceWindowMap.get(
-				message.subscriptionId)
-		}
-
-		if (sourceWindow) {
-			this.webMessageGateway.sendMessageToWindow(message, sourceWindow)
+			const application_FullName = this.getMessageClientApplication(
+				message)
+			this.webMessageGateway.sendMessageToApp(
+				application_FullName, message)
 		} else {
 			this.webMessageGateway.sendMessageToClient(message)
-		}
-	}
-
-	private decrementPendingCounts(
-		message: IApiCallRequestMessage
-			| IApiCallResponseMessage
-			| IInitializeConnectionMessage
-	) {
-		const fullDbApplication_Name = this.dbApplicationUtils.
-			getDbApplication_FullNameFromDomainAndName(
-				message.serverDomain, message.serverApplication)
-		const webReciever = this.terminalStore.getWebReceiver()
-
-		let numMessagesFromHost = webReciever.pendingHostCounts.get(message.clientDomain)
-		if (numMessagesFromHost > 0) {
-			webReciever.pendingHostCounts.set(message.clientDomain, numMessagesFromHost - 1)
-		}
-		let numMessagesForApplication = webReciever.pendingApplicationCounts
-			.get(fullDbApplication_Name)
-		if (numMessagesForApplication > 0) {
-			webReciever.pendingApplicationCounts.set(message.serverDomain,
-				numMessagesForApplication - 1)
 		}
 	}
 
@@ -601,9 +561,8 @@ could not be found for client Application:
 
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		const fullDbApplication_Name = this.dbApplicationUtils.
-			getDbApplication_FullNameFromDomainAndName(
-				message.serverDomain, message.serverApplication)
+		const fullDbApplication_Name = this.getMessageServerApplication(
+			message)
 		// Only accept requests from https protocol
 		if (!messageOrigin.startsWith("https")
 			// and from application domains that match the fullDbApplication_Name
@@ -635,8 +594,7 @@ could not be found for client Application:
 		message: IGetLatestApplicationVersionByDbApplication_NameMessage
 			| IInitializeConnectionMessage
 			| IRetrieveDomainMessage,
-		messageOrigin: string,
-		sourceWindow: Window
+		messageOrigin: string
 	): Promise<void> {
 		if (!await this.messageIsFromValidApp(message, messageOrigin)) {
 			return
@@ -644,10 +602,11 @@ could not be found for client Application:
 
 		const result = await this.processInternalMessage(message)
 
-		this.webMessageGateway.sendMessageToWindow({
+		this.webMessageGateway.sendMessageToApp(
+			this.getMessageClientApplication(message), {
 			...message,
 			returnedValue: result.theResult as any
-		}, sourceWindow)
+		})
 	}
 
 	private async handleFromClientMessage(
@@ -655,8 +614,7 @@ could not be found for client Application:
 			| IPortableQueryMessage
 			| IReadQueryMessage
 			| ISaveMessage<any>,
-		messageOrigin: string,
-		sourceWindow: Window
+		messageOrigin: string
 	): Promise<void> {
 		if (!await this.messageIsFromValidApp(message, messageOrigin)) {
 			return
@@ -664,70 +622,58 @@ could not be found for client Application:
 
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		const fullDbApplication_Name = this.dbApplicationUtils.
-			getDbApplication_FullNameFromDomainAndName(
-				message.clientDomain, message.clientApplication)
+		const application_FullName = this
+			.getMessageClientApplication(message)
 		switch (message.type) {
 			case Message_Type.SEARCH_UNSUBSCRIBE:
-				let isolateSubscriptionMap = webReciever.subscriptionMap.get(fullDbApplication_Name)
+				let isolateSubscriptionMap = webReciever
+					.subscriptionMap.get(application_FullName)
 				if (!isolateSubscriptionMap) {
 					return
 				}
-				let subscription = isolateSubscriptionMap.get(message.subscriptionId)
-				if (!subscription) {
+				let subscriptionRecord = isolateSubscriptionMap.get(message.subscriptionId)
+				if (!subscriptionRecord) {
 					return
 				}
-				subscription.unsubscribe()
+				subscriptionRecord.subscription.unsubscribe()
 				isolateSubscriptionMap.delete(message.subscriptionId)
 				return;
 		}
 
 		let response
+		let isFrameworkObservableCall = false
 		switch (message.type) {
 			case Message_Type.API_CALL: {
 				response = await this.nativeHandleApiCall(message as IApiCallRequestMessage, {
 					isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type),
 					startedAt: new Date()
 				})
-				break;
+				break
 			}
-			case Message_Type.API_SUBSCRIBE: {
-				let isolateSubscriptionSourceWindowMap = webReciever
-					.subscriptionSourceWindowMap.get(fullDbApplication_Name)
-				if (!isolateSubscriptionSourceWindowMap) {
-					isolateSubscriptionSourceWindowMap = new Map()
-					webReciever.subscriptionSourceWindowMap.set(
-						fullDbApplication_Name, isolateSubscriptionSourceWindowMap)
-				}
-				isolateSubscriptionSourceWindowMap.set(
-					message.subscriptionId, sourceWindow)
-				await this.nativeHandleObservableApiCall(message as IApiCallRequestMessage, {
-					isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type),
-					startedAt: new Date()
-				})
-				break;
-			}
+			case Message_Type.API_SUBSCRIBE:
 			case Message_Type.API_UNSUBSCRIBE: {
-				let isolateSubscriptionSourceWindowMap = webReciever
-					.subscriptionSourceWindowMap.get(fullDbApplication_Name)
-				if (!isolateSubscriptionSourceWindowMap) {
-					console.error(`During an API_UNSUBSCRIBE call,
-did not found an entry in subscriptionSourceWindowMap for Application:
-	${fullDbApplication_Name}
-`)
+				const observableApiResult = this.handleApiSubscribeOrUnsubscribe(message)
+				isFrameworkObservableCall = observableApiResult.isFrameworkObservableCall
+				response = observableApiResult.response
+				break
+			}
+			case Message_Type.SUBSCRIPTION_PING: {
+				let isolateSubscriptionMap = webReciever.subscriptionMap.get(application_FullName)
+				if (!isolateSubscriptionMap) {
+					break
 				}
-				isolateSubscriptionSourceWindowMap.delete(message.subscriptionId)
-				await this.nativeHandleObservableApiCall(message as IApiCallRequestMessage, {
-					isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type),
-					startedAt: new Date()
-				})
-				break;
+				const subscriptionRecord = isolateSubscriptionMap.get(message.subscriptionId)
+				if (!subscriptionRecord) {
+					break
+				}
+				subscriptionRecord.lastActive = new Date().getTime()
+				break
 			}
 			default: {
 				response = await this.processFromClientMessage(message as IPortableQueryMessage
 					| IReadQueryMessage
 					| ISaveMessage<any>)
-				break;
+				break
 			}
 		}
 
@@ -735,31 +681,175 @@ did not found an entry in subscriptionSourceWindowMap for Application:
 			return
 		}
 
-		let type
+		this.handleApiCallOrSubscription(
+			message,
+			response,
+			application_FullName,
+			isFrameworkObservableCall,
+			webReciever
+		)
+
+	}
+
+	private handleApiSubscribeOrUnsubscribe(
+		message: IApiCallRequestMessage
+			| IPortableQueryMessage
+			| IReadQueryMessage
+			| ISaveMessage<any>
+	): {
+		isFrameworkObservableCall: boolean,
+		response: Observable<any>
+	} {
+		let isFrameworkObservableCall = false
+		let response = null
+
+		const context: IContext = {
+			isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type),
+			startedAt: new Date()
+		}
+		const startDescriptor = await this.nativeStartApiCall(message as IApiCallRequestMessage, context);
+		if (!startDescriptor.isStarted) {
+			console.error(context.errorMessage)
+			return {
+				isFrameworkObservableCall,
+				response
+			}
+		}
+
+		isFrameworkObservableCall = startDescriptor.isFramework
+			if (isFrameworkObservableCall) {
+		}
+
+		return {
+			isFrameworkObservableCall,
+			response
+		}
+		const apiCallResult = await this.callFrameworkApi(message as IApiCallRequestMessage, context)
+
+		if (apiCallResult.errorMessage) {
+			// TODO: send back error messages for (UN)SUBSCRIBE messages
+			console.error(apiCallResult)
+			return
+		}
+		response = apiCallResult
+
+		const response: IApiCallResponseMessage = {
+			...message,
+			direction: Message_Direction.TO_CLIENT,
+			messageLeg: Message_Leg.FROM_HUB,
+			args,
+			errorMessage,
+			returnedValue,
+			transactionId
+		}
+	}
+
+	private handleApiCallOrSubscription(
+		message: IApiCallRequestMessage
+			| IPortableQueryMessage
+			| IReadQueryMessage
+			| ISaveMessage<any>,
+		response: IApiCallResponseMessage,
+		returnedValue: any,
+		application_FullName: DbApplication_FullName,
+		isFrameworkObservableCall: boolean,
+		webReciever: IWebReceiverState
+	): void {
 		switch (message.type) {
-			case Message_Type.SEARCH_ONE_SUBSCRIBE:
-				type = Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA
-			case Message_Type.SEARCH_SUBSCRIBE: {
-				type = Message_Type.SEARCH_SUBSCRIBTION_DATA
-				const subscription = response.returnedValue.subscribe(returnedValue => {
-					this.webMessageGateway.sendMessageToWindow({
-						...response,
-						returnedValue,
-						type
-					}, sourceWindow)
-				})
-				let isolateSubscriptionMap = webReciever.subscriptionMap.get(fullDbApplication_Name)
-				if (!isolateSubscriptionMap) {
-					isolateSubscriptionMap = new Map()
-					webReciever.subscriptionMap.set(fullDbApplication_Name, isolateSubscriptionMap)
+			case Message_Type.API_SUBSCRIBE: {
+				if (!isFrameworkObservableCall) {
+					this.webMessageGateway.sendMessageToApp(
+						application_FullName, response)
+					break
 				}
-				isolateSubscriptionMap.set(message.subscriptionId, subscription)
+				this.subscribeToFrameworkObservable(message,
+					Message_Type.API_SUBSCRIPTION_DATA,
+					response, returnedValue, application_FullName,
+					webReciever)
+				break
+			}
+			case Message_Type.SEARCH_ONE_SUBSCRIBE: {
+				this.subscribeToFrameworkObservable(message,
+					Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA,
+					response, application_FullName, webReciever)
+				break
+			}
+			case Message_Type.SEARCH_SUBSCRIBE: {
+				this.subscribeToFrameworkObservable(message,
+					Message_Type.SEARCH_SUBSCRIBTION_DATA,
+					response, application_FullName, webReciever)
+				break
+			}
+			case Message_Type.API_UNSUBSCRIBE: {
+				if (!isFrameworkObservableCall) {
+					break
+				}
+				let isolateSubscriptionMap = webReciever.subscriptionMap
+					.get(application_FullName)
+				if (!isolateSubscriptionMap) {
+					console.error(`		Did not find isolateSubscriptionMap for Application:
+${application_FullName}
+					`)
+					break
+				}
+				isolateSubscriptionMap.delete(message.subscriptionId)
 				break
 			}
 			default: {
-				this.webMessageGateway.sendMessageToWindow(response, sourceWindow)
+				this.webMessageGateway.sendMessageToApp(
+					application_FullName, response)
 				break
 			}
 		}
+	}
+
+	private subscribeToFrameworkObservable(
+		message: IApiCallRequestMessage
+			| IPortableQueryMessage
+			| IReadQueryMessage
+			| ISaveMessage<any>,
+		type: Message_Type,
+		messageFields: IApiCallResponseMessage,
+		returnedValue: any,
+		application_FullName: DbApplication_FullName,
+		webReciever: IWebReceiverState,
+	): void {
+
+		const subscription = returnedValue.subscribe(
+			returnedValue => {
+				this.webMessageGateway.sendMessageToApp(
+					application_FullName, {
+					...messageFields,
+					returnedValue,
+					type
+				})
+			})
+		let isolateSubscriptionMap = webReciever.subscriptionMap
+			.get(application_FullName)
+		if (!isolateSubscriptionMap) {
+			isolateSubscriptionMap = new Map()
+			webReciever.subscriptionMap.set(application_FullName, isolateSubscriptionMap)
+		}
+		isolateSubscriptionMap.set(message.subscriptionId, {
+			lastActive: new Date().getTime(),
+			subscription
+		})
+	}
+
+	private getMessageServerApplication(
+		message: IMessage
+	) {
+		return this.dbApplicationUtils.
+			getDbApplication_FullNameFromDomainAndName(
+				message.clientDomain, message.clientApplication)
+
+	}
+
+	private getMessageClientApplication(
+		message: IMessage
+	) {
+		return this.dbApplicationUtils.
+			getDbApplication_FullNameFromDomainAndName(
+				message.serverDomain, message.serverApplication)
 	}
 }

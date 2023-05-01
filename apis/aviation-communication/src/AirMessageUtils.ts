@@ -67,7 +67,7 @@ ${JSON.stringify(message, null, 2)}
     ): boolean {
         switch (type) {
             case Message_Type.API_SUBSCRIBE:
-            case Message_Type.API_SUBSCRIBTION_DATA:
+            case Message_Type.API_SUBSCRIPTION_DATA:
             case Message_Type.API_UNSUBSCRIBE:
             case Message_Type.SEARCH_ONE_SUBSCRIBE:
             case Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:

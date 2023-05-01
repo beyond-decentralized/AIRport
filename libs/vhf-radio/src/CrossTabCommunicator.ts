@@ -1,4 +1,4 @@
-import { AirMessageUtils, Message_Type, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage } from '@airport/aviation-communication';
+import { AirMessageUtils, Message_Type, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, TimeStamp } from '@airport/aviation-communication';
 import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
 
 export interface ICrossTabCommunicator {
@@ -20,11 +20,27 @@ export class CrossTabCommunicator
     communicationChannel: SoftBroadcastChannel
 
     pendingMessageIdSet: Set<string> = new Set()
-    activeSubscriptionIdSet: Set<string> = new Set()
+    activeSubscriptionIdMap: Map<string, TimeStamp> = new Map()
 
     constructor() {
         this.isNativeBroadcastChannel = typeof BroadcastChannel === 'function'
 
+        setTimeout(() => {
+            if (globalThis.repositoryAutoload !== false) {
+                setInterval(() => {
+                    let lastValidPinMillis = new Date().getTime() - 10000
+                    let staleSubscriptionIds = []
+                    for(const [subscriptionId, lastPingMillis] of this.activeSubscriptionIdMap) {
+                        if(lastPingMillis < lastValidPinMillis) {
+                            staleSubscriptionIds.push(subscriptionId)
+                        }
+                    }
+                    for(const staleSubscriptionId of staleSubscriptionIds) {
+                        this.activeSubscriptionIdMap.delete(staleSubscriptionId)
+                    }
+                }, 10000)
+            }
+        }, 2000)
 
         window.addEventListener("message", event => {
             const message: IApiCallRequestMessage = event.data
@@ -52,12 +68,13 @@ export class CrossTabCommunicator
                     this.clientProtocol = messageOriginFragments[0]
                     this.pendingMessageIdSet.add(message.id)
                     break
-                case Message_Type.API_SUBSCRIBE: {
-                    this.activeSubscriptionIdSet.add(message.subscriptionId)
+                case Message_Type.API_SUBSCRIBE:
+                case Message_Type.SUBSCRIPTION_PING: {
+                    this.activeSubscriptionIdMap.set(message.subscriptionId, new Date().getTime())
                     break
                 }
                 case Message_Type.API_UNSUBSCRIBE: {
-                    this.pendingMessageIdSet.delete(message.subscriptionId)
+                    this.activeSubscriptionIdMap.delete(message.subscriptionId)
                     break;
                 }
                 default: {
@@ -101,8 +118,8 @@ export class CrossTabCommunicator
                     case Message_Type.API_UNSUBSCRIBE: {
                         break;
                     }
-                    case Message_Type.API_SUBSCRIBTION_DATA: {
-                        if (!this.activeSubscriptionIdSet.has(message
+                    case Message_Type.API_SUBSCRIPTION_DATA: {
+                        if (!this.activeSubscriptionIdMap.has(message
                             .subscriptionId)) {
                             return
                         }

@@ -1,5 +1,5 @@
 import { AppState, IApplicationState } from "@airport/terminal-map";
-import { SubjectCache } from "@airport/autopilot";
+import { ClientSubjectCache } from "@airport/autopilot";
 
 export const applicationState: IApplicationState = {
     api: null,
@@ -12,7 +12,7 @@ export const applicationState: IApplicationState = {
     hostServer: 'https://localhost:3000',
     // FIXME: tie this in to the hostServer variable
     mainDomain: null,
-    subjectCache: new SubjectCache(),
+    clientSubjectCache: new ClientSubjectCache(),
     pendingMessageMap: new Map(),
     messageCallback: null,
 }

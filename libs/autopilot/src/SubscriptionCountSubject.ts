@@ -1,15 +1,27 @@
-import { ISubscriptionCountSubject } from "@airport/aviation-communication";
+import { ICoreRequestFields, ISubscriptionCountSubject, Message_Application, Message_Direction, Message_Domain, Message_DomainProtocol, Message_Leg, SubscriptionId } from "@airport/aviation-communication";
 import { Observer, Subject, Subscriber, Subscription } from "rxjs";
 import { SafeSubscriber } from "rxjs/internal/Subscriber";
 import { isSubscription } from "rxjs/internal/Subscription";
 
-export class SubscriptionCountSubject<T>
+export class SubscriptionCountSubject<T, RF extends {
+    clientApplication?: Message_Application,
+    clientDomain?: Message_Domain,
+    clientDomainProtocol?: Message_DomainProtocol,
+    direction: Message_Direction,
+    id: string,
+    messageLeg: Message_Leg,
+    serverApplication?: Message_Application,
+    serverDomain?: Message_Domain,
+    serverDomainProtocol?: Message_DomainProtocol
+}>
     extends Subject<T>
-    implements ISubscriptionCountSubject<T> {
+    implements ISubscriptionCountSubject<T, RF> {
 
     subscriptionCount = 0
 
     constructor(
+        public subscriptionId: SubscriptionId,
+        public requestFields: RF,
         private onFirstSubscriptionCallback: () => void,
         private onNoSubscriptionCallback: () => void
     ) {
@@ -68,10 +80,10 @@ export class SubscriptionCountSubject<T>
 
 }
 
-class SubscriptionCountSubscriber<T> extends SafeSubscriber<T> {
+class SubscriptionCountSubscriber<T, RF extends ICoreRequestFields> extends SafeSubscriber<T> {
 
     constructor(
-        private subscriptionCountSubject: SubscriptionCountSubject<T>,
+        private subscriptionCountSubject: SubscriptionCountSubject<T, RF>,
         observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null,
         error?: ((e?: any) => void) | null,
         complete?: (() => void) | null

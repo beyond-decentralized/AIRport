@@ -4,7 +4,7 @@ import {
     Injected,
     IOC
 } from '@airport/direction-indicator'
-import { IDbApplicationUtils } from '@airport/ground-control';
+import { DbApplication_FullName, IDbApplicationUtils } from '@airport/ground-control';
 import {
     IGetLatestApplicationVersionByDbApplication_NameMessage,
     IInitializeConnectionMessage,
@@ -21,20 +21,16 @@ export interface IWebMessageGateway {
     needMessageSerialization(): boolean
 
     sendMessageToApp(
+        application_FullName: DbApplication_FullName,
         message: IApiCallResponseMessage
+            | IGetLatestApplicationVersionByDbApplication_NameMessage
+			| IInitializeConnectionMessage
+            | IRetrieveDomainMessage
     ): void
 
     sendMessageToClient(
         message: IApiCallRequestMessage
             | IInitializeConnectionMessage
-    ): void
-
-    sendMessageToWindow(
-        message: IApiCallResponseMessage
-            | IGetLatestApplicationVersionByDbApplication_NameMessage
-            | IInitializeConnectionMessage
-            | IRetrieveDomainMessage,
-        window: Window
     ): void
 }
 
@@ -87,7 +83,7 @@ export class WebMessageGateway
                 return
             }
             this.transactionalReceiver.handleAppRequest(
-                message, event.origin, event.source)
+                message, event.origin)
         }, false)
     }
 
@@ -96,15 +92,14 @@ export class WebMessageGateway
     }
 
     sendMessageToApp(
-        message: IApiCallResponseMessage
+        application_FullName: DbApplication_FullName,
+        message: IApiCallResponseMessage | IInitializeConnectionMessage
     ): void {
-        const fullDbApplication_Name = this.dbApplicationUtils.
-            getDbApplication_FullNameFromDomainAndName(
-                message.serverDomain, message.serverApplication)
+        const window = this.getFrameWindow(application_FullName)
 
-        const window = this.getFrameWindow(fullDbApplication_Name)
+        this.airMessageUtils.prepMessageToSend(message)
 
-        this.sendMessageToWindow(message, window)
+        window.postMessage(message, '*')
     }
 
     sendMessageToClient(
@@ -114,18 +109,6 @@ export class WebMessageGateway
         this.airMessageUtils.prepMessageToSend(message)
 
         this.communicationChannel.postMessage(message)
-    }
-
-    sendMessageToWindow(
-        message: IApiCallResponseMessage
-            | IGetLatestApplicationVersionByDbApplication_NameMessage
-            | IInitializeConnectionMessage
-            | IRetrieveDomainMessage,
-        window: Window
-    ): void {
-        this.airMessageUtils.prepMessageToSend(message)
-
-        window.postMessage(message, '*')
     }
 
     private getFrameWindow(

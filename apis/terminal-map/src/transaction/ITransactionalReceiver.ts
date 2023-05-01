@@ -12,8 +12,7 @@ export interface ITransactionalReceiver {
 
     handleAppRequest(
         message: IMessage | IApiCallResponseMessage,
-        messageOrigin: string,
-        source: any
+        messageOrigin: string
     ): void
 
     onMessage(callback: (

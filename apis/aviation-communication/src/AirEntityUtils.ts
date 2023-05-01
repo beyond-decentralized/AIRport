@@ -1,5 +1,4 @@
 import { Injected } from '@airport/direction-indicator'
-import { Message_Type } from './IMessage';
 
 export type UserAccount_PublicSigningKey = string;
 export type UserAccount_LocalId = number;

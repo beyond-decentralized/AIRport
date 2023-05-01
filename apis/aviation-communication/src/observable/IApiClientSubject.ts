@@ -1,14 +1,11 @@
 import { IFullDITokenDescriptor } from "@airport/direction-indicator"
-import { IApiCallRequestMessage } from "../IApiCallMessage"
-import { ISubscriptionCountSubject } from "./ISubscriptionCountSubject"
+import { ICoreSubscriptionRequestFields, ISubscriptionCountSubject } from "./ISubscriptionCountSubject"
 
-export interface IApiClientSubject<T>
-    extends ISubscriptionCountSubject<T> {
+export interface IApiClientSubject<T, RF extends ICoreSubscriptionRequestFields>
+    extends ISubscriptionCountSubject<T, RF> {
 
     args: any[]
     fullDIDescriptor: IFullDITokenDescriptor
     subscriptionCount: number
-    subscriptionId: string
-    request: IApiCallRequestMessage
 
 }

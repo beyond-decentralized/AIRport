@@ -94,6 +94,28 @@ export class IframeTransactionalConnector
 
 	internal = false
 
+	constructor() {
+		setTimeout(() => {
+			if (globalThis.repositoryAutoload !== false) {
+				setInterval(() => {
+					let lastValidPinMillis = new Date().getTime() - 10000
+					let staleSubscriptionIds = []
+
+					const clientSubscriptionMap = this.applicationStore.state.clientSubscriptionMap
+					for (const [subscriptionId, subscriptionRecord] of clientSubscriptionMap) {
+						if (subscriptionRecord.lastActive < lastValidPinMillis) {
+							staleSubscriptionIds.push(subscriptionId)
+						}
+					}
+					for (const staleSubscriptionId of staleSubscriptionIds) {
+						clientSubscriptionMap.get(staleSubscriptionId).subscription.unsubscribe()
+						clientSubscriptionMap.delete(staleSubscriptionId)
+					}
+				}, 10000)
+			}
+		}, 2000)
+	}
+
 	async processMessage(
 		message: IApiCallRequestMessage
 			| IApiCallResponseMessage
@@ -346,22 +368,33 @@ export class IframeTransactionalConnector
 					this.sendMessageToParentWindow({
 						...response,
 						subscriptionId,
-						type: Message_Type.API_SUBSCRIBTION_DATA,
+						type: Message_Type.API_SUBSCRIPTION_DATA,
 						returnedValue: payload
 					} as IApiCallResponseMessage, origin)
 				})
-				clientSubscriptionMap.set(subscriptionId, subscription)
+				clientSubscriptionMap.set(subscriptionId, {
+					lastActive: new Date().getTime(),
+					subscription
+				})
 				break
 			}
+			case Message_Type.SUBSCRIPTION_PING: {
+				const subscriptionRecord = clientSubscriptionMap.get(subscriptionId)
+				if(!subscriptionRecord) {
+					break
+				}
+				subscriptionRecord.lastActive = new Date().getTime()
+			}
 			case Message_Type.API_UNSUBSCRIBE: {
-				const subscription = clientSubscriptionMap.get(subscriptionId)
-				if (!subscription) {
+				const subscriptionRecord = clientSubscriptionMap.get(subscriptionId)
+				if (!subscriptionRecord) {
 					console.log(`Could not find subscription for subscriptionId:
 ${subscriptionId}
 					`)
 					break
 				}
-				subscription.unsubscribe()
+				console.log(`Unsubscribing from Subscription Id: ${subscriptionId}`)
+				subscriptionRecord.subscription.unsubscribe()
 				clientSubscriptionMap.delete(subscriptionId)
 				// No need to send a message back, no transaction is started
 				// for the Unsubscribe operation
@@ -400,7 +433,7 @@ ${subscriptionId}
 			case Message_Type.SEARCH_ONE_SUBSCRIBE:
 			case Message_Type.SEARCH_SUBSCRIBE: {
 				observableRequestSubject = this.applicationStore.state
-					.subjectCache.getSubject(message.subscriptionId)
+					.clientSubjectCache.getSubject(message.subscriptionId)
 				if (!observableRequestSubject) {
 					return
 				}
@@ -416,7 +449,7 @@ ${subscriptionId}
 		const subscriptionId = message.subscriptionId
 		if (subscriptionId) {
 			observableRequestSubject = this.applicationStore.state
-				.subjectCache.getSubject(subscriptionId)
+				.clientSubjectCache.getSubject(subscriptionId)
 			if (!observableRequestSubject) {
 				console.error(`Could not find Observable API Request Subject for subscriptionId: ${subscriptionId}`)
 				return
@@ -531,7 +564,9 @@ ${subscriptionId}
 			type
 		}
 
-		const subject = new SubscriptionCountSubject<T>(
+		const subject = new SubscriptionCountSubject<T, IMessage>(
+			subscriptionId,
+			coreFields,
 			() => {
 				this.sendMessageToParentWindow(message)
 			},
@@ -543,8 +578,8 @@ ${subscriptionId}
 				}).then()
 			}
 		)
-		this.applicationStore.state.subjectCache
-			.addSubscripton(subscriptionId, subject)
+		this.applicationStore.state.clientSubjectCache
+			.addSubject(subscriptionId, subject)
 
 		return subject;
 	}
