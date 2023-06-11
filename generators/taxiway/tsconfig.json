@@ -14,6 +14,7 @@
     "noErrorTruncation": false,
     "incremental": true,
     "lib": [
+      "dom",
       "esnext"
     ],
     "target": "es2015",

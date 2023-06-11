@@ -1,27 +1,27 @@
 {
   "dependencies": {
-    "@airport/aviation-communication": "0.0.1",
-    "@airport/pressurization": "0.0.1",
-    "broadcast-channel": "^4.14.0"
+    "@airport/aviation-communication": "workspace:../../apis/aviation-communication",
+    "@airport/pressurization": "workspace:../pressurization",
+    "broadcast-channel": "workspace:../../../node_modules/broadcast-channel"
   },
   "devDependencies": {
-    "@airport/taxiway": "0.0.1",
-    "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-node-resolve": "^11.0.0",
-    "@rollup/plugin-typescript": "^8.0.0",
-    "rollup": "^2.3.4",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-terser": "^7.0.0",
-    "ts-node": "^10.9.1",
-    "ts-patch": "^2.1.0",
-    "tslib": "^2.0.0",
-    "tslint": "^5.14.0",
-    "typescript": "^4.5.2"
+    "@airport/taxiway": "workspace:../../generators/taxiway",
+    "@rollup/plugin-commonjs": "workspace:../../../node_modules/@rollup/plugin-commonjs",
+    "@rollup/plugin-node-resolve": "workspace:../../../node_modules/@rollup/plugin-node-resolve",
+    "@rollup/plugin-typescript": "workspace:../../../node_modules/@rollup/plugin-typescript",
+    "rollup": "workspace:../../../node_modules/rollup",
+    "rollup-plugin-dts": "workspace:../../../node_modules/rollup-plugin-dts",
+    "rollup-plugin-peer-deps-external": "workspace:../../../node_modules/rollup-plugin-peer-deps-external",
+    "rollup-plugin-terser": "workspace:../../../node_modules/rollup-plugin-terser",
+    "ts-node": "workspace:../../../node_modules/ts-node",
+    "ts-patch": "workspace:../../../node_modules/ts-patch",
+    "tslib": "workspace:../../../node_modules/tslib",
+    "typescript": "workspace:../../../node_modules/typescript"
   },
   "name": "@airport/vhf-radio",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w"
+    "build": "rollup --bundleConfigAsCjs -c ./rollup.config.js",
+    "dev": "rollup --bundleConfigAsCjs -c ./rollup.config.js -w"
   },
   "type": "module",
   "typings": "lib/index",

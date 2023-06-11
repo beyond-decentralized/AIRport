@@ -112,7 +112,7 @@ export default [
             format: "esm",
             sourcemap: true,
         }],
-        plugins: [dts()],
+        plugins: [dts.default()],
     },
     {
         input: "dist/esm/to_be_generated/airspace.api-index.d.ts",
@@ -121,6 +121,6 @@ export default [
             format: "esm",
             sourcemap: true,
         }],
-        plugins: [dts()],
+        plugins: [dts.default()],
     },
 ];

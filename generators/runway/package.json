@@ -2,33 +2,33 @@
   "name": "@airport/runway",
   "version": "0.0.1",
   "dependencies": {
-    "@airport/air-traffic-control": "0.0.1",
-    "@airport/aviation-communication": "0.0.1",
-    "@airport/direction-indicator": "0.0.1",
-    "@airport/final-approach": "0.0.1",
-    "@airport/fuel-hydrant-system": "0.0.1",
-    "@airport/ground-control": "0.0.1",
-    "@airport/takeoff": "0.0.1",
-    "@airport/sequence": "0.0.1",
-    "@airport/tarmaq-dao": "0.0.1",
-    "@airport/tarmaq-query": "0.0.1",
-    "@airport/terminal": "0.0.1",
-    "@airport/terminal-map": "0.0.1",
-    "@airport/tower": "0.0.1"
+    "@airport/air-traffic-control": "workspace:../../apis/air-traffic-control",
+    "@airport/aviation-communication": "workspace:../../apis/aviation-communication",
+    "@airport/direction-indicator": "workspace:../../libs/direction-indicator",
+    "@airport/final-approach": "workspace:../../schemas/final-approach",
+    "@airport/fuel-hydrant-system": "workspace:../../libs/fuel-hydrant-system",
+    "@airport/ground-control": "workspace:../../apis/ground-control",
+    "@airport/takeoff": "workspace:../takeoff",
+    "@airport/sequence": "workspace:../../databases/sequence",
+    "@airport/tarmaq-dao": "workspace:../../ORMs/tarmaq/dao",
+    "@airport/tarmaq-query": "workspace:../../ORMs/tarmaq/query",
+    "@airport/terminal": "workspace:../../engines/terminal",
+    "@airport/terminal-map": "workspace:../../apis/terminal-map",
+    "@airport/tower": "workspace:../../engines/tower"
   },
   "peerDependencies": {
-    "typescript": "^4.5.2"
+    "typescript": "workspace:../../../node_modules/typescript"
   },
   "devDependencies": {
-    "@types/node": "^14.11.10",
-    "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-node-resolve": "^13.0.6",
-    "rollup-plugin-typescript2": "0.33.0",
-    "rollup": "^2.60.0",
-    "rollup-plugin-dts": "^4.0.1",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-terser": "^7.0.2",
-    "tslib": "^2.0.0"
+    "@types/node": "workspace:../../../node_modules/@types/node",
+    "@rollup/plugin-commonjs": "workspace:../../../node_modules/@rollup/plugin-commonjs",
+    "@rollup/plugin-node-resolve": "workspace:../../../node_modules/@rollup/plugin-node-resolve",
+    "rollup": "workspace:../../../node_modules/rollup",
+    "rollup-plugin-dts": "workspace:../../../node_modules/rollup-plugin-dts",
+    "rollup-plugin-peer-deps-external": "workspace:../../../node_modules/rollup-plugin-peer-deps-external",
+    "rollup-plugin-terser": "workspace:../../../node_modules/rollup-plugin-terser",
+    "rollup-plugin-typescript2": "workspace:../../../node_modules/rollup-plugin-typescript2",
+    "tslib": "workspace:../../../node_modules/tslib"
   },
   "main": "dist/esm/index.mjs",
   "module": "dist/esm/index.mjs",
@@ -37,7 +37,7 @@
   ],
   "scripts": {
     "prebuild": "node bundleUtils.js internal",
-    "build": "rollup -c ./rollup.config.js",
+    "build": "rollup --bundleConfigAsCjs -c ./rollup.config.js",
     "postbuild": "node bundleUtils.js external"
   },
   "type": "module",

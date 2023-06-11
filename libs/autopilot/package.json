@@ -2,25 +2,25 @@
   "name": "@airport/autopilot",
   "version": "0.0.1",
   "peerDependencies": {
-    "@airport/aviation-communication": "0.0.1",
-    "@airport/direction-indicator": "0.0.1",
-    "@airport/pressurization": "0.0.1",
-    "rxjs": "~7.8.0",
-    "uuid": "^8.3.2"
+    "@airport/aviation-communication": "workspace:../../apis/aviation-communication",
+    "@airport/direction-indicator": "workspace:../direction-indicator",
+    "@airport/pressurization": "workspace:../pressurization",
+    "rxjs": "workspace:../../../node_modules/rxjs",
+    "uuid": "workspace:../../../node_modules/uuid"
   },
   "devDependencies": {
-    "@airport/taxiway": "0.0.1",
-    "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-node-resolve": "^13.0.6",
-    "rollup-plugin-typescript2": "0.33.0",
-    "rollup": "^2.60.0",
-    "rollup-plugin-dts": "^4.0.1",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-terser": "^7.0.2",
-    "ts-node": "^10.9.1",
-    "ts-patch": "^2.1.0",
-    "typescript": "^4.5.2",
-    "tslib": "^2.0.0"
+    "@airport/taxiway": "workspace:../../generators/taxiway",
+    "@rollup/plugin-commonjs": "workspace:../../../node_modules/@rollup/plugin-commonjs",
+    "@rollup/plugin-node-resolve": "workspace:../../../node_modules/@rollup/plugin-node-resolve",
+    "rollup": "workspace:../../../node_modules/rollup",
+    "rollup-plugin-dts": "workspace:../../../node_modules/rollup-plugin-dts",
+    "rollup-plugin-peer-deps-external": "workspace:../../../node_modules/rollup-plugin-peer-deps-external",
+    "rollup-plugin-terser": "workspace:../../../node_modules/rollup-plugin-terser",
+    "rollup-plugin-typescript2": "workspace:../../../node_modules/rollup-plugin-typescript2",
+    "ts-node": "workspace:../../../node_modules/ts-node",
+    "ts-patch": "workspace:../../../node_modules/ts-patch",
+    "tslib": "workspace:../../../node_modules/tslib",
+    "typescript": "workspace:../../../node_modules/typescript"
   },
   "main": "dist/esm/autopilot.index.mjs",
   "module": "dist/esm/autopilot.index.mjs",
@@ -28,8 +28,8 @@
     "dist"
   ],
   "scripts": {
-    "dev": "rollup -c ./rollup.config.js -w",
-    "build": "rollup -c ./rollup.config.js"
+    "dev": "rollup --bundleConfigAsCjs -c ./rollup.config.js -w",
+    "build": "rollup --bundleConfigAsCjs -c ./rollup.config.js"
   },
   "types": "dist/esm/autopilot.index.d.ts"
 }

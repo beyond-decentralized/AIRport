@@ -6,33 +6,33 @@
     "application": "@airport/travel-document-checkpoint"
   },
   "peerDependencies": {
-    "@airbridge/validate": "0.0.1",
-    "@airport/air-traffic-control": "0.0.1",
-    "@airport/airgate": "0.0.1",
-    "@airport/airspace": "0.0.1",
-    "@airport/autopilot": "0.0.1",
-    "@airport/aviation-communication": "0.0.1",
-    "@airport/direction-indicator": "0.0.1",
-    "@airport/ground-control": "0.0.1",
-    "@airport/tarmaq-dao": "0.0.1",
-    "@airport/tarmaq-entity": "0.0.1",
-    "@airport/tarmaq-query": "0.0.1",
-    "uuid": "^8.3.2"
+    "@airbridge/validate": "workspace:../../../AIRbridge/validate",
+    "@airport/air-traffic-control": "workspace:../../apis/air-traffic-control",
+    "@airport/airgate": "workspace:../../libs/airgate",
+    "@airport/airspace": "workspace:../airspace",
+    "@airport/autopilot": "workspace:../../libs/autopilot",
+    "@airport/aviation-communication": "workspace:../../apis/aviation-communication",
+    "@airport/direction-indicator": "workspace:../../libs/direction-indicator",
+    "@airport/ground-control": "workspace:../../apis/ground-control",
+    "@airport/tarmaq-dao": "workspace:../../ORMs/tarmaq/dao",
+    "@airport/tarmaq-entity": "workspace:../../ORMs/tarmaq/entity",
+    "@airport/tarmaq-query": "workspace:../../ORMs/tarmaq/query",
+    "uuid": "workspace:../../../node_modules/uuid"
   },
   "devDependencies": {
-    "@airport/runway": "0.0.1",
-    "@airport/taxiway": "0.0.1",
-    "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-node-resolve": "^13.0.6",
-    "rollup-plugin-typescript2": "0.33.0",
-    "rollup": "^2.60.0",
-    "rollup-plugin-dts": "^4.0.1",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-terser": "^7.0.2",
-    "ts-node": "^10.9.1",
-    "ts-patch": "^2.1.0",
-    "typescript": "^4.5.2",
-    "tslib": "^2.0.0"
+    "@airport/runway": "workspace:../../generators/runway",
+    "@airport/taxiway": "workspace:../../generators/taxiway",
+    "@rollup/plugin-commonjs": "workspace:../../../node_modules/@rollup/plugin-commonjs",
+    "@rollup/plugin-node-resolve": "workspace:../../../node_modules/@rollup/plugin-node-resolve",
+    "rollup": "workspace:../../../node_modules/rollup",
+    "rollup-plugin-dts": "workspace:../../../node_modules/rollup-plugin-dts",
+    "rollup-plugin-peer-deps-external": "workspace:../../../node_modules/rollup-plugin-peer-deps-external",
+    "rollup-plugin-terser": "workspace:../../../node_modules/rollup-plugin-terser",
+    "rollup-plugin-typescript2": "workspace:../../../node_modules/rollup-plugin-typescript2",
+    "ts-node": "workspace:../../../node_modules/ts-node",
+    "ts-patch": "workspace:../../../node_modules/ts-patch",
+    "tslib": "workspace:../../../node_modules/tslib",
+    "typescript": "workspace:../../../node_modules/typescript"
   },
   "main": "dist/esm/travel-document-checkpoint.index.mjs",
   "module": "dist/esm/travel-document-checkpoint.index.mjs",
@@ -43,9 +43,9 @@
   ],
   "scripts": {
     "predev": "node generate.mjs",
-    "dev": "rollup -c ./rollup.config.js -w",
+    "dev": "rollup --bundleConfigAsCjs -c ./rollup.config.js -w",
     "prebuild": "node generate.mjs",
-    "build": "rollup -c ./rollup.config.js"
+    "build": "rollup --bundleConfigAsCjs -c ./rollup.config.js"
   },
   "types": "dist/esm/travel-document-checkpoint.index.d.ts"
 }

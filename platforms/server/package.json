@@ -3,32 +3,32 @@
   "description": "AIRport server framework",
   "version": "0.0.1",
   "peerDependencies": {
-    "@airbridge/sso": "0.0.1",
-    "@airport/air-traffic-control": "0.0.1",
-    "@airport/airspace": "0.0.1",
-    "@airport/direction-indicator": "0.0.1",
-    "@airport/ground-control": "0.0.1",
-    "@airport/holding-pattern": "0.0.1",
-    "@airport/session-state": "0.0.1",
-    "@airport/sqljs": "0.0.1",
-    "@airport/takeoff": "0.0.1",
-    "@airport/terminal": "0.0.1",
-    "@airport/terminal-map": "0.0.1",
-    "@airport/tower": "0.0.1",
-    "rxjs": "^7.8.0"
+    "@airbridge/sso": "workspace:../../../AIRbridge/sso",
+    "@airport/air-traffic-control": "workspace:../../apis/air-traffic-control",
+    "@airport/airspace": "workspace:../../schemas/airspace",
+    "@airport/direction-indicator": "workspace:../../libs/direction-indicator",
+    "@airport/ground-control": "workspace:../../apis/ground-control",
+    "@airport/holding-pattern": "workspace:../../schemas/holding-pattern",
+    "@airport/session-state": "workspace:../../libs/session-state",
+    "@airport/sqljs": "workspace:../../database/sqljs",
+    "@airport/takeoff": "workspace:../../generators/takeoff",
+    "@airport/terminal": "workspace:../../engines/terminal",
+    "@airport/terminal-map": "workspace:../../apis/terminal-map",
+    "@airport/tower": "workspace:../../engines/tower",
+    "rxjs": "workspace:../../../node_modules/rxjs"
   },
   "devDependencies": {
-    "@airport/taxiway": "0.0.1",
-    "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-node-resolve": "^13.0.6",
-    "@rollup/plugin-typescript": "^8.3.0",
-    "rollup": "^2.60.0",
-    "rollup-plugin-dts": "^4.0.1",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-terser": "^7.0.2",
-    "ts-node": "^10.9.1",
-    "ts-patch": "^2.1.0",
-    "typescript": "^4.4.4"
+    "@airport/taxiway": "workspace:../../generators/taxiway",
+    "@rollup/plugin-commonjs": "workspace:../../../node_modules/@rollup/plugin-commonjs",
+    "@rollup/plugin-node-resolve": "workspace:../../../node_modules/@rollup/plugin-node-resolve",
+    "@rollup/plugin-typescript": "workspace:../../../node_modules/plugin-typescript",
+    "rollup": "workspace:../../../node_modules/rollup",
+    "rollup-plugin-dts": "workspace:../../../node_modules/rollup-plugin-dts",
+    "rollup-plugin-peer-deps-external": "workspace:../../../node_modules/rollup-plugin-peer-deps-external",
+    "rollup-plugin-terser": "workspace:../../../node_modules/rollup-plugin-terser",
+    "ts-node": "workspace:../../../node_modules/ts-node",
+    "ts-patch": "workspace:../../../node_modules/ts-patch",
+    "typescript": "workspace:../../../node_modules/typescript"
   },
   "main": "dist/cjs/server.index.js",
   "module": "dist/esm/server.index.js",
@@ -36,8 +36,8 @@
     "dist"
   ],
   "scripts": {
-    "dev": "rollup -c -w",
-    "build": "rollup -c"
+    "dev": "rollup --bundleConfigAsCjs -c ./rollup.config.js -w",
+    "build": "rollup --bundleConfigAsCjs -c ./rollup.config.js"
   },
   "types": "dist/server.index.d.ts"
 }

@@ -55,6 +55,6 @@ export default [
     {
         input: "dist/esm/server.index.d.ts",
         output: [{ file: "dist/server.index.d.ts", format: "esm" }],
-        plugins: [dts()],
+        plugins: [dts.default()],
     },
 ];
