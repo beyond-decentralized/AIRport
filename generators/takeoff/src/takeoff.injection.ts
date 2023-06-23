@@ -1,5 +1,5 @@
 import { AIRPORT_DATABASE, QApplicationBuilderUtils } from '@airport/air-traffic-control'
-import { SequenceDao } from '@airport/takeoff/node_modules/@airport/airport-code/dist/esm/airport-code.index'
+import { SequenceDao } from '@airport/airport-code'
 import {
     DbColumnDao,
     DbApplicationDao,
