@@ -215,16 +215,16 @@ function app(applicationDescriptor) {
 }
 
 class DependencyInjectionToken {
+    constructor(application, descriptor) {
+        this.application = application;
+        this.descriptor = descriptor;
+    }
     static getPath(tokenOrFullDescriptor) {
         return tokenOrFullDescriptor.application.domain.name + ':' + tokenOrFullDescriptor.application.name + ':'
             + tokenOrFullDescriptor.descriptor.interface;
     }
     get dependencyConfiguration() {
         return this.getInheritedDependencyConfiguration(this.descriptor.class);
-    }
-    constructor(application, descriptor) {
-        this.application = application;
-        this.descriptor = descriptor;
     }
     getPath() {
         return DependencyInjectionToken.getPath(this);
@@ -317,6 +317,11 @@ class DependencyInjectionToken {
 addClasses([DependencyInjectionToken]);
 
 class InjectionApplication {
+    constructor(name, domain) {
+        this.name = name;
+        this.domain = domain;
+        this.tokenMap = new Map();
+    }
     static getTokenDescriptor(input) {
         let descriptor = input;
         if (typeof input === 'string') {
@@ -337,11 +342,6 @@ class InjectionApplication {
             descriptor.class = null;
         }
         return descriptor;
-    }
-    constructor(name, domain) {
-        this.name = name;
-        this.domain = domain;
-        this.tokenMap = new Map();
     }
     register(...injectedClassesOrInterfaceNames) {
         let tokensObject = {};
@@ -2189,9 +2189,6 @@ class Interface {
     }
 }
 class EntityCandidate {
-    static create(type, path, parentClass, parentImport, isSuperClass) {
-        return new EntityCandidate(type, path, parentClass, parentImport, undefined, isSuperClass);
-    }
     constructor(type, path, parentClassName, location, verified, isSuperclass) {
         this.type = type;
         this.path = path;
@@ -2204,6 +2201,9 @@ class EntityCandidate {
             return;
         }
         console.log(`\tcreating entity: ${type}, parent: ${parentClassName}, isSuperclass: ${isSuperclass}`);
+    }
+    static create(type, path, parentClass, parentImport, isSuperClass) {
+        return new EntityCandidate(type, path, parentClass, parentImport, undefined, isSuperClass);
     }
     getIdProperties() {
         return this.getPropertiesOfType(true);
@@ -7238,23 +7238,8 @@ function reportUnhandledError(err) {
 
 function noop() { }
 
-var context = null;
 function errorContext(cb) {
-    if (config.useDeprecatedSynchronousErrorHandling) {
-        var isRoot = !context;
-        if (isRoot) {
-            context = { errorThrown: false, error: null };
-        }
-        cb();
-        if (isRoot) {
-            var _a = context, errorThrown = _a.errorThrown, error = _a.error;
-            context = null;
-            if (errorThrown) {
-                throw error;
-            }
-        }
-    }
-    else {
+    {
         cb();
     }
 }
@@ -8345,7 +8330,7 @@ var Message_Type;
     Message_Type["API_CALL"] = "API_CALL";
     Message_Type["API_SUBSCRIBE"] = "API_SUBSCRIBE";
     Message_Type["API_SUBSCRIPTION_DATA"] = "API_SUBSCRIPTION_DATA";
-    Message_Type["API_SUBSCRIPTION_PING"] = "API_SUBSCRIPTION_PING";
+    Message_Type["SUBSCRIPTION_PING"] = "SUBSCRIPTION_PING";
     Message_Type["API_UNSUBSCRIBE"] = "API_UNSUBSCRIBE";
     Message_Type["APP_INITIALIZED"] = "APP_INITIALIZED";
     Message_Type["APP_INITIALIZING"] = "APP_INITIALIZING";
@@ -8361,7 +8346,7 @@ var Message_Type;
     Message_Type["SAVE"] = "SAVE";
     Message_Type["SEARCH_ONE_SUBSCRIBE"] = "SEARCH_ONE_SUBSCRIBE";
     Message_Type["SEARCH_ONE_SUBSCRIBTION_DATA"] = "SEARCH_ONE_SUBSCRIBTION_DATA";
-    Message_Type["SEARCH_ONE_UNSUBSCRIBE"] = "SEARCH_ONE_UNSUBSCRIBE";
+    Message_Type["SEARCH_ONE_UNSUBSCRIBE"] = "ONE_UNSUBSCRIBE";
     Message_Type["SEARCH_SUBSCRIBE"] = "SEARCH_SUBSCRIBE";
     Message_Type["SEARCH_SUBSCRIBTION_DATA"] = "SEARCH_SUBSCRIBTION_DATA";
     Message_Type["SEARCH_UNSUBSCRIBE"] = "SEARCH_UNSUBSCRIBE";
@@ -8534,11 +8519,11 @@ setTimeout(() => {
 });
 
 class LookupProxy {
-    ensureContext(context) {
-        return this.dao.lookup.ensureContext(context);
-    }
     constructor(dao) {
         this.dao = dao;
+    }
+    ensureContext(context) {
+        return this.dao.lookup.ensureContext(context);
     }
     async findInternal(rawQuery, queryResultType, one, QueryClass, context, mapResults) {
         return await this.dao.lookup.findInternal(rawQuery, queryResultType, one, QueryClass, context, mapResults);
@@ -8896,11 +8881,6 @@ class FieldsSelect {
  * Created by Papa on 8/26/2017.
  */
 class Dao {
-    static BaseSave(config) {
-        return function (target, propertyKey) {
-            // No runtime logic required.
-        };
-    }
     constructor(dbEntityId, Q, internal = false) {
         this.internal = internal;
         const dbEntity = Q.__dbApplication__.currentVersion[0]
@@ -8908,6 +8888,11 @@ class Dao {
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
         this.db = new EntityDatabaseFacade(dbEntity, Q, this);
         this.SELECT = new FieldsSelect(dbEntity);
+    }
+    static BaseSave(config) {
+        return function (target, propertyKey) {
+            // No runtime logic required.
+        };
     }
     mapById(entities) {
         const map = new Map();
@@ -10348,20 +10333,20 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$5 extends ObservableDao {
+let SQDIDao$5 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_airport_dash_code);
     }
-}
+};
 class BaseSequenceDao extends SQDIDao$5 {
+    constructor() {
+        super(0);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airport_dash_code_diSet(0);
-    }
-    constructor() {
-        super(0);
     }
 }
 BaseSequenceDao.Find = new DaoQueryDecorators();
@@ -10369,14 +10354,14 @@ BaseSequenceDao.FindOne = new DaoQueryDecorators();
 BaseSequenceDao.Search = new DaoQueryDecorators();
 BaseSequenceDao.SearchOne = new DaoQueryDecorators();
 class BaseSystemWideOperationIdDao extends SQDIDao$5 {
+    constructor() {
+        super(1);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airport_dash_code_diSet(1);
-    }
-    constructor() {
-        super(1);
     }
 }
 BaseSystemWideOperationIdDao.Find = new DaoQueryDecorators();
@@ -10384,14 +10369,14 @@ BaseSystemWideOperationIdDao.FindOne = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.Search = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.SearchOne = new DaoQueryDecorators();
 class BaseTerminalRunDao extends SQDIDao$5 {
+    constructor() {
+        super(2);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airport_dash_code_diSet(2);
-    }
-    constructor() {
-        super(2);
     }
 }
 BaseTerminalRunDao.Find = new DaoQueryDecorators();
@@ -10571,20 +10556,20 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$4 extends ObservableDao {
+let SQDIDao$4 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_airspace);
     }
-}
+};
 class BaseApplicationApiClassDao extends SQDIDao$4 {
+    constructor() {
+        super(10);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(10);
-    }
-    constructor() {
-        super(10);
     }
 }
 BaseApplicationApiClassDao.Find = new DaoQueryDecorators();
@@ -10592,14 +10577,14 @@ BaseApplicationApiClassDao.FindOne = new DaoQueryDecorators();
 BaseApplicationApiClassDao.Search = new DaoQueryDecorators();
 BaseApplicationApiClassDao.SearchOne = new DaoQueryDecorators();
 class BaseApplicationApiOperationDao extends SQDIDao$4 {
+    constructor() {
+        super(9);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(9);
-    }
-    constructor() {
-        super(9);
     }
 }
 BaseApplicationApiOperationDao.Find = new DaoQueryDecorators();
@@ -10607,14 +10592,14 @@ BaseApplicationApiOperationDao.FindOne = new DaoQueryDecorators();
 BaseApplicationApiOperationDao.Search = new DaoQueryDecorators();
 BaseApplicationApiOperationDao.SearchOne = new DaoQueryDecorators();
 class BaseApplicationApiParameterDao extends SQDIDao$4 {
+    constructor() {
+        super(7);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(7);
-    }
-    constructor() {
-        super(7);
     }
 }
 BaseApplicationApiParameterDao.Find = new DaoQueryDecorators();
@@ -10622,14 +10607,14 @@ BaseApplicationApiParameterDao.FindOne = new DaoQueryDecorators();
 BaseApplicationApiParameterDao.Search = new DaoQueryDecorators();
 BaseApplicationApiParameterDao.SearchOne = new DaoQueryDecorators();
 class BaseApplicationApiReturnTypeDao extends SQDIDao$4 {
+    constructor() {
+        super(8);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(8);
-    }
-    constructor() {
-        super(8);
     }
 }
 BaseApplicationApiReturnTypeDao.Find = new DaoQueryDecorators();
@@ -10637,14 +10622,14 @@ BaseApplicationApiReturnTypeDao.FindOne = new DaoQueryDecorators();
 BaseApplicationApiReturnTypeDao.Search = new DaoQueryDecorators();
 BaseApplicationApiReturnTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlApplicationDao extends SQDIDao$4 {
+    constructor() {
+        super(13);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(13);
-    }
-    constructor() {
-        super(13);
     }
 }
 BaseDdlApplicationDao.Find = new DaoQueryDecorators();
@@ -10652,14 +10637,14 @@ BaseDdlApplicationDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlApplicationCurrentVersionDao extends SQDIDao$4 {
+    constructor() {
+        super(12);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(12);
-    }
-    constructor() {
-        super(12);
     }
 }
 BaseDdlApplicationCurrentVersionDao.Find = new DaoQueryDecorators();
@@ -10667,14 +10652,14 @@ BaseDdlApplicationCurrentVersionDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationCurrentVersionDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationCurrentVersionDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlApplicationReferenceDao extends SQDIDao$4 {
+    constructor() {
+        super(6);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(6);
-    }
-    constructor() {
-        super(6);
     }
 }
 BaseDdlApplicationReferenceDao.Find = new DaoQueryDecorators();
@@ -10682,14 +10667,14 @@ BaseDdlApplicationReferenceDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationReferenceDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationReferenceDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlApplicationVersionDao extends SQDIDao$4 {
+    constructor() {
+        super(11);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(11);
-    }
-    constructor() {
-        super(11);
     }
 }
 BaseDdlApplicationVersionDao.Find = new DaoQueryDecorators();
@@ -10697,14 +10682,14 @@ BaseDdlApplicationVersionDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationVersionDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationVersionDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlColumnDao extends SQDIDao$4 {
+    constructor() {
+        super(4);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(4);
-    }
-    constructor() {
-        super(4);
     }
 }
 BaseDdlColumnDao.Find = new DaoQueryDecorators();
@@ -10712,14 +10697,14 @@ BaseDdlColumnDao.FindOne = new DaoQueryDecorators();
 BaseDdlColumnDao.Search = new DaoQueryDecorators();
 BaseDdlColumnDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlDomainDao extends SQDIDao$4 {
+    constructor() {
+        super(14);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(14);
-    }
-    constructor() {
-        super(14);
     }
 }
 BaseDdlDomainDao.Find = new DaoQueryDecorators();
@@ -10727,14 +10712,14 @@ BaseDdlDomainDao.FindOne = new DaoQueryDecorators();
 BaseDdlDomainDao.Search = new DaoQueryDecorators();
 BaseDdlDomainDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlEntityDao extends SQDIDao$4 {
+    constructor() {
+        super(5);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(5);
-    }
-    constructor() {
-        super(5);
     }
 }
 BaseDdlEntityDao.Find = new DaoQueryDecorators();
@@ -10742,14 +10727,14 @@ BaseDdlEntityDao.FindOne = new DaoQueryDecorators();
 BaseDdlEntityDao.Search = new DaoQueryDecorators();
 BaseDdlEntityDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlPropertyDao extends SQDIDao$4 {
+    constructor() {
+        super(2);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(2);
-    }
-    constructor() {
-        super(2);
     }
 }
 BaseDdlPropertyDao.Find = new DaoQueryDecorators();
@@ -10757,14 +10742,14 @@ BaseDdlPropertyDao.FindOne = new DaoQueryDecorators();
 BaseDdlPropertyDao.Search = new DaoQueryDecorators();
 BaseDdlPropertyDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlPropertyColumnDao extends SQDIDao$4 {
+    constructor() {
+        super(3);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(3);
-    }
-    constructor() {
-        super(3);
     }
 }
 BaseDdlPropertyColumnDao.Find = new DaoQueryDecorators();
@@ -10772,14 +10757,14 @@ BaseDdlPropertyColumnDao.FindOne = new DaoQueryDecorators();
 BaseDdlPropertyColumnDao.Search = new DaoQueryDecorators();
 BaseDdlPropertyColumnDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlRelationDao extends SQDIDao$4 {
+    constructor() {
+        super(1);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(1);
-    }
-    constructor() {
-        super(1);
     }
 }
 BaseDdlRelationDao.Find = new DaoQueryDecorators();
@@ -10787,14 +10772,14 @@ BaseDdlRelationDao.FindOne = new DaoQueryDecorators();
 BaseDdlRelationDao.Search = new DaoQueryDecorators();
 BaseDdlRelationDao.SearchOne = new DaoQueryDecorators();
 class BaseDdlRelationColumnDao extends SQDIDao$4 {
+    constructor() {
+        super(0);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_airspace_diSet(0);
-    }
-    constructor() {
-        super(0);
     }
 }
 BaseDdlRelationColumnDao.Find = new DaoQueryDecorators();
@@ -12030,11 +12015,8 @@ globalThis.internalTerminalState = new BehaviorSubject({
         localDomain: '',
         mainDomainFragments: [],
         onClientMessageCallback: null,
-        pendingApplicationCounts: new Map(),
-        pendingHostCounts: new Map(),
         pendingInterAppApiCallMessageMap: new Map(),
-        subscriptionMap: new Map(),
-        subscriptionSourceWindowMap: new Map()
+        subscriptionMap: new Map()
     }
 });
 
@@ -13859,14 +13841,13 @@ takeoff.setDependencies(SqlSchemaBuilder, {
 // Unique ID creation requires a high quality random # generator. In the browser we therefore
 // require the crypto API and do not support built-in fallback to lower quality random number
 // generators (like Math.random()).
-var getRandomValues;
-var rnds8 = new Uint8Array(16);
+let getRandomValues;
+const rnds8 = new Uint8Array(16);
 function rng() {
   // lazy load so that environments that need to polyfill have a chance to do so
   if (!getRandomValues) {
-    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation. Also,
-    // find the complete implementation of crypto (msCrypto) on IE11.
-    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto !== 'undefined' && typeof msCrypto.getRandomValues === 'function' && msCrypto.getRandomValues.bind(msCrypto);
+    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
+    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
 
     if (!getRandomValues) {
       throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
@@ -13876,43 +13857,35 @@ function rng() {
   return getRandomValues(rnds8);
 }
 
-var REGEX = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
-
-function validate(uuid) {
-  return typeof uuid === 'string' && REGEX.test(uuid);
-}
-
 /**
  * Convert array of 16 byte values to UUID string format of the form:
  * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
  */
 
-var byteToHex = [];
+const byteToHex = [];
 
-for (var i = 0; i < 256; ++i) {
-  byteToHex.push((i + 0x100).toString(16).substr(1));
+for (let i = 0; i < 256; ++i) {
+  byteToHex.push((i + 0x100).toString(16).slice(1));
 }
 
-function stringify(arr) {
-  var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+function unsafeStringify(arr, offset = 0) {
   // Note: Be careful editing this code!  It's been tuned for performance
   // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
-  var uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase(); // Consistency check for valid UUID.  If this throws, it's likely due to one
-  // of the following:
-  // - One or more input array values don't map to a hex octet (leading to
-  // "undefined" in the uuid)
-  // - Invalid input values for the RFC `version` or `variant` fields
-
-  if (!validate(uuid)) {
-    throw TypeError('Stringified UUID is invalid');
-  }
-
-  return uuid;
+  return (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
 }
 
+const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+var native = {
+  randomUUID
+};
+
 function v4(options, buf, offset) {
+  if (native.randomUUID && !buf && !options) {
+    return native.randomUUID();
+  }
+
   options = options || {};
-  var rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+  const rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
 
   rnds[6] = rnds[6] & 0x0f | 0x40;
   rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
@@ -13920,14 +13893,14 @@ function v4(options, buf, offset) {
   if (buf) {
     offset = offset || 0;
 
-    for (var i = 0; i < 16; ++i) {
+    for (let i = 0; i < 16; ++i) {
       buf[offset + i] = rnds[i];
     }
 
     return buf;
   }
 
-  return stringify(rnds);
+  return unsafeStringify(rnds);
 }
 
 /**
@@ -14174,20 +14147,20 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$3 extends ObservableDao {
+let SQDIDao$3 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_holding_dash_pattern);
     }
-}
+};
 class BaseActorDao extends SQDIDao$3 {
+    constructor() {
+        super(0);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(0);
-    }
-    constructor() {
-        super(0);
     }
 }
 BaseActorDao.Find = new DaoQueryDecorators();
@@ -14195,14 +14168,14 @@ BaseActorDao.FindOne = new DaoQueryDecorators();
 BaseActorDao.Search = new DaoQueryDecorators();
 BaseActorDao.SearchOne = new DaoQueryDecorators();
 class BaseCopiedRecordLedgerDao extends SQDIDao$3 {
+    constructor() {
+        super(18);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(18);
-    }
-    constructor() {
-        super(18);
     }
 }
 BaseCopiedRecordLedgerDao.Find = new DaoQueryDecorators();
@@ -14210,14 +14183,14 @@ BaseCopiedRecordLedgerDao.FindOne = new DaoQueryDecorators();
 BaseCopiedRecordLedgerDao.Search = new DaoQueryDecorators();
 BaseCopiedRecordLedgerDao.SearchOne = new DaoQueryDecorators();
 class BaseCrossRepositoryRelationLedgerDao extends SQDIDao$3 {
+    constructor() {
+        super(19);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(19);
-    }
-    constructor() {
-        super(19);
     }
 }
 BaseCrossRepositoryRelationLedgerDao.Find = new DaoQueryDecorators();
@@ -14225,14 +14198,14 @@ BaseCrossRepositoryRelationLedgerDao.FindOne = new DaoQueryDecorators();
 BaseCrossRepositoryRelationLedgerDao.Search = new DaoQueryDecorators();
 BaseCrossRepositoryRelationLedgerDao.SearchOne = new DaoQueryDecorators();
 class BaseLocalCopyReplacementLedgerDao extends SQDIDao$3 {
+    constructor() {
+        super(20);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(20);
-    }
-    constructor() {
-        super(20);
     }
 }
 BaseLocalCopyReplacementLedgerDao.Find = new DaoQueryDecorators();
@@ -14240,14 +14213,14 @@ BaseLocalCopyReplacementLedgerDao.FindOne = new DaoQueryDecorators();
 BaseLocalCopyReplacementLedgerDao.Search = new DaoQueryDecorators();
 BaseLocalCopyReplacementLedgerDao.SearchOne = new DaoQueryDecorators();
 class BaseOperationHistoryDao extends SQDIDao$3 {
+    constructor() {
+        super(17);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(17);
-    }
-    constructor() {
-        super(17);
     }
 }
 BaseOperationHistoryDao.Find = new DaoQueryDecorators();
@@ -14255,14 +14228,14 @@ BaseOperationHistoryDao.FindOne = new DaoQueryDecorators();
 BaseOperationHistoryDao.Search = new DaoQueryDecorators();
 BaseOperationHistoryDao.SearchOne = new DaoQueryDecorators();
 class BaseRecordHistoryDao extends SQDIDao$3 {
+    constructor() {
+        super(3);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(3);
-    }
-    constructor() {
-        super(3);
     }
 }
 BaseRecordHistoryDao.Find = new DaoQueryDecorators();
@@ -14270,14 +14243,14 @@ BaseRecordHistoryDao.FindOne = new DaoQueryDecorators();
 BaseRecordHistoryDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryDao.SearchOne = new DaoQueryDecorators();
 class BaseRecordHistoryNewValueDao extends SQDIDao$3 {
+    constructor() {
+        super(1);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(1);
-    }
-    constructor() {
-        super(1);
     }
 }
 BaseRecordHistoryNewValueDao.Find = new DaoQueryDecorators();
@@ -14285,14 +14258,14 @@ BaseRecordHistoryNewValueDao.FindOne = new DaoQueryDecorators();
 BaseRecordHistoryNewValueDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryNewValueDao.SearchOne = new DaoQueryDecorators();
 class BaseRecordHistoryOldValueDao extends SQDIDao$3 {
+    constructor() {
+        super(2);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(2);
-    }
-    constructor() {
-        super(2);
     }
 }
 BaseRecordHistoryOldValueDao.Find = new DaoQueryDecorators();
@@ -14300,14 +14273,14 @@ BaseRecordHistoryOldValueDao.FindOne = new DaoQueryDecorators();
 BaseRecordHistoryOldValueDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryOldValueDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryDao extends SQDIDao$3 {
+    constructor() {
+        super(10);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(10);
-    }
-    constructor() {
-        super(10);
     }
 }
 BaseRepositoryDao.Find = new DaoQueryDecorators();
@@ -14315,14 +14288,14 @@ BaseRepositoryDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryDao.Search = new DaoQueryDecorators();
 BaseRepositoryDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryApplicationDao extends SQDIDao$3 {
+    constructor() {
+        super(8);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(8);
-    }
-    constructor() {
-        super(8);
     }
 }
 BaseRepositoryApplicationDao.Find = new DaoQueryDecorators();
@@ -14330,14 +14303,14 @@ BaseRepositoryApplicationDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryApplicationDao.Search = new DaoQueryDecorators();
 BaseRepositoryApplicationDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryClientDao extends SQDIDao$3 {
+    constructor() {
+        super(6);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(6);
-    }
-    constructor() {
-        super(6);
     }
 }
 BaseRepositoryClientDao.Find = new DaoQueryDecorators();
@@ -14345,14 +14318,14 @@ BaseRepositoryClientDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryClientDao.Search = new DaoQueryDecorators();
 BaseRepositoryClientDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryDatabaseDao extends SQDIDao$3 {
+    constructor() {
+        super(5);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(5);
-    }
-    constructor() {
-        super(5);
     }
 }
 BaseRepositoryDatabaseDao.Find = new DaoQueryDecorators();
@@ -14360,14 +14333,14 @@ BaseRepositoryDatabaseDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.Search = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryMemberDao extends SQDIDao$3 {
+    constructor() {
+        super(14);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(14);
-    }
-    constructor() {
-        super(14);
     }
 }
 BaseRepositoryMemberDao.Find = new DaoQueryDecorators();
@@ -14375,14 +14348,14 @@ BaseRepositoryMemberDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryMemberDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryMemberAcceptanceDao extends SQDIDao$3 {
+    constructor() {
+        super(11);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(11);
-    }
-    constructor() {
-        super(11);
     }
 }
 BaseRepositoryMemberAcceptanceDao.Find = new DaoQueryDecorators();
@@ -14390,14 +14363,14 @@ BaseRepositoryMemberAcceptanceDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryMemberAcceptanceDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberAcceptanceDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryMemberInvitationDao extends SQDIDao$3 {
+    constructor() {
+        super(12);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(12);
-    }
-    constructor() {
-        super(12);
     }
 }
 BaseRepositoryMemberInvitationDao.Find = new DaoQueryDecorators();
@@ -14405,14 +14378,14 @@ BaseRepositoryMemberInvitationDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryMemberInvitationDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberInvitationDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryMemberUpdateDao extends SQDIDao$3 {
+    constructor() {
+        super(13);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(13);
-    }
-    constructor() {
-        super(13);
     }
 }
 BaseRepositoryMemberUpdateDao.Find = new DaoQueryDecorators();
@@ -14420,14 +14393,14 @@ BaseRepositoryMemberUpdateDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryMemberUpdateDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberUpdateDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryReferenceDao extends SQDIDao$3 {
+    constructor() {
+        super(9);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(9);
-    }
-    constructor() {
-        super(9);
     }
 }
 BaseRepositoryReferenceDao.Find = new DaoQueryDecorators();
@@ -14435,14 +14408,14 @@ BaseRepositoryReferenceDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryReferenceDao.Search = new DaoQueryDecorators();
 BaseRepositoryReferenceDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryTerminalDao extends SQDIDao$3 {
+    constructor() {
+        super(7);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(7);
-    }
-    constructor() {
-        super(7);
     }
 }
 BaseRepositoryTerminalDao.Find = new DaoQueryDecorators();
@@ -14450,14 +14423,14 @@ BaseRepositoryTerminalDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryTerminalDao.Search = new DaoQueryDecorators();
 BaseRepositoryTerminalDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryTransactionHistoryDao extends SQDIDao$3 {
+    constructor() {
+        super(16);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(16);
-    }
-    constructor() {
-        super(16);
     }
 }
 BaseRepositoryTransactionHistoryDao.Find = new DaoQueryDecorators();
@@ -14465,14 +14438,14 @@ BaseRepositoryTransactionHistoryDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryTransactionHistoryDao.Search = new DaoQueryDecorators();
 BaseRepositoryTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryTypeDao extends SQDIDao$3 {
+    constructor() {
+        super(4);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(4);
-    }
-    constructor() {
-        super(4);
     }
 }
 BaseRepositoryTypeDao.Find = new DaoQueryDecorators();
@@ -14480,14 +14453,14 @@ BaseRepositoryTypeDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryTypeDao.Search = new DaoQueryDecorators();
 BaseRepositoryTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseTransactionHistoryDao extends SQDIDao$3 {
+    constructor() {
+        super(15);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_holding_dash_pattern_diSet(15);
-    }
-    constructor() {
-        super(15);
     }
 }
 BaseTransactionHistoryDao.Find = new DaoQueryDecorators();
@@ -15537,8 +15510,8 @@ class UserAccountManager {
     }
 }
 
-class Client$1 {
-}
+let Client$1 = class Client {
+};
 
 class ClientType {
 }
@@ -15627,20 +15600,20 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$2 extends ObservableDao {
+let SQDIDao$2 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint);
     }
-}
+};
 class BaseClassificationDao extends SQDIDao$2 {
+    constructor() {
+        super(6);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(6);
-    }
-    constructor() {
-        super(6);
     }
 }
 BaseClassificationDao.Find = new DaoQueryDecorators();
@@ -15648,14 +15621,14 @@ BaseClassificationDao.FindOne = new DaoQueryDecorators();
 BaseClassificationDao.Search = new DaoQueryDecorators();
 BaseClassificationDao.SearchOne = new DaoQueryDecorators();
 class BaseClientDao extends SQDIDao$2 {
+    constructor() {
+        super(10);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(10);
-    }
-    constructor() {
-        super(10);
     }
 }
 BaseClientDao.Find = new DaoQueryDecorators();
@@ -15663,14 +15636,14 @@ BaseClientDao.FindOne = new DaoQueryDecorators();
 BaseClientDao.Search = new DaoQueryDecorators();
 BaseClientDao.SearchOne = new DaoQueryDecorators();
 class BaseClientTypeDao extends SQDIDao$2 {
+    constructor() {
+        super(9);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(9);
-    }
-    constructor() {
-        super(9);
     }
 }
 BaseClientTypeDao.Find = new DaoQueryDecorators();
@@ -15678,14 +15651,14 @@ BaseClientTypeDao.FindOne = new DaoQueryDecorators();
 BaseClientTypeDao.Search = new DaoQueryDecorators();
 BaseClientTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseContinentDao extends SQDIDao$2 {
+    constructor() {
+        super(5);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(5);
-    }
-    constructor() {
-        super(5);
     }
 }
 BaseContinentDao.Find = new DaoQueryDecorators();
@@ -15693,14 +15666,14 @@ BaseContinentDao.FindOne = new DaoQueryDecorators();
 BaseContinentDao.Search = new DaoQueryDecorators();
 BaseContinentDao.SearchOne = new DaoQueryDecorators();
 class BaseCountryDao extends SQDIDao$2 {
+    constructor() {
+        super(4);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(4);
-    }
-    constructor() {
-        super(4);
     }
 }
 BaseCountryDao.Find = new DaoQueryDecorators();
@@ -15708,14 +15681,14 @@ BaseCountryDao.FindOne = new DaoQueryDecorators();
 BaseCountryDao.Search = new DaoQueryDecorators();
 BaseCountryDao.SearchOne = new DaoQueryDecorators();
 class BaseDatabaseDao extends SQDIDao$2 {
+    constructor() {
+        super(12);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(12);
-    }
-    constructor() {
-        super(12);
     }
 }
 BaseDatabaseDao.Find = new DaoQueryDecorators();
@@ -15723,14 +15696,14 @@ BaseDatabaseDao.FindOne = new DaoQueryDecorators();
 BaseDatabaseDao.Search = new DaoQueryDecorators();
 BaseDatabaseDao.SearchOne = new DaoQueryDecorators();
 class BaseDatabaseTypeDao extends SQDIDao$2 {
+    constructor() {
+        super(11);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(11);
-    }
-    constructor() {
-        super(11);
     }
 }
 BaseDatabaseTypeDao.Find = new DaoQueryDecorators();
@@ -15738,14 +15711,14 @@ BaseDatabaseTypeDao.FindOne = new DaoQueryDecorators();
 BaseDatabaseTypeDao.Search = new DaoQueryDecorators();
 BaseDatabaseTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseMetroAreaDao extends SQDIDao$2 {
+    constructor() {
+        super(1);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(1);
-    }
-    constructor() {
-        super(1);
     }
 }
 BaseMetroAreaDao.Find = new DaoQueryDecorators();
@@ -15753,14 +15726,14 @@ BaseMetroAreaDao.FindOne = new DaoQueryDecorators();
 BaseMetroAreaDao.Search = new DaoQueryDecorators();
 BaseMetroAreaDao.SearchOne = new DaoQueryDecorators();
 class BaseMetroAreaStateDao extends SQDIDao$2 {
+    constructor() {
+        super(2);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(2);
-    }
-    constructor() {
-        super(2);
     }
 }
 BaseMetroAreaStateDao.Find = new DaoQueryDecorators();
@@ -15768,14 +15741,14 @@ BaseMetroAreaStateDao.FindOne = new DaoQueryDecorators();
 BaseMetroAreaStateDao.Search = new DaoQueryDecorators();
 BaseMetroAreaStateDao.SearchOne = new DaoQueryDecorators();
 class BaseStateDao extends SQDIDao$2 {
+    constructor() {
+        super(3);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(3);
-    }
-    constructor() {
-        super(3);
     }
 }
 BaseStateDao.Find = new DaoQueryDecorators();
@@ -15783,14 +15756,14 @@ BaseStateDao.FindOne = new DaoQueryDecorators();
 BaseStateDao.Search = new DaoQueryDecorators();
 BaseStateDao.SearchOne = new DaoQueryDecorators();
 class BaseTerminalDao extends SQDIDao$2 {
+    constructor() {
+        super(14);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(14);
-    }
-    constructor() {
-        super(14);
     }
 }
 BaseTerminalDao.Find = new DaoQueryDecorators();
@@ -15798,14 +15771,14 @@ BaseTerminalDao.FindOne = new DaoQueryDecorators();
 BaseTerminalDao.Search = new DaoQueryDecorators();
 BaseTerminalDao.SearchOne = new DaoQueryDecorators();
 class BaseTerminalTypeDao extends SQDIDao$2 {
+    constructor() {
+        super(13);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(13);
-    }
-    constructor() {
-        super(13);
     }
 }
 BaseTerminalTypeDao.Find = new DaoQueryDecorators();
@@ -15813,14 +15786,14 @@ BaseTerminalTypeDao.FindOne = new DaoQueryDecorators();
 BaseTerminalTypeDao.Search = new DaoQueryDecorators();
 BaseTerminalTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseTypeDao extends SQDIDao$2 {
+    constructor() {
+        super(8);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(8);
-    }
-    constructor() {
-        super(8);
     }
 }
 BaseTypeDao.Find = new DaoQueryDecorators();
@@ -15828,14 +15801,14 @@ BaseTypeDao.FindOne = new DaoQueryDecorators();
 BaseTypeDao.Search = new DaoQueryDecorators();
 BaseTypeDao.SearchOne = new DaoQueryDecorators();
 class BaseTypeClassificationDao extends SQDIDao$2 {
+    constructor() {
+        super(7);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(7);
-    }
-    constructor() {
-        super(7);
     }
 }
 BaseTypeClassificationDao.Find = new DaoQueryDecorators();
@@ -15843,14 +15816,14 @@ BaseTypeClassificationDao.FindOne = new DaoQueryDecorators();
 BaseTypeClassificationDao.Search = new DaoQueryDecorators();
 BaseTypeClassificationDao.SearchOne = new DaoQueryDecorators();
 class BaseUserAccountDao extends SQDIDao$2 {
+    constructor() {
+        super(0);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(0);
-    }
-    constructor() {
-        super(0);
     }
 }
 BaseUserAccountDao.Find = new DaoQueryDecorators();
@@ -28600,20 +28573,20 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$1 extends ObservableDao {
+let SQDIDao$1 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_layover);
     }
-}
+};
 class BaseRecordUpdateStageDao extends SQDIDao$1 {
+    constructor() {
+        super(0);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_layover_diSet(0);
-    }
-    constructor() {
-        super(0);
     }
 }
 BaseRecordUpdateStageDao.Find = new DaoQueryDecorators();
@@ -28621,14 +28594,14 @@ BaseRecordUpdateStageDao.FindOne = new DaoQueryDecorators();
 BaseRecordUpdateStageDao.Search = new DaoQueryDecorators();
 BaseRecordUpdateStageDao.SearchOne = new DaoQueryDecorators();
 class BaseSynchronizationConflictDao extends SQDIDao$1 {
+    constructor() {
+        super(2);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_layover_diSet(2);
-    }
-    constructor() {
-        super(2);
     }
 }
 BaseSynchronizationConflictDao.Find = new DaoQueryDecorators();
@@ -28636,14 +28609,14 @@ BaseSynchronizationConflictDao.FindOne = new DaoQueryDecorators();
 BaseSynchronizationConflictDao.Search = new DaoQueryDecorators();
 BaseSynchronizationConflictDao.SearchOne = new DaoQueryDecorators();
 class BaseSynchronizationConflictValuesDao extends SQDIDao$1 {
+    constructor() {
+        super(1);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airport____at_airport_slash_layover_diSet(1);
-    }
-    constructor() {
-        super(1);
     }
 }
 BaseSynchronizationConflictValuesDao.Find = new DaoQueryDecorators();
@@ -28898,6 +28871,8 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
+/* global Reflect, Promise */
+
 
 function __decorate$1(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -28981,14 +28956,14 @@ class SQDIDao extends ObservableDao {
     }
 }
 class BaseKeyRingDao extends SQDIDao {
+    constructor() {
+        super(1);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airbridge____at_airbridge_slash_keyring_diSet(1);
-    }
-    constructor() {
-        super(1);
     }
 }
 BaseKeyRingDao.Find = new DaoQueryDecorators();
@@ -28996,14 +28971,14 @@ BaseKeyRingDao.FindOne = new DaoQueryDecorators();
 BaseKeyRingDao.Search = new DaoQueryDecorators();
 BaseKeyRingDao.SearchOne = new DaoQueryDecorators();
 class BaseRepositoryKeyDao extends SQDIDao {
+    constructor() {
+        super(0);
+    }
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
     static diSet() {
         return airbridge____at_airbridge_slash_keyring_diSet(0);
-    }
-    constructor() {
-        super(0);
     }
 }
 BaseRepositoryKeyDao.Find = new DaoQueryDecorators();
@@ -35678,6 +35653,8 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
+/* global Reflect, Promise */
+
 
 function __decorate(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -40511,9 +40488,10 @@ class AutopilotApiLoader {
 }
 
 class SubscriptionCountSubject extends Subject {
-    constructor(subscriptionId, onFirstSubscriptionCallback, onNoSubscriptionCallback) {
+    constructor(subscriptionId, requestFields, onFirstSubscriptionCallback, onNoSubscriptionCallback) {
         super();
         this.subscriptionId = subscriptionId;
+        this.requestFields = requestFields;
         this.onFirstSubscriptionCallback = onFirstSubscriptionCallback;
         this.onNoSubscriptionCallback = onNoSubscriptionCallback;
         this.subscriptionCount = 0;
@@ -40566,41 +40544,64 @@ class SubscriptionCountSubscriber extends SafeSubscriber {
 }
 
 class ApiClientSubject extends SubscriptionCountSubject {
-    constructor(args, request, fullDIDescriptor, cache) {
-        super(v4(), () => cache.subscribe(this), () => cache.unsubscribe(this));
+    constructor(args, requestFields, fullDIDescriptor, cache) {
+        super(v4(), requestFields, () => cache.subscribe(this), () => cache.unsubscribe(this));
         this.args = args;
-        this.request = request;
         this.fullDIDescriptor = fullDIDescriptor;
         this.subscriptionCount = 0;
-        request.subscriptionId = this.subscriptionId;
-        this.request = {
-            ...request,
+        requestFields.subscriptionId = this.subscriptionId;
+        this.requestFields = {
+            ...requestFields,
             subscriptionId: this.subscriptionId
         };
     }
 }
 
-class SubjectCache {
+class ClientSubjectCache {
     constructor() {
         this.observableRequestMap = new Map();
         setTimeout(() => {
             if (globalThis.repositoryAutoload !== false) {
                 setInterval(() => {
-                    for (const subscriptionId of this.observableRequestMap.keys()) {
-                        globalThis.MESSAGE_BUS.next({
-                            request: {
-                                direction: Message_Direction.FROM_CLIENT,
-                                subscriptionId,
-                                id: v4(),
-                                type: Message_Type.API_SUBSCRIPTION_PING
+                    const requestFieldsByDomainAndApp = new Map();
+                    for (const [_subscriptionId, subject] of this.observableRequestMap) {
+                        const requestFields = subject.requestFields;
+                        let requestFieldsForDomain = requestFieldsByDomainAndApp
+                            .get(requestFields.serverDomain);
+                        if (!requestFieldsForDomain) {
+                            requestFieldsForDomain = new Map();
+                            requestFieldsByDomainAndApp.set(requestFields.serverDomain, requestFieldsForDomain);
+                        }
+                        let requestFieldsForApp = requestFieldsForDomain.get(requestFields.serverApplication);
+                        if (!requestFieldsForApp) {
+                            requestFieldsForApp = [];
+                            requestFieldsForDomain.set(requestFields.serverApplication, requestFieldsForApp);
+                        }
+                        requestFieldsForApp.push(requestFields);
+                    }
+                    for (const [_serverDomain, requestFieldsForDomain] of requestFieldsByDomainAndApp) {
+                        for (const [_serverApplication, requestFieldsForApp] of requestFieldsForDomain) {
+                            const requestFields = requestFieldsForApp[0];
+                            const subscriptionIds = [];
+                            for (const requestFields of requestFieldsForApp) {
+                                subscriptionIds.push(requestFields.subscriptionId);
                             }
-                        });
+                            globalThis.MESSAGE_BUS.next({
+                                request: {
+                                    ...requestFields,
+                                    direction: Message_Direction.FROM_CLIENT,
+                                    subscriptionIds,
+                                    id: v4(),
+                                    type: Message_Type.SUBSCRIPTION_PING
+                                }
+                            });
+                        }
                     }
                 }, 5000);
             }
         }, 2000);
     }
-    addSubscripton(subscriptionId, subject) {
+    addSubject(subscriptionId, subject) {
         this.observableRequestMap.set(subscriptionId, subject);
     }
     getSubject(subscriptionId) {
@@ -40613,7 +40614,7 @@ class SubjectCache {
                 args: subject.args,
                 fullDIDescriptor: subject.fullDIDescriptor,
                 request: {
-                    ...subject.request,
+                    ...subject.requestFields,
                     id: v4(),
                     type: Message_Type.API_SUBSCRIBE
                 }
@@ -40629,7 +40630,7 @@ class SubjectCache {
             globalThis.MESSAGE_BUS.next({
                 fullDIDescriptor: subject.fullDIDescriptor,
                 request: {
-                    ...subject.request,
+                    ...subject.requestFields,
                     id: v4(),
                     type: Message_Type.API_UNSUBSCRIBE
                 }
@@ -41608,7 +41609,7 @@ const applicationState = {
     hostServer: 'https://localhost:3000',
     // FIXME: tie this in to the hostServer variable
     mainDomain: null,
-    subjectCache: new SubjectCache(),
+    clientSubjectCache: new ClientSubjectCache(),
     pendingMessageMap: new Map(),
     messageCallback: null,
 };
