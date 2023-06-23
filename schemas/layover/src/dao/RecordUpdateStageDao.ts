@@ -1,7 +1,7 @@
 import {
 	IAirportDatabase
 } from '@airport/air-traffic-control'
-import { IContext, Injected } from '@airport/direction-indicator';
+import { IContext, Inject, Injected } from '@airport/direction-indicator';
 import {
 	DbColumn_Index,
 	QueryBaseOperation,
@@ -18,7 +18,6 @@ import {
 	field,
 	OR,
 } from '@airport/tarmaq-query'
-import { Inject } from 'typedi';
 import Q from '../generated/qApplication'
 import { BaseRecordUpdateStageDao, IBaseRecordUpdateStageDao } from '../generated/baseDaos';
 import { QRecordUpdateStage } from '../generated/qInterfaces';
