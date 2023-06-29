@@ -98,22 +98,26 @@ export class IframeTransactionalConnector
 		setTimeout(() => {
 			if (globalThis.repositoryAutoload !== false) {
 				setInterval(() => {
-					let lastValidPinMillis = new Date().getTime() - 10000
-					let staleSubscriptionIds = []
-
-					const clientSubscriptionMap = this.applicationStore.state.clientSubscriptionMap
-					for (const [subscriptionId, subscriptionRecord] of clientSubscriptionMap) {
-						if (subscriptionRecord.lastActive < lastValidPinMillis) {
-							staleSubscriptionIds.push(subscriptionId)
-						}
-					}
-					for (const staleSubscriptionId of staleSubscriptionIds) {
-						clientSubscriptionMap.get(staleSubscriptionId).subscription.unsubscribe()
-						clientSubscriptionMap.delete(staleSubscriptionId)
-					}
+					this.pruneSubscriptions();
 				}, 10000)
 			}
 		}, 2000)
+	}
+
+	private pruneSubscriptions(): void {
+		const lastValidPingMillis = new Date().getTime() - 10000
+		const staleSubscriptionIds = []
+
+		const clientSubscriptionMap = this.applicationStore.state.clientSubscriptionMap
+		for (const [subscriptionId, subscriptionRecord] of clientSubscriptionMap) {
+			if (subscriptionRecord.lastActive < lastValidPingMillis) {
+				staleSubscriptionIds.push(subscriptionId)
+			}
+		}
+		for (const staleSubscriptionId of staleSubscriptionIds) {
+			clientSubscriptionMap.get(staleSubscriptionId).subscription.unsubscribe()
+			clientSubscriptionMap.delete(staleSubscriptionId)
+		}
 	}
 
 	async processMessage(

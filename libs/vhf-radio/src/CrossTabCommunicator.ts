@@ -28,10 +28,10 @@ export class CrossTabCommunicator
         setTimeout(() => {
             if (globalThis.repositoryAutoload !== false) {
                 setInterval(() => {
-                    let lastValidPinMillis = new Date().getTime() - 10000
+                    let lastValidPingMillis = new Date().getTime() - 10000
                     let staleSubscriptionIds = []
                     for(const [subscriptionId, lastPingMillis] of this.activeSubscriptionIdMap) {
-                        if(lastPingMillis < lastValidPinMillis) {
+                        if(lastPingMillis < lastValidPingMillis) {
                             staleSubscriptionIds.push(subscriptionId)
                         }
                     }

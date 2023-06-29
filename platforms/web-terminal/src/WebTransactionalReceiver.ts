@@ -75,32 +75,29 @@ export class WebTransactionalReceiver
 		setTimeout(() => {
 			if (globalThis.repositoryAutoload !== false) {
 				setInterval(() => {
-					let lastValidPinMillis = new Date().getTime() - 10000
-					let staleSubscriptionIds = []
-
-
-					const webReciever = this.terminalStore.getWebReceiver()
-					const application_FullName = this
-						.getMessageClientApplication(message)
-
-					let isolateSubscriptionMap = webReciever.subscriptionMap.get(application_FullName)
-					const serverSubscriptionMap = webReciever.subscriptionMap
-					for (const [application_FullName, isolateSubscriptionMap] of serverSubscriptionMap) {
-						for (const [subscriptionId, subscriptionRecord]) {
-							if (subscriptionRecord.lastActive < lastValidPinMillis) {
-								staleSubscriptionIds.push(subscriptionId)
-							}
-						}
-
-						for (const staleSubscriptionId of staleSubscriptionIds) {
-							clientSubscriptionMap.get(staleSubscriptionId).subscription.unsubscribe()
-							clientSubscriptionMap.delete(staleSubscriptionId)
-						}
-					}
+					this.pruneSubscriptions();
 				}, 10000)
 			}
 		}, 2000)
 
+	}
+
+	private pruneSubscriptions(): void {
+		const lastValidPingMillis = new Date().getTime() - 10000
+		const webReciever = this.terminalStore.getWebReceiver()
+
+		for (const [_application_FullName, isolateSubscriptionMap] of webReciever.subscriptionMap) {
+			const staleSubscriptionIds = []
+			for (const [subscriptionId, subscriptionRecord] of isolateSubscriptionMap) {
+				if (subscriptionRecord.lastActive < lastValidPingMillis) {
+					staleSubscriptionIds.push(subscriptionId)
+				}
+			}
+			for (const staleSubscriptionId of staleSubscriptionIds) {
+				isolateSubscriptionMap.get(staleSubscriptionId).subscription.unsubscribe()
+				isolateSubscriptionMap.delete(staleSubscriptionId)
+			}
+		}
 	}
 
 	handleClientRequest(
@@ -652,7 +649,7 @@ export class WebTransactionalReceiver
 			}
 			case Message_Type.API_SUBSCRIBE:
 			case Message_Type.API_UNSUBSCRIBE: {
-				const observableApiResult = this.handleApiSubscribeOrUnsubscribe(message)
+				const observableApiResult = await this.handleApiSubscribeOrUnsubscribe(message)
 				isFrameworkObservableCall = observableApiResult.isFrameworkObservableCall
 				response = observableApiResult.response
 				break
@@ -683,6 +680,7 @@ export class WebTransactionalReceiver
 
 		this.handleApiCallOrSubscription(
 			message,
+			message as IApiCallRequestMessage,
 			response,
 			application_FullName,
 			isFrameworkObservableCall,
@@ -691,15 +689,15 @@ export class WebTransactionalReceiver
 
 	}
 
-	private handleApiSubscribeOrUnsubscribe(
+	private async handleApiSubscribeOrUnsubscribe(
 		message: IApiCallRequestMessage
 			| IPortableQueryMessage
 			| IReadQueryMessage
 			| ISaveMessage<any>
-	): {
+	): Promise<{
 		isFrameworkObservableCall: boolean,
 		response: Observable<any>
-	} {
+	}> {
 		let isFrameworkObservableCall = false
 		let response = null
 
@@ -717,30 +715,26 @@ export class WebTransactionalReceiver
 		}
 
 		isFrameworkObservableCall = startDescriptor.isFramework
-			if (isFrameworkObservableCall) {
+		if (isFrameworkObservableCall) {
+			const apiCallResult = await this.callFrameworkApi(message as IApiCallRequestMessage, context)
+	
+			if (apiCallResult.errorMessage) {
+				// TODO: send back error messages for (UN)SUBSCRIBE messages
+				console.error(apiCallResult)
+				return
+			}
+			response = apiCallResult
+		} else {
+			response = {
+				...message,
+				direction: Message_Direction.TO_CLIENT,
+				messageLeg: Message_Leg.FROM_HUB
+			}
 		}
 
 		return {
 			isFrameworkObservableCall,
 			response
-		}
-		const apiCallResult = await this.callFrameworkApi(message as IApiCallRequestMessage, context)
-
-		if (apiCallResult.errorMessage) {
-			// TODO: send back error messages for (UN)SUBSCRIBE messages
-			console.error(apiCallResult)
-			return
-		}
-		response = apiCallResult
-
-		const response: IApiCallResponseMessage = {
-			...message,
-			direction: Message_Direction.TO_CLIENT,
-			messageLeg: Message_Leg.FROM_HUB,
-			args,
-			errorMessage,
-			returnedValue,
-			transactionId
 		}
 	}
 
@@ -771,13 +765,15 @@ export class WebTransactionalReceiver
 			case Message_Type.SEARCH_ONE_SUBSCRIBE: {
 				this.subscribeToFrameworkObservable(message,
 					Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA,
-					response, application_FullName, webReciever)
+					response, returnedValue, application_FullName,
+					webReciever)
 				break
 			}
 			case Message_Type.SEARCH_SUBSCRIBE: {
 				this.subscribeToFrameworkObservable(message,
 					Message_Type.SEARCH_SUBSCRIBTION_DATA,
-					response, application_FullName, webReciever)
+					response, returnedValue, application_FullName,
+					webReciever)
 				break
 			}
 			case Message_Type.API_UNSUBSCRIBE: {
@@ -814,7 +810,6 @@ ${application_FullName}
 		application_FullName: DbApplication_FullName,
 		webReciever: IWebReceiverState,
 	): void {
-
 		const subscription = returnedValue.subscribe(
 			returnedValue => {
 				this.webMessageGateway.sendMessageToApp(
@@ -852,4 +847,5 @@ ${application_FullName}
 			getDbApplication_FullNameFromDomainAndName(
 				message.serverDomain, message.serverApplication)
 	}
+
 }
