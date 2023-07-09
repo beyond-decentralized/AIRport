@@ -35717,7 +35717,7 @@ let RepositoryMaintenanceManager = class RepositoryMaintenanceManager {
         repositoryMemberInvitation.invitationPublicSigningKey = invitationSigningKey.public;
         repositoryMemberInvitation.invitedRepositoryMember = invitedRepositoryMember;
         await this.addRepositoryMemberInfoToHistory(invitedRepositoryMember, false, repository, null, null, repositoryMemberInvitation, context);
-        const joinUrl = `https://localhost:3000/joinRepository/${repository.GUID}/${base64EncodedKeyInvitationPublicSigningKey}/${base64EncodedKeyInvitationPrivateSigningKey}`;
+        const joinUrl = `https://localhost:5173/joinRepository/${repository.GUID}/${base64EncodedKeyInvitationPublicSigningKey}/${base64EncodedKeyInvitationPrivateSigningKey}`;
         await this.sendEmail(userEmail, `Join '${repository.name}' on Turbase`, joinUrl);
         if (this.canUseWebShareAPI()) {
             await this.share(`Join ${repository.name.substring(0, 20)}${repository.name.length > 20 ? '...' : ''}`, `You are invited to join '${repository.name}' on Turbase`, joinUrl);
@@ -40563,30 +40563,37 @@ class ClientSubjectCache {
         setTimeout(() => {
             if (globalThis.repositoryAutoload !== false) {
                 setInterval(() => {
-                    const requestFieldsByDomainAndApp = new Map();
+                    const requestsByDomainAndApp = new Map();
                     for (const [_subscriptionId, subject] of this.observableRequestMap) {
+                        const args = subject.args;
+                        const fullDIDescriptor = subject.fullDIDescriptor;
                         const requestFields = subject.requestFields;
-                        let requestFieldsForDomain = requestFieldsByDomainAndApp
+                        let requestsForDomain = requestsByDomainAndApp
                             .get(requestFields.serverDomain);
-                        if (!requestFieldsForDomain) {
-                            requestFieldsForDomain = new Map();
-                            requestFieldsByDomainAndApp.set(requestFields.serverDomain, requestFieldsForDomain);
+                        if (!requestsForDomain) {
+                            requestsForDomain = new Map();
+                            requestsByDomainAndApp.set(requestFields.serverDomain, requestsForDomain);
                         }
-                        let requestFieldsForApp = requestFieldsForDomain.get(requestFields.serverApplication);
-                        if (!requestFieldsForApp) {
-                            requestFieldsForApp = [];
-                            requestFieldsForDomain.set(requestFields.serverApplication, requestFieldsForApp);
+                        let requestsForApp = requestsForDomain.get(requestFields.serverApplication);
+                        if (!requestsForApp) {
+                            requestsForApp = [];
+                            requestsForDomain.set(requestFields.serverApplication, requestsForApp);
                         }
-                        requestFieldsForApp.push(requestFields);
+                        requestsForApp.push({
+                            args,
+                            fullDIDescriptor,
+                            requestFields
+                        });
                     }
-                    for (const [_serverDomain, requestFieldsForDomain] of requestFieldsByDomainAndApp) {
-                        for (const [_serverApplication, requestFieldsForApp] of requestFieldsForDomain) {
-                            const requestFields = requestFieldsForApp[0];
+                    for (const [_serverDomain, requestsForDomain] of requestsByDomainAndApp) {
+                        for (const [_serverApplication, requestsForApp] of requestsForDomain) {
+                            const requestFields = requestsForApp[0];
                             const subscriptionIds = [];
-                            for (const requestFields of requestFieldsForApp) {
-                                subscriptionIds.push(requestFields.subscriptionId);
+                            for (const request of requestsForApp) {
+                                subscriptionIds.push(request.requestFields.subscriptionId);
                             }
                             globalThis.MESSAGE_BUS.next({
+                                fullDIDescriptor: requestsForApp[0].fullDIDescriptor,
                                 request: {
                                     ...requestFields,
                                     direction: Message_Direction.FROM_CLIENT,
@@ -41605,8 +41612,8 @@ const applicationState = {
     clientSubscriptionMap: new Map(),
     domain: null,
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
-    // and debugging (https://localhost:3000)
-    hostServer: 'https://localhost:3000',
+    // and debugging (https://localhost:5173)
+    hostServer: 'https://localhost:5173',
     // FIXME: tie this in to the hostServer variable
     mainDomain: null,
     clientSubjectCache: new ClientSubjectCache(),

@@ -25,6 +25,7 @@
     "removeComments": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+    "typeRoots": ["./node_modules/@types"],
   }
 }

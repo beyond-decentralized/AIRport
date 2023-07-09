@@ -10,7 +10,7 @@
     "@airport/ground-control": "workspace:../../apis/ground-control",
     "@airport/holding-pattern": "workspace:../../schemas/holding-pattern",
     "@airport/session-state": "workspace:../../libs/session-state",
-    "@airport/sqljs": "workspace:../../database/sqljs",
+    "@airport/sqljs": "workspace:../../databases/sqljs",
     "@airport/takeoff": "workspace:../../generators/takeoff",
     "@airport/terminal": "workspace:../../engines/terminal",
     "@airport/terminal-map": "workspace:../../apis/terminal-map",

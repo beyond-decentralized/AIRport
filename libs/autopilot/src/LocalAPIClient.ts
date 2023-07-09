@@ -26,7 +26,7 @@ export interface ILocalAPIClient {
 
 let _inWebMode = true
 // let _webServer = 'https://turbase.app'
-let _webServer = 'https://localhost:3000'
+let _webServer = 'https://localhost:5173'
 
 export interface IRequestRecord {
     request: IApiCallRequestMessage

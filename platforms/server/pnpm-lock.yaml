@@ -23,8 +23,8 @@ dependencies:
     specifier: workspace:../../libs/session-state
     version: link:../../libs/session-state
   '@airport/sqljs':
-    specifier: workspace:../../database/sqljs
-    version: link:../../database/sqljs
+    specifier: workspace:../../databases/sqljs
+    version: link:../../databases/sqljs
   '@airport/takeoff':
     specifier: workspace:../../generators/takeoff
     version: link:../../generators/takeoff
