@@ -1,6 +1,7 @@
 import { IApiClientSubject, ICoreSubscriptionRequestFields, IClientSubjectCache, ISubscriptionCountSubject, Message_Application, Message_Direction, Message_Domain, Message_Type, SubscriptionId } from "@airport/aviation-communication"
 import { v4 as guidv4 } from "uuid";
 import { ApiClientSubject } from "./ApiClientSubject";
+import { IFullDITokenDescriptor } from "@airport/direction-indicator";
 
 export class ClientSubjectCache
     implements IClientSubjectCache {
@@ -13,33 +14,44 @@ export class ClientSubjectCache
         setTimeout(() => {
             if (globalThis.repositoryAutoload !== false) {
                 setInterval(() => {
-                    const requestFieldsByDomainAndApp: Map<Message_Domain, Map<Message_Application,
-                        ICoreSubscriptionRequestFields[]>> = new Map()
+                    const requestsByDomainAndApp: Map<Message_Domain, Map<Message_Application,
+                        {
+                            args: any[],
+                            fullDIDescriptor: IFullDITokenDescriptor,
+                            requestFields: ICoreSubscriptionRequestFields
+                        }[]>> = new Map()
                     for (const [_subscriptionId, subject] of this.observableRequestMap) {
+                        const args = (subject as IApiClientSubject<any, any>).args
+                        const fullDIDescriptor = (subject as IApiClientSubject<any, any>).fullDIDescriptor
                         const requestFields: ICoreSubscriptionRequestFields = subject.requestFields
-                        let requestFieldsForDomain = requestFieldsByDomainAndApp
+                        let requestsForDomain = requestsByDomainAndApp
                             .get(requestFields.serverDomain)
-                        if (!requestFieldsForDomain) {
-                            requestFieldsForDomain = new Map()
-                            requestFieldsByDomainAndApp.set(requestFields.serverDomain, requestFieldsForDomain)
+                        if (!requestsForDomain) {
+                            requestsForDomain = new Map()
+                            requestsByDomainAndApp.set(requestFields.serverDomain, requestsForDomain)
                         }
 
-                        let requestFieldsForApp = requestFieldsForDomain.get(requestFields.serverApplication)
-                        if (!requestFieldsForApp) {
-                            requestFieldsForApp = []
-                            requestFieldsForDomain.set(requestFields.serverApplication, requestFieldsForApp)
+                        let requestsForApp = requestsForDomain.get(requestFields.serverApplication)
+                        if (!requestsForApp) {
+                            requestsForApp = []
+                            requestsForDomain.set(requestFields.serverApplication, requestsForApp)
                         }
-                        requestFieldsForApp.push(requestFields)
+                        requestsForApp.push({
+                            args,
+                            fullDIDescriptor,
+                            requestFields
+                        })
                     }
 
-                    for (const [_serverDomain, requestFieldsForDomain] of requestFieldsByDomainAndApp) {
-                        for (const [_serverApplication, requestFieldsForApp] of requestFieldsForDomain) {
-                            const requestFields = requestFieldsForApp[0]
+                    for (const [_serverDomain, requestsForDomain] of requestsByDomainAndApp) {
+                        for (const [_serverApplication, requestsForApp] of requestsForDomain) {
+                            const requestFields = requestsForApp[0]
                             const subscriptionIds = []
-                            for (const requestFields of requestFieldsForApp) {
-                                subscriptionIds.push(requestFields.subscriptionId)
+                            for (const request of requestsForApp) {
+                                subscriptionIds.push(request.requestFields.subscriptionId)
                             }
                             globalThis.MESSAGE_BUS.next({
+                                fullDIDescriptor: requestsForApp[0].fullDIDescriptor,
                                 request: {
                                     ...requestFields,
                                     direction: Message_Direction.FROM_CLIENT,
