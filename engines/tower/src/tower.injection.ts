@@ -4,7 +4,7 @@ import { ENTITY_STATE_MANAGER, OPERATION_DESERIALIZER, UPDATE_CACHE_MANAGER } fr
 import { AirportDatabase } from './AirportDatabase';
 import { ApiRegistry } from './core/api/ApiRegistry';
 import { ApiValidator } from './core/api/ApiValidator';
-import { LocalAPIServer } from './core/api/LocalApiServer';
+import { LocalAPIServer } from './core/api/LocalAPIServer';
 import { OperationDeserializer } from './core/api/OperationDeserializer';
 import { EntityCopier } from './core/data/EntityCopier'
 import { UpdateCacheManager } from './core/data/UpdateCacheManager';
