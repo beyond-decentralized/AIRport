@@ -18,6 +18,7 @@
     "@rollup/plugin-commonjs": "workspace:../../../node_modules/@rollup/plugin-commonjs",
     "@rollup/plugin-node-resolve": "workspace:../../../node_modules/@rollup/plugin-node-resolve",
     "rollup": "workspace:../../../node_modules/rollup",
+    "rollup-plugin-delete": "workspace:../../../node_modules/rollup-plugin-delete",
     "rollup-plugin-dts": "workspace:../../../node_modules/rollup-plugin-dts",
     "rollup-plugin-peer-deps-external": "workspace:../../../node_modules/rollup-plugin-peer-deps-external",
     "rollup-plugin-terser": "workspace:../../../node_modules/rollup-plugin-terser",

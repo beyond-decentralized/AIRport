@@ -16,7 +16,7 @@ import {
     ApplicationApiParameterDao,
     ApplicationApiReturnTypeDao
 } from '@airport/airspace/dist/app/bundle'
-import { lib } from '@airport/direction-indicator/dist/esm/direction-indicator.index'
+import { lib } from '@airport/direction-indicator'
 import { ApplicationReferenceUtils, APPLICATION_UTILS, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, SEQUENCE_GENERATOR } from '@airport/ground-control'
 import { DOMAIN_RETRIEVER, STORE_DRIVER, TerminalStore, TRANSACTION_MANAGER } from '@airport/terminal-map'
 import { AirportDatabasePopulator } from './AirportDatabasePopulator'

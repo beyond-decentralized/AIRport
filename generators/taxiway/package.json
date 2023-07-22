@@ -3,13 +3,7 @@
   "version": "0.0.1",
   "devDependencies": {
     "@types/node": "workspace:../../../node_modules/@types/node",
-    "@rollup/plugin-commonjs": "workspace:../../../node_modules/@rollup/plugin-commonjs",
-    "@rollup/plugin-node-resolve": "workspace:../../../node_modules/@rollup/plugin-node-resolve",
-    "rollup": "workspace:../../../node_modules/rollup",
-    "rollup-plugin-dts": "workspace:../../../node_modules/rollup-plugin-dts",
-    "rollup-plugin-peer-deps-external": "workspace:../../../node_modules/rollup-plugin-peer-deps-external",
-    "rollup-plugin-terser": "workspace:../../../node_modules/rollup-plugin-terser",
-    "rollup-plugin-typescript2": "workspace:../../../node_modules/rollup-plugin-typescript2",
+    "rimraf": "workspace:../../../node_modules/rimraf",
     "tslib": "workspace:../../../node_modules/tslib"
   },
   "peerDependencies": {
@@ -20,7 +14,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc"
+    "clean": "rimraf dist",
+    "build": "pnpm clean && tsc ./src/taxiway.index.ts"
   },
   "types": "dist/taxiway.index.d.ts"
 }

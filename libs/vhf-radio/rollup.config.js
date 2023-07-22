@@ -1,11 +1,12 @@
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
-import { terser } from 'rollup-plugin-terser';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
+import typescript from '@rollup/plugin-typescript'
+import { terser } from 'rollup-plugin-terser'
+import peerDepsExternal from 'rollup-plugin-peer-deps-external'
+import del from 'rollup-plugin-delete'
 
-// const production = !process.env.ROLLUP_WATCH;
-const production = false;
+// const production = !process.env.ROLLUP_WATCH
+const production = false
 
 export default {
 	input: 'src/vhf-radio.index.ts',
@@ -16,6 +17,7 @@ export default {
 		file: '../../../AIRbridge/UI/react/main/public/client/build/bundle.js'
 	},
 	plugins: [
+		del({ targets: 'dist/*' }),
 		peerDepsExternal(),
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
@@ -38,4 +40,4 @@ export default {
 	watch: {
 		clearScreen: false
 	}
-};
+}
