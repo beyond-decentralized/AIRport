@@ -1,19 +1,9 @@
-import { ICoreRequestFields, ISubscriptionCountSubject, Message_Application, Message_Direction, Message_Domain, Message_DomainProtocol, Message_Leg, SubscriptionId } from "@airport/aviation-communication";
+import { ICoreRequestFields, IMessage, ISubscriptionCountSubject, SubscriptionId } from "@airport/aviation-communication";
 import { Observer, Subject, Subscriber, Subscription } from "rxjs";
 import { SafeSubscriber } from "rxjs/internal/Subscriber";
 import { isSubscription } from "rxjs/internal/Subscription";
 
-export class SubscriptionCountSubject<T, RF extends {
-    clientApplication?: Message_Application,
-    clientDomain?: Message_Domain,
-    clientDomainProtocol?: Message_DomainProtocol,
-    direction: Message_Direction,
-    id: string,
-    messageLeg: Message_Leg,
-    serverApplication?: Message_Application,
-    serverDomain?: Message_Domain,
-    serverDomainProtocol?: Message_DomainProtocol
-}>
+export class SubscriptionCountSubject<T, RF extends IMessage>
     extends Subject<T>
     implements ISubscriptionCountSubject<T, RF> {
 

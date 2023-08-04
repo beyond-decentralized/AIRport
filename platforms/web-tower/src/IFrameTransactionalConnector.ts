@@ -39,7 +39,6 @@ import {
 	IGetLatestApplicationVersionByDbApplication_NameMessage,
 	IInitializeConnectionMessage,
 	ILocalAPIServer,
-	IObservableMessageInRecord,
 	IPortableQueryMessage,
 	IReadQueryMessage,
 	IRetrieveDomainMessage,
@@ -138,19 +137,23 @@ export class IframeTransactionalConnector
 		}
 
 		switch (message.direction) {
-			case Message_Direction.FROM_CLIENT: {
+			case Message_Direction.FROM_APP: {
 				await this.handleApiRequest(message as IApiCallRequestMessage, origin)
 				break
 			}
-			case Message_Direction.INTERNAL: {
+			case Message_Direction.INTERNAL_TO_APP: {
 				this.handleInternalMessage(message as
 					IInitializeConnectionMessage
 					| IGetLatestApplicationVersionByDbApplication_NameMessage
 					| IRetrieveDomainMessage)
 				break
 			}
-			case Message_Direction.TO_CLIENT: {
+			case Message_Direction.TO_APP: {
 				this.handleToClientMessage(message as IApiCallResponseMessage)
+				break
+			}
+			default: {
+				throw new Error(`Unexpected message direction: ${message.direction}`)
 				break
 			}
 		}
@@ -288,7 +291,7 @@ export class IframeTransactionalConnector
 		fullDbApplication_Name: string
 	): Promise<DbApplicationVersion> {
 		return await this.sendMessageAndGetResponse<IGetLatestApplicationVersionByDbApplication_NameMessage, DbApplicationVersion>({
-			...this.getCoreFields(Message_Direction.INTERNAL),
+			...this.getCoreFields(Message_Direction.INTERNAL_FROM_APP),
 			fullDbApplication_Name: fullDbApplication_Name,
 			type: Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME
 		})
@@ -306,7 +309,7 @@ export class IframeTransactionalConnector
 		domainName: DbDomain_Name
 	): Promise<DbDomain> {
 		return await this.sendMessageAndGetResponse<IRetrieveDomainMessage, DbDomain>({
-			...this.getCoreFields(Message_Direction.INTERNAL),
+			...this.getCoreFields(Message_Direction.INTERNAL_FROM_APP),
 			domainName,
 			type: Message_Type.RETRIEVE_DOMAIN
 		})
@@ -318,11 +321,11 @@ export class IframeTransactionalConnector
 		this.applicationStore.state.messageCallback = callback
 	}
 
-	private async handleInternalMessage(
+	private handleInternalMessage(
 		message: IInitializeConnectionMessage
 			| IGetLatestApplicationVersionByDbApplication_NameMessage
 			| IRetrieveDomainMessage
-	) {
+	): void {
 		switch (message.type) {
 			case Message_Type.APP_INITIALIZING: {
 				if (this.applicationStore.state.appState === AppState.NOT_INITIALIZED
@@ -431,7 +434,7 @@ ${subscriptionId}
 
 	private handleToClientMessage(
 		message: IApiCallResponseMessage,
-	) {
+	): void {
 		let observableRequestSubject: Subject<any>
 		switch (message.type) {
 			case Message_Type.SEARCH_ONE_SUBSCRIBE:
@@ -447,6 +450,9 @@ ${subscriptionId}
 					observableRequestSubject.next(message.returnedValue)
 				}
 				return
+			}
+			default: {
+				throw new Error(`Unexpected messsage type ${message.type} for Message_Direction.TO_APP`)
 			}
 		}
 
@@ -474,7 +480,7 @@ ${subscriptionId}
 		message: IApiCallResponseMessage
 			| IGetLatestApplicationVersionByDbApplication_NameMessage
 			| IRetrieveDomainMessage
-	) {
+	): void {
 		const messageRecord = this.applicationStore.state.pendingMessageMap.get(message.id);
 		if (!messageRecord) {
 			return
@@ -491,29 +497,26 @@ ${subscriptionId}
 	}
 
 	private getCoreFields(
-		direction = Message_Direction.FROM_CLIENT
+		direction = Message_Direction.FROM_APP
 	): {
-		clientApplication?: Message_Application,
-		clientDomain?: Message_Domain,
-		clientDomainProtocol?: Message_DomainProtocol,
 		direction: Message_Direction,
 		id: string,
 		messageLeg: Message_Leg.TO_HUB,
-		serverApplication?: Message_Application,
-		serverDomain?: Message_Domain,
-		serverDomainProtocol?: Message_DomainProtocol
+		sourceApplication: Message_Application,
+		sourceDomain: Message_Domain,
+		sourceDomainProtocol: Message_DomainProtocol
 	} {
 		let application = this.applicationStore.state.application
 		let domain = this.applicationStore.state.domain
 		let id = guidv4()
 		let messageLeg = Message_Leg.TO_HUB
 		return {
-			clientApplication: application,
-			clientDomain: domain,
-			clientDomainProtocol: location.protocol,
 			direction,
 			id,
-			messageLeg
+			messageLeg,
+			sourceApplication: application,
+			sourceDomain: domain,
+			sourceDomainProtocol: location.protocol,
 		}
 	}
 
@@ -612,7 +615,7 @@ ${subscriptionId}
 				this.applicationStore.state.appState = AppState.INITIALIZED
 				await this.applicationLoader.initialize()
 				this.sendMessageToParentWindow({
-					...this.getCoreFields(Message_Direction.INTERNAL),
+					...this.getCoreFields(Message_Direction.INTERNAL_FROM_APP),
 					fullDbApplication_Name: this.dbApplicationUtils.
 						getDbApplication_FullName(
 							this.applicationLoader.getApplication()),
@@ -628,7 +631,7 @@ ${subscriptionId}
 		this.applicationStore.state.application = jsonApplication.name
 
 		this.sendMessageToParentWindow({
-			...this.getCoreFields(Message_Direction.INTERNAL),
+			...this.getCoreFields(Message_Direction.INTERNAL_FROM_APP),
 			jsonApplication,
 			type: Message_Type.APP_INITIALIZING
 		} as IInitializeConnectionMessage)

@@ -8,7 +8,7 @@ import { IActor } from '@airport/ground-control';
 import { IApplicationStore } from '../../state/ApplicationStore';
 import { IApiRegistry, IApplicationApi } from '@airport/air-traffic-control';
 import { RequestManager } from './RequestManager';
-import { Message_Direction, IApiCallRequestMessage, IApiCallResponseMessage } from '@airport/aviation-communication';
+import { IApiCallRequestMessage, IApiCallResponseMessage, IApiMessage, IMessage } from '@airport/aviation-communication';
 
 @Injected()
 export class LocalAPIServer
@@ -27,7 +27,7 @@ export class LocalAPIServer
     queryResultsDeserializer: IQueryResultsDeserializer
 
     async handleRequest(
-        request: IApiCallRequestMessage<IActor>
+        request: IApiCallRequestMessage<IActor> & IMessage
     ): Promise<IApiCallResponseMessage> {
         let internalResponse
         let errorMessage: string
@@ -48,9 +48,12 @@ export class LocalAPIServer
             console.error(e)
         }
 
-        const response: IApiCallResponseMessage = {
+        let origin = request.destination;
+        let destination = request.origin;
+        const response: IApiCallResponseMessage & IApiMessage = {
             ...request,
-            direction: Message_Direction.TO_CLIENT,
+            destination,
+            origin,
             errorMessage,
             returnedValue: internalResponse
                 ? internalResponse.result
@@ -72,13 +75,13 @@ export class LocalAPIServer
             apiObject,
             apiOperation
         } = await this.apiRegistry.findObjectAndOperationForApi(api,
-            request.serverDomain, request.serverApplication, request.objectName, request.methodName)
+            request.destination.domain, request.destination.app, request.objectName, request.methodName)
 
         if (request.args.length > apiOperation.parameters.length) {
             throw new Error(`
     Too many parameters passed in to @Api() request
-Domain:      ${request.serverDomain}
-Application: ${request.serverApplication}
+Domain:      ${request.destination.domain}
+Application: ${request.destination.app}
 @Api()
 ${request.objectName}.${request.methodName}
 `)

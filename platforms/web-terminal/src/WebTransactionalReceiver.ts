@@ -188,7 +188,7 @@ export class WebTransactionalReceiver
 		const interAppApiCallRequest = webReciever.pendingInterAppApiCallMessageMap
 			.get(message.id)
 		const context: IApiCallContext = {
-			isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type)
+			isObservableApiCall: this.airMessageUtils.isObservableMessage(message)
 		}
 		const credentials: IApiCredentials = {
 			application: message.serverApplication,
@@ -489,7 +489,7 @@ export class WebTransactionalReceiver
 		}
 
 		const context: IApiCallContext = {
-			isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type)
+			isObservableApiCall: this.airMessageUtils.isObservableMessage(message)
 		}
 		const localApiRequest = message
 		const startDescriptor = await this.nativeStartApiCall(localApiRequest, context);
@@ -642,7 +642,7 @@ export class WebTransactionalReceiver
 		switch (message.type) {
 			case Message_Type.API_CALL: {
 				response = await this.nativeHandleApiCall(message as IApiCallRequestMessage, {
-					isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type),
+					isObservableApiCall: this.airMessageUtils.isObservableMessage(message),
 					startedAt: new Date()
 				})
 				break
@@ -702,7 +702,7 @@ export class WebTransactionalReceiver
 		let response = null
 
 		const context: IContext = {
-			isObservableApiCall: this.airMessageUtils.isObservableMessage(message.type),
+			isObservableApiCall: this.airMessageUtils.isObservableMessage(message),
 			startedAt: new Date()
 		}
 		const startDescriptor = await this.nativeStartApiCall(message as IApiCallRequestMessage, context);

@@ -1,6 +1,6 @@
 import { Injected } from "@airport/direction-indicator";
 import { IApiCallRequestMessage } from "./IApiCallMessage";
-import { Message_Direction, IMessage, Message_Type } from "./IMessage";
+import { CRUD_Message_Type, ICrudMessage, IInternalMessage, IMessage, INTERNAL_Message_Type, ISubscriptionMessage, MessageOriginOrDestination, Message_OriginOrDestination_Type, Message_Type_Group, SUBSCRIPTION_Message_Type } from "./IMessage";
 
 export interface IAirMessageUtils {
 
@@ -18,7 +18,7 @@ export interface IAirMessageUtils {
     ): boolean
 
     isObservableMessage(
-        type: Message_Type
+        message: IMessage
     ): boolean
 
     markMessageAsReceived(
@@ -50,7 +50,7 @@ export class AirMessageUtils
     }
 
     isMessageAlreadyReceived(
-        message: IMessage | IApiCallRequestMessage
+        message: IMessage
     ): boolean {
         if (!(message instanceof Object) || message.__received__) {
             console.error(`Message already recieved:
@@ -63,23 +63,32 @@ ${JSON.stringify(message, null, 2)}
     }
 
     isObservableMessage(
-        type: Message_Type
+        message: IMessage
     ): boolean {
-        switch (type) {
-            case Message_Type.API_SUBSCRIBE:
-            case Message_Type.API_SUBSCRIPTION_DATA:
-            case Message_Type.API_UNSUBSCRIBE:
-            case Message_Type.SEARCH_ONE_SUBSCRIBE:
-            case Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
-            case Message_Type.SEARCH_ONE_UNSUBSCRIBE:
-            case Message_Type.SEARCH_SUBSCRIBE:
-            case Message_Type.SEARCH_SUBSCRIBTION_DATA:
-            case Message_Type.SEARCH_UNSUBSCRIBE:
-                return true
-            default:
+        switch (message.typeGroup) {
+            case Message_Type_Group.API: {
                 return false
+            }
+            case Message_Type_Group.CRUD: {
+                return false
+            }
+            case Message_Type_Group.INTERNAL: {
+                return false
+            }
+            case Message_Type_Group.SUBSCRIPTION: {
+                switch ((message as ISubscriptionMessage).type) {
+                    case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
+                        return true
+                    default:
+                        return false
+                }
+            }
+            default: {
+                throw new Error(this.getErrorMessage(`Unexpected
+    message.typeGroup: ${message.typeGroup}`, message))
+            }
         }
-
     }
 
     markMessageAsReceived(
@@ -97,127 +106,6 @@ ${JSON.stringify(message, null, 2)}
         delete message.__receivedTime__
     }
 
-    validateIncomingMessage(
-        message: IMessage
-    ): boolean {
-        if (this.isMessageAlreadyReceived(message)) {
-            return false
-        }
-
-        if (!this.hasValidApplicationInfo(message)) {
-            return false
-        }
-
-        this.markMessageAsReceived(message)
-
-        return true
-    }
-
-    private hasValidApplicationInfo(
-        message: IMessage
-    ): boolean {
-        let application, domain, messageType = 'INTERNAL'
-        // All requests need to have a application signature
-        // to know what application is being communicated to/from
-        switch (message.direction) {
-            case Message_Direction.FROM_CLIENT: {
-                switch (message.type) {
-                    case Message_Type.DELETE_WHERE:
-                    case Message_Type.FIND:
-                    case Message_Type.FIND_ONE:
-                    case Message_Type.INSERT_VALUES:
-                    case Message_Type.INSERT_VALUES_GET_IDS:
-                    case Message_Type.SAVE:
-                    case Message_Type.SEARCH_ONE_SUBSCRIBE:
-                    case Message_Type.SEARCH_ONE_UNSUBSCRIBE:
-                    case Message_Type.SEARCH_SUBSCRIBE:
-                    case Message_Type.SEARCH_SUBSCRIBTION_DATA:
-                    case Message_Type.SEARCH_UNSUBSCRIBE:
-                    case Message_Type.UPDATE_VALUES: {
-                        if (!this.validateDomainAndApplication(
-                            message,
-                            message.clientDomain,
-                            message.clientApplication
-                        )) {
-                            return false
-                        }
-                        domain = message.clientDomain
-                        application = message.clientApplication
-                        break;
-                    }
-                    default: {
-                        if (!this.validateDomainAndApplication(
-                            message,
-                            message.serverDomain,
-                            message.serverApplication
-                        )) {
-                            return false
-                        }
-                        domain = message.serverDomain
-                        application = message.serverApplication
-                        break
-                    }
-                }
-                break
-            }
-            case Message_Direction.TO_CLIENT: {
-                messageType = 'TO_CLIENT'
-                // Fall through to INTERNAL message handling
-            }
-            case Message_Direction.INTERNAL: {
-                if (!this.validateDomainAndApplication(
-                    message,
-                    message.clientDomain,
-                    message.clientApplication
-                )) {
-                    return false
-                }
-                domain = message.clientDomain
-                application = message.clientApplication
-                break
-            }
-            default: {
-                console.warn(`Unexpected message direction '${message.direction}'
-${JSON.stringify(message, null, 2)}
-`)
-                return false
-            }
-        }
-        if (domain.indexOf('.') > -1) {
-            console.error(`Invalid Domain name - cannot have periods that would point to invalid subdomains:
-${domain}
-`)
-            return false
-        }
-        if (application.indexOf('.') > -1) {
-            console.error(`Invalid Application name - cannot have periods that would point to invalid subdomains:
-${application}
-`)
-            return false
-        }
-
-        return true
-    }
-
-    private validateDomainAndApplication(
-        message,
-        messageDomain,
-        messageApplication
-    ) {
-        if (!this.isValidDomainNameString(
-            messageDomain
-        ) || !this.isValidApplicationNameString(
-            messageApplication
-        )) {
-            console.error(`${message.direction} Message does not have valid server domain and application:
-${JSON.stringify(message, null, 2)}
-`)
-            return false
-        }
-
-        return true
-    }
-
     isFromValidFrameworkDomain(
         origin: string
     ): boolean {
@@ -227,6 +115,238 @@ ${JSON.stringify(message, null, 2)}
         }
 
         return true
+    }
+
+    validateIncomingMessage(
+        message: IMessage
+    ): boolean {
+        if (this.isMessageAlreadyReceived(message)) {
+            return false
+        }
+
+        this.validateApplicationInfo(message)
+
+        this.markMessageAsReceived(message)
+
+        return true
+    }
+
+    private validateApplicationInfo(
+        message: IMessage
+    ): void {
+        this.validateDomainAndApplication(
+            message,
+            message.origin,
+            'origin'
+        )
+        this.validateDomainAndApplication(
+            message,
+            message.destination,
+            'destination'
+        );
+        switch (message.origin.type) {
+            case Message_OriginOrDestination_Type.APPLICATION: {
+                this.validateApplicationMessageType(message);
+                break;
+            }
+            case Message_OriginOrDestination_Type.DATABASE: {
+                this.validateDatabaseMessageType(message);
+                break;
+            }
+            case Message_OriginOrDestination_Type.FRAMEWORK: {
+                this.validateFrameworkMessageType(message);
+                break;
+            }
+            case Message_OriginOrDestination_Type.USER_INTERFACE: {
+                this.validateUiMessageType(message);
+                break;
+            }
+        }
+    }
+
+    private validateApplicationMessageType(
+        message: IMessage
+    ): void {
+        switch (message.typeGroup) {
+            case Message_Type_Group.API: {
+                break
+            }
+            case Message_Type_Group.CRUD: {
+                switch ((message as ICrudMessage).type) {
+                    case CRUD_Message_Type.DELETE_WHERE:
+                    case CRUD_Message_Type.FIND:
+                    case CRUD_Message_Type.FIND_ONE:
+                    case CRUD_Message_Type.INSERT_VALUES:
+                    case CRUD_Message_Type.INSERT_VALUES_GET_IDS:
+                    case CRUD_Message_Type.SAVE:
+                    case CRUD_Message_Type.UPDATE_VALUES:
+                        break
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${(message as ISubscriptionMessage).type}`, message))
+                }
+                break
+            }
+            case Message_Type_Group.INTERNAL: {
+                switch ((message as IInternalMessage).type) {
+                    case INTERNAL_Message_Type.APP_INITIALIZED:
+                    case INTERNAL_Message_Type.APP_INITIALIZING:
+                    case INTERNAL_Message_Type.CONNECTION_IS_READY:
+                    case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
+                    case INTERNAL_Message_Type.IS_CONNECTION_READY:
+                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
+                        break
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${(message as ISubscriptionMessage).type}`, message))
+                }
+                break
+            }
+            case Message_Type_Group.SUBSCRIPTION: {
+                switch ((message as ISubscriptionMessage).type) {
+                    case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA:
+                    case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_ONE_UNSUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_UNSUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING:
+                        break
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${(message as ISubscriptionMessage).type}`, message))
+                }
+                break
+            }
+            default: {
+                throw new Error(this.getErrorMessage(`Unexpected
+    message.typeGroup: ${message.typeGroup}`, message))
+            }
+        }
+    }
+
+    private validateDatabaseMessageType(
+        message: IMessage
+    ): void {
+        switch (message.typeGroup) {
+            case Message_Type_Group.CRUD: {
+                switch ((message as ICrudMessage).type) {
+                    case CRUD_Message_Type.DELETE_WHERE:
+                    case CRUD_Message_Type.FIND:
+                    case CRUD_Message_Type.FIND_ONE:
+                    case CRUD_Message_Type.INSERT_VALUES:
+                    case CRUD_Message_Type.INSERT_VALUES_GET_IDS:
+                    case CRUD_Message_Type.SAVE:
+                    case CRUD_Message_Type.UPDATE_VALUES:
+                        break
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${(message as ISubscriptionMessage).type}`, message))
+                }
+                break
+            }
+            case Message_Type_Group.SUBSCRIPTION: {
+                switch ((message as ISubscriptionMessage).type) {
+                    case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
+                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBTION_DATA:
+                        break
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${(message as ISubscriptionMessage).type}`, message))
+                }
+                break
+            }
+            default: {
+                throw new Error(this.getErrorMessage(`Unexpected
+    message.typeGroup: ${message.typeGroup}`, message))
+            }
+        }
+    }
+
+    private validateFrameworkMessageType(
+        message: IMessage
+    ): void {
+        switch (message.typeGroup) {
+            case Message_Type_Group.INTERNAL: {
+                switch ((message as IInternalMessage).type) {
+                    case INTERNAL_Message_Type.APP_INITIALIZED:
+                    case INTERNAL_Message_Type.APP_INITIALIZING:
+                    case INTERNAL_Message_Type.CONNECTION_IS_READY:
+                    case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
+                    case INTERNAL_Message_Type.IS_CONNECTION_READY:
+                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
+                        break
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${(message as ISubscriptionMessage).type}`, message))
+                }
+                break
+            }
+            default: {
+                throw new Error(this.getErrorMessage(`Unexpected
+    message.typeGroup: ${message.typeGroup}`, message))
+            }
+        }
+    }
+
+    private validateUiMessageType(
+        message: IMessage
+    ): void {
+        switch (message.typeGroup) {
+            case Message_Type_Group.API: {
+                break
+            }
+            case Message_Type_Group.SUBSCRIPTION: {
+                switch ((message as ISubscriptionMessage).type) {
+                    case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING:
+                        break
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${(message as ISubscriptionMessage).type}`, message))
+                }
+                break
+            }
+            default: {
+                throw new Error(this.getErrorMessage(`Unexpected
+    message.typeGroup: ${message.typeGroup}`, message))
+            }
+        }
+    }
+
+    private validateDomainAndApplication<M extends IMessage>(
+        message: M,
+        originOrDestination: MessageOriginOrDestination,
+        type: 'origin' | 'destination',
+    ): void {
+        if (!this.isValidDomainNameString(
+            originOrDestination.domain
+        )) {
+            throw new Error(this.getErrorMessage(`Invalid ${type} domain`, message))
+        }
+        if (!this.isValidApplicationNameString(
+            originOrDestination.app
+        )) {
+            throw new Error(this.getErrorMessage(`Invalid ${type} application`, message))
+        }
+        if (originOrDestination.domain.indexOf('.') > -1) {
+            throw new Error(this.getErrorMessage(`Invalid ${type} Domain name - cannot have periods that would point to invalid subdomains`, message))
+        }
+        if (originOrDestination.app.indexOf('.') > -1) {
+            throw new Error(this.getErrorMessage(`Invalid ${type} Application name - cannot have periods that would point to invalid subdomains`, message))
+        }
+    }
+
+    private getErrorMessage<M extends IMessage>(
+        errorMessage: string,
+        message: M,
+    ) {
+        return `${errorMessage}
+Message:
+    ${JSON.stringify(message, null, 2)}
+        `
     }
 
     private isValidApplicationNameString(

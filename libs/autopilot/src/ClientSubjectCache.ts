@@ -1,4 +1,4 @@
-import { IApiClientSubject, ICoreSubscriptionRequestFields, IClientSubjectCache, ISubscriptionCountSubject, Message_Application, Message_Direction, Message_Domain, Message_Type, SubscriptionId } from "@airport/aviation-communication"
+import { IApiClientSubject, ICoreSubscriptionRequestFields, IClientSubjectCache, ISubscriptionCountSubject, Message_Application, Message_Domain, SubscriptionId, Message_Type_Group, SUBSCRIPTION_Message_Type, ISubscriptionMessage } from "@airport/aviation-communication"
 import { v4 as guidv4 } from "uuid";
 import { ApiClientSubject } from "./ApiClientSubject";
 import { IFullDITokenDescriptor } from "@airport/direction-indicator";
@@ -25,16 +25,16 @@ export class ClientSubjectCache
                         const fullDIDescriptor = (subject as IApiClientSubject<any, any>).fullDIDescriptor
                         const requestFields: ICoreSubscriptionRequestFields = subject.requestFields
                         let requestsForDomain = requestsByDomainAndApp
-                            .get(requestFields.serverDomain)
+                            .get(requestFields.destination.domain)
                         if (!requestsForDomain) {
                             requestsForDomain = new Map()
-                            requestsByDomainAndApp.set(requestFields.serverDomain, requestsForDomain)
+                            requestsByDomainAndApp.set(requestFields.destination.domain, requestsForDomain)
                         }
 
-                        let requestsForApp = requestsForDomain.get(requestFields.serverApplication)
+                        let requestsForApp = requestsForDomain.get(requestFields.destination.app)
                         if (!requestsForApp) {
                             requestsForApp = []
-                            requestsForDomain.set(requestFields.serverApplication, requestsForApp)
+                            requestsForDomain.set(requestFields.destination.app, requestsForApp)
                         }
                         requestsForApp.push({
                             args,
@@ -45,7 +45,7 @@ export class ClientSubjectCache
 
                     for (const [_serverDomain, requestsForDomain] of requestsByDomainAndApp) {
                         for (const [_serverApplication, requestsForApp] of requestsForDomain) {
-                            const requestFields = requestsForApp[0]
+                            const requestFields = requestsForApp[0] as any as ISubscriptionMessage
                             const subscriptionIds = []
                             for (const request of requestsForApp) {
                                 subscriptionIds.push(request.requestFields.subscriptionId)
@@ -54,11 +54,11 @@ export class ClientSubjectCache
                                 fullDIDescriptor: requestsForApp[0].fullDIDescriptor,
                                 request: {
                                     ...requestFields,
-                                    direction: Message_Direction.FROM_CLIENT,
                                     subscriptionIds,
                                     id: guidv4(),
-                                    type: Message_Type.SUBSCRIPTION_PING
-                                }
+                                    type: SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING,
+                                    typeGroup: Message_Type_Group.SUBSCRIPTION
+                                } as ISubscriptionMessage
                             })
                         }
                     }
@@ -89,10 +89,11 @@ export class ClientSubjectCache
                 args: subject.args,
                 fullDIDescriptor: subject.fullDIDescriptor,
                 request: {
-                    ...subject.requestFields,
+                    ...subject.requestFields as ISubscriptionMessage,
                     id: guidv4(),
-                    type: Message_Type.API_SUBSCRIBE
-                }
+                    type: SUBSCRIPTION_Message_Type.API_SUBSCRIBE,
+                    typeGroup: Message_Type_Group.SUBSCRIPTION
+                } as ISubscriptionMessage
             })
         } else {
             throw new Error(`Can only subscribe "ApiClientSubject"s`)
@@ -107,10 +108,11 @@ export class ClientSubjectCache
             globalThis.MESSAGE_BUS.next({
                 fullDIDescriptor: subject.fullDIDescriptor,
                 request: {
-                    ...subject.requestFields,
+                    ...subject.requestFields as ISubscriptionMessage,
                     id: guidv4(),
-                    type: Message_Type.API_UNSUBSCRIBE
-                }
+                    type: SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE,
+                    typeGroup: Message_Type_Group.SUBSCRIPTION
+                } as ISubscriptionMessage
             })
         } else {
             subject.unsubscribe()

@@ -1,7 +1,13 @@
-import { IMessage } from "./IMessage"
+import { IApiMessage, ISubscriptionMessage } from "./IMessage"
 
 export interface IApiCallRequestMessage<A = any>
-    extends IMessage {
+    extends IApiMessage, IApiCallRequestMessageProperties<A> {
+}
+export interface IObservableApiCallRequestMessage<A = any>
+    extends ISubscriptionMessage, IApiCallRequestMessageProperties<A> {
+}
+
+export interface IApiCallRequestMessageProperties<A = any> {
     actor?: A
     args: Array<boolean | number | string>
     methodName: string

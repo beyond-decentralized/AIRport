@@ -1,6 +1,6 @@
 import { ILastIds, JsonApplicationWithLastIds } from '@airport/air-traffic-control';
 import { DbApplicationDao } from '@airport/airspace/dist/app/bundle';
-import { Message_Direction, Message_Leg, Message_Type, IApiCallRequestMessage, IApiCallResponseMessage } from '@airport/aviation-communication';
+import { Message_Leg, IApiCallRequestMessage, IApiCallResponseMessage, INTERNAL_Message_Type, CRUD_Message_Type, ISubscriptionMessage, Message_Type_Group, SUBSCRIPTION_Message_Type, IMessage } from '@airport/aviation-communication';
 import {
     IContext,
     Inject,
@@ -76,22 +76,19 @@ export abstract class TransactionalReceiver {
     } = {} as any
 
     async processFromClientMessage(
-        message: IPortableQueryMessage
-            | IReadQueryMessage
-            | ISaveMessage<any>
+        message: IApiCallRequestMessage
     ): Promise<IApiCallResponseMessage> {
         let result: any
         let errorMessage
         try {
             const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.serverDomain)
+                .isInternalDomain(message.destination.domain)
             if (isInternalDomain) {
                 throw new Error(`Internal domains cannot be used in external calls`)
             }
             let credentials: ICredentials = {
-                application: message.clientApplication,
-                domain: message.clientDomain,
-                transactionId: message.transactionId
+                application: message.origin.app,
+                domain: message.origin.domain
             }
             let context: IContext = {}
             context.startedAt = new Date()
@@ -100,7 +97,10 @@ export abstract class TransactionalReceiver {
                 theErrorMessage,
                 theResult
             } = await this.doProcessFromClientMessage(
-                message,
+                message as IMessage as IPortableQueryMessage
+                | IReadQueryMessage
+                | ISaveMessage<any>
+                | ISubscriptionMessage,
                 credentials,
                 context
             )
@@ -113,14 +113,22 @@ export abstract class TransactionalReceiver {
         }
         const messageCopy = {
             ...message,
-            direction: Message_Direction.TO_CLIENT,
+            destination: {
+                app: message.origin.app,
+                domain: message.origin.domain,
+                protocol: message.origin.protocol,
+                type: message.origin.type
+            },
             errorMessage,
             messageLeg: Message_Leg.FROM_HUB,
+            origin: {
+                app: message.destination.app,
+                domain: message.destination.domain,
+                protocol: message.destination.protocol,
+                type: message.destination.type
+            },
             returnedValue: result,
-            serverApplication: message.clientApplication,
-            serverDomain: message.clientDomain,
-            serverDomainProtocol: message.clientDomainProtocol
-        } as any
+        } as IApiCallResponseMessage
 
         return messageCopy
     }
@@ -136,7 +144,7 @@ export abstract class TransactionalReceiver {
         let theErrorMessage: string = null
         let theResult: any = null
         switch (message.type) {
-            case Message_Type.APP_INITIALIZING:
+            case INTERNAL_Message_Type.APP_INITIALIZING:
                 const application: JsonApplicationWithLastIds =
                     (message as IInitializeConnectionMessage).jsonApplication
                 const fullDbApplication_Name = this.dbApplicationUtils.
@@ -168,7 +176,7 @@ export abstract class TransactionalReceiver {
 
                 theResult = application.lastIds
                 break
-            case Message_Type.APP_INITIALIZED:
+            case INTERNAL_Message_Type.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps
                 initializedApps.add((message as IConnectionInitializedMessage).fullDbApplication_Name)
                 // console.log(`--==<<(( INITIALIZED: ${(message as any as IConnectionInitializedIMI).fullDbApplication_Name}))>>==--`)
@@ -176,13 +184,13 @@ export abstract class TransactionalReceiver {
                     theErrorMessage,
                     theResult
                 }
-            case Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
+            case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                 theResult = this.terminalStore.getLatestApplicationVersionMapByDbApplication_FullName()
                     .get((message as IGetLatestApplicationVersionByDbApplication_NameMessage)
                         .fullDbApplication_Name)
                 break
             }
-            case Message_Type.RETRIEVE_DOMAIN: {
+            case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
                 theResult = this.terminalStore.getDomainMapByName()
                     .get(message.clientDomain)
                 break
@@ -204,6 +212,79 @@ export abstract class TransactionalReceiver {
     private async doProcessFromClientMessage(
         message: IPortableQueryMessage
             | IReadQueryMessage
+            | ISaveMessage<any>
+            | ISubscriptionMessage,
+        credentials: ICredentials,
+        context: IContext
+    ): Promise<{
+        theErrorMessage: string
+        theResult: IApiCallResponseMessage | ISaveMessage<any>
+    }> {
+        switch (message.typeGroup) {
+            case Message_Type_Group.CRUD: {
+                return this.doProcessFromClientCRUDMessage(
+                    message, credentials, context
+                )
+            }
+            case Message_Type_Group.SUBSCRIPTION: {
+                return this.doProcessFromClientSubscriptionMessage(
+                    message, credentials, context
+                )
+            }
+            default: {
+                throw new Error(`Unexpected message.typeGroup "${message.typeGroup}"`)
+            }
+        }
+    }
+
+    private async doProcessFromClientSubscriptionMessage(
+        message: ISubscriptionMessage,
+        credentials: ICredentials,
+        context: IContext
+    ): Promise<{
+        theErrorMessage: string
+        theResult: IApiCallResponseMessage | ISaveMessage<any>
+    }> {
+        let theErrorMessage: string = null
+        let theResult: any = null
+        credentials.subscriptionId = message.subscriptionId
+        switch (message.type) {
+            case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
+                theResult = this.transactionalServer.searchOne(
+                    (message as IReadQueryMessage).portableQuery,
+                    credentials,
+                    {
+                        ...context as any,
+                        repository: (message as IReadQueryMessage).repository,
+                    } as IQueryOperationContext
+                )
+                break
+            case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
+                theResult = this.transactionalServer.search(
+                    (message as IReadQueryMessage).portableQuery,
+                    credentials,
+                    {
+                        ...context as any,
+                        repository: (message as IReadQueryMessage).repository,
+                    } as IQueryOperationContext
+                )
+                break
+            default:
+                return {
+                    theErrorMessage: `Unexpected SUBSCRIPTION_Message_Type: '${message.type}'`,
+                    theResult
+                }
+        }
+
+        return {
+            theErrorMessage,
+            theResult,
+        }
+    }
+
+    private async doProcessFromClientCRUDMessage(
+        message: IPortableQueryMessage
+            | IReadQueryMessage
             | ISaveMessage<any>,
         credentials: ICredentials,
         context: IContext
@@ -213,15 +294,16 @@ export abstract class TransactionalReceiver {
     }> {
         let theErrorMessage: string = null
         let theResult: any = null
+        credentials.transactionId = message.transactionId
         switch (message.type) {
-            case Message_Type.DELETE_WHERE:
+            case CRUD_Message_Type.DELETE_WHERE:
                 theResult = await this.transactionalServer.deleteWhere(
                     (message as IPortableQueryMessage).portableQuery,
                     credentials,
                     context
                 )
                 break
-            case Message_Type.FIND:
+            case CRUD_Message_Type.FIND:
                 theResult = await this.transactionalServer.find(
                     (message as IReadQueryMessage).portableQuery,
                     credentials,
@@ -231,7 +313,7 @@ export abstract class TransactionalReceiver {
                     } as IQueryOperationContext
                 )
                 break
-            case Message_Type.FIND_ONE:
+            case CRUD_Message_Type.FIND_ONE:
                 theResult = await this.transactionalServer.findOne(
                     (message as IReadQueryMessage).portableQuery,
                     credentials,
@@ -241,21 +323,21 @@ export abstract class TransactionalReceiver {
                     } as IQueryOperationContext
                 )
                 break
-            case Message_Type.INSERT_VALUES:
+            case CRUD_Message_Type.INSERT_VALUES:
                 theResult = await this.transactionalServer.insertValues(
                     (message as IPortableQueryMessage).portableQuery,
                     credentials,
                     context
                 )
                 break
-            case Message_Type.INSERT_VALUES_GET_IDS:
+            case CRUD_Message_Type.INSERT_VALUES_GET_IDS:
                 theResult = await this.transactionalServer.insertValuesGetLocalIds(
                     (message as IPortableQueryMessage).portableQuery,
                     credentials,
                     context
                 )
                 break
-            case Message_Type.SAVE: {
+            case CRUD_Message_Type.SAVE: {
                 if (!(message as ISaveMessage<any>).dbEntity) {
                     theErrorMessage = `DbEntity id was not passed in`
                     break
@@ -274,27 +356,7 @@ export abstract class TransactionalReceiver {
                 )
                 break
             }
-            case Message_Type.SEARCH_ONE_SUBSCRIBE:
-                theResult = this.transactionalServer.searchOne(
-                    (message as IReadQueryMessage).portableQuery,
-                    credentials,
-                    {
-                        ...context as any,
-                        repository: (message as IReadQueryMessage).repository,
-                    } as IQueryOperationContext
-                )
-                break
-            case Message_Type.SEARCH_SUBSCRIBE:
-                theResult = this.transactionalServer.search(
-                    (message as IReadQueryMessage).portableQuery,
-                    credentials,
-                    {
-                        ...context as any,
-                        repository: (message as IReadQueryMessage).repository,
-                    } as IQueryOperationContext
-                )
-                break
-            case Message_Type.UPDATE_VALUES:
+            case CRUD_Message_Type.UPDATE_VALUES:
                 theResult = await this.transactionalServer.updateValues(
                     (message as IPortableQueryMessage).portableQuery,
                     credentials,
@@ -303,7 +365,7 @@ export abstract class TransactionalReceiver {
                 break
             default:
                 return {
-                    theErrorMessage: `Unexpected FROM_CLIENT Message_Type: '${message.type}'`,
+                    theErrorMessage: `Unexpected CRUD_Message_Type: '${message.type}'`,
                     theResult
                 }
         }
@@ -337,7 +399,7 @@ export abstract class TransactionalReceiver {
     }> {
         const fullDbApplication_Name = this.dbApplicationUtils.
             getDbApplication_FullNameFromDomainAndName(
-                message.serverDomain, message.serverApplication)
+                message.destination.domain, message.destination.app)
         const application = this.terminalStore.getApplicationMapByFullName().get(fullDbApplication_Name)
         if (!application) {
             console.error(`Application not found
@@ -381,8 +443,8 @@ ${fullDbApplication_Name}
         context.isObservableApiCall = !apiOperation.isAsync
 
         const transactionCredentials: IApiCredentials = {
-            application: message.serverApplication,
-            domain: message.serverDomain,
+            application: message.destination.app,
+            domain: message.destination.domain,
             methodName: message.methodName,
             objectName: message.objectName,
             transactionId: message.transactionId
@@ -397,8 +459,8 @@ ${fullDbApplication_Name}
                 }
             }
             const initiator = context.transaction.initiator
-            initiator.application = message.serverApplication
-            initiator.domain = message.serverDomain
+            initiator.application = message.destination.app
+            initiator.domain = message.destination.domain
             initiator.methodName = message.methodName
             initiator.objectName = message.objectName
         }
@@ -408,7 +470,7 @@ ${fullDbApplication_Name}
         try {
 
             const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.serverDomain)
+                .isInternalDomain(message.destination.domain)
             if (!isInternalDomain) {
                 isFramework = false
                 await this.doNativeHandleCallback(
@@ -468,7 +530,7 @@ ${fullDbApplication_Name}
 
         try {
             const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.serverDomain)
+                .isInternalDomain(message.destination.domain)
             if (isInternalDomain
                 && !context.isObservableApiCall
                 && context.transaction.parentTransaction) {
@@ -478,8 +540,8 @@ ${fullDbApplication_Name}
             }
             const terminal = this.terminalStore.getTerminal()
             actor = await this.actorDao.findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(
-                message.serverDomain,
-                message.serverApplication,
+                message.destination.domain,
+                message.destination.app,
                 userSession.userAccount.accountPublicSigningKey,
                 terminal.GUID,
                 context
@@ -489,7 +551,7 @@ ${fullDbApplication_Name}
             }
 
             const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(
-                message.serverDomain, message.serverApplication, context)
+                message.destination.domain, message.destination.app, context)
             actor = {
                 _localId: null,
                 application,

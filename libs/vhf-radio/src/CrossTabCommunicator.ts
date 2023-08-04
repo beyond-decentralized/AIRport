@@ -1,4 +1,4 @@
-import { AirMessageUtils, Message_Type, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, TimeStamp } from '@airport/aviation-communication';
+import { AirMessageUtils, IAirMessageUtils, IApiCallResponseMessage, TimeStamp, Message_Type_Group, IInternalMessage, IMessage, ISubscriptionMessage, INTERNAL_Message_Type, SUBSCRIPTION_Message_Type } from '@airport/aviation-communication';
 import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
 
 export interface ICrossTabCommunicator {
@@ -30,12 +30,12 @@ export class CrossTabCommunicator
                 setInterval(() => {
                     let lastValidPingMillis = new Date().getTime() - 10000
                     let staleSubscriptionIds = []
-                    for(const [subscriptionId, lastPingMillis] of this.activeSubscriptionIdMap) {
-                        if(lastPingMillis < lastValidPingMillis) {
+                    for (const [subscriptionId, lastPingMillis] of this.activeSubscriptionIdMap) {
+                        if (lastPingMillis < lastValidPingMillis) {
                             staleSubscriptionIds.push(subscriptionId)
                         }
                     }
-                    for(const staleSubscriptionId of staleSubscriptionIds) {
+                    for (const staleSubscriptionId of staleSubscriptionIds) {
                         this.activeSubscriptionIdMap.delete(staleSubscriptionId)
                     }
                 }, 10000)
@@ -43,7 +43,7 @@ export class CrossTabCommunicator
         }, 2000)
 
         window.addEventListener("message", event => {
-            const message: IApiCallRequestMessage = event.data
+            const message: IMessage = event.data
 
             if (this.airMessageUtils.isMessageAlreadyReceived(message)) {
                 return
@@ -62,20 +62,41 @@ export class CrossTabCommunicator
             // if (message.domain !== appDomainAndPort) {
             //     return
             // }
-            switch (message.type) {
-                case Message_Type.IS_CONNECTION_READY:
-                    this.clientHost = messageOriginFragments[1]
-                    this.clientProtocol = messageOriginFragments[0]
-                    this.pendingMessageIdSet.add(message.id)
-                    break
-                case Message_Type.API_SUBSCRIBE:
-                case Message_Type.SUBSCRIPTION_PING: {
-                    this.activeSubscriptionIdMap.set(message.subscriptionId, new Date().getTime())
-                    break
-                }
-                case Message_Type.API_UNSUBSCRIBE: {
-                    this.activeSubscriptionIdMap.delete(message.subscriptionId)
+            switch (message.typeGroup) {
+                case Message_Type_Group.INTERNAL: {
+                    switch ((message as IInternalMessage).type) {
+                        case INTERNAL_Message_Type.IS_CONNECTION_READY: {
+                            this.clientHost = messageOriginFragments[1]
+                            this.clientProtocol = messageOriginFragments[0]
+                            // Not an observable message
+                            this.pendingMessageIdSet.add(message.id)
+                            break
+                        }
+                        default:
+                            // Not an observable message
+                            this.pendingMessageIdSet.add(message.id)
+                            break
+                    }
                     break;
+                }
+                case Message_Type_Group.SUBSCRIPTION: {
+                    switch ((message as ISubscriptionMessage).type) {
+
+                        case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
+                        case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
+                            this.activeSubscriptionIdMap.delete((message as ISubscriptionMessage).subscriptionId)
+                            break
+                        }
+                        case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
+                            this.activeSubscriptionIdMap.set((message as ISubscriptionMessage).subscriptionId, new Date().getTime())
+                            break
+                        }
+                        default:
+                            // Not an observable message
+                            this.pendingMessageIdSet.add(message.id)
+                            break;
+                    }
+                    break
                 }
                 default: {
                     // Not an observable message
@@ -83,11 +104,11 @@ export class CrossTabCommunicator
                     break;
                 }
             }
-            messageCopy.clientDomain = this.clientHost
-            messageCopy.clientDomainProtocol = this.clientProtocol
+            messageCopy.origin.domain = this.clientHost
+            messageCopy.origin.protocol = this.clientProtocol
 
             // FIXME: serialize message if !this.isNativeBroadcastChannel
-            this.communicationChannel.postMessage(messageCopy)
+            // this.communicationChannel.postMessage(messageCopy)
         })
 
         const createChannel = () => {
@@ -103,9 +124,9 @@ export class CrossTabCommunicator
                 },
             });
 
-            this.communicationChannel.onmessage = (message: IApiCallResponseMessage) => {
-                if (!this.clientHost || message.clientDomain !== this.clientHost
-                    || message.clientDomainProtocol !== this.clientProtocol) {
+            this.communicationChannel.onmessage = (message: IMessage) => {
+                if (!this.clientHost || message.destination.domain !== this.clientHost
+                    || message.destination.protocol !== this.clientProtocol) {
                     return
                 }
 
@@ -113,17 +134,22 @@ export class CrossTabCommunicator
                     return
                 }
 
-                switch (message.type) {
-                    case Message_Type.API_SUBSCRIBE:
-                    case Message_Type.API_UNSUBSCRIBE: {
-                        break;
-                    }
-                    case Message_Type.API_SUBSCRIPTION_DATA: {
-                        if (!this.activeSubscriptionIdMap.has(message
-                            .subscriptionId)) {
-                            return
+                switch (message.typeGroup) {
+                    case Message_Type_Group.SUBSCRIPTION: {
+                        switch ((message as ISubscriptionMessage).type) {
+                            case SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA: {
+                                if (!this.activeSubscriptionIdMap.has((message as ISubscriptionMessage)
+                                    .subscriptionId)) {
+                                    return
+                                }
+                                break
+                            }
+                            default:
+                                // Not an observable message
+                                this.pendingMessageIdSet.add(message.id)
+                                break;
                         }
-                        break;
+                        break
                     }
                     default: {
                         // Not an observable message
@@ -140,12 +166,12 @@ ${JSON.stringify(message)}
                     }
                 }
 
-                const messageCopy: IApiCallResponseMessage = { ...message }
+                const messageCopy: IMessage = { ...message }
 
                 // FIXME: deserialize message if !this.isNativeBroadcastChannel
                 window.parent.postMessage(messageCopy, this.clientProtocol + '//' + this.clientHost)
             };
         }
-        createChannel();
+        //createChannel();
     }
 }

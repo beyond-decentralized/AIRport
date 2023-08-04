@@ -8316,9 +8316,12 @@ class AirEntityUtils {
 
 var Message_Direction;
 (function (Message_Direction) {
-    Message_Direction["FROM_CLIENT"] = "FROM_CLIENT";
-    Message_Direction["INTERNAL"] = "INTERNAL";
-    Message_Direction["TO_CLIENT"] = "TO_CLIENT";
+    Message_Direction["FROM_APP"] = "FROM_APP";
+    Message_Direction["FROM_UI"] = "FROM_UI";
+    Message_Direction["INTERNAL_FROM_APP"] = "INTERNAL_FROM_APP";
+    Message_Direction["INTERNAL_TO_APP"] = "INTERNAL_TO_APP";
+    Message_Direction["TO_APP"] = "TO_APP";
+    Message_Direction["TO_UI"] = "TO_UI";
 })(Message_Direction || (Message_Direction = {}));
 var Message_Leg;
 (function (Message_Leg) {
@@ -8405,11 +8408,13 @@ ${JSON.stringify(message, null, 2)}
         return true;
     }
     hasValidApplicationInfo(message) {
-        let application, domain;
+        if (!this.validateDomainAndApplication(message, message.sourceDomain, message.sourceApplication)) {
+            return false;
+        }
         // All requests need to have a application signature
         // to know what application is being communicated to/from
         switch (message.direction) {
-            case Message_Direction.FROM_CLIENT: {
+            case Message_Direction.FROM_APP: {
                 switch (message.type) {
                     case Message_Type.DELETE_WHERE:
                     case Message_Type.FIND:
@@ -8423,31 +8428,48 @@ ${JSON.stringify(message, null, 2)}
                     case Message_Type.SEARCH_SUBSCRIBTION_DATA:
                     case Message_Type.SEARCH_UNSUBSCRIBE:
                     case Message_Type.UPDATE_VALUES: {
-                        if (!this.validateDomainAndApplication(message, message.clientDomain, message.clientApplication)) {
-                            return false;
-                        }
-                        domain = message.clientDomain;
-                        application = message.clientApplication;
                         break;
                     }
                     default: {
-                        if (!this.validateDomainAndApplication(message, message.serverDomain, message.serverApplication)) {
-                            return false;
-                        }
-                        domain = message.serverDomain;
-                        application = message.serverApplication;
-                        break;
+                        throw new Error(`Unexpected Message_Type: "${message.type}" for Message_Direction.FROM_APP`);
                     }
                 }
                 break;
             }
-            case Message_Direction.TO_CLIENT:            case Message_Direction.INTERNAL: {
-                if (!this.validateDomainAndApplication(message, message.clientDomain, message.clientApplication)) {
-                    return false;
+            case Message_Direction.TO_APP: {
+                switch (message.type) {
+                    default: {
+                        throw new Error(`Unexpected Message_Type: "${message.type}" for Message_Direction.TO_APP`);
+                    }
                 }
-                domain = message.clientDomain;
-                application = message.clientApplication;
-                break;
+            }
+            case Message_Direction.FROM_UI: {
+                switch (message.type) {
+                    default: {
+                        throw new Error(`Unexpected Message_Type: "${message.type}" for Message_Direction.FROM_UI`);
+                    }
+                }
+            }
+            case Message_Direction.TO_UI: {
+                switch (message.type) {
+                    default: {
+                        throw new Error(`Unexpected Message_Type: "${message.type}" for Message_Direction.TO_UI`);
+                    }
+                }
+            }
+            case Message_Direction.INTERNAL_FROM_APP: {
+                switch (message.type) {
+                    default: {
+                        throw new Error(`Unexpected Message_Type: "${message.type}" for Message_Direction.INTERNAL_FROM_APP`);
+                    }
+                }
+            }
+            case Message_Direction.INTERNAL_TO_APP: {
+                switch (message.type) {
+                    default: {
+                        throw new Error(`Unexpected Message_Type: "${message.type}" for Message_Direction.INTERNAL_TO_APP`);
+                    }
+                }
             }
             default: {
                 console.warn(`Unexpected message direction '${message.direction}'
@@ -8456,23 +8478,23 @@ ${JSON.stringify(message, null, 2)}
                 return false;
             }
         }
-        if (domain.indexOf('.') > -1) {
+        if (message.sourceDomain.indexOf('.') > -1) {
             console.error(`Invalid Domain name - cannot have periods that would point to invalid subdomains:
-${domain}
+${message.sourceDomain}
 `);
             return false;
         }
-        if (application.indexOf('.') > -1) {
+        if (message.sourceApplication.indexOf('.') > -1) {
             console.error(`Invalid Application name - cannot have periods that would point to invalid subdomains:
-${application}
+${message.sourceApplication}
 `);
             return false;
         }
         return true;
     }
-    validateDomainAndApplication(message, messageDomain, messageApplication) {
-        if (!this.isValidDomainNameString(messageDomain) || !this.isValidApplicationNameString(messageApplication)) {
-            console.error(`${message.direction} Message does not have valid server domain and application:
+    validateDomainAndApplication(message, sourceDomain, sourceApplication) {
+        if (!this.isValidDomainNameString(sourceDomain) || !this.isValidApplicationNameString(sourceApplication)) {
+            console.error(`${message.direction} Message does not have valid domain and application:
 ${JSON.stringify(message, null, 2)}
 `);
             return false;

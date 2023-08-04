@@ -75,7 +75,7 @@ export class WebMessageGateway
             };
         }
 
-        createChannel()
+        // createChannel()
 
         window.addEventListener("message", event => {
             const message: IMessage | IApiCallRequestMessage = event.data

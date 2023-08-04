@@ -78,7 +78,7 @@ export class IFrameInterAppAPIClient
             clientApplication: this.applicationStore.state.application,
             clientDomain: this.applicationStore.state.domain,
             clientDomainProtocol: location.protocol,
-            direction: Message_Direction.FROM_CLIENT,
+            direction: Message_Direction.FROM_APP,
             id: guidv4(),
             messageLeg: Message_Leg.TO_HUB,
             methodName,
