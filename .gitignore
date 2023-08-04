@@ -14,6 +14,7 @@
 /UI/**/dist/*
 /UI/**/client/build/*
 **/generated/*
+**/pnpm-lock.yaml
 
 .DS_Store
 **/.DS_Store
