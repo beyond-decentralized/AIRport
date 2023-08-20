@@ -1,15 +1,16 @@
 import { IApplicationApi } from "@airport/air-traffic-control"
-import { IClientSubjectCache, IMessage, SubscriptionId, TimeStamp } from "@airport/aviation-communication"
+import { IClientSubjectCache, IMessage, Message_Id, SubscriptionId, TimeStamp } from "@airport/aviation-communication"
+import { DbApplication_FullName, DbDomain_Name } from "@airport/ground-control"
 import { Subject, Subscription } from "rxjs"
 
-export interface IMessageInRecord {
-    message: IMessage
+export interface IMessageInRecord<IM extends IMessage = IMessage> {
+    message: IM
     reject?
     resolve
 }
 
 export interface IObservableMessageInRecord<T> {
-    id: string
+    id: Message_Id
     subject?: Subject<T>
 }
 
@@ -22,20 +23,20 @@ export enum AppState {
 
 export interface IApplicationState {
     api: IApplicationApi
-    application: string
+    application: DbApplication_FullName
     appState: AppState
     clientSubscriptionMap: Map<SubscriptionId, {
         lastActive: TimeStamp
         subscription: Subscription
     }>
-    domain: string
+    domain: DbDomain_Name
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
     // and debugging (https://localhost:5173)
     hostServer: string
     // FIXME: tie this in to the hostServer variable
     mainDomain: string
     clientSubjectCache: IClientSubjectCache
-    pendingMessageMap: Map<string, IMessageInRecord>
+    pendingMessageMap: Map<Message_Id, IMessageInRecord>
 
     messageCallback: (
         message: any

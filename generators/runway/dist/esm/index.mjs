@@ -8316,45 +8316,60 @@ class AirEntityUtils {
 
 var Message_Direction;
 (function (Message_Direction) {
-    Message_Direction["FROM_APP"] = "FROM_APP";
-    Message_Direction["FROM_UI"] = "FROM_UI";
-    Message_Direction["INTERNAL_FROM_APP"] = "INTERNAL_FROM_APP";
-    Message_Direction["INTERNAL_TO_APP"] = "INTERNAL_TO_APP";
-    Message_Direction["TO_APP"] = "TO_APP";
-    Message_Direction["TO_UI"] = "TO_UI";
+    Message_Direction["REQUEST"] = "REQUEST";
+    Message_Direction["RESPONSE"] = "RESPONSE";
 })(Message_Direction || (Message_Direction = {}));
+var Message_OriginOrDestination_Type;
+(function (Message_OriginOrDestination_Type) {
+    Message_OriginOrDestination_Type["APPLICATION"] = "APPLICATION";
+    Message_OriginOrDestination_Type["DATABASE"] = "DATABASE";
+    Message_OriginOrDestination_Type["FRAMEWORK"] = "FRAMEWORK";
+    Message_OriginOrDestination_Type["USER_INTERFACE"] = "USER_INTERFACE";
+})(Message_OriginOrDestination_Type || (Message_OriginOrDestination_Type = {}));
 var Message_Leg;
 (function (Message_Leg) {
     Message_Leg["FROM_HUB"] = "FROM_HUB";
     Message_Leg["TO_HUB"] = "TO_HUB";
 })(Message_Leg || (Message_Leg = {}));
-var Message_Type;
-(function (Message_Type) {
-    Message_Type["API_CALL"] = "API_CALL";
-    Message_Type["API_SUBSCRIBE"] = "API_SUBSCRIBE";
-    Message_Type["API_SUBSCRIPTION_DATA"] = "API_SUBSCRIPTION_DATA";
-    Message_Type["SUBSCRIPTION_PING"] = "SUBSCRIPTION_PING";
-    Message_Type["API_UNSUBSCRIBE"] = "API_UNSUBSCRIBE";
-    Message_Type["APP_INITIALIZED"] = "APP_INITIALIZED";
-    Message_Type["APP_INITIALIZING"] = "APP_INITIALIZING";
-    Message_Type["CONNECTION_IS_READY"] = "CONNECTION_IS_READY";
-    Message_Type["DELETE_WHERE"] = "DELETE_WHERE";
-    Message_Type["FIND"] = "FIND";
-    Message_Type["FIND_ONE"] = "FIND_ONE";
-    Message_Type["GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME"] = "GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME";
-    Message_Type["INSERT_VALUES"] = "INSERT_VALUES";
-    Message_Type["INSERT_VALUES_GET_IDS"] = "INSERT_VALUES_GET_IDS";
-    Message_Type["IS_CONNECTION_READY"] = "IS_CONNECTION_READY";
-    Message_Type["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
-    Message_Type["SAVE"] = "SAVE";
-    Message_Type["SEARCH_ONE_SUBSCRIBE"] = "SEARCH_ONE_SUBSCRIBE";
-    Message_Type["SEARCH_ONE_SUBSCRIBTION_DATA"] = "SEARCH_ONE_SUBSCRIBTION_DATA";
-    Message_Type["SEARCH_ONE_UNSUBSCRIBE"] = "ONE_UNSUBSCRIBE";
-    Message_Type["SEARCH_SUBSCRIBE"] = "SEARCH_SUBSCRIBE";
-    Message_Type["SEARCH_SUBSCRIBTION_DATA"] = "SEARCH_SUBSCRIBTION_DATA";
-    Message_Type["SEARCH_UNSUBSCRIBE"] = "SEARCH_UNSUBSCRIBE";
-    Message_Type["UPDATE_VALUES"] = "UPDATE_VALUES";
-})(Message_Type || (Message_Type = {}));
+var Message_Type_Group;
+(function (Message_Type_Group) {
+    Message_Type_Group["API"] = "API";
+    Message_Type_Group["CRUD"] = "CRUD";
+    Message_Type_Group["INTERNAL"] = "INTERNAL";
+    Message_Type_Group["SUBSCRIPTION"] = "SUBSCRIPTION";
+})(Message_Type_Group || (Message_Type_Group = {}));
+var CRUD_Message_Type;
+(function (CRUD_Message_Type) {
+    CRUD_Message_Type["DELETE_WHERE"] = "DELETE_WHERE";
+    CRUD_Message_Type["FIND"] = "FIND";
+    CRUD_Message_Type["FIND_ONE"] = "FIND_ONE";
+    CRUD_Message_Type["INSERT_VALUES"] = "INSERT_VALUES";
+    CRUD_Message_Type["INSERT_VALUES_GET_IDS"] = "INSERT_VALUES_GET_IDS";
+    CRUD_Message_Type["SAVE"] = "SAVE";
+    CRUD_Message_Type["UPDATE_VALUES"] = "UPDATE_VALUES";
+})(CRUD_Message_Type || (CRUD_Message_Type = {}));
+var INTERNAL_Message_Type;
+(function (INTERNAL_Message_Type) {
+    INTERNAL_Message_Type["APP_INITIALIZED"] = "APP_INITIALIZED";
+    INTERNAL_Message_Type["APP_INITIALIZING"] = "APP_INITIALIZING";
+    INTERNAL_Message_Type["CONNECTION_IS_READY"] = "CONNECTION_IS_READY";
+    INTERNAL_Message_Type["GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME"] = "GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME";
+    INTERNAL_Message_Type["IS_CONNECTION_READY"] = "IS_CONNECTION_READY";
+    INTERNAL_Message_Type["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
+})(INTERNAL_Message_Type || (INTERNAL_Message_Type = {}));
+var SUBSCRIPTION_Message_Type;
+(function (SUBSCRIPTION_Message_Type) {
+    SUBSCRIPTION_Message_Type["API_SUBSCRIBE"] = "API_SUBSCRIBE";
+    SUBSCRIPTION_Message_Type["API_SUBSCRIPTION_DATA"] = "API_SUBSCRIPTION_DATA";
+    SUBSCRIPTION_Message_Type["API_UNSUBSCRIBE"] = "API_UNSUBSCRIBE";
+    SUBSCRIPTION_Message_Type["SEARCH_ONE_SUBSCRIBE"] = "SEARCH_ONE_SUBSCRIBE";
+    SUBSCRIPTION_Message_Type["SEARCH_ONE_SUBSCRIBTION_DATA"] = "SEARCH_ONE_SUBSCRIBTION_DATA";
+    SUBSCRIPTION_Message_Type["SEARCH_ONE_UNSUBSCRIBE"] = "ONE_UNSUBSCRIBE";
+    SUBSCRIPTION_Message_Type["SEARCH_SUBSCRIBE"] = "SEARCH_SUBSCRIBE";
+    SUBSCRIPTION_Message_Type["SEARCH_SUBSCRIBTION_DATA"] = "SEARCH_SUBSCRIBTION_DATA";
+    SUBSCRIPTION_Message_Type["SEARCH_UNSUBSCRIBE"] = "SEARCH_UNSUBSCRIBE";
+    SUBSCRIPTION_Message_Type["SUBSCRIPTION_PING"] = "SUBSCRIPTION_PING";
+})(SUBSCRIPTION_Message_Type || (SUBSCRIPTION_Message_Type = {}));
 
 class AirMessageUtils {
     getMessageReadySendAttributes() {
@@ -8372,20 +8387,30 @@ ${JSON.stringify(message, null, 2)}
         }
         return false;
     }
-    isObservableMessage(type) {
-        switch (type) {
-            case Message_Type.API_SUBSCRIBE:
-            case Message_Type.API_SUBSCRIPTION_DATA:
-            case Message_Type.API_UNSUBSCRIBE:
-            case Message_Type.SEARCH_ONE_SUBSCRIBE:
-            case Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
-            case Message_Type.SEARCH_ONE_UNSUBSCRIBE:
-            case Message_Type.SEARCH_SUBSCRIBE:
-            case Message_Type.SEARCH_SUBSCRIBTION_DATA:
-            case Message_Type.SEARCH_UNSUBSCRIBE:
-                return true;
-            default:
+    isObservableMessage(message) {
+        switch (message.typeGroup) {
+            case Message_Type_Group.API: {
                 return false;
+            }
+            case Message_Type_Group.CRUD: {
+                return false;
+            }
+            case Message_Type_Group.INTERNAL: {
+                return false;
+            }
+            case Message_Type_Group.SUBSCRIPTION: {
+                switch (message.type) {
+                    case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            default: {
+                throw new Error(this.getErrorMessage(`Unexpected
+    message.typeGroup: ${message.typeGroup}`, message));
+            }
         }
     }
     markMessageAsReceived(message) {
@@ -8397,116 +8422,202 @@ ${JSON.stringify(message, null, 2)}
         delete message.__received__;
         delete message.__receivedTime__;
     }
-    validateIncomingMessage(message) {
-        if (this.isMessageAlreadyReceived(message)) {
-            return false;
-        }
-        if (!this.hasValidApplicationInfo(message)) {
-            return false;
-        }
-        this.markMessageAsReceived(message);
-        return true;
-    }
-    hasValidApplicationInfo(message) {
-        if (!this.validateDomainAndApplication(message, message.sourceDomain, message.sourceApplication)) {
-            return false;
-        }
-        // All requests need to have a application signature
-        // to know what application is being communicated to/from
-        switch (message.direction) {
-            case Message_Direction.FROM_APP: {
-                switch (message.type) {
-                    case Message_Type.DELETE_WHERE:
-                    case Message_Type.FIND:
-                    case Message_Type.FIND_ONE:
-                    case Message_Type.INSERT_VALUES:
-                    case Message_Type.INSERT_VALUES_GET_IDS:
-                    case Message_Type.SAVE:
-                    case Message_Type.SEARCH_ONE_SUBSCRIBE:
-                    case Message_Type.SEARCH_ONE_UNSUBSCRIBE:
-                    case Message_Type.SEARCH_SUBSCRIBE:
-                    case Message_Type.SEARCH_SUBSCRIBTION_DATA:
-                    case Message_Type.SEARCH_UNSUBSCRIBE:
-                    case Message_Type.UPDATE_VALUES: {
-                        break;
-                    }
-                    default: {
-                        throw new Error(`Unexpected Message_Type: "${message.type}" for Message_Direction.FROM_APP`);
-                    }
-                }
-                break;
-            }
-            case Message_Direction.TO_APP: {
-                switch (message.type) {
-                    default: {
-                        throw new Error(`Unexpected Message_Type: "${message.type}" for Message_Direction.TO_APP`);
-                    }
-                }
-            }
-            case Message_Direction.FROM_UI: {
-                switch (message.type) {
-                    default: {
-                        throw new Error(`Unexpected Message_Type: "${message.type}" for Message_Direction.FROM_UI`);
-                    }
-                }
-            }
-            case Message_Direction.TO_UI: {
-                switch (message.type) {
-                    default: {
-                        throw new Error(`Unexpected Message_Type: "${message.type}" for Message_Direction.TO_UI`);
-                    }
-                }
-            }
-            case Message_Direction.INTERNAL_FROM_APP: {
-                switch (message.type) {
-                    default: {
-                        throw new Error(`Unexpected Message_Type: "${message.type}" for Message_Direction.INTERNAL_FROM_APP`);
-                    }
-                }
-            }
-            case Message_Direction.INTERNAL_TO_APP: {
-                switch (message.type) {
-                    default: {
-                        throw new Error(`Unexpected Message_Type: "${message.type}" for Message_Direction.INTERNAL_TO_APP`);
-                    }
-                }
-            }
-            default: {
-                console.warn(`Unexpected message direction '${message.direction}'
-${JSON.stringify(message, null, 2)}
-`);
-                return false;
-            }
-        }
-        if (message.sourceDomain.indexOf('.') > -1) {
-            console.error(`Invalid Domain name - cannot have periods that would point to invalid subdomains:
-${message.sourceDomain}
-`);
-            return false;
-        }
-        if (message.sourceApplication.indexOf('.') > -1) {
-            console.error(`Invalid Application name - cannot have periods that would point to invalid subdomains:
-${message.sourceApplication}
-`);
-            return false;
-        }
-        return true;
-    }
-    validateDomainAndApplication(message, sourceDomain, sourceApplication) {
-        if (!this.isValidDomainNameString(sourceDomain) || !this.isValidApplicationNameString(sourceApplication)) {
-            console.error(`${message.direction} Message does not have valid domain and application:
-${JSON.stringify(message, null, 2)}
-`);
-            return false;
-        }
-        return true;
-    }
     isFromValidFrameworkDomain(origin) {
         if (!origin.startsWith("https")) {
             console.error(`Framework is not running via HTTPS protocol`);
             return false;
         }
         return true;
+    }
+    validateIncomingMessage(message) {
+        if (this.isMessageAlreadyReceived(message)) {
+            return false;
+        }
+        this.validateApplicationInfo(message);
+        this.markMessageAsReceived(message);
+        return true;
+    }
+    validateApplicationInfo(message) {
+        this.validateDomainAndApplication(message, message.origin, 'origin');
+        this.validateDomainAndApplication(message, message.destination, 'destination');
+        switch (message.origin.type) {
+            case Message_OriginOrDestination_Type.APPLICATION: {
+                this.validateApplicationMessageType(message);
+                break;
+            }
+            case Message_OriginOrDestination_Type.DATABASE: {
+                this.validateDatabaseMessageType(message);
+                break;
+            }
+            case Message_OriginOrDestination_Type.FRAMEWORK: {
+                this.validateFrameworkMessageType(message);
+                break;
+            }
+            case Message_OriginOrDestination_Type.USER_INTERFACE: {
+                this.validateUiMessageType(message);
+                break;
+            }
+        }
+    }
+    validateApplicationMessageType(message) {
+        switch (message.typeGroup) {
+            case Message_Type_Group.API: {
+                break;
+            }
+            case Message_Type_Group.CRUD: {
+                switch (message.type) {
+                    case CRUD_Message_Type.DELETE_WHERE:
+                    case CRUD_Message_Type.FIND:
+                    case CRUD_Message_Type.FIND_ONE:
+                    case CRUD_Message_Type.INSERT_VALUES:
+                    case CRUD_Message_Type.INSERT_VALUES_GET_IDS:
+                    case CRUD_Message_Type.SAVE:
+                    case CRUD_Message_Type.UPDATE_VALUES:
+                        break;
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${message.type}`, message));
+                }
+                break;
+            }
+            case Message_Type_Group.INTERNAL: {
+                switch (message.type) {
+                    case INTERNAL_Message_Type.APP_INITIALIZED:
+                    case INTERNAL_Message_Type.APP_INITIALIZING:
+                    case INTERNAL_Message_Type.CONNECTION_IS_READY:
+                    case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
+                    case INTERNAL_Message_Type.IS_CONNECTION_READY:
+                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
+                        break;
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${message.type}`, message));
+                }
+                break;
+            }
+            case Message_Type_Group.SUBSCRIPTION: {
+                switch (message.type) {
+                    case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA:
+                    case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_ONE_UNSUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_UNSUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING:
+                        break;
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${message.type}`, message));
+                }
+                break;
+            }
+            default: {
+                throw new Error(this.getErrorMessage(`Unexpected
+    message.typeGroup: ${message.typeGroup}`, message));
+            }
+        }
+    }
+    validateDatabaseMessageType(message) {
+        switch (message.typeGroup) {
+            case Message_Type_Group.CRUD: {
+                switch (message.type) {
+                    case CRUD_Message_Type.DELETE_WHERE:
+                    case CRUD_Message_Type.FIND:
+                    case CRUD_Message_Type.FIND_ONE:
+                    case CRUD_Message_Type.INSERT_VALUES:
+                    case CRUD_Message_Type.INSERT_VALUES_GET_IDS:
+                    case CRUD_Message_Type.SAVE:
+                    case CRUD_Message_Type.UPDATE_VALUES:
+                        break;
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${message.type}`, message));
+                }
+                break;
+            }
+            case Message_Type_Group.SUBSCRIPTION: {
+                switch (message.type) {
+                    case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
+                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBTION_DATA:
+                        break;
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${message.type}`, message));
+                }
+                break;
+            }
+            default: {
+                throw new Error(this.getErrorMessage(`Unexpected
+    message.typeGroup: ${message.typeGroup}`, message));
+            }
+        }
+    }
+    validateFrameworkMessageType(message) {
+        switch (message.typeGroup) {
+            case Message_Type_Group.INTERNAL: {
+                switch (message.type) {
+                    case INTERNAL_Message_Type.APP_INITIALIZED:
+                    case INTERNAL_Message_Type.APP_INITIALIZING:
+                    case INTERNAL_Message_Type.CONNECTION_IS_READY:
+                    case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
+                    case INTERNAL_Message_Type.IS_CONNECTION_READY:
+                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
+                        break;
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${message.type}`, message));
+                }
+                break;
+            }
+            default: {
+                throw new Error(this.getErrorMessage(`Unexpected
+    message.typeGroup: ${message.typeGroup}`, message));
+            }
+        }
+    }
+    validateUiMessageType(message) {
+        switch (message.typeGroup) {
+            case Message_Type_Group.API: {
+                break;
+            }
+            case Message_Type_Group.SUBSCRIPTION: {
+                switch (message.type) {
+                    case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING:
+                        break;
+                    default:
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${message.type}`, message));
+                }
+                break;
+            }
+            default: {
+                throw new Error(this.getErrorMessage(`Unexpected
+    message.typeGroup: ${message.typeGroup}`, message));
+            }
+        }
+    }
+    validateDomainAndApplication(message, originOrDestination, type) {
+        if (!this.isValidDomainNameString(originOrDestination.domain)) {
+            throw new Error(this.getErrorMessage(`Invalid ${type} domain`, message));
+        }
+        if (!this.isValidApplicationNameString(originOrDestination.app)) {
+            throw new Error(this.getErrorMessage(`Invalid ${type} application`, message));
+        }
+        if (originOrDestination.domain.indexOf('.') > -1) {
+            throw new Error(this.getErrorMessage(`Invalid ${type} Domain name - cannot have periods that would point to invalid subdomains`, message));
+        }
+        if (originOrDestination.app.indexOf('.') > -1) {
+            throw new Error(this.getErrorMessage(`Invalid ${type} Application name - cannot have periods that would point to invalid subdomains`, message));
+        }
+    }
+    getErrorMessage(errorMessage, message) {
+        return `${errorMessage}
+Message:
+    ${JSON.stringify(message, null, 2)}
+        `;
     }
     isValidApplicationNameString(applicationName) {
         return typeof applicationName === 'string'
@@ -36157,6 +36268,31 @@ already contains a new repository.`);
     }
 }
 
+class TerminalSessionManager {
+    async getUserSession() {
+        let session;
+        if (this.terminalStore.getIsServer()) {
+            throw new Error(`Implement`);
+        }
+        else {
+            const allSessions = this.userStore.getAllSessions();
+            if (allSessions.length != 1) {
+                throw new Error(`No User Session found`);
+            }
+            session = allSessions[0];
+        }
+        return session;
+    }
+    async getUserAccountFromSession() {
+        const userSession = await this.getUserSession();
+        const userAccount = userSession.userAccount;
+        if (!userAccount) {
+            throw new Error(`No UserAccount found in User Session`);
+        }
+        return userAccount;
+    }
+}
+
 class InternalRecordManager {
     async ensureApplicationRecords(application, context) {
         await this.transactionManager.transactInternal(async (_transaction, context) => {
@@ -36507,24 +36643,23 @@ class TransactionalReceiver {
     constructor() {
         this.WITH_ID = {};
     }
-    async processFromClientMessage(message) {
+    async processRequesMessage(message) {
         let result;
         let errorMessage;
         try {
             const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.serverDomain);
+                .isInternalDomain(message.destination.domain);
             if (isInternalDomain) {
                 throw new Error(`Internal domains cannot be used in external calls`);
             }
             let credentials = {
-                application: message.clientApplication,
-                domain: message.clientDomain,
-                transactionId: message.transactionId
+                application: message.origin.app,
+                domain: message.origin.domain
             };
             let context = {};
             context.startedAt = new Date();
             context.credentials = credentials;
-            const { theErrorMessage, theResult } = await this.doProcessFromClientMessage(message, credentials, context);
+            const { theErrorMessage, theResult } = await this.doProcessRequestMessage(message, credentials, context);
             errorMessage = theErrorMessage;
             result = theResult;
         }
@@ -36535,13 +36670,21 @@ class TransactionalReceiver {
         }
         const messageCopy = {
             ...message,
-            direction: Message_Direction.TO_CLIENT,
+            destination: {
+                app: message.origin.app,
+                domain: message.origin.domain,
+                protocol: message.origin.protocol,
+                type: message.origin.type
+            },
             errorMessage,
             messageLeg: Message_Leg.FROM_HUB,
+            // origin: {
+            //     app: message.destination.app,
+            //     domain: message.destination.domain,
+            //     protocol: message.destination.protocol,
+            //     type: message.destination.type
+            // },
             returnedValue: result,
-            serverApplication: message.clientApplication,
-            serverDomain: message.clientDomain,
-            serverDomainProtocol: message.clientDomainProtocol
         };
         return messageCopy;
     }
@@ -36549,12 +36692,12 @@ class TransactionalReceiver {
         let theErrorMessage = null;
         let theResult = null;
         switch (message.type) {
-            case Message_Type.APP_INITIALIZING:
+            case INTERNAL_Message_Type.APP_INITIALIZING:
                 const application = message.jsonApplication;
                 const fullDbApplication_Name = this.dbApplicationUtils.
                     getDbApplication_FullName(application);
                 const messageDbApplication_FullName = this.dbApplicationUtils.
-                    getDbApplication_FullNameFromDomainAndName(message.clientDomain, message.clientApplication);
+                    getDbApplication_FullNameFromDomainAndName(message.origin.domain, message.origin.app);
                 if (fullDbApplication_Name !== messageDbApplication_FullName) {
                     theResult = null;
                     break;
@@ -36574,7 +36717,7 @@ class TransactionalReceiver {
                 await this.internalRecordManager.ensureApplicationRecords(application, {});
                 theResult = application.lastIds;
                 break;
-            case Message_Type.APP_INITIALIZED:
+            case INTERNAL_Message_Type.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps;
                 initializedApps.add(message.fullDbApplication_Name);
                 // console.log(`--==<<(( INITIALIZED: ${(message as any as IConnectionInitializedIMI).fullDbApplication_Name}))>>==--`)
@@ -36582,15 +36725,15 @@ class TransactionalReceiver {
                     theErrorMessage,
                     theResult
                 };
-            case Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
+            case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                 theResult = this.terminalStore.getLatestApplicationVersionMapByDbApplication_FullName()
                     .get(message
                     .fullDbApplication_Name);
                 break;
             }
-            case Message_Type.RETRIEVE_DOMAIN: {
+            case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
                 theResult = this.terminalStore.getDomainMapByName()
-                    .get(message.clientDomain);
+                    .get(message.origin.app);
                 break;
             }
             default: {
@@ -36605,32 +36748,74 @@ class TransactionalReceiver {
             theResult,
         };
     }
-    async doProcessFromClientMessage(message, credentials, context) {
+    async doProcessRequestMessage(message, credentials, context) {
+        switch (message.typeGroup) {
+            case Message_Type_Group.CRUD: {
+                return this.doProcessCRUDRequestMessage(message, credentials, context);
+            }
+            case Message_Type_Group.SUBSCRIPTION: {
+                return this.doProcessSubscriptionRequestMessage(message, credentials, context);
+            }
+            default: {
+                throw new Error(`Unexpected message.typeGroup "${message.typeGroup}"`);
+            }
+        }
+    }
+    async doProcessSubscriptionRequestMessage(message, credentials, context) {
         let theErrorMessage = null;
         let theResult = null;
+        credentials.subscriptionId = message.subscriptionId;
         switch (message.type) {
-            case Message_Type.DELETE_WHERE:
+            case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
+                theResult = this.transactionalServer.searchOne(message.portableQuery, credentials, {
+                    ...context,
+                    repository: message.repository,
+                });
+                break;
+            case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
+                theResult = this.transactionalServer.search(message.portableQuery, credentials, {
+                    ...context,
+                    repository: message.repository,
+                });
+                break;
+            default:
+                return {
+                    theErrorMessage: `Unexpected SUBSCRIPTION_Message_Type: '${message.type}'`,
+                    theResult
+                };
+        }
+        return {
+            theErrorMessage,
+            theResult,
+        };
+    }
+    async doProcessCRUDRequestMessage(message, credentials, context) {
+        let theErrorMessage = null;
+        let theResult = null;
+        credentials.transactionId = message.transactionId;
+        switch (message.type) {
+            case CRUD_Message_Type.DELETE_WHERE:
                 theResult = await this.transactionalServer.deleteWhere(message.portableQuery, credentials, context);
                 break;
-            case Message_Type.FIND:
+            case CRUD_Message_Type.FIND:
                 theResult = await this.transactionalServer.find(message.portableQuery, credentials, {
                     ...context,
                     repository: message.repository
                 });
                 break;
-            case Message_Type.FIND_ONE:
+            case CRUD_Message_Type.FIND_ONE:
                 theResult = await this.transactionalServer.findOne(message.portableQuery, credentials, {
                     ...context,
                     repository: message.repository,
                 });
                 break;
-            case Message_Type.INSERT_VALUES:
+            case CRUD_Message_Type.INSERT_VALUES:
                 theResult = await this.transactionalServer.insertValues(message.portableQuery, credentials, context);
                 break;
-            case Message_Type.INSERT_VALUES_GET_IDS:
+            case CRUD_Message_Type.INSERT_VALUES_GET_IDS:
                 theResult = await this.transactionalServer.insertValuesGetLocalIds(message.portableQuery, credentials, context);
                 break;
-            case Message_Type.SAVE: {
+            case CRUD_Message_Type.SAVE: {
                 if (!message.dbEntity) {
                     theErrorMessage = `DbEntity id was not passed in`;
                     break;
@@ -36645,24 +36830,12 @@ class TransactionalReceiver {
                 theResult = await this.transactionalServer.save(message.entity, credentials, context);
                 break;
             }
-            case Message_Type.SEARCH_ONE_SUBSCRIBE:
-                theResult = this.transactionalServer.searchOne(message.portableQuery, credentials, {
-                    ...context,
-                    repository: message.repository,
-                });
-                break;
-            case Message_Type.SEARCH_SUBSCRIBE:
-                theResult = this.transactionalServer.search(message.portableQuery, credentials, {
-                    ...context,
-                    repository: message.repository,
-                });
-                break;
-            case Message_Type.UPDATE_VALUES:
+            case CRUD_Message_Type.UPDATE_VALUES:
                 theResult = await this.transactionalServer.updateValues(message.portableQuery, credentials, context);
                 break;
             default:
                 return {
-                    theErrorMessage: `Unexpected FROM_CLIENT Message_Type: '${message.type}'`,
+                    theErrorMessage: `Unexpected CRUD_Message_Type: '${message.type}'`,
                     theResult
                 };
         }
@@ -36673,7 +36846,7 @@ class TransactionalReceiver {
     }
     async startApiCall(message, context, nativeHandleCallback) {
         const fullDbApplication_Name = this.dbApplicationUtils.
-            getDbApplication_FullNameFromDomainAndName(message.serverDomain, message.serverApplication);
+            getDbApplication_FullNameFromDomainAndName(message.destination.domain, message.destination.app);
         const application = this.terminalStore.getApplicationMapByFullName().get(fullDbApplication_Name);
         if (!application) {
             console.error(`Application not found
@@ -36710,8 +36883,8 @@ ${fullDbApplication_Name}
         }
         context.isObservableApiCall = !apiOperation.isAsync;
         const transactionCredentials = {
-            application: message.serverApplication,
-            domain: message.serverDomain,
+            application: message.destination.app,
+            domain: message.destination.domain,
             methodName: message.methodName,
             objectName: message.objectName,
             transactionId: message.transactionId
@@ -36725,8 +36898,8 @@ ${fullDbApplication_Name}
                 };
             }
             const initiator = context.transaction.initiator;
-            initiator.application = message.serverApplication;
-            initiator.domain = message.serverDomain;
+            initiator.application = message.destination.app;
+            initiator.domain = message.destination.domain;
             initiator.methodName = message.methodName;
             initiator.objectName = message.objectName;
         }
@@ -36734,7 +36907,7 @@ ${fullDbApplication_Name}
         let isFramework = true;
         try {
             const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.serverDomain);
+                .isInternalDomain(message.destination.domain);
             if (!isInternalDomain) {
                 isFramework = false;
                 await this.doNativeHandleCallback(message, actor, context, nativeHandleCallback);
@@ -36777,7 +36950,7 @@ ${fullDbApplication_Name}
         let actor;
         try {
             const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.serverDomain);
+                .isInternalDomain(message.destination.domain);
             if (isInternalDomain
                 && !context.isObservableApiCall
                 && context.transaction.parentTransaction) {
@@ -36785,11 +36958,11 @@ ${fullDbApplication_Name}
                 return actor;
             }
             const terminal = this.terminalStore.getTerminal();
-            actor = await this.actorDao.findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(message.serverDomain, message.serverApplication, userSession.userAccount.accountPublicSigningKey, terminal.GUID, context);
+            actor = await this.actorDao.findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(message.destination.domain, message.destination.app, userSession.userAccount.accountPublicSigningKey, terminal.GUID, context);
             if (actor) {
                 return actor;
             }
-            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(message.serverDomain, message.serverApplication, context);
+            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(message.destination.domain, message.destination.app, context);
             actor = {
                 _localId: null,
                 application,
@@ -39836,31 +40009,6 @@ class QueryResultsSerializer {
  */
 new Date().getTime();
 
-class TerminalSessionManager {
-    async getUserSession() {
-        let session;
-        if (this.terminalStore.getIsServer()) {
-            throw new Error(`Implement`);
-        }
-        else {
-            const allSessions = this.userStore.getAllSessions();
-            if (allSessions.length != 1) {
-                throw new Error(`No User Session found`);
-            }
-            session = allSessions[0];
-        }
-        return session;
-    }
-    async getUserAccountFromSession() {
-        const userSession = await this.getUserSession();
-        const userAccount = userSession.userAccount;
-        if (!userAccount) {
-            throw new Error(`No UserAccount found in User Session`);
-        }
-        return userAccount;
-    }
-}
-
 const terminal = lib('terminal');
 REPOSITORY_LOADER.setClass(RepositoryLoader);
 TRANSACTIONAL_CONNECTOR.setClass(InternalTransactionalConnector);
@@ -40591,15 +40739,15 @@ class ClientSubjectCache {
                         const fullDIDescriptor = subject.fullDIDescriptor;
                         const requestFields = subject.requestFields;
                         let requestsForDomain = requestsByDomainAndApp
-                            .get(requestFields.serverDomain);
+                            .get(requestFields.destination.domain);
                         if (!requestsForDomain) {
                             requestsForDomain = new Map();
-                            requestsByDomainAndApp.set(requestFields.serverDomain, requestsForDomain);
+                            requestsByDomainAndApp.set(requestFields.destination.domain, requestsForDomain);
                         }
-                        let requestsForApp = requestsForDomain.get(requestFields.serverApplication);
+                        let requestsForApp = requestsForDomain.get(requestFields.destination.app);
                         if (!requestsForApp) {
                             requestsForApp = [];
-                            requestsForDomain.set(requestFields.serverApplication, requestsForApp);
+                            requestsForDomain.set(requestFields.destination.app, requestsForApp);
                         }
                         requestsForApp.push({
                             args,
@@ -40618,10 +40766,10 @@ class ClientSubjectCache {
                                 fullDIDescriptor: requestsForApp[0].fullDIDescriptor,
                                 request: {
                                     ...requestFields,
-                                    direction: Message_Direction.FROM_CLIENT,
                                     subscriptionIds,
                                     id: v4(),
-                                    type: Message_Type.SUBSCRIPTION_PING
+                                    type: SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING,
+                                    typeGroup: Message_Type_Group.SUBSCRIPTION
                                 }
                             });
                         }
@@ -40645,7 +40793,8 @@ class ClientSubjectCache {
                 request: {
                     ...subject.requestFields,
                     id: v4(),
-                    type: Message_Type.API_SUBSCRIBE
+                    type: SUBSCRIPTION_Message_Type.API_SUBSCRIBE,
+                    typeGroup: Message_Type_Group.SUBSCRIPTION
                 }
             });
         }
@@ -40661,7 +40810,8 @@ class ClientSubjectCache {
                 request: {
                     ...subject.requestFields,
                     id: v4(),
-                    type: Message_Type.API_UNSUBSCRIBE
+                    type: SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE,
+                    typeGroup: Message_Type_Group.SUBSCRIPTION
                 }
             });
         }
@@ -40766,9 +40916,12 @@ class LocalAPIServer {
             errorMessage = e.message ? e.message : e;
             console.error(e);
         }
+        let origin = request.destination;
+        let destination = request.origin;
         const response = {
             ...request,
-            direction: Message_Direction.TO_CLIENT,
+            destination,
+            origin,
             errorMessage,
             returnedValue: internalResponse
                 ? internalResponse.result
@@ -40777,12 +40930,12 @@ class LocalAPIServer {
         return response;
     }
     async coreHandleRequest(request, api, context) {
-        const { apiObject, apiOperation } = await this.apiRegistry.findObjectAndOperationForApi(api, request.serverDomain, request.serverApplication, request.objectName, request.methodName);
+        const { apiObject, apiOperation } = await this.apiRegistry.findObjectAndOperationForApi(api, request.destination.domain, request.destination.app, request.objectName, request.methodName);
         if (request.args.length > apiOperation.parameters.length) {
             throw new Error(`
     Too many parameters passed in to @Api() request
-Domain:      ${request.serverDomain}
-Application: ${request.serverApplication}
+Domain:      ${request.destination.domain}
+Application: ${request.destination.app}
 @Api()
 ${request.objectName}.${request.methodName}
 `);

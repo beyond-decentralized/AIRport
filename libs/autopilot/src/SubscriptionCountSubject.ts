@@ -1,4 +1,4 @@
-import { ICoreRequestFields, IMessage, ISubscriptionCountSubject, SubscriptionId } from "@airport/aviation-communication";
+import { IMessage, ISubscriptionCountSubject, SubscriptionId } from "@airport/aviation-communication";
 import { Observer, Subject, Subscriber, Subscription } from "rxjs";
 import { SafeSubscriber } from "rxjs/internal/Subscriber";
 import { isSubscription } from "rxjs/internal/Subscription";
@@ -70,7 +70,7 @@ export class SubscriptionCountSubject<T, RF extends IMessage>
 
 }
 
-class SubscriptionCountSubscriber<T, RF extends ICoreRequestFields> extends SafeSubscriber<T> {
+class SubscriptionCountSubscriber<T, RF extends IMessage> extends SafeSubscriber<T> {
 
     constructor(
         private subscriptionCountSubject: SubscriptionCountSubject<T, RF>,

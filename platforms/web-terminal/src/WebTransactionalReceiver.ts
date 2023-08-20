@@ -1,5 +1,5 @@
 import { JsonApplicationVersionWithApi } from '@airport/air-traffic-control'
-import { Message_Direction, Message_Leg, Message_Type, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage } from '@airport/aviation-communication'
+import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IInternalMessage, INTERNAL_Message_Type, Message_Direction, Message_Type_Group, ISubscriptionMessage, IObservableApiCallResponseMessage, SUBSCRIPTION_Message_Type, Message_OriginOrDestination_Type, IObservableApiCallRequestMessage } from '@airport/aviation-communication'
 import {
 	IContext,
 	Inject,
@@ -103,10 +103,6 @@ export class WebTransactionalReceiver
 	handleClientRequest(
 		message: IApiCallRequestMessage
 	): void {
-		if (message.direction !== Message_Direction.FROM_CLIENT) {
-			console.error(`Unexpected message direction '${message.direction}'`)
-			return
-		}
 
 		if (this.webMessageGateway.needMessageSerialization()) {
 			throw new Error("Deserialization is not yet implemented.")
@@ -119,18 +115,16 @@ export class WebTransactionalReceiver
 			webReciever.onClientMessageCallback(message)
 		}
 
-		switch (message.type) {
-			case Message_Type.IS_CONNECTION_READY:
-				this.ensureConnectionIsReady(message).then()
-				break
-			default:
-				const fromClientRedirectedMessage: IApiCallRequestMessage = {
-					...message,
-					messageLeg: Message_Leg.FROM_HUB
-				}
-				this.handleFromClientRequest(fromClientRedirectedMessage).then()
-				break
+		if ((message as IMessage as IInternalMessage).type === INTERNAL_Message_Type.IS_CONNECTION_READY) {
+			this.ensureConnectionIsReady(message).then()
+			return;
 		}
+
+		const fromClientRedirectedMessage: IApiCallRequestMessage = {
+			...message,
+			messageLeg: Message_Leg.FROM_HUB
+		}
+		this.handleRequest(fromClientRedirectedMessage).then()
 	}
 
 	handleAppRequest(
@@ -151,23 +145,24 @@ export class WebTransactionalReceiver
 		}
 
 		switch (message.direction) {
-			case Message_Direction.FROM_CLIENT:
-				this.handleFromClientMessage(message as
-					IApiCallRequestMessage
-					| IPortableQueryMessage
-					| IReadQueryMessage
-					| ISaveMessage<any>,
-					messageOrigin).then()
+			case Message_Direction.REQUEST:
+				if (message.typeGroup === Message_Type_Group.INTERNAL) {
+					this.handleInternalMessage(message as
+						IGetLatestApplicationVersionByDbApplication_NameMessage
+						| IInitializeConnectionMessage
+						| IRetrieveDomainMessage,
+						messageOrigin).then()
+				} else {
+					this.handleRequestMessage(message as
+						IApiCallRequestMessage
+						| IPortableQueryMessage
+						| IReadQueryMessage
+						| ISaveMessage<any>,
+						messageOrigin).then()
+				}
 				break
-			case Message_Direction.INTERNAL:
-				this.handleInternalMessage(message as
-					IGetLatestApplicationVersionByDbApplication_NameMessage
-					| IInitializeConnectionMessage
-					| IRetrieveDomainMessage,
-					messageOrigin).then()
-				break
-			case Message_Direction.TO_CLIENT:
-				this.handleToClientMessage(message as IApiCallResponseMessage,
+			case Message_Direction.RESPONSE:
+				this.handleResponseMessage(message as IApiCallResponseMessage,
 					messageOrigin, webReciever).then()
 				break
 			default:
@@ -175,7 +170,7 @@ export class WebTransactionalReceiver
 		}
 	}
 
-	private async handleToClientMessage(
+	private async handleResponseMessage(
 		message: IApiCallResponseMessage,
 		messageOrigin: string,
 		webReciever: IWebReceiverState
@@ -183,7 +178,7 @@ export class WebTransactionalReceiver
 		const {
 			endApiCall,
 			replyToClient
-		} = this.getToClientMessageOptions(message)
+		} = this.getResponseMessageOptions(message)
 
 		const interAppApiCallRequest = webReciever.pendingInterAppApiCallMessageMap
 			.get(message.id)
@@ -191,8 +186,8 @@ export class WebTransactionalReceiver
 			isObservableApiCall: this.airMessageUtils.isObservableMessage(message)
 		}
 		const credentials: IApiCredentials = {
-			application: message.serverApplication,
-			domain: message.serverDomain,
+			application: message.origin.app,
+			domain: message.origin.domain,
 			methodName: (message as IApiCallResponseMessage).methodName,
 			objectName: (message as IApiCallResponseMessage).objectName,
 			transactionId: message.transactionId
@@ -220,31 +215,34 @@ export class WebTransactionalReceiver
 		}
 	}
 
-	private getToClientMessageOptions(
+	private getResponseMessageOptions(
 		message: IApiCallResponseMessage
+			| IObservableApiCallResponseMessage
 			| IInitializeConnectionMessage
 	): IToClientMessageOptions {
 		let endApiCall = true
 		let replyToClient = true
-		switch (message.type) {
-			case Message_Type.API_SUBSCRIBE: {
-				endApiCall = true
-				break
-			}
-			case Message_Type.API_SUBSCRIPTION_DATA: {
-				endApiCall = false
-				replyToClient = true
-				break
-			}
-			case Message_Type.SUBSCRIPTION_PING: {
-				endApiCall = false
-				replyToClient = false
-				break
-			}
-			case Message_Type.API_UNSUBSCRIBE: {
-				endApiCall = false
-				replyToClient = false
-				break
+		if (message.typeGroup === Message_Type_Group.SUBSCRIPTION) {
+			switch ((message as IObservableApiCallResponseMessage).type) {
+				case SUBSCRIPTION_Message_Type.API_SUBSCRIBE: {
+					endApiCall = true
+					break
+				}
+				case SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA: {
+					endApiCall = false
+					replyToClient = true
+					break
+				}
+				case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
+					endApiCall = false
+					replyToClient = false
+					break
+				}
+				case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
+					endApiCall = false
+					replyToClient = false
+					break
+				}
 			}
 		}
 
@@ -264,7 +262,7 @@ export class WebTransactionalReceiver
 	): Promise<void> {
 		const toClientRedirectedMessage: IApiCallResponseMessage | IInitializeConnectionMessage = {
 			...message,
-			direction: Message_Direction.TO_CLIENT,
+			direction: Message_Direction.RESPONSE,
 			messageLeg: Message_Leg.FROM_HUB,
 			returnedValue
 		}
@@ -278,7 +276,7 @@ export class WebTransactionalReceiver
 				return
 			}
 		}
-		this.replyToClientRequest(toClientRedirectedMessage)
+		this.sendMessageReply(toClientRedirectedMessage)
 	}
 
 	onMessage(callback: (
@@ -304,7 +302,7 @@ export class WebTransactionalReceiver
 			if (!context.isObservableApiCall) {
 				messageCopy.transactionId = context.transaction.id
 			}
-			const application_FullName = this.getMessageServerApplication(
+			const application_FullName = this.getMessageDestinationApplication(
 				message)
 
 			this.webMessageGateway.sendMessageToApp(application_FullName, messageCopy)
@@ -332,9 +330,9 @@ export class WebTransactionalReceiver
 				this.terminalStore.getWebReceiver().pendingInterAppApiCallMessageMap.set(message.id, {
 					message: {
 						...message,
-						direction: Message_Direction.TO_CLIENT,
+						direction: Message_Direction.RESPONSE,
 						messageLeg: Message_Leg.FROM_HUB,
-						type: Message_Type.API_CALL
+						typeGroup: Message_Type_Group.API
 					},
 					resolve
 				})
@@ -348,7 +346,7 @@ export class WebTransactionalReceiver
 
 		const response: IApiCallResponseMessage = {
 			...message,
-			direction: Message_Direction.TO_CLIENT,
+			direction: Message_Direction.RESPONSE,
 			messageLeg: Message_Leg.FROM_HUB,
 			args,
 			errorMessage,
@@ -401,7 +399,7 @@ export class WebTransactionalReceiver
 			if (!context.isObservableApiCall) {
 				internalCredentials.transactionId = context.transaction.id
 			}
-			const fullDbApplication_Name = this.getMessageServerApplication(
+			const fullDbApplication_Name = this.getMessageDestinationApplication(
 				message)
 			const application: DbApplication = this.terminalStore
 				.getApplicationMapByFullName().get(fullDbApplication_Name)
@@ -419,8 +417,8 @@ export class WebTransactionalReceiver
 		} finally {
 			try {
 				await this.endApiCall({
-					application: message.clientApplication,
-					domain: message.clientDomain,
+					application: message.destination.app,
+					domain: message.destination.domain,
 					methodName: message.methodName,
 					objectName: message.objectName,
 					transactionId: messageCopy.transactionId
@@ -446,8 +444,8 @@ export class WebTransactionalReceiver
 		message: IApiCallRequestMessage
 	): Promise<void> {
 		const applicationIsInstalled = await this.applicationInitializer
-			.ensureApplicationIsInstalled(message.serverDomain,
-				message.serverApplication)
+			.ensureApplicationIsInstalled(message.destination.domain,
+				message.destination.app)
 
 		if (applicationIsInstalled) {
 			this.sendConnectionReadyMessage(message)
@@ -457,15 +455,12 @@ export class WebTransactionalReceiver
 	private sendConnectionReadyMessage(
 		message: IApiCallRequestMessage
 	) {
-		const connectionIsReadyMessage: IApiCallResponseMessage = {
+		const connectionIsReadyMessage: IInternalMessage = {
 			...message,
-			args: message.args,
-			direction: Message_Direction.TO_CLIENT,
+			direction: Message_Direction.RESPONSE,
 			messageLeg: Message_Leg.FROM_HUB,
-			errorMessage: null,
-			returnedValue: null,
-			transactionId: message.transactionId,
-			type: Message_Type.CONNECTION_IS_READY
+			type: INTERNAL_Message_Type.CONNECTION_IS_READY,
+			typeGroup: Message_Type_Group.INTERNAL
 		};
 
 		if (this.webMessageGateway.needMessageSerialization()) {
@@ -474,17 +469,15 @@ export class WebTransactionalReceiver
 		this.webMessageGateway.sendMessageToClient(connectionIsReadyMessage)
 	}
 
-	private async handleFromClientRequest(
+	private async handleRequest(
 		message: IApiCallRequestMessage,
 	): Promise<void> {
-		const webReciever = this.terminalStore.getWebReceiver()
-
-		const application_FullName = this.getMessageServerApplication(
+		const application_FullName = this.getMessageDestinationApplication(
 			message)
 
 		if (!await this.applicationInitializer.isApplicationIsInstalled(
-			message.serverDomain, application_FullName)) {
-			this.relyToClientWithError(message, `Application is not installed`)
+			message.destination.domain, application_FullName)) {
+			this.relyWithError(message, `Application is not installed`)
 			return
 		}
 
@@ -494,7 +487,7 @@ export class WebTransactionalReceiver
 		const localApiRequest = message
 		const startDescriptor = await this.nativeStartApiCall(localApiRequest, context);
 		if (!startDescriptor.isStarted) {
-			this.relyToClientWithError(message, context.errorMessage)
+			this.relyWithError(message, context.errorMessage)
 		} else if (startDescriptor.isFramework) {
 			const result = await this.callFrameworkApi(localApiRequest, context)
 			if (result.replyToClient) {
@@ -509,23 +502,23 @@ export class WebTransactionalReceiver
 		}
 	}
 
-	private relyToClientWithError(
+	private relyWithError(
 		message: IApiCallRequestMessage,
 		errorMessage: string
 	) {
 		const toClientRedirectedMessage: IApiCallResponseMessage = {
 			...message,
-			direction: Message_Direction.TO_CLIENT,
+			direction: Message_Direction.RESPONSE,
 			messageLeg: Message_Leg.FROM_HUB,
 			errorMessage,
 			id: message.id,
 			returnedValue: null
 		}
 
-		this.replyToClientRequest(toClientRedirectedMessage)
+		this.sendMessageReply(toClientRedirectedMessage)
 	}
 
-	private replyToClientRequest(
+	private sendMessageReply(
 		message: IApiCallResponseMessage
 			| IInitializeConnectionMessage
 	) {
@@ -534,8 +527,9 @@ export class WebTransactionalReceiver
 			// FIXME: serialize message
 		}
 
-		if (message.subscriptionId && message.clientApplication !== 'UserInterface') {
-			const application_FullName = this.getMessageClientApplication(
+		if (message.typeGroup === Message_Type_Group.SUBSCRIPTION
+			&& message.destination.type !== Message_OriginOrDestination_Type.USER_INTERFACE) {
+			const application_FullName = this.getMessageDestinationApplication(
 				message)
 			this.webMessageGateway.sendMessageToApp(
 				application_FullName, message)
@@ -558,7 +552,7 @@ export class WebTransactionalReceiver
 
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		const fullDbApplication_Name = this.getMessageServerApplication(
+		const fullDbApplication_Name = this.getMessageDestinationApplication(
 			message)
 		// Only accept requests from https protocol
 		if (!messageOrigin.startsWith("https")
@@ -600,14 +594,15 @@ export class WebTransactionalReceiver
 		const result = await this.processInternalMessage(message)
 
 		this.webMessageGateway.sendMessageToApp(
-			this.getMessageClientApplication(message), {
+			this.getMessageOriginApplication(message), {
 			...message,
 			returnedValue: result.theResult as any
 		})
 	}
 
-	private async handleFromClientMessage(
+	private async handleRequestMessage(
 		message: IApiCallRequestMessage
+			| IObservableApiCallRequestMessage
 			| IPortableQueryMessage
 			| IReadQueryMessage
 			| ISaveMessage<any>,
@@ -617,44 +612,90 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		const webReciever = this.terminalStore.getWebReceiver()
-
-		const application_FullName = this
-			.getMessageClientApplication(message)
-		switch (message.type) {
-			case Message_Type.SEARCH_UNSUBSCRIBE:
-				let isolateSubscriptionMap = webReciever
-					.subscriptionMap.get(application_FullName)
-				if (!isolateSubscriptionMap) {
-					return
-				}
-				let subscriptionRecord = isolateSubscriptionMap.get(message.subscriptionId)
-				if (!subscriptionRecord) {
-					return
-				}
-				subscriptionRecord.subscription.unsubscribe()
-				isolateSubscriptionMap.delete(message.subscriptionId)
-				return;
-		}
-
 		let response
 		let isFrameworkObservableCall = false
-		switch (message.type) {
-			case Message_Type.API_CALL: {
+		switch (message.typeGroup) {
+			case Message_Type_Group.API: {
 				response = await this.nativeHandleApiCall(message as IApiCallRequestMessage, {
 					isObservableApiCall: this.airMessageUtils.isObservableMessage(message),
 					startedAt: new Date()
 				})
 				break
 			}
-			case Message_Type.API_SUBSCRIBE:
-			case Message_Type.API_UNSUBSCRIBE: {
+			case Message_Type_Group.CRUD: {
+				response = await this.processRequesMessage(message as IPortableQueryMessage
+					| IReadQueryMessage
+					| ISaveMessage<any>)
+				break
+			}
+			case Message_Type_Group.SUBSCRIPTION: {
+				const result = await this.handleSubscriptionRequestMessage(message as IObservableApiCallRequestMessage)
+				isFrameworkObservableCall = result.isFrameworkObservableCall
+				response = result.response
+				break
+			}
+			default: {
+				throw new Error(`
+Unexpected message typeGroup:
+	${message.typeGroup}
+`)
+			}
+		}
+
+		if (!response) {
+			return
+		}
+
+		const application_FullName = this
+			.getMessageOriginApplication(message)
+		const webReciever = this.terminalStore.getWebReceiver()
+
+		this.handleApiCallOrSubscription(
+			message,
+			message as IApiCallRequestMessage,
+			response,
+			application_FullName,
+			isFrameworkObservableCall,
+			webReciever
+		)
+
+	}
+
+	private async handleSubscriptionRequestMessage(
+		message: IObservableApiCallRequestMessage
+	): Promise<{
+		isFrameworkObservableCall: boolean,
+		response: any
+	}> {
+		const webReciever = this.terminalStore.getWebReceiver()
+		const application_FullName = this.getMessageOriginApplication(message)
+
+		let response
+		let isFrameworkObservableCall = false
+		switch (message.type) {
+			case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
+			case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
 				const observableApiResult = await this.handleApiSubscribeOrUnsubscribe(message)
 				isFrameworkObservableCall = observableApiResult.isFrameworkObservableCall
 				response = observableApiResult.response
 				break
 			}
-			case Message_Type.SUBSCRIPTION_PING: {
+			case SUBSCRIPTION_Message_Type.SEARCH_ONE_UNSUBSCRIBE:
+			case SUBSCRIPTION_Message_Type.SEARCH_UNSUBSCRIBE: {
+				let isolateSubscriptionMap = webReciever
+					.subscriptionMap.get(application_FullName)
+				if (!isolateSubscriptionMap) {
+					break
+				}
+				let subscriptionRecord = isolateSubscriptionMap.get(message.subscriptionId)
+				if (!subscriptionRecord) {
+					break
+				}
+				subscriptionRecord.subscription.unsubscribe()
+				isolateSubscriptionMap.delete(message.subscriptionId)
+				break
+			}
+			case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
 				let isolateSubscriptionMap = webReciever.subscriptionMap.get(application_FullName)
 				if (!isolateSubscriptionMap) {
 					break
@@ -667,26 +708,15 @@ export class WebTransactionalReceiver
 				break
 			}
 			default: {
-				response = await this.processFromClientMessage(message as IPortableQueryMessage
-					| IReadQueryMessage
-					| ISaveMessage<any>)
+				response = await this.processRequesMessage(message as ISubscriptionMessage)
 				break
 			}
 		}
 
-		if (!response) {
-			return
-		}
-
-		this.handleApiCallOrSubscription(
-			message,
-			message as IApiCallRequestMessage,
-			response,
-			application_FullName,
+		return {
 			isFrameworkObservableCall,
-			webReciever
-		)
-
+			response
+		}
 	}
 
 	private async handleApiSubscribeOrUnsubscribe(
@@ -717,7 +747,7 @@ export class WebTransactionalReceiver
 		isFrameworkObservableCall = startDescriptor.isFramework
 		if (isFrameworkObservableCall) {
 			const apiCallResult = await this.callFrameworkApi(message as IApiCallRequestMessage, context)
-	
+
 			if (apiCallResult.errorMessage) {
 				// TODO: send back error messages for (UN)SUBSCRIBE messages
 				console.error(apiCallResult)
@@ -727,7 +757,7 @@ export class WebTransactionalReceiver
 		} else {
 			response = {
 				...message,
-				direction: Message_Direction.TO_CLIENT,
+				direction: Message_Direction.RESPONSE,
 				messageLeg: Message_Leg.FROM_HUB
 			}
 		}
@@ -742,54 +772,64 @@ export class WebTransactionalReceiver
 		message: IApiCallRequestMessage
 			| IPortableQueryMessage
 			| IReadQueryMessage
-			| ISaveMessage<any>,
+			| ISaveMessage<any>
+			| ISubscriptionMessage,
 		response: IApiCallResponseMessage,
 		returnedValue: any,
 		application_FullName: DbApplication_FullName,
 		isFrameworkObservableCall: boolean,
 		webReciever: IWebReceiverState
 	): void {
-		switch (message.type) {
-			case Message_Type.API_SUBSCRIBE: {
-				if (!isFrameworkObservableCall) {
-					this.webMessageGateway.sendMessageToApp(
-						application_FullName, response)
-					break
+		switch (message.typeGroup) {
+			case Message_Type_Group.SUBSCRIPTION: {
+				switch ((message as ISubscriptionMessage).type) {
+					case SUBSCRIPTION_Message_Type.API_SUBSCRIBE: {
+						if (!isFrameworkObservableCall) {
+							this.webMessageGateway.sendMessageToApp(
+								application_FullName, response)
+							break
+						}
+						this.subscribeToFrameworkObservable(message as ISubscriptionMessage,
+							SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA,
+							response, returnedValue, application_FullName,
+							webReciever)
+						break
+					}
+					case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE: {
+						this.subscribeToFrameworkObservable(message as ISubscriptionMessage,
+							SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA,
+							response, returnedValue, application_FullName,
+							webReciever)
+						break
+					}
+					case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE: {
+						this.subscribeToFrameworkObservable(message as ISubscriptionMessage,
+							SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBTION_DATA,
+							response, returnedValue, application_FullName,
+							webReciever)
+						break
+					}
+					case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
+						if (!isFrameworkObservableCall) {
+							break
+						}
+						let isolateSubscriptionMap = webReciever.subscriptionMap
+							.get(application_FullName)
+						if (!isolateSubscriptionMap) {
+							console.error(`		Did not find isolateSubscriptionMap for Application:
+		${application_FullName}
+							`)
+							break
+						}
+						isolateSubscriptionMap.delete((message as ISubscriptionMessage).subscriptionId)
+						break
+					}
+					default: {
+						this.webMessageGateway.sendMessageToApp(
+							application_FullName, response)
+						break
+					}
 				}
-				this.subscribeToFrameworkObservable(message,
-					Message_Type.API_SUBSCRIPTION_DATA,
-					response, returnedValue, application_FullName,
-					webReciever)
-				break
-			}
-			case Message_Type.SEARCH_ONE_SUBSCRIBE: {
-				this.subscribeToFrameworkObservable(message,
-					Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA,
-					response, returnedValue, application_FullName,
-					webReciever)
-				break
-			}
-			case Message_Type.SEARCH_SUBSCRIBE: {
-				this.subscribeToFrameworkObservable(message,
-					Message_Type.SEARCH_SUBSCRIBTION_DATA,
-					response, returnedValue, application_FullName,
-					webReciever)
-				break
-			}
-			case Message_Type.API_UNSUBSCRIBE: {
-				if (!isFrameworkObservableCall) {
-					break
-				}
-				let isolateSubscriptionMap = webReciever.subscriptionMap
-					.get(application_FullName)
-				if (!isolateSubscriptionMap) {
-					console.error(`		Did not find isolateSubscriptionMap for Application:
-${application_FullName}
-					`)
-					break
-				}
-				isolateSubscriptionMap.delete(message.subscriptionId)
-				break
 			}
 			default: {
 				this.webMessageGateway.sendMessageToApp(
@@ -800,11 +840,8 @@ ${application_FullName}
 	}
 
 	private subscribeToFrameworkObservable(
-		message: IApiCallRequestMessage
-			| IPortableQueryMessage
-			| IReadQueryMessage
-			| ISaveMessage<any>,
-		type: Message_Type,
+		message: ISubscriptionMessage,
+		type: SUBSCRIPTION_Message_Type,
 		messageFields: IApiCallResponseMessage,
 		returnedValue: any,
 		application_FullName: DbApplication_FullName,
@@ -831,21 +868,21 @@ ${application_FullName}
 		})
 	}
 
-	private getMessageServerApplication(
+	private getMessageDestinationApplication(
 		message: IMessage
 	) {
 		return this.dbApplicationUtils.
 			getDbApplication_FullNameFromDomainAndName(
-				message.clientDomain, message.clientApplication)
+				message.destination.domain, message.destination.app)
 
 	}
 
-	private getMessageClientApplication(
+	private getMessageOriginApplication(
 		message: IMessage
 	) {
 		return this.dbApplicationUtils.
 			getDbApplication_FullNameFromDomainAndName(
-				message.serverDomain, message.serverApplication)
+				message.origin.domain, message.origin.app)
 	}
 
 }

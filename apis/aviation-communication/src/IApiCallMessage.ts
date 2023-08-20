@@ -1,4 +1,4 @@
-import { IApiMessage, ISubscriptionMessage } from "./IMessage"
+import { IApiMessage, IResponseMessage, ISubscriptionMessage } from "./IMessage"
 
 export interface IApiCallRequestMessage<A = any>
     extends IApiMessage, IApiCallRequestMessageProperties<A> {
@@ -15,11 +15,9 @@ export interface IApiCallRequestMessageProperties<A = any> {
 }
 
 export interface IApiCallResponseMessage<A = any>
-    extends IApiCallRequestMessage<A> {
-    returnedValue?: any
+    extends IApiCallRequestMessage<A>, IResponseMessage {
 }
 
 export interface IObservableApiCallResponseMessage<A = any>
-    extends IObservableApiCallRequestMessage<A> {
-    returnedValue?: any
+    extends IObservableApiCallRequestMessage<A>, IResponseMessage {
 }

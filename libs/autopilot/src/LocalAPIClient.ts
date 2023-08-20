@@ -1,4 +1,4 @@
-import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IClientSubjectCache, Message_OriginOrDestination_Type, Message_Type_Group, IInternalMessage, INTERNAL_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IObservableApiCallRequestMessage } from "@airport/aviation-communication";
+import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IClientSubjectCache, Message_OriginOrDestination_Type, Message_Type_Group, IInternalMessage, INTERNAL_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IObservableApiCallRequestMessage, Message_Direction } from "@airport/aviation-communication";
 import { IFullDITokenDescriptor, Inject, Injected } from "@airport/direction-indicator";
 import {
     IOperationSerializer,
@@ -237,6 +237,7 @@ export class LocalAPIClient
                 protocol: 'https',
                 type: Message_OriginOrDestination_Type.APPLICATION,
             },
+            direction: Message_Direction.REQUEST,
             id: guidv4(),
             messageLeg: Message_Leg.TO_HUB,
             methodName,
@@ -361,6 +362,7 @@ export class LocalAPIClient
                 protocol: 'https',
                 type: Message_OriginOrDestination_Type.APPLICATION,
             },
+            direction: Message_Direction.REQUEST,
             id: guidv4(),
             messageLeg: Message_Leg.TO_HUB,
             origin: {

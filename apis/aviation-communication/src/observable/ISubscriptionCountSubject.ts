@@ -1,8 +1,8 @@
 import { Subject } from "rxjs";
-import { ICoreRequestFields, SubscriptionId } from "../IMessage";
+import { ICoreMessageFields, SubscriptionId } from "../IMessage";
 
 export interface ICoreSubscriptionRequestFields
-    extends ICoreRequestFields {
+    extends ICoreMessageFields {
 
     subscriptionId?: SubscriptionId
 

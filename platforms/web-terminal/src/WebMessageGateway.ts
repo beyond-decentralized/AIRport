@@ -1,4 +1,4 @@
-import { IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage } from '@airport/aviation-communication';
+import { IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IInternalMessage, IMessage, IObservableApiCallResponseMessage, ISubscriptionMessage } from '@airport/aviation-communication';
 import {
     Inject,
     Injected,
@@ -23,14 +23,16 @@ export interface IWebMessageGateway {
     sendMessageToApp(
         application_FullName: DbApplication_FullName,
         message: IApiCallResponseMessage
+            | IObservableApiCallResponseMessage
             | IGetLatestApplicationVersionByDbApplication_NameMessage
-			| IInitializeConnectionMessage
+            | IInitializeConnectionMessage
             | IRetrieveDomainMessage
+            | ISubscriptionMessage
     ): void
 
     sendMessageToClient(
         message: IApiCallRequestMessage
-            | IInitializeConnectionMessage
+            | IInternalMessage
     ): void
 }
 
@@ -93,7 +95,12 @@ export class WebMessageGateway
 
     sendMessageToApp(
         application_FullName: DbApplication_FullName,
-        message: IApiCallResponseMessage | IInitializeConnectionMessage
+        message: IApiCallResponseMessage
+            | IObservableApiCallResponseMessage
+            | IGetLatestApplicationVersionByDbApplication_NameMessage
+            | IInitializeConnectionMessage
+            | IRetrieveDomainMessage
+            | ISubscriptionMessage
     ): void {
         const window = this.getFrameWindow(application_FullName)
 
@@ -104,7 +111,7 @@ export class WebMessageGateway
 
     sendMessageToClient(
         message: IApiCallRequestMessage
-            | IInitializeConnectionMessage
+            | IInternalMessage
     ): void {
         this.airMessageUtils.prepMessageToSend(message)
 

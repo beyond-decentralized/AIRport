@@ -17,7 +17,7 @@ import { ApiClientSubject } from '@airport/autopilot';
 import { IApplicationStore } from '@airport/tower';
 import { Observable, Subscription } from 'rxjs';
 import { v4 as guidv4 } from "uuid";
-import { Message_Direction, Message_Leg, Message_Type, IApiCallRequestMessage } from '@airport/aviation-communication';
+import { Message_Leg, IApiCallRequestMessage, Message_OriginOrDestination_Type, Message_Type_Group, IObservableApiCallRequestMessage, SUBSCRIPTION_Message_Type, Message_Direction } from '@airport/aviation-communication';
 
 export interface IRequestRecord {
     request: IApiCallRequestMessage
@@ -75,22 +75,28 @@ export class IFrameInterAppAPIClient
 
         const request: IApiCallRequestMessage = {
             args: serializedParams,
-            clientApplication: this.applicationStore.state.application,
-            clientDomain: this.applicationStore.state.domain,
-            clientDomainProtocol: location.protocol,
-            direction: Message_Direction.FROM_APP,
+            destination: {
+                app: fullDiDescriptor.application.name,
+                domain: fullDiDescriptor.application.domain.name,
+                protocol: 'https',
+                type: Message_OriginOrDestination_Type.APPLICATION
+            },
+            direction: Message_Direction.REQUEST,
             id: guidv4(),
             messageLeg: Message_Leg.TO_HUB,
             methodName,
             objectName: fullDiDescriptor.descriptor.interface,
-            serverApplication: fullDiDescriptor.application.name,
-            serverDomain: fullDiDescriptor.application.domain.name,
-            serverDomainProtocol: 'https',
-            type: Message_Type.API_CALL
+            origin: {
+                app: this.applicationStore.state.application,
+                domain: this.applicationStore.state.domain,
+                protocol: location.protocol,
+                type: Message_OriginOrDestination_Type.APPLICATION
+            },
+            typeGroup: Message_Type_Group.API
         }
 
         if (isObservable) {
-            request.type = Message_Type.API_SUBSCRIBE
+            (request as IObservableApiCallRequestMessage).type = SUBSCRIPTION_Message_Type.API_SUBSCRIBE
             const subject = new ApiClientSubject<ReturnType, IApiCallRequestMessage>(args, request,
                 fullDiDescriptor, this.applicationStore.state.clientSubjectCache)
 
@@ -105,11 +111,8 @@ export class IFrameInterAppAPIClient
         args: any[]
     ): Promise<ReturnType> {
         let response
-        switch(request.type) {
-            case Message_Type.API_SUBSCRIBE:
-            case Message_Type.API_UNSUBSCRIBE:
-            case Message_Type.API_SUBSCRIPTION_DATA:
-            case Message_Type.SUBSCRIPTION_PING: {
+        switch(request.typeGroup) {
+            case Message_Type_Group.SUBSCRIPTION: {
                 await this.transactionalConnector.callApiNoReturn(request)
                 return
             }
@@ -140,6 +143,5 @@ export class IFrameInterAppAPIClient
 
         return returnedValue
     }
-
 
 }

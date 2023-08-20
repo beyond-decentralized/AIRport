@@ -1,6 +1,6 @@
 import { Injected } from "@airport/direction-indicator";
 import { IApiCallRequestMessage } from "./IApiCallMessage";
-import { CRUD_Message_Type, ICrudMessage, IInternalMessage, IMessage, INTERNAL_Message_Type, ISubscriptionMessage, MessageOriginOrDestination, Message_OriginOrDestination_Type, Message_Type_Group, SUBSCRIPTION_Message_Type } from "./IMessage";
+import { CRUD_Message_Type, ICrudMessage, IInternalMessage, IMessage, INTERNAL_Message_Type, ISubscriptionMessage, IMessageOriginOrDestination, Message_OriginOrDestination_Type, Message_Type_Group, SUBSCRIPTION_Message_Type } from "./IMessage";
 
 export interface IAirMessageUtils {
 
@@ -318,7 +318,7 @@ ${JSON.stringify(message, null, 2)}
 
     private validateDomainAndApplication<M extends IMessage>(
         message: M,
-        originOrDestination: MessageOriginOrDestination,
+        originOrDestination: IMessageOriginOrDestination,
         type: 'origin' | 'destination',
     ): void {
         if (!this.isValidDomainNameString(

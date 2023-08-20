@@ -11,10 +11,11 @@ import {
 	SUBSCRIPTION_Message_Type,
 	IObservableApiCallRequestMessage,
 	IObservableApiCallResponseMessage,
-	MessageOriginOrDestination,
+	IMessageOriginOrDestination,
 	Message_OriginOrDestination_Type,
 	CRUD_Message_Type,
-	IApiMessage
+	IApiMessage,
+	Message_Direction
 } from '@airport/aviation-communication';
 import {
 	IContext,
@@ -51,7 +52,7 @@ import {
 	ITerminalStore
 } from '@airport/terminal-map';
 import { IApplicationStore } from '@airport/tower';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { v4 as guidv4 } from 'uuid';
 
 export interface IIframeTransactionalConnector
@@ -488,9 +489,10 @@ expecting only API message types`)
 	private getCoreFields(
 		typeGroup: Message_Type_Group
 	): {
+		direction: Message_Direction
 		id: string,
 		messageLeg: Message_Leg.TO_HUB,
-		origin: MessageOriginOrDestination,
+		origin: IMessageOriginOrDestination,
 		typeGroup: Message_Type_Group
 	} {
 		let app = this.applicationStore.state.application
@@ -498,6 +500,7 @@ expecting only API message types`)
 		let id = guidv4()
 		let messageLeg = Message_Leg.TO_HUB
 		return {
+			direction: Message_Direction.REQUEST,
 			id,
 			messageLeg,
 			origin: {

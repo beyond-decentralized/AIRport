@@ -1,6 +1,6 @@
 import { ILastIds, JsonApplicationWithLastIds } from '@airport/air-traffic-control';
 import { DbApplicationDao } from '@airport/airspace/dist/app/bundle';
-import { Message_Leg, IApiCallRequestMessage, IApiCallResponseMessage, INTERNAL_Message_Type, CRUD_Message_Type, ISubscriptionMessage, Message_Type_Group, SUBSCRIPTION_Message_Type, IMessage } from '@airport/aviation-communication';
+import { Message_Leg, IApiCallRequestMessage, IApiCallResponseMessage, INTERNAL_Message_Type, CRUD_Message_Type, ISubscriptionMessage, Message_Type_Group, SUBSCRIPTION_Message_Type, IMessage, IResponseMessage } from '@airport/aviation-communication';
 import {
     IContext,
     Inject,
@@ -76,9 +76,12 @@ export abstract class TransactionalReceiver {
         _localId: number
     } = {} as any
 
-    async processFromClientMessage(
-        message: IApiCallRequestMessage
-    ): Promise<IApiCallResponseMessage> {
+    async processRequesMessage(
+        message: IPortableQueryMessage
+            | IReadQueryMessage
+            | ISaveMessage<any>
+            | ISubscriptionMessage
+    ): Promise<IResponseMessage> {
         let result: any
         let errorMessage
         try {
@@ -97,7 +100,7 @@ export abstract class TransactionalReceiver {
             const {
                 theErrorMessage,
                 theResult
-            } = await this.doProcessFromClientMessage(
+            } = await this.doProcessRequestMessage(
                 message as IMessage as IPortableQueryMessage
                 | IReadQueryMessage
                 | ISaveMessage<any>
@@ -122,14 +125,14 @@ export abstract class TransactionalReceiver {
             },
             errorMessage,
             messageLeg: Message_Leg.FROM_HUB,
-            origin: {
-                app: message.destination.app,
-                domain: message.destination.domain,
-                protocol: message.destination.protocol,
-                type: message.destination.type
-            },
+            // origin: {
+            //     app: message.destination.app,
+            //     domain: message.destination.domain,
+            //     protocol: message.destination.protocol,
+            //     type: message.destination.type
+            // },
             returnedValue: result,
-        } as IApiCallResponseMessage
+        } as IResponseMessage
 
         return messageCopy
     }
@@ -210,7 +213,7 @@ export abstract class TransactionalReceiver {
         }
     }
 
-    private async doProcessFromClientMessage(
+    private async doProcessRequestMessage(
         message: IPortableQueryMessage
             | IReadQueryMessage
             | ISaveMessage<any>
@@ -223,14 +226,14 @@ export abstract class TransactionalReceiver {
     }> {
         switch (message.typeGroup) {
             case Message_Type_Group.CRUD: {
-                return this.doProcessFromClientCRUDMessage(
+                return this.doProcessCRUDRequestMessage(
                     message as IPortableQueryMessage
                     | IReadQueryMessage
                     | ISaveMessage<any>, credentials, context
                 )
             }
             case Message_Type_Group.SUBSCRIPTION: {
-                return this.doProcessFromClientSubscriptionMessage(
+                return this.doProcessSubscriptionRequestMessage(
                     message as ISubscriptionMessage, credentials, context
                 )
             }
@@ -240,7 +243,7 @@ export abstract class TransactionalReceiver {
         }
     }
 
-    private async doProcessFromClientSubscriptionMessage(
+    private async doProcessSubscriptionRequestMessage(
         message: ISubscriptionMessage,
         credentials: ICredentials,
         context: IContext
@@ -285,7 +288,7 @@ export abstract class TransactionalReceiver {
         }
     }
 
-    private async doProcessFromClientCRUDMessage(
+    private async doProcessCRUDRequestMessage(
         message: IPortableQueryMessage
             | IReadQueryMessage
             | ISaveMessage<any>,
