@@ -18,3 +18,8 @@ export interface IApiCallResponseMessage<A = any>
     extends IApiCallRequestMessage<A> {
     returnedValue?: any
 }
+
+export interface IObservableApiCallResponseMessage<A = any>
+    extends IObservableApiCallRequestMessage<A> {
+    returnedValue?: any
+}

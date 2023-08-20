@@ -58,11 +58,11 @@ export enum SUBSCRIPTION_Message_Type {
 }
 
 export interface IApiMessage extends IMessage {
-    transactionId: TransactionId
+    transactionId?: TransactionId
 }
 
 export interface ICrudMessage extends IMessage {
-    transactionId: TransactionId
+    transactionId?: TransactionId
     type: CRUD_Message_Type
 }
 
@@ -83,7 +83,7 @@ export interface IMessage extends ICoreRequestFields {
 }
 
 export interface ICoreRequestFields {
-    destination: MessageOriginOrDestination
+    destination?: MessageOriginOrDestination
     id: Message_Id
     messageLeg: Message_Leg
     origin: MessageOriginOrDestination

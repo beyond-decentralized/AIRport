@@ -8,7 +8,7 @@ import { IActor } from '@airport/ground-control';
 import { IApplicationStore } from '../../state/ApplicationStore';
 import { IApiRegistry, IApplicationApi } from '@airport/air-traffic-control';
 import { RequestManager } from './RequestManager';
-import { IApiCallRequestMessage, IApiCallResponseMessage, IApiMessage, IMessage } from '@airport/aviation-communication';
+import { IApiCallRequestMessageProperties, IApiCallResponseMessage, IMessage, IObservableApiCallResponseMessage } from '@airport/aviation-communication';
 
 @Injected()
 export class LocalAPIServer
@@ -27,8 +27,8 @@ export class LocalAPIServer
     queryResultsDeserializer: IQueryResultsDeserializer
 
     async handleRequest(
-        request: IApiCallRequestMessage<IActor> & IMessage
-    ): Promise<IApiCallResponseMessage> {
+        request: IApiCallRequestMessageProperties<IActor> & IMessage
+    ): Promise<IApiCallResponseMessage | IObservableApiCallResponseMessage> {
         let internalResponse
         let errorMessage: string
         try {
@@ -50,7 +50,7 @@ export class LocalAPIServer
 
         let origin = request.destination;
         let destination = request.origin;
-        const response: IApiCallResponseMessage & IApiMessage = {
+        const response: (IApiCallResponseMessage | IObservableApiCallResponseMessage) = {
             ...request,
             destination,
             origin,
@@ -64,7 +64,7 @@ export class LocalAPIServer
     }
 
     async coreHandleRequest<ReturnType = any>(
-        request: IApiCallRequestMessage<IActor>,
+        request: IApiCallRequestMessageProperties<IActor> & IMessage,
         api: IApplicationApi,
         context?: IApiCallContext & ITransactionContext
     ): Promise<{

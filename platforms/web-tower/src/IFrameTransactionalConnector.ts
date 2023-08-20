@@ -1,15 +1,20 @@
 import { SubscriptionCountSubject } from '@airport/autopilot';
 import {
-	Message_Direction,
 	Message_Leg,
-	Message_Type,
 	IAirMessageUtils,
 	IApiCallRequestMessage,
 	IApiCallResponseMessage,
 	IMessage,
-	Message_Application,
-	Message_Domain,
-	Message_DomainProtocol
+	Message_Type_Group,
+	INTERNAL_Message_Type,
+	ISubscriptionMessage,
+	SUBSCRIPTION_Message_Type,
+	IObservableApiCallRequestMessage,
+	IObservableApiCallResponseMessage,
+	MessageOriginOrDestination,
+	Message_OriginOrDestination_Type,
+	CRUD_Message_Type,
+	IApiMessage
 } from '@airport/aviation-communication';
 import {
 	IContext,
@@ -59,7 +64,12 @@ export interface IIframeTransactionalConnector
 	initializeConnection(): Promise<void>
 
 	processMessage(
-		message: IApiCallRequestMessage,
+		message: IApiCallRequestMessage
+			| IObservableApiCallRequestMessage
+			| IApiCallResponseMessage
+			| IInitializeConnectionMessage
+			| IGetLatestApplicationVersionByDbApplication_NameMessage
+			| IRetrieveDomainMessage,
 		origin: string
 	): Promise<void>
 
@@ -121,6 +131,7 @@ export class IframeTransactionalConnector
 
 	async processMessage(
 		message: IApiCallRequestMessage
+			| IObservableApiCallRequestMessage
 			| IApiCallResponseMessage
 			| IInitializeConnectionMessage
 			| IGetLatestApplicationVersionByDbApplication_NameMessage
@@ -136,25 +147,24 @@ export class IframeTransactionalConnector
 			this.applicationStore.state.messageCallback(message)
 		}
 
-		switch (message.direction) {
-			case Message_Direction.FROM_APP: {
+		switch (message.typeGroup) {
+			case Message_Type_Group.API: {
 				await this.handleApiRequest(message as IApiCallRequestMessage, origin)
 				break
 			}
-			case Message_Direction.INTERNAL_TO_APP: {
+			case Message_Type_Group.INTERNAL: {
 				this.handleInternalMessage(message as
 					IInitializeConnectionMessage
 					| IGetLatestApplicationVersionByDbApplication_NameMessage
 					| IRetrieveDomainMessage)
 				break
 			}
-			case Message_Direction.TO_APP: {
-				this.handleToClientMessage(message as IApiCallResponseMessage)
+			case Message_Type_Group.SUBSCRIPTION: {
+				await this.handleSubscriptionRequest(message as ISubscriptionMessage, origin)
 				break
 			}
 			default: {
-				throw new Error(`Unexpected message direction: ${message.direction}`)
-				break
+				throw new Error(`Unexpected message.typeGroup : ${message.typeGroup}`)
 			}
 		}
 	}
@@ -164,7 +174,7 @@ export class IframeTransactionalConnector
 	): Promise<IApiCallResponseMessage> {
 		return await this.sendMessage<IApiCallRequestMessage, IApiCallResponseMessage>({
 			...apiInput,
-			...this.getCoreFields(),
+			...this.getCoreFields(Message_Type_Group.API),
 			actor: null
 		})
 	}
@@ -174,7 +184,7 @@ export class IframeTransactionalConnector
 	): Promise<void> {
 		await this.sendMessageNoReturn<IApiCallRequestMessage>({
 			...apiInput,
-			...this.getCoreFields(),
+			...this.getCoreFields(Message_Type_Group.API),
 			actor: null
 		})
 	}
@@ -184,10 +194,10 @@ export class IframeTransactionalConnector
 		context: IQueryContext,
 	): Promise<EntityArray> {
 		return await this.sendMessage<IReadQueryMessage, EntityArray>({
-			...this.getCoreFields(),
+			...this.getCoreFields(Message_Type_Group.CRUD),
 			portableQuery,
 			repository: context.repository,
-			type: Message_Type.FIND
+			type: CRUD_Message_Type.FIND
 		})
 	}
 
@@ -196,10 +206,10 @@ export class IframeTransactionalConnector
 		context: IQueryContext,
 	): Promise<E> {
 		return await this.sendMessage<IReadQueryMessage, E>({
-			...this.getCoreFields(),
+			...this.getCoreFields(Message_Type_Group.CRUD),
 			portableQuery,
 			repository: context.repository,
-			type: Message_Type.FIND_ONE
+			type: CRUD_Message_Type.FIND_ONE
 		})
 	}
 
@@ -210,7 +220,7 @@ export class IframeTransactionalConnector
 		return this.sendObservableMessage<EntityArray>(
 			portableQuery,
 			context,
-			Message_Type.SEARCH_SUBSCRIBE
+			SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE
 		);
 	}
 
@@ -221,7 +231,7 @@ export class IframeTransactionalConnector
 		return this.sendObservableMessage<E>(
 			portableQuery,
 			context,
-			Message_Type.SEARCH_ONE_SUBSCRIBE
+			SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE
 		);
 	}
 
@@ -231,13 +241,13 @@ export class IframeTransactionalConnector
 	): Promise<ISaveResult> {
 		const dbEntity = context.dbEntity;
 		return await this.sendMessage<ISaveMessage<any>, ISaveResult>({
-			...this.getCoreFields(),
+			...this.getCoreFields(Message_Type_Group.CRUD),
 			dbEntity: {
 				_localId: dbEntity._localId,
 				_applicationVersionLocalId: dbEntity.applicationVersion._localId
 			},
 			entity,
-			type: Message_Type.SAVE
+			type: CRUD_Message_Type.SAVE
 		})
 	}
 
@@ -248,9 +258,9 @@ export class IframeTransactionalConnector
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number> {
 		return await this.sendMessage<IPortableQueryMessage, number>({
-			...this.getCoreFields(),
+			...this.getCoreFields(Message_Type_Group.CRUD),
 			portableQuery,
-			type: Message_Type.INSERT_VALUES
+			type: CRUD_Message_Type.INSERT_VALUES
 		})
 	}
 
@@ -259,9 +269,9 @@ export class IframeTransactionalConnector
 		context: IContext,
 	): Promise<number[][]> {
 		return await this.sendMessage<IPortableQueryMessage, number[][]>({
-			...this.getCoreFields(),
+			...this.getCoreFields(Message_Type_Group.CRUD),
 			portableQuery,
-			type: Message_Type.INSERT_VALUES_GET_IDS
+			type: CRUD_Message_Type.INSERT_VALUES_GET_IDS
 		})
 	}
 
@@ -270,9 +280,9 @@ export class IframeTransactionalConnector
 		context: IContext,
 	): Promise<number> {
 		return await this.sendMessage<IPortableQueryMessage, number>({
-			...this.getCoreFields(),
+			...this.getCoreFields(Message_Type_Group.CRUD),
 			portableQuery,
-			type: Message_Type.UPDATE_VALUES
+			type: CRUD_Message_Type.UPDATE_VALUES
 		})
 	}
 
@@ -281,9 +291,9 @@ export class IframeTransactionalConnector
 		context: IContext,
 	): Promise<number> {
 		return await this.sendMessage<IPortableQueryMessage, number>({
-			...this.getCoreFields(),
+			...this.getCoreFields(Message_Type_Group.CRUD),
 			portableQuery,
-			type: Message_Type.DELETE_WHERE
+			type: CRUD_Message_Type.DELETE_WHERE
 		})
 	}
 
@@ -291,9 +301,9 @@ export class IframeTransactionalConnector
 		fullDbApplication_Name: string
 	): Promise<DbApplicationVersion> {
 		return await this.sendMessageAndGetResponse<IGetLatestApplicationVersionByDbApplication_NameMessage, DbApplicationVersion>({
-			...this.getCoreFields(Message_Direction.INTERNAL_FROM_APP),
+			...this.getCoreFields(Message_Type_Group.INTERNAL),
 			fullDbApplication_Name: fullDbApplication_Name,
-			type: Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME
+			type: INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME
 		})
 	}
 
@@ -309,9 +319,9 @@ export class IframeTransactionalConnector
 		domainName: DbDomain_Name
 	): Promise<DbDomain> {
 		return await this.sendMessageAndGetResponse<IRetrieveDomainMessage, DbDomain>({
-			...this.getCoreFields(Message_Direction.INTERNAL_FROM_APP),
+			...this.getCoreFields(Message_Type_Group.INTERNAL),
 			domainName,
-			type: Message_Type.RETRIEVE_DOMAIN
+			type: INTERNAL_Message_Type.RETRIEVE_DOMAIN
 		})
 	}
 
@@ -327,7 +337,7 @@ export class IframeTransactionalConnector
 			| IRetrieveDomainMessage
 	): void {
 		switch (message.type) {
-			case Message_Type.APP_INITIALIZING: {
+			case INTERNAL_Message_Type.APP_INITIALIZING: {
 				if (this.applicationStore.state.appState === AppState.NOT_INITIALIZED
 					&& (message as IInitializeConnectionMessage).returnedValue) {
 					// console.log(`--==<<(( path: ${window.location.pathname} appState: ${this.applicationStore.state.appState}, domain: ${message.domain}, app: ${message.application} ))>>==--`)
@@ -341,14 +351,14 @@ export class IframeTransactionalConnector
 				}
 				break
 			}
-			case Message_Type.RETRIEVE_DOMAIN:
-			case Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
+			case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
+			case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
 				this.completeAsyncMessage(message as
 					IGetLatestApplicationVersionByDbApplication_NameMessage
 					| IRetrieveDomainMessage)
 				break
 			}
-			case Message_Type.APP_INITIALIZED: {
+			case INTERNAL_Message_Type.APP_INITIALIZED: {
 				// Nothing to do as of now
 				break
 			}
@@ -366,18 +376,30 @@ export class IframeTransactionalConnector
 		while (this.applicationStore.state.appState !== AppState.INITIALIZED) {
 			await this.wait(100)
 		}
+		const response = await this.localApiServer.handleRequest(request)
+
+		this.sendMessageToParentWindow(response, origin)
+	}
+
+	private async handleSubscriptionRequest(
+		request: ISubscriptionMessage,
+		origin: string
+	) {
+		while (this.applicationStore.state.appState !== AppState.INITIALIZED) {
+			await this.wait(100)
+		}
 		const subscriptionId = request.subscriptionId
 		const clientSubscriptionMap = this.applicationStore.state.clientSubscriptionMap
 		switch (request.type) {
-			case Message_Type.API_SUBSCRIBE: {
-				const response = await this.localApiServer.handleRequest(request)
+			case SUBSCRIPTION_Message_Type.API_SUBSCRIBE: {
+				const response = await this.localApiServer.handleRequest(request as IObservableApiCallRequestMessage)
 				const subscription = response.returnedValue.subscribe(payload => {
 					this.sendMessageToParentWindow({
 						...response,
 						subscriptionId,
-						type: Message_Type.API_SUBSCRIPTION_DATA,
+						type: SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA,
 						returnedValue: payload
-					} as IApiCallResponseMessage, origin)
+					} as IObservableApiCallResponseMessage, origin)
 				})
 				clientSubscriptionMap.set(subscriptionId, {
 					lastActive: new Date().getTime(),
@@ -385,14 +407,14 @@ export class IframeTransactionalConnector
 				})
 				break
 			}
-			case Message_Type.SUBSCRIPTION_PING: {
+			case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
 				const subscriptionRecord = clientSubscriptionMap.get(subscriptionId)
-				if(!subscriptionRecord) {
+				if (!subscriptionRecord) {
 					break
 				}
 				subscriptionRecord.lastActive = new Date().getTime()
 			}
-			case Message_Type.API_UNSUBSCRIBE: {
+			case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
 				const subscriptionRecord = clientSubscriptionMap.get(subscriptionId)
 				if (!subscriptionRecord) {
 					console.log(`Could not find subscription for subscriptionId:
@@ -407,18 +429,29 @@ ${subscriptionId}
 				// for the Unsubscribe operation
 				break
 			}
-			default: {
-				if (subscriptionId) {
-					console.log(`Found a subscription for an @Api() call that returns a Promise.
-	subscriptionId:
-${subscriptionId}
-					`)
-					break
+			// case SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA: {
+			// 	// Handled by LocalAPIClient
+			// 	break
+			// }
+			case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
+			case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBTION_DATA: {
+				const observableRequestSubject = this.applicationStore.state
+					.clientSubjectCache.getSubject(request.subscriptionId)
+				if (!observableRequestSubject) {
+					return
 				}
-				const response = await this.localApiServer.handleRequest(request)
-
-				this.sendMessageToParentWindow(response, origin)
-				break
+				if (request.errorMessage) {
+					observableRequestSubject.error(request.errorMessage)
+				} else {
+					observableRequestSubject.next((request as IObservableApiCallResponseMessage).returnedValue)
+				}
+				return
+			}
+			default: {
+				throw new Error(`Invalid ISubscriptionMessage
+type:
+	${request.type}
+expecting only API message types`)
 			}
 		}
 	}
@@ -430,50 +463,6 @@ ${subscriptionId}
 		this.airMessageUtils.prepMessageToSend(message)
 
 		window.parent.postMessage(message, targetOrigin)
-	}
-
-	private handleToClientMessage(
-		message: IApiCallResponseMessage,
-	): void {
-		let observableRequestSubject: Subject<any>
-		switch (message.type) {
-			case Message_Type.SEARCH_ONE_SUBSCRIBE:
-			case Message_Type.SEARCH_SUBSCRIBE: {
-				observableRequestSubject = this.applicationStore.state
-					.clientSubjectCache.getSubject(message.subscriptionId)
-				if (!observableRequestSubject) {
-					return
-				}
-				if (message.errorMessage) {
-					observableRequestSubject.error(message.errorMessage)
-				} else {
-					observableRequestSubject.next(message.returnedValue)
-				}
-				return
-			}
-			default: {
-				throw new Error(`Unexpected messsage type ${message.type} for Message_Direction.TO_APP`)
-			}
-		}
-
-		const subscriptionId = message.subscriptionId
-		if (subscriptionId) {
-			observableRequestSubject = this.applicationStore.state
-				.clientSubjectCache.getSubject(subscriptionId)
-			if (!observableRequestSubject) {
-				console.error(`Could not find Observable API Request Subject for subscriptionId: ${subscriptionId}`)
-				return
-			}
-			try {
-				observableRequestSubject.next(message.returnedValue)
-			} catch (e) {
-				console.error(e)
-				observableRequestSubject.error(e)
-			}
-			return
-		}
-
-		this.completeAsyncMessage(message)
 	}
 
 	private completeAsyncMessage(
@@ -488,7 +477,7 @@ ${subscriptionId}
 
 		if (message.errorMessage) {
 			messageRecord.reject(message.errorMessage)
-		} else if (message.type === Message_Type.API_CALL) {
+		} else if (message.typeGroup === Message_Type_Group.API) {
 			messageRecord.resolve(message)
 		} else {
 			messageRecord.resolve(message.returnedValue)
@@ -497,26 +486,27 @@ ${subscriptionId}
 	}
 
 	private getCoreFields(
-		direction = Message_Direction.FROM_APP
+		typeGroup: Message_Type_Group
 	): {
-		direction: Message_Direction,
 		id: string,
 		messageLeg: Message_Leg.TO_HUB,
-		sourceApplication: Message_Application,
-		sourceDomain: Message_Domain,
-		sourceDomainProtocol: Message_DomainProtocol
+		origin: MessageOriginOrDestination,
+		typeGroup: Message_Type_Group
 	} {
-		let application = this.applicationStore.state.application
+		let app = this.applicationStore.state.application
 		let domain = this.applicationStore.state.domain
 		let id = guidv4()
 		let messageLeg = Message_Leg.TO_HUB
 		return {
-			direction,
 			id,
 			messageLeg,
-			sourceApplication: application,
-			sourceDomain: domain,
-			sourceDomainProtocol: location.protocol,
+			origin: {
+				app,
+				domain,
+				protocol: location.protocol,
+				type: Message_OriginOrDestination_Type.APPLICATION
+			},
+			typeGroup
 		}
 	}
 
@@ -542,7 +532,7 @@ ${subscriptionId}
 	private async sendMessageAndGetResponse<IMessageIn extends IMessage, ReturnType>(
 		message: IMessageIn
 	): Promise<ReturnType> {
-		message.transactionId = (<IInjected>this).__container__.context.id
+		(message as IApiMessage).transactionId = (<IInjected>this).__container__.context.id
 		this.sendMessageToParentWindow(message)
 
 		return new Promise<ReturnType>((resolve, reject) => {
@@ -557,10 +547,10 @@ ${subscriptionId}
 	private sendObservableMessage<T>(
 		portableQuery: PortableQuery,
 		context: IQueryContext,
-		type: Message_Type,
+		type: SUBSCRIPTION_Message_Type,
 		cachedSqlQueryId?: number
 	): Observable<T> {
-		const coreFields = this.getCoreFields()
+		const coreFields = this.getCoreFields(Message_Type_Group.SUBSCRIPTION)
 		let subscriptionId = (<IInjected>this).__container__.context.id
 		let message = {
 			...coreFields,
@@ -573,15 +563,23 @@ ${subscriptionId}
 
 		const subject = new SubscriptionCountSubject<T, IMessage>(
 			subscriptionId,
-			coreFields,
-			() => {
-				this.sendMessageToParentWindow(message)
+			{
+				...coreFields
 			},
 			() => {
-				this.sendMessageNoReturn<IMessage>({
+				this.sendMessageToParentWindow({
+					...message
+				})
+			},
+			() => {
+				let unsubscribeType = SUBSCRIPTION_Message_Type.SEARCH_UNSUBSCRIBE
+				if (type === SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE) {
+					unsubscribeType = SUBSCRIPTION_Message_Type.SEARCH_ONE_UNSUBSCRIBE
+				}
+				this.sendMessageNoReturn<ISubscriptionMessage>({
 					...coreFields,
 					subscriptionId,
-					type: Message_Type.SEARCH_UNSUBSCRIBE
+					type: unsubscribeType
 				}).then()
 			}
 		)
@@ -615,11 +613,11 @@ ${subscriptionId}
 				this.applicationStore.state.appState = AppState.INITIALIZED
 				await this.applicationLoader.initialize()
 				this.sendMessageToParentWindow({
-					...this.getCoreFields(Message_Direction.INTERNAL_FROM_APP),
+					...this.getCoreFields(Message_Type_Group.INTERNAL),
 					fullDbApplication_Name: this.dbApplicationUtils.
 						getDbApplication_FullName(
 							this.applicationLoader.getApplication()),
-					type: Message_Type.APP_INITIALIZED
+					type: INTERNAL_Message_Type.APP_INITIALIZED
 				} as IGetLatestApplicationVersionByDbApplication_NameMessage)
 				return true
 			case AppState.INITIALIZED:
@@ -631,9 +629,9 @@ ${subscriptionId}
 		this.applicationStore.state.application = jsonApplication.name
 
 		this.sendMessageToParentWindow({
-			...this.getCoreFields(Message_Direction.INTERNAL_FROM_APP),
+			...this.getCoreFields(Message_Type_Group.INTERNAL),
 			jsonApplication,
-			type: Message_Type.APP_INITIALIZING
+			type: INTERNAL_Message_Type.APP_INITIALIZING
 		} as IInitializeConnectionMessage)
 		return false
 	}

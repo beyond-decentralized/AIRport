@@ -1,5 +1,5 @@
 import { ILastIds, JsonApplicationWithLastIds } from "@airport/air-traffic-control";
-import { ICrudMessage, IInternalMessage, Message_Domain } from "@airport/aviation-communication";
+import { ICrudMessage, IInternalMessage, ISubscriptionMessage, Message_Domain } from "@airport/aviation-communication";
 import {
     DbApplicationVersion,
     DbApplication_FullName,
@@ -23,8 +23,21 @@ export interface IPortableQueryMessage
     portableQuery: PortableQuery
 }
 
+export interface ISubscriptionPortableQueryMessage
+    extends ISubscriptionMessage {
+    portableQuery: PortableQuery
+}
+
 export interface IReadQueryMessage
     extends IPortableQueryMessage {
+    repository?: {
+        source: string
+        GUID?: string
+    }
+}
+
+export interface ISubscriptionReadQueryMessage
+    extends ISubscriptionPortableQueryMessage {
     repository?: {
         source: string
         GUID?: string

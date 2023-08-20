@@ -34,7 +34,8 @@ import {
     ITerminalStore,
     ITransactionalServer,
     ITransactionContext,
-    IApiCredentials
+    IApiCredentials,
+    ISubscriptionReadQueryMessage
 } from '@airport/terminal-map';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 
@@ -151,7 +152,7 @@ export abstract class TransactionalReceiver {
                     getDbApplication_FullName(application)
                 const messageDbApplication_FullName = this.dbApplicationUtils.
                     getDbApplication_FullNameFromDomainAndName(
-                        message.clientDomain, message.clientApplication)
+                        message.origin.domain, message.origin.app)
                 if (fullDbApplication_Name !== messageDbApplication_FullName) {
                     theResult = null
                     break
@@ -192,7 +193,7 @@ export abstract class TransactionalReceiver {
             }
             case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
                 theResult = this.terminalStore.getDomainMapByName()
-                    .get(message.clientDomain)
+                    .get(message.origin.app)
                 break
             }
             default: {
@@ -223,12 +224,14 @@ export abstract class TransactionalReceiver {
         switch (message.typeGroup) {
             case Message_Type_Group.CRUD: {
                 return this.doProcessFromClientCRUDMessage(
-                    message, credentials, context
+                    message as IPortableQueryMessage
+                    | IReadQueryMessage
+                    | ISaveMessage<any>, credentials, context
                 )
             }
             case Message_Type_Group.SUBSCRIPTION: {
                 return this.doProcessFromClientSubscriptionMessage(
-                    message, credentials, context
+                    message as ISubscriptionMessage, credentials, context
                 )
             }
             default: {
@@ -251,21 +254,21 @@ export abstract class TransactionalReceiver {
         switch (message.type) {
             case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
                 theResult = this.transactionalServer.searchOne(
-                    (message as IReadQueryMessage).portableQuery,
+                    (message as ISubscriptionReadQueryMessage).portableQuery,
                     credentials,
                     {
                         ...context as any,
-                        repository: (message as IReadQueryMessage).repository,
+                        repository: (message as ISubscriptionReadQueryMessage).repository,
                     } as IQueryOperationContext
                 )
                 break
             case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
                 theResult = this.transactionalServer.search(
-                    (message as IReadQueryMessage).portableQuery,
+                    (message as ISubscriptionReadQueryMessage).portableQuery,
                     credentials,
                     {
                         ...context as any,
-                        repository: (message as IReadQueryMessage).repository,
+                        repository: (message as ISubscriptionReadQueryMessage).repository,
                     } as IQueryOperationContext
                 )
                 break
