@@ -27,6 +27,7 @@
     "rollup-plugin-dts": "workspace:../../../node_modules/rollup-plugin-dts",
     "rollup-plugin-peer-deps-external": "workspace:../../../node_modules/rollup-plugin-peer-deps-external",
     "rollup-plugin-terser": "workspace:../../../node_modules/rollup-plugin-terser",
+    "rollup-plugin-typescript2": "workspace:../../../node_modules/rollup-plugin-typescript2",
     "ts-node": "workspace:../../../node_modules/ts-node",
     "ts-patch": "workspace:../../../node_modules/ts-patch",
     "typescript": "workspace:../../../node_modules/typescript"
@@ -40,5 +41,5 @@
     "dev": "rollup --bundleConfigAsCjs -c ./rollup.config.js -w",
     "build": "rollup --bundleConfigAsCjs -c ./rollup.config.js"
   },
-  "types": "dist/server.index.d.ts"
+  "types": "dist/esm/server.index.d.ts"
 }
