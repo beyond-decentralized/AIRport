@@ -15,8 +15,4 @@ export interface ITransactionalReceiver {
         messageOrigin: string
     ): void
 
-    onMessage(callback: (
-        message: any
-    ) => void)
-
 }

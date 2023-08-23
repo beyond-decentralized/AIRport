@@ -1,5 +1,5 @@
 import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IClientSubjectCache, Message_OriginOrDestination_Type, Message_Type_Group, IInternalMessage, INTERNAL_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IObservableApiCallRequestMessage, Message_Direction } from "@airport/aviation-communication";
-import { IFullDITokenDescriptor, Inject, Injected } from "@airport/direction-indicator";
+import { IApiClient, IFullDITokenDescriptor, Inject, Injected } from "@airport/direction-indicator";
 import {
     IOperationSerializer,
     IQueryResultsDeserializer
@@ -8,21 +8,6 @@ import { Observable, Subscription } from "rxjs";
 import { v4 as guidv4 } from "uuid";
 import { ApiClientSubject } from "./ApiClientSubject";
 import { ClientSubjectCache } from "./ClientSubjectCache";
-
-export interface ILocalAPIClient {
-
-    invokeApiMethod<T = any>(
-        fullDIDescriptor: IFullDITokenDescriptor,
-        methodName: string,
-        args: any[],
-        isObservable: boolean
-    ): Promise<T> | Observable<T>
-
-    onMessage(callback: (
-        message: any
-    ) => void)
-
-}
 
 let _inWebMode = true
 // let _webServer = 'https://turbase.app'
@@ -36,7 +21,7 @@ export interface IRequestRecord {
 
 @Injected()
 export class LocalAPIClient
-    implements ILocalAPIClient {
+    implements IApiClient {
 
     @Inject()
     airMessageUtils: IAirMessageUtils
@@ -47,8 +32,6 @@ export class LocalAPIClient
     @Inject()
     queryResultsDeserializer: IQueryResultsDeserializer
 
-    clientIframe: HTMLIFrameElement
-
     webListenerStarted = false;
 
     lastConnectionReadyCheckMap: Map<string, Map<string, boolean>> = new Map()
@@ -58,10 +41,6 @@ export class LocalAPIClient
     clientSubjectCache: IClientSubjectCache = new ClientSubjectCache()
 
     pendingWebMessageMap: Map<string, IRequestRecord> = new Map();
-
-    messageCallback: (
-        message: any
-    ) => void
 
     init() {
         if (_inWebMode) {
@@ -98,7 +77,7 @@ export class LocalAPIClient
         this.airMessageUtils.prepMessageToSend(message)
 
         if (_inWebMode) {
-            this.clientIframe.contentWindow.postMessage(message, _webServer)
+            window.postMessage(message, _webServer)
         } else {
             throw new Error('Not Implemented')
         }
@@ -107,22 +86,11 @@ export class LocalAPIClient
     }
 
     private initializeForWeb() {
-        const htmlElements = document.getElementsByName('AIRportClient') as any;
-
-        if (htmlElements.length) {
-            this.clientIframe = htmlElements[0]
-        } else {
-            this.clientIframe = document.createElement('iframe')
-            this.clientIframe.src = _webServer + '/client/index.html'
-            this.clientIframe.name = 'AIRportClient'
-            this.clientIframe.style.display = 'none'
-            document.body.appendChild(this.clientIframe)
-        }
-
         window.addEventListener("message", event => {
             const message: IMessage = event.data
 
-            if (!this.airMessageUtils.validateIncomingMessage(message)) {
+            if (!this.airMessageUtils.validateUiBoundMessage(message)
+                || !this.airMessageUtils.validateIncomingMessage(message)) {
                 return
             }
 
@@ -138,10 +106,6 @@ export class LocalAPIClient
                     break
                 default:
                     return
-            }
-
-            if (this.messageCallback) {
-                this.messageCallback(message)
             }
 
             switch (message.typeGroup) {
@@ -207,12 +171,6 @@ export class LocalAPIClient
         if (requestWebMessage) {
             requestWebMessage.resolve(message)
         }
-    }
-
-    onMessage(callback: (
-        message: any
-    ) => void) {
-        this.messageCallback = callback
     }
 
     invokeApiMethod<ReturnType = any>(

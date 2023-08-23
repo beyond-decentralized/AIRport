@@ -64,8 +64,4 @@ export interface ITransactionalConnector {
 		context?: IContext,
 	): Promise<number>
 
-	onMessage(callback: (
-		message: any
-	) => void)
-
 }

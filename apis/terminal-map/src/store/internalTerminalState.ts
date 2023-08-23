@@ -66,7 +66,6 @@ globalThis.internalTerminalState = new BehaviorSubject<ITerminalState>({
         domainPrefix: '',
         localDomain: '',
         mainDomainFragments: [],
-        onClientMessageCallback: null,
         pendingInterAppApiCallMessageMap: new Map(),
         subscriptionMap: new Map()
     }

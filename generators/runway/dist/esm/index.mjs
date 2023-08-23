@@ -8437,6 +8437,15 @@ ${JSON.stringify(message, null, 2)}
         this.markMessageAsReceived(message);
         return true;
     }
+    validateUiBoundMessage(message) {
+        if (message.destination.domain !== location.host) {
+            return false;
+        }
+        if (message.destination.type !== Message_OriginOrDestination_Type.USER_INTERFACE) {
+            return false;
+        }
+        return true;
+    }
     validateApplicationInfo(message) {
         this.validateDomainAndApplication(message, message.origin, 'origin');
         this.validateDomainAndApplication(message, message.destination, 'destination');
@@ -12147,7 +12156,6 @@ globalThis.internalTerminalState = new BehaviorSubject({
         domainPrefix: '',
         localDomain: '',
         mainDomainFragments: [],
-        onClientMessageCallback: null,
         pendingInterAppApiCallMessageMap: new Map(),
         subscriptionMap: new Map()
     }
@@ -36477,9 +36485,6 @@ they are internal to the AIRport framework).`);
             internal: true,
             ...context
         });
-    }
-    onMessage(callback) {
-        // Nothing to do, onMessage callback was added for demo purposes for Web implementations
     }
 }
 function injectTransactionalConnector() {

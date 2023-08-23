@@ -111,10 +111,6 @@ export class WebTransactionalReceiver
 
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		if (webReciever.onClientMessageCallback) {
-			webReciever.onClientMessageCallback(message)
-		}
-
 		if ((message as IMessage as IInternalMessage).type === INTERNAL_Message_Type.IS_CONNECTION_READY) {
 			this.ensureConnectionIsReady(message).then()
 			return;
@@ -139,10 +135,6 @@ export class WebTransactionalReceiver
 		messageOrigin: string
 	): void {
 		const webReciever = this.terminalStore.getWebReceiver()
-
-		if (webReciever.onClientMessageCallback) {
-			webReciever.onClientMessageCallback(message)
-		}
 
 		switch (message.direction) {
 			case Message_Direction.REQUEST:
@@ -277,13 +269,6 @@ export class WebTransactionalReceiver
 			}
 		}
 		this.sendMessageReply(toClientRedirectedMessage)
-	}
-
-	onMessage(callback: (
-		message: any
-	) => void) {
-		const webReciever = this.terminalStore.getWebReceiver()
-		webReciever.onClientMessageCallback = callback
 	}
 
 	protected async nativeStartApiCall(

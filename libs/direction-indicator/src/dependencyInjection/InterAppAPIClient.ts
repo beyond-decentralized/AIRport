@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs'
 import { IFullDITokenDescriptor } from "./interfaces/Token";
 
-export interface IInterAppAPIClient {
+export interface IApiClient {
 
     invokeApiMethod<ReturnValue>(
         token: IFullDITokenDescriptor,

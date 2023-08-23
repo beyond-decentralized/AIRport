@@ -4,7 +4,6 @@ import { loadUiPressurisation } from '@airport/pressurization'
 import { AutopilotApiLoader } from './api/AutopilotApiLoader'
 import { LocalAPIClient } from './LocalAPIClient'
 import { UiStateManager } from './UiStateManager'
-import { ClientSubjectCache } from './ClientSubjectCache'
 
 export * from './ApiClientSubject'
 export * from './ClientSubjectCache'

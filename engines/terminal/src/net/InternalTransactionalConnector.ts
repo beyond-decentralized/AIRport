@@ -158,12 +158,6 @@ they are internal to the AIRport framework).`)
         })
     }
 
-    onMessage(callback: (
-        message: any
-    ) => void) {
-        // Nothing to do, onMessage callback was added for demo purposes for Web implementations
-    }
-
 }
 
 export function injectTransactionalConnector(): void {

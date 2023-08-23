@@ -326,12 +326,6 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	onMessage(callback: (
-		message: any
-	) => void) {
-		this.applicationStore.state.messageCallback = callback
-	}
-
 	private handleInternalMessage(
 		message: IInitializeConnectionMessage
 			| IGetLatestApplicationVersionByDbApplication_NameMessage

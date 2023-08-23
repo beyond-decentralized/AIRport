@@ -20,9 +20,6 @@ export interface IWebReceiverState {
 	domainPrefix: string
 	localDomain: string
 	mainDomainFragments: string[]
-	onClientMessageCallback: (
-		message: any
-	) => void
 	pendingInterAppApiCallMessageMap: Map<Message_Id, IMessageInRecord>
 	subscriptionMap: Map<DbApplication_FullName, Map<SubscriptionId, {
 		lastActive: TimeStamp

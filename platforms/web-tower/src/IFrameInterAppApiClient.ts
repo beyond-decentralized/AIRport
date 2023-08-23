@@ -1,5 +1,5 @@
 import {
-    IInterAppAPIClient,
+    IApiClient,
     Inject,
     Injected
 } from '@airport/direction-indicator'
@@ -29,7 +29,7 @@ const _inWebMode = true
 
 @Injected()
 export class IFrameInterAppAPIClient
-    implements IInterAppAPIClient {
+    implements IApiClient {
 
     @Inject()
     applicationStore: IApplicationStore

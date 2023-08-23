@@ -33,6 +33,10 @@ export interface IAirMessageUtils {
         message: IMessage
     ): boolean
 
+    validateUiBoundMessage(
+        message: IMessage
+    ): boolean
+
 }
 
 @Injected()
@@ -131,6 +135,19 @@ ${JSON.stringify(message, null, 2)}
         return true
     }
 
+    validateUiBoundMessage(
+        message: IMessage
+    ): boolean {
+        if (message.destination.domain !== location.host) {
+            return false
+        }
+        if(message.destination.type !== Message_OriginOrDestination_Type.USER_INTERFACE) {
+            return false
+        }
+
+        return true
+    }
+
     private validateApplicationInfo(
         message: IMessage
     ): void {
@@ -144,21 +161,22 @@ ${JSON.stringify(message, null, 2)}
             message.destination,
             'destination'
         );
+
         switch (message.origin.type) {
             case Message_OriginOrDestination_Type.APPLICATION: {
-                this.validateApplicationMessageType(message);
+                this.validateApplicationMessageType(message)
                 break;
             }
             case Message_OriginOrDestination_Type.DATABASE: {
-                this.validateDatabaseMessageType(message);
+                this.validateDatabaseMessageType(message)
                 break;
             }
             case Message_OriginOrDestination_Type.FRAMEWORK: {
-                this.validateFrameworkMessageType(message);
+                this.validateFrameworkMessageType(message)
                 break;
             }
             case Message_OriginOrDestination_Type.USER_INTERFACE: {
-                this.validateUiMessageType(message);
+                this.validateUiMessageType(message)
                 break;
             }
         }

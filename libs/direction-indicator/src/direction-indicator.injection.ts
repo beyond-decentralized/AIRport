@@ -1,7 +1,7 @@
 import { IAutopilotApiLoader } from "./autopilot/IAutopilotApiLoader";
 import { ContainerAccessor } from "./dependencyInjection/ContainerAccessor";
 import { lib } from "./dependencyInjection/InjectionApplication";
-import { IInterAppAPIClient } from "./dependencyInjection/InterAppAPIClient";
+import { IApiClient } from "./dependencyInjection/InterAppAPIClient";
 
 const directionIndicator = lib('direction-indicator')
 directionIndicator.register(ContainerAccessor)
@@ -21,5 +21,5 @@ globalThis.SERIALIZATION_STATE_MANAGER = pressurization.token('SerializationStat
 const autopilot = lib('autopilot')
 export const AUTOPILOT_API_LOADER = autopilot.token<IAutopilotApiLoader>('AutopilotApiLoader')
 globalThis.AUTOPILOT_API_LOADER = AUTOPILOT_API_LOADER
-export const API_CLIENT = autopilot.token<IInterAppAPIClient>('InterAppAPIClient')
+export const API_CLIENT = autopilot.token<IApiClient>('InterAppAPIClient')
 globalThis.API_CLIENT = API_CLIENT
