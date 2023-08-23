@@ -167,8 +167,14 @@ export class LocalAPIClient
     private resolveRequestMessage(
         message: IMessage
     ): void {
-        let requestWebMessage = this.pendingWebMessageMap.get(message.id)
-        if (requestWebMessage) {
+        const requestWebMessage = this.pendingWebMessageMap.get(message.id)
+        if (!requestWebMessage) {
+            console.log(`Did not find pending request Promise for Message Id: ${message.id}`)
+            return;
+        }
+        if (message.errorMessage) {
+            requestWebMessage.reject(message.errorMessage)
+        } else {
             requestWebMessage.resolve(message)
         }
     }
@@ -361,9 +367,6 @@ export class LocalAPIClient
     private async sendWebRequest(
         request: IApiCallRequestMessage
     ): Promise<IApiCallResponseMessage> {
-        if (!this.webListenerStarted) {
-            this.startWebListener()
-        }
         const returnValue = new Promise<IApiCallResponseMessage>((resolve, reject) => {
             this.pendingWebMessageMap.set(request.id, {
                 request,
@@ -375,33 +378,6 @@ export class LocalAPIClient
         this.sendMessage(request)
 
         return returnValue
-    }
-
-    private startWebListener() {
-        window.addEventListener("message", event => {
-            this.handleWebResponse(event.data);
-        })
-    }
-
-    private handleWebResponse(
-        response: IApiCallResponseMessage
-    ) {
-        if (response.destination.domain !== window.location.host) {
-            return
-        }
-        if (response.destination.type !== Message_OriginOrDestination_Type.USER_INTERFACE) {
-            return
-        }
-        const pendingRequest = this.pendingWebMessageMap.get(response.id)
-        if (!pendingRequest) {
-            return
-        }
-
-        if (response.errorMessage) {
-            pendingRequest.reject(response.errorMessage)
-        } else {
-            pendingRequest.resolve(response)
-        }
     }
 
 }
