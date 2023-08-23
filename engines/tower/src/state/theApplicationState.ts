@@ -14,5 +14,4 @@ export const applicationState: IApplicationState = {
     mainDomain: null,
     clientSubjectCache: new ClientSubjectCache(),
     pendingMessageMap: new Map(),
-    messageCallback: null,
 }

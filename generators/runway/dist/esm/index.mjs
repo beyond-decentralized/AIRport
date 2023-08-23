@@ -41798,7 +41798,6 @@ const applicationState = {
     mainDomain: null,
     clientSubjectCache: new ClientSubjectCache(),
     pendingMessageMap: new Map(),
-    messageCallback: null,
 };
 
 class ApplicationStore {

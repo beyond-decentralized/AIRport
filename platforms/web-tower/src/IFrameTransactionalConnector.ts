@@ -144,10 +144,6 @@ export class IframeTransactionalConnector
 			return
 		}
 
-		if (this.applicationStore.state.messageCallback) {
-			this.applicationStore.state.messageCallback(message)
-		}
-
 		switch (message.typeGroup) {
 			case Message_Type_Group.API: {
 				await this.handleApiRequest(message as IApiCallRequestMessage, origin)
@@ -424,10 +420,7 @@ ${subscriptionId}
 				// for the Unsubscribe operation
 				break
 			}
-			// case SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA: {
-			// 	// Handled by LocalAPIClient
-			// 	break
-			// }
+			case SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA:
 			case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
 			case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBTION_DATA: {
 				const observableRequestSubject = this.applicationStore.state

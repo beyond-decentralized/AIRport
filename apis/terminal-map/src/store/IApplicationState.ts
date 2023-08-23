@@ -37,8 +37,4 @@ export interface IApplicationState {
     mainDomain: string
     clientSubjectCache: IClientSubjectCache
     pendingMessageMap: Map<Message_Id, IMessageInRecord>
-
-    messageCallback: (
-        message: any
-    ) => void
 }
