@@ -96,13 +96,13 @@ export class LocalAPIClient
 
             switch (message.origin.type) {
                 case Message_OriginOrDestination_Type.APPLICATION:
-                case Message_OriginOrDestination_Type.USER_INTERFACE:
+                case Message_OriginOrDestination_Type.FRAMEWORK:
                     break
                 default:
                     return
             }
             switch (message.destination.type) {
-                case Message_OriginOrDestination_Type.APPLICATION:
+                case Message_OriginOrDestination_Type.USER_INTERFACE:
                     break
                 default:
                     return
