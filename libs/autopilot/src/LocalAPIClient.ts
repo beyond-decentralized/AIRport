@@ -172,6 +172,7 @@ export class LocalAPIClient
             console.log(`Did not find pending request Promise for Message Id: ${message.id}`)
             return;
         }
+        this.pendingWebMessageMap.delete(message.id)
         if (message.errorMessage) {
             requestWebMessage.reject(message.errorMessage)
         } else {
