@@ -14,7 +14,6 @@
     "@airport/terminal": "workspace:../../engines/terminal",
     "@airport/terminal-map": "workspace:../../apis/terminal-map",
     "@airport/tower": "workspace:../../engines/tower",
-    "broadcast-channel": "workspace:../../../node_modules/broadcast-channel",
     "rxjs": "workspace:../../../node_modules/rxjs"
   },
   "devDependencies": {

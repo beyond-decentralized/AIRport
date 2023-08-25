@@ -94,6 +94,11 @@ export class LocalAPIClient
                 return
             }
 
+            if (message.direction !== Message_Direction.RESPONSE) {
+                console.error(`Invalid message direction ${message.direction}`)
+                return
+            }
+
             switch (message.origin.type) {
                 case Message_OriginOrDestination_Type.APPLICATION:
                 case Message_OriginOrDestination_Type.FRAMEWORK:

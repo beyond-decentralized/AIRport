@@ -18,7 +18,6 @@
     "@airport/terminal-map": "workspace:../../apis/terminal-map",
     "@airport/tower": "workspace:../../engines/tower",
     "@airport/travel-document-checkpoint": "workspace:../../schemas/travel-document-checkpoint",
-    "broadcast-channel": "../../../node_modules/broadcast-channel",
     "rxjs": "workspace:../../../node_modules/rxjs",
     "uuid": "workspace:../../../node_modules/uuid"
   },

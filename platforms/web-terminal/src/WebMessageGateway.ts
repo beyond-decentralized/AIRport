@@ -1,4 +1,4 @@
-import { IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IInternalMessage, IMessage, IObservableApiCallResponseMessage, ISubscriptionMessage } from '@airport/aviation-communication';
+import { IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IInternalMessage, IMessage, IObservableApiCallResponseMessage, ISubscriptionMessage, Message_OriginOrDestination_Type } from '@airport/aviation-communication';
 import {
     Inject,
     Injected,
@@ -12,9 +12,6 @@ import {
     ITransactionalReceiver,
     TerminalStore
 } from "@airport/terminal-map";
-import {
-    BroadcastChannel as SoftBroadcastChannel
-} from 'broadcast-channel';
 
 export interface IWebMessageGateway {
 
@@ -49,48 +46,35 @@ export class WebMessageGateway
     @Inject()
     transactionalReceiver: ITransactionalReceiver
 
-    communicationChannel: SoftBroadcastChannel
-    isNativeBroadcastChannel: boolean
-
     init() {
-        this.isNativeBroadcastChannel = typeof BroadcastChannel === 'function'
-        const createChannel = () => {
-            this.communicationChannel = new SoftBroadcastChannel('clientCommunication', {
-                idb: {
-                    onclose: () => {
-                        // the onclose event is just the IndexedDB closing.
-                        // you should also close the channel before creating
-                        // a new one.
-                        this.communicationChannel.close();
-                        createChannel();
-                    },
-                },
-            });
-
-            this.communicationChannel.onmessage = (
-                message: IApiCallRequestMessage
-            ) => {
-                if (!this.airMessageUtils.validateIncomingMessage(message)) {
-                    return
-                }
-                this.transactionalReceiver.handleClientRequest(message)
-            };
-        }
-
-        // createChannel()
 
         window.addEventListener("message", event => {
             const message: IMessage | IApiCallRequestMessage = event.data
             if (!this.airMessageUtils.validateIncomingMessage(message)) {
                 return
             }
-            this.transactionalReceiver.handleAppRequest(
-                message, event.origin)
+
+            switch (message.origin.type) {
+                case Message_OriginOrDestination_Type.USER_INTERFACE: {
+                    this.transactionalReceiver.handleClientRequest(message as IApiCallRequestMessage)
+                    break
+                }
+                case Message_OriginOrDestination_Type.APPLICATION: {
+                    this.transactionalReceiver.handleAppRequest(message, event.origin)
+                    break
+                }
+                case Message_OriginOrDestination_Type.DATABASE:
+                case Message_OriginOrDestination_Type.FRAMEWORK:
+                default: {
+                    console.error(`Unexpected message origin type: ${message.origin.type}`)
+                    break
+                }
+            }
         }, false)
     }
 
-    needMessageSerialization(): boolean {
-        return !this.isNativeBroadcastChannel
+    needMessageSerialization() {
+        return false
     }
 
     sendMessageToApp(
@@ -106,7 +90,7 @@ export class WebMessageGateway
 
         this.airMessageUtils.prepMessageToSend(message)
 
-        window.postMessage(message, '*')
+        window.postMessage(message, message.destination.domain)
     }
 
     sendMessageToClient(
@@ -115,7 +99,7 @@ export class WebMessageGateway
     ): void {
         this.airMessageUtils.prepMessageToSend(message)
 
-        this.communicationChannel.postMessage(message)
+        window.postMessage(message, message.destination.domain)
     }
 
     private getFrameWindow(

@@ -103,17 +103,14 @@ export class WebTransactionalReceiver
 	handleClientRequest(
 		message: IApiCallRequestMessage
 	): void {
-
 		if (this.webMessageGateway.needMessageSerialization()) {
 			throw new Error("Deserialization is not yet implemented.")
 			// FIXME: deserialize message
 		}
 
-		const webReciever = this.terminalStore.getWebReceiver()
-
 		if ((message as IMessage as IInternalMessage).type === INTERNAL_Message_Type.IS_CONNECTION_READY) {
 			this.ensureConnectionIsReady(message).then()
-			return;
+			return
 		}
 
 		const fromClientRedirectedMessage: IApiCallRequestMessage = {
@@ -128,6 +125,7 @@ export class WebTransactionalReceiver
 			| IApiCallResponseMessage
 			| IGetLatestApplicationVersionByDbApplication_NameMessage
 			| IInitializeConnectionMessage
+			| ISubscriptionMessage
 			| IPortableQueryMessage
 			| IReadQueryMessage
 			| IRetrieveDomainMessage
@@ -147,6 +145,7 @@ export class WebTransactionalReceiver
 				} else {
 					this.handleRequestMessage(message as
 						IApiCallRequestMessage
+						| ISubscriptionMessage
 						| IPortableQueryMessage
 						| IReadQueryMessage
 						| ISaveMessage<any>,
@@ -158,6 +157,7 @@ export class WebTransactionalReceiver
 					messageOrigin, webReciever).then()
 				break
 			default:
+				console.error(`Unexpected message direction ${message.direction}`)
 				break
 		}
 	}
@@ -587,7 +587,7 @@ export class WebTransactionalReceiver
 
 	private async handleRequestMessage(
 		message: IApiCallRequestMessage
-			| IObservableApiCallRequestMessage
+			| ISubscriptionMessage
 			| IPortableQueryMessage
 			| IReadQueryMessage
 			| ISaveMessage<any>,
@@ -608,13 +608,13 @@ export class WebTransactionalReceiver
 				break
 			}
 			case Message_Type_Group.CRUD: {
-				response = await this.processRequesMessage(message as IPortableQueryMessage
+				response = await this.processCRUDMessage(message as IPortableQueryMessage
 					| IReadQueryMessage
 					| ISaveMessage<any>)
 				break
 			}
 			case Message_Type_Group.SUBSCRIPTION: {
-				const result = await this.handleSubscriptionRequestMessage(message as IObservableApiCallRequestMessage)
+				const result = await this.handleSubscriptionRequestMessage(message as ISubscriptionMessage)
 				isFrameworkObservableCall = result.isFrameworkObservableCall
 				response = result.response
 				break
@@ -647,7 +647,7 @@ Unexpected message typeGroup:
 	}
 
 	private async handleSubscriptionRequestMessage(
-		message: IObservableApiCallRequestMessage
+		message: ISubscriptionMessage
 	): Promise<{
 		isFrameworkObservableCall: boolean,
 		response: any
@@ -660,7 +660,7 @@ Unexpected message typeGroup:
 		switch (message.type) {
 			case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
 			case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
-				const observableApiResult = await this.handleApiSubscribeOrUnsubscribe(message)
+				const observableApiResult = await this.handleApiSubscribeOrUnsubscribe(message as IObservableApiCallRequestMessage)
 				isFrameworkObservableCall = observableApiResult.isFrameworkObservableCall
 				response = observableApiResult.response
 				break
@@ -693,7 +693,7 @@ Unexpected message typeGroup:
 				break
 			}
 			default: {
-				response = await this.processRequesMessage(message as ISubscriptionMessage)
+				response = await this.processSubscriptionMessage(message as ISubscriptionMessage)
 				break
 			}
 		}
@@ -705,10 +705,7 @@ Unexpected message typeGroup:
 	}
 
 	private async handleApiSubscribeOrUnsubscribe(
-		message: IApiCallRequestMessage
-			| IPortableQueryMessage
-			| IReadQueryMessage
-			| ISaveMessage<any>
+		message: IObservableApiCallRequestMessage
 	): Promise<{
 		isFrameworkObservableCall: boolean,
 		response: Observable<any>
@@ -720,7 +717,7 @@ Unexpected message typeGroup:
 			isObservableApiCall: this.airMessageUtils.isObservableMessage(message),
 			startedAt: new Date()
 		}
-		const startDescriptor = await this.nativeStartApiCall(message as IApiCallRequestMessage, context);
+		const startDescriptor = await this.nativeStartApiCall(message, context);
 		if (!startDescriptor.isStarted) {
 			console.error(context.errorMessage)
 			return {
@@ -731,7 +728,7 @@ Unexpected message typeGroup:
 
 		isFrameworkObservableCall = startDescriptor.isFramework
 		if (isFrameworkObservableCall) {
-			const apiCallResult = await this.callFrameworkApi(message as IApiCallRequestMessage, context)
+			const apiCallResult = await this.callFrameworkApi(message, context)
 
 			if (apiCallResult.errorMessage) {
 				// TODO: send back error messages for (UN)SUBSCRIBE messages

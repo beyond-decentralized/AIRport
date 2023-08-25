@@ -1,8 +1,7 @@
 {
   "dependencies": {
     "@airport/aviation-communication": "workspace:../../apis/aviation-communication",
-    "@airport/pressurization": "workspace:../pressurization",
-    "broadcast-channel": "workspace:../../../node_modules/broadcast-channel"
+    "@airport/pressurization": "workspace:../pressurization"
   },
   "devDependencies": {
     "@airport/taxiway": "workspace:../../generators/taxiway",

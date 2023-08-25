@@ -76,36 +76,21 @@ export abstract class TransactionalReceiver {
         _localId: number
     } = {} as any
 
-    async processRequesMessage(
+    async processCRUDMessage(
         message: IPortableQueryMessage
             | IReadQueryMessage
             | ISaveMessage<any>
-            | ISubscriptionMessage
     ): Promise<IResponseMessage> {
         let result: any
         let errorMessage
         try {
-            const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.destination.domain)
-            if (isInternalDomain) {
-                throw new Error(`Internal domains cannot be used in external calls`)
-            }
-            let credentials: ICredentials = {
-                application: message.origin.app,
-                domain: message.origin.domain
-            }
-            let context: IContext = {}
-            context.startedAt = new Date()
-            context.credentials = credentials
+            let context = await this.getProcessingContext(message)
             const {
                 theErrorMessage,
                 theResult
-            } = await this.doProcessRequestMessage(
-                message as IMessage as IPortableQueryMessage
-                | IReadQueryMessage
-                | ISaveMessage<any>
-                | ISubscriptionMessage,
-                credentials,
+            } = await this.doProcessCRUDRequestMessage(
+                message,
+                context.credentials,
                 context
             )
             errorMessage = theErrorMessage
@@ -115,26 +100,34 @@ export abstract class TransactionalReceiver {
             result = null
             errorMessage = error.message
         }
-        const messageCopy = {
-            ...message,
-            destination: {
-                app: message.origin.app,
-                domain: message.origin.domain,
-                protocol: message.origin.protocol,
-                type: message.origin.type
-            },
-            errorMessage,
-            messageLeg: Message_Leg.FROM_HUB,
-            // origin: {
-            //     app: message.destination.app,
-            //     domain: message.destination.domain,
-            //     protocol: message.destination.protocol,
-            //     type: message.destination.type
-            // },
-            returnedValue: result,
-        } as IResponseMessage
 
-        return messageCopy
+        return this.getMessageResponseCopy(message, result, errorMessage)
+    }
+
+    async processSubscriptionMessage(
+        message: ISubscriptionMessage
+    ): Promise<IResponseMessage> {
+        let result: any
+        let errorMessage
+        try {
+            let context = await this.getProcessingContext(message)
+            const {
+                theErrorMessage,
+                theResult
+            } = await this.doProcessSubscriptionRequestMessage(
+                message,
+                context.credentials,
+                context
+            )
+            errorMessage = theErrorMessage
+            result = theResult
+        } catch (error) {
+            console.error(error)
+            result = null
+            errorMessage = error.message
+        }
+
+        return this.getMessageResponseCopy(message, result, errorMessage)
     }
 
     async processInternalMessage(
@@ -210,36 +203,6 @@ export abstract class TransactionalReceiver {
         return {
             theErrorMessage,
             theResult,
-        }
-    }
-
-    private async doProcessRequestMessage(
-        message: IPortableQueryMessage
-            | IReadQueryMessage
-            | ISaveMessage<any>
-            | ISubscriptionMessage,
-        credentials: ICredentials,
-        context: IContext
-    ): Promise<{
-        theErrorMessage: string
-        theResult: IApiCallResponseMessage | ISaveMessage<any>
-    }> {
-        switch (message.typeGroup) {
-            case Message_Type_Group.CRUD: {
-                return this.doProcessCRUDRequestMessage(
-                    message as IPortableQueryMessage
-                    | IReadQueryMessage
-                    | ISaveMessage<any>, credentials, context
-                )
-            }
-            case Message_Type_Group.SUBSCRIPTION: {
-                return this.doProcessSubscriptionRequestMessage(
-                    message as ISubscriptionMessage, credentials, context
-                )
-            }
-            default: {
-                throw new Error(`Unexpected message.typeGroup "${message.typeGroup}"`)
-            }
         }
     }
 
@@ -594,6 +557,56 @@ ${fullDbApplication_Name}
         } finally {
             const userSession = await this.terminalSessionManager.getUserSession()
             userSession.currentTransaction = context.transaction
+        }
+    }
+
+    private async getProcessingContext(
+        message: IPortableQueryMessage
+            | IReadQueryMessage
+            | ISaveMessage<any>
+            | ISubscriptionMessage
+    ): Promise<IContext> {
+        const isInternalDomain = await this.appTrackerUtils
+            .isInternalDomain(message.destination.domain)
+        if (isInternalDomain) {
+            throw new Error(`Internal domains cannot be used in external calls`)
+        }
+        let credentials: ICredentials = {
+            application: message.origin.app,
+            domain: message.origin.domain
+        }
+        let context: IContext = {}
+        context.startedAt = new Date()
+        context.credentials = credentials
+
+        return context
+    }
+
+    private getMessageResponseCopy(
+        message: IPortableQueryMessage
+            | IReadQueryMessage
+            | ISaveMessage<any>
+            | ISubscriptionMessage,
+        result: any,
+        errorMessage: string,
+    ): IResponseMessage {
+        return {
+            ...message,
+            destination: {
+                app: message.origin.app,
+                domain: message.origin.domain,
+                protocol: message.origin.protocol,
+                type: message.origin.type
+            },
+            errorMessage,
+            messageLeg: Message_Leg.FROM_HUB,
+            // origin: {
+            //     app: message.destination.app,
+            //     domain: message.destination.domain,
+            //     protocol: message.destination.protocol,
+            //     type: message.destination.type
+            // },
+            returnedValue: result,
         }
     }
 

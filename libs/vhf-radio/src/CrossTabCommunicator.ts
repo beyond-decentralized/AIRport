@@ -1,5 +1,5 @@
 import { AirMessageUtils, IAirMessageUtils, IApiCallResponseMessage, TimeStamp, Message_Type_Group, IInternalMessage, IMessage, ISubscriptionMessage, INTERNAL_Message_Type, SUBSCRIPTION_Message_Type } from '@airport/aviation-communication';
-import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
+// import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
 
 export interface ICrossTabCommunicator {
 
@@ -17,7 +17,7 @@ export class CrossTabCommunicator
 
     isNativeBroadcastChannel: boolean
 
-    communicationChannel: SoftBroadcastChannel
+    // communicationChannel: SoftBroadcastChannel
 
     pendingMessageIdSet: Set<string> = new Set()
     activeSubscriptionIdMap: Map<string, TimeStamp> = new Map()
@@ -112,19 +112,20 @@ export class CrossTabCommunicator
         })
 
         const createChannel = () => {
-            this.communicationChannel = new SoftBroadcastChannel('clientCommunication', {
-                idb: {
-                    onclose: () => {
-                        // the onclose event is just the IndexedDB closing.
-                        // you should also close the channel before creating
-                        // a new one.
-                        this.communicationChannel.close();
-                        createChannel();
-                    },
-                },
-            });
+            // this.communicationChannel = new SoftBroadcastChannel('clientCommunication', {
+            //     idb: {
+            //         onclose: () => {
+            //             // the onclose event is just the IndexedDB closing.
+            //             // you should also close the channel before creating
+            //             // a new one.
+            //             this.communicationChannel.close();
+            //             createChannel();
+            //         },
+            //     },
+            // });
 
-            this.communicationChannel.onmessage = (message: IMessage) => {
+            // this.communicationChannel.
+            const onmessage = (message: IMessage) => {
                 if (!this.clientHost || message.destination.domain !== this.clientHost
                     || message.destination.protocol !== this.clientProtocol) {
                     return
