@@ -18,7 +18,7 @@
       "esnext"
     ],
     "target": "es2015",
-    "module": "CommonJS",
+    "module": "ES2020",
     "moduleResolution": "node",
     "strict": true,
     "preserveConstEnums": true,

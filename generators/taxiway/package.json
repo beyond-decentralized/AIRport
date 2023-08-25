@@ -2,8 +2,16 @@
   "name": "@airport/taxiway",
   "version": "0.0.1",
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "workspace:../../../node_modules/@rollup/plugin-node-resolve",
     "@types/node": "workspace:../../../node_modules/@types/node",
-    "rimraf": "workspace:../../../node_modules/rimraf",
+    "rollup": "workspace:../../../node_modules/rollup",
+    "rollup-plugin-delete": "workspace:../../../node_modules/rollup-plugin-delete",
+    "rollup-plugin-dts": "workspace:../../../node_modules/rollup-plugin-dts",
+    "rollup-plugin-peer-deps-external": "workspace:../../../node_modules/rollup-plugin-peer-deps-external",
+    "rollup-plugin-terser": "workspace:../../../node_modules/rollup-plugin-terser",
+    "rollup-plugin-typescript2": "workspace:../../../node_modules/rollup-plugin-typescript2",
+    "ts-node": "workspace:../../../node_modules/ts-node",
+    "ts-patch": "workspace:../../../node_modules/ts-patch",
     "tslib": "workspace:../../../node_modules/tslib"
   },
   "peerDependencies": {
@@ -14,8 +22,8 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "pnpm clean && tsc ./src/taxiway.index.ts"
+    "dev": "rollup --bundleConfigAsCjs -c ./rollup.config.js -w",
+    "build": "rollup --bundleConfigAsCjs -c ./rollup.config.js"
   },
   "types": "dist/taxiway.index.d.ts"
 }

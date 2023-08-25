@@ -36648,23 +36648,12 @@ class TransactionalReceiver {
     constructor() {
         this.WITH_ID = {};
     }
-    async processRequesMessage(message) {
+    async processCRUDMessage(message) {
         let result;
         let errorMessage;
         try {
-            const isInternalDomain = await this.appTrackerUtils
-                .isInternalDomain(message.destination.domain);
-            if (isInternalDomain) {
-                throw new Error(`Internal domains cannot be used in external calls`);
-            }
-            let credentials = {
-                application: message.origin.app,
-                domain: message.origin.domain
-            };
-            let context = {};
-            context.startedAt = new Date();
-            context.credentials = credentials;
-            const { theErrorMessage, theResult } = await this.doProcessRequestMessage(message, credentials, context);
+            let context = await this.getProcessingContext(message);
+            const { theErrorMessage, theResult } = await this.doProcessCRUDRequestMessage(message, context.credentials, context);
             errorMessage = theErrorMessage;
             result = theResult;
         }
@@ -36673,25 +36662,23 @@ class TransactionalReceiver {
             result = null;
             errorMessage = error.message;
         }
-        const messageCopy = {
-            ...message,
-            destination: {
-                app: message.origin.app,
-                domain: message.origin.domain,
-                protocol: message.origin.protocol,
-                type: message.origin.type
-            },
-            errorMessage,
-            messageLeg: Message_Leg.FROM_HUB,
-            // origin: {
-            //     app: message.destination.app,
-            //     domain: message.destination.domain,
-            //     protocol: message.destination.protocol,
-            //     type: message.destination.type
-            // },
-            returnedValue: result,
-        };
-        return messageCopy;
+        return this.getMessageResponseCopy(message, result, errorMessage);
+    }
+    async processSubscriptionMessage(message) {
+        let result;
+        let errorMessage;
+        try {
+            let context = await this.getProcessingContext(message);
+            const { theErrorMessage, theResult } = await this.doProcessSubscriptionRequestMessage(message, context.credentials, context);
+            errorMessage = theErrorMessage;
+            result = theResult;
+        }
+        catch (error) {
+            console.error(error);
+            result = null;
+            errorMessage = error.message;
+        }
+        return this.getMessageResponseCopy(message, result, errorMessage);
     }
     async processInternalMessage(message) {
         let theErrorMessage = null;
@@ -36752,19 +36739,6 @@ class TransactionalReceiver {
             theErrorMessage,
             theResult,
         };
-    }
-    async doProcessRequestMessage(message, credentials, context) {
-        switch (message.typeGroup) {
-            case Message_Type_Group.CRUD: {
-                return this.doProcessCRUDRequestMessage(message, credentials, context);
-            }
-            case Message_Type_Group.SUBSCRIPTION: {
-                return this.doProcessSubscriptionRequestMessage(message, credentials, context);
-            }
-            default: {
-                throw new Error(`Unexpected message.typeGroup "${message.typeGroup}"`);
-            }
-        }
     }
     async doProcessSubscriptionRequestMessage(message, credentials, context) {
         let theErrorMessage = null;
@@ -37002,6 +36976,41 @@ ${fullDbApplication_Name}
             const userSession = await this.terminalSessionManager.getUserSession();
             userSession.currentTransaction = context.transaction;
         }
+    }
+    async getProcessingContext(message) {
+        const isInternalDomain = await this.appTrackerUtils
+            .isInternalDomain(message.destination.domain);
+        if (isInternalDomain) {
+            throw new Error(`Internal domains cannot be used in external calls`);
+        }
+        let credentials = {
+            application: message.origin.app,
+            domain: message.origin.domain
+        };
+        let context = {};
+        context.startedAt = new Date();
+        context.credentials = credentials;
+        return context;
+    }
+    getMessageResponseCopy(message, result, errorMessage) {
+        return {
+            ...message,
+            destination: {
+                app: message.origin.app,
+                domain: message.origin.domain,
+                protocol: message.origin.protocol,
+                type: message.origin.type
+            },
+            errorMessage,
+            messageLeg: Message_Leg.FROM_HUB,
+            // origin: {
+            //     app: message.destination.app,
+            //     domain: message.destination.domain,
+            //     protocol: message.destination.protocol,
+            //     type: message.destination.type
+            // },
+            returnedValue: result,
+        };
     }
 }
 
