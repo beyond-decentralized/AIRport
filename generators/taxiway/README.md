@@ -11,4 +11,4 @@ at a @airport/terminal.
 Does all necessary TypeScript code modifications before it is compiled into
 runtime bundles. Currently it:
 
-* strips out all decorators that are not needed at runtime.
+* strips out all decorators (not needed at runtime).
