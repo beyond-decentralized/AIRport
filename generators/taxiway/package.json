@@ -2,9 +2,11 @@
   "name": "@airport/taxiway",
   "version": "0.0.1",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "workspace:../../../node_modules/@rollup/plugin-commonjs",
     "@rollup/plugin-node-resolve": "workspace:../../../node_modules/@rollup/plugin-node-resolve",
     "@types/node": "workspace:../../../node_modules/@types/node",
     "rollup": "workspace:../../../node_modules/rollup",
+    "rollup-plugin-copy": "workspace:../../../node_modules/rollup-plugin-copy",
     "rollup-plugin-delete": "workspace:../../../node_modules/rollup-plugin-delete",
     "rollup-plugin-dts": "workspace:../../../node_modules/rollup-plugin-dts",
     "rollup-plugin-peer-deps-external": "workspace:../../../node_modules/rollup-plugin-peer-deps-external",
@@ -22,8 +24,9 @@
     "dist"
   ],
   "scripts": {
-    "dev": "rollup --bundleConfigAsCjs -c ./rollup.config.js -w",
-    "build": "rollup --bundleConfigAsCjs -c ./rollup.config.js"
+    "build": "rollup -c ./rollup.config.mjs",
+    "clean-build": "rollup -c ./rollup.config.mjs --config-clean",
+    "dev": "rollup -c ./rollup.config.mjs -w"
   },
   "types": "dist/taxiway.index.d.ts"
 }

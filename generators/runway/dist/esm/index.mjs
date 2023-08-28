@@ -40771,15 +40771,15 @@ class ClientSubjectCache {
                     }
                     for (const [_serverDomain, requestsForDomain] of requestsByDomainAndApp) {
                         for (const [_serverApplication, requestsForApp] of requestsForDomain) {
-                            const requestFields = requestsForApp[0];
+                            const requestForApp = requestsForApp[0];
                             const subscriptionIds = [];
                             for (const request of requestsForApp) {
                                 subscriptionIds.push(request.requestFields.subscriptionId);
                             }
                             globalThis.MESSAGE_BUS.next({
-                                fullDIDescriptor: requestsForApp[0].fullDIDescriptor,
+                                fullDIDescriptor: requestForApp.fullDIDescriptor,
                                 request: {
-                                    ...requestFields,
+                                    ...requestForApp.requestFields,
                                     subscriptionIds,
                                     id: v4(),
                                     type: SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING,

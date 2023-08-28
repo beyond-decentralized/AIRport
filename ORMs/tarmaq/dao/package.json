@@ -11,18 +11,7 @@
   },
   "devDependencies": {
     "@airport/taxiway": "workspace:../../../generators/taxiway",
-    "@rollup/plugin-commonjs": "workspace:../../../../node_modules/@rollup/plugin-commonjs",
-    "@rollup/plugin-node-resolve": "workspace:../../../../node_modules/@rollup/plugin-node-resolve",
-    "rollup": "workspace:../../../../node_modules/rollup",
-    "rollup-plugin-delete": "workspace:../../../../node_modules/rollup-plugin-delete",
-    "rollup-plugin-dts": "workspace:../../../../node_modules/rollup-plugin-dts",
-    "rollup-plugin-peer-deps-external": "workspace:../../../../node_modules/rollup-plugin-peer-deps-external",
-    "rollup-plugin-terser": "workspace:../../../../node_modules/rollup-plugin-terser",
-    "rollup-plugin-typescript2": "workspace:../../../../node_modules/rollup-plugin-typescript2",
-    "ts-node": "workspace:../../../../node_modules/ts-node",
-    "ts-patch": "workspace:../../../../node_modules/ts-patch",
-    "tslib": "workspace:../../../../node_modules/tslib",
-    "typescript": "workspace:../../../../node_modules/typescript"
+    "rollup": "workspace:../../../../node_modules/rollup"
   },
   "main": "dist/esm/tarmaq.dao.index.mjs",
   "module": "dist/esm/tarmaq.dao.index.mjs",
@@ -30,8 +19,9 @@
     "dist"
   ],
   "scripts": {
-    "dev": "rollup --bundleConfigAsCjs -c ./rollup.config.js -w",
-    "build": "rollup --bundleConfigAsCjs -c ./rollup.config.js"
+    "build": "rollup -c ./rollup.config.mjs",
+    "clean-build": "rollup -c ./rollup.config.mjs --config-clean",
+    "dev": "rollup -c ./rollup.config.mjs -w"
   },
   "types": "dist/esm/tarmaq.dao.index.d.ts"
 }

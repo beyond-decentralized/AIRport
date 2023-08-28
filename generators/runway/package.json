@@ -17,19 +17,12 @@
     "@airport/tower": "workspace:../../engines/tower"
   },
   "peerDependencies": {
+    "@airport/taxiway": "workspace:../../generators/taxiway",
     "typescript": "workspace:../../../node_modules/typescript"
   },
   "devDependencies": {
     "@types/node": "workspace:../../../node_modules/@types/node",
-    "@rollup/plugin-commonjs": "workspace:../../../node_modules/@rollup/plugin-commonjs",
-    "@rollup/plugin-node-resolve": "workspace:../../../node_modules/@rollup/plugin-node-resolve",
-    "rollup": "workspace:../../../node_modules/rollup",
-    "rollup-plugin-delete": "workspace:../../../node_modules/rollup-plugin-delete",
-    "rollup-plugin-dts": "workspace:../../../node_modules/rollup-plugin-dts",
-    "rollup-plugin-peer-deps-external": "workspace:../../../node_modules/rollup-plugin-peer-deps-external",
-    "rollup-plugin-terser": "workspace:../../../node_modules/rollup-plugin-terser",
-    "rollup-plugin-typescript2": "workspace:../../../node_modules/rollup-plugin-typescript2",
-    "tslib": "workspace:../../../node_modules/tslib"
+    "rollup": "workspace:../../../node_modules/rollup"
   },
   "main": "dist/esm/index.mjs",
   "module": "dist/esm/index.mjs",
@@ -37,9 +30,8 @@
     "dist"
   ],
   "scripts": {
-    "prebuild": "node bundleUtils.js internal",
-    "build": "rollup --bundleConfigAsCjs -c ./rollup.config.js",
-    "postbuild": "node bundleUtils.js external"
+    "build": "node bundleUtils.js internal && rollup -c ./rollup.config.mjs && node bundleUtils.js external",
+    "clean-build": "node bundleUtils.js internal && rollup -c ./rollup.config.mjs --config-clean && node bundleUtils.js external"
   },
   "type": "module",
   "types": "dist/esm/index.d.ts"
