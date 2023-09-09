@@ -8356,6 +8356,7 @@ var INTERNAL_Message_Type;
     INTERNAL_Message_Type["GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME"] = "GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME";
     INTERNAL_Message_Type["IS_CONNECTION_READY"] = "IS_CONNECTION_READY";
     INTERNAL_Message_Type["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
+    INTERNAL_Message_Type["UI_URL_CHANGED"] = "UI_URL_CHANGED";
 })(INTERNAL_Message_Type || (INTERNAL_Message_Type = {}));
 var SUBSCRIPTION_Message_Type;
 (function (SUBSCRIPTION_Message_Type) {
@@ -8401,10 +8402,12 @@ ${JSON.stringify(message, null, 2)}
             case Message_Type_Group.SUBSCRIPTION: {
                 switch (message.type) {
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
-                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE: {
                         return true;
-                    default:
+                    }
+                    default: {
                         return false;
+                    }
                 }
             }
             default: {
@@ -8481,11 +8484,13 @@ ${JSON.stringify(message, null, 2)}
                     case CRUD_Message_Type.INSERT_VALUES:
                     case CRUD_Message_Type.INSERT_VALUES_GET_IDS:
                     case CRUD_Message_Type.SAVE:
-                    case CRUD_Message_Type.UPDATE_VALUES:
+                    case CRUD_Message_Type.UPDATE_VALUES: {
                         break;
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${message.type}`, message));
+                    }
                 }
                 break;
             }
@@ -8496,11 +8501,13 @@ ${JSON.stringify(message, null, 2)}
                     case INTERNAL_Message_Type.CONNECTION_IS_READY:
                     case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
                     case INTERNAL_Message_Type.IS_CONNECTION_READY:
-                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
+                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
                         break;
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${message.type}`, message));
+                    }
                 }
                 break;
             }
@@ -8513,11 +8520,13 @@ ${JSON.stringify(message, null, 2)}
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_UNSUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_UNSUBSCRIBE:
-                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING:
+                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
                         break;
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${message.type}`, message));
+                    }
                 }
                 break;
             }
@@ -8537,22 +8546,26 @@ ${JSON.stringify(message, null, 2)}
                     case CRUD_Message_Type.INSERT_VALUES:
                     case CRUD_Message_Type.INSERT_VALUES_GET_IDS:
                     case CRUD_Message_Type.SAVE:
-                    case CRUD_Message_Type.UPDATE_VALUES:
+                    case CRUD_Message_Type.UPDATE_VALUES: {
                         break;
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${message.type}`, message));
+                    }
                 }
                 break;
             }
             case Message_Type_Group.SUBSCRIPTION: {
                 switch (message.type) {
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
-                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBTION_DATA:
+                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBTION_DATA: {
                         break;
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${message.type}`, message));
+                    }
                 }
                 break;
             }
@@ -8571,11 +8584,13 @@ ${JSON.stringify(message, null, 2)}
                     case INTERNAL_Message_Type.CONNECTION_IS_READY:
                     case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
                     case INTERNAL_Message_Type.IS_CONNECTION_READY:
-                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
+                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
                         break;
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${message.type}`, message));
+                    }
                 }
                 break;
             }
@@ -8594,11 +8609,26 @@ ${JSON.stringify(message, null, 2)}
                 switch (message.type) {
                     case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE:
-                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING:
+                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
                         break;
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${message.type}`, message));
+                    }
+                }
+                break;
+            }
+            case Message_Type_Group.INTERNAL: {
+                switch (message.type) {
+                    case INTERNAL_Message_Type.IS_CONNECTION_READY:
+                    case INTERNAL_Message_Type.UI_URL_CHANGED: {
+                        break;
+                    }
+                    default: {
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${message.type}`, message));
+                    }
                 }
                 break;
             }
@@ -12087,6 +12117,7 @@ class TerminalStore {
         this.getSequenceGenerator = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.sequenceGenerator);
         this.getTerminal = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.terminal);
         this.getTransactionManager = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.transactionManager);
+        this.getUI = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.ui);
         this.getWebReceiver = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.webReceiver);
     }
     tearDown() {
@@ -12151,6 +12182,9 @@ globalThis.internalTerminalState = new BehaviorSubject({
         pendingTransactionQueue: [],
         rootTransactionInProgressMap: new Map(),
         transactionInProgressMap: new Map()
+    },
+    ui: {
+        currentUrl: ''
     },
     webReceiver: {
         domainPrefix: '',
@@ -36681,7 +36715,7 @@ class TransactionalReceiver {
         return this.getMessageResponseCopy(message, result, errorMessage);
     }
     async processInternalMessage(message) {
-        let theErrorMessage = null;
+        let theErrorMessage = undefined;
         let theResult = null;
         switch (message.type) {
             case INTERNAL_Message_Type.APP_INITIALIZING:
@@ -36726,6 +36760,19 @@ class TransactionalReceiver {
             case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
                 theResult = this.terminalStore.getDomainMapByName()
                     .get(message.origin.app);
+                break;
+            }
+            case INTERNAL_Message_Type.UI_URL_CHANGED: {
+                this.terminalStore.state.subscribe(state => {
+                    this.terminalStore.state.next({
+                        ...state,
+                        ui: {
+                            ...state.ui,
+                            currentUrl: message.newUrl
+                        }
+                    });
+                }).unsubscribe();
+                theResult = undefined;
                 break;
             }
             default: {

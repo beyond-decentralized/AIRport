@@ -27,6 +27,12 @@ export interface IWebReceiverState {
 	}>>
 }
 
+export type UIState_CurrentURL = string
+
+export interface IUIState {
+	currentUrl: UIState_CurrentURL
+}
+
 export interface InternalConnectorState {
 	dbName: string
 	internalCredentials: IApiCredentials
@@ -67,6 +73,7 @@ export interface ITerminalState<FM extends IFieldMapped = IFieldMapped> {
 	sequenceGenerator: ISequenceGeneratorState
 	terminal: ITerminal
 	transactionManager: ITransactionManagerState
+	ui: IUIState
 	webReceiver: IWebReceiverState
 
 }

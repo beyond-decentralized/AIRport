@@ -1,5 +1,5 @@
 
-import { AirEntityUtils, AirMessageUtils } from '@airport/aviation-communication'
+import { AirEntityUtils, AirMessageUtils, INTERNAL_Message_Type, IUrlChangeMessage } from '@airport/aviation-communication'
 import { loadUiPressurisation } from '@airport/pressurization'
 import { AutopilotApiLoader } from './api/AutopilotApiLoader'
 import { LocalAPIClient } from './LocalAPIClient'
@@ -58,6 +58,28 @@ export function loadUiAutopilot() {
         },
         getSync() {
             return airEntityUtils
+        }
+    }
+
+    const request: IUrlChangeMessage = this.getInternalMessage(INTERNAL_Message_Type.UI_URL_CHANGED)
+    let currentUrl: string
+    const history = window.history
+    const pushState = history.pushState
+    history.pushState = (state, ...args) => {
+        if (typeof (history as any).onpushstate == "function") {
+            (history as any).onpushstate({ state: state });
+        }
+        pushState.call(history, state, ...args)
+
+        if (currentUrl === args[1]) {
+            return
+        }
+        currentUrl = args[1].toString()
+        request.newUrl = currentUrl
+        try {
+            apiClient.sendMessage(request)
+        } catch (e) {
+            console.error(e)
         }
     }
 }

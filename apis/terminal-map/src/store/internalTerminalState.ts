@@ -62,6 +62,9 @@ globalThis.internalTerminalState = new BehaviorSubject<ITerminalState>({
         rootTransactionInProgressMap: new Map(),
         transactionInProgressMap: new Map()
     },
+    ui: {
+        currentUrl: ''
+    },
     webReceiver: {
         domainPrefix: '',
         localDomain: '',

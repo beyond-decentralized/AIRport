@@ -82,10 +82,12 @@ ${JSON.stringify(message, null, 2)}
             case Message_Type_Group.SUBSCRIPTION: {
                 switch ((message as ISubscriptionMessage).type) {
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
-                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE: {
                         return true
-                    default:
+                    }
+                    default: {
                         return false
+                    }
                 }
             }
             default: {
@@ -141,7 +143,7 @@ ${JSON.stringify(message, null, 2)}
         if (message.destination.domain !== location.host) {
             return false
         }
-        if(message.destination.type !== Message_OriginOrDestination_Type.USER_INTERFACE) {
+        if (message.destination.type !== Message_OriginOrDestination_Type.USER_INTERFACE) {
             return false
         }
 
@@ -165,19 +167,19 @@ ${JSON.stringify(message, null, 2)}
         switch (message.origin.type) {
             case Message_OriginOrDestination_Type.APPLICATION: {
                 this.validateApplicationMessageType(message)
-                break;
+                break
             }
             case Message_OriginOrDestination_Type.DATABASE: {
                 this.validateDatabaseMessageType(message)
-                break;
+                break
             }
             case Message_OriginOrDestination_Type.FRAMEWORK: {
                 this.validateFrameworkMessageType(message)
-                break;
+                break
             }
             case Message_OriginOrDestination_Type.USER_INTERFACE: {
                 this.validateUiMessageType(message)
-                break;
+                break
             }
         }
     }
@@ -197,11 +199,13 @@ ${JSON.stringify(message, null, 2)}
                     case CRUD_Message_Type.INSERT_VALUES:
                     case CRUD_Message_Type.INSERT_VALUES_GET_IDS:
                     case CRUD_Message_Type.SAVE:
-                    case CRUD_Message_Type.UPDATE_VALUES:
+                    case CRUD_Message_Type.UPDATE_VALUES: {
                         break
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${(message as ISubscriptionMessage).type}`, message))
+                    }
                 }
                 break
             }
@@ -212,11 +216,13 @@ ${JSON.stringify(message, null, 2)}
                     case INTERNAL_Message_Type.CONNECTION_IS_READY:
                     case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
                     case INTERNAL_Message_Type.IS_CONNECTION_READY:
-                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
+                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
                         break
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${(message as ISubscriptionMessage).type}`, message))
+                    }
                 }
                 break
             }
@@ -229,11 +235,13 @@ ${JSON.stringify(message, null, 2)}
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_UNSUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_UNSUBSCRIBE:
-                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING:
+                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
                         break
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${(message as ISubscriptionMessage).type}`, message))
+                    }
                 }
                 break
             }
@@ -256,22 +264,26 @@ ${JSON.stringify(message, null, 2)}
                     case CRUD_Message_Type.INSERT_VALUES:
                     case CRUD_Message_Type.INSERT_VALUES_GET_IDS:
                     case CRUD_Message_Type.SAVE:
-                    case CRUD_Message_Type.UPDATE_VALUES:
+                    case CRUD_Message_Type.UPDATE_VALUES: {
                         break
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${(message as ISubscriptionMessage).type}`, message))
+                    }
                 }
                 break
             }
             case Message_Type_Group.SUBSCRIPTION: {
                 switch ((message as ISubscriptionMessage).type) {
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
-                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBTION_DATA:
+                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBTION_DATA: {
                         break
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${(message as ISubscriptionMessage).type}`, message))
+                    }
                 }
                 break
             }
@@ -293,11 +305,13 @@ ${JSON.stringify(message, null, 2)}
                     case INTERNAL_Message_Type.CONNECTION_IS_READY:
                     case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
                     case INTERNAL_Message_Type.IS_CONNECTION_READY:
-                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
+                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
                         break
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${(message as ISubscriptionMessage).type}`, message))
+                    }
                 }
                 break
             }
@@ -319,11 +333,26 @@ ${JSON.stringify(message, null, 2)}
                 switch ((message as ISubscriptionMessage).type) {
                     case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE:
-                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING:
+                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
                         break
-                    default:
+                    }
+                    default: {
                         throw new Error(this.getErrorMessage(`Unexpected
     message.type: ${(message as ISubscriptionMessage).type}`, message))
+                    }
+                }
+                break
+            }
+            case Message_Type_Group.INTERNAL: {
+                switch ((message as IInternalMessage).type) {
+                    case INTERNAL_Message_Type.IS_CONNECTION_READY:
+                    case INTERNAL_Message_Type.UI_URL_CHANGED: {
+                        break
+                    }
+                    default: {
+                        throw new Error(this.getErrorMessage(`Unexpected
+    message.type: ${(message as IInternalMessage).type}`, message))
+                    }
                 }
                 break
             }

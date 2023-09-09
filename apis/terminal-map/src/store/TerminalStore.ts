@@ -33,7 +33,7 @@ import {
 import { IApiCredentials } from '../ICredentials';
 import { IMemoizedSelector, ISelectorManager } from './SelectorManager';
 import { ILastIds } from '@airport/air-traffic-control';
-import { CachedSQLQuery, IFieldMapped, SerializedJSONQuery } from '../terminal-map.index';
+import { CachedSQLQuery, IFieldMapped, IUIState, SerializedJSONQuery } from '../terminal-map.index';
 
 export interface IPendingTransaction {
 	context,
@@ -100,6 +100,8 @@ export interface ITerminalStore<FM extends IFieldMapped = IFieldMapped> {
 	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>
 
 	getTransactionManager: IMemoizedSelector<ITransactionManagerState, ITerminalState>
+
+	getUI: IMemoizedSelector<IUIState, ITerminalState>
 
 	getWebReceiver: IMemoizedSelector<IWebReceiverState, ITerminalState>
 
@@ -178,6 +180,8 @@ export class TerminalStore<FM extends IFieldMapped = IFieldMapped>
 	getTerminalState: IMemoizedSelector<ITerminalState<FM>, ITerminalState<FM>>
 
 	getTransactionManager: IMemoizedSelector<ITransactionManagerState, ITerminalState>
+
+	getUI: IMemoizedSelector<IUIState, ITerminalState>
 
 	getWebReceiver: IMemoizedSelector<IWebReceiverState, ITerminalState>
 
@@ -356,6 +360,9 @@ export class TerminalStore<FM extends IFieldMapped = IFieldMapped>
 
 		this.getTransactionManager = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.transactionManager)
+
+		this.getUI = this.selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.ui)
 
 		this.getWebReceiver = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.webReceiver)

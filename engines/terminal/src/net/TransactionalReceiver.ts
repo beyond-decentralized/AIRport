@@ -1,6 +1,6 @@
 import { ILastIds, JsonApplicationWithLastIds } from '@airport/air-traffic-control';
 import { DbApplicationDao } from '@airport/airspace/dist/app/bundle';
-import { Message_Leg, IApiCallRequestMessage, IApiCallResponseMessage, INTERNAL_Message_Type, CRUD_Message_Type, ISubscriptionMessage, Message_Type_Group, SUBSCRIPTION_Message_Type, IMessage, IResponseMessage } from '@airport/aviation-communication';
+import { Message_Leg, IApiCallRequestMessage, IApiCallResponseMessage, INTERNAL_Message_Type, CRUD_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IResponseMessage, IUrlChangeMessage } from '@airport/aviation-communication';
 import {
     IContext,
     Inject,
@@ -134,11 +134,12 @@ export abstract class TransactionalReceiver {
         message: IGetLatestApplicationVersionByDbApplication_NameMessage
             | IInitializeConnectionMessage
             | IRetrieveDomainMessage
+            | IUrlChangeMessage
     ): Promise<{
         theErrorMessage: string
         theResult: DbApplicationVersion | DbDomain | ILastIds | null
     }> {
-        let theErrorMessage: string = null
+        let theErrorMessage: string = undefined
         let theResult: any = null
         switch (message.type) {
             case INTERNAL_Message_Type.APP_INITIALIZING:
@@ -190,6 +191,19 @@ export abstract class TransactionalReceiver {
             case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
                 theResult = this.terminalStore.getDomainMapByName()
                     .get(message.origin.app)
+                break
+            }
+            case INTERNAL_Message_Type.UI_URL_CHANGED: {
+                this.terminalStore.state.subscribe(state => {
+                    this.terminalStore.state.next({
+                        ...state,
+                        ui: {
+                            ...state.ui,
+                            currentUrl: (message as IUrlChangeMessage).newUrl
+                        }
+                    })
+                }).unsubscribe()
+                theResult = undefined
                 break
             }
             default: {

@@ -46,7 +46,8 @@ export enum INTERNAL_Message_Type {
     CONNECTION_IS_READY = 'CONNECTION_IS_READY',
     GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME = 'GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME',
     IS_CONNECTION_READY = 'IS_CONNECTION_READY',
-    RETRIEVE_DOMAIN = 'RETRIEVE_DOMAIN'
+    RETRIEVE_DOMAIN = 'RETRIEVE_DOMAIN',
+    UI_URL_CHANGED = 'UI_URL_CHANGED'
 }
 
 export enum SUBSCRIPTION_Message_Type {
@@ -70,8 +71,9 @@ export interface IMessageOriginOrDestination {
 }
 
 export interface ICoreMessageFields {
+    isAIRportMessage: true
     destination?: IMessageOriginOrDestination
-    direction: Message_Direction;
+    direction: Message_Direction
     id: Message_Id
     messageLeg: Message_Leg
     origin?: IMessageOriginOrDestination
@@ -99,6 +101,10 @@ export interface ICrudMessage extends IMessage {
 
 export interface IInternalMessage extends IMessage {
     type: INTERNAL_Message_Type
+}
+
+export interface IUrlChangeMessage extends IInternalMessage {
+    newUrl: string
 }
 
 export interface ISubscriptionMessage extends IMessage {
