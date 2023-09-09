@@ -7,6 +7,9 @@ import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
 
 window.addEventListener("message", event => {
     const message: IMessage | IApiCallRequestMessage = event.data
+    if (!message.isAIRportMessage) {
+        return
+    }
     processMessage(message, event.origin).then()
 })
 
@@ -46,7 +49,7 @@ type:
     }
 }
 
-async function loadTransactionalConnector() {
+async function loadTransactionalConnector(): Promise<void> {
     const container = DEPENDENCY_INJECTION.db()
     const transactionalConnector: IIframeTransactionalConnector = await container.get(TRANSACTIONAL_CONNECTOR) as any
 
@@ -57,7 +60,7 @@ async function loadTransactionalConnector() {
 
 export function loadIframe(
     applicationName: string
-) {
+): void {
     loadAutopilot()
     loadTower(applicationName)
     loadTransactionalConnector().then()

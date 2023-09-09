@@ -1,5 +1,5 @@
 import { JsonApplicationVersionWithApi } from '@airport/air-traffic-control'
-import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IInternalMessage, INTERNAL_Message_Type, Message_Direction, Message_Type_Group, ISubscriptionMessage, IObservableApiCallResponseMessage, SUBSCRIPTION_Message_Type, Message_OriginOrDestination_Type, IObservableApiCallRequestMessage } from '@airport/aviation-communication'
+import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IInternalMessage, INTERNAL_Message_Type, Message_Direction, Message_Type_Group, ISubscriptionMessage, IObservableApiCallResponseMessage, SUBSCRIPTION_Message_Type, Message_OriginOrDestination_Type, IObservableApiCallRequestMessage, IUrlChangeMessage } from '@airport/aviation-communication'
 import {
 	IContext,
 	Inject,
@@ -569,7 +569,8 @@ export class WebTransactionalReceiver
 	private async handleInternalMessage(
 		message: IGetLatestApplicationVersionByDbApplication_NameMessage
 			| IInitializeConnectionMessage
-			| IRetrieveDomainMessage,
+			| IRetrieveDomainMessage
+			| IUrlChangeMessage,
 		messageOrigin: string
 	): Promise<void> {
 		if (!await this.messageIsFromValidApp(message, messageOrigin)) {
@@ -578,9 +579,15 @@ export class WebTransactionalReceiver
 
 		const result = await this.processInternalMessage(message)
 
+		if (result.theResult === undefined
+			&& result.theErrorMessage === undefined) {
+				return
+		}
+
 		this.webMessageGateway.sendMessageToApp(
 			this.getMessageOriginApplication(message), {
 			...message,
+			errorMessage: result.theErrorMessage,
 			returnedValue: result.theResult as any
 		})
 	}

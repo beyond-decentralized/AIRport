@@ -1,4 +1,4 @@
-import { IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IInternalMessage, IMessage, IObservableApiCallResponseMessage, ISubscriptionMessage, Message_OriginOrDestination_Type } from '@airport/aviation-communication';
+import { IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IInternalMessage, IMessage, IObservableApiCallResponseMessage, ISubscriptionMessage, IUrlChangeMessage, Message_OriginOrDestination_Type } from '@airport/aviation-communication';
 import {
     Inject,
     Injected,
@@ -25,6 +25,7 @@ export interface IWebMessageGateway {
             | IInitializeConnectionMessage
             | IRetrieveDomainMessage
             | ISubscriptionMessage
+            | IUrlChangeMessage
     ): void
 
     sendMessageToClient(
@@ -50,7 +51,8 @@ export class WebMessageGateway
 
         window.addEventListener("message", event => {
             const message: IMessage | IApiCallRequestMessage = event.data
-            if (!this.airMessageUtils.validateIncomingMessage(message)) {
+            if (!message.isAIRportMessage
+                || !this.airMessageUtils.validateIncomingMessage(message)) {
                 return
             }
 

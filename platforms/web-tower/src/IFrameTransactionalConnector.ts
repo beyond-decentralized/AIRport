@@ -478,6 +478,7 @@ expecting only API message types`)
 	): {
 		direction: Message_Direction
 		id: string,
+		isAIRportMessage: true,
 		messageLeg: Message_Leg.TO_HUB,
 		origin: IMessageOriginOrDestination,
 		typeGroup: Message_Type_Group
@@ -489,6 +490,7 @@ expecting only API message types`)
 		return {
 			direction: Message_Direction.REQUEST,
 			id,
+			isAIRportMessage: true,
 			messageLeg,
 			origin: {
 				app,

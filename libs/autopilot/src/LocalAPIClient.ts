@@ -71,13 +71,13 @@ export class LocalAPIClient
         })
     }
 
-    private sendMessage(
+    sendMessage(
         message: IMessage
     ): boolean {
         this.airMessageUtils.prepMessageToSend(message)
 
         if (_inWebMode) {
-            window.postMessage(message, _webServer)
+            window.parent.postMessage(message, _webServer)
         } else {
             throw new Error('Not Implemented')
         }
@@ -89,7 +89,8 @@ export class LocalAPIClient
         window.addEventListener("message", event => {
             const message: IMessage = event.data
 
-            if (!this.airMessageUtils.validateUiBoundMessage(message)
+            if (!message.isAIRportMessage
+                || !this.airMessageUtils.validateUiBoundMessage(message)
                 || !this.airMessageUtils.validateIncomingMessage(message)) {
                 return
             }
@@ -209,6 +210,7 @@ export class LocalAPIClient
             },
             direction: Message_Direction.REQUEST,
             id: guidv4(),
+            isAIRportMessage: true,
             messageLeg: Message_Leg.TO_HUB,
             methodName,
             objectName: fullDiDescriptor.descriptor.interface,
@@ -325,15 +327,27 @@ export class LocalAPIClient
             // this.lastConnectionReadyCheckMap.get(domain).delete(application)
             return true
         }
-        let request: IInternalMessage = {
-            destination: {
-                app: serverApplication,
-                domain: serverDomain,
-                protocol: 'https',
-                type: Message_OriginOrDestination_Type.APPLICATION,
-            },
+        
+        let request = this.getInternalMessage(INTERNAL_Message_Type.IS_CONNECTION_READY)
+        request.destination = {
+            app: serverApplication,
+            domain: serverDomain,
+            protocol: 'https',
+            type: Message_OriginOrDestination_Type.APPLICATION,
+        }
+
+        this.sendMessage(request)
+
+        return false
+    }
+
+    getInternalMessage(
+        type: INTERNAL_Message_Type
+    ): IInternalMessage {
+        return {
             direction: Message_Direction.REQUEST,
             id: guidv4(),
+            isAIRportMessage: true,
             messageLeg: Message_Leg.TO_HUB,
             origin: {
                 app: 'UserInterface',
@@ -344,10 +358,6 @@ export class LocalAPIClient
             type: INTERNAL_Message_Type.IS_CONNECTION_READY,
             typeGroup: Message_Type_Group.INTERNAL
         }
-
-        this.sendMessage(request)
-
-        return false
     }
 
     private async sendLocalRequest(

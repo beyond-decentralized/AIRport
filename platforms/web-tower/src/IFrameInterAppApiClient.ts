@@ -83,6 +83,7 @@ export class IFrameInterAppAPIClient
             },
             direction: Message_Direction.REQUEST,
             id: guidv4(),
+			isAIRportMessage: true,
             messageLeg: Message_Leg.TO_HUB,
             methodName,
             objectName: fullDiDescriptor.descriptor.interface,
