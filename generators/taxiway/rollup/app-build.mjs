@@ -24,7 +24,8 @@ if (process.argv.length >= 5) {
 export function getAppBuildConfig(
     appName = '',
     copyToDirectoryPath,
-    appShortName = appName
+    appShortName = appName,
+    makePeerDependenciesExternal = false
 ) {
     let runtimeBuildOutputFile = process.cwd() + '/' + packageJson.app
     let bundleDefinitionsInputFile = process.cwd() + `/dist/app/to_be_generated/${appShortName}.runtime-index.d.ts`
@@ -35,8 +36,19 @@ export function getAppBuildConfig(
         bundleDefinitionsOutputFile = copyToDirectoryPath + `/AIRport/apps/${appName}/bundle.d.ts`
     }
 
+    let delPlugins = []
+    if (clean) {
+        delPlugins = [del({ targets: process.cwd() + '/dist/*' })]
+    }
+
+    let peerDepsExternalPlugins = []
+    if (makePeerDependenciesExternal) {
+        peerDepsExternalPlugins = [peerDepsExternal()]
+    }
+
     const runtimeBuildPlugins = [
-        peerDepsExternal(),
+        ...delPlugins,
+        ...peerDepsExternalPlugins,
         resolve({
             browser: true
         }),
@@ -48,9 +60,6 @@ export function getAppBuildConfig(
         }),
         production && terser()
     ]
-    if (clean) {
-        runtimeBuildPlugins.unshift(del({ targets: process.cwd() + '/dist/*' }))
-    }
     if (copyToDirectoryPath) {
         runtimeBuildPlugins.push(copy({
             targets: [{
