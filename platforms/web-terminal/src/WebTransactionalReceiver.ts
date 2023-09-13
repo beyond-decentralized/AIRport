@@ -1,5 +1,5 @@
 import { JsonApplicationVersionWithApi } from '@airport/air-traffic-control'
-import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IInternalMessage, INTERNAL_Message_Type, Message_Direction, Message_Type_Group, ISubscriptionMessage, IObservableApiCallResponseMessage, SUBSCRIPTION_Message_Type, Message_OriginOrDestination_Type, IObservableApiCallRequestMessage, IUrlChangeMessage } from '@airport/aviation-communication'
+import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IInternalMessage, INTERNAL_Message_Type, Message_Direction, Message_Type_Group, ISubscriptionMessage, IObservableApiCallResponseMessage, SUBSCRIPTION_Message_Type, Message_OriginOrDestination_Type, IObservableApiCallRequestMessage } from '@airport/aviation-communication'
 import {
 	IContext,
 	Inject,
@@ -57,7 +57,7 @@ export class WebTransactionalReceiver
 	webMessageGateway: IWebMessageGateway
 
 	init() {
-		const ownDomain = window.location.hostname
+		const ownDomain = location.hostname
 		const mainDomainFragments = ownDomain.split('.')
 		if (mainDomainFragments[0] === 'www'
 			|| mainDomainFragments[0].startsWith('random_')) {
@@ -100,23 +100,31 @@ export class WebTransactionalReceiver
 		}
 	}
 
-	handleClientRequest(
-		message: IApiCallRequestMessage
+	handleUIRequest(
+		message: IInternalMessage | IApiCallRequestMessage
 	): void {
 		if (this.webMessageGateway.needMessageSerialization()) {
 			throw new Error("Deserialization is not yet implemented.")
 			// FIXME: deserialize message
 		}
 
-		if ((message as IMessage as IInternalMessage).type === INTERNAL_Message_Type.IS_CONNECTION_READY) {
-			this.ensureConnectionIsReady(message).then()
-			return
+		if (message.typeGroup === Message_Type_Group.INTERNAL) {
+			switch ((message as IInternalMessage).type) {
+				case INTERNAL_Message_Type.IS_CONNECTION_READY: {
+					this.ensureConnectionIsReady(message as IInternalMessage).then()
+					return
+				}
+				default: {
+					this.processInternalMessage(message as IInternalMessage)
+					return
+				}
+			}
 		}
 
 		const fromClientRedirectedMessage: IApiCallRequestMessage = {
 			...message,
 			messageLeg: Message_Leg.FROM_HUB
-		}
+		} as IApiCallRequestMessage
 		this.handleRequest(fromClientRedirectedMessage).then()
 	}
 
@@ -426,22 +434,24 @@ export class WebTransactionalReceiver
 	}
 
 	private async ensureConnectionIsReady(
-		message: IApiCallRequestMessage
+		message: IInternalMessage
 	): Promise<void> {
 		const applicationIsInstalled = await this.applicationInitializer
 			.ensureApplicationIsInstalled(message.destination.domain,
 				message.destination.app)
 
-		if (applicationIsInstalled) {
-			this.sendConnectionReadyMessage(message)
+		if (!applicationIsInstalled) {
+			return
 		}
-	}
 
-	private sendConnectionReadyMessage(
-		message: IApiCallRequestMessage
-	) {
 		const connectionIsReadyMessage: IInternalMessage = {
 			...message,
+			destination: message.origin,
+			origin: {
+				domain: 'turbase.org',
+				protocol: 'https:',
+				type: Message_OriginOrDestination_Type.FRAMEWORK
+			},
 			direction: Message_Direction.RESPONSE,
 			messageLeg: Message_Leg.FROM_HUB,
 			type: INTERNAL_Message_Type.CONNECTION_IS_READY,
@@ -567,10 +577,7 @@ export class WebTransactionalReceiver
 
 
 	private async handleInternalMessage(
-		message: IGetLatestApplicationVersionByDbApplication_NameMessage
-			| IInitializeConnectionMessage
-			| IRetrieveDomainMessage
-			| IUrlChangeMessage,
+		message: IInternalMessage,
 		messageOrigin: string
 	): Promise<void> {
 		if (!await this.messageIsFromValidApp(message, messageOrigin)) {
@@ -581,15 +588,21 @@ export class WebTransactionalReceiver
 
 		if (result.theResult === undefined
 			&& result.theErrorMessage === undefined) {
-				return
+			return
 		}
 
 		this.webMessageGateway.sendMessageToApp(
 			this.getMessageOriginApplication(message), {
-			...message,
-			errorMessage: result.theErrorMessage,
-			returnedValue: result.theResult as any
-		})
+				...message,
+				origin: {
+					domain: 'turbase.org',
+					protocol: 'https:',
+					type: Message_OriginOrDestination_Type.FRAMEWORK
+				},
+				destination: message.origin,
+				errorMessage: result.theErrorMessage,
+				returnedValue: result.theResult as any
+			} as IInternalMessage)
 	}
 
 	private async handleRequestMessage(

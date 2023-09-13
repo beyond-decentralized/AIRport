@@ -1,6 +1,6 @@
 import { ILastIds, JsonApplicationWithLastIds } from '@airport/air-traffic-control';
 import { DbApplicationDao } from '@airport/airspace/dist/app/bundle';
-import { Message_Leg, IApiCallRequestMessage, IApiCallResponseMessage, INTERNAL_Message_Type, CRUD_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IResponseMessage, IUrlChangeMessage } from '@airport/aviation-communication';
+import { Message_Leg, IApiCallRequestMessage, IApiCallResponseMessage, INTERNAL_Message_Type, CRUD_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IResponseMessage, IInternalMessage, IUrlChangeMessage } from '@airport/aviation-communication';
 import {
     IContext,
     Inject,
@@ -135,6 +135,7 @@ export abstract class TransactionalReceiver {
             | IInitializeConnectionMessage
             | IRetrieveDomainMessage
             | IUrlChangeMessage
+            | IInternalMessage
     ): Promise<{
         theErrorMessage: string
         theResult: DbApplicationVersion | DbDomain | ILastIds | null
@@ -194,15 +195,17 @@ export abstract class TransactionalReceiver {
                 break
             }
             case INTERNAL_Message_Type.UI_URL_CHANGED: {
-                this.terminalStore.state.subscribe(state => {
-                    this.terminalStore.state.next({
-                        ...state,
-                        ui: {
-                            ...state.ui,
-                            currentUrl: (message as IUrlChangeMessage).newUrl
-                        }
-                    })
+                let state
+                this.terminalStore.state.subscribe(theState => {
+                    state = theState
                 }).unsubscribe()
+                this.terminalStore.state.next({
+                    ...state,
+                    ui: {
+                        ...state.ui,
+                        currentUrl: (message as IUrlChangeMessage).newUrl
+                    }
+                })
                 theResult = undefined
                 break
             }

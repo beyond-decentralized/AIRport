@@ -61,9 +61,23 @@ export function loadUiAutopilot() {
         }
     }
 
-    const request: IUrlChangeMessage = this.getInternalMessage(INTERNAL_Message_Type.UI_URL_CHANGED)
-    let currentUrl: string
-    const history = window.history
+    trackUrlState(apiClient)
+}
+
+function trackUrlState(
+    apiClient: LocalAPIClient
+) {
+    const request: IUrlChangeMessage = apiClient.getInternalMessage(INTERNAL_Message_Type.UI_URL_CHANGED) as IUrlChangeMessage
+    const href = location.href
+    let currentPath = href.substring(
+        `${location.protocol}//${location.host}`.length)
+    request.newUrl = location.href
+    try {
+        apiClient.sendMessage(request)
+    } catch (e) {
+        console.error(e)
+    }
+
     const pushState = history.pushState
     history.pushState = (state, ...args) => {
         if (typeof (history as any).onpushstate == "function") {
@@ -71,11 +85,11 @@ export function loadUiAutopilot() {
         }
         pushState.call(history, state, ...args)
 
-        if (currentUrl === args[1]) {
+        if (currentPath === args[1]) {
             return
         }
-        currentUrl = args[1].toString()
-        request.newUrl = currentUrl
+        currentPath = args[1].toString()
+        request.newUrl = location.href
         try {
             apiClient.sendMessage(request)
         } catch (e) {

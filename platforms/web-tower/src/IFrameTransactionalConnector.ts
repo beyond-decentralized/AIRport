@@ -331,7 +331,7 @@ export class IframeTransactionalConnector
 			case INTERNAL_Message_Type.APP_INITIALIZING: {
 				if (this.applicationStore.state.appState === AppState.NOT_INITIALIZED
 					&& (message as IInitializeConnectionMessage).returnedValue) {
-					// console.log(`--==<<(( path: ${window.location.pathname} appState: ${this.applicationStore.state.appState}, domain: ${message.domain}, app: ${message.application} ))>>==--`)
+					// console.log(`--==<<(( path: ${location.pathname} appState: ${this.applicationStore.state.appState}, domain: ${message.domain}, app: ${message.application} ))>>==--`)
 					// console.log(message.result)
 					const lastTerminalState = this.terminalStore.getTerminalState()
 					this.terminalStore.state.next({
@@ -600,7 +600,7 @@ expecting only API message types`)
 			case AppState.START_INITIALIZING:
 				this.applicationStore.state.appState = AppState.INITIALIZING_IN_PROGRESS
 				// const lastIds = this.terminalStore.getLastIds()
-				// console.log(` path: ${window.location.pathname} INITIALIZING_IN_PROGRESS appIndex: ${lastIds.applications} ))>>==--`)
+				// console.log(` path: ${location.pathname} INITIALIZING_IN_PROGRESS appIndex: ${lastIds.applications} ))>>==--`)
 				await this.applicationLoader.load(this.terminalStore.getLastIds())
 				this.applicationStore.state.appState = AppState.INITIALIZED
 				await this.applicationLoader.initialize()

@@ -78,7 +78,7 @@ export class IFrameInterAppAPIClient
             destination: {
                 app: fullDiDescriptor.application.name,
                 domain: fullDiDescriptor.application.domain.name,
-                protocol: 'https',
+                protocol: 'https:',
                 type: Message_OriginOrDestination_Type.APPLICATION
             },
             direction: Message_Direction.REQUEST,

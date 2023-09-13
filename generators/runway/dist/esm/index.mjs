@@ -8426,7 +8426,7 @@ ${JSON.stringify(message, null, 2)}
         delete message.__receivedTime__;
     }
     isFromValidFrameworkDomain(origin) {
-        if (!origin.startsWith("https")) {
+        if (!origin.startsWith("https:")) {
             console.error(`Framework is not running via HTTPS protocol`);
             return false;
         }
@@ -8451,10 +8451,10 @@ ${JSON.stringify(message, null, 2)}
     }
     validateApplicationInfo(message) {
         this.validateDomainAndApplication(message, message.origin, 'origin');
-        this.validateDomainAndApplication(message, message.destination, 'destination');
+        let messageHasADestination = true;
         switch (message.origin.type) {
             case Message_OriginOrDestination_Type.APPLICATION: {
-                this.validateApplicationMessageType(message);
+                messageHasADestination = this.validateApplicationMessageType(message);
                 break;
             }
             case Message_OriginOrDestination_Type.DATABASE: {
@@ -8466,12 +8466,19 @@ ${JSON.stringify(message, null, 2)}
                 break;
             }
             case Message_OriginOrDestination_Type.USER_INTERFACE: {
-                this.validateUiMessageType(message);
+                messageHasADestination = this.validateUiMessageType(message);
                 break;
             }
+            default: {
+                throw new Error(`Invalid message.origin.type: ${message.origin.type}`);
+            }
+        }
+        if (messageHasADestination) {
+            this.validateDomainAndApplication(message, message.destination, 'destination');
         }
     }
     validateApplicationMessageType(message) {
+        let messageHasADestination = false;
         switch (message.typeGroup) {
             case Message_Type_Group.API: {
                 break;
@@ -8516,6 +8523,7 @@ ${JSON.stringify(message, null, 2)}
                     case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA:
                     case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE:
+                        messageHasADestination = true;
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_UNSUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
@@ -8535,6 +8543,7 @@ ${JSON.stringify(message, null, 2)}
     message.typeGroup: ${message.typeGroup}`, message));
             }
         }
+        return messageHasADestination;
     }
     validateDatabaseMessageType(message) {
         switch (message.typeGroup) {
@@ -8583,7 +8592,6 @@ ${JSON.stringify(message, null, 2)}
                     case INTERNAL_Message_Type.APP_INITIALIZING:
                     case INTERNAL_Message_Type.CONNECTION_IS_READY:
                     case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
-                    case INTERNAL_Message_Type.IS_CONNECTION_READY:
                     case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
                         break;
                     }
@@ -8601,6 +8609,7 @@ ${JSON.stringify(message, null, 2)}
         }
     }
     validateUiMessageType(message) {
+        let messageHasADestination = true;
         switch (message.typeGroup) {
             case Message_Type_Group.API: {
                 break;
@@ -8630,6 +8639,7 @@ ${JSON.stringify(message, null, 2)}
     message.type: ${message.type}`, message));
                     }
                 }
+                messageHasADestination = false;
                 break;
             }
             default: {
@@ -8637,19 +8647,15 @@ ${JSON.stringify(message, null, 2)}
     message.typeGroup: ${message.typeGroup}`, message));
             }
         }
+        return messageHasADestination;
     }
     validateDomainAndApplication(message, originOrDestination, type) {
         if (!this.isValidDomainNameString(originOrDestination.domain)) {
             throw new Error(this.getErrorMessage(`Invalid ${type} domain`, message));
         }
-        if (!this.isValidApplicationNameString(originOrDestination.app)) {
+        if (originOrDestination.type !== Message_OriginOrDestination_Type.FRAMEWORK
+            && !this.isValidApplicationNameString(originOrDestination.app)) {
             throw new Error(this.getErrorMessage(`Invalid ${type} application`, message));
-        }
-        if (originOrDestination.domain.indexOf('.') > -1) {
-            throw new Error(this.getErrorMessage(`Invalid ${type} Domain name - cannot have periods that would point to invalid subdomains`, message));
-        }
-        if (originOrDestination.app.indexOf('.') > -1) {
-            throw new Error(this.getErrorMessage(`Invalid ${type} Application name - cannot have periods that would point to invalid subdomains`, message));
         }
     }
     getErrorMessage(errorMessage, message) {
@@ -36763,15 +36769,17 @@ class TransactionalReceiver {
                 break;
             }
             case INTERNAL_Message_Type.UI_URL_CHANGED: {
-                this.terminalStore.state.subscribe(state => {
-                    this.terminalStore.state.next({
-                        ...state,
-                        ui: {
-                            ...state.ui,
-                            currentUrl: message.newUrl
-                        }
-                    });
+                let state;
+                this.terminalStore.state.subscribe(theState => {
+                    state = theState;
                 }).unsubscribe();
+                this.terminalStore.state.next({
+                    ...state,
+                    ui: {
+                        ...state.ui,
+                        currentUrl: message.newUrl
+                    }
+                });
                 theResult = undefined;
                 break;
             }
@@ -40830,7 +40838,8 @@ class ClientSubjectCache {
                                     subscriptionIds,
                                     id: v4(),
                                     type: SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING,
-                                    typeGroup: Message_Type_Group.SUBSCRIPTION
+                                    typeGroup: Message_Type_Group.SUBSCRIPTION,
+                                    dropIfConnectionNotReady: true
                                 }
                             });
                         }

@@ -7,11 +7,11 @@ import { IActor } from "@airport/ground-control";
 export interface ILocalAPIServer {
 
     handleRequest(
-        request: IApiCallRequestMessageProperties<IActor> & IMessage
+        message: IApiCallRequestMessageProperties<IActor> & IMessage
     ): Promise<IApiCallResponseMessage | IObservableApiCallResponseMessage>
 
     coreHandleRequest<ReturnType = any>(
-        request: IApiCallRequestMessageProperties<IActor> & IMessage,
+        message: IApiCallRequestMessageProperties<IActor> & IMessage,
         api: IApplicationApi,
         context?: IContext
     ): Promise<{

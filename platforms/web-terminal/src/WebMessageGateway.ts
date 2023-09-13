@@ -1,4 +1,4 @@
-import { IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IInternalMessage, IMessage, IObservableApiCallResponseMessage, ISubscriptionMessage, IUrlChangeMessage, Message_OriginOrDestination_Type } from '@airport/aviation-communication';
+import { IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IInternalMessage, IMessage, IObservableApiCallResponseMessage, ISubscriptionMessage, Message_OriginOrDestination_Type } from '@airport/aviation-communication';
 import {
     Inject,
     Injected,
@@ -21,11 +21,8 @@ export interface IWebMessageGateway {
         application_FullName: DbApplication_FullName,
         message: IApiCallResponseMessage
             | IObservableApiCallResponseMessage
-            | IGetLatestApplicationVersionByDbApplication_NameMessage
-            | IInitializeConnectionMessage
-            | IRetrieveDomainMessage
             | ISubscriptionMessage
-            | IUrlChangeMessage
+            | IInternalMessage
     ): void
 
     sendMessageToClient(
@@ -58,7 +55,7 @@ export class WebMessageGateway
 
             switch (message.origin.type) {
                 case Message_OriginOrDestination_Type.USER_INTERFACE: {
-                    this.transactionalReceiver.handleClientRequest(message as IApiCallRequestMessage)
+                    this.transactionalReceiver.handleUIRequest(message as IApiCallRequestMessage)
                     break
                 }
                 case Message_OriginOrDestination_Type.APPLICATION: {
@@ -92,7 +89,8 @@ export class WebMessageGateway
 
         this.airMessageUtils.prepMessageToSend(message)
 
-        window.postMessage(message, message.destination.domain)
+        window.postMessage(message,
+            `${message.destination.protocol}//${message.destination.domain}`)
     }
 
     sendMessageToClient(
@@ -101,7 +99,8 @@ export class WebMessageGateway
     ): void {
         this.airMessageUtils.prepMessageToSend(message)
 
-        window.postMessage(message, message.destination.domain)
+        window.postMessage(message,
+            `${message.destination.protocol}//${message.destination.domain}`)
     }
 
     private getFrameWindow(

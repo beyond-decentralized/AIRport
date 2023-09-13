@@ -1,6 +1,6 @@
 export type Message_Application = 'UserInterface' | string
 export type Message_Domain = string
-export type Message_DomainProtocol = 'https' | string
+export type Message_DomainProtocol = 'https:' | string
 export type Message_Error = string
 export type Message_Id = string
 export type SubscriptionId = string
@@ -78,6 +78,7 @@ export interface ICoreMessageFields {
     messageLeg: Message_Leg
     origin?: IMessageOriginOrDestination
     typeGroup: Message_Type_Group
+    dropIfConnectionNotReady?: boolean
 }
 
 export interface IMessage extends ICoreMessageFields {
@@ -101,10 +102,6 @@ export interface ICrudMessage extends IMessage {
 
 export interface IInternalMessage extends IMessage {
     type: INTERNAL_Message_Type
-}
-
-export interface IUrlChangeMessage extends IInternalMessage {
-    newUrl: string
 }
 
 export interface ISubscriptionMessage extends IMessage {

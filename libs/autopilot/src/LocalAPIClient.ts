@@ -65,7 +65,13 @@ export class LocalAPIClient
                     return
             }
 
-            this.waitForConnectionToBeReady(message.fullDIDescriptor).then(() => {
+            this.waitForConnectionToBeReady(
+                message.fullDIDescriptor,
+                message.request.dropIfConnectionNotReady
+            ).then(isConnectionReady => {
+                if (!isConnectionReady && message.request.dropIfConnectionNotReady) {
+                    return
+                }
                 this.sendMessage(message.request)
             })
         })
@@ -205,7 +211,7 @@ export class LocalAPIClient
             destination: {
                 app: fullDiDescriptor.application.name,
                 domain: fullDiDescriptor.application.domain.name,
-                protocol: 'https',
+                protocol: 'https:',
                 type: Message_OriginOrDestination_Type.APPLICATION,
             },
             direction: Message_Direction.REQUEST,
@@ -216,14 +222,13 @@ export class LocalAPIClient
             objectName: fullDiDescriptor.descriptor.interface,
             origin: {
                 app: 'UserInterface',
-                domain: window.location.hostname,
-                protocol: window.location.protocol,
+                domain: location.host,
+                protocol: location.protocol,
                 type: Message_OriginOrDestination_Type.USER_INTERFACE,
             },
             subscriptionId: undefined,
             transactionId: undefined,
             typeGroup: undefined
-            // type: Message_Type.API_CALL
         }
 
         if (isObservable) {
@@ -251,7 +256,7 @@ export class LocalAPIClient
         request: IApiCallRequestMessage,
         args: any[]
     ): Promise<any> {
-        await this.waitForConnectionToBeReady(fullDIDescriptor)
+        await this.waitForConnectionToBeReady(fullDIDescriptor, request.dropIfConnectionNotReady)
 
         let response: IApiCallResponseMessage
 
@@ -266,11 +271,18 @@ export class LocalAPIClient
     }
 
     private async waitForConnectionToBeReady(
-        fullDIDescriptor: IFullDITokenDescriptor
-    ) {
+        fullDIDescriptor: IFullDITokenDescriptor,
+        dropIfConnectionNotReady: boolean
+    ): Promise<boolean> {
+        if (dropIfConnectionNotReady && !await this.isConnectionReady(fullDIDescriptor, false)) {
+            return false
+        }
+
         while (!await this.isConnectionReady(fullDIDescriptor)) {
             await this.wait(301)
         }
+
+        return true
     }
 
     private processResponse(
@@ -314,7 +326,8 @@ export class LocalAPIClient
     }
 
     private async isConnectionReady<T>(
-        fullDiDescriptor: IFullDITokenDescriptor
+        fullDiDescriptor: IFullDITokenDescriptor,
+        sendConnectionRequest = true
     ): Promise<boolean> {
         const serverDomain = fullDiDescriptor.application.domain.name
         const serverApplication = fullDiDescriptor.application.name
@@ -327,12 +340,16 @@ export class LocalAPIClient
             // this.lastConnectionReadyCheckMap.get(domain).delete(application)
             return true
         }
-        
+
+        if (!sendConnectionRequest) {
+            return false
+        }
+
         let request = this.getInternalMessage(INTERNAL_Message_Type.IS_CONNECTION_READY)
         request.destination = {
             app: serverApplication,
             domain: serverDomain,
-            protocol: 'https',
+            protocol: 'https:',
             type: Message_OriginOrDestination_Type.APPLICATION,
         }
 
@@ -351,12 +368,13 @@ export class LocalAPIClient
             messageLeg: Message_Leg.TO_HUB,
             origin: {
                 app: 'UserInterface',
-                domain: window.location.hostname,
-                protocol: window.location.protocol,
+                domain: location.host,
+                protocol: location.protocol,
                 type: Message_OriginOrDestination_Type.USER_INTERFACE,
             },
-            type: INTERNAL_Message_Type.IS_CONNECTION_READY,
-            typeGroup: Message_Type_Group.INTERNAL
+            type,
+            typeGroup: Message_Type_Group.INTERNAL,
+            dropIfConnectionNotReady: true
         }
     }
 

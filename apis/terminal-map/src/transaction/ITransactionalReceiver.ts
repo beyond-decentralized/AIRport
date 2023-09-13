@@ -6,7 +6,7 @@ import {
 
 export interface ITransactionalReceiver {
 
-    handleClientRequest(
+    handleUIRequest(
         message: IApiCallRequestMessage
     ): void
 

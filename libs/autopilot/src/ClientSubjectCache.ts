@@ -57,7 +57,8 @@ export class ClientSubjectCache
                                     subscriptionIds,
                                     id: guidv4(),
                                     type: SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING,
-                                    typeGroup: Message_Type_Group.SUBSCRIPTION
+                                    typeGroup: Message_Type_Group.SUBSCRIPTION,
+                                    dropIfConnectionNotReady: true
                                 } as ISubscriptionMessage
                             })
                         }

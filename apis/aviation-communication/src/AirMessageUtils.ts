@@ -115,7 +115,7 @@ ${JSON.stringify(message, null, 2)}
     isFromValidFrameworkDomain(
         origin: string
     ): boolean {
-        if (!origin.startsWith("https")) {
+        if (!origin.startsWith("https:")) {
             console.error(`Framework is not running via HTTPS protocol`)
             return false
         }
@@ -158,15 +158,11 @@ ${JSON.stringify(message, null, 2)}
             message.origin,
             'origin'
         )
-        this.validateDomainAndApplication(
-            message,
-            message.destination,
-            'destination'
-        );
 
+        let messageHasADestination = true
         switch (message.origin.type) {
             case Message_OriginOrDestination_Type.APPLICATION: {
-                this.validateApplicationMessageType(message)
+                messageHasADestination = this.validateApplicationMessageType(message)
                 break
             }
             case Message_OriginOrDestination_Type.DATABASE: {
@@ -178,15 +174,28 @@ ${JSON.stringify(message, null, 2)}
                 break
             }
             case Message_OriginOrDestination_Type.USER_INTERFACE: {
-                this.validateUiMessageType(message)
+                messageHasADestination = this.validateUiMessageType(message)
                 break
             }
+            default: {
+                throw new Error(`Invalid message.origin.type: ${message.origin.type}`)
+            }
+        }
+
+        if (messageHasADestination) {
+            this.validateDomainAndApplication(
+                message,
+                message.destination,
+                'destination'
+            );
         }
     }
 
     private validateApplicationMessageType(
         message: IMessage
-    ): void {
+    ): boolean {
+        let messageHasADestination = false
+
         switch (message.typeGroup) {
             case Message_Type_Group.API: {
                 break
@@ -231,6 +240,7 @@ ${JSON.stringify(message, null, 2)}
                     case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA:
                     case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE:
+                        messageHasADestination = true
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_UNSUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
@@ -250,6 +260,8 @@ ${JSON.stringify(message, null, 2)}
     message.typeGroup: ${message.typeGroup}`, message))
             }
         }
+
+        return messageHasADestination
     }
 
     private validateDatabaseMessageType(
@@ -304,7 +316,6 @@ ${JSON.stringify(message, null, 2)}
                     case INTERNAL_Message_Type.APP_INITIALIZING:
                     case INTERNAL_Message_Type.CONNECTION_IS_READY:
                     case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
-                    case INTERNAL_Message_Type.IS_CONNECTION_READY:
                     case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
                         break
                     }
@@ -324,7 +335,9 @@ ${JSON.stringify(message, null, 2)}
 
     private validateUiMessageType(
         message: IMessage
-    ): void {
+    ): boolean {
+        let messageHasADestination = true
+
         switch (message.typeGroup) {
             case Message_Type_Group.API: {
                 break
@@ -354,6 +367,7 @@ ${JSON.stringify(message, null, 2)}
     message.type: ${(message as IInternalMessage).type}`, message))
                     }
                 }
+                messageHasADestination = false
                 break
             }
             default: {
@@ -361,6 +375,8 @@ ${JSON.stringify(message, null, 2)}
     message.typeGroup: ${message.typeGroup}`, message))
             }
         }
+
+        return messageHasADestination
     }
 
     private validateDomainAndApplication<M extends IMessage>(
@@ -368,21 +384,12 @@ ${JSON.stringify(message, null, 2)}
         originOrDestination: IMessageOriginOrDestination,
         type: 'origin' | 'destination',
     ): void {
-        if (!this.isValidDomainNameString(
-            originOrDestination.domain
-        )) {
+        if (!this.isValidDomainNameString(originOrDestination.domain)) {
             throw new Error(this.getErrorMessage(`Invalid ${type} domain`, message))
         }
-        if (!this.isValidApplicationNameString(
-            originOrDestination.app
-        )) {
+        if (originOrDestination.type !== Message_OriginOrDestination_Type.FRAMEWORK
+            && !this.isValidApplicationNameString(originOrDestination.app)) {
             throw new Error(this.getErrorMessage(`Invalid ${type} application`, message))
-        }
-        if (originOrDestination.domain.indexOf('.') > -1) {
-            throw new Error(this.getErrorMessage(`Invalid ${type} Domain name - cannot have periods that would point to invalid subdomains`, message))
-        }
-        if (originOrDestination.app.indexOf('.') > -1) {
-            throw new Error(this.getErrorMessage(`Invalid ${type} Application name - cannot have periods that would point to invalid subdomains`, message))
         }
     }
 
