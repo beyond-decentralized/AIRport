@@ -6,6 +6,7 @@
     "@airbridge/sso": "workspace:../../../AIRbridge/sso",
     "@airport/air-traffic-control": "workspace:../../apis/air-traffic-control",
     "@airport/airspace": "workspace:../../schemas/airspace",
+    "@airport/aviation-communication": "workspace:../../apis/aviation-communication",
     "@airport/direction-indicator": "workspace:../../libs/direction-indicator",
     "@airport/ground-control": "workspace:../../apis/ground-control",
     "@airport/holding-pattern": "workspace:../../schemas/holding-pattern",
@@ -15,6 +16,7 @@
     "@airport/terminal": "workspace:../../engines/terminal",
     "@airport/terminal-map": "workspace:../../apis/terminal-map",
     "@airport/tower": "workspace:../../engines/tower",
+    "@airport/web-terminal": "workspace:../../platforms/web-terminal",
     "rxjs": "workspace:../../../node_modules/rxjs"
   },
   "devDependencies": {

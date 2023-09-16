@@ -21,6 +21,7 @@ APPLICATION_INITIALIZER.setDependencies({
 webTerminal.setDependencies(WebMessageGateway, {
     airMessageUtils: globalThis.AIR_MESSAGE_UTILS,
     dbApplicationUtils: DbApplicationUtils,
+    terminalStore: TerminalStore,
     transactionalReceiver: TRANSACTIONAL_RECEIVER
 })
 TRANSACTIONAL_RECEIVER.setClass(WebTransactionalReceiver)

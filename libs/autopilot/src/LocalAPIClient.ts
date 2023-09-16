@@ -101,7 +101,7 @@ export class LocalAPIClient
                 return
             }
 
-            if (message.direction !== Message_Direction.RESPONSE) {
+            if (!this.isValidMessageDirection(message)) {
                 console.error(`Invalid message direction ${message.direction}`)
                 return
             }
@@ -130,6 +130,10 @@ export class LocalAPIClient
                                 this.lastConnectionReadyCheckMap.set(message.origin.domain, checksForDomain)
                             }
                             checksForDomain.set(message.origin.app, true)
+                            break
+                        }
+                        case INTERNAL_Message_Type.UI_GO_BACK: {
+                            history.back()
                             break
                         }
                         default: {
@@ -174,6 +178,28 @@ export class LocalAPIClient
                 }
             }
         }, false)
+    }
+
+    private isValidMessageDirection(
+        message: IMessage
+    ): boolean {
+        switch (message.direction) {
+            case Message_Direction.REQUEST: {
+                switch (message.typeGroup) {
+                    case Message_Type_Group.INTERNAL: {
+                        switch ((message as IInternalMessage).type) {
+                            case INTERNAL_Message_Type.UI_GO_BACK: {
+                                return true
+                            }
+                        }
+                    }
+                }
+                return false
+            }
+            case Message_Direction.RESPONSE: {
+                return true
+            }
+        }
     }
 
     private resolveRequestMessage(
@@ -345,7 +371,7 @@ export class LocalAPIClient
             return false
         }
 
-        let request = this.getInternalMessage(INTERNAL_Message_Type.IS_CONNECTION_READY)
+        let request = this.airMessageUtils.getInternalMessage(INTERNAL_Message_Type.IS_CONNECTION_READY)
         request.destination = {
             app: serverApplication,
             domain: serverDomain,
@@ -356,26 +382,6 @@ export class LocalAPIClient
         this.sendMessage(request)
 
         return false
-    }
-
-    getInternalMessage(
-        type: INTERNAL_Message_Type
-    ): IInternalMessage {
-        return {
-            direction: Message_Direction.REQUEST,
-            id: guidv4(),
-            isAIRportMessage: true,
-            messageLeg: Message_Leg.TO_HUB,
-            origin: {
-                app: 'UserInterface',
-                domain: location.host,
-                protocol: location.protocol,
-                type: Message_OriginOrDestination_Type.USER_INTERFACE,
-            },
-            type,
-            typeGroup: Message_Type_Group.INTERNAL,
-            dropIfConnectionNotReady: true
-        }
     }
 
     private async sendLocalRequest(

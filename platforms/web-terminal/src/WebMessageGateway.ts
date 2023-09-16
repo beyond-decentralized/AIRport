@@ -9,6 +9,7 @@ import {
     IGetLatestApplicationVersionByDbApplication_NameMessage,
     IInitializeConnectionMessage,
     IRetrieveDomainMessage,
+    ITerminalStore,
     ITransactionalReceiver,
     TerminalStore
 } from "@airport/terminal-map";
@@ -40,6 +41,9 @@ export class WebMessageGateway
 
     @Inject()
     dbApplicationUtils: IDbApplicationUtils
+
+    @Inject()
+    terminalStore: ITerminalStore
 
     @Inject()
     transactionalReceiver: ITransactionalReceiver
@@ -93,14 +97,21 @@ export class WebMessageGateway
             `${message.destination.protocol}//${message.destination.domain}`)
     }
 
+    setUiIframe(
+        iframe: HTMLIFrameElement
+    ): void {
+        IOC.getSync(WebMessageGateway).setUiIframe(iframe)
+    }
+
     sendMessageToClient(
         message: IApiCallRequestMessage
             | IInternalMessage
     ): void {
         this.airMessageUtils.prepMessageToSend(message)
 
-        window.postMessage(message,
-            `${message.destination.protocol}//${message.destination.domain}`)
+        this.terminalStore.getUI().uiIframe?.
+            contentWindow.postMessage(message,
+                `${message.destination.protocol}//${message.destination.domain}`)
     }
 
     private getFrameWindow(

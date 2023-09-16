@@ -31,6 +31,7 @@ export type UIState_CurrentURL = string
 
 export interface IUIState {
 	currentUrl: UIState_CurrentURL
+	uiIframe: HTMLIFrameElement
 }
 
 export interface InternalConnectorState {
@@ -96,7 +97,7 @@ export class TerminalState
 	init(): void {
 		this.terminalState = globalThis.internalTerminalState
 		let theState
-		this.terminalState.subscribe((state) => {
+		this.terminalState.subscribe(state => {
 			theState = state
 		}).unsubscribe()
 		this.terminalState.next({

@@ -1,6 +1,7 @@
 import { Injected } from "@airport/direction-indicator";
 import { IApiCallRequestMessage } from "./IApiCallMessage";
-import { CRUD_Message_Type, ICrudMessage, IInternalMessage, IMessage, INTERNAL_Message_Type, ISubscriptionMessage, IMessageOriginOrDestination, Message_OriginOrDestination_Type, Message_Type_Group, SUBSCRIPTION_Message_Type } from "./IMessage";
+import { CRUD_Message_Type, ICrudMessage, IInternalMessage, IMessage, INTERNAL_Message_Type, ISubscriptionMessage, IMessageOriginOrDestination, Message_OriginOrDestination_Type, Message_Type_Group, SUBSCRIPTION_Message_Type, Message_Direction, Message_Leg, Message_Application } from "./IMessage";
+import { v4 as guidv4 } from "uuid";
 
 export interface IAirMessageUtils {
 
@@ -36,6 +37,11 @@ export interface IAirMessageUtils {
     validateUiBoundMessage(
         message: IMessage
     ): boolean
+
+    getInternalMessage(
+        type: INTERNAL_Message_Type,
+        originType?: Message_OriginOrDestination_Type
+    ): IInternalMessage
 
 }
 
@@ -148,6 +154,27 @@ ${JSON.stringify(message, null, 2)}
         }
 
         return true
+    }
+
+    getInternalMessage(
+        type: INTERNAL_Message_Type,
+        originType: Message_OriginOrDestination_Type = Message_OriginOrDestination_Type.USER_INTERFACE
+    ): IInternalMessage {
+        return {
+            direction: Message_Direction.REQUEST,
+            id: guidv4(),
+            isAIRportMessage: true,
+            messageLeg: Message_Leg.TO_HUB,
+            origin: {
+                app: 'UserInterface',
+                domain: location.host,
+                protocol: location.protocol,
+                type: originType
+            },
+            type,
+            typeGroup: Message_Type_Group.INTERNAL,
+            dropIfConnectionNotReady: true
+        }
     }
 
     private validateApplicationInfo(
@@ -316,7 +343,9 @@ ${JSON.stringify(message, null, 2)}
                     case INTERNAL_Message_Type.APP_INITIALIZING:
                     case INTERNAL_Message_Type.CONNECTION_IS_READY:
                     case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
-                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
+                    case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
+                    case INTERNAL_Message_Type.UI_GO_BACK:
+                    case INTERNAL_Message_Type.UI_URL_CHANGED: {
                         break
                     }
                     default: {
@@ -359,7 +388,8 @@ ${JSON.stringify(message, null, 2)}
             case Message_Type_Group.INTERNAL: {
                 switch ((message as IInternalMessage).type) {
                     case INTERNAL_Message_Type.IS_CONNECTION_READY:
-                    case INTERNAL_Message_Type.UI_URL_CHANGED: {
+                    case INTERNAL_Message_Type.UI_URL_CHANGED:
+                    case INTERNAL_Message_Type.UI_GO_BACK: {
                         break
                     }
                     default: {
@@ -387,9 +417,14 @@ ${JSON.stringify(message, null, 2)}
         if (!this.isValidDomainNameString(originOrDestination.domain)) {
             throw new Error(this.getErrorMessage(`Invalid ${type} domain`, message))
         }
-        if (originOrDestination.type !== Message_OriginOrDestination_Type.FRAMEWORK
-            && !this.isValidApplicationNameString(originOrDestination.app)) {
-            throw new Error(this.getErrorMessage(`Invalid ${type} application`, message))
+
+        switch (originOrDestination.type) {
+            case Message_OriginOrDestination_Type.APPLICATION: {
+                if (!this.isValidApplicationNameString(originOrDestination.app)) {
+                    throw new Error(this.getErrorMessage(`Invalid ${type} application`, message))
+                }
+                break;
+            }
         }
     }
 

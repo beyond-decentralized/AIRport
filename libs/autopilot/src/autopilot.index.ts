@@ -1,5 +1,5 @@
 
-import { AirEntityUtils, AirMessageUtils, INTERNAL_Message_Type, IUrlChangeMessage } from '@airport/aviation-communication'
+import { AirEntityUtils, AirMessageUtils, IAirMessageUtils, INTERNAL_Message_Type, IUrlChangeMessage } from '@airport/aviation-communication'
 import { loadUiPressurisation } from '@airport/pressurization'
 import { AutopilotApiLoader } from './api/AutopilotApiLoader'
 import { LocalAPIClient } from './LocalAPIClient'
@@ -61,13 +61,15 @@ export function loadUiAutopilot() {
         }
     }
 
-    trackUrlState(apiClient)
+    trackUrlState(airMessageUtils, apiClient)
 }
 
 function trackUrlState(
+    airMessageUtils: IAirMessageUtils,
     apiClient: LocalAPIClient
 ) {
-    const request: IUrlChangeMessage = apiClient.getInternalMessage(INTERNAL_Message_Type.UI_URL_CHANGED) as IUrlChangeMessage
+    const request: IUrlChangeMessage = airMessageUtils
+        .getInternalMessage(INTERNAL_Message_Type.UI_URL_CHANGED) as IUrlChangeMessage
     const href = location.href
     let currentPath = href.substring(
         `${location.protocol}//${location.host}`.length)

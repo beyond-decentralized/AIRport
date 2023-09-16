@@ -8357,6 +8357,7 @@ var INTERNAL_Message_Type;
     INTERNAL_Message_Type["IS_CONNECTION_READY"] = "IS_CONNECTION_READY";
     INTERNAL_Message_Type["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
     INTERNAL_Message_Type["UI_URL_CHANGED"] = "UI_URL_CHANGED";
+    INTERNAL_Message_Type["UI_GO_BACK"] = "UI_GO_BACK";
 })(INTERNAL_Message_Type || (INTERNAL_Message_Type = {}));
 var SUBSCRIPTION_Message_Type;
 (function (SUBSCRIPTION_Message_Type) {
@@ -8371,6 +8372,71 @@ var SUBSCRIPTION_Message_Type;
     SUBSCRIPTION_Message_Type["SEARCH_UNSUBSCRIBE"] = "SEARCH_UNSUBSCRIBE";
     SUBSCRIPTION_Message_Type["SUBSCRIPTION_PING"] = "SUBSCRIPTION_PING";
 })(SUBSCRIPTION_Message_Type || (SUBSCRIPTION_Message_Type = {}));
+
+// Unique ID creation requires a high quality random # generator. In the browser we therefore
+// require the crypto API and do not support built-in fallback to lower quality random number
+// generators (like Math.random()).
+let getRandomValues$1;
+const rnds8$1 = new Uint8Array(16);
+function rng$1() {
+  // lazy load so that environments that need to polyfill have a chance to do so
+  if (!getRandomValues$1) {
+    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
+    getRandomValues$1 = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
+
+    if (!getRandomValues$1) {
+      throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+    }
+  }
+
+  return getRandomValues$1(rnds8$1);
+}
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+
+const byteToHex$1 = [];
+
+for (let i = 0; i < 256; ++i) {
+  byteToHex$1.push((i + 0x100).toString(16).slice(1));
+}
+
+function unsafeStringify$1(arr, offset = 0) {
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  return (byteToHex$1[arr[offset + 0]] + byteToHex$1[arr[offset + 1]] + byteToHex$1[arr[offset + 2]] + byteToHex$1[arr[offset + 3]] + '-' + byteToHex$1[arr[offset + 4]] + byteToHex$1[arr[offset + 5]] + '-' + byteToHex$1[arr[offset + 6]] + byteToHex$1[arr[offset + 7]] + '-' + byteToHex$1[arr[offset + 8]] + byteToHex$1[arr[offset + 9]] + '-' + byteToHex$1[arr[offset + 10]] + byteToHex$1[arr[offset + 11]] + byteToHex$1[arr[offset + 12]] + byteToHex$1[arr[offset + 13]] + byteToHex$1[arr[offset + 14]] + byteToHex$1[arr[offset + 15]]).toLowerCase();
+}
+
+const randomUUID$1 = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+var native$1 = {
+  randomUUID: randomUUID$1
+};
+
+function v4$1(options, buf, offset) {
+  if (native$1.randomUUID && !buf && !options) {
+    return native$1.randomUUID();
+  }
+
+  options = options || {};
+  const rnds = options.random || (options.rng || rng$1)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  if (buf) {
+    offset = offset || 0;
+
+    for (let i = 0; i < 16; ++i) {
+      buf[offset + i] = rnds[i];
+    }
+
+    return buf;
+  }
+
+  return unsafeStringify$1(rnds);
+}
 
 class AirMessageUtils {
     getMessageReadySendAttributes() {
@@ -8448,6 +8514,23 @@ ${JSON.stringify(message, null, 2)}
             return false;
         }
         return true;
+    }
+    getInternalMessage(type) {
+        return {
+            direction: Message_Direction.REQUEST,
+            id: v4$1(),
+            isAIRportMessage: true,
+            messageLeg: Message_Leg.TO_HUB,
+            origin: {
+                app: 'UserInterface',
+                domain: location.host,
+                protocol: location.protocol,
+                type: Message_OriginOrDestination_Type.USER_INTERFACE,
+            },
+            type,
+            typeGroup: Message_Type_Group.INTERNAL,
+            dropIfConnectionNotReady: true
+        };
     }
     validateApplicationInfo(message) {
         this.validateDomainAndApplication(message, message.origin, 'origin');
