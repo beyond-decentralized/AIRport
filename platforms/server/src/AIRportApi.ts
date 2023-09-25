@@ -10,10 +10,14 @@ import { WebMessageGateway } from "@airport/web-terminal";
 
 export class AIRportApi {
 
-    async getAllApplications(): Promise<DbApplication[]> {
-        const dbApplicationDao = await IOC.get(DbApplicationDao)
+    getAllApplications(): Observable<DbApplication[]> {
+        const transactionManager = IOC.getSync(TRANSACTION_MANAGER)
 
-        return await dbApplicationDao.findAll()
+        return transactionManager.transactObservableInternal(async (context) => {
+            const dbApplicationDao = IOC.getSync(DbApplicationDao)
+
+            return dbApplicationDao.searchAll()
+        }, null, {}, [])
     }
 
     getRepositories(): Observable<IRepository[]> {
@@ -63,21 +67,17 @@ export class AIRportApi {
         })
     }
 
-    async getRepository(
+    getRepository(
         repositoryGUID: Repository_GUID
-    ): Promise<IRepository> {
-        const [repositoryDao, transactionManager] = await IOC.get(RepositoryDao, TRANSACTION_MANAGER)
+    ): Observable<IRepository> {
+        const [repositoryDao, transactionManager] = IOC.getSync(RepositoryDao, TRANSACTION_MANAGER)
 
-        let repository: IRepository
-        await transactionManager.transactInternal(async (
-            _transaction: ITransaction,
+        return transactionManager.transactObservableInternal(async (
             context: IOperationContext & ITransactionContext
         ) => {
-            repository = await repositoryDao.findRepositoryWithReferences(
+            return repositoryDao.searchRepositoryWithReferences(
                 repositoryGUID, context)
         }, null, {})
-
-        return repository
     }
 
     async signUp(

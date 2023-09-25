@@ -44,7 +44,7 @@ export interface IPendingTransaction {
 
 export interface ITerminalStore<FM extends IFieldMapped = IFieldMapped> {
 
-	state: Subject<ITerminalState>
+	state: Subject<ITerminalState<FM>>
 
 	getAllApplicationVersionsByIds: IMemoizedSelector<DbApplicationVersion[], ITerminalState>
 

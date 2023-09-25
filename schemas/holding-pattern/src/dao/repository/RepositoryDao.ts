@@ -28,12 +28,12 @@ export interface IRepositoryDao
 		context: IContext
 	): Observable<IRepository[]>
 
-	findRepository(
+	searchRepositoryWithReferences(
 		repositoryGUID: Repository_GUID,
 		context: IContext
-	): Promise<IRepository>
+	): Observable<IRepository>
 
-	findRepositoryWithReferences(
+	findRepository(
 		repositoryGUID: Repository_GUID,
 		context: IContext
 	): Promise<IRepository>
@@ -123,15 +123,15 @@ export class RepositoryDao
 		return repository as IRepository
 	}
 
-	async findRepositoryWithReferences(
+	searchRepositoryWithReferences(
 		repositoryGUID: Repository_GUID,
 		context: IContext
-	): Promise<IRepository> {
+	): Observable<IRepository> {
 		let r: QRepository,
 			rr: QRepositoryReference,
 			rir: QRepositoryReference
 
-		const repository = await this._findOne({
+		return this._searchOne({
 			SELECT: {
 				'*': Y,
 				_localId: Y,
@@ -158,8 +158,6 @@ export class RepositoryDao
 			],
 			WHERE: r.GUID.equals(repositoryGUID)
 		}, context)
-
-		return repository as IRepository
 	}
 
 	async getRepositoryLoadInfo(
