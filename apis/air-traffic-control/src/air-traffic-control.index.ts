@@ -16,7 +16,7 @@ export * from './definition/IRepositoryLoader'
 export * from './implementation/utils/ApplicationUtils';
 export * from './implementation/utils/EntityUtils';
 export * from './implementation/utils/FieldUtils';
-export * from './implementation/utils/QApplicationBuilderUtils';
+export * from './implementation/utils/qApplicationBuilderUtils';
 export * from './implementation/utils/QMetadataUtils';
 export * from './implementation/utils/QueryUtils';
 export * from './implementation/databaseState';

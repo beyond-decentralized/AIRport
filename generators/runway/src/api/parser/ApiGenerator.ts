@@ -159,7 +159,7 @@ function serializeMethod(
     }
     let isApiMethod = false
     let isAsync = false
-    for (let modifier of member.declarations[0].modifiers) {
+    for (let modifier of (member.declarations[0] as ts.MethodDeclaration).modifiers) {
         if (modifier.kind === tsc.SyntaxKind.AsyncKeyword) {
             isAsync = true
         }
