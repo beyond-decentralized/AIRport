@@ -1,12 +1,12 @@
 import { DdlDomainDao } from '../dao/DdlDomainDao'
-import { DbColumnDao } from '../dao/application/entity/DbColumnDao';
+import { DdlColumnDao } from '../dao/application/entity/DdlColumnDao';
 import { DdlApplicationDao } from '../dao/application/DdlApplicationDao';
-import { DbEntityDao } from '../dao/application/entity/DbEntityDao';
-import { DbPropertyColumnDao } from '../dao/application/entity/DbPropertyColumnDao';
-import { DbPropertyDao } from '../dao/application/entity/DbPropertyDao';
+import { DdlEntityDao } from '../dao/application/entity/DdlEntityDao';
+import { DdlPropertyColumnDao } from '../dao/application/entity/DdlPropertyColumnDao';
+import { DdlPropertyDao } from '../dao/application/entity/DdlPropertyDao';
 import { DdlApplicationReferenceDao } from '../dao/application/DdlApplicationReferenceDao';
-import { DbRelationColumnDao } from '../dao/application/entity/DbRelationColumnDao';
-import { DbRelationDao } from '../dao/application/entity/DbRelationDao';
+import { DdlRelationColumnDao } from '../dao/application/entity/DdlRelationColumnDao';
+import { DdlRelationDao } from '../dao/application/entity/DdlRelationDao';
 import { DdlApplicationVersionDao } from '../dao/application/DdlApplicationVersionDao';
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { app } from '@airport/direction-indicator';
@@ -23,17 +23,17 @@ airspace.register(
     ApplicationApiClassDao, ApplicationApiOperationDao,
     ApplicationApiParameterDao, ApplicationApiReturnTypeDao,
     DdlApplicationDao, DdlApplicationReferenceDao,
-    DdlApplicationVersionDao, DbColumnDao, DdlDomainDao,
-    DbEntityDao, DbPropertyColumnDao, DbPropertyDao,
-    DbRelationColumnDao, DbRelationDao,
+    DdlApplicationVersionDao, DdlColumnDao, DdlDomainDao,
+    DdlEntityDao, DdlPropertyColumnDao, DdlPropertyDao,
+    DdlRelationColumnDao, DdlRelationDao,
 
 )
 
-airspace.setDependencies(DbColumnDao, {
+airspace.setDependencies(DdlColumnDao, {
     datastructureUtils: DatastructureUtils
 })
 
-airspace.setDependencies(DbRelationDao, {
+airspace.setDependencies(DdlRelationDao, {
     datastructureUtils: DatastructureUtils
 })
 

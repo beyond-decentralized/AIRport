@@ -5,14 +5,14 @@ import {
 } from '@airport/direction-indicator'
 import {
 	IDdlDomainDao,
-	IDbColumnDao,
+	IDdlColumnDao,
 	IDdlApplicationDao,
-	IDbEntityDao,
-	IDbPropertyColumnDao,
-	IDbPropertyDao,
+	IDdlEntityDao,
+	IDdlPropertyColumnDao,
+	IDdlPropertyDao,
 	IDdlApplicationReferenceDao,
-	IDbRelationColumnDao,
-	IDbRelationDao,
+	IDdlRelationColumnDao,
+	IDdlRelationDao,
 	IDdlApplicationVersionDao,
 	IApplicationApiClassDao,
 	IApplicationApiOperationDao,
@@ -61,28 +61,28 @@ export class DdlObjectRetriever
 	// applicationApiReturnTypeDao: IApplicationApiReturnTypeDao
 
 	@Inject()
-	dbColumnDao: IDbColumnDao
+	dbColumnDao: IDdlColumnDao
 
 	@Inject()
 	ddlApplicationDao: IDdlApplicationDao
 
 	@Inject()
-	dbEntityDao: IDbEntityDao
+	dbEntityDao: IDdlEntityDao
 
 	@Inject()
-	dbPropertyColumnDao: IDbPropertyColumnDao
+	dbPropertyColumnDao: IDdlPropertyColumnDao
 
 	@Inject()
-	dbPropertyDao: IDbPropertyDao
+	dbPropertyDao: IDdlPropertyDao
 
 	@Inject()
 	ddlApplicationReferenceDao: IDdlApplicationReferenceDao
 
 	@Inject()
-	dbRelationColumnDao: IDbRelationColumnDao
+	dbRelationColumnDao: IDdlRelationColumnDao
 
 	@Inject()
-	dbRelationDao: IDbRelationDao
+	dbRelationDao: IDdlRelationDao
 
 	@Inject()
 	ddlApplicationVersionDao: IDdlApplicationVersionDao

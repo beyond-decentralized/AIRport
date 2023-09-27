@@ -32,7 +32,7 @@ import {
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
     DdlApplicationDao,
-    DbRelationDao,
+    DdlRelationDao,
     DdlApplicationVersionDao,
     DdlDomainDao
 } from '@airport/airspace/dist/app/bundle'
@@ -163,7 +163,7 @@ groundTransport.setDependencies(SyncInUtils, {
 
 groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
-    dbRelationDao: DbRelationDao,
+    dbRelationDao: DdlRelationDao,
     applicationUtils: APPLICATION_UTILS,
     applicationNameUtils: ApplicationNameUtils,
     dictionary: Dictionary,

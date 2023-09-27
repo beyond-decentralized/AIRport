@@ -1,4 +1,4 @@
-import { IDbRelationDao } from '@airport/airspace/dist/app/bundle';
+import { IDdlRelationDao } from '@airport/airspace/dist/app/bundle';
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 import {
 	IContext,
@@ -115,7 +115,7 @@ export class SyncOutDataSerializer
 	applicationUtils: IApplicationUtils
 
 	@Inject()
-	dbRelationDao: IDbRelationDao
+	dbRelationDao: IDdlRelationDao
 
 	@Inject()
 	applicationNameUtils: IApplicationNameUtils

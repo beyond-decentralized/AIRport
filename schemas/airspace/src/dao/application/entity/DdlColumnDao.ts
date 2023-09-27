@@ -6,7 +6,7 @@ import { BaseDdlColumnDao, IBaseDdlColumnDao } from '../../../generated/baseDaos
 import Q_airport____at_airport_slash_airspace from '../../../generated/qApplication';
 import { QDdlColumn } from '../../../generated/qInterfaces';
 
-export interface IDbColumnDao
+export interface IDdlColumnDao
 	extends IBaseDdlColumnDao {
 
 	findAllForEntities(
@@ -22,9 +22,9 @@ export interface IDbColumnDao
 }
 
 @Injected()
-export class DbColumnDao
+export class DdlColumnDao
 	extends BaseDdlColumnDao
-	implements IDbColumnDao {
+	implements IDdlColumnDao {
 
 	@Inject()
 	datastructureUtils: IDatastructureUtils

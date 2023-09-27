@@ -4,7 +4,7 @@ import { BaseDdlPropertyColumnDao, IBaseDdlPropertyColumnDao } from '../../../ge
 import Q_airport____at_airport_slash_airspace from '../../../generated/qApplication'
 import { QDdlPropertyColumn } from '../../../generated/qInterfaces'
 
-export interface IDbPropertyColumnDao
+export interface IDdlPropertyColumnDao
 	extends IBaseDdlPropertyColumnDao {
 
 	findAllForColumns(
@@ -20,9 +20,9 @@ export interface IDbPropertyColumnDao
 }
 
 @Injected()
-export class DbPropertyColumnDao
+export class DdlPropertyColumnDao
 	extends BaseDdlPropertyColumnDao
-	implements IDbPropertyColumnDao {
+	implements IDdlPropertyColumnDao {
 
 
 	async findAllForColumns(

@@ -12704,7 +12704,7 @@ DdlApplicationVersionDao = __decorate$g([
     Injected()
 ], DdlApplicationVersionDao);
 
-let DbColumnDao = class DbColumnDao extends BaseDdlColumnDao {
+let DdlColumnDao = class DdlColumnDao extends BaseDdlColumnDao {
     async findAllForEntities(entityIds, context) {
         let c;
         return this.db.find.tree({
@@ -12759,12 +12759,12 @@ let DbColumnDao = class DbColumnDao extends BaseDdlColumnDao {
 };
 __decorate$g([
     Inject()
-], DbColumnDao.prototype, "datastructureUtils", void 0);
-DbColumnDao = __decorate$g([
+], DdlColumnDao.prototype, "datastructureUtils", void 0);
+DdlColumnDao = __decorate$g([
     Injected()
-], DbColumnDao);
+], DdlColumnDao);
 
-let DbEntityDao = class DbEntityDao extends BaseDdlEntityDao {
+let DdlEntityDao = class DdlEntityDao extends BaseDdlEntityDao {
     async findAllForApplicationVersions(applicationVersionIds, context) {
         let se;
         return await this.db.find.tree({
@@ -12807,11 +12807,11 @@ let DbEntityDao = class DbEntityDao extends BaseDdlEntityDao {
         }, context);
     }
 };
-DbEntityDao = __decorate$g([
+DdlEntityDao = __decorate$g([
     Injected()
-], DbEntityDao);
+], DdlEntityDao);
 
-let DbPropertyColumnDao = class DbPropertyColumnDao extends BaseDdlPropertyColumnDao {
+let DdlPropertyColumnDao = class DdlPropertyColumnDao extends BaseDdlPropertyColumnDao {
     async findAllForColumns(columnIds, context) {
         let rc;
         return this.db.find.tree({
@@ -12846,11 +12846,11 @@ let DbPropertyColumnDao = class DbPropertyColumnDao extends BaseDdlPropertyColum
         }, context);
     }
 };
-DbPropertyColumnDao = __decorate$g([
+DdlPropertyColumnDao = __decorate$g([
     Injected()
-], DbPropertyColumnDao);
+], DdlPropertyColumnDao);
 
-let DbPropertyDao = class DbPropertyDao extends BaseDdlPropertyDao {
+let DdlPropertyDao = class DdlPropertyDao extends BaseDdlPropertyDao {
     async findAllForEntities(entityIds, context) {
         let p;
         return this.db.find.tree({
@@ -12890,11 +12890,11 @@ let DbPropertyDao = class DbPropertyDao extends BaseDdlPropertyDao {
         }, context);
     }
 };
-DbPropertyDao = __decorate$g([
+DdlPropertyDao = __decorate$g([
     Injected()
-], DbPropertyDao);
+], DdlPropertyDao);
 
-let DbRelationColumnDao = class DbRelationColumnDao extends BaseDdlRelationColumnDao {
+let DdlRelationColumnDao = class DdlRelationColumnDao extends BaseDdlRelationColumnDao {
     async findAllForColumns(columnIds, context) {
         let rc;
         return this.db.find.tree({
@@ -12938,11 +12938,11 @@ let DbRelationColumnDao = class DbRelationColumnDao extends BaseDdlRelationColum
         }, context);
     }
 };
-DbRelationColumnDao = __decorate$g([
+DdlRelationColumnDao = __decorate$g([
     Injected()
-], DbRelationColumnDao);
+], DdlRelationColumnDao);
 
-let DbRelationDao = class DbRelationDao extends BaseDdlRelationDao {
+let DdlRelationDao = class DdlRelationDao extends BaseDdlRelationDao {
     async findAllForProperties(propertyIds, context) {
         let r;
         return this.db.find.tree({
@@ -13020,10 +13020,10 @@ let DbRelationDao = class DbRelationDao extends BaseDdlRelationDao {
 };
 __decorate$g([
     Inject()
-], DbRelationDao.prototype, "datastructureUtils", void 0);
-DbRelationDao = __decorate$g([
+], DdlRelationDao.prototype, "datastructureUtils", void 0);
+DdlRelationDao = __decorate$g([
     Injected()
-], DbRelationDao);
+], DdlRelationDao);
 
 let DdlDomainDao = class DdlDomainDao extends BaseDdlDomainDao {
     async findByIdIn(domainIds, context) {
@@ -13137,11 +13137,11 @@ const application$4 = {
 };
 
 const airspace = app(application$4);
-airspace.register(ApplicationApiClassDao, ApplicationApiOperationDao, ApplicationApiParameterDao, ApplicationApiReturnTypeDao, DdlApplicationDao, DdlApplicationReferenceDao, DdlApplicationVersionDao, DbColumnDao, DdlDomainDao, DbEntityDao, DbPropertyColumnDao, DbPropertyDao, DbRelationColumnDao, DbRelationDao);
-airspace.setDependencies(DbColumnDao, {
+airspace.register(ApplicationApiClassDao, ApplicationApiOperationDao, ApplicationApiParameterDao, ApplicationApiReturnTypeDao, DdlApplicationDao, DdlApplicationReferenceDao, DdlApplicationVersionDao, DdlColumnDao, DdlDomainDao, DdlEntityDao, DdlPropertyColumnDao, DdlPropertyDao, DdlRelationColumnDao, DdlRelationDao);
+airspace.setDependencies(DdlColumnDao, {
     datastructureUtils: DatastructureUtils
 });
-airspace.setDependencies(DbRelationDao, {
+airspace.setDependencies(DdlRelationDao, {
     datastructureUtils: DatastructureUtils
 });
 airspace.setDependencies(DdlApplicationDao, {
@@ -15464,15 +15464,15 @@ takeoff.setDependencies(ApplicationRecorder, {
     applicationApiOperationDao: ApplicationApiOperationDao,
     applicationApiParameterDao: ApplicationApiParameterDao,
     applicationApiReturnTypeDao: ApplicationApiReturnTypeDao,
-    dbColumnDao: DbColumnDao,
+    dbColumnDao: DdlColumnDao,
     ddlApplicationDao: DdlApplicationDao,
-    dbEntityDao: DbEntityDao,
-    dbPropertyColumnDao: DbPropertyColumnDao,
-    dbPropertyDao: DbPropertyDao,
+    dbEntityDao: DdlEntityDao,
+    dbPropertyColumnDao: DdlPropertyColumnDao,
+    dbPropertyDao: DdlPropertyDao,
     applicationRecorder: ApplicationRecorder,
     ddlApplicationReferenceDao: DdlApplicationReferenceDao,
-    dbRelationColumnDao: DbRelationColumnDao,
-    dbRelationDao: DbRelationDao,
+    dbRelationColumnDao: DdlRelationColumnDao,
+    dbRelationDao: DdlRelationDao,
     ddlApplicationVersionDao: DdlApplicationVersionDao,
     ddlDomainDao: DdlDomainDao,
     transactionManager: TRANSACTION_MANAGER
@@ -15485,14 +15485,14 @@ takeoff.setDependencies(DdlObjectRetriever, {
     // applicationApiOperationDao: ApplicationApiOperationDao,
     // applicationApiParameterDao: ApplicationApiParameterDao,
     // applicationApiReturnTypeDao: ApplicationApiReturnTypeDao,
-    dbColumnDao: DbColumnDao,
+    dbColumnDao: DdlColumnDao,
     ddlApplicationDao: DdlApplicationDao,
-    dbEntityDao: DbEntityDao,
-    dbPropertyColumnDao: DbPropertyColumnDao,
-    dbPropertyDao: DbPropertyDao,
+    dbEntityDao: DdlEntityDao,
+    dbPropertyColumnDao: DdlPropertyColumnDao,
+    dbPropertyDao: DdlPropertyDao,
     ddlApplicationReferenceDao: DdlApplicationReferenceDao,
-    dbRelationColumnDao: DbRelationColumnDao,
-    dbRelationDao: DbRelationDao,
+    dbRelationColumnDao: DdlRelationColumnDao,
+    dbRelationDao: DdlRelationDao,
     ddlApplicationVersionDao: DdlApplicationVersionDao,
     ddlDomainDao: DdlDomainDao
 });
@@ -35547,7 +35547,7 @@ groundTransport.setDependencies(SyncInUtils, {
 });
 groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
-    dbRelationDao: DbRelationDao,
+    dbRelationDao: DdlRelationDao,
     applicationUtils: APPLICATION_UTILS,
     applicationNameUtils: ApplicationNameUtils,
     dictionary: Dictionary,

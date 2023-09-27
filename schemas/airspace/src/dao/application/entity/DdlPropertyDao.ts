@@ -4,7 +4,7 @@ import { BaseDdlPropertyDao, IBaseDdlPropertyDao } from '../../../generated/base
 import Q_airport____at_airport_slash_airspace from '../../../generated/qApplication';
 import { QDdlProperty } from '../../../generated/qInterfaces';
 
-export interface IDbPropertyDao
+export interface IDdlPropertyDao
 	extends IBaseDdlPropertyDao {
 
 	findAllForEntities(
@@ -20,9 +20,9 @@ export interface IDbPropertyDao
 }
 
 @Injected()
-export class DbPropertyDao
+export class DdlPropertyDao
 	extends BaseDdlPropertyDao
-	implements IDbPropertyDao {
+	implements IDdlPropertyDao {
 
 	async findAllForEntities(
 		entityIds: DbEntity_LocalId[],
