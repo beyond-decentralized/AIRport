@@ -13,19 +13,19 @@ import {
 	Transient
 } from '@airport/tarmaq-entity'
 import {
-	DbApplicationVersion_LocalId,
-	DbApplicationVersion_IntegerVersion,
-	DbApplicationVersion_MajorVersion,
-	DbApplicationVersion_MinorVersion,
-	DbApplicationVersion_PatchVersion,
-	DbApplicationVersion_VersionString,
-	DbApplicationReference,
+	ApplicationVersion_LocalId,
+	ApplicationVersion_IntegerVersion,
+	ApplicationVersion_MajorVersion,
+	ApplicationVersion_MinorVersion,
+	ApplicationVersion_PatchVersion,
+	ApplicationVersion_VersionString,
+	IApplicationReference,
 	DbEntity,
-	DbApplicationVersion,
+	IApplicationVersion,
 	AppApiClass_Name,
 	AppApiClass,
 	DbEntity_Name,
-	DbApplication_FullName
+	Application_FullName
 } from '@airport/ground-control'
 import { DdlApplication } from './DdlApplication'
 import { DdlEntity } from './entity/DdlEntity'
@@ -36,33 +36,33 @@ import { ApplicationApiClass } from './api/ApplicationApiClass'
 @Entity()
 @Table({ name: 'DB_APPLICATION_VERSIONS' })
 export class DdlApplicationVersion
-	implements DbApplicationVersion {
+	implements IApplicationVersion {
 
 	@DbNumber()
 	@Id()
 	@SequenceGenerator({ allocationSize: 100 })
 	@Column({ name: 'DB_APPLICATION_VERSION_LID', nullable: false })
-	_localId: DbApplicationVersion_LocalId
+	_localId: ApplicationVersion_LocalId
 
 	@Column({ name: 'INTEGER_VERSION', nullable: false })
 	@DbNumber()
-	integerVersion: DbApplicationVersion_IntegerVersion
+	integerVersion: ApplicationVersion_IntegerVersion
 
 	@Column({ name: 'VERSION_STRING', nullable: false })
 	@DbString()
-	versionString: DbApplicationVersion_VersionString
+	versionString: ApplicationVersion_VersionString
 
 	@Column({ name: 'MAJOR_VERSION', nullable: false })
 	@DbNumber()
-	majorVersion: DbApplicationVersion_MajorVersion
+	majorVersion: ApplicationVersion_MajorVersion
 
 	@Column({ name: 'MINOR_VERSION', nullable: false })
 	@DbNumber()
-	minorVersion: DbApplicationVersion_MinorVersion
+	minorVersion: ApplicationVersion_MinorVersion
 
 	@Column({ name: 'PATCH_VERSION', nullable: false })
 	@DbNumber()
-	patchVersion: DbApplicationVersion_PatchVersion
+	patchVersion: ApplicationVersion_PatchVersion
 
 	// FIXME: revisit application tracking when versioning is implemented
 	// better to track everything by names
@@ -97,9 +97,9 @@ export class DdlApplicationVersion
 	entityMapByName?: { [entityName: DbEntity_Name]: DbEntity } = {}
 
 	@Transient()
-	referencesMapByName?: { [fullDbApplication_Name: DbApplication_FullName]: DbApplicationReference } = {}
+	referencesMapByName?: { [fullApplication_Name: Application_FullName]: IApplicationReference } = {}
 
 	@Transient()
-	referencedByMapByName?: { [fullDbApplication_Name: DbApplication_FullName]: DbApplicationReference } = {}
+	referencedByMapByName?: { [fullApplication_Name: Application_FullName]: IApplicationReference } = {}
 
 }

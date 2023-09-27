@@ -1,6 +1,6 @@
 import {
-	DbApplicationVersion,
-	IDbApplicationUtils,
+	IApplicationVersion,
+	IApplicationNameUtils,
 	JsonApplication
 } from '@airport/ground-control'
 import {
@@ -16,12 +16,12 @@ export interface IApplicationLocator {
 	locateExistingApplicationVersionRecord(
 		jsonApplication: JsonApplication,
 		terminalStore: ITerminalStore
-	): DbApplicationVersion
+	): IApplicationVersion
 
-	locateLatestApplicationVersionByDbApplication_Name(
-		fullDbApplication_Name: string,
+	locateLatestApplicationVersionByApplication_Name(
+		fullApplication_Name: string,
 		terminalStore: ITerminalStore,
-	): Promise<DbApplicationVersion>
+	): Promise<IApplicationVersion>
 
 }
 
@@ -30,25 +30,25 @@ export class ApplicationLocator
 	implements IApplicationLocator {
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	applicationNameUtils: IApplicationNameUtils
 
 	// private terminalStore: ITerminalStore
 
 	locateExistingApplicationVersionRecord(
 		jsonApplication: JsonApplication,
 		terminalStore: ITerminalStore
-	): DbApplicationVersion {
+	): IApplicationVersion {
 		const applicationVersionsForDomain_Name = terminalStore
 			.getLatestApplicationVersionMapByNames().get(jsonApplication.domain)
 		if (!applicationVersionsForDomain_Name) {
 			return null
 		}
-		const fullDbApplication_Name = this.dbApplicationUtils.
-			getDbApplication_FullNameFromDomainAndName(
+		const fullApplication_Name = this.applicationNameUtils.
+			getApplication_FullNameFromDomainAndName(
 				jsonApplication.domain,
 				jsonApplication.name
 			)
-		const latestApplicationVersionForApplication = applicationVersionsForDomain_Name.get(fullDbApplication_Name)
+		const latestApplicationVersionForApplication = applicationVersionsForDomain_Name.get(fullApplication_Name)
 
 		const jsonApplicationVersion = jsonApplication.versions[0]
 
@@ -60,12 +60,12 @@ export class ApplicationLocator
 		return latestApplicationVersionForApplication
 	}
 
-	async locateLatestApplicationVersionByDbApplication_Name(
-		fullDbApplication_Name: string,
+	async locateLatestApplicationVersionByApplication_Name(
+		fullApplication_Name: string,
 		terminalStore: ITerminalStore,
-	): Promise<DbApplicationVersion> {
-		return terminalStore.getLatestApplicationVersionMapByDbApplication_FullName()
-			.get(fullDbApplication_Name)
+	): Promise<IApplicationVersion> {
+		return terminalStore.getLatestApplicationVersionMapByApplication_FullName()
+			.get(fullApplication_Name)
 	}
 
 }

@@ -6,14 +6,14 @@ import {
     SystemWideOperationIdUtils,
     Utils
 } from '@airport/air-traffic-control'
-import { DbApplicationDao, DbDomainDao } from '@airport/airspace/dist/app/bundle'
+import { DdlApplicationDao, DdlDomainDao } from '@airport/airspace/dist/app/bundle'
 import { HISTORY_MANAGER, LOCAL_API_SERVER, TerminalStore, TERMINAL_SESSION_MANAGER, UserStore } from '@airport/terminal-map'
 import { lib } from '@airport/direction-indicator'
 import {
     APPLICATION_UTILS,
     AppTrackerUtils,
     DatastructureUtils,
-    DbApplicationUtils,
+    ApplicationNameUtils,
     Dictionary,
     ENTITY_STATE_MANAGER,
     QUERY_PARAMETER_DESERIALIZER,
@@ -112,9 +112,9 @@ terminal.setDependencies(TransactionalReceiver as any, {
 
 terminal.setDependencies(DatabaseManager, {
     airportDatabase: AIRPORT_DATABASE,
-    dbApplicationDao: DbApplicationDao,
+    ddlApplicationDao: DdlApplicationDao,
     applicationInitializer: APPLICATION_INITIALIZER,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     internalRecordManager: InternalRecordManager,
     storeDriver: STORE_DRIVER,
     transactionalServer: TRANSACTIONAL_SERVER,
@@ -163,8 +163,8 @@ terminal.setDependencies(InsertManager, {
 
 terminal.setDependencies(InternalRecordManager, {
     actorDao: ActorDao,
-    dbApplicationDao: DbApplicationDao,
-    dbDomainDao: DbDomainDao,
+    ddlApplicationDao: DdlApplicationDao,
+    ddlDomainDao: DdlDomainDao,
     entityStateManager: ENTITY_STATE_MANAGER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TerminalStore,
@@ -227,7 +227,7 @@ REPOSITORY_LOADER.setDependencies({
 terminal.setDependencies(StructuralEntityValidator, {
     applicationUtils: APPLICATION_UTILS,
     crossRepositoryRelationManager: CrossRepositoryRelationManager,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
 })
@@ -254,9 +254,9 @@ TRANSACTION_MANAGER.setDependencies({
 
 TRANSACTIONAL_RECEIVER.setDependencies({
     actorDao: ActorDao,
-    dbApplicationDao: DbApplicationDao,
+    ddlApplicationDao: DdlApplicationDao,
     databaseManager: DatabaseManager,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     internalRecordManager: InternalRecordManager,
     localApiServer: LOCAL_API_SERVER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,

@@ -1,6 +1,6 @@
 import { QApp } from "@airport/aviation-communication";
 import { Injected } from "@airport/direction-indicator";
-import { DbApplication } from "@airport/ground-control";
+import { IApplication } from "@airport/ground-control";
 import { IFunctionsAndOperators } from "@airport/tarmaq-query";
 import { IEntityRecord } from "../definition/IAirportDatabase";
 import { IDatabaseState } from "../definition/IDatabaseState";
@@ -12,7 +12,7 @@ export class DatabaseStore
 
     databaseState = theDatabaseState
 
-    get applications(): DbApplication[] {
+    get applications(): IApplication[] {
         return this.databaseState.applications
     }
     get entityMap(): Map<any, IEntityRecord> {

@@ -31,10 +31,10 @@ import {
     UserAccountDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
-    DbApplicationDao,
+    DdlApplicationDao,
     DbRelationDao,
-    DbApplicationVersionDao,
-    DbDomainDao
+    DdlApplicationVersionDao,
+    DdlDomainDao
 } from '@airport/airspace/dist/app/bundle'
 import {
     ActorDao,
@@ -57,7 +57,7 @@ import {
     APPLICATION_UTILS,
     AppTrackerUtils,
     DatastructureUtils,
-    DbApplicationUtils,
+    ApplicationNameUtils,
     Dictionary,
     KeyUtils,
     SEQUENCE_GENERATOR
@@ -111,13 +111,13 @@ groundTransport.setDependencies(SyncInActorChecker, {
 })
 
 groundTransport.setDependencies(SyncInApplicationChecker, {
-    dbApplicationDao: DbApplicationDao,
-    dbApplicationUtils: DbApplicationUtils,
-    dbDomainDao: DbDomainDao
+    ddlApplicationDao: DdlApplicationDao,
+    applicationNameUtils: ApplicationNameUtils,
+    ddlDomainDao: DdlDomainDao
 })
 
 groundTransport.setDependencies(SyncInApplicationVersionChecker, {
-    dbApplicationVersionDao: DbApplicationVersionDao,
+    ddlApplicationVersionDao: DdlApplicationVersionDao,
     applicationInitializer: APPLICATION_INITIALIZER
 })
 
@@ -165,7 +165,7 @@ groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
     dbRelationDao: DbRelationDao,
     applicationUtils: APPLICATION_UTILS,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     dictionary: Dictionary,
     repositoryDao: RepositoryDao,
 })

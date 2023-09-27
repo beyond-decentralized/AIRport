@@ -6,7 +6,7 @@ import {
 	DbColumn,
 	DbEntity,
 	QueryRelation,
-	DbApplication_Index,
+	Application_Index,
 	DbEntity_TableIndex
 } from '@airport/ground-control'
 
@@ -38,13 +38,13 @@ export interface IValidator {
 	): void;
 
 	validateReadQEntityProperty(
-		applicationIndex: DbApplication_Index,
+		applicationIndex: Application_Index,
 		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index,
 	): void;
 
 	validateReadQEntityManyToOneRelation(
-		applicationIndex: DbApplication_Index,
+		applicationIndex: Application_Index,
 		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index,
 	): void;
@@ -87,14 +87,14 @@ export class QValidator
 	}
 
 	validateReadQEntityProperty(
-		applicationIndex: DbApplication_Index,
+		applicationIndex: Application_Index,
 		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index,
 	): void {
 	}
 
 	validateReadQEntityManyToOneRelation(
-		applicationIndex: DbApplication_Index,
+		applicationIndex: Application_Index,
 		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index,
 	): void {

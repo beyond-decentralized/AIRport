@@ -1,62 +1,62 @@
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
-	DbDomain,
-	DbDomain_LocalId,
-	DbDomain_Name
+	IDomain,
+	Domain_LocalId,
+	Domain_Name
 } from '@airport/ground-control'
 import { BaseDdlDomainDao, IBaseDdlDomainDao } from '../generated/baseDaos'
 import Q_airport____at_airport_slash_airspace from '../generated/qApplication'
 import { QDdlDomain } from '../generated/qInterfaces'
 
-export interface IDbDomainDao
+export interface IDdlDomainDao
 	extends IBaseDdlDomainDao {
 
 	findByIdIn(
-		domainIds: DbDomain_LocalId[],
+		domainIds: Domain_LocalId[],
 		context: IContext
-	): Promise<DbDomain[]>
+	): Promise<IDomain[]>
 
 	findMapByNameWithNames(
-		domainNames: DbDomain_Name[],
+		domainNames: Domain_Name[],
 		context: IContext
-	): Promise<Map<DbDomain_Name, DbDomain>>
+	): Promise<Map<Domain_Name, IDomain>>
 
 	findOneByName(
-		domainName: DbDomain_Name,
+		domainName: Domain_Name,
 		context: IContext
-	): Promise<DbDomain>
+	): Promise<IDomain>
 
 	findByNames(
-		domainNames: DbDomain_Name[],
+		domainNames: Domain_Name[],
 		context: IContext
-	): Promise<DbDomain[]>
+	): Promise<IDomain[]>
 
 	findByName(
-		domainName: DbDomain_Name,
+		domainName: Domain_Name,
 		context: IContext
-	): Promise<DbDomain>
+	): Promise<IDomain>
 
 	checkAndInsertIfNeeded(
-		domains: DbDomain[],
+		domains: IDomain[],
 		context: IContext
 	): Promise<void>
 
 	insert(
-		domains: DbDomain[],
+		domains: IDomain[],
 		context: IContext
 	): Promise<void>
 
 }
 
 @Injected()
-export class DbDomainDao
+export class DdlDomainDao
 	extends BaseDdlDomainDao
-	implements IDbDomainDao {
+	implements IDdlDomainDao {
 
 	async findByIdIn(
-		domainIds: DbDomain_LocalId[],
+		domainIds: Domain_LocalId[],
 		context: IContext
-	): Promise<DbDomain[]> {
+	): Promise<IDomain[]> {
 		let d: QDdlDomain
 
 		return await this.db.find.tree({
@@ -69,9 +69,9 @@ export class DbDomainDao
 	}
 
 	async findMapByNameWithNames(
-		domainNames: DbDomain_Name[],
+		domainNames: Domain_Name[],
 		context: IContext
-	): Promise<Map<DbDomain_Name, DbDomain>> {
+	): Promise<Map<Domain_Name, IDomain>> {
 		let d: QDdlDomain
 		const domains = await this.db.find.tree({
 			SELECT: {},
@@ -79,7 +79,7 @@ export class DbDomainDao
 			WHERE: d.name.IN(domainNames)
 		}, context)
 
-		const domainMapByNameWithNames: Map<DbDomain_Name, DbDomain> = new Map()
+		const domainMapByNameWithNames: Map<Domain_Name, IDomain> = new Map()
 
 		for (const domain of domains) {
 			domainMapByNameWithNames.set(domain.name, domain)
@@ -89,9 +89,9 @@ export class DbDomainDao
 	}
 
 	async findOneByName(
-		name: DbDomain_Name,
+		name: Domain_Name,
 		context: IContext
-	): Promise<DbDomain> {
+	): Promise<IDomain> {
 		let d: QDdlDomain
 		return await this.db.findOne.tree({
 			SELECT: {},
@@ -101,9 +101,9 @@ export class DbDomainDao
 	}
 
 	async findByNames(
-		names: DbDomain_Name[],
+		names: Domain_Name[],
 		context: IContext
-	): Promise<DbDomain[]> {
+	): Promise<IDomain[]> {
 		let d: QDdlDomain
 		return await this.db.find.tree({
 			SELECT: {},
@@ -113,9 +113,9 @@ export class DbDomainDao
 	}
 
 	async findByName(
-		name: DbDomain_Name,
+		name: Domain_Name,
 		context: IContext
-	): Promise<DbDomain> {
+	): Promise<IDomain> {
 		let d: QDdlDomain
 		return await this.db.findOne.tree({
 			SELECT: {},
@@ -125,17 +125,17 @@ export class DbDomainDao
 	}
 
 	async checkAndInsertIfNeeded(
-		domains: DbDomain[],
+		domains: IDomain[],
 		context: IContext
 	): Promise<void> {
 		const existingDomains = await this.findByIdIn(
 			domains.map(domain => domain._localId),
 			context)
-		const existingDomainMap: Map<DbDomain_LocalId, DbDomain> = new Map()
+		const existingDomainMap: Map<Domain_LocalId, IDomain> = new Map()
 		for (const existingDomain of existingDomains) {
 			existingDomainMap.set(existingDomain._localId, existingDomain)
 		}
-		const newDomains: DbDomain[] = []
+		const newDomains: IDomain[] = []
 		for (const domain of domains) {
 			if (!existingDomainMap.has(domain._localId)) {
 				newDomains.push(domain)
@@ -162,7 +162,7 @@ export class DbDomainDao
 	}
 
 	async insert(
-		domains: DbDomain[],
+		domains: IDomain[],
 		context: IContext
 	): Promise<void> {
 		let d: QDdlDomain;

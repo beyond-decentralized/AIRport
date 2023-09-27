@@ -1,4 +1,4 @@
-import { DbApplicationCurrentVersion } from "@airport/ground-control";
+import { IApplicationCurrentVersion } from "@airport/ground-control";
 import {
     Entity,
     Id,
@@ -14,7 +14,7 @@ import { DdlApplicationVersion } from "./DdlApplicationVersion";
     name: 'DB_APPLICATION_CURRENT_VERSIONS'
 })
 export class DdlApplicationCurrentVersion
-    implements DbApplicationCurrentVersion {
+    implements IApplicationCurrentVersion {
 
     @Id()
     @ManyToOne()

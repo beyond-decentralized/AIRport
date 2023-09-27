@@ -1,5 +1,5 @@
 import { ILastIds, JsonApplicationWithLastIds } from '@airport/air-traffic-control';
-import { DbApplicationDao } from '@airport/airspace/dist/app/bundle';
+import { IDdlApplicationDao } from '@airport/airspace/dist/app/bundle';
 import { Message_Leg, IApiCallRequestMessage, IApiCallResponseMessage, INTERNAL_Message_Type, CRUD_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IResponseMessage, IInternalMessage, IUrlChangeMessage } from '@airport/aviation-communication';
 import {
     IContext,
@@ -7,11 +7,11 @@ import {
     Injected
 } from '@airport/direction-indicator'
 import {
-    DbApplicationVersion,
-    DbDomain,
+    IApplicationVersion,
+    IDomain,
     IActor,
     IAppTrackerUtils,
-    IDbApplicationUtils,
+    IApplicationNameUtils,
     ITerminal
 } from '@airport/ground-control';
 import { ActorDao } from '@airport/holding-pattern/dist/app/bundle';
@@ -22,7 +22,7 @@ import {
     IConnectionInitializedMessage,
     ICredentials,
     IDatabaseManager,
-    IGetLatestApplicationVersionByDbApplication_NameMessage,
+    IGetLatestApplicationVersionByApplication_NameMessage,
     IInitializeConnectionMessage,
     ILocalAPIServer,
     IPortableQueryMessage,
@@ -46,7 +46,7 @@ export abstract class TransactionalReceiver {
     actorDao: ActorDao
 
     @Inject()
-    dbApplicationDao: DbApplicationDao
+    ddlApplicationDao: IDdlApplicationDao
 
     @Inject()
     appTrackerUtils: IAppTrackerUtils
@@ -55,7 +55,7 @@ export abstract class TransactionalReceiver {
     databaseManager: IDatabaseManager
 
     @Inject()
-    dbApplicationUtils: IDbApplicationUtils
+    applicationNameUtils: IApplicationNameUtils
 
     @Inject()
     internalRecordManager: IInternalRecordManager
@@ -131,14 +131,14 @@ export abstract class TransactionalReceiver {
     }
 
     async processInternalMessage(
-        message: IGetLatestApplicationVersionByDbApplication_NameMessage
+        message: IGetLatestApplicationVersionByApplication_NameMessage
             | IInitializeConnectionMessage
             | IRetrieveDomainMessage
             | IUrlChangeMessage
             | IInternalMessage
     ): Promise<{
         theErrorMessage: string
-        theResult: DbApplicationVersion | DbDomain | ILastIds | null
+        theResult: IApplicationVersion | IDomain | ILastIds | null
     }> {
         let theErrorMessage: string = undefined
         let theResult: any = null
@@ -146,25 +146,25 @@ export abstract class TransactionalReceiver {
             case INTERNAL_Message_Type.APP_INITIALIZING:
                 const application: JsonApplicationWithLastIds =
                     (message as IInitializeConnectionMessage).jsonApplication
-                const fullDbApplication_Name = this.dbApplicationUtils.
-                    getDbApplication_FullName(application)
-                const messageDbApplication_FullName = this.dbApplicationUtils.
-                    getDbApplication_FullNameFromDomainAndName(
+                const fullApplication_Name = this.applicationNameUtils.
+                    getApplication_FullName(application)
+                const messageApplication_FullName = this.applicationNameUtils.
+                    getApplication_FullNameFromDomainAndName(
                         message.origin.domain, message.origin.app)
-                if (fullDbApplication_Name !== messageDbApplication_FullName) {
+                if (fullApplication_Name !== messageApplication_FullName) {
                     theResult = null
                     break
                 }
 
                 if (this.terminalStore.getReceiver().initializingApps
-                    .has(fullDbApplication_Name)) {
+                    .has(fullApplication_Name)) {
                     return {
                         theErrorMessage,
                         theResult
                     }
                 }
                 this.terminalStore.getReceiver().initializingApps
-                    .add(fullDbApplication_Name)
+                    .add(fullApplication_Name)
 
                 const context: IContext = {}
                 context.startedAt = new Date()
@@ -177,16 +177,16 @@ export abstract class TransactionalReceiver {
                 break
             case INTERNAL_Message_Type.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps
-                initializedApps.add((message as IConnectionInitializedMessage).fullDbApplication_Name)
-                // console.log(`--==<<(( INITIALIZED: ${(message as any as IConnectionInitializedIMI).fullDbApplication_Name}))>>==--`)
+                initializedApps.add((message as IConnectionInitializedMessage).fullApplication_Name)
+                // console.log(`--==<<(( INITIALIZED: ${(message as any as IConnectionInitializedIMI).fullApplication_Name}))>>==--`)
                 return {
                     theErrorMessage,
                     theResult
                 }
             case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
-                theResult = this.terminalStore.getLatestApplicationVersionMapByDbApplication_FullName()
-                    .get((message as IGetLatestApplicationVersionByDbApplication_NameMessage)
-                        .fullDbApplication_Name)
+                theResult = this.terminalStore.getLatestApplicationVersionMapByApplication_FullName()
+                    .get((message as IGetLatestApplicationVersionByApplication_NameMessage)
+                        .fullApplication_Name)
                 break
             }
             case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
@@ -383,13 +383,13 @@ export abstract class TransactionalReceiver {
         isFramework?: boolean
         isStarted: boolean,
     }> {
-        const fullDbApplication_Name = this.dbApplicationUtils.
-            getDbApplication_FullNameFromDomainAndName(
+        const fullApplication_Name = this.applicationNameUtils.
+            getApplication_FullNameFromDomainAndName(
                 message.destination.domain, message.destination.app)
-        const application = this.terminalStore.getApplicationMapByFullName().get(fullDbApplication_Name)
+        const application = this.terminalStore.getApplicationMapByFullName().get(fullApplication_Name)
         if (!application) {
             console.error(`Application not found
-${fullDbApplication_Name}
+${fullApplication_Name}
 `)
             return {
                 isStarted: false
@@ -404,7 +404,7 @@ ${fullDbApplication_Name}
             API Class:
 ${message.objectName}
             Application:
-${fullDbApplication_Name}
+${fullApplication_Name}
 `)
             return {
                 isStarted: false
@@ -419,7 +419,7 @@ ${fullDbApplication_Name}
             @Api():
 ${message.objectName}.${message.methodName}
             Application:
-${fullDbApplication_Name}
+${fullApplication_Name}
 `)
             return {
                 isStarted: false
@@ -525,7 +525,7 @@ ${fullDbApplication_Name}
                 return actor
             }
             const terminal = this.terminalStore.getTerminal()
-            actor = await this.actorDao.findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(
+            actor = await this.actorDao.findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(
                 message.destination.domain,
                 message.destination.app,
                 userSession.userAccount.accountPublicSigningKey,
@@ -536,7 +536,7 @@ ${fullDbApplication_Name}
                 return actor
             }
 
-            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(
+            const application = await this.ddlApplicationDao.findOneByDomain_NameAndApplication_Name(
                 message.destination.domain, message.destination.app, context)
             actor = {
                 _localId: null,

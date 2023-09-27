@@ -24,11 +24,11 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	DbApplicationVersion,
-	DbDomain,
-	DbDomain_Name,
+	IApplicationVersion,
+	IDomain,
+	Domain_Name,
 	IAirEntity,
-	IDbApplicationUtils,
+	IApplicationNameUtils,
 	ISaveResult,
 	ITransactionalConnector,
 	PortableQuery
@@ -42,7 +42,7 @@ import {
 import {
 	AppState,
 	IApplicationLoader,
-	IGetLatestApplicationVersionByDbApplication_NameMessage,
+	IGetLatestApplicationVersionByApplication_NameMessage,
 	IInitializeConnectionMessage,
 	ILocalAPIServer,
 	IPortableQueryMessage,
@@ -58,9 +58,9 @@ import { v4 as guidv4 } from 'uuid';
 export interface IIframeTransactionalConnector
 	extends ITransactionalConnector {
 
-	getLatestApplicationVersionMapByDbApplication_FullName(
+	getLatestApplicationVersionMapByApplication_FullName(
 		applicationName: string
-	): Promise<DbApplicationVersion>
+	): Promise<IApplicationVersion>
 
 	initializeConnection(): Promise<void>
 
@@ -69,14 +69,14 @@ export interface IIframeTransactionalConnector
 			| IObservableApiCallRequestMessage
 			| IApiCallResponseMessage
 			| IInitializeConnectionMessage
-			| IGetLatestApplicationVersionByDbApplication_NameMessage
+			| IGetLatestApplicationVersionByApplication_NameMessage
 			| IRetrieveDomainMessage,
 		origin: string
 	): Promise<void>
 
 	retrieveDomain(
-		domainName: DbDomain_Name
-	): Promise<DbDomain>
+		domainName: Domain_Name
+	): Promise<IDomain>
 
 }
 
@@ -94,7 +94,7 @@ export class IframeTransactionalConnector
 	applicationStore: IApplicationStore
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	applicationNameUtils: IApplicationNameUtils
 
 	@Inject()
 	localApiServer: ILocalAPIServer
@@ -135,7 +135,7 @@ export class IframeTransactionalConnector
 			| IObservableApiCallRequestMessage
 			| IApiCallResponseMessage
 			| IInitializeConnectionMessage
-			| IGetLatestApplicationVersionByDbApplication_NameMessage
+			| IGetLatestApplicationVersionByApplication_NameMessage
 			| IRetrieveDomainMessage,
 		origin: string
 	): Promise<void> {
@@ -152,7 +152,7 @@ export class IframeTransactionalConnector
 			case Message_Type_Group.INTERNAL: {
 				this.handleInternalMessage(message as
 					IInitializeConnectionMessage
-					| IGetLatestApplicationVersionByDbApplication_NameMessage
+					| IGetLatestApplicationVersionByApplication_NameMessage
 					| IRetrieveDomainMessage)
 				break
 			}
@@ -294,12 +294,12 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	async getLatestApplicationVersionMapByDbApplication_FullName(
-		fullDbApplication_Name: string
-	): Promise<DbApplicationVersion> {
-		return await this.sendMessageAndGetResponse<IGetLatestApplicationVersionByDbApplication_NameMessage, DbApplicationVersion>({
+	async getLatestApplicationVersionMapByApplication_FullName(
+		fullApplication_Name: string
+	): Promise<IApplicationVersion> {
+		return await this.sendMessageAndGetResponse<IGetLatestApplicationVersionByApplication_NameMessage, IApplicationVersion>({
 			...this.getCoreFields(Message_Type_Group.INTERNAL),
-			fullDbApplication_Name: fullDbApplication_Name,
+			fullApplication_Name: fullApplication_Name,
 			type: INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME
 		})
 	}
@@ -313,9 +313,9 @@ export class IframeTransactionalConnector
 	}
 
 	async retrieveDomain(
-		domainName: DbDomain_Name
-	): Promise<DbDomain> {
-		return await this.sendMessageAndGetResponse<IRetrieveDomainMessage, DbDomain>({
+		domainName: Domain_Name
+	): Promise<IDomain> {
+		return await this.sendMessageAndGetResponse<IRetrieveDomainMessage, IDomain>({
 			...this.getCoreFields(Message_Type_Group.INTERNAL),
 			domainName,
 			type: INTERNAL_Message_Type.RETRIEVE_DOMAIN
@@ -324,7 +324,7 @@ export class IframeTransactionalConnector
 
 	private handleInternalMessage(
 		message: IInitializeConnectionMessage
-			| IGetLatestApplicationVersionByDbApplication_NameMessage
+			| IGetLatestApplicationVersionByApplication_NameMessage
 			| IRetrieveDomainMessage
 	): void {
 		switch (message.type) {
@@ -345,7 +345,7 @@ export class IframeTransactionalConnector
 			case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
 			case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
 				this.completeAsyncMessage(message as
-					IGetLatestApplicationVersionByDbApplication_NameMessage
+					IGetLatestApplicationVersionByApplication_NameMessage
 					| IRetrieveDomainMessage)
 				break
 			}
@@ -455,7 +455,7 @@ expecting only API message types`)
 
 	private completeAsyncMessage(
 		message: IApiCallResponseMessage
-			| IGetLatestApplicationVersionByDbApplication_NameMessage
+			| IGetLatestApplicationVersionByApplication_NameMessage
 			| IRetrieveDomainMessage
 	): void {
 		const messageRecord = this.applicationStore.state.pendingMessageMap.get(message.id);
@@ -606,11 +606,11 @@ expecting only API message types`)
 				await this.applicationLoader.initialize()
 				this.sendMessageToParentWindow({
 					...this.getCoreFields(Message_Type_Group.INTERNAL),
-					fullDbApplication_Name: this.dbApplicationUtils.
-						getDbApplication_FullName(
+					fullApplication_Name: this.applicationNameUtils.
+						getApplication_FullName(
 							this.applicationLoader.getApplication()),
 					type: INTERNAL_Message_Type.APP_INITIALIZED
-				} as IGetLatestApplicationVersionByDbApplication_NameMessage)
+				} as IGetLatestApplicationVersionByApplication_NameMessage)
 				return true
 			case AppState.INITIALIZED:
 				return true

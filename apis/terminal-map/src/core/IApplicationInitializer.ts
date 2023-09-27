@@ -17,7 +17,7 @@ export interface IApplicationInitializer {
 
     isApplicationIsInstalled(
         domain: string,
-        fullDbApplication_Name: string
+        fullApplication_Name: string
     ): Promise<boolean>
 
     ensureApplicationIsInstalled(
@@ -38,7 +38,7 @@ export interface IApplicationInitializer {
     nativeInitializeApplication(
         domain: string,
         application: string,
-        fullDbApplication_Name: string,
+        fullApplication_Name: string,
     ): Promise<void>
 
     stage(

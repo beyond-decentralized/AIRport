@@ -1,5 +1,5 @@
 import { IOC } from '@airport/direction-indicator';
-import { DatastructureUtils, IDbApplicationBuilder, DbApplicationUtils } from '@airport/ground-control';
+import { DatastructureUtils, IApplicationBuilder, ApplicationNameUtils } from '@airport/ground-control';
 import { ILinkingDictionary } from '@airport/ground-control';
 import {
 	DbEntity,
@@ -14,24 +14,24 @@ import {
 } from '@airport/ground-control';
 import {
 	ApplicationStatus,
-	DbDomain,
-	DbApplication,
-	DbApplicationCurrentVersion,
-	DbApplicationReference,
-	DbApplicationVersion,
+	IDomain,
+	IApplication,
+	IApplicationCurrentVersion,
+	IApplicationReference,
+	IApplicationVersion,
 	JsonApplication,
 } from '@airport/ground-control';
 
-export class DbApplicationBuilder
-	implements IDbApplicationBuilder {
+export class DdlApplicationBuilder
+	implements IApplicationBuilder {
 
 	datastructureUtils = new DatastructureUtils()
 
-	buildDbApplicationWithoutReferences(
+	buildIApplicationWithoutReferences(
 		jsonApplication: JsonApplication,
-		allApplications: DbApplication[],
+		allApplications: IApplication[],
 		dictionary: ILinkingDictionary,
-	): DbApplication {
+	): IApplication {
 		const entities = [];
 		const entityMapByName = {};
 		const references = [];
@@ -43,7 +43,7 @@ export class DbApplicationBuilder
 		const versionString = currentJsonApplicationVersion.versionString;
 		const versionParts = versionString.split('.');
 
-		const dbApplicationVersion: DbApplicationVersion = {
+		const dbApplicationVersion: IApplicationVersion = {
 			_localId: null,
 			entities,
 			entityMapByName,
@@ -60,21 +60,21 @@ export class DbApplicationBuilder
 			signature: currentJsonApplicationVersion.signature,
 			versionString,
 		};
-		const dbApplicationCurrentVersion: DbApplicationCurrentVersion = {
+		const dbApplicationCurrentVersion: IApplicationCurrentVersion = {
 			application: null,
 			applicationVersion: dbApplicationVersion
 		}
-		const dbDomain: DbDomain = {
+		const dbDomain: IDomain = {
 			applications: [],
 			_localId: undefined,
 			name: jsonApplication.domain,
 		};
 
-		const dbApplication: DbApplication = {
+		const dbApplication: IApplication = {
 			currentVersion: [dbApplicationCurrentVersion],
 			domain: dbDomain,
-			fullName: IOC.getSync(DbApplicationUtils).
-				getDbApplication_FullNameFromDomainAndName(dbDomain.name, jsonApplication.name),
+			fullName: IOC.getSync(ApplicationNameUtils).
+				getApplication_FullNameFromDomainAndName(dbDomain.name, jsonApplication.name),
 			index: allApplications.length,
 			name: jsonApplication.name,
 			scope: null,
@@ -99,12 +99,12 @@ export class DbApplicationBuilder
 
 	/**
 	 *
-	 * @param {{[p: string]: DbApplication}} applicationMap
+	 * @param {{[p: string]: IApplication}} applicationMap
 	 * @param {{[p: string]: JsonApplication}} jsonApplicationMap
 	 * @param {ILinkingDictionary} dictionary
 	 */
-	linkDbApplicationsByReferences(
-		applicationMap: { [domain: string]: { [name: string]: DbApplication } },
+	linkIApplicationsByReferences(
+		applicationMap: { [domain: string]: { [name: string]: IApplication } },
 		jsonApplicationMap: { [domain: string]: { [name: string]: JsonApplication } },
 		dictionary: ILinkingDictionary,
 		failOnMissingMappings: boolean = true,
@@ -134,7 +134,7 @@ export class DbApplicationBuilder
 				const jsonApplicationVersion = jsonApplication.versions[0];
 				for (const index in jsonApplicationVersion.referencedApplications) {
 					const applicationReference = jsonApplicationVersion.referencedApplications[index];
-					const referencedDbApplication_Name = applicationReference.name;
+					const referencedApplication_Name = applicationReference.name;
 					const referencedDbDomain = applicationMap[applicationReference.domain];
 					if (!referencedDbDomain) {
 						if (failOnMissingMappings) {
@@ -143,11 +143,11 @@ export class DbApplicationBuilder
 						}
 						continue;
 					}
-					const referencedApplication = referencedDbDomain[referencedDbApplication_Name];
+					const referencedApplication = referencedDbDomain[referencedApplication_Name];
 					if (!referencedApplication) {
 						if (failOnMissingMappings) {
 							throw new Error(
-								`Application '${referencedDbApplication_Name}' is not yet available for relation linking.`);
+								`Application '${referencedApplication_Name}' is not yet available for relation linking.`);
 						}
 						continue;
 					}
@@ -156,7 +156,7 @@ export class DbApplicationBuilder
 						.applicationVersion;
 					const referencedApplicationVersion = referencedApplication.currentVersion[0]
 						.applicationVersion;
-					const dbApplicationReference: DbApplicationReference = {
+					const dbApplicationReference: IApplicationReference = {
 						index: parseInt(index),
 						ownApplicationVersion,
 						referencedApplicationVersion,
@@ -249,7 +249,7 @@ export class DbApplicationBuilder
 		jsonEntity: JsonEntity,
 		dictionary: ILinkingDictionary,
 		referencedApplications: JsonApplication[],
-		applicationVersion: DbApplicationVersion
+		applicationVersion: IApplicationVersion
 	): DbEntity {
 		const columnMap = {};
 		const columns: DbColumn[] = [];
@@ -352,7 +352,7 @@ export class DbApplicationBuilder
 	private buildDbRelation(
 		queryRelation: JsonRelation,
 		dbProperty: DbProperty,
-		applicationVersion: DbApplicationVersion
+		applicationVersion: IApplicationVersion
 	): DbRelation {
 		const dbRelation: DbRelation = {
 			entity: undefined, // TODO: verity that it's not needed
@@ -409,7 +409,7 @@ export class DbApplicationBuilder
 		properties: DbProperty[],
 		dictionary: ILinkingDictionary,
 		referencedApplications: JsonApplication[],
-		applicationVersion: DbApplicationVersion,
+		applicationVersion: IApplicationVersion,
 		entity: DbEntity
 	): DbColumn {
 		const dbColumn: DbColumn = {
@@ -443,22 +443,22 @@ export class DbApplicationBuilder
 
 		jsonColumn.manyRelationColumnRefs.map(
 			relationColumnRef => {
-				const manyDbApplicationReference_Index = jsonApplication.index;
+				const manyIApplicationReference_Index = jsonApplication.index;
 				let manyApplication;
-				if (manyDbApplicationReference_Index === null) {
+				if (manyIApplicationReference_Index === null) {
 					manyApplication = jsonApplication;
 				} else {
-					manyApplication = referencedApplications[manyDbApplicationReference_Index];
+					manyApplication = referencedApplications[manyIApplicationReference_Index];
 				}
 				const manyTableIndex = jsonEntity.index;
 				const manyRelationIndex = relationColumnRef.manyRelationIndex;
 				const manyColumnIndex = dbColumn.index;
-				const oneDbApplicationReference_Index = relationColumnRef.oneDbApplication_Index;
+				const oneIApplicationReference_Index = relationColumnRef.oneApplication_Index;
 				let oneApplication;
-				if (oneDbApplicationReference_Index === null) {
+				if (oneIApplicationReference_Index === null) {
 					oneApplication = jsonApplication;
 				} else {
-					oneApplication = referencedApplications[oneDbApplicationReference_Index];
+					oneApplication = referencedApplications[oneIApplicationReference_Index];
 				}
 				if (!oneApplication) {
 					// FIXME: figure out if not having references to nested applications is OK

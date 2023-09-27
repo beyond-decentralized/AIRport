@@ -5,7 +5,7 @@ import {
 	QueryRelation,
 	QueryRelationType,
 	DbRelation_Index,
-	DbApplication_Index,
+	Application_Index,
 	DbEntity_TableIndex
 } from "@airport/ground-control";
 
@@ -42,7 +42,7 @@ export class JoinTreeNode {
 	}
 
 	getEntityRelationChildNodeByIndexes(
-		applicationIndex: DbApplication_Index,
+		applicationIndex: Application_Index,
 		entityIndex: DbEntity_TableIndex,
 		relationIndex: DbRelation_Index
 	): JoinTreeNode {

@@ -1,5 +1,5 @@
 import { API_CLIENT } from '@airport/direction-indicator'
-import { DbApplicationUtils, TRANSACTIONAL_CONNECTOR } from "@airport/ground-control";
+import { ApplicationNameUtils, TRANSACTIONAL_CONNECTOR } from "@airport/ground-control";
 import { APPLICATION_LOCATOR } from "@airport/takeoff";
 import { APPLICATION_INITIALIZER, APPLICATION_LOADER, DOMAIN_RETRIEVER, LOCAL_API_SERVER, TerminalStore } from "@airport/terminal-map";
 import { ApplicationStore } from '@airport/tower';
@@ -27,7 +27,7 @@ TRANSACTIONAL_CONNECTOR.setDependencies({
     airMessageUtils: globalThis.AIR_MESSAGE_UTILS,
     applicationLoader: APPLICATION_LOADER,
     applicationStore: ApplicationStore,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     localApiServer: LOCAL_API_SERVER,
     terminalStore: TerminalStore
 })

@@ -1,45 +1,45 @@
 import { AND, Y } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
-import { DbApplication_Name, DbApplicationVersion, DbDomain_Name } from '@airport/ground-control'
+import { Application_Name, IApplicationVersion, Domain_Name } from '@airport/ground-control'
 import { BaseDdlApplicationVersionDao, IBaseDdlApplicationVersionDao } from '../../generated/baseDaos'
 import { QDdlApplication, QDdlApplicationVersion, QDdlDomain } from '../../generated/qInterfaces'
 import Q_airport____at_airport_slash_airspace from '../../generated/qApplication'
 
-export interface IDbApplicationVersionDao
+export interface IDdlApplicationVersionDao
 	extends IBaseDdlApplicationVersionDao {
 
-	findAllActiveOrderByDbApplication_IndexAndId(
+	findAllActiveOrderByApplication_IndexAndId(
 		context: IContext
-	): Promise<DbApplicationVersion[]>
+	): Promise<IApplicationVersion[]>
 
-	findByDomain_NamesAndDbApplication_Names(
+	findByDomain_NamesAndApplication_Names(
 		domainNames: string[],
 		applicationNames: string[],
 		context: IContext
-	): Promise<DbApplicationVersion[]>
+	): Promise<IApplicationVersion[]>
 
 	insert(
-		applicationVersions: DbApplicationVersion[],
+		applicationVersions: IApplicationVersion[],
 		context: IContext
 	): Promise<void>
 
 }
 
 @Injected()
-export class DbApplicationVersionDao
+export class DdlApplicationVersionDao
 	extends BaseDdlApplicationVersionDao
-	implements IDbApplicationVersionDao {
+	implements IDdlApplicationVersionDao {
 
 	/*
-	async findAllLatestForDbApplication_Indexes(
-		applicationIndexes: DbApplication_Index[],
+	async findAllLatestForApplication_Indexes(
+		applicationIndexes: Application_Index[],
 		context: IContext
-	): Promise<DbApplicationVersion[]> {
+	): Promise<IApplicationVersion[]> {
 		let sv: QAppVersion
 
 		return await this.db.find.tree({
 			FROM: [
-				sv = Q.DbApplicationVersion
+				sv = Q.IApplicationVersion
 			],
 			SELECT: {},
 			WHERE: AND(
@@ -50,9 +50,9 @@ export class DbApplicationVersionDao
 	}
 	*/
 
-	async findAllActiveOrderByDbApplication_IndexAndId(
+	async findAllActiveOrderByApplication_IndexAndId(
 		context: IContext
-	): Promise<DbApplicationVersion[]> {
+	): Promise<IApplicationVersion[]> {
 		let av: QDdlApplicationVersion,
 			a: QDdlApplication
 
@@ -69,11 +69,11 @@ export class DbApplicationVersionDao
 		}, context)
 	}
 
-	async findByDomain_NamesAndDbApplication_Names(
-		domainNames: DbDomain_Name[],
-		applicationNames: DbApplication_Name[],
+	async findByDomain_NamesAndApplication_Names(
+		domainNames: Domain_Name[],
+		applicationNames: Application_Name[],
 		context: IContext
-	): Promise<DbApplicationVersion[]> {
+	): Promise<IApplicationVersion[]> {
 		let av: QDdlApplicationVersion
 		let a: QDdlApplication
 		let d: QDdlDomain
@@ -108,19 +108,19 @@ export class DbApplicationVersionDao
 
 	/*
 	async findMaxVersionedMapByApplicationAndDomain_Names(
-		applicationDomain_Names: DbDomain_Name[],
-		applicationNames: DbApplication_Name[],
+		applicationDomain_Names: Domain_Name[],
+		applicationNames: Application_Name[],
 		context: IContext
-	): Promise<Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationVersion>>> {
+	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersion>>> {
 		const maxVersionedMapByApplicationAndDomain_Names
-				  : Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationVersion>>
+				  : Map<Domain_Name, Map<Application_Name, IApplicationVersion>>
 				  = new Map()
 
 		let sv: QAppVersion
 		let s: QApp
 		let d: QDdlDomain
 
-		const maxApplicationVersions: DbApplicationVersion[] = <any>await this.db.find.tree({
+		const maxApplicationVersions: IApplicationVersion[] = <any>await this.db.find.tree({
 			SELECT: {
 				integerVersion: Y,
 				majorVersion: Y,
@@ -137,7 +137,7 @@ export class DbApplicationVersionDao
 				_localId: Y
 			},
 			FROM: [
-				sv = Q.DbApplicationVersion,
+				sv = Q.IApplicationVersion,
 				s = sv.application.INNER_JOIN(),
 				d = s.domain.INNER_JOIN()
 			],
@@ -169,7 +169,7 @@ export class DbApplicationVersionDao
 			FROM: [
 				svMax = tree({
 					FROM: [
-						sv2 = Q.DbApplicationVersion
+						sv2 = Q.IApplicationVersion
 					],
 					SELECT: DISTINCT({
 						integerVersion: max(sv2.integerVersion),
@@ -183,7 +183,7 @@ export class DbApplicationVersionDao
 	}
 */
 	async insert(
-		applicationVersions: DbApplicationVersion[],
+		applicationVersions: IApplicationVersion[],
 		context: IContext
 	): Promise<void> {
 		let sv: QDdlApplicationVersion;

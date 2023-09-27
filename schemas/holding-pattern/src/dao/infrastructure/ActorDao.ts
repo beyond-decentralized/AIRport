@@ -6,8 +6,8 @@ import {
 import {
 	Actor_GUID,
 	Actor_LocalId,
-	DbApplication_Name,
-	DbDomain_Name,
+	Application_Name,
+	Domain_Name,
 	IActor,
 	IDatastructureUtils,
 	IUserAccount,
@@ -41,9 +41,9 @@ export interface IActorDao
 		context: IContext
 	): Promise<IActor[]>
 
-	findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(
-		domainName: DbDomain_Name,
-		applicationName: DbApplication_Name,
+	findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(
+		domainName: Domain_Name,
+		applicationName: Application_Name,
 		accountPublicSigningKey: UserAccount_PublicSigningKey,
 		terminalGUID: Terminal_GUID,
 		context: IContext
@@ -84,9 +84,9 @@ export class ActorDao
 		) => a._localId.IN(actorIds), context)
 	}
 
-	async findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(
-		domainName: DbDomain_Name,
-		applicationName: DbApplication_Name,
+	async findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(
+		domainName: Domain_Name,
+		applicationName: Application_Name,
 		accountPublicSigningKey: UserAccount_PublicSigningKey,
 		terminalGUID: Terminal_GUID,
 		context: IContext

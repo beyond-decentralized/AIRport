@@ -4,31 +4,31 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IDbDomainDao,
+	IDdlDomainDao,
 	IDbColumnDao,
-	IDbApplicationDao,
+	IDdlApplicationDao,
 	IDbEntityDao,
 	IDbPropertyColumnDao,
 	IDbPropertyDao,
-	IDbApplicationReferenceDao,
+	IDdlApplicationReferenceDao,
 	IDbRelationColumnDao,
 	IDbRelationDao,
-	IDbApplicationVersionDao,
+	IDdlApplicationVersionDao,
 	IApplicationApiClassDao,
 	IApplicationApiOperationDao,
 	IApplicationApiParameterDao,
 	IApplicationApiReturnTypeDao
 } from '@airport/airspace/dist/app/bundle'
 import {
-	DbDomain_LocalId,
-	DbApplication_Index,
-	DbApplication,
-	DbApplicationVersion,
+	Domain_LocalId,
+	Application_Index,
+	IApplication,
+	IApplicationVersion,
 	AppApiClass_LocalId,
 	AppApiClass,
 	AppApiOperation,
 	AppApiOperation_LocalId,
-	DbApplicationVersion_LocalId,
+	ApplicationVersion_LocalId,
 	AppApiParameter,
 	AppApiReturnType,
 } from '@airport/ground-control'
@@ -64,7 +64,7 @@ export class DdlObjectRetriever
 	dbColumnDao: IDbColumnDao
 
 	@Inject()
-	dbApplicationDao: IDbApplicationDao
+	ddlApplicationDao: IDdlApplicationDao
 
 	@Inject()
 	dbEntityDao: IDbEntityDao
@@ -76,7 +76,7 @@ export class DdlObjectRetriever
 	dbPropertyDao: IDbPropertyDao
 
 	@Inject()
-	dbApplicationReferenceDao: IDbApplicationReferenceDao
+	ddlApplicationReferenceDao: IDdlApplicationReferenceDao
 
 	@Inject()
 	dbRelationColumnDao: IDbRelationColumnDao
@@ -85,10 +85,10 @@ export class DdlObjectRetriever
 	dbRelationDao: IDbRelationDao
 
 	@Inject()
-	dbApplicationVersionDao: IDbApplicationVersionDao
+	ddlApplicationVersionDao: IDdlApplicationVersionDao
 
 	@Inject()
-	dbDomainDao: IDbDomainDao
+	ddlDomainDao: IDdlDomainDao
 
 	@Inject()
 	terminalStore: ITerminalStore
@@ -96,53 +96,53 @@ export class DdlObjectRetriever
 	async retrieveDdlObjects(
 		context: IContext
 	): Promise<DdlObjects> {
-		const applications = await this.dbApplicationDao.findAllActive(context)
-		const applicationIndexes: DbApplication_Index[] = []
-		const domainIdSet: Set<DbDomain_LocalId> = new Set()
+		const applications = await this.ddlApplicationDao.findAllActive(context)
+		const applicationIndexes: Application_Index[] = []
+		const domainIdSet: Set<Domain_LocalId> = new Set()
 		applications.forEach(
 			application => {
 				applicationIndexes.push(application.index)
 				domainIdSet.add(application.domain._localId)
 			})
 		applications.sort((
-			application1: DbApplication,
-			application2: DbApplication
+			application1: IApplication,
+			application2: IApplication
 		) => {
 			return application1.index - application2.index
 		})
 
-		const domains = await this.dbDomainDao.findByIdIn(
+		const domains = await this.ddlDomainDao.findByIdIn(
 			Array.from(domainIdSet), context)
 
-		const allApplicationVersions = await this.dbApplicationVersionDao
-			.findAllActiveOrderByDbApplication_IndexAndId(context)
-		const applicationVersionMapByLocalId: Map<DbApplicationVersion_LocalId, DbApplicationVersion>
+		const allApplicationVersions = await this.ddlApplicationVersionDao
+			.findAllActiveOrderByApplication_IndexAndId(context)
+		const applicationVersionMapByLocalId: Map<ApplicationVersion_LocalId, IApplicationVersion>
 			= new Map()
 
-		let lastDbApplication_Index: DbApplication_Index
-		// const allApplicationVersionsByIds: DbApplicationVersion[] = []
-		const latestApplicationVersions: DbApplicationVersion[] = []
-		const applicationVersions: DbApplicationVersion[] = []
+		let lastApplication_Index: Application_Index
+		// const allApplicationVersionsByIds: IApplicationVersion[] = []
+		const latestApplicationVersions: IApplicationVersion[] = []
+		const applicationVersions: IApplicationVersion[] = []
 		for (const applicationVersion of allApplicationVersions) {
-			if (applicationVersion.application.index !== lastDbApplication_Index) {
+			if (applicationVersion.application.index !== lastApplication_Index) {
 				latestApplicationVersions.push(applicationVersion)
 			}
 			// allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion
-			lastDbApplication_Index = applicationVersion.application.index
+			lastApplication_Index = applicationVersion.application.index
 			applicationVersions.push(applicationVersion)
 			applicationVersionMapByLocalId.set(applicationVersion._localId, applicationVersion)
 		}
 
-		const latestDbApplicationVersion_LocalIds = latestApplicationVersions.map(
+		const latestApplicationVersion_LocalIds = latestApplicationVersions.map(
 			applicationVersion => applicationVersion._localId)
 
-		const applicationReferences = await this.dbApplicationReferenceDao
+		const applicationReferences = await this.ddlApplicationReferenceDao
 			.findAllForApplicationVersions(
-				latestDbApplicationVersion_LocalIds, context)
+				latestApplicationVersion_LocalIds, context)
 
 		const entities = await this.dbEntityDao
 			.findAllForApplicationVersions(
-				latestDbApplicationVersion_LocalIds, context)
+				latestApplicationVersion_LocalIds, context)
 		const entityIds = entities.map(
 			entity => entity._localId)
 

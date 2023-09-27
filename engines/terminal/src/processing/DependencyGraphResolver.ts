@@ -314,12 +314,12 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 	): IOperationNode<E>[] {
 		let operationNodes: IOperationNode<any>[] = []
 		let processedNodes: IDependencyGraphNode<any>[] = []
-		let operationsByDbApplication_Index: IOperationsForEntity[][] = []
+		let operationsByApplication_Index: IOperationsForEntity[][] = []
 
 		for (const node of orderedDependencies) {
 			const dbEntity = node.dbEntity
 			const applicationOperationNodes = this.datastructureUtils.ensureChildArray(
-				operationsByDbApplication_Index, dbEntity.applicationVersion.application.index)
+				operationsByApplication_Index, dbEntity.applicationVersion.application.index)
 
 			let entityOperations = applicationOperationNodes[dbEntity.index]
 			if (!entityOperations) {

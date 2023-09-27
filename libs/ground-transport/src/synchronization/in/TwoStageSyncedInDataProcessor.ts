@@ -2,8 +2,8 @@ import {
 	Actor_LocalId,
 	DbColumn_Index,
 	DbEntity_LocalId,
-	DbApplicationVersion_LocalId,
-	DbApplication,
+	ApplicationVersion_LocalId,
+	IApplication,
 	DbColumn,
 	IActor,
 	IDatastructureUtils,
@@ -116,7 +116,7 @@ export class TwoStageSyncedInDataProcessor
 			context
 		)
 
-		const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByDbApplicationVersion_LocalIdMap }
+		const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersion_LocalIdMap }
 			= await this.getDataStructures(messages)
 
 		for (const newRepositoryMemberAcceptance of
@@ -129,7 +129,7 @@ export class TwoStageSyncedInDataProcessor
 
 		await this.updateLocalData(
 			repositoryTransactionHistoryMapByRepositoryId, actorMapById,
-			applicationsByDbApplicationVersion_LocalIdMap, context)
+			applicationsByApplicationVersion_LocalIdMap, context)
 	}
 
 	private async insertNewRepositoryInfo(
@@ -228,11 +228,11 @@ export class TwoStageSyncedInDataProcessor
 	): Promise<{
 		actorMapById: Map<number, IActor>
 		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
-		applicationsByDbApplicationVersion_LocalIdMap: Map<DbApplicationVersion_LocalId, DbApplication>
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>
 	}> {
 		const repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
 			= new Map()
-		const applicationsByDbApplicationVersion_LocalIdMap: Map<DbApplicationVersion_LocalId, DbApplication> = new Map()
+		const applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication> = new Map()
 		const actorMapById: Map<number, IActor> = new Map()
 		const repoTransHistories: IRepositoryTransactionHistory[] = []
 		for (const message of messages) {
@@ -243,7 +243,7 @@ export class TwoStageSyncedInDataProcessor
 				actorMapById.set(actor._localId, actor)
 			}
 			for (const applicationVersion of data.applicationVersions) {
-				applicationsByDbApplicationVersion_LocalIdMap.set(applicationVersion._localId, applicationVersion.application)
+				applicationsByApplicationVersion_LocalIdMap.set(applicationVersion._localId, applicationVersion.application)
 			}
 		}
 
@@ -255,14 +255,14 @@ export class TwoStageSyncedInDataProcessor
 		return {
 			actorMapById,
 			repositoryTransactionHistoryMapByRepositoryId,
-			applicationsByDbApplicationVersion_LocalIdMap
+			applicationsByApplicationVersion_LocalIdMap
 		}
 	}
 
 	private async updateLocalData(
 		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
 		actorMayById: Map<Actor_LocalId, IActor>,
-		applicationsByDbApplicationVersion_LocalIdMap: Map<DbApplicationVersion_LocalId, DbApplication>,
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
 		context: IContext
 	): Promise<void> {
 		const stage1Result
@@ -281,7 +281,7 @@ export class TwoStageSyncedInDataProcessor
 		}
 
 		await this.stage2SyncedInDataProcessor.applyChangesToDb(
-			stage1Result, applicationsByDbApplicationVersion_LocalIdMap)
+			stage1Result, applicationsByApplicationVersion_LocalIdMap)
 
 
 		if (allSyncConflicts.length) {

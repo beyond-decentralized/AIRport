@@ -1,5 +1,5 @@
 import { DbEntity_TableIndex } from "../../definition/application/DbEntity";
-import { DbApplication_Index } from "../../definition/application/DbApplication";
+import { Application_Index } from "../../definition/application/IApplication";
 import { ColumnMap } from "../query/ColumnMap";
 import {
 	TableMap
@@ -14,7 +14,7 @@ export class SyncTableMap
 	extends TableMap {
 
 	constructor(
-		applicationIndex: DbApplication_Index,
+		applicationIndex: Application_Index,
 		tableMap: { [entityIndex: string]: ColumnMap }
 	) {
 		super(applicationIndex, tableMap);

@@ -27,7 +27,7 @@ import { RepositoryDatabase } from "./RepositoryDatabase";
 import { RepositoryClient } from "./RepositoryClient";
 import { RepositoryTerminal } from "./RepositoryTerminal";
 import { RepositoryApplication } from "./RepositoryApplication";
-import { AgeSuitability, DbApplication_FullName, CreatedAt, IRepository, Repository_GUID, Repository_Immutable, Repository_IsPublic, Repository_LocalId, Repository_Name, Repository_Source, Repository_UiEntryUri, Repository_Internal } from "@airport/ground-control";
+import { AgeSuitability, Application_FullName, CreatedAt, IRepository, Repository_GUID, Repository_Immutable, Repository_IsPublic, Repository_LocalId, Repository_Name, Repository_Source, Repository_UiEntryUri, Repository_Internal } from "@airport/ground-control";
 import { RepositoryMember } from "./member/RepositoryMember";
 import { RepositoryReference } from "./RepositoryReference";
 
@@ -58,7 +58,7 @@ export class Repository
 
 	@Column({ name: "FULL_APPLICATION_NAME", nullable: false })
 	@DbString()
-	fullApplicationName: DbApplication_FullName
+	fullApplicationName: Application_FullName
 
 	@Column({ name: "GUID", nullable: false })
 	@DbString()

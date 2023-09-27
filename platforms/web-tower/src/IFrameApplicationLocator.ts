@@ -5,7 +5,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { DbApplicationVersion } from '@airport/ground-control'
+import { IApplicationVersion } from '@airport/ground-control'
 
 @Injected()
 export class IFrameApplicationLocator
@@ -14,19 +14,19 @@ export class IFrameApplicationLocator
     @Inject()
     transactionalConnector: IIframeTransactionalConnector
 
-    async locateLatestApplicationVersionByDbApplication_Name(
-        fullDbApplication_Name: string,
+    async locateLatestApplicationVersionByApplication_Name(
+        fullApplication_Name: string,
         terminalStore: ITerminalStore,
-    ): Promise<DbApplicationVersion> {
+    ): Promise<IApplicationVersion> {
         let applicationVersion = terminalStore
-            .getLatestApplicationVersionMapByDbApplication_FullName()
-            .get(fullDbApplication_Name)
+            .getLatestApplicationVersionMapByApplication_FullName()
+            .get(fullApplication_Name)
 
         if (applicationVersion) {
             return applicationVersion
         }
 
         return await this.transactionalConnector
-            .getLatestApplicationVersionMapByDbApplication_FullName(fullDbApplication_Name)
+            .getLatestApplicationVersionMapByApplication_FullName(fullApplication_Name)
     }
 }

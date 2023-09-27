@@ -11,7 +11,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { DbApplication, DbDomain } from '@airport/ground-control';
+import { IApplication, IDomain } from '@airport/ground-control';
 
 @Injected()
 export class QueryObjectInitializer
@@ -43,7 +43,7 @@ export class QueryObjectInitializer
 		for (const domain of allDdlObjects.added.domains) {
 			delete existingDomainMap[domain.name];
 		}
-		const unmodifiedDomains: DbDomain[] = [];
+		const unmodifiedDomains: IDomain[] = [];
 		for (const domainName in existingDomainMap) {
 			unmodifiedDomains.push(existingDomainMap[domainName]);
 		}
@@ -57,7 +57,7 @@ export class QueryObjectInitializer
 			lastTerminalState.applicationMapByFullName
 				.set(application.fullName, application)
 		}
-		const unmodifiedApplications: DbApplication[] = [];
+		const unmodifiedApplications: IApplication[] = [];
 		for (const applicationName in existingApplicationMap) {
 			unmodifiedApplications.push(existingApplicationMap[applicationName]);
 		}

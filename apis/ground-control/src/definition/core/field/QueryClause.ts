@@ -1,4 +1,4 @@
-import { DbApplication_Index } from '../../application/DbApplication'
+import { Application_Index } from '../../application/IApplication'
 import { DbEntity_TableIndex } from '../../application/DbEntity'
 import { DbColumn_Index, DbProperty_Index } from '../../application/DbProperty'
 import { QueryField } from '../../query/facade/QueryField'
@@ -83,7 +83,7 @@ export interface QueryFieldClause
 	/**
 	 * Application index
 	 */
-	applicationIndex?: DbApplication_Index;
+	applicationIndex?: Application_Index;
 	/**
 	 * Entity Index
 	 * Index of the entity to which this field belongs

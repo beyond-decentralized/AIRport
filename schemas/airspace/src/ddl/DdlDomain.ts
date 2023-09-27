@@ -8,25 +8,25 @@ import {
 	Table,
 } from '@airport/tarmaq-entity'
 import {
-	DbDomain,
-	DbDomain_LocalId,
-	DbDomain_Name,
+	IDomain,
+	Domain_LocalId,
+	Domain_Name,
 } from '@airport/ground-control'
 import { DdlApplication } from './application/DdlApplication'
 
 @Entity()
 @Table({ name: 'DB_DOMAINS' })
 export class DdlDomain
-	implements DbDomain {
+	implements IDomain {
 
 	@Id()
 	@DbNumber()
 	@Column({ name: 'DB_DOMAIN_LID', nullable: false })
-	_localId: DbDomain_LocalId
+	_localId: Domain_LocalId
 
 	@DbString()
 	@Column({ name: 'DOMAIN_NAME', nullable: false })
-	name: DbDomain_Name
+	name: Domain_Name
 
 	@OneToMany({ mappedBy: 'domain' })
 	applications?: DdlApplication[]

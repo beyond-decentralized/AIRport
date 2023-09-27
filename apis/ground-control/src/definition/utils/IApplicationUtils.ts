@@ -1,4 +1,4 @@
-import { DbApplication_Index } from "../application/DbApplication";
+import { Application_Index } from "../application/IApplication";
 import { DbEntity_TableIndex, DbEntity } from "../application/DbEntity";
 import { DbColumn, DbRelation } from "../application/DbProperty";
 import { CRUDOperation } from "../core/operation/Operation";
@@ -22,7 +22,7 @@ export interface IApplicationUtils {
   ): string[][]
 
   getDbEntity(
-    applicationIndex: DbApplication_Index,
+    applicationIndex: Application_Index,
     entityIndex: DbEntity_TableIndex
   ): DbEntity;
 

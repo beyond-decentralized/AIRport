@@ -5,15 +5,15 @@ import {
 import { Subject, Subscription } from 'rxjs'
 import { ITransaction } from '../transaction/ITransaction'
 import { IApiCredentials } from '../ICredentials'
-import { DbApplication_FullName, DbApplication, DbDomain, DbSequence, IActor, IAppTrackerUtils, ITerminal, Repository_LocalId, Repository_GUID } from '@airport/ground-control'
+import { Application_FullName, IApplication, IDomain, DbSequence, IActor, IAppTrackerUtils, ITerminal, Repository_LocalId, Repository_GUID } from '@airport/ground-control'
 import { IMessageInRecord } from './IApplicationState'
 import { ILastIds } from '@airport/air-traffic-control'
 import { CachedSQLQuery, IFieldMapped, SerializedJSONQuery } from '../terminal-map.index'
 import { Message_Id, SubscriptionId, TimeStamp } from '@airport/aviation-communication'
 
 export interface IReceiverState {
-	initializingApps: Set<DbApplication_FullName>
-	initializedApps: Set<DbApplication_FullName>
+	initializingApps: Set<Application_FullName>
+	initializedApps: Set<Application_FullName>
 }
 
 export interface IWebReceiverState {
@@ -21,7 +21,7 @@ export interface IWebReceiverState {
 	localDomain: string
 	mainDomainFragments: string[]
 	pendingInterAppApiCallMessageMap: Map<Message_Id, IMessageInRecord>
-	subscriptionMap: Map<DbApplication_FullName, Map<SubscriptionId, {
+	subscriptionMap: Map<Application_FullName, Map<SubscriptionId, {
 		lastActive: TimeStamp
 		subscription: Subscription
 	}>>
@@ -52,17 +52,17 @@ export interface ISequenceGeneratorState {
 }
 
 export interface IApplicationInitializerState {
-	applicationWindowMap: Map<DbApplication_FullName, Window>
-	initializingApplicationMap: Map<DbApplication_FullName, boolean>
+	applicationWindowMap: Map<Application_FullName, Window>
+	initializingApplicationMap: Map<Application_FullName, boolean>
 }
 
 export interface ITerminalState<FM extends IFieldMapped = IFieldMapped> {
 	apiSubscriptionMap: Map<string, Subscription>
 	applicationActors: IActor[]
 	applicationInitializer: IApplicationInitializerState
-	applicationMapByFullName: Map<DbApplication_FullName, DbApplication>
-	applications: DbApplication[]
-	domains: DbDomain[]
+	applicationMapByFullName: Map<Application_FullName, IApplication>
+	applications: IApplication[]
+	domains: IDomain[]
 	frameworkActor: IActor
 	internalConnector: InternalConnectorState
 	isServer: boolean

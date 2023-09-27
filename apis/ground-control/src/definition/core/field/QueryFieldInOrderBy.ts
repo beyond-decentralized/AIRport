@@ -1,4 +1,4 @@
-import { DbApplication_Index } from "../../application/DbApplication";
+import { Application_Index } from "../../application/IApplication";
 
 /**
  * Order of a sorted field, as specified in the ORDER BY clause.
@@ -31,7 +31,7 @@ export interface QueryFieldInOrderBy
 export interface QueryEntityFieldInOrderBy
 	extends QueryFieldInOrderBy {
 	// Application Version Id
-	applicationIndex: DbApplication_Index,
+	applicationIndex: Application_Index,
 	// Entity Index
 	entityIndex: number,
 	// Property Index

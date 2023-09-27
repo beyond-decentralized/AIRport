@@ -1,6 +1,6 @@
 import {
 	DbEntity,
-	DbApplication
+	IApplication
 } from '@airport/ground-control';
 import {
 	canBeInterface,
@@ -286,7 +286,7 @@ Did you forget to decorate it with @Entity()?`);
 	getReferencedApplication(
 		projectName: string,
 		property: EntityReference & PropertyDocEntry,
-	): DbApplication {
+	): IApplication {
 		const dbApplication = DB_APPLICATION_LOADER.getReferencedApplication(projectName, property);
 
 		property.otherApplicationDbEntity = this.getOtherApplicationEntity(projectName, dbApplication, property);
@@ -377,7 +377,7 @@ Could not find related Mapped Superclasses in project '${projectName}'`);
 
 	private getOtherApplicationEntity(
 		projectName: string,
-		dbApplication: DbApplication,
+		dbApplication: IApplication,
 		property: PropertyDocEntry,
 	): DbEntity {
 		const type = property.nonArrayType;

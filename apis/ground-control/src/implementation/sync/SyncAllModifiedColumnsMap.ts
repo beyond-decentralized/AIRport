@@ -1,4 +1,4 @@
-import { DbApplication_Index } from "../../definition/application/DbApplication";
+import { Application_Index } from "../../definition/application/IApplication";
 import { DbEntity } from "../../definition/application/DbEntity";
 import { AllModifiedColumnsMap } from "../query/AllModifiedColumnsMap";
 import { TableMap } from "../query/TableMap";
@@ -8,7 +8,7 @@ import { SyncTableMap } from "./SyncTableMap";
 export class SyncAllModifiedColumnsMap extends AllModifiedColumnsMap {
 
 	constructor(
-		applicationMap?: { [applicationIndex: DbApplication_Index]: TableMap }
+		applicationMap?: { [applicationIndex: Application_Index]: TableMap }
 	) {
 		super(applicationMap);
 	}

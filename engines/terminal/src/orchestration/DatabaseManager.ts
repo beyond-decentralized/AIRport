@@ -9,12 +9,12 @@ import {
 	IContext
 } from '@airport/direction-indicator';
 import {
-	DbApplication_FullName, DbApplication, IDbApplicationUtils, JsonApplication,
+	Application_FullName, IApplication, IApplicationNameUtils, JsonApplication,
 } from '@airport/ground-control';
 import {
 	Actor,
 } from '@airport/holding-pattern/dist/app/bundle';
-import { IDbApplicationDao } from '@airport/airspace/dist/app/bundle';
+import { IDdlApplicationDao } from '@airport/airspace/dist/app/bundle';
 import {
 	IApplicationInitializer,
 	IDatabaseManager,
@@ -33,13 +33,13 @@ export class DatabaseManager
 	airportDatabase: IAirportDatabase
 
 	@Inject()
-	dbApplicationDao: IDbApplicationDao
+	ddlApplicationDao: IDdlApplicationDao
 
 	@Inject()
 	applicationInitializer: IApplicationInitializer
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	applicationNameUtils: IApplicationNameUtils
 
 	@Inject()
 	internalRecordManager: IInternalRecordManager
@@ -83,8 +83,8 @@ export class DatabaseManager
 			context
 		) => {
 			const firstApp: JsonApplication = BLUEPRINT[0] as any
-			const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
-				.getDbApplication_FullName(firstApp),
+			const hydrate = await this.storeDriver.doesTableExist(this.applicationNameUtils
+				.getApplication_FullName(firstApp),
 				'PACKAGES', context);
 
 			await this.installStarterApplication(false, hydrate, context);
@@ -109,23 +109,23 @@ export class DatabaseManager
 		context: IContext,
 		jsonApplications?: JsonApplicationWithLastIds[]
 	): Promise<void> {
-		let applications: DbApplication[] = []
+		let applications: IApplication[] = []
 		await this.transactionManager.transactInternal(async (
 			_transaction,
 			context
 		) => {
-			applications = await this.dbApplicationDao.findAllWithJson(context)
+			applications = await this.ddlApplicationDao.findAllWithJson(context)
 		}, null, context)
 
-		const existingApplicationMap: Map<DbApplication_FullName, DbApplication> = new Map()
+		const existingApplicationMap: Map<Application_FullName, IApplication> = new Map()
 		for (const application of applications) {
 			existingApplicationMap.set(application.fullName, application)
 		}
 
 		const applicationsToCreate: JsonApplicationWithLastIds[] = []
 		for (const jsonApplication of jsonApplications) {
-			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils
-				.getDbApplication_FullName(jsonApplication))
+			const existingApplication = existingApplicationMap.get(this.applicationNameUtils
+				.getApplication_FullName(jsonApplication))
 			if (existingApplication) {
 				jsonApplication.lastIds =
 					(existingApplication.versions[0].jsonApplication as JsonApplicationWithLastIds).lastIds

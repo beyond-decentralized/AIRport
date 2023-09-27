@@ -7,15 +7,15 @@ import {
 } from '@airport/direction-indicator'
 import {
 	IDbColumnDao,
-	IDbApplicationDao,
+	IDdlApplicationDao,
 	IDbEntityDao,
 	IDbPropertyColumnDao,
 	IDbPropertyDao,
-	IDbApplicationReferenceDao,
+	IDdlApplicationReferenceDao,
 	IDbRelationColumnDao,
 	IDbRelationDao,
-	IDbApplicationVersionDao,
-	IDbDomainDao,
+	IDdlApplicationVersionDao,
+	IDdlDomainDao,
 	IApplicationApiClassDao,
 	IApplicationApiOperationDao,
 	IApplicationApiParameterDao,
@@ -54,7 +54,7 @@ export class ApplicationRecorder
 	dbColumnDao: IDbColumnDao
 
 	@Inject()
-	dbApplicationDao: IDbApplicationDao
+	ddlApplicationDao: IDdlApplicationDao
 
 	@Inject()
 	dbEntityDao: IDbEntityDao
@@ -66,7 +66,7 @@ export class ApplicationRecorder
 	dbPropertyDao: IDbPropertyDao
 
 	@Inject()
-	dbApplicationReferenceDao: IDbApplicationReferenceDao
+	ddlApplicationReferenceDao: IDdlApplicationReferenceDao
 
 	@Inject()
 	dbRelationColumnDao: IDbRelationColumnDao
@@ -75,10 +75,10 @@ export class ApplicationRecorder
 	dbRelationDao: IDbRelationDao
 
 	@Inject()
-	dbApplicationVersionDao: IDbApplicationVersionDao
+	ddlApplicationVersionDao: IDdlApplicationVersionDao
 
 	@Inject()
-	dbDomainDao: IDbDomainDao
+	ddlDomainDao: IDdlDomainDao
 
 	@Inject()
 	transactionManager: ITransactionManager
@@ -92,11 +92,11 @@ export class ApplicationRecorder
 			// FIXME: add support for real application versioning
 			this.setDefaultVersioning(ddlObjects)
 
-			const dbDomainDao = await (this as any).getdbDomainDaoAsync()
-			await dbDomainDao.checkAndInsertIfNeeded(ddlObjects.domains, context)
-			await this.dbApplicationDao.insert(ddlObjects.applications, context)
-			await this.dbApplicationVersionDao.insert(ddlObjects.applicationVersions, context)
-			await this.dbApplicationReferenceDao.insert(ddlObjects.applicationReferences, context)
+			const ddlDomainDao = await (this as any).getddlDomainDaoAsync()
+			await ddlDomainDao.checkAndInsertIfNeeded(ddlObjects.domains, context)
+			await this.ddlApplicationDao.insert(ddlObjects.applications, context)
+			await this.ddlApplicationVersionDao.insert(ddlObjects.applicationVersions, context)
+			await this.ddlApplicationReferenceDao.insert(ddlObjects.applicationReferences, context)
 			await this.dbEntityDao.insert(ddlObjects.entities, context)
 			await this.dbPropertyDao.insert(ddlObjects.properties, context)
 			await this.dbRelationDao.insert(ddlObjects.relations, context)

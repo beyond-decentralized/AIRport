@@ -5,9 +5,9 @@ import {
 	Dictionary,
 	IAppTrackerUtils,
 	IDatastructureUtils,
-	DbDomain_Name,
-	DbApplication_Name,
-	DbApplicationVersion,
+	Domain_Name,
+	Application_Name,
+	IApplicationVersion,
 	DbColumn,
 	RepositoryTransactionType,
 	IOperationHistory,
@@ -64,8 +64,8 @@ export interface ISyncInDataChecker {
 	): Promise<IDataCheckResult>
 
 	populateApplicationEntityMap(
-		messageApplicationVersions: DbApplicationVersion[]
-	): Promise<Map<DbDomain_Name, Map<DbApplication_Name, Map<DbEntity_TableIndex, DbEntity>>>>
+		messageApplicationVersions: IApplicationVersion[]
+	): Promise<Map<Domain_Name, Map<Application_Name, Map<DbEntity_TableIndex, DbEntity>>>>
 
 }
 
@@ -162,10 +162,10 @@ SyncRepositoryData.history.actor`)
 	}
 
 	async populateApplicationEntityMap(
-		messageApplicationVersions: DbApplicationVersion[]
-	): Promise<Map<DbDomain_Name, Map<DbApplication_Name, Map<DbEntity_TableIndex, DbEntity>>>> {
+		messageApplicationVersions: IApplicationVersion[]
+	): Promise<Map<Domain_Name, Map<Application_Name, Map<DbEntity_TableIndex, DbEntity>>>> {
 		const applicationVersionsByIds = this.terminalStore.getAllApplicationVersionsByIds()
-		const applicationEntityMap: Map<DbDomain_Name, Map<DbApplication_Name, Map<DbEntity_TableIndex, DbEntity>>>
+		const applicationEntityMap: Map<Domain_Name, Map<Application_Name, Map<DbEntity_TableIndex, DbEntity>>>
 			= new Map()
 		for (const messageApplicationVersion of messageApplicationVersions) {
 			const applicationVersion = applicationVersionsByIds[messageApplicationVersion._localId]

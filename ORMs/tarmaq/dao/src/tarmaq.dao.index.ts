@@ -31,10 +31,10 @@ export * from './implementation/ObservableDao'
 export * from './tarmaq.dao.injection'
 
 import { loadGlobalAirApi } from '@airport/aviation-communication'
-import { DbApplication } from '@airport/ground-control';
+import { IApplication } from '@airport/ground-control';
 
 export function diSet(
-    dbApplication: DbApplication,
+    dbApplication: IApplication,
     dbEntityId: number // DbEntity_LocalId
 ): boolean {
     if ((!globalThis.inAppMode && !globalThis.SEQ_GEN)
@@ -53,7 +53,7 @@ export function diSet(
 }
 
 export function duoDiSet(
-    dbApplication: DbApplication,
+    dbApplication: IApplication,
     dbEntityId: number
 ): boolean {
     return dbApplication && dbApplication.currentVersion[0]

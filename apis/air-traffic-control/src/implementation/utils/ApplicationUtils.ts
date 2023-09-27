@@ -6,7 +6,7 @@ import {
 	DbRelation,
 	Dictionary,
 	EntityRelationType,
-	DbApplication_Index,
+	Application_Index,
 	DbEntity_TableIndex,
 	IEntityStateManager,
 	IApplicationUtils
@@ -48,7 +48,7 @@ export class ApplicationUtils
 	utils: IUtils
 
 	getDbEntity(
-		applicationIndex: DbApplication_Index,
+		applicationIndex: Application_Index,
 		entityIndex: DbEntity_TableIndex
 	): DbEntity {
 		return this.airportDatabase.applications[applicationIndex].currentVersion[0]

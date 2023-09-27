@@ -1,4 +1,4 @@
-import { DbApplicationVersion } from "./DbApplication"
+import { IApplicationVersion } from "./IApplication"
 
 export type AppApiClass_LocalId = number
 export type AppApiClass_Name = string
@@ -6,7 +6,7 @@ export type AppApiClass_Name = string
 export interface AppApiClass {
 
     _localId: AppApiClass_LocalId
-    applicationVersion: DbApplicationVersion
+    applicationVersion: IApplicationVersion
     name: AppApiClass_Name
     operationMapByName?: { [operationName: AppApiOperation_Name]: AppApiOperation }
     operations: AppApiOperation[]

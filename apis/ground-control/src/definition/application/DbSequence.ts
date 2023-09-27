@@ -1,4 +1,4 @@
-import { DbApplication_Index } from "./DbApplication";
+import { Application_Index } from "./IApplication";
 import { DbEntity_TableIndex } from "./DbEntity";
 import { DbColumn_Index } from "./DbProperty";
 
@@ -17,7 +17,7 @@ export type SequenceCurrentValue = number
 export interface DbSequence {
 
 	// Id Properties
-	applicationIndex: DbApplication_Index
+	applicationIndex: Application_Index
 	entityIndex: DbEntity_TableIndex
 	columnIndex: DbColumn_Index
 

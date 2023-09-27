@@ -4,16 +4,16 @@ import {
 } from '@airport/direction-indicator'
 import type {
 	DbColumn_LocalId,
-	DbDomain_LocalId,
+	Domain_LocalId,
 	DbProperty_LocalId,
 	DbRelation_LocalId,
-	DbApplication_Index,
-	DbDomain,
-	DbApplicationVersion,
-	DbApplication,
-	DbApplicationReference,
+	Application_Index,
+	IDomain,
+	IApplicationVersion,
+	IApplication,
+	IApplicationReference,
 	DbEntity,
-	DbApplicationCurrentVersion,
+	IApplicationCurrentVersion,
 	DbProperty,
 	DbRelation,
 	DbColumn,
@@ -55,28 +55,28 @@ export class DdlObjectLinker
 	}
 
 	private linkDomainsAndApplicationsAndVersions(
-		allApplicationVersionsByIds: DbApplicationVersion[],
-		domains: DbDomain[],
-		applications: DbApplication[],
-		latestApplicationVersions: DbApplicationVersion[],
-		applicationReferences: DbApplicationReference[]
+		allApplicationVersionsByIds: IApplicationVersion[],
+		domains: IDomain[],
+		applications: IApplication[],
+		latestApplicationVersions: IApplicationVersion[],
+		applicationReferences: IApplicationReference[]
 	): void {
-		const domainMapById: Map<DbDomain_LocalId, DbDomain> = new Map()
-		domains.forEach((domain: DbDomain) => {
+		const domainMapById: Map<Domain_LocalId, IDomain> = new Map()
+		domains.forEach((domain: IDomain) => {
 			domainMapById.set(domain._localId, domain)
 		})
 
-		const applicationMapByIndex: Map<DbApplication_Index, DbApplication> = new Map()
-		applications.forEach((application: DbApplication) => {
+		const applicationMapByIndex: Map<Application_Index, IApplication> = new Map()
+		applications.forEach((application: IApplication) => {
 			applicationMapByIndex.set(application.index, application)
 			const domain = domainMapById.get(application.domain._localId)
 			application.domain = domain
 			domain.applications.push(<any>application)
 		})
 
-		latestApplicationVersions.forEach((applicationVersion: DbApplicationVersion) => {
+		latestApplicationVersions.forEach((applicationVersion: IApplicationVersion) => {
 			const application = applicationMapByIndex.get(applicationVersion.application.index)
-			let applicationCurrentVersion: DbApplicationCurrentVersion = {
+			let applicationCurrentVersion: IApplicationCurrentVersion = {
 				application,
 				applicationVersion
 			}
@@ -92,7 +92,7 @@ export class DdlObjectLinker
 			applicationVersion.referencedByMapByName = {}
 		})
 
-		applicationReferences.forEach((applicationReference: DbApplicationReference) => {
+		applicationReferences.forEach((applicationReference: IApplicationReference) => {
 			const ownApplicationVersion = allApplicationVersionsByIds[applicationReference.ownApplicationVersion._localId]
 			const referencedApplicationVersion = allApplicationVersionsByIds[applicationReference.referencedApplicationVersion._localId]
 
@@ -108,7 +108,7 @@ export class DdlObjectLinker
 	}
 
 	private linkEntities(
-		allApplicationVersionsByIds: DbApplicationVersion[],
+		allApplicationVersionsByIds: IApplicationVersion[],
 		allEntities: DbEntity[], // All of the entities of newly created applications
 		addedEntities: DbEntity[] // All of the entities of newly created applications
 		// from the latest available versions

@@ -1,9 +1,9 @@
 import { IContext } from '@airport/direction-indicator'
 import {
-	DbApplication_Name,
+	Application_Name,
 	DbEntity,
-	DbDomain_Name,
-	DbApplication_FullName,
+	Domain_Name,
+	Application_FullName,
 	IStoreOperator,
 	Query,
 	StoreType
@@ -46,9 +46,9 @@ export interface IStoreDriver
 
 	getTableName(
 		application: {
-			domain: DbDomain_Name | {
-				name: DbDomain_Name
-			}; name: DbApplication_Name; fullName?: DbApplication_FullName;
+			domain: Domain_Name | {
+				name: Domain_Name
+			}; name: Application_Name; fullName?: Application_FullName;
 		},
 		applicationIntegerVersion: number,
 		table: {

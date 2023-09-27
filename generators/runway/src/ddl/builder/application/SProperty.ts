@@ -5,7 +5,7 @@ import {
 	DbOneToManyElements,
 	EntityRelationType,
 	DbProperty_Index,
-	DbApplicationReferenceByIndex
+	IApplicationReferenceByIndex
 } from '@airport/ground-control';
 
 /**
@@ -58,7 +58,7 @@ export interface SRelation {
 	/**
 	 * Index of the application of the related entity (if not local).
 	 */
-	referencedDbApplication_Index?: number;
+	referencedApplication_Index?: number;
 
 	/**
 	 * Explicitly defined foreign key (if any)
@@ -117,7 +117,7 @@ export interface SRelation {
  * A column in a application table.
  */
 export interface SColumn
-	extends DbApplicationReferenceByIndex<DbColumn_Index> {
+	extends IApplicationReferenceByIndex<DbColumn_Index> {
 
 	/**
 	 * How many _localIds to allocate for a sequence at a time.

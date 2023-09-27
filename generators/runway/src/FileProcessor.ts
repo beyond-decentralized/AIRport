@@ -1,4 +1,4 @@
-import { DbApplication } from '@airport/ground-control'
+import { IApplication } from '@airport/ground-control'
 import * as ts from 'typescript'
 import { visitDaoFile } from './dao/parser/OperationGenerator'
 import { Configuration } from './ddl/options/Options'
@@ -47,7 +47,7 @@ export async function generateDefinitions(
 	fileNames: string[],
 	options: ts.CompilerOptions,
 	configuration: Configuration,
-	applicationMapByProjectName: { [projectName: string]: DbApplication }
+	applicationMapByProjectName: { [projectName: string]: IApplication }
 ): Promise<{ [entityName: string]: EntityCandidate }> {
 	// Build a program using the set of root file names in fileNames
 	let program = tsc.createProgram(fileNames, options)

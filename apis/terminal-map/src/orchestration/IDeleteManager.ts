@@ -1,7 +1,7 @@
 import {
     DbEntity_LocalId,
     PortableQuery,
-    DbApplication_Index,
+    Application_Index,
     IRootTransaction,
     Repository_LocalId,
     IActor,
@@ -23,4 +23,4 @@ export interface IDeleteManager {
 }
 
 export type RecordsToDelete =
-    Map<DbApplication_Index, Map<DbEntity_LocalId, Map<Repository_LocalId, IAirEntity[]>>>
+    Map<Application_Index, Map<DbEntity_LocalId, Map<Repository_LocalId, IAirEntity[]>>>

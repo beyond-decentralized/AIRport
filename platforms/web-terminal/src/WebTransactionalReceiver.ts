@@ -5,7 +5,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { DbApplication, DbApplication_FullName, IDbApplicationUtils } from '@airport/ground-control'
+import { IApplication, Application_FullName, IApplicationNameUtils } from '@airport/ground-control'
 import {
 	ITransactionalReceiver,
 	IApiCallContext,
@@ -15,7 +15,7 @@ import {
 	IWebReceiverState,
 	IInitializeConnectionMessage,
 	IApiCredentials,
-	IGetLatestApplicationVersionByDbApplication_NameMessage,
+	IGetLatestApplicationVersionByApplication_NameMessage,
 	IRetrieveDomainMessage,
 	IPortableQueryMessage,
 	IReadQueryMessage,
@@ -45,7 +45,7 @@ export class WebTransactionalReceiver
 	applicationInitializer: IWebApplicationInitializer
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	applicationNameUtils: IApplicationNameUtils
 
 	@Inject()
 	localApiServer: ILocalAPIServer
@@ -131,7 +131,7 @@ export class WebTransactionalReceiver
 	handleAppRequest(
 		message: IApiCallRequestMessage
 			| IApiCallResponseMessage
-			| IGetLatestApplicationVersionByDbApplication_NameMessage
+			| IGetLatestApplicationVersionByApplication_NameMessage
 			| IInitializeConnectionMessage
 			| ISubscriptionMessage
 			| IPortableQueryMessage
@@ -146,7 +146,7 @@ export class WebTransactionalReceiver
 			case Message_Direction.REQUEST:
 				if (message.typeGroup === Message_Type_Group.INTERNAL) {
 					this.handleInternalMessage(message as
-						IGetLatestApplicationVersionByDbApplication_NameMessage
+						IGetLatestApplicationVersionByApplication_NameMessage
 						| IInitializeConnectionMessage
 						| IRetrieveDomainMessage,
 						messageOrigin).then()
@@ -392,12 +392,12 @@ export class WebTransactionalReceiver
 			if (!context.isObservableApiCall) {
 				internalCredentials.transactionId = context.transaction.id
 			}
-			const fullDbApplication_Name = this.getMessageDestinationApplication(
+			const fullApplication_Name = this.getMessageDestinationApplication(
 				message)
-			const application: DbApplication = this.terminalStore
-				.getApplicationMapByFullName().get(fullDbApplication_Name)
+			const application: IApplication = this.terminalStore
+				.getApplicationMapByFullName().get(fullApplication_Name)
 			if (!application) {
-				throw new Error(`Could not find AIRport Framework Application: ${fullDbApplication_Name}`)
+				throw new Error(`Could not find AIRport Framework Application: ${fullApplication_Name}`)
 			}
 			internalResponse = await this.localApiServer.coreHandleRequest(messageCopy,
 				(application.currentVersion[0].applicationVersion.jsonApplication //
@@ -547,12 +547,12 @@ export class WebTransactionalReceiver
 
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		const fullDbApplication_Name = this.getMessageDestinationApplication(
+		const fullApplication_Name = this.getMessageDestinationApplication(
 			message)
 		// Only accept requests from https protocol
 		if (!messageOrigin.startsWith("https")
-			// and from application domains that match the fullDbApplication_Name
-			|| applicationDomain !== fullDbApplication_Name + webReciever.domainPrefix) {
+			// and from application domains that match the fullApplication_Name
+			|| applicationDomain !== fullApplication_Name + webReciever.domainPrefix) {
 			return false
 		}
 		// Only accept requests from '${applicationName}.${mainDomain_Name}'
@@ -565,14 +565,14 @@ export class WebTransactionalReceiver
 		}
 		const applicationDomainFirstFragment = applicationDomainFragments[0]
 
-		// check application domain-embedded signature and fullDbApplication_Name in message
+		// check application domain-embedded signature and fullApplication_Name in message
 		// and make sure they result in a match
-		if (applicationDomainFirstFragment !== fullDbApplication_Name) {
+		if (applicationDomainFirstFragment !== fullApplication_Name) {
 			return false
 		}
 
 		return !!this.terminalStore.getApplicationInitializer()
-			.applicationWindowMap.get(fullDbApplication_Name)
+			.applicationWindowMap.get(fullApplication_Name)
 	}
 
 
@@ -778,7 +778,7 @@ Unexpected message typeGroup:
 			| ISubscriptionMessage,
 		response: IApiCallResponseMessage,
 		returnedValue: any,
-		application_FullName: DbApplication_FullName,
+		application_FullName: Application_FullName,
 		isFrameworkObservableCall: boolean,
 		webReciever: IWebReceiverState
 	): void {
@@ -846,7 +846,7 @@ Unexpected message typeGroup:
 		type: SUBSCRIPTION_Message_Type,
 		messageFields: IApiCallResponseMessage,
 		returnedValue: any,
-		application_FullName: DbApplication_FullName,
+		application_FullName: Application_FullName,
 		webReciever: IWebReceiverState,
 	): void {
 		const subscription = returnedValue.subscribe(
@@ -873,8 +873,8 @@ Unexpected message typeGroup:
 	private getMessageDestinationApplication(
 		message: IMessage
 	) {
-		return this.dbApplicationUtils.
-			getDbApplication_FullNameFromDomainAndName(
+		return this.applicationNameUtils.
+			getApplication_FullNameFromDomainAndName(
 				message.destination.domain, message.destination.app)
 
 	}
@@ -882,8 +882,8 @@ Unexpected message typeGroup:
 	private getMessageOriginApplication(
 		message: IMessage
 	) {
-		return this.dbApplicationUtils.
-			getDbApplication_FullNameFromDomainAndName(
+		return this.applicationNameUtils.
+			getApplication_FullNameFromDomainAndName(
 				message.origin.domain, message.origin.app)
 	}
 

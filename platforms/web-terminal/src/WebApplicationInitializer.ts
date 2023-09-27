@@ -2,7 +2,7 @@ import {
     Inject,
     Injected
 } from '@airport/direction-indicator'
-import { DbApplication_FullName } from "@airport/ground-control";
+import { Application_FullName } from "@airport/ground-control";
 import { ApplicationInitializer } from "@airport/takeoff";
 import {
     IApplicationInitializer,
@@ -12,9 +12,9 @@ import {
 export interface IWebApplicationInitializer
     extends IApplicationInitializer {
 
-    applicationWindowMap: Map<DbApplication_FullName, Window>
+    applicationWindowMap: Map<Application_FullName, Window>
 
-    initializingApplicationMap: Map<DbApplication_FullName, boolean>
+    initializingApplicationMap: Map<Application_FullName, boolean>
 
 }
 
@@ -28,21 +28,21 @@ export class WebApplicationInitializer
     async nativeInitializeApplication(
         domain: string,
         application: string,
-        fullDbApplication_Name: string,
+        fullApplication_Name: string,
     ): Promise<void> {
         if (this.terminalStore.getReceiver().initializedApps
-            .has(fullDbApplication_Name)) {
+            .has(fullApplication_Name)) {
             return
         }
 
-        let appIframes = document.getElementsByName(fullDbApplication_Name);
+        let appIframes = document.getElementsByName(fullApplication_Name);
         let appIframe: HTMLIFrameElement
 
         if (!appIframes.length) {
             appIframe = document.createElement('iframe') as HTMLIFrameElement
             appIframe.src = 'http://' + domain + '/AIRport/apps/'
                 + application + '/index.html'
-            appIframe.name = fullDbApplication_Name
+            appIframe.name = fullApplication_Name
             appIframe.style.display = 'none'
             document.body.appendChild(appIframe)
         } else {
@@ -50,21 +50,21 @@ export class WebApplicationInitializer
         }
 
         while (!this.terminalStore.getReceiver().initializedApps
-            .has(fullDbApplication_Name)) {
+            .has(fullApplication_Name)) {
             await this.wait(100)
         }
 
         this.terminalStore.getApplicationInitializer()
-            .applicationWindowMap.set(fullDbApplication_Name, appIframe.contentWindow)
+            .applicationWindowMap.set(fullApplication_Name, appIframe.contentWindow)
         this.terminalStore.getApplicationInitializer()
-            .initializingApplicationMap.set(fullDbApplication_Name, false)
+            .initializingApplicationMap.set(fullApplication_Name, false)
     }
 
 	protected async isAppLoaded(
-		fullDbApplication_Name: string
+		fullApplication_Name: string
 	): Promise<boolean> {
         return !!this.terminalStore.getApplicationInitializer()
-        .applicationWindowMap.get(fullDbApplication_Name)
+        .applicationWindowMap.get(fullApplication_Name)
     }
 }
 

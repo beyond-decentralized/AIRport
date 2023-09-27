@@ -11,7 +11,7 @@ import {
 	DbEntity,
 	DbEntity_TableIndex
 } from './DbEntity';
-import { DbApplication_Index } from './DbApplication';
+import { Application_Index } from './IApplication';
 
 export type DbColumn_LocalId = number;
 export type DbColumn_Index = number;
@@ -36,7 +36,7 @@ export type DbColumn_AllocationSize = number
  * and are the first entries.
  */
 export interface JsonProperty
-	extends DbApplicationReferenceByIndex<DbProperty_Index>,
+	extends IApplicationReferenceByIndex<DbProperty_Index>,
 	JsonObject {
 
 	/**
@@ -52,17 +52,17 @@ export interface JsonProperty
 	/**
 	 * Column represented by the property.
 	 */
-	columnRef?: DbApplicationReferenceByIndex<DbColumn_Index>;
+	columnRef?: IApplicationReferenceByIndex<DbColumn_Index>;
 
 	/**
 	 * A Relation that is represented by the property (if any).
 	 */
-	relationRef?: DbApplicationReferenceByIndex<DbRelation_Index>;
+	relationRef?: IApplicationReferenceByIndex<DbRelation_Index>;
 
 }
 
 export interface DbProperty
-	extends DbApplicationReferenceByIndex<DbProperty_Index>,
+	extends IApplicationReferenceByIndex<DbProperty_Index>,
 	DbVersionedObject {
 
 	_localId: DbProperty_LocalId
@@ -79,7 +79,7 @@ export interface DbPropertyColumn
 
 	column: DbColumn;
 	property: DbProperty;
-	// sinceVersion: DbApplicationVersion;
+	// sinceVersion: IApplicationVersion;
 
 }
 
@@ -87,7 +87,7 @@ export interface DbPropertyColumn
  * A column in a application table.
  */
 export interface JsonColumn
-	extends DbApplicationReferenceByIndex<DbColumn_Index>,
+	extends IApplicationReferenceByIndex<DbColumn_Index>,
 	JsonObject {
 
 	/**
@@ -142,7 +142,7 @@ export interface IdKeyArrayByIdColumnIndex
 }
 
 export interface DbColumn
-	extends DbApplicationReferenceByIndex<DbColumn_Index>,
+	extends IApplicationReferenceByIndex<DbColumn_Index>,
 	DbVersionedObject {
 
 	_localId: DbColumn_LocalId
@@ -188,7 +188,7 @@ export interface DbColumn
 
 }
 
-export interface DbApplicationReferenceByIndex<ID extends number> {
+export interface IApplicationReferenceByIndex<ID extends number> {
 
 	/**
 	 * Index of the referenced object.
@@ -198,7 +198,7 @@ export interface DbApplicationReferenceByIndex<ID extends number> {
 }
 
 export interface PropertyReference
-	extends DbApplicationReferenceByIndex<DbProperty_Index> {
+	extends IApplicationReferenceByIndex<DbProperty_Index> {
 
 }
 
@@ -206,7 +206,7 @@ export interface PropertyReference
  * A application relation.
  */
 export interface JsonRelation
-	extends DbApplicationReferenceByIndex<DbRelation_Index>,
+	extends IApplicationReferenceByIndex<DbRelation_Index>,
 	JsonObject {
 
 	/**
@@ -249,7 +249,7 @@ export interface JsonRelation
 	/**
 	 * Related table's application index (as defined in application-local application references).
 	 */
-	relationTableDbApplication_Index?: DbApplication_Index;
+	relationTableApplication_Index?: Application_Index;
 
 	/**
 	 * Related table index.
@@ -271,7 +271,7 @@ export interface JsonRelation
 }
 
 export interface DbRelation
-	extends DbApplicationReferenceByIndex<DbRelation_Index>,
+	extends IApplicationReferenceByIndex<DbRelation_Index>,
 	DbVersionedObject {
 
 	_localId: DbRelation_LocalId
@@ -307,7 +307,7 @@ export interface JsonRelationColumn
 	extends JsonObject {
 
 	manyRelationIndex: DbRelation_Index;
-	oneDbApplication_Index: DbApplication_Index;
+	oneApplication_Index: Application_Index;
 	oneTableIndex: DbEntity_TableIndex;
 	oneRelationIndex?: DbRelation_Index;
 	oneColumnIndex: DbColumn_Index;

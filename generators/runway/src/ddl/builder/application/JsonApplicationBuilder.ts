@@ -4,7 +4,7 @@ import {
 	DbIndexConfiguration,
 	DbOneToManyElements,
 	DbEntity,
-	DbApplication,
+	IApplication,
 	EntityRelationType,
 	getSqlDataType,
 	IntermediatePropertyIndexConfiguration,
@@ -15,8 +15,8 @@ import {
 	JsonEntity,
 	JsonProperty,
 	JsonRelation,
-	DbApplication_Index,
-	DbApplicationReferenceByIndex,
+	Application_Index,
+	IApplicationReferenceByIndex,
 	DbEntity_TableIndex
 } from '@airport/ground-control';
 import { currentApplicationApi } from '../../../api/parser/ApiGenerator';
@@ -68,7 +68,7 @@ export class JsonApplicationBuilder {
 
 	build(
 		domain: string,
-		applicationMapByProjectName: { [projectName: string]: DbApplication },
+		applicationMapByProjectName: { [projectName: string]: IApplication },
 		entityOperationMap: { [entityName: string]: { [operationName: string]: JsonOperation } }
 	): [JsonApplicationWithApi, SIndexedApplication] {
 		const sApplicationBuilder = new SApplicationBuilder(this.config, this.entityMapByName);
@@ -266,7 +266,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 
 	private getIdColumnReferences(
 		sIndexedEntity: SIndexedEntity
-	): DbApplicationReferenceByIndex<DbColumn_Index>[] {
+	): IApplicationReferenceByIndex<DbColumn_Index>[] {
 		return sIndexedEntity.idColumns.map(
 			sColumn => ({
 				index: sColumn.index
@@ -294,26 +294,26 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 				};
 
 			} else {
-				let relationTableDbApplication_Index: number;
-				let relationDbApplication_Index: DbApplication_Index;
+				let relationTableApplication_Index: number;
+				let relationApplication_Index: Application_Index;
 				let relationTableIndex: DbEntity_TableIndex;
 				let relatedIndexedEntity: SIndexedEntity | DbEntity;
-				if (sRelation.referencedDbApplication_Index || sRelation.referencedDbApplication_Index === 0) {
-					relationTableDbApplication_Index = sRelation.referencedDbApplication_Index;
-					const relatedDbApplication = sIndexedApplication.application.referencedApplications[sRelation.referencedDbApplication_Index];
-					relationDbApplication_Index = relatedDbApplication.index;
-					relatedIndexedEntity = relatedDbApplication.dbApplication
+				if (sRelation.referencedApplication_Index || sRelation.referencedApplication_Index === 0) {
+					relationTableApplication_Index = sRelation.referencedApplication_Index;
+					const relatedIApplication = sIndexedApplication.application.referencedApplications[sRelation.referencedApplication_Index];
+					relationApplication_Index = relatedIApplication.index;
+					relatedIndexedEntity = relatedIApplication.dbApplication
 						.currentVersion[0].applicationVersion.entityMapByName[sRelation.entityName];
 					relationTableIndex = relatedIndexedEntity.index;
 				} else {
 					relatedIndexedEntity = sIndexedApplication.entityMapByName[sRelation.entityName];
-					relationDbApplication_Index = null;
+					relationApplication_Index = null;
 					relationTableIndex = relatedIndexedEntity.entity.entityIndex;
 				}
 
 				this.buildColumnRelations(
 					sIndexedEntity, sRelation, relatedIndexedEntity,
-					relationDbApplication_Index, relationTableIndex, columns);
+					relationApplication_Index, relationTableIndex, columns);
 
 				const relation: JsonRelation = {
 					// addToJoinFunction: sRelation.addToJoinFunction,
@@ -329,7 +329,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 						index: index
 					},
 					relationTableIndex,
-					relationTableDbApplication_Index,
+					relationTableApplication_Index,
 					sinceVersion: 1
 				};
 				relations[sRelation.index] = relation;
@@ -355,7 +355,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 		sIndexedEntity: SIndexedEntity,
 		sRelation: SRelation,
 		relatedIndexedEntity: SIndexedEntity | DbEntity,
-		relationDbApplication_Index: number,
+		relationApplication_Index: number,
 		relationTableIndex: number,
 		columns: JsonColumn[]
 	): void {
@@ -391,7 +391,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 
 				column.manyRelationColumnRefs.push({
 					manyRelationIndex: sRelation.index,
-					oneDbApplication_Index: relationDbApplication_Index,
+					oneApplication_Index: relationApplication_Index,
 					oneTableIndex: relationTableIndex,
 					oneRelationIndex: sRelationColumn.oneSideRelationIndex,
 					oneColumnIndex: relationColumnIndex,

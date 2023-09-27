@@ -1,13 +1,13 @@
-import { DbDomainDao } from '../dao/DbDomainDao'
+import { DdlDomainDao } from '../dao/DdlDomainDao'
 import { DbColumnDao } from '../dao/application/entity/DbColumnDao';
-import { DbApplicationDao } from '../dao/application/DbApplicationDao';
+import { DdlApplicationDao } from '../dao/application/DdlApplicationDao';
 import { DbEntityDao } from '../dao/application/entity/DbEntityDao';
 import { DbPropertyColumnDao } from '../dao/application/entity/DbPropertyColumnDao';
 import { DbPropertyDao } from '../dao/application/entity/DbPropertyDao';
-import { DbApplicationReferenceDao } from '../dao/application/DbApplicationReferenceDao';
+import { DdlApplicationReferenceDao } from '../dao/application/DdlApplicationReferenceDao';
 import { DbRelationColumnDao } from '../dao/application/entity/DbRelationColumnDao';
 import { DbRelationDao } from '../dao/application/entity/DbRelationDao';
-import { DbApplicationVersionDao } from '../dao/application/DbApplicationVersionDao';
+import { DdlApplicationVersionDao } from '../dao/application/DdlApplicationVersionDao';
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { app } from '@airport/direction-indicator';
 import { application } from './app-declaration';
@@ -22,8 +22,8 @@ export const airspace = app(application);
 airspace.register(
     ApplicationApiClassDao, ApplicationApiOperationDao,
     ApplicationApiParameterDao, ApplicationApiReturnTypeDao,
-    DbApplicationDao, DbApplicationReferenceDao,
-    DbApplicationVersionDao, DbColumnDao, DbDomainDao,
+    DdlApplicationDao, DdlApplicationReferenceDao,
+    DdlApplicationVersionDao, DbColumnDao, DdlDomainDao,
     DbEntityDao, DbPropertyColumnDao, DbPropertyDao,
     DbRelationColumnDao, DbRelationDao,
 
@@ -37,7 +37,7 @@ airspace.setDependencies(DbRelationDao, {
     datastructureUtils: DatastructureUtils
 })
 
-airspace.setDependencies(DbApplicationDao, {
+airspace.setDependencies(DdlApplicationDao, {
     airportDatabase: AIRPORT_DATABASE,
     datastructureUtils: DatastructureUtils
 })

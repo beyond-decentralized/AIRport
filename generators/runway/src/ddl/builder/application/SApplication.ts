@@ -1,4 +1,4 @@
-import { DbApplication } from '@airport/ground-control';
+import { IApplication } from '@airport/ground-control';
 import {
 	SEntity,
 	SIndexedEntity
@@ -28,7 +28,7 @@ export interface SApplicationReference {
 
 	index: number;
 
-	dbApplication: DbApplication;
+	dbApplication: IApplication;
 }
 
 /**

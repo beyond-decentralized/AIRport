@@ -6,11 +6,11 @@ import {
 } from '@airport/direction-indicator'
 import { ISequenceDao } from '@airport/airport-code';
 import {
-  DbApplication,
+  IApplication,
   DbSequence,
   EntityRelationType,
   IApplicationReferenceUtils,
-  IDbApplicationUtils,
+  IApplicationNameUtils,
   JsonApplication,
   JsonColumn,
   JsonEntity,
@@ -35,7 +35,7 @@ export abstract class SqlSchemaBuilder
   applicationReferenceUtils: IApplicationReferenceUtils
 
   @Inject()
-  dbApplicationUtils: IDbApplicationUtils
+  applicationNameUtils: IApplicationNameUtils
 
   @Inject()
   sequenceDao: ISequenceDao
@@ -45,7 +45,7 @@ export abstract class SqlSchemaBuilder
 
   async build(
     jsonApplication: JsonApplication,
-    existingApplicationMap: Map<string, DbApplication>,
+    existingApplicationMap: Map<string, IApplication>,
     newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>,
     isFeatureApp: boolean,
     context: IContext,
@@ -92,7 +92,7 @@ export abstract class SqlSchemaBuilder
     jsonApplication: JsonApplication,
     jsonApplicationVersion: JsonApplicationVersion,
     jsonEntity: JsonEntity,
-    existingApplicationMap: Map<string, DbApplication>,
+    existingApplicationMap: Map<string, IApplication>,
     context: IContext,
   ): Promise<void> {
     const primaryKeyColumnNames: string[] = [];
@@ -158,7 +158,7 @@ export abstract class SqlSchemaBuilder
     jsonApplication: JsonApplication,
     jsonApplicationVersion: JsonApplicationVersion,
     queryRelation: JsonRelation,
-    existingApplicationMap: Map<string, DbApplication>,
+    existingApplicationMap: Map<string, IApplication>,
     newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>,
     relatedJsonApplicationMap: Map<string, JsonApplication>
   ): {
@@ -167,29 +167,29 @@ export abstract class SqlSchemaBuilder
   } {
     let relatedJsonApplication: JsonApplication
     let relatedJsonEntity: JsonEntity
-    if (queryRelation.relationTableDbApplication_Index
-      || queryRelation.relationTableDbApplication_Index === 0) {
+    if (queryRelation.relationTableApplication_Index
+      || queryRelation.relationTableApplication_Index === 0) {
       const referencedApplication = jsonApplicationVersion
-        .referencedApplications[queryRelation.relationTableDbApplication_Index]
-      let relatedDbApplication_FullName = this.dbApplicationUtils
-        .getDbApplication_FullNameFromDomainAndName(
+        .referencedApplications[queryRelation.relationTableApplication_Index]
+      let relatedApplication_FullName = this.applicationNameUtils
+        .getApplication_FullNameFromDomainAndName(
           referencedApplication.domain, referencedApplication.name
         )
-      relatedJsonApplication = relatedJsonApplicationMap.get(relatedDbApplication_FullName)
+      relatedJsonApplication = relatedJsonApplicationMap.get(relatedApplication_FullName)
       if (!relatedJsonApplication) {
-        const relatedApplication = existingApplicationMap.get(relatedDbApplication_FullName)
+        const relatedApplication = existingApplicationMap.get(relatedApplication_FullName)
         if (relatedApplication) {
           // FIXME: this should be looked up though currentVersion - make sure it's populated
           // relatedJsonApplication = relatedApplication.currentVersion[0].applicationVersion.jsonApplication
           relatedJsonApplication = relatedApplication.versions[0].jsonApplication
         } else {
-          relatedJsonApplication = newJsonApplicationMap.get(relatedDbApplication_FullName)
+          relatedJsonApplication = newJsonApplicationMap.get(relatedApplication_FullName)
         }
         if (!relatedJsonApplication) {
-          throw new Error(`Could not find related application ${relatedDbApplication_FullName}
+          throw new Error(`Could not find related application ${relatedApplication_FullName}
           in either existing applications or newly installing applications.`)
         }
-        relatedJsonApplicationMap.set(relatedDbApplication_FullName, relatedJsonApplication)
+        relatedJsonApplicationMap.set(relatedApplication_FullName, relatedJsonApplication)
       }
       const relatedApplicationVersion: JsonApplicationVersion = relatedJsonApplication
         .versions[relatedJsonApplication.versions.length - 1]
@@ -215,7 +215,7 @@ export abstract class SqlSchemaBuilder
     jsonApplication: JsonApplication,
     jsonApplicationVersion: JsonApplicationVersion,
     jsonEntity: JsonEntity,
-    existingApplicationMap: Map<string, DbApplication>,
+    existingApplicationMap: Map<string, IApplication>,
     newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>,
     relatedJsonApplicationMap: Map<string, JsonApplication>,
     context: IContext,

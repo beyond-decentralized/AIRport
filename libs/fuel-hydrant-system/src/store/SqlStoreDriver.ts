@@ -8,12 +8,12 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	DbApplication_Name,
-	DbApplication,
+	Application_Name,
+	IApplication,
 	DbEntity,
-	DbDomain_Name,
-	DbApplication_FullName,
-	IDbApplicationUtils,
+	Domain_Name,
+	Application_FullName,
+	IApplicationNameUtils,
 	IEntityStateManager,
 	InternalFragments,
 	QueryDelete,
@@ -78,7 +78,7 @@ export abstract class SqlStoreDriver
 	dictionary: Dictionary
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	applicationNameUtils: IApplicationNameUtils
 
 	@Inject()
 	entityStateManager: IEntityStateManager
@@ -137,11 +137,11 @@ export abstract class SqlStoreDriver
 
 	getTableName(
 		application: {
-			domain?: DbDomain_Name | {
-				name?: DbDomain_Name
+			domain?: Domain_Name | {
+				name?: Domain_Name
 			};
-			name?: DbApplication_Name;
-			fullName?: DbApplication_FullName;
+			name?: Application_Name;
+			fullName?: Application_FullName;
 		},
 		applicationIntegerVersion: number,
 		table: {
@@ -200,13 +200,13 @@ Entity:          ${table.name}
 		if (table.tableConfig && table.tableConfig.name) {
 			theTableName = table.tableConfig.name;
 		}
-		let fullDbApplication_Name;
-		if ((application as DbApplication).fullName) {
-			fullDbApplication_Name = (application as DbApplication).fullName;
+		let fullApplication_Name;
+		if ((application as IApplication).fullName) {
+			fullApplication_Name = (application as IApplication).fullName;
 		} else {
-			fullDbApplication_Name = this.dbApplicationUtils.getDbApplication_FullName(application);
+			fullApplication_Name = this.applicationNameUtils.getApplication_FullName(application);
 		}
-		return this.composeTableName(fullDbApplication_Name, theTableName, context);
+		return this.composeTableName(fullApplication_Name, theTableName, context);
 	}
 
 	abstract composeTableName(

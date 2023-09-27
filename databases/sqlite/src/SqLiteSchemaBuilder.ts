@@ -10,7 +10,7 @@ import {
   IContext,
 } from '@airport/direction-indicator';
 import {
-  DbApplication,
+  IApplication,
   DbSequence,
   JsonApplication,
   JsonColumn,
@@ -82,8 +82,8 @@ export class SqLiteSchemaBuilder
 
     let allSequences: DbSequence[] = [];
     for (const jsonApplication of jsonApplications) {
-      const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
-        getDbApplication_FullName(jsonApplication)] as QAppInternal;
+      const qApplication = this.airportDatabase.QM[this.applicationNameUtils.
+        getApplication_FullName(jsonApplication)] as QAppInternal;
       for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
         allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
       }
@@ -102,8 +102,8 @@ export class SqLiteSchemaBuilder
 
     let stagedSequences: DbSequence[] = [];
     for (const jsonApplication of jsonApplications) {
-      const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
-        getDbApplication_FullName(jsonApplication)] as QAppInternal;
+      const qApplication = this.airportDatabase.QM[this.applicationNameUtils.
+        getApplication_FullName(jsonApplication)] as QAppInternal;
       for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
         stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
       }
@@ -113,7 +113,7 @@ export class SqLiteSchemaBuilder
   }
 
   buildSequences(
-    dbApplication: DbApplication,
+    dbApplication: IApplication,
     jsonEntity: JsonEntity,
   ): DbSequence[] {
     const sequences: DbSequence[] = [];

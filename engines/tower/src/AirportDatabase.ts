@@ -12,12 +12,12 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	DbApplication,
-	DbApplicationVersion,
+	IApplication,
+	IApplicationVersion,
 	DbEntity,
 	Dictionary,
 	IApplicationUtils,
-	IDbApplicationUtils,
+	IApplicationNameUtils,
 	ISaveResult,
 } from '@airport/ground-control';
 import {
@@ -86,7 +86,7 @@ export class AirportDatabase
 	dictionary: Dictionary
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	applicationNameUtils: IApplicationNameUtils
 
 	@Inject()
 	find: INonEntityFind
@@ -118,11 +118,11 @@ export class AirportDatabase
 		return this.databaseStore.functions
 	}
 
-	get A(): DbApplication[] {
+	get A(): IApplication[] {
 		return this.databaseStore.applications
 	}
 
-	get applications(): DbApplication[] {
+	get applications(): IApplication[] {
 		return this.databaseStore.applications
 	}
 
@@ -143,12 +143,12 @@ export class AirportDatabase
 		// (without the '.load() call) but '.load()' is more intuitive)
 	}
 
-	getCurrentDbApplicationVersion(
+	getCurrentIApplicationVersion(
 		domainName: string,
 		applicationName: string
-	): DbApplicationVersion {
-		const applicationFullName = this.dbApplicationUtils
-			.getDbApplication_FullNameFromDomainAndName(domainName, applicationName)
+	): IApplicationVersion {
+		const applicationFullName = this.applicationNameUtils
+			.getApplication_FullNameFromDomainAndName(domainName, applicationName)
 		return (this.QM[applicationFullName] as QAppInternal)
 			.__dbApplication__.currentVersion[0].applicationVersion
 	}
@@ -158,7 +158,7 @@ export class AirportDatabase
 		applicationName: string,
 		entityName: string
 	): DbEntity {
-		const dbApplicationVersion = this.getCurrentDbApplicationVersion(
+		const dbApplicationVersion = this.getCurrentIApplicationVersion(
 			domainName,
 			applicationName
 		)
@@ -169,9 +169,9 @@ export class AirportDatabase
 	setQApp(
 		qApplication: QApp
 	): void {
-		const fullDbApplication_Name = this.dbApplicationUtils
-			.getDbApplication_FullName(qApplication)
-		const existingQApp = this.QM[fullDbApplication_Name]
+		const fullApplication_Name = this.applicationNameUtils
+			.getApplication_FullName(qApplication)
+		const existingQApp = this.QM[fullApplication_Name]
 		if (existingQApp) {
 			const dbApplication = existingQApp.__dbApplication__
 			if (dbApplication) {
@@ -181,7 +181,7 @@ export class AirportDatabase
 				this.Q[dbApplication.index] = qApplication
 			}
 		}
-		this.QM[fullDbApplication_Name] = qApplication
+		this.QM[fullApplication_Name] = qApplication
 	}
 
 	getAccumulator(

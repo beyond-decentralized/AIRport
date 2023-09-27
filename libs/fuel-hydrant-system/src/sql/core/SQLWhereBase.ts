@@ -26,7 +26,7 @@ import {
 	DbProperty,
 	Repository_LocalId,
 	Repository_GUID,
-	DbApplication_Index,
+	Application_Index,
 	DbEntity_TableIndex,
 	DbColumn_Index
 } from '@airport/ground-control'
@@ -418,7 +418,7 @@ Returned:  ${resultsFromSelect.length}
 	}
 
 	protected addField(
-		applicationIndex: DbApplication_Index,
+		applicationIndex: Application_Index,
 		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index,
 	): void {

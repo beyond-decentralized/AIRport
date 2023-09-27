@@ -1,13 +1,13 @@
 import { Injected } from '@airport/direction-indicator';
-import { DbApplication_FullName } from '../../definition/application/DbApplication';
+import { Application_FullName } from '../../definition/application/IApplication';
 import { DbColumn_Name } from '../../definition/application/DbProperty';
-import { IDbApplicationUtils } from '../../definition/query/IDbApplicationUtils';
+import { IApplicationNameUtils } from '../../definition/query/IApplicationNameUtils';
 
 @Injected()
-export class DbApplicationUtils
-	implements IDbApplicationUtils {
+export class ApplicationNameUtils
+	implements IApplicationNameUtils {
 
-	getDbApplication_FullName({
+	getApplication_FullName({
 		domain,
 		name,
 	}: {
@@ -15,7 +15,7 @@ export class DbApplicationUtils
 			name: string
 		},
 		name: string
-	}): DbApplication_FullName {
+	}): Application_FullName {
 		if ((domain as {
 			name: string
 		}).name) {
@@ -24,13 +24,13 @@ export class DbApplicationUtils
 			}).name;
 		}
 
-		return this.getDbApplication_FullNameFromDomainAndName(domain as string, name);
+		return this.getApplication_FullNameFromDomainAndName(domain as string, name);
 	}
 
-	getDbApplication_FullNameFromDomainAndName(
+	getApplication_FullNameFromDomainAndName(
 		domainName: string,
 		applicationName: string,
-	): DbApplication_FullName {
+	): Application_FullName {
 		if (domainName.indexOf('___') > -1) {
 			throw new Error('Domain Name cannot contain "___" (3 consecutive underscores) in it.');
 		}
@@ -80,13 +80,13 @@ export class DbApplicationUtils
 			throw new Error('Application Name cannot have with "@", "/", "." or "_" right next to each other.');
 		}
 
-		let fullDbApplication_Name = `${domainPrefix}___${applicationPrefix}`
+		let fullApplication_Name = `${domainPrefix}___${applicationPrefix}`
 
-		if (fullDbApplication_Name.endsWith('_dash_runtime')) {
-			fullDbApplication_Name = fullDbApplication_Name.substring(0, fullDbApplication_Name.length - 13)
+		if (fullApplication_Name.endsWith('_dash_runtime')) {
+			fullApplication_Name = fullApplication_Name.substring(0, fullApplication_Name.length - 13)
 		}
 
-		return fullDbApplication_Name;
+		return fullApplication_Name;
 	}
 
 	getSequenceName(

@@ -19,7 +19,7 @@ import {
 	IApplicationUtils,
 	Dictionary,
 	DbColumn,
-	DbApplication_Index,
+	Application_Index,
 	DbEntity_TableIndex,
 	DbColumn_Index
 } from '@airport/ground-control'
@@ -235,7 +235,7 @@ on '${leftDbEntity.applicationVersion.application.name}.${leftDbEntity.name}.${d
 	}
 
 	protected addField(
-		applicationIndex: DbApplication_Index,
+		applicationIndex: Application_Index,
 		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index,
 	): void {

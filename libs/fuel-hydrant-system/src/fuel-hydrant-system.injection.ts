@@ -10,7 +10,7 @@ import { IdGenerator } from './store/IdGenerator'
 import { QValidator } from './validation/Validator'
 import { SqlStoreDriver } from './store/SqlStoreDriver'
 import { STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/terminal-map'
-import { AppTrackerUtils, DatastructureUtils, DbApplicationUtils, ENTITY_STATE_MANAGER, SEQUENCE_GENERATOR, Dictionary, APPLICATION_UTILS } from '@airport/ground-control'
+import { AppTrackerUtils, DatastructureUtils, ApplicationNameUtils, ENTITY_STATE_MANAGER, SEQUENCE_GENERATOR, Dictionary, APPLICATION_UTILS } from '@airport/ground-control'
 import {
     AIRPORT_DATABASE, QMetadataUtils, Utils
 } from '@airport/air-traffic-control'
@@ -43,7 +43,7 @@ STORE_DRIVER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: APPLICATION_UTILS,
     appTrackerUtils: AppTrackerUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
     lookup: Lookup,

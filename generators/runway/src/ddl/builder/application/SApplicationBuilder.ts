@@ -2,7 +2,7 @@ import {
 	DbForeignKey,
 	DbManyToOneElements,
 	DbOneToManyElements,
-	DbApplication,
+	IApplication,
 	Dictionary,
 	EntityRelationType,
 } from '@airport/ground-control';
@@ -42,7 +42,7 @@ export class SApplicationBuilder {
 	}
 
 	build(
-		applicationMapByProjectName: { [projectName: string]: DbApplication }
+		applicationMapByProjectName: { [projectName: string]: IApplication }
 	): SIndexedApplication {
 		const referencedApplicationsByProjectName: {
 			[projectName: string]: SApplicationReference
@@ -592,7 +592,7 @@ class ${entityCandidate.docEntry.name}
 			}
 		}
 		let entityName;
-		let referencedDbApplication_Index;
+		let referencedApplication_Index;
 		if (!aProperty.entity) {
 			if (!aProperty.fromProject) {
 				throw new Error(`Neither entity nor source project was specified 
@@ -615,7 +615,7 @@ class ${entityCandidate.docEntry.name}
 				referencedApplicationsByProjectName[aProperty.fromProject] = applicationReference;
 			}
 
-			referencedDbApplication_Index = applicationReference.index;
+			referencedApplication_Index = applicationReference.index;
 			const propertyType = aProperty.nonArrayType;
 			let relatedEntity = applicationReference.dbApplication.currentVersion[0]
 				.applicationVersion.entityMapByName[propertyType];
@@ -649,7 +649,7 @@ class ${entityCandidate.docEntry.name}
 			manyToOne,
 			oneToMany,
 			relationType,
-			referencedDbApplication_Index,
+			referencedApplication_Index,
 			relationMustBeSingleIdEntity,
 			// repositoryJoin,
 			sRelationColumns

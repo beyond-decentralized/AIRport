@@ -1,16 +1,16 @@
 import {
-	DbApplication,
-	IDbApplicationBuilder,
+	IApplication,
+	IApplicationBuilder,
 	JsonApplication
 } from '@airport/ground-control';
 import fs from 'fs';
 import { EntityReference, PropertyDocEntry } from '../parser/DocEntry';
-import { DbApplicationBuilder } from './DbApplicationBuilder';
+import { DdlApplicationBuilder } from './DdlApplicationBuilder';
 
 export interface IApplicationLoader {
 
 	setApplicationMap(
-		applicationMap: { [projectName: string]: DbApplication }
+		applicationMap: { [projectName: string]: IApplication }
 	): void
 
 	findAllReferencedJsonApplications(): JsonApplication[];
@@ -18,24 +18,24 @@ export interface IApplicationLoader {
 	getReferencedApplication(
 		projectName: string,
 		property: EntityReference & PropertyDocEntry,
-	): DbApplication
+	): IApplication
 
 }
 
 export class ApplicationLoader
 	implements IApplicationLoader {
 
-	applicationMap: { [projectName: string]: DbApplication } = {};
+	applicationMap: { [projectName: string]: IApplication } = {};
 
-	allApplications: DbApplication[] = [];
-	dbApplicationBuilder: IDbApplicationBuilder = new DbApplicationBuilder();
+	allApplications: IApplication[] = [];
+	dbApplicationBuilder: IApplicationBuilder = new DdlApplicationBuilder();
 	dictionary = {
 		dbColumnRelationMapByManySide: {},
 		dbColumnRelationMapByOneSide: {}
 	};
 
 	setApplicationMap(
-		applicationMap: { [projectName: string]: DbApplication }
+		applicationMap: { [projectName: string]: IApplication }
 	): void {
 		this.applicationMap = applicationMap
 	}
@@ -68,7 +68,7 @@ export class ApplicationLoader
 	getReferencedApplication(
 		projectName: string,
 		property: EntityReference & PropertyDocEntry
-	): DbApplication {
+	): IApplication {
 		const knownApplication = this.applicationMap[projectName]
 		if (knownApplication) {
 			return knownApplication
@@ -80,7 +80,7 @@ export class ApplicationLoader
 			return null;
 		}
 
-		const dbApplication = this.dbApplicationBuilder.buildDbApplicationWithoutReferences(
+		const dbApplication = this.dbApplicationBuilder.buildIApplicationWithoutReferences(
 			relatedApplication, this.allApplications, this.dictionary);
 		this.applicationMap[projectName] = dbApplication
 

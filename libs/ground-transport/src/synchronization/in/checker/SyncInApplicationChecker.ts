@@ -1,7 +1,7 @@
-import { DbApplication_Name, ApplicationStatus, DbDomain, DbApplication, SyncRepositoryData, IDbApplicationUtils } from '@airport/ground-control';
+import { Application_Name, ApplicationStatus, IDomain, IApplication, SyncRepositoryData, IApplicationNameUtils } from '@airport/ground-control';
 import {
-    IDbDomainDao,
-    IDbApplicationDao
+    IDdlDomainDao,
+    IDdlApplicationDao
 } from "@airport/airspace/dist/app/bundle";
 import {
     IContext,
@@ -10,15 +10,15 @@ import {
 } from '@airport/direction-indicator'
 
 export interface IDomainCheckRecord {
-    domain?: DbDomain
+    domain?: IDomain
     domainName: string
     found?: boolean
 }
 
 export interface IApplicationCheckRecord {
     found?: boolean
-    applicationName: DbApplication_Name
-    application?: DbApplication
+    applicationName: Application_Name
+    application?: IApplication
 }
 
 export interface ISyncInApplicationChecker {
@@ -35,13 +35,13 @@ export class SyncInApplicationChecker
     implements ISyncInApplicationChecker {
 
     @Inject()
-    dbApplicationDao: IDbApplicationDao
+    ddlApplicationDao: IDdlApplicationDao
 
     @Inject()
-    dbApplicationUtils: IDbApplicationUtils
+    applicationNameUtils: IApplicationNameUtils
 
     @Inject()
-    dbDomainDao: IDbDomainDao
+    ddlDomainDao: IDdlDomainDao
 
     async ensureApplications(
         data: SyncRepositoryData,
@@ -68,12 +68,12 @@ export class SyncInApplicationChecker
         data: SyncRepositoryData,
         context: IContext
     ): Promise<Map<string, Map<string, IApplicationCheckRecord>>> {
-        const { allDbApplication_Names, domainCheckMap, domainNames, applicationCheckMap }
+        const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap }
             = this.getNames(data)
 
-        const applications = await this.dbApplicationDao
-            .findByDomain_NamesAndDbApplication_Names(
-                domainNames, allDbApplication_Names, context)
+        const applications = await this.ddlApplicationDao
+            .findByDomain_NamesAndApplication_Names(
+                domainNames, allApplication_Names, context)
 
         for (let application of applications) {
             let domainName = application.domain.name
@@ -90,12 +90,12 @@ export class SyncInApplicationChecker
             }
         }
 
-        let domainsToCreate: DbDomain[] = []
+        let domainsToCreate: IDomain[] = []
         for (let [name, domainCheck] of domainCheckMap) {
             if (domainCheck.found) {
                 continue
             }
-            let domain: DbDomain = {
+            let domain: IDomain = {
                 _localId: null,
                 name
             }
@@ -103,20 +103,20 @@ export class SyncInApplicationChecker
             domainsToCreate.push(domain)
         }
         if (domainsToCreate.length) {
-            await this.dbDomainDao.insert(domainsToCreate, context)
+            await this.ddlDomainDao.insert(domainsToCreate, context)
         }
 
-        let applicationsToCreate: DbApplication[] = []
+        let applicationsToCreate: IApplication[] = []
         for (let [domainName, applicationChecksByName] of applicationCheckMap) {
             for (let [name, applicationCheck] of applicationChecksByName) {
                 if (applicationCheck.found) {
                     continue
                 }
                 let domain = domainCheckMap.get(domainName).domain
-                let application: DbApplication = {
+                let application: IApplication = {
                     currentVersion: null,
                     domain,
-                    fullName: this.dbApplicationUtils.getDbApplication_FullNameFromDomainAndName(
+                    fullName: this.applicationNameUtils.getApplication_FullNameFromDomainAndName(
                         domainName, name
                     ),
                     index: null,
@@ -132,7 +132,7 @@ export class SyncInApplicationChecker
         }
 
         if (applicationsToCreate.length) {
-            await this.dbApplicationDao.insert(applicationsToCreate, context)
+            await this.ddlApplicationDao.insert(applicationsToCreate, context)
         }
 
         return applicationCheckMap
@@ -141,7 +141,7 @@ export class SyncInApplicationChecker
     private getNames(
         message: SyncRepositoryData
     ): {
-        allDbApplication_Names: string[],
+        allApplication_Names: string[],
         domainCheckMap: Map<string, IDomainCheckRecord>,
         domainNames: string[],
         applicationCheckMap: Map<string, Map<string, IApplicationCheckRecord>>
@@ -186,16 +186,16 @@ export class SyncInApplicationChecker
         }
 
         const domainNames = []
-        const allDbApplication_Names = []
+        const allApplication_Names = []
         for (const [domainName, applicationChecksForDomainMap] of applicationCheckMap) {
             domainNames.push(domainName)
             for (let [applicationName, _] of applicationChecksForDomainMap) {
-                allDbApplication_Names.push(applicationName)
+                allApplication_Names.push(applicationName)
             }
         }
 
         return {
-            allDbApplication_Names,
+            allApplication_Names,
             domainCheckMap,
             domainNames,
             applicationCheckMap

@@ -7,7 +7,7 @@ import {
 	ManyToOne,
 	Table
 } from '@airport/tarmaq-entity'
-import { DbApplicationReference_Index, DbApplicationReference } from '@airport/ground-control'
+import { IApplicationReference_Index, IApplicationReference } from '@airport/ground-control'
 import { DdlApplicationVersion } from './DdlApplicationVersion'
 import { DdlVersionedObject } from '../DdlVersionedObject'
 
@@ -17,7 +17,7 @@ import { DdlVersionedObject } from '../DdlVersionedObject'
 })
 export class DdlApplicationReference
 	extends DdlVersionedObject
-	implements DbApplicationReference {
+	implements IApplicationReference {
 
 	@Id()
 	@ManyToOne()
@@ -37,6 +37,6 @@ export class DdlApplicationReference
 
 	@Column({ name: 'DB_APPLICATION_REFERENCE_INDEX', nullable: false })
 	@DbNumber()
-	index: DbApplicationReference_Index
+	index: IApplicationReference_Index
 
 }

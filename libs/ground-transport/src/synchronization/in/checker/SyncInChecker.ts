@@ -10,7 +10,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { DbEntity_LocalId, DbRelation_Index, DbApplication_Name, DbRelation, DbDomain_Name, IDatastructureUtils, KeyUtils, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, Repository_LocalId } from '@airport/ground-control';
+import { DbEntity_LocalId, DbRelation_Index, Application_Name, DbRelation, Domain_Name, IDatastructureUtils, KeyUtils, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, Repository_LocalId } from '@airport/ground-control';
 import { ITerminalStore } from '@airport/terminal-map';
 
 export interface ISyncInChecker {
@@ -22,7 +22,7 @@ export interface ISyncInChecker {
 
 	checkReferencedApplicationRelations(
 		data: SyncRepositoryData,
-		applicationCheckMap: Map<DbDomain_Name, Map<DbApplication_Name, IApplicationVersionCheckRecord>>,
+		applicationCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>,
 		context: IContext
 	): Promise<void>
 

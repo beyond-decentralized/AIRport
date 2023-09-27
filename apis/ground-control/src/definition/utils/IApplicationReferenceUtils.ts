@@ -1,4 +1,4 @@
-import { JsonApplication, JsonApplicationVersion } from "../application/DbApplication"
+import { JsonApplication, JsonApplicationVersion } from "../application/IApplication"
 import { JsonEntity } from "../application/DbEntity"
 import { JsonRelation } from "../application/DbProperty"
 

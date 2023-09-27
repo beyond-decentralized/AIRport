@@ -1,33 +1,33 @@
 import { IContext, Injected } from '@airport/direction-indicator'
-import { DbApplicationVersion_LocalId, DbApplicationReference } from '@airport/ground-control'
+import { ApplicationVersion_LocalId, IApplicationReference } from '@airport/ground-control'
 import { BaseDdlApplicationReferenceDao, IBaseDdlApplicationReferenceDao } from '../../generated/baseDaos'
 import Q_airport____at_airport_slash_airspace from '../../generated/qApplication'
 import { QDdlApplicationReference } from '../../generated/qInterfaces'
 
-export interface IDbApplicationReferenceDao
+export interface IDdlApplicationReferenceDao
 	extends IBaseDdlApplicationReferenceDao {
 
 	findAllForApplicationVersions(
-		applicationVersionIds: DbApplicationVersion_LocalId[],
+		applicationVersionIds: ApplicationVersion_LocalId[],
 		context: IContext
-	): Promise<DbApplicationReference[]>
+	): Promise<IApplicationReference[]>
 
 	insert(
-		applicationReferences: DbApplicationReference[],
+		applicationReferences: IApplicationReference[],
 		context: IContext
 	): Promise<void>
 
 }
 
 @Injected()
-export class DbApplicationReferenceDao
+export class DdlApplicationReferenceDao
 	extends BaseDdlApplicationReferenceDao
-	implements IDbApplicationReferenceDao {
+	implements IDdlApplicationReferenceDao {
 
 	async findAllForApplicationVersions(
-		applicationVersionIds: DbApplicationVersion_LocalId[],
+		applicationVersionIds: ApplicationVersion_LocalId[],
 		context: IContext
-	): Promise<DbApplicationReference[]> {
+	): Promise<IApplicationReference[]> {
 		let sr: QDdlApplicationReference
 
 		return await this.db.find.tree({
@@ -40,7 +40,7 @@ export class DbApplicationReferenceDao
 	}
 
 	async insert(
-		applicationReferences: DbApplicationReference[],
+		applicationReferences: IApplicationReference[],
 		context: IContext
 	): Promise<void> {
 		let sr: QDdlApplicationReference;

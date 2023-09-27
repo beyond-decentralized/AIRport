@@ -123,10 +123,10 @@ export class EntityGraphReconstructor
 for ${dbEntity.name}.${dbProperty.name}`)
 					} // switch dbRelation.relationType
 					const previousDbEntity = context.dbEntity
-					const previousDbApplication = previousDbEntity.applicationVersion.application
-					const propertyDbApplication = dbRelation.relationEntity.applicationVersion.application
-					if (!this.appTrackerUtils.isInternalDomain(propertyDbApplication.domain.name)
-						&& previousDbApplication.fullName !== propertyDbApplication.fullName) {
+					const previousIApplication = previousDbEntity.applicationVersion.application
+					const propertyIApplication = dbRelation.relationEntity.applicationVersion.application
+					if (!this.appTrackerUtils.isInternalDomain(propertyIApplication.domain.name)
+						&& previousIApplication.fullName !== propertyIApplication.fullName) {
 						// If a child entity is in a different application it won't be processed
 						// the calling application should call the API of the other application
 						// explicitly so that the application logic may be run

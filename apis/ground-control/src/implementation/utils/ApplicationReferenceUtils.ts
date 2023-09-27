@@ -1,5 +1,5 @@
 import { Inject, Injected } from "@airport/direction-indicator";
-import { DbApplication, DbDomain, JsonApplication, JsonApplicationVersion } from "../../definition/application/DbApplication";
+import { IApplication, IDomain, JsonApplication, JsonApplicationVersion } from "../../definition/application/IApplication";
 import { DbEntity, JsonEntity } from "../../definition/application/DbEntity";
 import { JsonColumn, JsonProperty, JsonRelation } from "../../definition/application/DbProperty";
 import { IApplicationReferenceUtils } from "../../definition/utils/IApplicationReferenceUtils";
@@ -25,7 +25,7 @@ export class ApplicationReferenceUtils
             applicationVersion: JsonApplicationVersion,
             queryRelation: JsonRelation
         ) => {
-            relatedJsonApplication: JsonApplication | DbApplication,
+            relatedJsonApplication: JsonApplication | IApplication,
             relatedJsonEntity: JsonEntity | DbEntity
         }
     ): void {
@@ -80,15 +80,15 @@ export class ApplicationReferenceUtils
     }
 
     private checkForARelationToAFrameworkEntity(
-        relatedJsonApplication: JsonApplication | DbApplication,
+        relatedJsonApplication: JsonApplication | IApplication,
         relatedJsonEntity: JsonEntity | DbEntity,
         jsonApplication: JsonApplication,
         jsonEntity: JsonEntity,
         jsonProperty: JsonProperty,
         jsonColumn: JsonColumn
     ) {
-        const domain: string | DbDomain = relatedJsonApplication.domain
-        const domainName = typeof domain === 'string' ? domain : (domain as DbDomain).name
+        const domain: string | IDomain = relatedJsonApplication.domain
+        const domainName = typeof domain === 'string' ? domain : (domain as IDomain).name
         // All non @Id AIR entity references 
         const manyRelationColumnRef = jsonColumn.manyRelationColumnRefs[0]
         const relatedColumn = relatedJsonEntity.columns[manyRelationColumnRef.oneColumnIndex]

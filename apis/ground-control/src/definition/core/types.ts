@@ -1,5 +1,5 @@
 import { InternalUserAccount } from "@airport/aviation-communication";
-import { DbApplication_FullName, DbApplication } from "../application/DbApplication";
+import { Application_FullName, IApplication } from "../application/IApplication";
 import { DbEntity } from "../application/DbEntity";
 import { DbRelation } from "../application/DbProperty";
 import { IRepositoryTransactionHistory } from "../synchronization/synchronizationTypes";
@@ -37,7 +37,7 @@ export interface IActor {
 
 	terminal: ITerminal
 
-	application: DbApplication
+	application: IApplication
 
 	// Transient Properties
 
@@ -71,7 +71,7 @@ export interface IRepository
 	// Non-Id Properties
 	ageSuitability: AgeSuitability;
 	createdAt: CreatedAt;
-	fullApplicationName: DbApplication_FullName;
+	fullApplicationName: Application_FullName;
 	immutable: Repository_Immutable;
 	internal: Repository_Internal;
 	isPublic: Repository_IsPublic;
@@ -112,7 +112,7 @@ export interface IRepositoryReference {
 
 export interface IRepositoryApplication {
 
-	application: DbApplication
+	application: IApplication
 	repository: IRepository
 
 }

@@ -5,8 +5,8 @@ import {
 	IContext, IOC
 } from '@airport/direction-indicator';
 import {
-	DbApplication,
-	DbApplicationUtils,
+	IApplication,
+	ApplicationNameUtils,
 	JsonApplication,
 	JsonColumn,
 	JsonEntity,
@@ -21,8 +21,8 @@ export class NoOpSchemaBuilder
 		jsonApplication: JsonApplication,
 		context: IContext,
 	): Promise<void> {
-		const applicationName = IOC.getSync(DbApplicationUtils).
-			getDbApplication_FullName(jsonApplication);
+		const applicationName = IOC.getSync(ApplicationNameUtils).
+			getApplication_FullName(jsonApplication);
 		const createApplicationStatement = `CREATE APPLICATION ${applicationName}`;
 
 		await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [],
@@ -50,8 +50,8 @@ export class NoOpSchemaBuilder
 	): Promise<any[]> {
 		let allSequences: any[] = [];
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
-				getDbApplication_FullName(jsonApplication)] as QAppInternal;
+			const qApplication = this.airportDatabase.QM[IOC.getSync(ApplicationNameUtils).
+				getApplication_FullName(jsonApplication)] as QAppInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
 			}
@@ -66,8 +66,8 @@ export class NoOpSchemaBuilder
 	): any[] {
 		let stagedSequences: any[] = [];
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
-				getDbApplication_FullName(jsonApplication)] as QAppInternal;
+			const qApplication = this.airportDatabase.QM[IOC.getSync(ApplicationNameUtils).
+				getApplication_FullName(jsonApplication)] as QAppInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
 			}
@@ -77,7 +77,7 @@ export class NoOpSchemaBuilder
 	}
 
 	buildSequences(
-		dbApplication: DbApplication,
+		dbApplication: IApplication,
 		jsonEntity: JsonEntity,
 	): any[] {
 		const sequences: any[] = [];

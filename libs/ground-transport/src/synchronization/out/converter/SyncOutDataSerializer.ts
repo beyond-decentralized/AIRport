@@ -9,16 +9,16 @@ import {
 	Actor_LocalId,
 	DbColumn_Index,
 	DbRelation_LocalId,
-	DbApplicationVersion_LocalId,
-	DbApplication_LocalId,
-	DbApplication,
-	DbApplicationVersion,
+	ApplicationVersion_LocalId,
+	Application_LocalId,
+	IApplication,
+	IApplicationVersion,
 	DbColumn,
 	DbEntity,
 	Dictionary,
 	IActor,
 	IApplicationUtils,
-	IDbApplicationUtils,
+	IApplicationNameUtils,
 	IOperationHistory,
 	IRecordHistory,
 	IRecordHistoryNewValue,
@@ -73,8 +73,8 @@ export interface IWithIndex {
 
 export interface InMessageLookupStructures {
 	actorInMessageIndexesById: Map<Actor_LocalId, number>
-	applicationVersionInMessageIndexesById: Map<DbApplicationVersion_LocalId, number>
-	applicationVersions: DbApplicationVersion[]
+	applicationVersionInMessageIndexesById: Map<ApplicationVersion_LocalId, number>
+	applicationVersions: IApplicationVersion[]
 	lastInMessageActorIndex: number
 	lastInMessageApplicationVersionIndex: number
 	lastInMessageReferencedApplicationRelation: number
@@ -83,10 +83,10 @@ export interface InMessageLookupStructures {
 	lastInMessageRepositoryIndex: number
 	messageRepository: IRepository
 	referencedApplicationRelationIndexesById: Map<DbRelation_LocalId, number>
-	referencedApplicationVersionInMessageIndexesById: Map<DbApplicationVersion_LocalId, number>
-	referencedApplicationVersions: DbApplicationVersion[]
+	referencedApplicationVersionInMessageIndexesById: Map<ApplicationVersion_LocalId, number>
+	referencedApplicationVersions: IApplicationVersion[]
 	repositoryInMessageIndexesById: Map<Repository_LocalId, number>
-	applicationLookup: InMessageEntityLookup<DbApplication_LocalId>
+	applicationLookup: InMessageEntityLookup<Application_LocalId>
 	repositoryMemberLookup: InMessageEntityLookup<RepositoryMember_PublicSigningKey>
 	terminalLookup: InMessageEntityLookup<Terminal_GUID>
 	userAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
@@ -118,7 +118,7 @@ export class SyncOutDataSerializer
 	dbRelationDao: IDbRelationDao
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	applicationNameUtils: IApplicationNameUtils
 
 	@Inject()
 	dictionary: Dictionary
@@ -324,9 +324,9 @@ export class SyncOutDataSerializer
 	}
 
 	private getEntityInMessageIndex(
-		entity: DbApplication | IRepositoryMember | ITerminal | IUserAccount,
+		entity: IApplication | IRepositoryMember | ITerminal | IUserAccount,
 		indexedEntityType: IndexedEntityType,
-		inMessageEntityLookup: InMessageEntityLookup<DbApplication_LocalId
+		inMessageEntityLookup: InMessageEntityLookup<Application_LocalId
 			| RepositoryMember_PublicSigningKey
 			| Terminal_GUID
 			| UserAccount_PublicSigningKey>
@@ -337,7 +337,7 @@ export class SyncOutDataSerializer
 		let id
 		switch (indexedEntityType) {
 			case IndexedEntityType.APPLICATION:
-				id = (entity as DbApplication).index
+				id = (entity as IApplication).index
 				break
 			case IndexedEntityType.REPOSITORY_MEMBER:
 				id = (entity as IRepositoryMember).memberPublicSigningKey
@@ -512,9 +512,9 @@ export class SyncOutDataSerializer
 
 	private serializeApplicationsAndVersions(
 		data: SyncRepositoryData,
-		applicationLookup: InMessageEntityLookup<DbApplication_LocalId>,
-		lookupVersions: DbApplicationVersion[],
-		finalApplicationVersions: DbApplicationVersion[]
+		applicationLookup: InMessageEntityLookup<Application_LocalId>,
+		lookupVersions: IApplicationVersion[],
+		finalApplicationVersions: IApplicationVersion[]
 	): void {
 		for (let i = 0; i < lookupVersions.length; i++) {
 			const applicationVersion = lookupVersions[i]
@@ -530,8 +530,8 @@ export class SyncOutDataSerializer
 	}
 
 	private serializeApplication(
-		application: DbApplication,
-		applicationLookup: InMessageEntityLookup<DbApplication_LocalId>,
+		application: IApplication,
+		applicationLookup: InMessageEntityLookup<Application_LocalId>,
 		data: SyncRepositoryData
 	): number {
 

@@ -11,7 +11,7 @@ import {
 	ISequence
 } from '@airport/airport-code'
 import {
-	DbApplication,
+	IApplication,
 	JsonApplication,
 	JsonColumn,
 	JsonEntity,
@@ -31,8 +31,8 @@ export class MySqlSchemaBuilder
 		jsonApplication: JsonApplication,
 		context: IContext,
 	): Promise<void> {
-		const fullDbApplication_Name = this.dbApplicationUtils.getDbApplication_FullName(jsonApplication)
-		const createApplicationStatement = `CREATE SCHEMA ${fullDbApplication_Name}`
+		const fullApplication_Name = this.applicationNameUtils.getApplication_FullName(jsonApplication)
+		const createApplicationStatement = `CREATE SCHEMA ${fullApplication_Name}`
 
 		await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [],
 			context, false)
@@ -89,8 +89,8 @@ export class MySqlSchemaBuilder
 
 		let allSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = this.airportDatabase.QM[this.dbApplicationUtils
-				.getDbApplication_FullName(jsonApplication)] as QAppInternal
+			const qApplication = this.airportDatabase.QM[this.applicationNameUtils
+				.getApplication_FullName(jsonApplication)] as QAppInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}
@@ -109,8 +109,8 @@ export class MySqlSchemaBuilder
 
 		let stagedSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = this.airportDatabase.QM[this.dbApplicationUtils
-				.getDbApplication_FullName(jsonApplication)] as QAppInternal
+			const qApplication = this.airportDatabase.QM[this.applicationNameUtils
+				.getApplication_FullName(jsonApplication)] as QAppInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}
@@ -120,7 +120,7 @@ export class MySqlSchemaBuilder
 	}
 
 	buildSequences(
-		dbApplication: DbApplication,
+		dbApplication: IApplication,
 		jsonEntity: JsonEntity,
 	): ISequence[] {
 		const sequences: ISequence[] = []

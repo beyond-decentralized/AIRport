@@ -2,7 +2,7 @@ import { resolveRelativePath } from '../../resolve/pathResolver';
 import { Configuration } from '../options/Options';
 import { PathBuilder } from './PathBuilder';
 import { IBuilder } from './Builder';
-import { DbApplication } from '@airport/ground-control';
+import { IApplication } from '@airport/ground-control';
 
 export class QApplicationBuilder
   implements IBuilder {
@@ -108,14 +108,14 @@ export class QApplicationBuilder
     QAppInternal
 } from '@airport/air-traffic-control'
 import {
-    DbApplication
+    IApplication
 } from '@airport/ground-control';
 ${qEntityImports}
 ${entityImports}
 
 export interface ${this.applicationFullName}_LocalQApp extends QAppInternal {
 
-    db: DbApplication;
+    db: IApplication;
 
   ${qApiDefinitions}
 

@@ -9,13 +9,13 @@ import {
 	JsonColumn,
 	JsonProperty,
 	JsonRelation,
-	DbApplicationReferenceByIndex
+	IApplicationReferenceByIndex
 } from './DbProperty'
 import {
 	DbVersionedObject,
-	DbApplicationVersion,
+	IApplicationVersion,
 	JsonObject
-} from './DbApplication'
+} from './IApplication'
 
 export type DbEntity_LocalId = number;
 export type DbEntity_Name = string;
@@ -29,7 +29,7 @@ export type DbColumn_IdIndex = number;
  * Indexed on per application basis.
  */
 export interface JsonEntity
-	extends DbApplicationReferenceByIndex<DbEntity_TableIndex>,
+	extends IApplicationReferenceByIndex<DbEntity_TableIndex>,
 	JsonObject {
 
 	/**
@@ -40,7 +40,7 @@ export interface JsonEntity
 	/**
 	 * References to ID columns.
 	 */
-	idColumnRefs: DbApplicationReferenceByIndex<DbColumn_IdIndex>[];
+	idColumnRefs: IApplicationReferenceByIndex<DbColumn_IdIndex>[];
 
 	/*
 	 * Is this entity local-only (does not extend AirEntity)
@@ -83,7 +83,7 @@ export interface JsonEntity
  * Application Entity with additional indexes (maps).
  */
 export interface DbEntity
-	extends DbApplicationReferenceByIndex<DbEntity_TableIndex>,
+	extends IApplicationReferenceByIndex<DbEntity_TableIndex>,
 	DbVersionedObject {
 
 	_localId: DbEntity_LocalId
@@ -146,7 +146,7 @@ export interface DbEntity
 	/**
 	 * Indexed application reference
 	 */
-	applicationVersion: DbApplicationVersion;
+	applicationVersion: IApplicationVersion;
 
 	relationReferences?: DbRelation[]
 

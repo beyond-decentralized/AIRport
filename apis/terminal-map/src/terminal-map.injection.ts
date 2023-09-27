@@ -3,7 +3,7 @@ import { lib } from '@airport/direction-indicator'
 import {
     AppTrackerUtils,
     DatastructureUtils,
-    DbApplicationUtils,
+    ApplicationNameUtils,
     SEQUENCE_GENERATOR,
     TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control'
@@ -78,7 +78,7 @@ TRANSACTION_MANAGER.setDependencies({
 
 TRANSACTIONAL_RECEIVER.setDependencies({
     applicationInitializer: APPLICATION_INITIALIZER,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
 })
 
 TRANSACTIONAL_SERVER.setDependencies({

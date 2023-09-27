@@ -1,9 +1,9 @@
-import { DbApplication, DbApplicationVersion } from "../application/DbApplication"
+import { IApplication, IApplicationVersion } from "../application/IApplication"
 import { DbRelation } from "../application/DbProperty"
 import { IRepositoryTransactionHistory } from "./synchronizationTypes"
 import { IActor, IRepository, IRepositoryMember, ITerminal, IUserAccount, RepositoryMemberAcceptance_Signature, RepositoryMember_Signature, UserAccount_Signature } from "../core/types"
 
-export type ReferencedDbApplicationVersion_InMessageIndex = number
+export type ReferencedApplicationVersion_InMessageIndex = number
 export type ReferencedDbRelation_InMessageIndex = number
 export type ReferencedRepository_InMessageIndex = number
 
@@ -27,12 +27,12 @@ export interface SyncRepositoryMessage {
 export interface SyncRepositoryData {
 
 	actors: IActor[]
-	applications: DbApplication[]
-	applicationVersions: DbApplicationVersion[]
+	applications: IApplication[]
+	applicationVersions: IApplicationVersion[]
 	history: IRepositoryTransactionHistory
 	// Repositories may reference records in other repositories
 	referencedApplicationRelations: DbRelation[]
-	referencedApplicationVersions: DbApplicationVersion[]
+	referencedApplicationVersions: IApplicationVersion[]
 	referencedRepositories: IRepository[]
 	repositoryMembers: IRepositoryMember[]
 	terminals: ITerminal[]

@@ -1,6 +1,6 @@
 import { DbEntity_TableIndex } from "../../definition/application/DbEntity";
 import { DbColumn_Index } from "../../definition/application/DbProperty";
-import { DbApplicationVersion_LocalId } from "../../definition/application/DbApplication";
+import { ApplicationVersion_LocalId } from "../../definition/application/IApplication";
 import { ColumnMap } from "./ColumnMap";
 
 /**
@@ -12,7 +12,7 @@ globalThis.ALL_TABLE_COLUMNS = '__ALL_TABLE_COLUMNS__';
 export class TableMap {
 
 	constructor(
-		public applicationVersionId: DbApplicationVersion_LocalId,
+		public applicationVersionId: ApplicationVersion_LocalId,
 		public tableMap: { [entityIndex: DbEntity_TableIndex]: ColumnMap } = {}
 	) {
 	}

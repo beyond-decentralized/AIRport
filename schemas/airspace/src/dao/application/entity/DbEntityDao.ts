@@ -1,5 +1,5 @@
 import { IContext, Injected } from '@airport/direction-indicator'
-import { DbApplicationVersion_LocalId, DbEntity } from '@airport/ground-control'
+import { ApplicationVersion_LocalId, DbEntity } from '@airport/ground-control'
 import { BaseDdlEntityDao, IBaseDdlEntityDao } from '../../../generated/baseDaos'
 import { Q_airport____at_airport_slash_airspace } from '../../../generated/qApplication'
 import { QDdlEntity } from '../../../generated/qInterfaces'
@@ -8,7 +8,7 @@ export interface IDbEntityDao
 	extends IBaseDdlEntityDao {
 
 	findAllForApplicationVersions(
-		applicationVersionIds: DbApplicationVersion_LocalId[],
+		applicationVersionIds: ApplicationVersion_LocalId[],
 		context: IContext
 	): Promise<DbEntity[]>
 
@@ -25,7 +25,7 @@ export class DbEntityDao
 	implements IDbEntityDao {
 
 	async findAllForApplicationVersions(
-		applicationVersionIds: DbApplicationVersion_LocalId[],
+		applicationVersionIds: ApplicationVersion_LocalId[],
 		context: IContext
 	): Promise<DbEntity[]> {
 		let se: QDdlEntity

@@ -10,7 +10,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { DbApplication, IApplicationUtils } from '@airport/ground-control'
+import { IApplication, IApplicationUtils } from '@airport/ground-control'
 import { IQueryEntityClassCreator } from '@airport/terminal-map'
 import { IQueryRelationManager } from '@airport/tarmaq-query'
 
@@ -30,7 +30,7 @@ export class QueryEntityClassCreator
 	queryRelationManager: IQueryRelationManager
 
 	createAll(
-		applications: DbApplication[]
+		applications: IApplication[]
 	): void {
 		const applicationsToCreate = this.qApplicationBuilderUtils
 			.orderApplicationsInOrderOfPrecedence(<any>applications)
@@ -39,7 +39,7 @@ export class QueryEntityClassCreator
 	}
 
 	create(
-		dbApplication: DbApplication
+		dbApplication: IApplication
 	): QApp {
 		let qApplication: QAppInternal = this.airportDatabase.QM[dbApplication.fullName] as QAppInternal
 		// If the Application API source has already been loaded

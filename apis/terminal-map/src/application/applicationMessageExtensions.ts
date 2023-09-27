@@ -1,9 +1,9 @@
 import { ILastIds, JsonApplicationWithLastIds } from "@airport/air-traffic-control";
 import { ICrudMessage, IInternalMessage, IResponseMessage, ISubscriptionMessage, Message_Domain } from "@airport/aviation-communication";
 import {
-    DbApplicationVersion,
-    DbApplication_FullName,
-    DbDomain,
+    IApplicationVersion,
+    Application_FullName,
+    IDomain,
     PortableQuery
 } from "@airport/ground-control";
 
@@ -14,7 +14,7 @@ export interface IInitializeConnectionMessage
 
 export interface IConnectionInitializedMessage
     extends IInternalMessage {
-    fullDbApplication_Name: DbApplication_FullName
+    fullApplication_Name: Application_FullName
 }
 
 export interface IPortableQueryMessage
@@ -54,12 +54,12 @@ export interface ISaveMessage<E, T = E | E[]>
     entity: T
 }
 
-export interface IGetLatestApplicationVersionByDbApplication_NameMessage
-    extends IInternalMessage, IResponseMessage<DbApplicationVersion> {
-    fullDbApplication_Name: string
+export interface IGetLatestApplicationVersionByApplication_NameMessage
+    extends IInternalMessage, IResponseMessage<IApplicationVersion> {
+    fullApplication_Name: string
 }
 
 export interface IRetrieveDomainMessage
-    extends IInternalMessage, IResponseMessage<DbDomain> {
+    extends IInternalMessage, IResponseMessage<IDomain> {
     domainName: Message_Domain
 }

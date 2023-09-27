@@ -5,8 +5,8 @@ import { IContext, Inject, Injected } from '@airport/direction-indicator';
 import {
 	DbColumn_Index,
 	QueryBaseOperation,
-	DbApplication_Index,
-	DbApplicationVersion_LocalId,
+	Application_Index,
+	ApplicationVersion_LocalId,
 	DbEntity_TableIndex,
 	Dictionary,
 	Repository_LocalId,
@@ -25,7 +25,7 @@ import { QRecordUpdateStage } from '../generated/qInterfaces';
 export type RecordUpdateStageValue = any;
 
 export type RecordUpdateStageValues = [
-	DbApplicationVersion_LocalId,
+	ApplicationVersion_LocalId,
 	DbEntity_TableIndex,
 	Repository_LocalId,
 	Actor_LocalId,
@@ -43,8 +43,8 @@ export interface IRecordUpdateStageDao
 	): Promise<number[][]>;
 
 	updateEntityWhereIds(
-		applicationIndex: DbApplication_Index,
-		applicationVersionId: DbApplicationVersion_LocalId,
+		applicationIndex: Application_Index,
+		applicationVersionId: ApplicationVersion_LocalId,
 		entityIndex: DbEntity_TableIndex,
 		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>,
 		updatedColumnIndexes: DbColumn_Index[],
@@ -97,8 +97,8 @@ export class RecordUpdateStageDao
 	}
 
 	async updateEntityWhereIds(
-		applicationIndex: DbApplication_Index,
-		applicationVersionId: DbApplicationVersion_LocalId,
+		applicationIndex: Application_Index,
+		applicationVersionId: ApplicationVersion_LocalId,
 		entityIndex: DbEntity_TableIndex,
 		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>,
 		updatedColumnIndexes: DbColumn_Index[],

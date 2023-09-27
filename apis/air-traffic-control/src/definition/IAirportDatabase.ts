@@ -2,8 +2,8 @@ import {
   QApp
 } from '@airport/aviation-communication';
 import {
-  DbApplication,
-  DbApplicationVersion,
+  IApplication,
+  IApplicationVersion,
   DbEntity,
   ISaveResult,
 } from '@airport/ground-control';
@@ -59,8 +59,8 @@ export interface IApplicationHub {
 
   entityMap: Map<any, IEntityRecord>
 
-  applications: DbApplication[];
-  A: DbApplication[];
+  applications: IApplication[];
+  A: IApplication[];
 
   qApplications: QApp[];
   Q: QApp[];
@@ -71,10 +71,10 @@ export interface IApplicationHub {
     qApplication: QApp
   ): void
 
-  getCurrentDbApplicationVersion(
+  getCurrentIApplicationVersion(
     domainName: string,
     applicationName: string
-  ): DbApplicationVersion
+  ): IApplicationVersion
 
   getDbEntity(
     domainName: string,
@@ -187,5 +187,5 @@ export interface QAppInternal
   __constructors__?: { [name: string]: EntityConstructor }
   __qConstructors__?: { [name: string]: QEntityConstructor<any> };
   __qIdRelationConstructors__?: typeof QRelation[];
-  __dbApplication__?: DbApplication;
+  __dbApplication__?: IApplication;
 }

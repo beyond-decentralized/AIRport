@@ -2,13 +2,13 @@ import { QApp } from '@airport/aviation-communication'
 import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	DbEntity,
-	DbApplication,
-	DbApplication_Index,
+	IApplication,
+	Application_Index,
 	IApplicationUtils
 } from '@airport/ground-control'
 import { IQueryRelationManager, QEntityUtils } from '@airport/tarmaq-query'
 import { QAppInternal } from '../../definition/IAirportDatabase'
-import { DbApplicationDependency, DbApplicationWithDependencies, IQApplicationBuilderUtils } from '../../definition/utils/IQApplicationBuilderUtils'
+import { IApplicationDependency, IApplicationWithDependencies, IQApplicationBuilderUtils } from '../../definition/utils/IQApplicationBuilderUtils'
 
 
 @Injected()
@@ -19,7 +19,7 @@ export class QApplicationBuilderUtils
 	qEntityUtils: QEntityUtils
 
 	setQAppEntities(
-		application: DbApplication,
+		application: IApplication,
 		qApplication: QAppInternal,
 		allQApps: QApp[],
 		appliationUtils: IApplicationUtils,
@@ -94,19 +94,19 @@ export class QApplicationBuilderUtils
 	}
 
 	orderApplicationsInOrderOfPrecedence(
-		applications: DbApplication[]
-	): DbApplication[] {
-		const appWithDependenciesMap: Map<DbApplication_Index, DbApplicationWithDependencies> = new Map()
-		const appsWithDependencies: DbApplicationWithDependencies[] = applications.map(
+		applications: IApplication[]
+	): IApplication[] {
+		const appWithDependenciesMap: Map<Application_Index, IApplicationWithDependencies> = new Map()
+		const appsWithDependencies: IApplicationWithDependencies[] = applications.map(
 			application => {
-				const dependencies: Set<DbApplicationDependency> = new Set()
+				const dependencies: Set<IApplicationDependency> = new Set()
 				for (const applicationReference of application.currentVersion[0]
 					.applicationVersion.references) {
 					dependencies.add({
 						index: applicationReference.referencedApplicationVersion.application.index
 					})
 				}
-				const applicationWithDependencies: DbApplicationWithDependencies = {
+				const applicationWithDependencies: IApplicationWithDependencies = {
 					application,
 					dependencies
 				}
@@ -125,8 +125,8 @@ export class QApplicationBuilderUtils
 
 		// Regular sort does not work since dependency tries can be complex and there is no way to 
 		appsWithDependencies.sort((
-			orderedApplication1: DbApplicationWithDependencies,
-			orderedApplication2: DbApplicationWithDependencies
+			orderedApplication1: IApplicationWithDependencies,
+			orderedApplication2: IApplicationWithDependencies
 		) => {
 			if (this.applicationDependsOn(
 				orderedApplication1, orderedApplication2.application.index)) {
@@ -144,15 +144,15 @@ export class QApplicationBuilderUtils
 	}
 
 	applicationDependsOn(
-		dependantApplication: DbApplicationWithDependencies,
-		dependsOnDbApplication_Index: DbApplication_Index
+		dependantApplication: IApplicationWithDependencies,
+		dependsOnApplication_Index: Application_Index
 	): boolean {
 		for (const dependency of dependantApplication.dependencies) {
-			if (dependency.index == dependsOnDbApplication_Index) {
+			if (dependency.index == dependsOnApplication_Index) {
 				return true
 			}
 			if (dependency.appWithDependencies.dependencies.size) {
-				if (this.applicationDependsOn(dependency.appWithDependencies, dependsOnDbApplication_Index)) {
+				if (this.applicationDependsOn(dependency.appWithDependencies, dependsOnApplication_Index)) {
 					return true
 				}
 			}

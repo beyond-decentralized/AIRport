@@ -35,10 +35,10 @@ export class JsonApplicationChecker
             ) => {
                 let relatedJsonApplication
                 let relatedJsonEntity
-                if (queryRelation.relationTableDbApplication_Index
-                    || queryRelation.relationTableDbApplication_Index === 0) {
+                if (queryRelation.relationTableApplication_Index
+                    || queryRelation.relationTableApplication_Index === 0) {
                     const referencedApplication = jsonApplicationVersion
-                        .referencedApplications[queryRelation.relationTableDbApplication_Index]
+                        .referencedApplications[queryRelation.relationTableApplication_Index]
 
                     // References are by name only since they are loaded from source by name
                     // thus a given Applicaiton shouldn't be referencing two other applications

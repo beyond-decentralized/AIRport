@@ -1,6 +1,6 @@
 import { SyncAllModifiedColumnsMap } from "../../implementation/sync/SyncAllModifiedColumnsMap";
 import { SyncColumnMap } from "../../implementation/sync/SyncColumnMap";
-import { DbApplicationVersion } from "../application/DbApplication";
+import { IApplicationVersion } from "../application/IApplication";
 import { DbEntity } from "../application/DbEntity";
 import { DbColumn_Index, DbColumn } from "../application/DbProperty";
 import { ChangeType } from "../data/ChangeType";
@@ -168,7 +168,7 @@ export type RecordUpdateStage_LocalId = number;
 export class IRecordUpdateStage {
 
     _localId: RecordUpdateStage_LocalId
-    applicationVersion: DbApplicationVersion
+    applicationVersion: IApplicationVersion
     entity: DbEntity
     repository: IRepository
     actor: IActor

@@ -1,22 +1,22 @@
 import { IAirMessageUtils, IInternalMessage, INTERNAL_Message_Type, Message_OriginOrDestination_Type, UI_URL } from "@airport/aviation-communication";
 import { AIR_MESSAGE_UTILS, IOC } from "@airport/direction-indicator";
-import { DbApplicationDao } from '@airport/airspace/dist/app/bundle';
+import { DdlApplicationDao } from '@airport/airspace/dist/app/bundle';
 import { RepositoryDao } from '@airport/holding-pattern/dist/app/bundle';
 import { IOperationContext, ITransaction, ITransactionContext, IUserAccountInfo, TRANSACTION_MANAGER, TerminalStore } from '@airport/terminal-map'
-import { DbApplication, IRepository, Repository_GUID } from "@airport/ground-control";
+import { IApplication, IRepository, Repository_GUID } from "@airport/ground-control";
 import { SSOManager } from "@airbridge/sso";
 import { Observable, map } from "rxjs";
 import { WebMessageGateway } from "@airport/web-terminal";
 
 export class AIRportApi {
 
-    getAllApplications(): Observable<DbApplication[]> {
+    getAllApplications(): Observable<IApplication[]> {
         const transactionManager = IOC.getSync(TRANSACTION_MANAGER)
 
         return transactionManager.transactObservableInternal(async (context) => {
-            const dbApplicationDao = IOC.getSync(DbApplicationDao)
+            const ddlApplicationDao = IOC.getSync(DdlApplicationDao)
 
-            return dbApplicationDao.searchAll()
+            return ddlApplicationDao.searchAll()
         }, null, {}, [])
     }
 

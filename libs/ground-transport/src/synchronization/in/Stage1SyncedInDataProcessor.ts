@@ -11,7 +11,7 @@ import {
 	ChangeType,
 	DbColumn_Index,
 	DbEntity_LocalId,
-	DbApplicationVersion_LocalId,
+	ApplicationVersion_LocalId,
 	DbEntity_TableIndex,
 	IDatastructureUtils,
 	Repository_LocalId,
@@ -180,13 +180,13 @@ export class Stage1SyncedInDataProcessor
 				.sortRepoTransHistories(repoTransHistoriesForRepository, actorMayById)
 		}
 
-		const recordCreations: Map<DbApplicationVersion_LocalId,
+		const recordCreations: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<DbColumn_Index, any>>>>>> = new Map()
-		const recordUpdates: Map<DbApplicationVersion_LocalId,
+		const recordUpdates: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<DbColumn_Index, RecordUpdate>>>>>> = new Map()
-		const recordDeletions: Map<DbApplicationVersion_LocalId,
+		const recordDeletions: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
 				Set<ActorRecordId>>>>> = new Map()
 
@@ -269,9 +269,9 @@ export class Stage1SyncedInDataProcessor
 		allRepoTransHistoryMapByRepoId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
 		repositoryTransactionHistoryMapByRepoId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
 		isLocal = false
-	): Map<DbApplicationVersion_LocalId, Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
+	): Map<ApplicationVersion_LocalId, Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 		Map<ActorRecordId, RecordHistory_LocalId>>>>> {
-		const recordDeletions: Map<DbApplicationVersion_LocalId, Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
+		const recordDeletions: Map<ApplicationVersion_LocalId, Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 			Map<ActorRecordId, RecordHistory_LocalId>>>>> = new Map()
 		for (const [repositoryLocalId, repoTransHistories] of repositoryTransactionHistoryMapByRepoId) {
 			this.mergeArraysInMap(allRepoTransHistoryMapByRepoId, repositoryLocalId, repoTransHistories)
@@ -315,19 +315,19 @@ export class Stage1SyncedInDataProcessor
 		repositoryLocalId: Repository_LocalId,
 		operationHistory: IOperationHistory,
 		isLocal: boolean,
-		recordCreations: Map<DbApplicationVersion_LocalId,
+		recordCreations: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<DbColumn_Index, any>>>>>>,
-		recordUpdates: Map<DbApplicationVersion_LocalId,
+		recordUpdates: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<DbColumn_Index, RecordUpdate>>>>>>,
-		recordDeletions: Map<DbApplicationVersion_LocalId,
+		recordDeletions: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
 				Set<ActorRecordId>>>>>,
-		allRemoteRecordDeletions: Map<DbApplicationVersion_LocalId,
+		allRemoteRecordDeletions: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, RecordHistory_LocalId>>>>>,
-		allLocalRecordDeletions: Map<DbApplicationVersion_LocalId,
+		allLocalRecordDeletions: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, RecordHistory_LocalId>>>>>,
 		syncConflictMapByRepoId: Map<Repository_LocalId, ISynchronizationConflict[]>
@@ -419,16 +419,16 @@ export class Stage1SyncedInDataProcessor
 		repositoryLocalId: Repository_LocalId,
 		operationHistory: IOperationHistory,
 		isLocal: boolean,
-		recordCreations: Map<DbApplicationVersion_LocalId,
+		recordCreations: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<DbColumn_Index, any>>>>>>,
-		recordUpdates: Map<DbApplicationVersion_LocalId,
+		recordUpdates: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<DbColumn_Index, RecordUpdate>>>>>>,
-		allRemoteRecordDeletions: Map<DbApplicationVersion_LocalId,
+		allRemoteRecordDeletions: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, RecordHistory_LocalId>>>>>,
-		allLocalRecordDeletions: Map<DbApplicationVersion_LocalId,
+		allLocalRecordDeletions: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, RecordHistory_LocalId>>>>>,
 		syncConflictMapByRepoId: Map<Repository_LocalId, ISynchronizationConflict[]>
@@ -567,16 +567,16 @@ export class Stage1SyncedInDataProcessor
 	private processDeletion(
 		repositoryLocalId: Repository_LocalId,
 		operationHistory: IOperationHistory,
-		recordCreations: Map<DbApplicationVersion_LocalId,
+		recordCreations: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<DbColumn_Index, any>>>>>>,
-		recordUpdates: Map<DbApplicationVersion_LocalId,
+		recordUpdates: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<DbColumn_Index, any>>>>>>,
-		recordDeletions: Map<DbApplicationVersion_LocalId,
+		recordDeletions: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Set<ActorRecordId>>>>>,
-		allLocalRecordDeletions: Map<DbApplicationVersion_LocalId,
+		allLocalRecordDeletions: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, RecordHistory_LocalId>>>>>,
 	): void {
@@ -630,7 +630,7 @@ export class Stage1SyncedInDataProcessor
 	private getRecordsForRepoInTable<T>(
 		repositoryLocalId: Repository_LocalId,
 		operationHistory: IOperationHistory,
-		recordMapByApplicationTableAndRepository: Map<DbApplicationVersion_LocalId,
+		recordMapByApplicationTableAndRepository: Map<ApplicationVersion_LocalId,
 			Map<DbEntity_LocalId, Map<Repository_LocalId, T>>>
 	): T {
 		const recordMapForApplication = recordMapByApplicationTableAndRepository

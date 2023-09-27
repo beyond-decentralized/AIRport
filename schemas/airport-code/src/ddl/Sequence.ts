@@ -7,7 +7,7 @@ import {
 } from '@airport/tarmaq-entity'
 import {
 	DbColumn_Index,
-	DbApplication_Index,
+	Application_Index,
 	DbEntity_TableIndex,
 	SequenceIncrementBy,
 	SequenceCurrentValue,
@@ -22,7 +22,7 @@ export class Sequence
 	@Id()
 	@Column({ name: 'DB_APPLICATION_INDEX', nullable: false })
 	@DbNumber()
-	applicationIndex: DbApplication_Index
+	applicationIndex: Application_Index
 
 	@Id()
 	@Column({ name: 'TABLE_INDEX', nullable: false })

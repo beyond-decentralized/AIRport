@@ -3,8 +3,8 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-    DbDomain,
-    DbDomain_Name
+    IDomain,
+    Domain_Name
 } from '@airport/ground-control'
 import {
     IDomainRetriever
@@ -19,11 +19,11 @@ export class DomainRetriever
     transactionalConnector: IIframeTransactionalConnector
 
     async retrieveDomain(
-        domainName: DbDomain_Name,
-        domainNameMapByName: Map<string, DbDomain>,
-        allDomains: DbDomain[],
-        newDomains: DbDomain[]
-    ): Promise<DbDomain> {
+        domainName: Domain_Name,
+        domainNameMapByName: Map<string, IDomain>,
+        allDomains: IDomain[],
+        newDomains: IDomain[]
+    ): Promise<IDomain> {
         let domain = domainNameMapByName.get(domainName)
 
         if (domain) {

@@ -15,8 +15,8 @@ import {
 	IQueryParameter,
 	QueryParameterType,
 	QueryResultType,
-	IDbApplicationUtils,
-	DbApplicationUtils
+	IApplicationNameUtils,
+	ApplicationNameUtils
 } from '@airport/ground-control';
 import {
 	Lookup,
@@ -139,7 +139,7 @@ export class ApplicationQueryGenerator {
 		queryJavascript = queryJavascript.replace(functionStartRegex, '');
 		queryJavascript = queryJavascript.replace(functionEndRegex, '');
 
-		const [airDb, dbApplicationUtils] = await IOC.get(AIRPORT_DATABASE, DbApplicationUtils);
+		const [airDb, applicationNameUtils] = await IOC.get(AIRPORT_DATABASE, ApplicationNameUtils);
 		for (const functionName in airDb.functions) {
 			const regex = new RegExp(`\\s*${functionName}\\(`);
 			queryJavascript = queryJavascript
@@ -156,15 +156,15 @@ export class ApplicationQueryGenerator {
 		const queryFunction = new Function(...functionConstructorParams);
 
 		const [queryFunctionParameters, queryParameters] = this.getQueryFunctionParameters(
-			queryDefinition, jsonApplication, airDb, dbApplicationUtils);
+			queryDefinition, jsonApplication, airDb, applicationNameUtils);
 
 		const rawQuery = queryFunction(...queryFunctionParameters);
 
 		const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(
-			DbApplicationUtils, Lookup, QUERY_FACADE);
+			ApplicationNameUtils, Lookup, QUERY_FACADE);
 		const context = lookup.ensureContext(null);
 		const qApplication: QAppInternal = airDb.QM[dbAppliationUtils.
-			getDbApplication_FullName(jsonApplication)];
+			getApplication_FullName(jsonApplication)];
 		const dbApplicationVersion = qApplication.__dbApplication__
 			.versions[qApplication.__dbApplication__.versions.length - 1];
 		context.dbEntity = dbApplicationVersion.entityMapByName[entityName];
@@ -197,7 +197,7 @@ export class ApplicationQueryGenerator {
 		queryDefinition: JsonFormattedQueryWithExpression,
 		jsonApplication: JsonApplication,
 		airDb: IAirportDatabase,
-		dbApplicationUtils: IDbApplicationUtils
+		applicationNameUtils: IApplicationNameUtils
 	): [any[], { index: number, parameter: IQOperableField<any, any, any, any> }[]] {
 		const queryFunctionParameters = [];
 		const queryParameters = [];
@@ -255,8 +255,8 @@ export class ApplicationQueryGenerator {
 					}
 					break;
 				case QueryInputKind.Q:
-					Q = airDb.QM[dbApplicationUtils.
-						getDbApplication_FullName(jsonApplication)];
+					Q = airDb.QM[applicationNameUtils.
+						getApplication_FullName(jsonApplication)];
 					queryFunctionParameters.push(Q);
 					break;
 				case QueryInputKind.QENTITY:

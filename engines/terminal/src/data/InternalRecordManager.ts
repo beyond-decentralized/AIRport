@@ -2,8 +2,8 @@ import {
     IContext
 } from "@airport/direction-indicator";
 import {
-    DbApplication,
-    DbDomain,
+    IApplication,
+    IDomain,
     IActor,
     IEntityStateManager,
     ITerminal,
@@ -16,8 +16,8 @@ import {
 } from "@airport/holding-pattern/dist/app/bundle";
 import { ITransactionManager, TerminalStore } from "@airport/terminal-map";
 import {
-    IDbDomainDao,
-    IDbApplicationDao
+    IDdlDomainDao,
+    IDdlApplicationDao
 } from "@airport/airspace/dist/app/bundle";
 import {
     Terminal,
@@ -53,10 +53,10 @@ export class InternalRecordManager
     actorDao: IActorDao
 
     @Inject()
-    dbApplicationDao: IDbApplicationDao
+    ddlApplicationDao: IDdlApplicationDao
 
     @Inject()
-    dbDomainDao: IDbDomainDao
+    ddlDomainDao: IDdlDomainDao
 
     @Inject()
     entityStateManager: IEntityStateManager
@@ -81,7 +81,7 @@ export class InternalRecordManager
             await this.updateDomain(application, context)
 
             let actorMapForDomain = this.terminalStore
-                .getApplicationActorMapByDomainAndDbApplication_Names().get(application.domain)
+                .getApplicationActorMapByDomainAndApplication_Names().get(application.domain)
             let actors: IActor[]
             if (actorMapForDomain) {
                 actors = actorMapForDomain.get(application.name)
@@ -95,12 +95,12 @@ export class InternalRecordManager
             const userSession = await this.terminalSessionManager.getUserSession()
 
             let actor = await this.actorDao
-                .findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(
+                .findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(
                     application.domain, application.name,
                     userSession.userAccount.accountPublicSigningKey,
                     frameworkActor.terminal.GUID, context)
 
-            let anApplication: DbApplication = await this.dbApplicationDao.findByIndex(
+            let anApplication: IApplication = await this.ddlApplicationDao.findByIndex(
                 application.lastIds.applications + 1, context);
             if (!actor) {
                 actor = {
@@ -145,7 +145,7 @@ export class InternalRecordManager
             terminal.isLocal = true;
             terminal.GUID = guidv4();
 
-            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(
+            const application = await this.ddlApplicationDao.findOneByDomain_NameAndApplication_Name(
                 firstApp.domain, firstApp.name, context)
 
             const actor: IActor = new Actor();
@@ -168,13 +168,13 @@ export class InternalRecordManager
     private async updateDomain(
         application: JsonApplicationWithLastIds,
         context: IContext
-    ): Promise<DbDomain> {
+    ): Promise<IDomain> {
         let domain = this.terminalStore.getDomainMapByName().get(application.domain)
 
         if (domain && this.entityStateManager.getOriginalValues(domain)) {
             return domain
         }
-        let dbDomain = await this.dbDomainDao.findByName(application.domain, context)
+        let dbDomain = await this.ddlDomainDao.findByName(application.domain, context)
         let updatedDomain
         if (domain) {
             if (dbDomain) {
@@ -190,7 +190,7 @@ export class InternalRecordManager
                     _localId: null,
                     name: application.domain,
                 }
-                await this.dbDomainDao.save(updatedDomain, context)
+                await this.ddlDomainDao.save(updatedDomain, context)
             }
         }
         if (!updatedDomain) {

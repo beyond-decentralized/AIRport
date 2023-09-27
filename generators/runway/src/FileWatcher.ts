@@ -1,7 +1,7 @@
 import {
-	DbApplication,
+	IApplication,
 	DbEntity_LocalId,
-	DbApplicationUtils,
+	ApplicationNameUtils,
 } from '@airport/ground-control';
 import * as fs from 'fs';
 import * as ts from 'typescript';
@@ -113,7 +113,7 @@ async function processFiles(
 ): Promise<void> {
 	currentApplicationApi.apiObjectMap = {}
 	options.target = tsc.ScriptTarget.ES5;
-	const applicationMapByProjectName: { [projectName: string]: DbApplication } = {};
+	const applicationMapByProjectName: { [projectName: string]: IApplication } = {};
 	let entityMapByName =
 		await generateDefinitions(rootFileNames, options, configuration, applicationMapByProjectName);
 	emitFiles(entityMapByName, configuration, applicationMapByProjectName);
@@ -122,7 +122,7 @@ async function processFiles(
 function emitFiles(
 	entityMapByName: { [entityName: string]: EntityCandidate },
 	configuration: Configuration,
-	applicationMapByProjectName: { [projectName: string]: DbApplication },
+	applicationMapByProjectName: { [projectName: string]: IApplication },
 ): void {
 	const pathBuilder = new PathBuilder(configuration);
 	const generatedDirPath = pathBuilder.workingDirPath + '/' + pathBuilder.generatedDirPath;
@@ -155,8 +155,8 @@ function emitFiles(
 
 	applicationChecker.checkFrameworkReferences(jsonApplication, indexedApplication)
 
-	const applicationFullName = IOC.getSync(DbApplicationUtils).
-		getDbApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
+	const applicationFullName = IOC.getSync(ApplicationNameUtils).
+		getApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
 
 	const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
 	const entityVInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'vInterfaces.ts');

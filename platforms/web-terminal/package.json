@@ -9,7 +9,6 @@
     "@airport/ground-control": "workspace:../../apis/ground-control",
     "@airport/holding-pattern": "workspace:../../schemas/holding-pattern",
     "@airport/takeoff": "workspace:../../generators/takeoff",
-    "@airport/server": "workspace:../server",
     "@airport/sqljs": "workspace:../../databases/sqljs",
     "@airport/terminal": "workspace:../../engines/terminal",
     "@airport/terminal-map": "workspace:../../apis/terminal-map",

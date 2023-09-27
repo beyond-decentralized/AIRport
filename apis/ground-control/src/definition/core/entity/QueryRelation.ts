@@ -1,4 +1,4 @@
-import { DbApplication_Index } from '../../application/DbApplication';
+import { Application_Index } from '../../application/IApplication';
 import { QueryTree } from '../../query/facade/QueryTree';
 import {
 	QueryBaseOperation,
@@ -77,7 +77,7 @@ export interface QueryRelation {
 	 *  Application Index
 	 * Application Index of the parent entity in relation
 	 */
-	applicationIndex: DbApplication_Index;
+	applicationIndex: Application_Index;
 }
 
 /**

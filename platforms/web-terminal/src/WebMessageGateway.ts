@@ -4,9 +4,9 @@ import {
     Injected,
     IOC
 } from '@airport/direction-indicator'
-import { DbApplication_FullName, IDbApplicationUtils } from '@airport/ground-control';
+import { Application_FullName, IApplicationNameUtils } from '@airport/ground-control';
 import {
-    IGetLatestApplicationVersionByDbApplication_NameMessage,
+    IGetLatestApplicationVersionByApplication_NameMessage,
     IInitializeConnectionMessage,
     IRetrieveDomainMessage,
     ITerminalStore,
@@ -19,7 +19,7 @@ export interface IWebMessageGateway {
     needMessageSerialization(): boolean
 
     sendMessageToApp(
-        application_FullName: DbApplication_FullName,
+        application_FullName: Application_FullName,
         message: IApiCallResponseMessage
             | IObservableApiCallResponseMessage
             | ISubscriptionMessage
@@ -40,7 +40,7 @@ export class WebMessageGateway
     airMessageUtils: IAirMessageUtils
 
     @Inject()
-    dbApplicationUtils: IDbApplicationUtils
+    applicationNameUtils: IApplicationNameUtils
 
     @Inject()
     terminalStore: ITerminalStore
@@ -81,10 +81,10 @@ export class WebMessageGateway
     }
 
     sendMessageToApp(
-        application_FullName: DbApplication_FullName,
+        application_FullName: Application_FullName,
         message: IApiCallResponseMessage
             | IObservableApiCallResponseMessage
-            | IGetLatestApplicationVersionByDbApplication_NameMessage
+            | IGetLatestApplicationVersionByApplication_NameMessage
             | IInitializeConnectionMessage
             | IRetrieveDomainMessage
             | ISubscriptionMessage
@@ -115,17 +115,17 @@ export class WebMessageGateway
     }
 
     private getFrameWindow(
-        fullDbApplication_Name: string
+        fullApplication_Name: string
     ): Window {
         const iframe: HTMLIFrameElement = document
-            .getElementsByName(fullDbApplication_Name) as any
+            .getElementsByName(fullApplication_Name) as any
         if (!iframe || !iframe[0]) {
             return null
         }
         const frameWindow = iframe[0].contentWindow
 
         if (!frameWindow) {
-            throw new Error(`No Application IFrame found for: ${fullDbApplication_Name}`)
+            throw new Error(`No Application IFrame found for: ${fullApplication_Name}`)
         }
 
         return frameWindow

@@ -1559,14 +1559,14 @@ class ColumnMap {
 }
 globalThis.ColumnMap = ColumnMap;
 
-let DbApplicationUtils = class DbApplicationUtils {
-    getDbApplication_FullName({ domain, name, }) {
+let ApplicationNameUtils = class ApplicationNameUtils {
+    getApplication_FullName({ domain, name, }) {
         if (domain.name) {
             domain = domain.name;
         }
-        return this.getDbApplication_FullNameFromDomainAndName(domain, name);
+        return this.getApplication_FullNameFromDomainAndName(domain, name);
     }
-    getDbApplication_FullNameFromDomainAndName(domainName, applicationName) {
+    getApplication_FullNameFromDomainAndName(domainName, applicationName) {
         if (domainName.indexOf('___') > -1) {
             throw new Error('Domain Name cannot contain "___" (3 consecutive underscores) in it.');
         }
@@ -1605,19 +1605,19 @@ let DbApplicationUtils = class DbApplicationUtils {
         if (applicationPrefix.indexOf('___') > -1) {
             throw new Error('Application Name cannot have with "@", "/", "." or "_" right next to each other.');
         }
-        let fullDbApplication_Name = `${domainPrefix}___${applicationPrefix}`;
-        if (fullDbApplication_Name.endsWith('_dash_runtime')) {
-            fullDbApplication_Name = fullDbApplication_Name.substring(0, fullDbApplication_Name.length - 13);
+        let fullApplication_Name = `${domainPrefix}___${applicationPrefix}`;
+        if (fullApplication_Name.endsWith('_dash_runtime')) {
+            fullApplication_Name = fullApplication_Name.substring(0, fullApplication_Name.length - 13);
         }
-        return fullDbApplication_Name;
+        return fullApplication_Name;
     }
     getSequenceName(prefixedTableName, columnName) {
         return `${prefixedTableName}_${columnName}__SEQUENCE`;
     }
 };
-DbApplicationUtils = __decorate$m([
+ApplicationNameUtils = __decorate$m([
     Injected()
-], DbApplicationUtils);
+], ApplicationNameUtils);
 
 /**
  * Created by Papa on 9/10/2016.
@@ -2107,7 +2107,7 @@ class KeyUtils {
 }
 
 const groundControl = lib('ground-control');
-groundControl.register(ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, KeyUtils);
+groundControl.register(ApplicationReferenceUtils, AppTrackerUtils, DatastructureUtils, ApplicationNameUtils, KeyUtils);
 const APPLICATION_UTILS = groundControl.token('ApplicationUtils');
 const DICTIONARY = groundControl.token(Dictionary);
 const ENTITY_STATE_MANAGER = groundControl.token('EntityStateManager');
@@ -2124,7 +2124,7 @@ groundControl.setDependencies(AppTrackerUtils, {
     dictionary: Dictionary
 });
 TRANSACTIONAL_CONNECTOR.setDependencies({
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
 });
 globalThis.DICTIONARY = DICTIONARY;
 
@@ -2419,11 +2419,11 @@ function getImplNameFromInterfaceName(interfaceName) {
     return interfaceName.substr(1);
 }
 
-class DbApplicationBuilder {
+class DdlApplicationBuilder {
     constructor() {
         this.datastructureUtils = new DatastructureUtils();
     }
-    buildDbApplicationWithoutReferences(jsonApplication, allApplications, dictionary) {
+    buildIApplicationWithoutReferences(jsonApplication, allApplications, dictionary) {
         const entities = [];
         const entityMapByName = {};
         const references = [];
@@ -2463,8 +2463,8 @@ class DbApplicationBuilder {
         const dbApplication = {
             currentVersion: [dbApplicationCurrentVersion],
             domain: dbDomain,
-            fullName: IOC.getSync(DbApplicationUtils).
-                getDbApplication_FullNameFromDomainAndName(dbDomain.name, jsonApplication.name),
+            fullName: IOC.getSync(ApplicationNameUtils).
+                getApplication_FullNameFromDomainAndName(dbDomain.name, jsonApplication.name),
             index: allApplications.length,
             name: jsonApplication.name,
             scope: null,
@@ -2484,11 +2484,11 @@ class DbApplicationBuilder {
     }
     /**
      *
-     * @param {{[p: string]: DbApplication}} applicationMap
+     * @param {{[p: string]: IApplication}} applicationMap
      * @param {{[p: string]: JsonApplication}} jsonApplicationMap
      * @param {ILinkingDictionary} dictionary
      */
-    linkDbApplicationsByReferences(applicationMap, jsonApplicationMap, dictionary, failOnMissingMappings = true) {
+    linkIApplicationsByReferences(applicationMap, jsonApplicationMap, dictionary, failOnMissingMappings = true) {
         // Map referenced applications
         for (const domain in jsonApplicationMap) {
             const domainMap = jsonApplicationMap[domain];
@@ -2512,7 +2512,7 @@ class DbApplicationBuilder {
                 const jsonApplicationVersion = jsonApplication.versions[0];
                 for (const index in jsonApplicationVersion.referencedApplications) {
                     const applicationReference = jsonApplicationVersion.referencedApplications[index];
-                    const referencedDbApplication_Name = applicationReference.name;
+                    const referencedApplication_Name = applicationReference.name;
                     const referencedDbDomain = applicationMap[applicationReference.domain];
                     if (!referencedDbDomain) {
                         if (failOnMissingMappings) {
@@ -2520,10 +2520,10 @@ class DbApplicationBuilder {
                         }
                         continue;
                     }
-                    const referencedApplication = referencedDbDomain[referencedDbApplication_Name];
+                    const referencedApplication = referencedDbDomain[referencedApplication_Name];
                     if (!referencedApplication) {
                         if (failOnMissingMappings) {
-                            throw new Error(`Application '${referencedDbApplication_Name}' is not yet available for relation linking.`);
+                            throw new Error(`Application '${referencedApplication_Name}' is not yet available for relation linking.`);
                         }
                         continue;
                     }
@@ -2743,24 +2743,24 @@ class DbApplicationBuilder {
         });
         dbColumn.propertyColumns = propertyColumns;
         jsonColumn.manyRelationColumnRefs.map(relationColumnRef => {
-            const manyDbApplicationReference_Index = jsonApplication.index;
+            const manyIApplicationReference_Index = jsonApplication.index;
             let manyApplication;
-            if (manyDbApplicationReference_Index === null) {
+            if (manyIApplicationReference_Index === null) {
                 manyApplication = jsonApplication;
             }
             else {
-                manyApplication = referencedApplications[manyDbApplicationReference_Index];
+                manyApplication = referencedApplications[manyIApplicationReference_Index];
             }
             const manyTableIndex = jsonEntity.index;
             const manyRelationIndex = relationColumnRef.manyRelationIndex;
             const manyColumnIndex = dbColumn.index;
-            const oneDbApplicationReference_Index = relationColumnRef.oneDbApplication_Index;
+            const oneIApplicationReference_Index = relationColumnRef.oneApplication_Index;
             let oneApplication;
-            if (oneDbApplicationReference_Index === null) {
+            if (oneIApplicationReference_Index === null) {
                 oneApplication = jsonApplication;
             }
             else {
-                oneApplication = referencedApplications[oneDbApplicationReference_Index];
+                oneApplication = referencedApplications[oneIApplicationReference_Index];
             }
             if (!oneApplication) {
                 // FIXME: figure out if not having references to nested applications is OK
@@ -2807,7 +2807,7 @@ class ApplicationLoader {
     constructor() {
         this.applicationMap = {};
         this.allApplications = [];
-        this.dbApplicationBuilder = new DbApplicationBuilder();
+        this.dbApplicationBuilder = new DdlApplicationBuilder();
         this.dictionary = {
             dbColumnRelationMapByManySide: {},
             dbColumnRelationMapByOneSide: {}
@@ -2849,7 +2849,7 @@ class ApplicationLoader {
         if (!relatedApplication) {
             return null;
         }
-        const dbApplication = this.dbApplicationBuilder.buildDbApplicationWithoutReferences(relatedApplication, this.allApplications, this.dictionary);
+        const dbApplication = this.dbApplicationBuilder.buildIApplicationWithoutReferences(relatedApplication, this.allApplications, this.dictionary);
         this.applicationMap[projectName] = dbApplication;
         return dbApplication;
     }
@@ -5619,7 +5619,7 @@ class QEntityDriver {
 */
     getQueryRelation(columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
         // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
-        // see DbApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
+        // see IDdlApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
         let QueryRelation = {
             currentChildIndex: this.currentChildIndex,
             entityIndex: this.dbEntity.index,
@@ -10184,13 +10184,13 @@ let QApplicationBuilderUtils = class QApplicationBuilderUtils {
         });
         return appsWithDependencies.map(applicationWithDeps => applicationWithDeps.application);
     }
-    applicationDependsOn(dependantApplication, dependsOnDbApplication_Index) {
+    applicationDependsOn(dependantApplication, dependsOnApplication_Index) {
         for (const dependency of dependantApplication.dependencies) {
-            if (dependency.index == dependsOnDbApplication_Index) {
+            if (dependency.index == dependsOnApplication_Index) {
                 return true;
             }
             if (dependency.appWithDependencies.dependencies.size) {
-                if (this.applicationDependsOn(dependency.appWithDependencies, dependsOnDbApplication_Index)) {
+                if (this.applicationDependsOn(dependency.appWithDependencies, dependsOnApplication_Index)) {
                     return true;
                 }
             }
@@ -10811,7 +10811,7 @@ AIRPORT_DATABASE.setDependencies({
     databaseFacade: DATABASE_FACADE,
     databaseStore: DatabaseStore,
     dictionary: Dictionary,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     find: NonEntityFind,
     findOne: NonEntityFindOne,
     qApplicationBuilderUtils: QApplicationBuilderUtils,
@@ -12220,7 +12220,7 @@ ApplicationApiReturnTypeDao = __decorate$g([
     Injected()
 ], ApplicationApiReturnTypeDao);
 
-let DbApplicationDao = class DbApplicationDao extends BaseDdlApplicationDao {
+let DdlApplicationDao = class DdlApplicationDao extends BaseDdlApplicationDao {
     async findAllActive(context) {
         return this.db.find.tree({
             SELECT: {},
@@ -12386,7 +12386,7 @@ let DbApplicationDao = class DbApplicationDao extends BaseDdlApplicationDao {
             WHERE: s.index.IN(indexes)
         }, context);
     }
-    async findMapByFullNames(fullDbApplication_Names, context) {
+    async findMapByFullNames(fullApplication_Names, context) {
         const mapByFullName = new Map();
         let s;
         const records = await this.db.find.tree({
@@ -12394,14 +12394,14 @@ let DbApplicationDao = class DbApplicationDao extends BaseDdlApplicationDao {
             FROM: [
                 s = Q_airport____at_airport_slash_airspace.DdlApplication
             ],
-            WHERE: s.fullName.IN(fullDbApplication_Names)
+            WHERE: s.fullName.IN(fullApplication_Names)
         }, context);
         for (const record of records) {
             mapByFullName.set(record.fullName, record);
         }
         return mapByFullName;
     }
-    async findByDomain_NamesAndDbApplication_Names(domainNames, applicationNames, context) {
+    async findByDomain_NamesAndApplication_Names(domainNames, applicationNames, context) {
         let s;
         let d;
         return await this.db.find.tree({
@@ -12421,7 +12421,7 @@ let DbApplicationDao = class DbApplicationDao extends BaseDdlApplicationDao {
             WHERE: AND(d.name.IN(domainNames), s.name.IN(applicationNames))
         }, context);
     }
-    async findOneByDomain_NameAndDbApplication_Name(domainName, applicationName, context) {
+    async findOneByDomain_NameAndApplication_Name(domainName, applicationName, context) {
         let s;
         let d;
         return await this.db.findOne.tree({
@@ -12483,15 +12483,15 @@ let DbApplicationDao = class DbApplicationDao extends BaseDdlApplicationDao {
 };
 __decorate$g([
     Inject()
-], DbApplicationDao.prototype, "airportDatabase", void 0);
+], DdlApplicationDao.prototype, "airportDatabase", void 0);
 __decorate$g([
     Inject()
-], DbApplicationDao.prototype, "datastructureUtils", void 0);
-DbApplicationDao = __decorate$g([
+], DdlApplicationDao.prototype, "datastructureUtils", void 0);
+DdlApplicationDao = __decorate$g([
     Injected()
-], DbApplicationDao);
+], DdlApplicationDao);
 
-let DbApplicationReferenceDao = class DbApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
+let DdlApplicationReferenceDao = class DdlApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
     async findAllForApplicationVersions(applicationVersionIds, context) {
         let sr;
         return await this.db.find.tree({
@@ -12529,21 +12529,21 @@ let DbApplicationReferenceDao = class DbApplicationReferenceDao extends BaseDdlA
         }, context);
     }
 };
-DbApplicationReferenceDao = __decorate$g([
+DdlApplicationReferenceDao = __decorate$g([
     Injected()
-], DbApplicationReferenceDao);
+], DdlApplicationReferenceDao);
 
-let DbApplicationVersionDao = class DbApplicationVersionDao extends BaseDdlApplicationVersionDao {
+let DdlApplicationVersionDao = class DdlApplicationVersionDao extends BaseDdlApplicationVersionDao {
     /*
-    async findAllLatestForDbApplication_Indexes(
-        applicationIndexes: DbApplication_Index[],
+    async findAllLatestForApplication_Indexes(
+        applicationIndexes: Application_Index[],
         context: IContext
-    ): Promise<DbApplicationVersion[]> {
+    ): Promise<IApplicationVersion[]> {
         let sv: QAppVersion
 
         return await this.db.find.tree({
             FROM: [
-                sv = Q.DbApplicationVersion
+                sv = Q.IApplicationVersion
             ],
             SELECT: {},
             WHERE: AND(
@@ -12553,7 +12553,7 @@ let DbApplicationVersionDao = class DbApplicationVersionDao extends BaseDdlAppli
         }, context)
     }
     */
-    async findAllActiveOrderByDbApplication_IndexAndId(context) {
+    async findAllActiveOrderByApplication_IndexAndId(context) {
         let av, a;
         return await this.db.find.tree({
             FROM: [
@@ -12567,7 +12567,7 @@ let DbApplicationVersionDao = class DbApplicationVersionDao extends BaseDdlAppli
             ]
         }, context);
     }
-    async findByDomain_NamesAndDbApplication_Names(domainNames, applicationNames, context) {
+    async findByDomain_NamesAndApplication_Names(domainNames, applicationNames, context) {
         let av;
         let a;
         let d;
@@ -12597,19 +12597,19 @@ let DbApplicationVersionDao = class DbApplicationVersionDao extends BaseDdlAppli
     }
     /*
     async findMaxVersionedMapByApplicationAndDomain_Names(
-        applicationDomain_Names: DbDomain_Name[],
-        applicationNames: DbApplication_Name[],
+        applicationDomain_Names: Domain_Name[],
+        applicationNames: Application_Name[],
         context: IContext
-    ): Promise<Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationVersion>>> {
+    ): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersion>>> {
         const maxVersionedMapByApplicationAndDomain_Names
-                  : Map<DbDomain_Name, Map<DbApplication_Name, DbApplicationVersion>>
+                  : Map<Domain_Name, Map<Application_Name, IApplicationVersion>>
                   = new Map()
 
         let sv: QAppVersion
         let s: QApp
         let d: QDdlDomain
 
-        const maxApplicationVersions: DbApplicationVersion[] = <any>await this.db.find.tree({
+        const maxApplicationVersions: IApplicationVersion[] = <any>await this.db.find.tree({
             SELECT: {
                 integerVersion: Y,
                 majorVersion: Y,
@@ -12626,7 +12626,7 @@ let DbApplicationVersionDao = class DbApplicationVersionDao extends BaseDdlAppli
                 _localId: Y
             },
             FROM: [
-                sv = Q.DbApplicationVersion,
+                sv = Q.IApplicationVersion,
                 s = sv.application.INNER_JOIN(),
                 d = s.domain.INNER_JOIN()
             ],
@@ -12658,7 +12658,7 @@ let DbApplicationVersionDao = class DbApplicationVersionDao extends BaseDdlAppli
             FROM: [
                 svMax = tree({
                     FROM: [
-                        sv2 = Q.DbApplicationVersion
+                        sv2 = Q.IApplicationVersion
                     ],
                     SELECT: DISTINCT({
                         integerVersion: max(sv2.integerVersion),
@@ -12700,9 +12700,9 @@ let DbApplicationVersionDao = class DbApplicationVersionDao extends BaseDdlAppli
         }, context);
     }
 };
-DbApplicationVersionDao = __decorate$g([
+DdlApplicationVersionDao = __decorate$g([
     Injected()
-], DbApplicationVersionDao);
+], DdlApplicationVersionDao);
 
 let DbColumnDao = class DbColumnDao extends BaseDdlColumnDao {
     async findAllForEntities(entityIds, context) {
@@ -13025,7 +13025,7 @@ DbRelationDao = __decorate$g([
     Injected()
 ], DbRelationDao);
 
-let DbDomainDao = class DbDomainDao extends BaseDdlDomainDao {
+let DdlDomainDao = class DdlDomainDao extends BaseDdlDomainDao {
     async findByIdIn(domainIds, context) {
         let d;
         return await this.db.find.tree({
@@ -13125,9 +13125,9 @@ let DbDomainDao = class DbDomainDao extends BaseDdlDomainDao {
         }
     }
 };
-DbDomainDao = __decorate$g([
+DdlDomainDao = __decorate$g([
     Injected()
-], DbDomainDao);
+], DdlDomainDao);
 
 const application$4 = {
     name: '@airport/airspace',
@@ -13137,14 +13137,14 @@ const application$4 = {
 };
 
 const airspace = app(application$4);
-airspace.register(ApplicationApiClassDao, ApplicationApiOperationDao, ApplicationApiParameterDao, ApplicationApiReturnTypeDao, DbApplicationDao, DbApplicationReferenceDao, DbApplicationVersionDao, DbColumnDao, DbDomainDao, DbEntityDao, DbPropertyColumnDao, DbPropertyDao, DbRelationColumnDao, DbRelationDao);
+airspace.register(ApplicationApiClassDao, ApplicationApiOperationDao, ApplicationApiParameterDao, ApplicationApiReturnTypeDao, DdlApplicationDao, DdlApplicationReferenceDao, DdlApplicationVersionDao, DbColumnDao, DdlDomainDao, DbEntityDao, DbPropertyColumnDao, DbPropertyDao, DbRelationColumnDao, DbRelationDao);
 airspace.setDependencies(DbColumnDao, {
     datastructureUtils: DatastructureUtils
 });
 airspace.setDependencies(DbRelationDao, {
     datastructureUtils: DatastructureUtils
 });
-airspace.setDependencies(DbApplicationDao, {
+airspace.setDependencies(DdlApplicationDao, {
     airportDatabase: AIRPORT_DATABASE,
     datastructureUtils: DatastructureUtils
 });
@@ -13226,10 +13226,10 @@ let TerminalStore = class TerminalStore {
         this.getApiSubscriptionMap = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.apiSubscriptionMap);
         this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
         this.getApplicationInitializer = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationInitializer);
-        this.getApplicationActorMapByDomainAndDbApplication_Names = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
-            const applicationActorsByDomainAndDbApplication_Names = new Map();
+        this.getApplicationActorMapByDomainAndApplication_Names = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
+            const applicationActorsByDomainAndApplication_Names = new Map();
             for (const applicationActor of applicationActors) {
-                const applicationActorMapForDomain = this.datastructureUtils.ensureChildJsMap(applicationActorsByDomainAndDbApplication_Names, applicationActor.application.domain.name);
+                const applicationActorMapForDomain = this.datastructureUtils.ensureChildJsMap(applicationActorsByDomainAndApplication_Names, applicationActor.application.domain.name);
                 let actorsForApplication = applicationActorMapForDomain
                     .get(applicationActor.application.name);
                 if (!actorsForApplication) {
@@ -13238,7 +13238,7 @@ let TerminalStore = class TerminalStore {
                 }
                 actorsForApplication.push(applicationActor);
             }
-            return applicationActorsByDomainAndDbApplication_Names;
+            return applicationActorsByDomainAndApplication_Names;
         });
         this.getDomains = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.domains);
         this.getDomainMapByName = this.selectorManager.createSelector(this.getDomains, domains => {
@@ -13262,14 +13262,14 @@ let TerminalStore = class TerminalStore {
             }
             return latestApplicationVersionMapByNames;
         });
-        this.getLatestApplicationVersionMapByDbApplication_FullName = this.selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
-            const latestApplicationVersionMapByDbApplication_FullName = new Map();
+        this.getLatestApplicationVersionMapByApplication_FullName = this.selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
+            const latestApplicationVersionMapByApplication_FullName = new Map();
             for (const applicationVersionsForDomain_Name of latestApplicationVersionMapByNames.values()) {
                 for (const applicationVersion of applicationVersionsForDomain_Name.values()) {
-                    latestApplicationVersionMapByDbApplication_FullName.set(applicationVersion.application.fullName, applicationVersion);
+                    latestApplicationVersionMapByApplication_FullName.set(applicationVersion.application.fullName, applicationVersion);
                 }
             }
-            return latestApplicationVersionMapByDbApplication_FullName;
+            return latestApplicationVersionMapByApplication_FullName;
         });
         this.getAllApplicationVersionsByIds = this.selectorManager.createSelector(this.getDomains, domains => {
             const allApplicationVersionsByIds = [];
@@ -13282,21 +13282,21 @@ let TerminalStore = class TerminalStore {
             }
             return allApplicationVersionsByIds;
         });
-        this.getLatestApplicationVersionsByDbApplication_Indexes = this.selectorManager.createSelector(this.getDomains, domains => {
-            const latestApplicationVersionsByDbApplication_Indexes = [];
+        this.getLatestApplicationVersionsByApplication_Indexes = this.selectorManager.createSelector(this.getDomains, domains => {
+            const latestApplicationVersionsByApplication_Indexes = [];
             for (const domain of domains) {
                 for (const application of domain.applications) {
-                    latestApplicationVersionsByDbApplication_Indexes[application.index]
+                    latestApplicationVersionsByApplication_Indexes[application.index]
                         = application.currentVersion[0].applicationVersion;
                 }
             }
-            return latestApplicationVersionsByDbApplication_Indexes;
+            return latestApplicationVersionsByApplication_Indexes;
         });
         this.getApplicationMapByFullName = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationMapByFullName);
         this.getApplications = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applications);
-        this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByDbApplication_Indexes, latestApplicationVersionsByDbApplication_Indexes => {
+        this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByApplication_Indexes, latestApplicationVersionsByApplication_Indexes => {
             const allEntities = [];
-            for (const latestApplicationVersion of latestApplicationVersionsByDbApplication_Indexes) {
+            for (const latestApplicationVersion of latestApplicationVersionsByApplication_Indexes) {
                 if (!latestApplicationVersion) {
                     continue;
                 }
@@ -13573,7 +13573,7 @@ TRANSACTION_MANAGER.setDependencies({
 });
 TRANSACTIONAL_RECEIVER.setDependencies({
     applicationInitializer: APPLICATION_INITIALIZER,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
 });
 TRANSACTIONAL_SERVER.setDependencies({
     terminalStore: TerminalStore,
@@ -13676,28 +13676,28 @@ let SqlSchemaBuilder = class SqlSchemaBuilder {
     getRelationInfo(jsonApplication, jsonApplicationVersion, queryRelation, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap) {
         let relatedJsonApplication;
         let relatedJsonEntity;
-        if (queryRelation.relationTableDbApplication_Index
-            || queryRelation.relationTableDbApplication_Index === 0) {
+        if (queryRelation.relationTableApplication_Index
+            || queryRelation.relationTableApplication_Index === 0) {
             const referencedApplication = jsonApplicationVersion
-                .referencedApplications[queryRelation.relationTableDbApplication_Index];
-            let relatedDbApplication_FullName = this.dbApplicationUtils
-                .getDbApplication_FullNameFromDomainAndName(referencedApplication.domain, referencedApplication.name);
-            relatedJsonApplication = relatedJsonApplicationMap.get(relatedDbApplication_FullName);
+                .referencedApplications[queryRelation.relationTableApplication_Index];
+            let relatedApplication_FullName = this.applicationNameUtils
+                .getApplication_FullNameFromDomainAndName(referencedApplication.domain, referencedApplication.name);
+            relatedJsonApplication = relatedJsonApplicationMap.get(relatedApplication_FullName);
             if (!relatedJsonApplication) {
-                const relatedApplication = existingApplicationMap.get(relatedDbApplication_FullName);
+                const relatedApplication = existingApplicationMap.get(relatedApplication_FullName);
                 if (relatedApplication) {
                     // FIXME: this should be looked up though currentVersion - make sure it's populated
                     // relatedJsonApplication = relatedApplication.currentVersion[0].applicationVersion.jsonApplication
                     relatedJsonApplication = relatedApplication.versions[0].jsonApplication;
                 }
                 else {
-                    relatedJsonApplication = newJsonApplicationMap.get(relatedDbApplication_FullName);
+                    relatedJsonApplication = newJsonApplicationMap.get(relatedApplication_FullName);
                 }
                 if (!relatedJsonApplication) {
-                    throw new Error(`Could not find related application ${relatedDbApplication_FullName}
+                    throw new Error(`Could not find related application ${relatedApplication_FullName}
           in either existing applications or newly installing applications.`);
                 }
-                relatedJsonApplicationMap.set(relatedDbApplication_FullName, relatedJsonApplication);
+                relatedJsonApplicationMap.set(relatedApplication_FullName, relatedJsonApplication);
             }
             const relatedApplicationVersion = relatedJsonApplication
                 .versions[relatedJsonApplication.versions.length - 1];
@@ -13778,7 +13778,7 @@ __decorate$e([
 ], SqlSchemaBuilder.prototype, "applicationReferenceUtils", void 0);
 __decorate$e([
     Inject()
-], SqlSchemaBuilder.prototype, "dbApplicationUtils", void 0);
+], SqlSchemaBuilder.prototype, "applicationNameUtils", void 0);
 __decorate$e([
     Inject()
 ], SqlSchemaBuilder.prototype, "sequenceDao", void 0);
@@ -13862,48 +13862,48 @@ let ApplicationChecker = class ApplicationChecker {
     async pruneReferencesToExistingApplications(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication, context) {
         const existingApplicationInfo = await this.findExistingApplications(allReferencedApplicationMap, context);
         for (const applicationName of existingApplicationInfo.existingApplicationMapByName.keys()) {
-            const coreDomainAndDbApplication_Names = existingApplicationInfo.coreDomainAndDbApplication_NamesByDbApplication_Name.get(applicationName);
+            const coreDomainAndApplication_Names = existingApplicationInfo.coreDomainAndApplication_NamesByApplication_Name.get(applicationName);
             // Remove every reference for this existing application
             for (const referenceMapForApplicationsOfDomain of referencedApplicationMapByApplication.values()) {
                 for (const applicationsReferencedByAGivenApplication of referenceMapForApplicationsOfDomain.values()) {
-                    const applicationReferencesForDomain = applicationsReferencedByAGivenApplication.get(coreDomainAndDbApplication_Names.domain);
+                    const applicationReferencesForDomain = applicationsReferencedByAGivenApplication.get(coreDomainAndApplication_Names.domain);
                     if (applicationReferencesForDomain) {
-                        applicationReferencesForDomain.delete(coreDomainAndDbApplication_Names.application);
+                        applicationReferencesForDomain.delete(coreDomainAndApplication_Names.application);
                     }
                 }
             }
-            const allApplicationReferencesForDomain = allReferencedApplicationMap.get(coreDomainAndDbApplication_Names.domain);
+            const allApplicationReferencesForDomain = allReferencedApplicationMap.get(coreDomainAndApplication_Names.domain);
             if (allApplicationReferencesForDomain) {
-                allApplicationReferencesForDomain.delete(coreDomainAndDbApplication_Names.application);
+                allApplicationReferencesForDomain.delete(coreDomainAndApplication_Names.application);
             }
         }
     }
     async findExistingApplications(allReferencedApplicationMap, context) {
-        const fullDbApplication_Names = [];
-        const coreDomainAndDbApplication_NamesByDbApplication_Name = new Map();
+        const fullApplication_Names = [];
+        const coreDomainAndApplication_NamesByApplication_Name = new Map();
         for (const [domainName, allReferencedApplicationsForDomain] of allReferencedApplicationMap) {
-            for (const [coreDbApplication_Name, referencedApplication] of allReferencedApplicationsForDomain) {
-                const fullDbApplication_Name = this.dbApplicationUtils.
-                    getDbApplication_FullName(referencedApplication);
-                fullDbApplication_Names.push(fullDbApplication_Name);
-                coreDomainAndDbApplication_NamesByDbApplication_Name.set(fullDbApplication_Name, {
+            for (const [coreApplication_Name, referencedApplication] of allReferencedApplicationsForDomain) {
+                const fullApplication_Name = this.applicationNameUtils.
+                    getApplication_FullName(referencedApplication);
+                fullApplication_Names.push(fullApplication_Name);
+                coreDomainAndApplication_NamesByApplication_Name.set(fullApplication_Name, {
                     domain: domainName,
-                    application: coreDbApplication_Name
+                    application: coreApplication_Name
                 });
             }
         }
         let existingApplicationMapByName;
-        if (!fullDbApplication_Names.length) {
+        if (!fullApplication_Names.length) {
             existingApplicationMapByName = new Map();
         }
         else {
             await this.transactionManager.transactInternal(async (_transaction, context) => {
-                existingApplicationMapByName = await this.dbApplicationDao
-                    .findMapByFullNames(fullDbApplication_Names, context);
+                existingApplicationMapByName = await this.ddlApplicationDao
+                    .findMapByFullNames(fullApplication_Names, context);
             }, null, context);
         }
         return {
-            coreDomainAndDbApplication_NamesByDbApplication_Name,
+            coreDomainAndApplication_NamesByApplication_Name,
             existingApplicationMapByName
         };
     }
@@ -13918,13 +13918,13 @@ let ApplicationChecker = class ApplicationChecker {
 };
 __decorate$e([
     Inject()
-], ApplicationChecker.prototype, "dbApplicationDao", void 0);
+], ApplicationChecker.prototype, "ddlApplicationDao", void 0);
 __decorate$e([
     Inject()
 ], ApplicationChecker.prototype, "datastructureUtils", void 0);
 __decorate$e([
     Inject()
-], ApplicationChecker.prototype, "dbApplicationUtils", void 0);
+], ApplicationChecker.prototype, "applicationNameUtils", void 0);
 __decorate$e([
     Inject()
 ], ApplicationChecker.prototype, "transactionManager", void 0);
@@ -13940,9 +13940,9 @@ let ApplicationLocator = class ApplicationLocator {
         if (!applicationVersionsForDomain_Name) {
             return null;
         }
-        const fullDbApplication_Name = this.dbApplicationUtils.
-            getDbApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
-        const latestApplicationVersionForApplication = applicationVersionsForDomain_Name.get(fullDbApplication_Name);
+        const fullApplication_Name = this.applicationNameUtils.
+            getApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
+        const latestApplicationVersionForApplication = applicationVersionsForDomain_Name.get(fullApplication_Name);
         const jsonApplicationVersion = jsonApplication.versions[0];
         if (latestApplicationVersionForApplication
             && latestApplicationVersionForApplication.integerVersion !== jsonApplicationVersion.integerVersion) {
@@ -13950,14 +13950,14 @@ let ApplicationLocator = class ApplicationLocator {
         }
         return latestApplicationVersionForApplication;
     }
-    async locateLatestApplicationVersionByDbApplication_Name(fullDbApplication_Name, terminalStore) {
-        return terminalStore.getLatestApplicationVersionMapByDbApplication_FullName()
-            .get(fullDbApplication_Name);
+    async locateLatestApplicationVersionByApplication_Name(fullApplication_Name, terminalStore) {
+        return terminalStore.getLatestApplicationVersionMapByApplication_FullName()
+            .get(fullApplication_Name);
     }
 };
 __decorate$e([
     Inject()
-], ApplicationLocator.prototype, "dbApplicationUtils", void 0);
+], ApplicationLocator.prototype, "applicationNameUtils", void 0);
 ApplicationLocator = __decorate$e([
     Injected()
 ], ApplicationLocator);
@@ -13979,8 +13979,8 @@ let ApplicationComposer = class ApplicationComposer {
             applicationMapByFullName.set(application.fullName, application);
         }
         const newLatestApplicationVersions = [];
-        const newApplicationVersionMapByDbApplication_Name = new Map();
-        const newEntitiesMapByDbApplication_Name = new Map();
+        const newApplicationVersionMapByApplication_Name = new Map();
+        const newEntitiesMapByApplication_Name = new Map();
         const newPropertiesMap = new Map();
         const newRelationsMap = new Map();
         const newColumnsMap = new Map();
@@ -14025,13 +14025,13 @@ let ApplicationComposer = class ApplicationComposer {
             added
         };
         for (const jsonApplication of jsonApplications) {
-            jsonApplicationMapByFullName.set(this.dbApplicationUtils.
-                getDbApplication_FullName(jsonApplication), jsonApplication);
+            jsonApplicationMapByFullName.set(this.applicationNameUtils.
+                getApplication_FullName(jsonApplication), jsonApplication);
             const domain = await this.composeDomain(jsonApplication.domain, allDomains, added.domains, domainMapByName);
             const application = this.composeApplication(domain, jsonApplication, allApplications, added.applications, applicationMapByFullName);
-            this.composeApplicationVersion(jsonApplication, application, newLatestApplicationVersions, added.applicationVersions, newApplicationVersionMapByDbApplication_Name);
+            this.composeApplicationVersion(jsonApplication, application, newLatestApplicationVersions, added.applicationVersions, newApplicationVersionMapByApplication_Name);
         }
-        const { newApplicationReferenceMap, newApplicationReferences } = await this.composeApplicationReferences(jsonApplicationMapByFullName, newApplicationVersionMapByDbApplication_Name, terminalStore, allDdlObjects, context.deepTraverseReferences);
+        const { newApplicationReferenceMap, newApplicationReferences } = await this.composeApplicationReferences(jsonApplicationMapByFullName, newApplicationVersionMapByApplication_Name, terminalStore, allDdlObjects, context.deepTraverseReferences);
         added.applicationReferences = newApplicationReferences;
         for (const applicationVersion of allApplicationVersionsByIds) {
             if (applicationVersion) {
@@ -14039,12 +14039,12 @@ let ApplicationComposer = class ApplicationComposer {
             }
         }
         for (const jsonApplication of jsonApplications) {
-            const fullDbApplication_Name = this.dbApplicationUtils.
-                getDbApplication_FullName(jsonApplication);
-            jsonApplicationMapByFullName.set(fullDbApplication_Name, jsonApplication);
+            const fullApplication_Name = this.applicationNameUtils.
+                getApplication_FullName(jsonApplication);
+            jsonApplicationMapByFullName.set(fullApplication_Name, jsonApplication);
             const domain = domainMapByName.get(jsonApplication.domain);
-            const application = applicationMapByFullName.get(this.dbApplicationUtils.
-                getDbApplication_FullName(jsonApplication));
+            const application = applicationMapByFullName.get(this.applicationNameUtils.
+                getApplication_FullName(jsonApplication));
             if (!application.index) {
                 jsonApplication.lastIds = {
                     ...this.terminalStore.getLastIds()
@@ -14054,17 +14054,17 @@ let ApplicationComposer = class ApplicationComposer {
             if (!domain._localId) {
                 domain._localId = ++this.terminalStore.getLastIds().domains;
             }
-            const applicationVersion = newApplicationVersionMapByDbApplication_Name
+            const applicationVersion = newApplicationVersionMapByApplication_Name
                 .get(application.fullName);
             if (!applicationVersion._localId) {
                 applicationVersion._localId = ++this.terminalStore.getLastIds().applicationVersions;
                 applicationVersion.jsonApplication = jsonApplication;
             }
-            this.composeApplicationEntities(jsonApplication, applicationVersion, newEntitiesMapByDbApplication_Name, added.entities);
-            this.composeApplicationProperties(jsonApplication, applicationVersion, added.properties, newPropertiesMap, newEntitiesMapByDbApplication_Name);
-            this.composeApplicationRelations(jsonApplication, applicationVersion, added.relations, newRelationsMap, newEntitiesMapByDbApplication_Name, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects);
-            this.composeApplicationColumns(jsonApplication, applicationVersion, added.columns, newColumnsMap, added.propertyColumns, newEntitiesMapByDbApplication_Name, newPropertiesMap);
-            this.composeApplicationRelationColumns(jsonApplication, applicationVersion, added.relationColumns, newApplicationVersionMapByDbApplication_Name, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects);
+            this.composeApplicationEntities(jsonApplication, applicationVersion, newEntitiesMapByApplication_Name, added.entities);
+            this.composeApplicationProperties(jsonApplication, applicationVersion, added.properties, newPropertiesMap, newEntitiesMapByApplication_Name);
+            this.composeApplicationRelations(jsonApplication, applicationVersion, added.relations, newRelationsMap, newEntitiesMapByApplication_Name, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects);
+            this.composeApplicationColumns(jsonApplication, applicationVersion, added.columns, newColumnsMap, added.propertyColumns, newEntitiesMapByApplication_Name, newPropertiesMap);
+            this.composeApplicationRelationColumns(jsonApplication, applicationVersion, added.relationColumns, newApplicationVersionMapByApplication_Name, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects);
             this.composeApplicationApis(jsonApplication, applicationVersion, added.apiClasses, added.apiOperations, added.apiParameters, added.apiReturnTypes);
         }
         this.addObjects(allDdlObjects.added, allDdlObjects.all);
@@ -14073,13 +14073,13 @@ let ApplicationComposer = class ApplicationComposer {
         }
         return allDdlObjects;
     }
-    getExistingLatestApplicationVersion(referencedDbApplication_Name, allDdlObjects) {
+    getExistingLatestApplicationVersion(referencedApplication_Name, allDdlObjects) {
         for (const latestApplicationVersion of allDdlObjects.all.latestApplicationVersions) {
-            if (latestApplicationVersion.application.fullName == referencedDbApplication_Name) {
+            if (latestApplicationVersion.application.fullName == referencedApplication_Name) {
                 return latestApplicationVersion;
             }
         }
-        throw new Error(`Cannot find application "${referencedDbApplication_Name}".`);
+        throw new Error(`Cannot find application "${referencedApplication_Name}".`);
     }
     addApplicationVersionObjects(applicationVersion, ddlObjects) {
         let foundDomain = false;
@@ -14188,15 +14188,15 @@ let ApplicationComposer = class ApplicationComposer {
         return domain;
     }
     composeApplication(domain, jsonApplication, allApplications, newApplications, applicationMapByFullName) {
-        const fullDbApplication_Name = this.dbApplicationUtils.
-            getDbApplication_FullName(jsonApplication);
-        let application = applicationMapByFullName.get(fullDbApplication_Name);
+        const fullApplication_Name = this.applicationNameUtils.
+            getApplication_FullName(jsonApplication);
+        let application = applicationMapByFullName.get(fullApplication_Name);
         if (!application) {
             application = {
                 currentVersion: [],
                 domain,
                 index: null,
-                fullName: fullDbApplication_Name,
+                fullName: fullApplication_Name,
                 name: jsonApplication.name,
                 scope: 'public',
                 publicSigningKey: 'localhost',
@@ -14205,11 +14205,11 @@ let ApplicationComposer = class ApplicationComposer {
             };
             allApplications.push(application);
             newApplications.push(application);
-            applicationMapByFullName.set(fullDbApplication_Name, application);
+            applicationMapByFullName.set(fullApplication_Name, application);
         }
         return application;
     }
-    composeApplicationVersion(jsonApplication, application, newLatestApplicationVersions, newApplicationVersions, newApplicationVersionMapByDbApplication_Name) {
+    composeApplicationVersion(jsonApplication, application, newLatestApplicationVersions, newApplicationVersions, newApplicationVersionMapByApplication_Name) {
         // Application versions are guaranteed to be new
         let newApplicationVersion;
         for (const applicationVersion of jsonApplication.versions) {
@@ -14247,35 +14247,35 @@ let ApplicationComposer = class ApplicationComposer {
         // needed for normalOperation only
         application.currentVersion = [newApplicationCurrentVersion];
         newLatestApplicationVersions.push(newApplicationVersion);
-        newApplicationVersionMapByDbApplication_Name.set(application.fullName, newApplicationVersion);
+        newApplicationVersionMapByApplication_Name.set(application.fullName, newApplicationVersion);
         return newApplicationVersion;
     }
-    async composeApplicationReferences(jsonApplicationMapByName, newApplicationVersionMapByDbApplication_Name, terminalStore, allDdlObjects, deepTraverseReferences) {
+    async composeApplicationReferences(jsonApplicationMapByName, newApplicationVersionMapByApplication_Name, terminalStore, allDdlObjects, deepTraverseReferences) {
         const newApplicationReferenceMap = new Map();
         const newApplicationReferenceLookup = new Map();
         const newApplicationReferences = [];
-        for (const [applicationName, ownApplicationVersion] of newApplicationVersionMapByDbApplication_Name) {
+        for (const [applicationName, ownApplicationVersion] of newApplicationVersionMapByApplication_Name) {
             const application = ownApplicationVersion.application;
             const jsonApplication = jsonApplicationMapByName.get(application.fullName);
             const lastJsonApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
             const applicationReferences = this.datastructureUtils.ensureChildArray(newApplicationReferenceMap, applicationName);
             const applicationReferenceLookup = this.datastructureUtils.ensureChildJsSet(newApplicationReferenceLookup, applicationName);
             for (const jsonReferencedApplication of lastJsonApplicationVersion.referencedApplications) {
-                const referencedDbApplication_FullName = this.dbApplicationUtils.
-                    getDbApplication_FullName(jsonReferencedApplication);
-                let referencedApplicationVersion = newApplicationVersionMapByDbApplication_Name.get(referencedDbApplication_FullName);
+                const referencedApplication_FullName = this.applicationNameUtils.
+                    getApplication_FullName(jsonReferencedApplication);
+                let referencedApplicationVersion = newApplicationVersionMapByApplication_Name.get(referencedApplication_FullName);
                 if (!referencedApplicationVersion) {
-                    referencedApplicationVersion = await this.applicationLocator.locateLatestApplicationVersionByDbApplication_Name(referencedDbApplication_FullName, terminalStore);
+                    referencedApplicationVersion = await this.applicationLocator.locateLatestApplicationVersionByApplication_Name(referencedApplication_FullName, terminalStore);
                     if (!referencedApplicationVersion) {
                         throw new Error(`Could not locate application:
-						${referencedDbApplication_FullName}
+						${referencedApplication_FullName}
 						in either existing applications or applications being currently processed`);
                     }
                     this.addApplicationVersionObjects(referencedApplicationVersion, allDdlObjects.all);
                     if (deepTraverseReferences) {
                         // This should cause another iteration over the outer loop to process newly added ApplicationVersion
-                        jsonApplicationMapByName.set(referencedDbApplication_FullName, referencedApplicationVersion.jsonApplication);
-                        newApplicationVersionMapByDbApplication_Name.set(referencedDbApplication_FullName, referencedApplicationVersion);
+                        jsonApplicationMapByName.set(referencedApplication_FullName, referencedApplicationVersion.jsonApplication);
+                        newApplicationVersionMapByApplication_Name.set(referencedApplication_FullName, referencedApplicationVersion);
                     }
                 }
                 if (!applicationReferenceLookup.has(jsonReferencedApplication.index)) {
@@ -14297,9 +14297,9 @@ let ApplicationComposer = class ApplicationComposer {
             newApplicationReferences
         };
     }
-    composeApplicationEntities(jsonApplication, applicationVersion, newEntitiesMapByDbApplication_Name, newEntities) {
-        const applicationName = this.dbApplicationUtils.
-            getDbApplication_FullName(jsonApplication);
+    composeApplicationEntities(jsonApplication, applicationVersion, newEntitiesMapByApplication_Name, newEntities) {
+        const applicationName = this.applicationNameUtils.
+            getApplication_FullName(jsonApplication);
         let index = 0;
         // TODO: verify that jsonApplication.versions is always ordered ascending
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
@@ -14328,15 +14328,15 @@ let ApplicationComposer = class ApplicationComposer {
             newApplicationEntities.push(entity);
             newEntities.push(entity);
         }
-        newEntitiesMapByDbApplication_Name.set(applicationName, newApplicationEntities);
+        newEntitiesMapByApplication_Name.set(applicationName, newApplicationEntities);
         applicationVersion.entities = newApplicationEntities;
     }
-    composeApplicationProperties(jsonApplication, applicationVersion, newProperties, newPropertiesMap, newEntitiesMapByDbApplication_Name) {
-        const applicationName = this.dbApplicationUtils.
-            getDbApplication_FullName(jsonApplication);
+    composeApplicationProperties(jsonApplication, applicationVersion, newProperties, newPropertiesMap, newEntitiesMapByApplication_Name) {
+        const applicationName = this.applicationNameUtils.
+            getApplication_FullName(jsonApplication);
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
         const jsonEntities = currentApplicationVersion.entities;
-        const entities = newEntitiesMapByDbApplication_Name.get(applicationName);
+        const entities = newEntitiesMapByApplication_Name.get(applicationName);
         const propertiesByEntityIndex = this.datastructureUtils.ensureChildArray(newPropertiesMap, applicationName);
         jsonEntities.forEach((jsonEntity, entityIndex) => {
             const entity = entities[entityIndex];
@@ -14361,12 +14361,12 @@ let ApplicationComposer = class ApplicationComposer {
             }
         });
     }
-    composeApplicationRelations(jsonApplication, applicationVersion, newRelations, newRelationsMap, newEntitiesMapByDbApplication_Name, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects) {
-        const applicationName = this.dbApplicationUtils.
-            getDbApplication_FullName(jsonApplication);
+    composeApplicationRelations(jsonApplication, applicationVersion, newRelations, newRelationsMap, newEntitiesMapByApplication_Name, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects) {
+        const applicationName = this.applicationNameUtils.
+            getApplication_FullName(jsonApplication);
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
         const jsonEntities = currentApplicationVersion.entities;
-        const entitiesForApplication = newEntitiesMapByDbApplication_Name.get(applicationName);
+        const entitiesForApplication = newEntitiesMapByApplication_Name.get(applicationName);
         const propertiesByEntityIndex = newPropertiesMap.get(applicationName);
         const relationsByEntityIndex = this.datastructureUtils.ensureChildArray(newRelationsMap, applicationName);
         const referencesForApplication = newApplicationReferenceMap.get(applicationName);
@@ -14380,15 +14380,15 @@ let ApplicationComposer = class ApplicationComposer {
             let index = 0;
             for (const queryRelation of jsonEntity.relations) {
                 const property = propertiesForEntity[queryRelation.propertyRef.index];
-                let referencedDbApplication_Name = applicationName;
-                if (queryRelation.relationTableDbApplication_Index
-                    || queryRelation.relationTableDbApplication_Index === 0) {
-                    const applicationReference = referencesForApplication[queryRelation.relationTableDbApplication_Index];
-                    referencedDbApplication_Name = applicationReference.referencedApplicationVersion.application.fullName;
+                let referencedApplication_Name = applicationName;
+                if (queryRelation.relationTableApplication_Index
+                    || queryRelation.relationTableApplication_Index === 0) {
+                    const applicationReference = referencesForApplication[queryRelation.relationTableApplication_Index];
+                    referencedApplication_Name = applicationReference.referencedApplicationVersion.application.fullName;
                 }
-                let entitiesArray = newEntitiesMapByDbApplication_Name.get(referencedDbApplication_Name);
+                let entitiesArray = newEntitiesMapByApplication_Name.get(referencedApplication_Name);
                 if (!entitiesArray) {
-                    const applicationVersion = this.getExistingLatestApplicationVersion(referencedDbApplication_Name, allDdlObjects);
+                    const applicationVersion = this.getExistingLatestApplicationVersion(referencedApplication_Name, allDdlObjects);
                     entitiesArray = applicationVersion.entities;
                 }
                 const relationEntity = entitiesArray[queryRelation.relationTableIndex];
@@ -14416,12 +14416,12 @@ let ApplicationComposer = class ApplicationComposer {
             }
         }
     }
-    composeApplicationColumns(jsonApplication, applicationVersion, newColumns, newColumnsMap, newPropertyColumns, newEntitiesMapByDbApplication_Name, newPropertiesMap) {
-        const applicationName = this.dbApplicationUtils.
-            getDbApplication_FullName(jsonApplication);
+    composeApplicationColumns(jsonApplication, applicationVersion, newColumns, newColumnsMap, newPropertyColumns, newEntitiesMapByApplication_Name, newPropertiesMap) {
+        const applicationName = this.applicationNameUtils.
+            getApplication_FullName(jsonApplication);
         const columnsByTable = [];
         newColumnsMap.set(applicationName, columnsByTable);
-        const entitiesForApplication = newEntitiesMapByDbApplication_Name.get(applicationName);
+        const entitiesForApplication = newEntitiesMapByApplication_Name.get(applicationName);
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
         const jsonEntities = currentApplicationVersion.entities;
         const propertiesForApplication = newPropertiesMap.get(applicationName);
@@ -14469,9 +14469,9 @@ let ApplicationComposer = class ApplicationComposer {
             });
         });
     }
-    composeApplicationRelationColumns(jsonApplication, applicationVersion, newRelationColumns, newApplicationVersionMapByDbApplication_Name, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects) {
-        const applicationName = this.dbApplicationUtils.
-            getDbApplication_FullName(jsonApplication);
+    composeApplicationRelationColumns(jsonApplication, applicationVersion, newRelationColumns, newApplicationVersionMapByApplication_Name, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects) {
+        const applicationName = this.applicationNameUtils.
+            getApplication_FullName(jsonApplication);
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
         const jsonEntities = currentApplicationVersion.entities;
         const columnsForApplication = newColumnsMap.get(applicationName);
@@ -14490,16 +14490,16 @@ let ApplicationComposer = class ApplicationComposer {
                     // 	manyRelation.manyRelationColumns = []
                     // }
                     let oneRelationApplicationVersion;
-                    if (jsonRelationColumn.oneDbApplication_Index
-                        || jsonRelationColumn.oneDbApplication_Index === 0) {
-                        const applicationReference = applicationReferencesForApplication[jsonRelationColumn.oneDbApplication_Index];
+                    if (jsonRelationColumn.oneApplication_Index
+                        || jsonRelationColumn.oneApplication_Index === 0) {
+                        const applicationReference = applicationReferencesForApplication[jsonRelationColumn.oneApplication_Index];
                         oneRelationApplicationVersion = applicationReference.referencedApplicationVersion;
                     }
                     else {
-                        oneRelationApplicationVersion = newApplicationVersionMapByDbApplication_Name.get(applicationName);
+                        oneRelationApplicationVersion = newApplicationVersionMapByApplication_Name.get(applicationName);
                     }
-                    const referencedDbApplication_Name = oneRelationApplicationVersion.application.fullName;
-                    const oneTableColumnsMapForApplication = newColumnsMap.get(referencedDbApplication_Name);
+                    const referencedApplication_Name = oneRelationApplicationVersion.application.fullName;
+                    const oneTableColumnsMapForApplication = newColumnsMap.get(referencedApplication_Name);
                     let oneTableColumns;
                     let oneTableRelations;
                     if (oneTableColumnsMapForApplication) {
@@ -14507,19 +14507,19 @@ let ApplicationComposer = class ApplicationComposer {
                         oneTableRelations = newRelationsMap.get(oneRelationApplicationVersion.application.fullName)[jsonRelationColumn.oneTableIndex];
                     }
                     else {
-                        const applicationVersion = this.getExistingLatestApplicationVersion(referencedDbApplication_Name, allDdlObjects);
+                        const applicationVersion = this.getExistingLatestApplicationVersion(referencedApplication_Name, allDdlObjects);
                         const entitiesArray = applicationVersion.entities;
                         const entity = entitiesArray[jsonRelationColumn.oneTableIndex];
                         oneTableColumns = entity.columns;
                         oneTableRelations = entity.relations;
                     }
                     const oneColumn = oneTableColumns[jsonRelationColumn.oneColumnIndex];
-                    // if (!jsonRelationColumn.oneDbApplication_Index
+                    // if (!jsonRelationColumn.oneApplication_Index
                     // 	&& !oneColumn.oneRelationColumns) {
                     // 	oneColumn.oneRelationColumns = []
                     // }
                     const oneRelation = oneTableRelations[jsonRelationColumn.oneRelationIndex];
-                    // if (!jsonRelationColumn.oneDbApplication_Index
+                    // if (!jsonRelationColumn.oneApplication_Index
                     // 	&& !oneRelation.oneRelationColumns) {
                     // 	oneRelation.oneRelationColumns = []
                     // }
@@ -14595,7 +14595,7 @@ __decorate$e([
 ], ApplicationComposer.prototype, "datastructureUtils", void 0);
 __decorate$e([
     Inject()
-], ApplicationComposer.prototype, "dbApplicationUtils", void 0);
+], ApplicationComposer.prototype, "applicationNameUtils", void 0);
 __decorate$e([
     Inject()
 ], ApplicationComposer.prototype, "domainRetriever", void 0);
@@ -14613,11 +14613,11 @@ let ApplicationRecorder = class ApplicationRecorder {
         await this.transactionManager.transactInternal(async () => {
             // FIXME: add support for real application versioning
             this.setDefaultVersioning(ddlObjects);
-            const dbDomainDao = await this.getdbDomainDaoAsync();
-            await dbDomainDao.checkAndInsertIfNeeded(ddlObjects.domains, context);
-            await this.dbApplicationDao.insert(ddlObjects.applications, context);
-            await this.dbApplicationVersionDao.insert(ddlObjects.applicationVersions, context);
-            await this.dbApplicationReferenceDao.insert(ddlObjects.applicationReferences, context);
+            const ddlDomainDao = await this.getddlDomainDaoAsync();
+            await ddlDomainDao.checkAndInsertIfNeeded(ddlObjects.domains, context);
+            await this.ddlApplicationDao.insert(ddlObjects.applications, context);
+            await this.ddlApplicationVersionDao.insert(ddlObjects.applicationVersions, context);
+            await this.ddlApplicationReferenceDao.insert(ddlObjects.applicationReferences, context);
             await this.dbEntityDao.insert(ddlObjects.entities, context);
             await this.dbPropertyDao.insert(ddlObjects.properties, context);
             await this.dbRelationDao.insert(ddlObjects.relations, context);
@@ -14688,7 +14688,7 @@ __decorate$e([
 ], ApplicationRecorder.prototype, "dbColumnDao", void 0);
 __decorate$e([
     Inject()
-], ApplicationRecorder.prototype, "dbApplicationDao", void 0);
+], ApplicationRecorder.prototype, "ddlApplicationDao", void 0);
 __decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "dbEntityDao", void 0);
@@ -14700,7 +14700,7 @@ __decorate$e([
 ], ApplicationRecorder.prototype, "dbPropertyDao", void 0);
 __decorate$e([
     Inject()
-], ApplicationRecorder.prototype, "dbApplicationReferenceDao", void 0);
+], ApplicationRecorder.prototype, "ddlApplicationReferenceDao", void 0);
 __decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "dbRelationColumnDao", void 0);
@@ -14709,10 +14709,10 @@ __decorate$e([
 ], ApplicationRecorder.prototype, "dbRelationDao", void 0);
 __decorate$e([
     Inject()
-], ApplicationRecorder.prototype, "dbApplicationVersionDao", void 0);
+], ApplicationRecorder.prototype, "ddlApplicationVersionDao", void 0);
 __decorate$e([
     Inject()
-], ApplicationRecorder.prototype, "dbDomainDao", void 0);
+], ApplicationRecorder.prototype, "ddlDomainDao", void 0);
 __decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "transactionManager", void 0);
@@ -14731,7 +14731,7 @@ let ApplicationInitializer = class ApplicationInitializer {
         // Hydrate all DDL objects and Sequences
         const ddlObjects = await this.queryObjectInitializer.initialize(context);
         this.addNewApplicationVersionsToAll(ddlObjects);
-        this.setAirDbApplications(ddlObjects);
+        this.setAirIApplications(ddlObjects);
         await this.sequenceGenerator.initialize(context);
     }
     /*
@@ -14748,7 +14748,7 @@ let ApplicationInitializer = class ApplicationInitializer {
         const existingApplicationMap = new Map();
         if (loadExistingApplications) {
             await this.transactionManager.transactInternal(async (_transaction, context) => {
-                const applications = await this.dbApplicationDao.findAllWithJson(context);
+                const applications = await this.ddlApplicationDao.findAllWithJson(context);
                 for (const application of applications) {
                     existingApplicationMap.set(application.fullName, application);
                 }
@@ -14756,21 +14756,21 @@ let ApplicationInitializer = class ApplicationInitializer {
         }
         const newJsonApplicationMap = new Map();
         for (const jsonApplication of jsonApplications) {
-            const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-                getDbApplication_FullName(jsonApplication));
+            const existingApplication = existingApplicationMap.get(this.applicationNameUtils.
+                getApplication_FullName(jsonApplication));
             if (existingApplication) {
                 jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds;
             }
             else {
-                newJsonApplicationMap.set(this.dbApplicationUtils.
-                    getDbApplication_FullName(jsonApplication), jsonApplication);
+                newJsonApplicationMap.set(this.applicationNameUtils.
+                    getApplication_FullName(jsonApplication), jsonApplication);
             }
         }
         let checkedApplicationsWithValidDependencies = [];
         await this.transactionManager.transactInternal(async (_transaction, context) => {
             for (const jsonApplication of applicationsWithValidDependencies) {
-                const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-                    getDbApplication_FullName(jsonApplication));
+                const existingApplication = existingApplicationMap.get(this.applicationNameUtils.
+                    getApplication_FullName(jsonApplication));
                 if (!existingApplication) {
                     checkedApplicationsWithValidDependencies.push(jsonApplication);
                     await this.schemaBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, areFeatureApps, context);
@@ -14782,22 +14782,22 @@ let ApplicationInitializer = class ApplicationInitializer {
         });
         this.addNewApplicationVersionsToAll(allDdlObjects);
         this.queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects);
-        this.setAirDbApplications(allDdlObjects);
+        this.setAirIApplications(allDdlObjects);
         await this.transactionManager.transactInternal(async (_transaction, context) => {
             const newSequences = await this.schemaBuilder.buildAllSequences(applicationsWithValidDependencies, context);
             await this.sequenceGenerator.initialize(context, newSequences);
             await this.applicationRecorder.record(allDdlObjects.added, context);
         }, null, context);
     }
-    async isApplicationIsInstalled(domain, fullDbApplication_Name) {
-        if (!fullDbApplication_Name) {
+    async isApplicationIsInstalled(domain, fullApplication_Name) {
+        if (!fullApplication_Name) {
             return false;
         }
         if (this.appTrackerUtils.isInternalDomain(domain)) {
             return true;
         }
         return !!this.terminalStore.getApplicationInitializer()
-            .applicationWindowMap.get(fullDbApplication_Name);
+            .applicationWindowMap.get(fullApplication_Name);
     }
     async ensureApplicationIsInstalled(domainName, applicationName) {
         const isInternalDomain = await this.appTrackerUtils
@@ -14805,18 +14805,18 @@ let ApplicationInitializer = class ApplicationInitializer {
         if (isInternalDomain) {
             return true;
         }
-        const fullDbApplication_Name = this.dbApplicationUtils.
-            getDbApplication_FullNameFromDomainAndName(domainName, applicationName);
+        const fullApplication_Name = this.applicationNameUtils.
+            getApplication_FullNameFromDomainAndName(domainName, applicationName);
         const applicationInitializing = this.terminalStore.getApplicationInitializer()
-            .initializingApplicationMap.get(fullDbApplication_Name);
+            .initializingApplicationMap.get(fullApplication_Name);
         if (applicationInitializing) {
             return false;
         }
-        const isApplicationLoaded = await this.isAppLoaded(fullDbApplication_Name);
+        const isApplicationLoaded = await this.isAppLoaded(fullApplication_Name);
         if (!isApplicationLoaded) {
             this.terminalStore.getApplicationInitializer()
-                .initializingApplicationMap.set(fullDbApplication_Name, true);
-            await this.nativeInitializeApplication(domainName, applicationName, fullDbApplication_Name);
+                .initializingApplicationMap.set(fullApplication_Name, true);
+            await this.nativeInitializeApplication(domainName, applicationName, fullApplication_Name);
         }
         return true;
     }
@@ -14842,7 +14842,7 @@ let ApplicationInitializer = class ApplicationInitializer {
         });
         this.addNewApplicationVersionsToAll(ddlObjects);
         this.queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects);
-        this.setAirDbApplications(ddlObjects);
+        this.setAirIApplications(ddlObjects);
     }
     async stage(jsonApplications, context) {
         // Temporarily Initialize application DDL objects and Sequences to allow for normal hydration
@@ -14851,7 +14851,7 @@ let ApplicationInitializer = class ApplicationInitializer {
         });
         this.addNewApplicationVersionsToAll(tempDdlObjects);
         this.queryObjectInitializer.generateQObjectsAndPopulateStore(tempDdlObjects);
-        this.setAirDbApplications(tempDdlObjects);
+        this.setAirIApplications(tempDdlObjects);
         const newSequences = await this.schemaBuilder.stageSequences(jsonApplications, context);
         await this.sequenceGenerator.tempInitialize(context, newSequences);
     }
@@ -14881,9 +14881,9 @@ let ApplicationInitializer = class ApplicationInitializer {
                 // const
                 for (let i = 0; i < applicationReferenceCheckResults.neededDependencies.length; i++) {
                     const neededDependency = applicationReferenceCheckResults.neededDependencies[i];
-                    const fullDbApplication_Name = this.dbApplicationUtils.
-                        getDbApplication_FullName(neededDependency);
-                    await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name, fullDbApplication_Name);
+                    const fullApplication_Name = this.applicationNameUtils.
+                        getApplication_FullName(neededDependency);
+                    await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name, fullApplication_Name);
                 }
             }
             applicationsWithValidDependencies = [
@@ -14896,7 +14896,7 @@ let ApplicationInitializer = class ApplicationInitializer {
         }
         return applicationsWithValidDependencies;
     }
-    setAirDbApplications(ddlObjects) {
+    setAirIApplications(ddlObjects) {
         for (let application of ddlObjects.all.applications) {
             this.airportDatabase.applications[application.index] = application;
         }
@@ -14913,7 +14913,7 @@ __decorate$e([
 ], ApplicationInitializer.prototype, "applicationComposer", void 0);
 __decorate$e([
     Inject()
-], ApplicationInitializer.prototype, "dbApplicationDao", void 0);
+], ApplicationInitializer.prototype, "ddlApplicationDao", void 0);
 __decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "applicationLocator", void 0);
@@ -14925,7 +14925,7 @@ __decorate$e([
 ], ApplicationInitializer.prototype, "appTrackerUtils", void 0);
 __decorate$e([
     Inject()
-], ApplicationInitializer.prototype, "dbApplicationUtils", void 0);
+], ApplicationInitializer.prototype, "applicationNameUtils", void 0);
 __decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "queryObjectInitializer", void 0);
@@ -15131,7 +15131,7 @@ DdlObjectLinker = __decorate$e([
 
 let DdlObjectRetriever = class DdlObjectRetriever {
     async retrieveDdlObjects(context) {
-        const applications = await this.dbApplicationDao.findAllActive(context);
+        const applications = await this.ddlApplicationDao.findAllActive(context);
         const applicationIndexes = [];
         const domainIdSet = new Set();
         applications.forEach(application => {
@@ -15141,28 +15141,28 @@ let DdlObjectRetriever = class DdlObjectRetriever {
         applications.sort((application1, application2) => {
             return application1.index - application2.index;
         });
-        const domains = await this.dbDomainDao.findByIdIn(Array.from(domainIdSet), context);
-        const allApplicationVersions = await this.dbApplicationVersionDao
-            .findAllActiveOrderByDbApplication_IndexAndId(context);
+        const domains = await this.ddlDomainDao.findByIdIn(Array.from(domainIdSet), context);
+        const allApplicationVersions = await this.ddlApplicationVersionDao
+            .findAllActiveOrderByApplication_IndexAndId(context);
         const applicationVersionMapByLocalId = new Map();
-        let lastDbApplication_Index;
-        // const allApplicationVersionsByIds: DbApplicationVersion[] = []
+        let lastApplication_Index;
+        // const allApplicationVersionsByIds: IApplicationVersion[] = []
         const latestApplicationVersions = [];
         const applicationVersions = [];
         for (const applicationVersion of allApplicationVersions) {
-            if (applicationVersion.application.index !== lastDbApplication_Index) {
+            if (applicationVersion.application.index !== lastApplication_Index) {
                 latestApplicationVersions.push(applicationVersion);
             }
             // allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion
-            lastDbApplication_Index = applicationVersion.application.index;
+            lastApplication_Index = applicationVersion.application.index;
             applicationVersions.push(applicationVersion);
             applicationVersionMapByLocalId.set(applicationVersion._localId, applicationVersion);
         }
-        const latestDbApplicationVersion_LocalIds = latestApplicationVersions.map(applicationVersion => applicationVersion._localId);
-        const applicationReferences = await this.dbApplicationReferenceDao
-            .findAllForApplicationVersions(latestDbApplicationVersion_LocalIds, context);
+        const latestApplicationVersion_LocalIds = latestApplicationVersions.map(applicationVersion => applicationVersion._localId);
+        const applicationReferences = await this.ddlApplicationReferenceDao
+            .findAllForApplicationVersions(latestApplicationVersion_LocalIds, context);
         const entities = await this.dbEntityDao
-            .findAllForApplicationVersions(latestDbApplicationVersion_LocalIds, context);
+            .findAllForApplicationVersions(latestApplicationVersion_LocalIds, context);
         const entityIds = entities.map(entity => entity._localId);
         /*
         const entityIds = entities.map(
@@ -15278,7 +15278,7 @@ __decorate$e([
 ], DdlObjectRetriever.prototype, "dbColumnDao", void 0);
 __decorate$e([
     Inject()
-], DdlObjectRetriever.prototype, "dbApplicationDao", void 0);
+], DdlObjectRetriever.prototype, "ddlApplicationDao", void 0);
 __decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "dbEntityDao", void 0);
@@ -15290,7 +15290,7 @@ __decorate$e([
 ], DdlObjectRetriever.prototype, "dbPropertyDao", void 0);
 __decorate$e([
     Inject()
-], DdlObjectRetriever.prototype, "dbApplicationReferenceDao", void 0);
+], DdlObjectRetriever.prototype, "ddlApplicationReferenceDao", void 0);
 __decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "dbRelationColumnDao", void 0);
@@ -15299,10 +15299,10 @@ __decorate$e([
 ], DdlObjectRetriever.prototype, "dbRelationDao", void 0);
 __decorate$e([
     Inject()
-], DdlObjectRetriever.prototype, "dbApplicationVersionDao", void 0);
+], DdlObjectRetriever.prototype, "ddlApplicationVersionDao", void 0);
 __decorate$e([
     Inject()
-], DdlObjectRetriever.prototype, "dbDomainDao", void 0);
+], DdlObjectRetriever.prototype, "ddlDomainDao", void 0);
 __decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "terminalStore", void 0);
@@ -15429,15 +15429,15 @@ const SCHEMA_BUILDER = tokens.ApplicationBuilder;
 // Needed as a token in @airport/web-tower (platforms/web-tower)
 tokens.ApplicationLocator;
 takeoff.setDependencies(ApplicationChecker, {
-    dbApplicationDao: DbApplicationDao,
+    ddlApplicationDao: DdlApplicationDao,
     datastructureUtils: DatastructureUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     transactionManager: TRANSACTION_MANAGER
 });
 takeoff.setDependencies(ApplicationComposer, {
     applicationLocator: ApplicationLocator,
     datastructureUtils: DatastructureUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     domainRetriever: DOMAIN_RETRIEVER,
     terminalStore: TerminalStore
 });
@@ -15445,11 +15445,11 @@ takeoff.setDependencies(ApplicationInitializer, {
     airportDatabase: AIRPORT_DATABASE,
     applicationChecker: ApplicationChecker,
     applicationComposer: ApplicationComposer,
-    dbApplicationDao: DbApplicationDao,
+    ddlApplicationDao: DdlApplicationDao,
     applicationLocator: ApplicationLocator,
     applicationRecorder: ApplicationRecorder,
     appTrackerUtils: AppTrackerUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     queryObjectInitializer: QueryObjectInitializer,
     schemaBuilder: SCHEMA_BUILDER,
     sequenceGenerator: SEQUENCE_GENERATOR,
@@ -15457,7 +15457,7 @@ takeoff.setDependencies(ApplicationInitializer, {
     transactionManager: TRANSACTION_MANAGER
 });
 takeoff.setDependencies(ApplicationLocator, {
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
 });
 takeoff.setDependencies(ApplicationRecorder, {
     applicationApiClassDao: ApplicationApiClassDao,
@@ -15465,16 +15465,16 @@ takeoff.setDependencies(ApplicationRecorder, {
     applicationApiParameterDao: ApplicationApiParameterDao,
     applicationApiReturnTypeDao: ApplicationApiReturnTypeDao,
     dbColumnDao: DbColumnDao,
-    dbApplicationDao: DbApplicationDao,
+    ddlApplicationDao: DdlApplicationDao,
     dbEntityDao: DbEntityDao,
     dbPropertyColumnDao: DbPropertyColumnDao,
     dbPropertyDao: DbPropertyDao,
     applicationRecorder: ApplicationRecorder,
-    dbApplicationReferenceDao: DbApplicationReferenceDao,
+    ddlApplicationReferenceDao: DdlApplicationReferenceDao,
     dbRelationColumnDao: DbRelationColumnDao,
     dbRelationDao: DbRelationDao,
-    dbApplicationVersionDao: DbApplicationVersionDao,
-    dbDomainDao: DbDomainDao,
+    ddlApplicationVersionDao: DdlApplicationVersionDao,
+    ddlDomainDao: DdlDomainDao,
     transactionManager: TRANSACTION_MANAGER
 });
 takeoff.setDependencies(DdlObjectLinker, {
@@ -15486,15 +15486,15 @@ takeoff.setDependencies(DdlObjectRetriever, {
     // applicationApiParameterDao: ApplicationApiParameterDao,
     // applicationApiReturnTypeDao: ApplicationApiReturnTypeDao,
     dbColumnDao: DbColumnDao,
-    dbApplicationDao: DbApplicationDao,
+    ddlApplicationDao: DdlApplicationDao,
     dbEntityDao: DbEntityDao,
     dbPropertyColumnDao: DbPropertyColumnDao,
     dbPropertyDao: DbPropertyDao,
-    dbApplicationReferenceDao: DbApplicationReferenceDao,
+    ddlApplicationReferenceDao: DdlApplicationReferenceDao,
     dbRelationColumnDao: DbRelationColumnDao,
     dbRelationDao: DbRelationDao,
-    dbApplicationVersionDao: DbApplicationVersionDao,
-    dbDomainDao: DbDomainDao
+    ddlApplicationVersionDao: DdlApplicationVersionDao,
+    ddlDomainDao: DdlDomainDao
 });
 takeoff.setDependencies(QueryEntityClassCreator, {
     airportDatabase: AIRPORT_DATABASE,
@@ -15514,7 +15514,7 @@ SCHEMA_BUILDER.setDependencies({
 takeoff.setDependencies(SqlSchemaBuilder, {
     airportDatabase: AIRPORT_DATABASE,
     applicationReferenceUtils: ApplicationReferenceUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     sequenceDao: SequenceDao,
     storeDriver: STORE_DRIVER
 });
@@ -16976,7 +16976,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
     async findWithDetailsAndGlobalIdsByIds(actorIds, context) {
         return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a._localId.IN(actorIds), context);
     }
-    async findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(domainName, applicationName, accountPublicSigningKey, terminalGUID, context) {
+    async findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(domainName, applicationName, accountPublicSigningKey, terminalGUID, context) {
         let act;
         let application;
         let domain;
@@ -19108,7 +19108,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -19130,7 +19130,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -19152,7 +19152,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -19188,7 +19188,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneRelationIndex": 5,
                                     "oneColumnIndex": 3,
@@ -19211,7 +19211,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneRelationIndex": 6,
                                     "oneColumnIndex": 3,
@@ -19234,7 +19234,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 5,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneRelationIndex": 6,
                                     "oneColumnIndex": 3,
@@ -19257,7 +19257,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 6,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneRelationIndex": 7,
                                     "oneColumnIndex": 3,
@@ -19280,7 +19280,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 7,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -19486,7 +19486,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -19508,7 +19508,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -19530,7 +19530,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -19650,7 +19650,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 2,
                                     "oneRelationIndex": 5,
                                     "oneColumnIndex": 3,
@@ -19673,7 +19673,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 5,
                                     "oneRelationIndex": 6,
                                     "oneColumnIndex": 3,
@@ -19696,7 +19696,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 5,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 5,
                                     "oneRelationIndex": 7,
                                     "oneColumnIndex": 3,
@@ -19963,7 +19963,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -19985,7 +19985,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20007,7 +20007,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20085,7 +20085,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 5,
                                     "oneRelationIndex": 5,
                                     "oneColumnIndex": 3,
@@ -20287,7 +20287,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20309,7 +20309,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20331,7 +20331,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20353,7 +20353,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 3,
@@ -20376,7 +20376,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 2,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 3,
@@ -20520,7 +20520,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20542,7 +20542,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20564,7 +20564,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -20726,7 +20726,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 5,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 3,
@@ -21004,7 +21004,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -21026,7 +21026,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -21048,7 +21048,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -21154,7 +21154,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
@@ -21418,7 +21418,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -21440,7 +21440,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -21462,7 +21462,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -21498,7 +21498,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
@@ -21521,7 +21521,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 0,
@@ -21731,7 +21731,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 9,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
@@ -21875,7 +21875,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 9,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
@@ -22010,7 +22010,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
@@ -22175,7 +22175,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
@@ -22393,7 +22393,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 13,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
@@ -22618,7 +22618,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 13,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
@@ -22641,7 +22641,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -22810,7 +22810,7 @@ const APPLICATION$5 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 14,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
@@ -23218,7 +23218,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -23343,7 +23343,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 3,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
@@ -23366,7 +23366,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
@@ -23494,7 +23494,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
@@ -23671,7 +23671,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 5,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
@@ -23985,7 +23985,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 6,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24007,7 +24007,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 8,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
@@ -24183,7 +24183,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 0,
@@ -24206,7 +24206,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 8,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24333,7 +24333,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24355,7 +24355,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24377,7 +24377,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24399,7 +24399,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24568,7 +24568,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 12,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 0,
@@ -24591,7 +24591,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 8,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24718,7 +24718,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24740,7 +24740,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24762,7 +24762,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24784,7 +24784,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -24953,7 +24953,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 14,
                                     "oneRelationIndex": 5,
                                     "oneColumnIndex": 0,
@@ -24976,7 +24976,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 8,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25103,7 +25103,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25125,7 +25125,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25147,7 +25147,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25169,7 +25169,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25191,7 +25191,7 @@ const APPLICATION$4 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25470,7 +25470,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25492,7 +25492,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 14,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25514,7 +25514,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": 1,
+                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 13,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25596,7 +25596,7 @@ const APPLICATION$3 = {
                                 "index": 2
                             },
                             "relationTableIndex": 0,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -25607,7 +25607,7 @@ const APPLICATION$3 = {
                                 "index": 3
                             },
                             "relationTableIndex": 14,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -25618,7 +25618,7 @@ const APPLICATION$3 = {
                                 "index": 4
                             },
                             "relationTableIndex": 13,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableApplication_Index": 1,
                             "sinceVersion": 1
                         }
                     ],
@@ -25664,7 +25664,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 3,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
@@ -25778,7 +25778,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 3,
                                     "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
@@ -25893,7 +25893,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25915,7 +25915,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 17,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
@@ -26068,7 +26068,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneRelationIndex": 13,
                                     "oneColumnIndex": 0,
@@ -26091,7 +26091,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 8,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26159,7 +26159,7 @@ const APPLICATION$3 = {
                                 "index": 1
                             },
                             "relationTableIndex": 8,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         }
                     ],
@@ -26177,7 +26177,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneRelationIndex": 11,
                                     "oneColumnIndex": 0,
@@ -26200,7 +26200,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 12,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26268,7 +26268,7 @@ const APPLICATION$3 = {
                                 "index": 1
                             },
                             "relationTableIndex": 12,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         }
                     ],
@@ -26286,7 +26286,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneRelationIndex": 10,
                                     "oneColumnIndex": 0,
@@ -26309,7 +26309,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26377,7 +26377,7 @@ const APPLICATION$3 = {
                                 "index": 1
                             },
                             "relationTableIndex": 10,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         }
                     ],
@@ -26395,7 +26395,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneRelationIndex": 12,
                                     "oneColumnIndex": 0,
@@ -26418,7 +26418,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 14,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26486,7 +26486,7 @@ const APPLICATION$3 = {
                                 "index": 1
                             },
                             "relationTableIndex": 14,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         }
                     ],
@@ -26504,7 +26504,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 1,
+                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 13,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26526,7 +26526,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneRelationIndex": 9,
                                     "oneColumnIndex": 0,
@@ -26585,7 +26585,7 @@ const APPLICATION$3 = {
                                 "index": 0
                             },
                             "relationTableIndex": 13,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -26613,7 +26613,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneRelationIndex": 5,
                                     "oneColumnIndex": 0,
@@ -26636,7 +26636,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneRelationIndex": 6,
                                     "oneColumnIndex": 0,
@@ -26891,7 +26891,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26913,7 +26913,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26935,7 +26935,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26957,7 +26957,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26979,7 +26979,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -27250,7 +27250,7 @@ const APPLICATION$3 = {
                                 "index": 12
                             },
                             "relationTableIndex": 0,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -27261,7 +27261,7 @@ const APPLICATION$3 = {
                                 "index": 13
                             },
                             "relationTableIndex": 5,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -27272,7 +27272,7 @@ const APPLICATION$3 = {
                                 "index": 14
                             },
                             "relationTableIndex": 4,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -27283,7 +27283,7 @@ const APPLICATION$3 = {
                                 "index": 15
                             },
                             "relationTableIndex": 3,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -27294,7 +27294,7 @@ const APPLICATION$3 = {
                                 "index": 16
                             },
                             "relationTableIndex": 1,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -27472,7 +27472,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 14,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -27494,7 +27494,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 16,
                                     "oneRelationIndex": 6,
                                     "oneColumnIndex": 0,
@@ -27647,7 +27647,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 14,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -27669,7 +27669,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 16,
                                     "oneRelationIndex": 5,
                                     "oneColumnIndex": 0,
@@ -27836,7 +27836,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 14,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -27858,7 +27858,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 16,
                                     "oneRelationIndex": 7,
                                     "oneColumnIndex": 0,
@@ -28061,7 +28061,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneRelationIndex": 7,
                                     "oneColumnIndex": 0,
@@ -28084,7 +28084,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -28106,7 +28106,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 16,
                                     "oneRelationIndex": 8,
                                     "oneColumnIndex": 0,
@@ -28262,7 +28262,7 @@ const APPLICATION$3 = {
                                 "index": 7
                             },
                             "relationTableIndex": 0,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -28534,7 +28534,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -28556,7 +28556,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 14,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -28578,7 +28578,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneRelationIndex": 8,
                                     "oneColumnIndex": 0,
@@ -28601,7 +28601,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 15,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
@@ -28962,7 +28962,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 1,
+                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -28984,7 +28984,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 16,
                                     "oneRelationIndex": 4,
                                     "oneColumnIndex": 0,
@@ -29085,7 +29085,7 @@ const APPLICATION$3 = {
                                 "index": 4
                             },
                             "relationTableIndex": 5,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -29126,7 +29126,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -29148,7 +29148,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -29240,7 +29240,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": 1,
+                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -29262,7 +29262,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -29284,7 +29284,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -29437,7 +29437,7 @@ const APPLICATION$3 = {
                                 "index": 7
                             },
                             "relationTableIndex": 5,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -29476,7 +29476,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -29498,7 +29498,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -29576,7 +29576,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": 1,
+                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 1,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -29598,7 +29598,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -29733,7 +29733,7 @@ const APPLICATION$3 = {
                                 "index": 6
                             },
                             "relationTableIndex": 1,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -29762,7 +29762,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 18,
                                     "oneColumnIndex": 2,
                                     "sinceVersion": 1
@@ -29784,7 +29784,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 18,
                                     "oneColumnIndex": 1,
                                     "sinceVersion": 1
@@ -29806,7 +29806,7 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 18,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -29973,7 +29973,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -29995,7 +29995,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 5,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -30017,7 +30017,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": 1,
+                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -30039,7 +30039,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 3,
-                                    "oneDbApplication_Index": 1,
+                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -30061,7 +30061,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 4,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 4,
                                     "oneColumnIndex": 3,
                                     "sinceVersion": 1
@@ -30170,7 +30170,7 @@ const APPLICATION$2 = {
                                 "index": 3
                             },
                             "relationTableIndex": 11,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -30181,7 +30181,7 @@ const APPLICATION$2 = {
                                 "index": 4
                             },
                             "relationTableIndex": 5,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -30192,7 +30192,7 @@ const APPLICATION$2 = {
                                 "index": 5
                             },
                             "relationTableIndex": 10,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -30203,7 +30203,7 @@ const APPLICATION$2 = {
                                 "index": 6
                             },
                             "relationTableIndex": 0,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -30214,7 +30214,7 @@ const APPLICATION$2 = {
                                 "index": 7
                             },
                             "relationTableIndex": 4,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         }
                     ],
@@ -30247,7 +30247,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 2,
                                     "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
@@ -30366,7 +30366,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 1,
+                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -30388,7 +30388,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 1,
+                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -30410,7 +30410,7 @@ const APPLICATION$2 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": 1,
+                                    "oneApplication_Index": 1,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -30510,7 +30510,7 @@ const APPLICATION$2 = {
                                 "index": 3
                             },
                             "relationTableIndex": 10,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -30521,7 +30521,7 @@ const APPLICATION$2 = {
                                 "index": 4
                             },
                             "relationTableIndex": 3,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -30532,7 +30532,7 @@ const APPLICATION$2 = {
                                 "index": 5
                             },
                             "relationTableIndex": 3,
-                            "relationTableDbApplication_Index": 1,
+                            "relationTableApplication_Index": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -30649,7 +30649,7 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -30671,7 +30671,7 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -30819,7 +30819,7 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
@@ -30842,7 +30842,7 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 1,
@@ -30865,7 +30865,7 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneDbApplication_Index": null,
+                                    "oneApplication_Index": null,
                                     "oneTableIndex": 1,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 2,
@@ -31017,7 +31017,7 @@ const APPLICATION = {
                                 "index": 1
                             },
                             "relationTableIndex": 0,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -31028,7 +31028,7 @@ const APPLICATION = {
                                 "index": 2
                             },
                             "relationTableIndex": 10,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -31057,7 +31057,7 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -31079,7 +31079,7 @@ const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneDbApplication_Index": 0,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -31287,7 +31287,7 @@ const APPLICATION = {
                                 "index": 1
                             },
                             "relationTableIndex": 0,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -31298,7 +31298,7 @@ const APPLICATION = {
                                 "index": 2
                             },
                             "relationTableIndex": 10,
-                            "relationTableDbApplication_Index": 0,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -31985,7 +31985,7 @@ let KeyRingManager = class KeyRingManager {
         if (!keyRing) {
             const keyRingContext = {
                 ...context,
-                applicationFullName: this.dbApplicationUtils.getDbApplication_FullName(application$1),
+                applicationFullName: this.applicationNameUtils.getApplication_FullName(application$1),
                 newRepositoryGUID: 'DEVSERVR_' + userPrivateKey,
                 forKeyRingRepository: true
             };
@@ -32027,7 +32027,7 @@ let KeyRingManager = class KeyRingManager {
 };
 __decorate$9([
     Inject()
-], KeyRingManager.prototype, "dbApplicationUtils", void 0);
+], KeyRingManager.prototype, "applicationNameUtils", void 0);
 __decorate$9([
     Inject()
 ], KeyRingManager.prototype, "keyRingDao", void 0);
@@ -32123,7 +32123,7 @@ MessageSigningManager = __decorate$9([
 const keyring = app(application$1);
 keyring.register(KeyRingDao, KeyRingManager, MessageSigningManager, RepositoryKeyDao);
 keyring.setDependencies(KeyRingManager, {
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     keyRingDao: KeyRingDao,
     keyUtils: KeyUtils,
     repositoryKeyDao: RepositoryKeyDao,
@@ -32338,9 +32338,9 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
         return true;
     }
     async checkApplicationsAndDomains(data, context) {
-        const { allDbApplication_Names, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(data);
-        const applications = await this.dbApplicationDao
-            .findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names, context);
+        const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(data);
+        const applications = await this.ddlApplicationDao
+            .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names, context);
         for (let application of applications) {
             let domainName = application.domain.name;
             let applicationName = application.name;
@@ -32367,7 +32367,7 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
             domainsToCreate.push(domain);
         }
         if (domainsToCreate.length) {
-            await this.dbDomainDao.insert(domainsToCreate, context);
+            await this.ddlDomainDao.insert(domainsToCreate, context);
         }
         let applicationsToCreate = [];
         for (let [domainName, applicationChecksByName] of applicationCheckMap) {
@@ -32379,7 +32379,7 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
                 let application = {
                     currentVersion: null,
                     domain,
-                    fullName: this.dbApplicationUtils.getDbApplication_FullNameFromDomainAndName(domainName, name),
+                    fullName: this.applicationNameUtils.getApplication_FullNameFromDomainAndName(domainName, name),
                     index: null,
                     name,
                     scope: 'private',
@@ -32392,7 +32392,7 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
             }
         }
         if (applicationsToCreate.length) {
-            await this.dbApplicationDao.insert(applicationsToCreate, context);
+            await this.ddlApplicationDao.insert(applicationsToCreate, context);
         }
         return applicationCheckMap;
     }
@@ -32434,15 +32434,15 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
             }
         }
         const domainNames = [];
-        const allDbApplication_Names = [];
+        const allApplication_Names = [];
         for (const [domainName, applicationChecksForDomainMap] of applicationCheckMap) {
             domainNames.push(domainName);
             for (let [applicationName, _] of applicationChecksForDomainMap) {
-                allDbApplication_Names.push(applicationName);
+                allApplication_Names.push(applicationName);
             }
         }
         return {
-            allDbApplication_Names,
+            allApplication_Names,
             domainCheckMap,
             domainNames,
             applicationCheckMap
@@ -32451,13 +32451,13 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
 };
 __decorate$8([
     Inject()
-], SyncInApplicationChecker.prototype, "dbApplicationDao", void 0);
+], SyncInApplicationChecker.prototype, "ddlApplicationDao", void 0);
 __decorate$8([
     Inject()
-], SyncInApplicationChecker.prototype, "dbApplicationUtils", void 0);
+], SyncInApplicationChecker.prototype, "applicationNameUtils", void 0);
 __decorate$8([
     Inject()
-], SyncInApplicationChecker.prototype, "dbDomainDao", void 0);
+], SyncInApplicationChecker.prototype, "ddlDomainDao", void 0);
 SyncInApplicationChecker = __decorate$8([
     Injected()
 ], SyncInApplicationChecker);
@@ -32483,9 +32483,9 @@ let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
         return applicationCheckMap;
     }
     async checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications, context) {
-        const { allApplicationNames: allDbApplication_Names, domainNames, applicationVersionCheckMap } = this
+        const { allApplicationNames: allApplication_Names, domainNames, applicationVersionCheckMap } = this
             .getNames(inMessageApplicationVersions, inMessageApplications);
-        await this.setApplicationVersions(domainNames, allDbApplication_Names, applicationVersionCheckMap, context);
+        await this.setApplicationVersions(domainNames, allApplication_Names, applicationVersionCheckMap, context);
         const domainWithNewApp_NameSet = new Set();
         const newApplicationNameSet = new Set();
         for (const [domainName, applicationChecks] of applicationVersionCheckMap) {
@@ -32500,9 +32500,9 @@ let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
         await this.setApplicationVersions(Array.from(domainWithNewApp_NameSet), Array.from(newApplicationNameSet), applicationVersionCheckMap, context);
         return applicationVersionCheckMap;
     }
-    async setApplicationVersions(domainNames, allDbApplication_Names, applicationVersionCheckMap, context) {
-        const existingApplicationVersions = await this.dbApplicationVersionDao
-            .findByDomain_NamesAndDbApplication_Names(domainNames, allDbApplication_Names, context);
+    async setApplicationVersions(domainNames, allApplication_Names, applicationVersionCheckMap, context) {
+        const existingApplicationVersions = await this.ddlApplicationVersionDao
+            .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names, context);
         let lastDomainName;
         let lastApplicationName;
         for (let applicationVersion of existingApplicationVersions) {
@@ -32571,7 +32571,7 @@ let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
 };
 __decorate$8([
     Inject()
-], SyncInApplicationVersionChecker.prototype, "dbApplicationVersionDao", void 0);
+], SyncInApplicationVersionChecker.prototype, "ddlApplicationVersionDao", void 0);
 __decorate$8([
     Inject()
 ], SyncInApplicationVersionChecker.prototype, "applicationInitializer", void 0);
@@ -34036,14 +34036,14 @@ Stage1SyncedInDataProcessor = __decorate$8([
 ], Stage1SyncedInDataProcessor);
 
 let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
-    async applyChangesToDb(stage1Result, applicationsByDbApplicationVersion_LocalIdMap) {
+    async applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap) {
         const context = {};
-        await this.performCreates(stage1Result.recordCreations, applicationsByDbApplicationVersion_LocalIdMap, context);
-        await this.performUpdates(stage1Result.recordUpdates, applicationsByDbApplicationVersion_LocalIdMap, context);
-        await this.performDeletes(stage1Result.recordDeletions, applicationsByDbApplicationVersion_LocalIdMap, context);
+        await this.performCreates(stage1Result.recordCreations, applicationsByApplicationVersion_LocalIdMap, context);
+        await this.performUpdates(stage1Result.recordUpdates, applicationsByApplicationVersion_LocalIdMap, context);
+        await this.performDeletes(stage1Result.recordDeletions, applicationsByApplicationVersion_LocalIdMap, context);
     }
     /**
-     * Remote changes come in with DbApplicationVersion_LocalIds not DbApplication_Indexes, so it makes
+     * Remote changes come in with ApplicationVersion_LocalIds not Application_Indexes, so it makes
      * sense to keep this structure.  NOTE: only one version of a given application is
      * processed at one time:
      *
@@ -34051,12 +34051,12 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
      *  Terminal itself must first be upgraded to newer application versions, before changes
      *  for that application version are processed.
      *
-     *  To tie in a given DbApplicationVersion_LocalId to its DbApplication_Index an additional mapping data
+     *  To tie in a given ApplicationVersion_LocalId to its Application_Index an additional mapping data
      *  structure is passed in.
      */
-    async performCreates(recordCreations, applicationsByDbApplicationVersion_LocalIdMap, context) {
+    async performCreates(recordCreations, applicationsByApplicationVersion_LocalIdMap, context) {
         for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
-            const applicationIndex = applicationsByDbApplicationVersion_LocalIdMap
+            const applicationIndex = applicationsByApplicationVersion_LocalIdMap
                 .get(applicationVersionId).index;
             for (const [entityIndex, creationInTableMap] of creationInApplicationMap) {
                 const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
@@ -34149,13 +34149,13 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
         });
         return nonIdColumns;
     }
-    async performUpdates(recordUpdates, applicationsByDbApplicationVersion_LocalIdMap, context) {
+    async performUpdates(recordUpdates, applicationsByApplicationVersion_LocalIdMap, context) {
         const finalUpdateMap = new Map();
         const recordUpdateStage = [];
         // Build the final update data structure
         for (const [applicationVersionId, applicationUpdateMap] of recordUpdates) {
             const finalApplicationUpdateMap = this.datastructureUtils.ensureChildJsMap(finalUpdateMap, applicationVersionId);
-            const applicationIndex = applicationsByDbApplicationVersion_LocalIdMap
+            const applicationIndex = applicationsByApplicationVersion_LocalIdMap
                 .get(applicationVersionId).index;
             for (const [entityIndex, tableUpdateMap] of applicationUpdateMap) {
                 const finalTableUpdateMap = this.datastructureUtils.ensureChildJsMap(finalApplicationUpdateMap, entityIndex);
@@ -34190,17 +34190,17 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
         await this.recordUpdateStageDao.insertValues(recordUpdateStage, context);
         // Perform the updates
         for (const [applicationVersionId, updateMapForApplication] of finalUpdateMap) {
-            const application = applicationsByDbApplicationVersion_LocalIdMap.get(applicationVersionId);
+            const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId);
             for (const [entityIndex, updateMapForTable] of updateMapForApplication) {
                 await this.runUpdatesForTable(application.index, applicationVersionId, entityIndex, updateMapForTable, context);
             }
         }
         await this.recordUpdateStageDao.delete(context);
     }
-    async performDeletes(recordDeletions, applicationsByDbApplicationVersion_LocalIdMap, context) {
+    async performDeletes(recordDeletions, applicationsByApplicationVersion_LocalIdMap, context) {
         const trackedRepoGUIDSet = new Set();
         for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {
-            const application = applicationsByDbApplicationVersion_LocalIdMap.get(applicationVersionId);
+            const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId);
             for (const [entityIndex, deletionInTableMap] of deletionInApplicationMap) {
                 const dbEntity = this.airportDatabase.applications[application.index].currentVersion[0]
                     .applicationVersion.entities[entityIndex];
@@ -34277,7 +34277,7 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
      * Run all updates for a particular table.  One update per updated column combination
      * is run.
      *
-     * @param {DbApplication_Index} applicationIndex
+     * @param {Application_Index} applicationIndex
      * @param {DbEntity_TableIndex} entityIndex
      * @param {ColumnUpdateKeyMap} updateKeyMap
      * @returns {Promise<void>}
@@ -34544,11 +34544,11 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
     async syncMessages(messages, newAndUpdatedRepositoriesAndRecords, transaction, context) {
         this.aggregateHistoryRecords(messages, transaction);
         await this.insertNewRepositoryInfo(messages, newAndUpdatedRepositoriesAndRecords, context);
-        const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByDbApplicationVersion_LocalIdMap } = await this.getDataStructures(messages);
+        const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersion_LocalIdMap } = await this.getDataStructures(messages);
         for (const newRepositoryMemberAcceptance of newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances) {
             await this.repositoryMemberDao.updatePublicSigningKey(newRepositoryMemberAcceptance.invitationPublicSigningKey, newRepositoryMemberAcceptance.acceptingRepositoryMember.memberPublicSigningKey, context);
         }
-        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByDbApplicationVersion_LocalIdMap, context);
+        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersion_LocalIdMap, context);
     }
     async insertNewRepositoryInfo(messages, newAndUpdatedRepositoriesAndRecords, context) {
         await this.repositoryDao.insert(newAndUpdatedRepositoriesAndRecords.missingRepositories, context);
@@ -34606,7 +34606,7 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
     }
     async getDataStructures(messages) {
         const repositoryTransactionHistoryMapByRepositoryId = new Map();
-        const applicationsByDbApplicationVersion_LocalIdMap = new Map();
+        const applicationsByApplicationVersion_LocalIdMap = new Map();
         const actorMapById = new Map();
         const repoTransHistories = [];
         for (const message of messages) {
@@ -34617,7 +34617,7 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
                 actorMapById.set(actor._localId, actor);
             }
             for (const applicationVersion of data.applicationVersions) {
-                applicationsByDbApplicationVersion_LocalIdMap.set(applicationVersion._localId, applicationVersion.application);
+                applicationsByApplicationVersion_LocalIdMap.set(applicationVersion._localId, applicationVersion.application);
             }
         }
         for (const [_, repoTransHistories] of repositoryTransactionHistoryMapByRepositoryId) {
@@ -34627,10 +34627,10 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
         return {
             actorMapById,
             repositoryTransactionHistoryMapByRepositoryId,
-            applicationsByDbApplicationVersion_LocalIdMap
+            applicationsByApplicationVersion_LocalIdMap
         };
     }
-    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByDbApplicationVersion_LocalIdMap, context) {
+    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersion_LocalIdMap, context) {
         const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById, context);
         let allSyncConflicts = [];
         let allSyncConflictValues = [];
@@ -34642,7 +34642,7 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
                 }
             }
         }
-        await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByDbApplicationVersion_LocalIdMap);
+        await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap);
         if (allSyncConflicts.length) {
             await this.synchronizationConflictDao.insert(allSyncConflicts, context);
         }
@@ -35265,7 +35265,7 @@ __decorate$8([
 ], SyncOutDataSerializer.prototype, "dbRelationDao", void 0);
 __decorate$8([
     Inject()
-], SyncOutDataSerializer.prototype, "dbApplicationUtils", void 0);
+], SyncOutDataSerializer.prototype, "applicationNameUtils", void 0);
 __decorate$8([
     Inject()
 ], SyncOutDataSerializer.prototype, "dictionary", void 0);
@@ -35503,12 +35503,12 @@ groundTransport.setDependencies(SyncInActorChecker, {
     actorDao: ActorDao,
 });
 groundTransport.setDependencies(SyncInApplicationChecker, {
-    dbApplicationDao: DbApplicationDao,
-    dbApplicationUtils: DbApplicationUtils,
-    dbDomainDao: DbDomainDao
+    ddlApplicationDao: DdlApplicationDao,
+    applicationNameUtils: ApplicationNameUtils,
+    ddlDomainDao: DdlDomainDao
 });
 groundTransport.setDependencies(SyncInApplicationVersionChecker, {
-    dbApplicationVersionDao: DbApplicationVersionDao,
+    ddlApplicationVersionDao: DdlApplicationVersionDao,
     applicationInitializer: APPLICATION_INITIALIZER
 });
 groundTransport.setDependencies(SyncInChecker, {
@@ -35549,7 +35549,7 @@ groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
     dbRelationDao: DbRelationDao,
     applicationUtils: APPLICATION_UTILS,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     dictionary: Dictionary,
     repositoryDao: RepositoryDao,
 });
@@ -38513,14 +38513,14 @@ Entity:          ${table.name}
         if (table.tableConfig && table.tableConfig.name) {
             theTableName = table.tableConfig.name;
         }
-        let fullDbApplication_Name;
+        let fullApplication_Name;
         if (application.fullName) {
-            fullDbApplication_Name = application.fullName;
+            fullApplication_Name = application.fullName;
         }
         else {
-            fullDbApplication_Name = this.dbApplicationUtils.getDbApplication_FullName(application);
+            fullApplication_Name = this.applicationNameUtils.getApplication_FullName(application);
         }
-        return this.composeTableName(fullDbApplication_Name, theTableName, context);
+        return this.composeTableName(fullApplication_Name, theTableName, context);
     }
     async internalSetupTransaction(transaction, context) {
         await this.ensureContext(context);
@@ -38689,7 +38689,7 @@ __decorate$7([
 ], SqlStoreDriver.prototype, "dictionary", void 0);
 __decorate$7([
     Inject()
-], SqlStoreDriver.prototype, "dbApplicationUtils", void 0);
+], SqlStoreDriver.prototype, "applicationNameUtils", void 0);
 __decorate$7([
     Inject()
 ], SqlStoreDriver.prototype, "entityStateManager", void 0);
@@ -38771,7 +38771,7 @@ STORE_DRIVER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: APPLICATION_UTILS,
     appTrackerUtils: AppTrackerUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
     lookup: Lookup,
@@ -39682,7 +39682,7 @@ let InternalRecordManager = class InternalRecordManager {
         await this.transactionManager.transactInternal(async (_transaction, context) => {
             await this.updateDomain(application, context);
             let actorMapForDomain = this.terminalStore
-                .getApplicationActorMapByDomainAndDbApplication_Names().get(application.domain);
+                .getApplicationActorMapByDomainAndApplication_Names().get(application.domain);
             let actors;
             if (actorMapForDomain) {
                 actors = actorMapForDomain.get(application.name);
@@ -39694,8 +39694,8 @@ let InternalRecordManager = class InternalRecordManager {
             // TODO: add request object
             const userSession = await this.terminalSessionManager.getUserSession();
             let actor = await this.actorDao
-                .findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(application.domain, application.name, userSession.userAccount.accountPublicSigningKey, frameworkActor.terminal.GUID, context);
-            let anApplication = await this.dbApplicationDao.findByIndex(application.lastIds.applications + 1, context);
+                .findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(application.domain, application.name, userSession.userAccount.accountPublicSigningKey, frameworkActor.terminal.GUID, context);
+            let anApplication = await this.ddlApplicationDao.findByIndex(application.lastIds.applications + 1, context);
             if (!actor) {
                 actor = {
                     _localId: null,
@@ -39728,7 +39728,7 @@ let InternalRecordManager = class InternalRecordManager {
             terminal.owner = userAccount;
             terminal.isLocal = true;
             terminal.GUID = v4();
-            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(firstApp.domain, firstApp.name, context);
+            const application = await this.ddlApplicationDao.findOneByDomain_NameAndApplication_Name(firstApp.domain, firstApp.name, context);
             const actor = new Actor();
             actor.application = application;
             actor.userAccount = userAccount;
@@ -39749,7 +39749,7 @@ let InternalRecordManager = class InternalRecordManager {
         if (domain && this.entityStateManager.getOriginalValues(domain)) {
             return domain;
         }
-        let dbDomain = await this.dbDomainDao.findByName(application.domain, context);
+        let dbDomain = await this.ddlDomainDao.findByName(application.domain, context);
         let updatedDomain;
         if (domain) {
             if (dbDomain) {
@@ -39766,7 +39766,7 @@ let InternalRecordManager = class InternalRecordManager {
                     _localId: null,
                     name: application.domain,
                 };
-                await this.dbDomainDao.save(updatedDomain, context);
+                await this.ddlDomainDao.save(updatedDomain, context);
             }
         }
         if (!updatedDomain) {
@@ -39797,10 +39797,10 @@ __decorate$4([
 ], InternalRecordManager.prototype, "actorDao", void 0);
 __decorate$4([
     Inject()
-], InternalRecordManager.prototype, "dbApplicationDao", void 0);
+], InternalRecordManager.prototype, "ddlApplicationDao", void 0);
 __decorate$4([
     Inject()
-], InternalRecordManager.prototype, "dbDomainDao", void 0);
+], InternalRecordManager.prototype, "ddlDomainDao", void 0);
 __decorate$4([
     Inject()
 ], InternalRecordManager.prototype, "entityStateManager", void 0);
@@ -40110,23 +40110,23 @@ let TransactionalReceiver = class TransactionalReceiver {
         switch (message.type) {
             case INTERNAL_Message_Type.APP_INITIALIZING:
                 const application = message.jsonApplication;
-                const fullDbApplication_Name = this.dbApplicationUtils.
-                    getDbApplication_FullName(application);
-                const messageDbApplication_FullName = this.dbApplicationUtils.
-                    getDbApplication_FullNameFromDomainAndName(message.origin.domain, message.origin.app);
-                if (fullDbApplication_Name !== messageDbApplication_FullName) {
+                const fullApplication_Name = this.applicationNameUtils.
+                    getApplication_FullName(application);
+                const messageApplication_FullName = this.applicationNameUtils.
+                    getApplication_FullNameFromDomainAndName(message.origin.domain, message.origin.app);
+                if (fullApplication_Name !== messageApplication_FullName) {
                     theResult = null;
                     break;
                 }
                 if (this.terminalStore.getReceiver().initializingApps
-                    .has(fullDbApplication_Name)) {
+                    .has(fullApplication_Name)) {
                     return {
                         theErrorMessage,
                         theResult
                     };
                 }
                 this.terminalStore.getReceiver().initializingApps
-                    .add(fullDbApplication_Name);
+                    .add(fullApplication_Name);
                 const context = {};
                 context.startedAt = new Date();
                 await this.databaseManager.initFeatureApplications(context, [application]);
@@ -40135,16 +40135,16 @@ let TransactionalReceiver = class TransactionalReceiver {
                 break;
             case INTERNAL_Message_Type.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps;
-                initializedApps.add(message.fullDbApplication_Name);
-                // console.log(`--==<<(( INITIALIZED: ${(message as any as IConnectionInitializedIMI).fullDbApplication_Name}))>>==--`)
+                initializedApps.add(message.fullApplication_Name);
+                // console.log(`--==<<(( INITIALIZED: ${(message as any as IConnectionInitializedIMI).fullApplication_Name}))>>==--`)
                 return {
                     theErrorMessage,
                     theResult
                 };
             case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
-                theResult = this.terminalStore.getLatestApplicationVersionMapByDbApplication_FullName()
+                theResult = this.terminalStore.getLatestApplicationVersionMapByApplication_FullName()
                     .get(message
-                    .fullDbApplication_Name);
+                    .fullApplication_Name);
                 break;
             }
             case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
@@ -40263,12 +40263,12 @@ let TransactionalReceiver = class TransactionalReceiver {
         };
     }
     async startApiCall(message, context, nativeHandleCallback) {
-        const fullDbApplication_Name = this.dbApplicationUtils.
-            getDbApplication_FullNameFromDomainAndName(message.destination.domain, message.destination.app);
-        const application = this.terminalStore.getApplicationMapByFullName().get(fullDbApplication_Name);
+        const fullApplication_Name = this.applicationNameUtils.
+            getApplication_FullNameFromDomainAndName(message.destination.domain, message.destination.app);
+        const application = this.terminalStore.getApplicationMapByFullName().get(fullApplication_Name);
         if (!application) {
             console.error(`Application not found
-${fullDbApplication_Name}
+${fullApplication_Name}
 `);
             return {
                 isStarted: false
@@ -40281,7 +40281,7 @@ ${fullDbApplication_Name}
             API Class:
 ${message.objectName}
             Application:
-${fullDbApplication_Name}
+${fullApplication_Name}
 `);
             return {
                 isStarted: false
@@ -40293,7 +40293,7 @@ ${fullDbApplication_Name}
             @Api():
 ${message.objectName}.${message.methodName}
             Application:
-${fullDbApplication_Name}
+${fullApplication_Name}
 `);
             return {
                 isStarted: false
@@ -40376,11 +40376,11 @@ ${fullDbApplication_Name}
                 return actor;
             }
             const terminal = this.terminalStore.getTerminal();
-            actor = await this.actorDao.findOneByDomainAndDbApplication_Names_AccountPublicSigningKey_TerminalGUID(message.destination.domain, message.destination.app, userSession.userAccount.accountPublicSigningKey, terminal.GUID, context);
+            actor = await this.actorDao.findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(message.destination.domain, message.destination.app, userSession.userAccount.accountPublicSigningKey, terminal.GUID, context);
             if (actor) {
                 return actor;
             }
-            const application = await this.dbApplicationDao.findOneByDomain_NameAndDbApplication_Name(message.destination.domain, message.destination.app, context);
+            const application = await this.ddlApplicationDao.findOneByDomain_NameAndApplication_Name(message.destination.domain, message.destination.app, context);
             actor = {
                 _localId: null,
                 application,
@@ -40457,7 +40457,7 @@ __decorate$4([
 ], TransactionalReceiver.prototype, "actorDao", void 0);
 __decorate$4([
     Inject()
-], TransactionalReceiver.prototype, "dbApplicationDao", void 0);
+], TransactionalReceiver.prototype, "ddlApplicationDao", void 0);
 __decorate$4([
     Inject()
 ], TransactionalReceiver.prototype, "appTrackerUtils", void 0);
@@ -40466,7 +40466,7 @@ __decorate$4([
 ], TransactionalReceiver.prototype, "databaseManager", void 0);
 __decorate$4([
     Inject()
-], TransactionalReceiver.prototype, "dbApplicationUtils", void 0);
+], TransactionalReceiver.prototype, "applicationNameUtils", void 0);
 __decorate$4([
     Inject()
 ], TransactionalReceiver.prototype, "internalRecordManager", void 0);
@@ -40778,8 +40778,8 @@ let DatabaseManager = class DatabaseManager {
         this.transactionalServer.tempActor = new Actor();
         await this.transactionManager.transactInternal(async (_transaction, context) => {
             const firstApp = BLUEPRINT[0];
-            const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
-                .getDbApplication_FullName(firstApp), 'PACKAGES', context);
+            const hydrate = await this.storeDriver.doesTableExist(this.applicationNameUtils
+                .getApplication_FullName(firstApp), 'PACKAGES', context);
             await this.installStarterApplication(false, hydrate, context);
             if (!hydrate) {
                 await this.internalRecordManager.initTerminal(firstApp, context);
@@ -40797,7 +40797,7 @@ let DatabaseManager = class DatabaseManager {
     async initFeatureApplications(context, jsonApplications) {
         let applications = [];
         await this.transactionManager.transactInternal(async (_transaction, context) => {
-            applications = await this.dbApplicationDao.findAllWithJson(context);
+            applications = await this.ddlApplicationDao.findAllWithJson(context);
         }, null, context);
         const existingApplicationMap = new Map();
         for (const application of applications) {
@@ -40805,8 +40805,8 @@ let DatabaseManager = class DatabaseManager {
         }
         const applicationsToCreate = [];
         for (const jsonApplication of jsonApplications) {
-            const existingApplication = existingApplicationMap.get(this.dbApplicationUtils
-                .getDbApplication_FullName(jsonApplication));
+            const existingApplication = existingApplicationMap.get(this.applicationNameUtils
+                .getApplication_FullName(jsonApplication));
             if (existingApplication) {
                 jsonApplication.lastIds =
                     existingApplication.versions[0].jsonApplication.lastIds;
@@ -40838,13 +40838,13 @@ __decorate$4([
 ], DatabaseManager.prototype, "airportDatabase", void 0);
 __decorate$4([
     Inject()
-], DatabaseManager.prototype, "dbApplicationDao", void 0);
+], DatabaseManager.prototype, "ddlApplicationDao", void 0);
 __decorate$4([
     Inject()
 ], DatabaseManager.prototype, "applicationInitializer", void 0);
 __decorate$4([
     Inject()
-], DatabaseManager.prototype, "dbApplicationUtils", void 0);
+], DatabaseManager.prototype, "applicationNameUtils", void 0);
 __decorate$4([
     Inject()
 ], DatabaseManager.prototype, "internalRecordManager", void 0);
@@ -42629,10 +42629,10 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
     optimizePersistOperations(orderedDependencies, context) {
         let operationNodes = [];
         let processedNodes = [];
-        let operationsByDbApplication_Index = [];
+        let operationsByApplication_Index = [];
         for (const node of orderedDependencies) {
             const dbEntity = node.dbEntity;
-            const applicationOperationNodes = this.datastructureUtils.ensureChildArray(operationsByDbApplication_Index, dbEntity.applicationVersion.application.index);
+            const applicationOperationNodes = this.datastructureUtils.ensureChildArray(operationsByApplication_Index, dbEntity.applicationVersion.application.index);
             let entityOperations = applicationOperationNodes[dbEntity.index];
             if (!entityOperations) {
                 entityOperations = {
@@ -42799,10 +42799,10 @@ let EntityGraphReconstructor = class EntityGraphReconstructor {
 for ${dbEntity.name}.${dbProperty.name}`);
                     } // switch dbRelation.relationType
                     const previousDbEntity = context.dbEntity;
-                    const previousDbApplication = previousDbEntity.applicationVersion.application;
-                    const propertyDbApplication = dbRelation.relationEntity.applicationVersion.application;
-                    if (!this.appTrackerUtils.isInternalDomain(propertyDbApplication.domain.name)
-                        && previousDbApplication.fullName !== propertyDbApplication.fullName) {
+                    const previousIApplication = previousDbEntity.applicationVersion.application;
+                    const propertyIApplication = dbRelation.relationEntity.applicationVersion.application;
+                    if (!this.appTrackerUtils.isInternalDomain(propertyIApplication.domain.name)
+                        && previousIApplication.fullName !== propertyIApplication.fullName) {
                         // If a child entity is in a different application it won't be processed
                         // the calling application should call the API of the other application
                         // explicitly so that the application logic may be run
@@ -43640,7 +43640,7 @@ __decorate$4([
 ], StructuralEntityValidator.prototype, "crossRepositoryRelationManager", void 0);
 __decorate$4([
     Inject()
-], StructuralEntityValidator.prototype, "dbApplicationUtils", void 0);
+], StructuralEntityValidator.prototype, "applicationNameUtils", void 0);
 __decorate$4([
     Inject()
 ], StructuralEntityValidator.prototype, "dictionary", void 0);
@@ -43856,9 +43856,9 @@ terminal.setDependencies(TransactionalReceiver, {
 });
 terminal.setDependencies(DatabaseManager, {
     airportDatabase: AIRPORT_DATABASE,
-    dbApplicationDao: DbApplicationDao,
+    ddlApplicationDao: DdlApplicationDao,
     applicationInitializer: APPLICATION_INITIALIZER,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     internalRecordManager: InternalRecordManager,
     storeDriver: STORE_DRIVER,
     transactionalServer: TRANSACTIONAL_SERVER,
@@ -43901,8 +43901,8 @@ terminal.setDependencies(InsertManager, {
 });
 terminal.setDependencies(InternalRecordManager, {
     actorDao: ActorDao,
-    dbApplicationDao: DbApplicationDao,
-    dbDomainDao: DbDomainDao,
+    ddlApplicationDao: DdlApplicationDao,
+    ddlDomainDao: DdlDomainDao,
     entityStateManager: ENTITY_STATE_MANAGER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TerminalStore,
@@ -43959,7 +43959,7 @@ REPOSITORY_LOADER.setDependencies({
 terminal.setDependencies(StructuralEntityValidator, {
     applicationUtils: APPLICATION_UTILS,
     crossRepositoryRelationManager: CrossRepositoryRelationManager,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
 });
@@ -43983,9 +43983,9 @@ TRANSACTION_MANAGER.setDependencies({
 });
 TRANSACTIONAL_RECEIVER.setDependencies({
     actorDao: ActorDao,
-    dbApplicationDao: DbApplicationDao,
+    ddlApplicationDao: DdlApplicationDao,
     databaseManager: DatabaseManager,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     internalRecordManager: InternalRecordManager,
     localApiServer: LOCAL_API_SERVER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
@@ -46202,20 +46202,20 @@ let AirportDatabase = class AirportDatabase {
         // ('this.airportDatabase' statement by itself creates the object,
         // (without the '.load() call) but '.load()' is more intuitive)
     }
-    getCurrentDbApplicationVersion(domainName, applicationName) {
-        const applicationFullName = this.dbApplicationUtils
-            .getDbApplication_FullNameFromDomainAndName(domainName, applicationName);
+    getCurrentIApplicationVersion(domainName, applicationName) {
+        const applicationFullName = this.applicationNameUtils
+            .getApplication_FullNameFromDomainAndName(domainName, applicationName);
         return this.QM[applicationFullName]
             .__dbApplication__.currentVersion[0].applicationVersion;
     }
     getDbEntity(domainName, applicationName, entityName) {
-        const dbApplicationVersion = this.getCurrentDbApplicationVersion(domainName, applicationName);
+        const dbApplicationVersion = this.getCurrentIApplicationVersion(domainName, applicationName);
         return dbApplicationVersion.entityMapByName[entityName];
     }
     setQApp(qApplication) {
-        const fullDbApplication_Name = this.dbApplicationUtils
-            .getDbApplication_FullName(qApplication);
-        const existingQApp = this.QM[fullDbApplication_Name];
+        const fullApplication_Name = this.applicationNameUtils
+            .getApplication_FullName(qApplication);
+        const existingQApp = this.QM[fullApplication_Name];
         if (existingQApp) {
             const dbApplication = existingQApp.__dbApplication__;
             if (dbApplication) {
@@ -46224,7 +46224,7 @@ let AirportDatabase = class AirportDatabase {
                 this.Q[dbApplication.index] = qApplication;
             }
         }
-        this.QM[fullDbApplication_Name] = qApplication;
+        this.QM[fullApplication_Name] = qApplication;
     }
     getAccumulator(applicationDomain, applicationName) {
         return new EntityAccumulator(applicationDomain, applicationName, this.entityMap);
@@ -46292,7 +46292,7 @@ __decorate$1([
 ], AirportDatabase.prototype, "dictionary", void 0);
 __decorate$1([
     Inject()
-], AirportDatabase.prototype, "dbApplicationUtils", void 0);
+], AirportDatabase.prototype, "applicationNameUtils", void 0);
 __decorate$1([
     Inject()
 ], AirportDatabase.prototype, "find", void 0);
@@ -46346,8 +46346,8 @@ QUERY_FACADE.setClass(QueryFacade);
 
 class NoOpSchemaBuilder extends SqlSchemaBuilder {
     async createApplication(jsonApplication, context) {
-        const applicationName = IOC.getSync(DbApplicationUtils).
-            getDbApplication_FullName(jsonApplication);
+        const applicationName = IOC.getSync(ApplicationNameUtils).
+            getApplication_FullName(jsonApplication);
         const createApplicationStatement = `CREATE APPLICATION ${applicationName}`;
         await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [], context, false);
     }
@@ -46360,8 +46360,8 @@ class NoOpSchemaBuilder extends SqlSchemaBuilder {
     async buildAllSequences(jsonApplications, context) {
         let allSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
-                getDbApplication_FullName(jsonApplication)];
+            const qApplication = this.airportDatabase.QM[IOC.getSync(ApplicationNameUtils).
+                getApplication_FullName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
@@ -46371,8 +46371,8 @@ class NoOpSchemaBuilder extends SqlSchemaBuilder {
     stageSequences(jsonApplications, context) {
         let stagedSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = this.airportDatabase.QM[IOC.getSync(DbApplicationUtils).
-                getDbApplication_FullName(jsonApplication)];
+            const qApplication = this.airportDatabase.QM[IOC.getSync(ApplicationNameUtils).
+                getApplication_FullName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
@@ -46742,7 +46742,7 @@ class ApplicationQueryGenerator {
         const functionEndRegex = /\s*\}\);\s*$/;
         queryJavascript = queryJavascript.replace(functionStartRegex, '');
         queryJavascript = queryJavascript.replace(functionEndRegex, '');
-        const [airDb, dbApplicationUtils] = await IOC.get(AIRPORT_DATABASE, DbApplicationUtils);
+        const [airDb, applicationNameUtils] = await IOC.get(AIRPORT_DATABASE, ApplicationNameUtils);
         for (const functionName in airDb.functions) {
             const regex = new RegExp(`\\s*${functionName}\\(`);
             queryJavascript = queryJavascript
@@ -46756,12 +46756,12 @@ class ApplicationQueryGenerator {
         functionConstructorParams.push('Y');
         functionConstructorParams.push(queryJavascript);
         const queryFunction = new Function(...functionConstructorParams);
-        const [queryFunctionParameters, queryParameters] = this.getQueryFunctionParameters(queryDefinition, jsonApplication, airDb, dbApplicationUtils);
+        const [queryFunctionParameters, queryParameters] = this.getQueryFunctionParameters(queryDefinition, jsonApplication, airDb, applicationNameUtils);
         const rawQuery = queryFunction(...queryFunctionParameters);
-        const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(DbApplicationUtils, Lookup, QUERY_FACADE);
+        const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(ApplicationNameUtils, Lookup, QUERY_FACADE);
         const context = lookup.ensureContext(null);
         const qApplication = airDb.QM[dbAppliationUtils.
-            getDbApplication_FullName(jsonApplication)];
+            getApplication_FullName(jsonApplication)];
         const dbApplicationVersion = qApplication.__dbApplication__
             .versions[qApplication.__dbApplication__.versions.length - 1];
         context.dbEntity = dbApplicationVersion.entityMapByName[entityName];
@@ -46785,7 +46785,7 @@ class ApplicationQueryGenerator {
             entityIndex: portableQuery.entityIndex
         };
     }
-    getQueryFunctionParameters(queryDefinition, jsonApplication, airDb, dbApplicationUtils) {
+    getQueryFunctionParameters(queryDefinition, jsonApplication, airDb, applicationNameUtils) {
         const queryFunctionParameters = [];
         const queryParameters = [];
         let parameter;
@@ -46845,8 +46845,8 @@ class ApplicationQueryGenerator {
                     }
                     break;
                 case QueryInputKind.Q:
-                    Q = airDb.QM[dbApplicationUtils.
-                        getDbApplication_FullName(jsonApplication)];
+                    Q = airDb.QM[applicationNameUtils.
+                        getApplication_FullName(jsonApplication)];
                     queryFunctionParameters.push(Q);
                     break;
                 case QueryInputKind.QENTITY:
@@ -47201,10 +47201,10 @@ class ApplicationRelationResolver {
             let relatedOneToManys;
             let relationIndexedEntity;
             let relationEntityName;
-            let crossApplication = aRelation.referencedDbApplication_Index || aRelation.referencedDbApplication_Index === 0;
+            let crossApplication = aRelation.referencedApplication_Index || aRelation.referencedApplication_Index === 0;
             if (crossApplication) {
                 relationIndexedEntity = indexedApplication.application
-                    .referencedApplications[aRelation.referencedDbApplication_Index].dbApplication.currentVersion[0]
+                    .referencedApplications[aRelation.referencedApplication_Index].dbApplication.currentVersion[0]
                     .applicationVersion.entityMapByName[aRelation.entityName];
                 relationEntityName = relationIndexedEntity.name;
                 relationIndexedEntity.isLocal;
@@ -47881,7 +47881,7 @@ class ${entityCandidate.docEntry.name}
             }
         }
         let entityName;
-        let referencedDbApplication_Index;
+        let referencedApplication_Index;
         if (!aProperty.entity) {
             if (!aProperty.fromProject) {
                 throw new Error(`Neither entity nor source project was specified 
@@ -47900,7 +47900,7 @@ class ${entityCandidate.docEntry.name}
                 };
                 referencedApplicationsByProjectName[aProperty.fromProject] = applicationReference;
             }
-            referencedDbApplication_Index = applicationReference.index;
+            referencedApplication_Index = applicationReference.index;
             const propertyType = aProperty.nonArrayType;
             let relatedEntity = applicationReference.dbApplication.currentVersion[0]
                 .applicationVersion.entityMapByName[propertyType];
@@ -47936,7 +47936,7 @@ class ${entityCandidate.docEntry.name}
             manyToOne,
             oneToMany,
             relationType,
-            referencedDbApplication_Index,
+            referencedApplication_Index,
             relationMustBeSingleIdEntity,
             // repositoryJoin,
             sRelationColumns
@@ -49180,14 +49180,14 @@ class QApplicationBuilder {
     QAppInternal
 } from '@airport/air-traffic-control'
 import {
-    DbApplication
+    IApplication
 } from '@airport/ground-control';
 ${qEntityImports}
 ${entityImports}
 
 export interface ${this.applicationFullName}_LocalQApp extends QAppInternal {
 
-    db: DbApplication;
+    db: IApplication;
 
   ${qApiDefinitions}
 
@@ -49416,24 +49416,24 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
                 };
             }
             else {
-                let relationTableDbApplication_Index;
-                let relationDbApplication_Index;
+                let relationTableApplication_Index;
+                let relationApplication_Index;
                 let relationTableIndex;
                 let relatedIndexedEntity;
-                if (sRelation.referencedDbApplication_Index || sRelation.referencedDbApplication_Index === 0) {
-                    relationTableDbApplication_Index = sRelation.referencedDbApplication_Index;
-                    const relatedDbApplication = sIndexedApplication.application.referencedApplications[sRelation.referencedDbApplication_Index];
-                    relationDbApplication_Index = relatedDbApplication.index;
-                    relatedIndexedEntity = relatedDbApplication.dbApplication
+                if (sRelation.referencedApplication_Index || sRelation.referencedApplication_Index === 0) {
+                    relationTableApplication_Index = sRelation.referencedApplication_Index;
+                    const relatedIApplication = sIndexedApplication.application.referencedApplications[sRelation.referencedApplication_Index];
+                    relationApplication_Index = relatedIApplication.index;
+                    relatedIndexedEntity = relatedIApplication.dbApplication
                         .currentVersion[0].applicationVersion.entityMapByName[sRelation.entityName];
                     relationTableIndex = relatedIndexedEntity.index;
                 }
                 else {
                     relatedIndexedEntity = sIndexedApplication.entityMapByName[sRelation.entityName];
-                    relationDbApplication_Index = null;
+                    relationApplication_Index = null;
                     relationTableIndex = relatedIndexedEntity.entity.entityIndex;
                 }
-                this.buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationDbApplication_Index, relationTableIndex, columns);
+                this.buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationApplication_Index, relationTableIndex, columns);
                 const relation = {
                     // addToJoinFunction: sRelation.addToJoinFunction,
                     foreignKey: sRelation.foreignKey,
@@ -49448,7 +49448,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
                         index: index
                     },
                     relationTableIndex,
-                    relationTableDbApplication_Index,
+                    relationTableApplication_Index,
                     sinceVersion: 1
                 };
                 relations[sRelation.index] = relation;
@@ -49467,7 +49467,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
         });
         return [properties, relations];
     }
-    buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationDbApplication_Index, relationTableIndex, columns) {
+    buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationApplication_Index, relationTableIndex, columns) {
         switch (sRelation.relationType) {
             case EntityRelationType.MANY_TO_ONE:
                 break;
@@ -49497,7 +49497,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
             const column = columns[ownColumnIndex];
             column.manyRelationColumnRefs.push({
                 manyRelationIndex: sRelation.index,
-                oneDbApplication_Index: relationDbApplication_Index,
+                oneApplication_Index: relationApplication_Index,
                 oneTableIndex: relationTableIndex,
                 oneRelationIndex: sRelationColumn.oneSideRelationIndex,
                 oneColumnIndex: relationColumnIndex,
@@ -50090,10 +50090,10 @@ class JsonApplicationChecker {
         this.applicationReferenceChecker.checkFrameworkReferences(jsonApplication, (jsonApplication, jsonApplicationVersion, queryRelation) => {
             let relatedJsonApplication;
             let relatedJsonEntity;
-            if (queryRelation.relationTableDbApplication_Index
-                || queryRelation.relationTableDbApplication_Index === 0) {
+            if (queryRelation.relationTableApplication_Index
+                || queryRelation.relationTableApplication_Index === 0) {
                 const referencedApplication = jsonApplicationVersion
-                    .referencedApplications[queryRelation.relationTableDbApplication_Index];
+                    .referencedApplications[queryRelation.relationTableApplication_Index];
                 // References are by name only since they are loaded from source by name
                 // thus a given Applicaiton shouldn't be referencing two other applications
                 // with the same names
@@ -50204,8 +50204,8 @@ function emitFiles(entityMapByName, configuration, applicationMapByProjectName) 
     const [jsonApplication, indexedApplication] = applicationBuilder.build(configuration.airport.domain, applicationMapByProjectName, entityOperationMap);
     const applicationChecker = new JsonApplicationChecker();
     applicationChecker.checkFrameworkReferences(jsonApplication, indexedApplication);
-    const applicationFullName = IOC.getSync(DbApplicationUtils).
-        getDbApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
+    const applicationFullName = IOC.getSync(ApplicationNameUtils).
+        getApplication_FullNameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
     const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
     const entityVInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'vInterfaces.ts');
     const qApplicationBuilder = new QApplicationBuilder(applicationFullName, pathBuilder, configuration);
@@ -50507,5 +50507,5 @@ async function generate() {
     console.log('DONE AIRport generation');
 }
 
-export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DbApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GlobalCandidates, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, InjectionFileBuilder, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpSchemaBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
+export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DdlApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GlobalCandidates, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, InjectionFileBuilder, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpSchemaBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
 //# sourceMappingURL=index.mjs.map

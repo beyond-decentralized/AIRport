@@ -1,8 +1,8 @@
-import { AppApiClass, AppApiOperation, AppApiParameter, AppApiReturnType, DbApplication, DbApplicationReference, DbApplicationVersion, DbColumn, DbDomain, DbEntity, DbProperty, DbPropertyColumn, DbRelation, DbRelationColumn } from "@airport/ground-control"
+import { AppApiClass, AppApiOperation, AppApiParameter, AppApiReturnType, IApplication, IApplicationReference, IApplicationVersion, DbColumn, IDomain, DbEntity, DbProperty, DbPropertyColumn, DbRelation, DbRelationColumn } from "@airport/ground-control"
 
 export interface AllDdlObjects {
     all: DdlObjects
-    allApplicationVersionsByIds: DbApplicationVersion[]
+    allApplicationVersionsByIds: IApplicationVersion[]
     added: DdlObjects
 }
 
@@ -12,15 +12,15 @@ export interface DdlObjects {
     apiParameters: AppApiParameter[],
     apiReturnTypes: AppApiReturnType[],
     columns: DbColumn[]
-    domains: DbDomain[]
+    domains: IDomain[]
     entities: DbEntity[]
-    latestApplicationVersions: DbApplicationVersion[]
+    latestApplicationVersions: IApplicationVersion[]
     properties: DbProperty[]
     propertyColumns: DbPropertyColumn[]
     relationColumns: DbRelationColumn[]
     relations: DbRelation[]
-    applications: DbApplication[]
-    applicationReferences: DbApplicationReference[]
-    applicationVersions: DbApplicationVersion[]
+    applications: IApplication[]
+    applicationReferences: IApplicationReference[]
+    applicationVersions: IApplicationVersion[]
 
 }

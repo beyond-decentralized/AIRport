@@ -3,10 +3,10 @@ import {
     IInjected
 } from '@airport/direction-indicator'
 import {
-    DbApplication_Name,
+    Application_Name,
     DbEntity,
-    DbDomain_Name,
-    DbApplication_FullName,
+    Domain_Name,
+    Application_FullName,
     InternalFragments,
     Query,
     PortableQuery,
@@ -103,11 +103,11 @@ export abstract class SqlTransaction
 
     getTableName(
         application: {
-            domain: DbDomain_Name | {
-                name: DbDomain_Name
+            domain: Domain_Name | {
+                name: Domain_Name
             };
-            name: DbApplication_Name;
-            fullName?: DbApplication_FullName;
+            name: Application_Name;
+            fullName?: Application_FullName;
         },
         applicationIntegerVersion: number,
         table: {

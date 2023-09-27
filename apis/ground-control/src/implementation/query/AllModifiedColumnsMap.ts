@@ -3,7 +3,7 @@ import {
 	DbEntity_TableIndex
 } from "../../definition/application/DbEntity";
 import { DbColumn_Index } from "../../definition/application/DbProperty";
-import { DbApplicationVersion_LocalId } from "../../definition/application/DbApplication";
+import { ApplicationVersion_LocalId } from "../../definition/application/IApplication";
 import { ColumnMap } from "./ColumnMap";
 import { TableMap } from "./TableMap";
 
@@ -23,7 +23,7 @@ export class AllModifiedColumnsMap {
 	}
 
 	ensure(
-		applicationVersionLocalId: DbApplicationVersion_LocalId,
+		applicationVersionLocalId: ApplicationVersion_LocalId,
 		entityIndex: DbEntity_TableIndex,
 		allColumns: boolean = false,
 		TableMapConstructor = globalThis.TableMap as typeof TableMap
@@ -38,7 +38,7 @@ export class AllModifiedColumnsMap {
 	}
 
 	existsByStructure(
-		applicationVersionLocalId: DbApplicationVersion_LocalId,
+		applicationVersionLocalId: ApplicationVersion_LocalId,
 		entityIndex: DbEntity_TableIndex,
 		columnIndex: DbColumn_Index
 	): boolean {

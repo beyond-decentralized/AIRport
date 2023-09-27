@@ -2,22 +2,22 @@ import { AIRPORT_DATABASE, QApplicationBuilderUtils } from '@airport/air-traffic
 import { SequenceDao } from '@airport/airport-code'
 import {
     DbColumnDao,
-    DbApplicationDao,
+    DdlApplicationDao,
     DbEntityDao,
     DbPropertyColumnDao,
     DbPropertyDao,
-    DbApplicationReferenceDao,
+    DdlApplicationReferenceDao,
     DbRelationColumnDao,
     DbRelationDao,
-    DbApplicationVersionDao,
-    DbDomainDao,
+    DdlApplicationVersionDao,
+    DdlDomainDao,
     ApplicationApiClassDao,
     ApplicationApiOperationDao,
     ApplicationApiParameterDao,
     ApplicationApiReturnTypeDao
 } from '@airport/airspace/dist/app/bundle'
 import { lib } from '@airport/direction-indicator'
-import { ApplicationReferenceUtils, APPLICATION_UTILS, AppTrackerUtils, DatastructureUtils, DbApplicationUtils, SEQUENCE_GENERATOR } from '@airport/ground-control'
+import { ApplicationReferenceUtils, APPLICATION_UTILS, AppTrackerUtils, DatastructureUtils, ApplicationNameUtils, SEQUENCE_GENERATOR } from '@airport/ground-control'
 import { DOMAIN_RETRIEVER, STORE_DRIVER, TerminalStore, TRANSACTION_MANAGER } from '@airport/terminal-map'
 import { AirportDatabasePopulator } from './AirportDatabasePopulator'
 import { ApplicationInitializer } from './ApplicationInitializer'
@@ -48,16 +48,16 @@ export const SCHEMA_BUILDER = tokens.ApplicationBuilder
 export const APPLICATION_LOCATOR = tokens.ApplicationLocator
 
 takeoff.setDependencies(ApplicationChecker, {
-    dbApplicationDao: DbApplicationDao,
+    ddlApplicationDao: DdlApplicationDao,
     datastructureUtils: DatastructureUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     transactionManager: TRANSACTION_MANAGER
 })
 
 takeoff.setDependencies(ApplicationComposer, {
     applicationLocator: ApplicationLocator,
     datastructureUtils: DatastructureUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     domainRetriever: DOMAIN_RETRIEVER,
     terminalStore: TerminalStore
 })
@@ -66,11 +66,11 @@ takeoff.setDependencies(ApplicationInitializer as any, {
     airportDatabase: AIRPORT_DATABASE,
     applicationChecker: ApplicationChecker,
     applicationComposer: ApplicationComposer,
-    dbApplicationDao: DbApplicationDao,
+    ddlApplicationDao: DdlApplicationDao,
     applicationLocator: ApplicationLocator,
     applicationRecorder: ApplicationRecorder,
     appTrackerUtils: AppTrackerUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     queryObjectInitializer: QueryObjectInitializer,
     schemaBuilder: SCHEMA_BUILDER,
     sequenceGenerator: SEQUENCE_GENERATOR,
@@ -79,7 +79,7 @@ takeoff.setDependencies(ApplicationInitializer as any, {
 })
 
 takeoff.setDependencies(ApplicationLocator, {
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
 })
 
 takeoff.setDependencies(ApplicationRecorder, {
@@ -88,16 +88,16 @@ takeoff.setDependencies(ApplicationRecorder, {
     applicationApiParameterDao: ApplicationApiParameterDao,
     applicationApiReturnTypeDao: ApplicationApiReturnTypeDao,
     dbColumnDao: DbColumnDao,
-    dbApplicationDao: DbApplicationDao,
+    ddlApplicationDao: DdlApplicationDao,
     dbEntityDao: DbEntityDao,
     dbPropertyColumnDao: DbPropertyColumnDao,
     dbPropertyDao: DbPropertyDao,
     applicationRecorder: ApplicationRecorder,
-    dbApplicationReferenceDao: DbApplicationReferenceDao,
+    ddlApplicationReferenceDao: DdlApplicationReferenceDao,
     dbRelationColumnDao: DbRelationColumnDao,
     dbRelationDao: DbRelationDao,
-    dbApplicationVersionDao: DbApplicationVersionDao,
-    dbDomainDao: DbDomainDao,
+    ddlApplicationVersionDao: DdlApplicationVersionDao,
+    ddlDomainDao: DdlDomainDao,
     transactionManager: TRANSACTION_MANAGER
 })
 
@@ -111,15 +111,15 @@ takeoff.setDependencies(DdlObjectRetriever, {
     // applicationApiParameterDao: ApplicationApiParameterDao,
     // applicationApiReturnTypeDao: ApplicationApiReturnTypeDao,
     dbColumnDao: DbColumnDao,
-    dbApplicationDao: DbApplicationDao,
+    ddlApplicationDao: DdlApplicationDao,
     dbEntityDao: DbEntityDao,
     dbPropertyColumnDao: DbPropertyColumnDao,
     dbPropertyDao: DbPropertyDao,
-    dbApplicationReferenceDao: DbApplicationReferenceDao,
+    ddlApplicationReferenceDao: DdlApplicationReferenceDao,
     dbRelationColumnDao: DbRelationColumnDao,
     dbRelationDao: DbRelationDao,
-    dbApplicationVersionDao: DbApplicationVersionDao,
-    dbDomainDao: DbDomainDao
+    ddlApplicationVersionDao: DdlApplicationVersionDao,
+    ddlDomainDao: DdlDomainDao
 })
 
 takeoff.setDependencies(QueryEntityClassCreator, {
@@ -143,7 +143,7 @@ SCHEMA_BUILDER.setDependencies({
 takeoff.setDependencies(SqlSchemaBuilder as any, {
     airportDatabase: AIRPORT_DATABASE,
     applicationReferenceUtils: ApplicationReferenceUtils,
-    dbApplicationUtils: DbApplicationUtils,
+    applicationNameUtils: ApplicationNameUtils,
     sequenceDao: SequenceDao,
     storeDriver: STORE_DRIVER
 })

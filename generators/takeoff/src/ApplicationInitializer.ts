@@ -9,9 +9,9 @@ import {
 	IContext
 } from '@airport/direction-indicator';
 import {
-	DbApplication,
-	DbApplication_FullName,
-	IDbApplicationUtils,
+	IApplication,
+	Application_FullName,
+	IApplicationNameUtils,
 	ISequenceGenerator,
 	JsonApplication,
 	IAppTrackerUtils
@@ -24,7 +24,7 @@ import {
 	ITransactionManager
 } from '@airport/terminal-map';
 import {
-	IDbApplicationDao
+	IDdlApplicationDao
 } from '@airport/airspace/dist/app/bundle';
 import { ISchemaBuilder } from './builder/ISchemaBuilder';
 import { IApplicationChecker } from './checker/ApplicationChecker';
@@ -46,7 +46,7 @@ export abstract class ApplicationInitializer
 	applicationComposer: IApplicationComposer
 
 	@Inject()
-	dbApplicationDao: IDbApplicationDao
+	ddlApplicationDao: IDdlApplicationDao
 
 	@Inject()
 	applicationLocator: IApplicationLocator
@@ -58,7 +58,7 @@ export abstract class ApplicationInitializer
 	appTrackerUtils: IAppTrackerUtils
 
 	@Inject()
-	dbApplicationUtils: IDbApplicationUtils
+	applicationNameUtils: IApplicationNameUtils
 
 	@Inject()
 	queryObjectInitializer: IQueryObjectInitializer
@@ -94,7 +94,7 @@ export abstract class ApplicationInitializer
 
 		this.addNewApplicationVersionsToAll(ddlObjects);
 
-		this.setAirDbApplications(ddlObjects);
+		this.setAirIApplications(ddlObjects);
 
 		await this.sequenceGenerator.initialize(context);
 	}
@@ -119,13 +119,13 @@ export abstract class ApplicationInitializer
 			getApplicationsWithValidDependencies(
 				jsonApplications, checkDependencies, context)
 
-		const existingApplicationMap: Map<DbApplication_FullName, DbApplication> = new Map()
+		const existingApplicationMap: Map<Application_FullName, IApplication> = new Map()
 		if (loadExistingApplications) {
 			await this.transactionManager.transactInternal(async (
 				_transaction,
 				context
 			) => {
-				const applications = await this.dbApplicationDao.findAllWithJson(context)
+				const applications = await this.ddlApplicationDao.findAllWithJson(context)
 				for (const application of applications) {
 					existingApplicationMap.set(application.fullName, application)
 				}
@@ -134,13 +134,13 @@ export abstract class ApplicationInitializer
 
 		const newJsonApplicationMap: Map<string, JsonApplicationWithLastIds> = new Map()
 		for (const jsonApplication of jsonApplications) {
-			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-				getDbApplication_FullName(jsonApplication))
+			const existingApplication = existingApplicationMap.get(this.applicationNameUtils.
+				getApplication_FullName(jsonApplication))
 			if (existingApplication) {
 				jsonApplication.lastIds = (existingApplication.versions[0].jsonApplication as JsonApplicationWithLastIds).lastIds
 			} else {
-				newJsonApplicationMap.set(this.dbApplicationUtils.
-					getDbApplication_FullName(jsonApplication), jsonApplication);
+				newJsonApplicationMap.set(this.applicationNameUtils.
+					getApplication_FullName(jsonApplication), jsonApplication);
 			}
 		}
 
@@ -151,8 +151,8 @@ export abstract class ApplicationInitializer
 			context
 		) => {
 			for (const jsonApplication of applicationsWithValidDependencies) {
-				const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-					getDbApplication_FullName(jsonApplication))
+				const existingApplication = existingApplicationMap.get(this.applicationNameUtils.
+					getApplication_FullName(jsonApplication))
 				if (!existingApplication) {
 					checkedApplicationsWithValidDependencies.push(jsonApplication)
 					await this.schemaBuilder.build(
@@ -171,7 +171,7 @@ export abstract class ApplicationInitializer
 
 		this.queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects);
 
-		this.setAirDbApplications(allDdlObjects);
+		this.setAirIApplications(allDdlObjects);
 
 		await this.transactionManager.transactInternal(async (
 			_transaction,
@@ -189,9 +189,9 @@ export abstract class ApplicationInitializer
 
 	async isApplicationIsInstalled(
 		domain: string,
-		fullDbApplication_Name: string
+		fullApplication_Name: string
 	): Promise<boolean> {
-		if (!fullDbApplication_Name) {
+		if (!fullApplication_Name) {
 			return false
 		}
 
@@ -200,7 +200,7 @@ export abstract class ApplicationInitializer
 		}
 
 		return !!this.terminalStore.getApplicationInitializer()
-			.applicationWindowMap.get(fullDbApplication_Name)
+			.applicationWindowMap.get(fullApplication_Name)
 	}
 
 	async ensureApplicationIsInstalled(
@@ -213,23 +213,23 @@ export abstract class ApplicationInitializer
 			return true
 		}
 
-		const fullDbApplication_Name = this.dbApplicationUtils.
-			getDbApplication_FullNameFromDomainAndName(
+		const fullApplication_Name = this.applicationNameUtils.
+			getApplication_FullNameFromDomainAndName(
 				domainName, applicationName)
 
 		const applicationInitializing = this.terminalStore.getApplicationInitializer()
-			.initializingApplicationMap.get(fullDbApplication_Name)
+			.initializingApplicationMap.get(fullApplication_Name)
 		if (applicationInitializing) {
 			return false
 		}
 
-		const isApplicationLoaded = await this.isAppLoaded(fullDbApplication_Name)
+		const isApplicationLoaded = await this.isAppLoaded(fullApplication_Name)
 
 		if (!isApplicationLoaded) {
 			this.terminalStore.getApplicationInitializer()
-				.initializingApplicationMap.set(fullDbApplication_Name, true)
+				.initializingApplicationMap.set(fullApplication_Name, true)
 			await this.nativeInitializeApplication(domainName,
-				applicationName, fullDbApplication_Name)
+				applicationName, fullApplication_Name)
 		}
 
 		return true
@@ -254,7 +254,7 @@ export abstract class ApplicationInitializer
 	}
 
 	protected abstract isAppLoaded(
-		fullDbApplication_Name: string
+		fullApplication_Name: string
 	): Promise<boolean>
 
 	async initializeForAIRportApp(
@@ -274,7 +274,7 @@ export abstract class ApplicationInitializer
 
 		this.queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects);
 
-		this.setAirDbApplications(ddlObjects);
+		this.setAirIApplications(ddlObjects);
 	}
 
 	async stage(
@@ -292,7 +292,7 @@ export abstract class ApplicationInitializer
 
 		this.queryObjectInitializer.generateQObjectsAndPopulateStore(tempDdlObjects);
 
-		this.setAirDbApplications(tempDdlObjects);
+		this.setAirIApplications(tempDdlObjects);
 
 		const newSequences = await this.schemaBuilder.stageSequences(
 			jsonApplications, context);
@@ -303,7 +303,7 @@ export abstract class ApplicationInitializer
 	abstract nativeInitializeApplication(
 		domain: string,
 		application: string,
-		fullDbApplication_Name: string,
+		fullApplication_Name: string,
 	): Promise<void>
 
 	protected async wait(
@@ -345,11 +345,11 @@ export abstract class ApplicationInitializer
 				// const
 				for (let i = 0; i < applicationReferenceCheckResults.neededDependencies.length; i++) {
 					const neededDependency = applicationReferenceCheckResults.neededDependencies[i]
-					const fullDbApplication_Name = this.dbApplicationUtils.
-						getDbApplication_FullName(neededDependency)
+					const fullApplication_Name = this.applicationNameUtils.
+						getApplication_FullName(neededDependency)
 
 					await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name,
-						fullDbApplication_Name)
+						fullApplication_Name)
 				}
 			}
 			applicationsWithValidDependencies = [
@@ -363,11 +363,11 @@ export abstract class ApplicationInitializer
 		return applicationsWithValidDependencies
 	}
 
-	private setAirDbApplications(
+	private setAirIApplications(
 		ddlObjects: AllDdlObjects
 	): void {
 		for (let application of ddlObjects.all.applications) {
-			this.airportDatabase.applications[application.index] = application as DbApplication;
+			this.airportDatabase.applications[application.index] = application as IApplication;
 		}
 	}
 
