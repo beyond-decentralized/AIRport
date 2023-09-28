@@ -27,16 +27,16 @@ export function getReactComponentsBuildConfig() {
         resolve(),
         commonjs(),
         typescript({
-            tsconfig: process.cwd() + "/tsconfig.json"
+            tsconfig: "./tsconfig.json"
         }),
         postcss(),
         production && terser(),
     ]
     if (clean) {
-        plugins.unshift(del({ targets: process.cwd() + '/dist/*' }))
+        plugins.unshift(del({ targets: './dist/*' }))
     }
     return [{
-        input: process.cwd() + "/src/index.ts",
+        input: "./src/index.ts",
         output: [
             {
                 file: packageJson.main,
@@ -52,9 +52,9 @@ export function getReactComponentsBuildConfig() {
         plugins
     },
     {
-        input: process.cwd() + "/dist/esm/types/index.d.ts",
+        input: "./dist/esm/types/index.d.ts",
         output: [{
-            file: process.cwd() + "/dist/index.d.ts",
+            file: "./dist/index.d.ts",
             format: "esm"
         }],
         plugins: [dts()],

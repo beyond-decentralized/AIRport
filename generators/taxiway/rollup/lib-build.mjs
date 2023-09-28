@@ -35,19 +35,19 @@ export function getLibBuildConfig(
         typescript({
             inlineSources: !production,
             sourceMap: !production,
-            tsconfig: process.cwd() + "/tsconfig.json"
+            tsconfig: "./tsconfig.json"
         }),
         production && terser()
     ]
     if (clean) {
-        plugins.unshift(del({ targets: process.cwd() + '/dist/*' }))
+        plugins.unshift(del({ targets: './dist/*' }))
     }
 
     return [{
-        input: process.cwd() + `/src/${inputFileName}.ts`,
+        input: `./src/${inputFileName}.ts`,
         output: [
             {
-                file: process.cwd() + '/' + packageJson.module,
+                file: './' + packageJson.module,
                 format: "esm",
                 sourcemap: true,
             },

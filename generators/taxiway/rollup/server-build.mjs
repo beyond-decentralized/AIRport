@@ -25,18 +25,18 @@ export function getServerBuildConfig() {
         resolve(),
         commonjs(),
         typescript({
-            tsconfig: process.cwd() + "/tsconfig.json",
+            tsconfig: "./tsconfig.json",
             sourceMap: !production,
             inlineSources: !production
         }),
         production && terser(),
     ]
     if (clean) {
-        cjsBuildPlugins.unshift(del({ targets: process.cwd() + '/dist/*' }))
+        cjsBuildPlugins.unshift(del({ targets: './dist/*' }))
     }
 
     return [{
-        input: process.cwd() + "/src/server.index.ts",
+        input: "./src/server.index.ts",
         output: [
             {
                 file: packageJson.main,
@@ -47,7 +47,7 @@ export function getServerBuildConfig() {
         plugins: cjsBuildPlugins
     },
     {
-        input: process.cwd() + "/src/server.index.ts",
+        input: "./src/server.index.ts",
         output: [
             {
                 file: packageJson.module,
@@ -60,7 +60,7 @@ export function getServerBuildConfig() {
             resolve(),
             commonjs(),
             typescript({
-                tsconfig: process.cwd() + "/tsconfig.json",
+                tsconfig: "./tsconfig.json",
                 sourceMap: !production,
                 inlineSources: !production
             }),
@@ -68,9 +68,9 @@ export function getServerBuildConfig() {
         ],
     },
     {
-        input: process.cwd() + "/dist/esm/server.index.d.ts",
+        input: "./dist/esm/server.index.d.ts",
         output: [{
-            file: process.cwd() + "/dist/server.index.d.ts",
+            file: "./dist/server.index.d.ts",
             format: "esm"
         }],
         plugins: [

@@ -745,42 +745,7 @@ else {
 }
 const DEPENDENCY_INJECTION = rootContainer;
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$n(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-const Injected = function () {
-    return function (constructor) {
-        // No runtime logic required.
-    };
-};
-const Inject = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-
-let ContainerAccessor = class ContainerAccessor {
+class ContainerAccessor {
     getContainer(injectedObject) {
         const iocContainer = injectedObject.__container__;
         if (!iocContainer) {
@@ -792,10 +757,7 @@ let ContainerAccessor = class ContainerAccessor {
         }
         return iocContainer;
     }
-};
-ContainerAccessor = __decorate$n([
-    Injected()
-], ContainerAccessor);
+}
 
 const directionIndicator = lib('direction-indicator');
 directionIndicator.register(ContainerAccessor);
@@ -831,6 +793,17 @@ class InversionOfControl {
 }
 addClasses([InversionOfControl]);
 
+const Injected = function () {
+    return function (constructor) {
+        // No runtime logic required.
+    };
+};
+const Inject = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+
 /**
  * From:
  * http://js-bits.blogspot.com/2010/08/javascript-inheritance-done-right.html
@@ -860,31 +833,7 @@ else {
 }
 const IOC = inversionOfControl;
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$m(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let Dictionary = class Dictionary {
+class Dictionary {
     constructor() {
         this.airbridge = {
             DOMAIN_NAME: 'airbridge',
@@ -1182,10 +1131,7 @@ let Dictionary = class Dictionary {
             && dbApplication.name === application.name
             && dbEntity.name === entity.name;
     }
-};
-Dictionary = __decorate$m([
-    Injected()
-], Dictionary);
+}
 
 /**
  * SQL Join contentType.
@@ -1559,7 +1505,7 @@ class ColumnMap {
 }
 globalThis.ColumnMap = ColumnMap;
 
-let ApplicationNameUtils = class ApplicationNameUtils {
+class ApplicationNameUtils {
     getApplication_FullName({ domain, name, }) {
         if (domain.name) {
             domain = domain.name;
@@ -1614,10 +1560,7 @@ let ApplicationNameUtils = class ApplicationNameUtils {
     getSequenceName(prefixedTableName, columnName) {
         return `${prefixedTableName}_${columnName}__SEQUENCE`;
     }
-};
-ApplicationNameUtils = __decorate$m([
-    Injected()
-], ApplicationNameUtils);
+}
 
 /**
  * Created by Papa on 9/10/2016.
@@ -1885,11 +1828,8 @@ class AppTrackerUtils {
         return false;
     }
 }
-__decorate$m([
-    Inject()
-], AppTrackerUtils.prototype, "dictionary", void 0);
 
-let ApplicationReferenceUtils = class ApplicationReferenceUtils {
+class ApplicationReferenceUtils {
     getCurrentJsonApplicationVersion(jsonApplication) {
         return jsonApplication.versions[jsonApplication.versions.length - 1];
     }
@@ -1951,15 +1891,9 @@ From:
           `);
         }
     }
-};
-__decorate$m([
-    Inject()
-], ApplicationReferenceUtils.prototype, "appTrackerUtils", void 0);
-ApplicationReferenceUtils = __decorate$m([
-    Injected()
-], ApplicationReferenceUtils);
+}
 
-let DatastructureUtils = class DatastructureUtils {
+class DatastructureUtils {
     ensureChildArray(parentContainer, index) {
         let childArray;
         if (parentContainer instanceof Map) {
@@ -2016,10 +1950,7 @@ let DatastructureUtils = class DatastructureUtils {
     undefinedToNull(value) {
         return value === undefined ? null : value;
     }
-};
-DatastructureUtils = __decorate$m([
-    Injected()
-], DatastructureUtils);
+}
 
 class KeyUtils {
     constructor() {
@@ -4522,30 +4453,6 @@ QEntity.prototype.in = function (entities) {
         .in(entities, this);
 };
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$l(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
 /**
  * Created by Papa on 4/21/2016.
  */
@@ -5303,8 +5210,7 @@ class QUntypedField extends QOperableField {
     }
 }
 
-var QEntityUtils_1;
-let QEntityUtils = QEntityUtils_1 = class QEntityUtils {
+class QEntityUtils {
     getColumnQField(entity, property, q, column) {
         switch (column.type) {
             case SQLDataType.ANY:
@@ -5346,7 +5252,7 @@ let QEntityUtils = QEntityUtils_1 = class QEntityUtils {
         // ChildQEntity refers to the constructor
         var ChildQEntity = function (entity, applicationUtils, queryRelationManager, nextChildJoinPosition, dbRelation, joinType) {
             ChildQEntity.base.constructor.call(this, entity, applicationUtils, queryRelationManager, nextChildJoinPosition, dbRelation, joinType);
-            const qEntityUtils = IOC.getSync(QEntityUtils_1);
+            const qEntityUtils = IOC.getSync(QEntityUtils);
             entity.properties.forEach((property) => {
                 let qFieldOrRelation;
                 if (property.relation && property.relation.length) {
@@ -5383,7 +5289,7 @@ let QEntityUtils = QEntityUtils_1 = class QEntityUtils {
     getQEntityIdRelationConstructor(dbEntity) {
         function QEntityIdRelation(entity, relation, qEntity, appliationUtils, queryRelationManager, queryUtils) {
             QEntityIdRelation.base.constructor.call(this, relation, qEntity, appliationUtils, queryRelationManager, queryUtils);
-            const qEntityUtils = IOC.getSync(QEntityUtils_1);
+            const qEntityUtils = IOC.getSync(QEntityUtils);
             qEntityUtils.getQEntityIdFields(this, entity, qEntity, relation.property);
             // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
         }
@@ -5472,19 +5378,7 @@ let QEntityUtils = QEntityUtils_1 = class QEntityUtils {
         });
         return addToObject;
     }
-};
-__decorate$l([
-    Inject()
-], QEntityUtils.prototype, "applicationUtils", void 0);
-__decorate$l([
-    Inject()
-], QEntityUtils.prototype, "queryRelationManager", void 0);
-__decorate$l([
-    Inject()
-], QEntityUtils.prototype, "queryUtils", void 0);
-QEntityUtils = QEntityUtils_1 = __decorate$l([
-    Injected()
-], QEntityUtils);
+}
 
 const tarmaqQuery = lib('tarmaq-query');
 // Separating core-tokens from tokens removes circular dependencies
@@ -8349,31 +8243,7 @@ function handleReset(reset, on) {
     return innerFrom(on.apply(void 0, __spreadArray([], __read(args)))).subscribe(onSubscriber);
 }
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$k(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let AirEntityUtils = class AirEntityUtils {
+class AirEntityUtils {
     getCreatedBy(airEntity) {
         return airEntity.actor.userAccount;
     }
@@ -8442,10 +8312,7 @@ let AirEntityUtils = class AirEntityUtils {
         }
         airEntity._actorRecordId = airEntityId._actorRecordId;
     }
-};
-AirEntityUtils = __decorate$k([
-    Injected()
-], AirEntityUtils);
+}
 
 var Message_Direction;
 (function (Message_Direction) {
@@ -8571,7 +8438,7 @@ function v4$1(options, buf, offset) {
   return unsafeStringify$1(rnds);
 }
 
-let AirMessageUtils = class AirMessageUtils {
+class AirMessageUtils {
     getMessageReadySendAttributes() {
         return {
             __received__: false,
@@ -8895,10 +8762,7 @@ Message:
         return typeof domainName === 'string'
             && domainName.length >= 3;
     }
-};
-AirMessageUtils = __decorate$k([
-    Injected()
-], AirMessageUtils);
+}
 
 globalThis.MESSAGE_BUS = new Subject();
 
@@ -8922,30 +8786,6 @@ setTimeout(() => {
     }
 });
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$j(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
 class LookupProxy {
     ensureContext(context) {
         return this.dao.lookup.ensureContext(context);
@@ -8960,7 +8800,7 @@ class LookupProxy {
         return this.dao.lookup.searchInternal(rawQuery, queryResultType, one, QueryClass, context, mapResults);
     }
 }
-let Lookup = class Lookup {
+class Lookup {
     ensureContext(context) {
         if (!context) {
             context = {};
@@ -9013,16 +8853,7 @@ let Lookup = class Lookup {
         }
         return query;
     }
-};
-__decorate$j([
-    Inject()
-], Lookup.prototype, "entityUtils", void 0);
-__decorate$j([
-    Inject()
-], Lookup.prototype, "queryFacade", void 0);
-Lookup = __decorate$j([
-    Injected()
-], Lookup);
+}
 
 class EntityLookup extends LookupProxy {
     constructor(dbEntity, dao, mapResults = EntityLookup.mapResults) {
@@ -9129,7 +8960,7 @@ class EntitySearchOne extends EntityLookup {
 /**
  * Created by Papa on 11/12/2016.
  */
-let NonEntityFind = class NonEntityFind extends Lookup {
+class NonEntityFind extends Lookup {
     field(rawFieldQuery, context) {
         return this.find(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context);
     }
@@ -9145,15 +8976,12 @@ let NonEntityFind = class NonEntityFind extends Lookup {
     find(rawNonEntityQuery, queryResultType, QueryClass, context) {
         return this.findInternal(rawNonEntityQuery, queryResultType, false, QueryClass, this.ensureContext(context));
     }
-};
-NonEntityFind = __decorate$j([
-    Injected()
-], NonEntityFind);
+}
 
 /**
  * Created by Papa on 11/12/2016.
  */
-let NonEntityFindOne = class NonEntityFindOne extends Lookup {
+class NonEntityFindOne extends Lookup {
     field(rawFieldQuery, context) {
         return this.findOne(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context);
     }
@@ -9166,15 +8994,12 @@ let NonEntityFindOne = class NonEntityFindOne extends Lookup {
     findOne(rawNonEntityQuery, queryResultType, QueryClass, context) {
         return this.findInternal(rawNonEntityQuery, queryResultType, true, QueryClass, this.ensureContext(context));
     }
-};
-NonEntityFindOne = __decorate$j([
-    Injected()
-], NonEntityFindOne);
+}
 
 /**
  * Created by Papa on 11/12/2016.
  */
-let NonEntitySearch = class NonEntitySearch extends Lookup {
+class NonEntitySearch extends Lookup {
     field(rawFieldQuery, context) {
         return this.search(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context);
     }
@@ -9187,15 +9012,12 @@ let NonEntitySearch = class NonEntitySearch extends Lookup {
     search(rawNonEntityQuery, queryResultType, QueryClass, context) {
         return this.searchInternal(rawNonEntityQuery, queryResultType, false, QueryClass, this.ensureContext(context));
     }
-};
-NonEntitySearch = __decorate$j([
-    Injected()
-], NonEntitySearch);
+}
 
 /**
  * Created by Papa on 11/12/2016.
  */
-let NonEntitySearchOne = class NonEntitySearchOne extends Lookup {
+class NonEntitySearchOne extends Lookup {
     field(rawFieldQuery, context) {
         return this.searchOne(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context);
     }
@@ -9208,10 +9030,7 @@ let NonEntitySearchOne = class NonEntitySearchOne extends Lookup {
     searchOne(rawNonEntityQuery, queryResultType, QueryClass, context) {
         return this.searchInternal(rawNonEntityQuery, queryResultType, true, QueryClass, this.ensureContext(context));
     }
-};
-NonEntitySearchOne = __decorate$j([
-    Injected()
-], NonEntitySearchOne);
+}
 
 /**
  * Created by Papa on 12/11/2016.
@@ -9329,7 +9148,7 @@ class FieldsSelect {
 /**
  * Created by Papa on 8/26/2017.
  */
-let Dao = class Dao {
+class Dao {
     static BaseSave(config) {
         return function (target, propertyKey) {
             // No runtime logic required.
@@ -9479,22 +9298,7 @@ let Dao = class Dao {
     ensureContext(context) {
         return this.lookup.ensureContext(context);
     }
-};
-__decorate$j([
-    Inject()
-], Dao.prototype, "databaseFacade", void 0);
-__decorate$j([
-    Inject()
-], Dao.prototype, "entityStateManager", void 0);
-__decorate$j([
-    Inject()
-], Dao.prototype, "lookup", void 0);
-__decorate$j([
-    Inject()
-], Dao.prototype, "updateCacheManager", void 0);
-Dao = __decorate$j([
-    Injected()
-], Dao);
+}
 
 class DaoQueryDecorators {
     Graph(callback) {
@@ -9509,7 +9313,7 @@ class DaoQueryDecorators {
     }
 }
 
-let ObservableDao = class ObservableDao extends Dao {
+class ObservableDao extends Dao {
     searchAll(entityIds, context) {
         if (entityIds) {
             throw new Error(`Not implemented`);
@@ -9559,10 +9363,7 @@ let ObservableDao = class ObservableDao extends Dao {
             WHERE: q.IN(airEntityIds)
         }, context);
     }
-};
-ObservableDao = __decorate$j([
-    Injected()
-], ObservableDao);
+}
 
 const tarmaqDao = lib('tarmaq-dao');
 tarmaqDao.register(Dao, Lookup, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne);
@@ -9603,32 +9404,7 @@ const Api = function () {
     };
 };
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$i(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-var ApplicationUtils_1;
-let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
+class ApplicationUtils {
     getDbEntity(applicationIndex, entityIndex) {
         return this.airportDatabase.applications[applicationIndex].currentVersion[0]
             .applicationVersion.entities[entityIndex];
@@ -9822,7 +9598,7 @@ let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
             if (forIdKey && this.isIdEmpty(value)) {
                 if (dbColumn.isGenerated) {
                     if (generateNegativeIdsForMissing) {
-                        value = --ApplicationUtils_1.TEMP_ID;
+                        value = --ApplicationUtils.TEMP_ID;
                     }
                     else {
                         value = null;
@@ -9875,28 +9651,13 @@ let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
         }
         return false;
     }
-};
+}
 ApplicationUtils.TEMP_ID = 0;
-__decorate$i([
-    Inject()
-], ApplicationUtils.prototype, "airportDatabase", void 0);
-__decorate$i([
-    Inject()
-], ApplicationUtils.prototype, "dictionary", void 0);
-__decorate$i([
-    Inject()
-], ApplicationUtils.prototype, "entityStateManager", void 0);
-__decorate$i([
-    Inject()
-], ApplicationUtils.prototype, "utils", void 0);
-ApplicationUtils = ApplicationUtils_1 = __decorate$i([
-    Injected()
-], ApplicationUtils);
 
 /**
  * Created by Papa on 6/14/2016.
  */
-let EntityUtils = class EntityUtils {
+class EntityUtils {
     getObjectClassName(object) {
         if (typeof object != 'object' || object === null) {
             throw new Error(`Not an object instance`);
@@ -10068,32 +9829,17 @@ It must be an Object with the id property.`);
     isQField(qEntity) {
         return qEntity instanceof QField;
     }
-};
-__decorate$i([
-    Inject()
-], EntityUtils.prototype, "dictionary", void 0);
-__decorate$i([
-    Inject()
-], EntityUtils.prototype, "utils", void 0);
-EntityUtils = __decorate$i([
-    Injected()
-], EntityUtils);
+}
 ENTITY_UTILS.setClass(EntityUtils);
 
-let FieldUtils = class FieldUtils {
+class FieldUtils {
     getFieldQueryJson(fieldSubQuery, entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils) {
         let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
         return subSelectQuery.toQuery(queryUtils, this, this.queryRelationManager);
     }
-};
-__decorate$i([
-    Inject()
-], FieldUtils.prototype, "queryRelationManager", void 0);
-FieldUtils = __decorate$i([
-    Injected()
-], FieldUtils);
+}
 
-let QApplicationBuilderUtils = class QApplicationBuilderUtils {
+class QApplicationBuilderUtils {
     setQAppEntities(application, qApplication, allQApps, appliationUtils, queryRelationManager) {
         // const entities = orderEntitiesByIdDependencies(application.currentVersion[0].applicationVersion.entities,
         // application)
@@ -10197,15 +9943,9 @@ let QApplicationBuilderUtils = class QApplicationBuilderUtils {
         }
         return false;
     }
-};
-__decorate$i([
-    Inject()
-], QApplicationBuilderUtils.prototype, "qEntityUtils", void 0);
-QApplicationBuilderUtils = __decorate$i([
-    Injected()
-], QApplicationBuilderUtils);
+}
 
-let QMetadataUtils = class QMetadataUtils {
+class QMetadataUtils {
     getAllColumns(qEntity) {
         return qEntity.__driver__.allColumns;
     }
@@ -10237,15 +9977,9 @@ let QMetadataUtils = class QMetadataUtils {
         }
         return new entityConstructor();
     }
-};
-__decorate$i([
-    Inject()
-], QMetadataUtils.prototype, "dictionary", void 0);
-QMetadataUtils = __decorate$i([
-    Injected()
-], QMetadataUtils);
+}
 
-let QueryUtils = class QueryUtils {
+class QueryUtils {
     equals(entityOrId, toObject // | IQRelation<IQ>
     ) {
         if (!entityOrId) {
@@ -10559,34 +10293,7 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
                 }
         }
     }
-};
-__decorate$i([
-    Inject()
-], QueryUtils.prototype, "airEntityUtils", void 0);
-__decorate$i([
-    Inject()
-], QueryUtils.prototype, "airportDatabase", void 0);
-__decorate$i([
-    Inject()
-], QueryUtils.prototype, "applicationUtils", void 0);
-__decorate$i([
-    Inject()
-], QueryUtils.prototype, "dictionary", void 0);
-__decorate$i([
-    Inject()
-], QueryUtils.prototype, "entityUtils", void 0);
-__decorate$i([
-    Inject()
-], QueryUtils.prototype, "fieldUtils", void 0);
-__decorate$i([
-    Inject()
-], QueryUtils.prototype, "qEntityUtils", void 0);
-__decorate$i([
-    Inject()
-], QueryUtils.prototype, "queryRelationManager", void 0);
-QueryUtils = __decorate$i([
-    Injected()
-], QueryUtils);
+}
 
 const databaseState = {
     applications: [],
@@ -10634,7 +10341,7 @@ const databaseState = {
     QM: {},
 };
 
-let DatabaseStore = class DatabaseStore {
+class DatabaseStore {
     constructor() {
         this.databaseState = databaseState;
     }
@@ -10653,12 +10360,9 @@ let DatabaseStore = class DatabaseStore {
     get QM() {
         return this.databaseState.QM;
     }
-};
-DatabaseStore = __decorate$i([
-    Injected()
-], DatabaseStore);
+}
 
-let QueryRelationManager = class QueryRelationManager {
+class QueryRelationManager {
     getPositionAlias(rootEntityPrefix, fromClausePosition) {
         return `${rootEntityPrefix}_${fromClausePosition.join('_')}`;
     }
@@ -10682,18 +10386,9 @@ let QueryRelationManager = class QueryRelationManager {
         nextChildJoinPosition.push(++joinParentDriver.currentChildIndex);
         return nextChildJoinPosition;
     }
-};
-__decorate$i([
-    Inject()
-], QueryRelationManager.prototype, "applicationUtils", void 0);
-__decorate$i([
-    Inject()
-], QueryRelationManager.prototype, "queryUtils", void 0);
-QueryRelationManager = __decorate$i([
-    Injected()
-], QueryRelationManager);
+}
 
-let SystemWideOperationIdUtils = class SystemWideOperationIdUtils {
+class SystemWideOperationIdUtils {
     async getSysWideOpId() {
         const sequences = await this.getSysWideOpIds(1);
         return sequences[0];
@@ -10704,18 +10399,9 @@ let SystemWideOperationIdUtils = class SystemWideOperationIdUtils {
         return await this.sequenceGenerator
             .generateSequenceNumbersForColumn(airport.DOMAIN_NAME, airport.apps.AIRPORT_CODE.name, SystemWideOperationId.name, SystemWideOperationId.columns.SYSTEM_WIDE_OPERATION_LID, numSequencesNeeded);
     }
-};
-__decorate$i([
-    Inject()
-], SystemWideOperationIdUtils.prototype, "dictionary", void 0);
-__decorate$i([
-    Inject()
-], SystemWideOperationIdUtils.prototype, "sequenceGenerator", void 0);
-SystemWideOperationIdUtils = __decorate$i([
-    Injected()
-], SystemWideOperationIdUtils);
+}
 
-let Utils = class Utils {
+class Utils {
     strsToNums(strings) {
         return strings.map(str => parseInt(str));
     }
@@ -10785,10 +10471,7 @@ let Utils = class Utils {
         }
         return 0;
     }
-};
-Utils = __decorate$i([
-    Injected()
-], Utils);
+}
 
 const airTrafficControl = lib('air-traffic-control');
 
@@ -10885,203 +10568,20 @@ globalThis.airApi.setQApp = function (qApplication) {
     });
 };
 
-var ConstraintMode;
-(function (ConstraintMode) {
-    ConstraintMode["CONSTRAINT"] = "CONSTRAINT";
-    ConstraintMode["NO_CONSTRAINT"] = "NO_CONSTRAINT";
-    ConstraintMode["PROVIDER_DEFAULT"] = "PROVIDER_DEFAULT";
-})(ConstraintMode || (ConstraintMode = {}));
-
-/**
- * Created by Papa on 8/20/2016.
- */
-const Id = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const Column = function (columnConfiguration) {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const JoinColumn = function (joinColumnConfiguration) {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const JoinColumns = function (joinColumnConfigurations) {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const Json = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const DbAny = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const DbBoolean = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const DbDate = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const DbNumber = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const DbString = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const Transient = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const ManyToOne = function (elements) {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const OneToMany = function (elements) {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const GeneratedValue = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const SequenceGenerator$1 = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-
-/**
- * Created by Papa on 8/20/2016.
- */
-const Entity = function () {
-    return function (constructor) {
-        // No runtime logic required.
-    };
-};
-const Table = function (tableConfiguration) {
-    return function (constructor) {
-        // No runtime logic required.
-    };
-};
-const MappedSuperclass = function () {
-    return function (constructor) {
-    };
-};
-
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$h(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+class Sequence {
 }
-
-let Sequence = class Sequence {
-};
-__decorate$h([
-    Id(),
-    Column(),
-    DbNumber()
-], Sequence.prototype, "applicationIndex", void 0);
-__decorate$h([
-    Id(),
-    Column(),
-    DbNumber()
-], Sequence.prototype, "entityIndex", void 0);
-__decorate$h([
-    Id(),
-    Column(),
-    DbNumber()
-], Sequence.prototype, "columnIndex", void 0);
-__decorate$h([
-    Column(),
-    DbNumber()
-], Sequence.prototype, "incrementBy", void 0);
-__decorate$h([
-    Column(),
-    DbNumber()
-], Sequence.prototype, "currentValue", void 0);
-Sequence = __decorate$h([
-    Entity(),
-    Table()
-], Sequence);
 
 /**
  * No actual records are inserted into this table, only used for the sequence
  */
-let SystemWideOperationId = class SystemWideOperationId {
-};
-__decorate$h([
-    Id(),
-    Column(),
-    DbNumber(),
-    GeneratedValue()
-], SystemWideOperationId.prototype, "_localId", void 0);
-SystemWideOperationId = __decorate$h([
-    Entity(),
-    Table()
-], SystemWideOperationId);
+class SystemWideOperationId {
+}
 
 /**
  * A record of the Terminal running (being up at a given point in time)
  */
-let TerminalRun = class TerminalRun {
-};
-__decorate$h([
-    Id(),
-    GeneratedValue(),
-    Column(),
-    DbNumber()
-], TerminalRun.prototype, "_localId", void 0);
-__decorate$h([
-    Column(),
-    DbNumber()
-], TerminalRun.prototype, "createTimestamp", void 0);
-__decorate$h([
-    Column(),
-    DbNumber()
-], TerminalRun.prototype, "randomNumber", void 0);
-TerminalRun = __decorate$h([
-    Entity(),
-    Table()
-], TerminalRun);
+class TerminalRun {
+}
 
 const __constructors__$6 = {
     Sequence,
@@ -11152,13 +10652,10 @@ BaseTerminalRunDao.FindOne = new DaoQueryDecorators();
 BaseTerminalRunDao.Search = new DaoQueryDecorators();
 BaseTerminalRunDao.SearchOne = new DaoQueryDecorators();
 
-let TerminalRunDao = class TerminalRunDao extends BaseTerminalRunDao {
-};
-TerminalRunDao = __decorate$h([
-    Injected()
-], TerminalRunDao);
+class TerminalRunDao extends BaseTerminalRunDao {
+}
 
-let SequenceDao = class SequenceDao extends BaseSequenceDao {
+class SequenceDao extends BaseSequenceDao {
     static diSet() {
         return Q_airport____at_airport_slash_airport_dash_code.__dbApplication__ && !!Q_airport____at_airport_slash_airport_dash_code.__dbApplication__.currentVersion[0]
             .applicationVersion.entities[0];
@@ -11181,172 +10678,30 @@ let SequenceDao = class SequenceDao extends BaseSequenceDao {
             }
         }, context);
     }
-};
-SequenceDao = __decorate$h([
-    Injected()
-], SequenceDao);
+}
 
 const airportCode = lib('@airport/airport-code');
 airportCode.register(SequenceDao, TerminalRunDao);
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$g(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let ApplicationApiClass = class ApplicationApiClass {
+class ApplicationApiClass {
     constructor() {
         this.operationMapByName = {};
     }
-};
-__decorate$g([
-    DbNumber(),
-    Id(),
-    SequenceGenerator$1(),
-    Column()
-], ApplicationApiClass.prototype, "_localId", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], ApplicationApiClass.prototype, "name", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationApiClass.prototype, "applicationVersion", void 0);
-__decorate$g([
-    OneToMany()
-], ApplicationApiClass.prototype, "operations", void 0);
-__decorate$g([
-    Transient()
-], ApplicationApiClass.prototype, "operationMapByName", void 0);
-ApplicationApiClass = __decorate$g([
-    Entity(),
-    Table()
-], ApplicationApiClass);
+}
 
-let ApplicationApiOperation = class ApplicationApiOperation {
-};
-__decorate$g([
-    DbNumber(),
-    Id(),
-    SequenceGenerator$1(),
-    Column()
-], ApplicationApiOperation.prototype, "_localId", void 0);
-__decorate$g([
-    Column(),
-    DbBoolean()
-], ApplicationApiOperation.prototype, "isAsync", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], ApplicationApiOperation.prototype, "name", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationApiOperation.prototype, "apiClass", void 0);
-__decorate$g([
-    OneToMany()
-], ApplicationApiOperation.prototype, "parameters", void 0);
-__decorate$g([
-    OneToMany()
-], ApplicationApiOperation.prototype, "returnType", void 0);
-ApplicationApiOperation = __decorate$g([
-    Entity(),
-    Table()
-], ApplicationApiOperation);
+class ApplicationApiOperation {
+}
 
-let ApplicationApiParameter = class ApplicationApiParameter {
-};
-__decorate$g([
-    DbNumber(),
-    Id(),
-    SequenceGenerator$1(),
-    Column()
-], ApplicationApiParameter.prototype, "_localId", void 0);
-__decorate$g([
-    Column(),
-    DbNumber()
-], ApplicationApiParameter.prototype, "index", void 0);
-__decorate$g([
-    Column(),
-    DbBoolean()
-], ApplicationApiParameter.prototype, "isRest", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationApiParameter.prototype, "operation", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], ApplicationApiParameter.prototype, "text", void 0);
-ApplicationApiParameter = __decorate$g([
-    Entity(),
-    Table()
-], ApplicationApiParameter);
+class ApplicationApiParameter {
+}
 
-let ApplicationApiReturnType = class ApplicationApiReturnType {
-};
-__decorate$g([
-    DbNumber(),
-    Id(),
-    SequenceGenerator$1(),
-    Column()
-], ApplicationApiReturnType.prototype, "_localId", void 0);
-__decorate$g([
-    Column(),
-    DbBoolean()
-], ApplicationApiReturnType.prototype, "isArray", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], ApplicationApiReturnType.prototype, "type", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationApiReturnType.prototype, "operation", void 0);
-ApplicationApiReturnType = __decorate$g([
-    Entity(),
-    Table()
-], ApplicationApiReturnType);
+class ApplicationApiReturnType {
+}
 
-let DdlVersionedObject = class DdlVersionedObject {
-};
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlVersionedObject.prototype, "deprecatedSinceVersion", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlVersionedObject.prototype, "removedInVersion", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlVersionedObject.prototype, "sinceVersion", void 0);
-DdlVersionedObject = __decorate$g([
-    MappedSuperclass()
-], DdlVersionedObject);
+class DdlVersionedObject {
+}
 
-let DdlColumn = class DdlColumn extends DdlVersionedObject {
+class DdlColumn extends DdlVersionedObject {
     constructor() {
         super(...arguments);
         this.propertyColumns = [];
@@ -11354,70 +10709,9 @@ let DdlColumn = class DdlColumn extends DdlVersionedObject {
         this.oneRelationColumns = [];
         this.propertyColumnMap = {};
     }
-};
-__decorate$g([
-    DbNumber(),
-    Id(),
-    Column()
-], DdlColumn.prototype, "_localId", void 0);
-__decorate$g([
-    Column(),
-    DbNumber()
-], DdlColumn.prototype, "index", void 0);
-__decorate$g([
-    Column(),
-    DbNumber()
-], DdlColumn.prototype, "idIndex", void 0);
-__decorate$g([
-    Column(),
-    DbBoolean()
-], DdlColumn.prototype, "isGenerated", void 0);
-__decorate$g([
-    Column(),
-    DbNumber()
-], DdlColumn.prototype, "allocationSize", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], DdlColumn.prototype, "name", void 0);
-__decorate$g([
-    Column(),
-    DbBoolean()
-], DdlColumn.prototype, "notNull", void 0);
-__decorate$g([
-    Column(),
-    DbNumber()
-], DdlColumn.prototype, "precision", void 0);
-__decorate$g([
-    Column(),
-    DbNumber()
-], DdlColumn.prototype, "scale", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], DdlColumn.prototype, "type", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlColumn.prototype, "entity", void 0);
-__decorate$g([
-    OneToMany()
-], DdlColumn.prototype, "propertyColumns", void 0);
-__decorate$g([
-    OneToMany()
-], DdlColumn.prototype, "manyRelationColumns", void 0);
-__decorate$g([
-    OneToMany()
-], DdlColumn.prototype, "oneRelationColumns", void 0);
-__decorate$g([
-    Transient()
-], DdlColumn.prototype, "propertyColumnMap", void 0);
-DdlColumn = __decorate$g([
-    Entity(),
-    Table()
-], DdlColumn);
+}
 
-let DdlEntity = class DdlEntity extends DdlVersionedObject {
+class DdlEntity extends DdlVersionedObject {
     constructor() {
         super(...arguments);
         //
@@ -11443,299 +10737,47 @@ let DdlEntity = class DdlEntity extends DdlVersionedObject {
         this.idColumnMap = {};
         this.propertyMap = {};
     }
-};
-__decorate$g([
-    DbNumber(),
-    Id(),
-    Column()
-], DdlEntity.prototype, "_localId", void 0);
-__decorate$g([
-    Column(),
-    DbNumber()
-], DdlEntity.prototype, "index", void 0);
-__decorate$g([
-    Column(),
-    DbBoolean()
-], DdlEntity.prototype, "isLocal", void 0);
-__decorate$g([
-    Column(),
-    DbBoolean()
-], DdlEntity.prototype, "isAirEntity", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], DdlEntity.prototype, "name", void 0);
-__decorate$g([
-    Column(),
-    Json()
-], DdlEntity.prototype, "tableConfig", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlEntity.prototype, "applicationVersion", void 0);
-__decorate$g([
-    OneToMany()
-], DdlEntity.prototype, "columns", void 0);
-__decorate$g([
-    OneToMany()
-], DdlEntity.prototype, "properties", void 0);
-__decorate$g([
-    OneToMany()
-], DdlEntity.prototype, "relations", void 0);
-__decorate$g([
-    OneToMany()
-], DdlEntity.prototype, "relationReferences", void 0);
-__decorate$g([
-    Transient()
-], DdlEntity.prototype, "columnMap", void 0);
-__decorate$g([
-    Transient()
-], DdlEntity.prototype, "idColumns", void 0);
-__decorate$g([
-    Transient()
-], DdlEntity.prototype, "idColumnMap", void 0);
-__decorate$g([
-    Transient()
-], DdlEntity.prototype, "propertyMap", void 0);
-DdlEntity = __decorate$g([
-    Entity(),
-    Table()
-], DdlEntity);
+}
 
-let DdlProperty = class DdlProperty extends DdlVersionedObject {
+class DdlProperty extends DdlVersionedObject {
     constructor() {
         super(...arguments);
         this.propertyColumns = [];
         this.relation = [];
     }
-};
-__decorate$g([
-    DbNumber(),
-    Id(),
-    Column()
-], DdlProperty.prototype, "_localId", void 0);
-__decorate$g([
-    DbNumber(),
-    Column()
-], DdlProperty.prototype, "index", void 0);
-__decorate$g([
-    DbString(),
-    Column()
-], DdlProperty.prototype, "name", void 0);
-__decorate$g([
-    DbBoolean(),
-    Column()
-], DdlProperty.prototype, "isId", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlProperty.prototype, "entity", void 0);
-__decorate$g([
-    OneToMany()
-], DdlProperty.prototype, "propertyColumns", void 0);
-__decorate$g([
-    OneToMany()
-], DdlProperty.prototype, "relation", void 0);
-DdlProperty = __decorate$g([
-    Entity(),
-    Table()
-], DdlProperty);
+}
 
 /**
  * Many-to-Many between Columns and properties
  */
-let DdlPropertyColumn = class DdlPropertyColumn extends DdlVersionedObject {
-};
-__decorate$g([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], DdlPropertyColumn.prototype, "column", void 0);
-__decorate$g([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], DdlPropertyColumn.prototype, "property", void 0);
-DdlPropertyColumn = __decorate$g([
-    Entity(),
-    Table()
-], DdlPropertyColumn);
+class DdlPropertyColumn extends DdlVersionedObject {
+}
 
-let DdlRelation = class DdlRelation extends DdlVersionedObject {
+class DdlRelation extends DdlVersionedObject {
     constructor() {
         super(...arguments);
         this.manyRelationColumns = [];
         this.oneRelationColumns = [];
     }
-};
-__decorate$g([
-    DbNumber(),
-    Id(),
-    Column()
-], DdlRelation.prototype, "_localId", void 0);
-__decorate$g([
-    DbNumber(),
-    Column()
-], DdlRelation.prototype, "index", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlRelation.prototype, "property", void 0);
-__decorate$g([
-    Json(),
-    Column()
-], DdlRelation.prototype, "foreignKey", void 0);
-__decorate$g([
-    Json(),
-    Column()
-], DdlRelation.prototype, "manyToOneElems", void 0);
-__decorate$g([
-    Json(),
-    Column()
-], DdlRelation.prototype, "oneToManyElems", void 0);
-__decorate$g([
-    DbString(),
-    Column()
-], DdlRelation.prototype, "relationType", void 0);
-__decorate$g([
-    Column()
-], DdlRelation.prototype, "isId", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlRelation.prototype, "entity", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlRelation.prototype, "relationEntity", void 0);
-__decorate$g([
-    OneToMany()
-], DdlRelation.prototype, "manyRelationColumns", void 0);
-__decorate$g([
-    OneToMany()
-], DdlRelation.prototype, "oneRelationColumns", void 0);
-DdlRelation = __decorate$g([
-    Entity(),
-    Table()
-], DdlRelation);
+}
 
-let DdlRelationColumn = class DdlRelationColumn extends DdlVersionedObject {
-};
-__decorate$g([
-    Id(),
-    Column(),
-    DbNumber()
-], DdlRelationColumn.prototype, "_localId", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlRelationColumn.prototype, "manyColumn", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlRelationColumn.prototype, "oneColumn", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlRelationColumn.prototype, "manyRelation", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlRelationColumn.prototype, "oneRelation", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlRelationColumn.prototype, "parentRelation", void 0);
-DdlRelationColumn = __decorate$g([
-    Entity(),
-    Table()
-], DdlRelationColumn);
+class DdlRelationColumn extends DdlVersionedObject {
+}
 
-let DdlApplication = class DdlApplication {
+class DdlApplication {
     constructor() {
         this.versions = [];
         this.currentVersion = [];
     }
-};
-__decorate$g([
-    Id(),
-    DbNumber(),
-    Column()
-], DdlApplication.prototype, "index", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], DdlApplication.prototype, "scope", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], DdlApplication.prototype, "name", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], DdlApplication.prototype, "fullName", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], DdlApplication.prototype, "status", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], DdlApplication.prototype, "publicSigningKey", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlApplication.prototype, "domain", void 0);
-__decorate$g([
-    OneToMany()
-], DdlApplication.prototype, "versions", void 0);
-__decorate$g([
-    OneToMany()
-], DdlApplication.prototype, "currentVersion", void 0);
-DdlApplication = __decorate$g([
-    Entity(),
-    Table()
-], DdlApplication);
+}
 
-let DdlApplicationCurrentVersion = class DdlApplicationCurrentVersion {
-};
-__decorate$g([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], DdlApplicationCurrentVersion.prototype, "application", void 0);
-__decorate$g([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], DdlApplicationCurrentVersion.prototype, "applicationVersion", void 0);
-DdlApplicationCurrentVersion = __decorate$g([
-    Entity(),
-    Table()
-], DdlApplicationCurrentVersion);
+class DdlApplicationCurrentVersion {
+}
 
-let DdlApplicationReference = class DdlApplicationReference extends DdlVersionedObject {
-};
-__decorate$g([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], DdlApplicationReference.prototype, "ownApplicationVersion", void 0);
-__decorate$g([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], DdlApplicationReference.prototype, "referencedApplicationVersion", void 0);
-__decorate$g([
-    Column(),
-    DbNumber()
-], DdlApplicationReference.prototype, "index", void 0);
-DdlApplicationReference = __decorate$g([
-    Entity(),
-    Table()
-], DdlApplicationReference);
+class DdlApplicationReference extends DdlVersionedObject {
+}
 
-let DdlApplicationVersion = class DdlApplicationVersion {
+class DdlApplicationVersion {
     constructor() {
         this.apiClasses = [];
         this.entities = [];
@@ -11746,92 +10788,10 @@ let DdlApplicationVersion = class DdlApplicationVersion {
         this.referencesMapByName = {};
         this.referencedByMapByName = {};
     }
-};
-__decorate$g([
-    DbNumber(),
-    Id(),
-    SequenceGenerator$1(),
-    Column()
-], DdlApplicationVersion.prototype, "_localId", void 0);
-__decorate$g([
-    Column(),
-    DbNumber()
-], DdlApplicationVersion.prototype, "integerVersion", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], DdlApplicationVersion.prototype, "versionString", void 0);
-__decorate$g([
-    Column(),
-    DbNumber()
-], DdlApplicationVersion.prototype, "majorVersion", void 0);
-__decorate$g([
-    Column(),
-    DbNumber()
-], DdlApplicationVersion.prototype, "minorVersion", void 0);
-__decorate$g([
-    Column(),
-    DbNumber()
-], DdlApplicationVersion.prototype, "patchVersion", void 0);
-__decorate$g([
-    Column(),
-    Json()
-], DdlApplicationVersion.prototype, "jsonApplication", void 0);
-__decorate$g([
-    Column(),
-    DbString()
-], DdlApplicationVersion.prototype, "signature", void 0);
-__decorate$g([
-    ManyToOne(),
-    JoinColumn()
-], DdlApplicationVersion.prototype, "application", void 0);
-__decorate$g([
-    OneToMany()
-], DdlApplicationVersion.prototype, "apiClasses", void 0);
-__decorate$g([
-    OneToMany()
-], DdlApplicationVersion.prototype, "entities", void 0);
-__decorate$g([
-    OneToMany()
-], DdlApplicationVersion.prototype, "references", void 0);
-__decorate$g([
-    OneToMany()
-], DdlApplicationVersion.prototype, "referencedBy", void 0);
-__decorate$g([
-    Transient()
-], DdlApplicationVersion.prototype, "apiClassMapByName", void 0);
-__decorate$g([
-    Transient()
-], DdlApplicationVersion.prototype, "entityMapByName", void 0);
-__decorate$g([
-    Transient()
-], DdlApplicationVersion.prototype, "referencesMapByName", void 0);
-__decorate$g([
-    Transient()
-], DdlApplicationVersion.prototype, "referencedByMapByName", void 0);
-DdlApplicationVersion = __decorate$g([
-    Entity(),
-    Table()
-], DdlApplicationVersion);
+}
 
-let DdlDomain = class DdlDomain {
-};
-__decorate$g([
-    Id(),
-    DbNumber(),
-    Column()
-], DdlDomain.prototype, "_localId", void 0);
-__decorate$g([
-    DbString(),
-    Column()
-], DdlDomain.prototype, "name", void 0);
-__decorate$g([
-    OneToMany()
-], DdlDomain.prototype, "applications", void 0);
-DdlDomain = __decorate$g([
-    Entity(),
-    Table()
-], DdlDomain);
+class DdlDomain {
+}
 
 const __constructors__$5 = {
     ApplicationApiClass,
@@ -12095,7 +11055,7 @@ BaseDdlRelationColumnDao.FindOne = new DaoQueryDecorators();
 BaseDdlRelationColumnDao.Search = new DaoQueryDecorators();
 BaseDdlRelationColumnDao.SearchOne = new DaoQueryDecorators();
 
-let ApplicationApiClassDao = class ApplicationApiClassDao extends BaseApplicationApiClassDao {
+class ApplicationApiClassDao extends BaseApplicationApiClassDao {
     async findWithAllNestedObjects() {
         let aac, aao;
         return await this._find({
@@ -12135,12 +11095,9 @@ let ApplicationApiClassDao = class ApplicationApiClassDao extends BaseApplicatio
             VALUES
         }, context);
     }
-};
-ApplicationApiClassDao = __decorate$g([
-    Injected()
-], ApplicationApiClassDao);
+}
 
-let ApplicationApiOperationDao = class ApplicationApiOperationDao extends BaseApplicationApiOperationDao {
+class ApplicationApiOperationDao extends BaseApplicationApiOperationDao {
     async insert(applicationApiOperations, context) {
         let aao;
         const VALUES = [];
@@ -12161,12 +11118,9 @@ let ApplicationApiOperationDao = class ApplicationApiOperationDao extends BaseAp
             VALUES
         }, context);
     }
-};
-ApplicationApiOperationDao = __decorate$g([
-    Injected()
-], ApplicationApiOperationDao);
+}
 
-let ApplicationApiParameterDao = class ApplicationApiParameterDao extends BaseApplicationApiParameterDao {
+class ApplicationApiParameterDao extends BaseApplicationApiParameterDao {
     async insert(applicationApiParameters, context) {
         let aap;
         const VALUES = [];
@@ -12189,12 +11143,9 @@ let ApplicationApiParameterDao = class ApplicationApiParameterDao extends BaseAp
             VALUES
         }, context);
     }
-};
-ApplicationApiParameterDao = __decorate$g([
-    Injected()
-], ApplicationApiParameterDao);
+}
 
-let ApplicationApiReturnTypeDao = class ApplicationApiReturnTypeDao extends BaseApplicationApiReturnTypeDao {
+class ApplicationApiReturnTypeDao extends BaseApplicationApiReturnTypeDao {
     async insert(applicationApiReturnTypes, context) {
         let aart;
         const VALUES = [];
@@ -12215,12 +11166,9 @@ let ApplicationApiReturnTypeDao = class ApplicationApiReturnTypeDao extends Base
             VALUES
         }, context);
     }
-};
-ApplicationApiReturnTypeDao = __decorate$g([
-    Injected()
-], ApplicationApiReturnTypeDao);
+}
 
-let DdlApplicationDao = class DdlApplicationDao extends BaseDdlApplicationDao {
+class DdlApplicationDao extends BaseDdlApplicationDao {
     async findAllActive(context) {
         return this.db.find.tree({
             SELECT: {},
@@ -12480,18 +11428,9 @@ let DdlApplicationDao = class DdlApplicationDao extends BaseDdlApplicationDao {
             VALUES
         }, context);
     }
-};
-__decorate$g([
-    Inject()
-], DdlApplicationDao.prototype, "airportDatabase", void 0);
-__decorate$g([
-    Inject()
-], DdlApplicationDao.prototype, "datastructureUtils", void 0);
-DdlApplicationDao = __decorate$g([
-    Injected()
-], DdlApplicationDao);
+}
 
-let DdlApplicationReferenceDao = class DdlApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
+class DdlApplicationReferenceDao extends BaseDdlApplicationReferenceDao {
     async findAllForApplicationVersions(applicationVersionIds, context) {
         let sr;
         return await this.db.find.tree({
@@ -12528,12 +11467,9 @@ let DdlApplicationReferenceDao = class DdlApplicationReferenceDao extends BaseDd
             VALUES
         }, context);
     }
-};
-DdlApplicationReferenceDao = __decorate$g([
-    Injected()
-], DdlApplicationReferenceDao);
+}
 
-let DdlApplicationVersionDao = class DdlApplicationVersionDao extends BaseDdlApplicationVersionDao {
+class DdlApplicationVersionDao extends BaseDdlApplicationVersionDao {
     /*
     async findAllLatestForApplication_Indexes(
         applicationIndexes: Application_Index[],
@@ -12699,12 +11635,9 @@ let DdlApplicationVersionDao = class DdlApplicationVersionDao extends BaseDdlApp
             VALUES: VALUES
         }, context);
     }
-};
-DdlApplicationVersionDao = __decorate$g([
-    Injected()
-], DdlApplicationVersionDao);
+}
 
-let DdlColumnDao = class DdlColumnDao extends BaseDdlColumnDao {
+class DdlColumnDao extends BaseDdlColumnDao {
     async findAllForEntities(entityIds, context) {
         let c;
         return this.db.find.tree({
@@ -12756,15 +11689,9 @@ let DdlColumnDao = class DdlColumnDao extends BaseDdlColumnDao {
             VALUES
         }, context);
     }
-};
-__decorate$g([
-    Inject()
-], DdlColumnDao.prototype, "datastructureUtils", void 0);
-DdlColumnDao = __decorate$g([
-    Injected()
-], DdlColumnDao);
+}
 
-let DdlEntityDao = class DdlEntityDao extends BaseDdlEntityDao {
+class DdlEntityDao extends BaseDdlEntityDao {
     async findAllForApplicationVersions(applicationVersionIds, context) {
         let se;
         return await this.db.find.tree({
@@ -12806,12 +11733,9 @@ let DdlEntityDao = class DdlEntityDao extends BaseDdlEntityDao {
             VALUES
         }, context);
     }
-};
-DdlEntityDao = __decorate$g([
-    Injected()
-], DdlEntityDao);
+}
 
-let DdlPropertyColumnDao = class DdlPropertyColumnDao extends BaseDdlPropertyColumnDao {
+class DdlPropertyColumnDao extends BaseDdlPropertyColumnDao {
     async findAllForColumns(columnIds, context) {
         let rc;
         return this.db.find.tree({
@@ -12845,12 +11769,9 @@ let DdlPropertyColumnDao = class DdlPropertyColumnDao extends BaseDdlPropertyCol
             VALUES
         }, context);
     }
-};
-DdlPropertyColumnDao = __decorate$g([
-    Injected()
-], DdlPropertyColumnDao);
+}
 
-let DdlPropertyDao = class DdlPropertyDao extends BaseDdlPropertyDao {
+class DdlPropertyDao extends BaseDdlPropertyDao {
     async findAllForEntities(entityIds, context) {
         let p;
         return this.db.find.tree({
@@ -12889,12 +11810,9 @@ let DdlPropertyDao = class DdlPropertyDao extends BaseDdlPropertyDao {
             VALUES
         }, context);
     }
-};
-DdlPropertyDao = __decorate$g([
-    Injected()
-], DdlPropertyDao);
+}
 
-let DdlRelationColumnDao = class DdlRelationColumnDao extends BaseDdlRelationColumnDao {
+class DdlRelationColumnDao extends BaseDdlRelationColumnDao {
     async findAllForColumns(columnIds, context) {
         let rc;
         return this.db.find.tree({
@@ -12937,12 +11855,9 @@ let DdlRelationColumnDao = class DdlRelationColumnDao extends BaseDdlRelationCol
             VALUES
         }, context);
     }
-};
-DdlRelationColumnDao = __decorate$g([
-    Injected()
-], DdlRelationColumnDao);
+}
 
-let DdlRelationDao = class DdlRelationDao extends BaseDdlRelationDao {
+class DdlRelationDao extends BaseDdlRelationDao {
     async findAllForProperties(propertyIds, context) {
         let r;
         return this.db.find.tree({
@@ -13017,15 +11932,9 @@ let DdlRelationDao = class DdlRelationDao extends BaseDdlRelationDao {
             VALUES
         }, context);
     }
-};
-__decorate$g([
-    Inject()
-], DdlRelationDao.prototype, "datastructureUtils", void 0);
-DdlRelationDao = __decorate$g([
-    Injected()
-], DdlRelationDao);
+}
 
-let DdlDomainDao = class DdlDomainDao extends BaseDdlDomainDao {
+class DdlDomainDao extends BaseDdlDomainDao {
     async findByIdIn(domainIds, context) {
         let d;
         return await this.db.find.tree({
@@ -13124,10 +12033,7 @@ let DdlDomainDao = class DdlDomainDao extends BaseDdlDomainDao {
             domain._localId = ids[i][0];
         }
     }
-};
-DdlDomainDao = __decorate$g([
-    Injected()
-], DdlDomainDao);
+}
 
 const application$4 = {
     name: '@airport/airspace',
@@ -13166,31 +12072,7 @@ var AppState;
     AppState["INITIALIZED"] = "INITIALIZED";
 })(AppState || (AppState = {}));
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$f(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let TerminalState = class TerminalState {
+class TerminalState {
     init() {
         this.terminalState = globalThis.internalTerminalState;
         let theState;
@@ -13208,16 +12090,10 @@ let TerminalState = class TerminalState {
             }
         });
     }
-};
+}
 TerminalState.sharedAcrossInjectionScopes = true;
-__decorate$f([
-    Inject()
-], TerminalState.prototype, "appTrackerUtils", void 0);
-TerminalState = __decorate$f([
-    Injected()
-], TerminalState);
 
-let TerminalStore = class TerminalStore {
+class TerminalStore {
     get state() {
         return this.terminalState.terminalState;
     }
@@ -13342,20 +12218,8 @@ let TerminalStore = class TerminalStore {
     }
     tearDown() {
     }
-};
+}
 TerminalStore.sharedAcrossInjectionScopes = true;
-__decorate$f([
-    Inject()
-], TerminalStore.prototype, "datastructureUtils", void 0);
-__decorate$f([
-    Inject()
-], TerminalStore.prototype, "selectorManager", void 0);
-__decorate$f([
-    Inject()
-], TerminalStore.prototype, "terminalState", void 0);
-TerminalStore = __decorate$f([
-    Injected()
-], TerminalStore);
 
 /**
  * For logic classes to be hot-swappable for quick upgrades all state is contained
@@ -13433,16 +12297,13 @@ const internalUserState = new BehaviorSubject({
     sessionMapByAccountPublicSigningKey: new Map()
 });
 
-let UserState = class UserState {
+class UserState {
     constructor() {
         this.userState = internalUserState;
     }
-};
-UserState = __decorate$f([
-    Injected()
-], UserState);
+}
 
-let UserStore = class UserStore {
+class UserStore {
     get state() {
         return this.userState.userState;
     }
@@ -13451,18 +12312,9 @@ let UserStore = class UserStore {
         this.getAllSessions = this.selectorManager.createSelector(this.getUserState, userState => userState.allSessions);
         this.getSessionMapByAccountPublicSigningKey = this.selectorManager.createSelector(this.getUserState, userState => userState.sessionMapByAccountPublicSigningKey);
     }
-};
-__decorate$f([
-    Inject()
-], UserStore.prototype, "selectorManager", void 0);
-__decorate$f([
-    Inject()
-], UserStore.prototype, "userState", void 0);
-UserStore = __decorate$f([
-    Injected()
-], UserStore);
+}
 
-let SelectorManager = class SelectorManager {
+class SelectorManager {
     createSelector(...args) {
         if (args.length < 2 || args.length > 6) {
             throw new Error(`Invalid createSelector call, Expecting 1 to 5 selectors and a callback.`);
@@ -13496,12 +12348,9 @@ let SelectorManager = class SelectorManager {
         selector.observable = observable;
         return selector;
     }
-};
-SelectorManager = __decorate$f([
-    Injected()
-], SelectorManager);
+}
 
-let AbstractApplicationLoader = class AbstractApplicationLoader {
+class AbstractApplicationLoader {
     constructor(application) {
         this.application = application;
         this.initializing = false;
@@ -13524,19 +12373,7 @@ let AbstractApplicationLoader = class AbstractApplicationLoader {
     getApplication() {
         return this.application;
     }
-};
-__decorate$f([
-    Inject()
-], AbstractApplicationLoader.prototype, "applicationInitializer", void 0);
-__decorate$f([
-    Inject()
-], AbstractApplicationLoader.prototype, "terminalStore", void 0);
-__decorate$f([
-    Inject()
-], AbstractApplicationLoader.prototype, "apiRegistry", void 0);
-AbstractApplicationLoader = __decorate$f([
-    Injected()
-], AbstractApplicationLoader);
+}
 
 const terminalMap = lib('terminal-map');
 terminalMap.register(SelectorManager, TerminalState, TerminalStore, UserState, UserStore);
@@ -13590,31 +12427,7 @@ APPLICATION_LOADER.setDependencies({
     apiRegistry: API_REGISTRY,
 });
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$e(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let SqlSchemaBuilder = class SqlSchemaBuilder {
+class SqlSchemaBuilder {
     async build(jsonApplication, existingApplicationMap, newJsonApplicationMap, isFeatureApp, context) {
         await this.createApplication(jsonApplication, context);
         const jsonApplicationVersion = this.applicationReferenceUtils
@@ -13769,27 +12582,9 @@ let SqlSchemaBuilder = class SqlSchemaBuilder {
 			${columnNames.join(',\n')}
 			)`;
     }
-};
-__decorate$e([
-    Inject()
-], SqlSchemaBuilder.prototype, "airportDatabase", void 0);
-__decorate$e([
-    Inject()
-], SqlSchemaBuilder.prototype, "applicationReferenceUtils", void 0);
-__decorate$e([
-    Inject()
-], SqlSchemaBuilder.prototype, "applicationNameUtils", void 0);
-__decorate$e([
-    Inject()
-], SqlSchemaBuilder.prototype, "sequenceDao", void 0);
-__decorate$e([
-    Inject()
-], SqlSchemaBuilder.prototype, "storeDriver", void 0);
-SqlSchemaBuilder = __decorate$e([
-    Injected()
-], SqlSchemaBuilder);
+}
 
-let ApplicationChecker = class ApplicationChecker {
+class ApplicationChecker {
     async check(jsonApplication) {
         if (!jsonApplication) {
             throw new Error(`Json Application not provided`);
@@ -13915,24 +12710,9 @@ let ApplicationChecker = class ApplicationChecker {
         }
         return false;
     }
-};
-__decorate$e([
-    Inject()
-], ApplicationChecker.prototype, "ddlApplicationDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationChecker.prototype, "datastructureUtils", void 0);
-__decorate$e([
-    Inject()
-], ApplicationChecker.prototype, "applicationNameUtils", void 0);
-__decorate$e([
-    Inject()
-], ApplicationChecker.prototype, "transactionManager", void 0);
-ApplicationChecker = __decorate$e([
-    Injected()
-], ApplicationChecker);
+}
 
-let ApplicationLocator = class ApplicationLocator {
+class ApplicationLocator {
     // private terminalStore: ITerminalStore
     locateExistingApplicationVersionRecord(jsonApplication, terminalStore) {
         const applicationVersionsForDomain_Name = terminalStore
@@ -13954,15 +12734,9 @@ let ApplicationLocator = class ApplicationLocator {
         return terminalStore.getLatestApplicationVersionMapByApplication_FullName()
             .get(fullApplication_Name);
     }
-};
-__decorate$e([
-    Inject()
-], ApplicationLocator.prototype, "applicationNameUtils", void 0);
-ApplicationLocator = __decorate$e([
-    Injected()
-], ApplicationLocator);
+}
 
-let ApplicationComposer = class ApplicationComposer {
+class ApplicationComposer {
     async compose(jsonApplications, context) {
         // NOTE: application name contains domain name as a prefix
         const jsonApplicationMapByFullName = new Map();
@@ -14586,27 +13360,9 @@ let ApplicationComposer = class ApplicationComposer {
         }
         applicationVersion.apiClasses = newApplicationApiClasses;
     }
-};
-__decorate$e([
-    Inject()
-], ApplicationComposer.prototype, "applicationLocator", void 0);
-__decorate$e([
-    Inject()
-], ApplicationComposer.prototype, "datastructureUtils", void 0);
-__decorate$e([
-    Inject()
-], ApplicationComposer.prototype, "applicationNameUtils", void 0);
-__decorate$e([
-    Inject()
-], ApplicationComposer.prototype, "domainRetriever", void 0);
-__decorate$e([
-    Inject()
-], ApplicationComposer.prototype, "terminalStore", void 0);
-ApplicationComposer = __decorate$e([
-    Injected()
-], ApplicationComposer);
+}
 
-let ApplicationRecorder = class ApplicationRecorder {
+class ApplicationRecorder {
     async record(ddlObjects, 
     // normalOperation: boolean,
     context) {
@@ -14670,57 +13426,9 @@ let ApplicationRecorder = class ApplicationRecorder {
     async bulkCreate(dao, entities, context) {
         await dao.save(entities, context);
     }
-};
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "applicationApiClassDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "applicationApiOperationDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "applicationApiParameterDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "applicationApiReturnTypeDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "dbColumnDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "ddlApplicationDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "dbEntityDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "dbPropertyColumnDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "dbPropertyDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "ddlApplicationReferenceDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "dbRelationColumnDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "dbRelationDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "ddlApplicationVersionDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "ddlDomainDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationRecorder.prototype, "transactionManager", void 0);
-ApplicationRecorder = __decorate$e([
-    Injected()
-], ApplicationRecorder);
+}
 
-let ApplicationInitializer = class ApplicationInitializer {
+class ApplicationInitializer {
     addNewApplicationVersionsToAll(ddlObjects) {
         for (const applicationVersion of ddlObjects.added.applicationVersions) {
             ddlObjects.allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion;
@@ -14901,64 +13609,19 @@ let ApplicationInitializer = class ApplicationInitializer {
             this.airportDatabase.applications[application.index] = application;
         }
     }
-};
-__decorate$e([
-    Inject()
-], ApplicationInitializer.prototype, "airportDatabase", void 0);
-__decorate$e([
-    Inject()
-], ApplicationInitializer.prototype, "applicationChecker", void 0);
-__decorate$e([
-    Inject()
-], ApplicationInitializer.prototype, "applicationComposer", void 0);
-__decorate$e([
-    Inject()
-], ApplicationInitializer.prototype, "ddlApplicationDao", void 0);
-__decorate$e([
-    Inject()
-], ApplicationInitializer.prototype, "applicationLocator", void 0);
-__decorate$e([
-    Inject()
-], ApplicationInitializer.prototype, "applicationRecorder", void 0);
-__decorate$e([
-    Inject()
-], ApplicationInitializer.prototype, "appTrackerUtils", void 0);
-__decorate$e([
-    Inject()
-], ApplicationInitializer.prototype, "applicationNameUtils", void 0);
-__decorate$e([
-    Inject()
-], ApplicationInitializer.prototype, "queryObjectInitializer", void 0);
-__decorate$e([
-    Inject()
-], ApplicationInitializer.prototype, "schemaBuilder", void 0);
-__decorate$e([
-    Inject()
-], ApplicationInitializer.prototype, "sequenceGenerator", void 0);
-__decorate$e([
-    Inject()
-], ApplicationInitializer.prototype, "terminalStore", void 0);
-__decorate$e([
-    Inject()
-], ApplicationInitializer.prototype, "transactionManager", void 0);
-ApplicationInitializer = __decorate$e([
-    Injected()
-], ApplicationInitializer);
+}
 
 // TODO: probably not needed, included application source populates itself
 // May be needed to populate applications from the database
-let AirportDatabasePopulator = class AirportDatabasePopulator {
+class AirportDatabasePopulator {
     populate() {
         // FIXME: implement
         // this.airDb.applications
         // this.airDb.qApplications
     }
-};
-AirportDatabasePopulator = __decorate$e([
-    Injected()
-], AirportDatabasePopulator);
+}
 
-let DdlObjectLinker = class DdlObjectLinker {
+class DdlObjectLinker {
     link(allDdlObjects) {
         const { all, allApplicationVersionsByIds, added } = allDdlObjects;
         const { latestApplicationVersions, properties, relations, applicationReferences, applications } = added;
@@ -15121,15 +13784,9 @@ let DdlObjectLinker = class DdlObjectLinker {
             relationColumn.oneRelation = oneRelation;
         });
     }
-};
-__decorate$e([
-    Inject()
-], DdlObjectLinker.prototype, "terminalStore", void 0);
-DdlObjectLinker = __decorate$e([
-    Injected()
-], DdlObjectLinker);
+}
 
-let DdlObjectRetriever = class DdlObjectRetriever {
+class DdlObjectRetriever {
     async retrieveDdlObjects(context) {
         const applications = await this.ddlApplicationDao.findAllActive(context);
         const applicationIndexes = [];
@@ -15269,48 +13926,9 @@ let DdlObjectRetriever = class DdlObjectRetriever {
             applicationVersions
         };
     }
-};
-__decorate$e([
-    Inject()
-], DdlObjectRetriever.prototype, "applicationApiClassDao", void 0);
-__decorate$e([
-    Inject()
-], DdlObjectRetriever.prototype, "dbColumnDao", void 0);
-__decorate$e([
-    Inject()
-], DdlObjectRetriever.prototype, "ddlApplicationDao", void 0);
-__decorate$e([
-    Inject()
-], DdlObjectRetriever.prototype, "dbEntityDao", void 0);
-__decorate$e([
-    Inject()
-], DdlObjectRetriever.prototype, "dbPropertyColumnDao", void 0);
-__decorate$e([
-    Inject()
-], DdlObjectRetriever.prototype, "dbPropertyDao", void 0);
-__decorate$e([
-    Inject()
-], DdlObjectRetriever.prototype, "ddlApplicationReferenceDao", void 0);
-__decorate$e([
-    Inject()
-], DdlObjectRetriever.prototype, "dbRelationColumnDao", void 0);
-__decorate$e([
-    Inject()
-], DdlObjectRetriever.prototype, "dbRelationDao", void 0);
-__decorate$e([
-    Inject()
-], DdlObjectRetriever.prototype, "ddlApplicationVersionDao", void 0);
-__decorate$e([
-    Inject()
-], DdlObjectRetriever.prototype, "ddlDomainDao", void 0);
-__decorate$e([
-    Inject()
-], DdlObjectRetriever.prototype, "terminalStore", void 0);
-DdlObjectRetriever = __decorate$e([
-    Injected()
-], DdlObjectRetriever);
+}
 
-let QueryEntityClassCreator = class QueryEntityClassCreator {
+class QueryEntityClassCreator {
     createAll(applications) {
         const applicationsToCreate = this.qApplicationBuilderUtils
             .orderApplicationsInOrderOfPrecedence(applications);
@@ -15336,21 +13954,9 @@ let QueryEntityClassCreator = class QueryEntityClassCreator {
         this.qApplicationBuilderUtils.setQAppEntities(dbApplication, qApplication, this.airportDatabase.qApplications, this.applicationUtils, this.queryRelationManager);
         return qApplication;
     }
-};
-__decorate$e([
-    Inject()
-], QueryEntityClassCreator.prototype, "airportDatabase", void 0);
-__decorate$e([
-    Inject()
-], QueryEntityClassCreator.prototype, "applicationUtils", void 0);
-__decorate$e([
-    Inject()
-], QueryEntityClassCreator.prototype, "queryRelationManager", void 0);
-QueryEntityClassCreator = __decorate$e([
-    Injected()
-], QueryEntityClassCreator);
+}
 
-let QueryObjectInitializer = class QueryObjectInitializer {
+class QueryObjectInitializer {
     generateQObjectsAndPopulateStore(allDdlObjects) {
         this.ddlObjectLinker.link(allDdlObjects);
         this.queryEntityClassCreator.createAll(allDdlObjects.all.applications);
@@ -15406,22 +14012,7 @@ let QueryObjectInitializer = class QueryObjectInitializer {
         this.generateQObjectsAndPopulateStore(allDdlObjects);
         return allDdlObjects;
     }
-};
-__decorate$e([
-    Inject()
-], QueryObjectInitializer.prototype, "ddlObjectLinker", void 0);
-__decorate$e([
-    Inject()
-], QueryObjectInitializer.prototype, "ddlObjectRetriever", void 0);
-__decorate$e([
-    Inject()
-], QueryObjectInitializer.prototype, "queryEntityClassCreator", void 0);
-__decorate$e([
-    Inject()
-], QueryObjectInitializer.prototype, "terminalStore", void 0);
-QueryObjectInitializer = __decorate$e([
-    Injected()
-], QueryObjectInitializer);
+}
 
 const takeoff = lib('takeoff');
 const tokens = takeoff.register(AirportDatabasePopulator, 'ApplicationBuilder', ApplicationInitializer, ApplicationChecker, ApplicationComposer, ApplicationLocator, ApplicationRecorder, DdlObjectLinker, DdlObjectRetriever, QueryEntityClassCreator, QueryObjectInitializer, SqlSchemaBuilder);
@@ -15584,114 +14175,24 @@ function v4(options, buf, offset) {
   return unsafeStringify(rnds);
 }
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$d(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
 /**
  * Created by Papa on 4/17/2017.
  */
 /**
  * Marks a group of mutation history changes.
  */
-let OperationHistory = class OperationHistory {
+class OperationHistory {
     constructor() {
         this.recordHistory = [];
     }
-};
-__decorate$d([
-    GeneratedValue(),
-    SequenceGenerator$1(),
-    Id(),
-    Column(),
-    DbNumber()
-], OperationHistory.prototype, "_localId", void 0);
-__decorate$d([
-    Column(),
-    DbNumber()
-], OperationHistory.prototype, "orderNumber", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], OperationHistory.prototype, "changeType", void 0);
-__decorate$d([
-    Column(),
-    DbNumber()
-], OperationHistory.prototype, "systemWideOperationId", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], OperationHistory.prototype, "entity", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], OperationHistory.prototype, "repositoryTransactionHistory", void 0);
-__decorate$d([
-    OneToMany()
-], OperationHistory.prototype, "recordHistory", void 0);
-OperationHistory = __decorate$d([
-    Entity(),
-    Table()
-], OperationHistory);
+}
 
-let RecordHistory = class RecordHistory {
+class RecordHistory {
     constructor() {
         this.newValues = [];
         this.oldValues = [];
     }
-};
-__decorate$d([
-    Id(),
-    GeneratedValue(),
-    SequenceGenerator$1(),
-    Column(),
-    DbNumber()
-], RecordHistory.prototype, "_localId", void 0);
-__decorate$d([
-    Column(),
-    DbNumber()
-], RecordHistory.prototype, "_actorRecordId", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RecordHistory.prototype, "actor", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RecordHistory.prototype, "operationHistory", void 0);
-__decorate$d([
-    OneToMany()
-], RecordHistory.prototype, "newValues", void 0);
-__decorate$d([
-    OneToMany()
-], RecordHistory.prototype, "oldValues", void 0);
-__decorate$d([
-    Transient()
-], RecordHistory.prototype, "tableColumnMap", void 0);
-RecordHistory = __decorate$d([
-    Entity(),
-    Table()
-], RecordHistory);
+}
 
 /**
  * Created by Papa on 9/15/2016.
@@ -15704,26 +14205,8 @@ RecordHistory = __decorate$d([
  * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
  * also be required.
  */
-let RecordHistoryNewValue = class RecordHistoryNewValue {
-};
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RecordHistoryNewValue.prototype, "recordHistory", void 0);
-__decorate$d([
-    Id(),
-    Column(),
-    DbNumber()
-], RecordHistoryNewValue.prototype, "columnIndex", void 0);
-__decorate$d([
-    Column(),
-    DbAny()
-], RecordHistoryNewValue.prototype, "newValue", void 0);
-RecordHistoryNewValue = __decorate$d([
-    Entity(),
-    Table()
-], RecordHistoryNewValue);
+class RecordHistoryNewValue {
+}
 
 /**
  * Created by Papa on 9/15/2016.
@@ -15736,26 +14219,8 @@ RecordHistoryNewValue = __decorate$d([
  * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
  * also be required.
  */
-let RecordHistoryOldValue = class RecordHistoryOldValue {
-};
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RecordHistoryOldValue.prototype, "recordHistory", void 0);
-__decorate$d([
-    Id(),
-    Column(),
-    DbNumber()
-], RecordHistoryOldValue.prototype, "columnIndex", void 0);
-__decorate$d([
-    Column(),
-    DbAny()
-], RecordHistoryOldValue.prototype, "oldValue", void 0);
-RecordHistoryOldValue = __decorate$d([
-    Entity(),
-    Table()
-], RecordHistoryOldValue);
+class RecordHistoryOldValue {
+}
 
 /**
  * Created by Papa on 9/15/2016.
@@ -15764,7 +14229,7 @@ RecordHistoryOldValue = __decorate$d([
  * An entry in repository Transaction History/Log.
  * The main synchronization unit exchanged between terminals.
  */
-let RepositoryTransactionHistory = class RepositoryTransactionHistory {
+class RepositoryTransactionHistory {
     constructor(data) {
         this.repositoryTransactionType = RepositoryTransactionType.LOCAL;
         this.operationHistory = [];
@@ -15793,82 +14258,12 @@ let RepositoryTransactionHistory = class RepositoryTransactionHistory {
         this.saveTimestamp = data.saveTimestamp;
         this.operationHistory = data.operationHistory;
     }
-};
-__decorate$d([
-    GeneratedValue(),
-    Id(),
-    SequenceGenerator$1(),
-    Column(),
-    DbNumber()
-], RepositoryTransactionHistory.prototype, "_localId", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
-__decorate$d([
-    Column(),
-    DbNumber()
-], RepositoryTransactionHistory.prototype, "saveTimestamp", void 0);
-__decorate$d([
-    Column(),
-    DbNumber()
-], RepositoryTransactionHistory.prototype, "syncTimestamp", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], RepositoryTransactionHistory.prototype, "GUID", void 0);
-__decorate$d([
-    Column(),
-    DbBoolean()
-], RepositoryTransactionHistory.prototype, "isRepositoryCreation", void 0);
-__decorate$d([
-    Column(),
-    DbBoolean()
-], RepositoryTransactionHistory.prototype, "isPublic", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], RepositoryTransactionHistory.prototype, "invitationPrivateSigningKey", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryTransactionHistory.prototype, "actor", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryTransactionHistory.prototype, "member", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryTransactionHistory.prototype, "repository", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryTransactionHistory.prototype, "transactionHistory", void 0);
-__decorate$d([
-    OneToMany()
-], RepositoryTransactionHistory.prototype, "operationHistory", void 0);
-__decorate$d([
-    OneToMany()
-], RepositoryTransactionHistory.prototype, "newRepositoryMemberInvitations", void 0);
-__decorate$d([
-    OneToMany()
-], RepositoryTransactionHistory.prototype, "newRepositoryMemberAcceptances", void 0);
-__decorate$d([
-    OneToMany()
-], RepositoryTransactionHistory.prototype, "newRepositoryMemberUpdates", void 0);
-__decorate$d([
-    OneToMany()
-], RepositoryTransactionHistory.prototype, "newRepositoryMembers", void 0);
-RepositoryTransactionHistory = __decorate$d([
-    Entity(),
-    Table()
-], RepositoryTransactionHistory);
+}
 
 /**
  * Created by Papa on 5/1/2017./
  */
-let TransactionHistory = class TransactionHistory {
+class TransactionHistory {
     constructor() {
         this.repositoryTransactionHistories = [];
         this.repositoryTransactionHistoryMap = {};
@@ -15881,86 +14276,16 @@ let TransactionHistory = class TransactionHistory {
         this.remoteRepositoryMemberInvitations = [];
         this.remoteRepositoryMembers = [];
     }
-};
-__decorate$d([
-    GeneratedValue(),
-    Id(),
-    SequenceGenerator$1(),
-    Column(),
-    DbNumber()
-], TransactionHistory.prototype, "_localId", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], TransactionHistory.prototype, "transactionType", void 0);
-__decorate$d([
-    OneToMany()
-], TransactionHistory.prototype, "repositoryTransactionHistories", void 0);
-__decorate$d([
-    Transient()
-], TransactionHistory.prototype, "repositoryTransactionHistoryMap", void 0);
-__decorate$d([
-    Transient()
-], TransactionHistory.prototype, "allModifiedColumnsMap", void 0);
-__decorate$d([
-    Transient()
-], TransactionHistory.prototype, "allOperationHistory", void 0);
-__decorate$d([
-    Transient()
-], TransactionHistory.prototype, "allRecordHistory", void 0);
-__decorate$d([
-    Transient()
-], TransactionHistory.prototype, "allRecordHistoryNewValues", void 0);
-__decorate$d([
-    Transient()
-], TransactionHistory.prototype, "allRecordHistoryOldValues", void 0);
-__decorate$d([
-    Transient()
-], TransactionHistory.prototype, "remoteRepositoryMemberAcceptances", void 0);
-__decorate$d([
-    Transient()
-], TransactionHistory.prototype, "remoteRepositoryMemberInvitations", void 0);
-__decorate$d([
-    Transient()
-], TransactionHistory.prototype, "remoteRepositoryMembers", void 0);
-TransactionHistory = __decorate$d([
-    Entity(),
-    Table()
-], TransactionHistory);
+}
 
-let Actor = class Actor {
-};
-__decorate$d([
-    Id(),
-    GeneratedValue(),
-    DbNumber(),
-    Column()
-], Actor.prototype, "_localId", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], Actor.prototype, "GUID", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], Actor.prototype, "userAccount", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], Actor.prototype, "terminal", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], Actor.prototype, "application", void 0);
-Actor = __decorate$d([
-    Entity()
-], Actor);
+class Actor {
+}
 
 /**
  * Created by Papa on 2/17/2017.
  */
 // Used withint the framework because it imports from '@airport/travel-document-checkpoint/dist/app/bundle'
-let InternalAirEntity = class InternalAirEntity {
+class InternalAirEntity {
     constructor(entityId) {
         this.ageSuitability = 0;
         // TODO: if and when records are copied, make this a column
@@ -15992,55 +14317,12 @@ let InternalAirEntity = class InternalAirEntity {
         });
         this.id = entityId;
     }
-};
-__decorate$d([
-    Id(),
-    Column(),
-    GeneratedValue(),
-    DbNumber()
-], InternalAirEntity.prototype, "_actorRecordId", void 0);
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], InternalAirEntity.prototype, "actor", void 0);
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], InternalAirEntity.prototype, "repository", void 0);
-__decorate$d([
-    Column(),
-    DbNumber()
-], InternalAirEntity.prototype, "ageSuitability", void 0);
-__decorate$d([
-    Transient()
-], InternalAirEntity.prototype, "copied", void 0);
-__decorate$d([
-    Column(),
-    DbDate()
-], InternalAirEntity.prototype, "createdAt", void 0);
-__decorate$d([
-    Column(),
-    DbNumber()
-], InternalAirEntity.prototype, "systemWideOperationId", void 0);
-__decorate$d([
-    Transient()
-], InternalAirEntity.prototype, "createdBy", void 0);
-__decorate$d([
-    Transient()
-], InternalAirEntity.prototype, "isNew", void 0);
-__decorate$d([
-    Transient()
-], InternalAirEntity.prototype, "id", void 0);
-InternalAirEntity = __decorate$d([
-    MappedSuperclass()
-], InternalAirEntity);
+}
 
 /**
  * Created by Papa on 2/9/2017.
  */
-let Repository = class Repository {
+class Repository {
     constructor() {
         this._localId = null;
         // Local-only, represents state of the repository
@@ -16056,407 +14338,49 @@ let Repository = class Repository {
         this.repositoryTerminals = [];
         this.repositoryTypes = [];
     }
-};
-__decorate$d([
-    Column(),
-    GeneratedValue(),
-    Id(),
-    DbNumber()
-], Repository.prototype, "_localId", void 0);
-__decorate$d([
-    Column(),
-    DbNumber()
-], Repository.prototype, "ageSuitability", void 0);
-__decorate$d([
-    Column(),
-    DbDate()
-], Repository.prototype, "createdAt", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], Repository.prototype, "fullApplicationName", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], Repository.prototype, "GUID", void 0);
-__decorate$d([
-    Column(),
-    DbBoolean()
-], Repository.prototype, "immutable", void 0);
-__decorate$d([
-    Column(),
-    DbBoolean()
-], Repository.prototype, "internal", void 0);
-__decorate$d([
-    Column(),
-    DbBoolean()
-], Repository.prototype, "isPublic", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], Repository.prototype, "name", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], Repository.prototype, "source", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], Repository.prototype, "uiEntryUri", void 0);
-__decorate$d([
-    Column()
-], Repository.prototype, "isLoaded", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], Repository.prototype, "owner", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], Repository.prototype, "continent", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], Repository.prototype, "country", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], Repository.prototype, "state", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], Repository.prototype, "metroArea", void 0);
-__decorate$d([
-    OneToMany()
-], Repository.prototype, "referencedRepositories", void 0);
-__decorate$d([
-    OneToMany()
-], Repository.prototype, "referencedInRepositories", void 0);
-__decorate$d([
-    OneToMany()
-], Repository.prototype, "repositoryMembers", void 0);
-__decorate$d([
-    OneToMany()
-], Repository.prototype, "repositoryTransactionHistory", void 0);
-__decorate$d([
-    OneToMany()
-], Repository.prototype, "repositoryApplications", void 0);
-__decorate$d([
-    OneToMany()
-], Repository.prototype, "repositoryClients", void 0);
-__decorate$d([
-    OneToMany()
-], Repository.prototype, "repositoryDatabases", void 0);
-__decorate$d([
-    OneToMany()
-], Repository.prototype, "repositoryTerminals", void 0);
-__decorate$d([
-    OneToMany()
-], Repository.prototype, "repositoryTypes", void 0);
-Repository = __decorate$d([
-    Entity(),
-    Table()
-], Repository);
+}
 
-let RepositoryApplication = class RepositoryApplication {
-};
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryApplication.prototype, "application", void 0);
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryApplication.prototype, "repository", void 0);
-RepositoryApplication = __decorate$d([
-    Entity(),
-    Table()
-], RepositoryApplication);
+class RepositoryApplication {
+}
 
-let RepositoryClient = class RepositoryClient {
-};
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryClient.prototype, "repository", void 0);
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryClient.prototype, "client", void 0);
-RepositoryClient = __decorate$d([
-    Entity(),
-    Table()
-], RepositoryClient);
+class RepositoryClient {
+}
 
-let RepositoryDatabase = class RepositoryDatabase {
-};
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryDatabase.prototype, "repository", void 0);
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryDatabase.prototype, "database", void 0);
-RepositoryDatabase = __decorate$d([
-    Entity(),
-    Table()
-], RepositoryDatabase);
+class RepositoryDatabase {
+}
 
-let RepositoryReference = class RepositoryReference {
-};
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryReference.prototype, "referencingRepository", void 0);
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryReference.prototype, "referencedRepository", void 0);
-RepositoryReference = __decorate$d([
-    Entity(),
-    Table()
-], RepositoryReference);
+class RepositoryReference {
+}
 
-let RepositoryMember = class RepositoryMember {
+class RepositoryMember {
     constructor() {
         this.updates = [];
     }
-};
-__decorate$d([
-    Id(),
-    GeneratedValue(),
-    Column(),
-    DbNumber()
-], RepositoryMember.prototype, "_localId", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], RepositoryMember.prototype, "memberPublicSigningKey", void 0);
-__decorate$d([
-    Column(),
-    DbBoolean()
-], RepositoryMember.prototype, "isOwner", void 0);
-__decorate$d([
-    Column(),
-    DbBoolean()
-], RepositoryMember.prototype, "isAdministrator", void 0);
-__decorate$d([
-    Column(),
-    DbBoolean()
-], RepositoryMember.prototype, "canWrite", void 0);
-__decorate$d([
-    Column(),
-    DbNumber()
-], RepositoryMember.prototype, "status", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryMember.prototype, "repository", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryMember.prototype, "userAccount", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryMember.prototype, "addedInRepositoryTransactionHistory", void 0);
-__decorate$d([
-    OneToMany()
-], RepositoryMember.prototype, "acceptances", void 0);
-__decorate$d([
-    OneToMany()
-], RepositoryMember.prototype, "invitations", void 0);
-__decorate$d([
-    OneToMany()
-], RepositoryMember.prototype, "updates", void 0);
-RepositoryMember = __decorate$d([
-    Entity(),
-    Table()
-], RepositoryMember);
+}
 
-let RepositoryMemberAcceptance = class RepositoryMemberAcceptance {
-};
-__decorate$d([
-    Id(),
-    GeneratedValue(),
-    Column(),
-    DbNumber()
-], RepositoryMemberAcceptance.prototype, "_localId", void 0);
-__decorate$d([
-    Column(),
-    DbDate()
-], RepositoryMemberAcceptance.prototype, "createdAt", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], RepositoryMemberAcceptance.prototype, "invitationPublicSigningKey", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryMemberAcceptance.prototype, "acceptingRepositoryMember", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryMemberAcceptance.prototype, "addedInRepositoryTransactionHistory", void 0);
-RepositoryMemberAcceptance = __decorate$d([
-    Entity(),
-    Table()
-], RepositoryMemberAcceptance);
+class RepositoryMemberAcceptance {
+}
 
-let RepositoryMemberInvitation = class RepositoryMemberInvitation {
-};
-__decorate$d([
-    Id(),
-    GeneratedValue(),
-    Column(),
-    DbNumber()
-], RepositoryMemberInvitation.prototype, "_localId", void 0);
-__decorate$d([
-    Column(),
-    DbDate()
-], RepositoryMemberInvitation.prototype, "createdAt", void 0);
-__decorate$d([
-    Column(),
-    DbString()
-], RepositoryMemberInvitation.prototype, "invitationPublicSigningKey", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryMemberInvitation.prototype, "invitedRepositoryMember", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryMemberInvitation.prototype, "addedInRepositoryTransactionHistory", void 0);
-RepositoryMemberInvitation = __decorate$d([
-    Entity(),
-    Table()
-], RepositoryMemberInvitation);
+class RepositoryMemberInvitation {
+}
 
-let RepositoryMemberUpdate = class RepositoryMemberUpdate {
-};
-__decorate$d([
-    Id(),
-    GeneratedValue(),
-    Column(),
-    DbNumber()
-], RepositoryMemberUpdate.prototype, "_localId", void 0);
-__decorate$d([
-    Column(),
-    DbNumber()
-], RepositoryMemberUpdate.prototype, "createdAt", void 0);
-__decorate$d([
-    Column(),
-    DbBoolean()
-], RepositoryMemberUpdate.prototype, "isAdministrator", void 0);
-__decorate$d([
-    Column(),
-    DbBoolean()
-], RepositoryMemberUpdate.prototype, "canWrite", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryMemberUpdate.prototype, "updatedRepositoryMember", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryMemberUpdate.prototype, "addedInRepositoryTransactionHistory", void 0);
-RepositoryMemberUpdate = __decorate$d([
-    Entity(),
-    Table()
-], RepositoryMemberUpdate);
+class RepositoryMemberUpdate {
+}
 
-let RepositoryTerminal = class RepositoryTerminal {
-};
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryTerminal.prototype, "repository", void 0);
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryTerminal.prototype, "terminal", void 0);
-RepositoryTerminal = __decorate$d([
-    Entity(),
-    Table()
-], RepositoryTerminal);
+class RepositoryTerminal {
+}
 
-let RepositoryType = class RepositoryType {
-};
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryType.prototype, "repository", void 0);
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryType.prototype, "type", void 0);
-RepositoryType = __decorate$d([
-    Entity(),
-    Table()
-], RepositoryType);
+class RepositoryType {
+}
 
-let CopiedRecordLedger = class CopiedRecordLedger extends InternalAirEntity {
-};
-__decorate$d([
-    Column(),
-    DbNumber()
-], CopiedRecordLedger.prototype, "copyActorRecordId", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], CopiedRecordLedger.prototype, "copyAppEntity", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], CopiedRecordLedger.prototype, "copyActor", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], CopiedRecordLedger.prototype, "copyRepository", void 0);
-CopiedRecordLedger = __decorate$d([
-    Entity(),
-    Table()
-], CopiedRecordLedger);
+class CopiedRecordLedger extends InternalAirEntity {
+}
 
-let CrossRepositoryRelationLedger = class CrossRepositoryRelationLedger extends InternalAirEntity {
-};
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], CrossRepositoryRelationLedger.prototype, "relation", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], CrossRepositoryRelationLedger.prototype, "relatedRepository", void 0);
-CrossRepositoryRelationLedger = __decorate$d([
-    Entity(),
-    Table()
-], CrossRepositoryRelationLedger);
+class CrossRepositoryRelationLedger extends InternalAirEntity {
+}
 
-let LocalCopyReplacementLedger = class LocalCopyReplacementLedger {
-};
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumns()
-], LocalCopyReplacementLedger.prototype, "copiedRecordLedger", void 0);
-LocalCopyReplacementLedger = __decorate$d([
-    Entity(),
-    Table()
-], LocalCopyReplacementLedger);
+class LocalCopyReplacementLedger {
+}
 
 const __constructors__$4 = {
     Actor,
@@ -16816,7 +14740,7 @@ BaseTransactionHistoryDao.FindOne = new DaoQueryDecorators();
 BaseTransactionHistoryDao.Search = new DaoQueryDecorators();
 BaseTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
 
-let RecordHistoryNewValueDao = class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
+class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
     async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds, context) {
         let rhnv;
         return await this.db.find.tree({
@@ -16827,12 +14751,9 @@ let RecordHistoryNewValueDao = class RecordHistoryNewValueDao extends BaseRecord
             WHERE: rhnv.recordHistory._localId.IN(RecordHistory_LocalIds)
         }, context);
     }
-};
-RecordHistoryNewValueDao = __decorate$d([
-    Injected()
-], RecordHistoryNewValueDao);
+}
 
-let RecordHistoryOldValueDao = class RecordHistoryOldValueDao extends BaseRecordHistoryOldValueDao {
+class RecordHistoryOldValueDao extends BaseRecordHistoryOldValueDao {
     async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds, context) {
         let rhov;
         return await this.db.find.tree({
@@ -16843,12 +14764,9 @@ let RecordHistoryOldValueDao = class RecordHistoryOldValueDao extends BaseRecord
             WHERE: rhov.recordHistory._localId.IN(RecordHistory_LocalIds)
         }, context);
     }
-};
-RecordHistoryOldValueDao = __decorate$d([
-    Injected()
-], RecordHistoryOldValueDao);
+}
 
-let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
+class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
     /*
     async clearContentsWhereIdsIn(
         repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[],
@@ -16964,15 +14882,9 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
             WHERE: rth._localId.equals(repositoryTransactionHistory._localId)
         }, context);
     }
-};
-__decorate$d([
-    Inject()
-], RepositoryTransactionHistoryDao.prototype, "datastructureUtils", void 0);
-RepositoryTransactionHistoryDao = __decorate$d([
-    Injected()
-], RepositoryTransactionHistoryDao);
+}
 
-let ActorDao = class ActorDao extends BaseActorDao {
+class ActorDao extends BaseActorDao {
     async findWithDetailsAndGlobalIdsByIds(actorIds, context) {
         return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a._localId.IN(actorIds), context);
     }
@@ -17100,15 +15012,9 @@ let ActorDao = class ActorDao extends BaseActorDao {
             WHERE: getWhereClause(a)
         }, context);
     }
-};
-__decorate$d([
-    Inject()
-], ActorDao.prototype, "datastructureUtils", void 0);
-ActorDao = __decorate$d([
-    Injected()
-], ActorDao);
+}
 
-let RepositoryMemberAcceptanceDao = class RepositoryMemberAcceptanceDao extends BaseRepositoryMemberAcceptanceDao {
+class RepositoryMemberAcceptanceDao extends BaseRepositoryMemberAcceptanceDao {
     async insert(repositoryMemberAcceptances, context) {
         let rma;
         const VALUES = [];
@@ -17143,12 +15049,9 @@ let RepositoryMemberAcceptanceDao = class RepositoryMemberAcceptanceDao extends 
             WHERE: rma._localId.IN(repositoryMemberAcceptances.map(repositoryMemberAcceptance => repositoryMemberAcceptance._localId))
         }, context);
     }
-};
-RepositoryMemberAcceptanceDao = __decorate$d([
-    Injected()
-], RepositoryMemberAcceptanceDao);
+}
 
-let RepositoryMemberDao = class RepositoryMemberDao extends BaseRepositoryMemberDao {
+class RepositoryMemberDao extends BaseRepositoryMemberDao {
     async findByMemberPublicSigningKeys(memberPublicSigningKeys, context) {
         let rm;
         return await this._find({
@@ -17252,12 +15155,9 @@ let RepositoryMemberDao = class RepositoryMemberDao extends BaseRepositoryMember
             WHERE: rm._localId.IN(repositoryMembers.map(repositoryMember => repositoryMember._localId))
         }, context);
     }
-};
-RepositoryMemberDao = __decorate$d([
-    Injected()
-], RepositoryMemberDao);
+}
 
-let RepositoryMemberInvitationDao = class RepositoryMemberInvitationDao extends BaseRepositoryMemberInvitationDao {
+class RepositoryMemberInvitationDao extends BaseRepositoryMemberInvitationDao {
     async insert(repositoryMemberInvitations, context) {
         let rmi;
         const VALUES = [];
@@ -17294,30 +15194,18 @@ let RepositoryMemberInvitationDao = class RepositoryMemberInvitationDao extends 
             WHERE: rmi._localId.IN(repositoryMemberInvitations.map(repositoryMemberInvitation => repositoryMemberInvitation._localId))
         }, context);
     }
-};
-RepositoryMemberInvitationDao = __decorate$d([
-    Injected()
-], RepositoryMemberInvitationDao);
+}
 
-let CopiedRecordLedgerDao = class CopiedRecordLedgerDao extends BaseCopiedRecordLedgerDao {
-};
-CopiedRecordLedgerDao = __decorate$d([
-    Injected()
-], CopiedRecordLedgerDao);
+class CopiedRecordLedgerDao extends BaseCopiedRecordLedgerDao {
+}
 
-let CrossRepositoryRelationLedgerDao = class CrossRepositoryRelationLedgerDao extends BaseCrossRepositoryRelationLedgerDao {
-};
-CrossRepositoryRelationLedgerDao = __decorate$d([
-    Injected()
-], CrossRepositoryRelationLedgerDao);
+class CrossRepositoryRelationLedgerDao extends BaseCrossRepositoryRelationLedgerDao {
+}
 
-let LocalCopyReplacementLedgerDao = class LocalCopyReplacementLedgerDao extends BaseLocalCopyReplacementLedgerDao {
-};
-LocalCopyReplacementLedgerDao = __decorate$d([
-    Injected()
-], LocalCopyReplacementLedgerDao);
+class LocalCopyReplacementLedgerDao extends BaseLocalCopyReplacementLedgerDao {
+}
 
-let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
+class RepositoryDao extends BaseRepositoryDao {
     searchRepositories(context) {
         let r;
         const repositories = this._search({
@@ -17530,10 +15418,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             WHERE: r.GUID.equals(repositoryGuid)
         }, context);
     }
-};
-RepositoryDao = __decorate$d([
-    Injected()
-], RepositoryDao);
+}
 
 class RepositoryReferenceDao extends BaseRepositoryReferenceDao {
     async findByReferencingRepository_GUIDs(repositoryGUIDs, context) {
@@ -17579,7 +15464,7 @@ class RepositoryReferenceDao extends BaseRepositoryReferenceDao {
     }
 }
 
-let OperationHistoryDuo = class OperationHistoryDuo {
+class OperationHistoryDuo {
     getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory, systemWideOperationId, rootTransaction) {
         let operationHistory = {
             changeType: entityChangeType,
@@ -17611,15 +15496,9 @@ let OperationHistoryDuo = class OperationHistoryDuo {
             .transactionHistory.allRecordHistory.push(recordHistory);
         return recordHistory;
     }
-};
-__decorate$d([
-    Inject()
-], OperationHistoryDuo.prototype, "recordHistoryDuo", void 0);
-OperationHistoryDuo = __decorate$d([
-    Injected()
-], OperationHistoryDuo);
+}
 
-let RecordHistoryDuo = class RecordHistoryDuo {
+class RecordHistoryDuo {
     getNewRecord(actorId, _actorRecordId) {
         const recordHistory = new RecordHistory();
         recordHistory._actorRecordId = _actorRecordId;
@@ -17666,21 +15545,9 @@ let RecordHistoryDuo = class RecordHistoryDuo {
             .allModifiedColumnsMap.ensureEntity(dbColumn.entity)
             .ensure(dbColumn.index);
     }
-};
-__decorate$d([
-    Inject()
-], RecordHistoryDuo.prototype, "dictionary", void 0);
-__decorate$d([
-    Inject()
-], RecordHistoryDuo.prototype, "recordHistoryNewValueDuo", void 0);
-__decorate$d([
-    Inject()
-], RecordHistoryDuo.prototype, "recordHistoryOldValueDuo", void 0);
-RecordHistoryDuo = __decorate$d([
-    Injected()
-], RecordHistoryDuo);
+}
 
-let RecordHistoryNewValueDuo = class RecordHistoryNewValueDuo {
+class RecordHistoryNewValueDuo {
     getNewRecord(recordHistory, dbColumn, newValue) {
         const recordHistoryNewValue = new RecordHistoryNewValue();
         recordHistoryNewValue.columnIndex = dbColumn.index;
@@ -17688,12 +15555,9 @@ let RecordHistoryNewValueDuo = class RecordHistoryNewValueDuo {
         recordHistoryNewValue.newValue = newValue;
         return recordHistoryNewValue;
     }
-};
-RecordHistoryNewValueDuo = __decorate$d([
-    Injected()
-], RecordHistoryNewValueDuo);
+}
 
-let RecordHistoryOldValueDuo = class RecordHistoryOldValueDuo {
+class RecordHistoryOldValueDuo {
     getNewRecord(recordHistory, dbColumn, oldValue) {
         const recordHistoryOldValue = new RecordHistoryOldValue();
         recordHistoryOldValue.columnIndex = dbColumn.index;
@@ -17701,12 +15565,9 @@ let RecordHistoryOldValueDuo = class RecordHistoryOldValueDuo {
         recordHistoryOldValue.oldValue = oldValue;
         return recordHistoryOldValue;
     }
-};
-RecordHistoryOldValueDuo = __decorate$d([
-    Injected()
-], RecordHistoryOldValueDuo);
+}
 
-let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo {
+class RepositoryTransactionHistoryDuo {
     getNewRecord(repositoryId, actor, transactionHistory, isRepositoryCreation, isPublic) {
         let repositoryTransactionHistory = new RepositoryTransactionHistory();
         let saveTimestamp = new Date().getTime();
@@ -17769,15 +15630,9 @@ let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo {
         }
         return 0;
     }
-};
-__decorate$d([
-    Inject()
-], RepositoryTransactionHistoryDuo.prototype, "operationHistoryDuo", void 0);
-RepositoryTransactionHistoryDuo = __decorate$d([
-    Injected()
-], RepositoryTransactionHistoryDuo);
+}
 
-let TransactionHistoryDuo = class TransactionHistoryDuo {
+class TransactionHistoryDuo {
     getNewRecord(transactionType = TransactionType.LOCAL) {
         const transactionHistory = new TransactionHistory();
         transactionHistory.modifiedRepository_LocalIdSet = new Set();
@@ -17801,21 +15656,9 @@ let TransactionHistoryDuo = class TransactionHistoryDuo {
         }
         return repositoryTransactionHistory;
     }
-};
-__decorate$d([
-    Inject()
-], TransactionHistoryDuo.prototype, "repositoryMemberDao", void 0);
-__decorate$d([
-    Inject()
-], TransactionHistoryDuo.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$d([
-    Inject()
-], TransactionHistoryDuo.prototype, "terminalSessionManager", void 0);
-TransactionHistoryDuo = __decorate$d([
-    Injected()
-], TransactionHistoryDuo);
+}
 
-let CrossRepositoryRelationManager = class CrossRepositoryRelationManager {
+class CrossRepositoryRelationManager {
     addCopiedRecordLedger(manySideRelation, manySideEntity, copiedEntity) {
         const copiedRecordLedger = new CopiedRecordLedger();
         copiedRecordLedger.repository = manySideEntity.repository;
@@ -17849,12 +15692,9 @@ let CrossRepositoryRelationManager = class CrossRepositoryRelationManager {
         crossRepositoryRelationLedger.relatedRepository = relatedEntity.repository;
         return crossRepositoryRelationLedger;
     }
-};
-CrossRepositoryRelationManager = __decorate$d([
-    Injected()
-], CrossRepositoryRelationManager);
+}
 
-let RepositoryApi = class RepositoryApi {
+class RepositoryApi {
     searchRepositories() {
         return this.repositoryDao.searchRepositories(arguments[0]);
     }
@@ -17871,25 +15711,7 @@ let RepositoryApi = class RepositoryApi {
     async setUiEntryUri(uiEntryUri, repository) {
         await this.repositoryManager.setUiEntryUri(uiEntryUri, repository, arguments[2]);
     }
-};
-__decorate$d([
-    Inject()
-], RepositoryApi.prototype, "repositoryDao", void 0);
-__decorate$d([
-    Inject()
-], RepositoryApi.prototype, "repositoryManager", void 0);
-__decorate$d([
-    Api()
-], RepositoryApi.prototype, "searchRepositories", null);
-__decorate$d([
-    Api()
-], RepositoryApi.prototype, "create", null);
-__decorate$d([
-    Api()
-], RepositoryApi.prototype, "setUiEntryUri", null);
-RepositoryApi = __decorate$d([
-    Injected()
-], RepositoryApi);
+}
 
 const application$3 = {
     name: '@airport/holding-pattern',
@@ -17928,31 +15750,7 @@ holdingPattern.setDependencies(TransactionHistoryDuo, {
     terminalSessionManager: TERMINAL_SESSION_MANAGER
 });
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$c(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let UserAccountApi = class UserAccountApi {
+class UserAccountApi {
     async findUserAccount(accountPublicSingingKey) {
         const userAccounts = await this.userAccountDao.findByAccountPublicSingingKeys([accountPublicSingingKey], arguments[1]);
         if (userAccounts.length) {
@@ -17960,16 +15758,7 @@ let UserAccountApi = class UserAccountApi {
         }
         return null;
     }
-};
-__decorate$c([
-    Inject()
-], UserAccountApi.prototype, "userAccountDao", void 0);
-__decorate$c([
-    Api()
-], UserAccountApi.prototype, "findUserAccount", null);
-UserAccountApi = __decorate$c([
-    Injected()
-], UserAccountApi);
+}
 
 var AddUserAccountErrorCodes;
 (function (AddUserAccountErrorCodes) {
@@ -17978,7 +15767,7 @@ var AddUserAccountErrorCodes;
     AddUserAccountErrorCodes["INVALID_EMAIL"] = "INVALID_EMAIL";
     AddUserAccountErrorCodes["INVALID_USERNAME"] = "INVALID_USERNAME";
 })(AddUserAccountErrorCodes || (AddUserAccountErrorCodes = {}));
-let UserAccountManager = class UserAccountManager {
+class UserAccountManager {
     async addUserAccount(username, accountPublicSigningKey, context) {
         const userAccount = {
             _localId: null,
@@ -17990,398 +15779,67 @@ let UserAccountManager = class UserAccountManager {
             userAccount
         };
     }
-};
-__decorate$c([
-    Inject()
-], UserAccountManager.prototype, "userAccountDao", void 0);
-UserAccountManager = __decorate$c([
-    Injected()
-], UserAccountManager);
+}
 
 let Client$1 = class Client {
 };
-__decorate$c([
-    Id(),
-    DbNumber(),
-    Column()
-], Client$1.prototype, "_localId", void 0);
-__decorate$c([
-    DbString(),
-    Column()
-], Client$1.prototype, "domain", void 0);
-__decorate$c([
-    DbString(),
-    Column()
-], Client$1.prototype, "GUID", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Client$1.prototype, "continent", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Client$1.prototype, "country", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Client$1.prototype, "state", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Client$1.prototype, "metroArea", void 0);
-__decorate$c([
-    OneToMany()
-], Client$1.prototype, "clientTypes", void 0);
-Client$1 = __decorate$c([
-    Entity(),
-    Table()
-], Client$1);
 
-let ClientType = class ClientType {
-};
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], ClientType.prototype, "client", void 0);
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], ClientType.prototype, "type", void 0);
-ClientType = __decorate$c([
-    Entity(),
-    Table()
-], ClientType);
+class ClientType {
+}
 
-let Database = class Database {
-};
-__decorate$c([
-    Id(),
-    DbNumber(),
-    Column()
-], Database.prototype, "_localId", void 0);
-__decorate$c([
-    DbString(),
-    Column()
-], Database.prototype, "domain", void 0);
-__decorate$c([
-    DbString(),
-    Column()
-], Database.prototype, "GUID", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Database.prototype, "continent", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Database.prototype, "country", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Database.prototype, "state", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Database.prototype, "metroArea", void 0);
-__decorate$c([
-    OneToMany()
-], Database.prototype, "databaseTypes", void 0);
-Database = __decorate$c([
-    Entity(),
-    Table()
-], Database);
+class Database {
+}
 
-let DatabaseType = class DatabaseType {
-};
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], DatabaseType.prototype, "database", void 0);
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], DatabaseType.prototype, "type", void 0);
-DatabaseType = __decorate$c([
-    Entity(),
-    Table()
-], DatabaseType);
+class DatabaseType {
+}
 
-let Continent = class Continent {
-};
-__decorate$c([
-    Id(),
-    DbNumber(),
-    Column()
-], Continent.prototype, "id", void 0);
-__decorate$c([
-    DbString(),
-    Column()
-], Continent.prototype, "name", void 0);
-__decorate$c([
-    OneToMany()
-], Continent.prototype, "countries", void 0);
-__decorate$c([
-    OneToMany()
-], Continent.prototype, "userAccounts", void 0);
-Continent = __decorate$c([
-    Entity(),
-    Table()
-], Continent);
+class Continent {
+}
 
-let Country = class Country {
-};
-__decorate$c([
-    Id(),
-    GeneratedValue(),
-    DbNumber(),
-    Column()
-], Country.prototype, "id", void 0);
-__decorate$c([
-    DbString(),
-    Column()
-], Country.prototype, "abbreviation", void 0);
-__decorate$c([
-    DbString(),
-    Column()
-], Country.prototype, "name", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Country.prototype, "continent", void 0);
-__decorate$c([
-    OneToMany()
-], Country.prototype, "states", void 0);
-__decorate$c([
-    OneToMany()
-], Country.prototype, "userAccounts", void 0);
-Country = __decorate$c([
-    Entity(),
-    Table()
-], Country);
+class Country {
+}
 
-let MetroArea = class MetroArea {
-};
-__decorate$c([
-    Id(),
-    GeneratedValue(),
-    DbNumber(),
-    Column()
-], MetroArea.prototype, "id", void 0);
-__decorate$c([
-    DbString()
-], MetroArea.prototype, "name", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], MetroArea.prototype, "country", void 0);
-__decorate$c([
-    OneToMany()
-], MetroArea.prototype, "metroAreaStates", void 0);
-__decorate$c([
-    OneToMany()
-], MetroArea.prototype, "userAccounts", void 0);
-MetroArea = __decorate$c([
-    Entity(),
-    Table()
-], MetroArea);
+class MetroArea {
+}
 
-let MetroAreaState = class MetroAreaState {
-};
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], MetroAreaState.prototype, "state", void 0);
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], MetroAreaState.prototype, "metroArea", void 0);
-MetroAreaState = __decorate$c([
-    Entity(),
-    Table()
-], MetroAreaState);
+class MetroAreaState {
+}
 
-let State = class State {
-};
-__decorate$c([
-    Id(),
-    GeneratedValue(),
-    DbNumber(),
-    Column()
-], State.prototype, "id", void 0);
-__decorate$c([
-    DbString()
-], State.prototype, "abbreviation", void 0);
-__decorate$c([
-    DbString()
-], State.prototype, "name", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], State.prototype, "country", void 0);
-__decorate$c([
-    OneToMany()
-], State.prototype, "metroAreaStates", void 0);
-__decorate$c([
-    OneToMany()
-], State.prototype, "userAccounts", void 0);
-State = __decorate$c([
-    Entity(),
-    Table()
-], State);
+class State {
+}
 
 /**
  * AIRport terminal where the Apps execute (a browser tab, native app, etc.)
  */
-let Terminal = class Terminal {
+class Terminal {
     constructor() {
         this.isLocal = false;
     }
-};
-__decorate$c([
-    Id(),
-    GeneratedValue(),
-    Column(),
-    DbNumber()
-], Terminal.prototype, "_localId", void 0);
-__decorate$c([
-    Column(),
-    DbString()
-], Terminal.prototype, "GUID", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Terminal.prototype, "owner", void 0);
-__decorate$c([
-    Column(),
-    DbBoolean()
-], Terminal.prototype, "isLocal", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Terminal.prototype, "continent", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Terminal.prototype, "country", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Terminal.prototype, "state", void 0);
-__decorate$c([
-    ManyToOne(),
-    JoinColumn()
-], Terminal.prototype, "metroArea", void 0);
-__decorate$c([
-    OneToMany()
-], Terminal.prototype, "terminalTypes", void 0);
-Terminal = __decorate$c([
-    Entity(),
-    Table()
-], Terminal);
+}
 
 /**
  * Types applicable to terminals
  */
-let TerminalType = class TerminalType {
-};
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], TerminalType.prototype, "terminal", void 0);
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], TerminalType.prototype, "type", void 0);
-TerminalType = __decorate$c([
-    Entity(),
-    Table()
-], TerminalType);
+class TerminalType {
+}
 
 /**
  * Classification of Generic Types (which can be applied to any entities)
  */
-let Classification = class Classification {
-};
-__decorate$c([
-    Id(),
-    Column(),
-    DbNumber()
-], Classification.prototype, "id", void 0);
-__decorate$c([
-    Column(),
-    DbString()
-], Classification.prototype, "name", void 0);
-Classification = __decorate$c([
-    Entity(),
-    Table()
-], Classification);
+class Classification {
+}
 
 /**
  * Generic Type (can be applied to any entities)
  */
-let Type = class Type {
-};
-__decorate$c([
-    Id(),
-    Column(),
-    DbNumber()
-], Type.prototype, "id", void 0);
-__decorate$c([
-    Column(),
-    DbString()
-], Type.prototype, "name", void 0);
-__decorate$c([
-    OneToMany()
-], Type.prototype, "typeClassifications", void 0);
-Type = __decorate$c([
-    Entity(),
-    Table()
-], Type);
+class Type {
+}
 
-let TypeClassification = class TypeClassification {
-};
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], TypeClassification.prototype, "classification", void 0);
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], TypeClassification.prototype, "type", void 0);
-TypeClassification = __decorate$c([
-    Entity(),
-    Table()
-], TypeClassification);
+class TypeClassification {
+}
 
-let UserAccount = class UserAccount {
-};
-__decorate$c([
-    Id(),
-    GeneratedValue(),
-    DbNumber(),
-    Column()
-], UserAccount.prototype, "_localId", void 0);
-__decorate$c([
-    Column(),
-    DbString()
-], UserAccount.prototype, "accountPublicSigningKey", void 0);
-__decorate$c([
-    Column(),
-    DbString()
-], UserAccount.prototype, "username", void 0);
-UserAccount = __decorate$c([
-    Entity()
-], UserAccount);
+class UserAccount {
+}
 
 const __constructors__$3 = {
     Classification,
@@ -18644,7 +16102,7 @@ BaseUserAccountDao.FindOne = new DaoQueryDecorators();
 BaseUserAccountDao.Search = new DaoQueryDecorators();
 BaseUserAccountDao.SearchOne = new DaoQueryDecorators();
 
-let TerminalDao = class TerminalDao extends BaseTerminalDao {
+class TerminalDao extends BaseTerminalDao {
     async findByOwnerPublicKeysAndOwnGUIDs(accountPublicSigningKeys, GUIDs, context) {
         let t, ua;
         return await this.db.find.tree({
@@ -18691,21 +16149,9 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
             VALUES
         }, context);
     }
-};
-__decorate$c([
-    Inject()
-], TerminalDao.prototype, "airportDatabase", void 0);
-__decorate$c([
-    Inject()
-], TerminalDao.prototype, "dictionary", void 0);
-__decorate$c([
-    Inject()
-], TerminalDao.prototype, "sequenceGenerator", void 0);
-TerminalDao = __decorate$c([
-    Injected()
-], TerminalDao);
+}
 
-let UserAccountDao = class UserAccountDao extends BaseUserAccountDao {
+class UserAccountDao extends BaseUserAccountDao {
     async findByUserAccountNames(usernames, context) {
         let u;
         return await this.db.find.tree({
@@ -18750,16 +16196,7 @@ let UserAccountDao = class UserAccountDao extends BaseUserAccountDao {
             VALUES
         }, context);
     }
-};
-__decorate$c([
-    Inject()
-], UserAccountDao.prototype, "dictionary", void 0);
-__decorate$c([
-    Inject()
-], UserAccountDao.prototype, "sequenceGenerator", void 0);
-UserAccountDao = __decorate$c([
-    Injected()
-], UserAccountDao);
+}
 
 const application$2 = {
     name: '@airport/travel-document-checkpoint',
@@ -31363,81 +28800,11 @@ var blueprint_index = /*#__PURE__*/Object.freeze({
 	BLUEPRINT: BLUEPRINT
 });
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$b(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+class SynchronizationConflict {
 }
 
-let SynchronizationConflict = class SynchronizationConflict {
-};
-__decorate$b([
-    GeneratedValue(),
-    Id(),
-    DbNumber(),
-    Column()
-], SynchronizationConflict.prototype, "_localId", void 0);
-__decorate$b([
-    Column(),
-    DbString()
-], SynchronizationConflict.prototype, "type", void 0);
-__decorate$b([
-    Column(),
-    DbBoolean()
-], SynchronizationConflict.prototype, "acknowledged", void 0);
-__decorate$b([
-    ManyToOne(),
-    JoinColumn()
-], SynchronizationConflict.prototype, "repository", void 0);
-__decorate$b([
-    ManyToOne(),
-    JoinColumn()
-], SynchronizationConflict.prototype, "overwrittenRecordHistory", void 0);
-__decorate$b([
-    ManyToOne(),
-    JoinColumn()
-], SynchronizationConflict.prototype, "overwritingRecordHistory", void 0);
-__decorate$b([
-    OneToMany()
-], SynchronizationConflict.prototype, "values", void 0);
-SynchronizationConflict = __decorate$b([
-    Entity(),
-    Table()
-], SynchronizationConflict);
-
-let SynchronizationConflictValues = class SynchronizationConflictValues {
-};
-__decorate$b([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], SynchronizationConflictValues.prototype, "synchronizationConflict", void 0);
-__decorate$b([
-    Id(),
-    DbNumber()
-], SynchronizationConflictValues.prototype, "columnIndex", void 0);
-SynchronizationConflictValues = __decorate$b([
-    Entity(),
-    Table()
-], SynchronizationConflictValues);
+class SynchronizationConflictValues {
+}
 
 var DataOrigin;
 (function (DataOrigin) {
@@ -31456,51 +28823,8 @@ var ApplicationChangeStatus;
  * to the local terminal.  Values are deleted right after the remote sync updates
  * are applied.
  */
-let RecordUpdateStage = class RecordUpdateStage {
-};
-__decorate$b([
-    Id(),
-    GeneratedValue(),
-    Column(),
-    DbNumber()
-], RecordUpdateStage.prototype, "_localId", void 0);
-__decorate$b([
-    Column(),
-    DbNumber()
-], RecordUpdateStage.prototype, "_actorRecordId", void 0);
-__decorate$b([
-    Column()
-], RecordUpdateStage.prototype, "updatedValue", void 0);
-__decorate$b([
-    ManyToOne(),
-    JoinColumn()
-], RecordUpdateStage.prototype, "applicationVersion", void 0);
-__decorate$b([
-    ManyToOne()
-    // FIXME: verify that these records don't make it into serialized
-    // repository ledger (and hence, that using local ids is safe)
-    ,
-    JoinColumn()
-], RecordUpdateStage.prototype, "entity", void 0);
-__decorate$b([
-    ManyToOne(),
-    JoinColumn()
-], RecordUpdateStage.prototype, "repository", void 0);
-__decorate$b([
-    ManyToOne(),
-    JoinColumn()
-], RecordUpdateStage.prototype, "actor", void 0);
-__decorate$b([
-    ManyToOne()
-    // FIXME: verify that these records don't make it into serialized
-    // repository ledger (and hence, that using local ids is safe)
-    ,
-    JoinColumn()
-], RecordUpdateStage.prototype, "column", void 0);
-RecordUpdateStage = __decorate$b([
-    Entity(),
-    Table()
-], RecordUpdateStage);
+class RecordUpdateStage {
+}
 
 const __constructors__$2 = {
     RecordUpdateStage,
@@ -31571,7 +28895,7 @@ BaseSynchronizationConflictValuesDao.FindOne = new DaoQueryDecorators();
 BaseSynchronizationConflictValuesDao.Search = new DaoQueryDecorators();
 BaseSynchronizationConflictValuesDao.SearchOne = new DaoQueryDecorators();
 
-let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSynchronizationConflictDao {
+class SynchronizationConflictDao extends BaseSynchronizationConflictDao {
     async insert(synchronizationConflicts, context) {
         let sc;
         const VALUES = [];
@@ -31600,12 +28924,9 @@ let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSy
             synchronizationConflict._localId = ids[i][0];
         }
     }
-};
-SynchronizationConflictDao = __decorate$b([
-    Injected()
-], SynchronizationConflictDao);
+}
 
-let SynchronizationConflictValuesDao = class SynchronizationConflictValuesDao extends BaseSynchronizationConflictValuesDao {
+class SynchronizationConflictValuesDao extends BaseSynchronizationConflictValuesDao {
     async insert(synchronizationConflictValues, context) {
         let scv;
         const VALUES = [];
@@ -31624,12 +28945,9 @@ let SynchronizationConflictValuesDao = class SynchronizationConflictValuesDao ex
             VALUES
         }, context);
     }
-};
-SynchronizationConflictValuesDao = __decorate$b([
-    Injected()
-], SynchronizationConflictValuesDao);
+}
 
-let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
+class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
     async insertValues(values, context) {
         const rus = Q_airport____at_airport_slash_layover.RecordUpdateStage;
         const columns = [
@@ -31687,16 +29005,7 @@ let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateSt
             DELETE_FROM: Q_airport____at_airport_slash_layover.RecordUpdateStage
         }, context);
     }
-};
-__decorate$b([
-    Inject()
-], RecordUpdateStageDao.prototype, "airportDatabase", void 0);
-__decorate$b([
-    Inject()
-], RecordUpdateStageDao.prototype, "dictionary", void 0);
-RecordUpdateStageDao = __decorate$b([
-    Injected()
-], RecordUpdateStageDao);
+}
 
 const layover = lib('@airport/layover');
 layover.register(RecordUpdateStageDao, SynchronizationConflictDao, SynchronizationConflictValuesDao);
@@ -31705,31 +29014,7 @@ layover.setDependencies(RecordUpdateStageDao, {
     dictionary: Dictionary
 });
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$a(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let Client = class Client {
+class Client {
     constructor() {
         // encryptionKey = process.env.ENCRYPTION_KEY
         this.serverLocationProtocol = 'http://';
@@ -31793,10 +29078,7 @@ let Client = class Client {
         // return JSON.parse(unpackagedMessage)
         return response.json();
     }
-};
-Client = __decorate$a([
-    Injected()
-], Client);
+}
 
 // import {
 //     decryptString,
@@ -31804,6 +29086,47 @@ Client = __decorate$a([
 // } from "string-cipher";
 const client = lib('client');
 client.register(Client);
+
+var ConstraintMode;
+(function (ConstraintMode) {
+    ConstraintMode["CONSTRAINT"] = "CONSTRAINT";
+    ConstraintMode["NO_CONSTRAINT"] = "NO_CONSTRAINT";
+    ConstraintMode["PROVIDER_DEFAULT"] = "PROVIDER_DEFAULT";
+})(ConstraintMode || (ConstraintMode = {}));
+const Column = function (columnConfiguration) {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const DbString = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const ManyToOne = function (elements) {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const OneToMany = function (elements) {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+
+/**
+ * Created by Papa on 8/20/2016.
+ */
+const Entity = function () {
+    return function (constructor) {
+        // No runtime logic required.
+    };
+};
+const Table = function (tableConfiguration) {
+    return function (constructor) {
+        // No runtime logic required.
+    };
+};
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -31822,7 +29145,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$9(decorators, target, key, desc) {
+function __decorate$1(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -31835,48 +29158,48 @@ let KeyRing = class KeyRing extends InternalAirEntity {
         this.repositoryKeys = [];
     }
 };
-__decorate$9([
+__decorate$1([
     Column(),
     DbString()
 ], KeyRing.prototype, "externalPrivateKey", void 0);
-__decorate$9([
+__decorate$1([
     Column(),
     DbString()
 ], KeyRing.prototype, "internalPrivateSigningKey", void 0);
-__decorate$9([
+__decorate$1([
     OneToMany()
 ], KeyRing.prototype, "repositoryKeys", void 0);
-KeyRing = __decorate$9([
+KeyRing = __decorate$1([
     Entity(),
     Table()
 ], KeyRing);
 
 let RepositoryKey = class RepositoryKey extends InternalAirEntity {
 };
-__decorate$9([
+__decorate$1([
     Column(),
     DbString()
 ], RepositoryKey.prototype, "encryptionKey", void 0);
-__decorate$9([
+__decorate$1([
     Column(),
     DbString()
 ], RepositoryKey.prototype, "repositoryGUID", void 0);
-__decorate$9([
+__decorate$1([
     Column(),
     DbString()
 ], RepositoryKey.prototype, "privateSigningKey", void 0);
-__decorate$9([
+__decorate$1([
     Column(),
     DbString()
 ], RepositoryKey.prototype, "publicSigningKey", void 0);
-__decorate$9([
+__decorate$1([
     Column(),
     DbString()
 ], RepositoryKey.prototype, "repositoryName", void 0);
-__decorate$9([
+__decorate$1([
     ManyToOne()
 ], RepositoryKey.prototype, "keyRing", void 0);
-RepositoryKey = __decorate$9([
+RepositoryKey = __decorate$1([
     Entity(),
     Table()
 ], RepositoryKey);
@@ -31947,7 +29270,7 @@ let KeyRingDao = class KeyRingDao extends BaseKeyRingDao {
         }, context);
     }
 };
-KeyRingDao = __decorate$9([
+KeyRingDao = __decorate$1([
     Injected()
 ], KeyRingDao);
 
@@ -31967,7 +29290,7 @@ let RepositoryKeyDao = class RepositoryKeyDao extends BaseRepositoryKeyDao {
         }, context);
     }
 };
-RepositoryKeyDao = __decorate$9([
+RepositoryKeyDao = __decorate$1([
     Injected()
 ], RepositoryKeyDao);
 
@@ -32025,28 +29348,28 @@ let KeyRingManager = class KeyRingManager {
         return memberPublicSigningKey;
     }
 };
-__decorate$9([
+__decorate$1([
     Inject()
 ], KeyRingManager.prototype, "applicationNameUtils", void 0);
-__decorate$9([
+__decorate$1([
     Inject()
 ], KeyRingManager.prototype, "keyRingDao", void 0);
-__decorate$9([
+__decorate$1([
     Inject()
 ], KeyRingManager.prototype, "keyUtils", void 0);
-__decorate$9([
+__decorate$1([
     Inject()
 ], KeyRingManager.prototype, "repositoryKeyDao", void 0);
-__decorate$9([
+__decorate$1([
     Inject()
 ], KeyRingManager.prototype, "repositoryLoader", void 0);
-__decorate$9([
+__decorate$1([
     Inject()
 ], KeyRingManager.prototype, "repositoryManager", void 0);
-__decorate$9([
+__decorate$1([
     Inject()
 ], KeyRingManager.prototype, "terminalSessionManager", void 0);
-KeyRingManager = __decorate$9([
+KeyRingManager = __decorate$1([
     Injected()
 ], KeyRingManager);
 
@@ -32104,19 +29427,19 @@ let MessageSigningManager = class MessageSigningManager {
         }
     }
 };
-__decorate$9([
+__decorate$1([
     Inject()
 ], MessageSigningManager.prototype, "dictionary", void 0);
-__decorate$9([
+__decorate$1([
     Inject()
 ], MessageSigningManager.prototype, "keyUtils", void 0);
-__decorate$9([
+__decorate$1([
     Inject()
 ], MessageSigningManager.prototype, "repositoryKeyDao", void 0);
-__decorate$9([
+__decorate$1([
     Inject()
 ], MessageSigningManager.prototype, "terminalSessionManager", void 0);
-MessageSigningManager = __decorate$9([
+MessageSigningManager = __decorate$1([
     Injected()
 ], MessageSigningManager);
 
@@ -32138,31 +29461,7 @@ keyring.setDependencies(MessageSigningManager, {
     terminalSessionManager: TERMINAL_SESSION_MANAGER
 });
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$8(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
+class DebugSynchronizationAdapter {
     async getTransactionsForRepository(repositoryGUID, sinceSyncTimestamp) {
         const location = this.getLocation(repositoryGUID);
         const response = await this.client.getRepositoryTransactions(location, repositoryGUID, sinceSyncTimestamp);
@@ -32215,15 +29514,9 @@ let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
         // }
         return 'localhost:9000';
     }
-};
-__decorate$8([
-    Inject()
-], DebugSynchronizationAdapter.prototype, "client", void 0);
-DebugSynchronizationAdapter = __decorate$8([
-    Injected()
-], DebugSynchronizationAdapter);
+}
 
-let SynchronizationAdapterLoader = class SynchronizationAdapterLoader {
+class SynchronizationAdapterLoader {
     async load(repositoryGUID) {
         // switch (synchronizationSource) {
         //     case 'IPFS': {
@@ -32236,15 +29529,9 @@ let SynchronizationAdapterLoader = class SynchronizationAdapterLoader {
         //         throw new Error(`Unexpected synchronization source: ${synchronizationSource}`)
         // }
     }
-};
-__decorate$8([
-    Inject()
-], SynchronizationAdapterLoader.prototype, "debugSynchronizationAdapter", void 0);
-SynchronizationAdapterLoader = __decorate$8([
-    Injected()
-], SynchronizationAdapterLoader);
+}
 
-let SyncInActorChecker = class SyncInActorChecker {
+class SyncInActorChecker {
     async ensureActors(data, context) {
         try {
             let actorGUIDs = [];
@@ -32312,15 +29599,9 @@ let SyncInActorChecker = class SyncInActorChecker {
         }
         actor.userAccount = userAccount;
     }
-};
-__decorate$8([
-    Inject()
-], SyncInActorChecker.prototype, "actorDao", void 0);
-SyncInActorChecker = __decorate$8([
-    Injected()
-], SyncInActorChecker);
+}
 
-let SyncInApplicationChecker = class SyncInApplicationChecker {
+class SyncInApplicationChecker {
     async ensureApplications(data, context) {
         try {
             let applicationCheckMap = await this.checkApplicationsAndDomains(data, context);
@@ -32448,21 +29729,9 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
             applicationCheckMap
         };
     }
-};
-__decorate$8([
-    Inject()
-], SyncInApplicationChecker.prototype, "ddlApplicationDao", void 0);
-__decorate$8([
-    Inject()
-], SyncInApplicationChecker.prototype, "applicationNameUtils", void 0);
-__decorate$8([
-    Inject()
-], SyncInApplicationChecker.prototype, "ddlDomainDao", void 0);
-SyncInApplicationChecker = __decorate$8([
-    Injected()
-], SyncInApplicationChecker);
+}
 
-let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
+class SyncInApplicationVersionChecker {
     async ensureApplicationVersions(
     // message: SyncRepositoryData,
     inMessageApplicationVersions, inMessageApplications, context) {
@@ -32568,18 +29837,9 @@ let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
             applicationVersionCheckMap
         };
     }
-};
-__decorate$8([
-    Inject()
-], SyncInApplicationVersionChecker.prototype, "ddlApplicationVersionDao", void 0);
-__decorate$8([
-    Inject()
-], SyncInApplicationVersionChecker.prototype, "applicationInitializer", void 0);
-SyncInApplicationVersionChecker = __decorate$8([
-    Injected()
-], SyncInApplicationVersionChecker);
+}
 
-let SyncInChecker = class SyncInChecker {
+class SyncInChecker {
     /**
      * Check the message and load all required auxiliary entities.
      */
@@ -32688,42 +29948,9 @@ Declared in 'referencedApplicationRelations[${i}].entity.applicationVersion'`);
             data.referencedApplicationRelations[i] = applicationRelation;
         }
     }
-};
-__decorate$8([
-    Inject()
-], SyncInChecker.prototype, "datastructureUtils", void 0);
-__decorate$8([
-    Inject()
-], SyncInChecker.prototype, "keyUtils", void 0);
-__decorate$8([
-    Inject()
-], SyncInChecker.prototype, "syncInActorChecker", void 0);
-__decorate$8([
-    Inject()
-], SyncInChecker.prototype, "syncInApplicationChecker", void 0);
-__decorate$8([
-    Inject()
-], SyncInChecker.prototype, "syncInApplicationVersionChecker", void 0);
-__decorate$8([
-    Inject()
-], SyncInChecker.prototype, "syncInDataChecker", void 0);
-__decorate$8([
-    Inject()
-], SyncInChecker.prototype, "syncInRepositoryChecker", void 0);
-__decorate$8([
-    Inject()
-], SyncInChecker.prototype, "syncInTerminalChecker", void 0);
-__decorate$8([
-    Inject()
-], SyncInChecker.prototype, "syncInUserAccountChecker", void 0);
-__decorate$8([
-    Inject()
-], SyncInChecker.prototype, "terminalStore", void 0);
-SyncInChecker = __decorate$8([
-    Injected()
-], SyncInChecker);
+}
 
-let SyncInDataChecker = class SyncInDataChecker {
+class SyncInDataChecker {
     /**
      * Every dataMessage.data.repoTransHistories array must be sorted before entering
      * this method.
@@ -33015,33 +30242,9 @@ Value is for ${relationIdColumn.name} and could find SyncRepositoryData.${inMess
             value[valueColumnName] = sourceEntity._localId;
         }
     }
-};
-__decorate$8([
-    Inject()
-], SyncInDataChecker.prototype, "airportDatabase", void 0);
-__decorate$8([
-    Inject()
-], SyncInDataChecker.prototype, "applicationUtils", void 0);
-__decorate$8([
-    Inject()
-], SyncInDataChecker.prototype, "appTrackerUtils", void 0);
-__decorate$8([
-    Inject()
-], SyncInDataChecker.prototype, "datastructureUtils", void 0);
-__decorate$8([
-    Inject()
-], SyncInDataChecker.prototype, "dictionary", void 0);
-__decorate$8([
-    Inject()
-], SyncInDataChecker.prototype, "systemWideOperationIdUtils", void 0);
-__decorate$8([
-    Inject()
-], SyncInDataChecker.prototype, "terminalStore", void 0);
-SyncInDataChecker = __decorate$8([
-    Injected()
-], SyncInDataChecker);
+}
 
-let SyncInRepositoryChecker = class SyncInRepositoryChecker {
+class SyncInRepositoryChecker {
     async checkRepositoriesAndMembers(message, context) {
         let missingRepositories = [];
         let newMembers = [];
@@ -33432,21 +30635,9 @@ is not present in the message.`);
         // Make sure id field is not in the input
         delete repository._localId;
     }
-};
-__decorate$8([
-    Inject()
-], SyncInRepositoryChecker.prototype, "dictionary", void 0);
-__decorate$8([
-    Inject()
-], SyncInRepositoryChecker.prototype, "repositoryDao", void 0);
-__decorate$8([
-    Inject()
-], SyncInRepositoryChecker.prototype, "repositoryMemberDao", void 0);
-SyncInRepositoryChecker = __decorate$8([
-    Injected()
-], SyncInRepositoryChecker);
+}
 
-let SyncInTerminalChecker = class SyncInTerminalChecker {
+class SyncInTerminalChecker {
     async ensureTerminals(data, context) {
         try {
             let terminalGUIDs = [];
@@ -33501,15 +30692,9 @@ let SyncInTerminalChecker = class SyncInTerminalChecker {
         }
         await this.terminalDao.insert(missingTerminals, context);
     }
-};
-__decorate$8([
-    Inject()
-], SyncInTerminalChecker.prototype, "terminalDao", void 0);
-SyncInTerminalChecker = __decorate$8([
-    Injected()
-], SyncInTerminalChecker);
+}
 
-let SyncInUserAccountChecker = class SyncInUserAccountChecker {
+class SyncInUserAccountChecker {
     async ensureUserAccounts(data, context) {
         try {
             // let userAccountPublicSigningKeys: UserAccount_PublicSigningKey[] = []
@@ -33566,15 +30751,9 @@ appears more than once in message.data.userAccounts
         }
         await this.userAccountDao.insert(missingUserAccounts, context);
     }
-};
-__decorate$8([
-    Inject()
-], SyncInUserAccountChecker.prototype, "userAccountDao", void 0);
-SyncInUserAccountChecker = __decorate$8([
-    Injected()
-], SyncInUserAccountChecker);
+}
 
-let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
+class Stage1SyncedInDataProcessor {
     /**
      * In stage one:
      *
@@ -34009,33 +31188,9 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
     ensureRecord(recordHistory, recordMapByActor) {
         return this.datastructureUtils.ensureChildJsMap(this.datastructureUtils.ensureChildJsMap(recordMapByActor, recordHistory.actor._localId), recordHistory._actorRecordId);
     }
-};
-__decorate$8([
-    Inject()
-], Stage1SyncedInDataProcessor.prototype, "actorDao", void 0);
-__decorate$8([
-    Inject()
-], Stage1SyncedInDataProcessor.prototype, "airportDatabase", void 0);
-__decorate$8([
-    Inject()
-], Stage1SyncedInDataProcessor.prototype, "datastructureUtils", void 0);
-__decorate$8([
-    Inject()
-], Stage1SyncedInDataProcessor.prototype, "repositoryTransactionHistoryDao", void 0);
-__decorate$8([
-    Inject()
-], Stage1SyncedInDataProcessor.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$8([
-    Inject()
-], Stage1SyncedInDataProcessor.prototype, "syncInUtils", void 0);
-__decorate$8([
-    Inject()
-], Stage1SyncedInDataProcessor.prototype, "systemWideOperationIdUtils", void 0);
-Stage1SyncedInDataProcessor = __decorate$8([
-    Injected()
-], Stage1SyncedInDataProcessor);
+}
 
-let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
+class Stage2SyncedInDataProcessor {
     async applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap) {
         const context = {};
         await this.performCreates(stage1Result.recordCreations, applicationsByApplicationVersion_LocalIdMap, context);
@@ -34292,33 +31447,12 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
             await this.runUpdatesForTable(applicationIndex, applicationVersionId, entityIndex, columnValueUpdate.childColumnUpdateKeyMap, context);
         }
     }
-};
-__decorate$8([
-    Inject()
-], Stage2SyncedInDataProcessor.prototype, "airportDatabase", void 0);
-__decorate$8([
-    Inject()
-], Stage2SyncedInDataProcessor.prototype, "databaseFacade", void 0);
-__decorate$8([
-    Inject()
-], Stage2SyncedInDataProcessor.prototype, "datastructureUtils", void 0);
-__decorate$8([
-    Inject()
-], Stage2SyncedInDataProcessor.prototype, "dictionary", void 0);
-__decorate$8([
-    Inject()
-], Stage2SyncedInDataProcessor.prototype, "recordUpdateStageDao", void 0);
-__decorate$8([
-    Inject()
-], Stage2SyncedInDataProcessor.prototype, "utils", void 0);
-Stage2SyncedInDataProcessor = __decorate$8([
-    Injected()
-], Stage2SyncedInDataProcessor);
+}
 
 /**
  * Synchronization in Manager implementation.
  */
-let SynchronizationInManager = class SynchronizationInManager {
+class SynchronizationInManager {
     async receiveMessages(messageMapByGUID, context) {
         const syncTimestamp = new Date().getTime();
         const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
@@ -34487,28 +31621,7 @@ let SynchronizationInManager = class SynchronizationInManager {
             });
         }
     }
-};
-__decorate$8([
-    Inject()
-], SynchronizationInManager.prototype, "repositoryLoader", void 0);
-__decorate$8([
-    Inject()
-], SynchronizationInManager.prototype, "repositoryTransactionHistoryDao", void 0);
-__decorate$8([
-    Inject()
-], SynchronizationInManager.prototype, "syncInApplicationVersionChecker", void 0);
-__decorate$8([
-    Inject()
-], SynchronizationInManager.prototype, "syncInChecker", void 0);
-__decorate$8([
-    Inject()
-], SynchronizationInManager.prototype, "transactionManager", void 0);
-__decorate$8([
-    Inject()
-], SynchronizationInManager.prototype, "twoStageSyncedInDataProcessor", void 0);
-SynchronizationInManager = __decorate$8([
-    Injected()
-], SynchronizationInManager);
+}
 
 /**
  * Result of comparing to versions of a given application.
@@ -34525,19 +31638,13 @@ var ApplicationComparisonResult;
     // Terminal (TM)
     ApplicationComparisonResult[ApplicationComparisonResult["MESSAGE_APPLICATION_VERSION_IS_HIGHER"] = 1] = "MESSAGE_APPLICATION_VERSION_IS_HIGHER";
 })(ApplicationComparisonResult || (ApplicationComparisonResult = {}));
-let SyncInUtils = class SyncInUtils {
+class SyncInUtils {
     ensureRecordMapForRepoInTable(repositoryLocalId, operationHistory, recordMapByApplicationTableAndRepository) {
         return this.datastructureUtils.ensureChildJsMap(this.datastructureUtils.ensureChildJsMap(this.datastructureUtils.ensureChildJsMap(recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion._localId), operationHistory.entity.index), repositoryLocalId);
     }
-};
-__decorate$8([
-    Inject()
-], SyncInUtils.prototype, "datastructureUtils", void 0);
-SyncInUtils = __decorate$8([
-    Injected()
-], SyncInUtils);
+}
 
-let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
+class TwoStageSyncedInDataProcessor {
     /**
      * Synchronize the data messages coming to Terminal (new data for this TM)
      */
@@ -34650,49 +31757,7 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
             await this.synchronizationConflictValuesDao.insert(allSyncConflictValues, context);
         }
     }
-};
-__decorate$8([
-    Inject()
-], TwoStageSyncedInDataProcessor.prototype, "datastructureUtils", void 0);
-__decorate$8([
-    Inject()
-], TwoStageSyncedInDataProcessor.prototype, "recordHistoryDuo", void 0);
-__decorate$8([
-    Inject()
-], TwoStageSyncedInDataProcessor.prototype, "repositoryDao", void 0);
-__decorate$8([
-    Inject()
-], TwoStageSyncedInDataProcessor.prototype, "repositoryMemberAcceptanceDao", void 0);
-__decorate$8([
-    Inject()
-], TwoStageSyncedInDataProcessor.prototype, "repositoryMemberDao", void 0);
-__decorate$8([
-    Inject()
-], TwoStageSyncedInDataProcessor.prototype, "repositoryMemberInvitationDao", void 0);
-__decorate$8([
-    Inject()
-], TwoStageSyncedInDataProcessor.prototype, "repositoryReferenceCreator", void 0);
-__decorate$8([
-    Inject()
-], TwoStageSyncedInDataProcessor.prototype, "repositoryReferenceDao", void 0);
-__decorate$8([
-    Inject()
-], TwoStageSyncedInDataProcessor.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$8([
-    Inject()
-], TwoStageSyncedInDataProcessor.prototype, "stage1SyncedInDataProcessor", void 0);
-__decorate$8([
-    Inject()
-], TwoStageSyncedInDataProcessor.prototype, "stage2SyncedInDataProcessor", void 0);
-__decorate$8([
-    Inject()
-], TwoStageSyncedInDataProcessor.prototype, "synchronizationConflictDao", void 0);
-__decorate$8([
-    Inject()
-], TwoStageSyncedInDataProcessor.prototype, "synchronizationConflictValuesDao", void 0);
-TwoStageSyncedInDataProcessor = __decorate$8([
-    Injected()
-], TwoStageSyncedInDataProcessor);
+}
 
 var IndexedEntityType;
 (function (IndexedEntityType) {
@@ -34701,7 +31766,7 @@ var IndexedEntityType;
     IndexedEntityType[IndexedEntityType["TERMINAL"] = 2] = "TERMINAL";
     IndexedEntityType[IndexedEntityType["USER_ACCOUNT"] = 3] = "USER_ACCOUNT";
 })(IndexedEntityType || (IndexedEntityType = {}));
-let SyncOutDataSerializer = class SyncOutDataSerializer {
+class SyncOutDataSerializer {
     constructor() {
         // @Inject()
         // repositoryDao: IRepositoryDao
@@ -35253,30 +32318,9 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             GUID: repository.GUID
         };
     }
-};
-__decorate$8([
-    Inject()
-], SyncOutDataSerializer.prototype, "actorDao", void 0);
-__decorate$8([
-    Inject()
-], SyncOutDataSerializer.prototype, "applicationUtils", void 0);
-__decorate$8([
-    Inject()
-], SyncOutDataSerializer.prototype, "dbRelationDao", void 0);
-__decorate$8([
-    Inject()
-], SyncOutDataSerializer.prototype, "applicationNameUtils", void 0);
-__decorate$8([
-    Inject()
-], SyncOutDataSerializer.prototype, "dictionary", void 0);
-__decorate$8([
-    Inject()
-], SyncOutDataSerializer.prototype, "repositoryDao", void 0);
-SyncOutDataSerializer = __decorate$8([
-    Injected()
-], SyncOutDataSerializer);
+}
 
-let SynchronizationOutManager = class SynchronizationOutManager {
+class SynchronizationOutManager {
     async getSynchronizationMessages(repositoryTransactionHistories, context) {
         const repositoryMapById = await this
             .loadHistoryRepositories(repositoryTransactionHistories, context);
@@ -35373,33 +32417,9 @@ let SynchronizationOutManager = class SynchronizationOutManager {
             }
         }
     }
-};
-__decorate$8([
-    Inject()
-], SynchronizationOutManager.prototype, "datastructureUtils", void 0);
-__decorate$8([
-    Inject()
-], SynchronizationOutManager.prototype, "messageSigningManager", void 0);
-__decorate$8([
-    Inject()
-], SynchronizationOutManager.prototype, "repositoryDao", void 0);
-__decorate$8([
-    Inject()
-], SynchronizationOutManager.prototype, "repositoryReferenceCreator", void 0);
-__decorate$8([
-    Inject()
-], SynchronizationOutManager.prototype, "repositoryTransactionHistoryDao", void 0);
-__decorate$8([
-    Inject()
-], SynchronizationOutManager.prototype, "synchronizationAdapterLoader", void 0);
-__decorate$8([
-    Inject()
-], SynchronizationOutManager.prototype, "syncOutDataSerializer", void 0);
-SynchronizationOutManager = __decorate$8([
-    Injected()
-], SynchronizationOutManager);
+}
 
-let RepositoryReferenceCreator = class RepositoryReferenceCreator {
+class RepositoryReferenceCreator {
     async create(messages, context) {
         let repositoryGUIDSetToLookUp = new Set();
         for (const message of messages) {
@@ -35457,19 +32477,7 @@ let RepositoryReferenceCreator = class RepositoryReferenceCreator {
             await this.repositoryReferenceDao.insert(repositoryReferenceArrayToInsert, context);
         }
     }
-};
-__decorate$8([
-    Inject()
-], RepositoryReferenceCreator.prototype, "datastructureUtils", void 0);
-__decorate$8([
-    Inject()
-], RepositoryReferenceCreator.prototype, "repositoryDao", void 0);
-__decorate$8([
-    Inject()
-], RepositoryReferenceCreator.prototype, "repositoryReferenceDao", void 0);
-RepositoryReferenceCreator = __decorate$8([
-    Injected()
-], RepositoryReferenceCreator);
+}
 
 const groundTransport = lib('ground-transport');
 groundTransport.register(RepositoryReferenceCreator, Stage1SyncedInDataProcessor, Stage2SyncedInDataProcessor, SyncInActorChecker, SyncInChecker, SyncInDataChecker, SyncInTerminalChecker, SyncInRepositoryChecker, SyncInApplicationChecker, SyncInApplicationVersionChecker, SyncInUserAccountChecker, SyncInUtils, SynchronizationInManager, SynchronizationOutManager, SyncOutDataSerializer, TwoStageSyncedInDataProcessor, DebugSynchronizationAdapter, SynchronizationAdapterLoader);
@@ -36539,31 +33547,7 @@ class GraphOtmMapper {
 }
 globalThis.GraphOtmMapper = GraphOtmMapper;
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$7(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let ObjectResultParserFactory = class ObjectResultParserFactory {
+class ObjectResultParserFactory {
     getObjectResultParser(queryResultType, config, rootDbEntity) {
         switch (queryResultType) {
             case QueryResultType.ENTITY_GRAPH:
@@ -36574,25 +33558,7 @@ let ObjectResultParserFactory = class ObjectResultParserFactory {
                 throw new Error(`ObjectQueryParser not supported for QueryResultType: ${queryResultType}`);
         }
     }
-};
-__decorate$7([
-    Inject()
-], ObjectResultParserFactory.prototype, "applicationUtils", void 0);
-__decorate$7([
-    Inject()
-], ObjectResultParserFactory.prototype, "datastructureUtils", void 0);
-__decorate$7([
-    Inject()
-], ObjectResultParserFactory.prototype, "entityStateManager", void 0);
-__decorate$7([
-    Inject()
-], ObjectResultParserFactory.prototype, "queryUtils", void 0);
-__decorate$7([
-    Inject()
-], ObjectResultParserFactory.prototype, "utils", void 0);
-ObjectResultParserFactory = __decorate$7([
-    Injected()
-], ObjectResultParserFactory);
+}
 
 /**
  * Created by Papa on 11/8/2016.
@@ -36622,7 +33588,7 @@ var ClauseType;
     ClauseType["WHERE_CLAUSE"] = "WHERE_CLAUSE";
     ClauseType["FUNCTION_CALL"] = "FUNCTION_CALL";
 })(ClauseType || (ClauseType = {}));
-let SQLWhereBase = class SQLWhereBase {
+class SQLWhereBase {
     constructor(dbEntity, dialect, dictionary, airportDatabase, applicationUtils, queryUtils, entityStateManager, qMetadataUtils, qValidator, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
         this.dbEntity = dbEntity;
         this.dialect = dialect;
@@ -36940,10 +33906,7 @@ Returned:  ${resultsFromSelect.length}
         }
         return false;
     }
-};
-SQLWhereBase = __decorate$7([
-    Injected()
-], SQLWhereBase);
+}
 
 /**
  * Created by Papa on 10/2/2016.
@@ -37783,7 +34746,7 @@ class TreeSQLQuery extends NonEntitySQLQuery {
     }
 }
 
-let SubStatementSqlGenerator = class SubStatementSqlGenerator {
+class SubStatementSqlGenerator {
     getTreeQuerySql(treeQuery, dialect, context) {
         let mappedSqlQuery = new TreeSQLQuery(treeQuery, dialect, this.dictionary, this.airportDatabase, this.applicationUtils, this.queryUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.queryRelationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
         const subQuerySql = mappedSqlQuery.toSQL({}, context);
@@ -37803,43 +34766,7 @@ let SubStatementSqlGenerator = class SubStatementSqlGenerator {
             subQuerySql
         };
     }
-};
-__decorate$7([
-    Inject()
-], SubStatementSqlGenerator.prototype, "airportDatabase", void 0);
-__decorate$7([
-    Inject()
-], SubStatementSqlGenerator.prototype, "applicationUtils", void 0);
-__decorate$7([
-    Inject()
-], SubStatementSqlGenerator.prototype, "dictionary", void 0);
-__decorate$7([
-    Inject()
-], SubStatementSqlGenerator.prototype, "entityStateManager", void 0);
-__decorate$7([
-    Inject()
-], SubStatementSqlGenerator.prototype, "qMetadataUtils", void 0);
-__decorate$7([
-    Inject()
-], SubStatementSqlGenerator.prototype, "queryRelationManager", void 0);
-__decorate$7([
-    Inject()
-], SubStatementSqlGenerator.prototype, "queryUtils", void 0);
-__decorate$7([
-    Inject()
-], SubStatementSqlGenerator.prototype, "qValidator", void 0);
-__decorate$7([
-    Inject()
-], SubStatementSqlGenerator.prototype, "sqlQueryAdapter", void 0);
-__decorate$7([
-    Inject()
-], SubStatementSqlGenerator.prototype, "storeDriver", void 0);
-__decorate$7([
-    Inject()
-], SubStatementSqlGenerator.prototype, "utils", void 0);
-SubStatementSqlGenerator = __decorate$7([
-    Injected()
-], SubStatementSqlGenerator);
+}
 
 /**
  * Created by Papa on 10/16/2016.
@@ -38394,7 +35321,7 @@ class SheetSQLQuery extends NonEntitySQLQuery {
 /**
  * Created by Papa on 9/2/2016.
  */
-let IdGenerator = class IdGenerator {
+class IdGenerator {
     constructor() {
         this.transactionHistory_LocalIdColumns = [];
     }
@@ -38445,13 +35372,7 @@ let IdGenerator = class IdGenerator {
         return Q_airport____at_airport_slash_holding_dash_pattern.__dbApplication__.currentVersion[0].applicationVersion
             .entityMapByName[holdingPatternEntityName];
     }
-};
-__decorate$7([
-    Inject()
-], IdGenerator.prototype, "sequenceGenerator", void 0);
-IdGenerator = __decorate$7([
-    Injected()
-], IdGenerator);
+}
 var CurrentState;
 (function (CurrentState) {
     CurrentState["CREATED"] = "CREATED";
@@ -38462,7 +35383,7 @@ var CurrentState;
 /**
  * Created by Papa on 9/9/2016.
  */
-let SqlStoreDriver = class SqlStoreDriver {
+class SqlStoreDriver {
     supportsLocalTransactions(context) {
         return true;
     }
@@ -38674,60 +35595,9 @@ Entity:          ${table.name}
         return this
             .lookup.ensureContext(context);
     }
-};
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "airportDatabase", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "applicationUtils", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "appTrackerUtils", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "dictionary", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "applicationNameUtils", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "entityStateManager", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "lookup", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "objectResultParserFactory", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "qMetadataUtils", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "queryRelationManager", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "queryUtils", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "qValidator", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "sqlQueryAdapter", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "subStatementSqlGenerator", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "transactionManager", void 0);
-__decorate$7([
-    Inject()
-], SqlStoreDriver.prototype, "utils", void 0);
-SqlStoreDriver = __decorate$7([
-    Injected()
-], SqlStoreDriver);
+}
 
-let QValidator = class QValidator {
+class QValidator {
     validateInsertQEntity(dbEntity) {
     }
     validateReadFromEntity(queryRelation) {
@@ -38748,10 +35618,7 @@ let QValidator = class QValidator {
     }
     validateAliasedFieldAccess(fieldAlias) {
     }
-};
-QValidator = __decorate$7([
-    Injected()
-], QValidator);
+}
 
 const fuelHydrantSystem = lib('fuel-hydrant-system');
 fuelHydrantSystem.register(SubStatementSqlGenerator, IdGenerator, ObjectResultParserFactory, QValidator, SqlStoreDriver);
@@ -38799,31 +35666,7 @@ fuelHydrantSystem.setDependencies(SubStatementSqlGenerator, {
     utils: Utils
 });
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$6(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let ActiveQueries = class ActiveQueries {
+class ActiveQueries {
     get queries() {
         return this.terminalStore.getQueries();
     }
@@ -38909,18 +35752,9 @@ let ActiveQueries = class ActiveQueries {
             }
         }, 101);
     }
-};
-__decorate$6([
-    Inject()
-], ActiveQueries.prototype, "repositoryDao", void 0);
-__decorate$6([
-    Inject()
-], ActiveQueries.prototype, "terminalStore", void 0);
-ActiveQueries = __decorate$6([
-    Injected()
-], ActiveQueries);
+}
 
-let ObservableQueryAdapter = class ObservableQueryAdapter {
+class ObservableQueryAdapter {
     constructor() {
         this.queriedRepositoryIds = {
             GUIDSet: new Set(),
@@ -39051,22 +35885,7 @@ let ObservableQueryAdapter = class ObservableQueryAdapter {
         }
         return trackedRepoLocalIdSet;
     }
-};
-__decorate$6([
-    Inject()
-], ObservableQueryAdapter.prototype, "activeQueries", void 0);
-__decorate$6([
-    Inject()
-], ObservableQueryAdapter.prototype, "repositoryDao", void 0);
-__decorate$6([
-    Inject()
-], ObservableQueryAdapter.prototype, "repositoryLoader", void 0);
-__decorate$6([
-    Inject()
-], ObservableQueryAdapter.prototype, "transactionManager", void 0);
-ObservableQueryAdapter = __decorate$6([
-    Injected()
-], ObservableQueryAdapter);
+}
 
 const flightNumber = lib('flight-number');
 flightNumber.register(ActiveQueries);
@@ -39108,7 +35927,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$5(decorators, target, key, desc) {
+function __decorate(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -39254,34 +36073,34 @@ let RepositoryMaintenanceManager = class RepositoryMaintenanceManager {
         await navigator.share(shareData);
     }
 };
-__decorate$5([
+__decorate([
     Inject()
 ], RepositoryMaintenanceManager.prototype, "historyManager", void 0);
-__decorate$5([
+__decorate([
     Inject()
 ], RepositoryMaintenanceManager.prototype, "keyRingManager", void 0);
-__decorate$5([
+__decorate([
     Inject()
 ], RepositoryMaintenanceManager.prototype, "keyUtils", void 0);
-__decorate$5([
+__decorate([
     Inject()
 ], RepositoryMaintenanceManager.prototype, "repositoryDao", void 0);
-__decorate$5([
+__decorate([
     Inject()
 ], RepositoryMaintenanceManager.prototype, "repositoryMemberDao", void 0);
-__decorate$5([
+__decorate([
     Inject()
 ], RepositoryMaintenanceManager.prototype, "terminalSessionManager", void 0);
-__decorate$5([
+__decorate([
     Api()
 ], RepositoryMaintenanceManager.prototype, "selfJoinRepository", null);
-__decorate$5([
+__decorate([
     Api()
 ], RepositoryMaintenanceManager.prototype, "acceptRepositoryMemberInvitation", null);
-__decorate$5([
+__decorate([
     Api()
 ], RepositoryMaintenanceManager.prototype, "inviteUserToRepository", null);
-RepositoryMaintenanceManager = __decorate$5([
+RepositoryMaintenanceManager = __decorate([
     Injected()
 ], RepositoryMaintenanceManager);
 
@@ -39327,37 +36146,37 @@ let SSOManager = class SSOManager {
         // })
     }
 };
-__decorate$5([
+__decorate([
     Inject()
 ], SSOManager.prototype, "actorDao", void 0);
-__decorate$5([
+__decorate([
     Inject()
 ], SSOManager.prototype, "keyUtils", void 0);
-__decorate$5([
+__decorate([
     Inject()
 ], SSOManager.prototype, "keyRingManager", void 0);
-__decorate$5([
+__decorate([
     Inject()
 ], SSOManager.prototype, "signInAdapter", void 0);
-__decorate$5([
+__decorate([
     Inject()
 ], SSOManager.prototype, "terminalStore", void 0);
-__decorate$5([
+__decorate([
     Inject()
 ], SSOManager.prototype, "userAccountManager", void 0);
-__decorate$5([
+__decorate([
     Inject()
 ], SSOManager.prototype, "userStore", void 0);
-__decorate$5([
+__decorate([
     Api()
 ], SSOManager.prototype, "signUp", null);
-__decorate$5([
+__decorate([
     Api()
 ], SSOManager.prototype, "login", null);
-__decorate$5([
+__decorate([
     Api()
 ], SSOManager.prototype, "signIn", null);
-SSOManager = __decorate$5([
+SSOManager = __decorate([
     Injected()
 ], SSOManager);
 
@@ -39398,31 +36217,7 @@ sso.setDependencies(SSOManager, {
     userStore: UserStore
 });
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$4(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let RepositoryLoader = class RepositoryLoader {
+class RepositoryLoader {
     /*
     Repository can be loaded because:
     - Repository is not present at all
@@ -39486,21 +36281,10 @@ let RepositoryLoader = class RepositoryLoader {
             return;
         }
     }
-};
-__decorate$4([
-    Inject()
-], RepositoryLoader.prototype, "repositoryDao", void 0);
-__decorate$4([
-    Inject()
-], RepositoryLoader.prototype, "synchronizationAdapterLoader", void 0);
-__decorate$4([
-    Inject()
-], RepositoryLoader.prototype, "synchronizationInManager", void 0);
-RepositoryLoader = __decorate$4([
-    Injected()
-], RepositoryLoader);
+}
 
-let RepositoryManager = class RepositoryManager {
+// import is reserved for Application use
+class RepositoryManager {
     async createRepository(repositoryName, internal, isPublic, context) {
         const userSession = await this.terminalSessionManager.getUserSession();
         let haveUserSession = userSession.currentRootTransaction
@@ -39620,30 +36404,9 @@ already contains a new repository.`);
             WHERE: AND(rawDelete.WHERE, qEntity.repository._localId.equals(repository._localId))
         };
     }
-};
-__decorate$4([
-    Inject()
-], RepositoryManager.prototype, "appTrackerUtils", void 0);
-__decorate$4([
-    Inject()
-], RepositoryManager.prototype, "dictionary", void 0);
-__decorate$4([
-    Inject()
-], RepositoryManager.prototype, "repositoryMaintenanceManager", void 0);
-__decorate$4([
-    Inject()
-], RepositoryManager.prototype, "repositoryDao", void 0);
-__decorate$4([
-    Inject()
-], RepositoryManager.prototype, "terminalSessionManager", void 0);
-__decorate$4([
-    Inject()
-], RepositoryManager.prototype, "terminalStore", void 0);
-RepositoryManager = __decorate$4([
-    Injected()
-], RepositoryManager);
+}
 
-let TerminalSessionManager = class TerminalSessionManager {
+class TerminalSessionManager {
     async getUserSession() {
         let session;
         if (this.terminalStore.getIsServer()) {
@@ -39666,18 +36429,9 @@ let TerminalSessionManager = class TerminalSessionManager {
         }
         return userAccount;
     }
-};
-__decorate$4([
-    Inject()
-], TerminalSessionManager.prototype, "terminalStore", void 0);
-__decorate$4([
-    Inject()
-], TerminalSessionManager.prototype, "userStore", void 0);
-TerminalSessionManager = __decorate$4([
-    Injected()
-], TerminalSessionManager);
+}
 
-let InternalRecordManager = class InternalRecordManager {
+class InternalRecordManager {
     async ensureApplicationRecords(application, context) {
         await this.transactionManager.transactInternal(async (_transaction, context) => {
             await this.updateDomain(application, context);
@@ -39791,33 +36545,9 @@ let InternalRecordManager = class InternalRecordManager {
         });
         return updatedDomain;
     }
-};
-__decorate$4([
-    Inject()
-], InternalRecordManager.prototype, "actorDao", void 0);
-__decorate$4([
-    Inject()
-], InternalRecordManager.prototype, "ddlApplicationDao", void 0);
-__decorate$4([
-    Inject()
-], InternalRecordManager.prototype, "ddlDomainDao", void 0);
-__decorate$4([
-    Inject()
-], InternalRecordManager.prototype, "entityStateManager", void 0);
-__decorate$4([
-    Inject()
-], InternalRecordManager.prototype, "terminalSessionManager", void 0);
-__decorate$4([
-    Inject()
-], InternalRecordManager.prototype, "terminalStore", void 0);
-__decorate$4([
-    Inject()
-], InternalRecordManager.prototype, "transactionManager", void 0);
-InternalRecordManager = __decorate$4([
-    Injected()
-], InternalRecordManager);
+}
 
-let InternalTransactionalConnector = class InternalTransactionalConnector {
+class InternalTransactionalConnector {
     constructor() {
         this.internal = true;
     }
@@ -39886,22 +36616,13 @@ they are internal to the AIRport framework).`);
             ...context
         });
     }
-};
-__decorate$4([
-    Inject()
-], InternalTransactionalConnector.prototype, "terminalStore", void 0);
-__decorate$4([
-    Inject()
-], InternalTransactionalConnector.prototype, "transactionalServer", void 0);
-InternalTransactionalConnector = __decorate$4([
-    Injected()
-], InternalTransactionalConnector);
+}
 function injectTransactionalConnector() {
     console.log('Injecting TransactionalConnector');
 }
 
 // TODO: implement
-let OnlineManager = class OnlineManager {
+class OnlineManager {
     constructor() {
         this.online = false;
     }
@@ -40051,24 +36772,9 @@ let OnlineManager = class OnlineManager {
     isOnline(context = {}) {
         return this.online;
     }
-};
-__decorate$4([
-    Inject()
-], OnlineManager.prototype, "repositoryDao", void 0);
-__decorate$4([
-    Inject()
-], OnlineManager.prototype, "repositoryManager", void 0);
-__decorate$4([
-    Inject()
-], OnlineManager.prototype, "repositoryTransactionHistoryDao", void 0);
-__decorate$4([
-    Inject()
-], OnlineManager.prototype, "transactionManager", void 0);
-OnlineManager = __decorate$4([
-    Injected()
-], OnlineManager);
+}
 
-let TransactionalReceiver = class TransactionalReceiver {
+class TransactionalReceiver {
     constructor() {
         this.WITH_ID = {};
     }
@@ -40451,40 +37157,7 @@ ${fullApplication_Name}
             returnedValue: result,
         };
     }
-};
-__decorate$4([
-    Inject()
-], TransactionalReceiver.prototype, "actorDao", void 0);
-__decorate$4([
-    Inject()
-], TransactionalReceiver.prototype, "ddlApplicationDao", void 0);
-__decorate$4([
-    Inject()
-], TransactionalReceiver.prototype, "appTrackerUtils", void 0);
-__decorate$4([
-    Inject()
-], TransactionalReceiver.prototype, "databaseManager", void 0);
-__decorate$4([
-    Inject()
-], TransactionalReceiver.prototype, "applicationNameUtils", void 0);
-__decorate$4([
-    Inject()
-], TransactionalReceiver.prototype, "internalRecordManager", void 0);
-__decorate$4([
-    Inject()
-], TransactionalReceiver.prototype, "localApiServer", void 0);
-__decorate$4([
-    Inject()
-], TransactionalReceiver.prototype, "terminalSessionManager", void 0);
-__decorate$4([
-    Inject()
-], TransactionalReceiver.prototype, "terminalStore", void 0);
-__decorate$4([
-    Inject()
-], TransactionalReceiver.prototype, "transactionalServer", void 0);
-TransactionalReceiver = __decorate$4([
-    Injected()
-], TransactionalReceiver);
+}
 
 /**
  * Keeps track of transactions, per client and validates that a given
@@ -40510,7 +37183,7 @@ TransactionalReceiver = __decorate$4([
  * A single transactional queue should be enough.
  *
  */
-let TransactionalServer = class TransactionalServer {
+class TransactionalServer {
     async init(context = {}) {
         return await this.transactionManager.initialize('airport', context);
     }
@@ -40637,42 +37310,12 @@ let TransactionalServer = class TransactionalServer {
         }
         return actor;
     }
-};
-__decorate$4([
-    Inject()
-], TransactionalServer.prototype, "appTrackerUtils", void 0);
-__decorate$4([
-    Inject()
-], TransactionalServer.prototype, "deleteManager", void 0);
-__decorate$4([
-    Inject()
-], TransactionalServer.prototype, "insertManager", void 0);
-__decorate$4([
-    Inject()
-], TransactionalServer.prototype, "operationManager", void 0);
-__decorate$4([
-    Inject()
-], TransactionalServer.prototype, "queryManager", void 0);
-__decorate$4([
-    Inject()
-], TransactionalServer.prototype, "repositoryManager", void 0);
-__decorate$4([
-    Inject()
-], TransactionalServer.prototype, "terminalStore", void 0);
-__decorate$4([
-    Inject()
-], TransactionalServer.prototype, "transactionManager", void 0);
-__decorate$4([
-    Inject()
-], TransactionalServer.prototype, "updateManager", void 0);
-TransactionalServer = __decorate$4([
-    Injected()
-], TransactionalServer);
+}
 function injectTransactionalServer() {
     console.log('Injecting TransactionalServer');
 }
 
-let AbstractMutationManager = class AbstractMutationManager {
+class AbstractMutationManager {
     getPortableQuery(applicationIndex, entityIndex, query, queryResultType) {
         return {
             applicationIndex,
@@ -40744,24 +37387,9 @@ let AbstractMutationManager = class AbstractMutationManager {
         let portableQuery = this.getPortableQuery(dbEntity.applicationVersion.application.index, dbEntity.index, insertValues, null);
         return await transaction.insertValues(portableQuery, context);
     }
-};
-__decorate$4([
-    Inject()
-], AbstractMutationManager.prototype, "applicationUtils", void 0);
-__decorate$4([
-    Inject()
-], AbstractMutationManager.prototype, "fieldUtils", void 0);
-__decorate$4([
-    Inject()
-], AbstractMutationManager.prototype, "queryRelationManager", void 0);
-__decorate$4([
-    Inject()
-], AbstractMutationManager.prototype, "queryUtils", void 0);
-AbstractMutationManager = __decorate$4([
-    Injected()
-], AbstractMutationManager);
+}
 
-let DatabaseManager = class DatabaseManager {
+class DatabaseManager {
     constructor() {
         this.initialized = false;
     }
@@ -40832,36 +37460,9 @@ let DatabaseManager = class DatabaseManager {
             await this.applicationInitializer.initialize(schemas, context, false, false, false);
         }
     }
-};
-__decorate$4([
-    Inject()
-], DatabaseManager.prototype, "airportDatabase", void 0);
-__decorate$4([
-    Inject()
-], DatabaseManager.prototype, "ddlApplicationDao", void 0);
-__decorate$4([
-    Inject()
-], DatabaseManager.prototype, "applicationInitializer", void 0);
-__decorate$4([
-    Inject()
-], DatabaseManager.prototype, "applicationNameUtils", void 0);
-__decorate$4([
-    Inject()
-], DatabaseManager.prototype, "internalRecordManager", void 0);
-__decorate$4([
-    Inject()
-], DatabaseManager.prototype, "storeDriver", void 0);
-__decorate$4([
-    Inject()
-], DatabaseManager.prototype, "transactionalServer", void 0);
-__decorate$4([
-    Inject()
-], DatabaseManager.prototype, "transactionManager", void 0);
-DatabaseManager = __decorate$4([
-    Injected()
-], DatabaseManager);
+}
 
-let DeleteManager = class DeleteManager {
+class DeleteManager {
     async deleteWhere(portableQuery, actor, transaction, rootTransaction, context) {
         const dbEntity = this.airportDatabase
             .applications[portableQuery.applicationIndex].currentVersion[0].applicationVersion
@@ -41048,42 +37649,9 @@ let DeleteManager = class DeleteManager {
         }
         return selectClause;
     }
-};
-__decorate$4([
-    Inject()
-], DeleteManager.prototype, "airportDatabase", void 0);
-__decorate$4([
-    Inject()
-], DeleteManager.prototype, "applicationUtils", void 0);
-__decorate$4([
-    Inject()
-], DeleteManager.prototype, "datastructureUtils", void 0);
-__decorate$4([
-    Inject()
-], DeleteManager.prototype, "dictionary", void 0);
-__decorate$4([
-    Inject()
-], DeleteManager.prototype, "historyManager", void 0);
-__decorate$4([
-    Inject()
-], DeleteManager.prototype, "operationHistoryDuo", void 0);
-__decorate$4([
-    Inject()
-], DeleteManager.prototype, "recordHistoryDuo", void 0);
-__decorate$4([
-    Inject()
-], DeleteManager.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$4([
-    Inject()
-], DeleteManager.prototype, "systemWideOperationIdUtils", void 0);
-__decorate$4([
-    Inject()
-], DeleteManager.prototype, "utils", void 0);
-DeleteManager = __decorate$4([
-    Injected()
-], DeleteManager);
+}
 
-let HistoryManager = class HistoryManager {
+class HistoryManager {
     async getNewTransactionHistory(transactionType = TransactionType.LOCAL) {
         return await this.transactionHistoryDuo.getNewRecord(transactionType);
     }
@@ -41097,15 +37665,9 @@ let HistoryManager = class HistoryManager {
         }
         return await this.transactionHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryLocalId, actor, isRepositoryCreation, isPublic, repositoryMember, context);
     }
-};
-__decorate$4([
-    Inject()
-], HistoryManager.prototype, "transactionHistoryDuo", void 0);
-HistoryManager = __decorate$4([
-    Injected()
-], HistoryManager);
+}
 
-let InsertManager = class InsertManager {
+class InsertManager {
     async insertValues(portableQuery, actor, transaction, rootTransaction, context, ensureGeneratedValues) {
         return await this.internalInsertValues(portableQuery, actor, transaction, rootTransaction, context, false, ensureGeneratedValues);
     }
@@ -41504,36 +38066,9 @@ and cannot have NULL values.`);
         // 	repoTransHistory.endGroupMutation(operationsByRepo[repositoryId]);
         // }
     }
-};
-__decorate$4([
-    Inject()
-], InsertManager.prototype, "airportDatabase", void 0);
-__decorate$4([
-    Inject()
-], InsertManager.prototype, "dictionary", void 0);
-__decorate$4([
-    Inject()
-], InsertManager.prototype, "historyManager", void 0);
-__decorate$4([
-    Inject()
-], InsertManager.prototype, "operationHistoryDuo", void 0);
-__decorate$4([
-    Inject()
-], InsertManager.prototype, "recordHistoryDuo", void 0);
-__decorate$4([
-    Inject()
-], InsertManager.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$4([
-    Inject()
-], InsertManager.prototype, "systemWideOperationIdUtils", void 0);
-__decorate$4([
-    Inject()
-], InsertManager.prototype, "sequenceGenerator", void 0);
-InsertManager = __decorate$4([
-    Injected()
-], InsertManager);
+}
 
-let QueryManager = class QueryManager {
+class QueryManager {
     async find(portableQuery, context) {
         await this.ensureRepositoryPresenceAndCurrentState(context);
         const entityArray = await this.storeDriver.find(portableQuery, {}, context);
@@ -41694,36 +38229,9 @@ let QueryManager = class QueryManager {
             }
         }
     }
-};
-__decorate$4([
-    Inject()
-], QueryManager.prototype, "actorDao", void 0);
-__decorate$4([
-    Inject()
-], QueryManager.prototype, "airportDatabase", void 0);
-__decorate$4([
-    Inject()
-], QueryManager.prototype, "dictionary", void 0);
-__decorate$4([
-    Inject()
-], QueryManager.prototype, "datastructureUtils", void 0);
-__decorate$4([
-    Inject()
-], QueryManager.prototype, "observableQueryAdapter", void 0);
-__decorate$4([
-    Inject()
-], QueryManager.prototype, "repositoryDao", void 0);
-__decorate$4([
-    Inject()
-], QueryManager.prototype, "repositoryLoader", void 0);
-__decorate$4([
-    Inject()
-], QueryManager.prototype, "storeDriver", void 0);
-QueryManager = __decorate$4([
-    Injected()
-], QueryManager);
+}
 
-let TransactionManager = class TransactionManager extends AbstractMutationManager {
+class TransactionManager extends AbstractMutationManager {
     /**
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}
@@ -42136,45 +38644,9 @@ ${callHerarchy}
             await this.doInsertValues(transaction, Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues, context);
         }
     }
-};
-__decorate$4([
-    Inject()
-], TransactionManager.prototype, "activeQueries", void 0);
-__decorate$4([
-    Inject()
-], TransactionManager.prototype, "appTrackerUtils", void 0);
-__decorate$4([
-    Inject()
-], TransactionManager.prototype, "idGenerator", void 0);
-__decorate$4([
-    Inject()
-], TransactionManager.prototype, "repositoryMemberAcceptanceDao", void 0);
-__decorate$4([
-    Inject()
-], TransactionManager.prototype, "repositoryMemberDao", void 0);
-__decorate$4([
-    Inject()
-], TransactionManager.prototype, "repositoryMemberInvitationDao", void 0);
-__decorate$4([
-    Inject()
-], TransactionManager.prototype, "storeDriver", void 0);
-__decorate$4([
-    Inject()
-], TransactionManager.prototype, "synchronizationOutManager", void 0);
-__decorate$4([
-    Inject()
-], TransactionManager.prototype, "terminalSessionManager", void 0);
-__decorate$4([
-    Inject()
-], TransactionManager.prototype, "terminalStore", void 0);
-__decorate$4([
-    Inject()
-], TransactionManager.prototype, "transactionHistoryDuo", void 0);
-TransactionManager = __decorate$4([
-    Injected()
-], TransactionManager);
+}
 
-let UpdateManager = class UpdateManager {
+class UpdateManager {
     async updateValues(portableQuery, actor, transaction, rootTransaction, context) {
         const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
             .currentVersion[0].applicationVersion.entities[portableQuery.entityIndex];
@@ -42340,48 +38812,9 @@ let UpdateManager = class UpdateManager {
             repositoryIdSet
         };
     }
-};
-__decorate$4([
-    Inject()
-], UpdateManager.prototype, "airportDatabase", void 0);
-__decorate$4([
-    Inject()
-], UpdateManager.prototype, "datastructureUtils", void 0);
-__decorate$4([
-    Inject()
-], UpdateManager.prototype, "dictionary", void 0);
-__decorate$4([
-    Inject()
-], UpdateManager.prototype, "fieldUtils", void 0);
-__decorate$4([
-    Inject()
-], UpdateManager.prototype, "historyManager", void 0);
-__decorate$4([
-    Inject()
-], UpdateManager.prototype, "operationHistoryDuo", void 0);
-__decorate$4([
-    Inject()
-], UpdateManager.prototype, "queryFacade", void 0);
-__decorate$4([
-    Inject()
-], UpdateManager.prototype, "queryRelationManager", void 0);
-__decorate$4([
-    Inject()
-], UpdateManager.prototype, "queryUtils", void 0);
-__decorate$4([
-    Inject()
-], UpdateManager.prototype, "recordHistoryDuo", void 0);
-__decorate$4([
-    Inject()
-], UpdateManager.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$4([
-    Inject()
-], UpdateManager.prototype, "systemWideOperationIdUtils", void 0);
-UpdateManager = __decorate$4([
-    Injected()
-], UpdateManager);
+}
 
-let CascadeGraphVerifier = class CascadeGraphVerifier {
+class CascadeGraphVerifier {
     verify(root, context) {
         if (!(root instanceof Array)) {
             root = [root];
@@ -42393,10 +38826,7 @@ let CascadeGraphVerifier = class CascadeGraphVerifier {
         // decorator
         return root;
     }
-};
-CascadeGraphVerifier = __decorate$4([
-    Injected()
-], CascadeGraphVerifier);
+}
 
 /*
  * Takes a (potentially) interconnected entity graph and returns
@@ -42404,7 +38834,7 @@ CascadeGraphVerifier = __decorate$4([
  * for insertion (with all needed new _localIds being inserted in an order
  * that will work).
  */
-let DependencyGraphResolver = class DependencyGraphResolver {
+class DependencyGraphResolver {
     getOperationsInOrder(entities, context) {
         const unorderedDependencies = this.getEntitiesToPersist(entities, [], [], context);
         this.resolveCircularDependencies(unorderedDependencies, context);
@@ -42705,25 +39135,13 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
         // throw new Error('Not Implemented.')
         return operationNodes;
     }
-};
-__decorate$4([
-    Inject()
-], DependencyGraphResolver.prototype, "datastructureUtils", void 0);
-__decorate$4([
-    Inject()
-], DependencyGraphResolver.prototype, "dictionary", void 0);
-__decorate$4([
-    Inject()
-], DependencyGraphResolver.prototype, "entityStateManager", void 0);
-DependencyGraphResolver = __decorate$4([
-    Injected()
-], DependencyGraphResolver);
+}
 
 /**
  * Takes a serialized object tree and reconstructs a (potentially)
  * interlinked object graph.
  */
-let EntityGraphReconstructor = class EntityGraphReconstructor {
+class EntityGraphReconstructor {
     restoreEntityGraph(root, context) {
         const entitiesByOperationIndex = [];
         const rootCopy = this.linkEntityGraph(root, entitiesByOperationIndex, false, context);
@@ -42869,21 +39287,12 @@ of entity ${dbProperty.entity.name}`);
 of entity ${dbProperty.entity.name}\``);
         }
     }
-};
-__decorate$4([
-    Inject()
-], EntityGraphReconstructor.prototype, "appTrackerUtils", void 0);
-__decorate$4([
-    Inject()
-], EntityGraphReconstructor.prototype, "entityStateManager", void 0);
-EntityGraphReconstructor = __decorate$4([
-    Injected()
-], EntityGraphReconstructor);
+}
 
 /**
  * Created by Papa on 11/15/2016.
  */
-let OperationManager = class OperationManager {
+class OperationManager {
     /**
      * Transactional context must have been started by the time this method is called.
      *
@@ -43253,57 +39662,9 @@ in top level objects (that are passed into '...Dao.save(...)')`);
         let portableQuery = this.queryFacade.getPortableQuery(deleteWhere, null, context);
         await this.deleteManager.deleteWhere(portableQuery, actor, transaction, rootTransaction, context);
     }
-};
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "airportDatabase", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "applicationUtils", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "cascadeGraphVerifier", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "deleteManager", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "dependencyGraphResolver", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "dictionary", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "entityGraphReconstructor", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "entityStateManager", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "insertManager", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "qMetadataUtils", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "queryFacade", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "repositoryManager", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "structuralEntityValidator", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "updateManager", void 0);
-__decorate$4([
-    Inject()
-], OperationManager.prototype, "utils", void 0);
-OperationManager = __decorate$4([
-    Injected()
-], OperationManager);
+}
 
-let StructuralEntityValidator = class StructuralEntityValidator {
+class StructuralEntityValidator {
     validate(records, operatedOnEntityIndicator, missingRepositoryRecords, topLevelObjectRepositories, context, depth = 1, fromOneToMany = false, parentRelationProperty = null, rootRelationRecord = null, parentRelationRecord = null) {
         const dbEntity = context.dbEntity;
         if (!dbEntity.idColumns.length) {
@@ -43631,32 +39992,14 @@ must always have a value for all entity operations.`);
         throw new Error(`Unexpected property value '${value.toString()}' in property '${dbProperty.entity.name}.${dbProperty.name}'
 		(column: '${dbColumn.name}').`);
     }
-};
-__decorate$4([
-    Inject()
-], StructuralEntityValidator.prototype, "applicationUtils", void 0);
-__decorate$4([
-    Inject()
-], StructuralEntityValidator.prototype, "crossRepositoryRelationManager", void 0);
-__decorate$4([
-    Inject()
-], StructuralEntityValidator.prototype, "applicationNameUtils", void 0);
-__decorate$4([
-    Inject()
-], StructuralEntityValidator.prototype, "dictionary", void 0);
-__decorate$4([
-    Inject()
-], StructuralEntityValidator.prototype, "entityStateManager", void 0);
-StructuralEntityValidator = __decorate$4([
-    Injected()
-], StructuralEntityValidator);
+}
 
 // TODO: figure out if this is needed - originally written for deserializing
 // Client-side query parameters.  Since then moved to Isolates and generic
 // API calls.  Probably should be used in go-tower to deserialize all of the
 // method argiments passed it (and won't be tied to a query of any kind, API
 // interface is generic, unless already known to contain entity objects.)
-let QueryParameterDeserializer = class QueryParameterDeserializer {
+class QueryParameterDeserializer {
     deserialize(parameters, query, entityStateManager) {
         if (parameters.length !== query.query.parameters.length) {
             throw new Error(`Wrong number of parameters for ${query.dbEntity.name}.${query.query.queryName}
@@ -43722,17 +40065,14 @@ got: ${typeOfParameter}
             `);
         }
     }
-};
-QueryParameterDeserializer = __decorate$4([
-    Injected()
-], QueryParameterDeserializer);
+}
 
 // TODO: figure out if this is needed - originally written for serializing
 // query resuts returned to the client.  Since then moved to Isolates and
 // generic API calls.  Probably should be used in go-tower to serialize
 // the values returned (and won't be tied to a query of any kind, API
 // interface is generic, unless already known to contain entity objects.)
-let QueryResultsSerializer = class QueryResultsSerializer {
+class QueryResultsSerializer {
     serialize(entity, dbEntity, entityStateManager, applicationUtils) {
         const operation = {
             lookupTable: [],
@@ -43821,10 +40161,7 @@ let QueryResultsSerializer = class QueryResultsSerializer {
         }
         return entityCopy;
     }
-};
-QueryResultsSerializer = __decorate$4([
-    Injected()
-], QueryResultsSerializer);
+}
 
 /**
  * Created by Papa on 6/30/2016.
@@ -44019,31 +40356,7 @@ terminal.setDependencies(UpdateManager, {
     systemWideOperationIdUtils: SystemWideOperationIdUtils,
 });
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$3(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let OperationSerializer = class OperationSerializer {
+class OperationSerializer {
     serializeAsArray(entity) {
         let serializedEntity = [];
         if (!entity) {
@@ -44155,26 +40468,19 @@ let OperationSerializer = class OperationSerializer {
         }
         return serializedEntity;
     }
-};
-__decorate$3([
-    Inject()
-], OperationSerializer.prototype, "serializationStateManager", void 0);
-OperationSerializer = __decorate$3([
-    Injected()
-], OperationSerializer);
+}
 
-var SerializationStateManager_1;
 var SerializationState;
 (function (SerializationState) {
     SerializationState["DATE"] = "DATE";
     SerializationState["STUB"] = "STUB";
 })(SerializationState || (SerializationState = {}));
-let SerializationStateManager = SerializationStateManager_1 = class SerializationStateManager {
+class SerializationStateManager {
     getSerializationUniqueId(entity, throwIfNotFound = true) {
-        const serializationUniqueId = entity[SerializationStateManager_1.SERIALIZATION_UNIQUE_ID_FIELD];
+        const serializationUniqueId = entity[SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD];
         if (!serializationUniqueId || typeof serializationUniqueId !== 'number' || serializationUniqueId < 1) {
             if (throwIfNotFound) {
-                throw new Error(`Could not find "${SerializationStateManager_1.SERIALIZATION_UNIQUE_ID_FIELD}" property on DTO:
+                throw new Error(`Could not find "${SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD}" property on DTO:
         
         ${JSON.stringify(entity)}`);
             }
@@ -44182,7 +40488,7 @@ let SerializationStateManager = SerializationStateManager_1 = class Serializatio
         return serializationUniqueId;
     }
     getEntityState(entity) {
-        return entity[SerializationStateManager_1.SERIALIZATION_STATE_FIELD];
+        return entity[SerializationStateManager.SERIALIZATION_STATE_FIELD];
     }
     markAsStub(entity) {
         this.markAs(entity, SerializationState.STUB);
@@ -44200,24 +40506,21 @@ let SerializationStateManager = SerializationStateManager_1 = class Serializatio
         return this.is(entity, SerializationState.DATE);
     }
     getUniqueIdFieldName() {
-        return SerializationStateManager_1.SERIALIZATION_UNIQUE_ID_FIELD;
+        return SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD;
     }
     // getStateFieldName(): string {
     //     return SerializationStateManager.SERIALIZATION_STATE_FIELD
     // }
     is(entity, serializationState) {
-        return entity[SerializationStateManager_1.SERIALIZATION_STATE_FIELD] == serializationState;
+        return entity[SerializationStateManager.SERIALIZATION_STATE_FIELD] == serializationState;
     }
     markAs(entity, serializationState) {
-        entity[SerializationStateManager_1.SERIALIZATION_STATE_FIELD] = serializationState;
+        entity[SerializationStateManager.SERIALIZATION_STATE_FIELD] = serializationState;
     }
-};
+}
 SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD = '__SUID__';
 SerializationStateManager.SERIALIZATION_STATE_FIELD = '__serializationState__';
 SerializationStateManager.ORIGINAL_VALUES_PROPERTY = '__originalValues__';
-SerializationStateManager = SerializationStateManager_1 = __decorate$3([
-    Injected()
-], SerializationStateManager);
 
 /*
 interface ArrayMemberEntityRecord<T> {
@@ -44252,7 +40555,7 @@ interface ArrayEntityInfo {
     entityArray: ArrayMemberRecord<any>[]
 }
  */
-let QueryResultsDeserializer = class QueryResultsDeserializer {
+class QueryResultsDeserializer {
     deserialize(entity, operation = {
         lookupTable: [],
     }) {
@@ -44458,16 +40761,7 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
             });
         }
     }
-};
-__decorate$3([
-    Inject()
-], QueryResultsDeserializer.prototype, "airEntityUtils", void 0);
-__decorate$3([
-    Inject()
-], QueryResultsDeserializer.prototype, "serializationStateManager", void 0);
-QueryResultsDeserializer = __decorate$3([
-    Injected()
-], QueryResultsDeserializer);
+}
 
 // This library is used in UI/Client bundles and does does not include @airport/direction-indicator
 // dependency injection library
@@ -44484,31 +40778,7 @@ if (globalThis.IOC) {
     });
 }
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$2(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let AutopilotApiLoader = class AutopilotApiLoader {
+class AutopilotApiLoader {
     constructor() {
         this.lastCallMillisMap = new Map();
     }
@@ -44544,13 +40814,7 @@ let AutopilotApiLoader = class AutopilotApiLoader {
             }
         });
     }
-};
-__decorate$2([
-    Inject()
-], AutopilotApiLoader.prototype, "apiClient", void 0);
-AutopilotApiLoader = __decorate$2([
-    Injected()
-], AutopilotApiLoader);
+}
 
 class SubscriptionCountSubject extends Subject {
     constructor(subscriptionId, requestFields, onFirstSubscriptionCallback, onNoSubscriptionCallback) {
@@ -44717,314 +40981,6 @@ class ClientSubjectCache {
     }
 }
 
-// let _webServer = 'https://turbase.app'
-let _webServer = 'https://localhost:5173';
-let LocalAPIClient = class LocalAPIClient {
-    constructor() {
-        this.webListenerStarted = false;
-        this.lastConnectionReadyCheckMap = new Map();
-        this.clientSubjectCache = new ClientSubjectCache();
-        this.pendingWebMessageMap = new Map();
-    }
-    init() {
-        {
-            this.initializeForWeb();
-        }
-        this.messageBusSubscription = globalThis.MESSAGE_BUS.subscribe((message) => {
-            switch (message.request.origin.type) {
-                case Message_OriginOrDestination_Type.APPLICATION:
-                case Message_OriginOrDestination_Type.USER_INTERFACE:
-                    break;
-                default:
-                    return;
-            }
-            switch (message.request.destination.type) {
-                case Message_OriginOrDestination_Type.APPLICATION:
-                    break;
-                default:
-                    return;
-            }
-            this.waitForConnectionToBeReady(message.fullDIDescriptor, message.request.dropIfConnectionNotReady).then(isConnectionReady => {
-                if (!isConnectionReady && message.request.dropIfConnectionNotReady) {
-                    return;
-                }
-                this.sendMessage(message.request);
-            });
-        });
-    }
-    sendMessage(message) {
-        this.airMessageUtils.prepMessageToSend(message);
-        {
-            window.parent.postMessage(message, _webServer);
-        }
-        return true;
-    }
-    initializeForWeb() {
-        window.addEventListener("message", event => {
-            const message = event.data;
-            if (!message.isAIRportMessage
-                || !this.airMessageUtils.validateUiBoundMessage(message)
-                || !this.airMessageUtils.validateIncomingMessage(message)) {
-                return;
-            }
-            if (!this.isValidMessageDirection(message)) {
-                console.error(`Invalid message direction ${message.direction}`);
-                return;
-            }
-            switch (message.origin.type) {
-                case Message_OriginOrDestination_Type.APPLICATION:
-                case Message_OriginOrDestination_Type.FRAMEWORK:
-                    break;
-                default:
-                    return;
-            }
-            switch (message.destination.type) {
-                case Message_OriginOrDestination_Type.USER_INTERFACE:
-                    break;
-                default:
-                    return;
-            }
-            switch (message.typeGroup) {
-                case Message_Type_Group.INTERNAL: {
-                    switch (message.type) {
-                        case INTERNAL_Message_Type.CONNECTION_IS_READY: {
-                            let checksForDomain = this.lastConnectionReadyCheckMap.get(message.origin.domain);
-                            if (!checksForDomain) {
-                                checksForDomain = new Map();
-                                this.lastConnectionReadyCheckMap.set(message.origin.domain, checksForDomain);
-                            }
-                            checksForDomain.set(message.origin.app, true);
-                            break;
-                        }
-                        case INTERNAL_Message_Type.UI_GO_BACK: {
-                            history.back();
-                            break;
-                        }
-                        default: {
-                            this.resolveRequestMessage(message);
-                            break;
-                        }
-                    }
-                    break;
-                }
-                case Message_Type_Group.SUBSCRIPTION: {
-                    switch (message.type) {
-                        case SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA: {
-                            const subscriptionId = message.subscriptionId;
-                            if (!subscriptionId) {
-                                console.error(`Could not find subscriptionId in an API_SUBSCRIPTION_DATA message`);
-                                break;
-                            }
-                            const requestSubject = this.clientSubjectCache.getSubject(subscriptionId);
-                            if (!requestSubject) {
-                                console.error(`Could not find Request Subject for subscriptionId: ${subscriptionId}`);
-                                break;
-                            }
-                            try {
-                                const response = this.processResponse(requestSubject.args, message);
-                                requestSubject.next(response);
-                            }
-                            catch (e) {
-                                console.error(e);
-                                requestSubject.error(e);
-                            }
-                            break;
-                        }
-                        default: {
-                            this.resolveRequestMessage(message);
-                            break;
-                        }
-                    }
-                    break;
-                }
-                default: {
-                    this.resolveRequestMessage(message);
-                    break;
-                }
-            }
-        }, false);
-    }
-    isValidMessageDirection(message) {
-        switch (message.direction) {
-            case Message_Direction.REQUEST: {
-                switch (message.typeGroup) {
-                    case Message_Type_Group.INTERNAL: {
-                        switch (message.type) {
-                            case INTERNAL_Message_Type.UI_GO_BACK: {
-                                return true;
-                            }
-                        }
-                    }
-                }
-                return false;
-            }
-            case Message_Direction.RESPONSE: {
-                return true;
-            }
-        }
-    }
-    resolveRequestMessage(message) {
-        const requestWebMessage = this.pendingWebMessageMap.get(message.id);
-        if (!requestWebMessage) {
-            console.log(`Did not find pending request Promise for Message Id: ${message.id}`);
-            return;
-        }
-        this.pendingWebMessageMap.delete(message.id);
-        if (message.errorMessage) {
-            requestWebMessage.reject(message.errorMessage);
-        }
-        else {
-            requestWebMessage.resolve(message);
-        }
-    }
-    invokeApiMethod(fullDiDescriptor, methodName, args, isObservable) {
-        let serializedParams;
-        {
-            serializedParams = args;
-        }
-        const request = {
-            actor: null,
-            args: serializedParams,
-            destination: {
-                app: fullDiDescriptor.application.name,
-                domain: fullDiDescriptor.application.domain.name,
-                protocol: 'https:',
-                type: Message_OriginOrDestination_Type.APPLICATION,
-            },
-            direction: Message_Direction.REQUEST,
-            id: v4(),
-            isAIRportMessage: true,
-            messageLeg: Message_Leg.TO_HUB,
-            methodName,
-            objectName: fullDiDescriptor.descriptor.interface,
-            origin: {
-                app: 'UserInterface',
-                domain: location.host,
-                protocol: location.protocol,
-                type: Message_OriginOrDestination_Type.USER_INTERFACE,
-            },
-            subscriptionId: undefined,
-            transactionId: undefined,
-            typeGroup: undefined
-        };
-        if (isObservable) {
-            request.typeGroup = Message_Type_Group.SUBSCRIPTION;
-            request.type = SUBSCRIPTION_Message_Type.API_SUBSCRIBE;
-            const subject = new ApiClientSubject(args, request, fullDiDescriptor, this.clientSubjectCache);
-            return subject;
-        }
-        else {
-            return this.doInvokeApiMethod(fullDiDescriptor, request, args);
-        }
-    }
-    async doInvokeApiMethod(fullDIDescriptor, request, args) {
-        await this.waitForConnectionToBeReady(fullDIDescriptor, request.dropIfConnectionNotReady);
-        let response;
-        {
-            response = await this.sendWebRequest(request);
-        }
-        return this.processResponse(args, response);
-    }
-    async waitForConnectionToBeReady(fullDIDescriptor, dropIfConnectionNotReady) {
-        if (dropIfConnectionNotReady && !await this.isConnectionReady(fullDIDescriptor, false)) {
-            return false;
-        }
-        while (!await this.isConnectionReady(fullDIDescriptor)) {
-            await this.wait(301);
-        }
-        return true;
-    }
-    processResponse(args, response) {
-        if (response.errorMessage) {
-            throw new Error(response.errorMessage);
-        }
-        let payload;
-        {
-            payload = response.returnedValue;
-        }
-        if (payload) {
-            this.queryResultsDeserializer.setPropertyDescriptors(payload);
-        }
-        for (let i = 0; i < args.length; i++) {
-            this.queryResultsDeserializer
-                .deepCopyProperties(response.args[i], args[i], new Map());
-        }
-        return payload;
-    }
-    wait(milliseconds) {
-        return new Promise((resolve, _reject) => {
-            setTimeout(() => {
-                resolve();
-            }, milliseconds);
-        });
-    }
-    async isConnectionReady(fullDiDescriptor, sendConnectionRequest = true) {
-        const serverDomain = fullDiDescriptor.application.domain.name;
-        const serverApplication = fullDiDescriptor.application.name;
-        if (this.lastConnectionReadyCheckMap.get(serverDomain)
-            && this.lastConnectionReadyCheckMap.get(serverDomain).get(serverApplication)) {
-            // FIXME: checking every time breaks in inconsistent ways,
-            // The whole 'IsConnectionReady' check needs to be done internally
-            // in the framework, without sending messages around (that is
-            // done on every request). 
-            // this.lastConnectionReadyCheckMap.get(domain).delete(application)
-            return true;
-        }
-        if (!sendConnectionRequest) {
-            return false;
-        }
-        let request = this.airMessageUtils.getInternalMessage(INTERNAL_Message_Type.IS_CONNECTION_READY);
-        request.destination = {
-            app: serverApplication,
-            domain: serverDomain,
-            protocol: 'https:',
-            type: Message_OriginOrDestination_Type.APPLICATION,
-        };
-        this.sendMessage(request);
-        return false;
-    }
-    async sendLocalRequest(request) {
-        const httpResponse = await fetch('http://localhost:31817', {
-            method: 'PUT',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'omit',
-            headers: {
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            // redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'origin',
-            body: JSON.stringify(request) // body data type must match "Content-Type" header
-        });
-        return await httpResponse.json();
-    }
-    async sendWebRequest(request) {
-        const returnValue = new Promise((resolve, reject) => {
-            this.pendingWebMessageMap.set(request.id, {
-                request,
-                resolve,
-                reject
-            });
-        });
-        this.sendMessage(request);
-        return returnValue;
-    }
-};
-__decorate$2([
-    Inject()
-], LocalAPIClient.prototype, "airMessageUtils", void 0);
-__decorate$2([
-    Inject()
-], LocalAPIClient.prototype, "operationSerializer", void 0);
-__decorate$2([
-    Inject()
-], LocalAPIClient.prototype, "queryResultsDeserializer", void 0);
-LocalAPIClient = __decorate$2([
-    Injected()
-], LocalAPIClient);
-
-var UiStateManager_1;
 var EntityState;
 (function (EntityState) {
     EntityState["CREATE"] = "CREATE";
@@ -45034,39 +40990,6 @@ var EntityState;
     EntityState["STUB"] = "STUB";
     EntityState["UPDATE"] = "UPDATE";
 })(EntityState || (EntityState = {}));
-let UiStateManager = UiStateManager_1 = class UiStateManager {
-    isStub(entity) {
-        return this.getEntityState(entity) === EntityState.STUB;
-    }
-    isParentSchemaId(entity) {
-        return this.getEntityState(entity) === EntityState.PARENT_SCHEMA_ID;
-    }
-    markForDeletion(entity, arrayToRemoveFrom) {
-        entity[UiStateManager_1.STATE_FIELD] = EntityState.DELETE;
-        if (!arrayToRemoveFrom) {
-            return;
-        }
-        for (let i = arrayToRemoveFrom.length - 1; i >= 0; i--) {
-            if (arrayToRemoveFrom[i] === entity) {
-                arrayToRemoveFrom.splice(i, 1);
-                break;
-            }
-        }
-    }
-    isDeleted(entity) {
-        return entity[UiStateManager_1.STATE_FIELD] === EntityState.DELETE;
-    }
-    markAsStub(entity) {
-        entity[UiStateManager_1.STATE_FIELD] = EntityState.STUB;
-    }
-    getEntityState(entity) {
-        return entity[UiStateManager_1.STATE_FIELD];
-    }
-};
-UiStateManager.STATE_FIELD = '__state__';
-UiStateManager = UiStateManager_1 = __decorate$2([
-    Injected()
-], UiStateManager);
 
 // This library is used in UI/Client bundles and does does not include @airport/direction-indicator
 // dependency injection library
@@ -45080,33 +41003,8 @@ if (globalThis.IOC) {
         queryResultsDeserializer: globalThis.QUERY_RESULTS_DESERIALIZER
     });
 }
-new UiStateManager();
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$1(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let ApiRegistry = class ApiRegistry {
+class ApiRegistry {
     initialize(applicationApi) {
         this.applicationStore.state.api = applicationApi;
     }
@@ -45151,27 +41049,15 @@ let ApiRegistry = class ApiRegistry {
             apiOperation
         };
     }
-};
-__decorate$1([
-    Inject()
-], ApiRegistry.prototype, "applicationStore", void 0);
-__decorate$1([
-    Inject()
-], ApiRegistry.prototype, "containerAccessor", void 0);
-ApiRegistry = __decorate$1([
-    Injected()
-], ApiRegistry);
+}
 
-let ApiValidator = class ApiValidator {
+class ApiValidator {
     validate(operation, parameters) {
         // FIXME: implement (eventually)
     }
-};
-ApiValidator = __decorate$1([
-    Injected()
-], ApiValidator);
+}
 
-let LocalAPIServer = class LocalAPIServer {
+class LocalAPIServer {
     async handleRequest(request) {
         let internalResponse;
         let errorMessage;
@@ -45229,29 +41115,14 @@ ${request.objectName}.${request.methodName}
             result
         };
     }
-};
-__decorate$1([
-    Inject()
-], LocalAPIServer.prototype, "apiRegistry", void 0);
-__decorate$1([
-    Inject()
-], LocalAPIServer.prototype, "applicationStore", void 0);
-__decorate$1([
-    Inject()
-], LocalAPIServer.prototype, "requestManager", void 0);
-__decorate$1([
-    Inject()
-], LocalAPIServer.prototype, "queryResultsDeserializer", void 0);
-LocalAPIServer = __decorate$1([
-    Injected()
-], LocalAPIServer);
+}
 
 // TODO: figure out if this is needed - originally written for deserializing
 // Client-side operation entities.  Since then moved to Isolates and generic
 // API calls.  Probably should be used in go-tower to deserialize all of the
 // method argiments passed it (and won't be tied to a query of any kind, API
 // interface is generic, unless already known to contain entity objects.)
-let OperationDeserializer = class OperationDeserializer {
+class OperationDeserializer {
     deserialize(entity, dbEntity, entityStateManager, applicationUtils) {
         const operation = {
             lookupTable: [],
@@ -45375,18 +41246,12 @@ let OperationDeserializer = class OperationDeserializer {
         }
         return valueCopy;
     }
-};
-OperationDeserializer = __decorate$1([
-    Injected()
-], OperationDeserializer);
+}
 
-let RequestManager = class RequestManager {
-};
-RequestManager = __decorate$1([
-    Injected()
-], RequestManager);
+class RequestManager {
+}
 
-let EntityCopier = class EntityCopier {
+class EntityCopier {
     copyEntityForProcessing(entity, dbEntity, entityStateManager, context) {
         const operation = {
             processedEntityMap: new Map(),
@@ -45426,12 +41291,9 @@ let EntityCopier = class EntityCopier {
             return entityCopy;
         }
     }
-};
-EntityCopier = __decorate$1([
-    Injected()
-], EntityCopier);
+}
 
-let UpdateCacheManager = class UpdateCacheManager {
+class UpdateCacheManager {
     saveOriginalValues(entity, dbEntity) {
         this.doSaveOriginalValues(entity, dbEntity, new Set());
     }
@@ -45790,19 +41652,9 @@ let UpdateCacheManager = class UpdateCacheManager {
             return this.entityStateManager.isDeleted(entity);
         }
     }
-};
-__decorate$1([
-    Inject()
-], UpdateCacheManager.prototype, "entityStateManager", void 0);
-__decorate$1([
-    Inject()
-], UpdateCacheManager.prototype, "applicationUtils", void 0);
-UpdateCacheManager = __decorate$1([
-    Injected()
-], UpdateCacheManager);
+}
 
-var EntityStateManager_1;
-let EntityStateManager = EntityStateManager_1 = class EntityStateManager {
+class EntityStateManager {
     isStub(entity) {
         return this.getEntityState(entity) === EntityState$1.STUB;
     }
@@ -45814,35 +41666,35 @@ let EntityStateManager = EntityStateManager_1 = class EntityStateManager {
         return this.getEntityState(entity) === EntityState$1.PASS_THROUGH;
     }
     markAsOfParentSchema(entity) {
-        entity[EntityStateManager_1.STATE_FIELD] =
+        entity[EntityStateManager.STATE_FIELD] =
             EntityState$1.PARENT_SCHEMA_ID;
     }
     markForDeletion(entity) {
-        entity[EntityStateManager_1.STATE_FIELD] = EntityState$1.DELETE;
+        entity[EntityStateManager.STATE_FIELD] = EntityState$1.DELETE;
     }
     markToCreate(entity) {
-        entity[EntityStateManager_1.STATE_FIELD] = EntityState$1.CREATE;
+        entity[EntityStateManager.STATE_FIELD] = EntityState$1.CREATE;
     }
     markToUpdate(entity) {
-        entity[EntityStateManager_1.STATE_FIELD] = EntityState$1.UPDATE;
+        entity[EntityStateManager.STATE_FIELD] = EntityState$1.UPDATE;
     }
     getEntityState(entity) {
-        return entity[EntityStateManager_1.STATE_FIELD];
+        return entity[EntityStateManager.STATE_FIELD];
     }
     getOriginalValues(entity) {
-        return entity[EntityStateManager_1.ORIGINAL_VALUES_PROPERTY];
+        return entity[EntityStateManager.ORIGINAL_VALUES_PROPERTY];
     }
     setOriginalValues(originalValues, entity) {
-        entity[EntityStateManager_1.ORIGINAL_VALUES_PROPERTY] = originalValues;
+        entity[EntityStateManager.ORIGINAL_VALUES_PROPERTY] = originalValues;
     }
     copyEntityState(fromEntity, toEntity) {
-        toEntity[EntityStateManager_1.STATE_FIELD]
-            = fromEntity[EntityStateManager_1.STATE_FIELD];
-        toEntity[EntityStateManager_1.ORIGINAL_VALUES_PROPERTY]
-            = fromEntity[EntityStateManager_1.ORIGINAL_VALUES_PROPERTY];
+        toEntity[EntityStateManager.STATE_FIELD]
+            = fromEntity[EntityStateManager.STATE_FIELD];
+        toEntity[EntityStateManager.ORIGINAL_VALUES_PROPERTY]
+            = fromEntity[EntityStateManager.ORIGINAL_VALUES_PROPERTY];
     }
     getStateFieldName() {
-        return EntityStateManager_1.STATE_FIELD;
+        return EntityStateManager.STATE_FIELD;
     }
     getEntityStateTypeAsFlags(entity, dbEntity) {
         let isCreate, isDelete, isParentSchemaId, isPassThrough, isResultDate, isStub, isUpdate;
@@ -45891,13 +41743,13 @@ let EntityStateManager = EntityStateManager_1 = class EntityStateManager {
         };
     }
     setIsDeleted(isDeleted, entity) {
-        entity[EntityStateManager_1.STATE_FIELD] = EntityState$1.DELETE;
+        entity[EntityStateManager.STATE_FIELD] = EntityState$1.DELETE;
     }
     isDeleted(entity) {
-        return entity[EntityStateManager_1.STATE_FIELD] === EntityState$1.DELETE;
+        return entity[EntityStateManager.STATE_FIELD] === EntityState$1.DELETE;
     }
     getOperationUniqueId(entity, throwIfNotFound = true, dbEntity = null) {
-        const operationUniqueId = entity[EntityStateManager_1.OPERATION_UNIQUE_ID_FIELD];
+        const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD];
         if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
             if (throwIfNotFound) {
                 let entityDescription;
@@ -45907,7 +41759,7 @@ let EntityStateManager = EntityStateManager_1 = class EntityStateManager {
                 else {
                     entityDescription = JSON.stringify(entity);
                 }
-                throw new Error(`Could not find "${EntityStateManager_1.OPERATION_UNIQUE_ID_FIELD}" property on DTO:
+                throw new Error(`Could not find "${EntityStateManager.OPERATION_UNIQUE_ID_FIELD}" property on DTO:
         
         ${entityDescription}`);
             }
@@ -45915,28 +41767,25 @@ let EntityStateManager = EntityStateManager_1 = class EntityStateManager {
         return operationUniqueId;
     }
     copyOperationUniqueId(entity, entityCopy) {
-        const operationUniqueId = entity[EntityStateManager_1.OPERATION_UNIQUE_ID_FIELD];
-        entityCopy[EntityStateManager_1.OPERATION_UNIQUE_ID_FIELD] = operationUniqueId;
+        const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD];
+        entityCopy[EntityStateManager.OPERATION_UNIQUE_ID_FIELD] = operationUniqueId;
     }
     markAsStub(entity) {
-        entity[EntityStateManager_1.STATE_FIELD] = EntityState$1.STUB;
+        entity[EntityStateManager.STATE_FIELD] = EntityState$1.STUB;
     }
     getUniqueIdFieldName() {
-        return EntityStateManager_1.OPERATION_UNIQUE_ID_FIELD;
+        return EntityStateManager.OPERATION_UNIQUE_ID_FIELD;
     }
-};
+}
 EntityStateManager.DELETED_PROPERTY = '__deleted__';
 EntityStateManager.ORIGINAL_VALUES_PROPERTY = SerializationStateManager.ORIGINAL_VALUES_PROPERTY;
 EntityStateManager.STATE_FIELD = '__state__';
 EntityStateManager.OPERATION_UNIQUE_ID_FIELD = '__OUID__';
-EntityStateManager = EntityStateManager_1 = __decorate$1([
-    Injected()
-], EntityStateManager);
 
 /**
  * Created by Papa on 5/23/2016.
  */
-let DatabaseFacade = class DatabaseFacade {
+class DatabaseFacade {
     async insertColumnValues(rawInsertColumnValues, context) {
         if (!rawInsertColumnValues) {
             return 0;
@@ -46053,25 +41902,7 @@ let DatabaseFacade = class DatabaseFacade {
         const queryContext = context;
         return queryContext;
     }
-};
-__decorate$1([
-    Inject()
-], DatabaseFacade.prototype, "entityCopier", void 0);
-__decorate$1([
-    Inject()
-], DatabaseFacade.prototype, "entityStateManager", void 0);
-__decorate$1([
-    Inject()
-], DatabaseFacade.prototype, "queryFacade", void 0);
-__decorate$1([
-    Inject()
-], DatabaseFacade.prototype, "transactionalConnector", void 0);
-__decorate$1([
-    Inject()
-], DatabaseFacade.prototype, "updateCacheManager", void 0);
-DatabaseFacade = __decorate$1([
-    Injected()
-], DatabaseFacade);
+}
 class FunctionWrapper {
     constructor(queryFunction) {
         throw new Error('Not Implemented');
@@ -46080,7 +41911,7 @@ class FunctionWrapper {
     }
 }
 
-let QueryFacade = class QueryFacade {
+class QueryFacade {
     async find(query, queryResultType, context) {
         const result = await this.transactionalConnector.find(this.getPortableQuery(query, queryResultType, context), context);
         return result;
@@ -46107,22 +41938,7 @@ let QueryFacade = class QueryFacade {
     searchOne(query, queryResultType, context) {
         return this.transactionalConnector.searchOne(this.getPortableQuery(query, queryResultType, context), context);
     }
-};
-__decorate$1([
-    Inject()
-], QueryFacade.prototype, "fieldUtils", void 0);
-__decorate$1([
-    Inject()
-], QueryFacade.prototype, "queryRelationManager", void 0);
-__decorate$1([
-    Inject()
-], QueryFacade.prototype, "queryUtils", void 0);
-__decorate$1([
-    Inject()
-], QueryFacade.prototype, "transactionalConnector", void 0);
-QueryFacade = __decorate$1([
-    Injected()
-], QueryFacade);
+}
 
 const applicationState = {
     api: null,
@@ -46139,18 +41955,15 @@ const applicationState = {
     pendingMessageMap: new Map(),
 };
 
-let ApplicationStore = class ApplicationStore {
+class ApplicationStore {
     constructor() {
         this.applicationState = applicationState;
     }
     get state() {
         return this.applicationState;
     }
-};
+}
 ApplicationStore.sharedAcrossInjectionScopes = true;
-ApplicationStore = __decorate$1([
-    Injected()
-], ApplicationStore);
 
 class EntityAccumulator {
     constructor(applicationDomain, applicationName, entityMap) {
@@ -46171,7 +41984,7 @@ class EntityAccumulator {
         });
     }
 }
-let AirportDatabase = class AirportDatabase {
+class AirportDatabase {
     get entityMap() {
         return this.databaseStore.entityMap;
     }
@@ -46277,43 +42090,7 @@ let AirportDatabase = class AirportDatabase {
     async updateWhere(rawUpdate, context) {
         return await this.databaseFacade.updateWhere(rawUpdate, context);
     }
-};
-__decorate$1([
-    Inject()
-], AirportDatabase.prototype, "appliationUtils", void 0);
-__decorate$1([
-    Inject()
-], AirportDatabase.prototype, "databaseFacade", void 0);
-__decorate$1([
-    Inject()
-], AirportDatabase.prototype, "databaseStore", void 0);
-__decorate$1([
-    Inject()
-], AirportDatabase.prototype, "dictionary", void 0);
-__decorate$1([
-    Inject()
-], AirportDatabase.prototype, "applicationNameUtils", void 0);
-__decorate$1([
-    Inject()
-], AirportDatabase.prototype, "find", void 0);
-__decorate$1([
-    Inject()
-], AirportDatabase.prototype, "findOne", void 0);
-__decorate$1([
-    Inject()
-], AirportDatabase.prototype, "qApplicationBuilderUtils", void 0);
-__decorate$1([
-    Inject()
-], AirportDatabase.prototype, "queryRelationManager", void 0);
-__decorate$1([
-    Inject()
-], AirportDatabase.prototype, "search", void 0);
-__decorate$1([
-    Inject()
-], AirportDatabase.prototype, "searchOne", void 0);
-AirportDatabase = __decorate$1([
-    Injected()
-], AirportDatabase);
+}
 function injectAirportDatabase() {
     console.log('Injecting AirportDatabase');
 }
@@ -46407,30 +42184,6 @@ class NoOpSchemaBuilder extends SqlSchemaBuilder {
     }
 }
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
 /**
  * Assumptions: 7/4/2019
  *
@@ -46449,7 +42202,7 @@ function __decorate(decorators, target, key, desc) {
  * Sequence-only solution
  *
  */
-let SequenceGenerator = class SequenceGenerator {
+class SequenceGenerator {
     get sequences() {
         return this.terminalStore.getSequenceGenerator().sequences;
     }
@@ -46573,22 +42326,7 @@ let SequenceGenerator = class SequenceGenerator {
             this.datastructureUtils.ensureChildArray(this.datastructureUtils.ensureChildArray(this.sequenceBlocks, sequence.applicationIndex), sequence.entityIndex)[sequence.columnIndex] = sequence.incrementBy;
         }
     }
-};
-__decorate([
-    Inject()
-], SequenceGenerator.prototype, "airportDatabase", void 0);
-__decorate([
-    Inject()
-], SequenceGenerator.prototype, "datastructureUtils", void 0);
-__decorate([
-    Inject()
-], SequenceGenerator.prototype, "sequenceDao", void 0);
-__decorate([
-    Inject()
-], SequenceGenerator.prototype, "terminalStore", void 0);
-SequenceGenerator = __decorate([
-    Injected()
-], SequenceGenerator);
+}
 
 SEQUENCE_GENERATOR.setClass(SequenceGenerator);
 SEQUENCE_GENERATOR.setDependencies({
