@@ -32,6 +32,9 @@ export type UIState_CurrentURL = string
 export interface IUIState {
 	currentUrl: UIState_CurrentURL
 	uiIframe: HTMLIFrameElement
+	zoneJsCallback?: (
+		innerCallback: () => void
+	) => void
 }
 
 export interface InternalConnectorState {

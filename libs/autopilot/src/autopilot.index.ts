@@ -63,7 +63,19 @@ export function loadUiAutopilot() {
 
     trackUrlState(airMessageUtils, apiClient)
 }
-
+/**
+ * 
+ * Objective: When the user presses the back/forward browser buttons
+ * the UI in the iframe navigates back and forth.
+ * 
+ * Considerations - UIs might implement browser history management
+ * differently.  However they all should support the user clicking
+ * back and forward buttons anyway, so directly manipulating browser
+ * history should be good enough.
+ * 
+ * @param airMessageUtils 
+ * @param apiClient 
+ */
 function trackUrlState(
     airMessageUtils: IAirMessageUtils,
     apiClient: LocalAPIClient

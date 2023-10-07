@@ -39,12 +39,14 @@ export class WebApplicationInitializer
         let appIframe: HTMLIFrameElement
 
         if (!appIframes.length) {
-            appIframe = document.createElement('iframe') as HTMLIFrameElement
-            appIframe.src = 'http://' + domain + '/AIRport/apps/'
-                + application + '/index.html'
-            appIframe.name = fullApplication_Name
-            appIframe.style.display = 'none'
-            document.body.appendChild(appIframe)
+            const zoneJsCallback = this.terminalStore.getUI().zoneJsCallback
+            if (zoneJsCallback) {
+                zoneJsCallback(() => {
+                    this.createAppIframe(domain, application, fullApplication_Name)
+                })
+            } else {
+                this.createAppIframe(domain, application, fullApplication_Name)
+            }
         } else {
             appIframe = appIframes[0] as HTMLIFrameElement
         }
@@ -60,11 +62,24 @@ export class WebApplicationInitializer
             .initializingApplicationMap.set(fullApplication_Name, false)
     }
 
-	protected async isAppLoaded(
-		fullApplication_Name: string
-	): Promise<boolean> {
+    createAppIframe(
+        domain: string,
+        application: string,
+        fullApplication_Name: string,
+    ) {
+        let appIframe: HTMLIFrameElement = document.createElement('iframe') as HTMLIFrameElement
+        appIframe.src = 'http://' + domain + '/AIRport/apps/'
+            + application + '/index.html'
+        appIframe.name = fullApplication_Name
+        appIframe.style.display = 'none'
+        document.body.appendChild(appIframe)
+    }
+
+    protected async isAppLoaded(
+        fullApplication_Name: string
+    ): Promise<boolean> {
         return !!this.terminalStore.getApplicationInitializer()
-        .applicationWindowMap.get(fullApplication_Name)
+            .applicationWindowMap.get(fullApplication_Name)
     }
 }
 

@@ -13,7 +13,7 @@ export class AIRportApi {
     getAllApplications(): Observable<IApplication[]> {
         const transactionManager = IOC.getSync(TRANSACTION_MANAGER)
 
-        return transactionManager.transactObservableInternal(async (context) => {
+        return transactionManager.transactObservableInternal(async (_context) => {
             const ddlApplicationDao = IOC.getSync(DdlApplicationDao)
 
             return ddlApplicationDao.searchAll()
@@ -30,7 +30,7 @@ export class AIRportApi {
         }, null, {}, [])
     }
 
-    getCurrentAppUrl(): Observable<UI_URL> {
+    getCurrentUiUrl(): Observable<UI_URL> {
         return IOC.getSync(TerminalStore).getUI.observable.pipe(
             map(uiState => uiState.currentUrl)
         )
@@ -51,7 +51,11 @@ export class AIRportApi {
     }
 
     setUiIframe(
-        uiIframe: HTMLIFrameElement
+        currentUrl: string,
+        uiIframe: HTMLIFrameElement,
+        zoneJsCallback?: (
+            innerCallback: () => void
+        ) => void
     ): void {
         const terminalStore = IOC.getSync(TerminalStore);
         let state
@@ -62,7 +66,9 @@ export class AIRportApi {
             ...state,
             ui: {
                 ...state.ui,
-                uiIframe
+                currentUrl,
+                uiIframe,
+                zoneJsCallback
             }
         })
     }

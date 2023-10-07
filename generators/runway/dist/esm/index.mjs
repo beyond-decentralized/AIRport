@@ -35988,7 +35988,7 @@ let RepositoryMaintenanceManager = class RepositoryMaintenanceManager {
         repositoryMemberInvitation.invitationPublicSigningKey = invitationSigningKey.public;
         repositoryMemberInvitation.invitedRepositoryMember = invitedRepositoryMember;
         await this.addRepositoryMemberInfoToHistory(invitedRepositoryMember, false, repository, null, null, repositoryMemberInvitation, context);
-        const joinUrl = `https://localhost:5173/joinRepository/${repository.GUID}/${base64EncodedKeyInvitationPublicSigningKey}/${base64EncodedKeyInvitationPrivateSigningKey}`;
+        const joinUrl = `https://localhost:4200/joinRepository/${repository.GUID}/${base64EncodedKeyInvitationPublicSigningKey}/${base64EncodedKeyInvitationPrivateSigningKey}`;
         await this.sendEmail(userEmail, `Join '${repository.name}' on Turbase`, joinUrl);
         if (this.canUseWebShareAPI()) {
             await this.share(`Join ${repository.name.substring(0, 20)}${repository.name.length > 20 ? '...' : ''}`, `You are invited to join '${repository.name}' on Turbase`, joinUrl);
@@ -41947,8 +41947,8 @@ const applicationState = {
     clientSubscriptionMap: new Map(),
     domain: null,
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
-    // and debugging (https://localhost:5173)
-    hostServer: 'https://localhost:5173',
+    // and debugging (https://localhost:4200)
+    hostServer: 'https://localhost:4200',
     // FIXME: tie this in to the hostServer variable
     mainDomain: null,
     clientSubjectCache: new ClientSubjectCache(),
