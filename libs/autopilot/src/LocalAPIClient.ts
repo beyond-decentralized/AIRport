@@ -11,7 +11,7 @@ import { ClientSubjectCache } from "./ClientSubjectCache";
 
 let _inWebMode = true
 // let _webServer = 'https://turbase.app'
-let _webServer = 'https://localhost:5173'
+let _webServer = 'https://localhost:4200'
 
 export interface IRequestRecord {
     request: IApiCallRequestMessage
