@@ -1,4 +1,4 @@
-import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IClientSubjectCache, Message_OriginOrDestination_Type, Message_Type_Group, IInternalMessage, INTERNAL_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IObservableApiCallRequestMessage, Message_Direction } from "@airport/aviation-communication";
+import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IClientSubjectCache, Message_OriginOrDestination_Type, Message_Type_Group, IInternalMessage, INTERNAL_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IObservableApiCallRequestMessage, Message_Direction, IConnectionReadyMessage } from "@airport/aviation-communication";
 import { IApiClient, IFullDITokenDescriptor, Inject, Injected } from "@airport/direction-indicator";
 import {
     IOperationSerializer,
@@ -122,14 +122,18 @@ export class LocalAPIClient
 
             switch (message.typeGroup) {
                 case Message_Type_Group.INTERNAL: {
-                    switch ((message as IInternalMessage).type) {
+                    switch ((message as IConnectionReadyMessage).type) {
                         case INTERNAL_Message_Type.CONNECTION_IS_READY: {
-                            let checksForDomain = this.lastConnectionReadyCheckMap.get(message.origin.domain)
+                            const returnedValue = (message as IConnectionReadyMessage).returnedValue
+                            let checksForDomain = this.lastConnectionReadyCheckMap
+                                .get(returnedValue.domain)
                             if (!checksForDomain) {
                                 checksForDomain = new Map()
-                                this.lastConnectionReadyCheckMap.set(message.origin.domain, checksForDomain)
+                                this.lastConnectionReadyCheckMap.set(
+                                    returnedValue.domain,
+                                    checksForDomain)
                             }
-                            checksForDomain.set(message.origin.app, true)
+                            checksForDomain.set(returnedValue.app, true)
                             break
                         }
                         case INTERNAL_Message_Type.UI_GO_BACK: {
@@ -259,7 +263,7 @@ export class LocalAPIClient
             },
             subscriptionId: undefined,
             transactionId: undefined,
-            typeGroup: undefined
+            typeGroup: Message_Type_Group.API
         }
 
         if (isObservable) {

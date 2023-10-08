@@ -29020,7 +29020,7 @@ layover.setDependencies(RecordUpdateStageDao, {
 class Client {
     constructor() {
         // encryptionKey = process.env.ENCRYPTION_KEY
-        this.serverLocationProtocol = 'http://';
+        this.serverLocationProtocol = 'https://';
     }
     async getRepositoryTransactions(location, repositoryGUID, sinceSyncTimestamp = null) {
         try {

@@ -1,5 +1,5 @@
 import { JsonApplicationVersionWithApi } from '@airport/air-traffic-control'
-import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IInternalMessage, INTERNAL_Message_Type, Message_Direction, Message_Type_Group, ISubscriptionMessage, IObservableApiCallResponseMessage, SUBSCRIPTION_Message_Type, Message_OriginOrDestination_Type, IObservableApiCallRequestMessage } from '@airport/aviation-communication'
+import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IInternalMessage, INTERNAL_Message_Type, Message_Direction, Message_Type_Group, ISubscriptionMessage, IObservableApiCallResponseMessage, SUBSCRIPTION_Message_Type, Message_OriginOrDestination_Type, IObservableApiCallRequestMessage, IConnectionReadyMessage } from '@airport/aviation-communication'
 import {
 	IContext,
 	Inject,
@@ -444,7 +444,7 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		const connectionIsReadyMessage: IInternalMessage = {
+		const connectionIsReadyMessage: IConnectionReadyMessage = {
 			...message,
 			destination: message.origin,
 			origin: {
@@ -454,6 +454,10 @@ export class WebTransactionalReceiver
 			},
 			direction: Message_Direction.RESPONSE,
 			messageLeg: Message_Leg.FROM_HUB,
+			returnedValue: {
+				app: message.destination.app,
+				domain: message.destination.domain
+			},
 			type: INTERNAL_Message_Type.CONNECTION_IS_READY,
 			typeGroup: Message_Type_Group.INTERNAL
 		};

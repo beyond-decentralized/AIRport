@@ -1,5 +1,5 @@
 import { ILastIds, JsonApplicationWithLastIds } from "@airport/air-traffic-control";
-import { ICrudMessage, IInternalMessage, IResponseMessage, ISubscriptionMessage, Message_Domain } from "@airport/aviation-communication";
+import { ICrudMessage, IInternalMessage, IResponseMessage, ISubscriptionMessage, Message_Application, Message_Domain, Message_OriginOrDestination_Type } from "@airport/aviation-communication";
 import {
     IApplicationVersion,
     Application_FullName,

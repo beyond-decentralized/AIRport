@@ -111,3 +111,10 @@ export interface ISubscriptionMessage extends IMessage {
     subscriptionIds?: SubscriptionId[]
     type: SUBSCRIPTION_Message_Type
 }
+
+export interface IConnectionReadyMessage
+    extends IInternalMessage, IResponseMessage<{
+        app: Message_Application
+        domain: Message_Domain
+    }> {
+}
