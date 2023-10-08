@@ -68,7 +68,7 @@ export class WebApplicationInitializer
         fullApplication_Name: string,
     ): HTMLIFrameElement {
         let appIframe: HTMLIFrameElement = document.createElement('iframe') as HTMLIFrameElement
-        appIframe.src = 'http://' + domain + '/AIRport/apps/'
+        appIframe.src = 'https://' + domain + '/AIRport/apps/'
             + application + '/index.html'
         appIframe.name = fullApplication_Name
         appIframe.style.display = 'none'
