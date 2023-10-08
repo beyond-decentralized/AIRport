@@ -42,10 +42,10 @@ export class WebApplicationInitializer
             const zoneJsCallback = this.terminalStore.getUI().zoneJsCallback
             if (zoneJsCallback) {
                 zoneJsCallback(() => {
-                    this.createAppIframe(domain, application, fullApplication_Name)
+                    appIframe = this.createAppIframe(domain, application, fullApplication_Name)
                 })
             } else {
-                this.createAppIframe(domain, application, fullApplication_Name)
+                appIframe = this.createAppIframe(domain, application, fullApplication_Name)
             }
         } else {
             appIframe = appIframes[0] as HTMLIFrameElement
@@ -66,13 +66,15 @@ export class WebApplicationInitializer
         domain: string,
         application: string,
         fullApplication_Name: string,
-    ) {
+    ): HTMLIFrameElement {
         let appIframe: HTMLIFrameElement = document.createElement('iframe') as HTMLIFrameElement
         appIframe.src = 'http://' + domain + '/AIRport/apps/'
             + application + '/index.html'
         appIframe.name = fullApplication_Name
         appIframe.style.display = 'none'
         document.body.appendChild(appIframe)
+
+        return appIframe
     }
 
     protected async isAppLoaded(

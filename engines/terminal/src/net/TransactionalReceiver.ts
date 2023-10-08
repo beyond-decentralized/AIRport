@@ -191,7 +191,7 @@ export abstract class TransactionalReceiver {
             }
             case INTERNAL_Message_Type.RETRIEVE_DOMAIN: {
                 theResult = this.terminalStore.getDomainMapByName()
-                    .get(message.origin.app)
+                    .get(message.origin.domain)
                 break
             }
             case INTERNAL_Message_Type.UI_URL_CHANGED: {
