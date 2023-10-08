@@ -8358,6 +8358,7 @@ var INTERNAL_Message_Type;
     INTERNAL_Message_Type["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
     INTERNAL_Message_Type["UI_URL_CHANGED"] = "UI_URL_CHANGED";
     INTERNAL_Message_Type["UI_GO_BACK"] = "UI_GO_BACK";
+    INTERNAL_Message_Type["UI_GO_FORWARD"] = "UI_GO_FORWARD";
 })(INTERNAL_Message_Type || (INTERNAL_Message_Type = {}));
 var SUBSCRIPTION_Message_Type;
 (function (SUBSCRIPTION_Message_Type) {
@@ -8677,6 +8678,7 @@ ${JSON.stringify(message, null, 2)}
                     case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
                     case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
                     case INTERNAL_Message_Type.UI_GO_BACK:
+                    case INTERNAL_Message_Type.UI_GO_FORWARD:
                     case INTERNAL_Message_Type.UI_URL_CHANGED: {
                         break;
                     }
@@ -8716,8 +8718,9 @@ ${JSON.stringify(message, null, 2)}
             case Message_Type_Group.INTERNAL: {
                 switch (message.type) {
                     case INTERNAL_Message_Type.IS_CONNECTION_READY:
-                    case INTERNAL_Message_Type.UI_URL_CHANGED:
-                    case INTERNAL_Message_Type.UI_GO_BACK: {
+                    case INTERNAL_Message_Type.UI_GO_BACK:
+                    case INTERNAL_Message_Type.UI_GO_FORWARD:
+                    case INTERNAL_Message_Type.UI_URL_CHANGED: {
                         break;
                     }
                     default: {

@@ -136,6 +136,10 @@ export class LocalAPIClient
                             history.back()
                             break
                         }
+                        case INTERNAL_Message_Type.UI_GO_FORWARD: {
+                            history.forward()
+                            break
+                        }
                         default: {
                             this.resolveRequestMessage(message)
                             break
@@ -188,7 +192,8 @@ export class LocalAPIClient
                 switch (message.typeGroup) {
                     case Message_Type_Group.INTERNAL: {
                         switch ((message as IInternalMessage).type) {
-                            case INTERNAL_Message_Type.UI_GO_BACK: {
+                            case INTERNAL_Message_Type.UI_GO_BACK:
+                            case INTERNAL_Message_Type.UI_GO_FORWARD: {
                                 return true
                             }
                         }

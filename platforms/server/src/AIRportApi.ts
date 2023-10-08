@@ -37,10 +37,22 @@ export class AIRportApi {
     }
 
     uiGoBack(): void {
+        this.uiGoBackOrForward(true)
+    }
+
+    uiGoForward(): void {
+        this.uiGoBackOrForward(false)
+    }
+
+    private uiGoBackOrForward(
+        back: boolean
+    ): void {
         const protocolAndRest = IOC.getSync(TerminalStore).getUI().currentUrl.split('//')
         let domain = protocolAndRest[1].split('/')[0]
+        let internalMessageType = back ? INTERNAL_Message_Type.UI_GO_BACK
+            : INTERNAL_Message_Type.UI_GO_FORWARD
         const goBackMessage: IInternalMessage = (IOC.getSync(AIR_MESSAGE_UTILS) as any as IAirMessageUtils)
-            .getInternalMessage(INTERNAL_Message_Type.UI_GO_BACK,
+            .getInternalMessage(internalMessageType,
                 Message_OriginOrDestination_Type.FRAMEWORK)
         goBackMessage.destination = {
             domain,
