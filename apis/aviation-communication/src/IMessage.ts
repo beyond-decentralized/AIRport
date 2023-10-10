@@ -102,6 +102,10 @@ export interface ICrudMessage extends IMessage {
     type: CRUD_Message_Type
 }
 
+export interface ICrudResponseMessage<A = any>
+    extends ICrudMessage, IResponseMessage<A> {
+}
+
 export interface IInternalMessage extends IMessage {
     type: INTERNAL_Message_Type
 }

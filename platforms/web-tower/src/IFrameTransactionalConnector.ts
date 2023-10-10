@@ -15,7 +15,8 @@ import {
 	Message_OriginOrDestination_Type,
 	CRUD_Message_Type,
 	IApiMessage,
-	Message_Direction
+	Message_Direction,
+	ICrudResponseMessage
 } from '@airport/aviation-communication';
 import {
 	IContext,
@@ -68,6 +69,7 @@ export interface IIframeTransactionalConnector
 		message: IApiCallRequestMessage
 			| IObservableApiCallRequestMessage
 			| IApiCallResponseMessage
+			| ICrudResponseMessage
 			| IInitializeConnectionMessage
 			| IGetLatestApplicationVersionByApplication_NameMessage
 			| IRetrieveDomainMessage,
@@ -134,6 +136,7 @@ export class IframeTransactionalConnector
 		message: IApiCallRequestMessage
 			| IObservableApiCallRequestMessage
 			| IApiCallResponseMessage
+			| ICrudResponseMessage
 			| IInitializeConnectionMessage
 			| IGetLatestApplicationVersionByApplication_NameMessage
 			| IRetrieveDomainMessage,
@@ -146,7 +149,19 @@ export class IframeTransactionalConnector
 
 		switch (message.typeGroup) {
 			case Message_Type_Group.API: {
-				await this.handleApiRequest(message as IApiCallRequestMessage, origin)
+				switch (message.direction) {
+					case Message_Direction.REQUEST: {
+						await this.handleApiRequest(message as IApiCallRequestMessage, origin)
+						break
+					}
+					case Message_Direction.RESPONSE: {
+						await this.completeAsyncMessage(message as IApiCallResponseMessage)
+						break
+					}
+					default: {
+						throw new Error(`Unexpected message direction: ${message.direction}`)
+					}
+				}
 				break
 			}
 			case Message_Type_Group.INTERNAL: {
@@ -159,6 +174,21 @@ export class IframeTransactionalConnector
 			case Message_Type_Group.SUBSCRIPTION: {
 				await this.handleSubscriptionRequest(message as ISubscriptionMessage, origin)
 				break
+			}
+			case Message_Type_Group.CRUD: {
+				switch (message.direction) {
+					case Message_Direction.REQUEST: {
+						throw new Error(`Unexpected CRUD request message to an application`)
+					}
+					case Message_Direction.RESPONSE: {
+						await this.completeAsyncMessage(message as ICrudResponseMessage)
+						break
+					}
+					default: {
+						throw new Error(`Unexpected message direction: ${message.direction}`)
+					}
+				}
+				break;
 			}
 			default: {
 				throw new Error(`Unexpected message.typeGroup : ${message.typeGroup}`)
@@ -459,6 +489,7 @@ expecting only API message types`)
 
 	private completeAsyncMessage(
 		message: IApiCallResponseMessage
+			| ICrudResponseMessage
 			| IGetLatestApplicationVersionByApplication_NameMessage
 			| IRetrieveDomainMessage
 	): void {
@@ -466,6 +497,7 @@ expecting only API message types`)
 		if (!messageRecord) {
 			return
 		}
+		this.applicationStore.state.pendingMessageMap.delete(message.id)
 
 		if (message.errorMessage) {
 			messageRecord.reject(message.errorMessage)
@@ -474,7 +506,6 @@ expecting only API message types`)
 		} else {
 			messageRecord.resolve(message.returnedValue)
 		}
-		this.applicationStore.state.pendingMessageMap.delete(message.id)
 	}
 
 	private getCoreFields(
