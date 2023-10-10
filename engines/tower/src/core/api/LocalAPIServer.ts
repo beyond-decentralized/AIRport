@@ -8,7 +8,7 @@ import { IActor } from '@airport/ground-control';
 import { IApplicationStore } from '../../state/ApplicationStore';
 import { IApiRegistry, IApplicationApi } from '@airport/air-traffic-control';
 import { RequestManager } from './RequestManager';
-import { IApiCallRequestMessageProperties, IApiCallResponseMessage, IMessage, IObservableApiCallResponseMessage } from '@airport/aviation-communication';
+import { IApiCallRequestMessageProperties, IApiCallResponseMessage, IMessage, IObservableApiCallResponseMessage, Message_Direction } from '@airport/aviation-communication';
 
 @Injected()
 export class LocalAPIServer
@@ -53,8 +53,9 @@ export class LocalAPIServer
         const response: (IApiCallResponseMessage | IObservableApiCallResponseMessage) = {
             ...request,
             destination,
-            origin,
+            direction: Message_Direction.RESPONSE,
             errorMessage,
+            origin,
             returnedValue: internalResponse
                 ? internalResponse.result
                 : null

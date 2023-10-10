@@ -80,10 +80,14 @@ export class LocalAPIClient
     sendMessage(
         message: IMessage
     ): boolean {
-        this.airMessageUtils.prepMessageToSend(message)
+        const data = this.airMessageUtils.prepMessageToSend(message)
 
         if (_inWebMode) {
-            window.parent.postMessage(message, _webServer)
+            try {
+                window.parent.postMessage(data, _webServer)
+            } catch (e) {
+                throw e
+            }
         } else {
             throw new Error('Not Implemented')
         }
@@ -93,7 +97,7 @@ export class LocalAPIClient
 
     private initializeForWeb() {
         window.addEventListener("message", event => {
-            const message: IMessage = event.data
+            const message: IMessage = this.airMessageUtils.unpackageRecievedMessage(event.data)
 
             if (!message.isAIRportMessage
                 || !this.airMessageUtils.validateUiBoundMessage(message)

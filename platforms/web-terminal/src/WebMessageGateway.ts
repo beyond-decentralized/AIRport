@@ -51,29 +51,44 @@ export class WebMessageGateway
     init() {
 
         window.addEventListener("message", event => {
-            const message: IMessage | IApiCallRequestMessage = event.data
-            if (!message.isAIRportMessage
-                || !this.airMessageUtils.validateIncomingMessage(message)) {
-                return
-            }
+            const message = this.airMessageUtils.unpackageRecievedMessage(event.data)
 
-            switch (message.origin.type) {
-                case Message_OriginOrDestination_Type.USER_INTERFACE: {
-                    this.transactionalReceiver.handleUIRequest(message as IApiCallRequestMessage)
-                    break
-                }
-                case Message_OriginOrDestination_Type.APPLICATION: {
-                    this.transactionalReceiver.handleAppRequest(message, event.origin)
-                    break
-                }
-                case Message_OriginOrDestination_Type.DATABASE:
-                case Message_OriginOrDestination_Type.FRAMEWORK:
-                default: {
-                    console.error(`Unexpected message origin type: ${message.origin.type}`)
-                    break
-                }
+            const escapeZoneJsCallback = this.terminalStore.getUI().escapeZoneJsCallback
+            if (escapeZoneJsCallback) {
+                escapeZoneJsCallback(() => {
+                    this.processMessage(message, event.origin);
+                })
+            } else {
+                this.processMessage(message, event.origin);
             }
         }, false)
+    }
+
+    private processMessage(
+        message: IMessage | IApiCallRequestMessage,
+        messageOrigin: string
+    ): void {
+        if (!message.isAIRportMessage
+            || !this.airMessageUtils.validateIncomingMessage(message)) {
+            return
+        }
+
+        switch (message.origin.type) {
+            case Message_OriginOrDestination_Type.USER_INTERFACE: {
+                this.transactionalReceiver.handleUIRequest(message as IApiCallRequestMessage)
+                break
+            }
+            case Message_OriginOrDestination_Type.APPLICATION: {
+                this.transactionalReceiver.handleAppRequest(message, messageOrigin)
+                break
+            }
+            case Message_OriginOrDestination_Type.DATABASE:
+            case Message_OriginOrDestination_Type.FRAMEWORK:
+            default: {
+                console.error(`Unexpected message origin type: ${message.origin.type}`)
+                break
+            }
+        }
     }
 
     needMessageSerialization() {
@@ -91,10 +106,14 @@ export class WebMessageGateway
     ): void {
         const window = this.getFrameWindow(application_FullName)
 
-        this.airMessageUtils.prepMessageToSend(message)
+        const data = this.airMessageUtils.prepMessageToSend(message)
 
-        window.postMessage(message,
-            `${message.destination.protocol}//${message.destination.domain}`)
+        try {
+            window.postMessage(data,
+                `${message.destination.protocol}//${message.destination.domain}`)
+        } catch (e) {
+            throw e
+        }
     }
 
     setUiIframe(
@@ -107,11 +126,15 @@ export class WebMessageGateway
         message: IApiCallRequestMessage
             | IInternalMessage
     ): void {
-        this.airMessageUtils.prepMessageToSend(message)
+        const data = this.airMessageUtils.prepMessageToSend(message)
 
-        this.terminalStore.getUI().uiIframe?.
-            contentWindow.postMessage(message,
-                `${message.destination.protocol}//${message.destination.domain}`)
+        try {
+            this.terminalStore.getUI().uiIframe?.
+                contentWindow.postMessage(data,
+                    `${message.destination.protocol}//${message.destination.domain}`)
+        } catch (e) {
+            throw e
+        }
     }
 
     private getFrameWindow(

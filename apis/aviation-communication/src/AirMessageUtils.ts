@@ -2,6 +2,9 @@ import { Injected } from "@airport/direction-indicator";
 import { IApiCallRequestMessage } from "./IApiCallMessage";
 import { CRUD_Message_Type, ICrudMessage, IInternalMessage, IMessage, INTERNAL_Message_Type, ISubscriptionMessage, IMessageOriginOrDestination, Message_OriginOrDestination_Type, Message_Type_Group, SUBSCRIPTION_Message_Type, Message_Direction, Message_Leg, Message_Application } from "./IMessage";
 import { v4 as guidv4 } from "uuid";
+// import { ProgressivePair } from "@beyond-decentralized/pson";
+// import PSON from "@beyond-decentralized/pson";
+// import ByteBuffer from "bytebuffer";
 
 export interface IAirMessageUtils {
 
@@ -28,7 +31,11 @@ export interface IAirMessageUtils {
 
     prepMessageToSend(
         message: IMessage
-    ): void
+    ): any
+
+    unpackageRecievedMessage(
+        data: any
+    ): IMessage
 
     validateIncomingMessage(
         message: IMessage
@@ -48,6 +55,13 @@ export interface IAirMessageUtils {
 @Injected()
 export class AirMessageUtils
     implements IAirMessageUtils {
+
+    // initialDictionary = []
+    // pson: ProgressivePair
+
+    // constructor() {
+    //     this.pson = new PSON.StaticPair(this.initialDictionary, {});
+    // }
 
     getMessageReadySendAttributes(): {
         __received__: boolean,
@@ -113,9 +127,28 @@ ${JSON.stringify(message, null, 2)}
 
     prepMessageToSend(
         message: IMessage
-    ): void {
+    ): any {
         delete message.__received__
         delete message.__receivedTime__
+
+        // FIXME: extend this class for web-environments this once NgZone is removed - no need to serialize in the browser environment
+        // and overwride with a basic return of original data
+        // return this.pson.encode(message)
+
+        return message
+    }
+
+    unpackageRecievedMessage(
+        data: any
+    ): IMessage {
+        // if (data instanceof ByteBuffer
+        //     || data instanceof ArrayBuffer
+        //     || (data.buffer instanceof ArrayBuffer
+        //         && data.view instanceof Uint8Array
+        //         && typeof data.limit === 'number')) {
+        //     return this.pson.decode(data)
+        // }
+        return data
     }
 
     isFromValidFrameworkDomain(
@@ -269,8 +302,10 @@ ${JSON.stringify(message, null, 2)}
                     case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE:
                         messageHasADestination = true
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIPTION_DATA:
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_UNSUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
+                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIPTION_DATA:
                     case SUBSCRIPTION_Message_Type.SEARCH_UNSUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
                         break
@@ -315,8 +350,8 @@ ${JSON.stringify(message, null, 2)}
             }
             case Message_Type_Group.SUBSCRIPTION: {
                 switch ((message as ISubscriptionMessage).type) {
-                    case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
-                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBTION_DATA: {
+                    case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIPTION_DATA:
+                    case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIPTION_DATA: {
                         break
                     }
                     default: {

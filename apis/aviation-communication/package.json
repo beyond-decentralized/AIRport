@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@airport/direction-indicator": "workspace:../../libs/direction-indicator",
-    "rxjs": "workspace:../../../node_modules/rxjs"
+    "rxjs": "workspace:../../../node_modules/rxjs",
+    "@beyond-decentralized/pson": "workspace:../../../node_modules/@beyond-decentralized/pson",
+    "bytebuffer": "workspace:../../../node_modules/bytebuffer"
   },
   "devDependencies": {
     "@airport/taxiway": "workspace:../../generators/taxiway",

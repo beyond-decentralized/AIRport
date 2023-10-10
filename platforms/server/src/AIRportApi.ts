@@ -65,7 +65,7 @@ export class AIRportApi {
     setUiIframe(
         currentUrl: string,
         uiIframe: HTMLIFrameElement,
-        zoneJsCallback?: (
+        escapeZoneJsCallback?: (
             innerCallback: () => void
         ) => void
     ): void {
@@ -80,7 +80,7 @@ export class AIRportApi {
                 ...state.ui,
                 currentUrl,
                 uiIframe,
-                zoneJsCallback
+                escapeZoneJsCallback
             }
         })
     }

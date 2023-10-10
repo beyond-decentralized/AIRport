@@ -1,12 +1,14 @@
 import { loadAutopilot } from '@airport/autopilot'
-import { IApiCallRequestMessage, IMessage, IApiMessage, ISubscriptionMessage, IInternalMessage, INTERNAL_Message_Type } from '@airport/aviation-communication'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
+import { IApiCallRequestMessage, IMessage, IApiMessage, ISubscriptionMessage, IInternalMessage, INTERNAL_Message_Type, IAirMessageUtils } from '@airport/aviation-communication'
+import { AIR_MESSAGE_UTILS, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
 import { loadTower } from '@airport/tower'
 import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
 
 window.addEventListener("message", event => {
-    const message: IMessage | IApiCallRequestMessage = event.data
+    const airMessageUtils = DEPENDENCY_INJECTION.db().getSync(AIR_MESSAGE_UTILS) as any as IAirMessageUtils
+    const message = airMessageUtils.unpackageRecievedMessage(event.data)
+
     if (!message.isAIRportMessage) {
         return
     }

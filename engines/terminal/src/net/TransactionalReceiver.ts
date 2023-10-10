@@ -1,6 +1,6 @@
 import { ILastIds, JsonApplicationWithLastIds } from '@airport/air-traffic-control';
 import { IDdlApplicationDao } from '@airport/airspace/dist/app/bundle';
-import { Message_Leg, IApiCallRequestMessage, IApiCallResponseMessage, INTERNAL_Message_Type, CRUD_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IResponseMessage, IInternalMessage, IUrlChangeMessage } from '@airport/aviation-communication';
+import { Message_Leg, IApiCallRequestMessage, IApiCallResponseMessage, INTERNAL_Message_Type, CRUD_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IResponseMessage, IInternalMessage, IUrlChangeMessage, Message_Direction } from '@airport/aviation-communication';
 import {
     IContext,
     Inject,
@@ -38,6 +38,7 @@ import {
     ISubscriptionReadQueryMessage
 } from '@airport/terminal-map';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
+import { Observable } from 'rxjs';
 
 @Injected()
 export abstract class TransactionalReceiver {
@@ -106,7 +107,7 @@ export abstract class TransactionalReceiver {
 
     async processSubscriptionMessage(
         message: ISubscriptionMessage
-    ): Promise<IResponseMessage> {
+    ): Promise<IResponseMessage<Observable<any>>> {
         let result: any
         let errorMessage
         try {
@@ -229,7 +230,7 @@ export abstract class TransactionalReceiver {
         context: IContext
     ): Promise<{
         theErrorMessage: string
-        theResult: IApiCallResponseMessage | ISaveMessage<any>
+        theResult: Observable<any>
     }> {
         let theErrorMessage: string = null
         let theResult: any = null
@@ -583,10 +584,12 @@ ${fullApplication_Name}
             | ISaveMessage<any>
             | ISubscriptionMessage
     ): Promise<IContext> {
-        const isInternalDomain = await this.appTrackerUtils
-            .isInternalDomain(message.destination.domain)
-        if (isInternalDomain) {
-            throw new Error(`Internal domains cannot be used in external calls`)
+        if (message.destination) {
+            const isInternalDomain = await this.appTrackerUtils
+                .isInternalDomain(message.destination.domain)
+            if (isInternalDomain) {
+                throw new Error(`Internal domains cannot be used in external calls`)
+            }
         }
         let credentials: ICredentials = {
             application: message.origin.app,
@@ -615,6 +618,7 @@ ${fullApplication_Name}
                 protocol: message.origin.protocol,
                 type: message.origin.type
             },
+            direction: Message_Direction.RESPONSE,
             errorMessage,
             messageLeg: Message_Leg.FROM_HUB,
             // origin: {

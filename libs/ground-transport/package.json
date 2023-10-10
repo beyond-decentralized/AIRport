@@ -17,7 +17,7 @@
     "@airport/travel-document-checkpoint": "workspace:../../schemas/travel-document-checkpoint",
     "@airway/client": "workspace:../../../AIRway/client",
     "rxjs": "workspace:../../../node_modules/rxjs",
-    "@as-com/pson": "workspace:../../../node_modules/@as-com/pson"
+    "@beyond-decentralized/pson": "workspace:../../../node_modules/@beyond-decentralized/pson"
   },
   "devDependencies": {
     "@airport/taxiway": "workspace:../../generators/taxiway",

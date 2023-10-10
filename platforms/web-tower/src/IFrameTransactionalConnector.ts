@@ -171,7 +171,7 @@ export class IframeTransactionalConnector
 	): Promise<IApiCallResponseMessage> {
 		return await this.sendMessage<IApiCallRequestMessage, IApiCallResponseMessage>({
 			...apiInput,
-			...this.getCoreFields(Message_Type_Group.API),
+			...this.getCoreFields(Message_Type_Group.API, false),
 			actor: null
 		})
 	}
@@ -181,7 +181,7 @@ export class IframeTransactionalConnector
 	): Promise<void> {
 		await this.sendMessageNoReturn<IApiCallRequestMessage>({
 			...apiInput,
-			...this.getCoreFields(Message_Type_Group.API),
+			...this.getCoreFields(apiInput.typeGroup, false),
 			actor: null
 		})
 	}
@@ -421,8 +421,8 @@ ${subscriptionId}
 				break
 			}
 			case SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA:
-			case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBTION_DATA:
-			case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBTION_DATA: {
+			case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIPTION_DATA:
+			case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIPTION_DATA: {
 				const observableRequestSubject = this.applicationStore.state
 					.clientSubjectCache.getSubject(request.subscriptionId)
 				if (!observableRequestSubject) {
@@ -448,9 +448,13 @@ expecting only API message types`)
 		message: IMessage,
 		targetOrigin: string = this.applicationStore.state.hostServer
 	): void {
-		this.airMessageUtils.prepMessageToSend(message)
+		const data = this.airMessageUtils.prepMessageToSend(message)
 
-		window.parent.postMessage(message, targetOrigin)
+		try {
+			window.parent.postMessage(data, targetOrigin)
+		} catch (e) {
+			throw e
+		}
 	}
 
 	private completeAsyncMessage(
@@ -474,9 +478,11 @@ expecting only API message types`)
 	}
 
 	private getCoreFields(
-		typeGroup: Message_Type_Group
+		typeGroup: Message_Type_Group,
+		toFramework: boolean = true
 	): {
-		direction: Message_Direction
+		destination?: IMessageOriginOrDestination,
+		direction: Message_Direction,
 		id: string,
 		isAIRportMessage: true,
 		messageLeg: Message_Leg.TO_HUB,
@@ -487,7 +493,15 @@ expecting only API message types`)
 		let domain = this.applicationStore.state.domain
 		let id = guidv4()
 		let messageLeg = Message_Leg.TO_HUB
-		return {
+		const coreFields: {
+			destination?: IMessageOriginOrDestination,
+			direction: Message_Direction,
+			id: string,
+			isAIRportMessage: true,
+			messageLeg: Message_Leg.TO_HUB,
+			origin: IMessageOriginOrDestination,
+			typeGroup: Message_Type_Group
+		} = {
 			direction: Message_Direction.REQUEST,
 			id,
 			isAIRportMessage: true,
@@ -500,6 +514,16 @@ expecting only API message types`)
 			},
 			typeGroup
 		}
+		if (toFramework) {
+			coreFields.destination = {
+				app: 'FRAMEWORK',
+				domain: 'trubase.org',
+				protocol: 'https:',
+				type: Message_OriginOrDestination_Type.FRAMEWORK
+			}
+		}
+
+		return coreFields
 	}
 
 	private async sendMessage<IMessageIn extends IMessage, ReturnType>(
@@ -553,10 +577,12 @@ expecting only API message types`)
 			type
 		}
 
-		const subject = new SubscriptionCountSubject<T, IMessage>(
+		const subject = new SubscriptionCountSubject<T, ISubscriptionMessage>(
 			subscriptionId,
 			{
-				...coreFields
+				...coreFields,
+				subscriptionId,
+				type
 			},
 			() => {
 				this.sendMessageToParentWindow({

@@ -39,9 +39,9 @@ export class WebApplicationInitializer
         let appIframe: HTMLIFrameElement
 
         if (!appIframes.length) {
-            const zoneJsCallback = this.terminalStore.getUI().zoneJsCallback
-            if (zoneJsCallback) {
-                zoneJsCallback(() => {
+            const escapeZoneJsCallback = this.terminalStore.getUI().escapeZoneJsCallback
+            if (escapeZoneJsCallback) {
+                escapeZoneJsCallback(() => {
                     appIframe = this.createAppIframe(domain, application, fullApplication_Name)
                 })
             } else {
