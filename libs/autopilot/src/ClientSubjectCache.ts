@@ -63,9 +63,9 @@ export class ClientSubjectCache
                             })
                         }
                     }
-                }, 5000)
+                }, 60000)
             }
-        }, 2000)
+        }, 30000)
     }
 
     addSubject(
