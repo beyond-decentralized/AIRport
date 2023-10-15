@@ -85,7 +85,7 @@ export class AIRportApi {
         })
     }
 
-    getRepository(
+    searchRepository(
         repositoryGUID: Repository_GUID
     ): Observable<IRepository> {
         const [repositoryDao, transactionManager] = IOC.getSync(RepositoryDao, TRANSACTION_MANAGER)

@@ -106,7 +106,7 @@ export class QueryManager
 				if (!result || !result.length) {
 					return result
 				}
-				return this.populateEntityGuidEntitiesAndUserAccounts<E>(
+				return await this.populateEntityGuidEntitiesAndUserAccounts<E>(
 					portableQuery, result, context)
 
 			},
@@ -130,8 +130,10 @@ export class QueryManager
 				if (!result) {
 					return result
 				}
-				return this.populateEntityGuidEntitiesAndUserAccounts<E>(
-					portableQuery, [result], context)[0];
+				await this.populateEntityGuidEntitiesAndUserAccounts<E>(
+					portableQuery, [result], context)
+
+				return result
 			},
 			context
 		)
