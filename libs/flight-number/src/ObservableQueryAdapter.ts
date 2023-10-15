@@ -74,7 +74,7 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
         }
     }
 
-    async doCheckExistenceOfQueriedRepositories(
+    private async doCheckExistenceOfQueriedRepositories(
         context: IContext
     ): Promise<void> {
         const locallyPresentRepositories = await this.repositoryDao
