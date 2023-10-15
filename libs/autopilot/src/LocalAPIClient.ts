@@ -32,6 +32,8 @@ export class LocalAPIClient
     @Inject()
     queryResultsDeserializer: IQueryResultsDeserializer
 
+    ngZone
+
     webListenerStarted = false;
 
     lastConnectionReadyCheckMap: Map<string, Map<string, boolean>> = new Map()
@@ -170,7 +172,11 @@ export class LocalAPIClient
                             }
                             try {
                                 const response = this.processResponse(requestSubject.args, message as IApiCallResponseMessage)
-                                requestSubject.next(response)
+                                if (this.ngZone) {
+                                    this.ngZone.run(() => requestSubject.next(response))
+                                } else {
+                                    requestSubject.next(response)
+                                }
                             } catch (e) {
                                 console.error(e)
                                 requestSubject.error(e)
@@ -225,9 +231,17 @@ export class LocalAPIClient
         }
         this.pendingWebMessageMap.delete(message.id)
         if (message.errorMessage) {
-            requestWebMessage.reject(message.errorMessage)
+            if (this.ngZone) {
+                this.ngZone.run(() => requestWebMessage.reject(message.errorMessage))
+            } else {
+                requestWebMessage.reject(message.errorMessage)
+            }
         } else {
-            requestWebMessage.resolve(message)
+            if (this.ngZone) {
+                this.ngZone.run(() => requestWebMessage.resolve(message))
+            } else {
+                requestWebMessage.resolve(message)
+            }
         }
     }
 

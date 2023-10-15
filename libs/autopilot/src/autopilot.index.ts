@@ -60,6 +60,9 @@ export function loadUiAutopilot() {
             return airEntityUtils
         }
     }
+    globalThis.setApiClientNgZone = (ngZone) => {
+        apiClient.ngZone = ngZone
+    }
 
     trackUrlState(airMessageUtils, apiClient)
 }
