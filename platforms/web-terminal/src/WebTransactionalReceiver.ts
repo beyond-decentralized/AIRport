@@ -76,7 +76,7 @@ export class WebTransactionalReceiver
 			if (globalThis.repositoryAutoload !== false) {
 				setInterval(() => {
 					this.pruneSubscriptions();
-				}, 10000)
+				}, 300000)
 			}
 		}, 2000)
 
@@ -125,7 +125,7 @@ export class WebTransactionalReceiver
 			...message,
 			messageLeg: Message_Leg.FROM_HUB
 		} as IApiCallRequestMessage
-		this.handleRequest(fromClientRedirectedMessage).then()
+		this.doHandleUIRequest(fromClientRedirectedMessage).then()
 	}
 
 	handleAppRequest(
@@ -472,7 +472,7 @@ export class WebTransactionalReceiver
 		this.webMessageGateway.sendMessageToClient(connectionIsReadyMessage)
 	}
 
-	private async handleRequest(
+	private async doHandleUIRequest(
 		message: IApiCallRequestMessage,
 	): Promise<void> {
 		const application_FullName = this.getMessageDestinationApplication(
@@ -720,9 +720,25 @@ Unexpected message typeGroup:
 				subscriptionRecord.lastActive = new Date().getTime()
 				break
 			}
-			default: {
+			case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
+			case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE: {
 				response = await this.processSubscriptionMessage(message as ISubscriptionMessage)
+				// Subscription is done in another method
 				break
+			}
+			case SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA:
+			case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIPTION_DATA:
+			case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIPTION_DATA: {
+				throw new Error(`
+Unexpected *_SUBSCRIPTION_DATA message.type:
+
+	${message.type}
+
+Subscription data should be response messages.
+				`)
+			}
+			default: {
+				throw new Error(`Unexpected message.type ${message.type}`)
 			}
 		}
 
@@ -833,7 +849,11 @@ Unexpected message typeGroup:
 							`)
 							break
 						}
-						isolateSubscriptionMap.delete((message as ISubscriptionMessage).subscriptionId)
+						const subscriptionId = (message as ISubscriptionMessage)
+							.subscriptionId
+						isolateSubscriptionMap.get(subscriptionId)?.subscription
+							.unsubscribe()
+						isolateSubscriptionMap.delete(subscriptionId)
 						break
 					}
 					default: {
@@ -865,6 +885,10 @@ Unexpected message typeGroup:
 				this.webMessageGateway.sendMessageToApp(
 					application_FullName, {
 					...messageFields,
+					direction: Message_Direction.RESPONSE,
+					messageLeg: Message_Leg.FROM_HUB,
+					destination: message.origin,
+					origin: messageFields.destination,
 					returnedValue,
 					type
 				})

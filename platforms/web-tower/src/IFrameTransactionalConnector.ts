@@ -111,7 +111,7 @@ export class IframeTransactionalConnector
 			if (globalThis.repositoryAutoload !== false) {
 				setInterval(() => {
 					this.pruneSubscriptions();
-				}, 10000)
+				}, 300000)
 			}
 		}, 2000)
 	}
@@ -434,6 +434,7 @@ export class IframeTransactionalConnector
 					break
 				}
 				subscriptionRecord.lastActive = new Date().getTime()
+				break
 			}
 			case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
 				const subscriptionRecord = clientSubscriptionMap.get(subscriptionId)
@@ -463,7 +464,7 @@ ${subscriptionId}
 				} else {
 					observableRequestSubject.next((request as IObservableApiCallResponseMessage).returnedValue)
 				}
-				return
+				break
 			}
 			default: {
 				throw new Error(`Invalid ISubscriptionMessage
