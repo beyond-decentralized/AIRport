@@ -379,6 +379,7 @@ ${JSON.stringify(message, null, 2)}
                     case INTERNAL_Message_Type.CONNECTION_IS_READY:
                     case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
                     case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
+                    case INTERNAL_Message_Type.UI_CHANGE_URL:
                     case INTERNAL_Message_Type.UI_GO_BACK:
                     case INTERNAL_Message_Type.UI_GO_FORWARD:
                     case INTERNAL_Message_Type.UI_URL_CHANGED: {
@@ -424,6 +425,7 @@ ${JSON.stringify(message, null, 2)}
             case Message_Type_Group.INTERNAL: {
                 switch ((message as IInternalMessage).type) {
                     case INTERNAL_Message_Type.IS_CONNECTION_READY:
+                    case INTERNAL_Message_Type.UI_CHANGE_URL:
                     case INTERNAL_Message_Type.UI_GO_BACK:
                     case INTERNAL_Message_Type.UI_GO_FORWARD:
                     case INTERNAL_Message_Type.UI_URL_CHANGED: {

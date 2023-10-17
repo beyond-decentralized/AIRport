@@ -1,4 +1,4 @@
-import { IAirMessageUtils, IInternalMessage, INTERNAL_Message_Type, Message_OriginOrDestination_Type, UI_URL } from "@airport/aviation-communication";
+import { IAirMessageUtils, IChangeUrlMessage, IInternalMessage, INTERNAL_Message_Type, Message_Domain, Message_DomainProtocol, Message_OriginOrDestination_Type, UI_URL } from "@airport/aviation-communication";
 import { AIR_MESSAGE_UTILS, IOC } from "@airport/direction-indicator";
 import { DdlApplicationDao } from '@airport/airspace/dist/app/bundle';
 import { RepositoryDao } from '@airport/holding-pattern/dist/app/bundle';
@@ -60,6 +60,23 @@ export class AIRportApi {
             type: Message_OriginOrDestination_Type.USER_INTERFACE
         }
         IOC.getSync(WebMessageGateway).sendMessageToClient(goBackMessage)
+    }
+
+    uiChangeUrl(
+        urlToChangeTo: UI_URL,
+        domain: Message_Domain,
+        protocol: Message_DomainProtocol
+    ): void {
+        const changeUrlMessage: IChangeUrlMessage = (IOC.getSync(AIR_MESSAGE_UTILS) as any as IAirMessageUtils)
+            .getInternalMessage(INTERNAL_Message_Type.UI_CHANGE_URL,
+                Message_OriginOrDestination_Type.FRAMEWORK) as IChangeUrlMessage
+        changeUrlMessage.destination = {
+            domain,
+            protocol,
+            type: Message_OriginOrDestination_Type.USER_INTERFACE
+        }
+        changeUrlMessage.changeToUrl = urlToChangeTo
+        IOC.getSync(WebMessageGateway).sendMessageToClient(changeUrlMessage)
     }
 
     setUiIframe(

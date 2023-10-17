@@ -1,6 +1,6 @@
 import { ILastIds, JsonApplicationWithLastIds } from '@airport/air-traffic-control';
 import { IDdlApplicationDao } from '@airport/airspace/dist/app/bundle';
-import { Message_Leg, IApiCallRequestMessage, IApiCallResponseMessage, INTERNAL_Message_Type, CRUD_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IResponseMessage, IInternalMessage, IUrlChangeMessage, Message_Direction } from '@airport/aviation-communication';
+import { Message_Leg, IApiCallRequestMessage, IApiCallResponseMessage, INTERNAL_Message_Type, CRUD_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IResponseMessage, IInternalMessage, IUrlChangeMessage, Message_Direction, IChangeUrlMessage } from '@airport/aviation-communication';
 import {
     IContext,
     Inject,
@@ -143,6 +143,7 @@ export abstract class TransactionalReceiver {
     }> {
         let theErrorMessage: string = undefined
         let theResult: any = null
+        let currentUrl: string = undefined
         switch (message.type) {
             case INTERNAL_Message_Type.APP_INITIALIZING:
                 const application: JsonApplicationWithLastIds =
@@ -195,7 +196,11 @@ export abstract class TransactionalReceiver {
                     .get(message.origin.domain)
                 break
             }
+            case INTERNAL_Message_Type.UI_CHANGE_URL:
+                currentUrl = (message as IChangeUrlMessage).changeToUrl
+                // Fall through to 'case INTERNAL_Message_Type.UI_URL_CHANGED:'
             case INTERNAL_Message_Type.UI_URL_CHANGED: {
+                currentUrl =(message as IUrlChangeMessage).newUrl
                 let state
                 this.terminalStore.state.subscribe(theState => {
                     state = theState
@@ -204,7 +209,7 @@ export abstract class TransactionalReceiver {
                     ...state,
                     ui: {
                         ...state.ui,
-                        currentUrl: (message as IUrlChangeMessage).newUrl
+                        currentUrl
                     }
                 })
                 theResult = undefined

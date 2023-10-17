@@ -1,4 +1,4 @@
-import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IClientSubjectCache, Message_OriginOrDestination_Type, Message_Type_Group, IInternalMessage, INTERNAL_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IObservableApiCallRequestMessage, Message_Direction, IConnectionReadyMessage } from "@airport/aviation-communication";
+import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IClientSubjectCache, Message_OriginOrDestination_Type, Message_Type_Group, IInternalMessage, INTERNAL_Message_Type, ISubscriptionMessage, SUBSCRIPTION_Message_Type, IObservableApiCallRequestMessage, Message_Direction, IConnectionReadyMessage, IChangeUrlMessage } from "@airport/aviation-communication";
 import { IApiClient, IFullDITokenDescriptor, Inject, Injected } from "@airport/direction-indicator";
 import {
     IOperationSerializer,
@@ -32,6 +32,7 @@ export class LocalAPIClient
     @Inject()
     queryResultsDeserializer: IQueryResultsDeserializer
 
+    navigationCallback: (url: string) => void
     ngZone
 
     webListenerStarted = false;
@@ -142,6 +143,10 @@ export class LocalAPIClient
                             checksForDomain.set(returnedValue.app, true)
                             break
                         }
+                        case INTERNAL_Message_Type.UI_CHANGE_URL: {
+                            this.navigationCallback((message as IChangeUrlMessage).changeToUrl)
+                            break
+                        }
                         case INTERNAL_Message_Type.UI_GO_BACK: {
                             history.back()
                             break
@@ -206,6 +211,7 @@ export class LocalAPIClient
                 switch (message.typeGroup) {
                     case Message_Type_Group.INTERNAL: {
                         switch ((message as IInternalMessage).type) {
+                            case INTERNAL_Message_Type.UI_CHANGE_URL:
                             case INTERNAL_Message_Type.UI_GO_BACK:
                             case INTERNAL_Message_Type.UI_GO_FORWARD: {
                                 return true

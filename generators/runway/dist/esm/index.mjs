@@ -8356,9 +8356,10 @@ var INTERNAL_Message_Type;
     INTERNAL_Message_Type["GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME"] = "GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME";
     INTERNAL_Message_Type["IS_CONNECTION_READY"] = "IS_CONNECTION_READY";
     INTERNAL_Message_Type["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
-    INTERNAL_Message_Type["UI_URL_CHANGED"] = "UI_URL_CHANGED";
+    INTERNAL_Message_Type["UI_CHANGE_URL"] = "UI_CHANGE_URL\u00DF";
     INTERNAL_Message_Type["UI_GO_BACK"] = "UI_GO_BACK";
     INTERNAL_Message_Type["UI_GO_FORWARD"] = "UI_GO_FORWARD";
+    INTERNAL_Message_Type["UI_URL_CHANGED"] = "UI_URL_CHANGED";
 })(INTERNAL_Message_Type || (INTERNAL_Message_Type = {}));
 var SUBSCRIPTION_Message_Type;
 (function (SUBSCRIPTION_Message_Type) {
@@ -8698,6 +8699,7 @@ ${JSON.stringify(message, null, 2)}
                     case INTERNAL_Message_Type.CONNECTION_IS_READY:
                     case INTERNAL_Message_Type.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME:
                     case INTERNAL_Message_Type.RETRIEVE_DOMAIN:
+                    case INTERNAL_Message_Type.UI_CHANGE_URL:
                     case INTERNAL_Message_Type.UI_GO_BACK:
                     case INTERNAL_Message_Type.UI_GO_FORWARD:
                     case INTERNAL_Message_Type.UI_URL_CHANGED: {
@@ -8739,6 +8741,7 @@ ${JSON.stringify(message, null, 2)}
             case Message_Type_Group.INTERNAL: {
                 switch (message.type) {
                     case INTERNAL_Message_Type.IS_CONNECTION_READY:
+                    case INTERNAL_Message_Type.UI_CHANGE_URL:
                     case INTERNAL_Message_Type.UI_GO_BACK:
                     case INTERNAL_Message_Type.UI_GO_FORWARD:
                     case INTERNAL_Message_Type.UI_URL_CHANGED: {
@@ -36882,7 +36885,11 @@ class TransactionalReceiver {
                     .get(message.origin.domain);
                 break;
             }
+            case INTERNAL_Message_Type.UI_CHANGE_URL:
+                let currentUrl = message.changeToUrl;
+            // Fall through to 'case INTERNAL_Message_Type.UI_URL_CHANGED:'
             case INTERNAL_Message_Type.UI_URL_CHANGED: {
+                currentUrl = message.newUrl;
                 let state;
                 this.terminalStore.state.subscribe(theState => {
                     state = theState;
@@ -36891,7 +36898,7 @@ class TransactionalReceiver {
                     ...state,
                     ui: {
                         ...state.ui,
-                        currentUrl: message.newUrl
+                        currentUrl
                     }
                 });
                 theResult = undefined;
@@ -38121,7 +38128,7 @@ class QueryManager {
             if (!result || !result.length) {
                 return result;
             }
-            return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, result, context);
+            return await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, result, context);
         }, context);
     }
     searchOne(portableQuery, context) {
@@ -38131,7 +38138,8 @@ class QueryManager {
             if (!result) {
                 return result;
             }
-            return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [result], context)[0];
+            await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [result], context);
+            return result;
         }, context);
     }
     async ensureRepositoryPresenceAndCurrentState(context) {
@@ -40961,9 +40969,9 @@ class ClientSubjectCache {
                             });
                         }
                     }
-                }, 5000);
+                }, 60000);
             }
-        }, 2000);
+        }, 30000);
     }
     addSubject(subscriptionId, subject) {
         this.observableRequestMap.set(subscriptionId, subject);

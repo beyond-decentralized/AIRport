@@ -63,6 +63,9 @@ export function loadUiAutopilot() {
     globalThis.setApiClientNgZone = (ngZone) => {
         apiClient.ngZone = ngZone
     }
+    globalThis.setApiClientNavigationCallback = (navigationCallback: (url: string) => void) => {
+        apiClient.navigationCallback = navigationCallback
+    }
 
     trackUrlState(airMessageUtils, apiClient)
 }
