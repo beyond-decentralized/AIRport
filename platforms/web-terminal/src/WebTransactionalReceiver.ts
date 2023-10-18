@@ -495,7 +495,11 @@ export class WebTransactionalReceiver
 			const result = await this.callFrameworkApi(localApiRequest, context)
 			if (result.replyToClient) {
 				await this.replyToClient(
-					message,
+					{
+						...message,
+						destination: message.origin,
+						origin: message.destination
+					},
 					result.errorMessage,
 					result.returnedValue,
 					!result.errorMessage,
