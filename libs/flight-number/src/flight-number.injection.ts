@@ -11,6 +11,7 @@ flightNumber.register(ActiveQueries)
 export const OBSERVABLE_QUERY_ADAPTER = flightNumber.token<IObservableQueryAdapter>('ObservableQueryAdapter')
 
 flightNumber.setDependencies(ActiveQueries, {
+    repositoryDao: RepositoryDao,
     terminalStore: TerminalStore
 })
 
