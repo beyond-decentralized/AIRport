@@ -101,6 +101,7 @@ ${JSON.stringify(message, null, 2)}
             }
             case Message_Type_Group.SUBSCRIPTION: {
                 switch ((message as ISubscriptionMessage).type) {
+                    case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE: {
                         return true
