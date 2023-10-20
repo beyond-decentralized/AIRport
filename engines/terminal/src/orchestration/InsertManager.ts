@@ -171,7 +171,7 @@ appears more than once in the Columns clause`)
 		}
 
 		let generatedColumns
-		if (!transaction.isSync || context.generateOnSync) {
+		if (!transaction.isRepositorySync || context.generateOnSync) {
 			generatedColumns = this.verifyNoGeneratedColumns(dbEntity,
 				<QueryInsertValues>portableQuery.query, errorPrefix)
 		}
@@ -184,7 +184,7 @@ appears more than once in the Columns clause`)
 				.getSysWideOpId()
 		}
 
-		if ((!transaction.isSync || context.generateOnSync) && ensureGeneratedValues) {
+		if ((!transaction.isRepositorySync || context.generateOnSync) && ensureGeneratedValues) {
 			_localIds = await this.ensureGeneratedValues(
 				dbEntity, insertValues, actor,
 				columnsToPopulate, generatedColumns,
@@ -196,7 +196,7 @@ appears more than once in the Columns clause`)
 				transaction.transactionHistory.allModifiedColumnsMap
 					.ensureEntity(dbEntity, true)
 			}
-		} else if (!transaction.isSync) {
+		} else if (!transaction.isRepositorySync) {
 			await this.addInsertHistory(
 				dbEntity, portableQuery, actor, systemWideOperationId,
 				transaction, rootTransaction, context)
@@ -438,21 +438,21 @@ appears more than once in the Columns clause`)
 						// Save operations validate Actor ealier and set it on the entity objects
 						break;
 					}
-					if (!transaction.isSync) {
+					if (!transaction.isRepositorySync) {
 						throw new Error(errorPrefix +
 							`You cannot explicitly provide an ACTOR_LID value for Repository entities.`)
 					}
 					break
 				case actorRecordIdColumn.index:
 					foundActorRecordIdColumn = true
-					if (!transaction.isSync) {
+					if (!transaction.isRepositorySync) {
 						throw new Error(errorPrefix +
 							`You cannot explicitly provide an ACTOR_RECORD_ID value for Repository entities.`)
 					}
 					break
 				case sysWideOperationIdColumn.index:
 					foundSystemWideOperationIdColumn = true
-					if (!transaction.isSync) {
+					if (!transaction.isRepositorySync) {
 						throw new Error(`Error inserting into '${dbEntity.name}'.
 You cannot explicitly provide a SYSTEM_WIDE_OPERATION_ID value for Repository entities.`)
 					}
@@ -471,7 +471,7 @@ You must provide a valid REPOSITORY_LID value for Repository entities.`
 			throw new Error(missingRepositoryIdErrorMsg)
 		}
 
-		if (transaction.isSync) {
+		if (transaction.isRepositorySync) {
 			if (!foundActorIdColumn) {
 				throw new Error(errorPrefix +
 					`ACTOR_LID must be provided for sync operations.`)
@@ -516,7 +516,7 @@ You must provide a valid REPOSITORY_LID value for Repository entities.`
 and cannot have NULL values.`)
 				}
 			}
-			if (!context.isSaveOperation && !transaction.isSync) {
+			if (!context.isSaveOperation && !transaction.isRepositorySync) {
 				// Save operation set Actor ealier (at the entity level, to be returned back to client)
 				entityValues[actorIdColumn.index] = actor._localId
 			}

@@ -148,7 +148,7 @@ export class SynchronizationInManager
 			}
 		}
 		await this.transactionManager.transactInternal(async (transaction, context) => {
-			transaction.isSync = true
+			transaction.isRepositorySync = true
 			await this.twoStageSyncedInDataProcessor.syncMessages(
 				immediateProcessingMessages, newAndUpdatedRepositoriesAndRecords,
 				transaction, context)
@@ -248,7 +248,7 @@ export class SynchronizationInManager
 		}
 		if (delayedProcessingMessagesWithValidApps.length) {
 			await this.transactionManager.transactInternal(async (transaction, context) => {
-				transaction.isSync = true
+				transaction.isRepositorySync = true
 				await this.twoStageSyncedInDataProcessor.syncMessages(
 					delayedProcessingMessagesWithValidApps, null,
 					transaction, context)

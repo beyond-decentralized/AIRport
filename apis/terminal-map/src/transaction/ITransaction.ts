@@ -17,7 +17,7 @@ export interface ITransaction
 	credentials: IApiCredentials
 	id: string
 	initiator: ITransactionInitiator
-	isSync: boolean
+	isRepositorySync: boolean
 	parentTransaction: ITransaction
 	transactionHistory: ITransactionHistory
 

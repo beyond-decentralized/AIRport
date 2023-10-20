@@ -101,7 +101,7 @@ export class UpdateManager
 		let recordHistoryMap: RecordHistoryMap
 		let repositorySheetSelectInfo: RepositorySheetSelectInfo
 		let systemWideOperationId: SystemWideOperationId
-		if (!dbEntity.isLocal && !transaction.isSync) {
+		if (!dbEntity.isLocal && !transaction.isRepositorySync) {
 
 			systemWideOperationId = await this.systemWideOperationIdUtils
 				.getSysWideOpId();
@@ -131,7 +131,7 @@ export class UpdateManager
 				transaction.transactionHistory.allModifiedColumnsMap
 					.ensureEntity(dbEntity, true)
 			}
-		} else if (!transaction.isSync) {
+		} else if (!transaction.isRepositorySync) {
 			const previousDbEntity = context.dbEntity
 			context.dbEntity = dbEntity
 			// TODO: Entity based updates already have all of the new values being
@@ -254,14 +254,23 @@ export class UpdateManager
 		transaction: ITransaction,
 		context: IOperationContext
 	): Promise<void> {
+		const resultSetIndexByColumnIndex: Map<DbColumn_Index, number> = new Map()
+		const SELECT: DbColumn[] = []
+		let i = 0
+		for (const qField of repositorySheetSelectInfo.selectClause) {
+			const dbColumn = qField.dbColumn
+			SELECT.push(dbColumn)
+			resultSetIndexByColumnIndex.set(dbColumn.index, i)
+			i++
+		}
+
 		const qEntity = this.airportDatabase.qApplications
 		[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
-
 		const sheetQuery = new SheetQuery({
 			FROM: [
 				qEntity
 			],
-			SELECT: [],
+			SELECT,
 			WHERE: qEntity[this.dictionary.AirEntity.properties
 				.systemWideOperationId]
 				.equals(systemWideOperationId)
@@ -270,23 +279,8 @@ export class UpdateManager
 		let portableSelect = this.queryFacade.getPortableQuery(
 			sheetQuery, QueryResultType.SHEET, context)
 
-		const resultSetIndexByColumnIndex: Map<DbColumn_Index, number> = new Map()
-
-		const selectDbColumns: DbColumn[] = []
-		let i = 0
-		for (const qField of repositorySheetSelectInfo.selectClause) {
-			const dbColumn = qField.dbColumn
-			selectDbColumns.push(dbColumn)
-			resultSetIndexByColumnIndex.set(dbColumn.index, i)
-			i++
-		}
-
-		const internalFragments: InternalFragments = {
-			SELECT: selectDbColumns
-		}
-
 		const updatedRecords = await transaction.find<any, Array<any>>(
-			portableSelect, internalFragments, context)
+			portableSelect, {}, context)
 
 		const {
 			recordsByRepositoryId,

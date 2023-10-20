@@ -15,7 +15,7 @@ export class MySqlTransaction
 	implements ITransaction {
 
 	credentials: IApiCredentials
-	isSync = false
+	isRepositorySync = false
 	transactionHistory: ITransactionHistory
 
 	constructor(

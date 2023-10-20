@@ -357,7 +357,7 @@ parent transactions.
 			}
 
 			let transactionHistory = transaction.transactionHistory
-			if (!parentTransaction && !context.doNotRecordHistory && !transaction.isSync
+			if (!parentTransaction && !context.doNotRecordHistory && !transaction.isRepositorySync
 				&& transactionHistory.repositoryTransactionHistories.length) {
 
 				await this.activeQueries.markQueriesToRerun(
@@ -366,7 +366,7 @@ parent transactions.
 					context
 				)
 
-				if (!transaction.isSync) {
+				if (!transaction.isRepositorySync) {
 					const {
 						historiesToSend,
 						messages

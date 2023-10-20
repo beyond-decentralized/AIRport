@@ -33,7 +33,7 @@ export abstract class SqlTransaction
     childTransaction: ITransaction
     credentials: IApiCredentials
     id: string
-    isSync = false
+    isRepositorySync = false
     newRepositoryMembers: IRepositoryMember[] = []
     updatedRepositoryMembers: IRepositoryMember[] = []
 

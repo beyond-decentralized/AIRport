@@ -86,7 +86,7 @@ export class DeleteManager
 			.entities[portableQuery.entityIndex]
 
 		const deleteCommand = transaction.deleteWhere(portableQuery, context)
-		if (dbEntity.isLocal || transaction.isSync) {
+		if (dbEntity.isLocal || transaction.isRepositorySync) {
 			return await deleteCommand
 		}
 
