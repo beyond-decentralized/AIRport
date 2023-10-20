@@ -2,7 +2,7 @@ import { IAirMessageUtils, IChangeUrlMessage, IInternalMessage, INTERNAL_Message
 import { AIR_MESSAGE_UTILS, IOC } from "@airport/direction-indicator";
 import { DdlApplicationDao } from '@airport/airspace/dist/app/bundle';
 import { RepositoryDao } from '@airport/holding-pattern/dist/app/bundle';
-import { IOperationContext, ITransaction, ITransactionContext, IUserAccountInfo, TRANSACTION_MANAGER, TerminalStore } from '@airport/terminal-map'
+import { IOperationContext, ITransaction, ITransactionContext, IUserAccountInfo, TRANSACTIONAL_RECEIVER, TRANSACTION_MANAGER, TerminalStore } from '@airport/terminal-map'
 import { IApplication, IRepository, Repository_GUID } from "@airport/ground-control";
 import { SSOManager } from "@airbridge/sso";
 import { Observable, map } from "rxjs";
@@ -42,6 +42,11 @@ export class AIRportApi {
 
     uiGoForward(): void {
         this.uiGoBackOrForward(false)
+    }
+
+    async unloadUI(): Promise<void> {
+        const transactionalReceiver = await IOC.get(TRANSACTIONAL_RECEIVER)
+        await transactionalReceiver.unloadUI()
     }
 
     private uiGoBackOrForward(

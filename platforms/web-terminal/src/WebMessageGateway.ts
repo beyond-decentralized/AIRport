@@ -129,9 +129,22 @@ export class WebMessageGateway
         const data = this.airMessageUtils.prepMessageToSend(message)
 
         try {
-            this.terminalStore.getUI().uiIframe?.
-                contentWindow.postMessage(data,
-                    `${message.destination.protocol}//${message.destination.domain}`)
+            const ui = this.terminalStore.getUI()
+            const uiHost = ui.currentUrl.split('//')[1].split('/')[0]
+            // A different UI may have been loaded and an older cached query
+            // that hasn't been cleaned up yet may be returning results
+            if (uiHost === message.destination.domain) {
+                this.terminalStore.getUI().uiIframe?.
+                    contentWindow.postMessage(data,
+                        `${message.destination.protocol}//${message.destination.domain}`)
+            } else {
+                console.error(`
+Trying to return a query to UI host:
+    ${message.destination.domain}
+but a different UI host is currently loaded:
+    ${uiHost}
+`)
+            }
         } catch (e) {
             throw e
         }

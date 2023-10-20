@@ -65,6 +65,7 @@ globalThis.internalTerminalState = new BehaviorSubject<ITerminalState>({
     ui: {
         currentUrl: '',
         uiIframe: null,
+        subscriptionMap: new Map()
     },
     webReceiver: {
         domainPrefix: '',

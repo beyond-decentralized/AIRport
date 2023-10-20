@@ -15,4 +15,6 @@ export interface ITransactionalReceiver {
         messageOrigin: string
     ): void
 
+    unloadUI(): Promise<void>
+
 }

@@ -170,6 +170,14 @@ export class WebTransactionalReceiver
 		}
 	}
 
+	async unloadUI(): Promise<void> {
+		const subscriptionMap = this.terminalStore.getUI().subscriptionMap
+		for (const [_subscriptionId, message] of subscriptionMap) {
+			await this.doHandleUIRequest(message as any)
+		}
+		subscriptionMap.clear()
+	}
+
 	private async handleResponseMessage(
 		message: IApiCallResponseMessage,
 		messageOrigin: string,
@@ -473,7 +481,7 @@ export class WebTransactionalReceiver
 	}
 
 	private async doHandleUIRequest(
-		message: IApiCallRequestMessage,
+		message: IApiCallRequestMessage
 	): Promise<void> {
 		const application_FullName = this.getMessageDestinationApplication(
 			message)
@@ -487,6 +495,8 @@ export class WebTransactionalReceiver
 		const context: IApiCallContext = {
 			isObservableApiCall: this.airMessageUtils.isObservableMessage(message)
 		}
+		this.maintainUiSubscriptions(message as any)
+
 		const localApiRequest = message
 		const startDescriptor = await this.nativeStartApiCall(localApiRequest, context);
 		if (!startDescriptor.isStarted) {
@@ -506,6 +516,31 @@ export class WebTransactionalReceiver
 					null
 				)
 			}
+		}
+	}
+
+	private maintainUiSubscriptions(
+		message: ISubscriptionMessage
+	): void {
+		switch (message.typeGroup) {
+			case Message_Type_Group.SUBSCRIPTION:
+				break
+			default:
+				return
+		}
+		const subscriptionMap = this.terminalStore.getUI().subscriptionMap
+		switch (message.type) {
+			case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
+				subscriptionMap.set(message.subscriptionId, {
+					...message,
+					type: SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE
+				})
+				break
+			case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE:
+				subscriptionMap.delete(message.subscriptionId)
+				break
+			default:
+				return
 		}
 	}
 

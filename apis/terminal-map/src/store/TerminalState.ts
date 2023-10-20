@@ -9,7 +9,7 @@ import { Application_FullName, IApplication, IDomain, DbSequence, IActor, IAppTr
 import { IMessageInRecord } from './IApplicationState'
 import { ILastIds } from '@airport/air-traffic-control'
 import { CachedSQLQuery, IFieldMapped, SerializedJSONQuery } from '../terminal-map.index'
-import { Message_Id, SubscriptionId, TimeStamp } from '@airport/aviation-communication'
+import { ISubscriptionMessage, Message_Id, SubscriptionId, TimeStamp } from '@airport/aviation-communication'
 
 export interface IReceiverState {
 	initializingApps: Set<Application_FullName>
@@ -35,6 +35,7 @@ export interface IUIState {
 	escapeZoneJsCallback?: (
 		innerCallback: () => void
 	) => void
+	subscriptionMap: Map<SubscriptionId, ISubscriptionMessage>
 }
 
 export interface InternalConnectorState {
