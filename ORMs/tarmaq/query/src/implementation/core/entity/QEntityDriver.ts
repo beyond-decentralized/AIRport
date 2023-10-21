@@ -16,7 +16,6 @@ export class QEntityDriver<IQE extends IQEntity = any>
     implements IQEntityDriver<IQE> {
 
     childQEntities: IQEntityInternal[] = []
-    entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, QueryBaseOperation, any, any> } = {}
     entityRelations: IQInternalRelation<any>[] = []
     entityRelationMapByIndex: { [relationPropertyIndex: number]: IQInternalRelation<any> }
     idColumns: IQOperableFieldInternal<any, QueryBaseOperation, any, any>[] = []
@@ -47,31 +46,10 @@ export class QEntityDriver<IQE extends IQEntity = any>
 
         instance.__driver__.currentChildIndex = this.currentChildIndex
         instance.__driver__.joinWhereClause = this.joinWhereClause
-        instance.__driver__.entityFieldMap = this.entityFieldMap
         instance.__driver__.entityRelations = this.entityRelations
 
         return instance
     }
-
-    /*
-    addEntityRelation<R extends IQEntityInternal>(
-        relation: IQInternalRelation<R>
-    ): void {
-        this.entityRelations[relation.parentRelationIndex] = relation;
-    }
-
-    addEntityField<T, IQF extends IQOperableFieldInternal<T, QueryBaseOperation, any, any>>(
-        field: IQF
-    ): void {
-        this.entityFieldMap[field.fieldName] = field;
-    }
-    */
-
-    /*
-    getRelationPropertyName(): string {
-        return QMetadataUtils.getRelationPropertyName(QMetadataUtils.getRelationByIndex(this.qEntity, this.relationIndex));
-    }
-*/
 
     getQueryRelation(
         columnAliases: IFieldColumnAliases<any>,

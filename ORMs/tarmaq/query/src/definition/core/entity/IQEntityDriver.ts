@@ -21,7 +21,6 @@ export interface IQEntityDriver<QE extends IQEntity<any> = any> {
     currentChildIndex: number;
     dbEntity: DbEntity;
     dbRelation: DbRelation;
-    entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, QueryBaseOperation, any, any> };
     entityRelations: IQInternalRelation<any>[];
     fromClausePosition: number[];
     idColumns: IQOperableFieldInternal<any, QueryBaseOperation, any, any>[];
