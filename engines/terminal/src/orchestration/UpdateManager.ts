@@ -7,7 +7,9 @@ import {
 	IQueryUtils,
 	IQueryRelationManager,
 	RepositorySheetSelectInfo,
-	SheetQuery
+	SheetQuery,
+	IQFieldInternal,
+	IQEntityInternal
 } from '@airport/tarmaq-query'
 import {
 	Inject,
@@ -16,7 +18,6 @@ import {
 import {
 	ChangeType,
 	DbColumn_Index,
-	DbColumn,
 	Dictionary,
 	InternalFragments,
 	IRootTransaction,
@@ -254,18 +255,16 @@ export class UpdateManager
 		transaction: ITransaction,
 		context: IOperationContext
 	): Promise<void> {
+		const qEntity: IQEntityInternal = this.airportDatabase.qApplications
+		[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 		const resultSetIndexByColumnIndex: Map<DbColumn_Index, number> = new Map()
-		const SELECT: DbColumn[] = []
-		let i = 0
-		for (const qField of repositorySheetSelectInfo.selectClause) {
-			const dbColumn = qField.dbColumn
-			SELECT.push(dbColumn)
+		const SELECT: IQFieldInternal<any>[] = []
+		for (let i = 0; i < repositorySheetSelectInfo.selectClause.length; i++) {
+			const dbColumn = repositorySheetSelectInfo.selectClause[i].dbColumn
+			SELECT.push(qEntity.__driver__.allColumns[dbColumn.index])
 			resultSetIndexByColumnIndex.set(dbColumn.index, i)
-			i++
 		}
 
-		const qEntity = this.airportDatabase.qApplications
-		[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 		const sheetQuery = new SheetQuery({
 			FROM: [
 				qEntity
