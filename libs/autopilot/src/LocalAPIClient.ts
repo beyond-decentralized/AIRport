@@ -237,17 +237,14 @@ export class LocalAPIClient
         }
         this.pendingWebMessageMap.delete(message.id)
         if (message.errorMessage) {
-            if (this.ngZone) {
-                this.ngZone.run(() => requestWebMessage.reject(message.errorMessage))
-            } else {
-                requestWebMessage.reject(message.errorMessage)
-            }
+            requestWebMessage.reject(message.errorMessage)
         } else {
-            if (this.ngZone) {
-                this.ngZone.run(() => requestWebMessage.resolve(message))
-            } else {
-                requestWebMessage.resolve(message)
-            }
+            requestWebMessage.resolve(message)
+        }
+        if (this.ngZone) {
+            setTimeout(() => {
+                this.ngZone.run(() => { })
+            })
         }
     }
 
