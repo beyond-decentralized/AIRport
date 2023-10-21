@@ -301,7 +301,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 
 		this.trackRepositoryIds(resultRow)
 
-		let numNonNullColumns = 0
+		let hasNonNullColumns = false
 
 		let qEntity = this.qEntityMapByAlias[entityAlias]
 		const dbEntity = qEntity.__driver__.dbEntity
@@ -319,7 +319,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 					resultRow, columnAlias, nextColumn.index, dbColumn.type as SQLDataType, defaultValue)
 				if (this.queryParser.addProperty(entityAlias, resultObject,
 					dbColumn.type as SQLDataType, propertyName, columnValue)) {
-					numNonNullColumns++
+					hasNonNullColumns = true
 				}
 				nextColumn.index++
 			} else {
@@ -349,7 +349,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 										this.resultsRepositories_LocalIdSet.add(value)
 									}
 									haveRelationValues = true
-									numNonNullColumns++
+									hasNonNullColumns = true
 								}
 								nextColumn.index++
 							})
@@ -377,6 +377,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 						case EntityRelationType.MANY_TO_ONE:
 							if (childResultObject) {
 								this.queryParser.bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject, context)
+								hasNonNullColumns = true
 							} else {
 								this.queryParser.bufferBlankManyToOneObject(entityAlias, resultObject, propertyName)
 							}
@@ -384,6 +385,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 						case EntityRelationType.ONE_TO_MANY:
 							if (childResultObject) {
 								this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, dbEntity, propertyName, relationDbEntity, childResultObject, context)
+								hasNonNullColumns = true
 							} else {
 								this.queryParser.bufferBlankOneToMany(entityAlias, resultObject, dbEntity.name, propertyName, relationDbEntity, context)
 							}
@@ -396,7 +398,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`
 			}
 		}
 
-		if (numNonNullColumns === 0) {
+		if (!hasNonNullColumns) {
 			return null
 		}
 
