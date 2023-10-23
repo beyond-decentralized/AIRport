@@ -216,7 +216,7 @@ export class SqlLiteFunctionAdaptor
 					let primitiveValue = this.toString(
 						sqlValueProvider.getFunctionCallValue(
 							val, false, context));
-					return acc + val;
+					return acc + primitiveValue;
 				}, this.toString(value));
 			case SqlFunction.COALESCE:
 				throw new Error('Not Implemented');
