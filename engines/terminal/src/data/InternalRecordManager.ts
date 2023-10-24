@@ -101,7 +101,7 @@ export class InternalRecordManager
                     frameworkActor.terminal.GUID, context)
 
             let anApplication: IApplication = await this.ddlApplicationDao.findByIndex(
-                application.lastIds.applications + 1, context);
+                application.lastIds.applications + 1, context)
             if (!actor) {
                 actor = {
                     _localId: null,
@@ -125,7 +125,7 @@ export class InternalRecordManager
                 applications
             })
 
-        }, null, context);
+        }, null, context)
 
     }
 
@@ -136,25 +136,25 @@ export class InternalRecordManager
         await this.transactionManager.transactInternal(async (
             _transaction
         ) => {
-            const userAccount: IUserAccount = new UserAccount();
-            userAccount.username = "internalUserAccount";
-            userAccount.accountPublicSigningKey = guidv4();
+            const userAccount: IUserAccount = new UserAccount()
+            userAccount.username = "internalUserAccount"
+            userAccount.accountPublicSigningKey = guidv4()
 
-            const terminal: ITerminal = new Terminal();
-            terminal.owner = userAccount;
-            terminal.isLocal = true;
-            terminal.GUID = guidv4();
+            const terminal: ITerminal = new Terminal()
+            terminal.owner = userAccount
+            terminal.isLocal = true
+            terminal.GUID = guidv4()
 
             const application = await this.ddlApplicationDao.findOneByDomain_NameAndApplication_Name(
                 firstApp.domain, firstApp.name, context)
 
-            const actor: IActor = new Actor();
-            actor.application = application;
-            actor.userAccount = userAccount;
-            actor.terminal = terminal;
-            actor.GUID = guidv4();
+            const actor: IActor = new Actor()
+            actor.application = application
+            actor.userAccount = userAccount
+            actor.terminal = terminal
+            actor.GUID = guidv4()
             const actorDao = await (this as any).getactorDaoAsync()
-            await actorDao.save(actor, context);
+            await actorDao.save(actor, context)
 
             const lastTerminalState = this.terminalStore.getTerminalState()
             this.terminalStore.state.next({
@@ -162,7 +162,7 @@ export class InternalRecordManager
                 frameworkActor: actor,
                 terminal
             })
-        }, null, context);
+        }, null, context)
     }
 
     private async updateDomain(
