@@ -14,6 +14,6 @@ setTimeout(() => {
                 observableQueryAdapter => observableQueryAdapter
                     .checkExistenceOfQueriedRepositories().then()
             )
-        }, 300)
+        }, 3000)
     }
-}, 2000)
+}, 5000)
