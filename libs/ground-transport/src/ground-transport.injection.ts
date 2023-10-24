@@ -136,6 +136,7 @@ groundTransport.setDependencies(SyncInChecker, {
 
 groundTransport.setDependencies(SyncInDataChecker, {
     airportDatabase: AIRPORT_DATABASE,
+	applicationUtils: APPLICATION_UTILS,
     appTrackerUtils: AppTrackerUtils,
     datastructureUtils: DatastructureUtils,
     dictionary: Dictionary,

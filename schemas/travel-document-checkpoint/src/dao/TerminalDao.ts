@@ -2,7 +2,7 @@ import { AND } from '@airport/tarmaq-query'
 import { IContext, Inject, Injected } from '@airport/direction-indicator';
 import Q from '../generated/qApplication'
 import { IAirportDatabase } from '@airport/air-traffic-control';
-import { Dictionary, ISequenceGenerator, ITerminal, Terminal_GUID } from '@airport/ground-control';
+import { Dictionary, ISequenceGenerator, ITerminal, IUserAccount, Terminal_GUID } from '@airport/ground-control';
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 import { BaseTerminalDao, IBaseTerminalDao } from '../generated/baseDaos';
 import { QTerminal, QUserAccount } from '../generated/qInterfaces';
@@ -23,6 +23,12 @@ export interface ITerminalDao
 
 	insert(
 		terminals: ITerminal[],
+		context: IContext
+	): Promise<void>
+
+	updateOwner(
+		terminal: ITerminal,
+		userAccount: IUserAccount,
 		context: IContext
 	): Promise<void>
 
@@ -80,38 +86,47 @@ export class TerminalDao
 		terminals: ITerminal[],
 		context: IContext
 	): Promise<void> {
-		const airport = this.dictionary.airport
-		const Terminal = this.dictionary.Terminal
-		const terminalLids = await this.sequenceGenerator
-			.generateSequenceNumbersForColumn(
-				airport.DOMAIN_NAME,
-				airport.apps.TRAVEL_DOCUMENT_CHECKPOINT.name,
-				Terminal.name,
-				Terminal.columns.TERMINAL_LID,
-				terminals.length
-			);
-
 		const VALUES = []
 		for (let i = 0; i < terminals.length; i++) {
 			const terminal = terminals[i]
-			terminal._localId = terminalLids[i]
 			VALUES.push([
-				terminalLids[i], terminal.GUID, terminal.owner._localId, false
+				terminal.GUID, terminal.owner._localId, false
 			])
 		}
 
 		let t: QTerminal;
 
-		await this.db.insertValues({
+		const ids = await this.db.insertValuesGenerateIds({
 			INSERT_INTO: t = Q.Terminal,
 			columns: [
-				t._localId,
 				t.GUID,
 				t.owner._localId,
 				t.isLocal
 			],
 			VALUES
+		}, context) as number[]
+		
+		for (let i = 0; i < terminals.length; i++) {
+			const terminal = terminals[i]
+			terminal._localId = ids[i][0]
+		}
+	}
+
+	async updateOwner(
+		terminal: ITerminal,
+		userAccount: IUserAccount,
+		context: IContext
+	): Promise<void> {
+		let t: QTerminal;
+		await this.db.updateColumnsWhere({
+			UPDATE: t = Q.Terminal,
+			SET: {
+				OWNER_USER_ACCOUNT_LID: userAccount._localId
+			},
+			WHERE: t._localId.equals(terminal._localId)
 		}, context)
+
+		terminal.owner = userAccount
 	}
 
 }

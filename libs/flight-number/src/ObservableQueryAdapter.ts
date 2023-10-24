@@ -117,18 +117,23 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
             }
         }
 
-        for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
-            await this.repositoryLoader.loadRepository(
-                locallyMissingRepositoryGUID,
-                {
-                    ...context,
-                    doNotLoadReferences: true
-                }
-            )
-        }
-
         this.queriedRepositoryIds.GUIDSet.clear()
         this.queriedRepositoryIds.localIdSet.clear()
+
+        for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
+            try {
+                await this.repositoryLoader.loadRepository(
+                    locallyMissingRepositoryGUID,
+                    {
+                        ...context,
+                        doNotLoadReferences: true
+                    }
+                )
+            } catch (e) {
+                console.error(`Error loading repository: ${locallyMissingRepositoryGUID}`)
+                console.error(e);
+            }
+        }
     }
 
     wrapInObservable<E>(

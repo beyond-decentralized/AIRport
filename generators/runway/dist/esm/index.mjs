@@ -5476,7 +5476,6 @@ class QEntityDriver {
         this.joinType = joinType;
         this.qEntity = qEntity;
         this.childQEntities = [];
-        this.entityFieldMap = {};
         this.entityRelations = [];
         this.idColumns = [];
         this.allColumns = [];
@@ -5489,28 +5488,9 @@ class QEntityDriver {
         let instance = new qEntityConstructor(this.dbEntity, this.queryUtils, this.queryRelationManager, this.fromClausePosition, this.dbRelation, this.joinType);
         instance.__driver__.currentChildIndex = this.currentChildIndex;
         instance.__driver__.joinWhereClause = this.joinWhereClause;
-        instance.__driver__.entityFieldMap = this.entityFieldMap;
         instance.__driver__.entityRelations = this.entityRelations;
         return instance;
     }
-    /*
-    addEntityRelation<R extends IQEntityInternal>(
-        relation: IQInternalRelation<R>
-    ): void {
-        this.entityRelations[relation.parentRelationIndex] = relation;
-    }
-
-    addEntityField<T, IQF extends IQOperableFieldInternal<T, QueryBaseOperation, any, any>>(
-        field: IQF
-    ): void {
-        this.entityFieldMap[field.fieldName] = field;
-    }
-    */
-    /*
-    getRelationPropertyName(): string {
-        return QMetadataUtils.getRelationPropertyName(QMetadataUtils.getRelationByIndex(this.qEntity, this.relationIndex));
-    }
-*/
     getQueryRelation(columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
         // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
         // see IDdlApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
@@ -8356,7 +8336,7 @@ var INTERNAL_Message_Type;
     INTERNAL_Message_Type["GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME"] = "GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME";
     INTERNAL_Message_Type["IS_CONNECTION_READY"] = "IS_CONNECTION_READY";
     INTERNAL_Message_Type["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
-    INTERNAL_Message_Type["UI_CHANGE_URL"] = "UI_CHANGE_URL\u00DF";
+    INTERNAL_Message_Type["UI_CHANGE_URL"] = "UI_CHANGE_URL";
     INTERNAL_Message_Type["UI_GO_BACK"] = "UI_GO_BACK";
     INTERNAL_Message_Type["UI_GO_FORWARD"] = "UI_GO_FORWARD";
     INTERNAL_Message_Type["UI_URL_CHANGED"] = "UI_URL_CHANGED";
@@ -8474,6 +8454,7 @@ ${JSON.stringify(message, null, 2)}
             }
             case Message_Type_Group.SUBSCRIPTION: {
                 switch (message.type) {
+                    case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE: {
                         return true;
@@ -12309,6 +12290,7 @@ globalThis.internalTerminalState = new BehaviorSubject({
     ui: {
         currentUrl: '',
         uiIframe: null,
+        subscriptionMap: new Map()
     },
     webReceiver: {
         domainPrefix: '',
@@ -31559,7 +31541,7 @@ class SynchronizationInManager {
             }
         }
         await this.transactionManager.transactInternal(async (transaction, context) => {
-            transaction.isSync = true;
+            transaction.isRepositorySync = true;
             await this.twoStageSyncedInDataProcessor.syncMessages(immediateProcessingMessages, newAndUpdatedRepositoriesAndRecords, transaction, context);
         }, null, context);
         await this.wait(2000);
@@ -31627,7 +31609,7 @@ class SynchronizationInManager {
         }
         if (delayedProcessingMessagesWithValidApps.length) {
             await this.transactionManager.transactInternal(async (transaction, context) => {
-                transaction.isSync = true;
+                transaction.isRepositorySync = true;
                 await this.twoStageSyncedInDataProcessor.syncMessages(delayedProcessingMessagesWithValidApps, null, transaction, context);
             }, null, context);
         }
@@ -34964,7 +34946,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
             return resultRow;
         }
         this.trackRepositoryIds(resultRow);
-        let numNonNullColumns = 0;
+        let hasNonNullColumns = false;
         let qEntity = this.qEntityMapByAlias[entityAlias];
         const dbEntity = qEntity.__driver__.dbEntity;
         let resultObject = this.queryParser.addEntity(entityAlias, dbEntity, context);
@@ -34976,7 +34958,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                 const dbColumn = dbProperty.propertyColumns[0].column;
                 const columnValue = this.sqlQueryAdapter.getResultCellValue(resultRow, columnAlias, nextColumn.index, dbColumn.type, defaultValue);
                 if (this.queryParser.addProperty(entityAlias, resultObject, dbColumn.type, propertyName, columnValue)) {
-                    numNonNullColumns++;
+                    hasNonNullColumns = true;
                 }
                 nextColumn.index++;
             }
@@ -35002,7 +34984,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                                         this.resultsRepositories_LocalIdSet.add(value);
                                     }
                                     haveRelationValues = true;
-                                    numNonNullColumns++;
+                                    hasNonNullColumns = true;
                                 }
                                 nextColumn.index++;
                             });
@@ -35031,6 +35013,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                         case EntityRelationType.MANY_TO_ONE:
                             if (childResultObject) {
                                 this.queryParser.bufferManyToOneObject(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, childResultObject, context);
+                                hasNonNullColumns = true;
                             }
                             else {
                                 this.queryParser.bufferBlankManyToOneObject(entityAlias, resultObject, propertyName);
@@ -35039,6 +35022,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                         case EntityRelationType.ONE_TO_MANY:
                             if (childResultObject) {
                                 this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, dbEntity, propertyName, relationDbEntity, childResultObject, context);
+                                hasNonNullColumns = true;
                             }
                             else {
                                 this.queryParser.bufferBlankOneToMany(entityAlias, resultObject, dbEntity.name, propertyName, relationDbEntity, context);
@@ -35051,7 +35035,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.query, context)}`;
                 }
             }
         }
-        if (numNonNullColumns === 0) {
+        if (!hasNonNullColumns) {
             return null;
         }
         let idValue = this.queryUtils.getIdKey(resultObject, dbEntity);
@@ -35918,6 +35902,7 @@ const flightNumber = lib('flight-number');
 flightNumber.register(ActiveQueries);
 const OBSERVABLE_QUERY_ADAPTER = flightNumber.token('ObservableQueryAdapter');
 flightNumber.setDependencies(ActiveQueries, {
+    repositoryDao: RepositoryDao,
     terminalStore: TerminalStore
 });
 OBSERVABLE_QUERY_ADAPTER.setClass(ObservableQueryAdapter);
@@ -35933,9 +35918,9 @@ setTimeout(() => {
         setInterval(() => {
             globalThis.IOC.get(globalThis.OBSERVABLE_QUERY_ADAPTER).then(observableQueryAdapter => observableQueryAdapter
                 .checkExistenceOfQueriedRepositories().then());
-        }, 300);
+        }, 3000);
     }
-}, 2000);
+}, 5000);
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -36840,6 +36825,7 @@ class TransactionalReceiver {
     async processInternalMessage(message) {
         let theErrorMessage = undefined;
         let theResult = null;
+        let currentUrl = undefined;
         switch (message.type) {
             case INTERNAL_Message_Type.APP_INITIALIZING:
                 const application = message.jsonApplication;
@@ -36886,7 +36872,7 @@ class TransactionalReceiver {
                 break;
             }
             case INTERNAL_Message_Type.UI_CHANGE_URL:
-                let currentUrl = message.changeToUrl;
+                currentUrl = message.changeToUrl;
             // Fall through to 'case INTERNAL_Message_Type.UI_URL_CHANGED:'
             case INTERNAL_Message_Type.UI_URL_CHANGED: {
                 currentUrl = message.newUrl;
@@ -37223,16 +37209,36 @@ class TransactionalServer {
     }
     async find(portableQuery, credentials, context) {
         this.ensureTransactionContext(credentials, context);
+        this.ensureRepositoriesLoaded(portableQuery);
         return await this.queryManager.find(portableQuery, context);
+    }
+    async ensureRepositoriesLoaded(portableQuery) {
+        const trackedRepoGUIDs = portableQuery.trackedRepoGUIDs;
+        if (trackedRepoGUIDs) {
+            for (const trackedRepoGUID of trackedRepoGUIDs) {
+                this.observableQueryAdapter.queriedRepositoryIds
+                    .GUIDSet.add(trackedRepoGUID);
+            }
+        }
+        const trackedRepoLocalIDs = portableQuery.trackedRepoLocalIds;
+        if (trackedRepoLocalIDs) {
+            for (const trackedRepoLocalID of trackedRepoLocalIDs) {
+                this.observableQueryAdapter.queriedRepositoryIds
+                    .localIdSet.add(trackedRepoLocalID);
+            }
+        }
     }
     async findOne(portableQuery, credentials, context) {
         this.ensureTransactionContext(credentials, context);
+        this.ensureRepositoriesLoaded(portableQuery);
         return await this.queryManager.findOne(portableQuery, context);
     }
     search(portableQuery, credentials, context) {
+        this.ensureRepositoriesLoaded(portableQuery);
         return this.queryManager.search(portableQuery, context);
     }
     searchOne(portableQuery, credentials, context) {
+        this.ensureRepositoriesLoaded(portableQuery);
         return this.queryManager.searchOne(portableQuery, context);
     }
     async startTransaction(credentials, context) {
@@ -37502,7 +37508,7 @@ class DeleteManager {
             .applications[portableQuery.applicationIndex].currentVersion[0].applicationVersion
             .entities[portableQuery.entityIndex];
         const deleteCommand = transaction.deleteWhere(portableQuery, context);
-        if (dbEntity.isLocal || transaction.isSync) {
+        if (dbEntity.isLocal || transaction.isRepositorySync) {
             return await deleteCommand;
         }
         const selectCascadeTree = this.getCascadeSubTree(dbEntity);
@@ -37761,7 +37767,7 @@ appears more than once in the Columns clause`);
             columnsToPopulate = this.ensureAirEntityIdValues(actor, dbEntity, insertValues, errorPrefix, transaction, context);
         }
         let generatedColumns;
-        if (!transaction.isSync || context.generateOnSync) {
+        if (!transaction.isRepositorySync || context.generateOnSync) {
             generatedColumns = this.verifyNoGeneratedColumns(dbEntity, portableQuery.query, errorPrefix);
         }
         let _localIds;
@@ -37770,7 +37776,7 @@ appears more than once in the Columns clause`);
             systemWideOperationId = await this.systemWideOperationIdUtils
                 .getSysWideOpId();
         }
-        if ((!transaction.isSync || context.generateOnSync) && ensureGeneratedValues) {
+        if ((!transaction.isRepositorySync || context.generateOnSync) && ensureGeneratedValues) {
             _localIds = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix);
         }
         if (dbEntity.isLocal) {
@@ -37779,7 +37785,7 @@ appears more than once in the Columns clause`);
                     .ensureEntity(dbEntity, true);
             }
         }
-        else if (!transaction.isSync) {
+        else if (!transaction.isRepositorySync) {
             await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, transaction, rootTransaction, context);
         }
         const numberOfInsertedRecords = await transaction.insertValues(portableQuery, context);
@@ -37948,21 +37954,21 @@ appears more than once in the Columns clause`);
                         // Save operations validate Actor ealier and set it on the entity objects
                         break;
                     }
-                    if (!transaction.isSync) {
+                    if (!transaction.isRepositorySync) {
                         throw new Error(errorPrefix +
                             `You cannot explicitly provide an ACTOR_LID value for Repository entities.`);
                     }
                     break;
                 case actorRecordIdColumn.index:
                     foundActorRecordIdColumn = true;
-                    if (!transaction.isSync) {
+                    if (!transaction.isRepositorySync) {
                         throw new Error(errorPrefix +
                             `You cannot explicitly provide an ACTOR_RECORD_ID value for Repository entities.`);
                     }
                     break;
                 case sysWideOperationIdColumn.index:
                     foundSystemWideOperationIdColumn = true;
-                    if (!transaction.isSync) {
+                    if (!transaction.isRepositorySync) {
                         throw new Error(`Error inserting into '${dbEntity.name}'.
 You cannot explicitly provide a SYSTEM_WIDE_OPERATION_ID value for Repository entities.`);
                     }
@@ -37978,7 +37984,7 @@ You must provide a valid REPOSITORY_LID value for Repository entities.`;
         if (repositoryIdColumnQueryIndex === undefined) {
             throw new Error(missingRepositoryIdErrorMsg);
         }
-        if (transaction.isSync) {
+        if (transaction.isRepositorySync) {
             if (!foundActorIdColumn) {
                 throw new Error(errorPrefix +
                     `ACTOR_LID must be provided for sync operations.`);
@@ -38018,7 +38024,7 @@ You must provide a valid REPOSITORY_LID value for Repository entities.`;
 and cannot have NULL values.`);
                 }
             }
-            if (!context.isSaveOperation && !transaction.isSync) {
+            if (!context.isSaveOperation && !transaction.isRepositorySync) {
                 // Save operation set Actor ealier (at the entity level, to be returned back to client)
                 entityValues[actorIdColumn.index] = actor._localId;
             }
@@ -38471,10 +38477,10 @@ parent transactions.
                 }
             }
             let transactionHistory = transaction.transactionHistory;
-            if (!parentTransaction && !context.doNotRecordHistory && !transaction.isSync
+            if (!parentTransaction && !context.doNotRecordHistory && !transaction.isRepositorySync
                 && transactionHistory.repositoryTransactionHistories.length) {
                 await this.activeQueries.markQueriesToRerun(transactionHistory.allModifiedColumnsMap, transactionHistory.modifiedRepository_LocalIdSet, context);
-                if (!transaction.isSync) {
+                if (!transaction.isRepositorySync) {
                     const { historiesToSend, messages } = await this.synchronizationOutManager.getSynchronizationMessages(transactionHistory.repositoryTransactionHistories, context);
                     await transaction.commit(null, context);
                     if (transactionHistory.allRecordHistory.length) {
@@ -38693,7 +38699,7 @@ class UpdateManager {
         let recordHistoryMap;
         let repositorySheetSelectInfo;
         let systemWideOperationId;
-        if (!dbEntity.isLocal && !transaction.isSync) {
+        if (!dbEntity.isLocal && !transaction.isRepositorySync) {
             systemWideOperationId = await this.systemWideOperationIdUtils
                 .getSysWideOpId();
             // TODO: For entity queries an additional query really shouldn't be needed
@@ -38717,7 +38723,7 @@ class UpdateManager {
                     .ensureEntity(dbEntity, true);
             }
         }
-        else if (!transaction.isSync) {
+        else if (!transaction.isRepositorySync) {
             const previousDbEntity = context.dbEntity;
             context.dbEntity = dbEntity;
             // TODO: Entity based updates already have all of the new values being
@@ -38787,29 +38793,24 @@ class UpdateManager {
     }
     async addNewValueHistory(queryUpdate, recordHistoryMapByRecordId, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, transaction, context) {
         const qEntity = this.airportDatabase.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
+        const resultSetIndexByColumnIndex = new Map();
+        const SELECT = [];
+        for (let i = 0; i < repositorySheetSelectInfo.selectClause.length; i++) {
+            const dbColumn = repositorySheetSelectInfo.selectClause[i].dbColumn;
+            SELECT.push(qEntity.__driver__.allColumns[dbColumn.index]);
+            resultSetIndexByColumnIndex.set(dbColumn.index, i);
+        }
         const sheetQuery = new SheetQuery({
             FROM: [
                 qEntity
             ],
-            SELECT: [],
+            SELECT,
             WHERE: qEntity[this.dictionary.AirEntity.properties
                 .systemWideOperationId]
                 .equals(systemWideOperationId)
         });
         let portableSelect = this.queryFacade.getPortableQuery(sheetQuery, QueryResultType.SHEET, context);
-        const resultSetIndexByColumnIndex = new Map();
-        const selectDbColumns = [];
-        let i = 0;
-        for (const qField of repositorySheetSelectInfo.selectClause) {
-            const dbColumn = qField.dbColumn;
-            selectDbColumns.push(dbColumn);
-            resultSetIndexByColumnIndex.set(dbColumn.index, i);
-            i++;
-        }
-        const internalFragments = {
-            SELECT: selectDbColumns
-        };
-        const updatedRecords = await transaction.find(portableSelect, internalFragments, context);
+        const updatedRecords = await transaction.find(portableSelect, {}, context);
         const { recordsByRepositoryId, repositoryIdSet } = this.groupRecordsByRepository(updatedRecords, repositorySheetSelectInfo);
         for (const repositoryId of repositoryIdSet) {
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];
@@ -40369,6 +40370,7 @@ TRANSACTIONAL_SERVER.setDependencies({
     appTrackerUtils: AppTrackerUtils,
     deleteManager: DeleteManager,
     insertManager: InsertManager,
+    observableQueryAdapter: ObservableQueryAdapter,
     operationManager: OperationManager,
     queryManager: QueryManager,
     repositoryManager: RepositoryManager,

@@ -130,6 +130,7 @@ export class SyncOutDataSerializer
 	// repositoryDao: IRepositoryDao
 
 	WITH_ID: IWithId = {} as any
+	TERMINAL_WITH_ID: ITerminal = {} as any
 	WITH_ID_AND_ACTOR_ID: IWithIdAndActor = {} as any
 	WITH_RECORD_HISTORY: IWithRecordHistory = {} as any
 	WITH_INDEX: IWithIndex = {} as any
@@ -314,7 +315,7 @@ export class SyncOutDataSerializer
 					canWrite: repositoryMember.canWrite,
 					status: repositoryMember.status,
 					userAccount: this.addUserAccountToMessage(repositoryMember.userAccount,
-						data, lookups.userAccountLookup)
+						data, lookups.userAccountLookup).userAccountInMessageIndex as any
 				}
 			}
 			data.repositoryMembers[inMessageIndex] = newRepositoryMember
@@ -370,9 +371,15 @@ export class SyncOutDataSerializer
 		userAccount: IUserAccount,
 		data: SyncRepositoryData,
 		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
-	): IUserAccount {
+	): {
+		entityAlreadyAdded,
+		userAccountInMessageIndex: number
+	} {
 		if (!userAccount) {
-			return -1 as any
+			return {
+				entityAlreadyAdded: true,
+				userAccountInMessageIndex: -1
+			}
 		}
 		const {
 			entityAlreadyAdded,
@@ -388,7 +395,10 @@ export class SyncOutDataSerializer
 			data.userAccounts[inMessageIndex] = serializedUserAccount
 		}
 
-		return inMessageIndex as any
+		return {
+			entityAlreadyAdded,
+			userAccountInMessageIndex: inMessageIndex
+		}
 	}
 
 	private addTerminalToMessage(
@@ -404,9 +414,8 @@ export class SyncOutDataSerializer
 
 		if (!entityAlreadyAdded) {
 			data.terminals[inMessageIndex] = {
-				...this.WITH_ID,
+				...this.TERMINAL_WITH_ID,
 				GUID: terminal.GUID,
-				isLocal: false,
 				owner: inMessageUserAccountLookup.inMessageIndexesById.get(terminal.owner.accountPublicSigningKey) as any
 			}
 		}
@@ -450,8 +459,8 @@ export class SyncOutDataSerializer
 		]
 
 		for (const repository of foundRepositories) {
-			let userAccountInMessageIndex = this.getEntityInMessageIndex(
-				repository.owner, IndexedEntityType.USER_ACCOUNT, lookups.userAccountLookup)
+			const { userAccountInMessageIndex } = this.addUserAccountToMessage(
+				repository.owner, data, lookups.userAccountLookup)
 			if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
 				const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository._localId)
 				data.referencedRepositories[repositoryInMessageIndex] =

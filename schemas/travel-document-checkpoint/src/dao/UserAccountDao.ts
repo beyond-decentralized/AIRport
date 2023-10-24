@@ -68,36 +68,28 @@ export class UserAccountDao
 		userAccounts: IUserAccount[],
 		context: IContext
 	): Promise<void> {
-		const airport = this.dictionary.airport
-		const UserAccount = this.dictionary.UserAccount
-		const userAccountLids = await this.sequenceGenerator
-			.generateSequenceNumbersForColumn(
-				airport.DOMAIN_NAME,
-				airport.apps.TRAVEL_DOCUMENT_CHECKPOINT.name,
-				UserAccount.name,
-				UserAccount.columns.USER_ACCOUNT_LID,
-				userAccounts.length
-			);
-
 		const VALUES = []
 		for (let i = 0; i < userAccounts.length; i++) {
 			const userAccount = userAccounts[i]
-			userAccount._localId = userAccountLids[i]
 			VALUES.push([
-				userAccountLids[i], userAccount.accountPublicSigningKey, userAccount.username
+				userAccount.accountPublicSigningKey, userAccount.username
 			])
 		}
 
 		let u: QUserAccount
-		await this.db.insertValues({
+		const ids = await this.db.insertValuesGenerateIds({
 			INSERT_INTO: u = Q.UserAccount,
 			columns: [
-				u._localId,
 				u.accountPublicSigningKey,
 				u.username
 			],
 			VALUES
-		}, context)
+		}, context) as number[]
+
+		for (let i = 0; i < userAccounts.length; i++) {
+			const userAccount = userAccounts[i]
+			userAccount._localId = ids[i][0]
+		}
 	}
 
 }

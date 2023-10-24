@@ -86,6 +86,7 @@ export class SyncInTerminalChecker
 	): Promise<void> {
 		for (const terminal of missingTerminals) {
 			terminal.isLocal = false
+			delete terminal._localId
 		}
 		await this.terminalDao.insert(missingTerminals, context)
 	}

@@ -43,7 +43,7 @@ export class UserAccountManager {
             username
         }
 
-        await this.userAccountDao.save(userAccount, context)
+        await this.userAccountDao.insert([userAccount], context)
 
         return {
             userAccount

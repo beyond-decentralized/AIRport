@@ -3,6 +3,7 @@ import { RepositoryDao } from "@airport/holding-pattern/dist/app/bundle"
 import { TerminalStore, TRANSACTION_MANAGER } from "@airport/terminal-map"
 import { ActiveQueries } from "./ActiveQueries"
 import { IObservableQueryAdapter, ObservableQueryAdapter } from "./ObservableQueryAdapter"
+import { REPOSITORY_LOADER } from "@airport/air-traffic-control"
 
 const flightNumber = lib('flight-number')
 
@@ -19,6 +20,7 @@ OBSERVABLE_QUERY_ADAPTER.setClass(ObservableQueryAdapter)
 OBSERVABLE_QUERY_ADAPTER.setDependencies({
     activeQueries: ActiveQueries,
     repositoryDao: RepositoryDao,
+    repositoryLoader: REPOSITORY_LOADER,
     transactionManager: TRANSACTION_MANAGER
 })
 

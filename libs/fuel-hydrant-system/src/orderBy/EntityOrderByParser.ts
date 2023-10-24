@@ -136,7 +136,7 @@ export class EntityOrderByParser
 						return
 					}
 
-					selectFragmentQueue.push(this.rootSelectClauseFragment[propertyName])
+					selectFragmentQueue.push(currentSelectFragment[propertyName])
 					const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation)
 					joinNodeQueue.push(childJoinNode)
 				} else {

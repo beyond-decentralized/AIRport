@@ -269,6 +269,7 @@ TRANSACTIONAL_SERVER.setDependencies({
     appTrackerUtils: AppTrackerUtils,
     deleteManager: DeleteManager,
     insertManager: InsertManager,
+    observableQueryAdapter: ObservableQueryAdapter,
     operationManager: OperationManager,
     queryManager: QueryManager,
     repositoryManager: RepositoryManager,

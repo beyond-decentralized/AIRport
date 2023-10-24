@@ -216,7 +216,6 @@ export class ActorDao
 		let a: QActor
 		let ap: QDdlApplication
 		let t: QTerminal
-		const GUID = Y
 		return await this.db.find.tree({
 			SELECT: {
 				...ALL_FIELDS,
@@ -228,8 +227,8 @@ export class ActorDao
 					}
 				},
 				terminal: {
-					_localId:
-						GUID,
+					_localId: Y,
+					GUID: Y,
 					owner: {}
 				},
 				userAccount: {}

@@ -40,7 +40,7 @@ export class SyncInUserAccountChecker
 				}
 				const accountPublicSigningKey = userAccount.accountPublicSigningKey
 				// FIXME: put in the proper UserAccount_PublicSigningKey (521) length
-				if (typeof accountPublicSigningKey !== 'string' || accountPublicSigningKey.length !== 36) {
+				if (typeof accountPublicSigningKey !== 'string' || accountPublicSigningKey.length !== 272) {
 					throw new Error(`Invalid 'userAccount.accountPublicSigningKey'`)
 				}
 				if (userAccountPublicSigningKeySet.has(accountPublicSigningKey)) {
@@ -92,6 +92,7 @@ appears more than once in message.data.userAccounts
 			if (!userAccount.username || typeof userAccount.username !== 'string') {
 				throw new Error(`Invalid UserAccount.username ${userAccount.username}`)
 			}
+			delete userAccount._localId
 		}
 		await this.userAccountDao.insert(missingUserAccounts, context)
 	}

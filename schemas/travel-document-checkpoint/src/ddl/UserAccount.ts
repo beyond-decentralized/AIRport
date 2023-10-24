@@ -5,11 +5,13 @@ import {
 	Entity,
 	GeneratedValue,
 	Id,
+	Table,
 } from '@airport/tarmaq-entity'
 import { UserAccount_PublicSigningKey, UserAccount_LocalId, UserAccount_Username } from '@airport/aviation-communication'
 import { IUserAccount } from '@airport/ground-control'
 
 @Entity()
+@Table({ name: "USER_ACCOUNTS"})
 export class UserAccount
 	implements IUserAccount {
 
