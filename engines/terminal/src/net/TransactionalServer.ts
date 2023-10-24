@@ -5,6 +5,7 @@ import {
 import {
 	IContext
 } from '@airport/direction-indicator';
+import { ObservableQueryAdapter } from '@airport/flight-number';
 import {
 	IActor,
 	IAirEntity,
@@ -75,6 +76,9 @@ export class TransactionalServer
 	insertManager: IInsertManager
 
 	@Inject()
+	observableQueryAdapter: ObservableQueryAdapter<any>
+
+	@Inject()
 	operationManager: IOperationManager
 
 	@Inject()
@@ -106,9 +110,31 @@ export class TransactionalServer
 		context: IQueryOperationContext & ITransactionContext
 	): Promise<EntityArray> {
 		this.ensureTransactionContext(credentials, context)
-		
+		this.ensureRepositoriesLoaded(portableQuery)
+
 		return await this.queryManager.find<E, EntityArray>(
 			portableQuery, context);
+	}
+
+	private async ensureRepositoriesLoaded(
+		portableQuery: PortableQuery
+	): Promise<void> {
+		const trackedRepoGUIDs = portableQuery.trackedRepoGUIDs
+		if (trackedRepoGUIDs) {
+			for (const trackedRepoGUID of trackedRepoGUIDs) {
+				this.observableQueryAdapter.queriedRepositoryIds
+					.GUIDSet.add(trackedRepoGUID)
+			}
+		}
+
+		const trackedRepoLocalIDs = portableQuery.trackedRepoLocalIds
+		if (trackedRepoLocalIDs) {
+			for (const trackedRepoLocalID of trackedRepoLocalIDs) {
+				this.observableQueryAdapter.queriedRepositoryIds
+					.localIdSet.add(trackedRepoLocalID)
+			}
+		}
+
 	}
 
 	async findOne<E>(
@@ -117,6 +143,7 @@ export class TransactionalServer
 		context: IQueryOperationContext & ITransactionContext
 	): Promise<E> {
 		this.ensureTransactionContext(credentials, context)
+		this.ensureRepositoriesLoaded(portableQuery)
 
 		return await this.queryManager.findOne<E>(
 			portableQuery, context);
@@ -127,6 +154,8 @@ export class TransactionalServer
 		credentials: IApiCredentials,
 		context: IQueryOperationContext & ITransactionContext
 	): Observable<EntityArray> {
+		this.ensureRepositoriesLoaded(portableQuery)
+
 		return this.queryManager.search<E, EntityArray>(
 			portableQuery, context);
 	}
@@ -136,6 +165,8 @@ export class TransactionalServer
 		credentials: IApiCredentials,
 		context: IQueryOperationContext & ITransactionContext
 	): Observable<E> {
+		this.ensureRepositoriesLoaded(portableQuery)
+
 		return this.queryManager.searchOne<E>(portableQuery, context);
 	}
 
