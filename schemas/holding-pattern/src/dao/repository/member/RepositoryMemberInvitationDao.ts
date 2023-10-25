@@ -31,7 +31,10 @@ export class RepositoryMemberInvitationDao
                 rmi.addedInRepositoryTransactionHistory._localId
             ],
             VALUES
-        }, context)
+        }, {
+            ...context,
+            generateOnSync: true
+        })
         for (let i = 0; i < repositoryMemberInvitations.length; i++) {
             let repositoryMemberInvitation = repositoryMemberInvitations[i]
             repositoryMemberInvitation._localId = _localIds[i][0]

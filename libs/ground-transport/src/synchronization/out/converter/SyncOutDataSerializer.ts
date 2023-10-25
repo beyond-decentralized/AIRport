@@ -947,15 +947,17 @@ export class SyncOutDataSerializer
 		owner: IUserAccount
 	): IRepository {
 		return {
-			_localId: repository._localId,
 			ageSuitability: repository.ageSuitability,
 			createdAt: repository.createdAt,
+			fullApplicationName: repository.fullApplicationName,
+			GUID: repository.GUID,
 			immutable: repository.immutable,
 			internal: repository.internal,
+			isPublic: repository.isPublic,
 			name: repository.name,
-			owner,
 			source: repository.source,
-			GUID: repository.GUID
+			uiEntryUri: repository.uiEntryUri,
+			owner
 		} as any
 	}
 

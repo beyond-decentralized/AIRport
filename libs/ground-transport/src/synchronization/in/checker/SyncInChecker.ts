@@ -15,7 +15,7 @@ import { ITerminalStore } from '@airport/terminal-map';
 
 export interface ISyncInChecker {
 
-	checkData(
+	checkMessage(
 		message: SyncRepositoryMessage,
 		context: IContext
 	): Promise<IDataCheckResult>
@@ -65,7 +65,7 @@ export class SyncInChecker
 	/**
 	 * Check the message and load all required auxiliary entities.
 	 */
-	async checkData(
+	async checkMessage(
 		message: SyncRepositoryMessage,
 		context: IContext
 	): Promise<IDataCheckResult> {

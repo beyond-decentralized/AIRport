@@ -456,12 +456,6 @@ parent transactions.
 			.allRecordHistoryNewValues.concat(childTransactionHistory.allRecordHistoryNewValues)
 		parentTransactionHistory.allRecordHistoryOldValues = parentTransactionHistory
 			.allRecordHistoryOldValues.concat(childTransactionHistory.allRecordHistoryOldValues)
-		parentTransactionHistory.remoteRepositoryMembers = parentTransactionHistory
-			.remoteRepositoryMembers.concat(childTransactionHistory.remoteRepositoryMembers)
-		parentTransactionHistory.remoteRepositoryMemberAcceptances = parentTransactionHistory
-			.remoteRepositoryMemberAcceptances.concat(childTransactionHistory.remoteRepositoryMemberAcceptances)
-		parentTransactionHistory.remoteRepositoryMemberInvitations = parentTransactionHistory
-			.remoteRepositoryMemberInvitations.concat(childTransactionHistory.remoteRepositoryMemberInvitations)
 		parentTransactionHistory.allModifiedColumnsMap
 			.merge(childTransactionHistory.allModifiedColumnsMap)
 		parentTransactionHistory.modifiedRepository_LocalIdSet
@@ -565,19 +559,6 @@ ${callHerarchy}
 		context: ITransactionContext,
 	): Promise<boolean> {
 		let transactionHistory = transaction.transactionHistory;
-
-		if (transactionHistory.remoteRepositoryMembers.length) {
-			await this.repositoryMemberDao
-				.insert(transactionHistory.remoteRepositoryMembers, context)
-		}
-		if (transactionHistory.remoteRepositoryMemberAcceptances.length) {
-			await this.repositoryMemberAcceptanceDao
-				.insert(transactionHistory.remoteRepositoryMemberAcceptances, context)
-		}
-		if (transactionHistory.remoteRepositoryMemberInvitations.length) {
-			await this.repositoryMemberInvitationDao
-				.insert(transactionHistory.remoteRepositoryMemberInvitations, context)
-		}
 
 		if (!transactionHistory.repositoryTransactionHistories.length) {
 			return

@@ -164,6 +164,7 @@ export class TwoStageSyncedInDataProcessor
 		// split messages by repository and record actor information
 		for (const message of messages) {
 			const repositoryTransactionHistory = message.data.history
+			repositoryTransactionHistory.transactionHistory = transactionHistory
 			this.repositoryTransactionHistoryDuo
 				.setModifiedRepository_LocalIdSet(repositoryTransactionHistory)
 
@@ -214,12 +215,6 @@ export class TwoStageSyncedInDataProcessor
 					}
 				})
 			})
-			transactionHistory.remoteRepositoryMembers = transactionHistory
-				.remoteRepositoryMembers.concat(repositoryTransactionHistory.newRepositoryMembers)
-			transactionHistory.remoteRepositoryMemberAcceptances = transactionHistory
-				.remoteRepositoryMemberAcceptances.concat(repositoryTransactionHistory.newRepositoryMemberAcceptances)
-			transactionHistory.remoteRepositoryMemberInvitations = transactionHistory
-				.remoteRepositoryMemberInvitations.concat(repositoryTransactionHistory.newRepositoryMemberInvitations)
 		}
 	}
 
@@ -281,7 +276,7 @@ export class TwoStageSyncedInDataProcessor
 		}
 
 		await this.stage2SyncedInDataProcessor.applyChangesToDb(
-			stage1Result, applicationsByApplicationVersion_LocalIdMap)
+			stage1Result, applicationsByApplicationVersion_LocalIdMap, context)
 
 
 		if (allSyncConflicts.length) {

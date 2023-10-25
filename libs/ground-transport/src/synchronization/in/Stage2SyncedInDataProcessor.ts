@@ -44,6 +44,7 @@ export interface IStage2SyncedInDataProcessor {
 	applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
+		context: IContext
 	): Promise<void>;
 
 }
@@ -89,9 +90,8 @@ export class Stage2SyncedInDataProcessor
 	async applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
+		context: IContext
 	): Promise<void> {
-		const context: IOperationContext = {} as any
-
 		await this.performCreates(stage1Result.recordCreations,
 			applicationsByApplicationVersion_LocalIdMap, context)
 		await this.performUpdates(stage1Result.recordUpdates,
@@ -118,7 +118,7 @@ export class Stage2SyncedInDataProcessor
 			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<DbColumn_Index, any>>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
-		context: IOperationContext
+		context: IContext
 	): Promise<void> {
 		for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
 			const applicationIndex = applicationsByApplicationVersion_LocalIdMap
@@ -235,7 +235,7 @@ export class Stage2SyncedInDataProcessor
 			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<ActorRecordId, Map<DbColumn_Index, RecordUpdate>>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
-		context: IOperationContext
+		context: IContext
 	): Promise<void> {
 		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
 		const finalUpdateMap: Map<ApplicationVersion_LocalId, Map<DbEntity_TableIndex, ColumnUpdateKeyMap>> = new Map()
@@ -307,7 +307,7 @@ export class Stage2SyncedInDataProcessor
 			Map<DbEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Set<ActorRecordId>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
-		context: IOperationContext
+		context: IContext
 	): Promise<void> {
 		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
 

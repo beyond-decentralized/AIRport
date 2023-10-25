@@ -57,6 +57,7 @@ export class SyncInRepositoryChecker
 		let missingRepositories: IRepository[] = []
 		let newMembers: IRepositoryMember[] = []
 		let newRepositoryMemberAcceptances: IRepositoryMemberAcceptance[] = []
+		let newRepositoryMemberInvitations: IRepositoryMemberInvitation[] = []
 		let signatureChecks: ISignatureCheck[] = []
 
 		try {
@@ -149,7 +150,12 @@ export class SyncInRepositoryChecker
 			const memberCheckResult = await this.checkRepositoryMembers(message, context)
 			signatureChecks = memberCheckResult.signatureChecks
 			newMembers = memberCheckResult.newMembers
-			newRepositoryMemberAcceptances = [memberCheckResult.newRepositoryMemberAcceptance]
+			if (memberCheckResult.newRepositoryMemberAcceptance) {
+				newRepositoryMemberAcceptances = [memberCheckResult.newRepositoryMemberAcceptance]
+			}
+			if (memberCheckResult.newRepositoryMemberInvitations) {
+				newRepositoryMemberInvitations = memberCheckResult.newRepositoryMemberInvitations
+			}
 		} catch (e) {
 			console.error(e)
 			return {
@@ -162,6 +168,7 @@ export class SyncInRepositoryChecker
 			missingRepositories,
 			newMembers,
 			newRepositoryMemberAcceptances,
+			newRepositoryMemberInvitations,
 			signatureChecks
 		}
 	}
@@ -172,6 +179,7 @@ export class SyncInRepositoryChecker
 	): Promise<{
 		newMembers: IRepositoryMember[]
 		newRepositoryMemberAcceptance: IRepositoryMemberAcceptance
+		newRepositoryMemberInvitations: IRepositoryMemberInvitation[]
 		signatureChecks?: ISignatureCheck[]
 	}> {
 		const data = message.data
@@ -188,25 +196,28 @@ export class SyncInRepositoryChecker
 				data, existingRepositoryMember)
 		const isNewRepositoryMemberAcceptanceMessage = !!newRepositoryMemberAcceptance
 
-		const isNewRepositoryMemberInvitationMessage = this
-			.isNewRepositoryMemberInvitationMessage(
+		const newRepositoryMemberInvitations = this
+			.getNewRepositoryMemberInvitations(
 				data, existingRepositoryMember, newMembers)
 
 		await this.checkRepositoryMemberUserAccounts(data,
 			isNewRepositoryMemberAcceptanceMessage,
-			isNewRepositoryMemberInvitationMessage)
+			!!newRepositoryMemberInvitations.length)
 
 		const signatureChecks = this.getPublicSigningKeysAndSignatureToCheck(
 			message, isNewRepositoryMemberAcceptanceMessage)
 
-		delete data.history.newRepositoryMembers
-
+		data.history.newRepositoryMembers = []
+		data.history.newRepositoryMemberAcceptances = []
+		data.history.newRepositoryMemberInvitations = []
+		data.history.newRepositoryMemberUpdates = []
 
 		// TODO: Add a newPublicRepositoryMember property to history and check it
 
 		return {
 			newMembers,
 			newRepositoryMemberAcceptance,
+			newRepositoryMemberInvitations,
 			signatureChecks
 		}
 	}
@@ -231,7 +242,7 @@ message.data.repositoryMembers[${i}].userAccount does not exist in the message`)
 			}
 		}
 
-		if (!data.userAccounts[history.member.userAccount as any]) {
+		if (!history.member.userAccount) {
 			throw new Error(`UserAccount with index ${history.member.userAccount} referenced in
 message.data.history.member.userAccount does not exist in the message`)
 		}
@@ -323,11 +334,11 @@ a acceptingRepositoryMember.userAccount specified.`)
 		return newRepositoryMemberAcceptance
 	}
 
-	private isNewRepositoryMemberInvitationMessage(
+	private getNewRepositoryMemberInvitations(
 		data: SyncRepositoryData,
 		existingRepositoryMember: IRepositoryMember,
 		newMembers: IRepositoryMember[]
-	): boolean {
+	): IRepositoryMemberInvitation[] {
 		const history = data.history
 
 		const newRepositoryMemberInvitationsErrorPrefix = `history.newRepositoryMemberInvitations`
@@ -338,7 +349,7 @@ a acceptingRepositoryMember.userAccount specified.`)
 		}
 
 		if (!newRepositoryMemberInvitations.length) {
-			return false
+			return []
 		}
 
 		if (history.repository.isPublic) {
@@ -395,7 +406,7 @@ is not present in the message.`)
 			newMembers.push(invitedRepositoryMember)
 		}
 
-		return true
+		return newRepositoryMemberInvitations
 	}
 
 	private checkRepositoryMembershipFlags(
@@ -454,9 +465,8 @@ is not present in the message.`)
 		if (typeof publicSigningKey !== 'string') {
 			throw new Error(`${errorPrefix} is not a string`)
 		}
-		// FIXME: get the right length of a publicSigningKey
-		if (publicSigningKey.length !== 36) {
-			throw new Error(`${errorPrefix} does not have .length === 36`)
+		if (publicSigningKey.length !== 224) {
+			throw new Error(`${errorPrefix} does not have correct length`)
 		}
 	}
 
@@ -478,8 +488,10 @@ is not present in the message.`)
 			if (existingMessageRepositoryMembers.length) {
 				throw new Error(`Found existing repositoryMembers for a newly created repository`)
 			}
-			this.checkRepositoryMembershipFlags(history.member,
+			const newMember = data.repositoryMembers[history.member as any]
+			this.checkRepositoryMembershipFlags(newMember,
 				`history.member`, false, data.history.repository)
+			history.member = newMember
 			newMembers.push(history.member)
 			return null
 		}
@@ -567,7 +579,7 @@ is not present in the message.`)
 		if (typeof repository.name !== 'string') {
 			throw new Error(`Invalid 'repository.name'`)
 		}
-		if (typeof repository.GUID !== 'string' || repository.GUID.length !== 36) {
+		if (typeof repository.GUID !== 'string' || repository.GUID.length !== 45) {
 			throw new Error(`Invalid 'repository.GUID'`)
 		}
 		if (typeof repository.owner !== 'number') {
@@ -585,6 +597,7 @@ is not present in the message.`)
 			throw new Error(
 				`Did not find repository.owner (UserAccount) with "in-message index" ${repository.owner}`);
 		}
+		repository.isLoaded = true
 		repository.owner = userAccount
 
 		repositoryGUIDs.push(repository.GUID)

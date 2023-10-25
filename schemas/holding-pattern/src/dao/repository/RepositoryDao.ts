@@ -79,12 +79,7 @@ export class RepositoryDao
 		const repositories = this._search({
 			SELECT: {
 				'*': Y,
-				_localId: Y,
-				ageSuitability: Y,
-				createdAt: Y,
-				GUID: Y,
-				owner: {},
-				uiEntryUri: Y
+				owner: {}
 			},
 			FROM: [
 				r = Q.Repository,
@@ -104,14 +99,8 @@ export class RepositoryDao
 
 		const repository = await this._findOne({
 			SELECT: {
-				_localId: Y,
-				ageSuitability: Y,
-				createdAt: Y,
-				GUID: Y,
-				isPublic: Y,
-				owner: {},
 				'*': Y,
-				uiEntryUri: Y
+				owner: {}
 			},
 			FROM: [
 				r = Q.Repository,
@@ -134,19 +123,13 @@ export class RepositoryDao
 		return this._searchOne({
 			SELECT: {
 				'*': Y,
-				_localId: Y,
-				ageSuitability: Y,
-				createdAt: Y,
-				GUID: Y,
-				isPublic: Y,
 				owner: {},
 				referencedInRepositories: {
 					referencingRepository: {}
 				},
 				referencedRepositories: {
 					referencedRepository: {}
-				},
-				uiEntryUri: Y
+				}
 			},
 			FROM: [
 				r = Q.Repository,
@@ -170,8 +153,7 @@ export class RepositoryDao
 
 		return await this.db.findOne.tree({
 			SELECT: {
-				immutable: Y,
-				internal: Y,
+				'*': Y,
 				repositoryTransactionHistory: {
 					saveTimestamp: Y
 				}
@@ -193,17 +175,11 @@ export class RepositoryDao
 		context: IContext
 	): Promise<IRepository[]> {
 		let r: QRepository
-		const _localId = Y
-		const GUID = Y
 
 		return await this.db.find.tree({
 			SELECT: {
-				_localId,
-				ageSuitability: Y,
-				createdAt: Y,
-				GUID,
-				owner: {},
-				uiEntryUri: Y
+				'*': Y,
+				owner: {}
 			},
 			FROM: [
 				r = Q.Repository,
@@ -221,12 +197,8 @@ export class RepositoryDao
 
 		return await this.db.find.tree({
 			SELECT: {
-				_localId: Y,
-				ageSuitability: Y,
-				createdAt: Y,
-				GUID: Y,
-				owner: {},
-				uiEntryUri: Y
+				'*': Y,
+				owner: {}
 			},
 			FROM: [
 				r = Q.Repository,
@@ -245,12 +217,8 @@ export class RepositoryDao
 
 		return await this.db.find.graph({
 			SELECT: {
-				_localId: Y,
-				ageSuitability: Y,
-				createdAt: Y,
-				GUID: Y,
-				owner: {},
-				uiEntryUri: Y
+				'*': Y,
+				owner: {}
 			},
 			FROM: [
 				r = Q.Repository,
@@ -284,14 +252,7 @@ export class RepositoryDao
 		let r: QRepository
 
 		return await this.db.find.tree({
-			SELECT: {
-				_localId: Y,
-				ageSuitability: Y,
-				createdAt: Y,
-				GUID: Y,
-				'*': Y,
-				uiEntryUri: Y
-			},
+			SELECT: {},
 			FROM: [
 				r = Q.Repository
 			],
@@ -310,24 +271,35 @@ export class RepositoryDao
 		const VALUES = []
 		for (const repository of repositories) {
 			VALUES.push([
-				repository.createdAt, repository.GUID, repository.ageSuitability,
-				repository.source, repository.immutable, repository.internal,
-				repository.owner._localId,
+				repository.ageSuitability, repository.createdAt,
+				repository.fullApplicationName, repository.GUID,
+				repository.immutable, repository.internal,
+				repository.isPublic, repository.name,
+				repository.source, repository.uiEntryUri,
+				repository.isLoaded, repository.owner._localId
 			])
 		}
 		const _localIds = await this.db.insertValuesGenerateIds({
 			INSERT_INTO: r = Q.Repository,
 			columns: [
-				r.createdAt,
-				r.GUID,
 				r.ageSuitability,
-				r.source,
+				r.createdAt,
+				r.fullApplicationName,
+				r.GUID,
 				r.immutable,
 				r.internal,
+				r.isPublic,
+				r.name,
+				r.source,
+				r.uiEntryUri,
+				r.isLoaded,
 				r.owner._localId
 			],
 			VALUES
-		}, context)
+		}, {
+			...context,
+			generateOnSync: true
+		})
 		for (let i = 0; i < repositories.length; i++) {
 			let repository = repositories[i]
 			repository._localId = _localIds[i][0]

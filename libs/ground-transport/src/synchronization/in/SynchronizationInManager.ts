@@ -9,8 +9,9 @@ import { ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
 import { IDataCheckResult } from './checker/SyncInDataChecker'
 import { ISyncInApplicationVersionChecker } from './checker/SyncInApplicationVersionChecker'
 import { IRepositoryLoader } from '@airport/air-traffic-control'
-import { IRepository, SyncRepositoryMessage, RepositoryTransactionHistory_GUID, Repository_GUID, Repository_LocalId } from '@airport/ground-control'
-import { INewAndUpdatedRepositoriesAndRecords, IRepositoriesAndMembersCheckResult } from './checker/SyncInRepositoryChecker'
+import { IRepository, SyncRepositoryMessage, RepositoryTransactionHistory_GUID, Repository_GUID, IRepositoryTransactionHistory } from '@airport/ground-control'
+import { v4 as guidv4 } from "uuid";
+import { INewAndUpdatedRepositoriesAndRecords } from './checker/SyncInRepositoryChecker'
 
 /**
  * The manager for synchronizing data coming in  to Terminal (TM)
@@ -97,8 +98,13 @@ export class SynchronizationInManager
 
 			let processMessage = true
 			let dataCheckResult: IDataCheckResult
+			// Each message may come from different source but some may not
+			// be valid transaction on essential record creation separately
+			// for each message
+			// FIXME: right now this does not start a nested trasaction
+			// - make it do so
 			await this.transactionManager.transactInternal(async (transaction) => {
-				dataCheckResult = await this.syncInChecker.checkData(
+				dataCheckResult = await this.syncInChecker.checkMessage(
 					message, context)
 				if (!dataCheckResult.isValid) {
 					transaction.rollback(null, context)
@@ -122,29 +128,34 @@ export class SynchronizationInManager
 					...dataCheckResult.newRepositoryMemberInvitations
 				]
 			}, null, context)
-			if (processMessage) {
-				immediateProcessingMessages.push({
+			if (!processMessage) {
+				continue
+			}
+
+			message.data.history.operationHistory = dataCheckResult.forImmediateProcessing
+			immediateProcessingMessages.push({
+				...message,
+				data: {
+					...message.data,
+					history: message.data.history
+				}
+			})
+			if (dataCheckResult.forDelayedProcessing.length) {
+				const history: IRepositoryTransactionHistory = {
+					...message.data.history,
+					GUID: guidv4(),
+					operationHistory: dataCheckResult.forDelayedProcessing
+				}
+				for (const operationHistory of dataCheckResult.forDelayedProcessing) {
+					operationHistory.repositoryTransactionHistory = history
+				}
+				delayedProcessingMessages.push({
 					...message,
 					data: {
 						...message.data,
-						history: {
-							...message.data.history,
-							operationHistory: dataCheckResult.forImmediateProcessing
-						}
+						history
 					}
 				})
-				if (dataCheckResult.forDelayedProcessing.length) {
-					delayedProcessingMessages.push({
-						...message,
-						data: {
-							...message.data,
-							history: {
-								...message.data.history,
-								operationHistory: dataCheckResult.forDelayedProcessing
-							}
-						}
-					})
-				}
 			}
 		}
 		await this.transactionManager.transactInternal(async (transaction, context) => {

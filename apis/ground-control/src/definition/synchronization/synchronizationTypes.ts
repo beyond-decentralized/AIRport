@@ -54,9 +54,6 @@ export interface ITransactionHistory {
     modifiedRepository_LocalIdSet?: Set<Repository_LocalId>
     repositoryTransactionHistories: IRepositoryTransactionHistory[]
     repositoryTransactionHistoryMap?: { [repositoryLocalId: Repository_LocalId]: IRepositoryTransactionHistory }
-    remoteRepositoryMemberAcceptances?: IRepositoryMemberAcceptance[]
-    remoteRepositoryMemberInvitations?: IRepositoryMemberInvitation[]
-    remoteRepositoryMembers?: IRepositoryMember[]
     transactionType: TransactionType
 
 }

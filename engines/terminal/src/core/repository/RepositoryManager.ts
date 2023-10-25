@@ -106,6 +106,10 @@ already contains a new repository.`)
 			isPublic,
 			context)
 
+		if (haveUserSession) {
+			userSession.currentRootTransaction.newRepository = repository
+		}
+
 		await this.repositoryMaintenanceManager.createRepositoryMember(
 			repository,
 			userAccount,
@@ -115,10 +119,6 @@ already contains a new repository.`)
 			!context.forKeyRingRepository,
 			context
 		)
-
-		if (haveUserSession) {
-			userSession.currentRootTransaction.newRepository = repository
-		}
 
 		return repository
 	}

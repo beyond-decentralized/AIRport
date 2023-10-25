@@ -29,7 +29,10 @@ export class RepositoryMemberAcceptanceDao
                 rma.addedInRepositoryTransactionHistory._localId
             ],
             VALUES
-        }, context)
+        }, {
+            ...context,
+            generateOnSync: true
+        })
         for (let i = 0; i < repositoryMemberAcceptances.length; i++) {
             let repositoryMemberAcceptance = repositoryMemberAcceptances[i]
             repositoryMemberAcceptance._localId = _localIds[i][0]

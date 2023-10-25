@@ -119,7 +119,10 @@ export class RepositoryMemberDao
                 rm.userAccount._localId
             ],
             VALUES
-        }, context)
+        }, {
+            ...context,
+            generateOnSync: true
+        })
         for (let i = 0; i < repositoryMembers.length; i++) {
             let repositoryMember = repositoryMembers[i]
             repositoryMember._localId = _localIds[i][0]
