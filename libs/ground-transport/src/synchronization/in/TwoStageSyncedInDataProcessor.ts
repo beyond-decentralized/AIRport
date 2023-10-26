@@ -13,7 +13,8 @@ import {
 	SyncRepositoryMessage,
 	RepositoryTransactionType,
 	Repository_LocalId,
-	TransactionType
+	TransactionType,
+	Dictionary
 } from '@airport/ground-control'
 import {
 	IRecordHistoryDuo,
@@ -62,6 +63,9 @@ export class TwoStageSyncedInDataProcessor
 
 	@Inject()
 	datastructureUtils: IDatastructureUtils
+
+	@Inject()
+	dictionary: Dictionary
 
 	@Inject()
 	recordHistoryDuo: IRecordHistoryDuo
@@ -113,7 +117,7 @@ export class TwoStageSyncedInDataProcessor
 			newAndUpdatedRepositoriesAndRecords,
 			context
 		)
-		
+
 		this.aggregateHistoryRecords(messages, transaction)
 
 		const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersion_LocalIdMap }
@@ -198,6 +202,12 @@ export class TwoStageSyncedInDataProcessor
 							.allRecordHistoryNewValues.concat(recordHistory.newValues)
 						for (const newValue of recordHistory.newValues) {
 							const dbColumn = entityColumnMapByIndex.get(newValue.columnIndex)
+							if (this.dictionary.isRepositoryRelationColumn(dbColumn)
+								&& newValue.newValue === -1) {
+								newValue.newValue = repositoryTransactionHistory.repository._localId
+							} else if (this.dictionary.isActorRelationColumn(dbColumn)) {
+								newValue.newValue = message.data.actors[newValue.newValue]._localId
+							}
 							this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(
 								recordHistory, dbColumn, newValue.newValue
 							)
@@ -208,6 +218,12 @@ export class TwoStageSyncedInDataProcessor
 							.allRecordHistoryOldValues.concat(recordHistory.oldValues)
 						for (const oldValue of recordHistory.oldValues) {
 							const dbColumn = entityColumnMapByIndex.get(oldValue.columnIndex)
+							if (this.dictionary.isRepositoryRelationColumn(dbColumn)
+								&& oldValue.oldValue === -1) {
+								oldValue.oldValue = repositoryTransactionHistory.repository._localId
+							} else if (this.dictionary.isActorRelationColumn(dbColumn)) {
+								oldValue.oldValue = message.data.actors[oldValue.oldValue]._localId
+							}
 							this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(
 								recordHistory, dbColumn, oldValue.oldValue
 							)
