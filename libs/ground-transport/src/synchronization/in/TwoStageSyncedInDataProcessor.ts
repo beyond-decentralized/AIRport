@@ -108,13 +108,13 @@ export class TwoStageSyncedInDataProcessor
 		transaction: ITransaction,
 		context: IContext
 	): Promise<void> {
-		this.aggregateHistoryRecords(messages, transaction)
-
 		await this.insertNewRepositoryInfo(
 			messages,
 			newAndUpdatedRepositoriesAndRecords,
 			context
 		)
+		
+		this.aggregateHistoryRecords(messages, transaction)
 
 		const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersion_LocalIdMap }
 			= await this.getDataStructures(messages)
@@ -199,7 +199,7 @@ export class TwoStageSyncedInDataProcessor
 						for (const newValue of recordHistory.newValues) {
 							const dbColumn = entityColumnMapByIndex.get(newValue.columnIndex)
 							this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(
-								recordHistory, dbColumn, newValue.columnIndex
+								recordHistory, dbColumn, newValue.newValue
 							)
 						}
 					}
@@ -209,7 +209,7 @@ export class TwoStageSyncedInDataProcessor
 						for (const oldValue of recordHistory.oldValues) {
 							const dbColumn = entityColumnMapByIndex.get(oldValue.columnIndex)
 							this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(
-								recordHistory, dbColumn, oldValue.columnIndex
+								recordHistory, dbColumn, oldValue.oldValue
 							)
 						}
 					}

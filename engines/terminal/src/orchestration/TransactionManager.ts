@@ -357,7 +357,7 @@ parent transactions.
 			}
 
 			let transactionHistory = transaction.transactionHistory
-			if (!parentTransaction && !context.doNotRecordHistory && !transaction.isRepositorySync
+			if (!parentTransaction && !context.doNotRecordHistory
 				&& transactionHistory.repositoryTransactionHistories.length) {
 
 				await this.activeQueries.markQueriesToRerun(

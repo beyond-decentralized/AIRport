@@ -69,7 +69,8 @@ export class RecordHistoryDuo
 			// No need to record a null value
 			return null
 		}
-		const recordHistoryNewValue = this.recordHistoryNewValueDuo.getNewRecord(recordHistory, dbColumn, newValue)
+		const recordHistoryNewValue = this.recordHistoryNewValueDuo
+			.getNewRecord(recordHistory, dbColumn, newValue)
 
 		recordHistory.newValues.push(recordHistoryNewValue)
 
@@ -77,7 +78,8 @@ export class RecordHistoryDuo
 			recordHistory, dbColumn, newValue)
 
 		recordHistory.operationHistory.repositoryTransactionHistory
-			.transactionHistory.allRecordHistoryNewValues.push(<any>recordHistoryNewValue)
+			.transactionHistory.allRecordHistoryNewValues
+			.push(<any>recordHistoryNewValue)
 
 		return recordHistoryNewValue
 	}
