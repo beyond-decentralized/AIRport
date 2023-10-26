@@ -454,7 +454,7 @@ appears more than once in the Columns clause`)
 					foundSystemWideOperationIdColumn = true
 					if (!transaction.isRepositorySync) {
 						throw new Error(`Error inserting into '${dbEntity.name}'.
-You cannot explicitly provide a SYSTEM_WIDE_OPERATION_ID value for Repository entities.`)
+You cannot explicitly provide a SYSTEM_WIDE_OPERATION_LID value for Repository entities.`)
 					}
 					break
 				case repositoryIdColumn.index:
@@ -482,7 +482,7 @@ You must provide a valid REPOSITORY_LID value for Repository entities.`
 			}
 			if (!foundSystemWideOperationIdColumn) {
 				throw new Error(errorPrefix +
-					`SYSTEM_WIDE_OPERATION_ID must be provided for sync operations.`)
+					`SYSTEM_WIDE_OPERATION_LID must be provided for sync operations.`)
 			}
 		}
 
