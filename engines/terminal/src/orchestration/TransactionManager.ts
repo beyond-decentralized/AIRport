@@ -430,9 +430,9 @@ parent transactions.
 		let parentTransactionHistory = parentTransaction.transactionHistory
 		for (const repositoryTransactionHistory of childTransactionHistory.repositoryTransactionHistories) {
 			const repositoryLocalId = repositoryTransactionHistory.repository._localId
-			const parentRepositoryTransactionRecord = parentTransactionHistory
+			const parentRepositoryTransactionHistory = parentTransactionHistory
 				.repositoryTransactionHistoryMap[repositoryLocalId]
-			if (!parentRepositoryTransactionRecord) {
+			if (!parentRepositoryTransactionHistory) {
 				parentTransactionHistory.repositoryTransactionHistoryMap[repositoryLocalId]
 					= repositoryTransactionHistory
 				repositoryTransactionHistory.transactionHistory = parentTransactionHistory
@@ -442,10 +442,14 @@ parent transactions.
 		}
 		for (const operationHistory of childTransactionHistory.allOperationHistory) {
 			const repositoryLocalId = operationHistory.repositoryTransactionHistory.repository._localId
-			const parentRepositoryTransactionRecord = parentTransactionHistory
+			const parentRepositoryTransactionHistory = parentTransactionHistory
 				.repositoryTransactionHistoryMap[repositoryLocalId]
-			if (parentRepositoryTransactionRecord) {
-				operationHistory.repositoryTransactionHistory = parentRepositoryTransactionRecord
+			operationHistory.syncActor = operationHistory.repositoryTransactionHistory.actor
+			if (parentRepositoryTransactionHistory) {
+				operationHistory.repositoryTransactionHistory = parentRepositoryTransactionHistory
+				parentRepositoryTransactionHistory.operationHistory.push(operationHistory)
+			} else {
+				throw new Error(`Did not find parent RepositoryTransactionHistory for REPOSITORY_LID: ${repositoryLocalId}`)
 			}
 		}
 		parentTransactionHistory.allOperationHistory = parentTransactionHistory
