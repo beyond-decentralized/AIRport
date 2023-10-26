@@ -40,8 +40,7 @@ import {
 } from "@airport/ground-control";
 import {
 	IActorDao,
-	IRepositoryDao,
-	RepositoryDao
+	IRepositoryDao
 } from "@airport/holding-pattern/dist/app/bundle";
 
 export interface ISyncOutDataSerializer {
