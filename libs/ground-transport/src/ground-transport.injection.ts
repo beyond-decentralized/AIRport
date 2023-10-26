@@ -196,6 +196,7 @@ groundTransport.setDependencies(SynchronizationOutManager, {
 
 groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
     datastructureUtils: DatastructureUtils,
+    dictionary: Dictionary,
     recordHistoryDuo: RecordHistoryDuo,
     repositoryDao: RepositoryDao,
     repositoryMemberAcceptanceDao: RepositoryMemberAcceptanceDao,
