@@ -117,8 +117,12 @@ export class SqlJsDriver
 				while (stmt.step()) {
 					results.push(stmt.get())
 				}
-				console.debug(results)
-				resolve(results)
+				let returnValue: any = results
+				if (queryType === QueryType.MUTATE) {
+					returnValue = this._db.getRowsModified()
+				}
+				console.debug(returnValue)
+				resolve(returnValue)
 			} catch (error) {
 				reject(error)
 			} finally {
