@@ -4,6 +4,7 @@ import {
 	Actor_LocalId,
 	ChangeType,
 	DbEntity,
+	IActor,
 	IOperationHistory,
 	IRecordHistory,
 	IRepositoryTransactionHistory,
@@ -14,9 +15,10 @@ import { IRecordHistoryDuo } from './RecordHistoryDuo'
 
 export interface IOperationHistoryDuo {
 
-	getNewRecord(
+	getOperationHistory(
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
+		actor: IActor,
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		systemWideOperationId: SystemWideOperationId,
 		rootTransaction: IRootTransaction
@@ -29,7 +31,7 @@ export interface IOperationHistoryDuo {
 
 	startRecordHistory(
 		operationHistory: IOperationHistory,
-		actorId: Actor_LocalId,
+		actorLid: Actor_LocalId,
 		_actorRecordId: ActorRecordId
 	): IRecordHistory;
 
@@ -42,9 +44,10 @@ export class OperationHistoryDuo
 	@Inject()
 	recordHistoryDuo: IRecordHistoryDuo
 
-	getNewRecord(
+	getOperationHistory(
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
+		actor: IActor,
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		systemWideOperationId: SystemWideOperationId,
 		rootTransaction: IRootTransaction
@@ -52,6 +55,7 @@ export class OperationHistoryDuo
 		let operationHistory: IOperationHistory = {
 			changeType: entityChangeType,
 			entity: dbEntity,
+			actor: actor,
 			_localId: undefined,
 			orderNumber: ++rootTransaction.numberOfOperations,
 			recordHistory: [],
@@ -78,10 +82,10 @@ export class OperationHistoryDuo
 
 	startRecordHistory(
 		operationHistory: IOperationHistory,
-		actorId: Actor_LocalId,
+		actorLid: Actor_LocalId,
 		_actorRecordId: ActorRecordId
 	): IRecordHistory {
-		const recordHistory = this.recordHistoryDuo.getNewRecord(actorId, _actorRecordId)
+		const recordHistory = this.recordHistoryDuo.getRecordHistory(actorLid, _actorRecordId)
 
 		recordHistory.operationHistory = operationHistory
 

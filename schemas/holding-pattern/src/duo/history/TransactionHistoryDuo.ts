@@ -1,7 +1,5 @@
-import { IContext, Inject, Injected } from '@airport/direction-indicator';
-import { IActor, IRepositoryMember, IRepositoryTransactionHistory, ITransactionHistory, RepositoryTransactionHistory_IsRepositoryCreation, Repository_IsPublic, Repository_LocalId, SyncAllModifiedColumnsMap, TransactionType } from '@airport/ground-control'
-import { ITerminalSessionManager } from '@airport/terminal-map';
-import { RepositoryMemberDao } from '../../dao/repository/member/RepositoryMemberDao';
+import { Inject, Injected } from '@airport/direction-indicator';
+import { IRepositoryTransactionHistory, ITransactionHistory, RepositoryTransactionHistory_IsRepositoryCreation, Repository_IsPublic, Repository_LocalId, TransactionType } from '@airport/ground-control'
 import {
 	TransactionHistory
 } from '../../ddl/history/TransactionHistory'
@@ -9,19 +7,15 @@ import { IRepositoryTransactionHistoryDuo } from './RepositoryTransactionHistory
 
 export interface ITransactionHistoryDuo {
 
-	getNewRecord(
+	getTransactionHistory(
 		transactionType?: TransactionType
 	): ITransactionHistory;
 
-	getRepositoryTransaction(
+	getRepositoryTransactionHistory(
 		transactionHistory: ITransactionHistory,
 		repositoryLocalId: Repository_LocalId,
-		actor: IActor,
-		isRepositoryCreation: boolean,
-		isPublic: Repository_IsPublic,
-		repositoryMember: IRepositoryMember,
-		context: IContext
-	): Promise<IRepositoryTransactionHistory>
+		isRepositoryCreation: boolean
+	): IRepositoryTransactionHistory
 
 }
 
@@ -30,15 +24,9 @@ export class TransactionHistoryDuo
 	implements ITransactionHistoryDuo {
 
 	@Inject()
-	repositoryMemberDao: RepositoryMemberDao
-
-	@Inject()
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 
-	@Inject()
-	terminalSessionManager: ITerminalSessionManager
-
-	getNewRecord(
+	getTransactionHistory(
 		transactionType: TransactionType = TransactionType.LOCAL
 	): ITransactionHistory {
 		const transactionHistory = new TransactionHistory() as ITransactionHistory
@@ -49,36 +37,16 @@ export class TransactionHistoryDuo
 		return transactionHistory
 	}
 
-	async getRepositoryTransaction(
+	getRepositoryTransactionHistory(
 		transactionHistory: ITransactionHistory,
 		repositoryLocalId: Repository_LocalId,
-		actor: IActor,
-		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation,
-		isPublic: Repository_IsPublic,
-		repositoryMember: IRepositoryMember,
-		context: IContext
-	): Promise<IRepositoryTransactionHistory> {
+		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation
+	): IRepositoryTransactionHistory {
 		let repositoryTransactionHistory: IRepositoryTransactionHistory = transactionHistory.repositoryTransactionHistoryMap[repositoryLocalId]
 
 		if (!repositoryTransactionHistory) {
-			const userSession = await this.terminalSessionManager.getUserSession()
-
-			if (!repositoryMember) {
-				repositoryMember = await this.repositoryMemberDao.findForRepositoryLocalIdAndUserLocalId(
-					repositoryLocalId,
-					userSession.userAccount._localId,
-					context
-				)
-				if (!repositoryMember) {
-					throw new Error(
-						`User '${userSession.userAccount.username}' is not a member of Repository '${repositoryLocalId}'`)
-				}
-			}
-
-			repositoryTransactionHistory = this.repositoryTransactionHistoryDuo.getNewRecord(
-				repositoryLocalId, actor, transactionHistory, isRepositoryCreation, isPublic)
-			repositoryTransactionHistory.member = repositoryMember
-
+			repositoryTransactionHistory = this.repositoryTransactionHistoryDuo.getRepositoryTransactionHistory(
+				repositoryLocalId, transactionHistory, isRepositoryCreation)
 			transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory)
 			transactionHistory.repositoryTransactionHistoryMap[repositoryLocalId] = <any>repositoryTransactionHistory
 		}

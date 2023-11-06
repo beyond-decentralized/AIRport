@@ -21,12 +21,10 @@ export type RepositoryTransactionHistory_GUID = string;
 export interface IRepositoryTransactionHistory {
 
     _localId: RepositoryTransactionHistory_LocalId
-    actor: IActor
     repositoryTransactionType: RepositoryTransactionType
     saveTimestamp: RepositoryTransactionHistory_SaveTimestamp
     syncTimestamp?: RepositoryTransactionHistory_SyncTimestamp
     GUID: RepositoryTransactionHistory_GUID
-    isPublic: Repository_IsPublic
     isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation
     member: IRepositoryMember
     modifiedRepository_LocalIdSet?: Set<Repository_LocalId>
@@ -66,12 +64,13 @@ export type OperationHistory_OrderNumber = number;
 export interface IOperationHistory {
 
     _localId: OperationHistory_LocalId
-    orderNumber: OperationHistory_OrderNumber
+    actor: IActor
     changeType: ChangeType
-    systemWideOperationId?: SystemWideOperationId
     entity: DbEntity
+    orderNumber: OperationHistory_OrderNumber
     repositoryTransactionHistory: IRepositoryTransactionHistory
     recordHistory: IRecordHistory[]
+    systemWideOperationId?: SystemWideOperationId
 
 }
 

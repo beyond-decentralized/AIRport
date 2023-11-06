@@ -8,8 +8,8 @@ import { IRecordHistoryOldValueDuo } from './RecordHistoryOldValueDuo'
 
 export interface IRecordHistoryDuo {
 
-	getNewRecord(
-		actorId: Actor_LocalId,
+	getRecordHistory(
+		actorLid: Actor_LocalId,
 		_actorRecordId: ActorRecordId
 	): IRecordHistory;
 
@@ -46,15 +46,15 @@ export class RecordHistoryDuo
 	@Inject()
 	recordHistoryOldValueDuo: IRecordHistoryOldValueDuo
 
-	getNewRecord(
-		actorId: Actor_LocalId,
+	getRecordHistory(
+		actorLid: Actor_LocalId,
 		_actorRecordId: ActorRecordId
 	): IRecordHistory {
 		const recordHistory = new RecordHistory()
 
 		recordHistory._actorRecordId = _actorRecordId
 		recordHistory.actor = {
-			_localId: actorId
+			_localId: actorLid
 		} as any
 
 		return recordHistory as IRecordHistory
@@ -70,7 +70,7 @@ export class RecordHistoryDuo
 			return null
 		}
 		const recordHistoryNewValue = this.recordHistoryNewValueDuo
-			.getNewRecord(recordHistory, dbColumn, newValue)
+			.getRecordHistoryNewValue(recordHistory, dbColumn, newValue)
 
 		recordHistory.newValues.push(recordHistoryNewValue)
 
@@ -94,7 +94,7 @@ export class RecordHistoryDuo
 			return null
 		}
 		const recordHistoryOldValue = this.recordHistoryOldValueDuo
-			.getNewRecord(recordHistory, dbColumn, oldValue)
+			.getRecordHistoryOldValue(recordHistory, dbColumn, oldValue)
 
 		recordHistory.oldValues.push(recordHistoryOldValue)
 

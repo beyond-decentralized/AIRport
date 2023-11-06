@@ -23,12 +23,10 @@ import { IOperationHistoryDuo } from './OperationHistoryDuo'
 
 export interface IRepositoryTransactionHistoryDuo {
 
-	getNewRecord(
-		repositoryId: Repository_LocalId,
-		actor: IActor,
+	getRepositoryTransactionHistory(
+		repositoryLid: Repository_LocalId,
 		transactionHistory: ITransactionHistory,
-		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation,
-		isPublic: Repository_IsPublic
+		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation
 	): IRepositoryTransactionHistory;
 
 	setModifiedRepository_LocalIdSet(
@@ -49,6 +47,7 @@ export interface IRepositoryTransactionHistoryDuo {
 		systemWideOperationId: SystemWideOperationId,
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
+		actor: IActor,
 		rootTransaction: IRootTransaction
 	): IOperationHistory;
 
@@ -61,24 +60,20 @@ export class RepositoryTransactionHistoryDuo
 	@Inject()
 	operationHistoryDuo: IOperationHistoryDuo
 
-	getNewRecord(
-		repositoryId: Repository_LocalId,
-		actor: IActor,
+	getRepositoryTransactionHistory(
+		repositoryLid: Repository_LocalId,
 		transactionHistory: ITransactionHistory,
-		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation,
-		isPublic: Repository_IsPublic
+		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation
 	): IRepositoryTransactionHistory {
 		let repositoryTransactionHistory: IRepositoryTransactionHistory = new RepositoryTransactionHistory() as IRepositoryTransactionHistory
 
 		let saveTimestamp = new Date().getTime()
 
 		repositoryTransactionHistory.saveTimestamp = saveTimestamp
-		repositoryTransactionHistory.actor = actor
 		repositoryTransactionHistory.GUID = guidv4()
 		repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation
-		repositoryTransactionHistory.isPublic = isPublic
 		repositoryTransactionHistory.repository = new Repository() as IRepository
-		repositoryTransactionHistory.repository._localId = repositoryId
+		repositoryTransactionHistory.repository._localId = repositoryLid
 		repositoryTransactionHistory.transactionHistory = transactionHistory
 
 		this.setModifiedRepository_LocalIdSet(repositoryTransactionHistory)
@@ -135,10 +130,11 @@ export class RepositoryTransactionHistoryDuo
 		systemWideOperationId: SystemWideOperationId,
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
+		actor: IActor,
 		rootTransaction: IRootTransaction
 	): IOperationHistory {
-		let operationHistory = this.operationHistoryDuo.getNewRecord(
-			entityChangeType, dbEntity, repositoryTransactionHistory,
+		let operationHistory = this.operationHistoryDuo.getOperationHistory(
+			entityChangeType, dbEntity, actor, repositoryTransactionHistory,
 			systemWideOperationId, rootTransaction)
 		repositoryTransactionHistory.operationHistory.push(operationHistory)
 

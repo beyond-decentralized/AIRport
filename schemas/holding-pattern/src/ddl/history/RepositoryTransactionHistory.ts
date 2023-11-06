@@ -13,7 +13,6 @@ import {
 	SequenceGenerator,
 	Table,
 } from '@airport/tarmaq-entity'
-import { Actor } from '../infrastructure/Actor'
 import { RepositoryMember } from '../repository/member/RepositoryMember'
 import { Repository } from '../repository/Repository'
 import { OperationHistory } from './OperationHistory'
@@ -62,23 +61,11 @@ export class RepositoryTransactionHistory
 	@DbBoolean()
 	isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation
 
-	@Column({ name: "IS_PUBLIC" })
-	@DbBoolean()
-	isPublic: Repository_IsPublic
-
 	// Present only for Repository invitation acceptances and only
 	// in the database of the Terminal where the invitation is accepted
 	@Column({ name: "INVITATION_PRIVATE_SIGNING_KEY" })
 	@DbString()
 	invitationPrivateSigningKey?: RepositoryMemberInvitation_PrivateSigningKey
-
-	@ManyToOne()
-	@JoinColumn({
-		name: 'ACTOR_LID',
-		referencedColumnName: 'ACTOR_LID',
-		nullable: false
-	})
-	actor: Actor
 
 	@ManyToOne()
 	@JoinColumn({

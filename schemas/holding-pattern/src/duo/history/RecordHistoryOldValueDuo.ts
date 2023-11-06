@@ -4,7 +4,7 @@ import { RecordHistoryOldValue } from '../../ddl/history/RecordHistoryOldValue'
 
 export interface IRecordHistoryOldValueDuo {
 
-	getNewRecord(
+	getRecordHistoryOldValue(
 		recordHistory: IRecordHistory,
 		dbColumn: DbColumn,
 		oldValue: any
@@ -16,7 +16,7 @@ export interface IRecordHistoryOldValueDuo {
 export class RecordHistoryOldValueDuo
 	implements IRecordHistoryOldValueDuo {
 
-	getNewRecord(
+	getRecordHistoryOldValue(
 		recordHistory: IRecordHistory,
 		dbColumn: DbColumn,
 		oldValue: any

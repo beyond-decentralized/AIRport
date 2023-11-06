@@ -15,6 +15,7 @@ import { ChangeType, IOperationHistory, OperationHistory_LocalId, OperationHisto
 import { DdlEntity } from '@airport/airspace/dist/app/bundle'
 import { RecordHistory } from './RecordHistory'
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory'
+import { Actor } from '../infrastructure/Actor'
 
 /**
  * Created by Papa on 4/17/2017.
@@ -47,6 +48,17 @@ export class OperationHistory
 	@Column({ name: 'SYSTEM_WIDE_OPERATION_LID' })
 	@DbNumber()
 	systemWideOperationId?: SystemWideOperationId
+
+	// Moved from RepositoryTransactionHistory because those get
+	// combined into parentRepsitoryTransactionHistory that
+	// (together) may have been performed by multiple Actors
+	@ManyToOne()
+	@JoinColumn({
+		name: 'ACTOR_LID',
+		referencedColumnName: 'ACTOR_LID',
+		nullable: false
+	})
+	actor: Actor
 
 	@ManyToOne()
 	@JoinColumn({
