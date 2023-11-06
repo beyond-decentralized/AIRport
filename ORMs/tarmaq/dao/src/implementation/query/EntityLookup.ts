@@ -85,7 +85,8 @@ export abstract class EntityLookup<Child,
 		let result = await this.findInternal(rawEntityQuery, queryResultType,
 			one, null, context, this.mapResults)
 
-		this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity)
+		this.dao.updateCacheManager.saveOriginalValues(
+			result, context.dbEntity)
 
 		return result
 	}
@@ -107,7 +108,8 @@ export abstract class EntityLookup<Child,
 
 		result = result.pipe(
 			map(observedResult => {
-				this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity)
+				this.dao.updateCacheManager.saveOriginalValues(
+					observedResult, context.dbEntity)
 
 				return observedResult
 			})
