@@ -42,7 +42,10 @@ export class DependencyInjectionToken<Injected>
 					const applicationDescriptor = apiClass.application
 					if (!applicationDescriptor || !applicationDescriptor.name || !applicationDescriptor.domain
 						|| !applicationDescriptor.domain.name) {
-						throw new Error(`Did not find application descriptor on @Injected() ${apiClass.name}`)
+						throw new Error(`Did not find application descriptor on @Injected() ${apiClass.name}
+	applicationDescriptor { name: string, domain: { name: string}}:
+${JSON.stringify(applicationDescriptor, null, '  ')}
+`)
 					}
 					this.application.getDomain(applicationDescriptor.domain.name).app(applicationDescriptor.name)
 						.register(apiClass)
