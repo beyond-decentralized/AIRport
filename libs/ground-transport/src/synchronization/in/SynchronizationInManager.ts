@@ -9,7 +9,7 @@ import { ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
 import { IDataCheckResult } from './checker/SyncInDataChecker'
 import { ISyncInApplicationVersionChecker } from './checker/SyncInApplicationVersionChecker'
 import { IRepositoryLoader } from '@airport/air-traffic-control'
-import { IRepository, SyncRepositoryMessage, RepositoryTransactionHistory_GUID, Repository_GUID, IRepositoryTransactionHistory } from '@airport/ground-control'
+import { IRepository, SyncRepositoryMessage, RepositoryTransactionHistory_GUID, Repository_GUID, IRepositoryTransactionHistory, RepositoryMember_PublicSigningKey, IRepositoryMember } from '@airport/ground-control'
 import { v4 as guidv4 } from "uuid";
 import { INewAndUpdatedRepositoriesAndRecords } from './checker/SyncInRepositoryChecker'
 
@@ -83,6 +83,10 @@ export class SynchronizationInManager
 			newRepositoryMemberAcceptances: []
 		}
 
+		const addedRepositoryMapByGUID: Map<Repository_GUID, IRepository> = new Map()
+		const addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey:
+			Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>> = new Map()
+
 		// Split up messages by type
 		for (const message of orderedMessages) {
 			if (!this.isValidLastChangeTime(
@@ -105,7 +109,8 @@ export class SynchronizationInManager
 			// - make it do so
 			await this.transactionManager.transactInternal(async (transaction) => {
 				dataCheckResult = await this.syncInChecker.checkMessage(
-					message, context)
+					message, addedRepositoryMapByGUID,
+					addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context)
 				if (!dataCheckResult.isValid) {
 					transaction.rollback(null, context)
 					processMessage = false

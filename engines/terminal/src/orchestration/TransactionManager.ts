@@ -10,7 +10,9 @@ import {
 } from '@airport/fuel-hydrant-system';
 import {
 	IAppTrackerUtils,
-	IRootTransaction
+	IRepository,
+	IRootTransaction,
+	Repository_LocalId
 } from '@airport/ground-control';
 import { ISynchronizationOutManager } from '@airport/ground-transport';
 import {
@@ -32,7 +34,8 @@ import {
 	IApiCredentials,
 	ITransactionInitiator,
 	ITransactionManager,
-	ITransactionManagerState
+	ITransactionManagerState,
+	IHistoryManager
 } from '@airport/terminal-map';
 import { BehaviorSubject, finalize, Observable, share } from 'rxjs';
 import { AbstractMutationManager } from './AbstractMutationManager';
@@ -47,6 +50,9 @@ export class TransactionManager
 
 	@Inject()
 	appTrackerUtils: IAppTrackerUtils
+
+	@Inject()
+	historyManager: IHistoryManager
 
 	@Inject()
 	idGenerator: IIdGenerator
@@ -343,6 +349,7 @@ parent transactions.
 
 		let parentTransaction = transaction.parentTransaction
 		try {
+			let repositoryMapByLid: Map<Repository_LocalId, IRepository>
 			if (parentTransaction) {
 				if (!context.doNotRecordHistory) {
 					this.copyTransactionHistoryToParentTransaction(
@@ -352,7 +359,7 @@ parent transactions.
 			} else {
 				// This is the root transaction, save it's history, along with any nested transactions
 				if (!context.doNotRecordHistory) {
-					await this.saveRepositoryHistory(transaction, context);
+					repositoryMapByLid = await this.saveRepositoryHistory(transaction, context);
 				}
 			}
 
@@ -371,7 +378,7 @@ parent transactions.
 						historiesToSend,
 						messages
 					} = await this.synchronizationOutManager.getSynchronizationMessages(
-						transactionHistory.repositoryTransactionHistories, context
+						transactionHistory.repositoryTransactionHistories, repositoryMapByLid, context
 					)
 
 					await transaction.commit(null, context)
@@ -444,7 +451,6 @@ parent transactions.
 			const repositoryLocalId = operationHistory.repositoryTransactionHistory.repository._localId
 			const parentRepositoryTransactionHistory = parentTransactionHistory
 				.repositoryTransactionHistoryMap[repositoryLocalId]
-			operationHistory.syncActor = operationHistory.repositoryTransactionHistory.actor
 			if (parentRepositoryTransactionHistory) {
 				operationHistory.repositoryTransactionHistory = parentRepositoryTransactionHistory
 				parentRepositoryTransactionHistory.operationHistory.push(operationHistory)
@@ -506,7 +512,7 @@ ${callHerarchy}
 		credentials.transactionId = transaction.id
 
 		if (!context.doNotRecordHistory && !transaction.transactionHistory) {
-			transaction.transactionHistory = this.transactionHistoryDuo.getNewRecord();
+			transaction.transactionHistory = this.transactionHistoryDuo.getTransactionHistory();
 		}
 
 		transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction)
@@ -561,35 +567,45 @@ ${callHerarchy}
 	private async saveRepositoryHistory(
 		transaction: ITransaction,
 		context: ITransactionContext,
-	): Promise<boolean> {
+	): Promise<Map<Repository_LocalId, IRepository>> {
 		let transactionHistory = transaction.transactionHistory;
 
 		if (!transactionHistory.repositoryTransactionHistories.length) {
-			return
+			return new Map()
+		}
+
+		const {
+			repositoryMapByLid,
+			selfJoinRepositoryMembersToCreate
+		} = await this.historyManager.ensureRepositoryMembers(
+			transactionHistory.repositoryTransactionHistories, context)
+		if (selfJoinRepositoryMembersToCreate.length) {
+			await this.doInsertValues(transaction, Q.RepositoryMember,
+				selfJoinRepositoryMembersToCreate, context)
 		}
 
 		const transactionHistoryIds = await this.idGenerator.generateTransactionHistory_LocalIds(
 			transactionHistory.repositoryTransactionHistories.length,
 			transactionHistory.allOperationHistory.length,
 			transactionHistory.allRecordHistory.length
-		);
+		)
 
-		let allModifiedColumnsMap = transactionHistory.allModifiedColumnsMap;
-		allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.TransactionHistory).__driver__.dbEntity, true);
-		transactionHistory._localId = transactionHistoryIds.transactionHistory_LocalId;
+		let allModifiedColumnsMap = transactionHistory.allModifiedColumnsMap
+		allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.TransactionHistory).__driver__.dbEntity, true)
+		transactionHistory._localId = transactionHistoryIds.transactionHistory_LocalId
 		await this.doInsertValues(transaction, Q.TransactionHistory,
-			[transactionHistory], context);
+			[transactionHistory], context)
 
-		allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.RepositoryTransactionHistory).__driver__.dbEntity, true);
+		allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.RepositoryTransactionHistory).__driver__.dbEntity, true)
 		transactionHistory.repositoryTransactionHistories.forEach((
 			repositoryTransactionHistory,
 			index,
 		) => {
-			repositoryTransactionHistory._localId = transactionHistoryIds.repositoryHistory_LocalIds[index];
+			repositoryTransactionHistory._localId = transactionHistoryIds.repositoryHistory_LocalIds[index]
 			repositoryTransactionHistory.transactionHistory = transactionHistory
-		});
+		})
 		await this.doInsertValues(transaction, Q.RepositoryTransactionHistory,
-			transactionHistory.repositoryTransactionHistories, context);
+			transactionHistory.repositoryTransactionHistories, context)
 
 		for (const repositoryTransactionHistory of transactionHistory.repositoryTransactionHistories) {
 			if (repositoryTransactionHistory.newRepositoryMembers.length) {
@@ -616,43 +632,45 @@ ${callHerarchy}
 		}
 
 		if (!transactionHistory.allRecordHistory.length) {
-			return;
+			return repositoryMapByLid
 		}
 
-		allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.OperationHistory).__driver__.dbEntity, true);
+		allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.OperationHistory).__driver__.dbEntity, true)
 		transactionHistory.allOperationHistory.forEach((
 			operationHistory,
 			index,
 		) => {
-			operationHistory._localId = transactionHistoryIds.operationHistory_LocalIds[index];
-		});
+			operationHistory._localId = transactionHistoryIds.operationHistory_LocalIds[index]
+		})
 		await this.doInsertValues(transaction, Q.OperationHistory,
-			transactionHistory.allOperationHistory, context);
+			transactionHistory.allOperationHistory, context)
 
-		allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistory).__driver__.dbEntity, true);
+		allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistory).__driver__.dbEntity, true)
 		transactionHistory.allRecordHistory.forEach((
 			recordHistory,
 			index,
 		) => {
-			recordHistory._localId = transactionHistoryIds.recordHistory_LocalIds[index];
+			recordHistory._localId = transactionHistoryIds.recordHistory_LocalIds[index]
 		});
 		await this.doInsertValues(transaction,
 			(<IQEntityInternal><any>Q.RecordHistory),
-			transactionHistory.allRecordHistory, context);
+			transactionHistory.allRecordHistory, context)
 
 		if (transactionHistory.allRecordHistoryNewValues.length) {
-			allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryNewValue).__driver__.dbEntity, true);
+			allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryNewValue).__driver__.dbEntity, true)
 			await this.doInsertValues(transaction,
 				Q.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues,
-				context);
+				context)
 		}
 
 		if (transactionHistory.allRecordHistoryOldValues.length) {
-			allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryOldValue).__driver__.dbEntity, true);
+			allModifiedColumnsMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryOldValue).__driver__.dbEntity, true)
 			await this.doInsertValues(transaction,
 				Q.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues,
-				context);
+				context)
 		}
+
+		return repositoryMapByLid
 	}
 
 }

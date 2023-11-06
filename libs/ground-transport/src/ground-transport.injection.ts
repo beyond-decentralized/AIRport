@@ -145,6 +145,7 @@ groundTransport.setDependencies(SyncInDataChecker, {
 })
 
 groundTransport.setDependencies(SyncInRepositoryChecker, {
+    datastructureUtils: DatastructureUtils,
 	dictionary: Dictionary,
     repositoryDao: RepositoryDao,
 	repositoryMemberDao: RepositoryMemberDao
@@ -155,6 +156,7 @@ groundTransport.setDependencies(SyncInTerminalChecker, {
 })
 
 groundTransport.setDependencies(SyncInUserAccountChecker, {
+    keyUtils: KeyUtils,
     userAccountDao: UserAccountDao
 })
 
@@ -187,7 +189,6 @@ groundTransport.setDependencies(SynchronizationInManager, {
 groundTransport.setDependencies(SynchronizationOutManager, {
     datastructureUtils: DatastructureUtils,
     messageSigningManager: MessageSigningManager,
-    repositoryDao: RepositoryDao,
     repositoryReferenceCreator: RepositoryReferenceCreator,
     repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
     synchronizationAdapterLoader: SynchronizationAdapterLoader,

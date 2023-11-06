@@ -14,7 +14,7 @@ import { RepositoryTransactionHistoryDuo } from '../duo/history/RepositoryTransa
 import { TransactionHistoryDuo } from '../duo/history/TransactionHistoryDuo'
 import { application } from './app-declaration'
 import { DatastructureUtils, Dictionary } from '@airport/ground-control'
-import { IRepositoryManager, TERMINAL_SESSION_MANAGER } from '@airport/terminal-map'
+import { IRepositoryManager } from '@airport/terminal-map'
 import { RepositoryReferenceDao } from '../dao/repository/RepositoryReferenceDao'
 import { CopiedRecordLedgerDao, CrossRepositoryRelationLedgerDao, LocalCopyReplacementLedgerDao } from './holding-pattern.runtime-index'
 import { CrossRepositoryRelationManager } from '../manager/CrossRepositoryRelationManager'
@@ -65,7 +65,5 @@ holdingPattern.setDependencies(RepositoryTransactionHistoryDuo, {
 })
 
 holdingPattern.setDependencies(TransactionHistoryDuo, {
-    repositoryMemberDao: RepositoryMemberDao,
-    repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
-    terminalSessionManager: TERMINAL_SESSION_MANAGER
+    repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo
 })

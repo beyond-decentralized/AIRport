@@ -6,7 +6,7 @@ import {
 import {
 	IRepositoryDao, RepositoryMemberDao
 } from '@airport/holding-pattern/dist/app/bundle'
-import { InMessageIndex, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Signature, RepositoryMember_Status, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, Repository_LocalId, UserAccount_Signature, Dictionary } from '@airport/ground-control';
+import { InMessageIndex, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Signature, RepositoryMember_Status, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, Repository_LocalId, UserAccount_Signature, Dictionary, IDatastructureUtils } from '@airport/ground-control';
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 
 export interface IRepositoriesAndMembersCheckResult
@@ -32,6 +32,8 @@ export interface ISyncInRepositoryChecker {
 
 	checkRepositoriesAndMembers(
 		message: SyncRepositoryMessage,
+		addedRepositoryMapByGUID: Map<Repository_GUID, IRepository>,
+		addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey: Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>>,
 		context: IContext
 	): Promise<IRepositoriesAndMembersCheckResult>;
 
@@ -40,6 +42,9 @@ export interface ISyncInRepositoryChecker {
 @Injected()
 export class SyncInRepositoryChecker
 	implements ISyncInRepositoryChecker {
+
+	@Inject()
+	datastructureUtils: IDatastructureUtils
 
 	@Inject()
 	dictionary: Dictionary
@@ -52,6 +57,8 @@ export class SyncInRepositoryChecker
 
 	async checkRepositoriesAndMembers(
 		message: SyncRepositoryMessage,
+		addedRepositoryMapByGUID: Map<Repository_GUID, IRepository>,
+		addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey: Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>>,
 		context: IContext
 	): Promise<IRepositoriesAndMembersCheckResult> {
 		let missingRepositories: IRepository[] = []
@@ -59,11 +66,13 @@ export class SyncInRepositoryChecker
 		let newRepositoryMemberAcceptances: IRepositoryMemberAcceptance[] = []
 		let newRepositoryMemberInvitations: IRepositoryMemberInvitation[] = []
 		let signatureChecks: ISignatureCheck[] = []
+		let repositoryAddedInAnEarlierIncomingMessage = false
+		let repositoryGUID: Repository_GUID
 
 		try {
 			const data = message.data
-			let repositoryGUIDs: string[] = []
-			let messageRepositoryIndexMap: Map<string, number> = new Map()
+			let repositoryGUIDs: Repository_GUID[] = []
+			let messageRepositoryIndexMap: Map<Repository_GUID, number> = new Map()
 			for (let i = 0; i < data.referencedRepositories.length; i++) {
 				this.checkRepository(
 					data.referencedRepositories[i],
@@ -92,12 +101,21 @@ export class SyncInRepositoryChecker
 					messageRepositoryIndexMap,
 					data
 				)
+				repositoryGUID = historyRepository.GUID
+				addedRepositoryMapByGUID.set(repositoryGUID, historyRepository)
 			} else {
-				if (typeof historyRepository !== 'string') {
-					throw new Error(`${repositoryErrorPrefix} a string
-	i${isRepositoryCreationEqualityErrorPrefix} === false`)
+				if (typeof historyRepository !== 'string' || (historyRepository as any).length !== 45) {
+					throw new Error(`${repositoryErrorPrefix} a string GUID
+	${isRepositoryCreationEqualityErrorPrefix} === false`)
 				}
-				repositoryGUIDs.push(historyRepository as any)
+				repositoryGUID = historyRepository
+				const repositoryAddedInPreviousMessage = addedRepositoryMapByGUID.get(historyRepository)
+				if (repositoryAddedInPreviousMessage) {
+					repositoryAddedInAnEarlierIncomingMessage = true
+					history.repository = historyRepository = repositoryAddedInPreviousMessage
+				} else {
+					repositoryGUIDs.push(historyRepository)
+				}
 			}
 
 			const foundRepositories = await this.repositoryDao.findByGUIDs(
@@ -120,6 +138,13 @@ export class SyncInRepositoryChecker
 						// gets modified with required state on an insert
 						history.repository = historyRepository = foundRepository
 					}
+				}
+			}
+
+			for (const [repositoryGUID, repository] of addedRepositoryMapByGUID) {
+				const messageRepositoryIndex = messageRepositoryIndexMap.get(repositoryGUID)
+				if (messageRepositoryIndex || messageRepositoryIndex === 0) {
+					data.referencedRepositories[messageRepositoryIndex] = repository
 				}
 			}
 
@@ -147,7 +172,13 @@ export class SyncInRepositoryChecker
 				}
 			}
 
-			const memberCheckResult = await this.checkRepositoryMembers(message, context)
+			const addedRepositoryMembersByPublicSigningKey = this.datastructureUtils
+				.ensureChildJsMap(addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey,
+					repositoryGUID)
+			addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey
+			const memberCheckResult = await this.checkRepositoryMembers(message,
+				historyRepository, repositoryAddedInAnEarlierIncomingMessage,
+				addedRepositoryMembersByPublicSigningKey, context)
 			signatureChecks = memberCheckResult.signatureChecks
 			newMembers = memberCheckResult.newMembers
 			if (memberCheckResult.newRepositoryMemberAcceptance) {
@@ -175,6 +206,9 @@ export class SyncInRepositoryChecker
 
 	private async checkRepositoryMembers(
 		message: SyncRepositoryMessage,
+		historyRepository: IRepository,
+		repositoryAddedInAnEarlierIncomingMessage: boolean,
+		addedRepositoryMembersByPublicSigningKey: Map<RepositoryMember_PublicSigningKey, IRepositoryMember>,
 		context: IContext
 	): Promise<{
 		newMembers: IRepositoryMember[]
@@ -187,18 +221,19 @@ export class SyncInRepositoryChecker
 			.getInMessageRepositoryMemberMap(data)
 
 		const newMembers: IRepositoryMember[] = []
-		const existingRepositoryMember = await this.getExistingRepositoryMember(
-			data, inMessageRepositoryMemberMapByPublicSigningKey, newMembers,
-			context)
+		const repositoryMember = await this.getRepositoryMember(
+			data, historyRepository,
+			repositoryAddedInAnEarlierIncomingMessage,
+			addedRepositoryMembersByPublicSigningKey,
+			inMessageRepositoryMemberMapByPublicSigningKey, newMembers, context)
 
 		const newRepositoryMemberAcceptance = this
-			.isNewRepositoryMemberAcceptanceMessage(
-				data, existingRepositoryMember)
+			.isNewRepositoryMemberAcceptanceMessage(data, repositoryMember)
 		const isNewRepositoryMemberAcceptanceMessage = !!newRepositoryMemberAcceptance
 
 		const newRepositoryMemberInvitations = this
 			.getNewRepositoryMemberInvitations(
-				data, existingRepositoryMember, newMembers)
+				data, repositoryMember, newMembers)
 
 		await this.checkRepositoryMemberUserAccounts(data,
 			isNewRepositoryMemberAcceptanceMessage,
@@ -268,7 +303,7 @@ a acceptingRepositoryMember.userAccount specified.`)
 
 	private isNewRepositoryMemberAcceptanceMessage(
 		data: SyncRepositoryData,
-		existingRepositoryMember: IRepositoryMember
+		repositoryMember: IRepositoryMember
 	): IRepositoryMemberAcceptance {
 		const history = data.history
 
@@ -318,7 +353,7 @@ a acceptingRepositoryMember.userAccount specified.`)
 
 		const acceptingRepositoryMember = data.repositoryMembers[newRepositoryMemberAcceptance.acceptingRepositoryMember]
 
-		if (acceptingRepositoryMember !== existingRepositoryMember) {
+		if (acceptingRepositoryMember.memberPublicSigningKey !== repositoryMember.memberPublicSigningKey) {
 			throw new Error(`${newRepositoryMemberAcceptancesErrorPrefix}[0] must be an existing RepositoryMember`)
 		}
 
@@ -336,7 +371,7 @@ a acceptingRepositoryMember.userAccount specified.`)
 
 	private getNewRepositoryMemberInvitations(
 		data: SyncRepositoryData,
-		existingRepositoryMember: IRepositoryMember,
+		repositoryMember: IRepositoryMember,
 		newMembers: IRepositoryMember[]
 	): IRepositoryMemberInvitation[] {
 		const history = data.history
@@ -356,7 +391,7 @@ a acceptingRepositoryMember.userAccount specified.`)
 			throw new Error(`${newRepositoryMemberInvitationsErrorPrefix} are NOT allowed on a public Repository`)
 		}
 
-		if (!existingRepositoryMember.isAdministrator) {
+		if (!repositoryMember.isAdministrator) {
 			throw new Error(`Non-Administrator user cannot send ${newRepositoryMemberInvitationsErrorPrefix}.`)
 		}
 
@@ -381,7 +416,7 @@ a acceptingRepositoryMember.userAccount specified.`)
 is not present in the message.`)
 			}
 
-			if (invitedRepositoryMember === existingRepositoryMember) {
+			if (invitedRepositoryMember.memberPublicSigningKey === repositoryMember.memberPublicSigningKey) {
 				throw new Error(`${newRepositoryMemberInvitationsErrorPrefix}[${i}] cannot be an existing RepositoryMember`)
 			}
 
@@ -432,7 +467,7 @@ is not present in the message.`)
 	private getInMessageRepositoryMemberMap(
 		data: SyncRepositoryData
 	): Map<RepositoryMember_PublicSigningKey, InMessageIndex> {
-		const repositoryMemberInMessageIndexesMapByPublicSigningKey:
+		const inMessageRepositoryMemberMapByPublicSigningKey:
 			Map<RepositoryMember_PublicSigningKey, InMessageIndex> = new Map()
 		const repositoryMemberPublicSigningKeySet:
 			Set<RepositoryMember_PublicSigningKey> = new Set()
@@ -449,13 +484,13 @@ is not present in the message.`)
 				throw new Error(`${errorPrefix} appears in more than one data.repositoryMembers`)
 			}
 			repositoryMemberPublicSigningKeySet.add(memberPublicSigningKey)
-			repositoryMemberInMessageIndexesMapByPublicSigningKey.set(
+			inMessageRepositoryMemberMapByPublicSigningKey.set(
 				memberPublicSigningKey, i)
 
 			delete repositoryMember._localId
 		}
 
-		return repositoryMemberInMessageIndexesMapByPublicSigningKey
+		return inMessageRepositoryMemberMapByPublicSigningKey
 	}
 
 	private checkPublicSigningKey(
@@ -470,48 +505,88 @@ is not present in the message.`)
 		}
 	}
 
-	private async getExistingRepositoryMember(
+	private async getRepositoryMember(
 		data: SyncRepositoryData,
-		repositoryMemberInMessageIndexesMapByPublicSigningKey:
+		historyRepository: IRepository,
+		repositoryAddedInAnEarlierIncomingMessage: boolean,
+		addedRepositoryMembersByPublicSigningKey: Map<RepositoryMember_PublicSigningKey, IRepositoryMember>,
+		inMessageRepositoryMemberMapByPublicSigningKey:
 			Map<RepositoryMember_PublicSigningKey, InMessageIndex>,
 		newMembers: IRepositoryMember[],
 		context: IContext
 	): Promise<IRepositoryMember> {
-		const memberPublicSigningKeys = data.repositoryMembers
-			.map(repositoryMember => repositoryMember.memberPublicSigningKey)
-		const existingMessageRepositoryMembers = await this.repositoryMemberDao
-			.findByMemberPublicSigningKeys(Array.from(memberPublicSigningKeys), context)
-		let existingRepositoryMember: IRepositoryMember
+		let exisingMessageRepositoryMembers: IRepositoryMember[] = []
+		let newRepositoryMember: IRepositoryMember
+		if (repositoryAddedInAnEarlierIncomingMessage) {
+			for (const repositoryMember of data.repositoryMembers) {
+				const repositoryMemberAddedInAnEarlierIncomingMessage =
+					addedRepositoryMembersByPublicSigningKey.get(repositoryMember.memberPublicSigningKey)
+				if (!repositoryMemberAddedInAnEarlierIncomingMessage) {
+					if (typeof repositoryMember.userAccount === 'undefined') {
+						throw new Error(`Did not find are RepositoryMember
+in an earlier (currently) incoming message for a repository was added in an
+earlier incoming message`)
+					} else {
+						if (newRepositoryMember) {
+							throw new Error(`Only one member can be added per message`)
+						}
+						newRepositoryMember = repositoryMember
+						addedRepositoryMembersByPublicSigningKey
+							.set(repositoryMember.memberPublicSigningKey, repositoryMember)
+					}
+				} else {
+					exisingMessageRepositoryMembers.push(
+						repositoryMemberAddedInAnEarlierIncomingMessage)
+				}
+			}
+		} else {
+			const memberPublicSigningKeys = data.repositoryMembers
+				.map(repositoryMember => repositoryMember.memberPublicSigningKey)
+			exisingMessageRepositoryMembers = await this.repositoryMemberDao
+				.findByMemberPublicSigningKeys(memberPublicSigningKeys, context)
+		}
+		let messageRepositoryMember: IRepositoryMember
 
 		const history = data.history
 		if (history.isRepositoryCreation) {
-			if (existingMessageRepositoryMembers.length) {
+			if (exisingMessageRepositoryMembers.length) {
 				throw new Error(`Found existing repositoryMembers for a newly created repository`)
 			}
-			const newMember = data.repositoryMembers[history.member as any]
-			this.checkRepositoryMembershipFlags(newMember,
-				`history.member`, false, data.history.repository)
-			history.member = newMember
+			newRepositoryMember = data.repositoryMembers[history.member as any]
+			this.checkRepositoryMembershipFlags(newRepositoryMember,
+				`history.member`, true, historyRepository)
+			history.member = newRepositoryMember
 			newMembers.push(history.member)
+			addedRepositoryMembersByPublicSigningKey
+				.set(newRepositoryMember.memberPublicSigningKey, newRepositoryMember)
 			return null
 		}
 
-		if (existingMessageRepositoryMembers.length !== 1) {
-			throw new Error(`Expecting exactly 1 existing RepositoryMember in non isRepositoryCreation message`)
+		if (newRepositoryMember) {
+			this.checkRepositoryMembershipFlags(newRepositoryMember,
+				`history.member`, false, historyRepository)
+			messageRepositoryMember = newRepositoryMember
+			newMembers.push(newRepositoryMember)
+		} else {
+			if (exisingMessageRepositoryMembers.length !== 1) {
+				throw new Error(`Expecting exactly one RepositoryMember in non isRepositoryCreation message`)
+			}
+			messageRepositoryMember = exisingMessageRepositoryMembers[0]
 		}
 
-		existingRepositoryMember = existingMessageRepositoryMembers[0]
-		const repositoryMemberInMessageIndex = repositoryMemberInMessageIndexesMapByPublicSigningKey
-		[existingRepositoryMember.memberPublicSigningKey]
+		const repositoryMemberInMessageIndex = inMessageRepositoryMemberMapByPublicSigningKey.get(
+			messageRepositoryMember.memberPublicSigningKey)
 
-		if (history.member !== repositoryMemberInMessageIndex) {
+		if (history.member as any !== repositoryMemberInMessageIndex) {
 			throw new Error(`history.member does not already exist in the Repository`)
 		}
 
-		history.member = existingRepositoryMember
-		data.repositoryMembers[repositoryMemberInMessageIndex] = existingRepositoryMember
+		history.member = messageRepositoryMember
+		data.repositoryMembers[repositoryMemberInMessageIndex] = messageRepositoryMember
+		addedRepositoryMembersByPublicSigningKey
+			.set(messageRepositoryMember.memberPublicSigningKey, messageRepositoryMember)
 
-		return existingRepositoryMember
+		return messageRepositoryMember
 	}
 
 	private getPublicSigningKeysAndSignatureToCheck(

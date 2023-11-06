@@ -129,9 +129,10 @@ export class SyncOutDataSerializer
 	// repositoryDao: IRepositoryDao
 
 	WITH_ID: IWithId = {} as any
+	USER_ACCOUNT_WITH_ID: IUserAccount = {} as any
 	TERMINAL_WITH_ID: ITerminal = {} as any
-	WITH_ID_AND_ACTOR_ID: IWithIdAndActor = {} as any
 	WITH_RECORD_HISTORY: IWithRecordHistory = {} as any
+	RECORD_HISTORY: IRecordHistory = {} as any
 	WITH_INDEX: IWithIndex = {} as any
 
 	async serialize(
@@ -235,12 +236,12 @@ export class SyncOutDataSerializer
 		lookups: InMessageLookupStructures,
 		context: IContext
 	): Promise<void> {
-		let actorIdsToFindBy: Actor_LocalId[] = []
-		for (let actorId of lookups.actorInMessageIndexesById.keys()) {
-			actorIdsToFindBy.push(actorId)
+		let actorLidsToFindBy: Actor_LocalId[] = []
+		for (let actorLid of lookups.actorInMessageIndexesById.keys()) {
+			actorLidsToFindBy.push(actorLid)
 		}
 		const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(
-			actorIdsToFindBy, context)
+			actorLidsToFindBy, context)
 
 		this.serializeUserAccounts(actors, data, lookups.userAccountLookup)
 		this.serializeActorTerminals(actors, data,
@@ -387,7 +388,7 @@ export class SyncOutDataSerializer
 
 		if (!entityAlreadyAdded) {
 			let serializedUserAccount: IUserAccount = {
-				...this.WITH_ID,
+				...this.USER_ACCOUNT_WITH_ID,
 				accountPublicSigningKey: userAccount.accountPublicSigningKey,
 				username: userAccount.username
 			}
@@ -429,14 +430,14 @@ export class SyncOutDataSerializer
 		repositoryMapById: Map<Repository_LocalId, IRepository>,
 		context: IContext
 	): Promise<void> {
-		let repositoryIdsToFindBy: Repository_LocalId[] = []
+		let repositoryLidsToFindBy: Repository_LocalId[] = []
 		let foundRepositories: IRepository[] = []
-		for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
-			const foundRepository = repositoryMapById.get(repositoryId)
+		for (let repositoryLid of lookups.repositoryInMessageIndexesById.keys()) {
+			const foundRepository = repositoryMapById.get(repositoryLid)
 			if (foundRepository) {
 				foundRepositories.push(foundRepository)
 			} else {
-				repositoryIdsToFindBy.push(repositoryId)
+				repositoryLidsToFindBy.push(repositoryLid)
 			}
 		}
 
@@ -444,13 +445,13 @@ export class SyncOutDataSerializer
 		if (foundRepository) {
 			foundRepositories.push(foundRepository)
 		} else {
-			repositoryIdsToFindBy.push(repositoryTransactionHistory._localId)
+			repositoryLidsToFindBy.push(repositoryTransactionHistory.repository._localId)
 		}
 
 		let repositories = []
-		if (repositoryIdsToFindBy.length) {
+		if (repositoryLidsToFindBy.length) {
 			repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(
-				repositoryIdsToFindBy, context)
+				repositoryLidsToFindBy, context)
 		}
 		foundRepositories = [
 			...repositories,
@@ -583,8 +584,10 @@ export class SyncOutDataSerializer
 		const serializedOperationHistory: IOperationHistory[] = []
 		for (const operationHistory of repositoryTransactionHistory.operationHistory) {
 			serializedOperationHistory.push(this.serializeOperationHistory(
-				repositoryTransactionHistory, operationHistory, data, lookups))
+				operationHistory, data, lookups))
 		}
+
+		this.serializeNewRepositoryMembers(repositoryTransactionHistory, data, lookups)
 
 		const member = this.addRepositoryMemberToMessage(
 			repositoryTransactionHistory.member,
@@ -593,14 +596,10 @@ export class SyncOutDataSerializer
 			repositoryTransactionHistory.isRepositoryCreation
 		)
 
-		this.serializeNewRepositoryMembers(repositoryTransactionHistory, data, lookups)
-
 		const serializedRepositoryTransactionHistory: IRepositoryTransactionHistory = {
 			...this.WITH_ID,
-			actor: this.getActorInMessageIndex(repositoryTransactionHistory.actor, lookups),
 			GUID: repositoryTransactionHistory.GUID,
 			isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
-			isPublic: repositoryTransactionHistory.isPublic,
 			member,
 			repository: this.serializeHistoryRepository(
 				repositoryTransactionHistory, data, lookups.userAccountLookup),
@@ -703,7 +702,6 @@ export class SyncOutDataSerializer
 	}
 
 	private serializeOperationHistory(
-		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		operationHistory: IOperationHistory,
 		data: SyncRepositoryData,
 		lookups: InMessageLookupStructures
@@ -712,7 +710,7 @@ export class SyncOutDataSerializer
 		const serializedRecordHistory: IRecordHistory[] = []
 		for (const recordHistory of operationHistory.recordHistory) {
 			serializedRecordHistory.push(this.serializeRecordHistory(
-				repositoryTransactionHistory, recordHistory, dbEntity, data, lookups))
+				recordHistory, dbEntity, data, lookups))
 		}
 
 		const historyEntity = operationHistory.entity
@@ -749,6 +747,7 @@ export class SyncOutDataSerializer
 
 		const serializedOperationHistory: IOperationHistory = {
 			...this.WITH_ID,
+			actor: this.getActorInMessageIndex(operationHistory.actor, lookups),
 			changeType: operationHistory.changeType,
 			entity,
 			recordHistory: serializedRecordHistory,
@@ -764,7 +763,6 @@ export class SyncOutDataSerializer
 	}
 
 	private serializeRecordHistory(
-		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		recordHistory: IRecordHistory,
 		dbEntity: DbEntity,
 		data: SyncRepositoryData,
@@ -796,11 +794,12 @@ export class SyncOutDataSerializer
 			_localId: number,
 			actor: IActor,
 			newValues?: IRecordHistoryNewValue[],
-			oldValues?: IRecordHistoryOldValue[]
+			oldValues?: IRecordHistoryOldValue[],
+			operationHistory: IOperationHistory
 		} = {
-			...this.WITH_ID_AND_ACTOR_ID,
+			...this.RECORD_HISTORY,
 		}
-		if (actor._localId !== repositoryTransactionHistory.actor._localId) {
+		if (actor._localId !== recordHistory.operationHistory.actor._localId) {
 			baseObject.actor = this.getActorInMessageIndex(actor, lookups)
 		}
 		if (newValues.length) {
@@ -812,9 +811,7 @@ export class SyncOutDataSerializer
 
 		return {
 			...baseObject,
-			_actorRecordId: recordHistory._actorRecordId,
-			actor: null,
-			operationHistory: null
+			_actorRecordId: recordHistory._actorRecordId
 		}
 	}
 
@@ -829,15 +826,15 @@ export class SyncOutDataSerializer
 	}
 
 	private getActorInMessageIndexById(
-		actorId: Actor_LocalId,
+		actorLid: Actor_LocalId,
 		lookups: InMessageLookupStructures
 	): number {
 		let actorInMessageIndex
-		if (lookups.actorInMessageIndexesById.has(actorId)) {
-			actorInMessageIndex = lookups.actorInMessageIndexesById.get(actorId)
+		if (lookups.actorInMessageIndexesById.has(actorLid)) {
+			actorInMessageIndex = lookups.actorInMessageIndexesById.get(actorLid)
 		} else {
 			actorInMessageIndex = ++lookups.lastInMessageActorIndex
-			lookups.actorInMessageIndexesById.set(actorId, actorInMessageIndex)
+			lookups.actorInMessageIndexesById.set(actorLid, actorInMessageIndex)
 		}
 
 		return actorInMessageIndex

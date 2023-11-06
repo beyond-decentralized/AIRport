@@ -74,7 +74,7 @@ import { QueryResultsSerializer } from './serialize/QueryResultsSerializer'
 import { RepositoryManager } from './core/repository/RepositoryManager'
 import { IdGenerator } from '@airport/fuel-hydrant-system'
 import { ActiveQueries, ObservableQueryAdapter } from '@airport/flight-number'
-import { RepositoryMaintenanceManager } from '@airbridge/sso/dist/app/bundle'
+import { RepositoryMaintenanceManager } from '@airbridge/sso'
 
 const terminal = lib('terminal')
 
@@ -147,6 +147,12 @@ terminal.setDependencies(EntityGraphReconstructor, {
 
 HISTORY_MANAGER.setClass(HistoryManager)
 HISTORY_MANAGER.setDependencies({
+    dataStructureUtils: DatastructureUtils,
+    repositoryDao: RepositoryDao,
+    repositoryMaintenanceManager: RepositoryMaintenanceManager,
+    repositoryMemberDao: RepositoryMemberDao,
+    sequenceGenerator: SEQUENCE_GENERATOR,
+    terminalSessionManager: TERMINAL_SESSION_MANAGER,
     transactionHistoryDuo: TransactionHistoryDuo,
 })
 
@@ -171,20 +177,9 @@ terminal.setDependencies(InternalRecordManager, {
     transactionManager: TRANSACTION_MANAGER
 })
 
-REPOSITORY_MANAGER.setClass(RepositoryManager)
-REPOSITORY_MANAGER.setDependencies({
-    appTrackerUtils: AppTrackerUtils,
-    dictionary: Dictionary,
-    repositoryMaintenanceManager: RepositoryMaintenanceManager,
-    repositoryDao: RepositoryDao,
-    repositoryMemberDao: RepositoryMemberDao,
-    terminalSessionManager: TERMINAL_SESSION_MANAGER,
-    terminalStore: TerminalStore
-})
-
 terminal.setDependencies(OnlineManager, {
     repositoryDao: RepositoryDao,
-    repositoryManager: RepositoryManager,
+    repositoryManager: REPOSITORY_MANAGER,
     repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
     transactionManager: TRANSACTION_MANAGER
 })
@@ -201,7 +196,7 @@ terminal.setDependencies(OperationManager, {
     insertManager: InsertManager,
     qMetadataUtils: QMetadataUtils,
     queryFacade: QUERY_FACADE,
-    repositoryManager: RepositoryManager,
+    repositoryManager: REPOSITORY_MANAGER,
     structuralEntityValidator: StructuralEntityValidator,
     updateManager: UpdateManager,
     utils: Utils
@@ -224,6 +219,17 @@ REPOSITORY_LOADER.setDependencies({
     synchronizationInManager: SynchronizationInManager
 })
 
+REPOSITORY_MANAGER.setClass(RepositoryManager)
+REPOSITORY_MANAGER.setDependencies({
+    appTrackerUtils: AppTrackerUtils,
+    dictionary: Dictionary,
+    repositoryMaintenanceManager: RepositoryMaintenanceManager,
+    repositoryDao: RepositoryDao,
+    repositoryMemberDao: RepositoryMemberDao,
+    terminalSessionManager: TERMINAL_SESSION_MANAGER,
+    terminalStore: TerminalStore
+})
+
 terminal.setDependencies(StructuralEntityValidator, {
     applicationUtils: APPLICATION_UTILS,
     crossRepositoryRelationManager: CrossRepositoryRelationManager,
@@ -241,6 +247,7 @@ TERMINAL_SESSION_MANAGER.setDependencies({
 TRANSACTION_MANAGER.setDependencies({
     activeQueries: ActiveQueries,
     appTrackerUtils: AppTrackerUtils,
+    historyManager: HISTORY_MANAGER,
     idGenerator: IdGenerator,
     repositoryMemberAcceptanceDao: RepositoryMemberAcceptanceDao,
     repositoryMemberDao: RepositoryMemberDao,
@@ -272,7 +279,7 @@ TRANSACTIONAL_SERVER.setDependencies({
     observableQueryAdapter: ObservableQueryAdapter,
     operationManager: OperationManager,
     queryManager: QueryManager,
-    repositoryManager: RepositoryManager,
+    repositoryManager: REPOSITORY_MANAGER,
     terminalStore: TerminalStore,
     transactionManager: TRANSACTION_MANAGER,
     updateManager: UpdateManager

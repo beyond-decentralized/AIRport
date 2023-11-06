@@ -10,13 +10,15 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { DbEntity_LocalId, DbRelation_Index, Application_Name, DbRelation, Domain_Name, IDatastructureUtils, KeyUtils, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, Repository_LocalId } from '@airport/ground-control';
+import { DbEntity_LocalId, DbRelation_Index, Application_Name, DbRelation, Domain_Name, IDatastructureUtils, KeyUtils, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, Repository_LocalId, IRepository, RepositoryMember_PublicSigningKey, IRepositoryMember } from '@airport/ground-control';
 import { ITerminalStore } from '@airport/terminal-map';
 
 export interface ISyncInChecker {
 
 	checkMessage(
 		message: SyncRepositoryMessage,
+		addedRepositoryMapByGUID: Map<Repository_GUID, IRepository>,
+		addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey: Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>>,
 		context: IContext
 	): Promise<IDataCheckResult>
 
@@ -67,6 +69,8 @@ export class SyncInChecker
 	 */
 	async checkMessage(
 		message: SyncRepositoryMessage,
+		addedRepositoryMapByGUID: Map<Repository_GUID, IRepository>,
+		addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey: Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>>,
 		context: IContext
 	): Promise<IDataCheckResult> {
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
@@ -105,7 +109,8 @@ export class SyncInChecker
 		const dataCheckResult = await this.syncInDataChecker.checkData(message, context)
 
 		const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
-			.checkRepositoriesAndMembers(message, context)
+			.checkRepositoriesAndMembers(message, addedRepositoryMapByGUID,
+				addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context)
 		if (!repositoryAndMemberCheckResult.isValid) {
 			return {
 				isValid: false

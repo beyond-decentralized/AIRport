@@ -31,7 +31,6 @@ import {
 	RecordUpdate,
 	Stage1SyncedInDataProcessingResult
 } from './SyncInUtils'
-import { IOperationContext } from '@airport/terminal-map'
 import { IDatabaseFacade } from '@airport/tarmaq-dao'
 import { AND, IQEntityInternal, IQOperableFieldInternal, OR } from '@airport/tarmaq-query'
 
@@ -138,12 +137,12 @@ export class Stage2SyncedInDataProcessor
 				let numInserts = 0
 				const VALUES: any[][] = []
 
-				for (const [repositoryId, creationForRepositoryMap] of creationInTableMap) {
-					for (const [actorId, creationForActorMap] of creationForRepositoryMap) {
+				for (const [repositoryLid, creationForRepositoryMap] of creationInTableMap) {
+					for (const [actorLid, creationForActorMap] of creationForRepositoryMap) {
 						for (const [_actorRecordId, creationOfRowMap] of creationForActorMap) {
 							const rowValues = [
-								repositoryId,
-								actorId,
+								repositoryLid,
+								actorLid,
 								_actorRecordId
 							]
 							const columnIndexedValues: ColumnIndexAndValue[] = []
@@ -254,16 +253,16 @@ export class Stage2SyncedInDataProcessor
 				const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
 					.applicationVersion.entities[entityIndex]
 
-				for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
+				for (const [repositoryLid, repositoryUpdateMap] of tableUpdateMap) {
 
-					for (const [actorId, actorUpdates] of repositoryUpdateMap) {
+					for (const [actorLid, actorUpdates] of repositoryUpdateMap) {
 						for (const [_actorRecordId, recordUpdateMap] of actorUpdates) {
 							const recordKeyMap = this.getRecordKeyMap(recordUpdateMap, finalTableUpdateMap)
 
 							this.datastructureUtils.ensureChildJsSet(
 								this.datastructureUtils.ensureChildJsMap(
-									recordKeyMap, repositoryId),
-								actorId)
+									recordKeyMap, repositoryLid),
+								actorLid)
 								.add(_actorRecordId)
 							for (const [columnIndex, columnUpdate] of recordUpdateMap) {
 								const dbColumn = dbEntity.columns[columnIndex]
@@ -271,8 +270,8 @@ export class Stage2SyncedInDataProcessor
 								recordUpdateStage.push([
 									applicationVersionId,
 									entityIndex,
-									repositoryId,
-									actorId,
+									repositoryLid,
+									actorLid,
 									_actorRecordId,
 									columnIndex,
 									columnUpdate.newValue
@@ -321,20 +320,20 @@ export class Stage2SyncedInDataProcessor
 				let numClauses = 0
 				let repositoryWhereFragments: QueryBaseOperation[] = []
 
-				for (const [repositoryId, deletionForRepositoryMap] of deletionInTableMap) {
+				for (const [repositoryLid, deletionForRepositoryMap] of deletionInTableMap) {
 					let actorWhereFragments: QueryBaseOperation[] = []
 
-					for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
+					for (const [actorLid, actorRecordIdSet] of deletionForRepositoryMap) {
 						numClauses++
 
 						actorWhereFragments.push(AND(
 							qEntity._actorRecordId.IN(Array.from(actorRecordIdSet)),
-							qEntity.actor._localId.equals(actorId)
+							qEntity.actor._localId.equals(actorLid)
 						))
 					}
 
 					repositoryWhereFragments.push(AND(
-						qEntity.repository._localId.equals(repositoryId),
+						qEntity.repository._localId.equals(repositoryLid),
 						OR(...actorWhereFragments)
 					))
 				}

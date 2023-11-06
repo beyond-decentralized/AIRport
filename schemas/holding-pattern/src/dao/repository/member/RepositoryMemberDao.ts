@@ -3,7 +3,7 @@ import { IContext, Injected } from "@airport/direction-indicator";
 import { IRepositoryMember, IRepositoryTransactionHistory, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Status, Repository_LocalId } from "@airport/ground-control";
 import { AND, EXISTS, Y } from "@airport/tarmaq-query";
 import { QUserAccount } from "@airport/travel-document-checkpoint/dist/app/bundle";
-import { QRepositoryMember, QRepositoryMemberInvitation } from "../../../generated/qInterfaces";
+import { QRepository, QRepositoryMember, QRepositoryMemberInvitation } from "../../../generated/qInterfaces";
 import { BaseRepositoryMemberDao } from "../../../generated/baseDaos";
 import Q_airport____at_airport_slash_holding_dash_pattern from "../../../generated/qApplication";
 
@@ -15,8 +15,7 @@ export class RepositoryMemberDao
         memberPublicSigningKeys: RepositoryMember_PublicSigningKey[],
         context: IContext
     ): Promise<IRepositoryMember[]> {
-        let rm: QRepositoryMember,
-            ua: QUserAccount
+        let rm: QRepositoryMember
 
         return await this._find({
             SELECT: {
@@ -25,7 +24,7 @@ export class RepositoryMemberDao
             },
             FROM: [
                 rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
-                ua = rm.userAccount.LEFT_JOIN()
+                rm.userAccount.LEFT_JOIN()
             ],
             WHERE: rm.memberPublicSigningKey.IN(memberPublicSigningKeys)
         }, context)
@@ -52,20 +51,22 @@ export class RepositoryMemberDao
         }, context)
     }
 
-    async findForRepositoryLocalIdAndUserLocalId(
-        repositoryLocalId: Repository_LocalId,
+    async findForRepositoryLocalIdsAndUserLocalId(
+        repositoryLocalId: Repository_LocalId[],
         userLocalId: UserAccount_LocalId,
         context: IContext
-    ): Promise<IRepositoryMember> {
+    ): Promise<IRepositoryMember[]> {
         let rm: QRepositoryMember
+        let r: QRepository
 
-        return await this._findOne({
+        return await this._find({
             SELECT: {},
             FROM: [
-                rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember
+                rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
+                r = rm.repository.INNER_JOIN()
             ],
             WHERE: AND(
-                rm.repository.equals(repositoryLocalId),
+                r._localId.IN(repositoryLocalId),
                 rm.userAccount.equals(userLocalId)
             )
         }, context)

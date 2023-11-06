@@ -21,7 +21,7 @@ import {
 
 export type RemoteApplication_Index = Application_Index;
 export type RemoteApplicationVersion_LocalId = ApplicationVersion_LocalId;
-export type RemoteActorId = Actor_LocalId;
+export type RemoteActorLid = Actor_LocalId;
 
 /**
  * Result of comparing to versions of a given application.

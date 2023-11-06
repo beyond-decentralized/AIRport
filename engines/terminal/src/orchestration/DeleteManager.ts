@@ -22,6 +22,7 @@ import {
 	QueryEntity,
 	PortableQuery,
 	QueryResultType,
+	Repository_LocalId,
 } from '@airport/ground-control'
 import {
 	IOperationHistoryDuo,
@@ -110,10 +111,10 @@ export class DeleteManager
 			.find<any, Array<any>>(portableSelect, {}, context)
 
 		const recordsToDelete: RecordsToDelete = new Map()
-		const repositoryIdSet = new Set<number>()
+		const repositoryLidSet = new Set<Repository_LocalId>()
 		for (const treeToDelete of treesToDelete) {
 			this.recordRepositoryIds(treeToDelete, dbEntity,
-				recordsToDelete, repositoryIdSet, this.applicationUtils)
+				recordsToDelete, repositoryLidSet, this.applicationUtils)
 		}
 
 		await this.recordTreeToDelete(recordsToDelete, actor,
@@ -126,11 +127,11 @@ export class DeleteManager
 		treeToDelete: any,
 		dbEntity: DbEntity,
 		recordsToDelete: RecordsToDelete,
-		repositoryIdSet: Set<number>,
+		repositoryLidSet: Set<number>,
 		applicationUtils: IApplicationUtils
 	): void {
-		const repositoryId = treeToDelete.repository._localId
-		repositoryIdSet.add(repositoryId)
+		const repositoryLid = treeToDelete.repository._localId
+		repositoryLidSet.add(repositoryLid)
 
 		const recordsToDeleteForApplication
 			= this.datastructureUtils.ensureChildJsMap(
@@ -140,7 +141,7 @@ export class DeleteManager
 				recordsToDeleteForApplication, dbEntity.index)
 		const recordsToDeleteForRepository
 			= this.datastructureUtils.ensureChildArray(
-				recordsToDeleteForTable, repositoryId)
+				recordsToDeleteForTable, repositoryLid)
 
 		const recordToDelete = {}
 		// FIXME: implement
@@ -175,7 +176,7 @@ export class DeleteManager
 							childTrees.forEach(
 								childTree => {
 									this.recordRepositoryIds(childTree, childDbEntity,
-										recordsToDelete, repositoryIdSet, applicationUtils)
+										recordsToDelete, repositoryLidSet, applicationUtils)
 								})
 						}
 						break
@@ -238,14 +239,14 @@ export class DeleteManager
 					systemWideOperationId = await this.systemWideOperationIdUtils.getSysWideOpId()
 				}
 
-				for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
+				for (const [repositoryLid, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
 					const repositoryTransactionHistory = await this.historyManager.getRepositoryTransactionHistory(
-						transaction.transactionHistory, repositoryId, actor, null, context
+						transaction.transactionHistory, repositoryLid, context
 					)
 
 					const operationHistory = this.repositoryTransactionHistoryDuo.startOperation(
 						repositoryTransactionHistory, systemWideOperationId,
-						ChangeType.DELETE_ROWS, dbEntity,
+						ChangeType.DELETE_ROWS, dbEntity, actor,
 						rootTransaction)
 
 					if (dbEntity.isLocal) {

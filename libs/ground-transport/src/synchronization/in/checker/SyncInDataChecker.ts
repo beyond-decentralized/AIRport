@@ -48,9 +48,9 @@ export interface IInternalDataCheckResult {
 
 export interface IEntityColumnMapsByIndex {
 
-	actorIds: Map<DbColumn_Index, DbColumn>
+	actorLids: Map<DbColumn_Index, DbColumn>
 	referencedRelationIds: Map<DbColumn_Index, DbColumn>
-	repositoryIds: Map<DbColumn_Index, DbColumn>
+	repositoryLids: Map<DbColumn_Index, DbColumn>
 	terminalIds: Map<DbColumn_Index, DbColumn>
 	userAccountIds: Map<DbColumn_Index, DbColumn>
 
@@ -130,12 +130,14 @@ export class SyncInDataChecker
 				throw new Error(`SyncRepositoryData.history.syncTimestamp cannot be specified`)
 			}
 
-			const actor = message.data.actors[history.actor as any]
-			if (!actor) {
-				throw new Error(`Cannot find Actor for "in-message id"
-SyncRepositoryData.history.actor`)
+			for(const operationHistory of history.operationHistory) {
+				const actor = message.data.actors[operationHistory.actor as any]
+				if (!actor) {
+					throw new Error(`Cannot find Actor for "in-message id"
+	SyncRepositoryData.history.operationHistory.actor`)
+				}
+				operationHistory.actor = actor
 			}
-			history.actor = actor
 
 			// Repository is already set in SyncInRepositoryChecker
 			history.repositoryTransactionType = RepositoryTransactionType.REMOTE
@@ -251,9 +253,9 @@ the position of orderHistory record determines it's order`)
 			delete operationHistory._localId
 
 			const entityColumnMapsByIndex: IEntityColumnMapsByIndex = {
-				actorIds: new Map(),
+				actorLids: new Map(),
 				referencedRelationIds: new Map(),
-				repositoryIds: new Map(),
+				repositoryLids: new Map(),
 				terminalIds: new Map(),
 				userAccountIds: new Map()
 			}
@@ -265,9 +267,9 @@ the position of orderHistory record determines it's order`)
 					const oneSideDbEntity = this.applicationUtils
 						.getOneSideEntityOfManyRelationColumn(dbColumn as DbColumn)
 					if (this.dictionary.isActor(oneSideDbEntity)) {
-						entityColumnMapsByIndex.actorIds.set(dbColumn.index, dbColumn)
+						entityColumnMapsByIndex.actorLids.set(dbColumn.index, dbColumn)
 					} else if (this.dictionary.isRepository(oneSideDbEntity)) {
-						entityColumnMapsByIndex.repositoryIds.set(dbColumn.index, dbColumn)
+						entityColumnMapsByIndex.repositoryLids.set(dbColumn.index, dbColumn)
 					} else if (this.dictionary.isTerminal(oneSideDbEntity)) {
 						entityColumnMapsByIndex.terminalIds.set(dbColumn.index, dbColumn)
 					} else if (this.dictionary.isUserAccount(oneSideDbEntity)) {
@@ -314,13 +316,13 @@ the position of orderHistory record determines it's order`)
 						throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.actor
 for ChangeType.INSERT_VALUES`)
 					}
-					recordHistory.actor = data.history.actor
+					recordHistory.actor = operationHistory.actor
 					break
 				case ChangeType.DELETE_ROWS:
 				case ChangeType.UPDATE_ROWS: {
 					// If no actor is present on record level its the same actor that created the repositoryTransactionHistory
 					if (recordHistory.actor === undefined) {
-						recordHistory.actor = data.history.actor
+						recordHistory.actor = operationHistory.actor
 					} else {
 						const actor = data.actors[recordHistory.actor as any]
 						if (!actor) {
@@ -384,7 +386,7 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS`)
 		for (const newValue of recordHistory.newValues) {
 			this.checkRelatedObjectInNewValue(
 				newValue,
-				entityColumnMapsByIndex.actorIds,
+				entityColumnMapsByIndex.actorLids,
 				data.actors,
 				'actors'
 			)
@@ -396,7 +398,7 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS`)
 			)
 			this.checkRelatedObjectInNewValue(
 				newValue,
-				entityColumnMapsByIndex.repositoryIds,
+				entityColumnMapsByIndex.repositoryLids,
 				data.referencedRepositories,
 				'referencedRepositories'
 			)
@@ -452,13 +454,13 @@ for ChangeType.UPDATE_ROWS`)
 		for (const oldValue of recordHistory.oldValues) {
 			this.checkRelatedObjectInOldValue(
 				oldValue,
-				entityColumnMapsByIndex.actorIds,
+				entityColumnMapsByIndex.actorLids,
 				data.actors,
 				'actors'
 			)
 			this.checkRelatedObjectInOldValue(
 				oldValue,
-				entityColumnMapsByIndex.repositoryIds,
+				entityColumnMapsByIndex.repositoryLids,
 				data.referencedRepositories,
 				'referencedRepositories'
 			)

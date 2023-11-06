@@ -120,7 +120,7 @@ export class TwoStageSyncedInDataProcessor
 
 		this.aggregateHistoryRecords(messages, transaction)
 
-		const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersion_LocalIdMap }
+		const { actorMapByLid, repositoryTransactionHistoryMapByRepositoryLid, applicationsByApplicationVersion_LocalIdMap }
 			= await this.getDataStructures(messages)
 
 		for (const newRepositoryMemberAcceptance of
@@ -132,7 +132,7 @@ export class TwoStageSyncedInDataProcessor
 		}
 
 		await this.updateLocalData(
-			repositoryTransactionHistoryMapByRepositoryId, actorMapById,
+			repositoryTransactionHistoryMapByRepositoryLid, actorMapByLid,
 			applicationsByApplicationVersion_LocalIdMap, context)
 	}
 
@@ -237,48 +237,48 @@ export class TwoStageSyncedInDataProcessor
 	private async getDataStructures(
 		messages: SyncRepositoryMessage[]
 	): Promise<{
-		actorMapById: Map<number, IActor>
-		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
+		actorMapByLid: Map<Actor_LocalId, IActor>
+		repositoryTransactionHistoryMapByRepositoryLid: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>
 	}> {
-		const repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
+		const repositoryTransactionHistoryMapByRepositoryLid: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
 			= new Map()
 		const applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication> = new Map()
-		const actorMapById: Map<number, IActor> = new Map()
+		const actorMapByLid: Map<number, IActor> = new Map()
 		const repoTransHistories: IRepositoryTransactionHistory[] = []
 		for (const message of messages) {
 			const data = message.data
 			repoTransHistories.push(data.history)
-			repositoryTransactionHistoryMapByRepositoryId.set(data.history.repository._localId, repoTransHistories)
+			repositoryTransactionHistoryMapByRepositoryLid.set(data.history.repository._localId, repoTransHistories)
 			for (const actor of data.actors) {
-				actorMapById.set(actor._localId, actor)
+				actorMapByLid.set(actor._localId, actor)
 			}
 			for (const applicationVersion of data.applicationVersions) {
 				applicationsByApplicationVersion_LocalIdMap.set(applicationVersion._localId, applicationVersion.application)
 			}
 		}
 
-		for (const [_, repoTransHistories] of repositoryTransactionHistoryMapByRepositoryId) {
+		for (const [_, repoTransHistories] of repositoryTransactionHistoryMapByRepositoryLid) {
 			this.repositoryTransactionHistoryDuo
-				.sortRepoTransHistories(repoTransHistories, actorMapById)
+				.sortRepoTransHistories(repoTransHistories, actorMapByLid)
 		}
 
 		return {
-			actorMapById,
-			repositoryTransactionHistoryMapByRepositoryId,
+			actorMapByLid,
+			repositoryTransactionHistoryMapByRepositoryLid,
 			applicationsByApplicationVersion_LocalIdMap
 		}
 	}
 
 	private async updateLocalData(
-		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
-		actorMayById: Map<Actor_LocalId, IActor>,
+		repositoryTransactionHistoryMapByRepositoryLid: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
+		actorMayByLid: Map<Actor_LocalId, IActor>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
 		context: IContext
 	): Promise<void> {
 		const stage1Result
 			= await this.stage1SyncedInDataProcessor.performStage1DataProcessing(
-				repositoryTransactionHistoryMapByRepositoryId, actorMayById, context)
+				repositoryTransactionHistoryMapByRepositoryLid, actorMayByLid, context)
 
 		let allSyncConflicts: ISynchronizationConflict[] = []
 		let allSyncConflictValues: ISynchronizationConflictValues[] = []

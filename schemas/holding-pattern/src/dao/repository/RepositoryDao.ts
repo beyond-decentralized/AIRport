@@ -13,6 +13,11 @@ import { Observable } from 'rxjs'
 export interface IRepositoryDao
 	extends IBaseRepositoryDao {
 
+	findByLocalId(
+		repositoryLid: Repository_LocalId,
+		context: IContext
+	): Promise<IRepository>
+
 	findByGUIDs(
 		repositoryGUIDs: Repository_GUID[],
 		context: IContext
@@ -39,7 +44,7 @@ export interface IRepositoryDao
 	): Promise<IRepository>
 
 	findWithOwnerBy_LocalIds(
-		repositoryIds: Repository_LocalId[],
+		repositoryLids: Repository_LocalId[],
 		context: IContext
 	): Promise<IRepository[]>;
 
@@ -89,6 +94,23 @@ export class RepositoryDao
 		}, context)
 
 		return repositories as any as Observable<IRepository[]>
+	}
+
+	async findByLocalId(
+		repositoryLid: Repository_LocalId,
+		context: IContext
+	): Promise<IRepository> {
+		let r: QRepository
+
+		const repository = await this._findOne({
+			SELECT: {},
+			FROM: [
+				r = Q.Repository
+			],
+			WHERE: r._localId.equals(repositoryLid)
+		}, context)
+
+		return repository as IRepository
 	}
 
 	async findRepository(
@@ -171,7 +193,7 @@ export class RepositoryDao
 	}
 
 	async findReposWithDetailsAndSyncNodeIds(
-		repositoryIds: Repository_LocalId[],
+		repositoryLids: Repository_LocalId[],
 		context: IContext
 	): Promise<IRepository[]> {
 		let r: QRepository
@@ -185,12 +207,12 @@ export class RepositoryDao
 				r = Q.Repository,
 				r.owner.INNER_JOIN()
 			],
-			WHERE: r._localId.IN(repositoryIds)
+			WHERE: r._localId.IN(repositoryLids)
 		}, context)
 	}
 
 	async findWithOwnerBy_LocalIds(
-		repositoryIds: Repository_LocalId[],
+		repositoryLids: Repository_LocalId[],
 		context: IContext
 	): Promise<IRepository[]> {
 		let r: QRepository
@@ -205,7 +227,7 @@ export class RepositoryDao
 				r.owner.INNER_JOIN()
 			],
 			WHERE:
-				r._localId.IN(repositoryIds)
+				r._localId.IN(repositoryLids)
 		}, context)
 	}
 

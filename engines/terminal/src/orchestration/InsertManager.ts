@@ -34,7 +34,7 @@ import {
 } from '@airport/terminal-map'
 
 interface ColumnsToPopulate {
-	actorIdColumn: DbColumn
+	actorLidColumn: DbColumn
 	sysWideOperationIdColumn: DbColumn
 }
 
@@ -250,11 +250,11 @@ appears more than once in the Columns clause`)
 			allIds.push([])
 		}
 
-		let actorIdColumn: DbColumn
+		let actorLidColumn: DbColumn
 		let sysWideOperationIdColumn: DbColumn
 
 		if (!dbEntity.isLocal) {
-			actorIdColumn = columnsToPopulate.actorIdColumn
+			actorLidColumn = columnsToPopulate.actorLidColumn
 			sysWideOperationIdColumn = columnsToPopulate.sysWideOperationIdColumn
 		}
 
@@ -263,7 +263,7 @@ appears more than once in the Columns clause`)
 				continue
 			}
 
-			let isActorIdColumn = false
+			let isActorLidColumn = false
 			let inStatementColumnIndex: number
 			const matchingColumns = queryInsertValues.COLUMNS.filter(
 				(
@@ -277,10 +277,10 @@ appears more than once in the Columns clause`)
 				})
 			if (matchingColumns.length < 1) {
 				// Actor Id cannot be in the insert statement
-				if (idColumn._localId === actorIdColumn._localId) {
-					isActorIdColumn = true
+				if (!dbEntity.isLocal && idColumn._localId === actorLidColumn._localId) {
+					isActorLidColumn = true
 					inStatementColumnIndex = queryInsertValues.COLUMNS.length
-					queryInsertValues.COLUMNS.push(actorIdColumn.index)
+					queryInsertValues.COLUMNS.push(actorLidColumn.index)
 				} else {
 					throw new Error(errorPrefix +
 						`Could not find @Id column ${dbEntity.name}.${idColumn.name} in
@@ -293,7 +293,7 @@ appears more than once in the Columns clause`)
 				const entityValues = values[i]
 				const idValues = allIds[i]
 				let idValue
-				if (isActorIdColumn) {
+				if (isActorLidColumn) {
 					idValue = actor._localId
 				} else {
 					idValue = entityValues[inStatementColumnIndex]
@@ -308,10 +308,10 @@ appears more than once in the Columns clause`)
 
 		// if (dbEntity.isAirEntity) {
 		// 	const repositoryColumn  = dbEntity.columnMap[airEntity.FOREIGN_KEY]
-		// 	const repositoryIdIndex = repositoryColumn.index
+		// 	const repositoryLidIndex = repositoryColumn.index
 		// 	for (const entityValues of values) {
-		// 		const repositoryId = entityValues[repositoryIdIndex]
-		// 		if (!repositoryId && repositoryId !== 0) {
+		// 		const repositoryLid = entityValues[repositoryLidIndex]
+		// 		if (!repositoryLid && repositoryLid !== 0) {
 		// 			throw new Error(`@Column({ name: 'REPOSITORY_LID'}) value is not specified on
 		// insert for '${dbEntity0.name}.${repositoryColumn.name}'.`) } } }
 
@@ -418,22 +418,22 @@ appears more than once in the Columns clause`)
 		context: IOperationContext
 	): ColumnsToPopulate {
 		const airEntityColumns = this.dictionary.AirEntity.columns
-		const actorIdColumn = dbEntity.idColumnMap[airEntityColumns.ACTOR_LID]
+		const actorLidColumn = dbEntity.idColumnMap[airEntityColumns.ACTOR_LID]
 		const actorRecordIdColumn = dbEntity.idColumnMap[airEntityColumns.ACTOR_RECORD_ID]
-		const repositoryIdColumn = dbEntity.idColumnMap[airEntityColumns.REPOSITORY_LID]
+		const repositoryLidColumn = dbEntity.idColumnMap[airEntityColumns.REPOSITORY_LID]
 		const sysWideOperationIdColumn = dbEntity.columnMap[airEntityColumns.SYSTEM_WIDE_OPERATION_LID]
 
-		let repositoryIdColumnQueryIndex
+		let repositoryLidColumnQueryIndex
 
-		let foundActorIdColumn = false
+		let foundActorLidColumn = false
 		let foundActorRecordIdColumn = false
 		let foundSystemWideOperationIdColumn = false
 
 		for (let i = 0; i < queryInsertValues.COLUMNS.length; i++) {
 			const columnIndex = queryInsertValues.COLUMNS[i]
 			switch (columnIndex) {
-				case actorIdColumn.index:
-					foundActorIdColumn = true
+				case actorLidColumn.index:
+					foundActorLidColumn = true
 					if (context.isSaveOperation) {
 						// Save operations validate Actor ealier and set it on the entity objects
 						break;
@@ -457,8 +457,8 @@ appears more than once in the Columns clause`)
 You cannot explicitly provide a SYSTEM_WIDE_OPERATION_LID value for Repository entities.`)
 					}
 					break
-				case repositoryIdColumn.index:
-					repositoryIdColumnQueryIndex = i
+				case repositoryLidColumn.index:
+					repositoryLidColumnQueryIndex = i
 					break
 			}
 		}
@@ -467,12 +467,12 @@ You cannot explicitly provide a SYSTEM_WIDE_OPERATION_LID value for Repository e
 			`Error inserting into '${dbEntity.name}'.
 You must provide a valid REPOSITORY_LID value for Repository entities.`
 
-		if (repositoryIdColumnQueryIndex === undefined) {
+		if (repositoryLidColumnQueryIndex === undefined) {
 			throw new Error(missingRepositoryIdErrorMsg)
 		}
 
 		if (transaction.isRepositorySync) {
-			if (!foundActorIdColumn) {
+			if (!foundActorLidColumn) {
 				throw new Error(errorPrefix +
 					`ACTOR_LID must be provided for sync operations.`)
 			}
@@ -493,16 +493,16 @@ You must provide a valid REPOSITORY_LID value for Repository entities.`
 				`)
 			}
 
-			let repositoryId = entityValues[repositoryIdColumnQueryIndex]
-			if (typeof repositoryId !== 'number'
-				|| !Number.isInteger(repositoryId)
-				|| repositoryId < 1) {
+			let repositoryLid = entityValues[repositoryLidColumnQueryIndex]
+			if (typeof repositoryLid !== 'number'
+				|| !Number.isInteger(repositoryLid)
+				|| repositoryLid < 1) {
 				throw new Error(missingRepositoryIdErrorMsg)
 			}
 
 			for (let i = 0; i < entityValues.length; i++) {
 				switch (i) {
-					case repositoryIdColumnQueryIndex:
+					case repositoryLidColumnQueryIndex:
 						continue
 				}
 				const value = entityValues[i]
@@ -518,12 +518,12 @@ and cannot have NULL values.`)
 			}
 			if (!context.isSaveOperation && !transaction.isRepositorySync) {
 				// Save operation set Actor ealier (at the entity level, to be returned back to client)
-				entityValues[actorIdColumn.index] = actor._localId
+				entityValues[actorLidColumn.index] = actor._localId
 			}
 		}
 
 		return {
-			actorIdColumn,
+			actorLidColumn,
 			sysWideOperationIdColumn
 		}
 	}
@@ -554,21 +554,21 @@ and cannot have NULL values.`)
 		let repoTransHistories: IRepositoryTransactionHistory[] = []
 
 		const airEntityColumns = this.dictionary.AirEntity.columns
-		const repositoryIdIndex = dbEntity.columnMap[airEntityColumns.REPOSITORY_LID].index
-		const actorIdIndex = dbEntity.columnMap[airEntityColumns.ACTOR_LID].index
+		const repositoryLidIndex = dbEntity.columnMap[airEntityColumns.REPOSITORY_LID].index
+		const actorLidIndex = dbEntity.columnMap[airEntityColumns.ACTOR_LID].index
 		const actorRecordIdIndex = dbEntity.columnMap[airEntityColumns.ACTOR_RECORD_ID].index
 
-		let repositoryIdColumnNumber
-		let actorIdColumnNumber
+		let repositoryLidColumnNumber
+		let actorLidColumnNumber
 		let actorRecordIdColumnNumber
 		for (const columnNumber in queryInsertValues.COLUMNS) {
 			const columnIndex = queryInsertValues.COLUMNS[columnNumber]
 			switch (columnIndex) {
-				case repositoryIdIndex:
-					repositoryIdColumnNumber = columnNumber
+				case repositoryLidIndex:
+					repositoryLidColumnNumber = columnNumber
 					break
-				case actorIdIndex:
-					actorIdColumnNumber = columnNumber
+				case actorLidIndex:
+					actorLidColumnNumber = columnNumber
 					break
 				case actorRecordIdIndex:
 					actorRecordIdColumnNumber = columnNumber
@@ -578,31 +578,31 @@ and cannot have NULL values.`)
 
 		// Rows may belong to different repositories
 		for (const row of queryInsertValues.VALUES) {
-			const repositoryId = row[repositoryIdColumnNumber]
-			// const repo           = await repoManager.getRepository(repositoryId)
-			let repositoryTransactionHistory = repoTransHistories[repositoryId]
+			const repositoryLid = row[repositoryLidColumnNumber]
+			// const repo           = await repoManager.getRepository(repositoryLid)
+			let repositoryTransactionHistory = repoTransHistories[repositoryLid]
 			if (!repositoryTransactionHistory) {
 				repositoryTransactionHistory = await this.historyManager
 					.getRepositoryTransactionHistory(transaction.transactionHistory,
-						repositoryId, actor, null, context)
+						repositoryLid, context)
 			}
 
-			let operationHistory = operationsByRepo[repositoryId]
+			let operationHistory = operationsByRepo[repositoryLid]
 			if (!operationHistory) {
 				operationHistory = this.repositoryTransactionHistoryDuo.startOperation(
 					repositoryTransactionHistory, systemWideOperationId, ChangeType.INSERT_VALUES,
-					dbEntity, rootTransaction)
-				operationsByRepo[repositoryId] = operationHistory
+					dbEntity, actor, rootTransaction)
+				operationsByRepo[repositoryLid] = operationHistory
 			}
 
 			const _actorRecordId = row[actorRecordIdColumnNumber]
-			const actorId = row[actorIdColumnNumber]
+			const actorLid = row[actorLidColumnNumber]
 			const recordHistory = this.operationHistoryDuo.startRecordHistory(
-				operationHistory, actorId, _actorRecordId)
+				operationHistory, actorLid, _actorRecordId)
 
 			for (const columnNumber in queryInsertValues.COLUMNS) {
-				if (columnNumber === repositoryIdColumnNumber
-					|| columnNumber === actorIdColumnNumber
+				if (columnNumber === repositoryLidColumnNumber
+					|| columnNumber === actorLidColumnNumber
 					|| columnNumber === actorRecordIdColumnNumber) {
 					continue
 				}
@@ -613,12 +613,6 @@ and cannot have NULL values.`)
 			}
 		}
 
-		// for (const repositoryId in operationsByRepo) {
-		// 	const repoTransHistory = await
-		// 		this.currentTransHistory.getRepositoryTransaction(
-		// 			repositoryId, null, null, null, repoTransHistoryDuo);
-		// 	repoTransHistory.endGroupMutation(operationsByRepo[repositoryId]);
-		// }
 	}
 
 }

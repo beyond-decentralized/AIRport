@@ -68,7 +68,8 @@ export class RepositoryMember
     @ManyToOne()
     @JoinColumn({
         name: 'USER_ACCOUNT_LID',
-        referencedColumnName: 'USER_ACCOUNT_LID'
+        referencedColumnName: 'USER_ACCOUNT_LID',
+        nullable: false
     })
     userAccount: UserAccount
 

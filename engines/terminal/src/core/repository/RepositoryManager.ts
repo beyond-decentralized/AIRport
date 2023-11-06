@@ -9,7 +9,7 @@ import {
 } from '@airport/holding-pattern/dist/app/bundle' // default
 import {
 	IRepositoryMaintenanceManager
-} from '@airbridge/sso/dist/app/bundle'
+} from '@airbridge/sso'
 // import is reserved for Application use
 import {
 	AND,

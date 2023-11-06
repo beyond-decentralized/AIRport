@@ -7,7 +7,7 @@ import {
 	IUserAccountDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
-import { IUserAccount, SyncRepositoryData } from '@airport/ground-control';
+import { IKeyUtils, IUserAccount, SyncRepositoryData } from '@airport/ground-control';
 
 export interface ISyncInUserAccountChecker {
 
@@ -21,6 +21,9 @@ export interface ISyncInUserAccountChecker {
 @Injected()
 export class SyncInUserAccountChecker
 	implements ISyncInUserAccountChecker {
+
+	@Inject()
+	keyUtils: IKeyUtils
 
 	@Inject()
 	userAccountDao: IUserAccountDao
@@ -92,6 +95,13 @@ appears more than once in message.data.userAccounts
 			if (!userAccount.username || typeof userAccount.username !== 'string') {
 				throw new Error(`Invalid UserAccount.username ${userAccount.username}`)
 			}
+			const hashedObject = {
+				accountPublicSigningKey: userAccount.accountPublicSigningKey,
+				username: userAccount.username
+			}
+			const sha1sum = await this.keyUtils.sha1(JSON.stringify(hashedObject))
+			userAccount.sha1sum = sha1sum
+
 			delete userAccount._localId
 		}
 		await this.userAccountDao.insert(missingUserAccounts, context)
