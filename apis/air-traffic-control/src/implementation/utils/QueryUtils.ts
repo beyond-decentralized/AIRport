@@ -391,9 +391,9 @@ is supported only for single columm relations
 		errorPrefix: string
 	): RepositorySheetSelectInfo {
 		const selectClause: IQFieldInternal<any>[] = []
-		let actorIdColumnIndex: number
+		let actorLidColumnIndex: number
 		let actorRecordIdColumnIndex: number
-		let repositoryIdColumnIndex: number
+		let repositoryLidColumnIndex: number
 		let systemWideOperationIdColumn: DbColumn
 
 		for (const columnIndex in dbEntity.columns) {
@@ -425,13 +425,13 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 
 			switch (dbColumn.name) {
 				case AirEntity.columns.ACTOR_LID:
-					actorIdColumnIndex = inQueryColumnIndex
+					actorLidColumnIndex = inQueryColumnIndex
 					break
 				case AirEntity.columns.ACTOR_RECORD_ID:
 					actorRecordIdColumnIndex = inQueryColumnIndex
 					break
 				case AirEntity.columns.REPOSITORY_LID:
-					repositoryIdColumnIndex = inQueryColumnIndex
+					repositoryLidColumnIndex = inQueryColumnIndex
 					break
 				case AirEntity.columns.SYSTEM_WIDE_OPERATION_LID:
 					if (nonIdColumnSet) {
@@ -444,9 +444,9 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 		}
 
 		return {
-			actorIdColumnIndex,
+			actorLidColumnIndex,
 			actorRecordIdColumnIndex,
-			repositoryIdColumnIndex,
+			repositoryLidColumnIndex,
 			selectClause,
 			systemWideOperationIdColumn
 		}

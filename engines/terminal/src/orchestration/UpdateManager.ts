@@ -195,44 +195,44 @@ export class UpdateManager
 			portableSelect, {}, context)
 
 		const {
-			recordsByRepositoryId,
-			repositoryIdSet
+			recordsByRepositoryLid,
+			repositoryLidSet
 		} = this.groupRecordsByRepository(
 			recordsToUpdate, getSheetSelectFromSetClauseResult)
 
-		const repositoryIds: number[] = Array.from(repositoryIdSet)
+		const repositoryLids: number[] = Array.from(repositoryLidSet)
 
-		const recordHistoryMapByRecordId: RecordHistoryMap = {}
+		const recordHistoryMapByRepositoryLid: RecordHistoryMap = {}
 
-		for (const repositoryId of repositoryIds) {
-			// const repository                         = repositories.get(repositoryId)
+		for (const repositoryLid of repositoryLids) {
+			// const repository                         = repositories.get(repositoryLid)
 			const recordHistoryMapForRepository = {}
-			recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository
+			recordHistoryMapByRepositoryLid[repositoryLid] = recordHistoryMapForRepository
 			const repositoryTransactionHistory = await this.historyManager.getRepositoryTransactionHistory(
-				transaction.transactionHistory, repositoryId, actor, null, context
+				transaction.transactionHistory, repositoryLid, context
 			)
 			const operationHistory = this.repositoryTransactionHistoryDuo.startOperation(
 				repositoryTransactionHistory, systemWideOperationId, ChangeType.UPDATE_ROWS,
-				context.dbEntity, rootTransaction)
+				context.dbEntity, actor, rootTransaction)
 
-			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
-			for (const recordToUpdate of recordsForRepositoryId) {
-				const actorId = recordToUpdate[
-					getSheetSelectFromSetClauseResult.actorIdColumnIndex]
+			const recordsForRepositoryLid = recordsByRepositoryLid[repositoryLid]
+			for (const recordToUpdate of recordsForRepositoryLid) {
+				const actorLid = recordToUpdate[
+					getSheetSelectFromSetClauseResult.actorLidColumnIndex]
 				const recordHistoryMapForActor =
-					this.datastructureUtils.ensureChildMap(recordHistoryMapForRepository, actorId)
+					this.datastructureUtils.ensureChildMap(recordHistoryMapForRepository, actorLid)
 
 				const _actorRecordId = recordToUpdate[
 					getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex]
 				const recordHistory = this.operationHistoryDuo.startRecordHistory(
-					operationHistory, actorId, _actorRecordId)
+					operationHistory, actorLid, _actorRecordId)
 				recordHistoryMapForActor[_actorRecordId] = recordHistory
 
 				for (let i = 0; i < recordToUpdate.length; i++) {
 					switch (i) {
-						case getSheetSelectFromSetClauseResult.actorIdColumnIndex:
+						case getSheetSelectFromSetClauseResult.actorLidColumnIndex:
 						case getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex:
-						case getSheetSelectFromSetClauseResult.repositoryIdColumnIndex:
+						case getSheetSelectFromSetClauseResult.repositoryLidColumnIndex:
 							continue
 					}
 					const dbColumn = getSheetSelectFromSetClauseResult
@@ -243,7 +243,7 @@ export class UpdateManager
 			}
 		}
 
-		return [recordHistoryMapByRecordId, getSheetSelectFromSetClauseResult]
+		return [recordHistoryMapByRepositoryLid, getSheetSelectFromSetClauseResult]
 	}
 
 	private async addNewValueHistory(
@@ -282,22 +282,22 @@ export class UpdateManager
 			portableSelect, {}, context)
 
 		const {
-			recordsByRepositoryId,
-			repositoryIdSet
+			recordsByRepositoryLid,
+			repositoryLidSet
 		} = this.groupRecordsByRepository(
 			updatedRecords, repositorySheetSelectInfo)
 
-		for (const repositoryId of repositoryIdSet) {
-			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
-			for (const updatedRecord of recordsForRepositoryId) {
-				const repositoryId = updatedRecord[resultSetIndexByColumnIndex.get(
-					repositorySheetSelectInfo.repositoryIdColumnIndex)]
-				const actorId = updatedRecord[resultSetIndexByColumnIndex.get(
-					repositorySheetSelectInfo.actorIdColumnIndex)]
+		for (const repositoryLid of repositoryLidSet) {
+			const recordsForRepositoryLid = recordsByRepositoryLid[repositoryLid]
+			for (const updatedRecord of recordsForRepositoryLid) {
+				const repositoryLid = updatedRecord[resultSetIndexByColumnIndex.get(
+					repositorySheetSelectInfo.repositoryLidColumnIndex)]
+				const actorLid = updatedRecord[resultSetIndexByColumnIndex.get(
+					repositorySheetSelectInfo.actorLidColumnIndex)]
 				const _actorRecordId = updatedRecord[resultSetIndexByColumnIndex.get(
 					repositorySheetSelectInfo.actorRecordIdColumnIndex)]
 				const recordHistory = recordHistoryMapByRecordId
-				[repositoryId][actorId][_actorRecordId]
+				[repositoryLid][actorLid][_actorRecordId]
 				for (const columnName in queryUpdate.SELECT) {
 					const dbColumn = context.dbEntity.columnMap[columnName]
 					const value = updatedRecord[resultSetIndexByColumnIndex.get(dbColumn.index)]
@@ -319,30 +319,26 @@ export class UpdateManager
 		records,
 		repositorySheetSelectInfo: RepositorySheetSelectInfo
 	): {
-		recordsByRepositoryId: {
-			[repositoryId
-				:
-				number
-			]:
-			any[]
+		recordsByRepositoryLid: {
+			[repositoryLid: number]: any[]
 		}
-		repositoryIdSet: Set<number>
+		repositoryLidSet: Set<number>
 	} {
 
-		const recordsByRepositoryId: { [repositoryId: number]: any[] }
+		const recordsByRepositoryLid: { [repositoryLid: number]: any[] }
 			= {}
-		const repositoryIdSet = new Set<number>()
+		const repositoryLidSet = new Set<number>()
 		for (const recordToUpdate of records) {
-			const repositoryId = recordToUpdate[repositorySheetSelectInfo.repositoryIdColumnIndex]
-			repositoryIdSet.add(repositoryId)
-			const recordsForRepositoryId =
-				this.datastructureUtils.ensureChildArray(recordsByRepositoryId, repositoryId)
-			recordsForRepositoryId.push(recordToUpdate)
+			const repositoryLid = recordToUpdate[repositorySheetSelectInfo.repositoryLidColumnIndex]
+			repositoryLidSet.add(repositoryLid)
+			const recordsForRepositoryLid =
+				this.datastructureUtils.ensureChildArray(recordsByRepositoryLid, repositoryLid)
+			recordsForRepositoryLid.push(recordToUpdate)
 		}
 
 		return {
-			recordsByRepositoryId,
-			repositoryIdSet
+			recordsByRepositoryLid,
+			repositoryLidSet
 		}
 	}
 

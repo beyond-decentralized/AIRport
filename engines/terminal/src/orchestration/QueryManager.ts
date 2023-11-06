@@ -273,19 +273,19 @@ export class QueryManager
 		actorsToRetrieveUserAccountForByLocalId: Map<Actor_LocalId, IActor>,
 		context: IContext
 	): Promise<void> {
-		const actorIdSet = new Set<Actor_LocalId>()
+		const actorLidSet = new Set<Actor_LocalId>()
 		for (const actorLocalId of entityMapByActorRecordId.keys()) {
-			actorIdSet.add(actorLocalId)
+			actorLidSet.add(actorLocalId)
 		}
 		for (const actorLocalId of actorsToRetrieveUserAccountForByLocalId.keys()) {
-			actorIdSet.add(actorLocalId)
+			actorLidSet.add(actorLocalId)
 		}
 
-		if (!actorIdSet.size) {
+		if (!actorLidSet.size) {
 			return
 		}
 
-		const actorLocalIds: number[] = Array.from(actorIdSet)
+		const actorLocalIds: number[] = Array.from(actorLidSet)
 		const actors = await this.actorDao.findWithUserAccountBy_LocalIdIn(
 			actorLocalIds, context)
 		for (const actor of actors) {

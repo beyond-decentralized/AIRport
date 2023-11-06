@@ -216,7 +216,7 @@ export abstract class Dao<Entity,
 		}
 	}
 
-	protected _repositoryId() {
+	protected _repositoryLid() {
 		return {
 			actor: {
 				_localId: Y

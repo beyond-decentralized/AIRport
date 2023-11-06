@@ -361,7 +361,7 @@ in object graph does not have a repository assigned
 
 		if (!isIdColumnEmpty) {
 			if (isCreate) {
-				if (this.applicationUtils.isActorId(dbColumn.name)) {
+				if (this.applicationUtils.isActorLid(dbColumn.name)) {
 					throw new Error(`Actor cannot be passed in for create Operations`)
 				}
 			}
@@ -373,7 +373,7 @@ in object graph does not have a repository assigned
 		if (this.applicationUtils.isRepositoryId(dbColumn.name)) {
 			// Repository was not provided - use context's 'newRepository'
 			return true
-		} else if (this.applicationUtils.isActorId(dbColumn.name)) {
+		} else if (this.applicationUtils.isActorLid(dbColumn.name)) {
 			// Use context's 'actor'
 			entity[dbProperty.name] = context.actor
 			return false

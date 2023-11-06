@@ -32,7 +32,7 @@ export interface IActorDao
 	extends IBaseActorDao {
 
 	findWithDetailsAndGlobalIdsByIds(
-		actorIds: Actor_LocalId[],
+		actorLids: Actor_LocalId[],
 		context: IContext
 	): Promise<IActor[]>
 
@@ -76,12 +76,12 @@ export class ActorDao
 	datastructureUtils: IDatastructureUtils
 
 	async findWithDetailsAndGlobalIdsByIds(
-		actorIds: Actor_LocalId[],
+		actorLids: Actor_LocalId[],
 		context: IContext
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
 			a: QActor,
-		) => a._localId.IN(actorIds), context)
+		) => a._localId.IN(actorLids), context)
 	}
 
 	async findOneByDomainAndApplication_Names_AccountPublicSigningKey_TerminalGUID(

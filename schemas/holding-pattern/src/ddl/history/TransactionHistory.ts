@@ -49,7 +49,7 @@ export class TransactionHistory
 	repositoryTransactionHistories: RepositoryTransactionHistory[] = []
 
 	@Transient()
-	repositoryTransactionHistoryMap?: { [repositoryId: number]: IRepositoryTransactionHistory } = {}
+	repositoryTransactionHistoryMap?: { [repositoryLid: number]: IRepositoryTransactionHistory } = {}
 
 	@Transient()
 	allModifiedColumnsMap?: SyncAllModifiedColumnsMap = new globalThis.SyncAllModifiedColumnsMap()

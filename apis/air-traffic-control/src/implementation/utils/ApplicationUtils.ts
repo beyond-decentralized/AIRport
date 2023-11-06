@@ -55,7 +55,7 @@ export class ApplicationUtils
 			.applicationVersion.entities[entityIndex]
 	}
 
-	isActorId(
+	isActorLid(
 		columnName: string
 	): boolean {
 		return columnName === this.dictionary.AirEntity.columns.ACTOR_LID

@@ -54,7 +54,7 @@ export interface IApplicationUtils {
     dbColumn: DbColumn
   ): boolean
 
-  isActorId(
+  isActorLid(
     columnName: string
   ): boolean
 

@@ -91,7 +91,7 @@ export class RepositoryTransactionHistoryDao
 		changedRecordIds: Map<Repository_LocalId, IChangedRecordIdsForRepository>,
 		context: IContext
 	): Promise<Map<Repository_LocalId, IRepositoryTransactionHistory[]>> {
-		const repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
+		const repositoryTransactionHistoryMapByRepositoryLid: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
 			= new Map()
 
 		const rth: QRepositoryTransactionHistory = Q.RepositoryTransactionHistory
@@ -104,14 +104,14 @@ export class RepositoryTransactionHistoryDao
 		let _localId = Y
 
 		const repositoryEquals: QueryBaseOperation[] = []
-		for (const [repositoryId, idsForRepository] of changedRecordIds) {
+		for (const [repositoryLid, idsForRepository] of changedRecordIds) {
 			const recordMapForRepository = idsForRepository.actorRecordIdsByLocalIds
 			const entityEquals: QueryBaseOperation[] = []
 			for (const [entityId, recordMapForEntity] of recordMapForRepository) {
 				const actorEquals: QueryBaseOperation[] = []
-				for (const [actorId, recordsForActor] of recordMapForEntity) {
+				for (const [actorLid, recordsForActor] of recordMapForEntity) {
 					actorEquals.push(AND(
-						rh.actor._localId.equals(actorId),
+						rh.actor._localId.equals(actorLid),
 						rh._actorRecordId.IN(Array.from(recordsForActor))
 					))
 				}
@@ -121,7 +121,7 @@ export class RepositoryTransactionHistoryDao
 				))
 			}
 			repositoryEquals.push(AND(
-				rth.repository._localId.equals(repositoryId),
+				rth.repository._localId.equals(repositoryLid),
 				rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime),
 				OR(...entityEquals)
 			))
@@ -174,7 +174,7 @@ export class RepositoryTransactionHistoryDao
 
 		for (const repoTransHistory of repoTransHistories) {
 			this.datastructureUtils.ensureChildArray(
-				repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository._localId)
+				repositoryTransactionHistoryMapByRepositoryLid, repoTransHistory.repository._localId)
 				.push(repoTransHistory)
 			repoTransHistory.operationHistory.sort((
 				rth1: OperationHistory,
@@ -190,7 +190,7 @@ export class RepositoryTransactionHistoryDao
 			})
 		}
 
-		return repositoryTransactionHistoryMapByRepositoryId
+		return repositoryTransactionHistoryMapByRepositoryLid
 	}
 
 	async updateSyncTimestamp(

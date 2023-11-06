@@ -24,9 +24,9 @@ export interface IdKeysByIdColumnIndex {
 }
 
 export interface RepositorySheetSelectInfo {
-	actorIdColumnIndex: number;
+	actorLidColumnIndex: number;
 	actorRecordIdColumnIndex: number;
-	repositoryIdColumnIndex: number;
+	repositoryLidColumnIndex: number;
 	systemWideOperationIdColumn: DbColumn;
 	selectClause?: IQFieldInternal<any>[];
 	selectClauseColumns?: DbColumn[];

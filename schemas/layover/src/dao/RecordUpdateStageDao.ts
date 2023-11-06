@@ -110,16 +110,16 @@ export class RecordUpdateStageDao
 
 		const repositoryEquals: QueryBaseOperation[] = []
 		const AirEntity = this.dictionary.AirEntity
-		for (const [repositoryId, idsForRepository] of idMap) {
+		for (const [repositoryLid, idsForRepository] of idMap) {
 			const actorEquals: QueryBaseOperation[] = []
-			for (const [actorId, idsForActor] of idsForRepository) {
+			for (const [actorLid, idsForActor] of idsForRepository) {
 				actorEquals.push(AND(
-					qEntity[AirEntity.properties.actor]._localId.equals(actorId),
+					qEntity[AirEntity.properties.actor]._localId.equals(actorLid),
 					qEntity[AirEntity.properties._actorRecordId].IN(Array.from(idsForActor))
 				))
 			}
 			repositoryEquals.push(AND(
-				qEntity[AirEntity.properties.repository]._localId.equals(repositoryId),
+				qEntity[AirEntity.properties.repository]._localId.equals(repositoryLid),
 				OR(...actorEquals)
 			))
 		}
