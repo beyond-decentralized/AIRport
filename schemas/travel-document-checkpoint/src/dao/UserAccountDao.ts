@@ -72,7 +72,9 @@ export class UserAccountDao
 		for (let i = 0; i < userAccounts.length; i++) {
 			const userAccount = userAccounts[i]
 			VALUES.push([
-				userAccount.accountPublicSigningKey, userAccount.username
+				userAccount.accountPublicSigningKey,
+				userAccount.username,
+				userAccount.sha1sum
 			])
 		}
 
@@ -81,7 +83,8 @@ export class UserAccountDao
 			INSERT_INTO: u = Q.UserAccount,
 			columns: [
 				u.accountPublicSigningKey,
-				u.username
+				u.username,
+				u.sha1sum
 			],
 			VALUES
 		}, context) as number[]

@@ -138,7 +138,9 @@ export class InternalRecordManager
         ) => {
             const userAccount: IUserAccount = new UserAccount()
             userAccount.username = "internalUserAccount"
-            userAccount.accountPublicSigningKey = guidv4()
+            const guid = guidv4()
+            userAccount.accountPublicSigningKey = guid
+            userAccount.sha1sum = guid
 
             const terminal: ITerminal = new Terminal()
             terminal.owner = userAccount

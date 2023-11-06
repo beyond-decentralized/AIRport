@@ -7,7 +7,7 @@ import {
 	Id,
 	Table,
 } from '@airport/tarmaq-entity'
-import { UserAccount_PublicSigningKey, UserAccount_LocalId, UserAccount_Username } from '@airport/aviation-communication'
+import { UserAccount_PublicSigningKey, UserAccount_LocalId, UserAccount_Username, UserAccount_Sha1sum, UserAccount_Email } from '@airport/aviation-communication'
 import { IUserAccount } from '@airport/ground-control'
 
 @Entity()
@@ -26,8 +26,12 @@ export class UserAccount
 	@DbString()
 	accountPublicSigningKey: UserAccount_PublicSigningKey
 
+	@Column({ name: "SHA1SUM", nullable: false })
+	@DbString()
+    sha1sum: UserAccount_Sha1sum
+
 	@Column({ name: "USERNAME", nullable: false })
 	@DbString()
-	username: UserAccount_Username;
+	username: UserAccount_Username
 
 }

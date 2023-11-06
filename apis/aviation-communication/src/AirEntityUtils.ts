@@ -1,22 +1,25 @@
 import { Injected } from '@airport/direction-indicator'
 
-export type UserAccount_PublicSigningKey = string;
-export type UserAccount_LocalId = number;
-export type UserAccount_Email = string;
-export type UserAccount_Username = string;
+export type UserAccount_PublicSigningKey = string
+export type UserAccount_LocalId = number
+export type UserAccount_Email = string
+export type UserAccount_Username = string
+export type UserAccount_Sha1sum = string
 
 export interface InternalUserAccount {
 
     // Id Properties
-    _localId: UserAccount_LocalId;
+    _localId: UserAccount_LocalId
 
     // Id Relations
 
     // Non-Id Properties
 
     // doubles as the GUID
-    accountPublicSigningKey: UserAccount_PublicSigningKey;
-    username: UserAccount_Username;
+    accountPublicSigningKey: UserAccount_PublicSigningKey
+
+    username: UserAccount_Username
+    sha1sum: UserAccount_Sha1sum
 
     // Non-Id Relations
 

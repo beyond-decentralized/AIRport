@@ -24,6 +24,10 @@ export interface IKeyUtils {
         str: string
     ): Promise<string>
 
+    sha1(
+        str: string
+    ): Promise<string>
+
     sign(
         text: string,
         privateKey: string,

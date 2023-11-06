@@ -1,13 +1,13 @@
 import {
     IAsymmetricKey,
     IKeyUtils
-} from "../../definition/utils/IKeyUtils";
+} from "../../definition/utils/IKeyUtils"
 
 export class KeyUtils
     implements IKeyUtils {
 
-    textDecoder = new TextDecoder("utf-8");
-    textEncoder = new TextEncoder();
+    textDecoder = new TextDecoder("utf-8")
+    textEncoder = new TextEncoder()
 
     digest(
         str: string,
@@ -17,8 +17,8 @@ export class KeyUtils
             new TextEncoder(/*"utf-8"*/).encode(str)).then(buf => {
                 return Array.prototype.map
                     .call(new Uint8Array(buf),
-                        x => (('00' + x.toString(16)).slice(-2))).join('');
-            });
+                        x => (('00' + x.toString(16)).slice(-2))).join('')
+            })
     }
 
     async getEncryptionKey(
@@ -32,7 +32,7 @@ export class KeyUtils
             true,
             ["encrypt", "decrypt"]
         )
-        const serializedEncryptionKey = await this.serializeKey(encryptionKey);
+        const serializedEncryptionKey = await this.serializeKey(encryptionKey)
 
         return serializedEncryptionKey
     }
@@ -47,10 +47,10 @@ export class KeyUtils
             },
             true,
             ["sign", "verify"]
-        );
+        )
 
-        const privateSigningKey = await this.serializeKey(keyPair.privateKey);
-        const publicSigningKey = await this.serializeKey(keyPair.publicKey);
+        const privateSigningKey = await this.serializeKey(keyPair.privateKey)
+        const publicSigningKey = await this.serializeKey(keyPair.publicKey)
 
         return {
             private: privateSigningKey,
@@ -61,7 +61,13 @@ export class KeyUtils
     sha512(
         str: string
     ): Promise<string> {
-        return this.digest(str, 512);
+        return this.digest(str, 512)
+    }
+
+    sha1(
+        str: string
+    ): Promise<string> {
+        return this.digest(str, 1)
     }
 
     async sign(
@@ -69,7 +75,7 @@ export class KeyUtils
         privateKey: string,
         privateKeyBitLength: number = 384
     ): Promise<string> {
-        const encoded = this.textEncoder.encode(text);
+        const encoded = this.textEncoder.encode(text)
         const signKey = await this.deserializeSignKey(privateKey, privateKeyBitLength)
 
         const signature = await window.crypto.subtle.sign(
@@ -79,9 +85,9 @@ export class KeyUtils
             },
             signKey,
             encoded
-        );
+        )
 
-        return this.textDecoder.decode(signature);
+        return this.textDecoder.decode(signature)
     }
 
     async verify(
@@ -90,8 +96,8 @@ export class KeyUtils
         publicKey: string,
         publicKeyBitLength: number = 384
     ): Promise<boolean> {
-        const encodedText = this.textEncoder.encode(text);
-        const encodedSignature = this.textEncoder.encode(signature);
+        const encodedText = this.textEncoder.encode(text)
+        const encodedSignature = this.textEncoder.encode(signature)
         const verifyKey = await this.deserializeVerifyKey(publicKey, publicKeyBitLength)
 
 
@@ -106,9 +112,9 @@ export class KeyUtils
             verifyKey,
             encodedSignature,
             encodedText
-        );
+        )
 
-        return isValidSignature;
+        return isValidSignature
     }
 
     private getHashSize(
@@ -129,7 +135,7 @@ export class KeyUtils
             rawKey
         );
 
-        return JSON.stringify(exportedPrivateSigningKey, null, " ");
+        return JSON.stringify(exportedPrivateSigningKey, null, " ")
     }
 
     private async deserializeSignKey(
@@ -163,7 +169,7 @@ export class KeyUtils
             },
             true,
             ["verify"]
-        );
+        )
     }
 
     private async deserializeEncryptionKey(
@@ -177,7 +183,7 @@ export class KeyUtils
             "AES-GCM",
             true,
             ["encrypt", "decrypt"]
-        );
+        )
     }
 
 }
