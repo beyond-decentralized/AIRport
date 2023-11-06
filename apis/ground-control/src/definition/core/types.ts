@@ -292,7 +292,6 @@ export interface IAirEntity {
 	repository: IRepository;
 
 	// Non-Id Properties
-	ageSuitability: AgeSuitability;
 	copied?: AirEntity_Copied;
 	createdAt: CreatedAt;
 	systemWideOperationId?: SystemWideOperationId;
