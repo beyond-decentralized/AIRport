@@ -1,0 +1,7 @@
+export enum RepositoryContentFlagType {
+    CHILD_FRIENDLY,
+    CHINA_FRIENDLY,
+    ISLAM_FRIENDLY,
+    ISLAM_PROHIBITED,
+    CHINA_PROHIBITED
+}

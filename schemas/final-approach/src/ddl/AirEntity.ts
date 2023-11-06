@@ -13,7 +13,7 @@ import {
 import { Actor, Repository } from '@airport/holding-pattern'
 import { UserAccount } from '@airport/travel-document-checkpoint'
 import { IAirEntityUtils } from '@airport/aviation-communication'
-import { ActorRecordId, AgeSuitability, AirEntity_Copied, AirEntity_Id, CreatedAt, IAirEntity, SystemWideOperationId } from '@airport/ground-control'
+import { ActorRecordId, AirEntity_Copied, AirEntity_Id, CreatedAt, IAirEntity, SystemWideOperationId } from '@airport/ground-control'
 
 /**
  * Created by Papa on 2/17/2017.
@@ -47,11 +47,7 @@ export abstract class AirEntity
 	})
 	repository: Repository
 
-	@Column({ name: 'AGE_SUITABILITY', nullable: false })
-	@DbNumber()
-	ageSuitability: AgeSuitability = 0
-
-	// TODO: if and when records are copied, make this a column
+	// TODO: when records are copied, make this a column
 	// @Column({ name: 'COPIED', nullable: false })
 	@Transient()
 	@DbBoolean()
