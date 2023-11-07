@@ -1,8 +1,8 @@
-import { IContext } from "@airport/direction-indicator";
+import { IContext } from "@airport/direction-indicator"
 import {
     DbEntity, IActor
-} from "@airport/ground-control";
-import { CachedSQLQuery } from "./IActiveQueries";
+} from "@airport/ground-control"
+import { CachedSQLQuery } from "./IActiveQueries"
 
 export interface IOperationContext
     extends IContext {

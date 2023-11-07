@@ -216,7 +216,8 @@ terminal.setDependencies(QueryManager, {
 REPOSITORY_LOADER.setDependencies({
     repositoryDao: RepositoryDao,
     synchronizationAdapterLoader: SynchronizationAdapterLoader,
-    synchronizationInManager: SynchronizationInManager
+    synchronizationInManager: SynchronizationInManager,
+    transactionManager: TRANSACTION_MANAGER
 })
 
 REPOSITORY_MANAGER.setClass(RepositoryManager)

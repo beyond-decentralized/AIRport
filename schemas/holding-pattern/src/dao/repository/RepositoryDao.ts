@@ -53,7 +53,11 @@ export interface IRepositoryDao
 		context: IContext
 	): Promise<IRepository[]>
 
-	getRepositoryLoadInfo(
+	findAllWithLoadInfo(
+		context: IContext
+	): Promise<IRepository[]>
+
+	getWithLoadInfo(
 		repositoryGUID: Repository_GUID,
 		context: IContext
 	): Promise<IRepository>
@@ -165,7 +169,26 @@ export class RepositoryDao
 		}, context)
 	}
 
-	async getRepositoryLoadInfo(
+	async findAllWithLoadInfo(
+		context: IContext
+	): Promise<IRepository[]> {
+		let r: QRepository
+
+		return await this.db.find.tree({
+			SELECT: {
+				'*': Y,
+				repositoryTransactionHistory: {
+					saveTimestamp: Y
+				}
+			},
+			FROM: [
+				r = Q.Repository,
+				r.repositoryTransactionHistory.INNER_JOIN()
+			]
+		}, context)
+	}
+
+	async getWithLoadInfo(
 		repositoryGUID: Repository_GUID,
 		context: IContext
 	): Promise<IRepository> {
