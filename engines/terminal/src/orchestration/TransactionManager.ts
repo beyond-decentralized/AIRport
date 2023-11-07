@@ -416,7 +416,7 @@ parent transactions.
 	private async clearUserSessionRootTransaction(
 		transaction: ITransaction
 	): Promise<void> {
-		this.activeQueries.clearQueriesToRerun()
+		// this.activeQueries.clearQueriesToRerun()
 
 		// Internal calls don't maintain rootTransaction and can create more than
 		// one repository at a time.  APIs exposed externally will never be top

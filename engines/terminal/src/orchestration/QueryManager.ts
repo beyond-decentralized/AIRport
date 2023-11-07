@@ -107,7 +107,13 @@ export class QueryManager
 					return result
 				}
 				return await this.populateEntityGuidEntitiesAndUserAccounts<E>(
-					portableQuery, result, context)
+					portableQuery, result,
+					{
+						...context,
+						// TODO: improve CachedSQLQuery to support multiple queries per context
+						// and re-evaluation of query params in the finally run query works
+						cachedSqlQuery: null
+					})
 
 			},
 			context
@@ -131,7 +137,13 @@ export class QueryManager
 					return result
 				}
 				await this.populateEntityGuidEntitiesAndUserAccounts<E>(
-					portableQuery, [result], context)
+					portableQuery, [result],
+					{
+						...context,
+						// TODO: improve CachedSQLQuery to support multiple queries per context
+						// and re-evaluation of query params in the finally run query works
+						cachedSqlQuery: null
+					})
 
 				return result
 			},
@@ -150,7 +162,7 @@ export class QueryManager
 	private async populateEntityGuidEntitiesAndUserAccounts<E>(
 		portableQuery: PortableQuery,
 		entities: Array<E>,
-		context: IContext
+		context: IQueryOperationContext
 	): Promise<Array<E>> {
 		if (!entities.length) {
 			return

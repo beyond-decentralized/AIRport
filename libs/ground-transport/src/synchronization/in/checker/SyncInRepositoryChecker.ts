@@ -131,7 +131,11 @@ export class SyncInRepositoryChecker
 						}
 						throw new Error(`Unexpected Repository ${foundRepository.GUID}`)
 					} else {
-						if (foundRepository.GUID !== historyRepository as any) {
+						let expectedRepositoryGUID: string = historyRepository as any
+						if (typeof historyRepository === 'object') {
+							expectedRepositoryGUID = historyRepository.GUID
+						}
+						if (foundRepository.GUID !== expectedRepositoryGUID) {
 							throw new Error(`Unexpected Repository ${foundRepository.GUID}`)
 						}
 						// Populating ahead of potential insert is OK, object
@@ -217,15 +221,15 @@ export class SyncInRepositoryChecker
 		signatureChecks?: ISignatureCheck[]
 	}> {
 		const data = message.data
-		const inMessageRepositoryMemberMapByPublicSigningKey = this
-			.getInMessageRepositoryMemberMap(data)
+		const repositoryMemberInMessageIndexMap = this
+			.getRepositoryMemberInMessageIndexMap(data)
 
 		const newMembers: IRepositoryMember[] = []
 		const repositoryMember = await this.getRepositoryMember(
 			data, historyRepository,
 			repositoryAddedInAnEarlierIncomingMessage,
 			addedRepositoryMembersByPublicSigningKey,
-			inMessageRepositoryMemberMapByPublicSigningKey, newMembers, context)
+			repositoryMemberInMessageIndexMap, newMembers, context)
 
 		const newRepositoryMemberAcceptance = this
 			.isNewRepositoryMemberAcceptanceMessage(data, repositoryMember)
@@ -266,9 +270,8 @@ export class SyncInRepositoryChecker
 
 		for (let i = 0; i < data.repositoryMembers.length; i++) {
 			const repositoryMember = data.repositoryMembers[i]
-			if (repositoryMember.userAccount
-				|| repositoryMember.userAccount === 0 as any) {
-				const userAccount = data.userAccounts[history.member.userAccount as any]
+			if (typeof repositoryMember.userAccount === 'number') {
+				const userAccount = data.userAccounts[repositoryMember.userAccount as any]
 				if (!userAccount) {
 					throw new Error(`UserAccount with index ${repositoryMember.userAccount} referenced in
 message.data.repositoryMembers[${i}].userAccount does not exist in the message`)
@@ -464,10 +467,10 @@ is not present in the message.`)
 		delete repositoryMember.updates
 	}
 
-	private getInMessageRepositoryMemberMap(
+	private getRepositoryMemberInMessageIndexMap(
 		data: SyncRepositoryData
 	): Map<RepositoryMember_PublicSigningKey, InMessageIndex> {
-		const inMessageRepositoryMemberMapByPublicSigningKey:
+		const repositoryMemberInMessageIndexMap:
 			Map<RepositoryMember_PublicSigningKey, InMessageIndex> = new Map()
 		const repositoryMemberPublicSigningKeySet:
 			Set<RepositoryMember_PublicSigningKey> = new Set()
@@ -484,13 +487,13 @@ is not present in the message.`)
 				throw new Error(`${errorPrefix} appears in more than one data.repositoryMembers`)
 			}
 			repositoryMemberPublicSigningKeySet.add(memberPublicSigningKey)
-			inMessageRepositoryMemberMapByPublicSigningKey.set(
+			repositoryMemberInMessageIndexMap.set(
 				memberPublicSigningKey, i)
 
 			delete repositoryMember._localId
 		}
 
-		return inMessageRepositoryMemberMapByPublicSigningKey
+		return repositoryMemberInMessageIndexMap
 	}
 
 	private checkPublicSigningKey(
@@ -509,8 +512,9 @@ is not present in the message.`)
 		data: SyncRepositoryData,
 		historyRepository: IRepository,
 		repositoryAddedInAnEarlierIncomingMessage: boolean,
-		addedRepositoryMembersByPublicSigningKey: Map<RepositoryMember_PublicSigningKey, IRepositoryMember>,
-		inMessageRepositoryMemberMapByPublicSigningKey:
+		addedRepositoryMembersByPublicSigningKey:
+			Map<RepositoryMember_PublicSigningKey, IRepositoryMember>,
+		repositoryMemberInMessageIndexMap:
 			Map<RepositoryMember_PublicSigningKey, InMessageIndex>,
 		newMembers: IRepositoryMember[],
 		context: IContext
@@ -545,38 +549,26 @@ earlier incoming message`)
 			exisingMessageRepositoryMembers = await this.repositoryMemberDao
 				.findByMemberPublicSigningKeys(memberPublicSigningKeys, context)
 		}
-		let messageRepositoryMember: IRepositoryMember
 
+		let messageRepositoryMember: IRepositoryMember
 		const history = data.history
 		if (history.isRepositoryCreation) {
 			if (exisingMessageRepositoryMembers.length) {
 				throw new Error(`Found existing repositoryMembers for a newly created repository`)
 			}
-			newRepositoryMember = data.repositoryMembers[history.member as any]
-			this.checkRepositoryMembershipFlags(newRepositoryMember,
-				`history.member`, true, historyRepository)
-			history.member = newRepositoryMember
-			newMembers.push(history.member)
-			addedRepositoryMembersByPublicSigningKey
-				.set(newRepositoryMember.memberPublicSigningKey, newRepositoryMember)
-			return null
 		}
-
-		if (newRepositoryMember) {
+		if (history.isRepositoryCreation || !exisingMessageRepositoryMembers.length) {
+			newRepositoryMember = data.repositoryMembers[history.member as any]
 			this.checkRepositoryMembershipFlags(newRepositoryMember,
 				`history.member`, false, historyRepository)
 			messageRepositoryMember = newRepositoryMember
 			newMembers.push(newRepositoryMember)
 		} else {
-			if (exisingMessageRepositoryMembers.length !== 1) {
-				throw new Error(`Expecting exactly one RepositoryMember in non isRepositoryCreation message`)
-			}
 			messageRepositoryMember = exisingMessageRepositoryMembers[0]
 		}
 
-		const repositoryMemberInMessageIndex = inMessageRepositoryMemberMapByPublicSigningKey.get(
+		const repositoryMemberInMessageIndex = repositoryMemberInMessageIndexMap.get(
 			messageRepositoryMember.memberPublicSigningKey)
-
 		if (history.member as any !== repositoryMemberInMessageIndex) {
 			throw new Error(`history.member does not already exist in the Repository`)
 		}

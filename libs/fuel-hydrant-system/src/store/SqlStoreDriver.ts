@@ -2,7 +2,7 @@ import {
 	IAirportDatabase,
 	IQMetadataUtils,
 	IUtils
-} from '@airport/air-traffic-control';
+} from '@airport/air-traffic-control'
 import {
 	Inject,
 	Injected
@@ -31,32 +31,32 @@ import {
 	IAppTrackerUtils,
 	IApplicationUtils,
 	Dictionary,
-} from '@airport/ground-control';
+} from '@airport/ground-control'
 import {
 	IQueryOperationContext,
 	IStoreDriver,
 	ITransaction,
 	ITransactionContext,
 	ITransactionManager
-} from '@airport/terminal-map';
-import { SQLDelete } from '../sql/core/SQLDelete';
-import { SQLInsertValues } from '../sql/core/SQLInsertValues';
+} from '@airport/terminal-map'
+import { SQLDelete } from '../sql/core/SQLDelete'
+import { SQLInsertValues } from '../sql/core/SQLInsertValues'
 import {
 	SQLDialect,
 	SQLQuery
-} from '../sql/core/SQLQuery';
-import { SQLUpdate } from '../sql/core/SQLUpdate';
-import { EntitySQLQuery } from '../sql/EntitySQLQuery';
-import { FieldSQLQuery } from '../sql/FieldSQLQuery';
-import { SheetSQLQuery } from '../sql/SheetSQLQuery';
-import { TreeSQLQuery } from '../sql/TreeSQLQuery';
-import { IFuelHydrantContext } from '../FuelHydrantContext';
-import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
-import { IValidator } from '../validation/Validator';
-import { ISubStatementSqlGenerator } from '../sql/core/SubStatementSqlGenerator';
-import { IObjectResultParserFactory } from '../result/entity/ObjectResultParserFactory';
-import { IQueryUtils, IQueryRelationManager } from '@airport/tarmaq-query';
-import { ILookup } from '@airport/tarmaq-dao';
+} from '../sql/core/SQLQuery'
+import { SQLUpdate } from '../sql/core/SQLUpdate'
+import { EntitySQLQuery } from '../sql/EntitySQLQuery'
+import { FieldSQLQuery } from '../sql/FieldSQLQuery'
+import { SheetSQLQuery } from '../sql/SheetSQLQuery'
+import { TreeSQLQuery } from '../sql/TreeSQLQuery'
+import { IFuelHydrantContext } from '../FuelHydrantContext'
+import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor'
+import { IValidator } from '../validation/Validator'
+import { ISubStatementSqlGenerator } from '../sql/core/SubStatementSqlGenerator'
+import { IObjectResultParserFactory } from '../result/entity/ObjectResultParserFactory'
+import { IQueryUtils, IQueryRelationManager } from '@airport/tarmaq-query'
+import { ILookup } from '@airport/tarmaq-dao'
 
 /**
  * Created by Papa on 9/9/2016.
@@ -113,13 +113,13 @@ export abstract class SqlStoreDriver
 	@Inject()
 	utils: IUtils
 
-	public type: StoreType;
-	protected maxValues: number;
+	public type: StoreType
+	protected maxValues: number
 
 	supportsLocalTransactions(
 		context: IFuelHydrantContext,
 	): boolean {
-		return true;
+		return true
 	}
 
 	getEntityTableName(
@@ -127,7 +127,7 @@ export abstract class SqlStoreDriver
 		context: IFuelHydrantContext,
 	): string {
 		return this.getTableName(dbEntity.applicationVersion.application,
-			dbEntity.applicationVersion.integerVersion, dbEntity, context);
+			dbEntity.applicationVersion.integerVersion, dbEntity, context)
 	}
 
 	abstract getSelectQuerySuffix(
@@ -196,29 +196,29 @@ Entity:          ${table.name}
 `)
 			}
 		}
-		let theTableName = table.name;
+		let theTableName = table.name
 		if (table.tableConfig && table.tableConfig.name) {
-			theTableName = table.tableConfig.name;
+			theTableName = table.tableConfig.name
 		}
-		let fullApplication_Name;
+		let fullApplication_Name
 		if ((application as IApplication).fullName) {
-			fullApplication_Name = (application as IApplication).fullName;
+			fullApplication_Name = (application as IApplication).fullName
 		} else {
-			fullApplication_Name = this.applicationNameUtils.getApplication_FullName(application);
+			fullApplication_Name = this.applicationNameUtils.getApplication_FullName(application)
 		}
-		return this.composeTableName(fullApplication_Name, theTableName, context);
+		return this.composeTableName(fullApplication_Name, theTableName, context)
 	}
 
 	abstract composeTableName(
 		applicationName: string,
 		tableName: string,
 		context: IFuelHydrantContext,
-	): string;
+	): string
 
 	abstract initialize(
 		dbName: string,
 		context: IFuelHydrantContext,
-	): Promise<any>;
+	): Promise<any>
 
 	abstract setupTransaction(
 		context: ITransactionContext,
@@ -320,9 +320,9 @@ Entity:          ${table.name}
 		if (!query || !query.VALUES || !query.VALUES.length) {
 			return 0
 		}
-		const splitValues = this.splitValues(query.VALUES, context);
+		const splitValues = this.splitValues(query.VALUES, context)
 
-		let numVals = 0;
+		let numVals = 0
 		for (const VALUES of splitValues) {
 			let sqlInsertValues = new SQLInsertValues(<QueryInsertValues>{
 				...portableQuery.query,
@@ -341,13 +341,13 @@ Entity:          ${table.name}
 				this.subStatementSqlGenerator,
 				this.utils,
 				context);
-			let sql = sqlInsertValues.toSQL(context);
-			let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
+			let sql = sqlInsertValues.toSQL(context)
+			let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context)
 
-			numVals += await this.executeNative(sql, parameters, context);
+			numVals += await this.executeNative(sql, parameters, context)
 		}
 
-		return numVals;
+		return numVals
 	}
 
 	async deleteWhere(
@@ -369,11 +369,11 @@ Entity:          ${table.name}
 			this.subStatementSqlGenerator,
 			this.utils,
 			context);
-		let sql = sqlDelete.toSQL(context);
-		let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
-		let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
+		let sql = sqlDelete.toSQL(context)
+		let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context)
+		let numberOfAffectedRecords = await this.executeNative(sql, parameters, context)
 
-		return numberOfAffectedRecords;
+		return numberOfAffectedRecords
 	}
 
 	async updateWhere(
@@ -395,11 +395,11 @@ Entity:          ${table.name}
 			this,
 			this.subStatementSqlGenerator,
 			this.utils,
-			context);
-		let sql = sqlUpdate.toSQL(internalFragments, context);
-		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
+			context)
+		let sql = sqlUpdate.toSQL(internalFragments, context)
+		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context)
 
-		const numAffectedRows = await this.executeNative(sql, parameters, context);
+		const numAffectedRows = await this.executeNative(sql, parameters, context)
 
 		return numAffectedRows
 	}
@@ -409,34 +409,42 @@ Entity:          ${table.name}
 		internalFragments: InternalFragments,
 		context: IFuelHydrantContext & IQueryOperationContext
 	): Promise<EntityArray> {
-		context = await this.ensureContext(context);
-		const sqlQuery = this.getSQLQuery(portableQuery, context);
-		if (context.cachedSqlQuery) {
-			context.cachedSqlQuery.sqlQuery = sqlQuery
+		context = await this.ensureContext(context)
+		let sql: string
+		let sqlQuery: SQLQuery<any>
+		if (!context.cachedSqlQueries || !context.cachedSqlQuery.sql) {
+			sqlQuery = this.getSQLQuery(portableQuery, context)
+			sql = sqlQuery.toSQL(internalFragments, context)
+			if (context.cachedSqlQuery) {
+				context.cachedSqlQuery.sql = sql
+				context.cachedSqlQuery.sqlQuery = sqlQuery
+			}
+		} else {
+			sql = context.cachedSqlQuery.sql
+			sqlQuery = context.cachedSqlQuery.sqlQuery
 		}
-		const sql = sqlQuery.toSQL(internalFragments, context);
-		const parameters = sqlQuery.getParameters(portableQuery.parameterMap, context);
+		const parameters = sqlQuery.getParameters(portableQuery.parameterMap, context)
 
-		let results = await this.findNative(sql, parameters, context);
+		let results = await this.findNative(sql, parameters, context)
 		results = await sqlQuery.parseQueryResults(
-			results, internalFragments, portableQuery.queryResultType, context);
+			results, internalFragments, portableQuery.queryResultType, context)
 
-		return <EntityArray>results;
+		return <EntityArray>results
 	}
 
 	getSQLQuery(
 		portableQuery: PortableQuery,
 		context: IFuelHydrantContext,
 	): SQLQuery<any> {
-		let query = portableQuery.query;
-		let dialect = this.getDialect(context);
-		let resultType = portableQuery.queryResultType;
-		const QueryResType = QueryResultType;
+		let query = portableQuery.query
+		let dialect = this.getDialect(context)
+		let resultType = portableQuery.queryResultType
+		const QueryResType = QueryResultType
 		switch (resultType) {
 			case QueryResType.ENTITY_GRAPH:
 			case QueryResType.ENTITY_TREE:
 				const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
-					.currentVersion[0].applicationVersion.entities[portableQuery.entityIndex];
+					.currentVersion[0].applicationVersion.entities[portableQuery.entityIndex]
 				return new EntitySQLQuery(<QueryEntity<any>>query,
 					dbEntity, dialect, resultType,
 					this.dictionary,
@@ -452,7 +460,7 @@ Entity:          ${table.name}
 					this,
 					this.subStatementSqlGenerator,
 					this.utils,
-					context);
+					context)
 			case QueryResType.FIELD:
 				return new FieldSQLQuery(<QueryField>query, dialect,
 					this.dictionary,
@@ -467,7 +475,7 @@ Entity:          ${table.name}
 					this,
 					this.subStatementSqlGenerator,
 					this.utils,
-					context);
+					context)
 			case QueryResType.SHEET:
 				return new SheetSQLQuery(<QuerySheet>query, dialect,
 					this.dictionary,
@@ -482,7 +490,7 @@ Entity:          ${table.name}
 					this,
 					this.subStatementSqlGenerator,
 					this.utils,
-					context);
+					context)
 			case QueryResType.TREE:
 				return new TreeSQLQuery(<QuerySheet>query, dialect,
 					this.dictionary,
@@ -497,10 +505,10 @@ Entity:          ${table.name}
 					this,
 					this.subStatementSqlGenerator,
 					this.utils,
-					context);
+					context)
 			case QueryResType.RAW:
 			default:
-				throw new Error(`Unknown QueryResultType: ${resultType}`);
+				throw new Error(`Unknown QueryResultType: ${resultType}`)
 		}
 	}
 
@@ -514,26 +522,26 @@ Entity:          ${table.name}
 		sqlQuery: string,
 		parameters: any[],
 		context: IFuelHydrantContext,
-	): Promise<any[]>;
+	): Promise<any[]>
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
 		internalFragments: InternalFragments,
 		context: IFuelHydrantContext & IQueryOperationContext
 	): Promise<E> {
-		let results = await this.find(portableQuery, internalFragments, context);
+		let results = await this.find(portableQuery, internalFragments, context)
 
 		if (results.length > 1) {
-			throw new Error(`Expecting a single result, got ${results.length}`);
+			throw new Error(`Expecting a single result, got ${results.length}`)
 		}
 		if (results.length == 1) {
-			return <E>results[0];
+			return <E>results[0]
 		}
-		return null;
+		return null
 	}
 
 	warn(message: string) {
-		console.log(message);
+		console.warn(message)
 	}
 
 	abstract doesTableExist(
@@ -560,39 +568,39 @@ Entity:          ${table.name}
 		sql: string,
 		parameters: any[],
 		context: IFuelHydrantContext,
-	): Promise<number>;
+	): Promise<number>
 
 	protected abstract getDialect(
 		context: IFuelHydrantContext,
-	): SQLDialect;
+	): SQLDialect
 
 	protected splitValues(
 		values: any[][],
 		context: IFuelHydrantContext,
 	): any[][][] {
-		const valuesInRow = values[0].length;
-		const numValues = values.length * valuesInRow;
+		const valuesInRow = values[0].length
+		const numValues = values.length * valuesInRow
 
 		if (numValues <= this.maxValues) {
-			return [values];
+			return [values]
 		}
 
-		let numRowsPerBatch = Math.floor(this.maxValues / valuesInRow);
+		let numRowsPerBatch = Math.floor(this.maxValues / valuesInRow)
 
-		const splitValues = [];
+		const splitValues = []
 		for (let i = 0; i < values.length; i += numRowsPerBatch) {
-			const aSplitValues = values.slice(i, i + numRowsPerBatch);
-			splitValues.push(aSplitValues);
+			const aSplitValues = values.slice(i, i + numRowsPerBatch)
+			splitValues.push(aSplitValues)
 		}
 
-		return splitValues;
+		return splitValues
 	}
 
 	protected async ensureContext(
 		context: IFuelHydrantContext
 	): Promise<IFuelHydrantContext & IQueryOperationContext> {
 		return <IFuelHydrantContext & IQueryOperationContext>this
-			.lookup.ensureContext(context);
+			.lookup.ensureContext(context)
 	}
 
 }

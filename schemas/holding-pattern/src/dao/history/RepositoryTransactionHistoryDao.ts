@@ -103,6 +103,7 @@ export class RepositoryTransactionHistoryDao
 		const nv: QRecordHistoryNewValue = rh.newValues.LEFT_JOIN()
 		let _localId = Y
 
+		let numSearchParameterRecords = 0;
 		const repositoryEquals: QueryBaseOperation[] = []
 		for (const [repositoryLid, idsForRepository] of changedRecordIds) {
 			const recordMapForRepository = idsForRepository.actorRecordIdsByLocalIds
@@ -114,6 +115,7 @@ export class RepositoryTransactionHistoryDao
 						rh.actor._localId.equals(actorLid),
 						rh._actorRecordId.IN(Array.from(recordsForActor))
 					))
+					numSearchParameterRecords++;
 				}
 				entityEquals.push(AND(
 					oh.entity._localId.equals(entityId),
@@ -125,6 +127,10 @@ export class RepositoryTransactionHistoryDao
 				rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime),
 				OR(...entityEquals)
 			))
+		}
+
+		if (!numSearchParameterRecords) {
+			return new Map()
 		}
 
 		const repoTransHistories = await this.db.find.tree({
