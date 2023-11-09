@@ -11,7 +11,7 @@ import {
 } from '@airport/tarmaq-entity'
 import { UserAccount } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { IAirEntityUtils } from '@airport/aviation-communication'
-import { ActorRecordId, AgeSuitability, AirEntity_Id, CreatedAt, IAirEntity, SystemWideOperationId } from '@airport/ground-control'
+import { ActorRecordId, AgeSuitability, AirEntity_GUID, CreatedAt, IAirEntity, SystemWideOperationId } from '@airport/ground-control'
 import { Actor } from './Actor'
 import { Repository } from '../repository/Repository'
 
@@ -25,7 +25,7 @@ export abstract class InternalAirEntity
 	implements IAirEntity {
 
 	constructor(
-		entityId?: AirEntity_Id
+		entityId?: AirEntity_GUID
 	) {
 		// Currently TypeScript does not support optional getters/setters
 		// this is a workaround
@@ -145,6 +145,6 @@ export abstract class InternalAirEntity
 	 * Returns null if one of it's member Ids does not exist
 	 */
 	@Transient()
-	id?: AirEntity_Id
+	id?: AirEntity_GUID
 
 }

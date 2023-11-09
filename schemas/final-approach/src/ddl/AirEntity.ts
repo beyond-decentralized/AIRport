@@ -13,7 +13,7 @@ import {
 import { Actor, Repository } from '@airport/holding-pattern'
 import { UserAccount } from '@airport/travel-document-checkpoint'
 import { IAirEntityUtils } from '@airport/aviation-communication'
-import { ActorRecordId, AirEntity_Copied, AirEntity_Id, CreatedAt, IAirEntity, SystemWideOperationId } from '@airport/ground-control'
+import { ActorRecordId, AirEntity_Copied, AirEntity_GUID, CreatedAt, IAirEntity, SystemWideOperationId } from '@airport/ground-control'
 
 /**
  * Created by Papa on 2/17/2017.
@@ -109,10 +109,10 @@ export abstract class AirEntity
 	 * Returns null if one of it's member Ids does not exist
 	 */
 	@Transient()
-	id?: AirEntity_Id
+	id?: AirEntity_GUID
 
 	constructor(
-		entityId?: AirEntity_Id
+		entityId?: AirEntity_GUID
 	) {
 		// Currently TypeScript does not support optional getters/setters
 		// this is a workaround
