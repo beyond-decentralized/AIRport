@@ -2,8 +2,9 @@ import { Api } from "@airport/air-traffic-control";
 import { IContext, Inject, Injected } from "@airport/direction-indicator";
 import { IRepository, Repository_GUID, Repository_IsPublic } from '@airport/ground-control';
 import { IRepositoryManager } from '@airport/terminal-map';
-import { Observable } from "rxjs";
-import { RepositoryDao } from "../../dao/dao";
+import { Observable, map } from "rxjs";
+import { RepositoryDao, RepositoryMemberDao } from "../../dao/dao";
+import { UserAccount } from "@airport/travel-document-checkpoint";
 
 @Injected()
 export class RepositoryApi {
@@ -12,11 +13,26 @@ export class RepositoryApi {
     repositoryDao: RepositoryDao
 
     @Inject()
+    repositoryMemberDao: RepositoryMemberDao
+
+    @Inject()
     repositoryManager: IRepositoryManager
 
     @Api()
     searchRepositories(): Observable<IRepository[]> {
         return this.repositoryDao.searchRepositories(arguments[0])
+    }
+
+    @Api()
+    searchRepositoryMemberUserAccountsByGUID(
+        repositoryGUID: Repository_GUID
+    ): Observable<UserAccount[]> {
+        return this.repositoryMemberDao
+            .searchWithMembersForRepositoryGUID(repositoryGUID).pipe(
+                map(repositoryMembers => repositoryMembers.map(
+                    repositoryMember => repositoryMember.userAccount
+                ))
+            )
     }
 
     async findRepository(

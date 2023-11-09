@@ -1,10 +1,13 @@
 import { app } from '@airport/direction-indicator'
+import { DatastructureUtils, Dictionary } from '@airport/ground-control'
+import { IRepositoryManager } from '@airport/terminal-map'
 import { RepositoryApi } from '../api/api'
 import { RecordHistoryNewValueDao } from '../dao/history/RecordHistoryNewValueDao'
 import { RecordHistoryOldValueDao } from '../dao/history/RecordHistoryOldValueDao'
 import { RepositoryTransactionHistoryDao } from '../dao/history/RepositoryTransactionHistoryDao'
 import { ActorDao } from '../dao/infrastructure/ActorDao'
 import { RepositoryDao } from '../dao/repository/RepositoryDao'
+import { RepositoryReferenceDao } from '../dao/repository/RepositoryReferenceDao'
 import { RepositoryMemberDao } from '../dao/repository/member/RepositoryMemberDao'
 import { OperationHistoryDuo } from '../duo/history/OperationHistoryDuo'
 import { RecordHistoryDuo } from '../duo/history/RecordHistoryDuo'
@@ -12,12 +15,9 @@ import { RecordHistoryNewValueDuo } from '../duo/history/RecordHistoryNewValueDu
 import { RecordHistoryOldValueDuo } from '../duo/history/RecordHistoryOldValueDuo'
 import { RepositoryTransactionHistoryDuo } from '../duo/history/RepositoryTransactionHistoryDuo'
 import { TransactionHistoryDuo } from '../duo/history/TransactionHistoryDuo'
-import { application } from './app-declaration'
-import { DatastructureUtils, Dictionary } from '@airport/ground-control'
-import { IRepositoryManager } from '@airport/terminal-map'
-import { RepositoryReferenceDao } from '../dao/repository/RepositoryReferenceDao'
-import { CopiedRecordLedgerDao, CrossRepositoryRelationLedgerDao, LocalCopyReplacementLedgerDao } from './holding-pattern.runtime-index'
 import { CrossRepositoryRelationManager } from '../manager/CrossRepositoryRelationManager'
+import { application } from './app-declaration'
+import { CopiedRecordLedgerDao, CrossRepositoryRelationLedgerDao, LocalCopyReplacementLedgerDao } from './holding-pattern.runtime-index'
 
 export const holdingPattern = app(application)
 
@@ -47,6 +47,7 @@ holdingPattern.setDependencies(OperationHistoryDuo, {
 
 holdingPattern.setDependencies(RepositoryApi, {
     repositoryDao: RepositoryDao,
+    repositoryMemberDao: RepositoryMemberDao,
     repositoryManager: REPOSITORY_MANAGER,
 })
 

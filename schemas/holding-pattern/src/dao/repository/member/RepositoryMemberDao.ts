@@ -1,11 +1,12 @@
 import { UserAccount_PublicSigningKey, UserAccount_LocalId } from "@airport/aviation-communication";
 import { IContext, Injected } from "@airport/direction-indicator";
-import { IRepositoryMember, IRepositoryTransactionHistory, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Status, Repository_LocalId } from "@airport/ground-control";
+import { IRepositoryMember, IRepositoryTransactionHistory, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Status, Repository_GUID, Repository_LocalId } from "@airport/ground-control";
 import { AND, EXISTS, Y } from "@airport/tarmaq-query";
 import { QUserAccount } from "@airport/travel-document-checkpoint/dist/app/bundle";
 import { QRepository, QRepositoryMember, QRepositoryMemberInvitation } from "../../../generated/qInterfaces";
 import { BaseRepositoryMemberDao } from "../../../generated/baseDaos";
 import Q_airport____at_airport_slash_holding_dash_pattern from "../../../generated/qApplication";
+import { Observable } from "rxjs";
 
 @Injected()
 export class RepositoryMemberDao
@@ -91,6 +92,26 @@ export class RepositoryMemberDao
                 rmi.invitationPublicSigningKey.equals(base64EncodedKeyInvitationPublicSigningKey)
             )
         }, context)
+    }
+
+    searchWithMembersForRepositoryGUID(
+        repositoryGUID: Repository_GUID
+    ): Observable<IRepositoryMember[]> {
+        let rm: QRepositoryMember,
+            r: QRepository
+
+        return this._search({
+            SELECT: {
+                '*': Y,
+                userAccount: {},
+            },
+            FROM: [
+                rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
+                r = rm.repository.INNER_JOIN(),
+                rm.userAccount.INNER_JOIN()
+            ],
+            WHERE: r.GUID.equals(repositoryGUID)
+        })
     }
 
     async insert(
