@@ -547,11 +547,26 @@ expecting only API message types`)
 			typeGroup
 		}
 		if (toFramework) {
+			let destinationType: Message_OriginOrDestination_Type
+			switch (typeGroup) {
+				case Message_Type_Group.CRUD:
+				case Message_Type_Group.SUBSCRIPTION: {
+					destinationType = Message_OriginOrDestination_Type.DATABASE
+					break
+				}
+				case Message_Type_Group.INTERNAL: {
+					destinationType = Message_OriginOrDestination_Type.FRAMEWORK
+					break
+				}
+				default: {
+					throw new Error(`Unexpected Message_Type_Group ${typeGroup} for an internal message.`)
+				}
+			}
 			coreFields.destination = {
 				app: 'FRAMEWORK',
 				domain: 'trubase.org',
 				protocol: 'https:',
-				type: Message_OriginOrDestination_Type.FRAMEWORK
+				type: destinationType
 			}
 		}
 

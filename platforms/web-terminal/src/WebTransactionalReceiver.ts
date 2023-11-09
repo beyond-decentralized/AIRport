@@ -924,12 +924,15 @@ Subscription data should be response messages.
 				this.webMessageGateway.sendMessageToApp(
 					application_FullName, {
 					...messageFields,
-					direction: Message_Direction.RESPONSE,
-					messageLeg: Message_Leg.FROM_HUB,
 					destination: message.origin,
-					origin: messageFields.destination,
+					direction: Message_Direction.RESPONSE,
+					isAIRportMessage: true,
+					messageLeg: Message_Leg.FROM_HUB,
+					origin: message.destination,
 					returnedValue,
-					type
+					subscriptionId: message.subscriptionId,
+					type,
+					typeGroup: Message_Type_Group.SUBSCRIPTION
 				})
 			})
 		let isolateSubscriptionMap = webReciever.subscriptionMap
