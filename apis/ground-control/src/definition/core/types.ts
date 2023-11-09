@@ -281,7 +281,7 @@ export interface IRepositoryMemberUpdate {
 
 export type SystemWideOperationId = number
 export type ActorRecordId = number
-export type AirEntity_Id = string
+export type AirEntity_GUID = string
 export type AirEntity_Copied = boolean
 export interface IAirEntity {
 	// Id Properties
@@ -299,7 +299,7 @@ export interface IAirEntity {
 	// Transient Properties
 	createdBy?: IUserAccount
 	isNew?: boolean
-	id?: AirEntity_Id
+	id?: AirEntity_GUID
 
 	// Public Methods
 }
