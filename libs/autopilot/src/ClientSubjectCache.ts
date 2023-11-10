@@ -12,60 +12,65 @@ export class ClientSubjectCache
 
     constructor() {
         setTimeout(() => {
-            if (globalThis.repositoryAutoload !== false) {
-                setInterval(() => {
-                    const requestsByDomainAndApp: Map<Message_Domain, Map<Message_Application,
-                        {
-                            args: any[],
-                            fullDIDescriptor: IFullDITokenDescriptor,
-                            requestFields: ICoreSubscriptionRequestFields
-                        }[]>> = new Map()
-                    for (const [_subscriptionId, subject] of this.observableRequestMap) {
-                        const args = (subject as IApiClientSubject<any, any>).args
-                        const fullDIDescriptor = (subject as IApiClientSubject<any, any>).fullDIDescriptor
-                        const requestFields: ICoreSubscriptionRequestFields = subject.requestFields
-                        let requestsForDomain = requestsByDomainAndApp
-                            .get(requestFields.destination.domain)
-                        if (!requestsForDomain) {
-                            requestsForDomain = new Map()
-                            requestsByDomainAndApp.set(requestFields.destination.domain, requestsForDomain)
-                        }
-
-                        let requestsForApp = requestsForDomain.get(requestFields.destination.app)
-                        if (!requestsForApp) {
-                            requestsForApp = []
-                            requestsForDomain.set(requestFields.destination.app, requestsForApp)
-                        }
-                        requestsForApp.push({
-                            args,
-                            fullDIDescriptor,
-                            requestFields
-                        })
-                    }
-
-                    for (const [_serverDomain, requestsForDomain] of requestsByDomainAndApp) {
-                        for (const [_serverApplication, requestsForApp] of requestsForDomain) {
-                            const requestForApp = requestsForApp[0]
-                            const subscriptionIds = []
-                            for (const request of requestsForApp) {
-                                subscriptionIds.push(request.requestFields.subscriptionId)
-                            }
-                            globalThis.MESSAGE_BUS.next({
-                                fullDIDescriptor: requestForApp.fullDIDescriptor,
-                                request: {
-                                    ...requestForApp.requestFields,
-                                    subscriptionIds,
-                                    id: guidv4(),
-                                    type: SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING,
-                                    typeGroup: Message_Type_Group.SUBSCRIPTION,
-                                    dropIfConnectionNotReady: true
-                                } as ISubscriptionMessage
-                            })
-                        }
-                    }
-                }, 60000)
+            if (globalThis.repositoryAutoload === false) {
+                return
             }
+            setInterval(() => {
+                this.maintainSubscriptions()
+            }, 60000)
         }, 30000)
+    }
+
+    private maintainSubscriptions(): void {
+        const requestsByDomainAndApp: Map<Message_Domain, Map<Message_Application,
+            {
+                args: any[],
+                fullDIDescriptor: IFullDITokenDescriptor,
+                requestFields: ICoreSubscriptionRequestFields
+            }[]>> = new Map()
+        for (const [_subscriptionId, subject] of this.observableRequestMap) {
+            const args = (subject as IApiClientSubject<any, any>).args
+            const fullDIDescriptor = (subject as IApiClientSubject<any, any>).fullDIDescriptor
+            const requestFields: ICoreSubscriptionRequestFields = subject.requestFields
+            let requestsForDomain = requestsByDomainAndApp
+                .get(requestFields.destination.domain)
+            if (!requestsForDomain) {
+                requestsForDomain = new Map()
+                requestsByDomainAndApp.set(requestFields.destination.domain, requestsForDomain)
+            }
+
+            let requestsForApp = requestsForDomain.get(requestFields.destination.app)
+            if (!requestsForApp) {
+                requestsForApp = []
+                requestsForDomain.set(requestFields.destination.app, requestsForApp)
+            }
+            requestsForApp.push({
+                args,
+                fullDIDescriptor,
+                requestFields
+            })
+        }
+
+        for (const [_serverDomain, requestsForDomain] of requestsByDomainAndApp) {
+            for (const [_serverApplication, requestsForApp] of requestsForDomain) {
+                const requestForApp = requestsForApp[0]
+                const subscriptionIds = []
+                for (const request of requestsForApp) {
+                    subscriptionIds.push(request.requestFields.subscriptionId)
+                }
+                globalThis.MESSAGE_BUS.next({
+                    fullDIDescriptor: requestForApp.fullDIDescriptor,
+                    request: {
+                        ...requestForApp.requestFields,
+                        subscriptionIds,
+                        id: guidv4(),
+                        type: SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING,
+                        typeGroup: Message_Type_Group.SUBSCRIPTION,
+                        dropIfConnectionNotReady: true
+                    } as ISubscriptionMessage
+                })
+            }
+        }
     }
 
     addSubject(
