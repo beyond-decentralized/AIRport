@@ -1,5 +1,5 @@
 import { JsonApplicationVersionWithApi } from '@airport/air-traffic-control'
-import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IInternalMessage, INTERNAL_Message_Type, Message_Direction, Message_Type_Group, ISubscriptionMessage, IObservableApiCallResponseMessage, SUBSCRIPTION_Message_Type, Message_OriginOrDestination_Type, IObservableApiCallRequestMessage, IConnectionReadyMessage } from '@airport/aviation-communication'
+import { Message_Leg, IAirMessageUtils, IApiCallRequestMessage, IApiCallResponseMessage, IMessage, IInternalMessage, INTERNAL_Message_Type, Message_Direction, Message_Type_Group, ISubscriptionMessage, IObservableApiCallResponseMessage, SUBSCRIPTION_Message_Type, Message_OriginOrDestination_Type, IObservableApiCallRequestMessage, IConnectionReadyMessage, IResponseMessage } from '@airport/aviation-communication'
 import {
 	IContext,
 	Inject,
@@ -86,16 +86,16 @@ export class WebTransactionalReceiver
 		const lastValidPingMillis = new Date().getTime() - 10000
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		for (const [_application_FullName, isolateSubscriptionMap] of webReciever.subscriptionMap) {
+		for (const [_application_FullName, clientSubscriptionMap] of webReciever.subscriptionMap) {
 			const staleSubscriptionIds = []
-			for (const [subscriptionId, subscriptionRecord] of isolateSubscriptionMap) {
+			for (const [subscriptionId, subscriptionRecord] of clientSubscriptionMap) {
 				if (subscriptionRecord.lastActive < lastValidPingMillis) {
 					staleSubscriptionIds.push(subscriptionId)
 				}
 			}
 			for (const staleSubscriptionId of staleSubscriptionIds) {
-				isolateSubscriptionMap.get(staleSubscriptionId).subscription.unsubscribe()
-				isolateSubscriptionMap.delete(staleSubscriptionId)
+				clientSubscriptionMap.get(staleSubscriptionId).subscription.unsubscribe()
+				clientSubscriptionMap.delete(staleSubscriptionId)
 			}
 		}
 	}
@@ -262,13 +262,16 @@ export class WebTransactionalReceiver
 
 	private async replyToClient(
 		message: IApiCallResponseMessage
+			| IObservableApiCallResponseMessage
 			| IInitializeConnectionMessage,
 		errorMessage,
 		returnedValue,
 		success,
 		messageOrigin
 	): Promise<void> {
-		const toClientRedirectedMessage: IApiCallResponseMessage | IInitializeConnectionMessage = {
+		const toClientRedirectedMessage: IApiCallResponseMessage
+			| IObservableApiCallResponseMessage
+			| IInitializeConnectionMessage = {
 			...message,
 			direction: Message_Direction.RESPONSE,
 			messageLeg: Message_Leg.FROM_HUB,
@@ -360,22 +363,6 @@ export class WebTransactionalReceiver
 		}
 
 		return response;
-	}
-
-	protected async nativeHandleObservableApiCall(
-		message: IApiCallRequestMessage,
-		context: IApiCallContext & ITransactionContext
-	): Promise<boolean> {
-		const startDescriptor = await this.nativeStartApiCall(message, context);
-		if (!startDescriptor.isStarted) {
-			throw new Error(context.errorMessage)
-		}
-
-		if (startDescriptor.isFramework) {
-			await this.callFrameworkApi(message, context)
-		}
-
-		return startDescriptor.isFramework
 	}
 
 	private async callFrameworkApi(
@@ -481,7 +468,7 @@ export class WebTransactionalReceiver
 	}
 
 	private async doHandleUIRequest(
-		message: IApiCallRequestMessage
+		message: IApiCallRequestMessage | IObservableApiCallRequestMessage
 	): Promise<void> {
 		const application_FullName = this.getMessageDestinationApplication(
 			message)
@@ -492,31 +479,62 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		const context: IApiCallContext = {
-			isObservableApiCall: this.airMessageUtils.isObservableMessage(message)
-		}
 		this.maintainUiSubscriptions(message as any)
 
-		const localApiRequest = message
-		const startDescriptor = await this.nativeStartApiCall(localApiRequest, context);
-		if (!startDescriptor.isStarted) {
-			this.relyWithError(message, context.errorMessage)
-		} else if (startDescriptor.isFramework) {
-			const result = await this.callFrameworkApi(localApiRequest, context)
-			if (result.replyToClient) {
-				await this.replyToClient(
-					{
-						...message,
-						destination: message.origin,
-						origin: message.destination
-					},
-					result.errorMessage,
-					result.returnedValue,
-					!result.errorMessage,
-					null
-				)
+		
+		let isFrameworkApiCall = false
+		switch (message.typeGroup) {
+			case Message_Type_Group.API: {
+				const result = await this.handleApiCall(message as IApiCallRequestMessage)
+				const response = result.response
+				if (result.isFrameworkApiCall) {
+					await this.replyToClient(
+						{
+							...message,
+							destination: message.origin,
+							origin: message.destination
+						},
+						response.errorMessage,
+						response.returnedValue,
+						!response.errorMessage,
+						null
+					)
+				}
+				break
+			}
+			case Message_Type_Group.SUBSCRIPTION: {
+				const result = await this.handleSubscriptionRequestMessage(message as ISubscriptionMessage)
+				isFrameworkApiCall = result.isFrameworkApiCall
+
+				if (isFrameworkApiCall) {
+					const webReciever = this.terminalStore.getWebReceiver()
+					switch ((message as ISubscriptionMessage).type) {
+						case SUBSCRIPTION_Message_Type.API_SUBSCRIBE: {
+							const response = result.response
+							this.subscribeToFrameworkObservable(message as ISubscriptionMessage,
+								SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA,
+								message, response.returnedValue, Message_OriginOrDestination_Type.USER_INTERFACE,
+								webReciever)
+							break
+						}
+						case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
+							this.frameworkApiUnsubscribe(message as ISubscriptionMessage,
+								Message_OriginOrDestination_Type.USER_INTERFACE, webReciever
+							)
+							break
+						}
+					}
+				}
+				break
+			}
+			default: {
+				throw new Error(`
+Unexpected message typeGroup for UI request:
+	${message.typeGroup}
+`)
 			}
 		}
+
 	}
 
 	private maintainUiSubscriptions(
@@ -665,7 +683,7 @@ export class WebTransactionalReceiver
 		}
 
 		let response
-		let isFrameworkObservableCall = false
+		let isFrameworkApiCall = false
 		switch (message.typeGroup) {
 			case Message_Type_Group.API: {
 				response = await this.nativeHandleApiCall(message as IApiCallRequestMessage, {
@@ -682,7 +700,7 @@ export class WebTransactionalReceiver
 			}
 			case Message_Type_Group.SUBSCRIPTION: {
 				const result = await this.handleSubscriptionRequestMessage(message as ISubscriptionMessage)
-				isFrameworkObservableCall = result.isFrameworkObservableCall
+				isFrameworkApiCall = result.isFrameworkApiCall
 				response = result.response
 				break
 			}
@@ -707,7 +725,7 @@ Unexpected message typeGroup:
 			response,
 			response.returnedValue,
 			application_FullName,
-			isFrameworkObservableCall,
+			isFrameworkApiCall,
 			webReciever
 		)
 
@@ -716,43 +734,46 @@ Unexpected message typeGroup:
 	private async handleSubscriptionRequestMessage(
 		message: ISubscriptionMessage
 	): Promise<{
-		isFrameworkObservableCall: boolean,
-		response: Observable<any>
+		isFrameworkApiCall: boolean,
+		response: IResponseMessage<Observable<any>>
 	}> {
 		const webReciever = this.terminalStore.getWebReceiver()
 		const application_FullName = this.getMessageOriginApplication(message)
 
 		let response
-		let isFrameworkObservableCall = false
+		let isFrameworkApiCall = false
 		switch (message.type) {
 			case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
 			case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
-				const observableApiResult = await this.handleApiSubscribeOrUnsubscribe(message as IObservableApiCallRequestMessage)
-				isFrameworkObservableCall = observableApiResult.isFrameworkObservableCall
+				const observableApiResult = await this.handleApiCall(message as IObservableApiCallRequestMessage)
+				isFrameworkApiCall = observableApiResult.isFrameworkApiCall
 				response = observableApiResult.response
 				break
 			}
 			case SUBSCRIPTION_Message_Type.SEARCH_ONE_UNSUBSCRIBE:
 			case SUBSCRIPTION_Message_Type.SEARCH_UNSUBSCRIBE: {
-				let isolateSubscriptionMap = webReciever
+				if (message.origin.type === Message_OriginOrDestination_Type.USER_INTERFACE) {
+					throw new Error(`search calls cannot be made from user interfaces`)
+				}
+				let clientSubscriptionMap = webReciever
 					.subscriptionMap.get(application_FullName)
-				if (!isolateSubscriptionMap) {
+				if (!clientSubscriptionMap) {
 					break
 				}
-				let subscriptionRecord = isolateSubscriptionMap.get(message.subscriptionId)
+				let subscriptionRecord = clientSubscriptionMap.get(message.subscriptionId)
 				if (!subscriptionRecord) {
 					break
 				}
 				subscriptionRecord.subscription.unsubscribe()
-				isolateSubscriptionMap.delete(message.subscriptionId)
+				clientSubscriptionMap.delete(message.subscriptionId)
 				break
 			}
 			case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
-				let isolateSubscriptionMap = webReciever.subscriptionMap.get(application_FullName)
-				if (!isolateSubscriptionMap) {
+				let clientSubscriptionMap = webReciever.subscriptionMap.get(application_FullName)
+				if (!clientSubscriptionMap) {
 					break
 				}
-				const subscriptionRecord = isolateSubscriptionMap.get(message.subscriptionId)
+				const subscriptionRecord = clientSubscriptionMap.get(message.subscriptionId)
 				if (!subscriptionRecord) {
 					break
 				}
@@ -761,6 +782,9 @@ Unexpected message typeGroup:
 			}
 			case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
 			case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE: {
+				if (message.origin.type === Message_OriginOrDestination_Type.USER_INTERFACE) {
+					throw new Error(`search calls cannot be made from user interfaces`)
+				}
 				response = await this.processSubscriptionMessage(message as ISubscriptionMessage)
 				// Subscription is done in another method
 				break
@@ -782,35 +806,44 @@ Subscription data should be response messages.
 		}
 
 		return {
-			isFrameworkObservableCall,
+			isFrameworkApiCall,
 			response
 		}
 	}
 
-	private async handleApiSubscribeOrUnsubscribe(
-		message: IObservableApiCallRequestMessage
+	private async handleApiCall(
+		message: IApiCallRequestMessage | IObservableApiCallRequestMessage
 	): Promise<{
-		isFrameworkObservableCall: boolean,
-		response: Observable<any>
+		errorMessage?: string,
+		isFrameworkApiCall: boolean,
+		isObservableApiCall: boolean,
+		response: IApiCallResponseMessage | IObservableApiCallResponseMessage | {
+			errorMessage,
+			replyToClient,
+			returnedValue
+		}
 	}> {
-		let isFrameworkObservableCall = false
+		let isFrameworkApiCall = false
+		let isObservableApiCall = this.airMessageUtils.isObservableMessage(message)
 		let response = null
 
 		const context: IContext = {
-			isObservableApiCall: this.airMessageUtils.isObservableMessage(message),
+			isObservableApiCall,
 			startedAt: new Date()
 		}
 		const startDescriptor = await this.nativeStartApiCall(message, context);
 		if (!startDescriptor.isStarted) {
 			console.error(context.errorMessage)
 			return {
-				isFrameworkObservableCall,
+				errorMessage: context.errorMessage,
+				isFrameworkApiCall,
+				isObservableApiCall,
 				response
 			}
 		}
 
-		isFrameworkObservableCall = startDescriptor.isFramework
-		if (isFrameworkObservableCall) {
+		isFrameworkApiCall = startDescriptor.isFramework
+		if (isFrameworkApiCall) {
 			const apiCallResult = await this.callFrameworkApi(message, context)
 
 			if (apiCallResult.errorMessage) {
@@ -830,7 +863,8 @@ Subscription data should be response messages.
 		response.direction = Message_Direction.RESPONSE
 
 		return {
-			isFrameworkObservableCall,
+			isFrameworkApiCall,
+			isObservableApiCall,
 			response
 		}
 	}
@@ -844,14 +878,14 @@ Subscription data should be response messages.
 		response: IApiCallResponseMessage,
 		returnedValue: Observable<any>,
 		application_FullName: Application_FullName,
-		isFrameworkObservableCall: boolean,
+		isFrameworkApiCall: boolean,
 		webReciever: IWebReceiverState
 	): void {
 		switch (message.typeGroup) {
 			case Message_Type_Group.SUBSCRIPTION: {
 				switch ((message as ISubscriptionMessage).type) {
 					case SUBSCRIPTION_Message_Type.API_SUBSCRIBE: {
-						if (!isFrameworkObservableCall) {
+						if (!isFrameworkApiCall) {
 							this.webMessageGateway.sendMessageToApp(
 								application_FullName, response)
 							break
@@ -877,22 +911,12 @@ Subscription data should be response messages.
 						break
 					}
 					case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
-						if (!isFrameworkObservableCall) {
+						if (!isFrameworkApiCall) {
 							break
 						}
-						let isolateSubscriptionMap = webReciever.subscriptionMap
-							.get(application_FullName)
-						if (!isolateSubscriptionMap) {
-							console.error(`		Did not find isolateSubscriptionMap for Application:
-		${application_FullName}
-							`)
-							break
-						}
-						const subscriptionId = (message as ISubscriptionMessage)
-							.subscriptionId
-						isolateSubscriptionMap.get(subscriptionId)?.subscription
-							.unsubscribe()
-						isolateSubscriptionMap.delete(subscriptionId)
+						this.frameworkApiUnsubscribe(message as ISubscriptionMessage,
+							application_FullName, webReciever
+						)
 						break
 					}
 					default: {
@@ -911,6 +935,27 @@ Subscription data should be response messages.
 		}
 	}
 
+	private frameworkApiUnsubscribe(
+		message: ISubscriptionMessage,
+		application_FullName: Application_FullName,
+		webReciever: IWebReceiverState
+	): void {
+
+		let clientSubscriptionMap = webReciever.subscriptionMap
+			.get(application_FullName)
+		if (!clientSubscriptionMap) {
+			console.error(`		Did not find clientSubscriptionMap for Application:
+${application_FullName}
+		`)
+			return
+		}
+		const subscriptionId = (message as ISubscriptionMessage)
+			.subscriptionId
+		clientSubscriptionMap.get(subscriptionId)?.subscription
+			.unsubscribe()
+		clientSubscriptionMap.delete(subscriptionId)
+	}
+
 	private subscribeToFrameworkObservable(
 		message: ISubscriptionMessage,
 		type: SUBSCRIPTION_Message_Type,
@@ -921,8 +966,7 @@ Subscription data should be response messages.
 	): void {
 		const subscription = returnedValue.subscribe(
 			returnedValue => {
-				this.webMessageGateway.sendMessageToApp(
-					application_FullName, {
+				let responseMessage: IObservableApiCallResponseMessage = {
 					...messageFields,
 					destination: message.origin,
 					direction: Message_Direction.RESPONSE,
@@ -933,15 +977,21 @@ Subscription data should be response messages.
 					subscriptionId: message.subscriptionId,
 					type,
 					typeGroup: Message_Type_Group.SUBSCRIPTION
-				})
+				}
+				if (message.origin.type === Message_OriginOrDestination_Type.USER_INTERFACE) {
+					this.webMessageGateway.sendMessageToClient(responseMessage)
+				} else {
+					this.webMessageGateway.sendMessageToApp(
+						application_FullName, responseMessage)
+				}
 			})
-		let isolateSubscriptionMap = webReciever.subscriptionMap
+		let clientSubscriptionMap = webReciever.subscriptionMap
 			.get(application_FullName)
-		if (!isolateSubscriptionMap) {
-			isolateSubscriptionMap = new Map()
-			webReciever.subscriptionMap.set(application_FullName, isolateSubscriptionMap)
+		if (!clientSubscriptionMap) {
+			clientSubscriptionMap = new Map()
+			webReciever.subscriptionMap.set(application_FullName, clientSubscriptionMap)
 		}
-		isolateSubscriptionMap.set(message.subscriptionId, {
+		clientSubscriptionMap.set(message.subscriptionId, {
 			lastActive: new Date().getTime(),
 			subscription
 		})

@@ -27,7 +27,8 @@ export interface IWebMessageGateway {
     ): void
 
     sendMessageToClient(
-        message: IApiCallRequestMessage
+        message: IApiCallResponseMessage
+            | IObservableApiCallResponseMessage
             | IInternalMessage
     ): void
 }
