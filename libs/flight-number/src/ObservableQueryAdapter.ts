@@ -126,7 +126,8 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
                     locallyMissingRepositoryGUID,
                     {
                         ...context,
-                        doNotLoadReferences: true
+                        doNotLoadReferences: true,
+                        isNestedLoadCall: false
                     }
                 )
             } catch (e) {

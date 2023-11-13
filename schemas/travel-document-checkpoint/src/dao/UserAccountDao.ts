@@ -1,4 +1,4 @@
-import { UserAccount_PublicSigningKey, UserAccount_Username } from '@airport/aviation-communication'
+import { UserAccount_LocalId, UserAccount_PublicSigningKey, UserAccount_Username } from '@airport/aviation-communication'
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import { Dictionary, ISequenceGenerator, IUserAccount } from '@airport/ground-control'
 import { BaseUserAccountDao, IBaseUserAccountDao } from '../generated/baseDaos'
@@ -15,6 +15,11 @@ export interface IUserAccountDao
 
 	findByAccountPublicSingingKeys(
 		accountPublicSingingKeys: UserAccount_PublicSigningKey[],
+		context: IContext
+	): Promise<IUserAccount[]>
+
+	findByLocalIds(
+		localIds: UserAccount_LocalId[],
 		context: IContext
 	): Promise<IUserAccount[]>
 
@@ -61,6 +66,21 @@ export class UserAccountDao
 				u = Q.UserAccount
 			],
 			WHERE: u.accountPublicSigningKey.IN(accountPublicSingingKeys)
+		}, context)
+	}
+
+	async findByLocalIds(
+		localIds: UserAccount_LocalId[],
+		context: IContext
+	): Promise<IUserAccount[]> {
+		let u: QUserAccount
+
+		return await this.db.find.tree({
+			SELECT: {},
+			FROM: [
+				u = Q.UserAccount
+			],
+			WHERE: u._localId.IN(localIds)
 		}, context)
 	}
 

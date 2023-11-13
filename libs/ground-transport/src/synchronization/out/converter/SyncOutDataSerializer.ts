@@ -1,5 +1,5 @@
 import { IDdlRelationDao } from '@airport/airspace/dist/app/bundle';
-import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
+import { UserAccount_LocalId, UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 import {
 	IContext,
 	Inject,
@@ -42,6 +42,7 @@ import {
 	IActorDao,
 	IRepositoryDao
 } from "@airport/holding-pattern/dist/app/bundle";
+import { IUserAccountDao } from '@airport/travel-document-checkpoint/dist/app/bundle';
 
 export interface ISyncOutDataSerializer {
 
@@ -88,7 +89,7 @@ export interface InMessageLookupStructures {
 	applicationLookup: InMessageEntityLookup<Application_LocalId>
 	repositoryMemberLookup: InMessageEntityLookup<RepositoryMember_PublicSigningKey>
 	terminalLookup: InMessageEntityLookup<Terminal_GUID>
-	userAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
+	userAccountLookup: InMessageEntityLookup<UserAccount_LocalId>
 }
 
 export interface InMessageEntityLookup<Id> {
@@ -114,16 +115,19 @@ export class SyncOutDataSerializer
 	applicationUtils: IApplicationUtils
 
 	@Inject()
-	dbRelationDao: IDdlRelationDao
+	applicationNameUtils: IApplicationNameUtils
 
 	@Inject()
-	applicationNameUtils: IApplicationNameUtils
+	dbRelationDao: IDdlRelationDao
 
 	@Inject()
 	dictionary: Dictionary
 
 	@Inject()
 	repositoryDao: IRepositoryDao
+
+	@Inject()
+	userAccountDao: IUserAccountDao
 
 	// @Inject()
 	// repositoryDao: IRepositoryDao
@@ -243,7 +247,8 @@ export class SyncOutDataSerializer
 		const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(
 			actorLidsToFindBy, context)
 
-		this.serializeUserAccounts(actors, data, lookups.userAccountLookup)
+		await this.serializeUserAccounts(actors, data,
+			lookups.userAccountLookup, context)
 		this.serializeActorTerminals(actors, data,
 			lookups.terminalLookup,
 			lookups.userAccountLookup)
@@ -257,7 +262,7 @@ export class SyncOutDataSerializer
 				...this.WITH_ID,
 				application: applicationInMessageIndex as any,
 				terminal: lookups.terminalLookup.inMessageIndexesById.get(actor.terminal.GUID) as any,
-				userAccount: lookups.userAccountLookup.inMessageIndexesById.get(actor.userAccount.accountPublicSigningKey) as any,
+				userAccount: lookups.userAccountLookup.inMessageIndexesById.get(actor.userAccount._localId) as any,
 				GUID: actor.GUID
 			}
 		}
@@ -267,7 +272,7 @@ export class SyncOutDataSerializer
 		actors: IActor[],
 		data: SyncRepositoryData,
 		inMessageTerminalLookup: InMessageEntityLookup<Terminal_GUID>,
-		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
+		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_LocalId>
 	): void {
 		for (const actor of actors) {
 			this.addTerminalToMessage(
@@ -279,14 +284,23 @@ export class SyncOutDataSerializer
 		}
 	}
 
-	private serializeUserAccounts(
+	private async serializeUserAccounts(
 		actors: IActor[],
 		data: SyncRepositoryData,
-		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
-	): void {
+		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_LocalId>,
+		context: IContext
+	): Promise<void> {
 		for (const actor of actors) {
-			this.addUserAccountToMessage(actor.userAccount, data, inMessageUserAccountLookup)
-			this.addUserAccountToMessage(actor.terminal.owner, data, inMessageUserAccountLookup)
+			this.registerUserAccountInMessage(actor.userAccount, inMessageUserAccountLookup)
+			this.registerUserAccountInMessage(actor.terminal.owner, inMessageUserAccountLookup)
+		}
+		const userAccounts = await this.userAccountDao.findByLocalIds(
+			[...inMessageUserAccountLookup.inMessageIndexesById.keys()], context)
+		for (let userAccount of userAccounts) {
+			const userAccountInMessageIndex = inMessageUserAccountLookup
+				.inMessageIndexesById.get(userAccount._localId)
+			this.addUserAccountToMessage(userAccount,
+				userAccountInMessageIndex, data)
 		}
 	}
 
@@ -314,8 +328,8 @@ export class SyncOutDataSerializer
 					isAdministrator: repositoryMember.isAdministrator,
 					canWrite: repositoryMember.canWrite,
 					status: repositoryMember.status,
-					userAccount: this.addUserAccountToMessage(repositoryMember.userAccount,
-						data, lookups.userAccountLookup).userAccountInMessageIndex as any
+					userAccount: this.registerUserAccountInMessage(repositoryMember.userAccount,
+						lookups.userAccountLookup) as any
 				}
 			}
 			data.repositoryMembers[inMessageIndex] = newRepositoryMember
@@ -347,7 +361,11 @@ export class SyncOutDataSerializer
 				id = (entity as ITerminal).GUID
 				break
 			case IndexedEntityType.USER_ACCOUNT:
-				id = (entity as IUserAccount).accountPublicSigningKey
+				if (typeof entity === 'number') {
+					id = entity
+				} else {
+					id = (entity as IUserAccount)._localId
+				}
 				break
 		}
 
@@ -369,43 +387,35 @@ export class SyncOutDataSerializer
 
 	private addUserAccountToMessage(
 		userAccount: IUserAccount,
-		data: SyncRepositoryData,
-		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
-	): {
-		entityAlreadyAdded,
-		userAccountInMessageIndex: number
-	} {
+		inMessageIndex: number,
+		data: SyncRepositoryData
+	): void {
+		let serializedUserAccount: IUserAccount = {
+			...this.USER_ACCOUNT_WITH_ID,
+			accountPublicSigningKey: userAccount.accountPublicSigningKey,
+			username: userAccount.username
+		}
+		data.userAccounts[inMessageIndex] = serializedUserAccount
+	}
+
+	private registerUserAccountInMessage(
+		userAccount: IUserAccount,
+		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_LocalId>
+	): number {
 		if (!userAccount) {
-			return {
-				entityAlreadyAdded: true,
-				userAccountInMessageIndex: -1
-			}
+			return -1
 		}
-		const {
-			entityAlreadyAdded,
-			inMessageIndex
-		} = this.getEntityInMessageIndex(userAccount, IndexedEntityType.USER_ACCOUNT, inMessageUserAccountLookup)
+		const indexResults = this.getEntityInMessageIndex(
+			userAccount, IndexedEntityType.USER_ACCOUNT, inMessageUserAccountLookup)
 
-		if (!entityAlreadyAdded) {
-			let serializedUserAccount: IUserAccount = {
-				...this.USER_ACCOUNT_WITH_ID,
-				accountPublicSigningKey: userAccount.accountPublicSigningKey,
-				username: userAccount.username
-			}
-			data.userAccounts[inMessageIndex] = serializedUserAccount
-		}
-
-		return {
-			entityAlreadyAdded,
-			userAccountInMessageIndex: inMessageIndex
-		}
+		return indexResults.inMessageIndex
 	}
 
 	private addTerminalToMessage(
 		terminal: ITerminal,
 		data: SyncRepositoryData,
 		inMessageTerminalLookup: InMessageEntityLookup<Terminal_GUID>,
-		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
+		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_LocalId>
 	): ITerminal {
 		const {
 			entityAlreadyAdded,
@@ -416,7 +426,7 @@ export class SyncOutDataSerializer
 			data.terminals[inMessageIndex] = {
 				...this.TERMINAL_WITH_ID,
 				GUID: terminal.GUID,
-				owner: inMessageUserAccountLookup.inMessageIndexesById.get(terminal.owner.accountPublicSigningKey) as any
+				owner: inMessageUserAccountLookup.inMessageIndexesById.get(terminal.owner._localId) as any
 			}
 		}
 
@@ -459,8 +469,8 @@ export class SyncOutDataSerializer
 		]
 
 		for (const repository of foundRepositories) {
-			const { userAccountInMessageIndex } = this.addUserAccountToMessage(
-				repository.owner, data, lookups.userAccountLookup)
+			const userAccountInMessageIndex = this.registerUserAccountInMessage(
+				repository.owner, lookups.userAccountLookup)
 			if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
 				const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository._localId)
 				data.referencedRepositories[repositoryInMessageIndex] =
@@ -602,7 +612,7 @@ export class SyncOutDataSerializer
 			isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
 			member,
 			repository: this.serializeHistoryRepository(
-				repositoryTransactionHistory, data, lookups.userAccountLookup),
+				repositoryTransactionHistory, lookups.userAccountLookup),
 			operationHistory: serializedOperationHistory,
 			saveTimestamp: repositoryTransactionHistory.saveTimestamp,
 			newRepositoryMemberAcceptances: this.serializeRepositoryMemberAcceptances(
@@ -622,13 +632,12 @@ export class SyncOutDataSerializer
 
 	private serializeHistoryRepository(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
-		data: SyncRepositoryData,
-		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_PublicSigningKey>
+		inMessageUserAccountLookup: InMessageEntityLookup<UserAccount_LocalId>
 	): IRepository {
 		if (repositoryTransactionHistory.isRepositoryCreation) {
 			const repository = repositoryTransactionHistory.repository
-			let userAccountInMessageIndex = this.addUserAccountToMessage(
-				repository.owner, data, inMessageUserAccountLookup)
+			let userAccountInMessageIndex = this.registerUserAccountInMessage(
+				repository.owner, inMessageUserAccountLookup)
 
 			return this.serializeRepository(repository, userAccountInMessageIndex as any)
 		} else {
@@ -883,8 +892,8 @@ export class SyncOutDataSerializer
 					lookups.userAccountLookup)
 				serailizedValue = terminalInMessageIndex
 			} else if (this.dictionary.isUserAccount(oneSideDbEntity)) {
-				const userAccountInMessageIndex = this.addUserAccountToMessage(
-					value, data, lookups.userAccountLookup)
+				const userAccountInMessageIndex = this.registerUserAccountInMessage(
+					value, lookups.userAccountLookup)
 				serailizedValue = userAccountInMessageIndex
 			} else if (this.dictionary.isApplicationRelation(oneSideDbEntity)) {
 				serailizedValue = this.getSerializedReferencedApplicationRelationId(
@@ -909,7 +918,7 @@ export class SyncOutDataSerializer
 	private getSerializedRepositoryId(
 		repositoryLocalId: number,
 		lookups: InMessageLookupStructures
-	) {
+	): number {
 		if (repositoryLocalId === lookups.messageRepository._localId) {
 			return -1
 		}
@@ -926,7 +935,7 @@ export class SyncOutDataSerializer
 	private getSerializedReferencedApplicationRelationId(
 		applicationRelationLocalId: number,
 		lookups: InMessageLookupStructures
-	) {
+	): number {
 		let serailizedValue = lookups.referencedApplicationRelationIndexesById
 			.get(applicationRelationLocalId)
 		if (serailizedValue === undefined) {
@@ -943,6 +952,7 @@ export class SyncOutDataSerializer
 		owner: IUserAccount
 	): IRepository {
 		return {
+			_localId: repository._localId,
 			ageSuitability: repository.ageSuitability,
 			createdAt: repository.createdAt,
 			fullApplicationName: repository.fullApplicationName,

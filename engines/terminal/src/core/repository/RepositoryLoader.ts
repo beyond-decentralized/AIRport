@@ -8,6 +8,7 @@ import {
 } from '@airport/direction-indicator';
 import { IRepository, RepositoryTransactionHistory_GUID, Repository_GUID, SyncRepositoryMessage } from "@airport/ground-control";
 import {
+    ISyncTransactionContext,
     ISynchronizationAdapterLoader,
     ISynchronizationInManager
 } from "@airport/ground-transport";
@@ -78,7 +79,7 @@ export class RepositoryLoader
     */
     async loadRepository(
         repositoryGUID: string,
-        context: IContext & ITransactionContext
+        context: ISyncTransactionContext
     ): Promise<void> {
         await this.ensureOneLoadAtATime(async () => {
             if (context.repositoryExistenceChecked) {
@@ -94,13 +95,18 @@ export class RepositoryLoader
                 repositoryGUID,
                 context
             )
-        }, true)
+        }, true, context.isNestedLoadCall)
     }
 
     private async ensureOneLoadAtATime(
         callback: () => Promise<void>,
-        wait: boolean
+        wait: boolean,
+        nestedCall = false
     ): Promise<void> {
+        if (nestedCall) {
+            await callback()
+            return
+        }
         if (wait) {
             while (this.currentlyLoading) {
                 await this.wait(100)
@@ -147,6 +153,11 @@ export class RepositoryLoader
 
         if (!loadRepository) {
             return
+        }
+
+        const currentlyLoadedRepsitoryGUIDSet = context.currentlyLoadedRepsitoryGUIDSet
+        if(currentlyLoadedRepsitoryGUIDSet) {
+            currentlyLoadedRepsitoryGUIDSet.set(repositoryGUID)
         }
 
         const now = new Date().getTime()

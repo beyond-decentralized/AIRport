@@ -117,6 +117,10 @@ export class TwoStageSyncedInDataProcessor
 			newAndUpdatedRepositoriesAndRecords,
 			context
 		)
+		await this.markLoadedRepositories(
+			newAndUpdatedRepositoriesAndRecords,
+			context
+		)
 
 		this.aggregateHistoryRecords(messages, transaction)
 
@@ -156,6 +160,17 @@ export class TwoStageSyncedInDataProcessor
 
 		await this.repositoryReferenceCreator.create(
 			messages, context)
+	}
+
+	private async markLoadedRepositories(
+		newAndUpdatedRepositoriesAndRecords: INewAndUpdatedRepositoriesAndRecords,
+		context: IContext
+	): Promise<void> {
+		if (newAndUpdatedRepositoriesAndRecords.loadedRepositoryGUIDS.length) {
+			await this.repositoryDao.markAsLoaded(
+				newAndUpdatedRepositoriesAndRecords.loadedRepositoryGUIDS,
+				context)
+		}
 	}
 
 	private aggregateHistoryRecords(
@@ -245,11 +260,13 @@ export class TwoStageSyncedInDataProcessor
 			= new Map()
 		const applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication> = new Map()
 		const actorMapByLid: Map<number, IActor> = new Map()
-		const repoTransHistories: IRepositoryTransactionHistory[] = []
 		for (const message of messages) {
 			const data = message.data
+			const repoTransHistories = this.datastructureUtils.ensureChildArray(
+				repositoryTransactionHistoryMapByRepositoryLid,
+				data.history.repository._localId
+			)
 			repoTransHistories.push(data.history)
-			repositoryTransactionHistoryMapByRepositoryLid.set(data.history.repository._localId, repoTransHistories)
 			for (const actor of data.actors) {
 				actorMapByLid.set(actor._localId, actor)
 			}

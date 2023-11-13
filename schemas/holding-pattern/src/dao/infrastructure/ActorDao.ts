@@ -230,8 +230,7 @@ export class ActorDao
 					_localId: Y,
 					GUID: Y,
 					owner: {}
-				},
-				userAccount: {}
+				}
 			},
 			FROM: [
 				a = Q.Actor,

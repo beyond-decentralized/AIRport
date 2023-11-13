@@ -50,7 +50,8 @@ export class HistoryManager
 		context: IOperationContext & ITransactionContext
 	): Promise<IRepositoryTransactionHistory> {
 		let isRepositoryCreation = false
-		if (context.rootTransaction.newRepository) {
+		if (context.rootTransaction.newRepository?._localId
+			=== repositoryLid) {
 			isRepositoryCreation = true
 		}
 
@@ -190,6 +191,7 @@ export class HistoryManager
 			context
 		)
 		for (const repositoryMember of foundRepositoryMembers) {
+			repositoryMember.userAccount = userAccount
 			const repositoryTransactionHistories = newMemberRepositoryTransactionHistoryMap.get(
 				repositoryMember.repository._localId
 			)

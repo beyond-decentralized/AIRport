@@ -55,14 +55,16 @@ export class RepositoryReferenceCreator {
                 repositoryGUID)
             for (const referencedRepository of message.data.referencedRepositories) {
                 if (referencesOfRepositoryMap.has(referencedRepository.GUID)) {
-                    continue
+                    referencesOfRepositoryMap.set(
+                        referencedRepository.GUID, {
+                        referencingRepository: {
+                            ...referencingRepository
+                        },
+                        referencedRepository: {
+                            ...referencedRepository
+                        }
+                    })
                 }
-                referencesOfRepositoryMap.set(
-                    referencedRepository.GUID, {
-                    referencingRepository,
-                    referencedRepository
-                }
-                )
             }
         }
 

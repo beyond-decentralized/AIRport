@@ -1989,6 +1989,9 @@ class KeyUtils {
     sha512(str) {
         return this.digest(str, 512);
     }
+    sha1(str) {
+        return this.digest(str, 1);
+    }
     async sign(text, privateKey, privateKeyBitLength = 384) {
         const encoded = this.textEncoder.encode(text);
         const signKey = await this.deserializeSignKey(privateKey, privateKeyBitLength);
@@ -14806,6 +14809,7 @@ class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDa
         const rh = oh.recordHistory.LEFT_JOIN();
         const nv = rh.newValues.LEFT_JOIN();
         let _localId = Y;
+        let numSearchParameterRecords = 0;
         const repositoryEquals = [];
         for (const [repositoryLid, idsForRepository] of changedRecordIds) {
             const recordMapForRepository = idsForRepository.actorRecordIdsByLocalIds;
@@ -14814,10 +14818,14 @@ class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDa
                 const actorEquals = [];
                 for (const [actorLid, recordsForActor] of recordMapForEntity) {
                     actorEquals.push(AND(rh.actor._localId.equals(actorLid), rh._actorRecordId.IN(Array.from(recordsForActor))));
+                    numSearchParameterRecords++;
                 }
                 entityEquals.push(AND(oh.entity._localId.equals(entityId), OR(...actorEquals)));
             }
             repositoryEquals.push(AND(rth.repository._localId.equals(repositoryLid), rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime), OR(...entityEquals)));
+        }
+        if (!numSearchParameterRecords) {
+            return new Map();
         }
         const repoTransHistories = await this.db.find.tree({
             SELECT: {
@@ -15105,6 +15113,21 @@ class RepositoryMemberDao extends BaseRepositoryMemberDao {
             WHERE: AND(rm.repository.equals(repositoryLocalId), rmi.invitationPublicSigningKey.equals(base64EncodedKeyInvitationPublicSigningKey))
         }, context);
     }
+    searchWithMembersForRepositoryGUID(repositoryGUID) {
+        let rm, r;
+        return this._search({
+            SELECT: {
+                '*': Y,
+                userAccount: {},
+            },
+            FROM: [
+                rm = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember,
+                r = rm.repository.INNER_JOIN(),
+                rm.userAccount.INNER_JOIN()
+            ],
+            WHERE: r.GUID.equals(repositoryGUID)
+        });
+    }
     async insert(repositoryMembers, context) {
         let rm;
         const VALUES = [];
@@ -15284,7 +15307,22 @@ class RepositoryDao extends BaseRepositoryDao {
             WHERE: r.GUID.equals(repositoryGUID)
         }, context);
     }
-    async getRepositoryLoadInfo(repositoryGUID, context) {
+    async findAllWithLoadInfo(context) {
+        let r;
+        return await this.db.find.tree({
+            SELECT: {
+                '*': Y,
+                repositoryTransactionHistory: {
+                    saveTimestamp: Y
+                }
+            },
+            FROM: [
+                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r.repositoryTransactionHistory.INNER_JOIN()
+            ]
+        }, context);
+    }
+    async getWithLoadInfo(repositoryGUID, context) {
         let r;
         let rth;
         let th;
@@ -15687,6 +15725,10 @@ class RepositoryApi {
     searchRepositories() {
         return this.repositoryDao.searchRepositories(arguments[0]);
     }
+    searchRepositoryMemberUserAccountsByGUID(repositoryGUID) {
+        return this.repositoryMemberDao
+            .searchWithMembersForRepositoryGUID(repositoryGUID).pipe(map(repositoryMembers => repositoryMembers.map(repositoryMember => repositoryMember.userAccount)));
+    }
     async findRepository(repositoryGUID) {
         return await this.repositoryDao.findRepository(repositoryGUID, arguments[1]);
     }
@@ -15720,6 +15762,7 @@ holdingPattern.setDependencies(OperationHistoryDuo, {
 });
 holdingPattern.setDependencies(RepositoryApi, {
     repositoryDao: RepositoryDao,
+    repositoryMemberDao: RepositoryMemberDao,
     repositoryManager: REPOSITORY_MANAGER,
 });
 holdingPattern.setDependencies(RecordHistoryDuo, {
@@ -15755,10 +15798,11 @@ var AddUserAccountErrorCodes;
     AddUserAccountErrorCodes["INVALID_USERNAME"] = "INVALID_USERNAME";
 })(AddUserAccountErrorCodes || (AddUserAccountErrorCodes = {}));
 class UserAccountManager {
-    async addUserAccount(username, accountPublicSigningKey, context) {
+    async addUserAccount(username, accountPublicSigningKey, sha1sum, context) {
         const userAccount = {
             _localId: null,
             accountPublicSigningKey,
+            sha1sum,
             username
         };
         await this.userAccountDao.insert([userAccount], context);
@@ -16173,7 +16217,9 @@ class UserAccountDao extends BaseUserAccountDao {
         for (let i = 0; i < userAccounts.length; i++) {
             const userAccount = userAccounts[i];
             VALUES.push([
-                userAccount.accountPublicSigningKey, userAccount.username
+                userAccount.accountPublicSigningKey,
+                userAccount.username,
+                userAccount.sha1sum
             ]);
         }
         let u;
@@ -16181,7 +16227,8 @@ class UserAccountDao extends BaseUserAccountDao {
             INSERT_INTO: u = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.UserAccount,
             columns: [
                 u.accountPublicSigningKey,
-                u.username
+                u.username,
+                u.sha1sum
             ],
             VALUES
         }, context);
@@ -20557,11 +20604,25 @@ const APPLICATION$4 = {
                             "index": 2,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "USERNAME",
+                            "name": "SHA1SUM",
                             "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "USERNAME",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
                                 }
                             ],
                             "sinceVersion": 1,
@@ -20601,6 +20662,15 @@ const APPLICATION$4 = {
                                 "index": 2
                             },
                             "index": 2,
+                            "isId": false,
+                            "name": "sha1sum",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 3
+                            },
+                            "index": 3,
                             "isId": false,
                             "name": "username",
                             "sinceVersion": 1
@@ -22834,6 +22904,15 @@ const APPLICATION$3 = {
                             "searchRepositories": {
                                 "isAsync": false,
                                 "parameters": []
+                            },
+                            "searchRepositoryMemberUserAccountsByGUID": {
+                                "isAsync": false,
+                                "parameters": [
+                                    {
+                                        "isRest": false,
+                                        "text": "repositoryGUID: Repository_GUID"
+                                    }
+                                ]
                             },
                             "create": {
                                 "isAsync": true,
@@ -28564,8 +28643,8 @@ const APPLICATION = {
                             "index": 6,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "EXTERNAL_PRIVATE_KEY",
-                            "notNull": true,
+                            "name": "EMAIL",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 6
@@ -28578,11 +28657,25 @@ const APPLICATION = {
                             "index": 7,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "INTERNAL_PRIVATE_SIGNING_KEY",
+                            "name": "EXTERNAL_PRIVATE_KEY",
                             "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 7
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 8,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "INTERNAL_PRIVATE_SIGNING_KEY",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 8
                                 }
                             ],
                             "sinceVersion": 1,
@@ -28665,7 +28758,7 @@ const APPLICATION = {
                             },
                             "index": 6,
                             "isId": false,
-                            "name": "externalPrivateKey",
+                            "name": "email",
                             "sinceVersion": 1
                         },
                         {
@@ -28674,11 +28767,20 @@ const APPLICATION = {
                             },
                             "index": 7,
                             "isId": false,
+                            "name": "externalPrivateKey",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 8
+                            },
+                            "index": 8,
+                            "isId": false,
                             "name": "internalPrivateSigningKey",
                             "sinceVersion": 1
                         },
                         {
-                            "index": 8,
+                            "index": 9,
                             "isId": false,
                             "name": "repositoryKeys",
                             "relationRef": {
@@ -28718,7 +28820,7 @@ const APPLICATION = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 8
+                                "index": 9
                             },
                             "relationTableIndex": 0,
                             "sinceVersion": 1
@@ -29130,6 +29232,10 @@ let KeyRing = class KeyRing extends InternalAirEntity {
         this.repositoryKeys = [];
     }
 };
+__decorate$1([
+    Column(),
+    DbString()
+], KeyRing.prototype, "email", void 0);
 __decorate$1([
     Column(),
     DbString()
@@ -29815,7 +29921,7 @@ class SyncInChecker {
     /**
      * Check the message and load all required auxiliary entities.
      */
-    async checkMessage(message, context) {
+    async checkMessage(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context) {
         // FIXME: replace as many DB lookups as possible with Terminal State lookups
         let data = message.data;
         let serializedData = JSON.stringify(data);
@@ -29846,7 +29952,7 @@ class SyncInChecker {
         }
         const dataCheckResult = await this.syncInDataChecker.checkData(message, context);
         const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
-            .checkRepositoriesAndMembers(message, context);
+            .checkRepositoriesAndMembers(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context);
         if (!repositoryAndMemberCheckResult.isValid) {
             return {
                 isValid: false
@@ -30219,12 +30325,14 @@ Value is for ${relationIdColumn.name} and could find SyncRepositoryData.${inMess
 }
 
 class SyncInRepositoryChecker {
-    async checkRepositoriesAndMembers(message, context) {
+    async checkRepositoriesAndMembers(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context) {
         let missingRepositories = [];
         let newMembers = [];
         let newRepositoryMemberAcceptances = [];
         let newRepositoryMemberInvitations = [];
         let signatureChecks = [];
+        let repositoryAddedInAnEarlierIncomingMessage = false;
+        let repositoryGUID;
         try {
             const data = message.data;
             let repositoryGUIDs = [];
@@ -30245,13 +30353,23 @@ class SyncInRepositoryChecker {
 	${isRepositoryCreationEqualityErrorPrefix} === true`);
                 }
                 this.checkRepository(historyRepository, null, repositoryGUIDs, messageRepositoryIndexMap, data);
+                repositoryGUID = historyRepository.GUID;
+                addedRepositoryMapByGUID.set(repositoryGUID, historyRepository);
             }
             else {
-                if (typeof historyRepository !== 'string') {
-                    throw new Error(`${repositoryErrorPrefix} a string
-	i${isRepositoryCreationEqualityErrorPrefix} === false`);
+                if (typeof historyRepository !== 'string' || historyRepository.length !== 45) {
+                    throw new Error(`${repositoryErrorPrefix} a string GUID
+	${isRepositoryCreationEqualityErrorPrefix} === false`);
                 }
-                repositoryGUIDs.push(historyRepository);
+                repositoryGUID = historyRepository;
+                const repositoryAddedInPreviousMessage = addedRepositoryMapByGUID.get(historyRepository);
+                if (repositoryAddedInPreviousMessage) {
+                    repositoryAddedInAnEarlierIncomingMessage = true;
+                    history.repository = historyRepository = repositoryAddedInPreviousMessage;
+                }
+                else {
+                    repositoryGUIDs.push(historyRepository);
+                }
             }
             const foundRepositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs, context);
             for (const foundRepository of foundRepositories) {
@@ -30267,13 +30385,23 @@ class SyncInRepositoryChecker {
                         throw new Error(`Unexpected Repository ${foundRepository.GUID}`);
                     }
                     else {
-                        if (foundRepository.GUID !== historyRepository) {
+                        let expectedRepositoryGUID = historyRepository;
+                        if (typeof historyRepository === 'object') {
+                            expectedRepositoryGUID = historyRepository.GUID;
+                        }
+                        if (foundRepository.GUID !== expectedRepositoryGUID) {
                             throw new Error(`Unexpected Repository ${foundRepository.GUID}`);
                         }
                         // Populating ahead of potential insert is OK, object
                         // gets modified with required state on an insert
                         history.repository = historyRepository = foundRepository;
                     }
+                }
+            }
+            for (const [repositoryGUID, repository] of addedRepositoryMapByGUID) {
+                const messageRepositoryIndex = messageRepositoryIndexMap.get(repositoryGUID);
+                if (messageRepositoryIndex || messageRepositoryIndex === 0) {
+                    data.referencedRepositories[messageRepositoryIndex] = repository;
                 }
             }
             missingRepositories = data.referencedRepositories
@@ -30299,7 +30427,10 @@ class SyncInRepositoryChecker {
                     missingRepositories.push(historyRepository);
                 }
             }
-            const memberCheckResult = await this.checkRepositoryMembers(message, context);
+            const addedRepositoryMembersByPublicSigningKey = this.datastructureUtils
+                .ensureChildJsMap(addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, repositoryGUID);
+            addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey;
+            const memberCheckResult = await this.checkRepositoryMembers(message, historyRepository, repositoryAddedInAnEarlierIncomingMessage, addedRepositoryMembersByPublicSigningKey, context);
             signatureChecks = memberCheckResult.signatureChecks;
             newMembers = memberCheckResult.newMembers;
             if (memberCheckResult.newRepositoryMemberAcceptance) {
@@ -30324,17 +30455,17 @@ class SyncInRepositoryChecker {
             signatureChecks
         };
     }
-    async checkRepositoryMembers(message, context) {
+    async checkRepositoryMembers(message, historyRepository, repositoryAddedInAnEarlierIncomingMessage, addedRepositoryMembersByPublicSigningKey, context) {
         const data = message.data;
-        const inMessageRepositoryMemberMapByPublicSigningKey = this
-            .getInMessageRepositoryMemberMap(data);
+        const repositoryMemberInMessageIndexMap = this
+            .getRepositoryMemberInMessageIndexMap(data);
         const newMembers = [];
-        const existingRepositoryMember = await this.getExistingRepositoryMember(data, inMessageRepositoryMemberMapByPublicSigningKey, newMembers, context);
+        const repositoryMember = await this.getRepositoryMember(data, historyRepository, repositoryAddedInAnEarlierIncomingMessage, addedRepositoryMembersByPublicSigningKey, repositoryMemberInMessageIndexMap, newMembers, context);
         const newRepositoryMemberAcceptance = this
-            .isNewRepositoryMemberAcceptanceMessage(data, existingRepositoryMember);
+            .isNewRepositoryMemberAcceptanceMessage(data, repositoryMember);
         const isNewRepositoryMemberAcceptanceMessage = !!newRepositoryMemberAcceptance;
         const newRepositoryMemberInvitations = this
-            .getNewRepositoryMemberInvitations(data, existingRepositoryMember, newMembers);
+            .getNewRepositoryMemberInvitations(data, repositoryMember, newMembers);
         await this.checkRepositoryMemberUserAccounts(data, isNewRepositoryMemberAcceptanceMessage, !!newRepositoryMemberInvitations.length);
         const signatureChecks = this.getPublicSigningKeysAndSignatureToCheck(message, isNewRepositoryMemberAcceptanceMessage);
         data.history.newRepositoryMembers = [];
@@ -30353,9 +30484,8 @@ class SyncInRepositoryChecker {
         const history = data.history;
         for (let i = 0; i < data.repositoryMembers.length; i++) {
             const repositoryMember = data.repositoryMembers[i];
-            if (repositoryMember.userAccount
-                || repositoryMember.userAccount === 0) {
-                const userAccount = data.userAccounts[history.member.userAccount];
+            if (typeof repositoryMember.userAccount === 'number') {
+                const userAccount = data.userAccounts[repositoryMember.userAccount];
                 if (!userAccount) {
                     throw new Error(`UserAccount with index ${repositoryMember.userAccount} referenced in
 message.data.repositoryMembers[${i}].userAccount does not exist in the message`);
@@ -30384,7 +30514,7 @@ a acceptingRepositoryMember.userAccount specified.`);
             }
         }
     }
-    isNewRepositoryMemberAcceptanceMessage(data, existingRepositoryMember) {
+    isNewRepositoryMemberAcceptanceMessage(data, repositoryMember) {
         const history = data.history;
         const newRepositoryMemberAcceptancesErrorPrefix = `history.newRepositoryMemberAcceptances`;
         const newRepositoryMemberAcceptances = history.newRepositoryMemberAcceptances;
@@ -30416,7 +30546,7 @@ a acceptingRepositoryMember.userAccount specified.`);
         }
         this.checkPublicSigningKey(newRepositoryMemberAcceptance.invitationPublicSigningKey, `${newRepositoryMemberAcceptancesErrorPrefix}[0].invitationPublicSigningKey`);
         const acceptingRepositoryMember = data.repositoryMembers[newRepositoryMemberAcceptance.acceptingRepositoryMember];
-        if (acceptingRepositoryMember !== existingRepositoryMember) {
+        if (acceptingRepositoryMember.memberPublicSigningKey !== repositoryMember.memberPublicSigningKey) {
             throw new Error(`${newRepositoryMemberAcceptancesErrorPrefix}[0] must be an existing RepositoryMember`);
         }
         if (acceptingRepositoryMember.status !== RepositoryMember_Status.JOINED) {
@@ -30427,7 +30557,7 @@ a acceptingRepositoryMember.userAccount specified.`);
         delete newRepositoryMemberAcceptance._localId;
         return newRepositoryMemberAcceptance;
     }
-    getNewRepositoryMemberInvitations(data, existingRepositoryMember, newMembers) {
+    getNewRepositoryMemberInvitations(data, repositoryMember, newMembers) {
         const history = data.history;
         const newRepositoryMemberInvitationsErrorPrefix = `history.newRepositoryMemberInvitations`;
         const newRepositoryMemberInvitations = history.newRepositoryMemberInvitations;
@@ -30440,7 +30570,7 @@ a acceptingRepositoryMember.userAccount specified.`);
         if (history.repository.isPublic) {
             throw new Error(`${newRepositoryMemberInvitationsErrorPrefix} are NOT allowed on a public Repository`);
         }
-        if (!existingRepositoryMember.isAdministrator) {
+        if (!repositoryMember.isAdministrator) {
             throw new Error(`Non-Administrator user cannot send ${newRepositoryMemberInvitationsErrorPrefix}.`);
         }
         for (let i = 0; i < newRepositoryMemberInvitations.length; i++) {
@@ -30460,7 +30590,7 @@ a acceptingRepositoryMember.userAccount specified.`);
                 throw new Error(`Invited repository member with in-message index ${newRepositoryMemberInvitation.invitedRepositoryMember}
 is not present in the message.`);
             }
-            if (invitedRepositoryMember === existingRepositoryMember) {
+            if (invitedRepositoryMember.memberPublicSigningKey === repositoryMember.memberPublicSigningKey) {
                 throw new Error(`${newRepositoryMemberInvitationsErrorPrefix}[${i}] cannot be an existing RepositoryMember`);
             }
             this.checkPublicSigningKey(newRepositoryMemberInvitation.invitationPublicSigningKey, `${newRepositoryMemberInvitationsErrorPrefix}[${i}].invitationPublicSigningKey`);
@@ -30488,8 +30618,8 @@ is not present in the message.`);
         delete repositoryMember.invitations;
         delete repositoryMember.updates;
     }
-    getInMessageRepositoryMemberMap(data) {
-        const repositoryMemberInMessageIndexesMapByPublicSigningKey = new Map();
+    getRepositoryMemberInMessageIndexMap(data) {
+        const repositoryMemberInMessageIndexMap = new Map();
         const repositoryMemberPublicSigningKeySet = new Set();
         for (let i = 0; i < data.repositoryMembers.length; i++) {
             const repositoryMember = data.repositoryMembers[i];
@@ -30503,10 +30633,10 @@ is not present in the message.`);
                 throw new Error(`${errorPrefix} appears in more than one data.repositoryMembers`);
             }
             repositoryMemberPublicSigningKeySet.add(memberPublicSigningKey);
-            repositoryMemberInMessageIndexesMapByPublicSigningKey.set(memberPublicSigningKey, i);
+            repositoryMemberInMessageIndexMap.set(memberPublicSigningKey, i);
             delete repositoryMember._localId;
         }
-        return repositoryMemberInMessageIndexesMapByPublicSigningKey;
+        return repositoryMemberInMessageIndexMap;
     }
     checkPublicSigningKey(publicSigningKey, errorPrefix) {
         if (typeof publicSigningKey !== 'string') {
@@ -30516,34 +30646,63 @@ is not present in the message.`);
             throw new Error(`${errorPrefix} does not have correct length`);
         }
     }
-    async getExistingRepositoryMember(data, repositoryMemberInMessageIndexesMapByPublicSigningKey, newMembers, context) {
-        const memberPublicSigningKeys = data.repositoryMembers
-            .map(repositoryMember => repositoryMember.memberPublicSigningKey);
-        const existingMessageRepositoryMembers = await this.repositoryMemberDao
-            .findByMemberPublicSigningKeys(Array.from(memberPublicSigningKeys), context);
-        let existingRepositoryMember;
+    async getRepositoryMember(data, historyRepository, repositoryAddedInAnEarlierIncomingMessage, addedRepositoryMembersByPublicSigningKey, repositoryMemberInMessageIndexMap, newMembers, context) {
+        let exisingMessageRepositoryMembers = [];
+        let newRepositoryMember;
+        if (repositoryAddedInAnEarlierIncomingMessage) {
+            for (const repositoryMember of data.repositoryMembers) {
+                const repositoryMemberAddedInAnEarlierIncomingMessage = addedRepositoryMembersByPublicSigningKey.get(repositoryMember.memberPublicSigningKey);
+                if (!repositoryMemberAddedInAnEarlierIncomingMessage) {
+                    if (typeof repositoryMember.userAccount === 'undefined') {
+                        throw new Error(`Did not find are RepositoryMember
+in an earlier (currently) incoming message for a repository was added in an
+earlier incoming message`);
+                    }
+                    else {
+                        if (newRepositoryMember) {
+                            throw new Error(`Only one member can be added per message`);
+                        }
+                        newRepositoryMember = repositoryMember;
+                        addedRepositoryMembersByPublicSigningKey
+                            .set(repositoryMember.memberPublicSigningKey, repositoryMember);
+                    }
+                }
+                else {
+                    exisingMessageRepositoryMembers.push(repositoryMemberAddedInAnEarlierIncomingMessage);
+                }
+            }
+        }
+        else {
+            const memberPublicSigningKeys = data.repositoryMembers
+                .map(repositoryMember => repositoryMember.memberPublicSigningKey);
+            exisingMessageRepositoryMembers = await this.repositoryMemberDao
+                .findByMemberPublicSigningKeys(memberPublicSigningKeys, context);
+        }
+        let messageRepositoryMember;
         const history = data.history;
         if (history.isRepositoryCreation) {
-            if (existingMessageRepositoryMembers.length) {
+            if (exisingMessageRepositoryMembers.length) {
                 throw new Error(`Found existing repositoryMembers for a newly created repository`);
             }
-            const newMember = data.repositoryMembers[history.member];
-            this.checkRepositoryMembershipFlags(newMember, `history.member`, false, data.history.repository);
-            history.member = newMember;
-            newMembers.push(history.member);
-            return null;
         }
-        if (existingMessageRepositoryMembers.length !== 1) {
-            throw new Error(`Expecting exactly 1 existing RepositoryMember in non isRepositoryCreation message`);
+        if (history.isRepositoryCreation || !exisingMessageRepositoryMembers.length) {
+            newRepositoryMember = data.repositoryMembers[history.member];
+            this.checkRepositoryMembershipFlags(newRepositoryMember, `history.member`, false, historyRepository);
+            messageRepositoryMember = newRepositoryMember;
+            newMembers.push(newRepositoryMember);
         }
-        existingRepositoryMember = existingMessageRepositoryMembers[0];
-        const repositoryMemberInMessageIndex = repositoryMemberInMessageIndexesMapByPublicSigningKey[existingRepositoryMember.memberPublicSigningKey];
+        else {
+            messageRepositoryMember = exisingMessageRepositoryMembers[0];
+        }
+        const repositoryMemberInMessageIndex = repositoryMemberInMessageIndexMap.get(messageRepositoryMember.memberPublicSigningKey);
         if (history.member !== repositoryMemberInMessageIndex) {
             throw new Error(`history.member does not already exist in the Repository`);
         }
-        history.member = existingRepositoryMember;
-        data.repositoryMembers[repositoryMemberInMessageIndex] = existingRepositoryMember;
-        return existingRepositoryMember;
+        history.member = messageRepositoryMember;
+        data.repositoryMembers[repositoryMemberInMessageIndex] = messageRepositoryMember;
+        addedRepositoryMembersByPublicSigningKey
+            .set(messageRepositoryMember.memberPublicSigningKey, messageRepositoryMember);
+        return messageRepositoryMember;
     }
     getPublicSigningKeysAndSignatureToCheck(message, isNewRepositoryMemberAcceptanceMessage) {
         const signatureChecks = [];
@@ -30736,6 +30895,12 @@ appears more than once in message.data.userAccounts
             if (!userAccount.username || typeof userAccount.username !== 'string') {
                 throw new Error(`Invalid UserAccount.username ${userAccount.username}`);
             }
+            const hashedObject = {
+                accountPublicSigningKey: userAccount.accountPublicSigningKey,
+                username: userAccount.username
+            };
+            const sha1sum = await this.keyUtils.sha1(JSON.stringify(hashedObject));
+            userAccount.sha1sum = sha1sum;
             delete userAccount._localId;
         }
         await this.userAccountDao.insert(missingUserAccounts, context);
@@ -31528,6 +31693,8 @@ class SynchronizationInManager {
             newRepositoryMemberInvitations: [],
             newRepositoryMemberAcceptances: []
         };
+        const addedRepositoryMapByGUID = new Map();
+        const addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey = new Map();
         // Split up messages by type
         for (const message of orderedMessages) {
             if (!this.isValidLastChangeTime(syncTimestamp, message.syncTimestamp, 'Sync Timestamp')) {
@@ -31544,7 +31711,7 @@ class SynchronizationInManager {
             // FIXME: right now this does not start a nested trasaction
             // - make it do so
             await this.transactionManager.transactInternal(async (transaction) => {
-                dataCheckResult = await this.syncInChecker.checkMessage(message, context);
+                dataCheckResult = await this.syncInChecker.checkMessage(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context);
                 if (!dataCheckResult.isValid) {
                     transaction.rollback(null, context);
                     processMessage = false;
@@ -31596,10 +31763,12 @@ class SynchronizationInManager {
                 });
             }
         }
-        await this.transactionManager.transactInternal(async (transaction, context) => {
-            transaction.isRepositorySync = true;
-            await this.twoStageSyncedInDataProcessor.syncMessages(immediateProcessingMessages, newAndUpdatedRepositoriesAndRecords, transaction, context);
-        }, null, context);
+        if (immediateProcessingMessages.length) {
+            await this.transactionManager.transactInternal(async (transaction, context) => {
+                transaction.isRepositorySync = true;
+                await this.twoStageSyncedInDataProcessor.syncMessages(immediateProcessingMessages, newAndUpdatedRepositoriesAndRecords, transaction, context);
+            }, null, context);
+        }
         await this.wait(2000);
         await this.processDelayedMessages(delayedProcessingMessages, context);
         if (!context.doNotLoadReferences) {
@@ -31845,9 +32014,10 @@ class SyncOutDataSerializer {
         // @Inject()
         // repositoryDao: IRepositoryDao
         this.WITH_ID = {};
+        this.USER_ACCOUNT_WITH_ID = {};
         this.TERMINAL_WITH_ID = {};
-        this.WITH_ID_AND_ACTOR_ID = {};
         this.WITH_RECORD_HISTORY = {};
+        this.RECORD_HISTORY = {};
         this.WITH_INDEX = {};
     }
     async serialize(repositoryTransactionHistories, repositoryMapById, context) {
@@ -32010,7 +32180,7 @@ class SyncOutDataSerializer {
         const { entityAlreadyAdded, inMessageIndex } = this.getEntityInMessageIndex(userAccount, IndexedEntityType.USER_ACCOUNT, inMessageUserAccountLookup);
         if (!entityAlreadyAdded) {
             let serializedUserAccount = {
-                ...this.WITH_ID,
+                ...this.USER_ACCOUNT_WITH_ID,
                 accountPublicSigningKey: userAccount.accountPublicSigningKey,
                 username: userAccount.username
             };
@@ -32049,7 +32219,7 @@ class SyncOutDataSerializer {
             foundRepositories.push(foundRepository);
         }
         else {
-            repositoryLidsToFindBy.push(repositoryTransactionHistory._localId);
+            repositoryLidsToFindBy.push(repositoryTransactionHistory.repository._localId);
         }
         let repositories = [];
         if (repositoryLidsToFindBy.length) {
@@ -32145,10 +32315,10 @@ class SyncOutDataSerializer {
         });
         const serializedOperationHistory = [];
         for (const operationHistory of repositoryTransactionHistory.operationHistory) {
-            serializedOperationHistory.push(this.serializeOperationHistory(repositoryTransactionHistory, operationHistory, data, lookups));
+            serializedOperationHistory.push(this.serializeOperationHistory(operationHistory, data, lookups));
         }
-        const member = this.addRepositoryMemberToMessage(repositoryTransactionHistory.member, data, lookups, repositoryTransactionHistory.isRepositoryCreation);
         this.serializeNewRepositoryMembers(repositoryTransactionHistory, data, lookups);
+        const member = this.addRepositoryMemberToMessage(repositoryTransactionHistory.member, data, lookups, repositoryTransactionHistory.isRepositoryCreation);
         const serializedRepositoryTransactionHistory = {
             ...this.WITH_ID,
             GUID: repositoryTransactionHistory.GUID,
@@ -32213,11 +32383,11 @@ class SyncOutDataSerializer {
         }
         return serializedRepositoryMemberInvitations;
     }
-    serializeOperationHistory(repositoryTransactionHistory, operationHistory, data, lookups) {
+    serializeOperationHistory(operationHistory, data, lookups) {
         const dbEntity = operationHistory.entity;
         const serializedRecordHistory = [];
         for (const recordHistory of operationHistory.recordHistory) {
-            serializedRecordHistory.push(this.serializeRecordHistory(repositoryTransactionHistory, recordHistory, dbEntity, data, lookups));
+            serializedRecordHistory.push(this.serializeRecordHistory(recordHistory, dbEntity, data, lookups));
         }
         const historyEntity = operationHistory.entity;
         // Should be populated - coming from TerminalStore
@@ -32263,7 +32433,7 @@ class SyncOutDataSerializer {
         delete serializedOperationHistory.repositoryTransactionHistory;
         return serializedOperationHistory;
     }
-    serializeRecordHistory(repositoryTransactionHistory, recordHistory, dbEntity, data, lookups) {
+    serializeRecordHistory(recordHistory, dbEntity, data, lookups) {
         const dbColumMapByIndex = new Map();
         for (const dbColumn of dbEntity.columns) {
             dbColumMapByIndex.set(dbColumn.index, dbColumn);
@@ -32284,7 +32454,7 @@ class SyncOutDataSerializer {
         // 	throw new Error(`RecordHistory.actor must be populated`)
         // }
         const baseObject = {
-            ...this.WITH_ID_AND_ACTOR_ID,
+            ...this.RECORD_HISTORY,
         };
         if (actor._localId !== recordHistory.operationHistory.actor._localId) {
             baseObject.actor = this.getActorInMessageIndex(actor, lookups);
@@ -32297,9 +32467,7 @@ class SyncOutDataSerializer {
         }
         return {
             ...baseObject,
-            _actorRecordId: recordHistory._actorRecordId,
-            actor: null,
-            operationHistory: null
+            _actorRecordId: recordHistory._actorRecordId
         };
     }
     getActorInMessageIndex(actor, lookups) {
@@ -32568,6 +32736,7 @@ groundTransport.setDependencies(SyncInDataChecker, {
     terminalStore: TerminalStore
 });
 groundTransport.setDependencies(SyncInRepositoryChecker, {
+    datastructureUtils: DatastructureUtils,
     dictionary: Dictionary,
     repositoryDao: RepositoryDao,
     repositoryMemberDao: RepositoryMemberDao
@@ -32576,6 +32745,7 @@ groundTransport.setDependencies(SyncInTerminalChecker, {
     terminalDao: TerminalDao
 });
 groundTransport.setDependencies(SyncInUserAccountChecker, {
+    keyUtils: KeyUtils,
     userAccountDao: UserAccountDao
 });
 groundTransport.setDependencies(SyncInUtils, {
@@ -35562,11 +35732,20 @@ Entity:          ${table.name}
     }
     async find(portableQuery, internalFragments, context) {
         context = await this.ensureContext(context);
-        const sqlQuery = this.getSQLQuery(portableQuery, context);
-        if (context.cachedSqlQuery) {
-            context.cachedSqlQuery.sqlQuery = sqlQuery;
+        let sql;
+        let sqlQuery;
+        if (!context.cachedSqlQueries || !context.cachedSqlQuery.sql) {
+            sqlQuery = this.getSQLQuery(portableQuery, context);
+            sql = sqlQuery.toSQL(internalFragments, context);
+            if (context.cachedSqlQuery) {
+                context.cachedSqlQuery.sql = sql;
+                context.cachedSqlQuery.sqlQuery = sqlQuery;
+            }
         }
-        const sql = sqlQuery.toSQL(internalFragments, context);
+        else {
+            sql = context.cachedSqlQuery.sql;
+            sqlQuery = context.cachedSqlQuery.sqlQuery;
+        }
         const parameters = sqlQuery.getParameters(portableQuery.parameterMap, context);
         let results = await this.findNative(sql, parameters, context);
         results = await sqlQuery.parseQueryResults(results, internalFragments, portableQuery.queryResultType, context);
@@ -35605,7 +35784,7 @@ Entity:          ${table.name}
         return null;
     }
     warn(message) {
-        console.log(message);
+        console.warn(message);
     }
     splitValues(values, context) {
         const valuesInRow = values[0].length;
@@ -35872,14 +36051,15 @@ class ObservableQueryAdapter {
             .trackedRepoGUIDArrayToSet(portableQuery.trackedRepoGUIDs);
         let trackedRepoLocalIdSet = this
             .trackedRepoLocalIdArrayToSet(portableQuery.trackedRepoLocalIds);
-        let queryContext = {
-            ...context,
-            isObservableApiCall: true
-        };
         let cachedSqlQuery = {
             portableQuery,
             resultsSubject,
             runQuery: () => {
+                let queryContext = {
+                    ...context,
+                    cachedSqlQuery,
+                    isObservableApiCall: true
+                };
                 queryCallback(queryContext).then(augmentedResult => {
                     resultsSubject.next(augmentedResult);
                 }).catch(e => {
@@ -35889,8 +36069,6 @@ class ObservableQueryAdapter {
             trackedRepoGUIDSet,
             trackedRepoLocalIdSet
         };
-        context.cachedSqlQuery = cachedSqlQuery;
-        queryContext.cachedSqlQuery = cachedSqlQuery;
         this.activeQueries.add(portableQuery, cachedSqlQuery);
         cachedSqlQuery.runQuery();
         return resultsSubject;
@@ -36143,8 +36321,15 @@ let SSOManager = class SSOManager {
         allSessions.push(session);
         context.transaction.actor = this.terminalStore.getFrameworkActor();
         const signingKey = await this.keyUtils.getSigningKey(521);
+        const accountPublicSigningKey = signingKey.public;
+        const username = userAccountInfo.username;
+        const hashedObject = {
+            accountPublicSigningKey,
+            username
+        };
+        const sha1sum = await this.keyUtils.sha1(JSON.stringify(hashedObject));
         const { userAccount } = await this.userAccountManager
-            .addUserAccount(userAccountInfo.username, signingKey.public, context);
+            .addUserAccount(username, accountPublicSigningKey, sha1sum, context);
         session.userAccount = userAccount;
         context.transaction.actor.userAccount = userAccount;
         await this.actorDao.updateUserAccount(userAccount, context.transaction.actor, context);
@@ -36223,6 +36408,33 @@ sso.setDependencies(SSOManager, {
 });
 
 class RepositoryLoader {
+    constructor() {
+        this.currentlyLoading = false;
+    }
+    init() {
+        setTimeout(() => {
+            setInterval(() => {
+                this.ensureOneLoadAtATime(async () => {
+                    await this.syncAllRepositories();
+                }, false).then();
+            }, 10000);
+        }, 20000);
+    }
+    async syncAllRepositories() {
+        let repositoriesWithLoadInfo = [];
+        await this.transactionManager.transactInternal(async (_transaction, context) => {
+            repositoriesWithLoadInfo = await this
+                .repositoryDao.findAllWithLoadInfo(context);
+        }, null, {});
+        for (const repositoryWithLoadInfo of repositoriesWithLoadInfo) {
+            try {
+                await this.doLoadRepository(repositoryWithLoadInfo, repositoryWithLoadInfo.GUID, {});
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
+    }
     /*
     Repository can be loaded because:
     - Repository is not present at all
@@ -36231,19 +36443,48 @@ class RepositoryLoader {
     Immutable repositories are only loaded once
     */
     async loadRepository(repositoryGUID, context) {
-        if (context.repositoryExistenceChecked) {
+        await this.ensureOneLoadAtATime(async () => {
+            if (context.repositoryExistenceChecked) {
+                return;
+            }
+            context.repositoryExistenceChecked = true;
+            const repositoryWithLoadInfo = await this.repositoryDao.getWithLoadInfo(repositoryGUID, context);
+            await this.doLoadRepository(repositoryWithLoadInfo, repositoryGUID, context);
+        }, true);
+    }
+    async ensureOneLoadAtATime(callback, wait) {
+        if (wait) {
+            while (this.currentlyLoading) {
+                await this.wait(100);
+            }
+        }
+        else if (this.currentlyLoading) {
             return;
         }
-        context.repositoryExistenceChecked = true;
-        const repositoryLoadInfo = await this.repositoryDao.getRepositoryLoadInfo(repositoryGUID, context);
+        this.currentlyLoading = true;
+        try {
+            await callback();
+        }
+        finally {
+            this.currentlyLoading = false;
+        }
+    }
+    wait(milliseconds) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve();
+            }, milliseconds);
+        });
+    }
+    async doLoadRepository(repositoryWithLoadInfo, repositoryGUID, context) {
         let loadRepository = false;
         let lastSyncTimestamp = 0;
-        if (!repositoryLoadInfo) {
+        if (!repositoryWithLoadInfo) {
             loadRepository = true;
         }
-        else if (!repositoryLoadInfo.immutable) {
+        else if (!repositoryWithLoadInfo.immutable) {
             loadRepository = true;
-            for (const remoteRepositoryTransactionHistory of repositoryLoadInfo.repositoryTransactionHistory) {
+            for (const remoteRepositoryTransactionHistory of repositoryWithLoadInfo.repositoryTransactionHistory) {
                 if (lastSyncTimestamp < remoteRepositoryTransactionHistory.saveTimestamp) {
                     lastSyncTimestamp = remoteRepositoryTransactionHistory.saveTimestamp;
                 }
@@ -36269,6 +36510,9 @@ class RepositoryLoader {
             else {
                 messages = await synchronizationAdapter.getTransactionsForRepository(repositoryGUID);
             }
+            if (!messages.length) {
+                return;
+            }
             // TODO: Add a special message for repository for adding users
             // into the repository 
             // each user will have a public key that they will distribute
@@ -36283,7 +36527,6 @@ class RepositoryLoader {
         }
         catch (e) {
             console.error(e);
-            return;
         }
     }
 }
@@ -36482,7 +36725,9 @@ class InternalRecordManager {
         await this.transactionManager.transactInternal(async (_transaction) => {
             const userAccount = new UserAccount();
             userAccount.username = "internalUserAccount";
-            userAccount.accountPublicSigningKey = v4$1();
+            const guid = v4$1();
+            userAccount.accountPublicSigningKey = guid;
+            userAccount.sha1sum = guid;
             const terminal = new Terminal();
             terminal.owner = userAccount;
             terminal.isLocal = true;
@@ -37697,15 +37942,15 @@ class HistoryManager {
     }
     async ensureRepositoryMembers(repositoryTransactionHistories, context) {
         const userAccount = await this.terminalSessionManager.getUserAccountFromSession();
-        const { repositoryMapByLid, repositoryTransactionHistoriesMapByRepositoryLid } = await this.populateRepositoriesAndMembers(repositoryTransactionHistories, userAccount, context);
-        if (!repositoryTransactionHistoriesMapByRepositoryLid.size) {
+        const { repositoryMapByLid, newMemberRepositoryTransactionHistoryMap } = await this.populateMissingRepositoriesAndMembers(repositoryTransactionHistories, userAccount, context);
+        if (!newMemberRepositoryTransactionHistoryMap.size) {
             return {
                 repositoryMapByLid: new Map(),
                 selfJoinRepositoryMembersToCreate: []
             };
         }
         const repositoriesWithNewMembers = [];
-        for (const repositoryTransactionHistories of repositoryTransactionHistoriesMapByRepositoryLid.values()) {
+        for (const repositoryTransactionHistories of newMemberRepositoryTransactionHistoryMap.values()) {
             const repository = repositoryTransactionHistories[0].repository;
             if (!repository.isPublic) {
                 throw new Error(`User '${userAccount.username}' is not a member of Repository GUID: '${repository.GUID}', LID: ${repository._localId}`);
@@ -37717,16 +37962,18 @@ class HistoryManager {
         ];
         const selfJoinRepositoryMembersToCreate = await this.repositoryMaintenanceManager
             .getSelfJoinRepositoryMembers(repositoriesWithNewMembers, context);
-        const newRepositoryTransactionHistories = this.getNewRepositoryTransactionHistories(originalRepositoryTransactionHistories, context);
-        const selfJoinRepositoryMemberResults = await this.populateRepositoriesAndMembers(newRepositoryTransactionHistories, userAccount, context);
+        const keyRingRepositoryTransactionHistories = this
+            .getKeyRingRepositoryTransactionHistories(originalRepositoryTransactionHistories, context);
+        const selfJoinRepositoryMemberResults = await this.populateMissingRepositoriesAndMembers(keyRingRepositoryTransactionHistories, userAccount, context);
         const generatedLocalIds = (await this.sequenceGenerator.generateSequenceNumbers([Q_airport____at_airport_slash_holding_dash_pattern.RepositoryMember._localId.dbColumn], [selfJoinRepositoryMembersToCreate.length]))[0];
         for (let i = 0; i < selfJoinRepositoryMembersToCreate.length; i++) {
             const selfJoinRepositoryMemberToCreate = selfJoinRepositoryMembersToCreate[i];
             selfJoinRepositoryMemberToCreate._localId = generatedLocalIds[i];
-            const repositoryTransactionHistories = repositoryTransactionHistoriesMapByRepositoryLid
+            const repositoryTransactionHistories = newMemberRepositoryTransactionHistoryMap
                 .get(selfJoinRepositoryMemberToCreate.repository._localId);
             for (const repositoryTransactionHistory of repositoryTransactionHistories) {
                 repositoryTransactionHistory.member = selfJoinRepositoryMemberToCreate;
+                repositoryTransactionHistory.newRepositoryMembers.push(selfJoinRepositoryMemberToCreate);
             }
             selfJoinRepositoryMemberToCreate.addedInRepositoryTransactionHistory = repositoryTransactionHistories[0];
         }
@@ -37738,25 +37985,27 @@ class HistoryManager {
             selfJoinRepositoryMembersToCreate
         };
     }
-    async populateRepositoriesAndMembers(repositoryTransactionHistories, userAccount, context) {
+    async populateMissingRepositoriesAndMembers(repositoryTransactionHistories, userAccount, context) {
         const repositoryLidSet = new Set();
         const repositoriesToFindMembersForLidSet = new Set();
-        const repositoryTransactionHistoriesMapByRepositoryLid = new Map();
+        const newMemberRepositoryTransactionHistoryMap = new Map();
         for (const repositoryTransactionHistory of repositoryTransactionHistories) {
             const repository = repositoryTransactionHistory.repository;
             repositoryLidSet.add(repository._localId);
             if (repositoryTransactionHistory.member) {
+                // All remotely synced changes will have a member
                 continue;
             }
+            // Only local changes might miss member information
             repositoriesToFindMembersForLidSet.add(repository._localId);
             const repositoryTransactionHistoriesForRepositoryLid = this.dataStructureUtils
-                .ensureChildArray(repositoryTransactionHistoriesMapByRepositoryLid, repository._localId);
+                .ensureChildArray(newMemberRepositoryTransactionHistoryMap, repository._localId);
             repositoryTransactionHistoriesForRepositoryLid.push(repositoryTransactionHistory);
         }
         if (!repositoryLidSet.size) {
             return {
                 repositoryMapByLid: new Map(),
-                repositoryTransactionHistoriesMapByRepositoryLid
+                newMemberRepositoryTransactionHistoryMap
             };
         }
         const repositoryMapByLid = await this.loadHistoryRepositories(repositoryLidSet, context);
@@ -37764,21 +38013,30 @@ class HistoryManager {
             repositoryTransactionHistory.repository =
                 repositoryMapByLid.get(repositoryTransactionHistory.repository._localId);
         }
-        const foundRepositoryMembers = await this.repositoryMemberDao.findForRepositoryLocalIdsAndUserLocalId([...repositoriesToFindMembersForLidSet], userAccount._localId, context);
+        if (!repositoriesToFindMembersForLidSet.size) {
+            return {
+                repositoryMapByLid,
+                newMemberRepositoryTransactionHistoryMap
+            };
+        }
+        // Following logic applies only to locally made changes (by the
+        // signed in user) - all remote RepositoryTransactionHistories
+        // must have members already
+        const foundRepositoryMembers = await this.repositoryMemberDao.findForRepositoryLocalIdsAndUserLocalId([...repositoriesToFindMembersForLidSet.values()], userAccount._localId, context);
         for (const repositoryMember of foundRepositoryMembers) {
-            const repositoryTransactionHistories = repositoryTransactionHistoriesMapByRepositoryLid.get(repositoryMember.repository._localId);
+            const repositoryTransactionHistories = newMemberRepositoryTransactionHistoryMap.get(repositoryMember.repository._localId);
             for (const repositoryTransactionHistory of repositoryTransactionHistories) {
                 repositoryTransactionHistory.member = repositoryMember;
                 repositoryMember.repository = repositoryTransactionHistory.repository;
             }
-            repositoryTransactionHistoriesMapByRepositoryLid.delete(repositoryMember.repository._localId);
+            newMemberRepositoryTransactionHistoryMap.delete(repositoryMember.repository._localId);
         }
         return {
             repositoryMapByLid,
-            repositoryTransactionHistoriesMapByRepositoryLid
+            newMemberRepositoryTransactionHistoryMap
         };
     }
-    getNewRepositoryTransactionHistories(originalRepositoryTransactionHistories, context) {
+    getKeyRingRepositoryTransactionHistories(originalRepositoryTransactionHistories, context) {
         const newRepositoryTransactionHistories = [];
         const originalRepositoryTransactionHistorySet = new Set();
         for (const originalRepositoryTransactionHistory of originalRepositoryTransactionHistories) {
@@ -37794,7 +38052,7 @@ class HistoryManager {
     async loadHistoryRepositories(repositoryLidSet, context) {
         const repositoryMapByLid = new Map();
         const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds([
-            ...repositoryLidSet
+            ...repositoryLidSet.values()
         ], context);
         for (const repository of repositories) {
             repositoryMapByLid.set(repository._localId, repository);
@@ -38224,7 +38482,12 @@ class QueryManager {
             if (!result || !result.length) {
                 return result;
             }
-            return await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, result, context);
+            return await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, result, {
+                ...context,
+                // TODO: improve CachedSQLQuery to support multiple queries per context
+                // and re-evaluation of query params in the finally run query works
+                cachedSqlQuery: null
+            });
         }, context);
     }
     searchOne(portableQuery, context) {
@@ -38234,7 +38497,12 @@ class QueryManager {
             if (!result) {
                 return result;
             }
-            await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [result], context);
+            await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [result], {
+                ...context,
+                // TODO: improve CachedSQLQuery to support multiple queries per context
+                // and re-evaluation of query params in the finally run query works
+                cachedSqlQuery: null
+            });
             return result;
         }, context);
     }
@@ -38600,7 +38868,7 @@ parent transactions.
         }
     }
     async clearUserSessionRootTransaction(transaction) {
-        this.activeQueries.clearQueriesToRerun();
+        // this.activeQueries.clearQueriesToRerun()
         // Internal calls don't maintain rootTransaction and can create more than
         // one repository at a time.  APIs exposed externally will never be top
         // level transactions
@@ -39484,7 +39752,7 @@ in top level objects (that are passed into '...Dao.save(...)')`);
             created: {},
             deleted: {},
             newRepository,
-            repositoryLidParts: newRepository ? {
+            repositoryIdParts: newRepository ? {
                 source: newRepository.source,
                 GUID: newRepository.GUID
             } : null,
@@ -40405,7 +40673,8 @@ terminal.setDependencies(QueryManager, {
 REPOSITORY_LOADER.setDependencies({
     repositoryDao: RepositoryDao,
     synchronizationAdapterLoader: SynchronizationAdapterLoader,
-    synchronizationInManager: SynchronizationInManager
+    synchronizationInManager: SynchronizationInManager,
+    transactionManager: TRANSACTION_MANAGER
 });
 REPOSITORY_MANAGER.setClass(RepositoryManager);
 REPOSITORY_MANAGER.setDependencies({
@@ -41016,53 +41285,57 @@ class ClientSubjectCache {
     constructor() {
         this.observableRequestMap = new Map();
         setTimeout(() => {
-            if (globalThis.repositoryAutoload !== false) {
-                setInterval(() => {
-                    const requestsByDomainAndApp = new Map();
-                    for (const [_subscriptionId, subject] of this.observableRequestMap) {
-                        const args = subject.args;
-                        const fullDIDescriptor = subject.fullDIDescriptor;
-                        const requestFields = subject.requestFields;
-                        let requestsForDomain = requestsByDomainAndApp
-                            .get(requestFields.destination.domain);
-                        if (!requestsForDomain) {
-                            requestsForDomain = new Map();
-                            requestsByDomainAndApp.set(requestFields.destination.domain, requestsForDomain);
-                        }
-                        let requestsForApp = requestsForDomain.get(requestFields.destination.app);
-                        if (!requestsForApp) {
-                            requestsForApp = [];
-                            requestsForDomain.set(requestFields.destination.app, requestsForApp);
-                        }
-                        requestsForApp.push({
-                            args,
-                            fullDIDescriptor,
-                            requestFields
-                        });
-                    }
-                    for (const [_serverDomain, requestsForDomain] of requestsByDomainAndApp) {
-                        for (const [_serverApplication, requestsForApp] of requestsForDomain) {
-                            const requestForApp = requestsForApp[0];
-                            const subscriptionIds = [];
-                            for (const request of requestsForApp) {
-                                subscriptionIds.push(request.requestFields.subscriptionId);
-                            }
-                            globalThis.MESSAGE_BUS.next({
-                                fullDIDescriptor: requestForApp.fullDIDescriptor,
-                                request: {
-                                    ...requestForApp.requestFields,
-                                    subscriptionIds,
-                                    id: v4$1(),
-                                    type: SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING,
-                                    typeGroup: Message_Type_Group.SUBSCRIPTION,
-                                    dropIfConnectionNotReady: true
-                                }
-                            });
-                        }
-                    }
-                }, 60000);
+            if (globalThis.repositoryAutoload === false) {
+                return;
             }
+            setInterval(() => {
+                this.maintainSubscriptions();
+            }, 60000);
         }, 30000);
+    }
+    maintainSubscriptions() {
+        const requestsByDomainAndApp = new Map();
+        for (const [_subscriptionId, subject] of this.observableRequestMap) {
+            const args = subject.args;
+            const fullDIDescriptor = subject.fullDIDescriptor;
+            const requestFields = subject.requestFields;
+            let requestsForDomain = requestsByDomainAndApp
+                .get(requestFields.destination.domain);
+            if (!requestsForDomain) {
+                requestsForDomain = new Map();
+                requestsByDomainAndApp.set(requestFields.destination.domain, requestsForDomain);
+            }
+            let requestsForApp = requestsForDomain.get(requestFields.destination.app);
+            if (!requestsForApp) {
+                requestsForApp = [];
+                requestsForDomain.set(requestFields.destination.app, requestsForApp);
+            }
+            requestsForApp.push({
+                args,
+                fullDIDescriptor,
+                requestFields
+            });
+        }
+        for (const [_serverDomain, requestsForDomain] of requestsByDomainAndApp) {
+            for (const [_serverApplication, requestsForApp] of requestsForDomain) {
+                const requestForApp = requestsForApp[0];
+                const subscriptionIds = [];
+                for (const request of requestsForApp) {
+                    subscriptionIds.push(request.requestFields.subscriptionId);
+                }
+                globalThis.MESSAGE_BUS.next({
+                    fullDIDescriptor: requestForApp.fullDIDescriptor,
+                    request: {
+                        ...requestForApp.requestFields,
+                        subscriptionIds,
+                        id: v4$1(),
+                        type: SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING,
+                        typeGroup: Message_Type_Group.SUBSCRIPTION,
+                        dropIfConnectionNotReady: true
+                    }
+                });
+            }
+        }
     }
     addSubject(subscriptionId, subject) {
         this.observableRequestMap.set(subscriptionId, subject);

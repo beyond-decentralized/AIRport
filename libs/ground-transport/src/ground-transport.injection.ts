@@ -166,11 +166,12 @@ groundTransport.setDependencies(SyncInUtils, {
 
 groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
-    dbRelationDao: DdlRelationDao,
     applicationUtils: APPLICATION_UTILS,
     applicationNameUtils: ApplicationNameUtils,
+    dbRelationDao: DdlRelationDao,
     dictionary: Dictionary,
     repositoryDao: RepositoryDao,
+    userAccountDao: UserAccountDao
 })
 
 groundTransport.setDependencies(SynchronizationAdapterLoader, {

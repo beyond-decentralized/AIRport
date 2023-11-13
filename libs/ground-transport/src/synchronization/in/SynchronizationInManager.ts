@@ -27,7 +27,9 @@ export interface ISynchronizationInManager {
 
 export interface ISyncTransactionContext
 	extends ITransactionContext {
-	doNotLoadReferences: boolean
+	doNotLoadReferences: boolean,
+	isNestedLoadCall: boolean,
+	currentlyLoadedRepsitoryGUIDSet: Set<Repository_GUID>
 }
 
 /**
@@ -77,6 +79,7 @@ export class SynchronizationInManager
 		const delayedProcessingMessages: SyncRepositoryMessage[] = []
 
 		const newAndUpdatedRepositoriesAndRecords: INewAndUpdatedRepositoriesAndRecords = {
+			loadedRepositoryGUIDS: [],
 			missingRepositories: [],
 			newMembers: [],
 			newRepositoryMemberInvitations: [],
@@ -116,6 +119,10 @@ export class SynchronizationInManager
 					processMessage = false
 					return
 				}
+				newAndUpdatedRepositoriesAndRecords.loadedRepositoryGUIDS = [
+					...newAndUpdatedRepositoriesAndRecords.loadedRepositoryGUIDS,
+					...dataCheckResult.loadedRepositoryGUIDS
+				]
 				newAndUpdatedRepositoriesAndRecords.missingRepositories = [
 					...newAndUpdatedRepositoriesAndRecords.missingRepositories,
 					...dataCheckResult.missingRepositories
@@ -279,9 +286,12 @@ export class SynchronizationInManager
 		context: ISyncTransactionContext
 	): Promise<void> {
 		const repositoryMapByGUID: Map<Repository_GUID, IRepository> = new Map()
+		const currentlyLoadedRepsitoryGUIDSet = context.currentlyLoadedRepsitoryGUIDSet
 		for (const message of messages) {
 			for (const repository of message.data.referencedRepositories) {
-				if (!repositoryMapByGUID.has(repository.GUID)) {
+				if (!repositoryMapByGUID.has(repository.GUID)
+					&& (!currentlyLoadedRepsitoryGUIDSet || !currentlyLoadedRepsitoryGUIDSet
+						.has(repository.GUID))) {
 					repositoryMapByGUID.set(repository.GUID, repository)
 				}
 			}
@@ -291,7 +301,8 @@ export class SynchronizationInManager
 				repository.GUID,
 				{
 					...context,
-					doNotLoadReferences: true
+					doNotLoadReferences: true,
+					isNestedLoadCall: true
 				}
 			)
 		}

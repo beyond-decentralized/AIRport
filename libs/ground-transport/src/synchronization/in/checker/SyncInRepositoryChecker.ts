@@ -16,6 +16,7 @@ export interface IRepositoriesAndMembersCheckResult
 }
 
 export interface INewAndUpdatedRepositoriesAndRecords {
+	loadedRepositoryGUIDS?: Repository_GUID[]
 	missingRepositories?: IRepository[]
 	newMembers?: IRepositoryMember[]
 	newRepositoryMemberInvitations?: IRepositoryMemberInvitation[]
@@ -61,6 +62,7 @@ export class SyncInRepositoryChecker
 		addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey: Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>>,
 		context: IContext
 	): Promise<IRepositoriesAndMembersCheckResult> {
+		const loadedRepositoryGUIDS: Repository_GUID[] = []
 		let missingRepositories: IRepository[] = []
 		let newMembers: IRepositoryMember[] = []
 		let newRepositoryMemberAcceptances: IRepositoryMemberAcceptance[] = []
@@ -127,9 +129,13 @@ export class SyncInRepositoryChecker
 				} else {
 					if (history.isRepositoryCreation) {
 						if (foundRepository.GUID === historyRepository.GUID) {
-							throw new Error(`Repository ${foundRepository.GUID} is already created.`)
+							if (!foundRepository.isLoaded) {
+								loadedRepositoryGUIDS.push(foundRepository.GUID)
+								history.repository = historyRepository = foundRepository
+							} else {
+								throw new Error(`Repository ${foundRepository.GUID} is already created.`)
+							}
 						}
-						throw new Error(`Unexpected Repository ${foundRepository.GUID}`)
 					} else {
 						let expectedRepositoryGUID: string = historyRepository as any
 						if (typeof historyRepository === 'object') {
@@ -200,6 +206,7 @@ export class SyncInRepositoryChecker
 
 		return {
 			isValid: true,
+			loadedRepositoryGUIDS,
 			missingRepositories,
 			newMembers,
 			newRepositoryMemberAcceptances,

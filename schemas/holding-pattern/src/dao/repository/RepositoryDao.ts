@@ -4,7 +4,7 @@ import {
 	Y
 } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
-import { IRepository, Repository_GUID, Repository_LocalId, TransactionType } from '@airport/ground-control'
+import { IRepository, Repository_GUID, Repository_LocalId, Repository_UiEntryUri, TransactionType } from '@airport/ground-control'
 import Q from '../../generated/qApplication'
 import { BaseRepositoryDao, IBaseRepositoryDao } from '../../generated/baseDaos'
 import { QRepository, QRepositoryReference, QRepositoryTransactionHistory, QTransactionHistory } from '../../generated/qInterfaces'
@@ -70,6 +70,11 @@ export interface IRepositoryDao
 	updateUiEntityUri(
 		repositoryGuid: string,
 		uiEntityUri: string,
+		context: IContext
+	): Promise<void>
+
+	markAsLoaded(
+		repositoryGuids: Repository_GUID[],
 		context: IContext
 	): Promise<void>
 
@@ -352,8 +357,8 @@ export class RepositoryDao
 	}
 
 	async updateUiEntityUri(
-		repositoryGuid: string,
-		uiEntityUri: string,
+		repositoryGuid: Repository_GUID,
+		uiEntityUri: Repository_UiEntryUri,
 		context: IContext
 	): Promise<void> {
 		let r: QRepository;
@@ -364,6 +369,21 @@ export class RepositoryDao
 				UI_ENTRY_URI: uiEntityUri
 			},
 			WHERE: r.GUID.equals(repositoryGuid)
+		}, context)
+	}
+
+	async markAsLoaded(
+		repositoryGuids: Repository_GUID[],
+		context: IContext
+	): Promise<void> {
+		let r: QRepository;
+
+		await this.db.updateColumnsWhere({
+			UPDATE: r = Q.Repository,
+			SET: {
+				IS_LOADED: true
+			},
+			WHERE: r.GUID.IN(repositoryGuids)
 		}, context)
 	}
 
