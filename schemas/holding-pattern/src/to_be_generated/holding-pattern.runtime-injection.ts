@@ -17,7 +17,7 @@ import { RepositoryTransactionHistoryDuo } from '../duo/history/RepositoryTransa
 import { TransactionHistoryDuo } from '../duo/history/TransactionHistoryDuo'
 import { CrossRepositoryRelationManager } from '../manager/CrossRepositoryRelationManager'
 import { application } from './app-declaration'
-import { CopiedRecordLedgerDao, CrossRepositoryRelationLedgerDao, LocalCopyReplacementLedgerDao } from './holding-pattern.runtime-index'
+import { CopiedRecordLedgerDao, LocalCopyReplacementLedgerDao } from './holding-pattern.runtime-index'
 
 export const holdingPattern = app(application)
 
@@ -26,7 +26,6 @@ export const REPOSITORY_MANAGER = holdingPattern.token<IRepositoryManager>('Repo
 holdingPattern.register(
     ActorDao,
     CopiedRecordLedgerDao,
-    CrossRepositoryRelationLedgerDao,
     CrossRepositoryRelationManager,
     LocalCopyReplacementLedgerDao,
     OperationHistoryDuo, RecordHistoryDuo,

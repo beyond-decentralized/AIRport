@@ -231,7 +231,8 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 					rootRelationRecord,
 					parentRelationRecord,
 					dbEntity,
-					parentRelationProperty, isCreate, repositoryAssignmentFromParentNeeded, context)
+					isCreate, 
+					repositoryAssignmentFromParentNeeded)
 			}
 		} // for (const record of records)
 	}
@@ -241,16 +242,15 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 		rootRelationRecord: IAirEntity,
 		parentRelationRecord: IAirEntity,
 		dbEntity: DbEntity,
-		parentRelationProperty: DbProperty,
 		_isCreate: boolean,
-		repositoryAssignmentFromParentNeeded: boolean,
-		context: IOperationContext
+		repositoryAssignmentFromParentNeeded: boolean
 	): void {
 		if (!dbEntity.isAirEntity) {
 			return
 		}
 
 		const airEntity = record as unknown as IAirEntity
+		// If there is no relationship yet between the parent and child records
 		if (!parentRelationRecord) {
 			if (repositoryAssignmentFromParentNeeded) {
 				throw new Error(`
@@ -258,17 +258,16 @@ Invalid condition - entity that is root in the passed
 in object graph does not have a repository assigned
 `)
 			}
-			// There is no relationship yet between the parent and child records
 			// This is the root record in the passed in object graph
 			// NOTE: it's child records (both from @ManyToOne & @OneToMany)
-			// will be check subsequently (with possible cross-Repository
+			// will be checked subsequently (with possible cross-Repository
 			// relations added)
 			return
 		}
 
 		// If a repository from the parent record is assigned to this record
 		if (repositoryAssignmentFromParentNeeded) {
-			// no further checks needed, current record isn't get assigned to a
+			// no further checks needed, current record isn't getting assigned to a
 			// different (or new) Repository so it will be assigned to the
 			// Repository of the parent record
 
@@ -312,14 +311,6 @@ in object graph does not have a repository assigned
 		`)
 				} */
 
-		// 
-		const {
-			manySideRepositoryLedger,
-			oneSideRepositoryLedger
-		} = this.crossRepositoryRelationManager.addRecords(
-			parentRelationProperty.relation[0], parentRelationRecord, airEntity)
-		context.crossRepositoryRelationLedgers.push(manySideRepositoryLedger)
-		context.crossRepositoryRelationLedgers.push(oneSideRepositoryLedger)
 
 		// NOTE: the below commented out code is for scenario where records
 		// via @ManyToOne links that point to other repositories are copied

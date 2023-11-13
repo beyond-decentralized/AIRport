@@ -129,8 +129,7 @@ export class OperationManager
 		}
 		const validationContext = {
 			...context,
-			copiedRecordLedgers: [],
-			crossRepositoryRelationLedgers: []
+			copiedRecordLedgers: []
 		}
 		const missingRepositoryRecords: IMissingRepositoryRecord[] = []
 		const topLevelObjectRepositoryHolder: IRepository[] = []
@@ -211,12 +210,6 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 		// await this.internalCreate(
 		// 	validationContext.copiedRecordLedgers, actor, transaction, rootTransaction,
 		// 	saveResult, context, true)
-
-		context.dbEntity = holdingPatternApp.currentVersion[0].applicationVersion
-			.entityMapByName[this.dictionary.CrossRepositoryRelationLedger.name]
-		await this.internalCreate(
-			validationContext.crossRepositoryRelationLedgers, actor, transaction, rootTransaction,
-			saveResult, context, true)
 
 		context.dbEntity = rootDbEntity
 

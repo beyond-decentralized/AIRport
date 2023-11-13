@@ -85,9 +85,6 @@ export class Dictionary {
 							userAccount: 'userAccount'
 						}
 					},
-					CrossRepositoryRelationLedger: {
-						name: 'CrossRepositoryRelationLedger'
-					},
 					InternalAirEntity: {
 						name: 'InternalAirEntity'
 					},
@@ -150,7 +147,6 @@ export class Dictionary {
 	AirEntity = this.airport.apps.FINAL_APPROACH.entities.AirEntity
 	ApplicationRelation = this.airport.apps.AIRSPACE.entities.ApplicationRelation
 	// CopiedRecordLedger = this.airport.apps.HOLDING_PATTERN.entities.CopiedRecordLedger
-	CrossRepositoryRelationLedger = this.airport.apps.HOLDING_PATTERN.entities.CrossRepositoryRelationLedger
 	InternalAirEntity = this.airport.apps.HOLDING_PATTERN.entities.InternalAirEntity
 	KeyRing = this.airbridge.apps.KEYRING.entities.KeyRing
 	Repository = this.airport.apps.HOLDING_PATTERN.entities.Repository
