@@ -784,8 +784,11 @@ export class SyncOutDataSerializer
 		const newValues: IRecordHistoryNewValue[] = []
 		for (const newValue of recordHistory.newValues) {
 			const dbColumn = dbColumMapByIndex.get(newValue.columnIndex)
-			newValues.push(this.serializeNewValue(
-				newValue, dbColumn, data, lookups))
+			if (dbColumn.name !== this.dictionary.SystemWideOperationId
+				.columns.SYSTEM_WIDE_OPERATION_LID) {
+				newValues.push(this.serializeNewValue(
+					newValue, dbColumn, data, lookups))
+			}
 		}
 		const oldValues: IRecordHistoryOldValue[] = []
 		for (const oldValue of recordHistory.oldValues) {

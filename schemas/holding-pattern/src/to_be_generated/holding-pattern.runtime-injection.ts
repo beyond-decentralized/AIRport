@@ -36,10 +36,6 @@ holdingPattern.register(
     TransactionHistoryDuo, RepositoryApi
 )
 
-holdingPattern.setDependencies(ActorDao, {
-    datastructureUtils: DatastructureUtils
-})
-
 holdingPattern.setDependencies(OperationHistoryDuo, {
     recordHistoryDuo: RecordHistoryDuo,
 })

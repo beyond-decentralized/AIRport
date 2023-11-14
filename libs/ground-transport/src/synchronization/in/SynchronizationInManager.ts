@@ -264,9 +264,7 @@ export class SynchronizationInManager
 				data.referencedApplicationVersions, data.applications, context
 			)
 			if (applicationCheckMap) {
-				await this.syncInChecker.checkReferencedApplicationRelations(
-					data, applicationCheckMap, context
-				)
+				this.syncInChecker.checkReferencedApplicationRelations(data)
 				delayedProcessingMessagesWithValidApps.push(message)
 
 			}

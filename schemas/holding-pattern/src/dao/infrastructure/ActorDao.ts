@@ -72,9 +72,6 @@ export class ActorDao
 	extends BaseActorDao
 	implements IActorDao {
 
-	@Inject()
-	datastructureUtils: IDatastructureUtils
-
 	async findWithDetailsAndGlobalIdsByIds(
 		actorLids: Actor_LocalId[],
 		context: IContext

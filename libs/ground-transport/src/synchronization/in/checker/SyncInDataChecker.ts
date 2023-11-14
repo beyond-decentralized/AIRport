@@ -59,13 +59,12 @@ export interface IEntityColumnMapsByIndex {
 export interface ISyncInDataChecker {
 
 	checkData(
-		message: SyncRepositoryMessage,
-		context: IContext
-	): Promise<IDataCheckResult>
+		message: SyncRepositoryMessage
+	): IDataCheckResult
 
 	populateApplicationEntityMap(
 		messageApplicationVersions: IApplicationVersion[]
-	): Promise<Map<Domain_Name, Map<Application_Name, Map<DbEntity_TableIndex, DbEntity>>>>
+	): Map<Domain_Name, Map<Application_Name, Map<DbEntity_TableIndex, DbEntity>>>
 
 }
 
@@ -101,10 +100,9 @@ export class SyncInDataChecker
 	 * @param {IDataToTM[]} dataMessagesWithCompatibleApplications
 	 * @returns {DataCheckResults}
 	 */
-	async checkData(
-		message: SyncRepositoryMessage,
-		context: IContext
-	): Promise<IDataCheckResult> {
+	checkData(
+		message: SyncRepositoryMessage
+	): IDataCheckResult {
 		const history = message.data.history
 		let operationHistoryCheckResult: IInternalDataCheckResult
 		try {
@@ -130,7 +128,7 @@ export class SyncInDataChecker
 				throw new Error(`SyncRepositoryData.history.syncTimestamp cannot be specified`)
 			}
 
-			for(const operationHistory of history.operationHistory) {
+			for (const operationHistory of history.operationHistory) {
 				const actor = message.data.actors[operationHistory.actor as any]
 				if (!actor) {
 					throw new Error(`Cannot find Actor for "in-message id"
@@ -144,11 +142,11 @@ export class SyncInDataChecker
 			history.syncTimestamp = message.syncTimestamp
 			delete history._localId
 
-			const applicationEntityMap = await this.populateApplicationEntityMap(
+			const applicationEntityMap = this.populateApplicationEntityMap(
 				message.data.applicationVersions)
 
-			operationHistoryCheckResult = await this.checkOperationHistories(
-				message.data, applicationEntityMap, context)
+			operationHistoryCheckResult = this.checkOperationHistories(
+				message.data, applicationEntityMap)
 		} catch (e) {
 			console.error(e)
 
@@ -163,9 +161,9 @@ export class SyncInDataChecker
 		}
 	}
 
-	async populateApplicationEntityMap(
+	populateApplicationEntityMap(
 		messageApplicationVersions: IApplicationVersion[]
-	): Promise<Map<Domain_Name, Map<Application_Name, Map<DbEntity_TableIndex, DbEntity>>>> {
+	): Map<Domain_Name, Map<Application_Name, Map<DbEntity_TableIndex, DbEntity>>> {
 		const applicationVersionsByIds = this.terminalStore.getAllApplicationVersionsByIds()
 		const applicationEntityMap: Map<Domain_Name, Map<Application_Name, Map<DbEntity_TableIndex, DbEntity>>>
 			= new Map()
@@ -184,11 +182,10 @@ export class SyncInDataChecker
 		return applicationEntityMap
 	}
 
-	private async checkOperationHistories(
+	private checkOperationHistories(
 		data: SyncRepositoryData,
-		applicationEntityMap: Map<string, Map<string, Map<DbEntity_TableIndex, DbEntity>>>,
-		context: IContext
-	): Promise<IInternalDataCheckResult> {
+		applicationEntityMap: Map<string, Map<string, Map<DbEntity_TableIndex, DbEntity>>>
+	): IInternalDataCheckResult {
 		const forImmediateProcessing: IOperationHistory[] = []
 		const forDelayedProcessing: IOperationHistory[] = []
 		const history = data.history
@@ -278,6 +275,12 @@ the position of orderHistory record determines it's order`)
 						entityColumnMapsByIndex.referencedRelationIds.set(dbColumn.index, dbColumn)
 					}
 				}
+				if (this.dictionary.isActorRelationColumn(dbColumn)) {
+					entityColumnMapsByIndex.actorLids.set(dbColumn.index, dbColumn)
+				}
+				if (this.dictionary.isRepositoryRelationColumn(dbColumn)) {
+					entityColumnMapsByIndex.repositoryLids.set(dbColumn.index, dbColumn)
+				}
 			}
 
 			if (delayOperationHistoryProcessing) {
@@ -286,8 +289,8 @@ the position of orderHistory record determines it's order`)
 				forImmediateProcessing.push(operationHistory)
 			}
 
-			await this.checkRecordHistories(operationHistory,
-				entityColumnMapsByIndex, data, context)
+			this.checkRecordHistories(operationHistory,
+				entityColumnMapsByIndex, data)
 		}
 		return {
 			forImmediateProcessing,
@@ -295,12 +298,11 @@ the position of orderHistory record determines it's order`)
 		}
 	}
 
-	private async checkRecordHistories(
+	private checkRecordHistories(
 		operationHistory: IOperationHistory,
 		entityColumnMapsByIndex: IEntityColumnMapsByIndex,
-		data: SyncRepositoryData,
-		context: IContext
-	): Promise<void> {
+		data: SyncRepositoryData
+	): void {
 		const recordHistories = operationHistory.recordHistory
 		if (!(recordHistories instanceof Array) || !recordHistories.length) {
 			throw new Error(`Inalid SyncRepositoryData.history -> operationHistory.recordHistory`)
@@ -388,30 +390,35 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS`)
 				newValue,
 				entityColumnMapsByIndex.actorLids,
 				data.actors,
+				false,
 				'actors'
-			)
-			this.checkRelatedObjectInNewValue(
-				newValue,
-				entityColumnMapsByIndex.referencedRelationIds,
-				data.referencedApplicationRelations,
-				'referencedApplicationRelations'
 			)
 			this.checkRelatedObjectInNewValue(
 				newValue,
 				entityColumnMapsByIndex.repositoryLids,
 				data.referencedRepositories,
+				true,
 				'referencedRepositories'
+			)
+			this.checkRelatedObjectInNewValue(
+				newValue,
+				entityColumnMapsByIndex.referencedRelationIds,
+				data.referencedApplicationRelations,
+				false,
+				'referencedApplicationRelations'
 			)
 			this.checkRelatedObjectInNewValue(
 				newValue,
 				entityColumnMapsByIndex.terminalIds,
 				data.terminals,
+				false,
 				'terminals'
 			)
 			this.checkRelatedObjectInNewValue(
 				newValue,
 				entityColumnMapsByIndex.userAccountIds,
 				data.userAccounts,
+				false,
 				'userAccounts'
 			)
 		}
@@ -456,30 +463,35 @@ for ChangeType.UPDATE_ROWS`)
 				oldValue,
 				entityColumnMapsByIndex.actorLids,
 				data.actors,
+				false,
 				'actors'
 			)
 			this.checkRelatedObjectInOldValue(
 				oldValue,
 				entityColumnMapsByIndex.repositoryLids,
 				data.referencedRepositories,
+				true,
 				'referencedRepositories'
 			)
 			this.checkRelatedObjectInOldValue(
 				oldValue,
 				entityColumnMapsByIndex.referencedRelationIds,
 				data.referencedApplicationRelations,
+				false,
 				'referencedApplicationRelations'
 			)
 			this.checkRelatedObjectInOldValue(
 				oldValue,
 				entityColumnMapsByIndex.terminalIds,
 				data.terminals,
+				false,
 				'terminals'
 			)
 			this.checkRelatedObjectInOldValue(
 				oldValue,
 				entityColumnMapsByIndex.userAccountIds,
 				data.userAccounts,
+				false,
 				'userAccounts'
 			)
 		}
@@ -491,6 +503,7 @@ for ChangeType.UPDATE_ROWS`)
 		entityArrayByInMessageIndex: {
 			_localId?: number
 		}[],
+		isRepositoryLidColumn: boolean,
 		inMessageEntityArrayName: string
 	): void {
 		this.checkRelatedObject(
@@ -498,6 +511,7 @@ for ChangeType.UPDATE_ROWS`)
 			'newValue',
 			entityIdColumnMapByIndex,
 			entityArrayByInMessageIndex,
+			isRepositoryLidColumn,
 			inMessageEntityArrayName
 		)
 	}
@@ -508,6 +522,7 @@ for ChangeType.UPDATE_ROWS`)
 		entityArrayByInMessageIndex: {
 			_localId?: number
 		}[],
+		isRepositoryLidColumn: boolean,
 		inMessageEntityArrayName: string
 	): void {
 		this.checkRelatedObject(
@@ -515,6 +530,7 @@ for ChangeType.UPDATE_ROWS`)
 			'oldValue',
 			entityIdColumnMapByIndex,
 			entityArrayByInMessageIndex,
+			isRepositoryLidColumn,
 			inMessageEntityArrayName
 		)
 	}
@@ -526,16 +542,22 @@ for ChangeType.UPDATE_ROWS`)
 		entityArrayByInMessageIndex: {
 			_localId?: number
 		}[],
+		isRepositoryLidColumn: boolean,
 		inMessageEntityArrayName: string
 	): void {
 		const relationIdColumn = entityIdColumnMapByIndex.get(value.columnIndex)
 		if (relationIdColumn) {
+			let columnValue = value[valueColumnName]
+			if (isRepositoryLidColumn && columnValue === -1) {
+				return
+			}
 			const sourceEntity = entityArrayByInMessageIndex[value[valueColumnName]]
 			if (!sourceEntity) {
 				throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.newValue
 Value is for ${relationIdColumn.name} and could find SyncRepositoryData.${inMessageEntityArrayName}[${value[valueColumnName]}]`)
 			}
 			value[valueColumnName] = sourceEntity._localId
+
 		}
 	}
 

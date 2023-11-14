@@ -105,7 +105,8 @@ export class SyncInUtils
 		return <any>this.datastructureUtils.ensureChildJsMap(
 			this.datastructureUtils.ensureChildJsMap(
 				this.datastructureUtils.ensureChildJsMap(
-					recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion._localId),
+					recordMapByApplicationTableAndRepository,
+					operationHistory.entity.applicationVersion._localId),
 				operationHistory.entity.index), repositoryLocalId)
 	}
 

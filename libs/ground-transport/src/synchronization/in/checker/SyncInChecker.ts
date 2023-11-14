@@ -23,10 +23,8 @@ export interface ISyncInChecker {
 	): Promise<IDataCheckResult>
 
 	checkReferencedApplicationRelations(
-		data: SyncRepositoryData,
-		applicationCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>,
-		context: IContext
-	): Promise<void>
+		data: SyncRepositoryData
+	): void
 
 }
 
@@ -106,7 +104,7 @@ export class SyncInChecker
 			}
 		}
 
-		const dataCheckResult = await this.syncInDataChecker.checkData(message, context)
+		const dataCheckResult = this.syncInDataChecker.checkData(message)
 
 		const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
 			.checkRepositoriesAndMembers(message, addedRepositoryMapByGUID,
@@ -134,13 +132,12 @@ export class SyncInChecker
 		}
 	}
 
-	async checkReferencedApplicationRelations(
-		data: SyncRepositoryData,
-		_context: IContext
-	): Promise<void> {
+	checkReferencedApplicationRelations(
+		data: SyncRepositoryData
+	): void {
 		// TODO: check referencedApplicationRelations
 		data.referencedApplicationVersions
-		const applicationEntityMap = await this.syncInDataChecker.populateApplicationEntityMap(data.referencedApplicationVersions)
+		const applicationEntityMap = this.syncInDataChecker.populateApplicationEntityMap(data.referencedApplicationVersions)
 		const applicationRelationMap: Map<DbEntity_LocalId, Map<DbRelation_Index, DbRelation>> = new Map()
 
 		for (let i = 0; i < data.referencedApplicationRelations.length; i++) {

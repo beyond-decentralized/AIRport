@@ -91,6 +91,7 @@ groundTransport.setDependencies(Stage1SyncedInDataProcessor, {
     actorDao: ActorDao,
     airportDatabase: AIRPORT_DATABASE,
     datastructureUtils: DatastructureUtils,
+    dictionary: Dictionary,
     repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     sequenceGenerator: SEQUENCE_GENERATOR,

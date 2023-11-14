@@ -220,8 +220,6 @@ export class TwoStageSyncedInDataProcessor
 							if (this.dictionary.isRepositoryRelationColumn(dbColumn)
 								&& newValue.newValue === -1) {
 								newValue.newValue = repositoryTransactionHistory.repository._localId
-							} else if (this.dictionary.isActorRelationColumn(dbColumn)) {
-								newValue.newValue = message.data.actors[newValue.newValue]._localId
 							}
 							this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(
 								recordHistory, dbColumn, newValue.newValue
@@ -236,8 +234,6 @@ export class TwoStageSyncedInDataProcessor
 							if (this.dictionary.isRepositoryRelationColumn(dbColumn)
 								&& oldValue.oldValue === -1) {
 								oldValue.oldValue = repositoryTransactionHistory.repository._localId
-							} else if (this.dictionary.isActorRelationColumn(dbColumn)) {
-								oldValue.oldValue = message.data.actors[oldValue.oldValue]._localId
 							}
 							this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(
 								recordHistory, dbColumn, oldValue.oldValue
@@ -295,7 +291,8 @@ export class TwoStageSyncedInDataProcessor
 	): Promise<void> {
 		const stage1Result
 			= await this.stage1SyncedInDataProcessor.performStage1DataProcessing(
-				repositoryTransactionHistoryMapByRepositoryLid, actorMayByLid, context)
+				repositoryTransactionHistoryMapByRepositoryLid, applicationsByApplicationVersion_LocalIdMap,
+				actorMayByLid, context)
 
 		let allSyncConflicts: ISynchronizationConflict[] = []
 		let allSyncConflictValues: ISynchronizationConflictValues[] = []

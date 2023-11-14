@@ -22,13 +22,16 @@ import {
 	IRecordHistory,
 	IOperationHistory,
 	ISynchronizationConflict,
-	SynchronizationConflict_Type
+	SynchronizationConflict_Type,
+	Dictionary,
+	IApplication
 } from '@airport/ground-control'
 import {
 	IChangedRecordIdsForRepository,
 	IActorDao,
 	IRepositoryTransactionHistoryDao,
 	IRepositoryTransactionHistoryDuo,
+	RecordHistoryNewValue
 } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	ISyncInUtils,
@@ -47,6 +50,7 @@ export interface IStage1SyncedInDataProcessor {
 
 	performStage1DataProcessing(
 		repositoryTransactionHistoryMapByRepositoryLocalId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
 		actorMayByLid: Map<Actor_LocalId, IActor>,
 		context: IContext
 	): Promise<Stage1SyncedInDataProcessingResult>;
@@ -65,6 +69,9 @@ export class Stage1SyncedInDataProcessor
 
 	@Inject()
 	datastructureUtils: IDatastructureUtils
+
+	@Inject()
+	dictionary: Dictionary
 
 	@Inject()
 	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
@@ -90,10 +97,12 @@ export class Stage1SyncedInDataProcessor
 	 */
 	async performStage1DataProcessing(
 		repositoryTransactionHistoryMapByRepositoryLocalId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
 		actorMayByLid: Map<Actor_LocalId, IActor>,
 		context: IContext
 	): Promise<Stage1SyncedInDataProcessingResult> {
-		await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryLocalId)
+		await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryLocalId,
+			applicationsByApplicationVersion_LocalIdMap)
 
 		const changedRecordIds: Map<Repository_LocalId, IChangedRecordIdsForRepository> = new Map()
 
@@ -234,7 +243,8 @@ export class Stage1SyncedInDataProcessor
 	}
 
 	private async populateSystemWideOperationIds(
-		repositoryTransactionHistoryMapByrepositoryLocalId: Map<Repository_LocalId, ISyncRepoTransHistory[]>
+		repositoryTransactionHistoryMapByrepositoryLocalId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
 	): Promise<void> {
 
 		let numSystemWideOperationIds = 0
@@ -252,6 +262,24 @@ export class Stage1SyncedInDataProcessor
 			for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
 				for (const operationHistory of repositoryTransactionHistory.operationHistory) {
 					operationHistory.systemWideOperationId = systemWideOperationIds[i]
+
+					const applicationIndex = applicationsByApplicationVersion_LocalIdMap
+						.get(operationHistory.entity.applicationVersion._localId).index
+					const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
+						.applicationVersion.entities[operationHistory.entity.index]
+					const sysWideOperationIdDbColumn = dbEntity.columnMap[
+						this.dictionary.AirEntity.columns.SYSTEM_WIDE_OPERATION_LID]
+
+					for (const recordHistory of operationHistory.recordHistory) {
+						if (recordHistory.newValues.length) {
+							const systemWideOperationIdNewValue = new RecordHistoryNewValue()
+							systemWideOperationIdNewValue.recordHistory = recordHistory
+							systemWideOperationIdNewValue.columnIndex = sysWideOperationIdDbColumn.index
+							systemWideOperationIdNewValue.newValue = operationHistory.systemWideOperationId
+							recordHistory.newValues.push(systemWideOperationIdNewValue)
+						}
+
+					}
 					i++
 				}
 			}
