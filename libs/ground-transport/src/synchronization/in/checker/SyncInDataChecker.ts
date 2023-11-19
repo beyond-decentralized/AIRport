@@ -556,7 +556,9 @@ for ChangeType.UPDATE_ROWS`)
 				throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.newValue
 Value is for ${relationIdColumn.name} and could find SyncRepositoryData.${inMessageEntityArrayName}[${value[valueColumnName]}]`)
 			}
-			value[valueColumnName] = sourceEntity._localId
+			if(!isRepositoryLidColumn) {
+				value[valueColumnName] = sourceEntity._localId
+			}
 
 		}
 	}

@@ -1,4 +1,4 @@
-import { IApplicationVersionCheckRecord, ISyncInApplicationVersionChecker } from './SyncInApplicationVersionChecker';
+import { ISyncInApplicationVersionChecker } from './SyncInApplicationVersionChecker';
 import { ISyncInActorChecker } from './SyncInActorChecker';
 import { ISyncInApplicationChecker } from './SyncInApplicationChecker';
 import { IDataCheckResult, ISyncInDataChecker } from './SyncInDataChecker';
@@ -10,7 +10,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { DbEntity_LocalId, DbRelation_Index, Application_Name, DbRelation, Domain_Name, IDatastructureUtils, KeyUtils, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, Repository_LocalId, IRepository, RepositoryMember_PublicSigningKey, IRepositoryMember } from '@airport/ground-control';
+import { DbEntity_LocalId, DbRelation_Index, DbRelation, IDatastructureUtils, KeyUtils, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, IRepository, RepositoryMember_PublicSigningKey, IRepositoryMember } from '@airport/ground-control';
 import { ITerminalStore } from '@airport/terminal-map';
 
 export interface ISyncInChecker {

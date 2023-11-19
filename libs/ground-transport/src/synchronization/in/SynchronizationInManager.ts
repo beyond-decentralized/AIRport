@@ -5,13 +5,12 @@ import {
 import { IRepositoryTransactionHistoryDao } from '@airport/holding-pattern/dist/app/bundle'
 import { ITransactionContext, ITransactionManager } from '@airport/terminal-map'
 import { ISyncInChecker } from './checker/SyncInChecker'
-import { ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
+import { ICrossMessageRepositoryAndMemberInfo, ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
 import { IDataCheckResult } from './checker/SyncInDataChecker'
 import { ISyncInApplicationVersionChecker } from './checker/SyncInApplicationVersionChecker'
 import { IRepositoryLoader } from '@airport/air-traffic-control'
 import { IRepository, SyncRepositoryMessage, RepositoryTransactionHistory_GUID, Repository_GUID, IRepositoryTransactionHistory, RepositoryMember_PublicSigningKey, IRepositoryMember } from '@airport/ground-control'
 import { v4 as guidv4 } from "uuid";
-import { INewAndUpdatedRepositoriesAndRecords } from './checker/SyncInRepositoryChecker'
 
 /**
  * The manager for synchronizing data coming in  to Terminal (TM)
@@ -78,12 +77,12 @@ export class SynchronizationInManager
 		const immediateProcessingMessages: SyncRepositoryMessage[] = []
 		const delayedProcessingMessages: SyncRepositoryMessage[] = []
 
-		const newAndUpdatedRepositoriesAndRecords: INewAndUpdatedRepositoriesAndRecords = {
-			loadedRepositoryGUIDS: [],
-			missingRepositories: [],
-			newMembers: [],
-			newRepositoryMemberInvitations: [],
-			newRepositoryMemberAcceptances: []
+		const repositoryAndMemberInfo: ICrossMessageRepositoryAndMemberInfo = {
+			loadedRepositoryGUIDSet: new Set(),
+			missingRepositoryMap: new Map(),
+			newMemberMap: new Map(),
+			newRepositoryMemberInvitationMap: new Map(),
+			newRepositoryMemberAcceptanceMap: new Map()
 		}
 
 		const addedRepositoryMapByGUID: Map<Repository_GUID, IRepository> = new Map()
@@ -119,26 +118,8 @@ export class SynchronizationInManager
 					processMessage = false
 					return
 				}
-				newAndUpdatedRepositoriesAndRecords.loadedRepositoryGUIDS = [
-					...newAndUpdatedRepositoriesAndRecords.loadedRepositoryGUIDS,
-					...dataCheckResult.loadedRepositoryGUIDS
-				]
-				newAndUpdatedRepositoriesAndRecords.missingRepositories = [
-					...newAndUpdatedRepositoriesAndRecords.missingRepositories,
-					...dataCheckResult.missingRepositories
-				]
-				newAndUpdatedRepositoriesAndRecords.newMembers = [
-					...newAndUpdatedRepositoriesAndRecords.newMembers,
-					...dataCheckResult.newMembers
-				]
-				newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances = [
-					...newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances,
-					...dataCheckResult.newRepositoryMemberAcceptances
-				]
-				newAndUpdatedRepositoriesAndRecords.newRepositoryMemberInvitations = [
-					...newAndUpdatedRepositoriesAndRecords.newRepositoryMemberInvitations,
-					...dataCheckResult.newRepositoryMemberInvitations
-				]
+				this.aggregateRepositoryAndMemberInfo(
+					dataCheckResult, repositoryAndMemberInfo)
 			}, null, context)
 			if (!processMessage) {
 				continue
@@ -174,7 +155,7 @@ export class SynchronizationInManager
 			await this.transactionManager.transactInternal(async (transaction, context) => {
 				transaction.isRepositorySync = true
 				await this.twoStageSyncedInDataProcessor.syncMessages(
-					immediateProcessingMessages, newAndUpdatedRepositoriesAndRecords,
+					immediateProcessingMessages, repositoryAndMemberInfo,
 					transaction, context)
 			}, null, context)
 		}
@@ -189,6 +170,35 @@ export class SynchronizationInManager
 				...immediateProcessingMessages,
 				...delayedProcessingMessages
 			], context)
+		}
+	}
+
+	private aggregateRepositoryAndMemberInfo(
+		dataCheckResult: IDataCheckResult,
+		repositoryAndMemberInfo: ICrossMessageRepositoryAndMemberInfo
+	): void {
+		for (const loadedRepositoryGUID of dataCheckResult.loadedRepositoryGUIDS) {
+			repositoryAndMemberInfo.loadedRepositoryGUIDSet
+				.add(loadedRepositoryGUID)
+		}
+		for (const missingRepository of dataCheckResult.missingRepositories) {
+			repositoryAndMemberInfo.missingRepositoryMap
+				.set(missingRepository.GUID, missingRepository)
+		}
+		for (const newMember of dataCheckResult.newMembers) {
+			repositoryAndMemberInfo.newMemberMap
+				.set(newMember.memberPublicSigningKey, newMember)
+		}
+		for (const newRepositoryMemberAcceptance of dataCheckResult.newRepositoryMemberAcceptances) {
+			repositoryAndMemberInfo.newRepositoryMemberAcceptanceMap
+				.set(newRepositoryMemberAcceptance.invitationPublicSigningKey,
+					newRepositoryMemberAcceptance
+				)
+		}
+		for (const newRepositoryMemberInvitation of dataCheckResult.newRepositoryMemberInvitations) {
+			repositoryAndMemberInfo.newRepositoryMemberInvitationMap
+				.set(newRepositoryMemberInvitation.invitationPublicSigningKey,
+					newRepositoryMemberInvitation)
 		}
 	}
 

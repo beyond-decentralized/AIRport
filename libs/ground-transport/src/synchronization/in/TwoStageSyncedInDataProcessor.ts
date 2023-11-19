@@ -14,7 +14,14 @@ import {
 	RepositoryTransactionType,
 	Repository_LocalId,
 	TransactionType,
-	Dictionary
+	Dictionary,
+	Repository_GUID,
+	IRepository,
+	RepositoryMember_PublicSigningKey,
+	IRepositoryMember,
+	RepositoryMemberInvitation_PublicSigningKey,
+	IRepositoryMemberInvitation,
+	IRepositoryMemberAcceptance
 } from '@airport/ground-control'
 import {
 	IRecordHistoryDuo,
@@ -40,8 +47,15 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { INewAndUpdatedRepositoriesAndRecords as INewAndUpdatedRepositoriesAndRecords } from './checker/SyncInRepositoryChecker'
 import { RepositoryReferenceCreator } from '../RepositoryReferenceCreator'
+
+export interface ICrossMessageRepositoryAndMemberInfo {
+	loadedRepositoryGUIDSet: Set<Repository_GUID>
+	missingRepositoryMap: Map<Repository_GUID, IRepository>
+	newMemberMap: Map<RepositoryMember_PublicSigningKey, IRepositoryMember>
+	newRepositoryMemberInvitationMap: Map<RepositoryMemberInvitation_PublicSigningKey, IRepositoryMemberInvitation>
+	newRepositoryMemberAcceptanceMap: Map<RepositoryMemberInvitation_PublicSigningKey, IRepositoryMemberAcceptance>
+}
 
 /**
  * Synchronizes incoming data and records message conflicts in two processing stages.
@@ -50,7 +64,7 @@ export interface ITwoStageSyncedInDataProcessor {
 
 	syncMessages(
 		messages: SyncRepositoryMessage[],
-		newAndUpdatedRepositorieAndRecords: INewAndUpdatedRepositoriesAndRecords,
+		repositoryAndMemberInfo: ICrossMessageRepositoryAndMemberInfo,
 		transaction: ITransaction,
 		context: IContext
 	): Promise<void>;
@@ -108,17 +122,17 @@ export class TwoStageSyncedInDataProcessor
 	 */
 	async syncMessages(
 		messages: SyncRepositoryMessage[],
-		newAndUpdatedRepositoriesAndRecords: INewAndUpdatedRepositoriesAndRecords,
+		repositoryAndMemberInfo: ICrossMessageRepositoryAndMemberInfo,
 		transaction: ITransaction,
 		context: IContext
 	): Promise<void> {
 		await this.insertNewRepositoryInfo(
 			messages,
-			newAndUpdatedRepositoriesAndRecords,
+			repositoryAndMemberInfo,
 			context
 		)
 		await this.markLoadedRepositories(
-			newAndUpdatedRepositoriesAndRecords,
+			repositoryAndMemberInfo,
 			context
 		)
 
@@ -128,7 +142,7 @@ export class TwoStageSyncedInDataProcessor
 			= await this.getDataStructures(messages)
 
 		for (const newRepositoryMemberAcceptance of
-			newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances) {
+			repositoryAndMemberInfo.newRepositoryMemberAcceptanceMap.values()) {
 			await this.repositoryMemberDao.updatePublicSigningKey(
 				newRepositoryMemberAcceptance.invitationPublicSigningKey,
 				newRepositoryMemberAcceptance.acceptingRepositoryMember.memberPublicSigningKey,
@@ -142,20 +156,20 @@ export class TwoStageSyncedInDataProcessor
 
 	private async insertNewRepositoryInfo(
 		messages: SyncRepositoryMessage[],
-		newAndUpdatedRepositoriesAndRecords: INewAndUpdatedRepositoriesAndRecords,
+		repositoryAndMemberInfo: ICrossMessageRepositoryAndMemberInfo,
 		context: IContext
 	): Promise<void> {
 		await this.repositoryDao.insert(
-			newAndUpdatedRepositoriesAndRecords.missingRepositories,
+			[...repositoryAndMemberInfo.missingRepositoryMap.values()],
 			context)
 
 		await this.repositoryMemberDao.insert(
-			newAndUpdatedRepositoriesAndRecords.newMembers, context)
+			[...repositoryAndMemberInfo.newMemberMap.values()], context)
 		await this.repositoryMemberInvitationDao.insert(
-			newAndUpdatedRepositoriesAndRecords.newRepositoryMemberInvitations,
+			[...repositoryAndMemberInfo.newRepositoryMemberInvitationMap.values()],
 			context)
 		await this.repositoryMemberAcceptanceDao.insert(
-			newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances,
+			[...repositoryAndMemberInfo.newRepositoryMemberAcceptanceMap.values()],
 			context)
 
 		await this.repositoryReferenceCreator.create(
@@ -163,13 +177,12 @@ export class TwoStageSyncedInDataProcessor
 	}
 
 	private async markLoadedRepositories(
-		newAndUpdatedRepositoriesAndRecords: INewAndUpdatedRepositoriesAndRecords,
+		repositoryAndMemberInfo: ICrossMessageRepositoryAndMemberInfo,
 		context: IContext
 	): Promise<void> {
-		if (newAndUpdatedRepositoriesAndRecords.loadedRepositoryGUIDS.length) {
-			await this.repositoryDao.markAsLoaded(
-				newAndUpdatedRepositoriesAndRecords.loadedRepositoryGUIDS,
-				context)
+		const loadedRepositoryGUIDs = [...repositoryAndMemberInfo.loadedRepositoryGUIDSet]
+		if (loadedRepositoryGUIDs.length) {
+			await this.repositoryDao.markAsLoaded(loadedRepositoryGUIDs, context)
 		}
 	}
 
@@ -217,9 +230,13 @@ export class TwoStageSyncedInDataProcessor
 							.allRecordHistoryNewValues.concat(recordHistory.newValues)
 						for (const newValue of recordHistory.newValues) {
 							const dbColumn = entityColumnMapByIndex.get(newValue.columnIndex)
-							if (this.dictionary.isRepositoryRelationColumn(dbColumn)
-								&& newValue.newValue === -1) {
-								newValue.newValue = repositoryTransactionHistory.repository._localId
+							if (this.dictionary.isRepositoryRelationColumn(dbColumn)) {
+								if (newValue.newValue === -1) {
+									newValue.newValue = repositoryTransactionHistory.repository._localId
+								} else {
+									newValue.newValue = message.data
+										.referencedRepositories[newValue.newValue]._localId
+								}
 							}
 							this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(
 								recordHistory, dbColumn, newValue.newValue
@@ -231,9 +248,13 @@ export class TwoStageSyncedInDataProcessor
 							.allRecordHistoryOldValues.concat(recordHistory.oldValues)
 						for (const oldValue of recordHistory.oldValues) {
 							const dbColumn = entityColumnMapByIndex.get(oldValue.columnIndex)
-							if (this.dictionary.isRepositoryRelationColumn(dbColumn)
-								&& oldValue.oldValue === -1) {
-								oldValue.oldValue = repositoryTransactionHistory.repository._localId
+							if (this.dictionary.isRepositoryRelationColumn(dbColumn)) {
+								if (oldValue.oldValue === -1) {
+									oldValue.oldValue = repositoryTransactionHistory.repository._localId
+								} else {
+									oldValue.oldValue = message.data
+										.referencedRepositories[oldValue.oldValue]._localId
+								}
 							}
 							this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(
 								recordHistory, dbColumn, oldValue.oldValue
