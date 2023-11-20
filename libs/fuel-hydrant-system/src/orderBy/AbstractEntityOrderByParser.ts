@@ -2,6 +2,7 @@ import {
 	IAirportDatabase
 } from '@airport/air-traffic-control'
 import {
+	IEntityStateManager,
 	QueryEntityFieldInOrderBy,
 	QueryFieldInOrderBy,
 	QuerySortOrder
@@ -43,6 +44,7 @@ export abstract class AbstractEntityOrderByParser {
 		protected airportDatabase: IAirportDatabase,
 		protected qValidator: IValidator,
 		protected queryRelationManager: IQueryRelationManager,
+		protected entityStateManager: IEntityStateManager,
 		protected orderBy?: QueryEntityFieldInOrderBy[]
 	) {
 	}

@@ -133,12 +133,15 @@ export class EntityOrderByParser
 					})
 
 					if (!matchingNodes.length) {
-						return
+						continue
 					}
 
-					selectFragmentQueue.push(currentSelectFragment[propertyName])
-					const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation)
-					joinNodeQueue.push(childJoinNode)
+					const nestedSelectFragment = currentSelectFragment[propertyName]
+					if (!this.entityStateManager.isStub(nestedSelectFragment)) {
+						selectFragmentQueue.push(nestedSelectFragment)
+						const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation)
+						joinNodeQueue.push(childJoinNode)
+					}
 				} else {
 					const dbColumn = dbProperty.propertyColumns[0].column
 					allColumnsToSortBy.push(dbColumn.name)

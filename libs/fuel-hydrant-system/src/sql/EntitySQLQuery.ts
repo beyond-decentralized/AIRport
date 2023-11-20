@@ -106,7 +106,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 			QueryResultType.ENTITY_GRAPH`)
 		}
 		this.finalSelectTree = this.setupSelectFields(this.query.SELECT, dbEntity, context)
-		this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, queryRelationManager, queryEntity.ORDER_BY)
+		this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, queryRelationManager, entityStateManager, queryEntity.ORDER_BY)
 	}
 
 	toSQL(
