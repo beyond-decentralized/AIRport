@@ -28,16 +28,19 @@ import {
 	ITerminalState,
 	ITerminalStateContainer,
 	ITransactionManagerState,
+	IUIState,
 	IWebReceiverState
 } from './TerminalState';
 import { IApiCredentials } from '../ICredentials';
 import { IMemoizedSelector, ISelectorManager } from './SelectorManager';
 import { ILastIds } from '@airport/air-traffic-control';
-import { CachedSQLQuery, IFieldMapped, IUIState, SerializedJSONQuery } from '../terminal-map.index';
+import { ITransaction } from '../transaction/ITransaction';
+import { CachedSQLQuery, IFieldMapped, SerializedJSONQuery } from '../processing/IActiveQueries';
 
 export interface IPendingTransaction {
 	context,
 	credentials: IApiCredentials
+	parentTransaction: ITransaction,
 	reject
 	resolve
 }

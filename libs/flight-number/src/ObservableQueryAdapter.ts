@@ -58,16 +58,32 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
             }
             this.repositoryExistenceCheckInProgress = true
 
+            let locallyMissingRepositoryGUIDSet: Set<Repository_GUID>
             await this.transactionManager.transactInternal(async (
                 _transaction,
                 context
             ) => {
-                await this.doCheckExistenceOfQueriedRepositories(
+                locallyMissingRepositoryGUIDSet = await this.doCheckExistenceOfQueriedRepositories(
                     context
                 )
             }, null, {})
+
+            for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
+                try {
+                    await this.repositoryLoader.loadRepository(
+                        locallyMissingRepositoryGUID,
+                        {
+                            doNotLoadReferences: true,
+                            isNestedLoadCall: false
+                        }
+                    )
+                } catch (e) {
+                    console.error(`Error loading repository: ${locallyMissingRepositoryGUID}`)
+                    console.error(e)
+                }
+            }
         } catch (e) {
-            console.error('Error checking Repositor existence')
+            console.error('Error checking Repository existence')
             console.error(e)
         } finally {
             this.repositoryExistenceCheckInProgress = false
@@ -76,7 +92,7 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
 
     private async doCheckExistenceOfQueriedRepositories(
         context: IContext
-    ): Promise<void> {
+    ): Promise<Set<Repository_GUID>> {
         const locallyPresentRepositories = await this.repositoryDao
             .findByGUIDsAndLocalIds(
                 Array.from(this.queriedRepositoryIds.GUIDSet),
@@ -120,21 +136,7 @@ export class ObservableQueryAdapter<SQLQuery extends IFieldMapped>
         this.queriedRepositoryIds.GUIDSet.clear()
         this.queriedRepositoryIds.localIdSet.clear()
 
-        for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
-            try {
-                await this.repositoryLoader.loadRepository(
-                    locallyMissingRepositoryGUID,
-                    {
-                        ...context,
-                        doNotLoadReferences: true,
-                        isNestedLoadCall: false
-                    }
-                )
-            } catch (e) {
-                console.error(`Error loading repository: ${locallyMissingRepositoryGUID}`)
-                console.error(e)
-            }
-        }
+        return locallyMissingRepositoryGUIDSet
     }
 
     wrapInObservable<E>(

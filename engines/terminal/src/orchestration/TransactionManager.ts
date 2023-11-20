@@ -232,6 +232,7 @@ Only one concurrent transaction is allowed per application.`)
 					transactionManagerStore.pendingTransactionQueue.unshift({
 						context,
 						credentials,
+						parentTransaction,
 						reject,
 						resolve
 					})
@@ -239,6 +240,14 @@ Only one concurrent transaction is allowed per application.`)
 			}
 		}
 
+		return await this.doStartTransaction(credentials, context, parentTransaction)
+	}
+
+	private async doStartTransaction(
+		credentials: IApiCredentials,
+		context: ITransactionContext,
+		parentTransaction: ITransaction,
+	): Promise<ITransaction> {
 		const transaction = await this.internalStartTransaction(credentials,
 			parentTransaction, context)
 		if (!parentTransaction) {
@@ -277,18 +286,23 @@ Only one concurrent transaction is allowed per application.`)
 		credentials: IApiCredentials,
 		context: ITransactionContext,
 	): Promise<void> {
-		const transaction = this.getTransactionFromContextOrCredentials(
-			credentials, context)
+		let parentTransaction
+		let transaction
+		try {
+			transaction = this.getTransactionFromContextOrCredentials(
+				credentials, context)
 
-		let parentTransaction = transaction.parentTransaction
-		await transaction.rollback(null, context)
-		const transactionCleared = await this.clearTransaction(
-			transaction, parentTransaction, credentials, context)
-		if (!parentTransaction) {
-			await this.clearUserSessionRootTransaction(transaction)
-		}
-		if (transactionCleared) {
-			await this.resumeParentOrPendingTransaction(parentTransaction, context)
+			parentTransaction = transaction.parentTransaction
+			await transaction.rollback(null, context)
+		} finally {
+			const transactionCleared = await this.clearTransaction(
+				transaction, parentTransaction, credentials, context)
+			if (!parentTransaction) {
+				await this.clearUserSessionRootTransaction(transaction)
+			}
+			if (transactionCleared) {
+				await this.resumeParentOrPendingTransaction(parentTransaction, context)
+			}
 		}
 	}
 
@@ -334,8 +348,8 @@ parent transactions.
 				context)
 		} else if (transactionManagerStore.pendingTransactionQueue.length) {
 			const pendingTransaction = transactionManagerStore.pendingTransactionQueue.pop()
-			const transaction = await this.internalStartTransaction(pendingTransaction.credentials,
-				null, pendingTransaction.context)
+			const transaction = await this.doStartTransaction(pendingTransaction.credentials,
+				pendingTransaction.context, pendingTransaction.parentTransaction)
 			pendingTransaction.resolve(transaction)
 		}
 	}
