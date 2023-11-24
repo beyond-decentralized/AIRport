@@ -144,45 +144,29 @@ export class DdlDomainDao
 		if (!newDomains.length) {
 			return
 		}
-		let d: QDdlDomain;
-		const VALUES = []
-		for (const domain of newDomains) {
-			VALUES.push([
-				domain._localId, domain.name
-			])
-		}
-		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
-			columns: [
-				d._localId,
-				d.name,
-			],
-			VALUES
-		}, context)
+		await this.insert(newDomains, context)
 	}
 
 	async insert(
 		domains: IDomain[],
 		context: IContext
 	): Promise<void> {
-		let d: QDdlDomain;
+		let d: QDdlDomain
 		const VALUES = []
 		for (const domain of domains) {
 			VALUES.push([
+				domain._localId,
 				domain.name
 			])
 		}
-		const ids = await this.db.insertValuesGenerateIds({
+		await this.db.insertValues({
 			INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
 			columns: [
+				d._localId,
 				d.name
 			],
 			VALUES
 		}, context)
-		for (let i = 0; i < domains.length; i++) {
-			let domain = domains[i]
-			domain._localId = ids[i][0]
-		}
 	}
 
 }
