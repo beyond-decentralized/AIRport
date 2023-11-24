@@ -33,8 +33,7 @@ import {
 import {
     DdlApplicationDao,
     DdlRelationDao,
-    DdlApplicationVersionDao,
-    DdlDomainDao
+    DdlApplicationVersionDao
 } from '@airport/airspace/dist/app/bundle'
 import {
     ActorDao,
@@ -112,9 +111,10 @@ groundTransport.setDependencies(SyncInActorChecker, {
 })
 
 groundTransport.setDependencies(SyncInApplicationChecker, {
-    ddlApplicationDao: DdlApplicationDao,
     applicationNameUtils: ApplicationNameUtils,
-    ddlDomainDao: DdlDomainDao
+    ddlApplicationDao: DdlApplicationDao,
+    syncInApplicationVersionChecker: SyncInApplicationVersionChecker,
+    terminalStore: TerminalStore
 })
 
 groundTransport.setDependencies(SyncInApplicationVersionChecker, {

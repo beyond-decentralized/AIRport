@@ -24,27 +24,11 @@ import {
 	DbSystemWideOperationIdUtils
 } from '@airport/air-traffic-control'
 import {
-	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
 import { ITerminalStore } from '@airport/terminal-map'
 import { IRepositoriesAndMembersCheckResult } from './SyncInRepositoryChecker'
-
-export interface IDataCheckResult
-	extends IRepositoriesAndMembersCheckResult,
-	IInternalDataCheckResult {
-	// Delay processing of ledger tables because it might require
-	// loading of additional Apps
-}
-
-export interface IInternalDataCheckResult {
-	// Delay processing of ledger tables because it might require
-	// loading of additional Apps
-	forDelayedProcessing?: IOperationHistory[]
-	forImmediateProcessing?: IOperationHistory[]
-}
-
 
 export interface IEntityColumnMapsByIndex {
 
@@ -60,7 +44,7 @@ export interface ISyncInDataChecker {
 
 	checkData(
 		message: SyncRepositoryMessage
-	): IDataCheckResult
+	): IRepositoriesAndMembersCheckResult
 
 	populateApplicationEntityMap(
 		messageApplicationVersions: IApplicationVersion[]
@@ -102,9 +86,8 @@ export class SyncInDataChecker
 	 */
 	checkData(
 		message: SyncRepositoryMessage
-	): IDataCheckResult {
+	): IRepositoriesAndMembersCheckResult {
 		const history = message.data.history
-		let operationHistoryCheckResult: IInternalDataCheckResult
 		try {
 			if (!history || typeof history !== 'object') {
 				throw new Error(`Invalid SyncRepositoryData.history`)
@@ -145,8 +128,7 @@ export class SyncInDataChecker
 			const applicationEntityMap = this.populateApplicationEntityMap(
 				message.data.applicationVersions)
 
-			operationHistoryCheckResult = this.checkOperationHistories(
-				message.data, applicationEntityMap)
+			this.checkOperationHistories(message.data, applicationEntityMap)
 		} catch (e) {
 			console.error(e)
 
@@ -156,7 +138,6 @@ export class SyncInDataChecker
 		}
 
 		return {
-			...operationHistoryCheckResult,
 			isValid: true
 		}
 	}
@@ -185,9 +166,7 @@ export class SyncInDataChecker
 	private checkOperationHistories(
 		data: SyncRepositoryData,
 		applicationEntityMap: Map<string, Map<string, Map<DbEntity_TableIndex, DbEntity>>>
-	): IInternalDataCheckResult {
-		const forImmediateProcessing: IOperationHistory[] = []
-		const forDelayedProcessing: IOperationHistory[] = []
+	): void {
 		const history = data.history
 		if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
 			throw new Error(`Invalid SyncRepositoryData.history.operationHistory Array`)
@@ -257,7 +236,6 @@ the position of orderHistory record determines it's order`)
 				userAccountIds: new Map()
 			}
 
-			let delayOperationHistoryProcessing = false
 
 			for (const dbColumn of operationHistory.entity.columns) {
 				if (this.applicationUtils.isManyRelationColumn(dbColumn as DbColumn)) {
@@ -283,18 +261,8 @@ the position of orderHistory record determines it's order`)
 				}
 			}
 
-			if (delayOperationHistoryProcessing) {
-				forDelayedProcessing.push(operationHistory)
-			} else {
-				forImmediateProcessing.push(operationHistory)
-			}
-
 			this.checkRecordHistories(operationHistory,
 				entityColumnMapsByIndex, data)
-		}
-		return {
-			forImmediateProcessing,
-			forDelayedProcessing
 		}
 	}
 

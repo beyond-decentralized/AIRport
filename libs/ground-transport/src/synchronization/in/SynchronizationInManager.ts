@@ -6,11 +6,10 @@ import { IRepositoryTransactionHistoryDao } from '@airport/holding-pattern/dist/
 import { ITransactionContext, ITransactionManager } from '@airport/terminal-map'
 import { ISyncInChecker } from './checker/SyncInChecker'
 import { ICrossMessageRepositoryAndMemberInfo, ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
-import { IDataCheckResult } from './checker/SyncInDataChecker'
 import { ISyncInApplicationVersionChecker } from './checker/SyncInApplicationVersionChecker'
 import { IRepositoryLoader } from '@airport/air-traffic-control'
-import { IRepository, SyncRepositoryMessage, RepositoryTransactionHistory_GUID, Repository_GUID, IRepositoryTransactionHistory, RepositoryMember_PublicSigningKey, IRepositoryMember } from '@airport/ground-control'
-import { v4 as guidv4 } from "uuid";
+import { IRepository, SyncRepositoryMessage, RepositoryTransactionHistory_GUID, Repository_GUID, RepositoryMember_PublicSigningKey, IRepositoryMember } from '@airport/ground-control'
+import { IRepositoriesAndMembersCheckResult } from './checker/SyncInRepositoryChecker'
 
 /**
  * The manager for synchronizing data coming in  to Terminal (TM)
@@ -18,7 +17,7 @@ import { v4 as guidv4 } from "uuid";
 export interface ISynchronizationInManager {
 
 	receiveMessages(
-		messageMapByGUID: Map<string, SyncRepositoryMessage>,
+		messageMapByGUID: Map<RepositoryTransactionHistory_GUID, SyncRepositoryMessage>,
 		context: ITransactionContext
 	): Promise<void>;
 
@@ -57,22 +56,25 @@ export class SynchronizationInManager
 	twoStageSyncedInDataProcessor: ITwoStageSyncedInDataProcessor
 
 	async receiveMessages(
-		messageMapByGUID: Map<RepositoryTransactionHistory_GUID, SyncRepositoryMessage>,
-		context: ISyncTransactionContext
+		messageMapByRepositoryTransactionHistoryGUID: Map<RepositoryTransactionHistory_GUID, SyncRepositoryMessage>,
+		context: ISyncTransactionContext,
+		syncTimestamp = new Date().getTime()
 	): Promise<void> {
-		const syncTimestamp = new Date().getTime()
-
-		const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
-			.findWhereGUIDsIn([...messageMapByGUID.keys()], context)
-		for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
-			messageMapByGUID.delete(existingRepositoryTransactionHistory.GUID)
-		}
-
-		if (!messageMapByGUID.size) {
+		if (!messageMapByRepositoryTransactionHistoryGUID.size) {
 			return
 		}
 
-		const orderedMessages = this.timeOrderMessages(messageMapByGUID)
+		const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
+			.findWhereGUIDsIn([...messageMapByRepositoryTransactionHistoryGUID.keys()], context)
+		for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
+			messageMapByRepositoryTransactionHistoryGUID.delete(existingRepositoryTransactionHistory.GUID)
+		}
+
+		if (!messageMapByRepositoryTransactionHistoryGUID.size) {
+			return
+		}
+
+		const orderedMessages = this.timeOrderMessages(messageMapByRepositoryTransactionHistoryGUID)
 
 		const immediateProcessingMessages: SyncRepositoryMessage[] = []
 		const delayedProcessingMessages: SyncRepositoryMessage[] = []
@@ -103,29 +105,30 @@ export class SynchronizationInManager
 			}
 
 			let processMessage = true
-			let dataCheckResult: IDataCheckResult
 			// Each message may come from different source but some may not
 			// be valid transaction on essential record creation separately
 			// for each message
 			// FIXME: right now this does not start a nested trasaction
 			// - make it do so
 			await this.transactionManager.transactInternal(async (transaction) => {
-				dataCheckResult = await this.syncInChecker.checkMessage(
+				const messageCheckResult = await this.syncInChecker.checkMessage(
 					message, addedRepositoryMapByGUID,
 					addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context)
-				if (!dataCheckResult.isValid) {
+				if (!messageCheckResult.isValid || !messageCheckResult.areAppsLoaded) {
 					transaction.rollback(null, context)
 					processMessage = false
+					if (messageCheckResult.isValid && !messageCheckResult.areAppsLoaded) {
+						delayedProcessingMessages.push(message)
+					}
 					return
 				}
 				this.aggregateRepositoryAndMemberInfo(
-					dataCheckResult, repositoryAndMemberInfo)
+					messageCheckResult, repositoryAndMemberInfo)
 			}, null, context)
 			if (!processMessage) {
 				continue
 			}
 
-			message.data.history.operationHistory = dataCheckResult.forImmediateProcessing
 			immediateProcessingMessages.push({
 				...message,
 				data: {
@@ -133,23 +136,6 @@ export class SynchronizationInManager
 					history: message.data.history
 				}
 			})
-			if (dataCheckResult.forDelayedProcessing.length) {
-				const history: IRepositoryTransactionHistory = {
-					...message.data.history,
-					GUID: guidv4(),
-					operationHistory: dataCheckResult.forDelayedProcessing
-				}
-				for (const operationHistory of dataCheckResult.forDelayedProcessing) {
-					operationHistory.repositoryTransactionHistory = history
-				}
-				delayedProcessingMessages.push({
-					...message,
-					data: {
-						...message.data,
-						history
-					}
-				})
-			}
 		}
 		if (immediateProcessingMessages.length) {
 			await this.transactionManager.transactInternal(async (transaction, context) => {
@@ -158,23 +144,19 @@ export class SynchronizationInManager
 					immediateProcessingMessages, repositoryAndMemberInfo,
 					transaction, context)
 			}, null, context)
-		}
 
-		await this.wait(2000)
+			if (!context.doNotLoadReferences) {
+				await this.loadReferencedRepositories(
+					immediateProcessingMessages, context)
+			}
+		}
 
 		await this.processDelayedMessages(
-			delayedProcessingMessages, context)
-
-		if (!context.doNotLoadReferences) {
-			await this.loadReferencedRepositories([
-				...immediateProcessingMessages,
-				...delayedProcessingMessages
-			], context)
-		}
+			delayedProcessingMessages, syncTimestamp, context)
 	}
 
 	private aggregateRepositoryAndMemberInfo(
-		dataCheckResult: IDataCheckResult,
+		dataCheckResult: IRepositoriesAndMembersCheckResult,
 		repositoryAndMemberInfo: ICrossMessageRepositoryAndMemberInfo
 	): void {
 		for (const loadedRepositoryGUID of dataCheckResult.loadedRepositoryGUIDS) {
@@ -248,45 +230,30 @@ export class SynchronizationInManager
 		return true
 	}
 
-	private wait(
-		milliseconds: number
-	): Promise<void> {
-		return new Promise(resolve => {
-			setTimeout(_ => {
-				resolve()
-			}, milliseconds)
-		})
-	}
-
 	private async processDelayedMessages(
 		delayedProcessingMessages: SyncRepositoryMessage[],
-		context: ITransactionContext
+		syncTimestamp: number,
+		context: ISyncTransactionContext
 	): Promise<void> {
 		const delayedProcessingMessagesWithValidApps: SyncRepositoryMessage[] = []
 		for (const message of delayedProcessingMessages) {
 			const data = message.data
-			// Possibly load (remotely) and install new apps - delayed processing
-			// messages deal with other repositories that might include data from
-			// other apps - other repositories might be referencing records in
-			// the synched repositories (which may not be aware of the apps the
-			// other repositories where created with)
-			const applicationCheckMap = await this.syncInApplicationVersionChecker.ensureApplicationVersions(
-				data.referencedApplicationVersions, data.applications, context
-			)
-			if (applicationCheckMap) {
+			// Install new apps
+			const appInstalledIfNeeded = await this.syncInApplicationVersionChecker
+				.installAndCheckApplications(data, context)
+			if (appInstalledIfNeeded) {
 				this.syncInChecker.checkReferencedApplicationRelations(data)
 				delayedProcessingMessagesWithValidApps.push(message)
-
 			}
 		}
-		if (delayedProcessingMessagesWithValidApps.length) {
-			await this.transactionManager.transactInternal(async (transaction, context) => {
-				transaction.isRepositorySync = true
-				await this.twoStageSyncedInDataProcessor.syncMessages(
-					delayedProcessingMessagesWithValidApps, null,
-					transaction, context)
-			}, null, context)
+		const messageMapByRepositoryTransactionHistoryGUID: Map<RepositoryTransactionHistory_GUID, SyncRepositoryMessage>
+			= new Map()
+		for (const message of delayedProcessingMessagesWithValidApps) {
+			messageMapByRepositoryTransactionHistoryGUID
+				.set(message.data.history.GUID, message)
 		}
+		await this.receiveMessages(messageMapByRepositoryTransactionHistoryGUID,
+			context, syncTimestamp)
 	}
 
 	private async loadReferencedRepositories(

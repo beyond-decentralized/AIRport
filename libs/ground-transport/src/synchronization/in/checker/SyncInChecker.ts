@@ -1,8 +1,8 @@
 import { ISyncInApplicationVersionChecker } from './SyncInApplicationVersionChecker';
 import { ISyncInActorChecker } from './SyncInActorChecker';
 import { ISyncInApplicationChecker } from './SyncInApplicationChecker';
-import { IDataCheckResult, ISyncInDataChecker } from './SyncInDataChecker';
-import { ISyncInRepositoryChecker } from './SyncInRepositoryChecker';
+import { ISyncInDataChecker } from './SyncInDataChecker';
+import { IRepositoriesAndMembersCheckResult, ISyncInRepositoryChecker } from './SyncInRepositoryChecker';
 import { ISyncInTerminalChecker } from './SyncInTerminalChecker';
 import { ISyncInUserAccountChecker } from './SyncInUserAccountChecker';
 import {
@@ -20,12 +20,19 @@ export interface ISyncInChecker {
 		addedRepositoryMapByGUID: Map<Repository_GUID, IRepository>,
 		addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey: Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>>,
 		context: IContext
-	): Promise<IDataCheckResult>
+	): Promise<IMessageCheckResult>
 
 	checkReferencedApplicationRelations(
 		data: SyncRepositoryData
 	): void
 
+}
+
+export interface IMessageCheckResult
+	extends IRepositoriesAndMembersCheckResult {
+	// Delay processing of ledger tables because it might require
+	// loading of additional Apps
+	areAppsLoaded: boolean
 }
 
 @Injected()
@@ -70,38 +77,39 @@ export class SyncInChecker
 		addedRepositoryMapByGUID: Map<Repository_GUID, IRepository>,
 		addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey: Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>>,
 		context: IContext
-	): Promise<IDataCheckResult> {
+	): Promise<IMessageCheckResult> {
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
 		let data = message.data
 
+		// Serialize before object starts to be interlinked
 		let serializedData = JSON.stringify(data)
 
-		if (! await this.syncInUserAccountChecker.ensureUserAccounts(data, context)) {
+		const applicationCheck = await this.syncInApplicationChecker.ensureApplications(data, context)
+		if (!applicationCheck.isInstalled) {
 			return {
-				isValid: false
-			}
-		}
-		if (! await this.syncInTerminalChecker.ensureTerminals(data, context)) {
-			return {
-				isValid: false
-			}
-		}
-		if (! await this.syncInApplicationChecker.ensureApplications(data, context)) {
-			return {
-				isValid: false
-			}
-		}
-		if (! await this.syncInActorChecker.ensureActors(data, context)) {
-			return {
-				isValid: false
+				areAppsLoaded: false,
+				isValid: applicationCheck.isValid
 			}
 		}
 
-		if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(
-			data.applicationVersions, data.applications, context)) {
-			return {
-				isValid: false
-			}
+		let invalidResult = {
+			areAppsLoaded: true,
+			isValid: false
+		}
+
+		if (!applicationCheck.isValid) {
+			return invalidResult
+		}
+
+
+		if (! await this.syncInUserAccountChecker.ensureUserAccounts(data, context)) {
+			return invalidResult
+		}
+		if (! await this.syncInTerminalChecker.ensureTerminals(data, context)) {
+			return invalidResult
+		}
+		if (! await this.syncInActorChecker.ensureActors(data, context)) {
+			return invalidResult
 		}
 
 		const dataCheckResult = this.syncInDataChecker.checkData(message)
@@ -110,9 +118,7 @@ export class SyncInChecker
 			.checkRepositoriesAndMembers(message, addedRepositoryMapByGUID,
 				addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context)
 		if (!repositoryAndMemberCheckResult.isValid) {
-			return {
-				isValid: false
-			}
+			return invalidResult
 		}
 
 		for (const signatureCheck of repositoryAndMemberCheckResult.signatureChecks) {
@@ -120,13 +126,12 @@ export class SyncInChecker
 				signatureCheck.signatureToCheck,
 				signatureCheck.publicSigningKey)) {
 				console.error(`message.${signatureCheck.signatureName} is not valid.`)
-				return {
-					isValid: false
-				}
+				return invalidResult
 			}
 		}
 
 		return {
+			areAppsLoaded: true,
 			...dataCheckResult,
 			...repositoryAndMemberCheckResult
 		}

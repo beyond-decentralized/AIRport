@@ -1,6 +1,5 @@
-import { Application_Name, ApplicationStatus, IDomain, IApplication, SyncRepositoryData, IApplicationNameUtils } from '@airport/ground-control';
+import { Application_Name, IDomain, IApplication, SyncRepositoryData, IApplicationNameUtils } from '@airport/ground-control';
 import {
-    IDdlDomainDao,
     IDdlApplicationDao
 } from "@airport/airspace/dist/app/bundle";
 import {
@@ -8,6 +7,8 @@ import {
     Inject,
     Injected
 } from '@airport/direction-indicator'
+import { ITerminalStore } from '@airport/terminal-map';
+import { ISyncInApplicationVersionChecker } from './SyncInApplicationVersionChecker';
 
 export interface IDomainCheckRecord {
     domain?: IDomain
@@ -26,7 +27,10 @@ export interface ISyncInApplicationChecker {
     ensureApplications(
         data: SyncRepositoryData,
         context: IContext
-    ): Promise<boolean>
+    ): Promise<{
+        isValid: boolean,
+        isInstalled: boolean
+    }>
 
 }
 
@@ -35,20 +39,45 @@ export class SyncInApplicationChecker
     implements ISyncInApplicationChecker {
 
     @Inject()
-    ddlApplicationDao: IDdlApplicationDao
-
-    @Inject()
     applicationNameUtils: IApplicationNameUtils
 
     @Inject()
-    ddlDomainDao: IDdlDomainDao
+    ddlApplicationDao: IDdlApplicationDao
+
+    @Inject()
+    syncInApplicationVersionChecker: ISyncInApplicationVersionChecker
+
+    @Inject()
+    terminalStore: ITerminalStore
 
     async ensureApplications(
         data: SyncRepositoryData,
         context: IContext
-    ): Promise<boolean> {
+    ): Promise<{
+        isValid: boolean,
+        isInstalled: boolean
+    }> {
         try {
-            let applicationCheckMap = await this.checkApplicationsAndDomains(data, context);
+            let applicationCheckMap = await this.checkApplicationsAndDomains(data, context)
+            for (const applicationsForDomainCheckMap of applicationCheckMap.values()) {
+                for (const applicationCheck of applicationsForDomainCheckMap.values()) {
+                    if (!applicationCheck.found) {
+                        return {
+                            isValid: true,
+                            isInstalled: false
+                        }
+                    }
+                }
+            }
+
+            const allAppsInstalled = await this.syncInApplicationVersionChecker
+                .ensureApplicationVersions(data, context)
+            if (!allAppsInstalled) {
+                return {
+                    isValid: true,
+                    isInstalled: false
+                }
+            }
 
             for (let i = 0; i < data.applications.length; i++) {
                 let application = data.applications[i]
@@ -58,17 +87,23 @@ export class SyncInApplicationChecker
             }
         } catch (e) {
             console.error(e)
-            return false
+            return {
+                isValid: false,
+                isInstalled: false
+            }
         }
 
-        return true
+        return {
+            isValid: true,
+            isInstalled: true
+        }
     }
 
     private async checkApplicationsAndDomains(
         data: SyncRepositoryData,
         context: IContext
     ): Promise<Map<string, Map<string, IApplicationCheckRecord>>> {
-        const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap }
+        const { allApplication_Names, domainNames, applicationCheckMap }
             = this.getNames(data)
 
         const applications = await this.ddlApplicationDao
@@ -81,58 +116,10 @@ export class SyncInApplicationChecker
 
             for (let [_, applicationCheck] of applicationCheckMap.get(domainName)) {
                 if (applicationCheck.applicationName === applicationName) {
-                    let domainCheck = domainCheckMap.get(domainName)
-                    domainCheck.found = true
-                    domainCheck.domain = application.domain
                     applicationCheck.found = true
                     applicationCheck.application = application
                 }
             }
-        }
-
-        let domainsToCreate: IDomain[] = []
-        for (let [name, domainCheck] of domainCheckMap) {
-            if (domainCheck.found) {
-                continue
-            }
-            let domain: IDomain = {
-                _localId: null,
-                name
-            }
-            domainCheck.domain = domain
-            domainsToCreate.push(domain)
-        }
-        if (domainsToCreate.length) {
-            await this.ddlDomainDao.insert(domainsToCreate, context)
-        }
-
-        let applicationsToCreate: IApplication[] = []
-        for (let [domainName, applicationChecksByName] of applicationCheckMap) {
-            for (let [name, applicationCheck] of applicationChecksByName) {
-                if (applicationCheck.found) {
-                    continue
-                }
-                let domain = domainCheckMap.get(domainName).domain
-                let application: IApplication = {
-                    currentVersion: null,
-                    domain,
-                    fullName: this.applicationNameUtils.getApplication_FullNameFromDomainAndName(
-                        domainName, name
-                    ),
-                    index: null,
-                    name,
-                    scope: 'private',
-                    status: ApplicationStatus.STUB,
-                    publicSigningKey: 'localhost',
-                    versions: []
-                }
-                applicationCheck.application = application
-                applicationsToCreate.push(application)
-            }
-        }
-
-        if (applicationsToCreate.length) {
-            await this.ddlApplicationDao.insert(applicationsToCreate, context)
         }
 
         return applicationCheckMap

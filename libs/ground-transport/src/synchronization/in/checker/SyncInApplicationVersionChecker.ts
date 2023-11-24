@@ -7,7 +7,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import { IApplicationInitializer } from '@airport/terminal-map'
-import { Application_Name, IApplication, IApplicationVersion, Domain_Name } from '@airport/ground-control'
+import { Application_Name, IApplicationVersion, Domain_Name, SyncRepositoryData } from '@airport/ground-control'
 
 export interface IApplicationVersionCheckRecord {
 	found?: boolean
@@ -19,10 +19,14 @@ export interface IApplicationVersionCheckRecord {
 export interface ISyncInApplicationVersionChecker {
 
 	ensureApplicationVersions(
-		inMessageApplicationVersions: IApplicationVersion[],
-		inMessageApplications: IApplication[],
+		data: SyncRepositoryData,
 		context: IContext
-	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>>;
+	): Promise<boolean>
+
+	installAndCheckApplications(
+		data: SyncRepositoryData,
+		context: IContext
+	): Promise<boolean>
 
 }
 
@@ -37,37 +41,37 @@ export class SyncInApplicationVersionChecker
 	applicationInitializer: IApplicationInitializer
 
 	async ensureApplicationVersions(
-		// message: SyncRepositoryData,
-		inMessageApplicationVersions: IApplicationVersion[],
-		inMessageApplications: IApplication[],
+		data: SyncRepositoryData,
 		context: IContext
-	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>> {
-		let applicationCheckMap
-		try {
-			applicationCheckMap = await this.checkVersionsApplicationsDomains(
-				inMessageApplicationVersions, inMessageApplications, context);
+	): Promise<boolean> {
+		const checkResult = await this.checkVersionsApplicationsDomains(
+			data, context)
 
-			for (let i = 0; i < inMessageApplicationVersions.length; i++) {
-				const applicationVersion = inMessageApplicationVersions[i]
-				inMessageApplicationVersions[i] = applicationCheckMap
-					.get(applicationVersion.application.domain.name).get(applicationVersion.application.name)
-					.applicationVersion
-			}
-		} catch (e) {
-			console.error(e)
-			return null
+		if (checkResult.haveMissingApplicationVersions) {
+			return false
 		}
 
-		return applicationCheckMap
+		this.setApplicationVersionApps(data)
+		for (let i = 0; i < data.applicationVersions.length; i++) {
+			const applicationVersion = data.applicationVersions[i]
+			data.applicationVersions[i] = checkResult.applicationVersionCheckMap
+				.get(applicationVersion.application.domain.name)
+				.get(applicationVersion.application.name)
+				.applicationVersion
+		}
+
+
+		return true
 	}
 
-	private async checkVersionsApplicationsDomains(
-		inMessageApplicationVersions: IApplicationVersion[],
-		inMessageApplications: IApplication[],
+	async installAndCheckApplications(
+		data: SyncRepositoryData,
 		context: IContext
-	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>> {
-		const { allApplicationNames: allApplication_Names, domainNames, applicationVersionCheckMap } = this
-			.getNames(inMessageApplicationVersions, inMessageApplications)
+	): Promise<boolean> {
+		const {
+			allApplicationNames: allApplication_Names,
+			domainNames, applicationVersionCheckMap
+		} = this.getNames(data)
 
 		await this.setApplicationVersions(
 			domainNames,
@@ -89,28 +93,61 @@ export class SyncInApplicationVersionChecker
 			}
 		}
 
-		await this.setApplicationVersions(
+		return await this.setApplicationVersions(
 			Array.from(domainWithNewApp_NameSet),
 			Array.from(newApplicationNameSet),
 			applicationVersionCheckMap,
 			context
 		)
-
-		return applicationVersionCheckMap
 	}
 
-	async setApplicationVersions(
+	private async checkVersionsApplicationsDomains(
+		data: SyncRepositoryData,
+		context: IContext
+	): Promise<{
+		applicationVersionCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>,
+		haveMissingApplicationVersions: boolean
+	}> {
+		const {
+			allApplicationNames: allApplication_Names,
+			domainNames, applicationVersionCheckMap
+		} = this.getNames(data)
+
+		await this.setApplicationVersions(
+			domainNames,
+			allApplication_Names,
+			applicationVersionCheckMap,
+			context
+		)
+
+		let haveMissingApplicationVersions = false
+		for (const [_, applicationChecks] of applicationVersionCheckMap) {
+			for (let [_, applicationCheck] of applicationChecks) {
+				if (!applicationCheck.found) {
+					haveMissingApplicationVersions = true
+				}
+			}
+		}
+
+		return {
+			applicationVersionCheckMap,
+			haveMissingApplicationVersions
+		}
+	}
+
+	private async setApplicationVersions(
 		domainNames: Domain_Name[],
 		allApplication_Names: Application_Name[],
 		applicationVersionCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>,
 		context: IContext
-	): Promise<void> {
+	): Promise<boolean> {
 		const existingApplicationVersions = await this.ddlApplicationVersionDao
 			.findByDomain_NamesAndApplication_Names(
 				domainNames, allApplication_Names, context)
 
 		let lastDomainName
 		let lastApplicationName
+		let haveMissingApplicationVersions = false
 		for (let applicationVersion of existingApplicationVersions) {
 			const domainName = applicationVersion.application.domain.name
 			const applicationName = applicationVersion.application.name
@@ -120,10 +157,12 @@ export class SyncInApplicationVersionChecker
 				const applicationVersionCheckMapForDomain = applicationVersionCheckMap.get(domainName);
 				for (let [_, applicationCheck] of applicationVersionCheckMapForDomain) {
 					if (applicationCheck.applicationName === applicationName) {
-						applicationCheck.found = true
 						if (applicationCheck.applicationVersionNumber > applicationVersionNumber) {
-							throw new Error(`Installed application ${applicationName} for domain ${domainName}
+							console.error(`Installed application ${applicationName} for domain ${domainName}
 	is at a lower version ${applicationVersionNumber} than needed in message ${applicationCheck.applicationVersionNumber}.`)
+							haveMissingApplicationVersions = true
+						} else {
+							applicationCheck.found = true
 						}
 						applicationCheck.applicationVersion = applicationVersion
 					}
@@ -133,16 +172,18 @@ export class SyncInApplicationVersionChecker
 				lastApplicationName = applicationName
 			}
 		}
+
+		return !haveMissingApplicationVersions
 	}
 
 	private getNames(
-		inMessageApplicationVersions: IApplicationVersion[],
-		inMessageApplications: IApplication[]
+		data: SyncRepositoryData
 	): {
 		allApplicationNames: Application_Name[],
 		domainNames: Domain_Name[],
 		applicationVersionCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>
 	} {
+		const inMessageApplicationVersions = data.applicationVersions
 		if (!inMessageApplicationVersions || !(inMessageApplicationVersions instanceof Array)) {
 			throw new Error(`Did not find applicationVersions in SyncRepositoryData.`)
 		}
@@ -153,11 +194,10 @@ export class SyncInApplicationVersionChecker
 			if (!applicationVersion.integerVersion || typeof applicationVersion.integerVersion !== 'number') {
 				throw new Error(`Invalid ApplicationVersion.integerVersion.`)
 			}
-			const application = inMessageApplications[applicationVersion.application as any]
+			const application = data.applications[applicationVersion.application as any]
 			if (typeof application !== 'object') {
 				throw new Error(`Invalid ApplicationVersion.application`)
 			}
-			applicationVersion.application = application
 			const domain = application.domain
 
 			let applicationChecksForDomain = applicationVersionCheckMap.get(domain.name)
@@ -187,6 +227,15 @@ export class SyncInApplicationVersionChecker
 			allApplicationNames: allApplicationNames,
 			domainNames,
 			applicationVersionCheckMap
+		}
+	}
+
+	private setApplicationVersionApps(
+		data: SyncRepositoryData
+	): void {
+		for (let applicationVersion of data.applicationVersions) {
+			const application = data.applications[applicationVersion.application as any]
+			applicationVersion.application = application
 		}
 	}
 
