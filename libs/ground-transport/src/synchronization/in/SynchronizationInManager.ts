@@ -91,8 +91,12 @@ export class SynchronizationInManager
 		const addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey:
 			Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>> = new Map()
 
+		let areMessagesValid: boolean[] = []
+		let areAppsLoaded = true
+		let i = 0;
 		// Split up messages by type
-		for (const message of orderedMessages) {
+		for (; i < orderedMessages.length; i++) {
+			const message = orderedMessages[i]
 			if (!this.isValidLastChangeTime(
 				syncTimestamp, message.syncTimestamp, 'Sync Timestamp')) {
 				continue
@@ -104,7 +108,6 @@ export class SynchronizationInManager
 				continue
 			}
 
-			let processMessage = true
 			// Each message may come from different source but some may not
 			// be valid transaction on essential record creation separately
 			// for each message
@@ -114,18 +117,20 @@ export class SynchronizationInManager
 				const messageCheckResult = await this.syncInChecker.checkMessage(
 					message, addedRepositoryMapByGUID,
 					addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context)
-				if (!messageCheckResult.isValid || !messageCheckResult.areAppsLoaded) {
+				areAppsLoaded = messageCheckResult.areAppsLoaded
+				areMessagesValid[i] = messageCheckResult.isValid
+				if (!messageCheckResult.isValid || !areAppsLoaded) {
 					transaction.rollback(null, context)
-					processMessage = false
-					if (messageCheckResult.isValid && !messageCheckResult.areAppsLoaded) {
-						delayedProcessingMessages.push(message)
-					}
 					return
 				}
 				this.aggregateRepositoryAndMemberInfo(
 					messageCheckResult, repositoryAndMemberInfo)
 			}, null, context)
-			if (!processMessage) {
+
+			if (!areAppsLoaded) {
+				break
+			}
+			if (!areMessagesValid[i]) {
 				continue
 			}
 
@@ -137,6 +142,16 @@ export class SynchronizationInManager
 				}
 			})
 		}
+
+		if (!areAppsLoaded) {
+			if (!areMessagesValid[i]) {
+				i++
+			}
+			for (; i < orderedMessages.length; i++) {
+				delayedProcessingMessages.push(orderedMessages[i])
+			}
+		}
+		
 		if (immediateProcessingMessages.length) {
 			await this.transactionManager.transactInternal(async (transaction, context) => {
 				transaction.isRepositorySync = true

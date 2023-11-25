@@ -149,6 +149,10 @@ export class SyncInRepositoryChecker
 						history.repository = historyRepository = foundRepository
 					}
 				}
+
+				if (addedRepositoryMapByGUID.has(foundRepository.GUID)) {
+					addedRepositoryMapByGUID.set(foundRepository.GUID, foundRepository)
+				}
 			}
 
 			for (const [repositoryGUID, repository] of addedRepositoryMapByGUID) {
@@ -165,8 +169,15 @@ export class SyncInRepositoryChecker
 					} else {
 						// Only the repository reference is loaded
 						referencedRepository.isLoaded = false
-
-						return true
+						if (addedRepositoryMapByGUID.has(referencedRepository.GUID)) {
+							return false
+						} else {
+							addedRepositoryMapByGUID.set(
+								referencedRepository.GUID,
+								referencedRepository
+							)
+							return true
+						}
 					}
 				})
 
@@ -177,7 +188,8 @@ export class SyncInRepositoryChecker
 	repository must already be loaded in this database for this message to be
 	processed.`)
 			} else {
-				if (!historyRepository._localId) {
+				if (!repositoryAddedInAnEarlierIncomingMessage
+					&& !historyRepository._localId) {
 					missingRepositories.push(historyRepository)
 				}
 			}
