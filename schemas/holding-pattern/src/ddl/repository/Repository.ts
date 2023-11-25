@@ -37,7 +37,7 @@ import { RepositoryReference } from "./RepositoryReference";
 
 @Entity()
 @Table({
-	name: "REPOSITORY"
+	name: "REPOSITORIES"
 })
 export class Repository
 	implements IRepository {
