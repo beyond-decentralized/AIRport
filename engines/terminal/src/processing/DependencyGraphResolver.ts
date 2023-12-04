@@ -77,7 +77,7 @@ export class DependencyGraphResolver
 			const {
 				isCreate,
 				isDelete,
-				isParentSchemaId,
+				isFromAnotherApp,
 				isPassThrough,
 				isStub,
 				isUpdate
@@ -108,7 +108,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 				let isExistingNode = false
 				if (dependencyGraphNode) {
 					isExistingNode = true
-				} else if (!isParentSchemaId && !deleteByCascade) {
+				} else if (!isFromAnotherApp && !deleteByCascade) {
 					dependencyGraphNode = {
 						circleTraversedFor: {},
 						dbEntity,
@@ -121,7 +121,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 					allProcessedNodes.push(dependencyGraphNode)
 					operatedOnEntities[operationUniqueId] = dependencyGraphNode
 				}
-				if (!isParentSchemaId && !isDelete) {
+				if (!isFromAnotherApp && !isDelete) {
 					if (dependsOn && !isDelete) {
 						const dependsOnOUID = this.entityStateManager.getOperationUniqueId(dependsOn.entity)
 						if (!dependencyGraphNode.dependsOnByOUID[dependsOnOUID]
@@ -171,7 +171,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 
 						const parentState = this.entityStateManager
 							.getEntityStateTypeAsFlags(propertyValue, dbRelation.relationEntity)
-						if (parentState.isParentSchemaId) {
+						if (parentState.isFromAnotherApp) {
 							continue
 						}
 						if (parentState.isDelete) {
@@ -216,7 +216,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 					const childDependencyLinkedNodes = this.getEntitiesToPersist(
 						relatedEntities, operatedOnEntities, operatedOnPassThroughs,
 						context, fromDependencyForChild,
-						!isParentSchemaId && !isDelete && isDependency ? dependencyGraphNode : null,
+						!isFromAnotherApp && !isDelete && isDependency ? dependencyGraphNode : null,
 						childDeleteByCascade)
 					allProcessedNodes = allProcessedNodes.concat(childDependencyLinkedNodes)
 					context.dbEntity = previousDbEntity

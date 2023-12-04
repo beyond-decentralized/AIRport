@@ -122,6 +122,10 @@ the following decorators to the property definition:
 @DbDate()
 @DbNumer()
 @DbString()
+
+If you are adding a transient field add the following decorator:
+
+@Transient()
 `)
 			return null;
 		}

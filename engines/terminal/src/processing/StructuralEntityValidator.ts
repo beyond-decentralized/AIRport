@@ -65,7 +65,7 @@ export class StructuralEntityValidator
 
 		let haveRootRelationRecord = !!rootRelationRecord
 
-		const levelObjectRepositoryMapByGUID: Map<string, IRepository> = new Map()
+		const objectLevelRepositoryMapByGUID: Map<string, IRepository> = new Map()
 
 		for (const record of records) {
 			if (!haveRootRelationRecord) {
@@ -73,12 +73,12 @@ export class StructuralEntityValidator
 			}
 			const {
 				isCreate,
-				isParentSchemaId,
+				isFromAnotherApp,
 				isPassThrough,
 				isStub
 			} = this.entityStateManager.getEntityStateTypeAsFlags(record, dbEntity)
 
-			if (isParentSchemaId) {
+			if (isFromAnotherApp) {
 				// No processing is needed (already covered by id check)
 				continue
 			}
@@ -88,9 +88,10 @@ export class StructuralEntityValidator
 			if (entityAlreadyOperatedOn) {
 				continue
 			}
-			operatedOnEntityIndicator[operationUniqueId] = true
+			operatedOnEntityIndicator[operationUniqueId] = true;
 
-			let repositoryAssignmentFromParentNeeded = false;
+			(record as IAirEntity).toBeCopied = false
+			let repositoryAssignmentFromParentNeeded = false
 
 			for (const dbProperty of dbEntity.properties) {
 				let propertyValue: any = record[dbProperty.name]
@@ -103,118 +104,30 @@ export class StructuralEntityValidator
 				 * a @ManyToOne, so we need to check
 				 */
 				if (dbProperty.relation && dbProperty.relation.length) {
-					const dbRelation = dbProperty.relation[0]
-					let relatedEntities = null
-					let relationIsOneToMany = false
-					let isRelationNullable = true
-					switch (dbRelation.relationType) {
-						case EntityRelationType.MANY_TO_ONE:
-							// Id columns are for the parent (currently processed) entity and must be
-							// checked as part of this entity
-							if (dbProperty.isId) {
-								let isMissingRepositoryProperty = false;
-								this.applicationUtils.forEachColumnOfRelation(dbRelation, record, (
-									dbColumn: DbColumn,
-									columnValue: any,
-									_propertyNameChains: string[][],
-								) => {
-									if (dbColumn.notNull) {
-										isRelationNullable = false
-									}
-									if (this.isRepositoryColumnAndNewRepositoryNeed(
-										dbEntity, dbProperty, dbColumn,
-										isCreate, record, columnValue, context)) {
-										isMissingRepositoryProperty = true
-									} else if (this.applicationUtils.isRepositoryId(dbColumn.name)) {
-										const repository = record[dbProperty.name]
-										if (!repository._localId || !repository.GUID) {
-											throw new Error(`Repository must have a _localId and GUID assigned:
-hence, it must an existing repository that exists locally.`)
-										}
-										if (!levelObjectRepositoryMapByGUID.has(repository.GUID)) {
-											levelObjectRepositoryMapByGUID.set(repository.GUID, repository)
-											if (depth == 1) {
-												topLevelObjectRepositories.push(repository)
-											}
-										}
-									}
-								}, false)
-								if (isMissingRepositoryProperty) {
-									// TODO: document that creating a new repository will automatically
-									// populate it in all objects passed to save that don't have a
-									// repository record reference
-									// TODO: document that if no new repository record is created
-									// then a top level object must have a repository record reference.
-									// Then all nested records without a repository record reference
-									// will have that repository assigned
-									if (!context.rootTransaction.newRepository) {
-										repositoryAssignmentFromParentNeeded = true
-										missingRepositoryRecords.push({
-											record,
-											repositoryPropertyName: dbProperty.name
-										})
-									} else {
-										record[dbProperty.name] = context.rootTransaction.newRepository
-									}
-								}
-							}
-							if (fromOneToMany) {
-								const parentOneToManyElems = parentRelationProperty.relation[0].oneToManyElems
-								const parentMappedBy = parentOneToManyElems ? parentOneToManyElems.mappedBy : null
-								const mappedBy = dbRelation.manyToOneElems ? dbRelation.manyToOneElems.mappedBy : null
-								// NOTE: 'actor' or the 'repository' properties may be automatically populated
-								// in the entity by this.validateRelationColumn
-								if (parentMappedBy === dbProperty.name
-									|| mappedBy === parentRelationProperty.name) {
-									// Always fix to the parent record
-									record[dbProperty.name] = parentRelationRecord
-									// if (!propertyValue && !entity[dbProperty.name]) {
-									// 	// The @ManyToOne side of the relationship is missing, add it
-									// 	entity[dbProperty.name] = parentRelationEntity
-									// }
-								}
-							}
-							const isActorProperty = this.dictionary.isActor(dbRelation.relationEntity)
-							if (propertyValue) {
-								if (isCreate && isActorProperty) {
-									throw new Error(`.actor property must not be populated for new objects`)
-								}
-								relatedEntities = [propertyValue]
-							} else if (!isRelationNullable) {
-								// Actor properties must be null when passed in
-								if (!isCreate && !isActorProperty) {
-									throw new Error(`Non-nullable relation ${dbEntity.name}.${dbProperty.name} does not have value assigned`)
-								}
-							} else {
-								console.warn(`Probably OK: Nullable @ManyToOne ${dbEntity.name}.${dbProperty.name} does not have anything assigned.`)
-							}
-
-							break
-						case EntityRelationType.ONE_TO_MANY:
-							relationIsOneToMany = true
-							relatedEntities = propertyValue
-							break
-						default:
-							throw new Error(`Unexpected relation type ${dbRelation.relationType}
-for ${dbEntity.name}.${dbProperty.name}`)
-					} // switch dbRelation.relationType
-					if (relatedEntities && relatedEntities.length) {
-						const previousDbEntity = context.dbEntity
-						context.dbEntity = dbRelation.relationEntity
-
-						this.validate(relatedEntities, operatedOnEntityIndicator,
-							missingRepositoryRecords, topLevelObjectRepositories, context, depth + 1,
-							relationIsOneToMany, dbProperty, rootRelationRecord, record)
-						context.dbEntity = previousDbEntity
-					}
-				} // if (dbProperty.relation // else its not a relation property
-				else {
+					repositoryAssignmentFromParentNeeded = this.processRelation(
+						operatedOnEntityIndicator,
+						missingRepositoryRecords,
+						topLevelObjectRepositories,
+						context,
+						depth,
+						fromOneToMany,
+						parentRelationProperty,
+						rootRelationRecord,
+						parentRelationRecord,
+						dbEntity,
+						objectLevelRepositoryMapByGUID,
+						record,
+						isCreate,
+						dbProperty,
+						propertyValue
+					)
+				} else {
 					const dbColumn = dbProperty.propertyColumns[0].column
 					if (dbProperty.isId) {
 						const isIdColumnEmpty = this.applicationUtils.isIdEmpty(propertyValue)
 						this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty)
 					} else {
-						if (isStub || isParentSchemaId) {
+						if (isStub || isFromAnotherApp) {
 							if (propertyValue !== undefined) {
 								throw new Error(`Unexpected non-@Id value Stub|ParentSchemaId|Deleted record.
 Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`)
@@ -222,19 +135,148 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 						}
 					}
 					this.ensureNonRelationalValue(dbProperty, dbColumn, propertyValue)
-				} // else (dbProperty.relation
-			} // for (const dbProperty of dbEntity.properties)
+				}
+			}
 
-			if (!isPassThrough && !isStub && !isParentSchemaId) {
+			if (!isPassThrough && !isStub && !isFromAnotherApp) {
 				this.ensureRepositoryValidity(
 					record as IAirEntity,
 					rootRelationRecord,
 					parentRelationRecord,
 					dbEntity,
-					isCreate, 
+					parentRelationProperty,
+					isCreate,
 					repositoryAssignmentFromParentNeeded)
 			}
 		} // for (const record of records)
+	}
+
+	private processRelation<E extends IAirEntity | any>(
+		operatedOnEntityIndicator: boolean[],
+		missingRepositoryRecords: IMissingRepositoryRecord[],
+		topLevelObjectRepositories: IRepository[],
+		context: IOperationContext & ITransactionContext,
+		depth: number,
+		fromOneToMany: boolean,
+		parentRelationProperty: DbProperty,
+		rootRelationRecord,
+		parentRelationRecord,
+		dbEntity: DbEntity,
+		objectLevelRepositoryMapByGUID: Map<string, IRepository>,
+		record: E,
+		isCreate: boolean,
+		dbProperty: DbProperty,
+		propertyValue: any
+	): boolean {
+		let repositoryAssignmentFromParentNeeded = false
+
+		const dbRelation = dbProperty.relation[0]
+		let relatedEntities = null
+		let relationIsOneToMany = false
+		let isRelationNullable = true
+		switch (dbRelation.relationType) {
+			case EntityRelationType.MANY_TO_ONE:
+				// Id columns are for the parent (currently processed) entity and must be
+				// checked as part of this entity
+				if (dbProperty.isId) {
+					let isMissingRepositoryProperty = false;
+					this.applicationUtils.forEachColumnOfRelation(dbRelation, record, (
+						dbColumn: DbColumn,
+						columnValue: any,
+						_propertyNameChains: string[][],
+					) => {
+						if (dbColumn.notNull) {
+							isRelationNullable = false
+						}
+						if (this.isRepositoryColumnAndNewRepositoryNeed(
+							dbEntity, dbProperty, dbColumn,
+							isCreate, record, columnValue, context)) {
+							isMissingRepositoryProperty = true
+						} else if (this.applicationUtils.isRepositoryId(dbColumn.name)) {
+							const repository = record[dbProperty.name]
+							if (!repository._localId || !repository.GUID) {
+								throw new Error(`Repository must have a _localId and GUID assigned:
+hence, it must an existing repository that exists locally.`)
+							}
+							if (!objectLevelRepositoryMapByGUID.has(repository.GUID)) {
+								objectLevelRepositoryMapByGUID.set(repository.GUID, repository)
+								if (depth == 1) {
+									topLevelObjectRepositories.push(repository)
+								}
+							}
+						}
+					}, false)
+					if (isMissingRepositoryProperty) {
+						// TODO: document that creating a new repository will automatically
+						// populate it in all objects passed to save that don't have a
+						// repository record reference
+						// TODO: document that if no new repository record is created
+						// then a top level object must have a repository record reference.
+						// Then all nested records without a repository record reference
+						// will have that repository assigned
+						if (!context.rootTransaction.newRepository) {
+							repositoryAssignmentFromParentNeeded = true
+							missingRepositoryRecords.push({
+								record,
+								repositoryPropertyName: dbProperty.name
+							})
+						} else {
+							record[dbProperty.name] = context.rootTransaction.newRepository
+						}
+					}
+				} // if (dbProperty.isId) {
+
+				if (fromOneToMany) {
+					const parentOneToManyElems = parentRelationProperty.relation[0].oneToManyElems
+					const parentMappedBy = parentOneToManyElems ? parentOneToManyElems.mappedBy : null
+					const mappedBy = dbRelation.manyToOneElems ? dbRelation.manyToOneElems.mappedBy : null
+					// NOTE: 'actor' or the 'repository' properties may be automatically populated
+					// in the entity by this.validateRelationColumn
+					if (parentMappedBy === dbProperty.name
+						|| mappedBy === parentRelationProperty.name) {
+						// Always fix to the parent record
+						record[dbProperty.name] = parentRelationRecord
+						// if (!propertyValue && !entity[dbProperty.name]) {
+						// 	// The @ManyToOne side of the relationship is missing, add it
+						// 	entity[dbProperty.name] = parentRelationEntity
+						// }
+					}
+				}
+				const isActorProperty = this.dictionary.isActor(dbRelation.relationEntity)
+				if (propertyValue) {
+					if (isCreate && isActorProperty) {
+						throw new Error(`.actor property must not be populated for new objects`)
+					}
+					relatedEntities = [propertyValue]
+				} else if (!isRelationNullable) {
+					// Actor properties must be null when passed in
+					if (!isCreate && !isActorProperty) {
+						throw new Error(`Non-nullable relation ${dbEntity.name}.${dbProperty.name} does not have value assigned`)
+					}
+				} else {
+					console.warn(`Probably OK: Nullable @ManyToOne ${dbEntity.name}.${dbProperty.name} does not have anything assigned.`)
+				}
+
+				break
+			case EntityRelationType.ONE_TO_MANY:
+				relationIsOneToMany = true
+				relatedEntities = propertyValue
+				break
+			default:
+				throw new Error(`Unexpected relation type ${dbRelation.relationType}
+for ${dbEntity.name}.${dbProperty.name}`)
+		} // switch dbRelation.relationType
+		if (relatedEntities && relatedEntities.length) {
+			const previousDbEntity = context.dbEntity
+			context.dbEntity = dbRelation.relationEntity
+
+			this.validate(relatedEntities, operatedOnEntityIndicator,
+				missingRepositoryRecords, topLevelObjectRepositories, context, depth + 1,
+				relationIsOneToMany, dbProperty, rootRelationRecord, record)
+			context.dbEntity = previousDbEntity
+		}
+
+		return repositoryAssignmentFromParentNeeded
 	}
 
 	private ensureRepositoryValidity(
@@ -242,7 +284,8 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 		rootRelationRecord: IAirEntity,
 		parentRelationRecord: IAirEntity,
 		dbEntity: DbEntity,
-		_isCreate: boolean,
+		parentRelationProperty: DbProperty,
+		isCreate: boolean,
 		repositoryAssignmentFromParentNeeded: boolean
 	): void {
 		if (!dbEntity.isAirEntity) {
@@ -284,51 +327,25 @@ in object graph does not have a repository assigned
 			return
 		}
 
-		// NOTE: This rule is currently disabled - to can create new records
-		// and assign them to existing repositories that are different from 
-		// repositories of paret records (or assign it the newly created repository).
-		// NOTE: it is possible to have records in the same repository that
-		// cannot be joined together in queries, so there is no need to check a valid
-		// path from this records to all other records passed to this save call that
-		// have the same repository.
-		// The disabled rule:
-		// A new record cannot be created - it has a repository that isn't:
-		// * Repository found in it's parent record,
-		// * a new Repository,
-		// 
-		// So a new record is being created and either has an explicitly
-		// assigned a Repository or has the sole (one and only per current rules)
-		// new Repository that is created in the (root) transaction.
-		/* 		if (_isCreate) {
-					throw new Error(`
-		A newly created '${dbEntity.name}' record
-		is being assigned to Repository _localId ${airEntity.repository._localId} (GUID: ${airEntity.repository.GUID})
-		This is because it is being referenced via ${parentRelationProperty.entity.name}.${parentRelationProperty.name},
-		from a record of Repository _localId ${parentRelationRecord.repository._localId} (GUID: ${parentRelationRecord.repository.GUID})
+
+		if (isCreate) {
+			throw new Error(`
+A newly created '${dbEntity.name}' record
+is being assigned to Repository _localId ${airEntity.repository._localId}
+	(GUID: ${airEntity.repository.GUID})
+This is because it is being referenced via:
+	${parentRelationProperty.entity.name}.${parentRelationProperty.name},
+from a record of Repository _localId ${parentRelationRecord.repository._localId}
+	(GUID: ${parentRelationRecord.repository.GUID})
 		
-		Did you mean to set this record's Repository to be the same one
-		as the Repository of the referencing (parent) record?
+Did you mean to set this record's Repository to be the same one
+as the Repository of the referencing (parent) record?
 		`)
-				} */
+		}
 
 
-		// NOTE: the below commented out code is for scenario where records
-		// via @ManyToOne links that point to other repositories are copied
-		// into the referencing repository
-
-		// If it doesn't then it is a reference to another repository - switch
-		// the record to the parent repository and set the sourceRepositoryValue
-		// airEntity.repository = rootRelationRecord.repository
-		// airEntity.copied = true
-
-		// Flip the state of this record to EntityState.CREATE this record now
-		// has to be created in the referencing repository
-		// airEntity[this.entityStateManager.getStateFieldName()] = EntityState.CREATE
-
-		// NOTE: If the child record is not provided and it's an optional
-		// @ManyToOne() it will be treated as if no record is there.  That is
-		// probaby the only correct way to handle it and a warning is
-		// shown to the user in this case
+		// Record will be copied into the Repository of the parent record
+		airEntity.toBeCopied = true
 	}
 
 	protected isRepositoryColumnAndNewRepositoryNeed<E>(

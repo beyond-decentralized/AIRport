@@ -8,7 +8,7 @@ export enum EntityState {
 	CREATE = 'CREATE',
 	DATE = 'DATE',
 	DELETE = 'DELETE',
-	PARENT_SCHEMA_ID = 'PARENT_SCHEMA_LID',
+	FROM_ANOTHER_APP = 'PARENT_SCHEMA_LID',
 	STUB = 'STUB',
 	UPDATE = 'UPDATE',
 }
@@ -19,7 +19,7 @@ export interface IUiStateManager {
 		entity: T
 	): boolean
 
-	isParentSchemaId<T>(
+	isFromAnotherApp<T>(
 		entity: T
 	): boolean
 
@@ -49,10 +49,10 @@ export class UiStateManager
 		return this.getEntityState(entity) === EntityState.STUB
 	}
 
-	isParentSchemaId<T>(
+	isFromAnotherApp<T>(
 		entity: T
 	): boolean {
-		return this.getEntityState(entity) === EntityState.PARENT_SCHEMA_ID
+		return this.getEntityState(entity) === EntityState.FROM_ANOTHER_APP
 	}
 
 	markForDeletion<T>(

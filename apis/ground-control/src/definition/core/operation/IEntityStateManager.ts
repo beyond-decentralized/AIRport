@@ -7,7 +7,7 @@ export enum EntityState {
 	// Originally it was PARENT_SCHEMA_ID and was meant for @ManyToOne() references
 	// when nothing is returned except for the id fields of the relation, however
 	// this schenario was sufficiently covered by STUB - id's only stub.  Now it's
-	// PARENT_SCHEMA_ID and currently used only for save operations
+	// FROM_ANOTHER_APP and currently used only for save operations
 	// when the entity referenced via the relation belongs to another application.
 	// This is because save does not allow to peristance of records across application
 	// boundaries (that should be done via an @Api() which will run validation and
@@ -15,8 +15,8 @@ export enum EntityState {
 	// In that case we want to keep the ID of the record from another application
 	// so that it can be saved in the record of the current application that is
 	// referencing it.
-	PARENT_SCHEMA_ID = 'PARENT_SCHEMA_LID',
-	// A "Pass through object" is an existing that is present in the object graph
+	FROM_ANOTHER_APP = 'PARENT_SCHEMA_LID',
+	// A "Pass through object" is an existing object that is present in the object graph
 	// but no operations are performed on it
 	PASS_THROUGH = 'PASS_THROUGH',
 	// An "Id's only" stub
@@ -31,7 +31,7 @@ export enum EntityState {
 export interface IEntityStateAsFlags {
 	isCreate: boolean
 	isDelete: boolean
-	isParentSchemaId: boolean
+	isFromAnotherApp: boolean
 	isPassThrough: boolean
 	isResultDate: boolean
 	isStub: boolean
@@ -44,7 +44,7 @@ export interface IEntityStateManager {
 		entity: T
 	): boolean
 
-	isParentSchemaId<T>(
+	isFromAnotherApp<T>(
 		entity: T
 	): boolean
 

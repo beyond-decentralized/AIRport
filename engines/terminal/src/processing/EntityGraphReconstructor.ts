@@ -79,7 +79,7 @@ export class EntityGraphReconstructor
 			 * other entities.
 			 */
 			let {
-				isParentSchemaId,
+				isFromAnotherApp,
 				isStub
 			} = this.entityStateManager
 				.getEntityStateTypeAsFlags(entity, dbEntity)
@@ -95,7 +95,7 @@ export class EntityGraphReconstructor
 
 			if (isParentEntity) {
 				this.entityStateManager.markAsOfParentSchema(entityCopy)
-				isParentSchemaId = true
+				isFromAnotherApp = true
 			}
 
 			for (const dbProperty of dbEntity.properties) {
@@ -136,8 +136,8 @@ for ${dbEntity.name}.${dbProperty.name}`)
 					let propertyCopyValue
 					if (propertyValue) {
 						propertyCopyValue = this.linkEntityGraph(relatedEntities,
-							entitiesByOperationIndex, isParentSchemaId || relationIsFromParentSchema, context)
-						if (isParentSchemaId || relationIsFromParentSchema) {
+							entitiesByOperationIndex, isFromAnotherApp || relationIsFromParentSchema, context)
+						if (isFromAnotherApp || relationIsFromParentSchema) {
 							for (const propertyCopyValueEntry of propertyCopyValue) {
 								const operationUniqueId = this.entityStateManager
 									.getOperationUniqueId(propertyCopyValueEntry)
@@ -172,7 +172,7 @@ for ${dbEntity.name}.${dbProperty.name}`)
 	private checkPropertyParentEntityStatus(
 		propertyCopyValue
 	) {
-		if (!this.entityStateManager.isParentSchemaId(propertyCopyValue)
+		if (!this.entityStateManager.isFromAnotherApp(propertyCopyValue)
 			&& !this.entityStateManager.isPassThrough(propertyCopyValue)) {
 			throw new Error(`Parent Ids may only contain relations that are themselves Parent Ids or Pass-Though objects.`)
 		}

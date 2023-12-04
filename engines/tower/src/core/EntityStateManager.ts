@@ -28,11 +28,11 @@ export class EntityStateManager
 		return this.getEntityState(entity) === EntityState.STUB
 	}
 
-	isParentSchemaId<T>(
+	isFromAnotherApp<T>(
 		entity: T
 	): boolean {
 		return this.getEntityState(entity) ===
-			EntityState.PARENT_SCHEMA_ID
+			EntityState.FROM_ANOTHER_APP
 	}
 
 	isPassThrough<T>(
@@ -45,7 +45,7 @@ export class EntityStateManager
 		entity: T
 	): void {
 		(<EntityWithState><any>entity)[EntityStateManager.STATE_FIELD] =
-			EntityState.PARENT_SCHEMA_ID
+			EntityState.FROM_ANOTHER_APP
 	}
 
 	markForDeletion<T>(
@@ -104,7 +104,7 @@ export class EntityStateManager
 		entity: T,
 		dbEntity: DbEntity
 	): IEntityStateAsFlags {
-		let isCreate, isDelete, isParentSchemaId, isPassThrough,
+		let isCreate, isDelete, isFromAnotherApp, isPassThrough,
 			isResultDate, isStub, isUpdate
 		const entityState = this.getEntityState(entity)
 		switch (entityState) {
@@ -114,8 +114,8 @@ export class EntityStateManager
 			case EntityState.DELETE:
 				isDelete = true
 				break
-			case EntityState.PARENT_SCHEMA_ID:
-				isParentSchemaId = true
+			case EntityState.FROM_ANOTHER_APP:
+				isFromAnotherApp = true
 				break
 			case EntityState.PASS_THROUGH:
 				isPassThrough = true
@@ -143,7 +143,7 @@ export class EntityStateManager
 		return {
 			isCreate,
 			isDelete,
-			isParentSchemaId,
+			isFromAnotherApp,
 			isPassThrough,
 			// isResult,
 			isResultDate,
