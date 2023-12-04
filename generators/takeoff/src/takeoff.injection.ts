@@ -144,6 +144,5 @@ takeoff.setDependencies(SqlSchemaBuilder as any, {
     airportDatabase: AIRPORT_DATABASE,
     applicationReferenceUtils: ApplicationReferenceUtils,
     applicationNameUtils: ApplicationNameUtils,
-    sequenceDao: SequenceDao,
     storeDriver: STORE_DRIVER
 })

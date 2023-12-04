@@ -1,10 +1,11 @@
 import { IAirportDatabase, JsonApplicationWithLastIds } from '@airport/air-traffic-control';
 import {
   IContext,
+  IOC,
   Inject,
   Injected
 } from '@airport/direction-indicator'
-import { ISequenceDao } from '@airport/airport-code';
+import { ISequenceDao, SequenceDao } from '@airport/airport-code';
 import {
   IApplication,
   DbSequence,
@@ -38,10 +39,12 @@ export abstract class SqlSchemaBuilder
   applicationNameUtils: IApplicationNameUtils
 
   @Inject()
-  sequenceDao: ISequenceDao
-
-  @Inject()
   storeDriver: IStoreDriver
+
+  // Avoids race-condition errors when SequenceDao is retrieved at initialization
+  async getSequenceDao(): Promise<ISequenceDao> {
+    return await IOC.get(SequenceDao)
+  }
 
   async build(
     jsonApplication: JsonApplication,

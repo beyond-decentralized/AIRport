@@ -1,14 +1,14 @@
 import {
   IAirportDatabase,
   QAppInternal,
-} from '@airport/air-traffic-control';
+} from '@airport/air-traffic-control'
 import {
   Inject,
   Injected
 } from '@airport/direction-indicator'
 import {
   IContext,
-} from '@airport/direction-indicator';
+} from '@airport/direction-indicator'
 import {
   IApplication,
   DbSequence,
@@ -16,8 +16,8 @@ import {
   JsonColumn,
   JsonEntity,
   SQLDataType,
-} from '@airport/ground-control';
-import { SqlSchemaBuilder } from '@airport/takeoff';
+} from '@airport/ground-control'
+import { SqlSchemaBuilder } from '@airport/takeoff'
 
 @Injected()
 export class SqLiteSchemaBuilder
@@ -38,10 +38,10 @@ export class SqLiteSchemaBuilder
     jsonEntity: JsonEntity,
     jsonColumn: JsonColumn,
   ): string {
-    let primaryKeySuffix = '';
+    let primaryKeySuffix = ''
     if (jsonColumn.notNull
       || this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
-      primaryKeySuffix = ' NOT NULL';
+      primaryKeySuffix = ' NOT NULL'
     }
 
     const suffix = primaryKeySuffix; // + autoincrementSuffix
@@ -54,12 +54,12 @@ export class SqLiteSchemaBuilder
       case SQLDataType.DATE:
         return `REAL ${suffix}`
       case SQLDataType.JSON:
-        return `TEXT ${suffix}`;
+        return `TEXT ${suffix}`
       case SQLDataType.NUMBER:
         if (suffix) {
           return `INTEGER ${suffix}`
         }
-        return 'REAL';
+        return 'REAL'
       case SQLDataType.STRING:
         return `TEXT ${suffix}`
       default:
@@ -71,25 +71,24 @@ export class SqLiteSchemaBuilder
     jsonApplication: JsonApplication,
     jsonEntity: JsonEntity,
   ): string {
-    return ` WITHOUT ROWID`;
+    return ` WITHOUT ROWID`
   }
 
   async buildAllSequences(
     jsonApplications: JsonApplication[],
     context: IContext
   ): Promise<DbSequence[]> {
-    console.log('buildAllSequences');
-
-    let allSequences: DbSequence[] = [];
+    let allSequences: DbSequence[] = []
     for (const jsonApplication of jsonApplications) {
       const qApplication = this.airportDatabase.QM[this.applicationNameUtils.
-        getApplication_FullName(jsonApplication)] as QAppInternal;
+        getApplication_FullName(jsonApplication)] as QAppInternal
       for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-        allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
+        allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
       }
     }
 
-    await this.sequenceDao.save(allSequences, context);
+    const sequenceDao = await this.getSequenceDao()
+    await sequenceDao.save(allSequences, context)
 
     return allSequences;
   }
@@ -98,32 +97,30 @@ export class SqLiteSchemaBuilder
     jsonApplications: JsonApplication[],
     context: IContext,
   ): DbSequence[] {
-    console.log('stageSequences');
-
-    let stagedSequences: DbSequence[] = [];
+    let stagedSequences: DbSequence[] = []
     for (const jsonApplication of jsonApplications) {
       const qApplication = this.airportDatabase.QM[this.applicationNameUtils.
-        getApplication_FullName(jsonApplication)] as QAppInternal;
+        getApplication_FullName(jsonApplication)] as QAppInternal
       for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-        stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
+        stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
       }
     }
 
-    return stagedSequences;
+    return stagedSequences
   }
 
   buildSequences(
     dbApplication: IApplication,
     jsonEntity: JsonEntity,
   ): DbSequence[] {
-    const sequences: DbSequence[] = [];
+    const sequences: DbSequence[] = []
     for (const jsonColumn of jsonEntity.columns) {
       if (!jsonColumn.isGenerated) {
-        continue;
+        continue
       }
-      let incrementBy = jsonColumn.allocationSize;
+      let incrementBy = jsonColumn.allocationSize
       if (!incrementBy) {
-        incrementBy = 100;
+        incrementBy = 100
       }
 
       sequences.push({
@@ -132,10 +129,10 @@ export class SqLiteSchemaBuilder
         columnIndex: jsonColumn.index,
         incrementBy,
         currentValue: 0,
-      });
+      })
     }
 
-    return sequences;
+    return sequences
   }
 
   protected getIndexSql(
@@ -168,7 +165,7 @@ export class SqLiteSchemaBuilder
     // into the CREATE TABLE command, though techniques for getting
     // around this do exist:
     // https://stackoverflow.com/questions/1884818/how-do-i-add-a-foreign-key-to-an-existing-sqlite-table
-    return null;
+    return null
   }
 
 }
