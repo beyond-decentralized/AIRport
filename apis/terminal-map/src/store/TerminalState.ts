@@ -9,7 +9,7 @@ import { Application_FullName, IApplication, IDomain, DbSequence, IActor, IAppTr
 import { IMessageInRecord } from './IApplicationState'
 import { ILastIds } from '@airport/air-traffic-control'
 import { CachedSQLQuery, IFieldMapped, SerializedJSONQuery } from '../terminal-map.index'
-import { ISubscriptionMessage, Message_Id, SubscriptionId, TimeStamp } from '@airport/aviation-communication'
+import { ISubscriptionMessage, Message_Id, SubscriptionId } from '@airport/aviation-communication'
 
 export interface IReceiverState {
 	initializingApps: Set<Application_FullName>
@@ -21,10 +21,7 @@ export interface IWebReceiverState {
 	localDomain: string
 	mainDomainFragments: string[]
 	pendingInterAppApiCallMessageMap: Map<Message_Id, IMessageInRecord>
-	subscriptionMap: Map<Application_FullName, Map<SubscriptionId, {
-		lastActive: TimeStamp
-		subscription: Subscription
-	}>>
+	subscriptionMap: Map<Application_FullName, Map<SubscriptionId, Subscription>>
 }
 
 export type UIState_CurrentURL = string

@@ -1,5 +1,5 @@
 import { IApplicationApi } from "@airport/air-traffic-control"
-import { IClientSubjectCache, IMessage, Message_Id, SubscriptionId, TimeStamp } from "@airport/aviation-communication"
+import { IClientSubjectCache, IMessage, Message_Id, SubscriptionId } from "@airport/aviation-communication"
 import { Application_FullName, Domain_Name } from "@airport/ground-control"
 import { Subject, Subscription } from "rxjs"
 
@@ -25,10 +25,7 @@ export interface IApplicationState {
     api: IApplicationApi
     application: Application_FullName
     appState: AppState
-    clientSubscriptionMap: Map<SubscriptionId, {
-        lastActive: TimeStamp
-        subscription: Subscription
-    }>
+    clientSubscriptionMap: Map<SubscriptionId, Subscription>
     domain: Domain_Name
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
     // and debugging (https://localhost:4200)

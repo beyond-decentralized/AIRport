@@ -106,32 +106,6 @@ export class IframeTransactionalConnector
 
 	internal = false
 
-	constructor() {
-		setTimeout(() => {
-			if (globalThis.repositoryAutoload !== false) {
-				setInterval(() => {
-					this.pruneSubscriptions();
-				}, 300000)
-			}
-		}, 2000)
-	}
-
-	private pruneSubscriptions(): void {
-		const lastValidPingMillis = new Date().getTime() - 10000
-		const staleSubscriptionIds = []
-
-		const clientSubscriptionMap = this.applicationStore.state.clientSubscriptionMap
-		for (const [subscriptionId, subscriptionRecord] of clientSubscriptionMap) {
-			if (subscriptionRecord.lastActive < lastValidPingMillis) {
-				staleSubscriptionIds.push(subscriptionId)
-			}
-		}
-		for (const staleSubscriptionId of staleSubscriptionIds) {
-			clientSubscriptionMap.get(staleSubscriptionId).subscription.unsubscribe()
-			clientSubscriptionMap.delete(staleSubscriptionId)
-		}
-	}
-
 	async processMessage(
 		message: IApiCallRequestMessage
 			| IObservableApiCallRequestMessage
@@ -422,30 +396,19 @@ export class IframeTransactionalConnector
 						returnedValue: payload
 					} as IObservableApiCallResponseMessage, origin)
 				})
-				clientSubscriptionMap.set(subscriptionId, {
-					lastActive: new Date().getTime(),
-					subscription
-				})
-				break
-			}
-			case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
-				const subscriptionRecord = clientSubscriptionMap.get(subscriptionId)
-				if (!subscriptionRecord) {
-					break
-				}
-				subscriptionRecord.lastActive = new Date().getTime()
+				clientSubscriptionMap.set(subscriptionId, subscription)
 				break
 			}
 			case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
-				const subscriptionRecord = clientSubscriptionMap.get(subscriptionId)
-				if (!subscriptionRecord) {
+				const subscription = clientSubscriptionMap.get(subscriptionId)
+				if (!subscription) {
 					console.log(`Could not find subscription for subscriptionId:
 ${subscriptionId}
 					`)
 					break
 				}
 				console.log(`Unsubscribing from Subscription Id: ${subscriptionId}`)
-				subscriptionRecord.subscription.unsubscribe()
+				subscription.unsubscribe()
 				clientSubscriptionMap.delete(subscriptionId)
 				// No need to send a message back, no transaction is started
 				// for the Unsubscribe operation

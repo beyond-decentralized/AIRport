@@ -71,33 +71,6 @@ export class WebTransactionalReceiver
 		const webReciever = this.terminalStore.getWebReceiver()
 		webReciever.domainPrefix = domainPrefix
 		webReciever.mainDomainFragments = mainDomainFragments
-
-		setTimeout(() => {
-			if (globalThis.repositoryAutoload !== false) {
-				setInterval(() => {
-					this.pruneSubscriptions();
-				}, 300000)
-			}
-		}, 2000)
-
-	}
-
-	private pruneSubscriptions(): void {
-		const lastValidPingMillis = new Date().getTime() - 10000
-		const webReciever = this.terminalStore.getWebReceiver()
-
-		for (const [_application_FullName, clientSubscriptionMap] of webReciever.subscriptionMap) {
-			const staleSubscriptionIds = []
-			for (const [subscriptionId, subscriptionRecord] of clientSubscriptionMap) {
-				if (subscriptionRecord.lastActive < lastValidPingMillis) {
-					staleSubscriptionIds.push(subscriptionId)
-				}
-			}
-			for (const staleSubscriptionId of staleSubscriptionIds) {
-				clientSubscriptionMap.get(staleSubscriptionId).subscription.unsubscribe()
-				clientSubscriptionMap.delete(staleSubscriptionId)
-			}
-		}
 	}
 
 	handleUIRequest(
@@ -239,11 +212,6 @@ export class WebTransactionalReceiver
 				case SUBSCRIPTION_Message_Type.API_SUBSCRIPTION_DATA: {
 					endApiCall = false
 					replyToClient = true
-					break
-				}
-				case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
-					endApiCall = false
-					replyToClient = false
 					break
 				}
 				case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
@@ -760,24 +728,12 @@ Unexpected message typeGroup:
 				if (!clientSubscriptionMap) {
 					break
 				}
-				let subscriptionRecord = clientSubscriptionMap.get(message.subscriptionId)
-				if (!subscriptionRecord) {
+				let subscription = clientSubscriptionMap.get(message.subscriptionId)
+				if (!subscription) {
 					break
 				}
-				subscriptionRecord.subscription.unsubscribe()
+				subscription.unsubscribe()
 				clientSubscriptionMap.delete(message.subscriptionId)
-				break
-			}
-			case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
-				let clientSubscriptionMap = webReciever.subscriptionMap.get(application_FullName)
-				if (!clientSubscriptionMap) {
-					break
-				}
-				const subscriptionRecord = clientSubscriptionMap.get(message.subscriptionId)
-				if (!subscriptionRecord) {
-					break
-				}
-				subscriptionRecord.lastActive = new Date().getTime()
 				break
 			}
 			case SUBSCRIPTION_Message_Type.SEARCH_ONE_SUBSCRIBE:
@@ -951,8 +907,7 @@ ${application_FullName}
 		}
 		const subscriptionId = (message as ISubscriptionMessage)
 			.subscriptionId
-		clientSubscriptionMap.get(subscriptionId)?.subscription
-			.unsubscribe()
+		clientSubscriptionMap.get(subscriptionId)?.unsubscribe()
 		clientSubscriptionMap.delete(subscriptionId)
 	}
 
@@ -991,10 +946,7 @@ ${application_FullName}
 			clientSubscriptionMap = new Map()
 			webReciever.subscriptionMap.set(application_FullName, clientSubscriptionMap)
 		}
-		clientSubscriptionMap.set(message.subscriptionId, {
-			lastActive: new Date().getTime(),
-			subscription
-		})
+		clientSubscriptionMap.set(message.subscriptionId, subscription)
 	}
 
 	private getMessageDestinationApplication(

@@ -1,6 +1,6 @@
 import { Injected } from "@airport/direction-indicator";
 import { IApiCallRequestMessage } from "./IApiCallMessage";
-import { CRUD_Message_Type, ICrudMessage, IInternalMessage, IMessage, INTERNAL_Message_Type, ISubscriptionMessage, IMessageOriginOrDestination, Message_OriginOrDestination_Type, Message_Type_Group, SUBSCRIPTION_Message_Type, Message_Direction, Message_Leg, Message_Application } from "./IMessage";
+import { CRUD_Message_Type, ICrudMessage, IInternalMessage, IMessage, INTERNAL_Message_Type, ISubscriptionMessage, IMessageOriginOrDestination, Message_OriginOrDestination_Type, Message_Type_Group, SUBSCRIPTION_Message_Type, Message_Direction, Message_Leg } from "./IMessage";
 import { v4 as guidv4 } from "uuid";
 // import { ProgressivePair } from "@beyond-decentralized/pson";
 // import PSON from "@beyond-decentralized/pson";
@@ -307,8 +307,7 @@ ${JSON.stringify(message, null, 2)}
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_UNSUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIPTION_DATA:
-                    case SUBSCRIPTION_Message_Type.SEARCH_UNSUBSCRIBE:
-                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
+                    case SUBSCRIPTION_Message_Type.SEARCH_UNSUBSCRIBE: {
                         break
                     }
                     default: {
@@ -412,8 +411,7 @@ ${JSON.stringify(message, null, 2)}
             case Message_Type_Group.SUBSCRIPTION: {
                 switch ((message as ISubscriptionMessage).type) {
                     case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
-                    case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE:
-                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
+                    case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
                         break
                     }
                     default: {
