@@ -913,9 +913,6 @@ class Dictionary {
                                 userAccount: 'userAccount'
                             }
                         },
-                        CrossRepositoryRelationLedger: {
-                            name: 'CrossRepositoryRelationLedger'
-                        },
                         InternalAirEntity: {
                             name: 'InternalAirEntity'
                         },
@@ -975,7 +972,6 @@ class Dictionary {
         this.AirEntity = this.airport.apps.FINAL_APPROACH.entities.AirEntity;
         this.ApplicationRelation = this.airport.apps.AIRSPACE.entities.ApplicationRelation;
         // CopiedRecordLedger = this.airport.apps.HOLDING_PATTERN.entities.CopiedRecordLedger
-        this.CrossRepositoryRelationLedger = this.airport.apps.HOLDING_PATTERN.entities.CrossRepositoryRelationLedger;
         this.InternalAirEntity = this.airport.apps.HOLDING_PATTERN.entities.InternalAirEntity;
         this.KeyRing = this.airbridge.apps.KEYRING.entities.KeyRing;
         this.Repository = this.airport.apps.HOLDING_PATTERN.entities.Repository;
@@ -8358,26 +8354,25 @@ var SUBSCRIPTION_Message_Type;
     SUBSCRIPTION_Message_Type["SEARCH_SUBSCRIBE"] = "SEARCH_SUBSCRIBE";
     SUBSCRIPTION_Message_Type["SEARCH_SUBSCRIPTION_DATA"] = "SEARCH_SUBSCRIPTION_DATA";
     SUBSCRIPTION_Message_Type["SEARCH_UNSUBSCRIBE"] = "SEARCH_UNSUBSCRIBE";
-    SUBSCRIPTION_Message_Type["SUBSCRIPTION_PING"] = "SUBSCRIPTION_PING";
 })(SUBSCRIPTION_Message_Type || (SUBSCRIPTION_Message_Type = {}));
 
 // Unique ID creation requires a high quality random # generator. In the browser we therefore
 // require the crypto API and do not support built-in fallback to lower quality random number
 // generators (like Math.random()).
-let getRandomValues$2;
-const rnds8$2 = new Uint8Array(16);
-function rng$2() {
+let getRandomValues$1;
+const rnds8$1 = new Uint8Array(16);
+function rng$1() {
   // lazy load so that environments that need to polyfill have a chance to do so
-  if (!getRandomValues$2) {
+  if (!getRandomValues$1) {
     // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
-    getRandomValues$2 = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
+    getRandomValues$1 = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
 
-    if (!getRandomValues$2) {
+    if (!getRandomValues$1) {
       throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
     }
   }
 
-  return getRandomValues$2(rnds8$2);
+  return getRandomValues$1(rnds8$1);
 }
 
 /**
@@ -8385,30 +8380,30 @@ function rng$2() {
  * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
  */
 
-const byteToHex$2 = [];
+const byteToHex$1 = [];
 
 for (let i = 0; i < 256; ++i) {
-  byteToHex$2.push((i + 0x100).toString(16).slice(1));
+  byteToHex$1.push((i + 0x100).toString(16).slice(1));
 }
 
-function unsafeStringify$2(arr, offset = 0) {
+function unsafeStringify$1(arr, offset = 0) {
   // Note: Be careful editing this code!  It's been tuned for performance
   // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
-  return (byteToHex$2[arr[offset + 0]] + byteToHex$2[arr[offset + 1]] + byteToHex$2[arr[offset + 2]] + byteToHex$2[arr[offset + 3]] + '-' + byteToHex$2[arr[offset + 4]] + byteToHex$2[arr[offset + 5]] + '-' + byteToHex$2[arr[offset + 6]] + byteToHex$2[arr[offset + 7]] + '-' + byteToHex$2[arr[offset + 8]] + byteToHex$2[arr[offset + 9]] + '-' + byteToHex$2[arr[offset + 10]] + byteToHex$2[arr[offset + 11]] + byteToHex$2[arr[offset + 12]] + byteToHex$2[arr[offset + 13]] + byteToHex$2[arr[offset + 14]] + byteToHex$2[arr[offset + 15]]).toLowerCase();
+  return (byteToHex$1[arr[offset + 0]] + byteToHex$1[arr[offset + 1]] + byteToHex$1[arr[offset + 2]] + byteToHex$1[arr[offset + 3]] + '-' + byteToHex$1[arr[offset + 4]] + byteToHex$1[arr[offset + 5]] + '-' + byteToHex$1[arr[offset + 6]] + byteToHex$1[arr[offset + 7]] + '-' + byteToHex$1[arr[offset + 8]] + byteToHex$1[arr[offset + 9]] + '-' + byteToHex$1[arr[offset + 10]] + byteToHex$1[arr[offset + 11]] + byteToHex$1[arr[offset + 12]] + byteToHex$1[arr[offset + 13]] + byteToHex$1[arr[offset + 14]] + byteToHex$1[arr[offset + 15]]).toLowerCase();
 }
 
-const randomUUID$2 = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
-var native$2 = {
-  randomUUID: randomUUID$2
+const randomUUID$1 = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+var native$1 = {
+  randomUUID: randomUUID$1
 };
 
-function v4$2(options, buf, offset) {
-  if (native$2.randomUUID && !buf && !options) {
-    return native$2.randomUUID();
+function v4$1(options, buf, offset) {
+  if (native$1.randomUUID && !buf && !options) {
+    return native$1.randomUUID();
   }
 
   options = options || {};
-  const rnds = options.random || (options.rng || rng$2)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+  const rnds = options.random || (options.rng || rng$1)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
 
   rnds[6] = rnds[6] & 0x0f | 0x40;
   rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
@@ -8423,7 +8418,7 @@ function v4$2(options, buf, offset) {
     return buf;
   }
 
-  return unsafeStringify$2(rnds);
+  return unsafeStringify$1(rnds);
 }
 
 class AirMessageUtils {
@@ -8526,7 +8521,7 @@ ${JSON.stringify(message, null, 2)}
     getInternalMessage(type, originType = Message_OriginOrDestination_Type.USER_INTERFACE) {
         return {
             direction: Message_Direction.REQUEST,
-            id: v4$2(),
+            id: v4$1(),
             isAIRportMessage: true,
             messageLeg: Message_Leg.TO_HUB,
             origin: {
@@ -8620,8 +8615,7 @@ ${JSON.stringify(message, null, 2)}
                     case SUBSCRIPTION_Message_Type.SEARCH_ONE_UNSUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIBE:
                     case SUBSCRIPTION_Message_Type.SEARCH_SUBSCRIPTION_DATA:
-                    case SUBSCRIPTION_Message_Type.SEARCH_UNSUBSCRIBE:
-                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
+                    case SUBSCRIPTION_Message_Type.SEARCH_UNSUBSCRIBE: {
                         break;
                     }
                     default: {
@@ -8714,8 +8708,7 @@ ${JSON.stringify(message, null, 2)}
             case Message_Type_Group.SUBSCRIPTION: {
                 switch (message.type) {
                     case SUBSCRIPTION_Message_Type.API_SUBSCRIBE:
-                    case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE:
-                    case SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING: {
+                    case SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE: {
                         break;
                     }
                     default: {
@@ -12004,41 +11997,25 @@ class DdlDomainDao extends BaseDdlDomainDao {
         if (!newDomains.length) {
             return;
         }
-        let d;
-        const VALUES = [];
-        for (const domain of newDomains) {
-            VALUES.push([
-                domain._localId, domain.name
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
-            columns: [
-                d._localId,
-                d.name,
-            ],
-            VALUES
-        }, context);
+        await this.insert(newDomains, context);
     }
     async insert(domains, context) {
         let d;
         const VALUES = [];
         for (const domain of domains) {
             VALUES.push([
+                domain._localId,
                 domain.name
             ]);
         }
-        const ids = await this.db.insertValuesGenerateIds({
+        await this.db.insertValues({
             INSERT_INTO: d = Q_airport____at_airport_slash_airspace.DdlDomain,
             columns: [
+                d._localId,
                 d.name
             ],
             VALUES
         }, context);
-        for (let i = 0; i < domains.length; i++) {
-            let domain = domains[i];
-            domain._localId = ids[i][0];
-        }
     }
 }
 
@@ -12436,6 +12413,10 @@ APPLICATION_LOADER.setDependencies({
 });
 
 class SqlSchemaBuilder {
+    // Avoids race-condition errors when SequenceDao is retrieved at initialization
+    async getSequenceDao() {
+        return await IOC.get(SequenceDao);
+    }
     async build(jsonApplication, existingApplicationMap, newJsonApplicationMap, isFeatureApp, context) {
         await this.createApplication(jsonApplication, context);
         const jsonApplicationVersion = this.applicationReferenceUtils
@@ -14114,27 +14095,26 @@ takeoff.setDependencies(SqlSchemaBuilder, {
     airportDatabase: AIRPORT_DATABASE,
     applicationReferenceUtils: ApplicationReferenceUtils,
     applicationNameUtils: ApplicationNameUtils,
-    sequenceDao: SequenceDao,
     storeDriver: STORE_DRIVER
 });
 
 // Unique ID creation requires a high quality random # generator. In the browser we therefore
 // require the crypto API and do not support built-in fallback to lower quality random number
 // generators (like Math.random()).
-let getRandomValues$1;
-const rnds8$1 = new Uint8Array(16);
-function rng$1() {
+let getRandomValues;
+const rnds8 = new Uint8Array(16);
+function rng() {
   // lazy load so that environments that need to polyfill have a chance to do so
-  if (!getRandomValues$1) {
+  if (!getRandomValues) {
     // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
-    getRandomValues$1 = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
+    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
 
-    if (!getRandomValues$1) {
+    if (!getRandomValues) {
       throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
     }
   }
 
-  return getRandomValues$1(rnds8$1);
+  return getRandomValues(rnds8);
 }
 
 /**
@@ -14142,30 +14122,30 @@ function rng$1() {
  * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
  */
 
-const byteToHex$1 = [];
+const byteToHex = [];
 
 for (let i = 0; i < 256; ++i) {
-  byteToHex$1.push((i + 0x100).toString(16).slice(1));
+  byteToHex.push((i + 0x100).toString(16).slice(1));
 }
 
-function unsafeStringify$1(arr, offset = 0) {
+function unsafeStringify(arr, offset = 0) {
   // Note: Be careful editing this code!  It's been tuned for performance
   // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
-  return (byteToHex$1[arr[offset + 0]] + byteToHex$1[arr[offset + 1]] + byteToHex$1[arr[offset + 2]] + byteToHex$1[arr[offset + 3]] + '-' + byteToHex$1[arr[offset + 4]] + byteToHex$1[arr[offset + 5]] + '-' + byteToHex$1[arr[offset + 6]] + byteToHex$1[arr[offset + 7]] + '-' + byteToHex$1[arr[offset + 8]] + byteToHex$1[arr[offset + 9]] + '-' + byteToHex$1[arr[offset + 10]] + byteToHex$1[arr[offset + 11]] + byteToHex$1[arr[offset + 12]] + byteToHex$1[arr[offset + 13]] + byteToHex$1[arr[offset + 14]] + byteToHex$1[arr[offset + 15]]).toLowerCase();
+  return (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
 }
 
-const randomUUID$1 = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
-var native$1 = {
-  randomUUID: randomUUID$1
+const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+var native = {
+  randomUUID
 };
 
-function v4$1(options, buf, offset) {
-  if (native$1.randomUUID && !buf && !options) {
-    return native$1.randomUUID();
+function v4(options, buf, offset) {
+  if (native.randomUUID && !buf && !options) {
+    return native.randomUUID();
   }
 
   options = options || {};
-  const rnds = options.random || (options.rng || rng$1)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+  const rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
 
   rnds[6] = rnds[6] & 0x0f | 0x40;
   rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
@@ -14180,7 +14160,7 @@ function v4$1(options, buf, offset) {
     return buf;
   }
 
-  return unsafeStringify$1(rnds);
+  return unsafeStringify(rnds);
 }
 
 /**
@@ -14381,16 +14361,12 @@ class RepositoryType {
 class CopiedRecordLedger extends InternalAirEntity {
 }
 
-class CrossRepositoryRelationLedger extends InternalAirEntity {
-}
-
 class LocalCopyReplacementLedger {
 }
 
 const __constructors__$3 = {
     Actor,
     CopiedRecordLedger,
-    CrossRepositoryRelationLedger,
     InternalAirEntity,
     LocalCopyReplacementLedger,
     OperationHistory,
@@ -14459,7 +14435,7 @@ BaseCopiedRecordLedgerDao.Find = new DaoQueryDecorators();
 BaseCopiedRecordLedgerDao.FindOne = new DaoQueryDecorators();
 BaseCopiedRecordLedgerDao.Search = new DaoQueryDecorators();
 BaseCopiedRecordLedgerDao.SearchOne = new DaoQueryDecorators();
-class BaseCrossRepositoryRelationLedgerDao extends SQDIDao$3 {
+class BaseLocalCopyReplacementLedgerDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -14468,21 +14444,6 @@ class BaseCrossRepositoryRelationLedgerDao extends SQDIDao$3 {
     }
     constructor() {
         super(19);
-    }
-}
-BaseCrossRepositoryRelationLedgerDao.Find = new DaoQueryDecorators();
-BaseCrossRepositoryRelationLedgerDao.FindOne = new DaoQueryDecorators();
-BaseCrossRepositoryRelationLedgerDao.Search = new DaoQueryDecorators();
-BaseCrossRepositoryRelationLedgerDao.SearchOne = new DaoQueryDecorators();
-class BaseLocalCopyReplacementLedgerDao extends SQDIDao$3 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(20);
-    }
-    constructor() {
-        super(20);
     }
 }
 BaseLocalCopyReplacementLedgerDao.Find = new DaoQueryDecorators();
@@ -15008,8 +14969,7 @@ class ActorDao extends BaseActorDao {
                     _localId: Y,
                     GUID: Y,
                     owner: {}
-                },
-                userAccount: {}
+                }
             },
             FROM: [
                 a = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
@@ -15235,9 +15195,6 @@ class RepositoryMemberInvitationDao extends BaseRepositoryMemberInvitationDao {
 class CopiedRecordLedgerDao extends BaseCopiedRecordLedgerDao {
 }
 
-class CrossRepositoryRelationLedgerDao extends BaseCrossRepositoryRelationLedgerDao {
-}
-
 class LocalCopyReplacementLedgerDao extends BaseLocalCopyReplacementLedgerDao {
 }
 
@@ -15452,6 +15409,16 @@ class RepositoryDao extends BaseRepositoryDao {
             WHERE: r.GUID.equals(repositoryGuid)
         }, context);
     }
+    async markAsLoaded(repositoryGuids, context) {
+        let r;
+        await this.db.updateColumnsWhere({
+            UPDATE: r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+            SET: {
+                IS_LOADED: true
+            },
+            WHERE: r.GUID.IN(repositoryGuids)
+        }, context);
+    }
 }
 
 class RepositoryReferenceDao extends BaseRepositoryReferenceDao {
@@ -15609,7 +15576,7 @@ class RepositoryTransactionHistoryDuo {
         let repositoryTransactionHistory = new RepositoryTransactionHistory();
         let saveTimestamp = new Date().getTime();
         repositoryTransactionHistory.saveTimestamp = saveTimestamp;
-        repositoryTransactionHistory.GUID = v4$1();
+        repositoryTransactionHistory.GUID = v4();
         repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation;
         repositoryTransactionHistory.repository = new Repository();
         repositoryTransactionHistory.repository._localId = repositoryLid;
@@ -15695,30 +15662,6 @@ class CrossRepositoryRelationManager {
         copiedRecordLedger.copyRepository = copiedEntity.repository;
         return copiedRecordLedger;
     }
-    addRecords(manySideRelation, manySideEntity, copiedEntity) {
-        let oneSideRelation;
-        let oneSideDbEntity = manySideRelation.relationEntity;
-        for (const oneSideEntityDbRelation of oneSideDbEntity.relations) {
-            if (oneSideEntityDbRelation.oneToManyElems.mappedBy === manySideRelation.property.name) {
-                oneSideRelation = oneSideEntityDbRelation;
-                break;
-            }
-        }
-        const oneSideRepositoryLedger = this.getLedger(oneSideRelation, manySideEntity);
-        oneSideRepositoryLedger.repository = copiedEntity.repository;
-        const manySideRepositoryLedger = this.getLedger(manySideRelation, copiedEntity);
-        manySideRepositoryLedger.repository = manySideEntity.repository;
-        return {
-            manySideRepositoryLedger,
-            oneSideRepositoryLedger
-        };
-    }
-    getLedger(relation, relatedEntity) {
-        const crossRepositoryRelationLedger = new CrossRepositoryRelationLedger();
-        crossRepositoryRelationLedger.relation = relation;
-        crossRepositoryRelationLedger.relatedRepository = relatedEntity.repository;
-        return crossRepositoryRelationLedger;
-    }
 }
 
 class RepositoryApi {
@@ -15753,10 +15696,7 @@ const application$2 = {
 
 const holdingPattern = app(application$2);
 const REPOSITORY_MANAGER = holdingPattern.token('RepositoryManager');
-holdingPattern.register(ActorDao, CopiedRecordLedgerDao, CrossRepositoryRelationLedgerDao, CrossRepositoryRelationManager, LocalCopyReplacementLedgerDao, OperationHistoryDuo, RecordHistoryDuo, RecordHistoryNewValueDao, RecordHistoryNewValueDuo, RecordHistoryOldValueDao, RecordHistoryOldValueDuo, RepositoryDao, RepositoryMemberDao, RepositoryReferenceDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo, TransactionHistoryDuo, RepositoryApi);
-holdingPattern.setDependencies(ActorDao, {
-    datastructureUtils: DatastructureUtils
-});
+holdingPattern.register(ActorDao, CopiedRecordLedgerDao, CrossRepositoryRelationManager, LocalCopyReplacementLedgerDao, OperationHistoryDuo, RecordHistoryDuo, RecordHistoryNewValueDao, RecordHistoryNewValueDuo, RecordHistoryOldValueDao, RecordHistoryOldValueDuo, RepositoryDao, RepositoryMemberDao, RepositoryReferenceDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo, TransactionHistoryDuo, RepositoryApi);
 holdingPattern.setDependencies(OperationHistoryDuo, {
     recordHistoryDuo: RecordHistoryDuo,
 });
@@ -16210,6 +16150,16 @@ class UserAccountDao extends BaseUserAccountDao {
                 u = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.UserAccount
             ],
             WHERE: u.accountPublicSigningKey.IN(accountPublicSingingKeys)
+        }, context);
+    }
+    async findByLocalIds(localIds, context) {
+        let u;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                u = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.UserAccount
+            ],
+            WHERE: u._localId.IN(localIds)
         }, context);
     }
     async insert(userAccounts, context) {
@@ -24928,7 +24878,7 @@ const APPLICATION$3 = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "REPOSITORY",
+                        "name": "REPOSITORIES",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -26963,292 +26913,6 @@ const APPLICATION$3 = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "ACTOR_RECORD_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "AGE_SUITABILITY",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "CREATED_AT",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "DATE"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "SYSTEM_WIDE_OPERATION_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 1,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ONE_SIDE_APPLICATION_RELATION_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 7,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "RELATION_REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        },
-                        {
-                            "index": 2
-                        }
-                    ],
-                    "index": 19,
-                    "isLocal": false,
-                    "isAirEntity": true,
-                    "name": "CrossRepositoryRelationLedger",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_actorRecordId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "name": "actor",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": true,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 3,
-                            "isId": false,
-                            "name": "ageSuitability",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 4
-                            },
-                            "index": 4,
-                            "isId": false,
-                            "name": "createdAt",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 5
-                            },
-                            "index": 5,
-                            "isId": false,
-                            "name": "systemWideOperationId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "name": "relation",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 7,
-                            "isId": false,
-                            "name": "relatedRepository",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 10,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 6
-                            },
-                            "relationTableIndex": 1,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 7
-                            },
-                            "relationTableIndex": 10,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "CROSS_REPOSITORY_RELATION_LEDGER",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
                                     "oneTableIndex": 18,
@@ -27322,7 +26986,7 @@ const APPLICATION$3 = {
                             "index": 2
                         }
                     ],
-                    "index": 20,
+                    "index": 19,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "LocalCopyReplacementLedger",
@@ -29683,6 +29347,24 @@ class SyncInApplicationChecker {
     async ensureApplications(data, context) {
         try {
             let applicationCheckMap = await this.checkApplicationsAndDomains(data, context);
+            for (const applicationsForDomainCheckMap of applicationCheckMap.values()) {
+                for (const applicationCheck of applicationsForDomainCheckMap.values()) {
+                    if (!applicationCheck.found) {
+                        return {
+                            isValid: true,
+                            isInstalled: false
+                        };
+                    }
+                }
+            }
+            const allAppsInstalled = await this.syncInApplicationVersionChecker
+                .ensureApplicationVersions(data, context);
+            if (!allAppsInstalled) {
+                return {
+                    isValid: true,
+                    isInstalled: false
+                };
+            }
             for (let i = 0; i < data.applications.length; i++) {
                 let application = data.applications[i];
                 data.applications[i] = applicationCheckMap
@@ -29692,12 +29374,18 @@ class SyncInApplicationChecker {
         }
         catch (e) {
             console.error(e);
-            return false;
+            return {
+                isValid: false,
+                isInstalled: false
+            };
         }
-        return true;
+        return {
+            isValid: true,
+            isInstalled: true
+        };
     }
     async checkApplicationsAndDomains(data, context) {
-        const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(data);
+        const { allApplication_Names, domainNames, applicationCheckMap } = this.getNames(data);
         const applications = await this.ddlApplicationDao
             .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names, context);
         for (let application of applications) {
@@ -29705,53 +29393,10 @@ class SyncInApplicationChecker {
             let applicationName = application.name;
             for (let [_, applicationCheck] of applicationCheckMap.get(domainName)) {
                 if (applicationCheck.applicationName === applicationName) {
-                    let domainCheck = domainCheckMap.get(domainName);
-                    domainCheck.found = true;
-                    domainCheck.domain = application.domain;
                     applicationCheck.found = true;
                     applicationCheck.application = application;
                 }
             }
-        }
-        let domainsToCreate = [];
-        for (let [name, domainCheck] of domainCheckMap) {
-            if (domainCheck.found) {
-                continue;
-            }
-            let domain = {
-                _localId: null,
-                name
-            };
-            domainCheck.domain = domain;
-            domainsToCreate.push(domain);
-        }
-        if (domainsToCreate.length) {
-            await this.ddlDomainDao.insert(domainsToCreate, context);
-        }
-        let applicationsToCreate = [];
-        for (let [domainName, applicationChecksByName] of applicationCheckMap) {
-            for (let [name, applicationCheck] of applicationChecksByName) {
-                if (applicationCheck.found) {
-                    continue;
-                }
-                let domain = domainCheckMap.get(domainName).domain;
-                let application = {
-                    currentVersion: null,
-                    domain,
-                    fullName: this.applicationNameUtils.getApplication_FullNameFromDomainAndName(domainName, name),
-                    index: null,
-                    name,
-                    scope: 'private',
-                    status: ApplicationStatus.STUB,
-                    publicSigningKey: 'localhost',
-                    versions: []
-                };
-                applicationCheck.application = application;
-                applicationsToCreate.push(application);
-            }
-        }
-        if (applicationsToCreate.length) {
-            await this.ddlApplicationDao.insert(applicationsToCreate, context);
         }
         return applicationCheckMap;
     }
@@ -29810,28 +29455,23 @@ class SyncInApplicationChecker {
 }
 
 class SyncInApplicationVersionChecker {
-    async ensureApplicationVersions(
-    // message: SyncRepositoryData,
-    inMessageApplicationVersions, inMessageApplications, context) {
-        let applicationCheckMap;
-        try {
-            applicationCheckMap = await this.checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications, context);
-            for (let i = 0; i < inMessageApplicationVersions.length; i++) {
-                const applicationVersion = inMessageApplicationVersions[i];
-                inMessageApplicationVersions[i] = applicationCheckMap
-                    .get(applicationVersion.application.domain.name).get(applicationVersion.application.name)
-                    .applicationVersion;
-            }
+    async ensureApplicationVersions(data, context) {
+        const checkResult = await this.checkVersionsApplicationsDomains(data, context);
+        if (checkResult.haveMissingApplicationVersions) {
+            return false;
         }
-        catch (e) {
-            console.error(e);
-            return null;
+        this.setApplicationVersionApps(data);
+        for (let i = 0; i < data.applicationVersions.length; i++) {
+            const applicationVersion = data.applicationVersions[i];
+            data.applicationVersions[i] = checkResult.applicationVersionCheckMap
+                .get(applicationVersion.application.domain.name)
+                .get(applicationVersion.application.name)
+                .applicationVersion;
         }
-        return applicationCheckMap;
+        return true;
     }
-    async checkVersionsApplicationsDomains(inMessageApplicationVersions, inMessageApplications, context) {
-        const { allApplicationNames: allApplication_Names, domainNames, applicationVersionCheckMap } = this
-            .getNames(inMessageApplicationVersions, inMessageApplications);
+    async installAndCheckApplications(data, context) {
+        const { allApplicationNames: allApplication_Names, domainNames, applicationVersionCheckMap } = this.getNames(data);
         await this.setApplicationVersions(domainNames, allApplication_Names, applicationVersionCheckMap, context);
         const domainWithNewApp_NameSet = new Set();
         const newApplicationNameSet = new Set();
@@ -29844,14 +29484,30 @@ class SyncInApplicationVersionChecker {
                 }
             }
         }
-        await this.setApplicationVersions(Array.from(domainWithNewApp_NameSet), Array.from(newApplicationNameSet), applicationVersionCheckMap, context);
-        return applicationVersionCheckMap;
+        return await this.setApplicationVersions(Array.from(domainWithNewApp_NameSet), Array.from(newApplicationNameSet), applicationVersionCheckMap, context);
+    }
+    async checkVersionsApplicationsDomains(data, context) {
+        const { allApplicationNames: allApplication_Names, domainNames, applicationVersionCheckMap } = this.getNames(data);
+        await this.setApplicationVersions(domainNames, allApplication_Names, applicationVersionCheckMap, context);
+        let haveMissingApplicationVersions = false;
+        for (const [_, applicationChecks] of applicationVersionCheckMap) {
+            for (let [_, applicationCheck] of applicationChecks) {
+                if (!applicationCheck.found) {
+                    haveMissingApplicationVersions = true;
+                }
+            }
+        }
+        return {
+            applicationVersionCheckMap,
+            haveMissingApplicationVersions
+        };
     }
     async setApplicationVersions(domainNames, allApplication_Names, applicationVersionCheckMap, context) {
         const existingApplicationVersions = await this.ddlApplicationVersionDao
             .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names, context);
         let lastDomainName;
         let lastApplicationName;
+        let haveMissingApplicationVersions = false;
         for (let applicationVersion of existingApplicationVersions) {
             const domainName = applicationVersion.application.domain.name;
             const applicationName = applicationVersion.application.name;
@@ -29860,10 +29516,13 @@ class SyncInApplicationVersionChecker {
                 const applicationVersionCheckMapForDomain = applicationVersionCheckMap.get(domainName);
                 for (let [_, applicationCheck] of applicationVersionCheckMapForDomain) {
                     if (applicationCheck.applicationName === applicationName) {
-                        applicationCheck.found = true;
                         if (applicationCheck.applicationVersionNumber > applicationVersionNumber) {
-                            throw new Error(`Installed application ${applicationName} for domain ${domainName}
+                            console.error(`Installed application ${applicationName} for domain ${domainName}
 	is at a lower version ${applicationVersionNumber} than needed in message ${applicationCheck.applicationVersionNumber}.`);
+                            haveMissingApplicationVersions = true;
+                        }
+                        else {
+                            applicationCheck.found = true;
                         }
                         applicationCheck.applicationVersion = applicationVersion;
                     }
@@ -29872,8 +29531,10 @@ class SyncInApplicationVersionChecker {
                 lastApplicationName = applicationName;
             }
         }
+        return !haveMissingApplicationVersions;
     }
-    getNames(inMessageApplicationVersions, inMessageApplications) {
+    getNames(data) {
+        const inMessageApplicationVersions = data.applicationVersions;
         if (!inMessageApplicationVersions || !(inMessageApplicationVersions instanceof Array)) {
             throw new Error(`Did not find applicationVersions in SyncRepositoryData.`);
         }
@@ -29882,11 +29543,10 @@ class SyncInApplicationVersionChecker {
             if (!applicationVersion.integerVersion || typeof applicationVersion.integerVersion !== 'number') {
                 throw new Error(`Invalid ApplicationVersion.integerVersion.`);
             }
-            const application = inMessageApplications[applicationVersion.application];
+            const application = data.applications[applicationVersion.application];
             if (typeof application !== 'object') {
                 throw new Error(`Invalid ApplicationVersion.application`);
             }
-            applicationVersion.application = application;
             const domain = application.domain;
             let applicationChecksForDomain = applicationVersionCheckMap.get(domain.name);
             if (!applicationChecksForDomain) {
@@ -29915,417 +29575,17 @@ class SyncInApplicationVersionChecker {
             applicationVersionCheckMap
         };
     }
-}
-
-class SyncInChecker {
-    /**
-     * Check the message and load all required auxiliary entities.
-     */
-    async checkMessage(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context) {
-        // FIXME: replace as many DB lookups as possible with Terminal State lookups
-        let data = message.data;
-        let serializedData = JSON.stringify(data);
-        if (!await this.syncInUserAccountChecker.ensureUserAccounts(data, context)) {
-            return {
-                isValid: false
-            };
-        }
-        if (!await this.syncInTerminalChecker.ensureTerminals(data, context)) {
-            return {
-                isValid: false
-            };
-        }
-        if (!await this.syncInApplicationChecker.ensureApplications(data, context)) {
-            return {
-                isValid: false
-            };
-        }
-        if (!await this.syncInActorChecker.ensureActors(data, context)) {
-            return {
-                isValid: false
-            };
-        }
-        if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(data.applicationVersions, data.applications, context)) {
-            return {
-                isValid: false
-            };
-        }
-        const dataCheckResult = await this.syncInDataChecker.checkData(message, context);
-        const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
-            .checkRepositoriesAndMembers(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context);
-        if (!repositoryAndMemberCheckResult.isValid) {
-            return {
-                isValid: false
-            };
-        }
-        for (const signatureCheck of repositoryAndMemberCheckResult.signatureChecks) {
-            if (!this.keyUtils.verify(serializedData, signatureCheck.signatureToCheck, signatureCheck.publicSigningKey)) {
-                console.error(`message.${signatureCheck.signatureName} is not valid.`);
-                return {
-                    isValid: false
-                };
-            }
-        }
-        return {
-            ...dataCheckResult,
-            ...repositoryAndMemberCheckResult
-        };
-    }
-    async checkReferencedApplicationRelations(data, _context) {
-        // TODO: check referencedApplicationRelations
-        data.referencedApplicationVersions;
-        const applicationEntityMap = await this.syncInDataChecker.populateApplicationEntityMap(data.referencedApplicationVersions);
-        const applicationRelationMap = new Map();
-        for (let i = 0; i < data.referencedApplicationRelations.length; i++) {
-            const referencedRelation = data.referencedApplicationRelations[i];
-            if (typeof referencedRelation !== 'object') {
-                throw new Error(`Invalid referencedApplicationRelations[${i}] objectg`);
-            }
-            if (typeof referencedRelation.index !== 'number') {
-                throw new Error(`Expecting "index" (number)
-					in 'referencedApplicationRelations[${i}].index'`);
-            }
-            const referencedEntity = referencedRelation.entity;
-            if (typeof referencedEntity !== 'object') {
-                throw new Error(`Invalid referencedApplicationRelations[${i}].entity`);
-            }
-            if (typeof referencedEntity.applicationVersion !== 'number') {
-                throw new Error(`Expecting "in-message index" (number)
-					in 'referencedApplicationRelations[${i}].entity.applicationVersion'`);
-            }
-            if (typeof referencedEntity.index !== 'number') {
-                throw new Error(`Expecting "index" (number)
-					in 'referencedApplicationRelations[${i}].entity.index'`);
-            }
-            const messageApplicationVersion = data
-                .referencedApplicationVersions[referencedEntity.applicationVersion];
-            if (!messageApplicationVersion) {
-                throw new Error(`No Application Version with in-message index ${referencedEntity.applicationVersion}.
-Declared in 'referencedApplicationRelations[${i}].entity.applicationVersion'`);
-            }
-            const applicationEntity = applicationEntityMap.get(messageApplicationVersion.application.domain.name)
-                .get(messageApplicationVersion.application.name).get(referencedEntity.index);
-            if (!applicationEntity) {
-                throw new Error(`Invalid referencedApplicationRelations[${i}].entity.index: ${referencedEntity.index}`);
-            }
-            const applicationRelationsForEntityMap = this.datastructureUtils.ensureChildJsMap(applicationRelationMap, applicationEntity._localId);
-            let applicationRelation = applicationRelationsForEntityMap.get(referencedRelation.index);
-            if (applicationRelation) {
-                throw new Error(`referencedApplicationRelations[${i}].index: ${referencedRelation.index} is defined more than once`);
-            }
-            for (const relation of applicationEntity.relations) {
-                if (relation.index === referencedRelation.index) {
-                    applicationRelation = relation;
-                    break;
-                }
-            }
-            if (!applicationRelation) {
-                throw new Error(`Invalid referencedApplicationRelations[${i}].index: ${referencedRelation.index}`);
-            }
-            applicationRelationsForEntityMap.set(referencedRelation.index, applicationRelation);
-            data.referencedApplicationRelations[i] = applicationRelation;
-        }
-    }
-}
-
-class SyncInDataChecker {
-    /**
-     * Every dataMessage.data.repoTransHistories array must be sorted before entering
-     * this method.
-     *
-     * @param {IDataToTM[]} dataMessagesWithCompatibleApplications
-     * @returns {DataCheckResults}
-     */
-    async checkData(message, context) {
-        const history = message.data.history;
-        let operationHistoryCheckResult;
-        try {
-            if (!history || typeof history !== 'object') {
-                throw new Error(`Invalid SyncRepositoryData.history`);
-            }
-            if (typeof history.GUID !== 'string' || history.GUID.length !== 36) {
-                throw new Error(`Invalid SyncRepositoryData.history.GUID`);
-            }
-            if (!history.operationHistory || !(history.operationHistory instanceof Array)) {
-                throw new Error(`Invalid SyncRepositoryData.history.operationHistory`);
-            }
-            if (!history.saveTimestamp || typeof history.saveTimestamp !== 'number') {
-                throw new Error(`Invalid SyncRepositoryData.history.saveTimestamp`);
-            }
-            if (history.transactionHistory) {
-                throw new Error(`SyncRepositoryData.history.transactionHistory cannot be specified`);
-            }
-            if (history.repositoryTransactionType) {
-                throw new Error(`SyncRepositoryData.history.repositoryTransactionType cannot be specified`);
-            }
-            if (history.syncTimestamp) {
-                throw new Error(`SyncRepositoryData.history.syncTimestamp cannot be specified`);
-            }
-            for (const operationHistory of history.operationHistory) {
-                const actor = message.data.actors[operationHistory.actor];
-                if (!actor) {
-                    throw new Error(`Cannot find Actor for "in-message id"
-	SyncRepositoryData.history.operationHistory.actor`);
-                }
-                operationHistory.actor = actor;
-            }
-            // Repository is already set in SyncInRepositoryChecker
-            history.repositoryTransactionType = RepositoryTransactionType.REMOTE;
-            history.syncTimestamp = message.syncTimestamp;
-            delete history._localId;
-            const applicationEntityMap = await this.populateApplicationEntityMap(message.data.applicationVersions);
-            operationHistoryCheckResult = await this.checkOperationHistories(message.data, applicationEntityMap, context);
-        }
-        catch (e) {
-            console.error(e);
-            return {
-                isValid: false
-            };
-        }
-        return {
-            ...operationHistoryCheckResult,
-            isValid: true
-        };
-    }
-    async populateApplicationEntityMap(messageApplicationVersions) {
-        const applicationVersionsByIds = this.terminalStore.getAllApplicationVersionsByIds();
-        const applicationEntityMap = new Map();
-        for (const messageApplicationVersion of messageApplicationVersions) {
-            const applicationVersion = applicationVersionsByIds[messageApplicationVersion._localId];
-            for (const applicationEntity of applicationVersion.entities) {
-                const entitiesForApplication = this.datastructureUtils.ensureChildJsMap(this.datastructureUtils.ensureChildJsMap(applicationEntityMap, applicationVersion.application.domain.name), applicationVersion.application.name);
-                entitiesForApplication.set(applicationEntity.index, applicationEntity);
-            }
-        }
-        return applicationEntityMap;
-    }
-    async checkOperationHistories(data, applicationEntityMap, context) {
-        const forImmediateProcessing = [];
-        const forDelayedProcessing = [];
-        const history = data.history;
-        if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
-            throw new Error(`Invalid SyncRepositoryData.history.operationHistory Array`);
-        }
-        const systemWideOperationIds = this.systemWideOperationIdUtils.getSysWideOpIds(history.operationHistory.length);
-        let orderNumber = 0;
-        for (let i = 0; i < history.operationHistory.length; i++) {
-            const operationHistory = history.operationHistory[i];
-            if (typeof operationHistory !== 'object') {
-                throw new Error(`Invalid operationHistory[${i}]`);
-            }
-            if (operationHistory.orderNumber) {
-                throw new Error(`SyncRepositoryData.history -> operationHistory[${i}].orderNumber cannot be specified,
-the position of orderHistory record determines it's order`);
-            }
-            operationHistory.orderNumber = ++orderNumber;
-            switch (operationHistory.changeType) {
-                case ChangeType.DELETE_ROWS:
-                case ChangeType.INSERT_VALUES:
-                case ChangeType.UPDATE_ROWS:
-                    break;
-                default:
-                    throw new Error(`Invalid operationHistory[${i}].changeType: ${operationHistory.changeType}`);
-            }
-            if (typeof operationHistory.entity !== 'object') {
-                throw new Error(`Invalid operationHistory[${i}].entity`);
-            }
-            if (typeof operationHistory.entity.applicationVersion !== 'number') {
-                throw new Error(`Expecting "in-message index" (number)
-					in 'operationHistory[${i}].entity.applicationVersion'`);
-            }
-            const applicationVersion = data.applicationVersions[operationHistory.entity.applicationVersion];
-            if (!applicationVersion) {
-                throw new Error(`Invalid index into message.applicationVersions [${operationHistory.entity.applicationVersion}],
-				in operationHistory[${i}].entity.applicationVersion`);
-            }
-            const applicationEntity = applicationEntityMap.get(applicationVersion.application.domain.name)
-                .get(applicationVersion.application.name).get(operationHistory.entity.index);
-            if (!applicationEntity) {
-                throw new Error(`Invalid operationHistory[${i}].entity.index: ${operationHistory.entity.index}`);
-            }
-            operationHistory.entity = applicationEntity;
-            if (operationHistory.repositoryTransactionHistory) {
-                throw new Error(`SyncRepositoryData.history -> operationHistory[${i}].repositoryTransactionHistory cannot be specified`);
-            }
-            operationHistory.repositoryTransactionHistory = history;
-            if (operationHistory.systemWideOperationId) {
-                throw new Error(`SyncRepositoryData.history -> operationHistory[${i}].systemWideOperationId cannot be specified`);
-            }
-            operationHistory.systemWideOperationId = systemWideOperationIds[i];
-            delete operationHistory._localId;
-            const entityColumnMapsByIndex = {
-                actorLids: new Map(),
-                referencedRelationIds: new Map(),
-                repositoryLids: new Map(),
-                terminalIds: new Map(),
-                userAccountIds: new Map()
-            };
-            for (const dbColumn of operationHistory.entity.columns) {
-                if (this.applicationUtils.isManyRelationColumn(dbColumn)) {
-                    const oneSideDbEntity = this.applicationUtils
-                        .getOneSideEntityOfManyRelationColumn(dbColumn);
-                    if (this.dictionary.isActor(oneSideDbEntity)) {
-                        entityColumnMapsByIndex.actorLids.set(dbColumn.index, dbColumn);
-                    }
-                    else if (this.dictionary.isRepository(oneSideDbEntity)) {
-                        entityColumnMapsByIndex.repositoryLids.set(dbColumn.index, dbColumn);
-                    }
-                    else if (this.dictionary.isTerminal(oneSideDbEntity)) {
-                        entityColumnMapsByIndex.terminalIds.set(dbColumn.index, dbColumn);
-                    }
-                    else if (this.dictionary.isUserAccount(oneSideDbEntity)) {
-                        entityColumnMapsByIndex.userAccountIds.set(dbColumn.index, dbColumn);
-                    }
-                    else if (this.dictionary.isApplicationRelation(oneSideDbEntity)) {
-                        entityColumnMapsByIndex.referencedRelationIds.set(dbColumn.index, dbColumn);
-                    }
-                }
-            }
-            {
-                forImmediateProcessing.push(operationHistory);
-            }
-            await this.checkRecordHistories(operationHistory, entityColumnMapsByIndex, data, context);
-        }
-        return {
-            forImmediateProcessing,
-            forDelayedProcessing
-        };
-    }
-    async checkRecordHistories(operationHistory, entityColumnMapsByIndex, data, context) {
-        const recordHistories = operationHistory.recordHistory;
-        if (!(recordHistories instanceof Array) || !recordHistories.length) {
-            throw new Error(`Inalid SyncRepositoryData.history -> operationHistory.recordHistory`);
-        }
-        for (const recordHistory of recordHistories) {
-            if (!recordHistory._actorRecordId || typeof recordHistory._actorRecordId !== 'number') {
-                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory._actorRecordId`);
-            }
-            switch (operationHistory.changeType) {
-                case ChangeType.INSERT_VALUES:
-                    if (recordHistory.actor) {
-                        throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.actor
-for ChangeType.INSERT_VALUES`);
-                    }
-                    recordHistory.actor = operationHistory.actor;
-                    break;
-                case ChangeType.DELETE_ROWS:
-                case ChangeType.UPDATE_ROWS: {
-                    // If no actor is present on record level its the same actor that created the repositoryTransactionHistory
-                    if (recordHistory.actor === undefined) {
-                        recordHistory.actor = operationHistory.actor;
-                    }
-                    else {
-                        const actor = data.actors[recordHistory.actor];
-                        if (!actor) {
-                            throw new Error(`Did find Actor for "in-message id" in SyncRepositoryData.history -> operationHistory.actor`);
-                        }
-                        recordHistory.actor = actor;
-                    }
-                    break;
-                }
-            }
-            if (recordHistory.operationHistory) {
-                throw new Error(`SyncRepositoryData.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
-            }
-            this.checkNewValues(recordHistory, entityColumnMapsByIndex, operationHistory, data);
-            this.checkOldValues(recordHistory, entityColumnMapsByIndex, operationHistory, data);
-            recordHistory.operationHistory = operationHistory;
-            delete recordHistory._localId;
-        }
-    }
-    checkNewValues(recordHistory, entityColumnMapsByIndex, operationHistory, data) {
-        switch (operationHistory.changeType) {
-            case ChangeType.DELETE_ROWS:
-                if (recordHistory.newValues) {
-                    throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues
-for ChangeType.DELETE_ROWS`);
-                }
-                return;
-            case ChangeType.INSERT_VALUES:
-            case ChangeType.UPDATE_ROWS:
-                if (!(recordHistory.newValues instanceof Array) || !recordHistory.newValues.length) {
-                    throw new Error(`Must specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues
-for ChangeType.INSERT_VALUES|UPDATE_ROWS`);
-                }
-                break;
-        }
-        for (const newValue of recordHistory.newValues) {
-            if (newValue.recordHistory) {
-                throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues.recordHistory`);
-            }
-            newValue.recordHistory = recordHistory;
-            if (typeof newValue.columnIndex !== 'number') {
-                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.columnIndex`);
-            }
-            if (typeof newValue.newValue === undefined) {
-                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.newValue`);
-            }
-        }
-        for (const newValue of recordHistory.newValues) {
-            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.actorLids, data.actors, 'actors');
-            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.referencedRelationIds, data.referencedApplicationRelations, 'referencedApplicationRelations');
-            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.repositoryLids, data.referencedRepositories, 'referencedRepositories');
-            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.terminalIds, data.terminals, 'terminals');
-            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.userAccountIds, data.userAccounts, 'userAccounts');
-        }
-    }
-    checkOldValues(recordHistory, entityColumnMapsByIndex, operationHistory, data) {
-        switch (operationHistory.changeType) {
-            case ChangeType.DELETE_ROWS:
-            case ChangeType.INSERT_VALUES:
-                if (recordHistory.oldValues) {
-                    throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.oldValues
-for ChangeType.DELETE_ROWS|INSERT_VALUES`);
-                }
-                return;
-            case ChangeType.UPDATE_ROWS:
-                if (!(recordHistory.newValues instanceof Array) || !recordHistory.oldValues.length) {
-                    throw new Error(`Must specify SyncRepositoryData.history -> operationHistory.recordHistory.oldValues
-for ChangeType.UPDATE_ROWS`);
-                }
-                break;
-        }
-        for (const oldValue of recordHistory.oldValues) {
-            if (oldValue.recordHistory) {
-                throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues.recordHistory`);
-            }
-            oldValue.recordHistory = recordHistory;
-            if (typeof oldValue.columnIndex !== 'number') {
-                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.oldValues.columnIndex`);
-            }
-            if (typeof oldValue.oldValue === undefined) {
-                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.oldValues.oldValue`);
-            }
-        }
-        for (const oldValue of recordHistory.oldValues) {
-            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.actorLids, data.actors, 'actors');
-            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.repositoryLids, data.referencedRepositories, 'referencedRepositories');
-            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.referencedRelationIds, data.referencedApplicationRelations, 'referencedApplicationRelations');
-            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.terminalIds, data.terminals, 'terminals');
-            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.userAccountIds, data.userAccounts, 'userAccounts');
-        }
-    }
-    checkRelatedObjectInNewValue(newValue, entityIdColumnMapByIndex, entityArrayByInMessageIndex, inMessageEntityArrayName) {
-        this.checkRelatedObject(newValue, 'newValue', entityIdColumnMapByIndex, entityArrayByInMessageIndex, inMessageEntityArrayName);
-    }
-    checkRelatedObjectInOldValue(oldValue, entityIdColumnMapByIndex, entityArrayByInMessageIndex, inMessageEntityArrayName) {
-        this.checkRelatedObject(oldValue, 'oldValue', entityIdColumnMapByIndex, entityArrayByInMessageIndex, inMessageEntityArrayName);
-    }
-    checkRelatedObject(value, valueColumnName, entityIdColumnMapByIndex, entityArrayByInMessageIndex, inMessageEntityArrayName) {
-        const relationIdColumn = entityIdColumnMapByIndex.get(value.columnIndex);
-        if (relationIdColumn) {
-            const sourceEntity = entityArrayByInMessageIndex[value[valueColumnName]];
-            if (!sourceEntity) {
-                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.newValue
-Value is for ${relationIdColumn.name} and could find SyncRepositoryData.${inMessageEntityArrayName}[${value[valueColumnName]}]`);
-            }
-            value[valueColumnName] = sourceEntity._localId;
+    setApplicationVersionApps(data) {
+        for (let applicationVersion of data.applicationVersions) {
+            const application = data.applications[applicationVersion.application];
+            applicationVersion.application = application;
         }
     }
 }
 
 class SyncInRepositoryChecker {
     async checkRepositoriesAndMembers(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context) {
+        const loadedRepositoryGUIDS = [];
         let missingRepositories = [];
         let newMembers = [];
         let newRepositoryMemberAcceptances = [];
@@ -30380,9 +29640,14 @@ class SyncInRepositoryChecker {
                 else {
                     if (history.isRepositoryCreation) {
                         if (foundRepository.GUID === historyRepository.GUID) {
-                            throw new Error(`Repository ${foundRepository.GUID} is already created.`);
+                            if (!foundRepository.isLoaded) {
+                                loadedRepositoryGUIDS.push(foundRepository.GUID);
+                                history.repository = historyRepository = foundRepository;
+                            }
+                            else {
+                                throw new Error(`Repository ${foundRepository.GUID} is already created.`);
+                            }
                         }
-                        throw new Error(`Unexpected Repository ${foundRepository.GUID}`);
                     }
                     else {
                         let expectedRepositoryGUID = historyRepository;
@@ -30396,6 +29661,9 @@ class SyncInRepositoryChecker {
                         // gets modified with required state on an insert
                         history.repository = historyRepository = foundRepository;
                     }
+                }
+                if (addedRepositoryMapByGUID.has(foundRepository.GUID)) {
+                    addedRepositoryMapByGUID.set(foundRepository.GUID, foundRepository);
                 }
             }
             for (const [repositoryGUID, repository] of addedRepositoryMapByGUID) {
@@ -30412,7 +29680,13 @@ class SyncInRepositoryChecker {
                 else {
                     // Only the repository reference is loaded
                     referencedRepository.isLoaded = false;
-                    return true;
+                    if (addedRepositoryMapByGUID.has(referencedRepository.GUID)) {
+                        return false;
+                    }
+                    else {
+                        addedRepositoryMapByGUID.set(referencedRepository.GUID, referencedRepository);
+                        return true;
+                    }
                 }
             });
             if (typeof historyRepository !== 'object') {
@@ -30423,7 +29697,8 @@ class SyncInRepositoryChecker {
 	processed.`);
             }
             else {
-                if (!historyRepository._localId) {
+                if (!repositoryAddedInAnEarlierIncomingMessage
+                    && !historyRepository._localId) {
                     missingRepositories.push(historyRepository);
                 }
             }
@@ -30448,6 +29723,7 @@ class SyncInRepositoryChecker {
         }
         return {
             isValid: true,
+            loadedRepositoryGUIDS,
             missingRepositories,
             newMembers,
             newRepositoryMemberAcceptances,
@@ -30783,6 +30059,410 @@ earlier incoming message`);
     }
 }
 
+class SyncInChecker {
+    /**
+     * Check the message and load all required auxiliary entities.
+     */
+    async checkMessage(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context) {
+        // FIXME: replace as many DB lookups as possible with Terminal State lookups
+        let data = message.data;
+        // Serialize before object starts to be interlinked
+        let serializedData = JSON.stringify(data);
+        const applicationCheck = await this.syncInApplicationChecker.ensureApplications(data, context);
+        if (!applicationCheck.isInstalled) {
+            return {
+                areAppsLoaded: false,
+                isValid: applicationCheck.isValid
+            };
+        }
+        let invalidResult = {
+            areAppsLoaded: true,
+            isValid: false
+        };
+        if (!applicationCheck.isValid) {
+            return invalidResult;
+        }
+        if (!await this.syncInUserAccountChecker.ensureUserAccounts(data, context)) {
+            return invalidResult;
+        }
+        if (!await this.syncInTerminalChecker.ensureTerminals(data, context)) {
+            return invalidResult;
+        }
+        if (!await this.syncInActorChecker.ensureActors(data, context)) {
+            return invalidResult;
+        }
+        const dataCheckResult = this.syncInDataChecker.checkData(message);
+        const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
+            .checkRepositoriesAndMembers(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context);
+        if (!repositoryAndMemberCheckResult.isValid) {
+            return invalidResult;
+        }
+        for (const signatureCheck of repositoryAndMemberCheckResult.signatureChecks) {
+            if (!this.keyUtils.verify(serializedData, signatureCheck.signatureToCheck, signatureCheck.publicSigningKey)) {
+                console.error(`message.${signatureCheck.signatureName} is not valid.`);
+                return invalidResult;
+            }
+        }
+        return {
+            areAppsLoaded: true,
+            ...dataCheckResult,
+            ...repositoryAndMemberCheckResult
+        };
+    }
+    checkReferencedApplicationRelations(data) {
+        // TODO: check referencedApplicationRelations
+        data.referencedApplicationVersions;
+        const applicationEntityMap = this.syncInDataChecker.populateApplicationEntityMap(data.referencedApplicationVersions);
+        const applicationRelationMap = new Map();
+        for (let i = 0; i < data.referencedApplicationRelations.length; i++) {
+            const referencedRelation = data.referencedApplicationRelations[i];
+            if (typeof referencedRelation !== 'object') {
+                throw new Error(`Invalid referencedApplicationRelations[${i}] objectg`);
+            }
+            if (typeof referencedRelation.index !== 'number') {
+                throw new Error(`Expecting "index" (number)
+					in 'referencedApplicationRelations[${i}].index'`);
+            }
+            const referencedEntity = referencedRelation.entity;
+            if (typeof referencedEntity !== 'object') {
+                throw new Error(`Invalid referencedApplicationRelations[${i}].entity`);
+            }
+            if (typeof referencedEntity.applicationVersion !== 'number') {
+                throw new Error(`Expecting "in-message index" (number)
+					in 'referencedApplicationRelations[${i}].entity.applicationVersion'`);
+            }
+            if (typeof referencedEntity.index !== 'number') {
+                throw new Error(`Expecting "index" (number)
+					in 'referencedApplicationRelations[${i}].entity.index'`);
+            }
+            const messageApplicationVersion = data
+                .referencedApplicationVersions[referencedEntity.applicationVersion];
+            if (!messageApplicationVersion) {
+                throw new Error(`No Application Version with in-message index ${referencedEntity.applicationVersion}.
+Declared in 'referencedApplicationRelations[${i}].entity.applicationVersion'`);
+            }
+            const applicationEntity = applicationEntityMap.get(messageApplicationVersion.application.domain.name)
+                .get(messageApplicationVersion.application.name).get(referencedEntity.index);
+            if (!applicationEntity) {
+                throw new Error(`Invalid referencedApplicationRelations[${i}].entity.index: ${referencedEntity.index}`);
+            }
+            const applicationRelationsForEntityMap = this.datastructureUtils.ensureChildJsMap(applicationRelationMap, applicationEntity._localId);
+            let applicationRelation = applicationRelationsForEntityMap.get(referencedRelation.index);
+            if (applicationRelation) {
+                throw new Error(`referencedApplicationRelations[${i}].index: ${referencedRelation.index} is defined more than once`);
+            }
+            for (const relation of applicationEntity.relations) {
+                if (relation.index === referencedRelation.index) {
+                    applicationRelation = relation;
+                    break;
+                }
+            }
+            if (!applicationRelation) {
+                throw new Error(`Invalid referencedApplicationRelations[${i}].index: ${referencedRelation.index}`);
+            }
+            applicationRelationsForEntityMap.set(referencedRelation.index, applicationRelation);
+            data.referencedApplicationRelations[i] = applicationRelation;
+        }
+    }
+}
+
+class SyncInDataChecker {
+    /**
+     * Every dataMessage.data.repoTransHistories array must be sorted before entering
+     * this method.
+     *
+     * @param {IDataToTM[]} dataMessagesWithCompatibleApplications
+     * @returns {DataCheckResults}
+     */
+    checkData(message) {
+        const history = message.data.history;
+        try {
+            if (!history || typeof history !== 'object') {
+                throw new Error(`Invalid SyncRepositoryData.history`);
+            }
+            if (typeof history.GUID !== 'string' || history.GUID.length !== 36) {
+                throw new Error(`Invalid SyncRepositoryData.history.GUID`);
+            }
+            if (!history.operationHistory || !(history.operationHistory instanceof Array)) {
+                throw new Error(`Invalid SyncRepositoryData.history.operationHistory`);
+            }
+            if (!history.saveTimestamp || typeof history.saveTimestamp !== 'number') {
+                throw new Error(`Invalid SyncRepositoryData.history.saveTimestamp`);
+            }
+            if (history.transactionHistory) {
+                throw new Error(`SyncRepositoryData.history.transactionHistory cannot be specified`);
+            }
+            if (history.repositoryTransactionType) {
+                throw new Error(`SyncRepositoryData.history.repositoryTransactionType cannot be specified`);
+            }
+            if (history.syncTimestamp) {
+                throw new Error(`SyncRepositoryData.history.syncTimestamp cannot be specified`);
+            }
+            for (const operationHistory of history.operationHistory) {
+                const actor = message.data.actors[operationHistory.actor];
+                if (!actor) {
+                    throw new Error(`Cannot find Actor for "in-message id"
+	SyncRepositoryData.history.operationHistory.actor`);
+                }
+                operationHistory.actor = actor;
+            }
+            // Repository is already set in SyncInRepositoryChecker
+            history.repositoryTransactionType = RepositoryTransactionType.REMOTE;
+            history.syncTimestamp = message.syncTimestamp;
+            delete history._localId;
+            const applicationEntityMap = this.populateApplicationEntityMap(message.data.applicationVersions);
+            this.checkOperationHistories(message.data, applicationEntityMap);
+        }
+        catch (e) {
+            console.error(e);
+            return {
+                isValid: false
+            };
+        }
+        return {
+            isValid: true
+        };
+    }
+    populateApplicationEntityMap(messageApplicationVersions) {
+        const applicationVersionsByIds = this.terminalStore.getAllApplicationVersionsByIds();
+        const applicationEntityMap = new Map();
+        for (const messageApplicationVersion of messageApplicationVersions) {
+            const applicationVersion = applicationVersionsByIds[messageApplicationVersion._localId];
+            for (const applicationEntity of applicationVersion.entities) {
+                const entitiesForApplication = this.datastructureUtils.ensureChildJsMap(this.datastructureUtils.ensureChildJsMap(applicationEntityMap, applicationVersion.application.domain.name), applicationVersion.application.name);
+                entitiesForApplication.set(applicationEntity.index, applicationEntity);
+            }
+        }
+        return applicationEntityMap;
+    }
+    checkOperationHistories(data, applicationEntityMap) {
+        const history = data.history;
+        if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
+            throw new Error(`Invalid SyncRepositoryData.history.operationHistory Array`);
+        }
+        const systemWideOperationIds = this.systemWideOperationIdUtils.getSysWideOpIds(history.operationHistory.length);
+        let orderNumber = 0;
+        for (let i = 0; i < history.operationHistory.length; i++) {
+            const operationHistory = history.operationHistory[i];
+            if (typeof operationHistory !== 'object') {
+                throw new Error(`Invalid operationHistory[${i}]`);
+            }
+            if (operationHistory.orderNumber) {
+                throw new Error(`SyncRepositoryData.history -> operationHistory[${i}].orderNumber cannot be specified,
+the position of orderHistory record determines it's order`);
+            }
+            operationHistory.orderNumber = ++orderNumber;
+            switch (operationHistory.changeType) {
+                case ChangeType.DELETE_ROWS:
+                case ChangeType.INSERT_VALUES:
+                case ChangeType.UPDATE_ROWS:
+                    break;
+                default:
+                    throw new Error(`Invalid operationHistory[${i}].changeType: ${operationHistory.changeType}`);
+            }
+            if (typeof operationHistory.entity !== 'object') {
+                throw new Error(`Invalid operationHistory[${i}].entity`);
+            }
+            if (typeof operationHistory.entity.applicationVersion !== 'number') {
+                throw new Error(`Expecting "in-message index" (number)
+					in 'operationHistory[${i}].entity.applicationVersion'`);
+            }
+            const applicationVersion = data.applicationVersions[operationHistory.entity.applicationVersion];
+            if (!applicationVersion) {
+                throw new Error(`Invalid index into message.applicationVersions [${operationHistory.entity.applicationVersion}],
+				in operationHistory[${i}].entity.applicationVersion`);
+            }
+            const applicationEntity = applicationEntityMap.get(applicationVersion.application.domain.name)
+                .get(applicationVersion.application.name).get(operationHistory.entity.index);
+            if (!applicationEntity) {
+                throw new Error(`Invalid operationHistory[${i}].entity.index: ${operationHistory.entity.index}`);
+            }
+            operationHistory.entity = applicationEntity;
+            if (operationHistory.repositoryTransactionHistory) {
+                throw new Error(`SyncRepositoryData.history -> operationHistory[${i}].repositoryTransactionHistory cannot be specified`);
+            }
+            operationHistory.repositoryTransactionHistory = history;
+            if (operationHistory.systemWideOperationId) {
+                throw new Error(`SyncRepositoryData.history -> operationHistory[${i}].systemWideOperationId cannot be specified`);
+            }
+            operationHistory.systemWideOperationId = systemWideOperationIds[i];
+            delete operationHistory._localId;
+            const entityColumnMapsByIndex = {
+                actorLids: new Map(),
+                referencedRelationIds: new Map(),
+                repositoryLids: new Map(),
+                terminalIds: new Map(),
+                userAccountIds: new Map()
+            };
+            for (const dbColumn of operationHistory.entity.columns) {
+                if (this.applicationUtils.isManyRelationColumn(dbColumn)) {
+                    const oneSideDbEntity = this.applicationUtils
+                        .getOneSideEntityOfManyRelationColumn(dbColumn);
+                    if (this.dictionary.isActor(oneSideDbEntity)) {
+                        entityColumnMapsByIndex.actorLids.set(dbColumn.index, dbColumn);
+                    }
+                    else if (this.dictionary.isRepository(oneSideDbEntity)) {
+                        entityColumnMapsByIndex.repositoryLids.set(dbColumn.index, dbColumn);
+                    }
+                    else if (this.dictionary.isTerminal(oneSideDbEntity)) {
+                        entityColumnMapsByIndex.terminalIds.set(dbColumn.index, dbColumn);
+                    }
+                    else if (this.dictionary.isUserAccount(oneSideDbEntity)) {
+                        entityColumnMapsByIndex.userAccountIds.set(dbColumn.index, dbColumn);
+                    }
+                    else if (this.dictionary.isApplicationRelation(oneSideDbEntity)) {
+                        entityColumnMapsByIndex.referencedRelationIds.set(dbColumn.index, dbColumn);
+                    }
+                }
+                if (this.dictionary.isActorRelationColumn(dbColumn)) {
+                    entityColumnMapsByIndex.actorLids.set(dbColumn.index, dbColumn);
+                }
+                if (this.dictionary.isRepositoryRelationColumn(dbColumn)) {
+                    entityColumnMapsByIndex.repositoryLids.set(dbColumn.index, dbColumn);
+                }
+            }
+            this.checkRecordHistories(operationHistory, entityColumnMapsByIndex, data);
+        }
+    }
+    checkRecordHistories(operationHistory, entityColumnMapsByIndex, data) {
+        const recordHistories = operationHistory.recordHistory;
+        if (!(recordHistories instanceof Array) || !recordHistories.length) {
+            throw new Error(`Inalid SyncRepositoryData.history -> operationHistory.recordHistory`);
+        }
+        for (const recordHistory of recordHistories) {
+            if (!recordHistory._actorRecordId || typeof recordHistory._actorRecordId !== 'number') {
+                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory._actorRecordId`);
+            }
+            switch (operationHistory.changeType) {
+                case ChangeType.INSERT_VALUES:
+                    if (recordHistory.actor) {
+                        throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.actor
+for ChangeType.INSERT_VALUES`);
+                    }
+                    recordHistory.actor = operationHistory.actor;
+                    break;
+                case ChangeType.DELETE_ROWS:
+                case ChangeType.UPDATE_ROWS: {
+                    // If no actor is present on record level its the same actor that created the repositoryTransactionHistory
+                    if (recordHistory.actor === undefined) {
+                        recordHistory.actor = operationHistory.actor;
+                    }
+                    else {
+                        const actor = data.actors[recordHistory.actor];
+                        if (!actor) {
+                            throw new Error(`Did find Actor for "in-message id" in SyncRepositoryData.history -> operationHistory.actor`);
+                        }
+                        recordHistory.actor = actor;
+                    }
+                    break;
+                }
+            }
+            if (recordHistory.operationHistory) {
+                throw new Error(`SyncRepositoryData.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
+            }
+            this.checkNewValues(recordHistory, entityColumnMapsByIndex, operationHistory, data);
+            this.checkOldValues(recordHistory, entityColumnMapsByIndex, operationHistory, data);
+            recordHistory.operationHistory = operationHistory;
+            delete recordHistory._localId;
+        }
+    }
+    checkNewValues(recordHistory, entityColumnMapsByIndex, operationHistory, data) {
+        switch (operationHistory.changeType) {
+            case ChangeType.DELETE_ROWS:
+                if (recordHistory.newValues) {
+                    throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues
+for ChangeType.DELETE_ROWS`);
+                }
+                return;
+            case ChangeType.INSERT_VALUES:
+            case ChangeType.UPDATE_ROWS:
+                if (!(recordHistory.newValues instanceof Array) || !recordHistory.newValues.length) {
+                    throw new Error(`Must specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues
+for ChangeType.INSERT_VALUES|UPDATE_ROWS`);
+                }
+                break;
+        }
+        for (const newValue of recordHistory.newValues) {
+            if (newValue.recordHistory) {
+                throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues.recordHistory`);
+            }
+            newValue.recordHistory = recordHistory;
+            if (typeof newValue.columnIndex !== 'number') {
+                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.columnIndex`);
+            }
+            if (typeof newValue.newValue === undefined) {
+                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.newValue`);
+            }
+        }
+        for (const newValue of recordHistory.newValues) {
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.actorLids, data.actors, false, 'actors');
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.repositoryLids, data.referencedRepositories, true, 'referencedRepositories');
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.referencedRelationIds, data.referencedApplicationRelations, false, 'referencedApplicationRelations');
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.terminalIds, data.terminals, false, 'terminals');
+            this.checkRelatedObjectInNewValue(newValue, entityColumnMapsByIndex.userAccountIds, data.userAccounts, false, 'userAccounts');
+        }
+    }
+    checkOldValues(recordHistory, entityColumnMapsByIndex, operationHistory, data) {
+        switch (operationHistory.changeType) {
+            case ChangeType.DELETE_ROWS:
+            case ChangeType.INSERT_VALUES:
+                if (recordHistory.oldValues) {
+                    throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.oldValues
+for ChangeType.DELETE_ROWS|INSERT_VALUES`);
+                }
+                return;
+            case ChangeType.UPDATE_ROWS:
+                if (!(recordHistory.newValues instanceof Array) || !recordHistory.oldValues.length) {
+                    throw new Error(`Must specify SyncRepositoryData.history -> operationHistory.recordHistory.oldValues
+for ChangeType.UPDATE_ROWS`);
+                }
+                break;
+        }
+        for (const oldValue of recordHistory.oldValues) {
+            if (oldValue.recordHistory) {
+                throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues.recordHistory`);
+            }
+            oldValue.recordHistory = recordHistory;
+            if (typeof oldValue.columnIndex !== 'number') {
+                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.oldValues.columnIndex`);
+            }
+            if (typeof oldValue.oldValue === undefined) {
+                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.oldValues.oldValue`);
+            }
+        }
+        for (const oldValue of recordHistory.oldValues) {
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.actorLids, data.actors, false, 'actors');
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.repositoryLids, data.referencedRepositories, true, 'referencedRepositories');
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.referencedRelationIds, data.referencedApplicationRelations, false, 'referencedApplicationRelations');
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.terminalIds, data.terminals, false, 'terminals');
+            this.checkRelatedObjectInOldValue(oldValue, entityColumnMapsByIndex.userAccountIds, data.userAccounts, false, 'userAccounts');
+        }
+    }
+    checkRelatedObjectInNewValue(newValue, entityIdColumnMapByIndex, entityArrayByInMessageIndex, isRepositoryLidColumn, inMessageEntityArrayName) {
+        this.checkRelatedObject(newValue, 'newValue', entityIdColumnMapByIndex, entityArrayByInMessageIndex, isRepositoryLidColumn, inMessageEntityArrayName);
+    }
+    checkRelatedObjectInOldValue(oldValue, entityIdColumnMapByIndex, entityArrayByInMessageIndex, isRepositoryLidColumn, inMessageEntityArrayName) {
+        this.checkRelatedObject(oldValue, 'oldValue', entityIdColumnMapByIndex, entityArrayByInMessageIndex, isRepositoryLidColumn, inMessageEntityArrayName);
+    }
+    checkRelatedObject(value, valueColumnName, entityIdColumnMapByIndex, entityArrayByInMessageIndex, isRepositoryLidColumn, inMessageEntityArrayName) {
+        const relationIdColumn = entityIdColumnMapByIndex.get(value.columnIndex);
+        if (relationIdColumn) {
+            let columnValue = value[valueColumnName];
+            if (isRepositoryLidColumn && columnValue === -1) {
+                return;
+            }
+            const sourceEntity = entityArrayByInMessageIndex[value[valueColumnName]];
+            if (!sourceEntity) {
+                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.newValue
+Value is for ${relationIdColumn.name} and could find SyncRepositoryData.${inMessageEntityArrayName}[${value[valueColumnName]}]`);
+            }
+            if (!isRepositoryLidColumn) {
+                value[valueColumnName] = sourceEntity._localId;
+            }
+        }
+    }
+}
+
 class SyncInTerminalChecker {
     async ensureTerminals(data, context) {
         try {
@@ -30918,8 +30598,8 @@ class Stage1SyncedInDataProcessor {
      * @param {Map<Actor_LocalId, IActor>} actorMayById
      * @returns {Promise<void>}
      */
-    async performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryLocalId, actorMayByLid, context) {
-        await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryLocalId);
+    async performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryLocalId, applicationsByApplicationVersion_LocalIdMap, actorMayByLid, context) {
+        await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryLocalId, applicationsByApplicationVersion_LocalIdMap);
         const changedRecordIds = new Map();
         // query for all local operations on records in a repository (since the earliest
         // received change time).  Get the
@@ -31018,7 +30698,7 @@ class Stage1SyncedInDataProcessor {
             syncConflictMapByRepoId
         };
     }
-    async populateSystemWideOperationIds(repositoryTransactionHistoryMapByrepositoryLocalId) {
+    async populateSystemWideOperationIds(repositoryTransactionHistoryMapByrepositoryLocalId, applicationsByApplicationVersion_LocalIdMap) {
         let numSystemWideOperationIds = 0;
         for (const [_, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByrepositoryLocalId) {
             for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
@@ -31033,6 +30713,20 @@ class Stage1SyncedInDataProcessor {
             for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
                 for (const operationHistory of repositoryTransactionHistory.operationHistory) {
                     operationHistory.systemWideOperationId = systemWideOperationIds[i];
+                    const applicationIndex = applicationsByApplicationVersion_LocalIdMap
+                        .get(operationHistory.entity.applicationVersion._localId).index;
+                    const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
+                        .applicationVersion.entities[operationHistory.entity.index];
+                    const sysWideOperationIdDbColumn = dbEntity.columnMap[this.dictionary.AirEntity.columns.SYSTEM_WIDE_OPERATION_LID];
+                    for (const recordHistory of operationHistory.recordHistory) {
+                        if (recordHistory.newValues.length) {
+                            const systemWideOperationIdNewValue = new RecordHistoryNewValue();
+                            systemWideOperationIdNewValue.recordHistory = recordHistory;
+                            systemWideOperationIdNewValue.columnIndex = sysWideOperationIdDbColumn.index;
+                            systemWideOperationIdNewValue.newValue = operationHistory.systemWideOperationId;
+                            recordHistory.newValues.push(systemWideOperationIdNewValue);
+                        }
+                    }
                     i++;
                 }
             }
@@ -31605,139 +31299,67 @@ class Stage2SyncedInDataProcessor {
     }
 }
 
-// Unique ID creation requires a high quality random # generator. In the browser we therefore
-// require the crypto API and do not support built-in fallback to lower quality random number
-// generators (like Math.random()).
-let getRandomValues;
-const rnds8 = new Uint8Array(16);
-function rng() {
-  // lazy load so that environments that need to polyfill have a chance to do so
-  if (!getRandomValues) {
-    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
-    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
-
-    if (!getRandomValues) {
-      throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
-    }
-  }
-
-  return getRandomValues(rnds8);
-}
-
-/**
- * Convert array of 16 byte values to UUID string format of the form:
- * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
- */
-
-const byteToHex = [];
-
-for (let i = 0; i < 256; ++i) {
-  byteToHex.push((i + 0x100).toString(16).slice(1));
-}
-
-function unsafeStringify(arr, offset = 0) {
-  // Note: Be careful editing this code!  It's been tuned for performance
-  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
-  return (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
-}
-
-const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
-var native = {
-  randomUUID
-};
-
-function v4(options, buf, offset) {
-  if (native.randomUUID && !buf && !options) {
-    return native.randomUUID();
-  }
-
-  options = options || {};
-  const rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
-
-  rnds[6] = rnds[6] & 0x0f | 0x40;
-  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
-
-  if (buf) {
-    offset = offset || 0;
-
-    for (let i = 0; i < 16; ++i) {
-      buf[offset + i] = rnds[i];
-    }
-
-    return buf;
-  }
-
-  return unsafeStringify(rnds);
-}
-
 /**
  * Synchronization in Manager implementation.
  */
 class SynchronizationInManager {
-    async receiveMessages(messageMapByGUID, context) {
-        const syncTimestamp = new Date().getTime();
-        const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
-            .findWhereGUIDsIn([...messageMapByGUID.keys()], context);
-        for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
-            messageMapByGUID.delete(existingRepositoryTransactionHistory.GUID);
-        }
-        if (!messageMapByGUID.size) {
+    async receiveMessages(messageMapByRepositoryTransactionHistoryGUID, context, syncTimestamp = new Date().getTime()) {
+        if (!messageMapByRepositoryTransactionHistoryGUID.size) {
             return;
         }
-        const orderedMessages = this.timeOrderMessages(messageMapByGUID);
+        const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
+            .findWhereGUIDsIn([...messageMapByRepositoryTransactionHistoryGUID.keys()], context);
+        for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
+            messageMapByRepositoryTransactionHistoryGUID.delete(existingRepositoryTransactionHistory.GUID);
+        }
+        if (!messageMapByRepositoryTransactionHistoryGUID.size) {
+            return;
+        }
+        const orderedMessages = this.timeOrderMessages(messageMapByRepositoryTransactionHistoryGUID);
         const immediateProcessingMessages = [];
         const delayedProcessingMessages = [];
-        const newAndUpdatedRepositoriesAndRecords = {
-            missingRepositories: [],
-            newMembers: [],
-            newRepositoryMemberInvitations: [],
-            newRepositoryMemberAcceptances: []
+        const repositoryAndMemberInfo = {
+            loadedRepositoryGUIDSet: new Set(),
+            missingRepositoryMap: new Map(),
+            newMemberMap: new Map(),
+            newRepositoryMemberInvitationMap: new Map(),
+            newRepositoryMemberAcceptanceMap: new Map()
         };
         const addedRepositoryMapByGUID = new Map();
         const addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey = new Map();
+        let areMessagesValid = [];
+        let areAppsLoaded = true;
+        let i = 0;
         // Split up messages by type
-        for (const message of orderedMessages) {
+        for (; i < orderedMessages.length; i++) {
+            const message = orderedMessages[i];
             if (!this.isValidLastChangeTime(syncTimestamp, message.syncTimestamp, 'Sync Timestamp')) {
                 continue;
             }
             if (!this.isValidLastChangeTime(message.syncTimestamp, message.data.history.saveTimestamp, 'Sync Timestamp', 'Save Timestamp')) {
                 continue;
             }
-            let processMessage = true;
-            let dataCheckResult;
             // Each message may come from different source but some may not
             // be valid transaction on essential record creation separately
             // for each message
             // FIXME: right now this does not start a nested trasaction
             // - make it do so
             await this.transactionManager.transactInternal(async (transaction) => {
-                dataCheckResult = await this.syncInChecker.checkMessage(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context);
-                if (!dataCheckResult.isValid) {
+                const messageCheckResult = await this.syncInChecker.checkMessage(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context);
+                areAppsLoaded = messageCheckResult.areAppsLoaded;
+                areMessagesValid[i] = messageCheckResult.isValid;
+                if (!messageCheckResult.isValid || !areAppsLoaded) {
                     transaction.rollback(null, context);
-                    processMessage = false;
                     return;
                 }
-                newAndUpdatedRepositoriesAndRecords.missingRepositories = [
-                    ...newAndUpdatedRepositoriesAndRecords.missingRepositories,
-                    ...dataCheckResult.missingRepositories
-                ];
-                newAndUpdatedRepositoriesAndRecords.newMembers = [
-                    ...newAndUpdatedRepositoriesAndRecords.newMembers,
-                    ...dataCheckResult.newMembers
-                ];
-                newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances = [
-                    ...newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances,
-                    ...dataCheckResult.newRepositoryMemberAcceptances
-                ];
-                newAndUpdatedRepositoriesAndRecords.newRepositoryMemberInvitations = [
-                    ...newAndUpdatedRepositoriesAndRecords.newRepositoryMemberInvitations,
-                    ...dataCheckResult.newRepositoryMemberInvitations
-                ];
+                this.aggregateRepositoryAndMemberInfo(messageCheckResult, repositoryAndMemberInfo);
             }, null, context);
-            if (!processMessage) {
+            if (!areAppsLoaded) {
+                break;
+            }
+            if (!areMessagesValid[i]) {
                 continue;
             }
-            message.data.history.operationHistory = dataCheckResult.forImmediateProcessing;
             immediateProcessingMessages.push({
                 ...message,
                 data: {
@@ -31745,37 +31367,46 @@ class SynchronizationInManager {
                     history: message.data.history
                 }
             });
-            if (dataCheckResult.forDelayedProcessing.length) {
-                const history = {
-                    ...message.data.history,
-                    GUID: v4(),
-                    operationHistory: dataCheckResult.forDelayedProcessing
-                };
-                for (const operationHistory of dataCheckResult.forDelayedProcessing) {
-                    operationHistory.repositoryTransactionHistory = history;
-                }
-                delayedProcessingMessages.push({
-                    ...message,
-                    data: {
-                        ...message.data,
-                        history
-                    }
-                });
+        }
+        if (!areAppsLoaded) {
+            if (!areMessagesValid[i]) {
+                i++;
+            }
+            for (; i < orderedMessages.length; i++) {
+                delayedProcessingMessages.push(orderedMessages[i]);
             }
         }
         if (immediateProcessingMessages.length) {
             await this.transactionManager.transactInternal(async (transaction, context) => {
                 transaction.isRepositorySync = true;
-                await this.twoStageSyncedInDataProcessor.syncMessages(immediateProcessingMessages, newAndUpdatedRepositoriesAndRecords, transaction, context);
+                await this.twoStageSyncedInDataProcessor.syncMessages(immediateProcessingMessages, repositoryAndMemberInfo, transaction, context);
             }, null, context);
+            if (!context.doNotLoadReferences) {
+                await this.loadReferencedRepositories(immediateProcessingMessages, context);
+            }
         }
-        await this.wait(2000);
-        await this.processDelayedMessages(delayedProcessingMessages, context);
-        if (!context.doNotLoadReferences) {
-            await this.loadReferencedRepositories([
-                ...immediateProcessingMessages,
-                ...delayedProcessingMessages
-            ], context);
+        await this.processDelayedMessages(delayedProcessingMessages, syncTimestamp, context);
+    }
+    aggregateRepositoryAndMemberInfo(dataCheckResult, repositoryAndMemberInfo) {
+        for (const loadedRepositoryGUID of dataCheckResult.loadedRepositoryGUIDS) {
+            repositoryAndMemberInfo.loadedRepositoryGUIDSet
+                .add(loadedRepositoryGUID);
+        }
+        for (const missingRepository of dataCheckResult.missingRepositories) {
+            repositoryAndMemberInfo.missingRepositoryMap
+                .set(missingRepository.GUID, missingRepository);
+        }
+        for (const newMember of dataCheckResult.newMembers) {
+            repositoryAndMemberInfo.newMemberMap
+                .set(newMember.memberPublicSigningKey, newMember);
+        }
+        for (const newRepositoryMemberAcceptance of dataCheckResult.newRepositoryMemberAcceptances) {
+            repositoryAndMemberInfo.newRepositoryMemberAcceptanceMap
+                .set(newRepositoryMemberAcceptance.invitationPublicSigningKey, newRepositoryMemberAcceptance);
+        }
+        for (const newRepositoryMemberInvitation of dataCheckResult.newRepositoryMemberInvitations) {
+            repositoryAndMemberInfo.newRepositoryMemberInvitationMap
+                .set(newRepositoryMemberInvitation.invitationPublicSigningKey, newRepositoryMemberInvitation);
         }
     }
     timeOrderMessages(messageMapByGUID) {
@@ -31810,40 +31441,33 @@ class SynchronizationInManager {
         }
         return true;
     }
-    wait(milliseconds) {
-        return new Promise(resolve => {
-            setTimeout(_ => {
-                resolve();
-            }, milliseconds);
-        });
-    }
-    async processDelayedMessages(delayedProcessingMessages, context) {
+    async processDelayedMessages(delayedProcessingMessages, syncTimestamp, context) {
         const delayedProcessingMessagesWithValidApps = [];
         for (const message of delayedProcessingMessages) {
             const data = message.data;
-            // Possibly load (remotely) and install new apps - delayed processing
-            // messages deal with other repositories that might include data from
-            // other apps - other repositories might be referencing records in
-            // the synched repositories (which may not be aware of the apps the
-            // other repositories where created with)
-            const applicationCheckMap = await this.syncInApplicationVersionChecker.ensureApplicationVersions(data.referencedApplicationVersions, data.applications, context);
-            if (applicationCheckMap) {
-                await this.syncInChecker.checkReferencedApplicationRelations(data, applicationCheckMap, context);
+            // Install new apps
+            const appInstalledIfNeeded = await this.syncInApplicationVersionChecker
+                .installAndCheckApplications(data, context);
+            if (appInstalledIfNeeded) {
+                this.syncInChecker.checkReferencedApplicationRelations(data);
                 delayedProcessingMessagesWithValidApps.push(message);
             }
         }
-        if (delayedProcessingMessagesWithValidApps.length) {
-            await this.transactionManager.transactInternal(async (transaction, context) => {
-                transaction.isRepositorySync = true;
-                await this.twoStageSyncedInDataProcessor.syncMessages(delayedProcessingMessagesWithValidApps, null, transaction, context);
-            }, null, context);
+        const messageMapByRepositoryTransactionHistoryGUID = new Map();
+        for (const message of delayedProcessingMessagesWithValidApps) {
+            messageMapByRepositoryTransactionHistoryGUID
+                .set(message.data.history.GUID, message);
         }
+        await this.receiveMessages(messageMapByRepositoryTransactionHistoryGUID, context, syncTimestamp);
     }
     async loadReferencedRepositories(messages, context) {
         const repositoryMapByGUID = new Map();
+        const currentlyLoadedRepsitoryGUIDSet = context.currentlyLoadedRepsitoryGUIDSet;
         for (const message of messages) {
             for (const repository of message.data.referencedRepositories) {
-                if (!repositoryMapByGUID.has(repository.GUID)) {
+                if (!repositoryMapByGUID.has(repository.GUID)
+                    && (!currentlyLoadedRepsitoryGUIDSet || !currentlyLoadedRepsitoryGUIDSet
+                        .has(repository.GUID))) {
                     repositoryMapByGUID.set(repository.GUID, repository);
                 }
             }
@@ -31851,7 +31475,8 @@ class SynchronizationInManager {
         for (const repository of repositoryMapByGUID.values()) {
             await this.repositoryLoader.loadRepository(repository.GUID, {
                 ...context,
-                doNotLoadReferences: true
+                doNotLoadReferences: true,
+                isNestedLoadCall: true
             });
         }
     }
@@ -31882,21 +31507,28 @@ class TwoStageSyncedInDataProcessor {
     /**
      * Synchronize the data messages coming to Terminal (new data for this TM)
      */
-    async syncMessages(messages, newAndUpdatedRepositoriesAndRecords, transaction, context) {
-        await this.insertNewRepositoryInfo(messages, newAndUpdatedRepositoriesAndRecords, context);
+    async syncMessages(messages, repositoryAndMemberInfo, transaction, context) {
+        await this.insertNewRepositoryInfo(messages, repositoryAndMemberInfo, context);
+        await this.markLoadedRepositories(repositoryAndMemberInfo, context);
         this.aggregateHistoryRecords(messages, transaction);
         const { actorMapByLid, repositoryTransactionHistoryMapByRepositoryLid, applicationsByApplicationVersion_LocalIdMap } = await this.getDataStructures(messages);
-        for (const newRepositoryMemberAcceptance of newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances) {
+        for (const newRepositoryMemberAcceptance of repositoryAndMemberInfo.newRepositoryMemberAcceptanceMap.values()) {
             await this.repositoryMemberDao.updatePublicSigningKey(newRepositoryMemberAcceptance.invitationPublicSigningKey, newRepositoryMemberAcceptance.acceptingRepositoryMember.memberPublicSigningKey, context);
         }
         await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryLid, actorMapByLid, applicationsByApplicationVersion_LocalIdMap, context);
     }
-    async insertNewRepositoryInfo(messages, newAndUpdatedRepositoriesAndRecords, context) {
-        await this.repositoryDao.insert(newAndUpdatedRepositoriesAndRecords.missingRepositories, context);
-        await this.repositoryMemberDao.insert(newAndUpdatedRepositoriesAndRecords.newMembers, context);
-        await this.repositoryMemberInvitationDao.insert(newAndUpdatedRepositoriesAndRecords.newRepositoryMemberInvitations, context);
-        await this.repositoryMemberAcceptanceDao.insert(newAndUpdatedRepositoriesAndRecords.newRepositoryMemberAcceptances, context);
+    async insertNewRepositoryInfo(messages, repositoryAndMemberInfo, context) {
+        await this.repositoryDao.insert([...repositoryAndMemberInfo.missingRepositoryMap.values()], context);
+        await this.repositoryMemberDao.insert([...repositoryAndMemberInfo.newMemberMap.values()], context);
+        await this.repositoryMemberInvitationDao.insert([...repositoryAndMemberInfo.newRepositoryMemberInvitationMap.values()], context);
+        await this.repositoryMemberAcceptanceDao.insert([...repositoryAndMemberInfo.newRepositoryMemberAcceptanceMap.values()], context);
         await this.repositoryReferenceCreator.create(messages, context);
+    }
+    async markLoadedRepositories(repositoryAndMemberInfo, context) {
+        const loadedRepositoryGUIDs = [...repositoryAndMemberInfo.loadedRepositoryGUIDSet];
+        if (loadedRepositoryGUIDs.length) {
+            await this.repositoryDao.markAsLoaded(loadedRepositoryGUIDs, context);
+        }
     }
     aggregateHistoryRecords(messages, transaction) {
         const transactionHistory = transaction.transactionHistory;
@@ -31925,12 +31557,14 @@ class TwoStageSyncedInDataProcessor {
                             .allRecordHistoryNewValues.concat(recordHistory.newValues);
                         for (const newValue of recordHistory.newValues) {
                             const dbColumn = entityColumnMapByIndex.get(newValue.columnIndex);
-                            if (this.dictionary.isRepositoryRelationColumn(dbColumn)
-                                && newValue.newValue === -1) {
-                                newValue.newValue = repositoryTransactionHistory.repository._localId;
-                            }
-                            else if (this.dictionary.isActorRelationColumn(dbColumn)) {
-                                newValue.newValue = message.data.actors[newValue.newValue]._localId;
+                            if (this.dictionary.isRepositoryRelationColumn(dbColumn)) {
+                                if (newValue.newValue === -1) {
+                                    newValue.newValue = repositoryTransactionHistory.repository._localId;
+                                }
+                                else {
+                                    newValue.newValue = message.data
+                                        .referencedRepositories[newValue.newValue]._localId;
+                                }
                             }
                             this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(recordHistory, dbColumn, newValue.newValue);
                         }
@@ -31940,12 +31574,14 @@ class TwoStageSyncedInDataProcessor {
                             .allRecordHistoryOldValues.concat(recordHistory.oldValues);
                         for (const oldValue of recordHistory.oldValues) {
                             const dbColumn = entityColumnMapByIndex.get(oldValue.columnIndex);
-                            if (this.dictionary.isRepositoryRelationColumn(dbColumn)
-                                && oldValue.oldValue === -1) {
-                                oldValue.oldValue = repositoryTransactionHistory.repository._localId;
-                            }
-                            else if (this.dictionary.isActorRelationColumn(dbColumn)) {
-                                oldValue.oldValue = message.data.actors[oldValue.oldValue]._localId;
+                            if (this.dictionary.isRepositoryRelationColumn(dbColumn)) {
+                                if (oldValue.oldValue === -1) {
+                                    oldValue.oldValue = repositoryTransactionHistory.repository._localId;
+                                }
+                                else {
+                                    oldValue.oldValue = message.data
+                                        .referencedRepositories[oldValue.oldValue]._localId;
+                                }
                             }
                             this.recordHistoryDuo.ensureModifiedRepositoryLocalIdSet(recordHistory, dbColumn, oldValue.oldValue);
                         }
@@ -31958,11 +31594,10 @@ class TwoStageSyncedInDataProcessor {
         const repositoryTransactionHistoryMapByRepositoryLid = new Map();
         const applicationsByApplicationVersion_LocalIdMap = new Map();
         const actorMapByLid = new Map();
-        const repoTransHistories = [];
         for (const message of messages) {
             const data = message.data;
+            const repoTransHistories = this.datastructureUtils.ensureChildArray(repositoryTransactionHistoryMapByRepositoryLid, data.history.repository._localId);
             repoTransHistories.push(data.history);
-            repositoryTransactionHistoryMapByRepositoryLid.set(data.history.repository._localId, repoTransHistories);
             for (const actor of data.actors) {
                 actorMapByLid.set(actor._localId, actor);
             }
@@ -31981,7 +31616,7 @@ class TwoStageSyncedInDataProcessor {
         };
     }
     async updateLocalData(repositoryTransactionHistoryMapByRepositoryLid, actorMayByLid, applicationsByApplicationVersion_LocalIdMap, context) {
-        const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryLid, actorMayByLid, context);
+        const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryLid, applicationsByApplicationVersion_LocalIdMap, actorMayByLid, context);
         let allSyncConflicts = [];
         let allSyncConflictValues = [];
         for (const [_, synchronizationConflicts] of stage1Result.syncConflictMapByRepoId) {
@@ -32095,7 +31730,7 @@ class SyncOutDataSerializer {
             actorLidsToFindBy.push(actorLid);
         }
         const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(actorLidsToFindBy, context);
-        this.serializeUserAccounts(actors, data, lookups.userAccountLookup);
+        await this.serializeUserAccounts(actors, data, lookups.userAccountLookup, context);
         this.serializeActorTerminals(actors, data, lookups.terminalLookup, lookups.userAccountLookup);
         for (const actor of actors) {
             const applicationInMessageIndex = this.serializeApplication(actor.application, lookups.applicationLookup, data);
@@ -32104,7 +31739,7 @@ class SyncOutDataSerializer {
                 ...this.WITH_ID,
                 application: applicationInMessageIndex,
                 terminal: lookups.terminalLookup.inMessageIndexesById.get(actor.terminal.GUID),
-                userAccount: lookups.userAccountLookup.inMessageIndexesById.get(actor.userAccount.accountPublicSigningKey),
+                userAccount: lookups.userAccountLookup.inMessageIndexesById.get(actor.userAccount._localId),
                 GUID: actor.GUID
             };
         }
@@ -32114,10 +31749,16 @@ class SyncOutDataSerializer {
             this.addTerminalToMessage(actor.terminal, data, inMessageTerminalLookup, inMessageUserAccountLookup);
         }
     }
-    serializeUserAccounts(actors, data, inMessageUserAccountLookup) {
+    async serializeUserAccounts(actors, data, inMessageUserAccountLookup, context) {
         for (const actor of actors) {
-            this.addUserAccountToMessage(actor.userAccount, data, inMessageUserAccountLookup);
-            this.addUserAccountToMessage(actor.terminal.owner, data, inMessageUserAccountLookup);
+            this.registerUserAccountInMessage(actor.userAccount, inMessageUserAccountLookup);
+            this.registerUserAccountInMessage(actor.terminal.owner, inMessageUserAccountLookup);
+        }
+        const userAccounts = await this.userAccountDao.findByLocalIds([...inMessageUserAccountLookup.inMessageIndexesById.keys()], context);
+        for (let userAccount of userAccounts) {
+            const userAccountInMessageIndex = inMessageUserAccountLookup
+                .inMessageIndexesById.get(userAccount._localId);
+            this.addUserAccountToMessage(userAccount, userAccountInMessageIndex, data);
         }
     }
     addRepositoryMemberToMessage(repositoryMember, data, lookups, addFullRecord) {
@@ -32134,7 +31775,7 @@ class SyncOutDataSerializer {
                     isAdministrator: repositoryMember.isAdministrator,
                     canWrite: repositoryMember.canWrite,
                     status: repositoryMember.status,
-                    userAccount: this.addUserAccountToMessage(repositoryMember.userAccount, data, lookups.userAccountLookup).userAccountInMessageIndex
+                    userAccount: this.registerUserAccountInMessage(repositoryMember.userAccount, lookups.userAccountLookup)
                 };
             }
             data.repositoryMembers[inMessageIndex] = newRepositoryMember;
@@ -32154,7 +31795,12 @@ class SyncOutDataSerializer {
                 id = entity.GUID;
                 break;
             case IndexedEntityType.USER_ACCOUNT:
-                id = entity.accountPublicSigningKey;
+                if (typeof entity === 'number') {
+                    id = entity;
+                }
+                else {
+                    id = entity._localId;
+                }
                 break;
         }
         let inMessageIndex = inMessageEntityLookup
@@ -32170,26 +31816,20 @@ class SyncOutDataSerializer {
             inMessageIndex
         };
     }
-    addUserAccountToMessage(userAccount, data, inMessageUserAccountLookup) {
-        if (!userAccount) {
-            return {
-                entityAlreadyAdded: true,
-                userAccountInMessageIndex: -1
-            };
-        }
-        const { entityAlreadyAdded, inMessageIndex } = this.getEntityInMessageIndex(userAccount, IndexedEntityType.USER_ACCOUNT, inMessageUserAccountLookup);
-        if (!entityAlreadyAdded) {
-            let serializedUserAccount = {
-                ...this.USER_ACCOUNT_WITH_ID,
-                accountPublicSigningKey: userAccount.accountPublicSigningKey,
-                username: userAccount.username
-            };
-            data.userAccounts[inMessageIndex] = serializedUserAccount;
-        }
-        return {
-            entityAlreadyAdded,
-            userAccountInMessageIndex: inMessageIndex
+    addUserAccountToMessage(userAccount, inMessageIndex, data) {
+        let serializedUserAccount = {
+            ...this.USER_ACCOUNT_WITH_ID,
+            accountPublicSigningKey: userAccount.accountPublicSigningKey,
+            username: userAccount.username
         };
+        data.userAccounts[inMessageIndex] = serializedUserAccount;
+    }
+    registerUserAccountInMessage(userAccount, inMessageUserAccountLookup) {
+        if (!userAccount) {
+            return -1;
+        }
+        const indexResults = this.getEntityInMessageIndex(userAccount, IndexedEntityType.USER_ACCOUNT, inMessageUserAccountLookup);
+        return indexResults.inMessageIndex;
     }
     addTerminalToMessage(terminal, data, inMessageTerminalLookup, inMessageUserAccountLookup) {
         const { entityAlreadyAdded, inMessageIndex } = this.getEntityInMessageIndex(terminal, IndexedEntityType.TERMINAL, inMessageTerminalLookup);
@@ -32197,7 +31837,7 @@ class SyncOutDataSerializer {
             data.terminals[inMessageIndex] = {
                 ...this.TERMINAL_WITH_ID,
                 GUID: terminal.GUID,
-                owner: inMessageUserAccountLookup.inMessageIndexesById.get(terminal.owner.accountPublicSigningKey)
+                owner: inMessageUserAccountLookup.inMessageIndexesById.get(terminal.owner._localId)
             };
         }
         return inMessageIndex;
@@ -32230,7 +31870,7 @@ class SyncOutDataSerializer {
             ...foundRepositories
         ];
         for (const repository of foundRepositories) {
-            const { userAccountInMessageIndex } = this.addUserAccountToMessage(repository.owner, data, lookups.userAccountLookup);
+            const userAccountInMessageIndex = this.registerUserAccountInMessage(repository.owner, lookups.userAccountLookup);
             if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
                 const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository._localId);
                 data.referencedRepositories[repositoryInMessageIndex] =
@@ -32324,7 +31964,7 @@ class SyncOutDataSerializer {
             GUID: repositoryTransactionHistory.GUID,
             isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
             member,
-            repository: this.serializeHistoryRepository(repositoryTransactionHistory, data, lookups.userAccountLookup),
+            repository: this.serializeHistoryRepository(repositoryTransactionHistory, lookups.userAccountLookup),
             operationHistory: serializedOperationHistory,
             saveTimestamp: repositoryTransactionHistory.saveTimestamp,
             newRepositoryMemberAcceptances: this.serializeRepositoryMemberAcceptances(repositoryTransactionHistory, data, lookups),
@@ -32337,10 +31977,10 @@ class SyncOutDataSerializer {
         delete serializedRepositoryTransactionHistory.repositoryTransactionType;
         return serializedRepositoryTransactionHistory;
     }
-    serializeHistoryRepository(repositoryTransactionHistory, data, inMessageUserAccountLookup) {
+    serializeHistoryRepository(repositoryTransactionHistory, inMessageUserAccountLookup) {
         if (repositoryTransactionHistory.isRepositoryCreation) {
             const repository = repositoryTransactionHistory.repository;
-            let userAccountInMessageIndex = this.addUserAccountToMessage(repository.owner, data, inMessageUserAccountLookup);
+            let userAccountInMessageIndex = this.registerUserAccountInMessage(repository.owner, inMessageUserAccountLookup);
             return this.serializeRepository(repository, userAccountInMessageIndex);
         }
         else {
@@ -32441,7 +32081,10 @@ class SyncOutDataSerializer {
         const newValues = [];
         for (const newValue of recordHistory.newValues) {
             const dbColumn = dbColumMapByIndex.get(newValue.columnIndex);
-            newValues.push(this.serializeNewValue(newValue, dbColumn, data, lookups));
+            if (dbColumn.name !== this.dictionary.SystemWideOperationId
+                .columns.SYSTEM_WIDE_OPERATION_LID) {
+                newValues.push(this.serializeNewValue(newValue, dbColumn, data, lookups));
+            }
         }
         const oldValues = [];
         for (const oldValue of recordHistory.oldValues) {
@@ -32510,7 +32153,7 @@ class SyncOutDataSerializer {
                 serailizedValue = terminalInMessageIndex;
             }
             else if (this.dictionary.isUserAccount(oneSideDbEntity)) {
-                const userAccountInMessageIndex = this.addUserAccountToMessage(value, data, lookups.userAccountLookup);
+                const userAccountInMessageIndex = this.registerUserAccountInMessage(value, lookups.userAccountLookup);
                 serailizedValue = userAccountInMessageIndex;
             }
             else if (this.dictionary.isApplicationRelation(oneSideDbEntity)) {
@@ -32554,6 +32197,7 @@ class SyncOutDataSerializer {
     }
     serializeRepository(repository, owner) {
         return {
+            _localId: repository._localId,
             ageSuitability: repository.ageSuitability,
             createdAt: repository.createdAt,
             fullApplicationName: repository.fullApplicationName,
@@ -32644,12 +32288,15 @@ class RepositoryReferenceCreator {
             const referencesOfRepositoryMap = this.datastructureUtils.ensureChildJsMap(repositoryReferenceMapByGUIDs, repositoryGUID);
             for (const referencedRepository of message.data.referencedRepositories) {
                 if (referencesOfRepositoryMap.has(referencedRepository.GUID)) {
-                    continue;
+                    referencesOfRepositoryMap.set(referencedRepository.GUID, {
+                        referencingRepository: {
+                            ...referencingRepository
+                        },
+                        referencedRepository: {
+                            ...referencedRepository
+                        }
+                    });
                 }
-                referencesOfRepositoryMap.set(referencedRepository.GUID, {
-                    referencingRepository,
-                    referencedRepository
-                });
             }
         }
         if (!repositoryReferenceMapByGUIDs.size) {
@@ -32688,6 +32335,7 @@ groundTransport.setDependencies(Stage1SyncedInDataProcessor, {
     actorDao: ActorDao,
     airportDatabase: AIRPORT_DATABASE,
     datastructureUtils: DatastructureUtils,
+    dictionary: Dictionary,
     repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     sequenceGenerator: SEQUENCE_GENERATOR,
@@ -32706,9 +32354,10 @@ groundTransport.setDependencies(SyncInActorChecker, {
     actorDao: ActorDao,
 });
 groundTransport.setDependencies(SyncInApplicationChecker, {
-    ddlApplicationDao: DdlApplicationDao,
     applicationNameUtils: ApplicationNameUtils,
-    ddlDomainDao: DdlDomainDao
+    ddlApplicationDao: DdlApplicationDao,
+    syncInApplicationVersionChecker: SyncInApplicationVersionChecker,
+    terminalStore: TerminalStore
 });
 groundTransport.setDependencies(SyncInApplicationVersionChecker, {
     ddlApplicationVersionDao: DdlApplicationVersionDao,
@@ -32753,11 +32402,12 @@ groundTransport.setDependencies(SyncInUtils, {
 });
 groundTransport.setDependencies(SyncOutDataSerializer, {
     actorDao: ActorDao,
-    dbRelationDao: DdlRelationDao,
     applicationUtils: APPLICATION_UTILS,
     applicationNameUtils: ApplicationNameUtils,
+    dbRelationDao: DdlRelationDao,
     dictionary: Dictionary,
     repositoryDao: RepositoryDao,
+    userAccountDao: UserAccountDao
 });
 groundTransport.setDependencies(SynchronizationAdapterLoader, {
     debugSynchronizationAdapter: DebugSynchronizationAdapter
@@ -32795,11 +32445,12 @@ groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
 });
 
 class AbstractEntityOrderByParser {
-    constructor(rootSelectClauseFragment, airportDatabase, qValidator, queryRelationManager, orderBy) {
+    constructor(rootSelectClauseFragment, airportDatabase, qValidator, queryRelationManager, entityStateManager, orderBy) {
         this.rootSelectClauseFragment = rootSelectClauseFragment;
         this.airportDatabase = airportDatabase;
         this.qValidator = qValidator;
         this.queryRelationManager = queryRelationManager;
+        this.entityStateManager = entityStateManager;
         this.orderBy = orderBy;
     }
     getCommonOrderByFragment(orderByFields) {
@@ -32909,11 +32560,14 @@ class EntityOrderByParser extends AbstractEntityOrderByParser {
                             && queryRelation.entityIndex === dbEntity.index;
                     });
                     if (!matchingNodes.length) {
-                        return;
+                        continue;
                     }
-                    selectFragmentQueue.push(currentSelectFragment[propertyName]);
-                    const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation);
-                    joinNodeQueue.push(childJoinNode);
+                    const nestedSelectFragment = currentSelectFragment[propertyName];
+                    if (!this.entityStateManager.isStub(nestedSelectFragment)) {
+                        selectFragmentQueue.push(nestedSelectFragment);
+                        const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation);
+                        joinNodeQueue.push(childJoinNode);
+                    }
                 }
                 else {
                     const dbColumn = dbProperty.propertyColumns[0].column;
@@ -34983,7 +34637,7 @@ class EntitySQLQuery extends SQLQuery {
 			QueryResultType.ENTITY_GRAPH`);
         }
         this.finalSelectTree = this.setupSelectFields(this.query.SELECT, dbEntity, context);
-        this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, queryRelationManager, queryEntity.ORDER_BY);
+        this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, queryRelationManager, entityStateManager, queryEntity.ORDER_BY);
     }
     toSQL(internalFragments, context) {
         let joinNodeMap = {};
@@ -35980,12 +35634,25 @@ class ObservableQueryAdapter {
                 return;
             }
             this.repositoryExistenceCheckInProgress = true;
+            let locallyMissingRepositoryGUIDSet;
             await this.transactionManager.transactInternal(async (_transaction, context) => {
-                await this.doCheckExistenceOfQueriedRepositories(context);
+                locallyMissingRepositoryGUIDSet = await this.doCheckExistenceOfQueriedRepositories(context);
             }, null, {});
+            for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
+                try {
+                    await this.repositoryLoader.loadRepository(locallyMissingRepositoryGUID, {
+                        doNotLoadReferences: true,
+                        isNestedLoadCall: false
+                    });
+                }
+                catch (e) {
+                    console.error(`Error loading repository: ${locallyMissingRepositoryGUID}`);
+                    console.error(e);
+                }
+            }
         }
         catch (e) {
-            console.error('Error checking Repositor existence');
+            console.error('Error checking Repository existence');
             console.error(e);
         }
         finally {
@@ -36021,18 +35688,7 @@ class ObservableQueryAdapter {
         }
         this.queriedRepositoryIds.GUIDSet.clear();
         this.queriedRepositoryIds.localIdSet.clear();
-        for (const locallyMissingRepositoryGUID of locallyMissingRepositoryGUIDSet.values()) {
-            try {
-                await this.repositoryLoader.loadRepository(locallyMissingRepositoryGUID, {
-                    ...context,
-                    doNotLoadReferences: true
-                });
-            }
-            catch (e) {
-                console.error(`Error loading repository: ${locallyMissingRepositoryGUID}`);
-                console.error(e);
-            }
-        }
+        return locallyMissingRepositoryGUIDSet;
     }
     wrapInObservable(portableQuery, queryCallback, context) {
         // TODO: checking for presence of a Repository in an Observable
@@ -36171,6 +35827,7 @@ let RepositoryMaintenanceManager = class RepositoryMaintenanceManager {
         if (!acceptingRepositoryMember) {
             throw new Error(`User '${userAccount.username}' is not a member of Repository '${repository.name}'`);
         }
+        acceptingRepositoryMember.userAccount = userAccount;
         const publicSigningKey = await this.keyRingManager.addRepositoryKey(repository.GUID, repository.name, context);
         acceptingRepositoryMember.memberPublicSigningKey = publicSigningKey;
         const repositoryMemberAcceptance = new RepositoryMemberAcceptance();
@@ -36450,9 +36107,13 @@ class RepositoryLoader {
             context.repositoryExistenceChecked = true;
             const repositoryWithLoadInfo = await this.repositoryDao.getWithLoadInfo(repositoryGUID, context);
             await this.doLoadRepository(repositoryWithLoadInfo, repositoryGUID, context);
-        }, true);
+        }, true, context.isNestedLoadCall);
     }
-    async ensureOneLoadAtATime(callback, wait) {
+    async ensureOneLoadAtATime(callback, wait, nestedCall = false) {
+        if (nestedCall) {
+            await callback();
+            return;
+        }
         if (wait) {
             while (this.currentlyLoading) {
                 await this.wait(100);
@@ -36492,6 +36153,10 @@ class RepositoryLoader {
         }
         if (!loadRepository) {
             return;
+        }
+        const currentlyLoadedRepsitoryGUIDSet = context.currentlyLoadedRepsitoryGUIDSet;
+        if (currentlyLoadedRepsitoryGUIDSet) {
+            currentlyLoadedRepsitoryGUIDSet.set(repositoryGUID);
         }
         const now = new Date().getTime();
         const synchronizationAdapter = await this.synchronizationAdapterLoader
@@ -36547,7 +36212,7 @@ already contains a new repository.`);
             : userSession.userAccount;
         const repositoryGUID = context.newRepositoryGUID
             ? context.newRepositoryGUID
-            : 'DEVSERVR_' + v4$1();
+            : 'DEVSERVR_' + v4();
         let applicationFullName;
         if (haveUserSession) {
             applicationFullName = userSession.currentTransaction
@@ -36704,7 +36369,7 @@ class InternalRecordManager {
                     application: anApplication,
                     terminal: frameworkActor.terminal,
                     userAccount: userSession.userAccount,
-                    GUID: v4$1()
+                    GUID: v4()
                 };
                 await this.actorDao.save(actor, context);
                 actors = [actor];
@@ -36725,19 +36390,19 @@ class InternalRecordManager {
         await this.transactionManager.transactInternal(async (_transaction) => {
             const userAccount = new UserAccount();
             userAccount.username = "internalUserAccount";
-            const guid = v4$1();
+            const guid = v4();
             userAccount.accountPublicSigningKey = guid;
             userAccount.sha1sum = guid;
             const terminal = new Terminal();
             terminal.owner = userAccount;
             terminal.isLocal = true;
-            terminal.GUID = v4$1();
+            terminal.GUID = v4();
             const application = await this.ddlApplicationDao.findOneByDomain_NameAndApplication_Name(firstApp.domain, firstApp.name, context);
             const actor = new Actor();
             actor.application = application;
             actor.userAccount = userAccount;
             actor.terminal = terminal;
-            actor.GUID = v4$1();
+            actor.GUID = v4();
             const actorDao = await this.getactorDaoAsync();
             await actorDao.save(actor, context);
             const lastTerminalState = this.terminalStore.getTerminalState();
@@ -37345,7 +37010,7 @@ ${fullApplication_Name}
             actor = {
                 _localId: null,
                 application,
-                GUID: v4$1(),
+                GUID: v4(),
                 terminal: terminal,
                 userAccount: userSession.userAccount
             };
@@ -37935,7 +37600,8 @@ class HistoryManager {
     }
     async getRepositoryTransactionHistory(transactionHistory, repositoryLid, context) {
         let isRepositoryCreation = false;
-        if (context.rootTransaction.newRepository) {
+        if (context.rootTransaction.newRepository?._localId
+            === repositoryLid) {
             isRepositoryCreation = true;
         }
         return await this.transactionHistoryDuo.getRepositoryTransactionHistory(transactionHistory, repositoryLid, isRepositoryCreation);
@@ -38024,6 +37690,7 @@ class HistoryManager {
         // must have members already
         const foundRepositoryMembers = await this.repositoryMemberDao.findForRepositoryLocalIdsAndUserLocalId([...repositoriesToFindMembersForLidSet.values()], userAccount._localId, context);
         for (const repositoryMember of foundRepositoryMembers) {
+            repositoryMember.userAccount = userAccount;
             const repositoryTransactionHistories = newMemberRepositoryTransactionHistoryMap.get(repositoryMember.repository._localId);
             for (const repositoryTransactionHistory of repositoryTransactionHistories) {
                 repositoryTransactionHistory.member = repositoryMember;
@@ -38741,12 +38408,16 @@ Only one concurrent transaction is allowed per application.`)
                     transactionManagerStore.pendingTransactionQueue.unshift({
                         context,
                         credentials,
+                        parentTransaction,
                         reject,
                         resolve
                     });
                 });
             }
         }
+        return await this.doStartTransaction(credentials, context, parentTransaction);
+    }
+    async doStartTransaction(credentials, context, parentTransaction) {
         const transaction = await this.internalStartTransaction(credentials, parentTransaction, context);
         if (!parentTransaction) {
             const rootTransaction = transaction;
@@ -38771,15 +38442,21 @@ Only one concurrent transaction is allowed per application.`)
         return transaction;
     }
     async rollback(credentials, context) {
-        const transaction = this.getTransactionFromContextOrCredentials(credentials, context);
-        let parentTransaction = transaction.parentTransaction;
-        await transaction.rollback(null, context);
-        const transactionCleared = await this.clearTransaction(transaction, parentTransaction, credentials, context);
-        if (!parentTransaction) {
-            await this.clearUserSessionRootTransaction(transaction);
+        let parentTransaction;
+        let transaction;
+        try {
+            transaction = this.getTransactionFromContextOrCredentials(credentials, context);
+            parentTransaction = transaction.parentTransaction;
+            await transaction.rollback(null, context);
         }
-        if (transactionCleared) {
-            await this.resumeParentOrPendingTransaction(parentTransaction, context);
+        finally {
+            const transactionCleared = await this.clearTransaction(transaction, parentTransaction, credentials, context);
+            if (!parentTransaction) {
+                await this.clearUserSessionRootTransaction(transaction);
+            }
+            if (transactionCleared) {
+                await this.resumeParentOrPendingTransaction(parentTransaction, context);
+            }
         }
     }
     getTransactionFromContextOrCredentials(credentials, context) {
@@ -38815,7 +38492,7 @@ parent transactions.
         }
         else if (transactionManagerStore.pendingTransactionQueue.length) {
             const pendingTransaction = transactionManagerStore.pendingTransactionQueue.pop();
-            const transaction = await this.internalStartTransaction(pendingTransaction.credentials, null, pendingTransaction.context);
+            const transaction = await this.doStartTransaction(pendingTransaction.credentials, pendingTransaction.context, pendingTransaction.parentTransaction);
             pendingTransaction.resolve(transaction);
         }
     }
@@ -39704,8 +39381,7 @@ class OperationManager {
         }
         const validationContext = {
             ...context,
-            copiedRecordLedgers: [],
-            crossRepositoryRelationLedgers: []
+            copiedRecordLedgers: []
         };
         const missingRepositoryRecords = [];
         const topLevelObjectRepositoryHolder = [];
@@ -39770,15 +39446,12 @@ in top level objects (that are passed into '...Dao.save(...)')`);
                 await this.internalUpdate(operation.entities, actor, transaction, rootTransaction, saveResult, context);
             }
         }
-        const holdingPatternApp = this.airportDatabase.applications.filter(dbApplication => dbApplication.domain.name === this.dictionary.airport.DOMAIN_NAME
+        this.airportDatabase.applications.filter(dbApplication => dbApplication.domain.name === this.dictionary.airport.DOMAIN_NAME
             && dbApplication.name === this.dictionary.airport.apps.HOLDING_PATTERN.name)[0];
         // context.dbEntity = holdingPatternApp.currentVersion[0].applicationVersion.entityMapByName['CopiedRecordLedger']
         // await this.internalCreate(
         // 	validationContext.copiedRecordLedgers, actor, transaction, rootTransaction,
         // 	saveResult, context, true)
-        context.dbEntity = holdingPatternApp.currentVersion[0].applicationVersion
-            .entityMapByName[this.dictionary.CrossRepositoryRelationLedger.name];
-        await this.internalCreate(validationContext.crossRepositoryRelationLedgers, actor, transaction, rootTransaction, saveResult, context, true);
         context.dbEntity = rootDbEntity;
         return saveResult;
     }
@@ -40203,15 +39876,16 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
                 } // else (dbProperty.relation
             } // for (const dbProperty of dbEntity.properties)
             if (!isPassThrough && !isStub && !isParentSchemaId) {
-                this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, repositoryAssignmentFromParentNeeded, context);
+                this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, isCreate, repositoryAssignmentFromParentNeeded);
             }
         } // for (const record of records)
     }
-    ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, _isCreate, repositoryAssignmentFromParentNeeded, context) {
+    ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, _isCreate, repositoryAssignmentFromParentNeeded) {
         if (!dbEntity.isAirEntity) {
             return;
         }
         const airEntity = record;
+        // If there is no relationship yet between the parent and child records
         if (!parentRelationRecord) {
             if (repositoryAssignmentFromParentNeeded) {
                 throw new Error(`
@@ -40219,16 +39893,15 @@ Invalid condition - entity that is root in the passed
 in object graph does not have a repository assigned
 `);
             }
-            // There is no relationship yet between the parent and child records
             // This is the root record in the passed in object graph
             // NOTE: it's child records (both from @ManyToOne & @OneToMany)
-            // will be check subsequently (with possible cross-Repository
+            // will be checked subsequently (with possible cross-Repository
             // relations added)
             return;
         }
         // If a repository from the parent record is assigned to this record
         if (repositoryAssignmentFromParentNeeded) {
-            // no further checks needed, current record isn't get assigned to a
+            // no further checks needed, current record isn't getting assigned to a
             // different (or new) Repository so it will be assigned to the
             // Repository of the parent record
             // Since the repository will be same as that of the parent, it's
@@ -40268,10 +39941,6 @@ in object graph does not have a repository assigned
         as the Repository of the referencing (parent) record?
         `)
                 } */
-        // 
-        const { manySideRepositoryLedger, oneSideRepositoryLedger } = this.crossRepositoryRelationManager.addRecords(parentRelationProperty.relation[0], parentRelationRecord, airEntity);
-        context.crossRepositoryRelationLedgers.push(manySideRepositoryLedger);
-        context.crossRepositoryRelationLedgers.push(oneSideRepositoryLedger);
         // NOTE: the below commented out code is for scenario where records
         // via @ManyToOne links that point to other repositories are copied
         // into the referencing repository
@@ -41269,7 +40938,7 @@ class SubscriptionCountSubscriber extends SafeSubscriber {
 
 class ApiClientSubject extends SubscriptionCountSubject {
     constructor(args, requestFields, fullDIDescriptor, cache) {
-        super(v4$1(), requestFields, () => cache.subscribe(this), () => cache.unsubscribe(this));
+        super(v4(), requestFields, () => cache.subscribe(this), () => cache.unsubscribe(this));
         this.args = args;
         this.fullDIDescriptor = fullDIDescriptor;
         this.subscriptionCount = 0;
@@ -41284,58 +40953,6 @@ class ApiClientSubject extends SubscriptionCountSubject {
 class ClientSubjectCache {
     constructor() {
         this.observableRequestMap = new Map();
-        setTimeout(() => {
-            if (globalThis.repositoryAutoload === false) {
-                return;
-            }
-            setInterval(() => {
-                this.maintainSubscriptions();
-            }, 60000);
-        }, 30000);
-    }
-    maintainSubscriptions() {
-        const requestsByDomainAndApp = new Map();
-        for (const [_subscriptionId, subject] of this.observableRequestMap) {
-            const args = subject.args;
-            const fullDIDescriptor = subject.fullDIDescriptor;
-            const requestFields = subject.requestFields;
-            let requestsForDomain = requestsByDomainAndApp
-                .get(requestFields.destination.domain);
-            if (!requestsForDomain) {
-                requestsForDomain = new Map();
-                requestsByDomainAndApp.set(requestFields.destination.domain, requestsForDomain);
-            }
-            let requestsForApp = requestsForDomain.get(requestFields.destination.app);
-            if (!requestsForApp) {
-                requestsForApp = [];
-                requestsForDomain.set(requestFields.destination.app, requestsForApp);
-            }
-            requestsForApp.push({
-                args,
-                fullDIDescriptor,
-                requestFields
-            });
-        }
-        for (const [_serverDomain, requestsForDomain] of requestsByDomainAndApp) {
-            for (const [_serverApplication, requestsForApp] of requestsForDomain) {
-                const requestForApp = requestsForApp[0];
-                const subscriptionIds = [];
-                for (const request of requestsForApp) {
-                    subscriptionIds.push(request.requestFields.subscriptionId);
-                }
-                globalThis.MESSAGE_BUS.next({
-                    fullDIDescriptor: requestForApp.fullDIDescriptor,
-                    request: {
-                        ...requestForApp.requestFields,
-                        subscriptionIds,
-                        id: v4$1(),
-                        type: SUBSCRIPTION_Message_Type.SUBSCRIPTION_PING,
-                        typeGroup: Message_Type_Group.SUBSCRIPTION,
-                        dropIfConnectionNotReady: true
-                    }
-                });
-            }
-        }
     }
     addSubject(subscriptionId, subject) {
         this.observableRequestMap.set(subscriptionId, subject);
@@ -41351,7 +40968,7 @@ class ClientSubjectCache {
                 fullDIDescriptor: subject.fullDIDescriptor,
                 request: {
                     ...subject.requestFields,
-                    id: v4$1(),
+                    id: v4(),
                     type: SUBSCRIPTION_Message_Type.API_SUBSCRIBE,
                     typeGroup: Message_Type_Group.SUBSCRIPTION
                 }
@@ -41368,7 +40985,7 @@ class ClientSubjectCache {
                 fullDIDescriptor: subject.fullDIDescriptor,
                 request: {
                     ...subject.requestFields,
-                    id: v4$1(),
+                    id: v4(),
                     type: SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE,
                     typeGroup: Message_Type_Group.SUBSCRIPTION
                 }
