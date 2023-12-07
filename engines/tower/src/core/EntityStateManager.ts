@@ -4,6 +4,7 @@ import {
 import {
 	DbEntity,
 	EntityState,
+	IAirEntity,
 	IEntityStateAsFlags,
 	IEntityStateManager
 } from '@airport/ground-control';
@@ -21,6 +22,12 @@ export class EntityStateManager
 	static ORIGINAL_VALUES_PROPERTY = SerializationStateManager.ORIGINAL_VALUES_PROPERTY
 	static STATE_FIELD = '__state__'
 	static OPERATION_UNIQUE_ID_FIELD = '__OUID__'
+
+	isACopy<T>(
+		entity: T
+	): boolean {
+		return (entity as IAirEntity).copied
+	}
 
 	isStub<T>(
 		entity: T
@@ -140,7 +147,10 @@ export class EntityStateManager
 "${this.getStateFieldName()}" for ${dbEntity.name}: ${entityState}`)
 		}
 
+		let isACopy = (entity as IAirEntity).copied
+
 		return {
+			isACopy,
 			isCreate,
 			isDelete,
 			isFromAnotherApp,
