@@ -131,27 +131,9 @@ export class OperationManager
 			...context,
 			copiedRecordLedgers: []
 		}
-		const missingRepositoryRecords: IMissingRepositoryRecord[] = []
 		const topLevelObjectRepositoryHolder: IRepository[] = []
-		this.structuralEntityValidator.validate(entityGraph, [], missingRepositoryRecords,
+		this.structuralEntityValidator.validate(entityGraph, [],
 			topLevelObjectRepositoryHolder, validationContext)
-
-		if (missingRepositoryRecords.length) {
-			if (!topLevelObjectRepositoryHolder.length) {
-				throw new Error(`There are entities without an assigned repository and no top level object
-passed to '...Dao.save(...)' has a repository assigned`);
-			}
-			if (topLevelObjectRepositoryHolder.length > 1) {
-				throw new Error(`When there are entities without an assigned repository
-(when passed to '...Dao.save(...)') there may only be one (and same) repository assigned
-in top level objects (that are passed into '...Dao.save(...)')`)
-			}
-			const repository = topLevelObjectRepositoryHolder[0]
-			for (const missingRepositoryRecord of missingRepositoryRecords) {
-				missingRepositoryRecord.record[missingRepositoryRecord.repositoryPropertyName]
-					= repository
-			}
-		}
 
 		const operations = this.dependencyGraphResolver
 			.getOperationsInOrder(entityGraph, context)
@@ -202,10 +184,10 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 			}
 		}
 
-		const holdingPatternApp = this.airportDatabase.applications.filter(
-			dbApplication => dbApplication.domain.name === this.dictionary.airport.DOMAIN_NAME
-				&& dbApplication.name === this.dictionary.airport.apps.HOLDING_PATTERN.name
-		)[0]
+		// const holdingPatternApp = this.airportDatabase.applications.filter(
+		// 	dbApplication => dbApplication.domain.name === this.dictionary.airport.DOMAIN_NAME
+		// 		&& dbApplication.name === this.dictionary.airport.apps.HOLDING_PATTERN.name
+		// )[0]
 		// context.dbEntity = holdingPatternApp.currentVersion[0].applicationVersion.entityMapByName['CopiedRecordLedger']
 		// await this.internalCreate(
 		// 	validationContext.copiedRecordLedgers, actor, transaction, rootTransaction,

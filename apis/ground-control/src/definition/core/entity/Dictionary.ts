@@ -213,7 +213,8 @@ export class Dictionary {
 	 */
 	joincolumn = {
 		FOREIGN_KEY: 'foreignKey',
-		REFERENCED_COLUMN_NAME: 'referencedColumnName',
+		NULLABLE: 'nullable',
+		REFERENCED_COLUMN_NAME: '',
 		VALUE: 'value'
 	}
 

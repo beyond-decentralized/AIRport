@@ -1,6 +1,6 @@
 import { Application_Index } from "../application/IApplication";
 import { DbEntity_TableIndex, DbEntity } from "../application/DbEntity";
-import { DbColumn, DbRelation } from "../application/DbProperty";
+import { DbColumn, DbProperty, DbRelation } from "../application/DbProperty";
 import { CRUDOperation } from "../core/operation/Operation";
 import { ChangeType } from "../data/ChangeType";
 
@@ -16,74 +16,16 @@ export interface EntityIdData {
 
 export interface IApplicationUtils {
 
-  getColumnPaths(
-    dbColumn: DbColumn,
-    breadCrumb: string[],
-  ): string[][]
-
-  getDbEntity(
-    applicationIndex: Application_Index,
-    entityIndex: DbEntity_TableIndex
-  ): DbEntity;
-
-  getEntityConstructor(
-    dbEntity: DbEntity
-  ): any;
-
-  getNewEntity(
-    dbEntity: DbEntity
-  ): any;
-
-  getOneSideEntityOfManyRelationColumn(
-    dbColumn: DbColumn
-  ): DbEntity
-
-  isIdEmpty(idValue: any): boolean;
-
-  isEmpty(value: any): boolean;
-
-  isRelationColumn(
-    dbColumn: DbColumn,
-  ): boolean
-
-  isManyRelationColumn(
-    dbColumn: DbColumn
-  ): boolean
-
-  isOneRelationColumn(
-    dbColumn: DbColumn
-  ): boolean
-
-  isActorLid(
-    columnName: string
-  ): boolean
-
-  isActorRecordId(
-    columnName: string
-  ): boolean
-
-  isRepositoryId(
-    columnName: string,
-  ): boolean;
-
-  doCascade(
-    dbRelation: DbRelation,
-    crudOperation: CRUDOperation,
-  ): boolean;
-
-  getColumnPropertyNameChainsAndValue(
-    dbEntity: DbEntity,
-    dbColumn: DbColumn,
-    entityObject: any,
-    forIdKey?: boolean,
-    generateNegativeIdsForMissing?: boolean
-  ): [string[][], any];
-
   addRelationToEntitySelectClause(
     dbRelation: DbRelation,
     selectClause: any,
     allowDefaults?: boolean,
-  ): void;
+  ): void
+
+  doCascade(
+    dbRelation: DbRelation,
+    crudOperation: CRUDOperation,
+  ): boolean
 
   forEachColumnOfRelation(
     dbRelation: DbRelation,
@@ -96,7 +38,7 @@ export interface IApplicationUtils {
       ): void | boolean
     },
     failOnNoValue?: boolean,
-  ): void;
+  ): void
 
   forEachColumnTypeOfRelation(
     dbRelation: DbRelation,
@@ -106,6 +48,76 @@ export interface IApplicationUtils {
         propertyNameChains: string[][],
       ): void | boolean
     },
-  ): void;
+  ): void
+
+  getColumnPaths(
+    dbColumn: DbColumn,
+    breadCrumb: string[],
+  ): string[][]
+
+  getColumnPropertyNameChainsAndValue(
+    dbEntity: DbEntity,
+    dbColumn: DbColumn,
+    entityObject: any,
+    forIdKey?: boolean,
+    generateNegativeIdsForMissing?: boolean
+  ): [string[][], any]
+
+  getDbEntity(
+    applicationIndex: Application_Index,
+    entityIndex: DbEntity_TableIndex
+  ): DbEntity
+
+  getEntityConstructor(
+    dbEntity: DbEntity
+  ): any
+
+  getNewEntity(
+    dbEntity: DbEntity
+  ): any
+
+  getOneSideEntityOfManyRelationColumn(
+    dbColumn: DbColumn
+  ): DbEntity
+
+  isActorLid(
+    columnName: string
+  ): boolean
+
+  isActorRecordId(
+    columnName: string
+  ): boolean
+
+  isIdEmpty(idValue: any): boolean
+
+  isEmpty(value: any): boolean
+
+  isManyRelationColumn(
+    dbColumn: DbColumn
+  ): boolean
+
+  isOneRelationColumn(
+    dbColumn: DbColumn
+  ): boolean
+
+  isOneToMayRelation(
+    dbRelation: DbRelation
+  ): boolean
+
+  isRelationColumn(
+    dbColumn: DbColumn,
+  ): boolean
+
+  isRepositoryId(
+    columnName: string,
+  ): boolean
+
+  isRequiredForCreateProperty(
+    dbProperty: DbProperty
+  ): boolean
+
+  isSystemWideOperationId(
+    columnName: string
+  ): boolean
 
 }

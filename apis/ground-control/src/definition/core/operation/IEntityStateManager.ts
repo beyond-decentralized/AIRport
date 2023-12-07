@@ -29,6 +29,7 @@ export enum EntityState {
 }
 
 export interface IEntityStateAsFlags {
+	isACopy: boolean
 	isCreate: boolean
 	isDelete: boolean
 	isFromAnotherApp: boolean
@@ -40,7 +41,49 @@ export interface IEntityStateAsFlags {
 
 export interface IEntityStateManager {
 
-	isStub<T>(
+	copyEntityState<T>(
+		fromEntity: T,
+		toEntity: T
+	): void
+
+	copyOperationUniqueId<T>(
+		entity: T,
+		entityCopy: T
+	): void
+
+	getEntityState<T>(
+		entity: T
+	): EntityState
+
+	getEntityStateTypeAsFlags<T>(
+		entity: T,
+		dbEntity: DbEntity
+	): IEntityStateAsFlags
+
+	getOperationUniqueId<T>(
+		entity: T,
+		throwIfNotFound?: boolean,
+		dbEntity?: DbEntity
+	): number
+
+	getOriginalValues<T>(
+		entity: T
+	): any
+
+	setOriginalValues<T>(
+		originalValues: any,
+		entity: T
+	): void
+
+	getStateFieldName(): string
+
+	getUniqueIdFieldName(): string
+
+	isACopy<T>(
+		entity: T
+	): boolean
+
+	isDeleted<T>(
 		entity: T
 	): boolean
 
@@ -52,22 +95,15 @@ export interface IEntityStateManager {
 		entity: T
 	): boolean
 
-	getOperationUniqueId<T>(
-		entity: T,
-		throwIfNotFound?: boolean,
-		dbEntity?: DbEntity
-	): number
+	isStub<T>(
+		entity: T
+	): boolean
 
-	copyOperationUniqueId<T>(
-		entity: T,
-		entityCopy: T
-	): void
-
-	markAsStub<T>(
+	markAsOfParentSchema<T>(
 		entity: T
 	): void
 
-	markAsOfParentSchema<T>(
+	markAsStub<T>(
 		entity: T
 	): void
 
@@ -83,40 +119,9 @@ export interface IEntityStateManager {
 		entity: T
 	): void
 
-	getEntityState<T>(
-		entity: T
-	): EntityState
-
-	copyEntityState<T>(
-		fromEntity: T,
-		toEntity: T
-	): void
-
-	getUniqueIdFieldName(): string
-
-	getStateFieldName(): string
-
-	getEntityStateTypeAsFlags<T>(
-		entity: T,
-		dbEntity: DbEntity
-	): IEntityStateAsFlags
-
-	getOriginalValues<T>(
-		entity: T
-	): any
-
-	setOriginalValues<T>(
-		originalValues: any,
-		entity: T
-	): void
-
 	setIsDeleted<T>(
 		isDeleted: boolean,
 		entity: T
 	): void
-
-	isDeleted<T>(
-		entity: T
-	): boolean
 
 }

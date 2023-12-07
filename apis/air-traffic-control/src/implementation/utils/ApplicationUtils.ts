@@ -47,134 +47,6 @@ export class ApplicationUtils
 	@Inject()
 	utils: IUtils
 
-	getDbEntity(
-		applicationIndex: Application_Index,
-		entityIndex: DbEntity_TableIndex
-	): DbEntity {
-		return this.airportDatabase.applications[applicationIndex].currentVersion[0]
-			.applicationVersion.entities[entityIndex]
-	}
-
-	isActorLid(
-		columnName: string
-	): boolean {
-		return columnName === this.dictionary.AirEntity.columns.ACTOR_LID
-	}
-
-	isActorRecordId(
-		columnName: string
-	): boolean {
-		return columnName === this.dictionary.AirEntity.columns.ACTOR_RECORD_ID
-	}
-
-	isRepositoryId(
-		columnName: string
-	): boolean {
-		return columnName === this.dictionary.AirEntity.columns.REPOSITORY_LID
-	}
-
-	doCascade(
-		dbRelation: DbRelation,
-		crudOperation: CRUDOperation
-	): boolean {
-		if (dbRelation.relationType !== EntityRelationType.ONE_TO_MANY) {
-			return false
-		}
-
-		if (!dbRelation.oneToManyElems) {
-			return false
-		}
-
-		switch (crudOperation) {
-			case CRUDOperation.CREATE:
-			case CRUDOperation.UPDATE:
-			case CRUDOperation.DELETE:
-				return true
-			default:
-				throw new Error(`Unsupported CRUDOperation '${crudOperation}' for cascade check.`)
-		}
-	}
-
-	getEntityConstructor(
-		dbEntity: DbEntity
-	): any {
-		const entityConstructor = this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index]
-			.__constructors__[dbEntity.name]
-		return entityConstructor
-	}
-
-	getNewEntity(
-		dbEntity: DbEntity
-	): any {
-		const entityConstructor = this.getEntityConstructor(dbEntity)
-		if (!entityConstructor) {
-			return {}
-		}
-		return new entityConstructor()
-	}
-
-	isIdEmpty(idValue: any): boolean {
-		return !idValue && idValue !== 0
-	}
-
-	isEmpty(value: any): boolean {
-		return this.isIdEmpty(value) && value !== false && value !== ''
-	}
-
-	isRelationColumn(
-		dbColumn: DbColumn
-	): boolean {
-		return this.isManyRelationColumn(dbColumn)
-			|| this.isOneRelationColumn(dbColumn)
-	}
-
-	isManyRelationColumn(
-		dbColumn: DbColumn
-	): boolean {
-		return !!(dbColumn.manyRelationColumns && dbColumn.manyRelationColumns.length)
-	}
-
-	isOneRelationColumn(
-		dbColumn: DbColumn
-	): boolean {
-		return !!(dbColumn.oneRelationColumns && dbColumn.oneRelationColumns.length)
-	}
-
-	getOneSideEntityOfManyRelationColumn(
-		dbColumn: DbColumn
-	): DbEntity {
-		return dbColumn.manyRelationColumns[0].oneColumn.entity
-	}
-
-	getColumnPropertyNameChainsAndValue(
-		dbEntity: DbEntity,
-		dbColumn: DbColumn,
-		entityObject: any,
-		forIdKey = false,
-		generateNegativeIdsForMissing = true
-	): [string[][], any] {
-		const columnValuesAndPaths = this.getColumnValuesAndPaths(
-			dbColumn, entityObject, [], forIdKey, generateNegativeIdsForMissing)
-		const firstColumnValueAndPath = columnValuesAndPaths[0]
-		const propertyNameChains: string[][] = [firstColumnValueAndPath.path]
-		const value = firstColumnValueAndPath.value
-		columnValuesAndPaths.reduce((
-			last,
-			current
-		) => {
-			if (!this.utils.valuesEqual(last.value, current.value, true)) {
-				throw new Error(`Values differ for ${dbEntity.name}.${dbColumn.name}:
-						'${last.path.join('.')}' = ${last.value}
-						'${current.path.join('.')}' = ${current.value}`)
-			}
-			propertyNameChains.push(current.path)
-
-			return current
-		})
-
-		return [propertyNameChains, value]
-	}
-
 	addRelationToEntitySelectClause(
 		dbRelation: DbRelation,
 		selectClause: any,
@@ -234,6 +106,28 @@ export class ApplicationUtils
 			})
 	}
 
+	doCascade(
+		dbRelation: DbRelation,
+		crudOperation: CRUDOperation
+	): boolean {
+		if (dbRelation.relationType !== EntityRelationType.ONE_TO_MANY) {
+			return false
+		}
+
+		if (!dbRelation.oneToManyElems) {
+			return false
+		}
+
+		switch (crudOperation) {
+			case CRUDOperation.CREATE:
+			case CRUDOperation.UPDATE:
+			case CRUDOperation.DELETE:
+				return true
+			default:
+				throw new Error(`Unsupported CRUDOperation '${crudOperation}' for cascade check.`)
+		}
+	}
+
 	forEachColumnOfRelation(
 		dbRelation: DbRelation,
 		entity: any,
@@ -272,6 +166,184 @@ export class ApplicationUtils
 				return
 			}
 		}
+	}
+
+	getColumnPaths(
+		dbColumn: DbColumn,
+		breadCrumb: string[],
+	): string[][] {
+		let columnValuesAndPaths = []
+
+		if (this.isManyRelationColumn(dbColumn)) {
+			// If a column is part of a relation, it would be on the Many Side
+			for (const dbRelationColumn of dbColumn.manyRelationColumns) {
+				const dbProperty = dbRelationColumn.manyRelation.property
+				const relationBreadCrumb = [...breadCrumb]
+				relationBreadCrumb.push(dbProperty.name)
+				const otherEntityColumn = dbRelationColumn.oneColumn
+				const relationValuesAndPaths = this.getColumnPaths(otherEntityColumn, relationBreadCrumb)
+				columnValuesAndPaths = columnValuesAndPaths.concat(relationValuesAndPaths)
+			}
+		} else {
+			// If a column is not a part of (a) relation(s) then it is associated
+			// to only one property
+			const dbProperty = dbColumn.propertyColumns[0].property
+			const propertyBreadCrumb = [...breadCrumb]
+			propertyBreadCrumb.push(dbProperty.name)
+			columnValuesAndPaths.push(propertyBreadCrumb)
+		}
+
+		return columnValuesAndPaths
+	}
+
+	getColumnPropertyNameChainsAndValue(
+		dbEntity: DbEntity,
+		dbColumn: DbColumn,
+		entityObject: any,
+		forIdKey = false,
+		generateNegativeIdsForMissing = true
+	): [string[][], any] {
+		const columnValuesAndPaths = this.getColumnValuesAndPaths(
+			dbColumn, entityObject, [], forIdKey, generateNegativeIdsForMissing)
+		const firstColumnValueAndPath = columnValuesAndPaths[0]
+		const propertyNameChains: string[][] = [firstColumnValueAndPath.path]
+		const value = firstColumnValueAndPath.value
+		columnValuesAndPaths.reduce((
+			last,
+			current
+		) => {
+			if (!this.utils.valuesEqual(last.value, current.value, true)) {
+				throw new Error(`Values differ for ${dbEntity.name}.${dbColumn.name}:
+						'${last.path.join('.')}' = ${last.value}
+						'${current.path.join('.')}' = ${current.value}`)
+			}
+			propertyNameChains.push(current.path)
+
+			return current
+		})
+
+		return [propertyNameChains, value]
+	}
+
+	getDbEntity(
+		applicationIndex: Application_Index,
+		entityIndex: DbEntity_TableIndex
+	): DbEntity {
+		return this.airportDatabase.applications[applicationIndex].currentVersion[0]
+			.applicationVersion.entities[entityIndex]
+	}
+
+	getEntityConstructor(
+		dbEntity: DbEntity
+	): any {
+		const entityConstructor = this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index]
+			.__constructors__[dbEntity.name]
+		return entityConstructor
+	}
+
+	getNewEntity(
+		dbEntity: DbEntity
+	): any {
+		const entityConstructor = this.getEntityConstructor(dbEntity)
+		if (!entityConstructor) {
+			return {}
+		}
+		return new entityConstructor()
+	}
+
+	getOneSideEntityOfManyRelationColumn(
+		dbColumn: DbColumn
+	): DbEntity {
+		return dbColumn.manyRelationColumns[0].oneColumn.entity
+	}
+
+	isActorLid(
+		columnName: string
+	): boolean {
+		return columnName === this.dictionary.AirEntity.columns.ACTOR_LID
+	}
+
+	isActorRecordId(
+		columnName: string
+	): boolean {
+		return columnName === this.dictionary.AirEntity.columns.ACTOR_RECORD_ID
+	}
+
+	isRepositoryId(
+		columnName: string
+	): boolean {
+		return columnName === this.dictionary.AirEntity.columns.REPOSITORY_LID
+	}
+
+	isIdEmpty(idValue: any): boolean {
+		return !idValue && idValue !== 0
+	}
+
+	isEmpty(value: any): boolean {
+		return this.isIdEmpty(value) && value !== false && value !== ''
+	}
+
+	isRelationColumn(
+		dbColumn: DbColumn
+	): boolean {
+		return this.isManyRelationColumn(dbColumn)
+			|| this.isOneRelationColumn(dbColumn)
+	}
+
+	isManyRelationColumn(
+		dbColumn: DbColumn
+	): boolean {
+		return !!(dbColumn.manyRelationColumns && dbColumn.manyRelationColumns.length)
+	}
+
+	isOneRelationColumn(
+		dbColumn: DbColumn
+	): boolean {
+		return !!(dbColumn.oneRelationColumns && dbColumn.oneRelationColumns.length)
+	}
+
+	isOneToMayRelation(
+		dbRelation: DbRelation
+	): boolean {
+		return dbRelation.oneRelationColumns
+			&& !!dbRelation.oneRelationColumns.length
+	}
+
+	isRequiredForCreateProperty(
+		dbProperty: DbProperty
+	): boolean {
+		const relation = dbProperty.relation
+		let allColumnsNullable = true
+		if (relation && relation.length && relation[0]) {
+			const dbRelation = relation[0]
+			if (this.isOneToMayRelation(dbRelation)) {
+				return false
+			}
+
+			for (const manyRelationColumn of dbRelation.manyRelationColumns) {
+				if (manyRelationColumn.manyColumn.notNull !== false) {
+					allColumnsNullable = false
+					break
+				}
+			}
+		}
+
+		const propertyColumns = dbProperty.propertyColumns
+		if (!propertyColumns || !propertyColumns[0]) {
+			return false
+		}
+		
+		const columnName = propertyColumns[0].column.name
+		return !this.isActorRecordId(columnName)
+			&& !this.isActorLid(columnName)
+			&& !this.isSystemWideOperationId(columnName)
+			&& !allColumnsNullable
+	}
+
+	isSystemWideOperationId(
+		columnName: string
+	): boolean {
+		return columnName === this.dictionary.AirEntity.columns.SYSTEM_WIDE_OPERATION_LID
 	}
 
 	private getColumnValuesAndPaths(
@@ -343,57 +415,6 @@ export class ApplicationUtils
 				value
 			}]
 		}
-	}
-
-	getColumnPaths(
-		dbColumn: DbColumn,
-		breadCrumb: string[],
-	): string[][] {
-		let columnValuesAndPaths = []
-
-		if (this.isManyRelationColumn(dbColumn)) {
-			// If a column is part of a relation, it would be on the Many Side
-			for (const dbRelationColumn of dbColumn.manyRelationColumns) {
-				const dbProperty = dbRelationColumn.manyRelation.property
-				const relationBreadCrumb = [...breadCrumb]
-				relationBreadCrumb.push(dbProperty.name)
-				const otherEntityColumn = dbRelationColumn.oneColumn
-				const relationValuesAndPaths = this.getColumnPaths(otherEntityColumn, relationBreadCrumb)
-				columnValuesAndPaths = columnValuesAndPaths.concat(relationValuesAndPaths)
-			}
-		} else {
-			// If a column is not a part of (a) relation(s) then it is associated
-			// to only one property
-			const dbProperty = dbColumn.propertyColumns[0].property
-			const propertyBreadCrumb = [...breadCrumb]
-			propertyBreadCrumb.push(dbProperty.name)
-			columnValuesAndPaths.push(propertyBreadCrumb)
-		}
-
-		return columnValuesAndPaths
-	}
-
-	private handleNoId(
-		dbColumn: DbColumn,
-		dbProperty: DbProperty,
-		propertyNameChains: string[][],
-		value,
-		noIdValueCallback: {
-			(
-				relationColumn: DbColumn,
-				value: any,
-				propertyNameChains: string[][],
-			): boolean;
-		},
-	): boolean {
-		if (noIdValueCallback) {
-			if (!noIdValueCallback(dbColumn, value, propertyNameChains)) {
-				return true
-			}
-		} else {
-			throw new Error(`Cannot retrieve composite Id value, value chain '${propertyNameChains.join('.')}' is : ${value}.`)
-		}
-		return false
 	}
 
 }

@@ -232,9 +232,9 @@ REPOSITORY_MANAGER.setDependencies({
 })
 
 terminal.setDependencies(StructuralEntityValidator, {
+    applicationNameUtils: ApplicationNameUtils,
     applicationUtils: APPLICATION_UTILS,
     crossRepositoryRelationManager: CrossRepositoryRelationManager,
-    applicationNameUtils: ApplicationNameUtils,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
 })

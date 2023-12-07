@@ -13,7 +13,7 @@ import {
 import { Actor, Repository } from '@airport/holding-pattern'
 import { UserAccount } from '@airport/travel-document-checkpoint'
 import { IAirEntityUtils } from '@airport/aviation-communication'
-import { ActorRecordId, AirEntity_Copied, AirEntity_GUID, CreatedAt, IAirEntity, SystemWideOperationId } from '@airport/ground-control'
+import { ActorRecordId, AirEntity_Copied, AirEntity_GUID, AirEntity_ToBeCopied, CreatedAt, IAirEntity, SystemWideOperationId } from '@airport/ground-control'
 
 /**
  * Created by Papa on 2/17/2017.
@@ -47,9 +47,7 @@ export abstract class AirEntity
 	})
 	repository: Repository
 
-	// TODO: when records are copied, make this a column
-	// @Column({ name: 'COPIED', nullable: false })
-	@Transient()
+	@Column({ name: 'COPIED', nullable: false })
 	@DbBoolean()
 	copied?: AirEntity_Copied = false
 
@@ -64,6 +62,13 @@ export abstract class AirEntity
 	@Column({ name: 'SYSTEM_WIDE_OPERATION_LID', nullable: false })
 	@DbNumber()
 	systemWideOperationId?: SystemWideOperationId
+
+	/*
+	 * Set at record creation time if a copy needs to be made (of a record
+	 * in another repository)
+	 */
+	@Transient()
+	toBeCopied?: AirEntity_ToBeCopied = false
 
 	/*
 	 *A transient convenience property to get the username of the

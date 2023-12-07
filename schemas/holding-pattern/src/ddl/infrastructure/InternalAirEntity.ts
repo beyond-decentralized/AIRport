@@ -1,5 +1,6 @@
 import {
 	Column,
+	DbBoolean,
 	DbDate,
 	DbNumber,
 	GeneratedValue,
@@ -11,7 +12,7 @@ import {
 } from '@airport/tarmaq-entity'
 import { UserAccount } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { IAirEntityUtils } from '@airport/aviation-communication'
-import { ActorRecordId, AgeSuitability, AirEntity_GUID, CreatedAt, IAirEntity, SystemWideOperationId } from '@airport/ground-control'
+import { ActorRecordId, AgeSuitability, AirEntity_Copied, AirEntity_GUID, AirEntity_ToBeCopied, CreatedAt, IAirEntity, SystemWideOperationId } from '@airport/ground-control'
 import { Actor } from './Actor'
 import { Repository } from '../repository/Repository'
 
@@ -84,10 +85,9 @@ export abstract class InternalAirEntity
 	@DbNumber()
 	ageSuitability: AgeSuitability = 0
 
-	// TODO: if and when records are copied, make this a column
-	// @Column({ name: 'COPIED', nullable: false })
-	@Transient()
-	copied?: boolean = false
+	@Column({ name: 'COPIED', nullable: false })
+	@DbBoolean()
+	copied?: AirEntity_Copied = false
 
 	@Column({ name: 'CREATED_AT', nullable: false })
 	@DbDate()
@@ -100,6 +100,13 @@ export abstract class InternalAirEntity
 	@Column({ name: 'SYSTEM_WIDE_OPERATION_LID', nullable: false })
 	@DbNumber()
 	systemWideOperationId?: SystemWideOperationId
+
+	/*
+	 * Set at record creation time if a copy needs to be made (of a record
+	 * in another repository)
+	 */
+	@Transient()
+	toBeCopied?: AirEntity_ToBeCopied = false
 
 	/*
 	 *A transient convenience property to get the username of the

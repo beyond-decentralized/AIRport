@@ -283,6 +283,7 @@ export type SystemWideOperationId = number
 export type ActorRecordId = number
 export type AirEntity_GUID = string
 export type AirEntity_Copied = boolean
+export type AirEntity_ToBeCopied = boolean
 export interface IAirEntity {
 	// Id Properties
 	_actorRecordId?: ActorRecordId;
@@ -291,12 +292,20 @@ export interface IAirEntity {
 	actor?: IActor;
 	repository: IRepository;
 
+	// Source Id Property
+	sourceActorRecordId?: number;
+
+	// Source Id Relations
+	sourceRepository?: IRepository;
+	sourceActor?: IActor;
+
 	// Non-Id Properties
 	copied?: AirEntity_Copied;
 	createdAt: CreatedAt;
 	systemWideOperationId?: SystemWideOperationId;
 
 	// Transient Properties
+	toBeCopied?: AirEntity_ToBeCopied;
 	createdBy?: IUserAccount
 	isNew?: boolean
 	id?: AirEntity_GUID
