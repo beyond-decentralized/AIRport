@@ -1273,7 +1273,7 @@ var EntityState$1;
     // Originally it was PARENT_SCHEMA_ID and was meant for @ManyToOne() references
     // when nothing is returned except for the id fields of the relation, however
     // this schenario was sufficiently covered by STUB - id's only stub.  Now it's
-    // PARENT_SCHEMA_ID and currently used only for save operations
+    // FROM_ANOTHER_APP and currently used only for save operations
     // when the entity referenced via the relation belongs to another application.
     // This is because save does not allow to peristance of records across application
     // boundaries (that should be done via an @Api() which will run validation and
@@ -1281,8 +1281,8 @@ var EntityState$1;
     // In that case we want to keep the ID of the record from another application
     // so that it can be saved in the record of the current application that is
     // referencing it.
-    EntityState["PARENT_SCHEMA_ID"] = "PARENT_SCHEMA_LID";
-    // A "Pass through object" is an existing that is present in the object graph
+    EntityState["FROM_ANOTHER_APP"] = "PARENT_SCHEMA_LID";
+    // A "Pass through object" is an existing object that is present in the object graph
     // but no operations are performed on it
     EntityState["PASS_THROUGH"] = "PASS_THROUGH";
     // An "Id's only" stub
@@ -2819,6 +2819,10 @@ the following decorators to the property definition:
 @DbDate()
 @DbNumer()
 @DbString()
+
+If you are adding a transient field add the following decorator:
+
+@Transient()
 `);
             return null;
         }
@@ -14273,10 +14277,13 @@ class Actor {
 class InternalAirEntity {
     constructor(entityId) {
         this.ageSuitability = 0;
-        // TODO: if and when records are copied, make this a column
-        // @Column({ name: 'COPIED', nullable: false })
         this.copied = false;
         this.createdAt = new Date();
+        /*
+         * Set at record creation time if a copy needs to be made (of a record
+         * in another repository)
+         */
+        this.toBeCopied = false;
         // Currently TypeScript does not support optional getters/setters
         // this is a workaround
         delete this.id;
@@ -26634,7 +26641,7 @@ const APPLICATION$3 = {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "CREATED_AT",
+                            "name": "COPIED",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -26642,13 +26649,13 @@ const APPLICATION$3 = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "DATE"
+                            "type": "BOOLEAN"
                         },
                         {
                             "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "SYSTEM_WIDE_OPERATION_LID",
+                            "name": "CREATED_AT",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -26656,14 +26663,14 @@ const APPLICATION$3 = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "NUMBER"
+                            "type": "DATE"
                         },
                         {
                             "index": 6,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "COPY_ACTOR_RECORD_ID",
-                            "notNull": false,
+                            "name": "SYSTEM_WIDE_OPERATION_LID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 6
@@ -26674,6 +26681,20 @@ const APPLICATION$3 = {
                         },
                         {
                             "index": 7,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "COPY_ACTOR_RECORD_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 7
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 8,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -26688,14 +26709,14 @@ const APPLICATION$3 = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 7
+                                    "index": 8
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 8,
+                            "index": 9,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -26710,14 +26731,14 @@ const APPLICATION$3 = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 8
+                                    "index": 9
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 9,
+                            "index": 10,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -26732,7 +26753,7 @@ const APPLICATION$3 = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 9
+                                    "index": 10
                                 }
                             ],
                             "sinceVersion": 1,
@@ -26797,7 +26818,7 @@ const APPLICATION$3 = {
                             },
                             "index": 4,
                             "isId": false,
-                            "name": "createdAt",
+                            "name": "copied",
                             "sinceVersion": 1
                         },
                         {
@@ -26806,7 +26827,7 @@ const APPLICATION$3 = {
                             },
                             "index": 5,
                             "isId": false,
-                            "name": "systemWideOperationId",
+                            "name": "createdAt",
                             "sinceVersion": 1
                         },
                         {
@@ -26815,11 +26836,20 @@ const APPLICATION$3 = {
                             },
                             "index": 6,
                             "isId": false,
+                            "name": "systemWideOperationId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 7
+                            },
+                            "index": 7,
+                            "isId": false,
                             "name": "copyActorRecordId",
                             "sinceVersion": 1
                         },
                         {
-                            "index": 7,
+                            "index": 8,
                             "isId": false,
                             "name": "copyAppEntity",
                             "relationRef": {
@@ -26828,7 +26858,7 @@ const APPLICATION$3 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 8,
+                            "index": 9,
                             "isId": false,
                             "name": "copyActor",
                             "relationRef": {
@@ -26837,7 +26867,7 @@ const APPLICATION$3 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 9,
+                            "index": 10,
                             "isId": false,
                             "name": "copyRepository",
                             "relationRef": {
@@ -26872,7 +26902,7 @@ const APPLICATION$3 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 7
+                                "index": 8
                             },
                             "relationTableIndex": 5,
                             "relationTableApplication_Index": 1,
@@ -26883,7 +26913,7 @@ const APPLICATION$3 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 8
+                                "index": 9
                             },
                             "relationTableIndex": 0,
                             "sinceVersion": 1
@@ -26893,7 +26923,7 @@ const APPLICATION$3 = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 9
+                                "index": 10
                             },
                             "relationTableIndex": 10,
                             "sinceVersion": 1
@@ -27871,7 +27901,7 @@ const APPLICATION = {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "CREATED_AT",
+                            "name": "COPIED",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -27879,13 +27909,13 @@ const APPLICATION = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "DATE"
+                            "type": "BOOLEAN"
                         },
                         {
                             "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "SYSTEM_WIDE_OPERATION_LID",
+                            "name": "CREATED_AT",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -27893,28 +27923,28 @@ const APPLICATION = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "NUMBER"
+                            "type": "DATE"
                         },
                         {
                             "index": 6,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "ENCRYPTION_KEY",
-                            "notNull": false,
+                            "name": "SYSTEM_WIDE_OPERATION_LID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 6
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         },
                         {
                             "index": 7,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_GUID",
-                            "notNull": true,
+                            "name": "ENCRYPTION_KEY",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 7
@@ -27927,7 +27957,7 @@ const APPLICATION = {
                             "index": 8,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "PRIVATE_SIGNING_KEY",
+                            "name": "REPOSITORY_GUID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -27941,7 +27971,7 @@ const APPLICATION = {
                             "index": 9,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "PUBLIC_SIGNING_KEY",
+                            "name": "PRIVATE_SIGNING_KEY",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -27955,7 +27985,7 @@ const APPLICATION = {
                             "index": 10,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_NAME",
+                            "name": "PUBLIC_SIGNING_KEY",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -27967,6 +27997,20 @@ const APPLICATION = {
                         },
                         {
                             "index": 11,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "REPOSITORY_NAME",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 11
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 12,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -27982,14 +28026,14 @@ const APPLICATION = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 11
+                                    "index": 12
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 12,
+                            "index": 13,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -28005,14 +28049,14 @@ const APPLICATION = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 11
+                                    "index": 12
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 13,
+                            "index": 14,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -28028,7 +28072,76 @@ const APPLICATION = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 11
+                                    "index": 12
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 15,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 1,
+                                    "oneRelationIndex": 2,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "KEY_RING_SRC_RID_1",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 12
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 16,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 1,
+                                    "oneRelationIndex": 2,
+                                    "oneColumnIndex": 1,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "KEY_RING_SRC_AID_1",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 12
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 17,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 1,
+                                    "oneRelationIndex": 2,
+                                    "oneColumnIndex": 2,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "KEY_RING_SRC_ARID_1",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 12
                                 }
                             ],
                             "sinceVersion": 1,
@@ -28093,7 +28206,7 @@ const APPLICATION = {
                             },
                             "index": 4,
                             "isId": false,
-                            "name": "createdAt",
+                            "name": "copied",
                             "sinceVersion": 1
                         },
                         {
@@ -28102,7 +28215,7 @@ const APPLICATION = {
                             },
                             "index": 5,
                             "isId": false,
-                            "name": "systemWideOperationId",
+                            "name": "createdAt",
                             "sinceVersion": 1
                         },
                         {
@@ -28111,7 +28224,7 @@ const APPLICATION = {
                             },
                             "index": 6,
                             "isId": false,
-                            "name": "encryptionKey",
+                            "name": "systemWideOperationId",
                             "sinceVersion": 1
                         },
                         {
@@ -28120,7 +28233,7 @@ const APPLICATION = {
                             },
                             "index": 7,
                             "isId": false,
-                            "name": "repositoryGUID",
+                            "name": "encryptionKey",
                             "sinceVersion": 1
                         },
                         {
@@ -28129,7 +28242,7 @@ const APPLICATION = {
                             },
                             "index": 8,
                             "isId": false,
-                            "name": "privateSigningKey",
+                            "name": "repositoryGUID",
                             "sinceVersion": 1
                         },
                         {
@@ -28138,7 +28251,7 @@ const APPLICATION = {
                             },
                             "index": 9,
                             "isId": false,
-                            "name": "publicSigningKey",
+                            "name": "privateSigningKey",
                             "sinceVersion": 1
                         },
                         {
@@ -28147,11 +28260,20 @@ const APPLICATION = {
                             },
                             "index": 10,
                             "isId": false,
+                            "name": "publicSigningKey",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 11
+                            },
+                            "index": 11,
+                            "isId": false,
                             "name": "repositoryName",
                             "sinceVersion": 1
                         },
                         {
-                            "index": 11,
+                            "index": 12,
                             "isId": false,
                             "name": "keyRing",
                             "relationRef": {
@@ -28188,7 +28310,7 @@ const APPLICATION = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 11
+                                "index": 12
                             },
                             "relationTableIndex": 1,
                             "sinceVersion": 1
@@ -28279,7 +28401,7 @@ const APPLICATION = {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "CREATED_AT",
+                            "name": "COPIED",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -28287,13 +28409,13 @@ const APPLICATION = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "DATE"
+                            "type": "BOOLEAN"
                         },
                         {
                             "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "SYSTEM_WIDE_OPERATION_LID",
+                            "name": "CREATED_AT",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -28301,28 +28423,28 @@ const APPLICATION = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "NUMBER"
+                            "type": "DATE"
                         },
                         {
                             "index": 6,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "EMAIL",
-                            "notNull": false,
+                            "name": "SYSTEM_WIDE_OPERATION_LID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 6
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         },
                         {
                             "index": 7,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "EXTERNAL_PRIVATE_KEY",
-                            "notNull": true,
+                            "name": "EMAIL",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 7
@@ -28335,11 +28457,25 @@ const APPLICATION = {
                             "index": 8,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "INTERNAL_PRIVATE_SIGNING_KEY",
+                            "name": "EXTERNAL_PRIVATE_KEY",
                             "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 8
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 9,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "INTERNAL_PRIVATE_SIGNING_KEY",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 9
                                 }
                             ],
                             "sinceVersion": 1,
@@ -28404,7 +28540,7 @@ const APPLICATION = {
                             },
                             "index": 4,
                             "isId": false,
-                            "name": "createdAt",
+                            "name": "copied",
                             "sinceVersion": 1
                         },
                         {
@@ -28413,7 +28549,7 @@ const APPLICATION = {
                             },
                             "index": 5,
                             "isId": false,
-                            "name": "systemWideOperationId",
+                            "name": "createdAt",
                             "sinceVersion": 1
                         },
                         {
@@ -28422,7 +28558,7 @@ const APPLICATION = {
                             },
                             "index": 6,
                             "isId": false,
-                            "name": "email",
+                            "name": "systemWideOperationId",
                             "sinceVersion": 1
                         },
                         {
@@ -28431,7 +28567,7 @@ const APPLICATION = {
                             },
                             "index": 7,
                             "isId": false,
-                            "name": "externalPrivateKey",
+                            "name": "email",
                             "sinceVersion": 1
                         },
                         {
@@ -28440,11 +28576,20 @@ const APPLICATION = {
                             },
                             "index": 8,
                             "isId": false,
+                            "name": "externalPrivateKey",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 9
+                            },
+                            "index": 9,
+                            "isId": false,
                             "name": "internalPrivateSigningKey",
                             "sinceVersion": 1
                         },
                         {
-                            "index": 9,
+                            "index": 10,
                             "isId": false,
                             "name": "repositoryKeys",
                             "relationRef": {
@@ -28484,7 +28629,7 @@ const APPLICATION = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 9
+                                "index": 10
                             },
                             "relationTableIndex": 0,
                             "sinceVersion": 1
@@ -38917,7 +39062,7 @@ class DependencyGraphResolver {
              * has no associated operations or child entities of
              * it's own).
              */
-            const { isCreate, isDelete, isParentSchemaId, isPassThrough, isStub, isUpdate } = this.entityStateManager
+            const { isCreate, isDelete, isFromAnotherApp, isPassThrough, isStub, isUpdate } = this.entityStateManager
                 .getEntityStateTypeAsFlags(entity, dbEntity);
             if (isStub) {
                 // No processing is needed
@@ -38944,7 +39089,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
                 if (dependencyGraphNode) {
                     isExistingNode = true;
                 }
-                else if (!isParentSchemaId && !deleteByCascade) {
+                else if (!isFromAnotherApp && !deleteByCascade) {
                     dependencyGraphNode = {
                         circleTraversedFor: {},
                         dbEntity,
@@ -38957,7 +39102,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
                     allProcessedNodes.push(dependencyGraphNode);
                     operatedOnEntities[operationUniqueId] = dependencyGraphNode;
                 }
-                if (!isParentSchemaId && !isDelete) {
+                if (!isFromAnotherApp && !isDelete) {
                     if (dependsOn && !isDelete) {
                         const dependsOnOUID = this.entityStateManager.getOperationUniqueId(dependsOn.entity);
                         if (!dependencyGraphNode.dependsOnByOUID[dependsOnOUID]
@@ -39003,7 +39148,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
                         }
                         const parentState = this.entityStateManager
                             .getEntityStateTypeAsFlags(propertyValue, dbRelation.relationEntity);
-                        if (parentState.isParentSchemaId) {
+                        if (parentState.isFromAnotherApp) {
                             continue;
                         }
                         if (parentState.isDelete) {
@@ -39047,7 +39192,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
                     const dbEntity = dbRelation.relationEntity;
                     const previousDbEntity = context.dbEntity;
                     context.dbEntity = dbEntity;
-                    const childDependencyLinkedNodes = this.getEntitiesToPersist(relatedEntities, operatedOnEntities, operatedOnPassThroughs, context, fromDependencyForChild, !isParentSchemaId && !isDelete && isDependency ? dependencyGraphNode : null, childDeleteByCascade);
+                    const childDependencyLinkedNodes = this.getEntitiesToPersist(relatedEntities, operatedOnEntities, operatedOnPassThroughs, context, fromDependencyForChild, !isFromAnotherApp && !isDelete && isDependency ? dependencyGraphNode : null, childDeleteByCascade);
                     allProcessedNodes = allProcessedNodes.concat(childDependencyLinkedNodes);
                     context.dbEntity = previousDbEntity;
                 }
@@ -39241,7 +39386,7 @@ class EntityGraphReconstructor {
              * entity stubs that are needed structurally to get to
              * other entities.
              */
-            let { isParentSchemaId, isStub } = this.entityStateManager
+            let { isFromAnotherApp, isStub } = this.entityStateManager
                 .getEntityStateTypeAsFlags(entity, dbEntity);
             let entityCopy = {};
             entityCopy[this.entityStateManager.getUniqueIdFieldName()]
@@ -39253,7 +39398,7 @@ class EntityGraphReconstructor {
                 = entityCopy;
             if (isParentEntity) {
                 this.entityStateManager.markAsOfParentSchema(entityCopy);
-                isParentSchemaId = true;
+                isFromAnotherApp = true;
             }
             for (const dbProperty of dbEntity.properties) {
                 let propertyValue = entity[dbProperty.name];
@@ -39292,8 +39437,8 @@ for ${dbEntity.name}.${dbProperty.name}`);
                     context.dbEntity = dbRelation.relationEntity;
                     let propertyCopyValue;
                     if (propertyValue) {
-                        propertyCopyValue = this.linkEntityGraph(relatedEntities, entitiesByOperationIndex, isParentSchemaId || relationIsFromParentSchema, context);
-                        if (isParentSchemaId || relationIsFromParentSchema) {
+                        propertyCopyValue = this.linkEntityGraph(relatedEntities, entitiesByOperationIndex, isFromAnotherApp || relationIsFromParentSchema, context);
+                        if (isFromAnotherApp || relationIsFromParentSchema) {
                             for (const propertyCopyValueEntry of propertyCopyValue) {
                                 const operationUniqueId = this.entityStateManager
                                     .getOperationUniqueId(propertyCopyValueEntry);
@@ -39324,7 +39469,7 @@ for ${dbEntity.name}.${dbProperty.name}`);
         return results;
     }
     checkPropertyParentEntityStatus(propertyCopyValue) {
-        if (!this.entityStateManager.isParentSchemaId(propertyCopyValue)
+        if (!this.entityStateManager.isFromAnotherApp(propertyCopyValue)
             && !this.entityStateManager.isPassThrough(propertyCopyValue)) {
             throw new Error(`Parent Ids may only contain relations that are themselves Parent Ids or Pass-Though objects.`);
         }
@@ -39446,8 +39591,10 @@ in top level objects (that are passed into '...Dao.save(...)')`);
                 await this.internalUpdate(operation.entities, actor, transaction, rootTransaction, saveResult, context);
             }
         }
-        this.airportDatabase.applications.filter(dbApplication => dbApplication.domain.name === this.dictionary.airport.DOMAIN_NAME
-            && dbApplication.name === this.dictionary.airport.apps.HOLDING_PATTERN.name)[0];
+        // const holdingPatternApp = this.airportDatabase.applications.filter(
+        // 	dbApplication => dbApplication.domain.name === this.dictionary.airport.DOMAIN_NAME
+        // 		&& dbApplication.name === this.dictionary.airport.apps.HOLDING_PATTERN.name
+        // )[0]
         // context.dbEntity = holdingPatternApp.currentVersion[0].applicationVersion.entityMapByName['CopiedRecordLedger']
         // await this.internalCreate(
         // 	validationContext.copiedRecordLedgers, actor, transaction, rootTransaction,
@@ -39724,21 +39871,23 @@ in top level objects (that are passed into '...Dao.save(...)')`);
 }
 
 class StructuralEntityValidator {
-    validate(records, operatedOnEntityIndicator, missingRepositoryRecords, topLevelObjectRepositories, context, depth = 1, fromOneToMany = false, parentRelationProperty = null, rootRelationRecord = null, parentRelationRecord = null) {
+    validate(records, operatedOnEntityIndicator, missingRepositoryRecords, topLevelObjectRepositories, context, depth = 1, fromOneToMany = false, parentRelationProperty = null, rootRelationRecord = null, parentRelationRecord = null, hasUpstreamCreation = false) {
         const dbEntity = context.dbEntity;
         if (!dbEntity.idColumns.length) {
             throw new Error(`Cannot run 'save' for entity '${dbEntity.name}' with no @Id(s).
 					Please use non-entity operations (like 'insert' or 'updateWhere') instead.`);
         }
         let haveRootRelationRecord = !!rootRelationRecord;
-        const levelObjectRepositoryMapByGUID = new Map();
+        const objectLevelRepositoryMapByGUID = new Map();
         for (const record of records) {
             if (!haveRootRelationRecord) {
                 rootRelationRecord = record;
             }
-            const { isCreate, isParentSchemaId, isPassThrough, isStub } = this.entityStateManager.getEntityStateTypeAsFlags(record, dbEntity);
-            if (isParentSchemaId) {
-                // No processing is needed (already covered by id check)
+            const entityStateFlags = this.entityStateManager.getEntityStateTypeAsFlags(record, dbEntity);
+            const { isACopy, isCreate, isFromAnotherApp, isStub } = entityStateFlags;
+            if (isACopy) {
+                // Copied entities (from other repositories) do not change once
+                //created and can only have references to other copied entities
                 continue;
             }
             const operationUniqueId = this.entityStateManager.getOperationUniqueId(record);
@@ -39747,9 +39896,22 @@ class StructuralEntityValidator {
                 continue;
             }
             operatedOnEntityIndicator[operationUniqueId] = true;
+            record.toBeCopied = false;
             let repositoryAssignmentFromParentNeeded = false;
             for (const dbProperty of dbEntity.properties) {
                 let propertyValue = record[dbProperty.name];
+                if (propertyValue === undefined) {
+                    if (dbEntity.isAirEntity && (isCreate
+                        || hasUpstreamCreation)) {
+                        throw new Error(`Have unspecified properties in a Created object
+(or an object referenced in a @ManyToOne() relation of a Created object):
+${this.getIdErrorMessage(dbEntity, record)}
+
+Property ${dbEntity.name}
+
+Please either specify values for set to null.`);
+                    }
+                }
                 if (propertyValue === undefined && !isStub) {
                     propertyValue = null;
                     record[dbProperty.name] = propertyValue;
@@ -39759,113 +39921,16 @@ class StructuralEntityValidator {
                  * a @ManyToOne, so we need to check
                  */
                 if (dbProperty.relation && dbProperty.relation.length) {
-                    const dbRelation = dbProperty.relation[0];
-                    let relatedEntities = null;
-                    let relationIsOneToMany = false;
-                    let isRelationNullable = true;
-                    switch (dbRelation.relationType) {
-                        case EntityRelationType.MANY_TO_ONE:
-                            // Id columns are for the parent (currently processed) entity and must be
-                            // checked as part of this entity
-                            if (dbProperty.isId) {
-                                let isMissingRepositoryProperty = false;
-                                this.applicationUtils.forEachColumnOfRelation(dbRelation, record, (dbColumn, columnValue, _propertyNameChains) => {
-                                    if (dbColumn.notNull) {
-                                        isRelationNullable = false;
-                                    }
-                                    if (this.isRepositoryColumnAndNewRepositoryNeed(dbEntity, dbProperty, dbColumn, isCreate, record, columnValue, context)) {
-                                        isMissingRepositoryProperty = true;
-                                    }
-                                    else if (this.applicationUtils.isRepositoryId(dbColumn.name)) {
-                                        const repository = record[dbProperty.name];
-                                        if (!repository._localId || !repository.GUID) {
-                                            throw new Error(`Repository must have a _localId and GUID assigned:
-hence, it must an existing repository that exists locally.`);
-                                        }
-                                        if (!levelObjectRepositoryMapByGUID.has(repository.GUID)) {
-                                            levelObjectRepositoryMapByGUID.set(repository.GUID, repository);
-                                            if (depth == 1) {
-                                                topLevelObjectRepositories.push(repository);
-                                            }
-                                        }
-                                    }
-                                }, false);
-                                if (isMissingRepositoryProperty) {
-                                    // TODO: document that creating a new repository will automatically
-                                    // populate it in all objects passed to save that don't have a
-                                    // repository record reference
-                                    // TODO: document that if no new repository record is created
-                                    // then a top level object must have a repository record reference.
-                                    // Then all nested records without a repository record reference
-                                    // will have that repository assigned
-                                    if (!context.rootTransaction.newRepository) {
-                                        repositoryAssignmentFromParentNeeded = true;
-                                        missingRepositoryRecords.push({
-                                            record,
-                                            repositoryPropertyName: dbProperty.name
-                                        });
-                                    }
-                                    else {
-                                        record[dbProperty.name] = context.rootTransaction.newRepository;
-                                    }
-                                }
-                            }
-                            if (fromOneToMany) {
-                                const parentOneToManyElems = parentRelationProperty.relation[0].oneToManyElems;
-                                const parentMappedBy = parentOneToManyElems ? parentOneToManyElems.mappedBy : null;
-                                const mappedBy = dbRelation.manyToOneElems ? dbRelation.manyToOneElems.mappedBy : null;
-                                // NOTE: 'actor' or the 'repository' properties may be automatically populated
-                                // in the entity by this.validateRelationColumn
-                                if (parentMappedBy === dbProperty.name
-                                    || mappedBy === parentRelationProperty.name) {
-                                    // Always fix to the parent record
-                                    record[dbProperty.name] = parentRelationRecord;
-                                    // if (!propertyValue && !entity[dbProperty.name]) {
-                                    // 	// The @ManyToOne side of the relationship is missing, add it
-                                    // 	entity[dbProperty.name] = parentRelationEntity
-                                    // }
-                                }
-                            }
-                            const isActorProperty = this.dictionary.isActor(dbRelation.relationEntity);
-                            if (propertyValue) {
-                                if (isCreate && isActorProperty) {
-                                    throw new Error(`.actor property must not be populated for new objects`);
-                                }
-                                relatedEntities = [propertyValue];
-                            }
-                            else if (!isRelationNullable) {
-                                // Actor properties must be null when passed in
-                                if (!isCreate && !isActorProperty) {
-                                    throw new Error(`Non-nullable relation ${dbEntity.name}.${dbProperty.name} does not have value assigned`);
-                                }
-                            }
-                            else {
-                                console.warn(`Probably OK: Nullable @ManyToOne ${dbEntity.name}.${dbProperty.name} does not have anything assigned.`);
-                            }
-                            break;
-                        case EntityRelationType.ONE_TO_MANY:
-                            relationIsOneToMany = true;
-                            relatedEntities = propertyValue;
-                            break;
-                        default:
-                            throw new Error(`Unexpected relation type ${dbRelation.relationType}
-for ${dbEntity.name}.${dbProperty.name}`);
-                    } // switch dbRelation.relationType
-                    if (relatedEntities && relatedEntities.length) {
-                        const previousDbEntity = context.dbEntity;
-                        context.dbEntity = dbRelation.relationEntity;
-                        this.validate(relatedEntities, operatedOnEntityIndicator, missingRepositoryRecords, topLevelObjectRepositories, context, depth + 1, relationIsOneToMany, dbProperty, rootRelationRecord, record);
-                        context.dbEntity = previousDbEntity;
-                    }
-                } // if (dbProperty.relation // else its not a relation property
-                else {
+                    repositoryAssignmentFromParentNeeded = this.processRelation(operatedOnEntityIndicator, missingRepositoryRecords, topLevelObjectRepositories, context, depth, fromOneToMany, parentRelationProperty, rootRelationRecord, parentRelationRecord, dbEntity, objectLevelRepositoryMapByGUID, record, hasUpstreamCreation, entityStateFlags, dbProperty, propertyValue);
+                }
+                else if (!isFromAnotherApp) {
                     const dbColumn = dbProperty.propertyColumns[0].column;
                     if (dbProperty.isId) {
                         const isIdColumnEmpty = this.applicationUtils.isIdEmpty(propertyValue);
                         this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty);
                     }
                     else {
-                        if (isStub || isParentSchemaId) {
+                        if (isStub) {
                             if (propertyValue !== undefined) {
                                 throw new Error(`Unexpected non-@Id value Stub|ParentSchemaId|Deleted record.
 Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`);
@@ -39873,14 +39938,161 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
                         }
                     }
                     this.ensureNonRelationalValue(dbProperty, dbColumn, propertyValue);
-                } // else (dbProperty.relation
-            } // for (const dbProperty of dbEntity.properties)
-            if (!isPassThrough && !isStub && !isParentSchemaId) {
-                this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, isCreate, repositoryAssignmentFromParentNeeded);
+                }
             }
-        } // for (const record of records)
+            if (!isStub) {
+                this.ensureCopiedState(fromOneToMany, rootRelationRecord, parentRelationRecord, hasUpstreamCreation, dbEntity, record, parentRelationProperty, entityStateFlags, repositoryAssignmentFromParentNeeded);
+            }
+        }
     }
-    ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, _isCreate, repositoryAssignmentFromParentNeeded) {
+    processRelation(operatedOnEntityIndicator, missingRepositoryRecords, topLevelObjectRepositories, context, depth, fromOneToMany, parentRelationProperty, rootRelationRecord, parentRelationRecord, dbEntity, objectLevelRepositoryMapByGUID, record, hasUpstreamCreation, entityStateFlags, dbProperty, propertyValue) {
+        let repositoryAssignmentFromParentNeeded = false;
+        const { isCreate, isFromAnotherApp } = entityStateFlags;
+        const dbRelation = dbProperty.relation[0];
+        let relatedEntities = null;
+        let relationIsOneToMany = false;
+        let isRelationNullable = true;
+        switch (dbRelation.relationType) {
+            case EntityRelationType.MANY_TO_ONE: {
+                // Other App entities are only traversed for generating copy objects
+                if (isFromAnotherApp) {
+                    if (propertyValue) {
+                        relatedEntities = [propertyValue];
+                    }
+                    break;
+                }
+                // Id columns are for the parent (currently processed) entity and 
+                // must be xchecked as part of this entity
+                if (dbProperty.isId) {
+                    const idPropertyState = this.processIdPropertyRelation(dbEntity, dbProperty, dbRelation, record, objectLevelRepositoryMapByGUID, isCreate, depth, missingRepositoryRecords, topLevelObjectRepositories, context);
+                    isRelationNullable = idPropertyState.isRelationNullable;
+                    repositoryAssignmentFromParentNeeded = idPropertyState.repositoryAssignmentFromParentNeeded;
+                }
+                if (fromOneToMany) {
+                    const parentOneToManyElems = parentRelationProperty.relation[0].oneToManyElems;
+                    const parentMappedBy = parentOneToManyElems ? parentOneToManyElems.mappedBy : null;
+                    const mappedBy = dbRelation.manyToOneElems ? dbRelation.manyToOneElems.mappedBy : null;
+                    // NOTE: 'actor' or the 'repository' properties may be automatically populated
+                    // in the entity by this.validateRelationColumn
+                    if (parentMappedBy === dbProperty.name
+                        || mappedBy === parentRelationProperty.name) {
+                        // Always fix to the parent record
+                        record[dbProperty.name] = parentRelationRecord;
+                        // if (!propertyValue && !entity[dbProperty.name]) {
+                        // 	// The @ManyToOne side of the relationship is missing, add it
+                        // 	entity[dbProperty.name] = parentRelationEntity
+                        // }
+                    }
+                }
+                const isActorProperty = this.dictionary.isActor(dbRelation.relationEntity);
+                if (propertyValue) {
+                    if (isCreate && isActorProperty) {
+                        throw new Error(`.actor property must not be populated for new objects`);
+                    }
+                    relatedEntities = [propertyValue];
+                }
+                else if (!isRelationNullable) {
+                    // Actor properties must be null when passed in
+                    if (!isCreate && !isActorProperty) {
+                        throw new Error(`Non-nullable relation ${dbEntity.name}.${dbProperty.name} does not have value assigned`);
+                    }
+                }
+                else {
+                    console.warn(`Probably OK: Nullable @ManyToOne ${dbEntity.name}.${dbProperty.name} does not have anything assigned.`);
+                }
+                break;
+            }
+            case EntityRelationType.ONE_TO_MANY: {
+                relationIsOneToMany = true;
+                // Other App entities are only traversed for generating copy objects
+                // Copy objects are not created via @OneToMany() relations
+                if (!isFromAnotherApp) {
+                    relatedEntities = propertyValue;
+                }
+                break;
+            }
+            default: {
+                throw new Error(`Unexpected relation type ${dbRelation.relationType}
+for ${dbEntity.name}.${dbProperty.name}`);
+            }
+        } // switch dbRelation.relationType
+        if (relatedEntities && relatedEntities.length) {
+            const previousDbEntity = context.dbEntity;
+            context.dbEntity = dbRelation.relationEntity;
+            this.validate(relatedEntities, operatedOnEntityIndicator, missingRepositoryRecords, topLevelObjectRepositories, context, depth + 1, relationIsOneToMany, dbProperty, rootRelationRecord, record, hasUpstreamCreation || isCreate);
+            context.dbEntity = previousDbEntity;
+        }
+        return repositoryAssignmentFromParentNeeded;
+    }
+    processIdPropertyRelation(dbEntity, dbProperty, dbRelation, record, objectLevelRepositoryMapByGUID, isCreate, depth, missingRepositoryRecords, topLevelObjectRepositories, context) {
+        let isRelationNullable = true;
+        let repositoryAssignmentFromParentNeeded = false;
+        let isMissingRepositoryProperty = false;
+        this.applicationUtils.forEachColumnOfRelation(dbRelation, record, (dbColumn, columnValue, _propertyNameChains) => {
+            if (dbColumn.notNull) {
+                isRelationNullable = false;
+            }
+            if (this.isRepositoryColumnAndNewRepositoryNeed(dbEntity, dbProperty, dbColumn, isCreate, record, columnValue, context)) {
+                isMissingRepositoryProperty = true;
+            }
+            else if (this.applicationUtils.isRepositoryId(dbColumn.name)) {
+                const repository = record[dbProperty.name];
+                if (!repository._localId || !repository.GUID) {
+                    throw new Error(`Repository must have a _localId and GUID assigned:
+hence, it must an existing repository that exists locally.`);
+                }
+                if (!objectLevelRepositoryMapByGUID.has(repository.GUID)) {
+                    objectLevelRepositoryMapByGUID.set(repository.GUID, repository);
+                    if (depth == 1) {
+                        topLevelObjectRepositories.push(repository);
+                    }
+                }
+            }
+        }, false);
+        if (isMissingRepositoryProperty) {
+            // TODO: document that creating a new repository will automatically
+            // populate it in all objects passed to save that don't have a
+            // repository record reference
+            // TODO: document that if no new repository record is created
+            // then a top level object must have a repository record reference.
+            // Then all nested records without a repository record reference
+            // will have that repository assigned
+            if (!context.rootTransaction.newRepository) {
+                repositoryAssignmentFromParentNeeded = true;
+                missingRepositoryRecords.push({
+                    record,
+                    repositoryPropertyName: dbProperty.name
+                });
+            }
+            else {
+                record[dbProperty.name] = context.rootTransaction.newRepository;
+            }
+        }
+        return {
+            isRelationNullable,
+            repositoryAssignmentFromParentNeeded
+        };
+    }
+    /*
+    If there is a creation operation directly above the subgraph
+    that has only pass-through records or records from other apps,
+    then those records need to be Copied into this repository. Ex:
+    creating an object graph:
+
+    EntityA1
+        b1: EntityB1
+
+    First must call the B1 app to create the EntityB1 entity referenced
+    in the b1 property. Once that's created that entity can be used in
+    EntityA1 (during it's subsequent creation).  The b1 entity can
+    belong to another repository, and if it does it needs to be copied
+    in.
+
+    Pass through entities (not created or updated) might also have
+    to be copied into the Repository in which the records are being
+    created IF they belong to another repository.
+    */
+    ensureCopiedState(fromOneToMany = false, rootRelationRecord, parentRelationRecord, hasUpstreamCreation, dbEntity, record, parentRelationProperty, entityStateFlags, repositoryAssignmentFromParentNeeded) {
         if (!dbEntity.isAirEntity) {
             return;
         }
@@ -39915,46 +40127,37 @@ in object graph does not have a repository assigned
             // across parent and child records
             return;
         }
-        // NOTE: This rule is currently disabled - to can create new records
-        // and assign them to existing repositories that are different from 
-        // repositories of paret records (or assign it the newly created repository).
-        // NOTE: it is possible to have records in the same repository that
-        // cannot be joined together in queries, so there is no need to check a valid
-        // path from this records to all other records passed to this save call that
-        // have the same repository.
-        // The disabled rule:
-        // A new record cannot be created - it has a repository that isn't:
-        // * Repository found in it's parent record,
-        // * a new Repository,
-        // 
-        // So a new record is being created and either has an explicitly
-        // assigned a Repository or has the sole (one and only per current rules)
-        // new Repository that is created in the (root) transaction.
-        /* 		if (_isCreate) {
-                    throw new Error(`
-        A newly created '${dbEntity.name}' record
-        is being assigned to Repository _localId ${airEntity.repository._localId} (GUID: ${airEntity.repository.GUID})
-        This is because it is being referenced via ${parentRelationProperty.entity.name}.${parentRelationProperty.name},
-        from a record of Repository _localId ${parentRelationRecord.repository._localId} (GUID: ${parentRelationRecord.repository.GUID})
-        
-        Did you mean to set this record's Repository to be the same one
-        as the Repository of the referencing (parent) record?
-        `)
-                } */
-        // NOTE: the below commented out code is for scenario where records
-        // via @ManyToOne links that point to other repositories are copied
-        // into the referencing repository
-        // If it doesn't then it is a reference to another repository - switch
-        // the record to the parent repository and set the sourceRepositoryValue
-        // airEntity.repository = rootRelationRecord.repository
-        // airEntity.copied = true
-        // Flip the state of this record to EntityState.CREATE this record now
-        // has to be created in the referencing repository
-        // airEntity[this.entityStateManager.getStateFieldName()] = EntityState.CREATE
-        // NOTE: If the child record is not provided and it's an optional
-        // @ManyToOne() it will be treated as if no record is there.  That is
-        // probaby the only correct way to handle it and a warning is
-        // shown to the user in this case
+        if (entityStateFlags.isCreate
+            || entityStateFlags.isUpdate
+            || entityStateFlags.isDelete) {
+            throw new Error(`
+A created/updated/deleted ${this.getIdErrorMessage(dbEntity, airEntity, parentRelationProperty, parentRelationRecord)}
+		
+Did you mean to set this record's Repository to be the same one
+as the Repository of the referencing (parent) record?
+		`);
+        }
+        if (fromOneToMany) {
+            // Entities in @OneToMany relations are not copied
+            return;
+        }
+        if (hasUpstreamCreation) {
+            // Record will be copied into the Repository of the parent record
+            airEntity.toBeCopied = true;
+        }
+    }
+    getIdErrorMessage(dbEntity, airEntity, parentRelationProperty, parentRelationRecord) {
+        let suffix = '';
+        if (parentRelationProperty) {
+            suffix = `
+It is being referenced via:
+			${parentRelationProperty.entity.name}.${parentRelationProperty.name},
+		from a record of Repository _localId ${parentRelationRecord.repository._localId}
+			(GUID: ${parentRelationRecord.repository.GUID})`;
+        }
+        return `'${dbEntity.name}' record
+is assigned to Repository _localId ${airEntity.repository._localId}
+	(GUID: ${airEntity.repository.GUID})${suffix}`;
     }
     isRepositoryColumnAndNewRepositoryNeed(dbEntity, dbProperty, dbColumn, isCreate, entity, columnValue, context) {
         if (!dbColumn.idIndex && dbColumn.idIndex !== 0) {
@@ -41002,7 +41205,7 @@ var EntityState;
     EntityState["CREATE"] = "CREATE";
     EntityState["DATE"] = "DATE";
     EntityState["DELETE"] = "DELETE";
-    EntityState["PARENT_SCHEMA_ID"] = "PARENT_SCHEMA_LID";
+    EntityState["FROM_ANOTHER_APP"] = "PARENT_SCHEMA_LID";
     EntityState["STUB"] = "STUB";
     EntityState["UPDATE"] = "UPDATE";
 })(EntityState || (EntityState = {}));
@@ -41672,19 +41875,22 @@ class UpdateCacheManager {
 }
 
 class EntityStateManager {
+    isACopy(entity) {
+        return entity.copied;
+    }
     isStub(entity) {
         return this.getEntityState(entity) === EntityState$1.STUB;
     }
-    isParentSchemaId(entity) {
+    isFromAnotherApp(entity) {
         return this.getEntityState(entity) ===
-            EntityState$1.PARENT_SCHEMA_ID;
+            EntityState$1.FROM_ANOTHER_APP;
     }
     isPassThrough(entity) {
         return this.getEntityState(entity) === EntityState$1.PASS_THROUGH;
     }
     markAsOfParentSchema(entity) {
         entity[EntityStateManager.STATE_FIELD] =
-            EntityState$1.PARENT_SCHEMA_ID;
+            EntityState$1.FROM_ANOTHER_APP;
     }
     markForDeletion(entity) {
         entity[EntityStateManager.STATE_FIELD] = EntityState$1.DELETE;
@@ -41714,7 +41920,7 @@ class EntityStateManager {
         return EntityStateManager.STATE_FIELD;
     }
     getEntityStateTypeAsFlags(entity, dbEntity) {
-        let isCreate, isDelete, isParentSchemaId, isPassThrough, isResultDate, isStub, isUpdate;
+        let isCreate, isDelete, isFromAnotherApp, isPassThrough, isResultDate, isStub, isUpdate;
         const entityState = this.getEntityState(entity);
         switch (entityState) {
             case EntityState$1.CREATE:
@@ -41723,8 +41929,8 @@ class EntityStateManager {
             case EntityState$1.DELETE:
                 isDelete = true;
                 break;
-            case EntityState$1.PARENT_SCHEMA_ID:
-                isParentSchemaId = true;
+            case EntityState$1.FROM_ANOTHER_APP:
+                isFromAnotherApp = true;
                 break;
             case EntityState$1.PASS_THROUGH:
                 isPassThrough = true;
@@ -41748,10 +41954,12 @@ class EntityStateManager {
                 throw new Error(`Unexpected entity state
 "${this.getStateFieldName()}" for ${dbEntity.name}: ${entityState}`);
         }
+        let isACopy = entity.copied;
         return {
+            isACopy,
             isCreate,
             isDelete,
-            isParentSchemaId,
+            isFromAnotherApp,
             isPassThrough,
             // isResult,
             isResultDate,
@@ -43599,7 +43807,11 @@ class ${entityCandidate.docEntry.name}
                     const notNull = isManyToOnePropertyNotNull(aProperty);
                     const airEntityColumns = this.dictionary.AirEntity.columns;
                     const relationColumnReferences = [
-                        airEntityColumns.REPOSITORY_LID, airEntityColumns.ACTOR_LID,
+                        airEntityColumns.REPOSITORY_LID,
+                        airEntityColumns.ACTOR_LID,
+                        airEntityColumns.ACTOR_RECORD_ID,
+                        airEntityColumns.REPOSITORY_LID,
+                        airEntityColumns.ACTOR_LID,
                         airEntityColumns.ACTOR_RECORD_ID
                     ];
                     let numExistingReferenceToTable = relatedTableMap.get(relatedTableName);
@@ -43610,7 +43822,8 @@ class ${entityCandidate.docEntry.name}
                         numExistingReferenceToTable++;
                     }
                     relatedTableMap.set(relatedTableName, numExistingReferenceToTable);
-                    const columnSuffixes = ['_RID_', '_AID_', '_ARID_'].map(suffix => suffix + numExistingReferenceToTable);
+                    const columnSuffixes = ['_RID_', '_AID_', '_ARID_',
+                        '_SRC_RID_', '_SRC_AID_', '_SRC_ARID_'].map(suffix => suffix + numExistingReferenceToTable);
                     columnSuffixes.forEach((suffix, index) => {
                         const [sRelationColumn, sColumn] = this.processRelationColumn(relatedTableName + suffix, relationColumnReferences[index], true, isIdProperty, propertyIndex, entity, relationColumnMapByName, primitiveColumnMapByName, notNull);
                         sRelationColumns.push(sRelationColumn);
