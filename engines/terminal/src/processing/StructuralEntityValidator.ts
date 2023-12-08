@@ -55,6 +55,8 @@ export class StructuralEntityValidator
 		parentRelationProperty: DbProperty = null,
 		rootRelationRecord = null,
 		parentRelationRecord = null,
+		isAncestorRecordBeingCreated = false,
+		isAncestorRecordBeingCopied = false,
 		isParentRecordBeingCreated = false
 	): void {
 		const dbEntity = context.dbEntity
@@ -95,7 +97,17 @@ export class StructuralEntityValidator
 			}
 			operatedOnEntityIndicator[operationUniqueId] = true;
 
-			(record as IAirEntity).toBeCopied = false
+			if (!isStub) {
+				this.ensureCopiedState(
+					fromOneToMany,
+					rootRelationRecord,
+					parentRelationRecord,
+					isAncestorRecordBeingCreated,
+					dbEntity,
+					record,
+					parentRelationProperty,
+					entityStateFlags)
+			}
 
 			for (const dbProperty of dbEntity.properties) {
 				let propertyValue: any = record[dbProperty.name]
@@ -103,7 +115,7 @@ export class StructuralEntityValidator
 					&& !this.entityStateManager.isPassThrough(record)) {
 					if (dbEntity.isAirEntity && (isCreate
 						|| isParentRecordBeingCreated)
-						&& this.applicationUtils.isRequiredForCreateProperty(dbProperty)) {
+						&& this.applicationUtils.isPropertyRequiredForCreateOperation(dbProperty)) {
 						throw new Error(`Have unspecified value for "${dbEntity.name}.${dbProperty.name}" property 
 in an object that is being Created during a DAO.save operation
 (or an object referenced in a @ManyToOne() relation of a Created object):
@@ -135,7 +147,8 @@ Please either specify property values or set to null.`)
 						dbEntity,
 						objectLevelRepositoryMapByGUID,
 						record,
-						isParentRecordBeingCreated,
+						isAncestorRecordBeingCreated,
+						isAncestorRecordBeingCopied,
 						entityStateFlags,
 						dbProperty,
 						propertyValue
@@ -156,17 +169,6 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 					this.ensureNonRelationalValue(dbProperty, dbColumn, propertyValue)
 				}
 			}
-			if (!isStub) {
-				this.ensureCopiedState(
-					fromOneToMany,
-					rootRelationRecord,
-					parentRelationRecord,
-					isParentRecordBeingCreated,
-					dbEntity,
-					record as IAirEntity,
-					parentRelationProperty,
-					entityStateFlags)
-			}
 		}
 	}
 
@@ -182,7 +184,8 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 		dbEntity: DbEntity,
 		objectLevelRepositoryMapByGUID: Map<string, IRepository>,
 		record: E,
-		isParentRecordBeingCreated: boolean,
+		isAncestorRecordBeingCreated: boolean,
+		isAncestorRecordBeingCopied: boolean,
 		entityStateFlags: IEntityStateAsFlags,
 		dbProperty: DbProperty,
 		propertyValue: any
@@ -251,14 +254,13 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 				} else {
 					console.warn(`Probably OK: Nullable @ManyToOne ${dbEntity.name}.${dbProperty.name} does not have anything assigned.`)
 				}
-
 				break
 			}
 			case EntityRelationType.ONE_TO_MANY: {
 				relationIsOneToMany = true
 				// Other App entities are only traversed for generating copy objects
 				// Copy objects are not created via @OneToMany() relations
-				if (!isFromAnotherApp) {
+				if (!isFromAnotherApp && !isAncestorRecordBeingCopied) {
 					relatedEntities = propertyValue
 				}
 				break
@@ -272,10 +274,18 @@ for ${dbEntity.name}.${dbProperty.name}`)
 			const previousDbEntity = context.dbEntity
 			context.dbEntity = dbRelation.relationEntity
 
-			this.validate(relatedEntities, operatedOnEntityIndicator,
-				topLevelObjectRepositories, context, depth + 1,
-				relationIsOneToMany, dbProperty, rootRelationRecord, record,
-				isParentRecordBeingCreated || isCreate)
+			this.validate(
+				relatedEntities, 
+				operatedOnEntityIndicator,
+				topLevelObjectRepositories, 
+				context,
+				depth + 1,
+				relationIsOneToMany,
+				dbProperty,
+				rootRelationRecord, record,
+				isAncestorRecordBeingCreated || isCreate, 
+				isAncestorRecordBeingCopied || record.toBeCopied,
+				isCreate)
 			context.dbEntity = previousDbEntity
 		}
 	}
@@ -342,15 +352,17 @@ hence, it must an existing repository that exists locally.`)
 	created IF they belong to another repository.
 	*/
 	private ensureCopiedState(
-		fromOneToMany = false,
+		fromOneToMany: boolean,
 		rootRelationRecord: IAirEntity,
 		parentRelationRecord: IAirEntity,
-		isParentRecordBeingCreated: boolean,
+		isAncestorRecordBeingCreated: boolean,
 		dbEntity: DbEntity,
 		record: IAirEntity,
 		parentRelationProperty: DbProperty,
 		entityStateFlags: IEntityStateAsFlags
 	): void {
+		record.toBeCopied = false
+
 		if (!dbEntity.isAirEntity) {
 			return
 		}
@@ -391,7 +403,7 @@ as the Repository of the referencing (parent) record?
 			return
 		}
 
-		if (isParentRecordBeingCreated) {
+		if (isAncestorRecordBeingCreated) {
 			// Record will be copied into the Repository of the parent record
 			airEntity.toBeCopied = true
 		}
