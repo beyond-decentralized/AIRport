@@ -18,7 +18,6 @@ import {
 	DbRelation
 } from '@airport/ground-control'
 import {
-	IMissingRepositoryRecord,
 	IOperationContext,
 	IStructuralEntityValidator,
 	ITransactionContext

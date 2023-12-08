@@ -37,7 +37,6 @@ import {
 	IDependencyGraphResolver,
 	IEntityGraphReconstructor,
 	IInsertManager,
-	IMissingRepositoryRecord,
 	IOperationContext,
 	IOperationManager,
 	IRepositoryManager,
