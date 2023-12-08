@@ -112,7 +112,7 @@ export interface IApplicationUtils {
     columnName: string,
   ): boolean
 
-  isRequiredForCreateProperty(
+  isPropertyRequiredForCreateOperation(
     dbProperty: DbProperty
   ): boolean
 

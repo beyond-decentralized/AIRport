@@ -309,7 +309,7 @@ export class ApplicationUtils
 			&& !!dbRelation.oneRelationColumns.length
 	}
 
-	isRequiredForCreateProperty(
+	isPropertyRequiredForCreateOperation(
 		dbProperty: DbProperty
 	): boolean {
 		const relation = dbProperty.relation
