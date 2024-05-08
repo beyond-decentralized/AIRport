@@ -12,7 +12,7 @@ import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRel
 import { AbstractRawUpdate } from '../../../definition/query/facade/RawUpdate'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
-import { EntityAliases } from '../../core/entity/aliases'
+import { EntityAliases } from '../../core/entity/Aliases'
 import { AbstractQuery } from './AbstractQuery'
 
 export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractRawUpdate<IQE>>

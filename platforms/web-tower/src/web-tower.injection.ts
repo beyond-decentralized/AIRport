@@ -6,7 +6,7 @@ import { ApplicationStore } from '@airport/tower';
 import { DomainRetriever } from "./DomainRetriever";
 import { IFrameApplicationInitializer } from "./IFrameApplicationInitializer";
 import { IFrameApplicationLocator } from "./IFrameApplicationLocator";
-import { IFrameInterAppAPIClient } from "./IFrameInterAppAPIClient";
+import { IFrameInterAppAPIClient } from "./IFrameInterAppApiClient";
 import { IframeTransactionalConnector } from "./IFrameTransactionalConnector";
 
 DOMAIN_RETRIEVER.setClass(DomainRetriever)

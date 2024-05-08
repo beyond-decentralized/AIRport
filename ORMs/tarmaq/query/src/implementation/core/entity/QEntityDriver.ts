@@ -10,7 +10,7 @@ import { IQOperableFieldInternal } from "../../../definition/core/field/IQOperab
 import { IEntityUtils } from "../../../definition/utils/IEntityUtils"
 import { IFieldUtils } from "../../../definition/utils/IFieldUtils"
 import { IQueryUtils } from "../../../definition/utils/IQueryUtils"
-import { JoinFields } from "../joins"
+import { JoinFields } from "../Joins"
 
 export class QEntityDriver<IQE extends IQEntity = any>
     implements IQEntityDriver<IQE> {

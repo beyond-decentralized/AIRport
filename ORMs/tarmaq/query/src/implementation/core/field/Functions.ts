@@ -79,7 +79,7 @@ import {
 	date,
 	num,
 	str
-} from './wrapperFunctions'
+} from './WrapperFunctions'
 
 function getSqlFunctionCall(
 	sqlFunction: SqlFunction,

@@ -1,12 +1,12 @@
 import { QueryRelationType, QueryViewJoinRelation, Repository_GUID, Repository_LocalId } from "@airport/ground-control";
+import { IDependencyInjectionToken, InversionOfControl } from "@airport/direction-indicator";
 import { IFieldColumnAliases } from "../../../definition/core/entity/IAliases";
 import { RawTreeQuery } from "../../../definition/query/facade/RawTreeQuery";
-import { FieldColumnAliases } from "./aliases";
+import { FieldColumnAliases } from "./Aliases";
 import { IQueryUtils } from "../../../definition/utils/IQueryUtils";
 import { IFieldUtils } from "../../../definition/utils/IFieldUtils";
 import { IQueryRelationManager } from "../../../definition/core/entity/IQueryRelationManager";
 import { QEntityDriver } from "./QEntityDriver";
-import { IDependencyInjectionToken, InversionOfControl } from "@airport/direction-indicator";
 import { IEntityUtils } from "../../../definition/utils/IEntityUtils";
 import { IQEntityDriver, IQEntityInternal } from "../../../definition/core/entity/IQEntityDriver";
 import { QEntity } from "./QEntity";

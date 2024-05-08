@@ -8,9 +8,9 @@ import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRel
 import { AbstractRawInsertValues } from '../../../definition/query/facade/RawInsertValues'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
-import { EntityAliases } from '../../core/entity/aliases'
+import { EntityAliases } from '../../core/entity/Aliases'
 import { QField } from '../../core/field/QField'
-import { getPrimitiveValue } from '../../core/field/wrapperFunctions'
+import { getPrimitiveValue } from '../../core/field/WrapperFunctions'
 import { AbstractQuery } from './AbstractQuery'
 
 /**

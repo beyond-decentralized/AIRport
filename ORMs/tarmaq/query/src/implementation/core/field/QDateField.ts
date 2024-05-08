@@ -18,7 +18,7 @@ import {
 import { RawFieldQuery } from '../../../definition/query/facade/RawFieldQuery';
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils';
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils';
-import { FieldColumnAliases } from '../entity/aliases';
+import { FieldColumnAliases } from '../entity/Aliases';
 import { DateOperation } from '../operation/DateOperation';
 import { QOperableField } from './QOperableField';
 

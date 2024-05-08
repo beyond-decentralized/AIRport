@@ -19,7 +19,7 @@ import { RawUpdate } from '../../../definition/query/facade/RawUpdate'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { QField } from '../../../tarmaq.query.index'
-import { wrapPrimitive } from '../../core/field/wrapperFunctions'
+import { wrapPrimitive } from '../../core/field/WrapperFunctions'
 import { AbstractUpdate } from './AbstractUpdate'
 
 /**

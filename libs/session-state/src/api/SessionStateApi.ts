@@ -15,8 +15,9 @@ export class SessionStateApi {
 
         return {
             _localId: null,
-            username: userAccount.username,
-            accountPublicSigningKey: userAccount.accountPublicSigningKey
+            accountPublicSigningKey: userAccount.accountPublicSigningKey,
+            sha1sum: null,
+            username: userAccount.username
         }
     }
 
