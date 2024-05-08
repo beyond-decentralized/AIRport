@@ -28,7 +28,6 @@ import {
 } from '@airport/ground-transport'
 import {
     ActorDao,
-    CrossRepositoryRelationManager,
     OperationHistoryDuo,
     RecordHistoryDuo,
     RepositoryDao,
@@ -40,6 +39,9 @@ import {
     REPOSITORY_MANAGER,
     TransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
+import {
+    CrossRepositoryRelationManager
+} from '@airport/layover'
 import { QUERY_FACADE } from '@airport/tarmaq-dao'
 import { QUERY_RELATION_MANAGER, QUERY_UTILS } from '@airport/tarmaq-query'
 import {

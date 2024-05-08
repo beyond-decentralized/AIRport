@@ -268,7 +268,7 @@ export class Stage1SyncedInDataProcessor
 					const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
 						.applicationVersion.entities[operationHistory.entity.index]
 					const sysWideOperationIdDbColumn = dbEntity.columnMap[
-						this.dictionary.AirEntity.columns.SYSTEM_WIDE_OPERATION_LID]
+						this.dictionary.AirEntityFields.columns.SYSTEM_WIDE_OPERATION_LID]
 
 					for (const recordHistory of operationHistory.recordHistory) {
 						if (recordHistory.newValues.length) {

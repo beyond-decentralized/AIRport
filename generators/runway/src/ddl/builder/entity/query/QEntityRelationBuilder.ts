@@ -1,5 +1,5 @@
 import { EntityCandidate } from '../../../parser/EntityCandidate'
-import { entityExtendsOrIsAirEntity } from '../../application/SApplicationBuilder'
+import { entityExtendsOrIsAirEntity, entityExtendsOrIsAirEntityFieldsOrId } from '../../application/SApplicationBuilder'
 import { QCoreEntityBuilder } from './QCoreEntityBuilder'
 import { QEntityFileBuilder } from './QEntityFileBuilder'
 
@@ -25,7 +25,10 @@ export class QEntityRelationBuilder
 
 		let genericType = ''
 		let entity = this.entity.docEntry.name
-		const [isAirEntity, _] = entityExtendsOrIsAirEntity(this.entity)
+		let [isAirEntity, _] = entityExtendsOrIsAirEntity(this.entity)
+		if (!isAirEntity) {
+			isAirEntity = entityExtendsOrIsAirEntityFieldsOrId(this.entity)[0]
+		}
 		let parentInterfaceType = 'IQManyToOneInternalRelation'
 		if (isAirEntity) {
 			parentInterfaceType = 'IQManyToOneAirEntityRelation'

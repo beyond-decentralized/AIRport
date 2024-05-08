@@ -4,9 +4,11 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IRepositoryDao,
-	QInternalAirEntity
+	IRepositoryDao
 } from '@airport/holding-pattern/dist/app/bundle' // default
+import {
+	QInternalAirEntity
+} from '@airport/final-approach/dist/app/bundle' // default
 import {
 	IRepositoryMaintenanceManager
 } from '@airbridge/sso'
@@ -210,7 +212,7 @@ already contains a new repository.`)
 			return rawInsertValues
 		}
 
-		const repositoryPropertyName = this.dictionary.AirEntity.properties.repository
+		const repositoryPropertyName = this.dictionary.AirEntityId.properties.repository
 		let columns = rawInsertValues.columns.slice()
 		if (columns.some((
 			column: IQOperableFieldInternal<any, any, any, any>,

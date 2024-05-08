@@ -417,11 +417,11 @@ appears more than once in the Columns clause`)
 		transaction: ITransaction,
 		context: IOperationContext
 	): ColumnsToPopulate {
-		const airEntityColumns = this.dictionary.AirEntity.columns
+		const airEntityColumns = this.dictionary.AirEntityId.columns
 		const actorLidColumn = dbEntity.idColumnMap[airEntityColumns.ACTOR_LID]
 		const actorRecordIdColumn = dbEntity.idColumnMap[airEntityColumns.ACTOR_RECORD_ID]
 		const repositoryLidColumn = dbEntity.idColumnMap[airEntityColumns.REPOSITORY_LID]
-		const sysWideOperationIdColumn = dbEntity.columnMap[airEntityColumns.SYSTEM_WIDE_OPERATION_LID]
+		const sysWideOperationIdColumn = dbEntity.columnMap[this.dictionary.AirEntityFields.columns.SYSTEM_WIDE_OPERATION_LID]
 
 		let repositoryLidColumnQueryIndex
 
@@ -553,7 +553,7 @@ and cannot have NULL values.`)
 		let operationsByRepo: IOperationHistory[] = []
 		let repoTransHistories: IRepositoryTransactionHistory[] = []
 
-		const airEntityColumns = this.dictionary.AirEntity.columns
+		const airEntityColumns = this.dictionary.AirEntityId.columns
 		const repositoryLidIndex = dbEntity.columnMap[airEntityColumns.REPOSITORY_LID].index
 		const actorLidIndex = dbEntity.columnMap[airEntityColumns.ACTOR_LID].index
 		const actorRecordIdIndex = dbEntity.columnMap[airEntityColumns.ACTOR_RECORD_ID].index

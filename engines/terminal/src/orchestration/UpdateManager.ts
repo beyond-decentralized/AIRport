@@ -270,7 +270,7 @@ export class UpdateManager
 				qEntity
 			],
 			SELECT,
-			WHERE: qEntity[this.dictionary.AirEntity.properties
+			WHERE: qEntity[this.dictionary.AirEntityFields.properties
 				.systemWideOperationId]
 				.equals(systemWideOperationId)
 		})

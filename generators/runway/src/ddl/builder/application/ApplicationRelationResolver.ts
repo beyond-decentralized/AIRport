@@ -22,7 +22,7 @@ export class ApplicationRelationResolver {
 		for (const entityName in indexedApplication.entityMapByName) {
 			const indexedEntity = indexedApplication.entityMapByName[entityName]
 			if (indexedEntity.entity.isAirEntity) {
-				if (indexedEntity.idColumns[0].name !== this.dictionary.AirEntity.columns.REPOSITORY_LID) {
+				if (indexedEntity.idColumns[0].name !== this.dictionary.AirEntityId.columns.REPOSITORY_LID) {
 					throw new Error(`@Id Column at index 0, must be 'REPOSITORY_LID'`)
 				}
 			}

@@ -110,7 +110,7 @@ export class SApplicationBuilder {
 
 		entity.numIdColumns = 3;
 
-		const airEntityColumns = this.dictionary.AirEntity.columns
+		const airEntityColumns = this.dictionary.AirEntityId.columns
 		switch (columnName) {
 			case airEntityColumns.REPOSITORY_LID:
 				return 0;
@@ -264,7 +264,7 @@ class ${entityCandidate.docEntry.name}
 		relatedTableMap: Map<string, number>,
 		referencedApplicationsByProjectName: { [projectName: string]: SApplicationReference },
 		project?: string,
-	) {
+	): number {
 		let parentEntity = entityCandidate.parentEntity;
 		let numParentProperties = 0;
 		if (parentEntity) {
@@ -544,7 +544,7 @@ class ${entityCandidate.docEntry.name}
 
 					const notNull = isManyToOnePropertyNotNull(aProperty);
 
-					const airEntityColumns = this.dictionary.AirEntity.columns
+					const airEntityColumns = this.dictionary.AirEntityId.columns
 					const relationColumnReferences = [
 						airEntityColumns.REPOSITORY_LID, airEntityColumns.ACTOR_LID,
 						airEntityColumns.ACTOR_RECORD_ID];
@@ -857,28 +857,16 @@ class ${entity.name}
 		notNull: boolean,
 		entityCannotReferenceOtherColumns: boolean = false,
 	): [SRelationColumn, SColumn] {
-		// const ownColumnIdIndex                 = this.getIdColumnIndex(ownColumnReference)
-		// const relationColumnIdIndex            =
-		// this.getIdColumnIndex(relationColumnReference)
 		const sRelationColumn: SRelationColumn = {
 			manyToOne,
 			oneSideRelationIndex: null,
-			// ownColumnIdIndex,
 			ownColumnReference,
-			// relationColumnIdIndex,
 			relationColumnReference
 		};
-		// if (ownColumnIdIndex) {
-		// 	if (isIdProperty) {
-		// 		throw new Error(`ManyToOne/OneToMany relation cannot be @Id and reference Id
-		// columns at the same time.`) }  return [ sRelationColumn, null ] }
 
 		const existingPrimitiveColumn = primitiveColumnMapByName[ownColumnReference];
 		if (existingPrimitiveColumn) {
 			if (manyToOne && isIdProperty) {
-				// if (entityCannotReferenceOtherColumns) {
-				// throw new Error(`ManyToOne relation without (R)JoinColumn(s) cannot be named
-				// as other columns.`);
 				throw new Error(`@Id & @ManyToOne relation columns cannot be named as other non-relational columns.
 			A column can either be defined as a non-relational column
 			OR as a relation.
@@ -897,16 +885,13 @@ class ${entity.name}
 		const existingRelationColumn = relationColumnMapByName[ownColumnReference];
 		if (existingRelationColumn) {
 			if (manyToOne && isIdProperty) {
-				// if (entityCannotReferenceOtherColumns) {
-				// throw new Error(`ManyToOne relation without (R)JoinColumn(s) cannot be named
-				// as other columns.`);
-				throw new Error(`@Id & @ManyToOne relation columns cannot be named in multiple relations.
-			A @Id column can be defined in only one relation.
+				throw new Error(`@Id cannot be specified in more than one @ManyToOne relation.
+			A @Id column name can be defined on only one relation.
 			Column: '${entity.name}.${ownColumnReference}'`);
 			}
 			if (entityCannotReferenceOtherColumns) {
-				throw new Error(`ManyToOne relation without JoinColumn(s) 
-				cannot be named as other columns.`);
+				throw new Error(`@ManyToOne relation without @JoinColumn(s) 
+				cannot be placed on other columns.`);
 			}
 			if ((existingRelationColumn.notNull && !notNull)
 				|| (!existingRelationColumn.notNull && notNull)) {
@@ -985,7 +970,7 @@ export function entityExtendsAirEntity( //
 	return entityExtendsOrIsAirEntity(entityCandidate.parentEntity)
 }
 
-const dictionary = new Dictionary()
+export const dictionary = new Dictionary()
 
 export function entityExtendsOrIsAirEntity( //
 	entityCandidate: EntityCandidate //
@@ -993,14 +978,28 @@ export function entityExtendsOrIsAirEntity( //
 	if (!entityCandidate) {
 		return [false, true];
 	}
+	
 	if (entityCandidate.docEntry.name === dictionary.AirEntity.name
 		|| entityCandidate.docEntry.name === dictionary.InternalAirEntity.name) {
 		return [true, false];
 	}
-	// if (entityCandidate.docEntry.name === airEntityColumns.LOCAL_ENTITY_NAME) {
-	// 	return [true, true];
-	// }
+	
 	return entityExtendsOrIsAirEntity(entityCandidate.parentEntity);
+}
+
+export function entityExtendsOrIsAirEntityFieldsOrId( //
+	entityCandidate: EntityCandidate //
+): [boolean, boolean] {
+	if (!entityCandidate) {
+		return [false, true];
+	}
+
+	if (entityCandidate.docEntry.name === dictionary.AirEntityId.name
+		|| entityCandidate.docEntry.name === dictionary.AirEntityFields.name) {
+		return [true, false];
+	}
+
+	return entityExtendsOrIsAirEntityFieldsOrId(entityCandidate.parentEntity);
 }
 
 export function isManyToOnePropertyNotNull(

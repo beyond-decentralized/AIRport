@@ -209,7 +209,7 @@ export class Stage2SyncedInDataProcessor
 		dbEntity: DbEntity
 	): DbColumn[] {
 		const nonIdColumns = []
-		const airEntityColumns = this.dictionary.AirEntity.columns
+		const airEntityColumns = this.dictionary.AirEntityId.columns
 		for (const column of dbEntity.columns) {
 			switch (column.name) {
 				case airEntityColumns.ACTOR_LID:

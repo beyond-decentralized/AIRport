@@ -279,18 +279,25 @@ export interface IRepositoryMemberUpdate {
 
 }
 
-export type SystemWideOperationId = number
 export type ActorRecordId = number
 export type AirEntity_GUID = string
-export type AirEntity_Copied = boolean
-export type AirEntity_ToBeCopied = boolean
-export interface IAirEntity {
+
+export interface IAirEntityId {
 	// Id Properties
 	_actorRecordId?: ActorRecordId;
 
 	// Id Relations
 	actor?: IActor;
 	repository: IRepository;
+
+	// Transient Properties
+	id?: AirEntity_GUID
+}
+
+export type SystemWideOperationId = number
+export type AirEntity_ToBeCopied = boolean
+export interface IAirEntity
+	extends IAirEntityId {
 
 	// Source Id Property
 	sourceActorRecordId?: number;
@@ -300,7 +307,6 @@ export interface IAirEntity {
 	sourceActor?: IActor;
 
 	// Non-Id Properties
-	copied?: AirEntity_Copied;
 	createdAt: CreatedAt;
 	systemWideOperationId?: SystemWideOperationId;
 
@@ -308,7 +314,6 @@ export interface IAirEntity {
 	toBeCopied?: AirEntity_ToBeCopied;
 	createdBy?: IUserAccount
 	isNew?: boolean
-	id?: AirEntity_GUID
 
 	// Public Methods
 }
@@ -437,17 +442,14 @@ export interface ICrossRepositoryRelationLedger
 	relatedRepository: IRepository
 
 }
-export interface ICopiedRecordLedger
-	extends IAirEntity {
+export interface ICopiedEntityRecord
+	extends IAirEntityId {
 
-	copyAppEntity: DbEntity
-	copyActorRecordId: ActorRecordId
-	copyActor: IActor
-	copyRepository: IRepository
+	copyDdlEntity: DbEntity
 
 }
-export interface ILocalCopyReplacementLedger {
+export interface ICopiedEntityRecordRepository {
 
-	copiedRecordLedger: ICopiedRecordLedger
+	copiedEntityRecord: ICopiedEntityRecord
 
 }

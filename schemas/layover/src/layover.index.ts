@@ -6,7 +6,5 @@ export * from './generated/baseDvos'
 export * from './generated/qApplication'
 export * from './generated/qInterfaces'
 export * from './generated/vInterfaces'
+export * from './manager/CrossRepositoryRelationManager'
 export * from './layover.injection';
-
-export function injectMovingWalkway() {
-}

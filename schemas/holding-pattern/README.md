@@ -14,8 +14,6 @@ Contains:
 Actor   -   A User, using a specific Client, that performs operations via
 a specific Application at a specific Terminal 
 
-InternalAirEntity   - superclass for all internal AIR entities
-
 Repository  - unit of data in AIRport
     *   member/RepositoryMember
     *   member/RepositoryMemberAcceptance

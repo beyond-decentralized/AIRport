@@ -36,7 +36,7 @@ export class QMetadataUtils
 			}
 			if (qEntity.__driver__.dbEntity.isAirEntity) {
 				switch (qField.dbColumn.name) {
-					case this.dictionary.AirEntity.columns.SYSTEM_WIDE_OPERATION_LID:
+					case this.dictionary.AirEntityFields.columns.SYSTEM_WIDE_OPERATION_LID:
 						return false
 				}
 			}

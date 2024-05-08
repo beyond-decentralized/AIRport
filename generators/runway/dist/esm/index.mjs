@@ -765,7 +765,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$n(decorators, target, key, desc) {
+function __decorate$o(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -796,7 +796,7 @@ let ContainerAccessor = class ContainerAccessor {
         return iocContainer;
     }
 };
-ContainerAccessor = __decorate$n([
+ContainerAccessor = __decorate$o([
     Injected()
 ], ContainerAccessor);
 
@@ -880,7 +880,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$m(decorators, target, key, desc) {
+function __decorate$n(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -934,20 +934,32 @@ let Dictionary = class Dictionary {
                     name: '@airport/final-approach',
                     entities: {
                         AirEntity: {
-                            name: 'AirEntity',
+                            name: 'AirEntity'
+                        },
+                        AirEntityFields: {
+                            name: 'AirEntityFields',
                             columns: {
-                                ACTOR_LID: 'ACTOR_LID',
-                                ACTOR_RECORD_ID: 'ACTOR_RECORD_ID',
-                                REPOSITORY_LID: 'REPOSITORY_LID',
                                 SYSTEM_WIDE_OPERATION_LID: 'SYSTEM_WIDE_OPERATION_LID'
                             },
                             properties: {
-                                _actorRecordId: '_actorRecordId',
-                                _localId: '_localId',
-                                actor: 'actor',
-                                repository: 'repository',
                                 systemWideOperationId: 'systemWideOperationId'
                             }
+                        },
+                        AirEntityId: {
+                            name: 'AirEntityId',
+                            columns: {
+                                ACTOR_LID: 'ACTOR_LID',
+                                ACTOR_RECORD_ID: 'ACTOR_RECORD_ID',
+                                REPOSITORY_LID: 'REPOSITORY_LID'
+                            },
+                            properties: {
+                                _actorRecordId: '_actorRecordId',
+                                actor: 'actor',
+                                repository: 'repository'
+                            }
+                        },
+                        InternalAirEntity: {
+                            name: 'InternalAirEntity'
                         }
                     }
                 },
@@ -963,9 +975,6 @@ let Dictionary = class Dictionary {
                             properties: {
                                 userAccount: 'userAccount'
                             }
-                        },
-                        InternalAirEntity: {
-                            name: 'InternalAirEntity'
                         },
                         Repository: {
                             name: 'Repository',
@@ -1021,9 +1030,11 @@ let Dictionary = class Dictionary {
         this.INTERNAL_DOMAIN = 'internal://domain';
         this.Actor = this.airport.apps.HOLDING_PATTERN.entities.Actor;
         this.AirEntity = this.airport.apps.FINAL_APPROACH.entities.AirEntity;
+        this.AirEntityFields = this.airport.apps.FINAL_APPROACH.entities.AirEntityFields;
+        this.AirEntityId = this.airport.apps.FINAL_APPROACH.entities.AirEntityId;
         this.ApplicationRelation = this.airport.apps.AIRSPACE.entities.ApplicationRelation;
         // CopiedRecordLedger = this.airport.apps.HOLDING_PATTERN.entities.CopiedRecordLedger
-        this.InternalAirEntity = this.airport.apps.HOLDING_PATTERN.entities.InternalAirEntity;
+        this.InternalAirEntity = this.airport.apps.FINAL_APPROACH.entities.InternalAirEntity;
         this.KeyRing = this.airbridge.apps.KEYRING.entities.KeyRing;
         this.Repository = this.airport.apps.HOLDING_PATTERN.entities.Repository;
         this.RepositoryKey = this.airbridge.apps.KEYRING.entities.RepositoryKey;
@@ -1170,11 +1181,11 @@ let Dictionary = class Dictionary {
     }
     isActorProperty(dbProperty) {
         return dbProperty.entity.isAirEntity
-            && this.AirEntity.properties.actor === dbProperty.name;
+            && this.AirEntityId.properties.actor === dbProperty.name;
     }
     isRepositoryProperty(dbProperty) {
         return dbProperty.entity.isAirEntity
-            && this.AirEntity.properties.repository === dbProperty.name;
+            && this.AirEntityId.properties.repository === dbProperty.name;
     }
     isEntityType(dbEntity, application, entity, expectedDomainName = this.airport.DOMAIN_NAME) {
         const dbApplication = dbEntity.applicationVersion.application;
@@ -1183,7 +1194,7 @@ let Dictionary = class Dictionary {
             && dbEntity.name === entity.name;
     }
 };
-Dictionary = __decorate$m([
+Dictionary = __decorate$n([
     Injected()
 ], Dictionary);
 
@@ -1615,7 +1626,7 @@ let ApplicationNameUtils = class ApplicationNameUtils {
         return `${prefixedTableName}_${columnName}__SEQUENCE`;
     }
 };
-ApplicationNameUtils = __decorate$m([
+ApplicationNameUtils = __decorate$n([
     Injected()
 ], ApplicationNameUtils);
 
@@ -1885,7 +1896,7 @@ class AppTrackerUtils {
         return false;
     }
 }
-__decorate$m([
+__decorate$n([
     Inject()
 ], AppTrackerUtils.prototype, "dictionary", void 0);
 
@@ -1952,10 +1963,10 @@ From:
         }
     }
 };
-__decorate$m([
+__decorate$n([
     Inject()
 ], ApplicationReferenceUtils.prototype, "appTrackerUtils", void 0);
-ApplicationReferenceUtils = __decorate$m([
+ApplicationReferenceUtils = __decorate$n([
     Injected()
 ], ApplicationReferenceUtils);
 
@@ -2017,7 +2028,7 @@ let DatastructureUtils = class DatastructureUtils {
         return value === undefined ? null : value;
     }
 };
-DatastructureUtils = __decorate$m([
+DatastructureUtils = __decorate$n([
     Injected()
 ], DatastructureUtils);
 
@@ -4546,7 +4557,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$l(decorators, target, key, desc) {
+function __decorate$m(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -5480,16 +5491,16 @@ let QEntityUtils = QEntityUtils_1 = class QEntityUtils {
         return addToObject;
     }
 };
-__decorate$l([
+__decorate$m([
     Inject()
 ], QEntityUtils.prototype, "applicationUtils", void 0);
-__decorate$l([
+__decorate$m([
     Inject()
 ], QEntityUtils.prototype, "queryRelationManager", void 0);
-__decorate$l([
+__decorate$m([
     Inject()
 ], QEntityUtils.prototype, "queryUtils", void 0);
-QEntityUtils = QEntityUtils_1 = __decorate$l([
+QEntityUtils = QEntityUtils_1 = __decorate$m([
     Injected()
 ], QEntityUtils);
 
@@ -8353,7 +8364,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$k(decorators, target, key, desc) {
+function __decorate$l(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -8430,7 +8441,7 @@ let AirEntityUtils = class AirEntityUtils {
         airEntity._actorRecordId = airEntityId._actorRecordId;
     }
 };
-AirEntityUtils = __decorate$k([
+AirEntityUtils = __decorate$l([
     Injected()
 ], AirEntityUtils);
 
@@ -8908,7 +8919,7 @@ Message:
             && domainName.length >= 3;
     }
 };
-AirMessageUtils = __decorate$k([
+AirMessageUtils = __decorate$l([
     Injected()
 ], AirMessageUtils);
 
@@ -8951,7 +8962,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$j(decorators, target, key, desc) {
+function __decorate$k(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -9026,13 +9037,13 @@ let Lookup = class Lookup {
         return query;
     }
 };
-__decorate$j([
+__decorate$k([
     Inject()
 ], Lookup.prototype, "entityUtils", void 0);
-__decorate$j([
+__decorate$k([
     Inject()
 ], Lookup.prototype, "queryFacade", void 0);
-Lookup = __decorate$j([
+Lookup = __decorate$k([
     Injected()
 ], Lookup);
 
@@ -9158,7 +9169,7 @@ let NonEntityFind = class NonEntityFind extends Lookup {
         return this.findInternal(rawNonEntityQuery, queryResultType, false, QueryClass, this.ensureContext(context));
     }
 };
-NonEntityFind = __decorate$j([
+NonEntityFind = __decorate$k([
     Injected()
 ], NonEntityFind);
 
@@ -9179,7 +9190,7 @@ let NonEntityFindOne = class NonEntityFindOne extends Lookup {
         return this.findInternal(rawNonEntityQuery, queryResultType, true, QueryClass, this.ensureContext(context));
     }
 };
-NonEntityFindOne = __decorate$j([
+NonEntityFindOne = __decorate$k([
     Injected()
 ], NonEntityFindOne);
 
@@ -9200,7 +9211,7 @@ let NonEntitySearch = class NonEntitySearch extends Lookup {
         return this.searchInternal(rawNonEntityQuery, queryResultType, false, QueryClass, this.ensureContext(context));
     }
 };
-NonEntitySearch = __decorate$j([
+NonEntitySearch = __decorate$k([
     Injected()
 ], NonEntitySearch);
 
@@ -9221,7 +9232,7 @@ let NonEntitySearchOne = class NonEntitySearchOne extends Lookup {
         return this.searchInternal(rawNonEntityQuery, queryResultType, true, QueryClass, this.ensureContext(context));
     }
 };
-NonEntitySearchOne = __decorate$j([
+NonEntitySearchOne = __decorate$k([
     Injected()
 ], NonEntitySearchOne);
 
@@ -9492,19 +9503,19 @@ let Dao = class Dao {
         return this.lookup.ensureContext(context);
     }
 };
-__decorate$j([
+__decorate$k([
     Inject()
 ], Dao.prototype, "databaseFacade", void 0);
-__decorate$j([
+__decorate$k([
     Inject()
 ], Dao.prototype, "entityStateManager", void 0);
-__decorate$j([
+__decorate$k([
     Inject()
 ], Dao.prototype, "lookup", void 0);
-__decorate$j([
+__decorate$k([
     Inject()
 ], Dao.prototype, "updateCacheManager", void 0);
-Dao = __decorate$j([
+Dao = __decorate$k([
     Injected()
 ], Dao);
 
@@ -9572,7 +9583,7 @@ let ObservableDao = class ObservableDao extends Dao {
         }, context);
     }
 };
-ObservableDao = __decorate$j([
+ObservableDao = __decorate$k([
     Injected()
 ], ObservableDao);
 
@@ -9632,7 +9643,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$i(decorators, target, key, desc) {
+function __decorate$j(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -9783,13 +9794,13 @@ let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
         return dbColumn.manyRelationColumns[0].oneColumn.entity;
     }
     isActorLid(columnName) {
-        return columnName === this.dictionary.AirEntity.columns.ACTOR_LID;
+        return columnName === this.dictionary.AirEntityId.columns.ACTOR_LID;
     }
     isActorRecordId(columnName) {
-        return columnName === this.dictionary.AirEntity.columns.ACTOR_RECORD_ID;
+        return columnName === this.dictionary.AirEntityId.columns.ACTOR_RECORD_ID;
     }
     isRepositoryId(columnName) {
-        return columnName === this.dictionary.AirEntity.columns.REPOSITORY_LID;
+        return columnName === this.dictionary.AirEntityId.columns.REPOSITORY_LID;
     }
     isIdEmpty(idValue) {
         return !idValue && idValue !== 0;
@@ -9837,7 +9848,7 @@ let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
             && !allColumnsNullable;
     }
     isSystemWideOperationId(columnName) {
-        return columnName === this.dictionary.AirEntity.columns.SYSTEM_WIDE_OPERATION_LID;
+        return columnName === this.dictionary.AirEntityFields.columns.SYSTEM_WIDE_OPERATION_LID;
     }
     getColumnValuesAndPaths(dbColumn, relationObject, breadCrumb, forIdKey = false, generateNegativeIdsForMissing = true
     // noIdValueCallback: {
@@ -9910,19 +9921,19 @@ let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
     }
 };
 ApplicationUtils.TEMP_ID = 0;
-__decorate$i([
+__decorate$j([
     Inject()
 ], ApplicationUtils.prototype, "airportDatabase", void 0);
-__decorate$i([
+__decorate$j([
     Inject()
 ], ApplicationUtils.prototype, "dictionary", void 0);
-__decorate$i([
+__decorate$j([
     Inject()
 ], ApplicationUtils.prototype, "entityStateManager", void 0);
-__decorate$i([
+__decorate$j([
     Inject()
 ], ApplicationUtils.prototype, "utils", void 0);
-ApplicationUtils = ApplicationUtils_1 = __decorate$i([
+ApplicationUtils = ApplicationUtils_1 = __decorate$j([
     Injected()
 ], ApplicationUtils);
 
@@ -10102,13 +10113,13 @@ It must be an Object with the id property.`);
         return qEntity instanceof QField;
     }
 };
-__decorate$i([
+__decorate$j([
     Inject()
 ], EntityUtils.prototype, "dictionary", void 0);
-__decorate$i([
+__decorate$j([
     Inject()
 ], EntityUtils.prototype, "utils", void 0);
-EntityUtils = __decorate$i([
+EntityUtils = __decorate$j([
     Injected()
 ], EntityUtils);
 ENTITY_UTILS.setClass(EntityUtils);
@@ -10119,10 +10130,10 @@ let FieldUtils = class FieldUtils {
         return subSelectQuery.toQuery(queryUtils, this, this.queryRelationManager);
     }
 };
-__decorate$i([
+__decorate$j([
     Inject()
 ], FieldUtils.prototype, "queryRelationManager", void 0);
-FieldUtils = __decorate$i([
+FieldUtils = __decorate$j([
     Injected()
 ], FieldUtils);
 
@@ -10231,10 +10242,10 @@ let QApplicationBuilderUtils = class QApplicationBuilderUtils {
         return false;
     }
 };
-__decorate$i([
+__decorate$j([
     Inject()
 ], QApplicationBuilderUtils.prototype, "qEntityUtils", void 0);
-QApplicationBuilderUtils = __decorate$i([
+QApplicationBuilderUtils = __decorate$j([
     Injected()
 ], QApplicationBuilderUtils);
 
@@ -10252,7 +10263,7 @@ let QMetadataUtils = class QMetadataUtils {
             }
             if (qEntity.__driver__.dbEntity.isAirEntity) {
                 switch (qField.dbColumn.name) {
-                    case this.dictionary.AirEntity.columns.SYSTEM_WIDE_OPERATION_LID:
+                    case this.dictionary.AirEntityFields.columns.SYSTEM_WIDE_OPERATION_LID:
                         return false;
                 }
             }
@@ -10271,10 +10282,10 @@ let QMetadataUtils = class QMetadataUtils {
         return new entityConstructor();
     }
 };
-__decorate$i([
+__decorate$j([
     Inject()
 ], QMetadataUtils.prototype, "dictionary", void 0);
-QMetadataUtils = __decorate$i([
+QMetadataUtils = __decorate$j([
     Injected()
 ], QMetadataUtils);
 
@@ -10504,18 +10515,19 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
                 // entitySelectClause[dbColumn.index] = null;
             }
             const inQueryColumnIndex = selectClause.length - 1;
-            const AirEntity = this.dictionary.AirEntity;
+            const AirEntityFields = this.dictionary.AirEntityFields;
+            const AirEntityId = this.dictionary.AirEntityId;
             switch (dbColumn.name) {
-                case AirEntity.columns.ACTOR_LID:
+                case AirEntityId.columns.ACTOR_LID:
                     actorLidColumnIndex = inQueryColumnIndex;
                     break;
-                case AirEntity.columns.ACTOR_RECORD_ID:
+                case AirEntityId.columns.ACTOR_RECORD_ID:
                     actorRecordIdColumnIndex = inQueryColumnIndex;
                     break;
-                case AirEntity.columns.REPOSITORY_LID:
+                case AirEntityId.columns.REPOSITORY_LID:
                     repositoryLidColumnIndex = inQueryColumnIndex;
                     break;
-                case AirEntity.columns.SYSTEM_WIDE_OPERATION_LID:
+                case AirEntityFields.columns.SYSTEM_WIDE_OPERATION_LID:
                     if (nonIdColumnSet) {
                         throw new Error(errorPrefix +
                             `Cannot update 'systemWideOperationId' of Repository Entities.`);
@@ -10593,31 +10605,31 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
         }
     }
 };
-__decorate$i([
+__decorate$j([
     Inject()
 ], QueryUtils.prototype, "airEntityUtils", void 0);
-__decorate$i([
+__decorate$j([
     Inject()
 ], QueryUtils.prototype, "airportDatabase", void 0);
-__decorate$i([
+__decorate$j([
     Inject()
 ], QueryUtils.prototype, "applicationUtils", void 0);
-__decorate$i([
+__decorate$j([
     Inject()
 ], QueryUtils.prototype, "dictionary", void 0);
-__decorate$i([
+__decorate$j([
     Inject()
 ], QueryUtils.prototype, "entityUtils", void 0);
-__decorate$i([
+__decorate$j([
     Inject()
 ], QueryUtils.prototype, "fieldUtils", void 0);
-__decorate$i([
+__decorate$j([
     Inject()
 ], QueryUtils.prototype, "qEntityUtils", void 0);
-__decorate$i([
+__decorate$j([
     Inject()
 ], QueryUtils.prototype, "queryRelationManager", void 0);
-QueryUtils = __decorate$i([
+QueryUtils = __decorate$j([
     Injected()
 ], QueryUtils);
 
@@ -10687,7 +10699,7 @@ let DatabaseStore = class DatabaseStore {
         return this.databaseState.QM;
     }
 };
-DatabaseStore = __decorate$i([
+DatabaseStore = __decorate$j([
     Injected()
 ], DatabaseStore);
 
@@ -10716,13 +10728,13 @@ let QueryRelationManager = class QueryRelationManager {
         return nextChildJoinPosition;
     }
 };
-__decorate$i([
+__decorate$j([
     Inject()
 ], QueryRelationManager.prototype, "applicationUtils", void 0);
-__decorate$i([
+__decorate$j([
     Inject()
 ], QueryRelationManager.prototype, "queryUtils", void 0);
-QueryRelationManager = __decorate$i([
+QueryRelationManager = __decorate$j([
     Injected()
 ], QueryRelationManager);
 
@@ -10738,13 +10750,13 @@ let SystemWideOperationIdUtils = class SystemWideOperationIdUtils {
             .generateSequenceNumbersForColumn(airport.DOMAIN_NAME, airport.apps.AIRPORT_CODE.name, SystemWideOperationId.name, SystemWideOperationId.columns.SYSTEM_WIDE_OPERATION_LID, numSequencesNeeded);
     }
 };
-__decorate$i([
+__decorate$j([
     Inject()
 ], SystemWideOperationIdUtils.prototype, "dictionary", void 0);
-__decorate$i([
+__decorate$j([
     Inject()
 ], SystemWideOperationIdUtils.prototype, "sequenceGenerator", void 0);
-SystemWideOperationIdUtils = __decorate$i([
+SystemWideOperationIdUtils = __decorate$j([
     Injected()
 ], SystemWideOperationIdUtils);
 
@@ -10819,7 +10831,7 @@ let Utils = class Utils {
         return 0;
     }
 };
-Utils = __decorate$i([
+Utils = __decorate$j([
     Injected()
 ], Utils);
 
@@ -11039,7 +11051,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$h(decorators, target, key, desc) {
+function __decorate$i(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11048,30 +11060,30 @@ function __decorate$h(decorators, target, key, desc) {
 
 let Sequence = class Sequence {
 };
-__decorate$h([
+__decorate$i([
     Id(),
     Column(),
     DbNumber()
 ], Sequence.prototype, "applicationIndex", void 0);
-__decorate$h([
+__decorate$i([
     Id(),
     Column(),
     DbNumber()
 ], Sequence.prototype, "entityIndex", void 0);
-__decorate$h([
+__decorate$i([
     Id(),
     Column(),
     DbNumber()
 ], Sequence.prototype, "columnIndex", void 0);
-__decorate$h([
+__decorate$i([
     Column(),
     DbNumber()
 ], Sequence.prototype, "incrementBy", void 0);
-__decorate$h([
+__decorate$i([
     Column(),
     DbNumber()
 ], Sequence.prototype, "currentValue", void 0);
-Sequence = __decorate$h([
+Sequence = __decorate$i([
     Entity(),
     Table()
 ], Sequence);
@@ -11081,13 +11093,13 @@ Sequence = __decorate$h([
  */
 let SystemWideOperationId = class SystemWideOperationId {
 };
-__decorate$h([
+__decorate$i([
     Id(),
     Column(),
     DbNumber(),
     GeneratedValue()
 ], SystemWideOperationId.prototype, "_localId", void 0);
-SystemWideOperationId = __decorate$h([
+SystemWideOperationId = __decorate$i([
     Entity(),
     Table()
 ], SystemWideOperationId);
@@ -11097,32 +11109,32 @@ SystemWideOperationId = __decorate$h([
  */
 let TerminalRun = class TerminalRun {
 };
-__decorate$h([
+__decorate$i([
     Id(),
     GeneratedValue(),
     Column(),
     DbNumber()
 ], TerminalRun.prototype, "_localId", void 0);
-__decorate$h([
+__decorate$i([
     Column(),
     DbNumber()
 ], TerminalRun.prototype, "createTimestamp", void 0);
-__decorate$h([
+__decorate$i([
     Column(),
     DbNumber()
 ], TerminalRun.prototype, "randomNumber", void 0);
-TerminalRun = __decorate$h([
+TerminalRun = __decorate$i([
     Entity(),
     Table()
 ], TerminalRun);
 
-const __constructors__$5 = {
+const __constructors__$6 = {
     Sequence,
     SystemWideOperationId,
     TerminalRun
 };
 const Q_airport____at_airport_slash_airport_dash_code = {
-    __constructors__: __constructors__$5,
+    __constructors__: __constructors__$6,
     domain: 'airport',
     name: '@airport/airport-code'
 };
@@ -11134,12 +11146,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-let SQDIDao$5 = class SQDIDao extends ObservableDao {
+let SQDIDao$6 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_airport_dash_code);
     }
 };
-class BaseSequenceDao extends SQDIDao$5 {
+class BaseSequenceDao extends SQDIDao$6 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11154,7 +11166,7 @@ BaseSequenceDao.Find = new DaoQueryDecorators();
 BaseSequenceDao.FindOne = new DaoQueryDecorators();
 BaseSequenceDao.Search = new DaoQueryDecorators();
 BaseSequenceDao.SearchOne = new DaoQueryDecorators();
-class BaseSystemWideOperationIdDao extends SQDIDao$5 {
+class BaseSystemWideOperationIdDao extends SQDIDao$6 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11169,7 +11181,7 @@ BaseSystemWideOperationIdDao.Find = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.FindOne = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.Search = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.SearchOne = new DaoQueryDecorators();
-class BaseTerminalRunDao extends SQDIDao$5 {
+class BaseTerminalRunDao extends SQDIDao$6 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11187,7 +11199,7 @@ BaseTerminalRunDao.SearchOne = new DaoQueryDecorators();
 
 let TerminalRunDao = class TerminalRunDao extends BaseTerminalRunDao {
 };
-TerminalRunDao = __decorate$h([
+TerminalRunDao = __decorate$i([
     Injected()
 ], TerminalRunDao);
 
@@ -11215,7 +11227,7 @@ let SequenceDao = class SequenceDao extends BaseSequenceDao {
         }, context);
     }
 };
-SequenceDao = __decorate$h([
+SequenceDao = __decorate$i([
     Injected()
 ], SequenceDao);
 
@@ -11239,7 +11251,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$g(decorators, target, key, desc) {
+function __decorate$h(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11251,131 +11263,131 @@ let ApplicationApiClass = class ApplicationApiClass {
         this.operationMapByName = {};
     }
 };
-__decorate$g([
+__decorate$h([
     DbNumber(),
     Id(),
     SequenceGenerator$1(),
     Column()
 ], ApplicationApiClass.prototype, "_localId", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], ApplicationApiClass.prototype, "name", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], ApplicationApiClass.prototype, "applicationVersion", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], ApplicationApiClass.prototype, "operations", void 0);
-__decorate$g([
+__decorate$h([
     Transient()
 ], ApplicationApiClass.prototype, "operationMapByName", void 0);
-ApplicationApiClass = __decorate$g([
+ApplicationApiClass = __decorate$h([
     Entity(),
     Table()
 ], ApplicationApiClass);
 
 let ApplicationApiOperation = class ApplicationApiOperation {
 };
-__decorate$g([
+__decorate$h([
     DbNumber(),
     Id(),
     SequenceGenerator$1(),
     Column()
 ], ApplicationApiOperation.prototype, "_localId", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbBoolean()
 ], ApplicationApiOperation.prototype, "isAsync", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], ApplicationApiOperation.prototype, "name", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], ApplicationApiOperation.prototype, "apiClass", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], ApplicationApiOperation.prototype, "parameters", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], ApplicationApiOperation.prototype, "returnType", void 0);
-ApplicationApiOperation = __decorate$g([
+ApplicationApiOperation = __decorate$h([
     Entity(),
     Table()
 ], ApplicationApiOperation);
 
 let ApplicationApiParameter = class ApplicationApiParameter {
 };
-__decorate$g([
+__decorate$h([
     DbNumber(),
     Id(),
     SequenceGenerator$1(),
     Column()
 ], ApplicationApiParameter.prototype, "_localId", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbNumber()
 ], ApplicationApiParameter.prototype, "index", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbBoolean()
 ], ApplicationApiParameter.prototype, "isRest", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], ApplicationApiParameter.prototype, "operation", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], ApplicationApiParameter.prototype, "text", void 0);
-ApplicationApiParameter = __decorate$g([
+ApplicationApiParameter = __decorate$h([
     Entity(),
     Table()
 ], ApplicationApiParameter);
 
 let ApplicationApiReturnType = class ApplicationApiReturnType {
 };
-__decorate$g([
+__decorate$h([
     DbNumber(),
     Id(),
     SequenceGenerator$1(),
     Column()
 ], ApplicationApiReturnType.prototype, "_localId", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbBoolean()
 ], ApplicationApiReturnType.prototype, "isArray", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], ApplicationApiReturnType.prototype, "type", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], ApplicationApiReturnType.prototype, "operation", void 0);
-ApplicationApiReturnType = __decorate$g([
+ApplicationApiReturnType = __decorate$h([
     Entity(),
     Table()
 ], ApplicationApiReturnType);
 
 let DdlVersionedObject = class DdlVersionedObject {
 };
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlVersionedObject.prototype, "deprecatedSinceVersion", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlVersionedObject.prototype, "removedInVersion", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlVersionedObject.prototype, "sinceVersion", void 0);
-DdlVersionedObject = __decorate$g([
+DdlVersionedObject = __decorate$h([
     MappedSuperclass()
 ], DdlVersionedObject);
 
@@ -11388,64 +11400,64 @@ let DdlColumn = class DdlColumn extends DdlVersionedObject {
         this.propertyColumnMap = {};
     }
 };
-__decorate$g([
+__decorate$h([
     DbNumber(),
     Id(),
     Column()
 ], DdlColumn.prototype, "_localId", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbNumber()
 ], DdlColumn.prototype, "index", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbNumber()
 ], DdlColumn.prototype, "idIndex", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbBoolean()
 ], DdlColumn.prototype, "isGenerated", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbNumber()
 ], DdlColumn.prototype, "allocationSize", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], DdlColumn.prototype, "name", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbBoolean()
 ], DdlColumn.prototype, "notNull", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbNumber()
 ], DdlColumn.prototype, "precision", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbNumber()
 ], DdlColumn.prototype, "scale", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], DdlColumn.prototype, "type", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlColumn.prototype, "entity", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlColumn.prototype, "propertyColumns", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlColumn.prototype, "manyRelationColumns", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlColumn.prototype, "oneRelationColumns", void 0);
-__decorate$g([
+__decorate$h([
     Transient()
 ], DdlColumn.prototype, "propertyColumnMap", void 0);
-DdlColumn = __decorate$g([
+DdlColumn = __decorate$h([
     Entity(),
     Table()
 ], DdlColumn);
@@ -11477,60 +11489,60 @@ let DdlEntity = class DdlEntity extends DdlVersionedObject {
         this.propertyMap = {};
     }
 };
-__decorate$g([
+__decorate$h([
     DbNumber(),
     Id(),
     Column()
 ], DdlEntity.prototype, "_localId", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbNumber()
 ], DdlEntity.prototype, "index", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbBoolean()
 ], DdlEntity.prototype, "isLocal", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbBoolean()
 ], DdlEntity.prototype, "isAirEntity", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], DdlEntity.prototype, "name", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     Json()
 ], DdlEntity.prototype, "tableConfig", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlEntity.prototype, "applicationVersion", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlEntity.prototype, "columns", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlEntity.prototype, "properties", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlEntity.prototype, "relations", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlEntity.prototype, "relationReferences", void 0);
-__decorate$g([
+__decorate$h([
     Transient()
 ], DdlEntity.prototype, "columnMap", void 0);
-__decorate$g([
+__decorate$h([
     Transient()
 ], DdlEntity.prototype, "idColumns", void 0);
-__decorate$g([
+__decorate$h([
     Transient()
 ], DdlEntity.prototype, "idColumnMap", void 0);
-__decorate$g([
+__decorate$h([
     Transient()
 ], DdlEntity.prototype, "propertyMap", void 0);
-DdlEntity = __decorate$g([
+DdlEntity = __decorate$h([
     Entity(),
     Table()
 ], DdlEntity);
@@ -11542,34 +11554,34 @@ let DdlProperty = class DdlProperty extends DdlVersionedObject {
         this.relation = [];
     }
 };
-__decorate$g([
+__decorate$h([
     DbNumber(),
     Id(),
     Column()
 ], DdlProperty.prototype, "_localId", void 0);
-__decorate$g([
+__decorate$h([
     DbNumber(),
     Column()
 ], DdlProperty.prototype, "index", void 0);
-__decorate$g([
+__decorate$h([
     DbString(),
     Column()
 ], DdlProperty.prototype, "name", void 0);
-__decorate$g([
+__decorate$h([
     DbBoolean(),
     Column()
 ], DdlProperty.prototype, "isId", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlProperty.prototype, "entity", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlProperty.prototype, "propertyColumns", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlProperty.prototype, "relation", void 0);
-DdlProperty = __decorate$g([
+DdlProperty = __decorate$h([
     Entity(),
     Table()
 ], DdlProperty);
@@ -11579,17 +11591,17 @@ DdlProperty = __decorate$g([
  */
 let DdlPropertyColumn = class DdlPropertyColumn extends DdlVersionedObject {
 };
-__decorate$g([
+__decorate$h([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DdlPropertyColumn.prototype, "column", void 0);
-__decorate$g([
+__decorate$h([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DdlPropertyColumn.prototype, "property", void 0);
-DdlPropertyColumn = __decorate$g([
+DdlPropertyColumn = __decorate$h([
     Entity(),
     Table()
 ], DdlPropertyColumn);
@@ -11601,85 +11613,85 @@ let DdlRelation = class DdlRelation extends DdlVersionedObject {
         this.oneRelationColumns = [];
     }
 };
-__decorate$g([
+__decorate$h([
     DbNumber(),
     Id(),
     Column()
 ], DdlRelation.prototype, "_localId", void 0);
-__decorate$g([
+__decorate$h([
     DbNumber(),
     Column()
 ], DdlRelation.prototype, "index", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlRelation.prototype, "property", void 0);
-__decorate$g([
+__decorate$h([
     Json(),
     Column()
 ], DdlRelation.prototype, "foreignKey", void 0);
-__decorate$g([
+__decorate$h([
     Json(),
     Column()
 ], DdlRelation.prototype, "manyToOneElems", void 0);
-__decorate$g([
+__decorate$h([
     Json(),
     Column()
 ], DdlRelation.prototype, "oneToManyElems", void 0);
-__decorate$g([
+__decorate$h([
     DbString(),
     Column()
 ], DdlRelation.prototype, "relationType", void 0);
-__decorate$g([
+__decorate$h([
     Column()
 ], DdlRelation.prototype, "isId", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlRelation.prototype, "entity", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlRelation.prototype, "relationEntity", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlRelation.prototype, "manyRelationColumns", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlRelation.prototype, "oneRelationColumns", void 0);
-DdlRelation = __decorate$g([
+DdlRelation = __decorate$h([
     Entity(),
     Table()
 ], DdlRelation);
 
 let DdlRelationColumn = class DdlRelationColumn extends DdlVersionedObject {
 };
-__decorate$g([
+__decorate$h([
     Id(),
     Column(),
     DbNumber()
 ], DdlRelationColumn.prototype, "_localId", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlRelationColumn.prototype, "manyColumn", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlRelationColumn.prototype, "oneColumn", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlRelationColumn.prototype, "manyRelation", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlRelationColumn.prototype, "oneRelation", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlRelationColumn.prototype, "parentRelation", void 0);
-DdlRelationColumn = __decorate$g([
+DdlRelationColumn = __decorate$h([
     Entity(),
     Table()
 ], DdlRelationColumn);
@@ -11690,80 +11702,80 @@ let DdlApplication = class DdlApplication {
         this.currentVersion = [];
     }
 };
-__decorate$g([
+__decorate$h([
     Id(),
     DbNumber(),
     Column()
 ], DdlApplication.prototype, "index", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], DdlApplication.prototype, "scope", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], DdlApplication.prototype, "name", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], DdlApplication.prototype, "fullName", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], DdlApplication.prototype, "status", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], DdlApplication.prototype, "publicSigningKey", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlApplication.prototype, "domain", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlApplication.prototype, "versions", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlApplication.prototype, "currentVersion", void 0);
-DdlApplication = __decorate$g([
+DdlApplication = __decorate$h([
     Entity(),
     Table()
 ], DdlApplication);
 
 let DdlApplicationCurrentVersion = class DdlApplicationCurrentVersion {
 };
-__decorate$g([
+__decorate$h([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DdlApplicationCurrentVersion.prototype, "application", void 0);
-__decorate$g([
+__decorate$h([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DdlApplicationCurrentVersion.prototype, "applicationVersion", void 0);
-DdlApplicationCurrentVersion = __decorate$g([
+DdlApplicationCurrentVersion = __decorate$h([
     Entity(),
     Table()
 ], DdlApplicationCurrentVersion);
 
 let DdlApplicationReference = class DdlApplicationReference extends DdlVersionedObject {
 };
-__decorate$g([
+__decorate$h([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DdlApplicationReference.prototype, "ownApplicationVersion", void 0);
-__decorate$g([
+__decorate$h([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DdlApplicationReference.prototype, "referencedApplicationVersion", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbNumber()
 ], DdlApplicationReference.prototype, "index", void 0);
-DdlApplicationReference = __decorate$g([
+DdlApplicationReference = __decorate$h([
     Entity(),
     Table()
 ], DdlApplicationReference);
@@ -11780,93 +11792,93 @@ let DdlApplicationVersion = class DdlApplicationVersion {
         this.referencedByMapByName = {};
     }
 };
-__decorate$g([
+__decorate$h([
     DbNumber(),
     Id(),
     SequenceGenerator$1(),
     Column()
 ], DdlApplicationVersion.prototype, "_localId", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbNumber()
 ], DdlApplicationVersion.prototype, "integerVersion", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], DdlApplicationVersion.prototype, "versionString", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbNumber()
 ], DdlApplicationVersion.prototype, "majorVersion", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbNumber()
 ], DdlApplicationVersion.prototype, "minorVersion", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbNumber()
 ], DdlApplicationVersion.prototype, "patchVersion", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     Json()
 ], DdlApplicationVersion.prototype, "jsonApplication", void 0);
-__decorate$g([
+__decorate$h([
     Column(),
     DbString()
 ], DdlApplicationVersion.prototype, "signature", void 0);
-__decorate$g([
+__decorate$h([
     ManyToOne(),
     JoinColumn()
 ], DdlApplicationVersion.prototype, "application", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlApplicationVersion.prototype, "apiClasses", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlApplicationVersion.prototype, "entities", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlApplicationVersion.prototype, "references", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlApplicationVersion.prototype, "referencedBy", void 0);
-__decorate$g([
+__decorate$h([
     Transient()
 ], DdlApplicationVersion.prototype, "apiClassMapByName", void 0);
-__decorate$g([
+__decorate$h([
     Transient()
 ], DdlApplicationVersion.prototype, "entityMapByName", void 0);
-__decorate$g([
+__decorate$h([
     Transient()
 ], DdlApplicationVersion.prototype, "referencesMapByName", void 0);
-__decorate$g([
+__decorate$h([
     Transient()
 ], DdlApplicationVersion.prototype, "referencedByMapByName", void 0);
-DdlApplicationVersion = __decorate$g([
+DdlApplicationVersion = __decorate$h([
     Entity(),
     Table()
 ], DdlApplicationVersion);
 
 let DdlDomain = class DdlDomain {
 };
-__decorate$g([
+__decorate$h([
     Id(),
     DbNumber(),
     Column()
 ], DdlDomain.prototype, "_localId", void 0);
-__decorate$g([
+__decorate$h([
     DbString(),
     Column()
 ], DdlDomain.prototype, "name", void 0);
-__decorate$g([
+__decorate$h([
     OneToMany()
 ], DdlDomain.prototype, "applications", void 0);
-DdlDomain = __decorate$g([
+DdlDomain = __decorate$h([
     Entity(),
     Table()
 ], DdlDomain);
 
-const __constructors__$4 = {
+const __constructors__$5 = {
     ApplicationApiClass,
     ApplicationApiOperation,
     ApplicationApiParameter,
@@ -11885,7 +11897,7 @@ const __constructors__$4 = {
     DdlVersionedObject
 };
 const Q_airport____at_airport_slash_airspace = {
-    __constructors__: __constructors__$4,
+    __constructors__: __constructors__$5,
     domain: 'airport',
     name: '@airport/airspace'
 };
@@ -11897,12 +11909,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-let SQDIDao$4 = class SQDIDao extends ObservableDao {
+let SQDIDao$5 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_airspace);
     }
 };
-class BaseApplicationApiClassDao extends SQDIDao$4 {
+class BaseApplicationApiClassDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11917,7 +11929,7 @@ BaseApplicationApiClassDao.Find = new DaoQueryDecorators();
 BaseApplicationApiClassDao.FindOne = new DaoQueryDecorators();
 BaseApplicationApiClassDao.Search = new DaoQueryDecorators();
 BaseApplicationApiClassDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationApiOperationDao extends SQDIDao$4 {
+class BaseApplicationApiOperationDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11932,7 +11944,7 @@ BaseApplicationApiOperationDao.Find = new DaoQueryDecorators();
 BaseApplicationApiOperationDao.FindOne = new DaoQueryDecorators();
 BaseApplicationApiOperationDao.Search = new DaoQueryDecorators();
 BaseApplicationApiOperationDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationApiParameterDao extends SQDIDao$4 {
+class BaseApplicationApiParameterDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11947,7 +11959,7 @@ BaseApplicationApiParameterDao.Find = new DaoQueryDecorators();
 BaseApplicationApiParameterDao.FindOne = new DaoQueryDecorators();
 BaseApplicationApiParameterDao.Search = new DaoQueryDecorators();
 BaseApplicationApiParameterDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationApiReturnTypeDao extends SQDIDao$4 {
+class BaseApplicationApiReturnTypeDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11962,7 +11974,7 @@ BaseApplicationApiReturnTypeDao.Find = new DaoQueryDecorators();
 BaseApplicationApiReturnTypeDao.FindOne = new DaoQueryDecorators();
 BaseApplicationApiReturnTypeDao.Search = new DaoQueryDecorators();
 BaseApplicationApiReturnTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlApplicationDao extends SQDIDao$4 {
+class BaseDdlApplicationDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11977,7 +11989,7 @@ BaseDdlApplicationDao.Find = new DaoQueryDecorators();
 BaseDdlApplicationDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlApplicationCurrentVersionDao extends SQDIDao$4 {
+class BaseDdlApplicationCurrentVersionDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11992,7 +12004,7 @@ BaseDdlApplicationCurrentVersionDao.Find = new DaoQueryDecorators();
 BaseDdlApplicationCurrentVersionDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationCurrentVersionDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationCurrentVersionDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlApplicationReferenceDao extends SQDIDao$4 {
+class BaseDdlApplicationReferenceDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12007,7 +12019,7 @@ BaseDdlApplicationReferenceDao.Find = new DaoQueryDecorators();
 BaseDdlApplicationReferenceDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationReferenceDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationReferenceDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlApplicationVersionDao extends SQDIDao$4 {
+class BaseDdlApplicationVersionDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12022,7 +12034,7 @@ BaseDdlApplicationVersionDao.Find = new DaoQueryDecorators();
 BaseDdlApplicationVersionDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationVersionDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationVersionDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlColumnDao extends SQDIDao$4 {
+class BaseDdlColumnDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12037,7 +12049,7 @@ BaseDdlColumnDao.Find = new DaoQueryDecorators();
 BaseDdlColumnDao.FindOne = new DaoQueryDecorators();
 BaseDdlColumnDao.Search = new DaoQueryDecorators();
 BaseDdlColumnDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlDomainDao extends SQDIDao$4 {
+class BaseDdlDomainDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12052,7 +12064,7 @@ BaseDdlDomainDao.Find = new DaoQueryDecorators();
 BaseDdlDomainDao.FindOne = new DaoQueryDecorators();
 BaseDdlDomainDao.Search = new DaoQueryDecorators();
 BaseDdlDomainDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlEntityDao extends SQDIDao$4 {
+class BaseDdlEntityDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12067,7 +12079,7 @@ BaseDdlEntityDao.Find = new DaoQueryDecorators();
 BaseDdlEntityDao.FindOne = new DaoQueryDecorators();
 BaseDdlEntityDao.Search = new DaoQueryDecorators();
 BaseDdlEntityDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlPropertyDao extends SQDIDao$4 {
+class BaseDdlPropertyDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12082,7 +12094,7 @@ BaseDdlPropertyDao.Find = new DaoQueryDecorators();
 BaseDdlPropertyDao.FindOne = new DaoQueryDecorators();
 BaseDdlPropertyDao.Search = new DaoQueryDecorators();
 BaseDdlPropertyDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlPropertyColumnDao extends SQDIDao$4 {
+class BaseDdlPropertyColumnDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12097,7 +12109,7 @@ BaseDdlPropertyColumnDao.Find = new DaoQueryDecorators();
 BaseDdlPropertyColumnDao.FindOne = new DaoQueryDecorators();
 BaseDdlPropertyColumnDao.Search = new DaoQueryDecorators();
 BaseDdlPropertyColumnDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlRelationDao extends SQDIDao$4 {
+class BaseDdlRelationDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12112,7 +12124,7 @@ BaseDdlRelationDao.Find = new DaoQueryDecorators();
 BaseDdlRelationDao.FindOne = new DaoQueryDecorators();
 BaseDdlRelationDao.Search = new DaoQueryDecorators();
 BaseDdlRelationDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlRelationColumnDao extends SQDIDao$4 {
+class BaseDdlRelationColumnDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12169,7 +12181,7 @@ let ApplicationApiClassDao = class ApplicationApiClassDao extends BaseApplicatio
         }, context);
     }
 };
-ApplicationApiClassDao = __decorate$g([
+ApplicationApiClassDao = __decorate$h([
     Injected()
 ], ApplicationApiClassDao);
 
@@ -12195,7 +12207,7 @@ let ApplicationApiOperationDao = class ApplicationApiOperationDao extends BaseAp
         }, context);
     }
 };
-ApplicationApiOperationDao = __decorate$g([
+ApplicationApiOperationDao = __decorate$h([
     Injected()
 ], ApplicationApiOperationDao);
 
@@ -12223,7 +12235,7 @@ let ApplicationApiParameterDao = class ApplicationApiParameterDao extends BaseAp
         }, context);
     }
 };
-ApplicationApiParameterDao = __decorate$g([
+ApplicationApiParameterDao = __decorate$h([
     Injected()
 ], ApplicationApiParameterDao);
 
@@ -12249,7 +12261,7 @@ let ApplicationApiReturnTypeDao = class ApplicationApiReturnTypeDao extends Base
         }, context);
     }
 };
-ApplicationApiReturnTypeDao = __decorate$g([
+ApplicationApiReturnTypeDao = __decorate$h([
     Injected()
 ], ApplicationApiReturnTypeDao);
 
@@ -12514,13 +12526,13 @@ let DdlApplicationDao = class DdlApplicationDao extends BaseDdlApplicationDao {
         }, context);
     }
 };
-__decorate$g([
+__decorate$h([
     Inject()
 ], DdlApplicationDao.prototype, "airportDatabase", void 0);
-__decorate$g([
+__decorate$h([
     Inject()
 ], DdlApplicationDao.prototype, "datastructureUtils", void 0);
-DdlApplicationDao = __decorate$g([
+DdlApplicationDao = __decorate$h([
     Injected()
 ], DdlApplicationDao);
 
@@ -12562,7 +12574,7 @@ let DdlApplicationReferenceDao = class DdlApplicationReferenceDao extends BaseDd
         }, context);
     }
 };
-DdlApplicationReferenceDao = __decorate$g([
+DdlApplicationReferenceDao = __decorate$h([
     Injected()
 ], DdlApplicationReferenceDao);
 
@@ -12733,7 +12745,7 @@ let DdlApplicationVersionDao = class DdlApplicationVersionDao extends BaseDdlApp
         }, context);
     }
 };
-DdlApplicationVersionDao = __decorate$g([
+DdlApplicationVersionDao = __decorate$h([
     Injected()
 ], DdlApplicationVersionDao);
 
@@ -12790,10 +12802,10 @@ let DdlColumnDao = class DdlColumnDao extends BaseDdlColumnDao {
         }, context);
     }
 };
-__decorate$g([
+__decorate$h([
     Inject()
 ], DdlColumnDao.prototype, "datastructureUtils", void 0);
-DdlColumnDao = __decorate$g([
+DdlColumnDao = __decorate$h([
     Injected()
 ], DdlColumnDao);
 
@@ -12840,7 +12852,7 @@ let DdlEntityDao = class DdlEntityDao extends BaseDdlEntityDao {
         }, context);
     }
 };
-DdlEntityDao = __decorate$g([
+DdlEntityDao = __decorate$h([
     Injected()
 ], DdlEntityDao);
 
@@ -12879,7 +12891,7 @@ let DdlPropertyColumnDao = class DdlPropertyColumnDao extends BaseDdlPropertyCol
         }, context);
     }
 };
-DdlPropertyColumnDao = __decorate$g([
+DdlPropertyColumnDao = __decorate$h([
     Injected()
 ], DdlPropertyColumnDao);
 
@@ -12923,7 +12935,7 @@ let DdlPropertyDao = class DdlPropertyDao extends BaseDdlPropertyDao {
         }, context);
     }
 };
-DdlPropertyDao = __decorate$g([
+DdlPropertyDao = __decorate$h([
     Injected()
 ], DdlPropertyDao);
 
@@ -12971,7 +12983,7 @@ let DdlRelationColumnDao = class DdlRelationColumnDao extends BaseDdlRelationCol
         }, context);
     }
 };
-DdlRelationColumnDao = __decorate$g([
+DdlRelationColumnDao = __decorate$h([
     Injected()
 ], DdlRelationColumnDao);
 
@@ -13051,10 +13063,10 @@ let DdlRelationDao = class DdlRelationDao extends BaseDdlRelationDao {
         }, context);
     }
 };
-__decorate$g([
+__decorate$h([
     Inject()
 ], DdlRelationDao.prototype, "datastructureUtils", void 0);
-DdlRelationDao = __decorate$g([
+DdlRelationDao = __decorate$h([
     Injected()
 ], DdlRelationDao);
 
@@ -13142,7 +13154,7 @@ let DdlDomainDao = class DdlDomainDao extends BaseDdlDomainDao {
         }, context);
     }
 };
-DdlDomainDao = __decorate$g([
+DdlDomainDao = __decorate$h([
     Injected()
 ], DdlDomainDao);
 
@@ -13200,7 +13212,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$f(decorators, target, key, desc) {
+function __decorate$g(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -13227,10 +13239,10 @@ let TerminalState = class TerminalState {
     }
 };
 TerminalState.sharedAcrossInjectionScopes = true;
-__decorate$f([
+__decorate$g([
     Inject()
 ], TerminalState.prototype, "appTrackerUtils", void 0);
-TerminalState = __decorate$f([
+TerminalState = __decorate$g([
     Injected()
 ], TerminalState);
 
@@ -13361,16 +13373,16 @@ let TerminalStore = class TerminalStore {
     }
 };
 TerminalStore.sharedAcrossInjectionScopes = true;
-__decorate$f([
+__decorate$g([
     Inject()
 ], TerminalStore.prototype, "datastructureUtils", void 0);
-__decorate$f([
+__decorate$g([
     Inject()
 ], TerminalStore.prototype, "selectorManager", void 0);
-__decorate$f([
+__decorate$g([
     Inject()
 ], TerminalStore.prototype, "terminalState", void 0);
-TerminalStore = __decorate$f([
+TerminalStore = __decorate$g([
     Injected()
 ], TerminalStore);
 
@@ -13456,7 +13468,7 @@ let UserState = class UserState {
         this.userState = internalUserState;
     }
 };
-UserState = __decorate$f([
+UserState = __decorate$g([
     Injected()
 ], UserState);
 
@@ -13470,13 +13482,13 @@ let UserStore = class UserStore {
         this.getSessionMapByAccountPublicSigningKey = this.selectorManager.createSelector(this.getUserState, userState => userState.sessionMapByAccountPublicSigningKey);
     }
 };
-__decorate$f([
+__decorate$g([
     Inject()
 ], UserStore.prototype, "selectorManager", void 0);
-__decorate$f([
+__decorate$g([
     Inject()
 ], UserStore.prototype, "userState", void 0);
-UserStore = __decorate$f([
+UserStore = __decorate$g([
     Injected()
 ], UserStore);
 
@@ -13515,7 +13527,7 @@ let SelectorManager = class SelectorManager {
         return selector;
     }
 };
-SelectorManager = __decorate$f([
+SelectorManager = __decorate$g([
     Injected()
 ], SelectorManager);
 
@@ -13543,16 +13555,16 @@ let AbstractApplicationLoader = class AbstractApplicationLoader {
         return this.application;
     }
 };
-__decorate$f([
+__decorate$g([
     Inject()
 ], AbstractApplicationLoader.prototype, "applicationInitializer", void 0);
-__decorate$f([
+__decorate$g([
     Inject()
 ], AbstractApplicationLoader.prototype, "terminalStore", void 0);
-__decorate$f([
+__decorate$g([
     Inject()
 ], AbstractApplicationLoader.prototype, "apiRegistry", void 0);
-AbstractApplicationLoader = __decorate$f([
+AbstractApplicationLoader = __decorate$g([
     Injected()
 ], AbstractApplicationLoader);
 
@@ -13625,7 +13637,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$e(decorators, target, key, desc) {
+function __decorate$f(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -13792,19 +13804,19 @@ let SqlSchemaBuilder = class SqlSchemaBuilder {
 			)`;
     }
 };
-__decorate$e([
+__decorate$f([
     Inject()
 ], SqlSchemaBuilder.prototype, "airportDatabase", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], SqlSchemaBuilder.prototype, "applicationReferenceUtils", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], SqlSchemaBuilder.prototype, "applicationNameUtils", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], SqlSchemaBuilder.prototype, "storeDriver", void 0);
-SqlSchemaBuilder = __decorate$e([
+SqlSchemaBuilder = __decorate$f([
     Injected()
 ], SqlSchemaBuilder);
 
@@ -13935,19 +13947,19 @@ let ApplicationChecker = class ApplicationChecker {
         return false;
     }
 };
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationChecker.prototype, "ddlApplicationDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationChecker.prototype, "datastructureUtils", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationChecker.prototype, "applicationNameUtils", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationChecker.prototype, "transactionManager", void 0);
-ApplicationChecker = __decorate$e([
+ApplicationChecker = __decorate$f([
     Injected()
 ], ApplicationChecker);
 
@@ -13974,10 +13986,10 @@ let ApplicationLocator = class ApplicationLocator {
             .get(fullApplication_Name);
     }
 };
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationLocator.prototype, "applicationNameUtils", void 0);
-ApplicationLocator = __decorate$e([
+ApplicationLocator = __decorate$f([
     Injected()
 ], ApplicationLocator);
 
@@ -14606,22 +14618,22 @@ let ApplicationComposer = class ApplicationComposer {
         applicationVersion.apiClasses = newApplicationApiClasses;
     }
 };
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationComposer.prototype, "applicationLocator", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationComposer.prototype, "datastructureUtils", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationComposer.prototype, "applicationNameUtils", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationComposer.prototype, "domainRetriever", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationComposer.prototype, "terminalStore", void 0);
-ApplicationComposer = __decorate$e([
+ApplicationComposer = __decorate$f([
     Injected()
 ], ApplicationComposer);
 
@@ -14690,52 +14702,52 @@ let ApplicationRecorder = class ApplicationRecorder {
         await dao.save(entities, context);
     }
 };
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "applicationApiClassDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "applicationApiOperationDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "applicationApiParameterDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "applicationApiReturnTypeDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "dbColumnDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "ddlApplicationDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "dbEntityDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "dbPropertyColumnDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "dbPropertyDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "ddlApplicationReferenceDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "dbRelationColumnDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "dbRelationDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "ddlApplicationVersionDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "ddlDomainDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationRecorder.prototype, "transactionManager", void 0);
-ApplicationRecorder = __decorate$e([
+ApplicationRecorder = __decorate$f([
     Injected()
 ], ApplicationRecorder);
 
@@ -14921,46 +14933,46 @@ let ApplicationInitializer = class ApplicationInitializer {
         }
     }
 };
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationInitializer.prototype, "airportDatabase", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationInitializer.prototype, "applicationChecker", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationInitializer.prototype, "applicationComposer", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationInitializer.prototype, "ddlApplicationDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationInitializer.prototype, "applicationLocator", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationInitializer.prototype, "applicationRecorder", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationInitializer.prototype, "appTrackerUtils", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationInitializer.prototype, "applicationNameUtils", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationInitializer.prototype, "queryObjectInitializer", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationInitializer.prototype, "schemaBuilder", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationInitializer.prototype, "sequenceGenerator", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationInitializer.prototype, "terminalStore", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], ApplicationInitializer.prototype, "transactionManager", void 0);
-ApplicationInitializer = __decorate$e([
+ApplicationInitializer = __decorate$f([
     Injected()
 ], ApplicationInitializer);
 
@@ -14973,7 +14985,7 @@ let AirportDatabasePopulator = class AirportDatabasePopulator {
         // this.airDb.qApplications
     }
 };
-AirportDatabasePopulator = __decorate$e([
+AirportDatabasePopulator = __decorate$f([
     Injected()
 ], AirportDatabasePopulator);
 
@@ -15141,10 +15153,10 @@ let DdlObjectLinker = class DdlObjectLinker {
         });
     }
 };
-__decorate$e([
+__decorate$f([
     Inject()
 ], DdlObjectLinker.prototype, "terminalStore", void 0);
-DdlObjectLinker = __decorate$e([
+DdlObjectLinker = __decorate$f([
     Injected()
 ], DdlObjectLinker);
 
@@ -15289,43 +15301,43 @@ let DdlObjectRetriever = class DdlObjectRetriever {
         };
     }
 };
-__decorate$e([
+__decorate$f([
     Inject()
 ], DdlObjectRetriever.prototype, "applicationApiClassDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], DdlObjectRetriever.prototype, "dbColumnDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], DdlObjectRetriever.prototype, "ddlApplicationDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], DdlObjectRetriever.prototype, "dbEntityDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], DdlObjectRetriever.prototype, "dbPropertyColumnDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], DdlObjectRetriever.prototype, "dbPropertyDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], DdlObjectRetriever.prototype, "ddlApplicationReferenceDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], DdlObjectRetriever.prototype, "dbRelationColumnDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], DdlObjectRetriever.prototype, "dbRelationDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], DdlObjectRetriever.prototype, "ddlApplicationVersionDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], DdlObjectRetriever.prototype, "ddlDomainDao", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], DdlObjectRetriever.prototype, "terminalStore", void 0);
-DdlObjectRetriever = __decorate$e([
+DdlObjectRetriever = __decorate$f([
     Injected()
 ], DdlObjectRetriever);
 
@@ -15356,16 +15368,16 @@ let QueryEntityClassCreator = class QueryEntityClassCreator {
         return qApplication;
     }
 };
-__decorate$e([
+__decorate$f([
     Inject()
 ], QueryEntityClassCreator.prototype, "airportDatabase", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], QueryEntityClassCreator.prototype, "applicationUtils", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], QueryEntityClassCreator.prototype, "queryRelationManager", void 0);
-QueryEntityClassCreator = __decorate$e([
+QueryEntityClassCreator = __decorate$f([
     Injected()
 ], QueryEntityClassCreator);
 
@@ -15426,19 +15438,19 @@ let QueryObjectInitializer = class QueryObjectInitializer {
         return allDdlObjects;
     }
 };
-__decorate$e([
+__decorate$f([
     Inject()
 ], QueryObjectInitializer.prototype, "ddlObjectLinker", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], QueryObjectInitializer.prototype, "ddlObjectRetriever", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], QueryObjectInitializer.prototype, "queryEntityClassCreator", void 0);
-__decorate$e([
+__decorate$f([
     Inject()
 ], QueryObjectInitializer.prototype, "terminalStore", void 0);
-QueryObjectInitializer = __decorate$e([
+QueryObjectInitializer = __decorate$f([
     Injected()
 ], QueryObjectInitializer);
 
@@ -15619,7 +15631,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$d(decorators, target, key, desc) {
+function __decorate$e(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -15637,41 +15649,41 @@ let OperationHistory = class OperationHistory {
         this.recordHistory = [];
     }
 };
-__decorate$d([
+__decorate$e([
     GeneratedValue(),
     SequenceGenerator$1(),
     Id(),
     Column(),
     DbNumber()
 ], OperationHistory.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbNumber()
 ], OperationHistory.prototype, "orderNumber", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], OperationHistory.prototype, "changeType", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbNumber()
 ], OperationHistory.prototype, "systemWideOperationId", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], OperationHistory.prototype, "actor", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], OperationHistory.prototype, "entity", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], OperationHistory.prototype, "repositoryTransactionHistory", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], OperationHistory.prototype, "recordHistory", void 0);
-OperationHistory = __decorate$d([
+OperationHistory = __decorate$e([
     Entity(),
     Table()
 ], OperationHistory);
@@ -15682,35 +15694,35 @@ let RecordHistory = class RecordHistory {
         this.oldValues = [];
     }
 };
-__decorate$d([
+__decorate$e([
     Id(),
     GeneratedValue(),
     SequenceGenerator$1(),
     Column(),
     DbNumber()
 ], RecordHistory.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbNumber()
 ], RecordHistory.prototype, "_actorRecordId", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RecordHistory.prototype, "actor", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RecordHistory.prototype, "operationHistory", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], RecordHistory.prototype, "newValues", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], RecordHistory.prototype, "oldValues", void 0);
-__decorate$d([
+__decorate$e([
     Transient()
 ], RecordHistory.prototype, "tableColumnMap", void 0);
-RecordHistory = __decorate$d([
+RecordHistory = __decorate$e([
     Entity(),
     Table()
 ], RecordHistory);
@@ -15728,21 +15740,21 @@ RecordHistory = __decorate$d([
  */
 let RecordHistoryNewValue = class RecordHistoryNewValue {
 };
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RecordHistoryNewValue.prototype, "recordHistory", void 0);
-__decorate$d([
+__decorate$e([
     Id(),
     Column(),
     DbNumber()
 ], RecordHistoryNewValue.prototype, "columnIndex", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbAny()
 ], RecordHistoryNewValue.prototype, "newValue", void 0);
-RecordHistoryNewValue = __decorate$d([
+RecordHistoryNewValue = __decorate$e([
     Entity(),
     Table()
 ], RecordHistoryNewValue);
@@ -15760,21 +15772,21 @@ RecordHistoryNewValue = __decorate$d([
  */
 let RecordHistoryOldValue = class RecordHistoryOldValue {
 };
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RecordHistoryOldValue.prototype, "recordHistory", void 0);
-__decorate$d([
+__decorate$e([
     Id(),
     Column(),
     DbNumber()
 ], RecordHistoryOldValue.prototype, "columnIndex", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbAny()
 ], RecordHistoryOldValue.prototype, "oldValue", void 0);
-RecordHistoryOldValue = __decorate$d([
+RecordHistoryOldValue = __decorate$e([
     Entity(),
     Table()
 ], RecordHistoryOldValue);
@@ -15816,65 +15828,65 @@ let RepositoryTransactionHistory = class RepositoryTransactionHistory {
         this.operationHistory = data.operationHistory;
     }
 };
-__decorate$d([
+__decorate$e([
     GeneratedValue(),
     Id(),
     SequenceGenerator$1(),
     Column(),
     DbNumber()
 ], RepositoryTransactionHistory.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbNumber()
 ], RepositoryTransactionHistory.prototype, "saveTimestamp", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbNumber()
 ], RepositoryTransactionHistory.prototype, "syncTimestamp", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], RepositoryTransactionHistory.prototype, "GUID", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbBoolean()
 ], RepositoryTransactionHistory.prototype, "isRepositoryCreation", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], RepositoryTransactionHistory.prototype, "invitationPrivateSigningKey", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RepositoryTransactionHistory.prototype, "member", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RepositoryTransactionHistory.prototype, "repository", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RepositoryTransactionHistory.prototype, "transactionHistory", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], RepositoryTransactionHistory.prototype, "operationHistory", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], RepositoryTransactionHistory.prototype, "newRepositoryMemberInvitations", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], RepositoryTransactionHistory.prototype, "newRepositoryMemberAcceptances", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], RepositoryTransactionHistory.prototype, "newRepositoryMemberUpdates", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], RepositoryTransactionHistory.prototype, "newRepositoryMembers", void 0);
-RepositoryTransactionHistory = __decorate$d([
+RepositoryTransactionHistory = __decorate$e([
     Entity(),
     Table()
 ], RepositoryTransactionHistory);
@@ -15893,158 +15905,70 @@ let TransactionHistory = class TransactionHistory {
         this.allRecordHistoryOldValues = [];
     }
 };
-__decorate$d([
+__decorate$e([
     GeneratedValue(),
     Id(),
     SequenceGenerator$1(),
     Column(),
     DbNumber()
 ], TransactionHistory.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], TransactionHistory.prototype, "transactionType", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], TransactionHistory.prototype, "repositoryTransactionHistories", void 0);
-__decorate$d([
+__decorate$e([
     Transient()
 ], TransactionHistory.prototype, "repositoryTransactionHistoryMap", void 0);
-__decorate$d([
+__decorate$e([
     Transient()
 ], TransactionHistory.prototype, "allModifiedColumnsMap", void 0);
-__decorate$d([
+__decorate$e([
     Transient()
 ], TransactionHistory.prototype, "allOperationHistory", void 0);
-__decorate$d([
+__decorate$e([
     Transient()
 ], TransactionHistory.prototype, "allRecordHistory", void 0);
-__decorate$d([
+__decorate$e([
     Transient()
 ], TransactionHistory.prototype, "allRecordHistoryNewValues", void 0);
-__decorate$d([
+__decorate$e([
     Transient()
 ], TransactionHistory.prototype, "allRecordHistoryOldValues", void 0);
-TransactionHistory = __decorate$d([
+TransactionHistory = __decorate$e([
     Entity(),
     Table()
 ], TransactionHistory);
 
 let Actor = class Actor {
 };
-__decorate$d([
+__decorate$e([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], Actor.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], Actor.prototype, "GUID", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], Actor.prototype, "userAccount", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], Actor.prototype, "terminal", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], Actor.prototype, "application", void 0);
-Actor = __decorate$d([
+Actor = __decorate$e([
     Entity()
 ], Actor);
-
-/**
- * Created by Papa on 2/17/2017.
- */
-// Used withint the framework because it imports from '@airport/travel-document-checkpoint/dist/app/bundle'
-let InternalAirEntity = class InternalAirEntity {
-    constructor(entityId) {
-        this.ageSuitability = 0;
-        this.copied = false;
-        this.createdAt = new Date();
-        /*
-         * Set at record creation time if a copy needs to be made (of a record
-         * in another repository)
-         */
-        this.toBeCopied = false;
-        // Currently TypeScript does not support optional getters/setters
-        // this is a workaround
-        delete this.id;
-        Object.defineProperty(this, 'id', {
-            get() {
-                return globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS).encodeId(this);
-            },
-            set(idString) {
-                globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS).setId(idString, this);
-            }
-        });
-        delete this.isNew;
-        Object.defineProperty(this, 'isNew', {
-            get() {
-                return !!this._actorRecordId;
-            }
-        });
-        delete this.createdBy;
-        Object.defineProperty(this, 'createdBy', {
-            get() {
-                return this.actor.userAccount;
-            }
-        });
-        this.id = entityId;
-    }
-};
-__decorate$d([
-    Id(),
-    Column(),
-    GeneratedValue(),
-    DbNumber()
-], InternalAirEntity.prototype, "_actorRecordId", void 0);
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], InternalAirEntity.prototype, "actor", void 0);
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], InternalAirEntity.prototype, "repository", void 0);
-__decorate$d([
-    Column(),
-    DbNumber()
-], InternalAirEntity.prototype, "ageSuitability", void 0);
-__decorate$d([
-    Column(),
-    DbBoolean()
-], InternalAirEntity.prototype, "copied", void 0);
-__decorate$d([
-    Column(),
-    DbDate()
-], InternalAirEntity.prototype, "createdAt", void 0);
-__decorate$d([
-    Column(),
-    DbNumber()
-], InternalAirEntity.prototype, "systemWideOperationId", void 0);
-__decorate$d([
-    Transient()
-], InternalAirEntity.prototype, "toBeCopied", void 0);
-__decorate$d([
-    Transient()
-], InternalAirEntity.prototype, "createdBy", void 0);
-__decorate$d([
-    Transient()
-], InternalAirEntity.prototype, "isNew", void 0);
-__decorate$d([
-    Transient()
-], InternalAirEntity.prototype, "id", void 0);
-InternalAirEntity = __decorate$d([
-    MappedSuperclass()
-], InternalAirEntity);
 
 /**
  * Created by Papa on 2/9/2017.
@@ -16066,171 +15990,171 @@ let Repository = class Repository {
         this.repositoryTypes = [];
     }
 };
-__decorate$d([
+__decorate$e([
     Column(),
     GeneratedValue(),
     Id(),
     DbNumber()
 ], Repository.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbNumber()
 ], Repository.prototype, "ageSuitability", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbDate()
 ], Repository.prototype, "createdAt", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], Repository.prototype, "fullApplicationName", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], Repository.prototype, "GUID", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbBoolean()
 ], Repository.prototype, "immutable", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbBoolean()
 ], Repository.prototype, "internal", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbBoolean()
 ], Repository.prototype, "isPublic", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], Repository.prototype, "name", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], Repository.prototype, "source", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], Repository.prototype, "uiEntryUri", void 0);
-__decorate$d([
+__decorate$e([
     Column()
 ], Repository.prototype, "isLoaded", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], Repository.prototype, "owner", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], Repository.prototype, "continent", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], Repository.prototype, "country", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], Repository.prototype, "state", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], Repository.prototype, "metroArea", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], Repository.prototype, "referencedRepositories", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], Repository.prototype, "referencedInRepositories", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], Repository.prototype, "repositoryMembers", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], Repository.prototype, "repositoryApplications", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], Repository.prototype, "repositoryClients", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], Repository.prototype, "repositoryDatabases", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], Repository.prototype, "repositoryTerminals", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], Repository.prototype, "repositoryTypes", void 0);
-Repository = __decorate$d([
+Repository = __decorate$e([
     Entity(),
     Table()
 ], Repository);
 
 let RepositoryApplication = class RepositoryApplication {
 };
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryApplication.prototype, "application", void 0);
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryApplication.prototype, "repository", void 0);
-RepositoryApplication = __decorate$d([
+RepositoryApplication = __decorate$e([
     Entity(),
     Table()
 ], RepositoryApplication);
 
 let RepositoryClient = class RepositoryClient {
 };
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryClient.prototype, "repository", void 0);
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryClient.prototype, "client", void 0);
-RepositoryClient = __decorate$d([
+RepositoryClient = __decorate$e([
     Entity(),
     Table()
 ], RepositoryClient);
 
 let RepositoryDatabase = class RepositoryDatabase {
 };
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryDatabase.prototype, "repository", void 0);
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryDatabase.prototype, "database", void 0);
-RepositoryDatabase = __decorate$d([
+RepositoryDatabase = __decorate$e([
     Entity(),
     Table()
 ], RepositoryDatabase);
 
 let RepositoryReference = class RepositoryReference {
 };
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryReference.prototype, "referencingRepository", void 0);
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryReference.prototype, "referencedRepository", void 0);
-RepositoryReference = __decorate$d([
+RepositoryReference = __decorate$e([
     Entity(),
     Table()
 ], RepositoryReference);
@@ -16240,223 +16164,185 @@ let RepositoryMember = class RepositoryMember {
         this.updates = [];
     }
 };
-__decorate$d([
+__decorate$e([
     Id(),
     GeneratedValue(),
     Column(),
     DbNumber()
 ], RepositoryMember.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], RepositoryMember.prototype, "memberPublicSigningKey", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbBoolean()
 ], RepositoryMember.prototype, "isOwner", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbBoolean()
 ], RepositoryMember.prototype, "isAdministrator", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbBoolean()
 ], RepositoryMember.prototype, "canWrite", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbNumber()
 ], RepositoryMember.prototype, "status", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMember.prototype, "repository", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMember.prototype, "userAccount", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMember.prototype, "addedInRepositoryTransactionHistory", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], RepositoryMember.prototype, "acceptances", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], RepositoryMember.prototype, "invitations", void 0);
-__decorate$d([
+__decorate$e([
     OneToMany()
 ], RepositoryMember.prototype, "updates", void 0);
-RepositoryMember = __decorate$d([
+RepositoryMember = __decorate$e([
     Entity(),
     Table()
 ], RepositoryMember);
 
 let RepositoryMemberAcceptance = class RepositoryMemberAcceptance {
 };
-__decorate$d([
+__decorate$e([
     Id(),
     GeneratedValue(),
     Column(),
     DbNumber()
 ], RepositoryMemberAcceptance.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbDate()
 ], RepositoryMemberAcceptance.prototype, "createdAt", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], RepositoryMemberAcceptance.prototype, "invitationPublicSigningKey", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMemberAcceptance.prototype, "acceptingRepositoryMember", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMemberAcceptance.prototype, "addedInRepositoryTransactionHistory", void 0);
-RepositoryMemberAcceptance = __decorate$d([
+RepositoryMemberAcceptance = __decorate$e([
     Entity(),
     Table()
 ], RepositoryMemberAcceptance);
 
 let RepositoryMemberInvitation = class RepositoryMemberInvitation {
 };
-__decorate$d([
+__decorate$e([
     Id(),
     GeneratedValue(),
     Column(),
     DbNumber()
 ], RepositoryMemberInvitation.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbDate()
 ], RepositoryMemberInvitation.prototype, "createdAt", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbString()
 ], RepositoryMemberInvitation.prototype, "invitationPublicSigningKey", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMemberInvitation.prototype, "invitedRepositoryMember", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMemberInvitation.prototype, "addedInRepositoryTransactionHistory", void 0);
-RepositoryMemberInvitation = __decorate$d([
+RepositoryMemberInvitation = __decorate$e([
     Entity(),
     Table()
 ], RepositoryMemberInvitation);
 
 let RepositoryMemberUpdate = class RepositoryMemberUpdate {
 };
-__decorate$d([
+__decorate$e([
     Id(),
     GeneratedValue(),
     Column(),
     DbNumber()
 ], RepositoryMemberUpdate.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbNumber()
 ], RepositoryMemberUpdate.prototype, "createdAt", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbBoolean()
 ], RepositoryMemberUpdate.prototype, "isAdministrator", void 0);
-__decorate$d([
+__decorate$e([
     Column(),
     DbBoolean()
 ], RepositoryMemberUpdate.prototype, "canWrite", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMemberUpdate.prototype, "updatedRepositoryMember", void 0);
-__decorate$d([
+__decorate$e([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMemberUpdate.prototype, "addedInRepositoryTransactionHistory", void 0);
-RepositoryMemberUpdate = __decorate$d([
+RepositoryMemberUpdate = __decorate$e([
     Entity(),
     Table()
 ], RepositoryMemberUpdate);
 
 let RepositoryTerminal = class RepositoryTerminal {
 };
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryTerminal.prototype, "repository", void 0);
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryTerminal.prototype, "terminal", void 0);
-RepositoryTerminal = __decorate$d([
+RepositoryTerminal = __decorate$e([
     Entity(),
     Table()
 ], RepositoryTerminal);
 
 let RepositoryType = class RepositoryType {
 };
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryType.prototype, "repository", void 0);
-__decorate$d([
+__decorate$e([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryType.prototype, "type", void 0);
-RepositoryType = __decorate$d([
+RepositoryType = __decorate$e([
     Entity(),
     Table()
 ], RepositoryType);
 
-let CopiedRecordLedger = class CopiedRecordLedger extends InternalAirEntity {
-};
-__decorate$d([
-    Column(),
-    DbNumber()
-], CopiedRecordLedger.prototype, "copyActorRecordId", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], CopiedRecordLedger.prototype, "copyAppEntity", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], CopiedRecordLedger.prototype, "copyActor", void 0);
-__decorate$d([
-    ManyToOne(),
-    JoinColumn()
-], CopiedRecordLedger.prototype, "copyRepository", void 0);
-CopiedRecordLedger = __decorate$d([
-    Entity(),
-    Table()
-], CopiedRecordLedger);
-
-let LocalCopyReplacementLedger = class LocalCopyReplacementLedger {
-};
-__decorate$d([
-    Id(),
-    ManyToOne(),
-    JoinColumns()
-], LocalCopyReplacementLedger.prototype, "copiedRecordLedger", void 0);
-LocalCopyReplacementLedger = __decorate$d([
-    Entity(),
-    Table()
-], LocalCopyReplacementLedger);
-
-const __constructors__$3 = {
+const __constructors__$4 = {
     Actor,
-    CopiedRecordLedger,
-    InternalAirEntity,
-    LocalCopyReplacementLedger,
     OperationHistory,
     RecordHistory,
     RecordHistoryNewValue,
@@ -16476,7 +16362,7 @@ const __constructors__$3 = {
     TransactionHistory
 };
 const Q_airport____at_airport_slash_holding_dash_pattern = {
-    __constructors__: __constructors__$3,
+    __constructors__: __constructors__$4,
     domain: 'airport',
     name: '@airport/holding-pattern'
 };
@@ -16488,12 +16374,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-let SQDIDao$3 = class SQDIDao extends ObservableDao {
+let SQDIDao$4 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_holding_dash_pattern);
     }
 };
-class BaseActorDao extends SQDIDao$3 {
+class BaseActorDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16508,37 +16394,7 @@ BaseActorDao.Find = new DaoQueryDecorators();
 BaseActorDao.FindOne = new DaoQueryDecorators();
 BaseActorDao.Search = new DaoQueryDecorators();
 BaseActorDao.SearchOne = new DaoQueryDecorators();
-class BaseCopiedRecordLedgerDao extends SQDIDao$3 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(18);
-    }
-    constructor() {
-        super(18);
-    }
-}
-BaseCopiedRecordLedgerDao.Find = new DaoQueryDecorators();
-BaseCopiedRecordLedgerDao.FindOne = new DaoQueryDecorators();
-BaseCopiedRecordLedgerDao.Search = new DaoQueryDecorators();
-BaseCopiedRecordLedgerDao.SearchOne = new DaoQueryDecorators();
-class BaseLocalCopyReplacementLedgerDao extends SQDIDao$3 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(19);
-    }
-    constructor() {
-        super(19);
-    }
-}
-BaseLocalCopyReplacementLedgerDao.Find = new DaoQueryDecorators();
-BaseLocalCopyReplacementLedgerDao.FindOne = new DaoQueryDecorators();
-BaseLocalCopyReplacementLedgerDao.Search = new DaoQueryDecorators();
-BaseLocalCopyReplacementLedgerDao.SearchOne = new DaoQueryDecorators();
-class BaseOperationHistoryDao extends SQDIDao$3 {
+class BaseOperationHistoryDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16553,7 +16409,7 @@ BaseOperationHistoryDao.Find = new DaoQueryDecorators();
 BaseOperationHistoryDao.FindOne = new DaoQueryDecorators();
 BaseOperationHistoryDao.Search = new DaoQueryDecorators();
 BaseOperationHistoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRecordHistoryDao extends SQDIDao$3 {
+class BaseRecordHistoryDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16568,7 +16424,7 @@ BaseRecordHistoryDao.Find = new DaoQueryDecorators();
 BaseRecordHistoryDao.FindOne = new DaoQueryDecorators();
 BaseRecordHistoryDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRecordHistoryNewValueDao extends SQDIDao$3 {
+class BaseRecordHistoryNewValueDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16583,7 +16439,7 @@ BaseRecordHistoryNewValueDao.Find = new DaoQueryDecorators();
 BaseRecordHistoryNewValueDao.FindOne = new DaoQueryDecorators();
 BaseRecordHistoryNewValueDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryNewValueDao.SearchOne = new DaoQueryDecorators();
-class BaseRecordHistoryOldValueDao extends SQDIDao$3 {
+class BaseRecordHistoryOldValueDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16598,7 +16454,7 @@ BaseRecordHistoryOldValueDao.Find = new DaoQueryDecorators();
 BaseRecordHistoryOldValueDao.FindOne = new DaoQueryDecorators();
 BaseRecordHistoryOldValueDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryOldValueDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryDao extends SQDIDao$3 {
+class BaseRepositoryDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16613,7 +16469,7 @@ BaseRepositoryDao.Find = new DaoQueryDecorators();
 BaseRepositoryDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryDao.Search = new DaoQueryDecorators();
 BaseRepositoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryApplicationDao extends SQDIDao$3 {
+class BaseRepositoryApplicationDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16628,7 +16484,7 @@ BaseRepositoryApplicationDao.Find = new DaoQueryDecorators();
 BaseRepositoryApplicationDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryApplicationDao.Search = new DaoQueryDecorators();
 BaseRepositoryApplicationDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryClientDao extends SQDIDao$3 {
+class BaseRepositoryClientDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16643,7 +16499,7 @@ BaseRepositoryClientDao.Find = new DaoQueryDecorators();
 BaseRepositoryClientDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryClientDao.Search = new DaoQueryDecorators();
 BaseRepositoryClientDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryDatabaseDao extends SQDIDao$3 {
+class BaseRepositoryDatabaseDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16658,7 +16514,7 @@ BaseRepositoryDatabaseDao.Find = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.Search = new DaoQueryDecorators();
 BaseRepositoryDatabaseDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryMemberDao extends SQDIDao$3 {
+class BaseRepositoryMemberDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16673,7 +16529,7 @@ BaseRepositoryMemberDao.Find = new DaoQueryDecorators();
 BaseRepositoryMemberDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryMemberDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryMemberAcceptanceDao extends SQDIDao$3 {
+class BaseRepositoryMemberAcceptanceDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16688,7 +16544,7 @@ BaseRepositoryMemberAcceptanceDao.Find = new DaoQueryDecorators();
 BaseRepositoryMemberAcceptanceDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryMemberAcceptanceDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberAcceptanceDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryMemberInvitationDao extends SQDIDao$3 {
+class BaseRepositoryMemberInvitationDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16703,7 +16559,7 @@ BaseRepositoryMemberInvitationDao.Find = new DaoQueryDecorators();
 BaseRepositoryMemberInvitationDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryMemberInvitationDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberInvitationDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryMemberUpdateDao extends SQDIDao$3 {
+class BaseRepositoryMemberUpdateDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16718,7 +16574,7 @@ BaseRepositoryMemberUpdateDao.Find = new DaoQueryDecorators();
 BaseRepositoryMemberUpdateDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryMemberUpdateDao.Search = new DaoQueryDecorators();
 BaseRepositoryMemberUpdateDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryReferenceDao extends SQDIDao$3 {
+class BaseRepositoryReferenceDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16733,7 +16589,7 @@ BaseRepositoryReferenceDao.Find = new DaoQueryDecorators();
 BaseRepositoryReferenceDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryReferenceDao.Search = new DaoQueryDecorators();
 BaseRepositoryReferenceDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryTerminalDao extends SQDIDao$3 {
+class BaseRepositoryTerminalDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16748,7 +16604,7 @@ BaseRepositoryTerminalDao.Find = new DaoQueryDecorators();
 BaseRepositoryTerminalDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryTerminalDao.Search = new DaoQueryDecorators();
 BaseRepositoryTerminalDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryTransactionHistoryDao extends SQDIDao$3 {
+class BaseRepositoryTransactionHistoryDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16763,7 +16619,7 @@ BaseRepositoryTransactionHistoryDao.Find = new DaoQueryDecorators();
 BaseRepositoryTransactionHistoryDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryTransactionHistoryDao.Search = new DaoQueryDecorators();
 BaseRepositoryTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryTypeDao extends SQDIDao$3 {
+class BaseRepositoryTypeDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16778,7 +16634,7 @@ BaseRepositoryTypeDao.Find = new DaoQueryDecorators();
 BaseRepositoryTypeDao.FindOne = new DaoQueryDecorators();
 BaseRepositoryTypeDao.Search = new DaoQueryDecorators();
 BaseRepositoryTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseTransactionHistoryDao extends SQDIDao$3 {
+class BaseTransactionHistoryDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16806,7 +16662,7 @@ let RecordHistoryNewValueDao = class RecordHistoryNewValueDao extends BaseRecord
         }, context);
     }
 };
-RecordHistoryNewValueDao = __decorate$d([
+RecordHistoryNewValueDao = __decorate$e([
     Injected()
 ], RecordHistoryNewValueDao);
 
@@ -16822,7 +16678,7 @@ let RecordHistoryOldValueDao = class RecordHistoryOldValueDao extends BaseRecord
         }, context);
     }
 };
-RecordHistoryOldValueDao = __decorate$d([
+RecordHistoryOldValueDao = __decorate$e([
     Injected()
 ], RecordHistoryOldValueDao);
 
@@ -16948,10 +16804,10 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
         }, context);
     }
 };
-__decorate$d([
+__decorate$e([
     Inject()
 ], RepositoryTransactionHistoryDao.prototype, "datastructureUtils", void 0);
-RepositoryTransactionHistoryDao = __decorate$d([
+RepositoryTransactionHistoryDao = __decorate$e([
     Injected()
 ], RepositoryTransactionHistoryDao);
 
@@ -17083,7 +16939,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
         }, context);
     }
 };
-ActorDao = __decorate$d([
+ActorDao = __decorate$e([
     Injected()
 ], ActorDao);
 
@@ -17126,7 +16982,7 @@ let RepositoryMemberAcceptanceDao = class RepositoryMemberAcceptanceDao extends 
         }, context);
     }
 };
-RepositoryMemberAcceptanceDao = __decorate$d([
+RepositoryMemberAcceptanceDao = __decorate$e([
     Injected()
 ], RepositoryMemberAcceptanceDao);
 
@@ -17255,7 +17111,7 @@ let RepositoryMemberDao = class RepositoryMemberDao extends BaseRepositoryMember
         }, context);
     }
 };
-RepositoryMemberDao = __decorate$d([
+RepositoryMemberDao = __decorate$e([
     Injected()
 ], RepositoryMemberDao);
 
@@ -17300,21 +17156,9 @@ let RepositoryMemberInvitationDao = class RepositoryMemberInvitationDao extends 
         }, context);
     }
 };
-RepositoryMemberInvitationDao = __decorate$d([
+RepositoryMemberInvitationDao = __decorate$e([
     Injected()
 ], RepositoryMemberInvitationDao);
-
-let CopiedRecordLedgerDao = class CopiedRecordLedgerDao extends BaseCopiedRecordLedgerDao {
-};
-CopiedRecordLedgerDao = __decorate$d([
-    Injected()
-], CopiedRecordLedgerDao);
-
-let LocalCopyReplacementLedgerDao = class LocalCopyReplacementLedgerDao extends BaseLocalCopyReplacementLedgerDao {
-};
-LocalCopyReplacementLedgerDao = __decorate$d([
-    Injected()
-], LocalCopyReplacementLedgerDao);
 
 let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
     searchRepositories(context) {
@@ -17538,7 +17382,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
         }, context);
     }
 };
-RepositoryDao = __decorate$d([
+RepositoryDao = __decorate$e([
     Injected()
 ], RepositoryDao);
 
@@ -17620,10 +17464,10 @@ let OperationHistoryDuo = class OperationHistoryDuo {
         return recordHistory;
     }
 };
-__decorate$d([
+__decorate$e([
     Inject()
 ], OperationHistoryDuo.prototype, "recordHistoryDuo", void 0);
-OperationHistoryDuo = __decorate$d([
+OperationHistoryDuo = __decorate$e([
     Injected()
 ], OperationHistoryDuo);
 
@@ -17677,16 +17521,16 @@ let RecordHistoryDuo = class RecordHistoryDuo {
             .ensure(dbColumn.index);
     }
 };
-__decorate$d([
+__decorate$e([
     Inject()
 ], RecordHistoryDuo.prototype, "dictionary", void 0);
-__decorate$d([
+__decorate$e([
     Inject()
 ], RecordHistoryDuo.prototype, "recordHistoryNewValueDuo", void 0);
-__decorate$d([
+__decorate$e([
     Inject()
 ], RecordHistoryDuo.prototype, "recordHistoryOldValueDuo", void 0);
-RecordHistoryDuo = __decorate$d([
+RecordHistoryDuo = __decorate$e([
     Injected()
 ], RecordHistoryDuo);
 
@@ -17699,7 +17543,7 @@ let RecordHistoryNewValueDuo = class RecordHistoryNewValueDuo {
         return recordHistoryNewValue;
     }
 };
-RecordHistoryNewValueDuo = __decorate$d([
+RecordHistoryNewValueDuo = __decorate$e([
     Injected()
 ], RecordHistoryNewValueDuo);
 
@@ -17712,7 +17556,7 @@ let RecordHistoryOldValueDuo = class RecordHistoryOldValueDuo {
         return recordHistoryOldValue;
     }
 };
-RecordHistoryOldValueDuo = __decorate$d([
+RecordHistoryOldValueDuo = __decorate$e([
     Injected()
 ], RecordHistoryOldValueDuo);
 
@@ -17778,10 +17622,10 @@ let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo {
         return 0;
     }
 };
-__decorate$d([
+__decorate$e([
     Inject()
 ], RepositoryTransactionHistoryDuo.prototype, "operationHistoryDuo", void 0);
-RepositoryTransactionHistoryDuo = __decorate$d([
+RepositoryTransactionHistoryDuo = __decorate$e([
     Injected()
 ], RepositoryTransactionHistoryDuo);
 
@@ -17802,27 +17646,12 @@ let TransactionHistoryDuo = class TransactionHistoryDuo {
         return repositoryTransactionHistory;
     }
 };
-__decorate$d([
+__decorate$e([
     Inject()
 ], TransactionHistoryDuo.prototype, "repositoryTransactionHistoryDuo", void 0);
-TransactionHistoryDuo = __decorate$d([
+TransactionHistoryDuo = __decorate$e([
     Injected()
 ], TransactionHistoryDuo);
-
-let CrossRepositoryRelationManager = class CrossRepositoryRelationManager {
-    addCopiedRecordLedger(manySideRelation, manySideEntity, copiedEntity) {
-        const copiedRecordLedger = new CopiedRecordLedger();
-        copiedRecordLedger.repository = manySideEntity.repository;
-        copiedRecordLedger.copyAppEntity = manySideRelation.relationEntity;
-        copiedRecordLedger.copyActorRecordId = copiedEntity._actorRecordId;
-        copiedRecordLedger.copyActor = copiedEntity.actor;
-        copiedRecordLedger.copyRepository = copiedEntity.repository;
-        return copiedRecordLedger;
-    }
-};
-CrossRepositoryRelationManager = __decorate$d([
-    Injected()
-], CrossRepositoryRelationManager);
 
 let RepositoryApi = class RepositoryApi {
     searchRepositories() {
@@ -17846,28 +17675,28 @@ let RepositoryApi = class RepositoryApi {
         await this.repositoryManager.setUiEntryUri(uiEntryUri, repository, arguments[2]);
     }
 };
-__decorate$d([
+__decorate$e([
     Inject()
 ], RepositoryApi.prototype, "repositoryDao", void 0);
-__decorate$d([
+__decorate$e([
     Inject()
 ], RepositoryApi.prototype, "repositoryMemberDao", void 0);
-__decorate$d([
+__decorate$e([
     Inject()
 ], RepositoryApi.prototype, "repositoryManager", void 0);
-__decorate$d([
+__decorate$e([
     Api()
 ], RepositoryApi.prototype, "searchRepositories", null);
-__decorate$d([
+__decorate$e([
     Api()
 ], RepositoryApi.prototype, "searchRepositoryMemberUserAccountsByGUID", null);
-__decorate$d([
+__decorate$e([
     Api()
 ], RepositoryApi.prototype, "create", null);
-__decorate$d([
+__decorate$e([
     Api()
 ], RepositoryApi.prototype, "setUiEntryUri", null);
-RepositoryApi = __decorate$d([
+RepositoryApi = __decorate$e([
     Injected()
 ], RepositoryApi);
 
@@ -17880,7 +17709,7 @@ const application$2 = {
 
 const holdingPattern = app(application$2);
 const REPOSITORY_MANAGER = holdingPattern.token('RepositoryManager');
-holdingPattern.register(ActorDao, CopiedRecordLedgerDao, CrossRepositoryRelationManager, LocalCopyReplacementLedgerDao, OperationHistoryDuo, RecordHistoryDuo, RecordHistoryNewValueDao, RecordHistoryNewValueDuo, RecordHistoryOldValueDao, RecordHistoryOldValueDuo, RepositoryDao, RepositoryMemberDao, RepositoryReferenceDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo, TransactionHistoryDuo, RepositoryApi);
+holdingPattern.register(ActorDao, OperationHistoryDuo, RecordHistoryDuo, RecordHistoryNewValueDao, RecordHistoryNewValueDuo, RecordHistoryOldValueDao, RecordHistoryOldValueDuo, RepositoryDao, RepositoryMemberDao, RepositoryReferenceDao, RepositoryTransactionHistoryDao, RepositoryTransactionHistoryDuo, TransactionHistoryDuo, RepositoryApi);
 holdingPattern.setDependencies(OperationHistoryDuo, {
     recordHistoryDuo: RecordHistoryDuo,
 });
@@ -17921,7 +17750,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$c(decorators, target, key, desc) {
+function __decorate$d(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -17937,13 +17766,13 @@ let UserAccountApi = class UserAccountApi {
         return null;
     }
 };
-__decorate$c([
+__decorate$d([
     Inject()
 ], UserAccountApi.prototype, "userAccountDao", void 0);
-__decorate$c([
+__decorate$d([
     Api()
 ], UserAccountApi.prototype, "findUserAccount", null);
-UserAccountApi = __decorate$c([
+UserAccountApi = __decorate$d([
     Injected()
 ], UserAccountApi);
 
@@ -17968,246 +17797,246 @@ let UserAccountManager = class UserAccountManager {
         };
     }
 };
-__decorate$c([
+__decorate$d([
     Inject()
 ], UserAccountManager.prototype, "userAccountDao", void 0);
-UserAccountManager = __decorate$c([
+UserAccountManager = __decorate$d([
     Injected()
 ], UserAccountManager);
 
 let Client$1 = class Client {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     DbNumber(),
     Column()
 ], Client$1.prototype, "_localId", void 0);
-__decorate$c([
+__decorate$d([
     DbString(),
     Column()
 ], Client$1.prototype, "domain", void 0);
-__decorate$c([
+__decorate$d([
     DbString(),
     Column()
 ], Client$1.prototype, "GUID", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Client$1.prototype, "continent", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Client$1.prototype, "country", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Client$1.prototype, "state", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Client$1.prototype, "metroArea", void 0);
-__decorate$c([
+__decorate$d([
     OneToMany()
 ], Client$1.prototype, "clientTypes", void 0);
-Client$1 = __decorate$c([
+Client$1 = __decorate$d([
     Entity(),
     Table()
 ], Client$1);
 
 let ClientType = class ClientType {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], ClientType.prototype, "client", void 0);
-__decorate$c([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], ClientType.prototype, "type", void 0);
-ClientType = __decorate$c([
+ClientType = __decorate$d([
     Entity(),
     Table()
 ], ClientType);
 
 let Database = class Database {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     DbNumber(),
     Column()
 ], Database.prototype, "_localId", void 0);
-__decorate$c([
+__decorate$d([
     DbString(),
     Column()
 ], Database.prototype, "domain", void 0);
-__decorate$c([
+__decorate$d([
     DbString(),
     Column()
 ], Database.prototype, "GUID", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Database.prototype, "continent", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Database.prototype, "country", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Database.prototype, "state", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Database.prototype, "metroArea", void 0);
-__decorate$c([
+__decorate$d([
     OneToMany()
 ], Database.prototype, "databaseTypes", void 0);
-Database = __decorate$c([
+Database = __decorate$d([
     Entity(),
     Table()
 ], Database);
 
 let DatabaseType = class DatabaseType {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DatabaseType.prototype, "database", void 0);
-__decorate$c([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DatabaseType.prototype, "type", void 0);
-DatabaseType = __decorate$c([
+DatabaseType = __decorate$d([
     Entity(),
     Table()
 ], DatabaseType);
 
 let Continent = class Continent {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     DbNumber(),
     Column()
 ], Continent.prototype, "id", void 0);
-__decorate$c([
+__decorate$d([
     DbString(),
     Column()
 ], Continent.prototype, "name", void 0);
-__decorate$c([
+__decorate$d([
     OneToMany()
 ], Continent.prototype, "countries", void 0);
-__decorate$c([
+__decorate$d([
     OneToMany()
 ], Continent.prototype, "userAccounts", void 0);
-Continent = __decorate$c([
+Continent = __decorate$d([
     Entity(),
     Table()
 ], Continent);
 
 let Country = class Country {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], Country.prototype, "id", void 0);
-__decorate$c([
+__decorate$d([
     DbString(),
     Column()
 ], Country.prototype, "abbreviation", void 0);
-__decorate$c([
+__decorate$d([
     DbString(),
     Column()
 ], Country.prototype, "name", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Country.prototype, "continent", void 0);
-__decorate$c([
+__decorate$d([
     OneToMany()
 ], Country.prototype, "states", void 0);
-__decorate$c([
+__decorate$d([
     OneToMany()
 ], Country.prototype, "userAccounts", void 0);
-Country = __decorate$c([
+Country = __decorate$d([
     Entity(),
     Table()
 ], Country);
 
 let MetroArea = class MetroArea {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], MetroArea.prototype, "id", void 0);
-__decorate$c([
+__decorate$d([
     DbString()
 ], MetroArea.prototype, "name", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], MetroArea.prototype, "country", void 0);
-__decorate$c([
+__decorate$d([
     OneToMany()
 ], MetroArea.prototype, "metroAreaStates", void 0);
-__decorate$c([
+__decorate$d([
     OneToMany()
 ], MetroArea.prototype, "userAccounts", void 0);
-MetroArea = __decorate$c([
+MetroArea = __decorate$d([
     Entity(),
     Table()
 ], MetroArea);
 
 let MetroAreaState = class MetroAreaState {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], MetroAreaState.prototype, "state", void 0);
-__decorate$c([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], MetroAreaState.prototype, "metroArea", void 0);
-MetroAreaState = __decorate$c([
+MetroAreaState = __decorate$d([
     Entity(),
     Table()
 ], MetroAreaState);
 
 let State = class State {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], State.prototype, "id", void 0);
-__decorate$c([
+__decorate$d([
     DbString()
 ], State.prototype, "abbreviation", void 0);
-__decorate$c([
+__decorate$d([
     DbString()
 ], State.prototype, "name", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], State.prototype, "country", void 0);
-__decorate$c([
+__decorate$d([
     OneToMany()
 ], State.prototype, "metroAreaStates", void 0);
-__decorate$c([
+__decorate$d([
     OneToMany()
 ], State.prototype, "userAccounts", void 0);
-State = __decorate$c([
+State = __decorate$d([
     Entity(),
     Table()
 ], State);
@@ -18220,44 +18049,44 @@ let Terminal = class Terminal {
         this.isLocal = false;
     }
 };
-__decorate$c([
+__decorate$d([
     Id(),
     GeneratedValue(),
     Column(),
     DbNumber()
 ], Terminal.prototype, "_localId", void 0);
-__decorate$c([
+__decorate$d([
     Column(),
     DbString()
 ], Terminal.prototype, "GUID", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "owner", void 0);
-__decorate$c([
+__decorate$d([
     Column(),
     DbBoolean()
 ], Terminal.prototype, "isLocal", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "continent", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "country", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "state", void 0);
-__decorate$c([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "metroArea", void 0);
-__decorate$c([
+__decorate$d([
     OneToMany()
 ], Terminal.prototype, "terminalTypes", void 0);
-Terminal = __decorate$c([
+Terminal = __decorate$d([
     Entity(),
     Table()
 ], Terminal);
@@ -18267,17 +18096,17 @@ Terminal = __decorate$c([
  */
 let TerminalType = class TerminalType {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TerminalType.prototype, "terminal", void 0);
-__decorate$c([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TerminalType.prototype, "type", void 0);
-TerminalType = __decorate$c([
+TerminalType = __decorate$d([
     Entity(),
     Table()
 ], TerminalType);
@@ -18287,16 +18116,16 @@ TerminalType = __decorate$c([
  */
 let Classification = class Classification {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     Column(),
     DbNumber()
 ], Classification.prototype, "id", void 0);
-__decorate$c([
+__decorate$d([
     Column(),
     DbString()
 ], Classification.prototype, "name", void 0);
-Classification = __decorate$c([
+Classification = __decorate$d([
     Entity(),
     Table()
 ], Classification);
@@ -18306,66 +18135,66 @@ Classification = __decorate$c([
  */
 let Type = class Type {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     Column(),
     DbNumber()
 ], Type.prototype, "id", void 0);
-__decorate$c([
+__decorate$d([
     Column(),
     DbString()
 ], Type.prototype, "name", void 0);
-__decorate$c([
+__decorate$d([
     OneToMany()
 ], Type.prototype, "typeClassifications", void 0);
-Type = __decorate$c([
+Type = __decorate$d([
     Entity(),
     Table()
 ], Type);
 
 let TypeClassification = class TypeClassification {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TypeClassification.prototype, "classification", void 0);
-__decorate$c([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TypeClassification.prototype, "type", void 0);
-TypeClassification = __decorate$c([
+TypeClassification = __decorate$d([
     Entity(),
     Table()
 ], TypeClassification);
 
 let UserAccount = class UserAccount {
 };
-__decorate$c([
+__decorate$d([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], UserAccount.prototype, "_localId", void 0);
-__decorate$c([
+__decorate$d([
     Column(),
     DbString()
 ], UserAccount.prototype, "accountPublicSigningKey", void 0);
-__decorate$c([
+__decorate$d([
     Column(),
     DbString()
 ], UserAccount.prototype, "sha1sum", void 0);
-__decorate$c([
+__decorate$d([
     Column(),
     DbString()
 ], UserAccount.prototype, "username", void 0);
-UserAccount = __decorate$c([
+UserAccount = __decorate$d([
     Entity(),
     Table()
 ], UserAccount);
 
-const __constructors__$2 = {
+const __constructors__$3 = {
     Classification,
     Client: Client$1,
     ClientType,
@@ -18383,7 +18212,7 @@ const __constructors__$2 = {
     UserAccount
 };
 const Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint = {
-    __constructors__: __constructors__$2,
+    __constructors__: __constructors__$3,
     domain: 'airport',
     name: '@airport/travel-document-checkpoint'
 };
@@ -18395,12 +18224,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-let SQDIDao$2 = class SQDIDao extends ObservableDao {
+let SQDIDao$3 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint);
     }
 };
-class BaseClassificationDao extends SQDIDao$2 {
+class BaseClassificationDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18415,7 +18244,7 @@ BaseClassificationDao.Find = new DaoQueryDecorators();
 BaseClassificationDao.FindOne = new DaoQueryDecorators();
 BaseClassificationDao.Search = new DaoQueryDecorators();
 BaseClassificationDao.SearchOne = new DaoQueryDecorators();
-class BaseClientDao extends SQDIDao$2 {
+class BaseClientDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18430,7 +18259,7 @@ BaseClientDao.Find = new DaoQueryDecorators();
 BaseClientDao.FindOne = new DaoQueryDecorators();
 BaseClientDao.Search = new DaoQueryDecorators();
 BaseClientDao.SearchOne = new DaoQueryDecorators();
-class BaseClientTypeDao extends SQDIDao$2 {
+class BaseClientTypeDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18445,7 +18274,7 @@ BaseClientTypeDao.Find = new DaoQueryDecorators();
 BaseClientTypeDao.FindOne = new DaoQueryDecorators();
 BaseClientTypeDao.Search = new DaoQueryDecorators();
 BaseClientTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseContinentDao extends SQDIDao$2 {
+class BaseContinentDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18460,7 +18289,7 @@ BaseContinentDao.Find = new DaoQueryDecorators();
 BaseContinentDao.FindOne = new DaoQueryDecorators();
 BaseContinentDao.Search = new DaoQueryDecorators();
 BaseContinentDao.SearchOne = new DaoQueryDecorators();
-class BaseCountryDao extends SQDIDao$2 {
+class BaseCountryDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18475,7 +18304,7 @@ BaseCountryDao.Find = new DaoQueryDecorators();
 BaseCountryDao.FindOne = new DaoQueryDecorators();
 BaseCountryDao.Search = new DaoQueryDecorators();
 BaseCountryDao.SearchOne = new DaoQueryDecorators();
-class BaseDatabaseDao extends SQDIDao$2 {
+class BaseDatabaseDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18490,7 +18319,7 @@ BaseDatabaseDao.Find = new DaoQueryDecorators();
 BaseDatabaseDao.FindOne = new DaoQueryDecorators();
 BaseDatabaseDao.Search = new DaoQueryDecorators();
 BaseDatabaseDao.SearchOne = new DaoQueryDecorators();
-class BaseDatabaseTypeDao extends SQDIDao$2 {
+class BaseDatabaseTypeDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18505,7 +18334,7 @@ BaseDatabaseTypeDao.Find = new DaoQueryDecorators();
 BaseDatabaseTypeDao.FindOne = new DaoQueryDecorators();
 BaseDatabaseTypeDao.Search = new DaoQueryDecorators();
 BaseDatabaseTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseMetroAreaDao extends SQDIDao$2 {
+class BaseMetroAreaDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18520,7 +18349,7 @@ BaseMetroAreaDao.Find = new DaoQueryDecorators();
 BaseMetroAreaDao.FindOne = new DaoQueryDecorators();
 BaseMetroAreaDao.Search = new DaoQueryDecorators();
 BaseMetroAreaDao.SearchOne = new DaoQueryDecorators();
-class BaseMetroAreaStateDao extends SQDIDao$2 {
+class BaseMetroAreaStateDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18535,7 +18364,7 @@ BaseMetroAreaStateDao.Find = new DaoQueryDecorators();
 BaseMetroAreaStateDao.FindOne = new DaoQueryDecorators();
 BaseMetroAreaStateDao.Search = new DaoQueryDecorators();
 BaseMetroAreaStateDao.SearchOne = new DaoQueryDecorators();
-class BaseStateDao extends SQDIDao$2 {
+class BaseStateDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18550,7 +18379,7 @@ BaseStateDao.Find = new DaoQueryDecorators();
 BaseStateDao.FindOne = new DaoQueryDecorators();
 BaseStateDao.Search = new DaoQueryDecorators();
 BaseStateDao.SearchOne = new DaoQueryDecorators();
-class BaseTerminalDao extends SQDIDao$2 {
+class BaseTerminalDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18565,7 +18394,7 @@ BaseTerminalDao.Find = new DaoQueryDecorators();
 BaseTerminalDao.FindOne = new DaoQueryDecorators();
 BaseTerminalDao.Search = new DaoQueryDecorators();
 BaseTerminalDao.SearchOne = new DaoQueryDecorators();
-class BaseTerminalTypeDao extends SQDIDao$2 {
+class BaseTerminalTypeDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18580,7 +18409,7 @@ BaseTerminalTypeDao.Find = new DaoQueryDecorators();
 BaseTerminalTypeDao.FindOne = new DaoQueryDecorators();
 BaseTerminalTypeDao.Search = new DaoQueryDecorators();
 BaseTerminalTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseTypeDao extends SQDIDao$2 {
+class BaseTypeDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18595,7 +18424,7 @@ BaseTypeDao.Find = new DaoQueryDecorators();
 BaseTypeDao.FindOne = new DaoQueryDecorators();
 BaseTypeDao.Search = new DaoQueryDecorators();
 BaseTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseTypeClassificationDao extends SQDIDao$2 {
+class BaseTypeClassificationDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18610,7 +18439,7 @@ BaseTypeClassificationDao.Find = new DaoQueryDecorators();
 BaseTypeClassificationDao.FindOne = new DaoQueryDecorators();
 BaseTypeClassificationDao.Search = new DaoQueryDecorators();
 BaseTypeClassificationDao.SearchOne = new DaoQueryDecorators();
-class BaseUserAccountDao extends SQDIDao$2 {
+class BaseUserAccountDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18683,16 +18512,16 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
         terminal.owner = userAccount;
     }
 };
-__decorate$c([
+__decorate$d([
     Inject()
 ], TerminalDao.prototype, "airportDatabase", void 0);
-__decorate$c([
+__decorate$d([
     Inject()
 ], TerminalDao.prototype, "dictionary", void 0);
-__decorate$c([
+__decorate$d([
     Inject()
 ], TerminalDao.prototype, "sequenceGenerator", void 0);
-TerminalDao = __decorate$c([
+TerminalDao = __decorate$d([
     Injected()
 ], TerminalDao);
 
@@ -18753,13 +18582,13 @@ let UserAccountDao = class UserAccountDao extends BaseUserAccountDao {
         }
     }
 };
-__decorate$c([
+__decorate$d([
     Inject()
 ], UserAccountDao.prototype, "dictionary", void 0);
-__decorate$c([
+__decorate$d([
     Inject()
 ], UserAccountDao.prototype, "sequenceGenerator", void 0);
-UserAccountDao = __decorate$c([
+UserAccountDao = __decorate$d([
     Injected()
 ], UserAccountDao);
 
@@ -29129,493 +28958,6 @@ const APPLICATION$3 = {
                         "name": "REPOSITORY_OPERATION_HISTORY",
                         "columnIndexes": []
                     }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "ACTOR_RECORD_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "AGE_SUITABILITY",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "COPIED",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "BOOLEAN"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "CREATED_AT",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "DATE"
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "SYSTEM_WIDE_OPERATION_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 7,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "COPY_ACTOR_RECORD_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 8,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 5,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COPY_DB_ENTITY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 8
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 9,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 3,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COPY_ACTOR_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 9
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 10,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 4,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COPY_REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 10
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        },
-                        {
-                            "index": 2
-                        }
-                    ],
-                    "index": 18,
-                    "isLocal": false,
-                    "isAirEntity": true,
-                    "name": "CopiedRecordLedger",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_actorRecordId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "name": "actor",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": true,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 3,
-                            "isId": false,
-                            "name": "ageSuitability",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 4
-                            },
-                            "index": 4,
-                            "isId": false,
-                            "name": "copied",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 5
-                            },
-                            "index": 5,
-                            "isId": false,
-                            "name": "createdAt",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 6
-                            },
-                            "index": 6,
-                            "isId": false,
-                            "name": "systemWideOperationId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 7
-                            },
-                            "index": 7,
-                            "isId": false,
-                            "name": "copyActorRecordId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 8,
-                            "isId": false,
-                            "name": "copyAppEntity",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 9,
-                            "isId": false,
-                            "name": "copyActor",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 10,
-                            "isId": false,
-                            "name": "copyRepository",
-                            "relationRef": {
-                                "index": 4
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 10,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 8
-                            },
-                            "relationTableIndex": 5,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 9
-                            },
-                            "relationTableIndex": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 10
-                            },
-                            "relationTableIndex": 10,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "COPIED_RECORD_LEDGER",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 18,
-                                    "oneColumnIndex": 2,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_RECORD_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 18,
-                                    "oneColumnIndex": 1,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 18,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        },
-                        {
-                            "index": 2
-                        }
-                    ],
-                    "index": 19,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "LocalCopyReplacementLedger",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "copiedRecordLedger",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 18,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "LOCAL_COPY_REPLACEMENT_LEDGER",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
                 }
             ],
             "integerVersion": 1,
@@ -30304,6 +29646,397 @@ const APPLICATION$2 = {
                         "columnIndexes": []
                     },
                     "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 4,
+                                    "oneRelationIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "COPY_ACTOR_RECORD_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 4,
+                                    "oneRelationIndex": 3,
+                                    "oneColumnIndex": 1,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "COPY_ACTOR_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 4,
+                                    "oneRelationIndex": 3,
+                                    "oneColumnIndex": 2,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "COPY_REPOSITORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 4,
+                                    "oneRelationIndex": 3,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "COPY_DB_ENTITY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplication_Index": 1,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "COPYING_REPOSITORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        },
+                        {
+                            "index": 2
+                        },
+                        {
+                            "index": 3
+                        },
+                        {
+                            "index": 4
+                        }
+                    ],
+                    "index": 3,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "CopiedEntityRecordRepository",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "copiedEntityRecord",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "repositoryWithCopy",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 4,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 10,
+                            "relationTableApplication_Index": 1,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "COPIED_ENTITY_RECORD_REPOSITORY",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "ACTOR_RECORD_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": 1,
+                                    "oneTableIndex": 0,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ACTOR_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplication_Index": 1,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneApplication_Index": 0,
+                                    "oneTableIndex": 5,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "COPY_DB_ENTITY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        },
+                        {
+                            "index": 2
+                        },
+                        {
+                            "index": 3
+                        }
+                    ],
+                    "index": 4,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "CopiedEntityRecord",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_actorRecordId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "actor",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": true,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": true,
+                            "name": "copyDdlEntity",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "copiedEntityRecordRepositories",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 0,
+                            "relationTableApplication_Index": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 10,
+                            "relationTableApplication_Index": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 5,
+                            "relationTableApplication_Index": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "copiedEntityRecord"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 3,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "COPIED_ENTITY_RECORD",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
                 }
             ],
             "integerVersion": 1,
@@ -30454,7 +30187,7 @@ const APPLICATION = {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "AGE_SUITABILITY",
+                            "name": "CREATED_AT",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -30462,13 +30195,13 @@ const APPLICATION = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "NUMBER"
+                            "type": "DATE"
                         },
                         {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "COPIED",
+                            "name": "SYSTEM_WIDE_OPERATION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -30476,27 +30209,27 @@ const APPLICATION = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "BOOLEAN"
+                            "type": "NUMBER"
                         },
                         {
                             "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "CREATED_AT",
-                            "notNull": true,
+                            "name": "ENCRYPTION_KEY",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 5
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "DATE"
+                            "type": "STRING"
                         },
                         {
                             "index": 6,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "SYSTEM_WIDE_OPERATION_LID",
+                            "name": "REPOSITORY_GUID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -30504,14 +30237,14 @@ const APPLICATION = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "NUMBER"
+                            "type": "STRING"
                         },
                         {
                             "index": 7,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "ENCRYPTION_KEY",
-                            "notNull": false,
+                            "name": "PRIVATE_SIGNING_KEY",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 7
@@ -30524,7 +30257,7 @@ const APPLICATION = {
                             "index": 8,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_GUID",
+                            "name": "PUBLIC_SIGNING_KEY",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -30538,7 +30271,7 @@ const APPLICATION = {
                             "index": 9,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "PRIVATE_SIGNING_KEY",
+                            "name": "REPOSITORY_NAME",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -30550,34 +30283,6 @@ const APPLICATION = {
                         },
                         {
                             "index": 10,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "PUBLIC_SIGNING_KEY",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 10
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 11,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_NAME",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 11
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 12,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -30593,14 +30298,14 @@ const APPLICATION = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 12
+                                    "index": 10
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 13,
+                            "index": 11,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -30616,14 +30321,14 @@ const APPLICATION = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 12
+                                    "index": 10
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
                         },
                         {
-                            "index": 14,
+                            "index": 12,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -30639,7 +30344,7 @@ const APPLICATION = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 12
+                                    "index": 10
                                 }
                             ],
                             "sinceVersion": 1,
@@ -30695,7 +30400,7 @@ const APPLICATION = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "ageSuitability",
+                            "name": "createdAt",
                             "sinceVersion": 1
                         },
                         {
@@ -30704,7 +30409,7 @@ const APPLICATION = {
                             },
                             "index": 4,
                             "isId": false,
-                            "name": "copied",
+                            "name": "systemWideOperationId",
                             "sinceVersion": 1
                         },
                         {
@@ -30713,7 +30418,7 @@ const APPLICATION = {
                             },
                             "index": 5,
                             "isId": false,
-                            "name": "createdAt",
+                            "name": "encryptionKey",
                             "sinceVersion": 1
                         },
                         {
@@ -30722,7 +30427,7 @@ const APPLICATION = {
                             },
                             "index": 6,
                             "isId": false,
-                            "name": "systemWideOperationId",
+                            "name": "repositoryGUID",
                             "sinceVersion": 1
                         },
                         {
@@ -30731,7 +30436,7 @@ const APPLICATION = {
                             },
                             "index": 7,
                             "isId": false,
-                            "name": "encryptionKey",
+                            "name": "privateSigningKey",
                             "sinceVersion": 1
                         },
                         {
@@ -30740,7 +30445,7 @@ const APPLICATION = {
                             },
                             "index": 8,
                             "isId": false,
-                            "name": "repositoryGUID",
+                            "name": "publicSigningKey",
                             "sinceVersion": 1
                         },
                         {
@@ -30749,29 +30454,11 @@ const APPLICATION = {
                             },
                             "index": 9,
                             "isId": false,
-                            "name": "privateSigningKey",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 10
-                            },
-                            "index": 10,
-                            "isId": false,
-                            "name": "publicSigningKey",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 11
-                            },
-                            "index": 11,
-                            "isId": false,
                             "name": "repositoryName",
                             "sinceVersion": 1
                         },
                         {
-                            "index": 12,
+                            "index": 10,
                             "isId": false,
                             "name": "keyRing",
                             "relationRef": {
@@ -30808,7 +30495,7 @@ const APPLICATION = {
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 12
+                                "index": 10
                             },
                             "relationTableIndex": 1,
                             "sinceVersion": 1
@@ -30885,7 +30572,7 @@ const APPLICATION = {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "AGE_SUITABILITY",
+                            "name": "CREATED_AT",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -30893,13 +30580,13 @@ const APPLICATION = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "NUMBER"
+                            "type": "DATE"
                         },
                         {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "COPIED",
+                            "name": "SYSTEM_WIDE_OPERATION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -30907,27 +30594,27 @@ const APPLICATION = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "BOOLEAN"
+                            "type": "NUMBER"
                         },
                         {
                             "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "CREATED_AT",
-                            "notNull": true,
+                            "name": "EMAIL",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 5
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "DATE"
+                            "type": "STRING"
                         },
                         {
                             "index": 6,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "SYSTEM_WIDE_OPERATION_LID",
+                            "name": "EXTERNAL_PRIVATE_KEY",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -30935,45 +30622,17 @@ const APPLICATION = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "NUMBER"
+                            "type": "STRING"
                         },
                         {
                             "index": 7,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "EMAIL",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 8,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "EXTERNAL_PRIVATE_KEY",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 8
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 9,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "INTERNAL_PRIVATE_SIGNING_KEY",
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 9
+                                    "index": 7
                                 }
                             ],
                             "sinceVersion": 1,
@@ -31029,7 +30688,7 @@ const APPLICATION = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "ageSuitability",
+                            "name": "createdAt",
                             "sinceVersion": 1
                         },
                         {
@@ -31038,7 +30697,7 @@ const APPLICATION = {
                             },
                             "index": 4,
                             "isId": false,
-                            "name": "copied",
+                            "name": "systemWideOperationId",
                             "sinceVersion": 1
                         },
                         {
@@ -31047,7 +30706,7 @@ const APPLICATION = {
                             },
                             "index": 5,
                             "isId": false,
-                            "name": "createdAt",
+                            "name": "email",
                             "sinceVersion": 1
                         },
                         {
@@ -31056,7 +30715,7 @@ const APPLICATION = {
                             },
                             "index": 6,
                             "isId": false,
-                            "name": "systemWideOperationId",
+                            "name": "externalPrivateKey",
                             "sinceVersion": 1
                         },
                         {
@@ -31065,29 +30724,11 @@ const APPLICATION = {
                             },
                             "index": 7,
                             "isId": false,
-                            "name": "email",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 8
-                            },
-                            "index": 8,
-                            "isId": false,
-                            "name": "externalPrivateKey",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 9
-                            },
-                            "index": 9,
-                            "isId": false,
                             "name": "internalPrivateSigningKey",
                             "sinceVersion": 1
                         },
                         {
-                            "index": 10,
+                            "index": 8,
                             "isId": false,
                             "name": "repositoryKeys",
                             "relationRef": {
@@ -31127,7 +30768,7 @@ const APPLICATION = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 10
+                                "index": 8
                             },
                             "relationTableIndex": 0,
                             "sinceVersion": 1
@@ -31180,6 +30821,199 @@ var blueprint_index = /*#__PURE__*/Object.freeze({
 	__proto__: null,
 	BLUEPRINT: BLUEPRINT
 });
+
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+
+function __decorate$c(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+/**
+ * Created by Papa on 6/8/2024.
+ */
+let AirEntityId = class AirEntityId {
+    constructor(entityId) {
+        // Currently TypeScript does not support optional getters/setters
+        // this is a workaround
+        delete this.id;
+        Object.defineProperty(this, 'id', {
+            get() {
+                return globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS).encodeId(this);
+            },
+            set(idString) {
+                globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS).setId(idString, this);
+            }
+        });
+        this.id = entityId;
+    }
+};
+__decorate$c([
+    Id(),
+    Column(),
+    GeneratedValue(),
+    DbNumber()
+], AirEntityId.prototype, "_actorRecordId", void 0);
+__decorate$c([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], AirEntityId.prototype, "actor", void 0);
+__decorate$c([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], AirEntityId.prototype, "repository", void 0);
+__decorate$c([
+    Transient()
+], AirEntityId.prototype, "id", void 0);
+AirEntityId = __decorate$c([
+    MappedSuperclass()
+], AirEntityId);
+
+/**
+ * Created by Papa on 6/8/2024.
+ */
+let AirEntityFields = class AirEntityFields extends AirEntityId {
+    constructor(entityId) {
+        super(entityId);
+        this.createdAt = new Date();
+        /*
+         * Set at record creation time if a copy needs to be made (of a record
+         * in another repository)
+         */
+        this.toBeCopied = false;
+        delete this.isNew;
+        Object.defineProperty(this, 'isNew', {
+            get() {
+                return !!this._actorRecordId;
+            }
+        });
+        delete this.createdBy;
+        Object.defineProperty(this, 'createdBy', {
+            get() {
+                return this.actor.userAccount;
+            }
+        });
+    }
+};
+__decorate$c([
+    Column(),
+    DbDate()
+], AirEntityFields.prototype, "createdAt", void 0);
+__decorate$c([
+    Column(),
+    DbNumber()
+], AirEntityFields.prototype, "systemWideOperationId", void 0);
+__decorate$c([
+    Transient()
+], AirEntityFields.prototype, "toBeCopied", void 0);
+__decorate$c([
+    Transient()
+], AirEntityFields.prototype, "createdBy", void 0);
+__decorate$c([
+    Transient()
+], AirEntityFields.prototype, "isNew", void 0);
+AirEntityFields = __decorate$c([
+    MappedSuperclass()
+], AirEntityFields);
+
+/**
+ * Created by Papa on 2/17/2017.
+ */
+let AirEntity = class AirEntity extends AirEntityFields {
+};
+AirEntity = __decorate$c([
+    MappedSuperclass()
+], AirEntity);
+
+/**
+ * Created by Papa on 2/17/2017.
+ */
+// Used withint the framework because it imports from '@airport/travel-document-checkpoint/dist/app/bundle'
+let InternalAirEntity = class InternalAirEntity extends AirEntityFields {
+};
+InternalAirEntity = __decorate$c([
+    MappedSuperclass()
+], InternalAirEntity);
+
+let RepositoryContentFlag = class RepositoryContentFlag extends AirEntity {
+};
+__decorate$c([
+    Column(),
+    DbNumber()
+], RepositoryContentFlag.prototype, "flagType", void 0);
+RepositoryContentFlag = __decorate$c([
+    Entity(),
+    Table()
+], RepositoryContentFlag);
+
+var RepositoryContentFlagType;
+(function (RepositoryContentFlagType) {
+    RepositoryContentFlagType[RepositoryContentFlagType["CHILD_FRIENDLY"] = 0] = "CHILD_FRIENDLY";
+    RepositoryContentFlagType[RepositoryContentFlagType["CHINA_FRIENDLY"] = 1] = "CHINA_FRIENDLY";
+    RepositoryContentFlagType[RepositoryContentFlagType["ISLAM_FRIENDLY"] = 2] = "ISLAM_FRIENDLY";
+    RepositoryContentFlagType[RepositoryContentFlagType["ISLAM_PROHIBITED"] = 3] = "ISLAM_PROHIBITED";
+    RepositoryContentFlagType[RepositoryContentFlagType["CHINA_PROHIBITED"] = 4] = "CHINA_PROHIBITED";
+})(RepositoryContentFlagType || (RepositoryContentFlagType = {}));
+
+const __constructors__$2 = {
+    AirEntity,
+    AirEntityFields,
+    AirEntityId,
+    InternalAirEntity,
+    RepositoryContentFlag
+};
+const Q_airport____at_airport_slash_final_dash_approach = {
+    __constructors__: __constructors__$2,
+    domain: 'airport',
+    name: '@airport/final-approach'
+};
+function airport____at_airport_slash_final_dash_approach_diSet(dbEntityId) {
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_final_dash_approach.__dbApplication__, dbEntityId);
+}
+if (globalThis.airApi) {
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_final_dash_approach);
+}
+
+// Application Q object Dependency Injection readiness detection Dao
+let SQDIDao$2 = class SQDIDao extends ObservableDao {
+    constructor(dbEntityId) {
+        super(dbEntityId, Q_airport____at_airport_slash_final_dash_approach);
+    }
+};
+class BaseRepositoryContentFlagDao extends SQDIDao$2 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_final_dash_approach_diSet(0);
+    }
+    constructor() {
+        super(0);
+    }
+}
+BaseRepositoryContentFlagDao.Find = new DaoQueryDecorators();
+BaseRepositoryContentFlagDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryContentFlagDao.Search = new DaoQueryDecorators();
+BaseRepositoryContentFlagDao.SearchOne = new DaoQueryDecorators();
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -31257,6 +31091,53 @@ SynchronizationConflictValues = __decorate$b([
     Table()
 ], SynchronizationConflictValues);
 
+/**
+ * A record of all entities that are currently copied from other repositories
+ * and those repositories are not loaded locally.
+ */
+let CopiedEntityRecord = class CopiedEntityRecord extends AirEntityId {
+    constructor() {
+        super(...arguments);
+        this.copiedEntityRecordRepositories = [];
+    }
+};
+__decorate$b([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], CopiedEntityRecord.prototype, "copyDdlEntity", void 0);
+__decorate$b([
+    OneToMany()
+], CopiedEntityRecord.prototype, "copiedEntityRecordRepositories", void 0);
+CopiedEntityRecord = __decorate$b([
+    Entity(),
+    Table()
+], CopiedEntityRecord);
+
+/**
+ * A record of which repository has a given CopiedEntityRecord in them.
+ *
+ * Will be needed once repository unloading is supported.  Once all repositories
+ * with a given record copy are unloaded that record copy needs to be
+ * removed as well.
+ */
+let CopiedEntityRecordRepository = class CopiedEntityRecordRepository {
+};
+__decorate$b([
+    Id(),
+    ManyToOne(),
+    JoinColumns()
+], CopiedEntityRecordRepository.prototype, "copiedEntityRecord", void 0);
+__decorate$b([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], CopiedEntityRecordRepository.prototype, "repositoryWithCopy", void 0);
+CopiedEntityRecordRepository = __decorate$b([
+    Entity(),
+    Table()
+], CopiedEntityRecordRepository);
+
 var DataOrigin;
 (function (DataOrigin) {
     DataOrigin["LOCAL"] = "LOCAL";
@@ -31321,6 +31202,8 @@ RecordUpdateStage = __decorate$b([
 ], RecordUpdateStage);
 
 const __constructors__$1 = {
+    CopiedEntityRecord,
+    CopiedEntityRecordRepository,
     RecordUpdateStage,
     SynchronizationConflict,
     SynchronizationConflictValues
@@ -31343,6 +31226,36 @@ let SQDIDao$1 = class SQDIDao extends ObservableDao {
         super(dbEntityId, Q_airport____at_airport_slash_layover);
     }
 };
+class BaseCopiedEntityRecordDao extends SQDIDao$1 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_layover_diSet(4);
+    }
+    constructor() {
+        super(4);
+    }
+}
+BaseCopiedEntityRecordDao.Find = new DaoQueryDecorators();
+BaseCopiedEntityRecordDao.FindOne = new DaoQueryDecorators();
+BaseCopiedEntityRecordDao.Search = new DaoQueryDecorators();
+BaseCopiedEntityRecordDao.SearchOne = new DaoQueryDecorators();
+class BaseCopiedEntityRecordRepositoryDao extends SQDIDao$1 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_layover_diSet(3);
+    }
+    constructor() {
+        super(3);
+    }
+}
+BaseCopiedEntityRecordRepositoryDao.Find = new DaoQueryDecorators();
+BaseCopiedEntityRecordRepositoryDao.FindOne = new DaoQueryDecorators();
+BaseCopiedEntityRecordRepositoryDao.Search = new DaoQueryDecorators();
+BaseCopiedEntityRecordRepositoryDao.SearchOne = new DaoQueryDecorators();
 class BaseRecordUpdateStageDao extends SQDIDao$1 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
@@ -31447,6 +31360,18 @@ SynchronizationConflictValuesDao = __decorate$b([
     Injected()
 ], SynchronizationConflictValuesDao);
 
+let CopiedEntityRecordDao = class CopiedEntityRecordDao extends BaseCopiedEntityRecordDao {
+};
+CopiedEntityRecordDao = __decorate$b([
+    Injected()
+], CopiedEntityRecordDao);
+
+let CopiedEntityRecordRepositoryDao = class CopiedEntityRecordRepositoryDao extends BaseCopiedEntityRecordRepositoryDao {
+};
+CopiedEntityRecordRepositoryDao = __decorate$b([
+    Injected()
+], CopiedEntityRecordRepositoryDao);
+
 let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
     async insertValues(values, context) {
         const rus = Q_airport____at_airport_slash_layover.RecordUpdateStage;
@@ -31473,13 +31398,13 @@ let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateSt
             .applicationVersion.entities[entityIndex];
         const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name];
         const repositoryEquals = [];
-        const AirEntity = this.dictionary.AirEntity;
+        const AirEntityId = this.dictionary.AirEntityId;
         for (const [repositoryLid, idsForRepository] of idMap) {
             const actorEquals = [];
             for (const [actorLid, idsForActor] of idsForRepository) {
-                actorEquals.push(AND(qEntity[AirEntity.properties.actor]._localId.equals(actorLid), qEntity[AirEntity.properties._actorRecordId].IN(Array.from(idsForActor))));
+                actorEquals.push(AND(qEntity[AirEntityId.properties.actor]._localId.equals(actorLid), qEntity[AirEntityId.properties._actorRecordId].IN(Array.from(idsForActor))));
             }
-            repositoryEquals.push(AND(qEntity[AirEntity.properties.repository]._localId.equals(repositoryLid), OR(...actorEquals)));
+            repositoryEquals.push(AND(qEntity[AirEntityId.properties.repository]._localId.equals(repositoryLid), OR(...actorEquals)));
         }
         const setClause = {};
         for (const columnIndex of updatedColumnIndexes) {
@@ -31516,8 +31441,30 @@ RecordUpdateStageDao = __decorate$b([
     Injected()
 ], RecordUpdateStageDao);
 
+let CrossRepositoryRelationManager = class CrossRepositoryRelationManager {
+    addCopiedEntityRecord(copiedEntity, copyDdlEntity, repositoryWithCopy) {
+        const copiedEntityRecord = new CopiedEntityRecord();
+        copiedEntityRecord._actorRecordId = copiedEntity._actorRecordId;
+        copiedEntityRecord.actor = copiedEntityRecord.actor;
+        copiedEntityRecord.repository = copiedEntityRecord.repository;
+        copiedEntityRecord.copyDdlEntity = copyDdlEntity;
+        this.addCopiedEntityRecordRepository(copiedEntityRecord, repositoryWithCopy);
+        return copiedEntityRecord;
+    }
+    addCopiedEntityRecordRepository(copiedEntityRecord, repositoryWithCopy) {
+        const copiedEntityRecordRepository = new CopiedEntityRecordRepository();
+        copiedEntityRecordRepository.copiedEntityRecord = copiedEntityRecord;
+        copiedEntityRecordRepository.repositoryWithCopy = repositoryWithCopy;
+        copiedEntityRecord.copiedEntityRecordRepositories.push(copiedEntityRecordRepository);
+        return copiedEntityRecordRepository;
+    }
+};
+CrossRepositoryRelationManager = __decorate$b([
+    Injected()
+], CrossRepositoryRelationManager);
+
 const layover = lib('@airport/layover');
-layover.register(RecordUpdateStageDao, SynchronizationConflictDao, SynchronizationConflictValuesDao);
+layover.register(CopiedEntityRecordDao, CopiedEntityRecordRepositoryDao, CrossRepositoryRelationManager, RecordUpdateStageDao, SynchronizationConflictDao, SynchronizationConflictValuesDao);
 layover.setDependencies(RecordUpdateStageDao, {
     airportDatabase: AIRPORT_DATABASE,
     dictionary: Dictionary
@@ -33633,7 +33580,7 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
                         .get(operationHistory.entity.applicationVersion._localId).index;
                     const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
                         .applicationVersion.entities[operationHistory.entity.index];
-                    const sysWideOperationIdDbColumn = dbEntity.columnMap[this.dictionary.AirEntity.columns.SYSTEM_WIDE_OPERATION_LID];
+                    const sysWideOperationIdDbColumn = dbEntity.columnMap[this.dictionary.AirEntityFields.columns.SYSTEM_WIDE_OPERATION_LID];
                     for (const recordHistory of operationHistory.recordHistory) {
                         if (recordHistory.newValues.length) {
                             const systemWideOperationIdNewValue = new RecordHistoryNewValue();
@@ -34082,7 +34029,7 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
     }
     getNonIdColumnsInIndexOrder(dbEntity) {
         const nonIdColumns = [];
-        const airEntityColumns = this.dictionary.AirEntity.columns;
+        const airEntityColumns = this.dictionary.AirEntityId.columns;
         for (const column of dbEntity.columns) {
             switch (column.name) {
                 case airEntityColumns.ACTOR_LID:
@@ -39599,7 +39546,7 @@ already contains a new repository.`);
         if (!qEntity.__driver__.dbEntity.isAirEntity) {
             return rawInsertValues;
         }
-        const repositoryPropertyName = this.dictionary.AirEntity.properties.repository;
+        const repositoryPropertyName = this.dictionary.AirEntityId.properties.repository;
         let columns = rawInsertValues.columns.slice();
         if (columns.some((column, _index) => {
             // return column.fieldName === repositoryPropertyName
@@ -41041,8 +40988,8 @@ let DeleteManager = class DeleteManager {
                                             switch (dbColumn.name) {
                                                 // Do not add Actor or Repository the are recorded
                                                 // at record history level
-                                                case this.dictionary.AirEntity.columns.ACTOR_LID:
-                                                case this.dictionary.AirEntity.columns.REPOSITORY_LID:
+                                                case this.dictionary.AirEntityId.columns.ACTOR_LID:
+                                                case this.dictionary.AirEntityId.columns.REPOSITORY_LID:
                                                     break;
                                                 default:
                                                     this.recordHistoryDuo.addOldValue(recordHistory, dbColumn, value);
@@ -41520,11 +41467,11 @@ appears more than once in the Columns clause`);
         return allIds;
     }
     ensureAirEntityIdValues(actor, dbEntity, queryInsertValues, errorPrefix, transaction, context) {
-        const airEntityColumns = this.dictionary.AirEntity.columns;
+        const airEntityColumns = this.dictionary.AirEntityId.columns;
         const actorLidColumn = dbEntity.idColumnMap[airEntityColumns.ACTOR_LID];
         const actorRecordIdColumn = dbEntity.idColumnMap[airEntityColumns.ACTOR_RECORD_ID];
         const repositoryLidColumn = dbEntity.idColumnMap[airEntityColumns.REPOSITORY_LID];
-        const sysWideOperationIdColumn = dbEntity.columnMap[airEntityColumns.SYSTEM_WIDE_OPERATION_LID];
+        const sysWideOperationIdColumn = dbEntity.columnMap[this.dictionary.AirEntityFields.columns.SYSTEM_WIDE_OPERATION_LID];
         let repositoryLidColumnQueryIndex;
         let foundActorLidColumn = false;
         let foundActorRecordIdColumn = false;
@@ -41633,7 +41580,7 @@ and cannot have NULL values.`);
         const queryInsertValues = portableQuery.query;
         let operationsByRepo = [];
         let repoTransHistories = [];
-        const airEntityColumns = this.dictionary.AirEntity.columns;
+        const airEntityColumns = this.dictionary.AirEntityId.columns;
         const repositoryLidIndex = dbEntity.columnMap[airEntityColumns.REPOSITORY_LID].index;
         const actorLidIndex = dbEntity.columnMap[airEntityColumns.ACTOR_LID].index;
         const actorRecordIdIndex = dbEntity.columnMap[airEntityColumns.ACTOR_RECORD_ID].index;
@@ -42488,7 +42435,7 @@ let UpdateManager = class UpdateManager {
                 qEntity
             ],
             SELECT,
-            WHERE: qEntity[this.dictionary.AirEntity.properties
+            WHERE: qEntity[this.dictionary.AirEntityFields.properties
                 .systemWideOperationId]
                 .equals(systemWideOperationId)
         });
@@ -43489,12 +43436,12 @@ let StructuralEntityValidator = class StructuralEntityValidator {
                 rootRelationRecord = record;
             }
             const entityStateFlags = this.entityStateManager.getEntityStateTypeAsFlags(record, dbEntity);
-            const { isACopy, isCreate, isFromAnotherApp, isStub } = entityStateFlags;
-            if (isACopy) {
-                // Copied entities (from other repositories) do not change once
-                //created and can only have references to other copied entities
-                continue;
-            }
+            const { isCreate, isFromAnotherApp, isStub } = entityStateFlags;
+            // if (isACopy) {
+            // 	// Copied entities (from other repositories) do not change once
+            // 	//created and can only have references to other copied entities
+            // 	continue
+            // }
             const operationUniqueId = this.entityStateManager.getOperationUniqueId(record);
             const entityAlreadyOperatedOn = operatedOnEntityIndicator[operationUniqueId];
             if (entityAlreadyOperatedOn) {
@@ -45974,9 +45921,6 @@ UpdateCacheManager = __decorate$1([
 
 var EntityStateManager_1;
 let EntityStateManager = EntityStateManager_1 = class EntityStateManager {
-    isACopy(entity) {
-        return entity.copied;
-    }
     isStub(entity) {
         return this.getEntityState(entity) === EntityState$1.STUB;
     }
@@ -46053,9 +45997,7 @@ let EntityStateManager = EntityStateManager_1 = class EntityStateManager {
                 throw new Error(`Unexpected entity state
 "${this.getStateFieldName()}" for ${dbEntity.name}: ${entityState}`);
         }
-        let isACopy = entity.copied;
         return {
-            isACopy,
             isCreate,
             isDelete,
             isFromAnotherApp,
@@ -47352,7 +47294,7 @@ class ApplicationRelationResolver {
         for (const entityName in indexedApplication.entityMapByName) {
             const indexedEntity = indexedApplication.entityMapByName[entityName];
             if (indexedEntity.entity.isAirEntity) {
-                if (indexedEntity.idColumns[0].name !== this.dictionary.AirEntity.columns.REPOSITORY_LID) {
+                if (indexedEntity.idColumns[0].name !== this.dictionary.AirEntityId.columns.REPOSITORY_LID) {
                     throw new Error(`@Id Column at index 0, must be 'REPOSITORY_LID'`);
                 }
             }
@@ -47673,7 +47615,7 @@ class SApplicationBuilder {
             return entity.numIdColumns++;
         }
         entity.numIdColumns = 3;
-        const airEntityColumns = this.dictionary.AirEntity.columns;
+        const airEntityColumns = this.dictionary.AirEntityId.columns;
         switch (columnName) {
             case airEntityColumns.REPOSITORY_LID:
                 return 0;
@@ -48018,7 +47960,7 @@ class ${entityCandidate.docEntry.name}
                         }
                     }
                     const notNull = isManyToOnePropertyNotNull(aProperty);
-                    const airEntityColumns = this.dictionary.AirEntity.columns;
+                    const airEntityColumns = this.dictionary.AirEntityId.columns;
                     const relationColumnReferences = [
                         airEntityColumns.REPOSITORY_LID, airEntityColumns.ACTOR_LID,
                         airEntityColumns.ACTOR_RECORD_ID
@@ -48273,27 +48215,15 @@ class ${entity.name}
      * @returns {SColumn}
      */
     processRelationColumn(ownColumnReference, relationColumnReference, manyToOne, isIdProperty, propertyIndex, entity, relationColumnMapByName, primitiveColumnMapByName, notNull, entityCannotReferenceOtherColumns = false) {
-        // const ownColumnIdIndex                 = this.getIdColumnIndex(ownColumnReference)
-        // const relationColumnIdIndex            =
-        // this.getIdColumnIndex(relationColumnReference)
         const sRelationColumn = {
             manyToOne,
             oneSideRelationIndex: null,
-            // ownColumnIdIndex,
             ownColumnReference,
-            // relationColumnIdIndex,
             relationColumnReference
         };
-        // if (ownColumnIdIndex) {
-        // 	if (isIdProperty) {
-        // 		throw new Error(`ManyToOne/OneToMany relation cannot be @Id and reference Id
-        // columns at the same time.`) }  return [ sRelationColumn, null ] }
         const existingPrimitiveColumn = primitiveColumnMapByName[ownColumnReference];
         if (existingPrimitiveColumn) {
             if (manyToOne && isIdProperty) {
-                // if (entityCannotReferenceOtherColumns) {
-                // throw new Error(`ManyToOne relation without (R)JoinColumn(s) cannot be named
-                // as other columns.`);
                 throw new Error(`@Id & @ManyToOne relation columns cannot be named as other non-relational columns.
 			A column can either be defined as a non-relational column
 			OR as a relation.
@@ -48311,16 +48241,13 @@ class ${entity.name}
         const existingRelationColumn = relationColumnMapByName[ownColumnReference];
         if (existingRelationColumn) {
             if (manyToOne && isIdProperty) {
-                // if (entityCannotReferenceOtherColumns) {
-                // throw new Error(`ManyToOne relation without (R)JoinColumn(s) cannot be named
-                // as other columns.`);
-                throw new Error(`@Id & @ManyToOne relation columns cannot be named in multiple relations.
-			A @Id column can be defined in only one relation.
+                throw new Error(`@Id cannot be specified in more than one @ManyToOne relation.
+			A @Id column name can be defined on only one relation.
 			Column: '${entity.name}.${ownColumnReference}'`);
             }
             if (entityCannotReferenceOtherColumns) {
-                throw new Error(`ManyToOne relation without JoinColumn(s) 
-				cannot be named as other columns.`);
+                throw new Error(`@ManyToOne relation without @JoinColumn(s) 
+				cannot be placed on other columns.`);
             }
             if ((existingRelationColumn.notNull && !notNull)
                 || (!existingRelationColumn.notNull && notNull)) {
@@ -48367,10 +48294,19 @@ entityCandidate //
         || entityCandidate.docEntry.name === dictionary.InternalAirEntity.name) {
         return [true, false];
     }
-    // if (entityCandidate.docEntry.name === airEntityColumns.LOCAL_ENTITY_NAME) {
-    // 	return [true, true];
-    // }
     return entityExtendsOrIsAirEntity(entityCandidate.parentEntity);
+}
+function entityExtendsOrIsAirEntityFieldsOrId(//
+entityCandidate //
+) {
+    if (!entityCandidate) {
+        return [false, true];
+    }
+    if (entityCandidate.docEntry.name === dictionary.AirEntityId.name
+        || entityCandidate.docEntry.name === dictionary.AirEntityFields.name) {
+        return [true, false];
+    }
+    return entityExtendsOrIsAirEntityFieldsOrId(entityCandidate.parentEntity);
 }
 function isManyToOnePropertyNotNull(aProperty) {
     const manyToOneProperty = getManyToOneDecorator(aProperty);
@@ -48968,7 +48904,10 @@ class QEntityRelationBuilder extends QCoreEntityBuilder {
         });
         let genericType = '';
         let entity = this.entity.docEntry.name;
-        const [isAirEntity, _] = entityExtendsOrIsAirEntity(this.entity);
+        let [isAirEntity, _] = entityExtendsOrIsAirEntity(this.entity);
+        if (!isAirEntity) {
+            isAirEntity = entityExtendsOrIsAirEntityFieldsOrId(this.entity)[0];
+        }
         let parentInterfaceType = 'IQManyToOneInternalRelation';
         if (isAirEntity) {
             parentInterfaceType = 'IQManyToOneAirEntityRelation';
@@ -50683,5 +50622,5 @@ async function generate() {
     console.log('DONE AIRport generation');
 }
 
-export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DdlApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GlobalCandidates, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, InjectionFileBuilder, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpSchemaBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
+export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DdlApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GlobalCandidates, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, InjectionFileBuilder, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpSchemaBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, dictionary, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityExtendsOrIsAirEntityFieldsOrId, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
 //# sourceMappingURL=index.mjs.map

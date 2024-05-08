@@ -274,8 +274,8 @@ export class DeleteManager
 											switch (dbColumn.name) {
 												// Do not add Actor or Repository the are recorded
 												// at record history level
-												case this.dictionary.AirEntity.columns.ACTOR_LID:
-												case this.dictionary.AirEntity.columns.REPOSITORY_LID:
+												case this.dictionary.AirEntityId.columns.ACTOR_LID:
+												case this.dictionary.AirEntityId.columns.REPOSITORY_LID:
 													break;
 												default:
 													this.recordHistoryDuo.addOldValue(recordHistory, dbColumn,

@@ -23,12 +23,6 @@ export class EntityStateManager
 	static STATE_FIELD = '__state__'
 	static OPERATION_UNIQUE_ID_FIELD = '__OUID__'
 
-	isACopy<T>(
-		entity: T
-	): boolean {
-		return (entity as IAirEntity).copied
-	}
-
 	isStub<T>(
 		entity: T
 	): boolean {
@@ -147,10 +141,7 @@ export class EntityStateManager
 "${this.getStateFieldName()}" for ${dbEntity.name}: ${entityState}`)
 		}
 
-		let isACopy = (entity as IAirEntity).copied
-
 		return {
-			isACopy,
 			isCreate,
 			isDelete,
 			isFromAnotherApp,

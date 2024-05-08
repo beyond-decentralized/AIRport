@@ -8,6 +8,7 @@
   "peerDependencies": {
     "@airbridge/validate": "workspace:../../../AIRbridge/validate",
     "@airport/air-traffic-control": "workspace:../../apis/air-traffic-control",
+    "@airport/airspace": "workspace:../airspace",
     "@airport/autopilot": "workspace:../../libs/autopilot",
     "@airport/aviation-communication": "workspace:../../apis/aviation-communication",
     "@airport/direction-indicator": "workspace:../../libs/direction-indicator",

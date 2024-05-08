@@ -24,7 +24,7 @@ import {
 } from '@airport/terminal-map'
 import {
 	ICrossRepositoryRelationManager
-} from '@airport/holding-pattern/dist/app/bundle'
+} from '@airport/layover'
 
 @Injected()
 export class StructuralEntityValidator
@@ -78,17 +78,16 @@ export class StructuralEntityValidator
 			const entityStateFlags = this.entityStateManager.getEntityStateTypeAsFlags(record, dbEntity)
 
 			const {
-				isACopy,
 				isCreate,
 				isFromAnotherApp,
 				isStub
 			} = entityStateFlags
 
-			if (isACopy) {
-				// Copied entities (from other repositories) do not change once
-				//created and can only have references to other copied entities
-				continue
-			}
+			// if (isACopy) {
+			// 	// Copied entities (from other repositories) do not change once
+			// 	//created and can only have references to other copied entities
+			// 	continue
+			// }
 
 			const operationUniqueId = this.entityStateManager.getOperationUniqueId(record)
 			const entityAlreadyOperatedOn = operatedOnEntityIndicator[operationUniqueId]

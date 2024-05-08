@@ -421,19 +421,20 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 
 			const inQueryColumnIndex = selectClause.length - 1
 
-			const AirEntity = this.dictionary.AirEntity
+			const AirEntityFields = this.dictionary.AirEntityFields
+			const AirEntityId = this.dictionary.AirEntityId
 
 			switch (dbColumn.name) {
-				case AirEntity.columns.ACTOR_LID:
+				case AirEntityId.columns.ACTOR_LID:
 					actorLidColumnIndex = inQueryColumnIndex
 					break
-				case AirEntity.columns.ACTOR_RECORD_ID:
+				case AirEntityId.columns.ACTOR_RECORD_ID:
 					actorRecordIdColumnIndex = inQueryColumnIndex
 					break
-				case AirEntity.columns.REPOSITORY_LID:
+				case AirEntityId.columns.REPOSITORY_LID:
 					repositoryLidColumnIndex = inQueryColumnIndex
 					break
-				case AirEntity.columns.SYSTEM_WIDE_OPERATION_LID:
+				case AirEntityFields.columns.SYSTEM_WIDE_OPERATION_LID:
 					if (nonIdColumnSet) {
 						throw new Error(errorPrefix +
 							`Cannot update 'systemWideOperationId' of Repository Entities.`)

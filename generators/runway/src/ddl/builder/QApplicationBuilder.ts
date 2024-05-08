@@ -2,7 +2,6 @@ import { resolveRelativePath } from '../../resolve/pathResolver';
 import { Configuration } from '../options/Options';
 import { PathBuilder } from './PathBuilder';
 import { IBuilder } from './Builder';
-import { IApplication } from '@airport/ground-control';
 
 export class QApplicationBuilder
   implements IBuilder {

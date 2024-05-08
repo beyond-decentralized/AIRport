@@ -260,19 +260,19 @@ export class ApplicationUtils
 	isActorLid(
 		columnName: string
 	): boolean {
-		return columnName === this.dictionary.AirEntity.columns.ACTOR_LID
+		return columnName === this.dictionary.AirEntityId.columns.ACTOR_LID
 	}
 
 	isActorRecordId(
 		columnName: string
 	): boolean {
-		return columnName === this.dictionary.AirEntity.columns.ACTOR_RECORD_ID
+		return columnName === this.dictionary.AirEntityId.columns.ACTOR_RECORD_ID
 	}
 
 	isRepositoryId(
 		columnName: string
 	): boolean {
-		return columnName === this.dictionary.AirEntity.columns.REPOSITORY_LID
+		return columnName === this.dictionary.AirEntityId.columns.REPOSITORY_LID
 	}
 
 	isIdEmpty(idValue: any): boolean {
@@ -343,7 +343,7 @@ export class ApplicationUtils
 	isSystemWideOperationId(
 		columnName: string
 	): boolean {
-		return columnName === this.dictionary.AirEntity.columns.SYSTEM_WIDE_OPERATION_LID
+		return columnName === this.dictionary.AirEntityFields.columns.SYSTEM_WIDE_OPERATION_LID
 	}
 
 	private getColumnValuesAndPaths(

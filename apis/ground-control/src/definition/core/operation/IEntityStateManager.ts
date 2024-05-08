@@ -29,7 +29,6 @@ export enum EntityState {
 }
 
 export interface IEntityStateAsFlags {
-	isACopy: boolean
 	isCreate: boolean
 	isDelete: boolean
 	isFromAnotherApp: boolean
@@ -78,10 +77,6 @@ export interface IEntityStateManager {
 	getStateFieldName(): string
 
 	getUniqueIdFieldName(): string
-
-	isACopy<T>(
-		entity: T
-	): boolean
 
 	isDeleted<T>(
 		entity: T

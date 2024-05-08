@@ -1,5 +1,7 @@
 export * from './conflict/SynchronizationConflict'
 export * from './conflict/SynchronizationConflictValues'
+export * from './relation/CopiedEntityRecord'
+export * from './relation/CopiedEntityRecordRepository'
 export * from './values/DataOrigin'
 export * from './values/ApplicationChangeStatus'
 export * from './RecordUpdateStage'

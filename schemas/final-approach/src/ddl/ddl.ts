@@ -1,3 +1,6 @@
-export * from './AirEntity'
+export * from './airEntity/AirEntityId'
+export * from './airEntity/AirEntityFields'
+export * from './airEntity/AirEntity'
+export * from './airEntity/InternalAirEntity'
 export * from './RepositoryContentFlag'
 export * from './RepositoryContentFlagType'

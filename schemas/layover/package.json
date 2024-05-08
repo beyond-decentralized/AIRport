@@ -9,11 +9,12 @@
     "@airbridge/validate": "workspace:../../../AIRbridge/validate",
     "@airport/air-traffic-control": "workspace:../../apis/air-traffic-control",
     "@airport/airgate": "workspace:../../libs/airgate",
+    "@airport/airspace": "workspace:../airspace",
     "@airport/autopilot": "workspace:../../libs/autopilot",
     "@airport/direction-indicator": "workspace:../../libs/direction-indicator",
+    "@airport/final-approach": "workspace:../final-approach",
     "@airport/ground-control": "workspace:../../apis/ground-control",
     "@airport/holding-pattern": "workspace:../holding-pattern",
-    "@airport/airspace": "workspace:../airspace",
     "@airport/tarmaq-dao": "workspace:../../ORMs/tarmaq/dao",
     "@airport/tarmaq-entity": "workspace:../../ORMs/tarmaq/entity",
     "@airport/tarmaq-query": "workspace:../../ORMs/tarmaq/query"

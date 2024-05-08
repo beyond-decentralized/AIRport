@@ -55,20 +55,32 @@ export class Dictionary {
 				name: '@airport/final-approach',
 				entities: {
 					AirEntity: {
-						name: 'AirEntity',
+						name: 'AirEntity'
+					},
+					AirEntityFields: {
+						name: 'AirEntityFields',
 						columns: {
-							ACTOR_LID: 'ACTOR_LID',
-							ACTOR_RECORD_ID: 'ACTOR_RECORD_ID',
-							REPOSITORY_LID: 'REPOSITORY_LID',
 							SYSTEM_WIDE_OPERATION_LID: 'SYSTEM_WIDE_OPERATION_LID'
 						},
 						properties: {
-							_actorRecordId: '_actorRecordId',
-							_localId: '_localId',
-							actor: 'actor',
-							repository: 'repository',
 							systemWideOperationId: 'systemWideOperationId'
 						}
+					},
+					AirEntityId: {
+						name: 'AirEntityId',
+						columns: {
+							ACTOR_LID: 'ACTOR_LID',
+							ACTOR_RECORD_ID: 'ACTOR_RECORD_ID',
+							REPOSITORY_LID: 'REPOSITORY_LID'
+						},
+						properties: {
+							_actorRecordId: '_actorRecordId',
+							actor: 'actor',
+							repository: 'repository'
+						}
+					},
+					InternalAirEntity: {
+						name: 'InternalAirEntity'
 					}
 				}
 			},
@@ -84,9 +96,6 @@ export class Dictionary {
 						properties: {
 							userAccount: 'userAccount'
 						}
-					},
-					InternalAirEntity: {
-						name: 'InternalAirEntity'
 					},
 					Repository: {
 						name: 'Repository',
@@ -145,9 +154,11 @@ export class Dictionary {
 
 	Actor = this.airport.apps.HOLDING_PATTERN.entities.Actor
 	AirEntity = this.airport.apps.FINAL_APPROACH.entities.AirEntity
+	AirEntityFields = this.airport.apps.FINAL_APPROACH.entities.AirEntityFields
+	AirEntityId = this.airport.apps.FINAL_APPROACH.entities.AirEntityId
 	ApplicationRelation = this.airport.apps.AIRSPACE.entities.ApplicationRelation
 	// CopiedRecordLedger = this.airport.apps.HOLDING_PATTERN.entities.CopiedRecordLedger
-	InternalAirEntity = this.airport.apps.HOLDING_PATTERN.entities.InternalAirEntity
+	InternalAirEntity = this.airport.apps.FINAL_APPROACH.entities.InternalAirEntity
 	KeyRing = this.airbridge.apps.KEYRING.entities.KeyRing
 	Repository = this.airport.apps.HOLDING_PATTERN.entities.Repository
 	RepositoryKey = this.airbridge.apps.KEYRING.entities.RepositoryKey
@@ -372,14 +383,14 @@ export class Dictionary {
 		dbProperty: DbProperty
 	) {
 		return dbProperty.entity.isAirEntity
-			&& this.AirEntity.properties.actor === dbProperty.name
+			&& this.AirEntityId.properties.actor === dbProperty.name
 	}
 
 	isRepositoryProperty(
 		dbProperty: DbProperty
 	) {
 		return dbProperty.entity.isAirEntity
-			&& this.AirEntity.properties.repository === dbProperty.name
+			&& this.AirEntityId.properties.repository === dbProperty.name
 	}
 
 	private isEntityType(
