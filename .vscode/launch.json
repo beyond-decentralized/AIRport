@@ -71,6 +71,40 @@
         {
             "type": "pwa-node",
             "request": "launch",
+            "name": "final-approach-dos",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\schemas\\final-approach\\generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\schemas\\final-approach",
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node",
+                "--preserve-symlinks"
+            ]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "final-approach-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/schemas/final-approach/generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/schemas/final-approach",
+            "runtimeArgs": [
+                "--experimental-specifier-resolution=node",
+                "--preserve-symlinks"
+            ]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
             "name": "holding-pattern-dos",
             "skipFiles": [
                 "<node_internals>/**"
