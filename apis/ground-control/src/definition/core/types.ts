@@ -299,13 +299,6 @@ export type AirEntity_ToBeCopied = boolean
 export interface IAirEntity
 	extends IAirEntityId {
 
-	// Source Id Property
-	sourceActorRecordId?: number;
-
-	// Source Id Relations
-	sourceRepository?: IRepository;
-	sourceActor?: IActor;
-
 	// Non-Id Properties
 	createdAt: CreatedAt;
 	systemWideOperationId?: SystemWideOperationId;
@@ -442,14 +435,35 @@ export interface ICrossRepositoryRelationLedger
 	relatedRepository: IRepository
 
 }
+
+export type CopiedEntityRecord_IntegerdId = number
 export interface ICopiedEntityRecord
 	extends IAirEntityId {
 
+	integerdId: CopiedEntityRecord_IntegerdId
 	copyDdlEntity: DbEntity
 
 }
-export interface ICopiedEntityRecordRepository {
+export interface ICopiedEntityRepositoryRecord {
 
 	copiedEntityRecord: ICopiedEntityRecord
 
+	repositoryWithCopy: IRepository
+
+}
+
+export type ICopiedEntityQueryRecord_QueryNumber = number
+export interface ICopiedEntityQueryRecord {
+
+	copiedEntityRecord: ICopiedEntityRecord
+
+	queryNumber: ICopiedEntityQueryRecord_QueryNumber
+
+}
+
+export interface ICopiedEntityRecordAdditionsForRepository {
+
+	repository: IRepository
+	entities: IAirEntity[][]
+	ddlEntities: DbEntity[]
 }

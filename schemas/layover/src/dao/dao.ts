@@ -1,5 +1,6 @@
 export * from './conflict/SynchronizationConflictDao'
 export * from './conflict/SynchronizationConflictValuesDao'
 export * from './relation/CopiedEntityRecordDao'
-export * from './relation/CopiedEntityRecordRepositoryDao'
+export * from './relation/CopiedEntityRepositoryRecordDao'
+export * from './relation/CopiedEntityQueryRecordDao'
 export * from './RecordUpdateStageDao'

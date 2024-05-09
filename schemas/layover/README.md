@@ -12,7 +12,8 @@ Tracks data conflicts found during repository synchronization.
 
 Entities:
 
+*   CopiedEntityQueryRecord
 *   CopiedEntityRecord
-*   CopiedEntityRecordRepository
+*   CopiedEntityRepositoryRecord
 *   SynchronizationConflict
 *   SynchronizationConflictValues

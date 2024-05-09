@@ -122,6 +122,17 @@ export class Dictionary {
 					}
 				}
 			},
+			LAYOVER: {
+				name: '@airport/layover',
+				entities: {
+					CopiedEntityQuery: {
+						name: 'CopiedEntityQuery',
+						columns: {
+							ID: 'ID'
+						}
+					}
+				}
+			},
 			TRAVEL_DOCUMENT_CHECKPOINT: {
 				name: '@airport/travel-document-checkpoint',
 				entities: {
