@@ -127,7 +127,7 @@ export class Stage1SyncedInDataProcessor
 					changedRecordsForRepo.firstChangeTime = repoTransHistory.saveTimestamp
 				}
 				for (const operationHistory of repoTransHistory.operationHistory) {
-					// Collect the Actor related localIds
+					// Collect the Entity related localIds
 					const idsForEntity: Map<Actor_LocalId, Set<ActorRecordId>>
 						= this.datastructureUtils.ensureChildJsMap(changedRecordsForRepo.actorRecordIdsByLocalIds,
 							operationHistory.entity._localId)
