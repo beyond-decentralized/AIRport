@@ -2,7 +2,7 @@ import { DdlEntity } from "@airport/airspace/dist/app/bundle";
 import { AirEntityId } from "@airport/final-approach/dist/app/bundle";
 import { EntityRecord_IntegerdId, EntityRecord_IsACopy, IEntityRecord } from "@airport/ground-control";
 import { Column, DbBoolean, DbNumber, Entity, GeneratedValue, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/tarmaq-entity";
-import { CopiedEntityRepositoryRecord } from "./CopiedEntityRepositoryRecord";
+import { RepositoryReferencingEntityRecord } from "./RepositoryReferencingEntityRecord";
 import { EntityQueryRecord } from "./EntityQueryRecord";
 import { EntityRelationRecord } from "./EntityRelationRecord";
 
@@ -40,7 +40,7 @@ export class EntityRecord
     referencingRecordRelations: EntityRelationRecord[]
 
     @OneToMany({ mappedBy: 'entityRecord' })
-    copiedEntityRecordRepositories: CopiedEntityRepositoryRecord[] = []
+    repositoryReferencingEntityRecords: RepositoryReferencingEntityRecord[] = []
 
     @OneToMany({ mappedBy: 'entityRecord' })
     entityRecordQueries: EntityQueryRecord[] = []

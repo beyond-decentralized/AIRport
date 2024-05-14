@@ -452,11 +452,11 @@ export interface IEntityRelationRecord {
 	referencingRecord: IEntityRecord
 }
 
-export interface ICopiedEntityRepositoryRecord {
+export interface IRepositoryReferencingEntityRecord {
 
 	entityRecord: IEntityRecord
 
-	repositoryWithCopy: IRepository
+	referencingRepository: IRepository
 
 }
 

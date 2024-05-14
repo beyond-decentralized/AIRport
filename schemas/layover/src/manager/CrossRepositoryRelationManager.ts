@@ -5,8 +5,8 @@ import { Repository } from "@airport/holding-pattern/dist/app/bundle"
 import { ActorRecordId, Actor_LocalId, DbEntity, DbEntity_LocalId, Dictionary, IAirEntity, IEntityRecordAdditionsForRepository, IDatastructureUtils, ISequenceGenerator, Repository_LocalId } from "@airport/ground-control"
 import { CopiedEntityQueryRecordDao } from "../dao/relation/EntityQueryRecordDao"
 import { EntityRecordDao } from "../dao/relation/EntityRecordDao"
-import { CopiedEntityRepositoryRecordDao } from "../dao/relation/EntityRepositoryRecordDao"
-import { EntityRecord, CopiedEntityRepositoryRecord } from "../ddl/ddl"
+import { RepositoryReferencingEntityRecordDao } from "../dao/relation/RepositoryReferencingEntityRecordDao"
+import { EntityRecord, RepositoryReferencingEntityRecord } from "../ddl/ddl"
 
 export interface ICrossRepositoryRelationManager {
 
@@ -14,10 +14,10 @@ export interface ICrossRepositoryRelationManager {
         entityRecordAdditionsPerRepository: IEntityRecordAdditionsForRepository[]
     ): Promise<EntityRecord>
 
-    addCopiedEntityRepositoryRecord(
+    addRepositoryReferencingEntityRecord(
         entityRecord: EntityRecord,
-        repositoryWithCopy: Repository
-    ): CopiedEntityRepositoryRecord
+        referencingRepository: Repository
+    ): RepositoryReferencingEntityRecord
 
     getRecords(
         entities: IAirEntity[][],
@@ -37,7 +37,7 @@ export class CrossRepositoryRelationManager
     entityRecordDao: EntityRecordDao
 
     @Inject()
-    copiedEntityRepositoryRecordDao: CopiedEntityRepositoryRecordDao
+    repositoryReferencingEntityRecordDao: RepositoryReferencingEntityRecordDao
     
     @Inject()
     datastructureUtils: IDatastructureUtils
@@ -87,7 +87,7 @@ export class CrossRepositoryRelationManager
 
         // this.getCopiedEntityRepositoryRecord(
         //     entityRecord,
-        //     repositoryWithCopy
+        //     referencingRepository
         // )
 
         // return entityRecord
@@ -95,15 +95,15 @@ export class CrossRepositoryRelationManager
         return null
     }
 
-    addCopiedEntityRepositoryRecord(
+    addRepositoryReferencingEntityRecord(
         entityRecord: EntityRecord,
-        repositoryWithCopy: Repository
-    ): CopiedEntityRepositoryRecord {
-        const copiedEntityRepositoryRecord = new CopiedEntityRepositoryRecord()
+        referencingRepository: Repository
+    ): RepositoryReferencingEntityRecord {
+        const copiedEntityRepositoryRecord = new RepositoryReferencingEntityRecord()
         copiedEntityRepositoryRecord.entityRecord = entityRecord
-        copiedEntityRepositoryRecord.repositoryWithCopy = repositoryWithCopy
+        copiedEntityRepositoryRecord.referencingRepository = referencingRepository
 
-        entityRecord.copiedEntityRecordRepositories.push(copiedEntityRepositoryRecord)
+        entityRecord.repositoryReferencingEntityRecords.push(copiedEntityRepositoryRecord)
 
         return copiedEntityRepositoryRecord
     }
@@ -158,14 +158,14 @@ export class CrossRepositoryRelationManager
     private getCopiedEntityRepositoryRecord(
         entityRecord: EntityRecord,
         repositoryWithCopy: Repository
-    ): CopiedEntityRepositoryRecord {
-        const copiedEntityRepositoryRecord = new CopiedEntityRepositoryRecord()
-        copiedEntityRepositoryRecord.entityRecord = entityRecord
-        copiedEntityRepositoryRecord.repositoryWithCopy = repositoryWithCopy
+    ): RepositoryReferencingEntityRecord {
+        const repositoryReferencingEntityRecord = new RepositoryReferencingEntityRecord()
+        repositoryReferencingEntityRecord.entityRecord = entityRecord
+        repositoryReferencingEntityRecord.referencingRepository = repositoryWithCopy
 
-        entityRecord.copiedEntityRecordRepositories.push(copiedEntityRepositoryRecord)
+        entityRecord.repositoryReferencingEntityRecords.push(repositoryReferencingEntityRecord)
 
-        return copiedEntityRepositoryRecord
+        return repositoryReferencingEntityRecord
     }
 
 }
