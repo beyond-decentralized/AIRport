@@ -1,25 +1,25 @@
 import { IContext, Injected } from "@airport/direction-indicator";
-import { BaseCopiedEntityRecordDao } from "../../generated/baseDaos";
+import { BaseEntityRecordDao } from "../../generated/baseDaos";
 import { Q_airport____at_airport_slash_layover } from '../../generated/qApplication'
-import { QCopiedEntityRecord } from '../../generated/qInterfaces'
-import { CopiedEntityRecord } from "../../ddl/relation/CopiedEntityRecord";
+import { QEntityRecord } from '../../generated/qInterfaces'
+import { EntityRecord } from "../../ddl/relation/EntityRecord";
 
 @Injected()
-export class CopiedEntityRecordDao
-    extends BaseCopiedEntityRecordDao {
+export class EntityRecordDao
+    extends BaseEntityRecordDao {
 
         async insert(
-            copiedEntityRecords: CopiedEntityRecord[],
+            copiedEntityRecords: EntityRecord[],
             context: IContext
         ): Promise<void> {
-            let cer: QCopiedEntityRecord;
+            let cer: QEntityRecord;
             const VALUES = []
             for (const copiedEntityRecord of copiedEntityRecords) {
                 VALUES.push([
                     copiedEntityRecord._actorRecordId,
                     copiedEntityRecord.actor._localId,
                     copiedEntityRecord.repository._localId,
-                    copiedEntityRecord.copyDdlEntity._localId
+                    copiedEntityRecord.ddlEntity._localId
                 ])
             }
             await this.db.insertValuesGenerateIds({
@@ -28,7 +28,7 @@ export class CopiedEntityRecordDao
                     cer._actorRecordId,
                     cer.actor._localId,
                     cer.repository._localId,
-                    cer.copyDdlEntity._localId
+                    cer.ddlEntity._localId
                 ],
                 VALUES
             }, context)

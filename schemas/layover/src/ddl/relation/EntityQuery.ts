@@ -1,4 +1,4 @@
-import { ICopiedEntityQueryRecord_QueryNumber } from "@airport/ground-control"
+import { IEntityQueryRecord_QueryNumber } from "@airport/ground-control"
 import { DbNumber, Entity, GeneratedValue, Id, Table } from "@airport/tarmaq-entity"
 
 /**
@@ -12,6 +12,6 @@ export class CopiedEntityQuery {
     @Id()
     @GeneratedValue()
     @DbNumber()
-    queryNumber: ICopiedEntityQueryRecord_QueryNumber
+    queryNumber: IEntityQueryRecord_QueryNumber
 
 }

@@ -3,16 +3,16 @@ import { lib } from '@airport/direction-indicator'
 import { DatastructureUtils, Dictionary, SEQUENCE_GENERATOR } from '@airport/ground-control';
 import { SynchronizationConflictDao } from "./dao/conflict/SynchronizationConflictDao";
 import { SynchronizationConflictValuesDao } from "./dao/conflict/SynchronizationConflictValuesDao";
-import { CopiedEntityRecordDao } from './dao/relation/CopiedEntityRecordDao'
-import { CopiedEntityRepositoryRecordDao } from './dao/relation/CopiedEntityRepositoryRecordDao'
+import { EntityRecordDao } from './dao/relation/EntityRecordDao'
+import { CopiedEntityRepositoryRecordDao } from './dao/relation/EntityRepositoryRecordDao'
 import { CrossRepositoryRelationManager } from './manager/CrossRepositoryRelationManager'
 import { RecordUpdateStageDao } from "./dao/RecordUpdateStageDao";
-import { CopiedEntityQueryRecordDao } from './dao/relation/CopiedEntityQueryRecordDao';
+import { CopiedEntityQueryRecordDao } from './dao/relation/EntityQueryRecordDao';
 
 const layover = lib('@airport/layover')
 
 layover.register(
-    CopiedEntityRecordDao,
+    EntityRecordDao,
     CopiedEntityRepositoryRecordDao,
     CopiedEntityQueryRecordDao,
     CrossRepositoryRelationManager,
@@ -27,7 +27,7 @@ layover.setDependencies(RecordUpdateStageDao, {
 })
 layover.setDependencies(CrossRepositoryRelationManager, {
     copiedEntityQueryRecordDao: CopiedEntityQueryRecordDao,
-    copiedEntityRecordDao: CopiedEntityRecordDao,
+    copiedEntityRecordDao: EntityRecordDao,
     copiedEntityRepositoryRecordDao: CopiedEntityRepositoryRecordDao,
     datastructureUtils: DatastructureUtils,
 	dictionary: Dictionary,

@@ -16,18 +16,18 @@ export class CopiedEntityRepositoryRecordDao
             const VALUES = []
             for (const copiedEntityRepositoryRecord of copiedEntityRepositoryRecords) {
                 VALUES.push([
-                    copiedEntityRepositoryRecord.copiedEntityRecord._actorRecordId,
-                    copiedEntityRepositoryRecord.copiedEntityRecord.actor._localId,
-                    copiedEntityRepositoryRecord.copiedEntityRecord.repository._localId,
+                    copiedEntityRepositoryRecord.entityRecord._actorRecordId,
+                    copiedEntityRepositoryRecord.entityRecord.actor._localId,
+                    copiedEntityRepositoryRecord.entityRecord.repository._localId,
                     copiedEntityRepositoryRecord.repositoryWithCopy._localId
                 ])
             }
             await this.db.insertValuesGenerateIds({
                 INSERT_INTO: ceqr = Q_airport____at_airport_slash_layover.CopiedEntityRepositoryRecord,
                 columns: [
-                    ceqr.copiedEntityRecord._actorRecordId,
-                    ceqr.copiedEntityRecord.actor._localId,
-                    ceqr.copiedEntityRecord.repository._localId,
+                    ceqr.entityRecord._actorRecordId,
+                    ceqr.entityRecord.actor._localId,
+                    ceqr.entityRecord.repository._localId,
                     ceqr.repositoryWithCopy._localId
                 ],
                 VALUES

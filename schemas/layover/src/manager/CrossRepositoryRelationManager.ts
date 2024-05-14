@@ -2,27 +2,27 @@ import { Inject, Injected } from "@airport/direction-indicator"
 import { AirEntityId } from "@airport/final-approach"
 import { DdlEntity } from "@airport/airspace/dist/app/bundle"
 import { Repository } from "@airport/holding-pattern/dist/app/bundle"
-import { ActorRecordId, Actor_LocalId, DbEntity, DbEntity_LocalId, Dictionary, IAirEntity, ICopiedEntityRecordAdditionsForRepository, IDatastructureUtils, ISequenceGenerator, Repository_LocalId } from "@airport/ground-control"
-import { CopiedEntityQueryRecordDao } from "../dao/relation/CopiedEntityQueryRecordDao"
-import { CopiedEntityRecordDao } from "../dao/relation/CopiedEntityRecordDao"
-import { CopiedEntityRepositoryRecordDao } from "../dao/relation/CopiedEntityRepositoryRecordDao"
-import { CopiedEntityRecord, CopiedEntityRepositoryRecord } from "../ddl/ddl"
+import { ActorRecordId, Actor_LocalId, DbEntity, DbEntity_LocalId, Dictionary, IAirEntity, IEntityRecordAdditionsForRepository, IDatastructureUtils, ISequenceGenerator, Repository_LocalId } from "@airport/ground-control"
+import { CopiedEntityQueryRecordDao } from "../dao/relation/EntityQueryRecordDao"
+import { EntityRecordDao } from "../dao/relation/EntityRecordDao"
+import { CopiedEntityRepositoryRecordDao } from "../dao/relation/EntityRepositoryRecordDao"
+import { EntityRecord, CopiedEntityRepositoryRecord } from "../ddl/ddl"
 
 export interface ICrossRepositoryRelationManager {
 
-    addCopiedEntityRecords(
-        copiedEntityRecordAdditionsPerRepository: ICopiedEntityRecordAdditionsForRepository[]
-    ): Promise<CopiedEntityRecord>
+    addEntityRecords(
+        entityRecordAdditionsPerRepository: IEntityRecordAdditionsForRepository[]
+    ): Promise<EntityRecord>
 
     addCopiedEntityRepositoryRecord(
-        copiedEntityRecord: CopiedEntityRecord,
+        entityRecord: EntityRecord,
         repositoryWithCopy: Repository
     ): CopiedEntityRepositoryRecord
 
-    getCopiedRecords(
+    getRecords(
         entities: IAirEntity[][],
         dbEntities: DbEntity[]
-    ): Promise<CopiedEntityRecord[]>
+    ): Promise<EntityRecord[]>
 
 }
 
@@ -34,7 +34,7 @@ export class CrossRepositoryRelationManager
     copiedEntityQueryRecordDao: CopiedEntityQueryRecordDao
 
     @Inject()
-    copiedEntityRecordDao: CopiedEntityRecordDao
+    entityRecordDao: EntityRecordDao
 
     @Inject()
     copiedEntityRepositoryRecordDao: CopiedEntityRepositoryRecordDao
@@ -48,11 +48,11 @@ export class CrossRepositoryRelationManager
     @Inject()
     sequenceGenerator: ISequenceGenerator
 
-    async addCopiedEntityRecords(
-        copiedEntityRecordAdditionsPerRepository: ICopiedEntityRecordAdditionsForRepository[]
-    ): Promise<CopiedEntityRecord> {
+    async addEntityRecords(
+        entityRecordAdditionsPerRepository: IEntityRecordAdditionsForRepository[]
+    ): Promise<EntityRecord> {
 
-        const copiedEntityRecords: CopiedEntityRecord[] = []
+        const entityRecords: EntityRecord[] = []
         /*
         A number of repositories are going to get synced-in at the same time.  They may
         have a number of copied records in them, all of the copies will be sent into
@@ -70,59 +70,59 @@ export class CrossRepositoryRelationManager
 	actor?: IActor;
 	repository: IRepository;
         */
-        const copiedEntityRecordMap: Map<DbEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,ActorRecordId[]>>> = new Map()
-        for (const copiedEntityRecordAdditionsForRepository of copiedEntityRecordAdditionsPerRepository) {
-            for (let i = 0; i < copiedEntityRecordAdditionsForRepository.ddlEntities.length; i++) {
-                const ddlEntity = copiedEntityRecordAdditionsForRepository.ddlEntities.length[i]
-                const entities = copiedEntityRecordAdditionsForRepository.entities.length[i]
-                const copiedEntityRecord = this.getCopiedEntityRecord(entities, ddlEntity, copiedEntityRecordAdditionsForRepository.repository)
+        const entityRecordMap: Map<DbEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId,ActorRecordId[]>>> = new Map()
+        for (const entityRecordAdditionsForRepository of entityRecordAdditionsPerRepository) {
+            for (let i = 0; i < entityRecordAdditionsForRepository.ddlEntities.length; i++) {
+                const ddlEntity = entityRecordAdditionsForRepository.ddlEntities.length[i]
+                const entities = entityRecordAdditionsForRepository.entities.length[i]
+                const entityRecord = this.getEntityRecord(entities, ddlEntity, entityRecordAdditionsForRepository.repository)
 
 					// const applicationActorMapForDomain = this.datastructureUtils.ensureChildJsMap(
 					// 	this.datastructureUtils.ensureChildJsMap(
                     //         this.datastructureUtils.ensureChildJsMap(),entities.repository._localId),
                     //     ddlEntity._localId)
-                copiedEntityRecords.push(copiedEntityRecord)
+                entityRecords.push(entityRecord)
             }
         }
 
         // this.getCopiedEntityRepositoryRecord(
-        //     copiedEntityRecord,
+        //     entityRecord,
         //     repositoryWithCopy
         // )
 
-        // return copiedEntityRecord
+        // return entityRecord
 
         return null
     }
 
     addCopiedEntityRepositoryRecord(
-        copiedEntityRecord: CopiedEntityRecord,
+        entityRecord: EntityRecord,
         repositoryWithCopy: Repository
     ): CopiedEntityRepositoryRecord {
         const copiedEntityRepositoryRecord = new CopiedEntityRepositoryRecord()
-        copiedEntityRepositoryRecord.copiedEntityRecord = copiedEntityRecord
+        copiedEntityRepositoryRecord.entityRecord = entityRecord
         copiedEntityRepositoryRecord.repositoryWithCopy = repositoryWithCopy
 
-        copiedEntityRecord.copiedEntityRecordRepositories.push(copiedEntityRepositoryRecord)
+        entityRecord.copiedEntityRecordRepositories.push(copiedEntityRepositoryRecord)
 
         return copiedEntityRepositoryRecord
     }
 
-    async getCopiedRecords(
+    async getRecords(
         entities: IAirEntity[][],
         dbEntities: DbEntity[]
-    ): Promise<CopiedEntityRecord[]> {
+    ): Promise<EntityRecord[]> {
 
         const airport = this.dictionary.airport
-        const CopiedEntityQuery = airport.apps.LAYOVER.entities.CopiedEntityQuery
+        const EntityQuery = airport.apps.LAYOVER.entities.EntityQuery
 
         const SystemWideOperationId = this.dictionary.SystemWideOperationId
         const queryNumber = await this.sequenceGenerator
             .generateSequenceNumbersForColumn(
                 airport.DOMAIN_NAME,
                 airport.apps.LAYOVER.name,
-                CopiedEntityQuery.name,
-                CopiedEntityQuery.columns.ID,
+                EntityQuery.name,
+                EntityQuery.columns.ID,
                 1
             );
 
@@ -136,34 +136,34 @@ export class CrossRepositoryRelationManager
         return null;
     }
 
-    private getCopiedEntityRecord(
+    private getEntityRecord(
         copiedEntity: AirEntityId,
         copyDdlEntity: DdlEntity,
         repositoryWithCopy: Repository
-    ): CopiedEntityRecord {
-        const copiedEntityRecord = new CopiedEntityRecord()
-        copiedEntityRecord._actorRecordId = copiedEntity._actorRecordId
-        copiedEntityRecord.actor = copiedEntityRecord.actor
-        copiedEntityRecord.repository = copiedEntityRecord.repository
-        copiedEntityRecord.copyDdlEntity = copyDdlEntity
+    ): EntityRecord {
+        const entityRecord = new EntityRecord()
+        entityRecord._actorRecordId = copiedEntity._actorRecordId
+        entityRecord.actor = entityRecord.actor
+        entityRecord.repository = entityRecord.repository
+        entityRecord.ddlEntity = copyDdlEntity
 
         this.getCopiedEntityRepositoryRecord(
-            copiedEntityRecord,
+            entityRecord,
             repositoryWithCopy
         )
 
-        return copiedEntityRecord
+        return entityRecord
     }
 
     private getCopiedEntityRepositoryRecord(
-        copiedEntityRecord: CopiedEntityRecord,
+        entityRecord: EntityRecord,
         repositoryWithCopy: Repository
     ): CopiedEntityRepositoryRecord {
         const copiedEntityRepositoryRecord = new CopiedEntityRepositoryRecord()
-        copiedEntityRepositoryRecord.copiedEntityRecord = copiedEntityRecord
+        copiedEntityRepositoryRecord.entityRecord = entityRecord
         copiedEntityRepositoryRecord.repositoryWithCopy = repositoryWithCopy
 
-        copiedEntityRecord.copiedEntityRecordRepositories.push(copiedEntityRepositoryRecord)
+        entityRecord.copiedEntityRecordRepositories.push(copiedEntityRepositoryRecord)
 
         return copiedEntityRepositoryRecord
     }

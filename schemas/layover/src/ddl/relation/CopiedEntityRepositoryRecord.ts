@@ -1,7 +1,7 @@
 import { ICopiedEntityRepositoryRecord } from "@airport/ground-control"
 import { Repository } from "@airport/holding-pattern/dist/app/bundle"
-import { Entity, Id, JoinColumn, JoinColumns, ManyToOne, Table } from "@airport/tarmaq-entity"
-import { CopiedEntityRecord } from "./CopiedEntityRecord"
+import { Entity, Id, JoinColumn, ManyToOne, Table } from "@airport/tarmaq-entity"
+import { EntityRecord } from "./EntityRecord"
 
 /**
  * A record of which repository has a given CopiedEntityRecord in them.
@@ -11,14 +11,14 @@ import { CopiedEntityRecord } from "./CopiedEntityRecord"
  * removed as well.
  */
 @Entity()
-@Table({ name: 'COPIED_ENTITY_RECORD_REPOSITORIES' })
+@Table({ name: 'COPIED_ENTITY_REPOSITORY_RECORD' })
 export class CopiedEntityRepositoryRecord
     implements ICopiedEntityRepositoryRecord {
 
     @Id()
     @ManyToOne()
-    @JoinColumn({ name: 'COPY_INTEGER_LID', referencedColumnName: 'INTEGER_LID', nullable: false })
-    copiedEntityRecord: CopiedEntityRecord
+    @JoinColumn({ name: 'INTEGER_LID', referencedColumnName: 'INTEGER_LID', nullable: false })
+    entityRecord: EntityRecord
 
     @Id()
     @ManyToOne()

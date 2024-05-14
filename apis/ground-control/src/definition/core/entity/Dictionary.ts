@@ -125,8 +125,8 @@ export class Dictionary {
 			LAYOVER: {
 				name: '@airport/layover',
 				entities: {
-					CopiedEntityQuery: {
-						name: 'CopiedEntityQuery',
+					EntityQuery: {
+						name: 'EntityQuery',
 						columns: {
 							ID: 'ID'
 						}

@@ -1,7 +1,7 @@
 import { InternalUserAccount } from "@airport/aviation-communication";
 import { Application_FullName, IApplication } from "../application/IApplication";
 import { DbEntity } from "../application/DbEntity";
-import { DbRelation } from "../application/DbProperty";
+import { DbColumn, DbRelation } from "../application/DbProperty";
 import { IRepositoryTransactionHistory } from "../synchronization/synchronizationTypes";
 
 export interface IRootTransaction {
@@ -436,32 +436,40 @@ export interface ICrossRepositoryRelationLedger
 
 }
 
-export type CopiedEntityRecord_IntegerdId = number
-export interface ICopiedEntityRecord
+export type EntityRecord_IntegerdId = number
+export type EntityRecord_IsACopy = number
+export interface IEntityRecord
 	extends IAirEntityId {
 
-	integerdId: CopiedEntityRecord_IntegerdId
-	copyDdlEntity: DbEntity
+	integerdId: EntityRecord_IntegerdId
+	ddlEntity: DbEntity
 
 }
+
+export interface IEntityRelationRecord {
+	referencedRecord: IEntityRecord
+	referencingColumn: DbColumn
+	referencingRecord: IEntityRecord
+}
+
 export interface ICopiedEntityRepositoryRecord {
 
-	copiedEntityRecord: ICopiedEntityRecord
+	entityRecord: IEntityRecord
 
 	repositoryWithCopy: IRepository
 
 }
 
-export type ICopiedEntityQueryRecord_QueryNumber = number
-export interface ICopiedEntityQueryRecord {
+export type IEntityQueryRecord_QueryNumber = number
+export interface IEntityQueryRecord {
 
-	copiedEntityRecord: ICopiedEntityRecord
+	entityRecord: IEntityRecord
 
-	queryNumber: ICopiedEntityQueryRecord_QueryNumber
+	queryNumber: IEntityQueryRecord_QueryNumber
 
 }
 
-export interface ICopiedEntityRecordAdditionsForRepository {
+export interface IEntityRecordAdditionsForRepository {
 
 	repository: IRepository
 	entities: IAirEntity[][]
