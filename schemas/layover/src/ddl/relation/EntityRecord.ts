@@ -1,10 +1,10 @@
-import { DdlEntity } from "@airport/airspace/dist/app/bundle";
-import { AirEntityId } from "@airport/final-approach/dist/app/bundle";
-import { EntityRecord_IntegerdId, EntityRecord_IsACopy, IEntityRecord } from "@airport/ground-control";
-import { Column, DbBoolean, DbNumber, Entity, GeneratedValue, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/tarmaq-entity";
-import { RepositoryReferencingEntityRecord } from "./RepositoryReferencingEntityRecord";
-import { EntityQueryRecord } from "./EntityQueryRecord";
-import { EntityRelationRecord } from "./EntityRelationRecord";
+import { DdlEntity } from "@airport/airspace/dist/app/bundle"
+import { AirEntityId } from "@airport/final-approach/dist/app/bundle"
+import { EntityRecord_IntegerdId, EntityRecord_IsACopy, IEntityRecord } from "@airport/ground-control"
+import { Column, DbBoolean, DbNumber, Entity, GeneratedValue, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/tarmaq-entity"
+import { EntityRecordRepositoryReference } from "./EntityRecordRepositoryReference"
+import { EntityQueryRecord } from "./EntityQueryRecord"
+import { EntityRelationRecord } from "./EntityRelationRecord"
 
 /**
  * A record of all entities that are currently loaded into the database.
@@ -19,7 +19,7 @@ export class EntityRecord
     @DbNumber()
     @Column({ name: 'INTEGER_LID', nullable: false })
     // Space-saving foreign key for CopiedEntityRepositoryRecord
-    integerdId: EntityRecord_IntegerdId
+    integerId: EntityRecord_IntegerdId
 
     @Column({ name: 'IS_A_COPY', nullable: false })
     @DbBoolean()
@@ -40,7 +40,7 @@ export class EntityRecord
     referencingRecordRelations: EntityRelationRecord[]
 
     @OneToMany({ mappedBy: 'entityRecord' })
-    repositoryReferencingEntityRecords: RepositoryReferencingEntityRecord[] = []
+    repositoryReferences: EntityRecordRepositoryReference[] = []
 
     @OneToMany({ mappedBy: 'entityRecord' })
     entityRecordQueries: EntityQueryRecord[] = []

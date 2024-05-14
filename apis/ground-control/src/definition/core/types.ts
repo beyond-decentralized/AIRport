@@ -441,20 +441,22 @@ export type EntityRecord_IsACopy = number
 export interface IEntityRecord
 	extends IAirEntityId {
 
-	integerdId: EntityRecord_IntegerdId
+	integerId: EntityRecord_IntegerdId
 	ddlEntity: DbEntity
 
 }
 
+export type EntityRelationRecord_IntegerdId = number
 export interface IEntityRelationRecord {
+	integerId: EntityRelationRecord_IntegerdId
 	referencedRecord: IEntityRecord
 	referencingColumn: DbColumn
 	referencingRecord: IEntityRecord
 }
 
-export interface IRepositoryReferencingEntityRecord {
+export interface IEntityRecordRepositoryReference {
 
-	entityRecord: IEntityRecord
+	entityRelationRecord: IEntityRelationRecord
 
 	referencingRepository: IRepository
 

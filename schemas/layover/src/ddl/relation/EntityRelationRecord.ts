@@ -1,6 +1,6 @@
 import { DdlColumn } from '@airport/airspace'
-import { IEntityRelationRecord } from "@airport/ground-control"
-import { Entity, Id, JoinColumn, ManyToOne, Table } from "@airport/tarmaq-entity"
+import { EntityRelationRecord_IntegerdId, IEntityRelationRecord } from "@airport/ground-control"
+import { Column, DbNumber, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, Table } from "@airport/tarmaq-entity"
 import { EntityRecord } from "./EntityRecord"
 
 @Table({ name: 'ENTITY_RELATIONS' })
@@ -9,16 +9,20 @@ export class EntityRelationRecord
     implements IEntityRelationRecord {
 
     @Id()
+    @GeneratedValue()
+    @DbNumber()
+    @Column({ name: 'INTEGER_LID', nullable: false })
+    // Space-saving foreign key for CopiedEntityRepositoryRecord
+    integerId: EntityRelationRecord_IntegerdId
+
     @ManyToOne()
     @JoinColumn({ name: 'REFERENCED_RECORD_INTEGER_ID', referencedColumnName: 'INTEGER_LID' })
     referencedRecord: EntityRecord
 
-    @Id()
     @ManyToOne()
     @JoinColumn({ name: 'REFERENCING_DB_COLUMN_LID', referencedColumnName: 'DB_COLUMN_LID' })
     referencingColumn: DdlColumn
 
-    @Id()
     @ManyToOne()
     @JoinColumn({ name: 'REFERENCING_RECORD_INTEGER_ID', referencedColumnName: 'INTEGER_LID' })
     referencingRecord: EntityRecord

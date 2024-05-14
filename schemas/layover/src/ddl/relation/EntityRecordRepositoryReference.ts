@@ -1,7 +1,7 @@
-import { IRepositoryReferencingEntityRecord } from "@airport/ground-control"
+import { IEntityRecordRepositoryReference } from "@airport/ground-control"
 import { Repository } from "@airport/holding-pattern/dist/app/bundle"
 import { Entity, Id, JoinColumn, ManyToOne, Table } from "@airport/tarmaq-entity"
-import { EntityRecord } from "./EntityRecord"
+import { EntityRelationRecord } from "./EntityRelationRecord"
 
 /**
  * A record of which repository has a a referece to a given Entity.
@@ -30,14 +30,14 @@ import { EntityRecord } from "./EntityRecord"
  * new record (if any) and update the relations.
  */
 @Entity()
-@Table({ name: 'REPOSITORY_REFERENCING_ENTITY_RECORDS' })
-export class RepositoryReferencingEntityRecord
-    implements IRepositoryReferencingEntityRecord {
+@Table({ name: 'ENTITY_RECORD_REPOSITORY_REFERENCES' })
+export class EntityRecordRepositoryReference
+    implements IEntityRecordRepositoryReference {
 
     @Id()
     @ManyToOne()
-    @JoinColumn({ name: 'ENTITY_INTEGER_LID', referencedColumnName: 'INTEGER_LID', nullable: false })
-    entityRecord: EntityRecord
+    @JoinColumn({ name: 'ENTITY_RELATION_INTEGER_LID', referencedColumnName: 'INTEGER_LID', nullable: false })
+    entityRelationRecord: EntityRelationRecord
 
     @Id()
     @ManyToOne()
