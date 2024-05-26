@@ -9,11 +9,11 @@ export function forEach(
 ) {
 	if (collection instanceof Map) {
 		for (let [key, value] of collection.entries()) {
-			callback(key, value);
+			callback(key, value)
 		}
 	} else {
 		for (let memberName in collection) {
-			callback(memberName, collection[memberName]);
+			callback(memberName, collection[memberName])
 		}
 	}
 }

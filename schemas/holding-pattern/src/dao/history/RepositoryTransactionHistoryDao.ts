@@ -25,26 +25,16 @@ import { QOperationHistory, QRecordHistory, QRecordHistoryNewValue, QRepositoryT
 
 export interface IRepositoryTransactionHistoryDao {
 
-	findWhereGUIDsIn(
-		GUIDs: string[],
-		context: IContext
-	): Promise<IRepositoryTransactionHistory[]>
-
 	findAllLocalChangesForRecordIds(
 		changedRecordIds: Map<Repository_LocalId, IChangedRecordIdsForRepository>,
 		context: IContext
-	): Promise<Map<Repository_LocalId, IRepositoryTransactionHistory[]>>;
-
-	updateSyncTimestamp(
-		repositoryTransactionHistory: IRepositoryTransactionHistory,
-		context: IContext
-	): Promise<void>
+	): Promise<Map<Repository_LocalId, IRepositoryTransactionHistory[]>>
 
 }
 
 export interface IChangedRecordIdsForRepository {
-	actorRecordIdsByLocalIds: Map<DbEntity_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>;
-	firstChangeTime: number;
+	actorRecordIdsByLocalIds: Map<DbEntity_LocalId, Map<Actor_LocalId, Set<ActorRecordId>>>
+	firstChangeTime: number
 }
 
 @Injected()
@@ -54,38 +44,6 @@ export class RepositoryTransactionHistoryDao
 
 	@Inject()
 	datastructureUtils: IDatastructureUtils
-
-	/*
-	async clearContentsWhereIdsIn(
-		repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[],
-		context: IContext
-	): Promise<void> {
-		const rtb: QRepositoryTransactionBlock = Q.QRepositoryTransactionBlock
-		await this.db.updateWhere({
-			UPDATE: rtb,
-			SET: {
-				contents: null
-			},
-			WHERE: rtb._localId.IN(repositoryTransactionBlockIds)
-		}, context)
-	}
-	*/
-
-	async findWhereGUIDsIn(
-		GUIDs: string[],
-		context: IContext
-	): Promise<IRepositoryTransactionHistory[]> {
-		let rth: QRepositoryTransactionHistory
-		return await this.db.find.tree({
-			SELECT: {
-				GUID: Y
-			},
-			FROM: [
-				rth = Q.RepositoryTransactionHistory
-			],
-			WHERE: rth.GUID.IN(GUIDs)
-		}, context)
-	}
 
 	async findAllLocalChangesForRecordIds(
 		changedRecordIds: Map<Repository_LocalId, IChangedRecordIdsForRepository>,
@@ -103,7 +61,7 @@ export class RepositoryTransactionHistoryDao
 		const nv: QRecordHistoryNewValue = rh.newValues.LEFT_JOIN()
 		let _localId = Y
 
-		let numSearchParameterRecords = 0;
+		let numSearchParameterRecords = 0
 		const repositoryEquals: QueryBaseOperation[] = []
 		for (const [repositoryLid, idsForRepository] of changedRecordIds) {
 			const recordMapForRepository = idsForRepository.actorRecordIdsByLocalIds
@@ -115,7 +73,7 @@ export class RepositoryTransactionHistoryDao
 						rh.actor._localId.equals(actorLid),
 						rh._actorRecordId.IN(Array.from(recordsForActor))
 					))
-					numSearchParameterRecords++;
+					numSearchParameterRecords++
 				}
 				entityEquals.push(AND(
 					oh.entity._localId.equals(entityId),
@@ -199,18 +157,4 @@ export class RepositoryTransactionHistoryDao
 		return repositoryTransactionHistoryMapByRepositoryLid
 	}
 
-	async updateSyncTimestamp(
-		repositoryTransactionHistory: IRepositoryTransactionHistory,
-		context: IContext
-	): Promise<void> {
-		let rth: QRepositoryTransactionHistory
-
-		await this.db.updateWhere({
-			UPDATE: rth = Q.RepositoryTransactionHistory,
-			SET: {
-				syncTimestamp: repositoryTransactionHistory.syncTimestamp
-			},
-			WHERE: rth._localId.equals(repositoryTransactionHistory._localId)
-		}, context)
-	}
 }

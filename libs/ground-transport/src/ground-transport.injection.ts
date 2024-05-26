@@ -14,7 +14,7 @@ import { SyncInUtils } from './synchronization/in/SyncInUtils'
 import { TwoStageSyncedInDataProcessor } from './synchronization/in/TwoStageSyncedInDataProcessor'
 import { SynchronizationOutManager } from './synchronization/out/SynchronizationOutManager'
 import { SynchronizationAdapterLoader } from './adapters/SynchronizationAdapterLoader'
-import { SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer'
+import { SyncOutDataPreparer } from './synchronization/out/converter/SyncOutDataPreparer'
 import {
     AIRPORT_DATABASE,
     REPOSITORY_LOADER,
@@ -38,6 +38,7 @@ import {
 import {
     ActorDao,
     RecordHistoryDuo,
+    RepositoryBlockDao,
     RepositoryDao,
     RepositoryMemberAcceptanceDao,
     RepositoryMemberDao,
@@ -46,11 +47,11 @@ import {
     RepositoryTransactionHistoryDao,
     RepositoryTransactionHistoryDuo
 } from '@airport/holding-pattern/dist/app/bundle'
-import {
-    RecordUpdateStageDao,
-    SynchronizationConflictDao,
-    SynchronizationConflictValuesDao
-} from '@airport/layover'
+// import {
+//     RecordUpdateStageDao,
+//     SynchronizationConflictDao,
+//     SynchronizationConflictValuesDao
+// } from '@airport/layover'
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter'
 import {
     APPLICATION_UTILS,
@@ -63,7 +64,7 @@ import {
 } from '@airport/ground-control'
 import { DATABASE_FACADE } from '@airport/tarmaq-dao'
 import { Client } from '@airway/client'
-import { MessageSigningManager } from '@airbridge/keyring/dist/app/bundle'
+import { BlockSigningManager } from '@airbridge/keyring/dist/app/bundle'
 import { RepositoryReferenceCreator } from './synchronization/RepositoryReferenceCreator'
 
 const groundTransport = lib('ground-transport')
@@ -74,7 +75,7 @@ groundTransport.register(
     SyncInChecker, SyncInDataChecker, SyncInTerminalChecker,
     SyncInRepositoryChecker, SyncInApplicationChecker, SyncInApplicationVersionChecker,
     SyncInUserAccountChecker, SyncInUtils, SynchronizationInManager,
-    SynchronizationOutManager, SyncOutDataSerializer, TwoStageSyncedInDataProcessor,
+    SynchronizationOutManager, SyncOutDataPreparer, TwoStageSyncedInDataProcessor,
     DebugSynchronizationAdapter, SynchronizationAdapterLoader
 )
 
@@ -102,7 +103,7 @@ groundTransport.setDependencies(Stage2SyncedInDataProcessor, {
     databaseFacade: DATABASE_FACADE,
     datastructureUtils: DatastructureUtils,
     dictionary: Dictionary,
-    recordUpdateStageDao: RecordUpdateStageDao,
+    // recordUpdateStageDao: RecordUpdateStageDao,
     utils: Utils
 })
 
@@ -165,7 +166,7 @@ groundTransport.setDependencies(SyncInUtils, {
     datastructureUtils: DatastructureUtils
 })
 
-groundTransport.setDependencies(SyncOutDataSerializer, {
+groundTransport.setDependencies(SyncOutDataPreparer, {
     actorDao: ActorDao,
     applicationUtils: APPLICATION_UTILS,
     applicationNameUtils: ApplicationNameUtils,
@@ -181,7 +182,7 @@ groundTransport.setDependencies(SynchronizationAdapterLoader, {
 
 groundTransport.setDependencies(SynchronizationInManager, {
     repositoryLoader: REPOSITORY_LOADER,
-    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
+    repositoryBlockDao: RepositoryBlockDao,
     syncInApplicationVersionChecker: SyncInApplicationVersionChecker,
     syncInChecker: SyncInChecker,
     transactionManager: TRANSACTION_MANAGER,
@@ -190,11 +191,11 @@ groundTransport.setDependencies(SynchronizationInManager, {
 
 groundTransport.setDependencies(SynchronizationOutManager, {
     datastructureUtils: DatastructureUtils,
-    messageSigningManager: MessageSigningManager,
+    messageSigningManager: BlockSigningManager,
     repositoryReferenceCreator: RepositoryReferenceCreator,
-    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
+    repositoryBlockDao: RepositoryBlockDao,
     synchronizationAdapterLoader: SynchronizationAdapterLoader,
-    syncOutDataSerializer: SyncOutDataSerializer
+    syncOutDataPreparer: SyncOutDataPreparer
 })
 
 groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
@@ -209,6 +210,6 @@ groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     stage1SyncedInDataProcessor: Stage1SyncedInDataProcessor,
     stage2SyncedInDataProcessor: Stage2SyncedInDataProcessor,
-    synchronizationConflictDao: SynchronizationConflictDao,
-    synchronizationConflictValuesDao: SynchronizationConflictValuesDao
+    // synchronizationConflictDao: SynchronizationConflictDao,
+    // synchronizationConflictValuesDao: SynchronizationConflictValuesDao
 })

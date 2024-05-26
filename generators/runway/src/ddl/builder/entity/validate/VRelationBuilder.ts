@@ -2,7 +2,7 @@ import { PropertyDocEntry } from '../../../parser/DocEntry'
 import {
 	IBuilder
 } from '../../Builder'
-import { IVCoreEntityBuilder } from './VCoreEntityBuilder';
+import { IVCoreEntityBuilder } from './common'
 
 /**
  * Created by Papa on 4/25/2016.

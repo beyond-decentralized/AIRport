@@ -23,10 +23,10 @@ import {
 	IApplication,
 	Repository_GUID
 } from '@airport/ground-control'
-import {
-	IRecordUpdateStageDao,
-	RecordUpdateStageValues
-} from '@airport/layover'
+// import {
+// 	IRecordUpdateStageDao,
+// 	RecordUpdateStageValues
+// } from '@airport/layover'
 import {
 	RecordUpdate,
 	Stage1SyncedInDataProcessingResult
@@ -81,7 +81,7 @@ export class Stage2SyncedInDataProcessor
 	dictionary: Dictionary
 
 	@Inject()
-	recordUpdateStageDao: IRecordUpdateStageDao
+	recordUpdateStageDao: any //IRecordUpdateStageDao
 
 	@Inject()
 	utils: IUtils
@@ -238,7 +238,8 @@ export class Stage2SyncedInDataProcessor
 	): Promise<void> {
 		const trackedRepoGUIDSet: Set<Repository_GUID> = new Set()
 		const finalUpdateMap: Map<ApplicationVersion_LocalId, Map<DbEntity_TableIndex, ColumnUpdateKeyMap>> = new Map()
-		const recordUpdateStage: RecordUpdateStageValues[] = []
+		// const recordUpdateStage: RecordUpdateStageValues[] = []
+		const recordUpdateStage = []
 
 		// Build the final update data structure
 		for (const [applicationVersionId, applicationUpdateMap] of recordUpdates) {

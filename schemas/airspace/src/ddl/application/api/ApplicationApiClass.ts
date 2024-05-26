@@ -22,10 +22,7 @@ export class ApplicationApiClass
     name: AppApiClass_Name
 
     @ManyToOne()
-    @JoinColumn({
-        name: 'DB_APPLICATION_VERSION_LID',
-        referencedColumnName: 'DB_APPLICATION_VERSION_LID'
-    })
+    @JoinColumn({ name: 'DB_APPLICATION_VERSION_LID' })
     applicationVersion: DdlApplicationVersion
 
     @OneToMany({ mappedBy: 'apiClass' })

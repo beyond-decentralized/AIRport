@@ -6,7 +6,7 @@ import {
 import {
 	IBuilder,
 } from '../../Builder'
-import { getVPropertyFieldInterface, IVCoreEntityBuilder } from './VCoreEntityBuilder'
+import { getVPropertyFieldInterface, IVCoreEntityBuilder } from './common'
 
 /**
  * Created by Papa on 4/25/2016.
@@ -49,7 +49,7 @@ export class VPropertyBuilder
 		let operableFieldSuffix = ' | ' + getVPropertyFieldInterface(prop)
 
 
-		return `${name}?: ${propertyType}${operableFieldSuffix};`
+		return `${name}?: ${propertyType}${operableFieldSuffix}`
 	}
 
 }

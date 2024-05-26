@@ -273,12 +273,11 @@ export class Stage1SyncedInDataProcessor
 					for (const recordHistory of operationHistory.recordHistory) {
 						if (recordHistory.newValues.length) {
 							const systemWideOperationIdNewValue = new RecordHistoryNewValue()
-							systemWideOperationIdNewValue.recordHistory = recordHistory
+							// systemWideOperationIdNewValue.recordHistory = recordHistory
 							systemWideOperationIdNewValue.columnIndex = sysWideOperationIdDbColumn.index
 							systemWideOperationIdNewValue.newValue = operationHistory.systemWideOperationId
 							recordHistory.newValues.push(systemWideOperationIdNewValue)
 						}
-
 					}
 					i++
 				}

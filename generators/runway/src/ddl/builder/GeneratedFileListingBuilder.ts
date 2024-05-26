@@ -28,7 +28,7 @@ export class GeneratedFileListingBuilder
 		this.generatedFilePaths.sort()
 
 		const exports = this.generatedFilePaths.map(
-			filePath => `export * from '${filePath}';`)
+			filePath => `export * from '${filePath}'`)
 			.join('\n')
 
 		return `${exports}

@@ -4,17 +4,17 @@ import { DatastructureUtils, Dictionary, SEQUENCE_GENERATOR } from '@airport/gro
 import { SynchronizationConflictDao } from "./dao/conflict/SynchronizationConflictDao";
 import { SynchronizationConflictValuesDao } from "./dao/conflict/SynchronizationConflictValuesDao";
 import { EntityRecordDao } from './dao/relation/EntityRecordDao'
-import { EntityRecordRepositoryReferenceDao } from './dao/relation/EntityRecordRepositoryReferenceDao'
 import { CrossRepositoryRelationManager } from './manager/CrossRepositoryRelationManager'
 import { RecordUpdateStageDao } from "./dao/RecordUpdateStageDao";
 import { CopiedEntityQueryRecordDao } from './dao/relation/EntityQueryRecordDao';
+import { CopiedEntityRecordReferenceDao } from './dao/relation/CopiedEntityRecordReferenceDao';
 
 const layover = lib('@airport/layover')
 
 layover.register(
     EntityRecordDao,
-    EntityRecordRepositoryReferenceDao,
     CopiedEntityQueryRecordDao,
+    CopiedEntityRecordReferenceDao,
     CrossRepositoryRelationManager,
     RecordUpdateStageDao,
     SynchronizationConflictDao,
@@ -28,7 +28,7 @@ layover.setDependencies(RecordUpdateStageDao, {
 layover.setDependencies(CrossRepositoryRelationManager, {
     copiedEntityQueryRecordDao: CopiedEntityQueryRecordDao,
     copiedEntityRecordDao: EntityRecordDao,
-    entityRecordRepositoryReferenceDao: EntityRecordRepositoryReferenceDao,
+    copiedEntityRecordReferenceDao: CopiedEntityRecordReferenceDao,
     datastructureUtils: DatastructureUtils,
 	dictionary: Dictionary,
 	sequenceGenerator: SEQUENCE_GENERATOR,

@@ -18,18 +18,12 @@ export class TypeClassification
 
     @Id()
     @ManyToOne()
-    @JoinColumn({
-        name: 'CLASSIFICATION_ID',
-        referencedColumnName: 'CLASSIFICATION_ID'
-    })
+    @JoinColumn({ name: 'CLASSIFICATION_ID' })
     classification: Classification
 
     @Id()
     @ManyToOne()
-    @JoinColumn({
-        name: 'TYPE_ID',
-        referencedColumnName: 'TYPE_ID'
-    })
+    @JoinColumn({ name: 'TYPE_ID' })
     type: Type
 
 }

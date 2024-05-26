@@ -147,7 +147,7 @@ export class ApplicationRelationResolver {
 							break
 							// throw new Error(`Expecting one matching @OneToMany for
 							// ${anEntity.name}.${aProperty.name} and found
-							// ${matchingRelatedOneToManys.length}`);
+							// ${matchingRelatedOneToManys.length}`)
 						}
 						oneSideRelationIndex = matchingRelatedOneToManys[0].index
 					}

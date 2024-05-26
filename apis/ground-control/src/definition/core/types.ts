@@ -2,7 +2,7 @@ import { InternalUserAccount } from "@airport/aviation-communication";
 import { Application_FullName, IApplication } from "../application/IApplication";
 import { DbEntity } from "../application/DbEntity";
 import { DbColumn, DbRelation } from "../application/DbProperty";
-import { IRepositoryTransactionHistory } from "../synchronization/synchronizationTypes";
+import { IRepositoryTransactionHistory } from "../history/historyAndBlock";
 
 export interface IRootTransaction {
 	numberOfOperations: number
@@ -82,6 +82,7 @@ export interface IRepository
 	isLoaded: boolean
 
 	// Non-Id Relations
+	currentRepositoryTransactionHistory?: IRepositoryTransactionHistory
 	owner: IUserAccount;
 	continent?: IContinent
 	country?: ICountry
@@ -207,22 +208,29 @@ export interface IRepositoryMember {
 
 	_localId: RepositoryMember_LocalId
 	canWrite: RepositoryMember_CanWrite
-	invitations?: IRepositoryMemberInvitation[]
-	isOwner: RepositoryMember_IsOwner
 	isAdministrator: RepositoryMember_IsAdministrator
+	isOwner: RepositoryMember_IsOwner
 	// doubles as the GUID
 	memberPublicSigningKey?: RepositoryMember_PublicSigningKey
-	repository: IRepository
-	updates?: IRepositoryMemberUpdate[]
 	status: RepositoryMember_Status
+
+	// ManyToOnes
+
+	repository: IRepository
 	// When the member is first invited to the repository
 	// there is no UserAccount associated with it
 	userAccount: IUserAccount
+
+	// OneToManys
+
+    acceptances?: IRepositoryMemberAcceptance[]
 	// Only populated in the database of the Terminal
 	// where the RepositoryTransactionHistory was originally
 	// created (for the purpose of being able to reconstruct
 	// and re-send the RepositoryTransactionHistory)
 	addedInRepositoryTransactionHistory?: IRepositoryTransactionHistory
+	invitations?: IRepositoryMemberInvitation[]
+	updates?: IRepositoryMemberUpdate[]
 
 }
 
@@ -442,23 +450,41 @@ export interface IEntityRecord
 	extends IAirEntityId {
 
 	integerId: EntityRecord_IntegerdId
+	isACopy: EntityRecord_IsACopy
+
+	// ManyToOne
+
 	ddlEntity: DbEntity
+
+	// OneToManys
+
+	referencedRecordRelations: IEntityRelationRecord[]
+    referencingRecordRelations: IEntityRelationRecord[]
+    copiedRecordReferences: ICopiedEntityRecordReference[]
+    entityRecordQueries: IEntityQueryRecord[]
 
 }
 
 export type EntityRelationRecord_IntegerdId = number
 export interface IEntityRelationRecord {
 	integerId: EntityRelationRecord_IntegerdId
+
+	// ManyToOnes
+
 	referencedRecord: IEntityRecord
 	referencingColumn: DbColumn
 	referencingRecord: IEntityRecord
+
+	// OneToManys
+
+    copiedEntityRecordReferences: ICopiedEntityRecordReference[]
 }
 
-export interface IEntityRecordRepositoryReference {
+export interface ICopiedEntityRecordReference {
 
-	entityRelationRecord: IEntityRelationRecord
+	copiedEntityRelationRecord: IEntityRelationRecord
 
-	referencingRepository: IRepository
+	referencingEntityRecord: IEntityRecord
 
 }
 

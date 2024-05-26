@@ -16,18 +16,12 @@ export class MetroAreaState
 
     @Id()
     @ManyToOne()
-    @JoinColumn({
-        name: 'STATE_ID',
-        referencedColumnName: 'STATE_ID'
-    })
+    @JoinColumn({ name: 'STATE_ID' })
     state: State
 
     @Id()
     @ManyToOne()
-    @JoinColumn({
-        name: 'METRO_AREA_ID',
-        referencedColumnName: 'METRO_AREA_ID'
-    })
+    @JoinColumn({ name: 'METRO_AREA_ID' })
     metroArea: MetroArea
 
 }

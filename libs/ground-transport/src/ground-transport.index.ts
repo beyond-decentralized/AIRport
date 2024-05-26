@@ -18,6 +18,6 @@ export * from './synchronization/in/Stage2SyncedInDataProcessor';
 export * from './synchronization/in/SynchronizationInManager';
 export * from './synchronization/in/SyncInUtils';
 export * from './synchronization/in/TwoStageSyncedInDataProcessor';
-export * from './synchronization/out/converter/SyncOutDataSerializer';
+export * from './synchronization/out/converter/SyncOutDataPreparer';
 export * from './synchronization/out/SynchronizationOutManager';
 export * from './ground-transport.injection';

@@ -7,7 +7,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import { IApplicationInitializer } from '@airport/terminal-map'
-import { Application_Name, IApplicationVersion, Domain_Name, SyncRepositoryData } from '@airport/ground-control'
+import { Application_Name, IApplicationVersion, Domain_Name, IRepositoryBlockData } from '@airport/ground-control'
 
 export interface IApplicationVersionCheckRecord {
 	found?: boolean
@@ -19,12 +19,12 @@ export interface IApplicationVersionCheckRecord {
 export interface ISyncInApplicationVersionChecker {
 
 	ensureApplicationVersions(
-		data: SyncRepositoryData,
+		data: IRepositoryBlockData,
 		context: IContext
 	): Promise<boolean>
 
 	installAndCheckApplications(
-		data: SyncRepositoryData,
+		data: IRepositoryBlockData,
 		context: IContext
 	): Promise<boolean>
 
@@ -41,7 +41,7 @@ export class SyncInApplicationVersionChecker
 	applicationInitializer: IApplicationInitializer
 
 	async ensureApplicationVersions(
-		data: SyncRepositoryData,
+		data: IRepositoryBlockData,
 		context: IContext
 	): Promise<boolean> {
 		const checkResult = await this.checkVersionsApplicationsDomains(
@@ -65,7 +65,7 @@ export class SyncInApplicationVersionChecker
 	}
 
 	async installAndCheckApplications(
-		data: SyncRepositoryData,
+		data: IRepositoryBlockData,
 		context: IContext
 	): Promise<boolean> {
 		const {
@@ -102,7 +102,7 @@ export class SyncInApplicationVersionChecker
 	}
 
 	private async checkVersionsApplicationsDomains(
-		data: SyncRepositoryData,
+		data: IRepositoryBlockData,
 		context: IContext
 	): Promise<{
 		applicationVersionCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>>,
@@ -177,7 +177,7 @@ export class SyncInApplicationVersionChecker
 	}
 
 	private getNames(
-		data: SyncRepositoryData
+		data: IRepositoryBlockData
 	): {
 		allApplicationNames: Application_Name[],
 		domainNames: Domain_Name[],
@@ -185,7 +185,7 @@ export class SyncInApplicationVersionChecker
 	} {
 		const inMessageApplicationVersions = data.applicationVersions
 		if (!inMessageApplicationVersions || !(inMessageApplicationVersions instanceof Array)) {
-			throw new Error(`Did not find applicationVersions in SyncRepositoryData.`)
+			throw new Error(`Did not find applicationVersions in IRepositoryBlockData.`)
 		}
 
 		const applicationVersionCheckMap: Map<Domain_Name, Map<Application_Name, IApplicationVersionCheckRecord>> = new Map()
@@ -231,7 +231,7 @@ export class SyncInApplicationVersionChecker
 	}
 
 	private setApplicationVersionApps(
-		data: SyncRepositoryData
+		data: IRepositoryBlockData
 	): void {
 		for (let applicationVersion of data.applicationVersions) {
 			const application = data.applications[applicationVersion.application as any]

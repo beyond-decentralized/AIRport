@@ -2,13 +2,13 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { IRepositoryTransactionHistoryDao } from '@airport/holding-pattern/dist/app/bundle'
+import { IRepositoryBlockDao } from '@airport/holding-pattern/dist/app/bundle'
 import { ITransactionContext, ITransactionManager } from '@airport/terminal-map'
 import { ISyncInChecker } from './checker/SyncInChecker'
-import { ICrossMessageRepositoryAndMemberInfo, ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
+import { ICrossBlockRepositoryAndMemberInfo, ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
 import { ISyncInApplicationVersionChecker } from './checker/SyncInApplicationVersionChecker'
 import { IRepositoryLoader } from '@airport/air-traffic-control'
-import { IRepository, SyncRepositoryMessage, RepositoryTransactionHistory_GUID, Repository_GUID, RepositoryMember_PublicSigningKey, IRepositoryMember } from '@airport/ground-control'
+import { IRepository, IRepositoryBlock, RepositoryBlock_GUID, Repository_GUID, RepositoryMember_PublicSigningKey, IRepositoryMember } from '@airport/ground-control'
 import { IRepositoriesAndMembersCheckResult } from './checker/SyncInRepositoryChecker'
 
 /**
@@ -16,8 +16,8 @@ import { IRepositoriesAndMembersCheckResult } from './checker/SyncInRepositoryCh
  */
 export interface ISynchronizationInManager {
 
-	receiveMessages(
-		messageMapByGUID: Map<RepositoryTransactionHistory_GUID, SyncRepositoryMessage>,
+	receiveBlocks(
+		blockMapByGUID: Map<RepositoryBlock_GUID, IRepositoryBlock>,
 		context: ITransactionContext
 	): Promise<void>;
 
@@ -41,7 +41,7 @@ export class SynchronizationInManager
 	repositoryLoader: IRepositoryLoader
 
 	@Inject()
-	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
+	repositoryBlockDao: IRepositoryBlockDao
 
 	@Inject()
 	syncInApplicationVersionChecker: ISyncInApplicationVersionChecker
@@ -55,31 +55,31 @@ export class SynchronizationInManager
 	@Inject()
 	twoStageSyncedInDataProcessor: ITwoStageSyncedInDataProcessor
 
-	async receiveMessages(
-		messageMapByRepositoryTransactionHistoryGUID: Map<RepositoryTransactionHistory_GUID, SyncRepositoryMessage>,
+	async receiveBlocks(
+		blockMapByGUID: Map<RepositoryBlock_GUID, IRepositoryBlock>,
 		context: ISyncTransactionContext,
 		syncTimestamp = new Date().getTime()
 	): Promise<void> {
-		if (!messageMapByRepositoryTransactionHistoryGUID.size) {
+		if (!blockMapByGUID.size) {
 			return
 		}
 
-		const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
-			.findWhereGUIDsIn([...messageMapByRepositoryTransactionHistoryGUID.keys()], context)
+		const existingRepositoryTransactionHistories = await this.repositoryBlockDao
+			.findWhereGUIDsIn([...blockMapByGUID.keys()], context)
 		for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
-			messageMapByRepositoryTransactionHistoryGUID.delete(existingRepositoryTransactionHistory.GUID)
+			blockMapByGUID.delete(existingRepositoryTransactionHistory.GUID)
 		}
 
-		if (!messageMapByRepositoryTransactionHistoryGUID.size) {
+		if (!blockMapByGUID.size) {
 			return
 		}
 
-		const orderedMessages = this.timeOrderMessages(messageMapByRepositoryTransactionHistoryGUID)
+		const orderedBlocks = this.timeOrderBlocks(blockMapByGUID)
 
-		const immediateProcessingMessages: SyncRepositoryMessage[] = []
-		const delayedProcessingMessages: SyncRepositoryMessage[] = []
+		const immediateProcessingBlocks: IRepositoryBlock[] = []
+		const delayedProcessingBlocks: IRepositoryBlock[] = []
 
-		const repositoryAndMemberInfo: ICrossMessageRepositoryAndMemberInfo = {
+		const repositoryAndMemberInfo: ICrossBlockRepositoryAndMemberInfo = {
 			loadedRepositoryGUIDSet: new Set(),
 			missingRepositoryMap: new Map(),
 			newMemberMap: new Map(),
@@ -91,88 +91,88 @@ export class SynchronizationInManager
 		const addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey:
 			Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>> = new Map()
 
-		let areMessagesValid: boolean[] = []
+		let areBlocksValid: boolean[] = []
 		let areAppsLoaded = true
 		let i = 0;
-		// Split up messages by type
-		for (; i < orderedMessages.length; i++) {
-			const message = orderedMessages[i]
+		// Split up blocks by type
+		for (; i < orderedBlocks.length; i++) {
+			const block = orderedBlocks[i]
 			if (!this.isValidLastChangeTime(
-				syncTimestamp, message.syncTimestamp, 'Sync Timestamp')) {
+				syncTimestamp, block.syncTimestamp, 'Sync Timestamp')) {
 				continue
 			}
 
 			if (!this.isValidLastChangeTime(
-				message.syncTimestamp, message.data.history.saveTimestamp,
+				block.syncTimestamp, block.data.history.saveTimestamp,
 				'Sync Timestamp', 'Save Timestamp')) {
 				continue
 			}
 
-			// Each message may come from different source but some may not
+			// Each block may come from different source but some may not
 			// be valid transaction on essential record creation separately
-			// for each message
+			// for each block
 			// FIXME: right now this does not start a nested trasaction
 			// - make it do so
 			await this.transactionManager.transactInternal(async (transaction) => {
-				const messageCheckResult = await this.syncInChecker.checkMessage(
-					message, addedRepositoryMapByGUID,
+				const blockCheckResult = await this.syncInChecker.checkBlock(
+					block, addedRepositoryMapByGUID,
 					addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context)
-				areAppsLoaded = messageCheckResult.areAppsLoaded
-				areMessagesValid[i] = messageCheckResult.isValid
-				if (!messageCheckResult.isValid || !areAppsLoaded) {
+				areAppsLoaded = blockCheckResult.areAppsLoaded
+				areBlocksValid[i] = blockCheckResult.isValid
+				if (!blockCheckResult.isValid || !areAppsLoaded) {
 					transaction.rollback(null, context)
 					return
 				}
 				this.aggregateRepositoryAndMemberInfo(
-					messageCheckResult, repositoryAndMemberInfo)
+					blockCheckResult, repositoryAndMemberInfo)
 			}, null, context)
 
 			if (!areAppsLoaded) {
 				break
 			}
-			if (!areMessagesValid[i]) {
+			if (!areBlocksValid[i]) {
 				continue
 			}
 
-			immediateProcessingMessages.push({
-				...message,
+			immediateProcessingBlocks.push({
+				...block,
 				data: {
-					...message.data,
-					history: message.data.history
+					...block.data,
+					history: block.data.history
 				}
 			})
 		}
 
 		if (!areAppsLoaded) {
-			if (!areMessagesValid[i]) {
+			if (!areBlocksValid[i]) {
 				i++
 			}
-			for (; i < orderedMessages.length; i++) {
-				delayedProcessingMessages.push(orderedMessages[i])
+			for (; i < orderedBlocks.length; i++) {
+				delayedProcessingBlocks.push(orderedBlocks[i])
 			}
 		}
 		
-		if (immediateProcessingMessages.length) {
+		if (immediateProcessingBlocks.length) {
 			await this.transactionManager.transactInternal(async (transaction, context) => {
 				transaction.isRepositorySync = true
-				await this.twoStageSyncedInDataProcessor.syncMessages(
-					immediateProcessingMessages, repositoryAndMemberInfo,
+				await this.twoStageSyncedInDataProcessor.syncBlocks(
+					immediateProcessingBlocks, repositoryAndMemberInfo,
 					transaction, context)
 			}, null, context)
 
 			if (!context.doNotLoadReferences) {
 				await this.loadReferencedRepositories(
-					immediateProcessingMessages, context)
+					immediateProcessingBlocks, context)
 			}
 		}
 
-		await this.processDelayedMessages(
-			delayedProcessingMessages, syncTimestamp, context)
+		await this.processDelayedBlocks(
+			delayedProcessingBlocks, syncTimestamp, context)
 	}
 
 	private aggregateRepositoryAndMemberInfo(
 		dataCheckResult: IRepositoriesAndMembersCheckResult,
-		repositoryAndMemberInfo: ICrossMessageRepositoryAndMemberInfo
+		repositoryAndMemberInfo: ICrossBlockRepositoryAndMemberInfo
 	): void {
 		for (const loadedRepositoryGUID of dataCheckResult.loadedRepositoryGUIDS) {
 			repositoryAndMemberInfo.loadedRepositoryGUIDSet
@@ -199,20 +199,20 @@ export class SynchronizationInManager
 		}
 	}
 
-	private timeOrderMessages(
-		messageMapByGUID: Map<string, SyncRepositoryMessage>
-	): SyncRepositoryMessage[] {
-		const messages: SyncRepositoryMessage[] = [...messageMapByGUID.values()]
+	private timeOrderBlocks(
+		blockMapByGUID: Map<string, IRepositoryBlock>
+	): IRepositoryBlock[] {
+		const blocks: IRepositoryBlock[] = [...blockMapByGUID.values()]
 
-		messages.sort((message1, message2) => {
-			if (message1.syncTimestamp < message2.syncTimestamp) {
+		blocks.sort((block1, block2) => {
+			if (block1.syncTimestamp < block2.syncTimestamp) {
 				return -1
 			}
-			if (message1.syncTimestamp > message2.syncTimestamp) {
+			if (block1.syncTimestamp > block2.syncTimestamp) {
 				return 1
 			}
-			let history1 = message1.data.history
-			let history2 = message2.data.history
+			let history1 = block1.data.history
+			let history2 = block2.data.history
 			if (history1.saveTimestamp < history2.saveTimestamp) {
 				return -1
 			}
@@ -223,7 +223,7 @@ export class SynchronizationInManager
 			return 0
 		})
 
-		return messages
+		return blocks
 	}
 
 	private isValidLastChangeTime(
@@ -233,8 +233,8 @@ export class SynchronizationInManager
 		syncFieldName = 'Reception Time:'
 	): boolean {
 		if (syncTimestamp < remoteTimestamp) {
-			console.error(`Message ${syncFieldName} is less than
-			the ${remoteFieldName} in received message:
+			console.error(`Block ${syncFieldName} is less than
+			the ${remoteFieldName} in received block:
 				${syncFieldName}:               ${syncTimestamp}
 				${remoteFieldName}:           ${remoteTimestamp}
 			`)
@@ -245,40 +245,40 @@ export class SynchronizationInManager
 		return true
 	}
 
-	private async processDelayedMessages(
-		delayedProcessingMessages: SyncRepositoryMessage[],
+	private async processDelayedBlocks(
+		delayedProcessingBlocks: IRepositoryBlock[],
 		syncTimestamp: number,
 		context: ISyncTransactionContext
 	): Promise<void> {
-		const delayedProcessingMessagesWithValidApps: SyncRepositoryMessage[] = []
-		for (const message of delayedProcessingMessages) {
-			const data = message.data
+		const delayedProcessingBlocksWithValidApps: IRepositoryBlock[] = []
+		for (const block of delayedProcessingBlocks) {
+			const data = block.data
 			// Install new apps
 			const appInstalledIfNeeded = await this.syncInApplicationVersionChecker
 				.installAndCheckApplications(data, context)
 			if (appInstalledIfNeeded) {
 				this.syncInChecker.checkReferencedApplicationRelations(data)
-				delayedProcessingMessagesWithValidApps.push(message)
+				delayedProcessingBlocksWithValidApps.push(block)
 			}
 		}
-		const messageMapByRepositoryTransactionHistoryGUID: Map<RepositoryTransactionHistory_GUID, SyncRepositoryMessage>
+		const blockMapByGUID: Map<RepositoryBlock_GUID, IRepositoryBlock>
 			= new Map()
-		for (const message of delayedProcessingMessagesWithValidApps) {
-			messageMapByRepositoryTransactionHistoryGUID
-				.set(message.data.history.GUID, message)
+		for (const block of delayedProcessingBlocksWithValidApps) {
+			blockMapByGUID
+				.set(block.GUID, block)
 		}
-		await this.receiveMessages(messageMapByRepositoryTransactionHistoryGUID,
+		await this.receiveBlocks(blockMapByGUID,
 			context, syncTimestamp)
 	}
 
 	private async loadReferencedRepositories(
-		messages: SyncRepositoryMessage[],
+		blocks: IRepositoryBlock[],
 		context: ISyncTransactionContext
 	): Promise<void> {
 		const repositoryMapByGUID: Map<Repository_GUID, IRepository> = new Map()
 		const currentlyLoadedRepsitoryGUIDSet = context.currentlyLoadedRepsitoryGUIDSet
-		for (const message of messages) {
-			for (const repository of message.data.referencedRepositories) {
+		for (const block of blocks) {
+			for (const repository of block.data.referencedRepositories) {
 				if (!repositoryMapByGUID.has(repository.GUID)
 					&& (!currentlyLoadedRepsitoryGUIDSet || !currentlyLoadedRepsitoryGUIDSet
 						.has(repository.GUID))) {

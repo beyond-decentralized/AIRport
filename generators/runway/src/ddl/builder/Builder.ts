@@ -8,12 +8,17 @@ export interface IBuilder {
 
 	build(
 		...args: any[]
-	): string;
+	): string
 
 }
 
 export interface MemberData {
-	definitions: string;
+	definitions: string
+}
+
+export interface IdRelationData
+	extends MemberData {
+	customInterfaces: string
 }
 
 export function getPropertyFieldType( //

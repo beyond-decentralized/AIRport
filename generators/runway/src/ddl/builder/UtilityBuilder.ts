@@ -1,10 +1,10 @@
-import { ImplementationFileBuilder } from './ImplementationFileBuilder';
-import { PathBuilder } from './PathBuilder';
+import { ImplementationFileBuilder } from './ImplementationFileBuilder'
+import { PathBuilder } from './PathBuilder'
 
 export abstract class UtilityBuilder
 	extends ImplementationFileBuilder {
 
-	private diSet;
+	private diSet
 
 	constructor(
 		applicationFullName: string,
@@ -13,17 +13,17 @@ export abstract class UtilityBuilder
 		private baseClassSuffix: string = classSuffix,
 		fileNameSuffx = classSuffix
 	) {
-		super('base' + fileNameSuffx + 's', pathBuilder);
+		super('base' + fileNameSuffx + 's', pathBuilder)
 
-		// this.diSet = needsQEntity ? 'diSet' : 'duoDiSet';
-		this.diSet = applicationFullName + '_diSet';
+		// this.diSet = needsQEntity ? 'diSet' : 'duoDiSet'
+		this.diSet = applicationFullName + '_diSet'
 	}
 
 	build(): string {
-		this.entityNames.sort();
-		const baseClassDefinitions = this.buildBaseClassDefinitions();
+		this.entityNames.sort()
+		const baseClassDefinitions = this.buildBaseClassDefinitions()
 
-		const imports = this.buildImports();
+		const imports = this.buildImports()
 
 		return `/* eslint-disable */
 ${imports}
@@ -54,7 +54,7 @@ export class SQDI${this.classSuffix}<Entity,
 	}
 }
 
-${baseClassDefinitions}`;
+${baseClassDefinitions}`
 	}
 
 	protected addImports() {
@@ -62,7 +62,7 @@ ${baseClassDefinitions}`;
 			entityName => {
 				this.addImport([
 					`${entityName}`
-				], `${this.ddlPathMapByEntityName[entityName]}`);
+				], `${this.ddlPathMapByEntityName[entityName]}`)
 				this.addImport([
 					`${entityName}ESelect`,
 					`${entityName}ECreateColumns`,
@@ -72,8 +72,8 @@ ${baseClassDefinitions}`;
 					`${entityName}EId`,
 					`${entityName}Graph`,
 					`Q${entityName}`
-				], `${this.generatedPathMapByEntityName[entityName]}`);
-			});
+				], `${this.generatedPathMapByEntityName[entityName]}`)
+			})
 
 		this.addImport([
 			'IEntityCascadeGraph',
@@ -83,16 +83,16 @@ ${baseClassDefinitions}`;
 			'IEntityUpdateColumns',
 			'IEntityUpdateProperties',
 			'IQEntity'
-		], '@airport/tarmaq-query');
+		], '@airport/tarmaq-query')
 		this.addImport([
 			{
 				asName: 'DbEntityId',
 				sourceName: 'DbEntity_LocalId'
 			}
-		], '@airport/ground-control');
+		], '@airport/ground-control')
 		this.addImport([
 			`${this.diSet}`
-		], './qApplication');
+		], './qApplication')
 	}
 
 	protected buildBaseClassDefinitions(): string {
@@ -114,13 +114,13 @@ export class Base${entityName}${this.classSuffix}
 		super(${this.entityIdMapByName[entityName]})
 	}
 }
-`).join('\n');
+`).join('\n')
 	}
 
 	protected buildStaticProperties(
 		entityName: string
 	): string {
-		return '';
+		return ''
 	}
 
 }

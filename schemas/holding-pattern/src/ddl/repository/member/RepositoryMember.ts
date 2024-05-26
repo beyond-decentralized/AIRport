@@ -32,6 +32,18 @@ export class RepositoryMember
     @DbNumber()
     _localId: RepositoryMember_LocalId;
 
+    @Column({ name: 'CAN_WRITE', nullable: false })
+    @DbBoolean()
+    canWrite: RepositoryMember_CanWrite
+
+    @Column({ name: 'IS_ADMINISTRATOR', nullable: false })
+    @DbBoolean()
+    isAdministrator: RepositoryMember_IsAdministrator
+
+    @Column({ name: 'IS_OWNER', nullable: false })
+    @DbBoolean()
+    isOwner: RepositoryMember_IsOwner
+
     // doubles as the GUID property
     // Is null when the user is first invited into the Repository
     // but hasn't accepted the invitation yet
@@ -39,39 +51,22 @@ export class RepositoryMember
     @DbString()
     memberPublicSigningKey?: RepositoryMember_PublicSigningKey
 
-    @Column({ name: 'IS_OWNER', nullable: false })
-    @DbBoolean()
-    isOwner: RepositoryMember_IsOwner
-
-    @Column({ name: 'IS_ADMINISTRATOR', nullable: false })
-    @DbBoolean()
-    isAdministrator: RepositoryMember_IsAdministrator
-
-    @Column({ name: 'CAN_WRITE', nullable: false })
-    @DbBoolean()
-    canWrite: RepositoryMember_CanWrite
-
     @Column({ name: 'STATUS', nullable: false })
     @DbNumber()
     status: RepositoryMember_Status
 
     @ManyToOne()
-    @JoinColumn({
-        name: 'REPOSITORY_LID',
-        referencedColumnName: 'REPOSITORY_LID',
-        nullable: false
-    })
+    @JoinColumn({ name: 'REPOSITORY_LID', nullable: false })
     repository: Repository
 
     // When the member is first invited to the repository
     // there is no UserAccount associated with it
     @ManyToOne()
-    @JoinColumn({
-        name: 'USER_ACCOUNT_LID',
-        referencedColumnName: 'USER_ACCOUNT_LID',
-        nullable: false
-    })
+    @JoinColumn({ name: 'USER_ACCOUNT_LID', nullable: false })
     userAccount: UserAccount
+
+    @OneToMany({ mappedBy: 'repositoryMember' })
+    acceptances?: RepositoryMemberAcceptance[]
 
     // Only populated in the database of the Terminal
     // where the RepositoryTransactionHistory was originally
@@ -83,9 +78,6 @@ export class RepositoryMember
         referencedColumnName: 'REPOSITORY_TRANSACTION_HISTORY_LID'
     })
     addedInRepositoryTransactionHistory?: RepositoryTransactionHistory
-
-    @OneToMany({ mappedBy: 'repositoryMember' })
-    acceptances?: RepositoryMemberAcceptance[]
 
     @OneToMany({ mappedBy: 'repositoryMember' })
     invitations?: RepositoryMemberInvitation[]

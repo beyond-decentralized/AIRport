@@ -10,7 +10,7 @@ import {
 	IRepositoryTransactionHistory,
 	ISynchronizationConflict,
 	ISynchronizationConflictValues,
-	SyncRepositoryMessage,
+	IRepositoryBlock,
 	RepositoryTransactionType,
 	Repository_LocalId,
 	TransactionType,
@@ -32,10 +32,10 @@ import {
 	RepositoryMemberInvitationDao,
 	RepositoryReferenceDao
 } from '@airport/holding-pattern/dist/app/bundle'
-import {
-	ISynchronizationConflictDao,
-	ISynchronizationConflictValuesDao,
-} from '@airport/layover'
+// import {
+// 	ISynchronizationConflictDao,
+// 	ISynchronizationConflictValuesDao,
+// } from '@airport/layover'
 import {
 	ITransaction
 } from '@airport/terminal-map'
@@ -49,7 +49,7 @@ import {
 } from '@airport/direction-indicator'
 import { RepositoryReferenceCreator } from '../RepositoryReferenceCreator'
 
-export interface ICrossMessageRepositoryAndMemberInfo {
+export interface ICrossBlockRepositoryAndMemberInfo {
 	loadedRepositoryGUIDSet: Set<Repository_GUID>
 	missingRepositoryMap: Map<Repository_GUID, IRepository>
 	newMemberMap: Map<RepositoryMember_PublicSigningKey, IRepositoryMember>
@@ -58,13 +58,13 @@ export interface ICrossMessageRepositoryAndMemberInfo {
 }
 
 /**
- * Synchronizes incoming data and records message conflicts in two processing stages.
+ * Synchronizes incoming data and records block conflicts in two processing stages.
  */
 export interface ITwoStageSyncedInDataProcessor {
 
-	syncMessages(
-		messages: SyncRepositoryMessage[],
-		repositoryAndMemberInfo: ICrossMessageRepositoryAndMemberInfo,
+	syncBlocks(
+		blocks: IRepositoryBlock[],
+		repositoryAndMemberInfo: ICrossBlockRepositoryAndMemberInfo,
 		transaction: ITransaction,
 		context: IContext
 	): Promise<void>;
@@ -112,22 +112,22 @@ export class TwoStageSyncedInDataProcessor
 	stage2SyncedInDataProcessor: IStage2SyncedInDataProcessor
 
 	@Inject()
-	synchronizationConflictDao: ISynchronizationConflictDao
+	synchronizationConflictDao: any // ISynchronizationConflictDao
 
 	@Inject()
-	synchronizationConflictValuesDao: ISynchronizationConflictValuesDao
+	synchronizationConflictValuesDao: any // ISynchronizationConflictValuesDao
 
 	/**
-	 * Synchronize the data messages coming to Terminal (new data for this TM)
+	 * Synchronize the data blocks coming to Terminal (new data for this TM)
 	 */
-	async syncMessages(
-		messages: SyncRepositoryMessage[],
-		repositoryAndMemberInfo: ICrossMessageRepositoryAndMemberInfo,
+	async syncBlocks(
+		blocks: IRepositoryBlock[],
+		repositoryAndMemberInfo: ICrossBlockRepositoryAndMemberInfo,
 		transaction: ITransaction,
 		context: IContext
 	): Promise<void> {
 		await this.insertNewRepositoryInfo(
-			messages,
+			blocks,
 			repositoryAndMemberInfo,
 			context
 		)
@@ -136,10 +136,10 @@ export class TwoStageSyncedInDataProcessor
 			context
 		)
 
-		this.aggregateHistoryRecords(messages, transaction)
+		this.aggregateHistoryRecords(blocks, transaction)
 
 		const { actorMapByLid, repositoryTransactionHistoryMapByRepositoryLid, applicationsByApplicationVersion_LocalIdMap }
-			= await this.getDataStructures(messages)
+			= await this.getDataStructures(blocks)
 
 		for (const newRepositoryMemberAcceptance of
 			repositoryAndMemberInfo.newRepositoryMemberAcceptanceMap.values()) {
@@ -155,8 +155,8 @@ export class TwoStageSyncedInDataProcessor
 	}
 
 	private async insertNewRepositoryInfo(
-		messages: SyncRepositoryMessage[],
-		repositoryAndMemberInfo: ICrossMessageRepositoryAndMemberInfo,
+		blocks: IRepositoryBlock[],
+		repositoryAndMemberInfo: ICrossBlockRepositoryAndMemberInfo,
 		context: IContext
 	): Promise<void> {
 		await this.repositoryDao.insert(
@@ -173,11 +173,11 @@ export class TwoStageSyncedInDataProcessor
 			context)
 
 		await this.repositoryReferenceCreator.create(
-			messages, context)
+			blocks, context)
 	}
 
 	private async markLoadedRepositories(
-		repositoryAndMemberInfo: ICrossMessageRepositoryAndMemberInfo,
+		repositoryAndMemberInfo: ICrossBlockRepositoryAndMemberInfo,
 		context: IContext
 	): Promise<void> {
 		const loadedRepositoryGUIDs = [...repositoryAndMemberInfo.loadedRepositoryGUIDSet]
@@ -187,15 +187,15 @@ export class TwoStageSyncedInDataProcessor
 	}
 
 	private aggregateHistoryRecords(
-		messages: SyncRepositoryMessage[],
+		blocks: any[], // IRepositoryBlock[],
 		transaction: ITransaction
 	): void {
 		const transactionHistory = transaction.transactionHistory
 		transactionHistory.transactionType = TransactionType.REMOTE_SYNC
 
-		// split messages by repository and record actor information
-		for (const message of messages) {
-			const repositoryTransactionHistory = message.data.history
+		// split blocks by repository and record actor information
+		for (const block of blocks) {
+			const repositoryTransactionHistory = block.data.history
 			repositoryTransactionHistory.transactionHistory = transactionHistory
 			this.repositoryTransactionHistoryDuo
 				.setModifiedRepository_LocalIdSet(repositoryTransactionHistory)
@@ -234,7 +234,7 @@ export class TwoStageSyncedInDataProcessor
 								if (newValue.newValue === -1) {
 									newValue.newValue = repositoryTransactionHistory.repository._localId
 								} else {
-									newValue.newValue = message.data
+									newValue.newValue = block.data
 										.referencedRepositories[newValue.newValue]._localId
 								}
 							}
@@ -252,7 +252,7 @@ export class TwoStageSyncedInDataProcessor
 								if (oldValue.oldValue === -1) {
 									oldValue.oldValue = repositoryTransactionHistory.repository._localId
 								} else {
-									oldValue.oldValue = message.data
+									oldValue.oldValue = block.data
 										.referencedRepositories[oldValue.oldValue]._localId
 								}
 							}
@@ -267,7 +267,7 @@ export class TwoStageSyncedInDataProcessor
 	}
 
 	private async getDataStructures(
-		messages: SyncRepositoryMessage[]
+		blocks: any[] // IRepositoryBlock[]
 	): Promise<{
 		actorMapByLid: Map<Actor_LocalId, IActor>
 		repositoryTransactionHistoryMapByRepositoryLid: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
@@ -277,8 +277,8 @@ export class TwoStageSyncedInDataProcessor
 			= new Map()
 		const applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication> = new Map()
 		const actorMapByLid: Map<number, IActor> = new Map()
-		for (const message of messages) {
-			const data = message.data
+		for (const block of blocks) {
+			const data = block.histories
 			const repoTransHistories = this.datastructureUtils.ensureChildArray(
 				repositoryTransactionHistoryMapByRepositoryLid,
 				data.history.repository._localId

@@ -1,34 +1,34 @@
-import { IApplication } from '@airport/ground-control';
+import { IApplication } from '@airport/ground-control'
 import {
 	SEntity,
 	SIndexedEntity
-}                   from './SEntity';
+}                   from './SEntity'
 
 /**
  * A application.
  */
 export interface SApplication {
 
-	domain: 'private' | string;
+	domain: 'private' | string
 
-	entities: SEntity[];
+	entities: SEntity[]
 
 	/**
 	 * Name of the application.
 	 */
-	name: string;
+	name: string
 
-	packageName: string;
+	packageName: string
 
-	referencedApplications: SApplicationReference[];
+	referencedApplications: SApplicationReference[]
 
 }
 
 export interface SApplicationReference {
 
-	index: number;
+	index: number
 
-	dbApplication: IApplication;
+	dbApplication: IApplication
 }
 
 /**
@@ -39,19 +39,19 @@ export interface SIndexedApplication {
 	/**
 	 * Entities by their repository table indexes.
 	 */
-	entities: SIndexedEntity[];
+	entities: SIndexedEntity[]
 
 	/**
 	 * Map of all entities by name.
 	 */
-	entityMapByName: { [entityName: string]: SIndexedEntity };
+	entityMapByName: { [entityName: string]: SIndexedEntity }
 
 	/**
 	 * Application definition.
 	 */
-	application: SApplication;
+	application: SApplication
 
-	referencedApplicationsByName: { [projectName: string]: SApplicationReference };
+	referencedApplicationsByName: { [projectName: string]: SApplicationReference }
 
 }
 
@@ -64,29 +64,29 @@ export function buildIndexedSApplication(
 		entityMapByName: {},
 		referencedApplicationsByName,
 		application
-	};
+	}
 
 	for (const entity of application.entities) {
-		const columnMap   = {};
-		const propertyMap = {};
-		const relationMap = {};
-		const columns     = [];
-		const idColumns   = [];
-		const relations   = [];
+		const columnMap   = {}
+		const propertyMap = {}
+		const relationMap = {}
+		const columns     = []
+		const idColumns   = []
+		const relations   = []
 		for (const property of entity.properties) {
-			propertyMap[property.name] = property;
+			propertyMap[property.name] = property
 			if (property.columns) {
 				for (const column of property.columns) {
-					columnMap[column.name] = column;
-					columns[column.index]  = column;
+					columnMap[column.name] = column
+					columns[column.index]  = column
 					if (column.idIndex || column.idIndex === 0) {
-						idColumns[column.idIndex] = column;
+						idColumns[column.idIndex] = column
 					}
 				}
 			}
 			if (property.relation) {
-				relationMap[property.name]         = property.relation;
-				relations[property.relation.index] = property.relation;
+				relationMap[property.name]         = property.relation
+				relations[property.relation.index] = property.relation
 			}
 		}
 
@@ -98,11 +98,11 @@ export function buildIndexedSApplication(
 			propertyMap,
 			relationMap,
 			relations,
-		};
+		}
 
-		idx.entities[entity.entityIndex]  = indexedEntity;
-		idx.entityMapByName[entity.name] = indexedEntity;
+		idx.entities[entity.entityIndex]  = indexedEntity
+		idx.entityMapByName[entity.name] = indexedEntity
 	}
 
-	return idx;
+	return idx
 }

@@ -31,35 +31,20 @@ export class Actor
 	GUID: Actor_GUID
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'USER_ACCOUNT_LID',
-		referencedColumnName: 'USER_ACCOUNT_LID',
-		nullable: false
-	})
+	@JoinColumn({ name: 'USER_ACCOUNT_LID', nullable: false })
 	userAccount: UserAccount
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'TERMINAL_LID',
-		referencedColumnName: 'TERMINAL_LID',
-		nullable: false
-	})
+	@JoinColumn({ name: 'TERMINAL_LID', nullable: false })
 	terminal: Terminal
 
 	@ManyToOne()
-	@JoinColumn({
-		name: "DB_APPLICATION_INDEX",
-		referencedColumnName: "DB_APPLICATION_INDEX"
-	})
+	@JoinColumn({ name: "DB_APPLICATION_INDEX" })
 	application: DdlApplication
 
 	// This should be tracked in RepositoryTransactionHistory - keeping actors focused on Apps
 	// @ManyToOne()
-	// @JoinColumn({
-	// 	name: 'CLIENT_LID',
-	// 	referencedColumnName: 'CLIENT_LID',
-	// 	nullable: true
-	// })
+	// @JoinColumn({ name: 'CLIENT_LID', nullable: true })
 	// client?: Client
 
 }

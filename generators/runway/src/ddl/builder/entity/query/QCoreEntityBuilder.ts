@@ -1,27 +1,15 @@
-import { PropertyDocEntry } from "../../../parser/DocEntry";
-import { EntityCandidate } from "../../../parser/EntityCandidate";
-import { SColumn } from "../../application/SProperty";
-import { IBuilder, MemberData } from "../../Builder";
-import { FileBuilder } from "../FileBuilder";
-import { QColumnBuilder } from "./QColumnBuilder";
-import { QPropertyBuilder } from "./QPropertyBuilder";
-import { QRelationBuilder } from "./QRelationBuilder";
-import { QTransientBuilder } from "./QTransientBuilder";
+import { PropertyDocEntry } from "../../../parser/DocEntry"
+import { EntityCandidate } from "../../../parser/EntityCandidate"
+import { SIndexedApplication } from "../../application/SApplication"
+import { SColumn } from "../../application/SProperty"
+import { IdRelationData, MemberData } from "../../Builder"
+import { FileBuilder } from "../FileBuilder"
+import { IQCoreEntityBuilder } from "./common"
+import { QColumnBuilder } from "./QColumnBuilder"
+import { QPropertyBuilder } from "./QPropertyBuilder"
+import { QRelationBuilder } from "./QRelationBuilder"
+import { QTransientBuilder } from "./QTransientBuilder"
 
-
-export interface IQCoreEntityBuilder
-    extends IBuilder {
-
-    constructorFields: { [name: string]: boolean };
-    entity: EntityCandidate;
-    fileBuilder: FileBuilder;
-
-    addImport(
-        classNames: (string | { asName: string, sourceName: string })[],
-        filePath: string
-    ): void;
-
-}
 
 export abstract class QCoreEntityBuilder
     implements IQCoreEntityBuilder {
@@ -33,11 +21,12 @@ export abstract class QCoreEntityBuilder
         protected fullGenerationPath: string,
         protected workingDirPath: string,
         public fileBuilder: FileBuilder,
-        protected entityMapByName: { [entityName: string]: EntityCandidate }
+        protected entityMapByName: { [entityName: string]: EntityCandidate },
+		public sIndexedApplication: SIndexedApplication
     ) {
     }
 
-    abstract build(...args: any[]): string;
+    abstract build(...args: any[]): string
 
     addImport(
         classNames: (string | { asName: string, sourceName: string })[],
@@ -99,14 +88,16 @@ export abstract class QCoreEntityBuilder
 
     protected buildRelationData(
         relationBuilders: QRelationBuilder[]
-    ): MemberData {
-        const relationData: MemberData = {
+    ): IdRelationData {
+        const relationData: IdRelationData = {
             definitions: ``,
+            customInterfaces: ``
         }
 
         relationBuilders.forEach((
             builder: QRelationBuilder
         ) => {
+            relationData.customInterfaces += builder.buildCustomInterface()
             relationData.definitions += `	${builder.buildDefinition()}\n`
         })
 
@@ -135,56 +126,4 @@ export abstract class QCoreEntityBuilder
         return relationBuilder
     }
 
-}
-
-export function getQPropertyFieldInterface( //
-    propertyDocEntry: PropertyDocEntry //
-): string {
-    return getQPrimitiveFieldInterface(propertyDocEntry.primitive)
-}
-
-export function getQColumnFieldInterface( //
-    sColumn: SColumn //
-): string {
-    return getQPrimitiveFieldInterface(sColumn.type)
-}
-
-export function getQPrimitiveFieldInterface( //
-    primitive: string //
-): string {
-    switch (primitive) {
-        case 'boolean':
-            return 'IQBooleanField'
-        case 'Date':
-            return 'IQDateField'
-        case 'number':
-            return 'IQNumberField'
-        case 'string':
-        case 'Json':
-            return 'IQStringField'
-        case 'any':
-            return 'IQUntypedField'
-        default:
-            throw new Error(`Unexpected primitive ${primitive}`)
-    }
-}
-
-export function getQPropertyFieldClass( //
-    propertyDocEntry: PropertyDocEntry //
-): string {
-    switch (propertyDocEntry.primitive) {
-        case 'boolean':
-            return 'QBooleanField'
-        case 'Date':
-            return 'QDateField'
-        case 'number':
-            return 'QNumberField'
-        case 'string':
-        case 'Json':
-            return 'QStringField'
-        case 'any':
-            return 'QUntypedField'
-        default:
-            throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`)
-    }
 }

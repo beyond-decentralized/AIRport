@@ -19,12 +19,10 @@ Repository  - unit of data in AIRport
     *   member/RepositoryMemberAcceptance
     *   member/RepositoryMemberInvitation
     *   member/RepositoryMemberUpdate
-    *   relation/CopiedRecordLedger
-    *   relation/CrossRepositoryRelationLedger
-    *   relation/LocalCopyReplacementLedger
     *   RepositoryApplication
     *   RepositoryClient
     *   RepositoryDatabase
+    *   RepositoryReference
     *   RepositoryTerminal
     *   RepositoryType
 

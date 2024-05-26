@@ -1,4 +1,4 @@
-import {FileImports} from "./FileImports";
+import {FileImports} from "./FileImports"
 
 export class ImportManager {
 
@@ -6,15 +6,15 @@ export class ImportManager {
 		sourceFile,
 		filePath: string
 	): FileImports {
-		const importMapByObjectAsName = {};
-		const importMapByModulePath   = {};
+		const importMapByObjectAsName = {}
+		const importMapByModulePath   = {}
 		const fileImports             = {
 			importMapByObjectAsName,
 			importMapByModulePath,
-		};
+		}
 
 		for (const anImport of sourceFile.imports) {
-			const path = anImport.text;
+			const path = anImport.text
 			if (path.endsWith('../')) {
 				throw new Error(`
 Entity file source rule violation:
@@ -32,7 +32,7 @@ Entity file source rule violation:
 		Import:
 			${path}
 				
-				`);
+				`)
 			}
 			if (path.endsWith('../index')) {
 				throw new Error(`
@@ -45,46 +45,46 @@ Entity file source rule violation:
 		Import:
 			${path}
 				
-				`);
+				`)
 			}
-			const isLocal               = this.isLocalReference(path);
-			const objectMapByAsName     = {};
+			const isLocal               = this.isLocalReference(path)
+			const objectMapByAsName     = {}
 			const moduleImport          = {
 				fileImports,
 				isLocal,
 				objectMapByAsName,
 				path,
-			};
-			importMapByModulePath[path] = moduleImport;
+			}
+			importMapByModulePath[path] = moduleImport
 
-			const namedBindings = anImport.parent.importClause.namedBindings;
+			const namedBindings = anImport.parent.importClause.namedBindings
 			if (!namedBindings || !namedBindings.elements) {
-				continue;
+				continue
 			}
 
 			for (const namedBinding of namedBindings.elements) {
-				const asName   = namedBinding.name.text;
-				let sourceName = asName;
+				const asName   = namedBinding.name.text
+				let sourceName = asName
 				if (namedBinding.propertyName) {
-					sourceName = namedBinding.propertyName.text;
+					sourceName = namedBinding.propertyName.text
 				}
 				const importedObject            = {
 					asName,
 					moduleImport,
 					sourceName,
-				};
-				objectMapByAsName[asName]       = importedObject;
-				importMapByObjectAsName[asName] = moduleImport;
+				}
+				objectMapByAsName[asName]       = importedObject
+				importMapByObjectAsName[asName] = moduleImport
 			}
 		}
 
-		return fileImports;
+		return fileImports
 	}
 
 	static isLocalReference(
 		path: string
 	): boolean {
-		return path.startsWith('.');
+		return path.startsWith('.')
 	}
 
 }

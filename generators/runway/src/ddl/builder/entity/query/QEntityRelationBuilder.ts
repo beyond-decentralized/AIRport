@@ -1,5 +1,7 @@
 import { EntityCandidate } from '../../../parser/EntityCandidate'
+import { SIndexedApplication } from '../../application/SApplication'
 import { entityExtendsOrIsAirEntity, entityExtendsOrIsAirEntityFieldsOrId } from '../../application/SApplicationBuilder'
+
 import { QCoreEntityBuilder } from './QCoreEntityBuilder'
 import { QEntityFileBuilder } from './QEntityFileBuilder'
 
@@ -11,9 +13,10 @@ export class QEntityRelationBuilder
 		fullGenerationPath: string,
 		workingDirPath: string,
 		fileBuilder: QEntityFileBuilder,
-		entityMapByName: { [entityName: string]: EntityCandidate }
+		entityMapByName: { [entityName: string]: EntityCandidate },
+		sIndexedApplication: SIndexedApplication
 	) {
-		super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName)
+		super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName, sIndexedApplication)
 	}
 
 	build(): string {
@@ -26,12 +29,18 @@ export class QEntityRelationBuilder
 		let genericType = ''
 		let entity = this.entity.docEntry.name
 		let [isAirEntity, _] = entityExtendsOrIsAirEntity(this.entity)
+		let isAirEntityIdOrFields = false
 		if (!isAirEntity) {
-			isAirEntity = entityExtendsOrIsAirEntityFieldsOrId(this.entity)[0]
+			isAirEntityIdOrFields = entityExtendsOrIsAirEntityFieldsOrId(this.entity)[0]
+			isAirEntity = isAirEntityIdOrFields
 		}
 		let parentInterfaceType = 'IQManyToOneInternalRelation'
 		if (isAirEntity) {
-			parentInterfaceType = 'IQManyToOneAirEntityRelation'
+			if (isAirEntityIdOrFields) {
+				parentInterfaceType = 'IQManyToOneEntityRelation'
+			} else {
+				parentInterfaceType = 'IQManyToOneAirEntityRelation'
+			}
 		}
 		let parentEntityQType = `${parentInterfaceType}<${qName}>`
 		if (isMappedSuperclass) {

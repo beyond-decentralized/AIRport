@@ -1,6 +1,6 @@
-import { JsonApplicationWithApi } from "@airport/air-traffic-control";
-import { ApplicationReferenceUtils, AppTrackerUtils, Dictionary, JsonApplication, JsonRelation, JsonApplicationVersion } from "@airport/ground-control";
-import { SIndexedApplication } from "./SApplication";
+import { JsonApplicationWithApi } from "@airport/air-traffic-control"
+import { ApplicationReferenceUtils, AppTrackerUtils, Dictionary, JsonApplication, JsonRelation, JsonApplicationVersion } from "@airport/ground-control"
+import { SIndexedApplication } from "./SApplication"
 
 export interface IJsonApplicationChecker {
 

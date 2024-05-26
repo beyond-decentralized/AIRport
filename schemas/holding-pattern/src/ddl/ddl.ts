@@ -1,3 +1,4 @@
+export * from './blockchain/RepositoryBlock'
 export * from './history/OperationHistory'
 export * from './history/RecordHistory'
 export * from './history/RecordHistoryNewValue'

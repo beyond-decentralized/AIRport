@@ -48,7 +48,7 @@ export abstract class FileBuilder {
 	}
 
 	protected buildImports(): string {
-		this.addImports();
+		this.addImports()
 
 		let imports = ``
 		for (let filePath in this.importMap) {
@@ -62,7 +62,7 @@ export abstract class FileBuilder {
 					importedObjects.push(`${sourceName} as ${asName}`)
 				}
 			}
-			imports += `import {\n\t${importedObjects.join(',\n\t')},\n} from '${filePath}';\n`
+			imports += `import {\n\t${importedObjects.join(',\n\t')},\n} from '${filePath}'\n`
 		}
 
 		return imports

@@ -1,6 +1,6 @@
-import { IBuilder } from "./Builder";
-import { FileBuilder } from "./entity/FileBuilder";
-import { PathBuilder } from "./PathBuilder";
+import { IBuilder } from "./Builder"
+import { FileBuilder } from "./entity/FileBuilder"
+import { PathBuilder } from "./PathBuilder"
 
 /**
  * A builder for generating injection.ts
@@ -31,18 +31,18 @@ export class InjectionFileBuilder
         fileName: string,
         pathBuilder: PathBuilder,
     ) {
-        super(null, null, pathBuilder, null);
-        // this.daoListingFilePath = pathBuilder.fullGeneratedDirPath + `/${fileName}.ts`;
+        super(null, null, pathBuilder, null)
+        // this.daoListingFilePath = pathBuilder.fullGeneratedDirPath + `/${fileName}.ts`
     }
 
     addImports() {
         // this.addImport([
         //     'IQEntity'
-        // ], '@airport/air-traffic-control');
+        // ], '@airport/air-traffic-control')
     }
 
     build(): string {
-        const imports = this.buildImports();
+        const imports = this.buildImports()
 
         throw new Error(`Not Implemented, yet.`)
     }

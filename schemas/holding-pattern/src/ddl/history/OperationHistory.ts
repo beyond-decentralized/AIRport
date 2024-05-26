@@ -53,26 +53,15 @@ export class OperationHistory
 	// combined into parentRepsitoryTransactionHistory that
 	// (together) may have been performed by multiple Actors
 	@ManyToOne()
-	@JoinColumn({
-		name: 'ACTOR_LID',
-		referencedColumnName: 'ACTOR_LID',
-		nullable: false
-	})
+	@JoinColumn({ name: 'ACTOR_LID', nullable: false })
 	actor: Actor
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'DB_ENTITY_LID',
-		referencedColumnName: 'DB_ENTITY_LID', nullable: false
-	})
+	@JoinColumn({ name: 'DB_ENTITY_LID', nullable: false })
 	entity: DdlEntity
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'REPOSITORY_TRANSACTION_HISTORY_LID',
-		referencedColumnName: 'REPOSITORY_TRANSACTION_HISTORY_LID',
-		nullable: false
-	})
+	@JoinColumn({ name: 'REPOSITORY_TRANSACTION_HISTORY_LID', nullable: false })
 	repositoryTransactionHistory: RepositoryTransactionHistory
 
 	@OneToMany({ mappedBy: 'operationHistory' })

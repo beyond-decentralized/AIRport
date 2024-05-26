@@ -1,20 +1,20 @@
-import { SyncRepositoryMessage, Repository_GUID, Repository_Source } from "@airport/ground-control";
+import { IRepositoryBlock, Repository_GUID } from "@airport/ground-control";
 
 export interface ISynchronizationAdapter {
 
-    getTransactionsForRepository(
+    getBlocksForRepository(
         repositoryGUID: Repository_GUID,
         sinceSyncTimestamp?: number
-    ): Promise<SyncRepositoryMessage[]>
+    ): Promise<IRepositoryBlock[]>
 
-    sendTransactions(
+    sendBlocks(
         repositoryGUID: Repository_GUID,
-        messagesForRepository: SyncRepositoryMessage[]
+        messagesForRepository: IRepositoryBlock[]
     ): Promise<boolean>
 
-    sendTransactionsForRepository(
+    sendBlocksForRepository(
         repositoryGUID: Repository_GUID,
-        repositoryTransactionHistories: SyncRepositoryMessage[]
+        repositoryTransactionHistories: IRepositoryBlock[]
     ): Promise<boolean>
 
 }

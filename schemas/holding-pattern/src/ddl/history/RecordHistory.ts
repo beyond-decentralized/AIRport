@@ -48,18 +48,11 @@ export class RecordHistory
 	_actorRecordId: ActorRecordId
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'ACTOR_LID',
-		referencedColumnName: 'ACTOR_LID', nullable: false
-	})
+	@JoinColumn({ name: 'ACTOR_LID', nullable: false })
 	actor: Actor
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'OPERATION_HISTORY_LID',
-		referencedColumnName: 'OPERATION_HISTORY_LID',
-		nullable: false
-	})
+	@JoinColumn({ name: 'OPERATION_HISTORY_LID', nullable: false })
 	operationHistory: OperationHistory
 
 	@OneToMany({ mappedBy: 'recordHistory' })

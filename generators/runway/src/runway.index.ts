@@ -2,10 +2,10 @@
  * Created by Papa on 4/24/2016.
  */
 
-import * as fs from 'fs';
-import { readConfiguration } from './ddl/options/generator';
-import { additionalFileProcessors } from './FileProcessor';
-import { watchFiles } from './FileWatcher';
+import * as fs from 'fs'
+import { readConfiguration } from './ddl/options/generator'
+import { additionalFileProcessors } from './FileProcessor'
+import { watchFiles } from './FileWatcher'
 
 globalThis.repositoryAutoload = false
 
@@ -16,7 +16,7 @@ function addRootDirPaths(
 ) {
 	const dir = dirNameFromConfig ? dirNameFromConfig : defaultDir
 	const dirPath = process.cwd() + '/' + dir
-	const sourceFilePaths = findAllSourceFilePaths(dirPath);
+	const sourceFilePaths = findAllSourceFilePaths(dirPath)
 
 	return [...existingSourceFilePaths, ...sourceFilePaths]
 }
@@ -25,46 +25,46 @@ function findAllSourceFilePaths(
 	dirPath: string,
 ): string[] {
 	if (!fs.existsSync(dirPath)) {
-		fs.mkdirSync(dirPath);
+		fs.mkdirSync(dirPath)
 	}
-	const allFileNames = fs.readdirSync(dirPath);
+	const allFileNames = fs.readdirSync(dirPath)
 	const containedFilePaths = allFileNames.map(
 		fileName => {
-			return dirPath + '/' + fileName;
-		});
-	let sourceFilePaths = [];
+			return dirPath + '/' + fileName
+		})
+	let sourceFilePaths = []
 	const subDirectoryPaths = containedFilePaths.filter(
 		filePath => {
 			if (fs.lstatSync(filePath).isDirectory()) {
-				return true;
+				return true
 			} else {
 				if (isTsFile(filePath)) {
-					sourceFilePaths.push(filePath);
+					sourceFilePaths.push(filePath)
 				}
-				return false;
+				return false
 			}
 		}
-	);
+	)
 	for (const subDirPath of subDirectoryPaths) {
-		sourceFilePaths = sourceFilePaths.concat(findAllSourceFilePaths(subDirPath));
+		sourceFilePaths = sourceFilePaths.concat(findAllSourceFilePaths(subDirPath))
 	}
 
 	sourceFilePaths = sourceFilePaths.map(sourceFilePath => fs.realpathSync.native(sourceFilePath))
 
-	return sourceFilePaths;
+	return sourceFilePaths
 }
 
 function isTsFile(
 	fileName: string
 ): boolean {
-	return fileName.substr(fileName.length - 3, 3) === '.ts';
+	return fileName.substr(fileName.length - 3, 3) === '.ts'
 }
 
 export async function generate(): Promise<void> {
 	console.log('START AIRport generation')
 
-	const configuration = readConfiguration(process.cwd(), process.argv);
-	globalThis.configuration = configuration;
+	const configuration = readConfiguration(process.cwd(), process.argv)
+	globalThis.configuration = configuration
 
 	let sourceFilePaths = addRootDirPaths(
 		configuration.airport.ddlDir, 'src/ddl', []

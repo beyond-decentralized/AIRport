@@ -1,4 +1,4 @@
-import { CreatedAt, IRepositoryMemberUpdate, RepositoryMember_CanWrite, RepositoryMember_IsAdministrator, RepositoryMember_LocalId, RepositoryTransactionHistory_SyncTimestamp } from "@airport/ground-control";
+import { CreatedAt, IRepositoryMemberUpdate, RepositoryMember_CanWrite, RepositoryMember_IsAdministrator, RepositoryMember_LocalId } from "@airport/ground-control";
 import {
     Column,
     DbBoolean,

@@ -6,7 +6,7 @@ export * from './definition/core/field/QueryClause'
 export * from './definition/core/operation/IEntityStateManager';
 export * from './definition/core/operation/Operation'
 export * from './definition/core/types'
-export * from './definition/synchronization/synchronizationTypes'
+export * from './definition/history/historyAndBlock'
 export * from './definition/core/UpdateState'
 export * from './definition/data/sync/TransactionType'
 export * from './definition/data/ChangeType'
@@ -53,8 +53,8 @@ export * from './definition/serialize/IClientQuery';
 export * from './definition/serialize/IOperationDeserializer';
 export * from './definition/serialize/IQueryParameterDeserializer';
 export * from './definition/serialize/IQueryResultsSerializer';
-export * from './definition/synchronization/synchronizationTypes';
-export * from './definition/synchronization/SyncRepositoryMessage';
+export * from './definition/history/historyAndBlock';
+export * from './definition/history/blockMessages';
 export * from './definition/utils/IApplicationReferenceUtils'
 export * from './definition/utils/IApplicationUtils';
 export * from './definition/utils/IAppTrackerUtils'

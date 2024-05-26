@@ -35,10 +35,7 @@ export class Country
     name: Country_Name
 
     @ManyToOne()
-    @JoinColumn({
-        name: 'CONTINENT_ID',
-        referencedColumnName: 'CONTINENT_ID'
-    })
+    @JoinColumn({ name: 'CONTINENT_ID' })
     continent: Continent
 
     @OneToMany({ mappedBy: 'country' })

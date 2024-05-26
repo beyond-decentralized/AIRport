@@ -27,10 +27,7 @@ export class ApplicationApiOperation
     name: AppApiOperation_Name
 
     @ManyToOne()
-    @JoinColumn({
-        name: 'APPLICATION_API_CLASS_LID',
-        referencedColumnName: 'APPLICATION_API_CLASS_LID'
-    })
+    @JoinColumn({ name: 'APPLICATION_API_CLASS_LID' })
     apiClass: ApplicationApiClass
 
     @OneToMany({ mappedBy: 'operation' })

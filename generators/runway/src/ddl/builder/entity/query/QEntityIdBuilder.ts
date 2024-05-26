@@ -1,14 +1,15 @@
-import {MemberData} from "../../Builder";
-import {EntityCandidate}                from "../../../parser/EntityCandidate";
-import {QEntityFileBuilder}             from "./QEntityFileBuilder";
-import {QRelationBuilder}               from "./QRelationBuilder";
-import {QPropertyBuilder}               from "./QPropertyBuilder";
-import { QCoreEntityBuilder } from "./QCoreEntityBuilder";
+import {IdRelationData, MemberData} from "../../Builder"
+import {EntityCandidate}                from "../../../parser/EntityCandidate"
+import {QEntityFileBuilder}             from "./QEntityFileBuilder"
+import {QRelationBuilder}               from "./QRelationBuilder"
+import {QPropertyBuilder}               from "./QPropertyBuilder"
+import { QCoreEntityBuilder } from "./QCoreEntityBuilder"
+import { SIndexedApplication } from "../../application/SApplication"
 
 export class QEntityIdBuilder extends QCoreEntityBuilder {
 
-	idPropertyBuilders: QPropertyBuilder[];
-	idRelationBuilders: QRelationBuilder[];
+	idPropertyBuilders: QPropertyBuilder[]
+	idRelationBuilders: QRelationBuilder[]
 
 	constructor(
 		entity: EntityCandidate,
@@ -16,23 +17,24 @@ export class QEntityIdBuilder extends QCoreEntityBuilder {
 		workingDirPath: string,
 		fileBuilder: QEntityFileBuilder,
 		entityMapByName: { [entityName: string]: EntityCandidate },
+		sIndexedApplication: SIndexedApplication
 	) {
-		super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName);
+		super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName, sIndexedApplication)
 
-		const idProperties = entity.getIdProperties();
-		this.idPropertyBuilders = this.getQPropertyBuilders(idProperties);
-		this.idRelationBuilders = this.getQRelationBuilders(idProperties, false);
+		const idProperties = entity.getIdProperties()
+		this.idPropertyBuilders = this.getQPropertyBuilders(idProperties)
+		this.idRelationBuilders = this.getQRelationBuilders(idProperties, false)
 	}
 
 	build(): string {
-		const idPropertyData: MemberData = this.buildPropertyData(this.idPropertyBuilders);
-		const idRelationData: MemberData = this.buildRelationData(this.idRelationBuilders);
+		const idPropertyData: MemberData = this.buildPropertyData(this.idPropertyBuilders)
+		const idRelationData: IdRelationData = this.buildRelationData(this.idRelationBuilders)
 
-		let qName = `Q${this.entity.docEntry.name}`;
+		let qName = `Q${this.entity.docEntry.name}`
 
-		let extendsQType = '';
+		let extendsQType = ''
 		if(this.entity.parentEntity) {
-			extendsQType = ' extends Q' + this.entity.parentEntity.type + 'QId';
+			extendsQType = ' extends Q' + this.entity.parentEntity.type + 'QId'
 		}
 
 		const classSource = `// Entity Id Interface
@@ -44,9 +46,9 @@ ${idPropertyData.definitions}
 	// Id Relations
 ${idRelationData.definitions}
 
-}`;
+}`
 
-		return classSource;
+		return `${idRelationData.customInterfaces}${classSource}`
 	}
 
 }

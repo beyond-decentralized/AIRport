@@ -5,31 +5,31 @@ import {
 	IApplication,
 	Dictionary,
 	EntityRelationType,
-} from '@airport/ground-control';
+} from '@airport/ground-control'
 import {
 	canBeInterface,
 	getImplNameFromInterfaceName
-} from '../../../resolve/pathResolver';
-import { Configuration } from '../../options/Options';
+} from '../../../resolve/pathResolver'
+import { Configuration } from '../../options/Options'
 import {
 	Decorator,
 	PropertyDocEntry
-} from '../../parser/DocEntry';
-import { EntityCandidate } from '../../parser/EntityCandidate';
-import { GLOBAL_CANDIDATES } from '../../parser/EntityDefinitionGenerator';
-import { ApplicationRelationResolver } from './ApplicationRelationResolver';
-import { SEntity } from './SEntity';
+} from '../../parser/DocEntry'
+import { EntityCandidate } from '../../parser/EntityCandidate'
+import { GLOBAL_CANDIDATES } from '../../parser/EntityCandidateRegistry'
+import { ApplicationRelationResolver } from './ApplicationRelationResolver'
+import { SEntity } from './SEntity'
 import {
 	SColumn,
 	SRelation,
 	SRelationColumn
-} from './SProperty';
+} from './SProperty'
 import {
 	buildIndexedSApplication,
 	SIndexedApplication,
 	SApplication,
 	SApplicationReference
-} from './SApplication';
+} from './SApplication'
 
 export class SApplicationBuilder {
 
@@ -46,22 +46,22 @@ export class SApplicationBuilder {
 	): SIndexedApplication {
 		const referencedApplicationsByProjectName: {
 			[projectName: string]: SApplicationReference
-		} = {};
+		} = {}
 		const originalReferencedApplicationsByProjectName: {
 			[projectName: string]: SApplicationReference
-		} = {};
-		const referencedApplications: SApplicationReference[] = [];
-		let applicationReferenceIndex = 0;
+		} = {}
+		const referencedApplications: SApplicationReference[] = []
+		let applicationReferenceIndex = 0
 		for (let projectName in applicationMapByProjectName) {
 			const sApplicationReference = {
 				index: applicationReferenceIndex,
 				dbApplication: applicationMapByProjectName[projectName]
-			};
-			referencedApplications.push(sApplicationReference);
-			referencedApplicationsByProjectName[projectName] = sApplicationReference;
-			originalReferencedApplicationsByProjectName[projectName] = sApplicationReference;
+			}
+			referencedApplications.push(sApplicationReference)
+			referencedApplicationsByProjectName[projectName] = sApplicationReference
+			originalReferencedApplicationsByProjectName[projectName] = sApplicationReference
 
-			applicationReferenceIndex++;
+			applicationReferenceIndex++
 		}
 		const application: SApplication = {
 			domain: this.config.airport.domain,
@@ -69,35 +69,35 @@ export class SApplicationBuilder {
 			packageName: this.config.name,
 			name: this.config.name,
 			referencedApplications,
-		};
+		}
 
-		const sEntityMapByName: { [name: string]: SEntity } = {};
+		const sEntityMapByName: { [name: string]: SEntity } = {}
 		for (const entityName in this.entityMapByName) {
-			const entityCandidate: EntityCandidate = this.entityMapByName[entityName];
-			const entityIndex = application.entities.length;
-			const entity = this.buildEntity(entityCandidate, entityIndex, referencedApplicationsByProjectName);
+			const entityCandidate: EntityCandidate = this.entityMapByName[entityName]
+			const entityIndex = application.entities.length
+			const entity = this.buildEntity(entityCandidate, entityIndex, referencedApplicationsByProjectName)
 			if (entity) {
-				application.entities.push(entity);
-				sEntityMapByName[entityName] = entity;
+				application.entities.push(entity)
+				sEntityMapByName[entityName] = entity
 			}
 		}
 
 		for (const projectName in referencedApplicationsByProjectName) {
 			if (!originalReferencedApplicationsByProjectName[projectName]) {
-				referencedApplications.push(referencedApplicationsByProjectName[projectName]);
+				referencedApplications.push(referencedApplicationsByProjectName[projectName])
 			}
 		}
 
 		referencedApplications.sort((
 			a,
 			b
-		) => a.index - b.index);
+		) => a.index - b.index)
 
-		const indexedApplication = buildIndexedSApplication(application, referencedApplicationsByProjectName);
+		const indexedApplication = buildIndexedSApplication(application, referencedApplicationsByProjectName)
 
-		new ApplicationRelationResolver().resolveAllRelationLinks(indexedApplication);
+		new ApplicationRelationResolver().resolveAllRelationLinks(indexedApplication)
 
-		return indexedApplication;
+		return indexedApplication
 	}
 
 	getIdColumnIndex(
@@ -105,22 +105,22 @@ export class SApplicationBuilder {
 		columnName: string
 	) {
 		if (!entity.isAirEntity) {
-			return entity.numIdColumns++;
+			return entity.numIdColumns++
 		}
 
-		entity.numIdColumns = 3;
+		entity.numIdColumns = 3
 
 		const airEntityColumns = this.dictionary.AirEntityId.columns
 		switch (columnName) {
 			case airEntityColumns.REPOSITORY_LID:
-				return 0;
+				return 0
 			case airEntityColumns.ACTOR_LID:
-				return 1;
+				return 1
 			case airEntityColumns.ACTOR_RECORD_ID:
-				return 2;
+				return 2
 			default:
 				throw new Error(
-					`AirEntity @Id columns must be 'REPOSITORY_LID', 'ACTOR_LID' and 'ACTOR_RECORD_ID'`);
+					`AirEntity @Id columns must be 'REPOSITORY_LID', 'ACTOR_LID' and 'ACTOR_RECORD_ID'`)
 		}
 
 	}
@@ -130,17 +130,17 @@ export class SApplicationBuilder {
 		idIndex: number | undefined
 	) {
 		if (!entity.isAirEntity) {
-			return entity.numColumns++;
+			return entity.numColumns++
 		}
 
 		if (!entity.numColumns) {
-			entity.numColumns = 3;
+			entity.numColumns = 3
 		}
 		if (idIndex !== undefined) {
-			return idIndex;
+			return idIndex
 		}
 
-		return entity.numColumns++;
+		return entity.numColumns++
 	}
 
 	private buildEntity(
@@ -148,17 +148,17 @@ export class SApplicationBuilder {
 		entityIndex: number,
 		referencedApplicationsByProjectName: { [projectName: string]: SApplicationReference },
 	): SEntity {
-		let foundEntityDecorator = false;
-		let tableConfig;
+		let foundEntityDecorator = false
+		let tableConfig
 		const file = this.dictionary.file
 		for (const decorator of entityCandidate.docEntry.decorators) {
 			switch (decorator.name) {
 				case file.ENTITY: {
-					foundEntityDecorator = true;
-					break;
+					foundEntityDecorator = true
+					break
 				}
 				case file.TABLE: {
-					const decoratorValue = decorator.values[0];
+					const decoratorValue = decorator.values[0]
 					if (!decoratorValue) {
 						throw new Error(`@Table decorator is missing property definition object:
 @Entity()
@@ -197,27 +197,27 @@ class ${entityCandidate.docEntry.name}
 					}
 					tableConfig = {
 						...decorator.values[0]
-					};
-					if (!tableConfig.indexes) {
-						tableConfig.indexes = [];
 					}
-					break;
+					if (!tableConfig.indexes) {
+						tableConfig.indexes = []
+					}
+					break
 				}
 			}
 		}
 
 		if (!foundEntityDecorator) {
-			return null;
+			return null
 		}
 
 		if (!tableConfig) {
 			tableConfig = {
 				indexes: []
-			};
+			}
 		}
 
 		const [isAirEntity, isLocal]
-			= entityExtendsAirEntity(entityCandidate);
+			= entityExtendsAirEntity(entityCandidate)
 
 		let entity: SEntity = {
 			isLocal,
@@ -229,31 +229,31 @@ class ${entityCandidate.docEntry.name}
 			properties: [],
 			table: tableConfig,
 			entityIndex
-		};
+		}
 
-		const primitiveColumnMapByName: { [columnName: string]: SColumn } = {};
-		const relationColumnMapByName: { [columnName: string]: SColumn } = {};
-		const relatedTableMap: Map<string, number> = new Map();
+		const primitiveColumnMapByName: { [columnName: string]: SColumn } = {}
+		const relationColumnMapByName: { [columnName: string]: SColumn } = {}
+		const relatedTableMap: Map<string, number> = new Map()
 
 		this.buildColumnsWithParentEntities(
 			entityCandidate, entity, primitiveColumnMapByName, relationColumnMapByName,
-			relatedTableMap, referencedApplicationsByProjectName);
+			relatedTableMap, referencedApplicationsByProjectName)
 
 		entity.properties.sort((
 			prop1,
 			prop2
 		) => {
-			return prop1.index - prop2.index;
-		});
+			return prop1.index - prop2.index
+		})
 
 		if (entity.isAirEntity) {
 			if (entity.numIdColumns !== 3) {
 				throw new Error(`Repository entity '${entity.name}' must have 3 id columns 
-				and has ${entity.numIdColumns}.`);
+				and has ${entity.numIdColumns}.`)
 			}
 		}
 
-		return entity;
+		return entity
 	}
 
 	private buildColumnsWithParentEntities(
@@ -265,20 +265,20 @@ class ${entityCandidate.docEntry.name}
 		referencedApplicationsByProjectName: { [projectName: string]: SApplicationReference },
 		project?: string,
 	): number {
-		let parentEntity = entityCandidate.parentEntity;
-		let numParentProperties = 0;
+		let parentEntity = entityCandidate.parentEntity
+		let numParentProperties = 0
 		if (parentEntity) {
-			let parentProject = project;
+			let parentProject = project
 			if (parentEntity.project) {
-				parentProject = parentEntity.project;
+				parentProject = parentEntity.project
 			}
 			numParentProperties = this.buildColumnsWithParentEntities(
 				parentEntity, entity, primitiveColumnMapByName, relationColumnMapByName,
-				relatedTableMap, referencedApplicationsByProjectName, parentProject);
+				relatedTableMap, referencedApplicationsByProjectName, parentProject)
 		}
 		return this.buildColumns(entityCandidate, entity,
 			primitiveColumnMapByName, relationColumnMapByName, relatedTableMap,
-			numParentProperties, referencedApplicationsByProjectName, project);
+			numParentProperties, referencedApplicationsByProjectName, project)
 	}
 
 	private buildColumns(
@@ -291,30 +291,30 @@ class ${entityCandidate.docEntry.name}
 		referencedApplicationsByProjectName: { [projectName: string]: SApplicationReference },
 		project?: string,
 	): number {
-		const idProperties = entityCandidate.getIdProperties();
+		const idProperties = entityCandidate.getIdProperties()
 		const primitiveIdProperties = idProperties.filter(
 			aProperty => {
 				if (!aProperty.fromProject) {
-					aProperty.fromProject = project;
+					aProperty.fromProject = project
 				}
 
-				return aProperty.primitive;
-			});
-		this.processPrimitiveColumns(primitiveIdProperties, true, entity, primitiveColumnMapByName, numParentProperties);
+				return aProperty.primitive
+			})
+		this.processPrimitiveColumns(primitiveIdProperties, true, entity, primitiveColumnMapByName, numParentProperties)
 
-		const nonIdProperties = entityCandidate.getNonIdProperties();
+		const nonIdProperties = entityCandidate.getNonIdProperties()
 		const primitiveNonIdProperties = nonIdProperties.filter(
 			aProperty => {
 				if (!aProperty.fromProject) {
-					aProperty.fromProject = project;
+					aProperty.fromProject = project
 				}
 
-				return aProperty.primitive;
-			});
-		this.processPrimitiveColumns(primitiveNonIdProperties, false, entity, primitiveColumnMapByName, numParentProperties);
+				return aProperty.primitive
+			})
+		this.processPrimitiveColumns(primitiveNonIdProperties, false, entity, primitiveColumnMapByName, numParentProperties)
 
 		const relationIdProperties = idProperties.filter(
-			aProperty => !aProperty.primitive);
+			aProperty => !aProperty.primitive)
 		for (const aProperty of relationIdProperties) {
 			this.processRelationProperty(
 				aProperty,
@@ -326,11 +326,11 @@ class ${entityCandidate.docEntry.name}
 				relatedTableMap,
 				numParentProperties,
 				referencedApplicationsByProjectName
-			);
+			)
 		}
 
 		const relationNonIdProperties = nonIdProperties.filter(
-			aProperty => !aProperty.primitive);
+			aProperty => !aProperty.primitive)
 		for (const aProperty of relationNonIdProperties) {
 			this.processRelationProperty(
 				aProperty,
@@ -342,10 +342,10 @@ class ${entityCandidate.docEntry.name}
 				relatedTableMap,
 				numParentProperties,
 				referencedApplicationsByProjectName
-			);
+			)
 		}
 
-		return numParentProperties + idProperties.length + nonIdProperties.length;
+		return numParentProperties + idProperties.length + nonIdProperties.length
 	}
 
 	private processRelationProperty(
@@ -359,147 +359,147 @@ class ${entityCandidate.docEntry.name}
 		numParentProperties: number,
 		referencedApplicationsByProjectName: { [projectName: string]: SApplicationReference },
 	): void {
-		let columnRelationDefs = [];
-		let columnsDefined = false;
-		let foreignKey: DbForeignKey;
-		let manyToOne: DbManyToOneElements = undefined;
-		let oneToMany: DbOneToManyElements = undefined;
-		let isId = false;
-		// let repositoryJoin                       = false;
-		// let addToJoinFunction;
+		let columnRelationDefs = []
+		let columnsDefined = false
+		let foreignKey: DbForeignKey
+		let manyToOne: DbManyToOneElements = undefined
+		let oneToMany: DbOneToManyElements = undefined
+		let isId = false
+		// let repositoryJoin                       = false
+		// let addToJoinFunction
 		// let joinFunctionWithOperator = SqlOperator.AND
-		let relationType: EntityRelationType;
+		let relationType: EntityRelationType
 		for (const decorator of aProperty.decorators) {
 			const property = this.dictionary.property
 			switch (decorator.name) {
 				case property.ID:
-					isId = true;
-					break;
+					isId = true
+					break
 				// case property.R_JOIN_COLUMN:
 				// 	if (!entity.isAirEntity) {
 				// 		throw new Error(`${entity.name}.${aProperty.name} cannot be @RJoinColumn `
 				// 		+ `- ${entity.name} does not extend AirEntity or
-				// LocalAirEntity.`); } repositoryJoin = true;
+				// LocalAirEntity.`) } repositoryJoin = true
 				case property.JOIN_COLUMN:
 					if (columnsDefined) {
 						throw new Error(`Columns are defined more than once 
-						for ${entity.name}.${aProperty.name}`);
+						for ${entity.name}.${aProperty.name}`)
 					}
-					columnsDefined = true;
-					foreignKey = decorator.values[0].foreignKey;
-					columnRelationDefs.push(decorator.values[0]);
-					break;
+					columnsDefined = true
+					foreignKey = decorator.values[0].foreignKey
+					columnRelationDefs.push(decorator.values[0])
+					break
 				// case property.R_JOIN_COLUMNS:
 				// 	if (!entity.isAirEntity) {
 				// 		throw new Error(`${entity.name}.${aProperty.name} cannot be @RJoinColumns `
 				// 		+ `- ${entity.name} does not extend AirEntity or
-				// LocalAirEntity.`); } repositoryJoin = true;
+				// LocalAirEntity.`) } repositoryJoin = true
 				case property.JOIN_COLUMNS:
 					if (columnsDefined) {
 						throw new Error(`Columns are defined more than once 
-						for ${entity.name}.${aProperty.name}`);
+						for ${entity.name}.${aProperty.name}`)
 					}
-					columnsDefined = true;
+					columnsDefined = true
 					if (decorator.values[0] instanceof Array) {
-						columnRelationDefs = columnRelationDefs.concat(decorator.values[0].slice());
+						columnRelationDefs = columnRelationDefs.concat(decorator.values[0].slice())
 					} else {
 						throw new Error(
 							`"${entity.name}.${aProperty.name} " is decorated with @JoinColumns decorator
 						which must be provided an array of column join definitions (and currently is provided
-						something other than an Array).`);
-						// columnRelationDefs = columnRelationDefs.concat(decorator.values[0].value);
-						// foreignKey = decorator.values[0].foreignKey;
+						something other than an Array).`)
+						// columnRelationDefs = columnRelationDefs.concat(decorator.values[0].value)
+						// foreignKey = decorator.values[0].foreignKey
 					}
-					break;
+					break
 				case property.MANY_TO_ONE:
 					if (relationType) {
 						throw new Error(
 							`Cardinality (@ManyToOne,@OneToMany) is defined more than once 
-							for ${entity.name}.${aProperty.name}`);
+							for ${entity.name}.${aProperty.name}`)
 					}
-					manyToOne = decorator.values[0];
-					relationType = EntityRelationType.MANY_TO_ONE;
-					break;
+					manyToOne = decorator.values[0]
+					relationType = EntityRelationType.MANY_TO_ONE
+					break
 				case property.ONE_TO_MANY:
 					if (isId) {
-						throw new Error(`A property cannot be be both @OneToMany and @Id`);
+						throw new Error(`A property cannot be be both @OneToMany and @Id`)
 					}
 					if (relationType) {
 						throw new Error(`Cardinality (@ManyToOne,@OneToMany) is defined more than once 
-						for ${entity.name}.${aProperty.name}`);
+						for ${entity.name}.${aProperty.name}`)
 					}
-					oneToMany = decorator.values[0];
-					relationType = EntityRelationType.ONE_TO_MANY;
-					break;
+					oneToMany = decorator.values[0]
+					relationType = EntityRelationType.ONE_TO_MANY
+					break
 				// case property.WHERE_JOIN_TABLE:
-				// 	addToJoinFunction = decorator.values[0];
+				// 	addToJoinFunction = decorator.values[0]
 				// 	if (decorator.values.length === 2) {
 				// 		switch (decorator.values[1]) {
 				// 			case 'var and':
-				// 				joinFunctionWithOperator = SqlOperator.AND;
+				// 				joinFunctionWithOperator = SqlOperator.AND
 				// 			case 'var or':
-				// 				joinFunctionWithOperator = SqlOperator.OR;
+				// 				joinFunctionWithOperator = SqlOperator.OR
 				// 			default:
 				// 				throw new Error(
-				// 				`Unsupported 'joinFunctionWithOperator' ${decorator.values[1]}`);
+				// 				`Unsupported 'joinFunctionWithOperator' ${decorator.values[1]}`)
 				// 		}
 				// 	}
-				// 	break;
+				// 	break
 				default:
-					throw new Error(`Unsupported cardinality decorator ${decorator.name}`);
+					throw new Error(`Unsupported cardinality decorator ${decorator.name}`)
 			}
 		}
 		if (!relationType) {
 			throw new Error(
 				`Cardinality (@ManyToOne,@OneToMany) is not defined 
-				for ${entity.name}.${aProperty.name}`);
+				for ${entity.name}.${aProperty.name}`)
 		}
-		const columns: SColumn[] = [];
-		const sRelationColumns: SRelationColumn[] = [];
-		let relationMustBeSingleIdEntity = false;
-		const propertyIndex = aProperty.index + numParentProperties;
+		const columns: SColumn[] = []
+		const sRelationColumns: SRelationColumn[] = []
+		let relationMustBeSingleIdEntity = false
+		const propertyIndex = aProperty.index + numParentProperties
 		if (columnsDefined) {
 			for (const columnRelationDef of columnRelationDefs) {
-				let name = columnRelationDef.name;
-				let notNull = false;
+				let name = columnRelationDef.name
+				let notNull = false
 				if (name) {
-					name = name.toUpperCase();
+					name = name.toUpperCase()
 				} else {
 					throw new Error(`"name" is not defined in for a JoinColumn(s) configuration 
-					of ${entity.name}.${aProperty.name}`);
+					of ${entity.name}.${aProperty.name}`)
 				}
 				if (columnRelationDef.nullable === false) {
-					notNull = true;
+					notNull = true
 				}
-				let referencedColumnName = columnRelationDef.referencedColumnName;
+				let referencedColumnName = columnRelationDef.referencedColumnName
 				if (referencedColumnName) {
-					referencedColumnName = referencedColumnName.toUpperCase();
+					referencedColumnName = referencedColumnName.toUpperCase()
 				} else {
-					referencedColumnName = name;
+					referencedColumnName = name
 				}
-				let ownColumnReference;
-				let relationColumnReference;
-				let isManyToOne = false;
+				let ownColumnReference
+				let relationColumnReference
+				let isManyToOne = false
 				switch (relationType) {
 					case EntityRelationType.MANY_TO_ONE:
-						ownColumnReference = name;
-						relationColumnReference = referencedColumnName;
-						isManyToOne = true;
-						break;
+						ownColumnReference = name
+						relationColumnReference = referencedColumnName
+						isManyToOne = true
+						break
 					case EntityRelationType.ONE_TO_MANY:
-						ownColumnReference = referencedColumnName;
-						relationColumnReference = name;
-						break;
+						ownColumnReference = referencedColumnName
+						relationColumnReference = name
+						break
 					default:
-						throw new Error(`Uknown EntityRelationType: ${relationType}.`);
+						throw new Error(`Uknown EntityRelationType: ${relationType}.`)
 				}
 				const [sRelationColumn, sColumn] = this.processRelationColumn(
 					ownColumnReference, relationColumnReference, isManyToOne,
 					isIdProperty, propertyIndex, entity,
-					relationColumnMapByName, primitiveColumnMapByName, notNull);
-				sRelationColumns.push(sRelationColumn);
+					relationColumnMapByName, primitiveColumnMapByName, notNull)
+				sRelationColumns.push(sRelationColumn)
 				if (sColumn) {
-					columns.push(sColumn);
+					columns.push(sColumn)
 				}
 			}
 		} else {
@@ -528,11 +528,11 @@ class ${entityCandidate.docEntry.name}
 					}
 					if (!extendsEntity || isLocal) {
 						throw new Error(`@JoinColumn(s) must be specified for @ManyToOne
-					in ${entity.name}.${aProperty.name} for non-repository entities.  Did you forget 'extends AirEntity'?`);
+					in ${entity.name}.${aProperty.name} for non-repository entities.  Did you forget 'extends AirEntity'?`)
 					}
 					let relatedTableName
 					if (aProperty.entity) {
-						relatedTableName = this.getTableNameFromEntity(aProperty.entity);
+						relatedTableName = this.getTableNameFromEntity(aProperty.entity)
 					} else {
 						const otherAppDbEntity = aProperty.otherApplicationDbEntity
 						if (otherAppDbEntity.tableConfig && otherAppDbEntity.tableConfig.name) {
@@ -542,12 +542,12 @@ class ${entityCandidate.docEntry.name}
 						}
 					}
 
-					const notNull = isManyToOnePropertyNotNull(aProperty);
+					const notNull = isManyToOnePropertyNotNull(aProperty)
 
 					const airEntityColumns = this.dictionary.AirEntityId.columns
 					const relationColumnReferences = [
 						airEntityColumns.REPOSITORY_LID, airEntityColumns.ACTOR_LID,
-						airEntityColumns.ACTOR_RECORD_ID];
+						airEntityColumns.ACTOR_RECORD_ID]
 
 					let numExistingReferenceToTable = relatedTableMap.get(relatedTableName)
 
@@ -568,12 +568,12 @@ class ${entityCandidate.docEntry.name}
 						const [sRelationColumn, sColumn] = this.processRelationColumn(
 							relatedTableName + suffix, relationColumnReferences[index], true,
 							isIdProperty, propertyIndex, entity,
-							relationColumnMapByName, primitiveColumnMapByName, notNull);
-						sRelationColumns.push(sRelationColumn);
+							relationColumnMapByName, primitiveColumnMapByName, notNull)
+						sRelationColumns.push(sRelationColumn)
 						if (sColumn) {
-							columns.push(sColumn);
+							columns.push(sColumn)
 						}
-					});
+					})
 				}
 				// relationMustBeSingleIdEntity = true
 				// const [sRelationColumn, sColumn] = this.processRelationColumn(
@@ -586,59 +586,59 @@ class ${entityCandidate.docEntry.name}
 				// break
 				case EntityRelationType.ONE_TO_MANY:
 					// Nothing to do
-					break;
+					break
 				default:
-					throw new Error(`Uknown EntityRelationType: ${relationType}.`);
+					throw new Error(`Uknown EntityRelationType: ${relationType}.`)
 			}
 		}
-		let entityName;
-		let referencedApplication_Index;
+		let entityName
+		let referencedApplication_Index
 		if (!aProperty.entity) {
 			if (!aProperty.fromProject) {
 				throw new Error(`Neither entity nor source project was specified 
-				for ${entity.name}.${aProperty.name}`);
+				for ${entity.name}.${aProperty.name}`)
 			}
 
-			let applicationReference = referencedApplicationsByProjectName[aProperty.fromProject];
+			let applicationReference = referencedApplicationsByProjectName[aProperty.fromProject]
 
 			if (!applicationReference) {
-				const dbApplication = GLOBAL_CANDIDATES.registry.getReferencedApplication(aProperty.fromProject, aProperty);
+				const dbApplication = GLOBAL_CANDIDATES.registry.getReferencedApplication(aProperty.fromProject, aProperty)
 				if (!dbApplication) {
 					throw new Error(`Could not find related project '${aProperty.fromProject}' 
-					for ${entity.name}.${aProperty.name}`);
+					for ${entity.name}.${aProperty.name}`)
 				}
 
 				applicationReference = {
 					index: Object.keys(referencedApplicationsByProjectName).length,
 					dbApplication
-				};
-				referencedApplicationsByProjectName[aProperty.fromProject] = applicationReference;
+				}
+				referencedApplicationsByProjectName[aProperty.fromProject] = applicationReference
 			}
 
-			referencedApplication_Index = applicationReference.index;
-			const propertyType = aProperty.nonArrayType;
+			referencedApplication_Index = applicationReference.index
+			const propertyType = aProperty.nonArrayType
 			let relatedEntity = applicationReference.dbApplication.currentVersion[0]
-				.applicationVersion.entityMapByName[propertyType];
+				.applicationVersion.entityMapByName[propertyType]
 			if (!relatedEntity) {
 				if (canBeInterface(propertyType)) {
-					const entityType = getImplNameFromInterfaceName(propertyType);
+					const entityType = getImplNameFromInterfaceName(propertyType)
 					relatedEntity = applicationReference.dbApplication.currentVersion[0]
-						.applicationVersion.entityMapByName[entityType];
+						.applicationVersion.entityMapByName[entityType]
 					if (!relatedEntity) {
 						throw new Error(`Could not find related entity '${entityType}' 
 						(from interface ${propertyType}) 
 						in project '${aProperty.fromProject}' 
-						for ${entity.name}.${aProperty.name}`);
+						for ${entity.name}.${aProperty.name}`)
 					}
 				} else {
 					throw new Error(`Could not find related entity '${propertyType}' 
 					in project '${aProperty.fromProject}' 
-					for ${entity.name}.${aProperty.name}`);
+					for ${entity.name}.${aProperty.name}`)
 				}
 			}
-			entityName = relatedEntity.name;
+			entityName = relatedEntity.name
 		} else {
-			entityName = aProperty.entity.type;
+			entityName = aProperty.entity.type
 		}
 		let relation: SRelation = {
 			// addToJoinFunction,
@@ -653,7 +653,7 @@ class ${entityCandidate.docEntry.name}
 			relationMustBeSingleIdEntity,
 			// repositoryJoin,
 			sRelationColumns
-		};
+		}
 
 		entity.properties.push({
 			columns,
@@ -662,7 +662,7 @@ class ${entityCandidate.docEntry.name}
 			name: aProperty.name,
 			optional: aProperty.optional,
 			relation
-		});
+		})
 	}
 
 	private getTableNameFromEntity(
@@ -671,12 +671,12 @@ class ${entityCandidate.docEntry.name}
 		const tableDecorators = entityCandidate.docEntry.decorators.filter(
 			decorator =>
 				decorator.name === 'Table'
-		);
+		)
 		if (!tableDecorators.length) {
-			return entityCandidate.docEntry.name.toUpperCase();
+			return entityCandidate.docEntry.name.toUpperCase()
 		}
 
-		return tableDecorators[0].values[0].name;
+		return tableDecorators[0].values[0].name
 	}
 
 	private isManyToOnePropertyNotNull(
@@ -685,13 +685,13 @@ class ${entityCandidate.docEntry.name}
 		const manyToOneDecoratorValues = aProperty.decorators.filter(
 			decorator =>
 				decorator.name === 'ManyToOne'
-		)[0].values;
+		)[0].values
 
 		if (!manyToOneDecoratorValues.length) {
-			return false;
+			return false
 		}
 
-		return manyToOneDecoratorValues[0].optional === false;
+		return manyToOneDecoratorValues[0].optional === false
 	}
 
 	private processPrimitiveColumns(
@@ -702,7 +702,7 @@ class ${entityCandidate.docEntry.name}
 		numParentProperties: number
 	) {
 		for (const aProperty of properties) {
-			const propertyIndex = aProperty.index + numParentProperties;
+			const propertyIndex = aProperty.index + numParentProperties
 			entity.properties.push({
 				columns: [this.processPrimitiveColumn(
 					aProperty, isIdProperty, propertyIndex, entity, primitiveColumnMapByName)],
@@ -711,7 +711,7 @@ class ${entityCandidate.docEntry.name}
 				name: aProperty.name,
 				optional: aProperty.optional,
 				relation: undefined
-			});
+			})
 		}
 	}
 
@@ -722,22 +722,22 @@ class ${entityCandidate.docEntry.name}
 		entity: SEntity,
 		primitiveColumnMapByName: { [columnName: string]: SColumn }
 	): SColumn {
-		let columnName;
-		let notNull = false;
-		let columnDefined = false;
-		let precision = null;
-		let scale = null;
+		let columnName
+		let notNull = false
+		let columnDefined = false
+		let precision = null
+		let scale = null
 		for (const decorator of aProperty.decorators) {
 			switch (decorator.name) {
 				case this.dictionary.property.COLUMN:
 					if (columnDefined) {
 						throw new Error(`@Column is defined more than once
-						 for ${entity.name}.${aProperty.name}`);
+						 for ${entity.name}.${aProperty.name}`)
 					}
-					columnDefined = true;
+					columnDefined = true
 					if (decorator.values.length) {
-						const columnDecoratorDefs = decorator.values[0];
-						columnName = columnDecoratorDefs.name;
+						const columnDecoratorDefs = decorator.values[0]
+						columnName = columnDecoratorDefs.name
 
 						let columnNameCheckRegExp = /^[A-Z]/
 						let errorMessageSuffix = ''
@@ -771,43 +771,43 @@ class ${entity.name}
 	`)
 						}
 						if (columnDecoratorDefs.nullable === false) {
-							notNull = true;
+							notNull = true
 						}
 						if (columnDecoratorDefs.precision) {
-							precision = columnDecoratorDefs.precision;
+							precision = columnDecoratorDefs.precision
 						}
 						if (columnDecoratorDefs.scale) {
-							scale = columnDecoratorDefs.scale;
+							scale = columnDecoratorDefs.scale
 						}
 					} else {
-						columnName = aProperty.name;
+						columnName = aProperty.name
 					}
 			}
 		}
 		if (!columnName) {
-			columnName = aProperty.name;
+			columnName = aProperty.name
 		}
-		columnName = columnName.toUpperCase();
+		columnName = columnName.toUpperCase()
 
 		if (!columnName) {
-			throw new Error(`Could not find a columnName in "${entity.name}"`);
+			throw new Error(`Could not find a columnName in "${entity.name}"`)
 		}
 
-		const existingColumn = primitiveColumnMapByName[columnName];
+		const existingColumn = primitiveColumnMapByName[columnName]
 		if (existingColumn) {
 			throw new Error(`More than one @Column({name: "${columnName}"}) 
-			defined in "${entity.name}"`);
+			defined in "${entity.name}"`)
 		}
 		if (aProperty.isGenerated
 			&& aProperty.primitive !== 'number'
 			&& aProperty.primitive !== 'string') {
 			throw new Error(`Column '${columnName}' defined in "${entity.name}" is a @GeneratedValue()
-			but isn't of type "number" or "string"`);
+			but isn't of type "number" or "string"`)
 		}
 
-		let idIndex = undefined;
+		let idIndex = undefined
 		if (isIdProperty) {
-			idIndex = this.getIdColumnIndex(entity, columnName);
+			idIndex = this.getIdColumnIndex(entity, columnName)
 		}
 		const column: SColumn = {
 			allocationSize: aProperty.allocationSize,
@@ -821,10 +821,10 @@ class ${entity.name}
 			propertyRefs: [propertyIndex],
 			scale,
 			type: aProperty.primitive
-		};
-		primitiveColumnMapByName[columnName] = column;
+		}
+		primitiveColumnMapByName[columnName] = column
 
-		return column;
+		return column
 	}
 
 	/**
@@ -862,51 +862,51 @@ class ${entity.name}
 			oneSideRelationIndex: null,
 			ownColumnReference,
 			relationColumnReference
-		};
+		}
 
-		const existingPrimitiveColumn = primitiveColumnMapByName[ownColumnReference];
+		const existingPrimitiveColumn = primitiveColumnMapByName[ownColumnReference]
 		if (existingPrimitiveColumn) {
 			if (manyToOne && isIdProperty) {
 				throw new Error(`@Id & @ManyToOne relation columns cannot be named as other non-relational columns.
 			A column can either be defined as a non-relational column
 			OR as a relation.
-			Column: '${entity.name}.${ownColumnReference}'`);
+			Column: '${entity.name}.${ownColumnReference}'`)
 			}
 			if ((existingPrimitiveColumn.notNull && !notNull)
 				|| (!existingPrimitiveColumn.notNull && notNull)) {
-				throw new Error(`Column ${existingPrimitiveColumn.name} has conflicting nullable definitions`);
+				throw new Error(`Column ${existingPrimitiveColumn.name} has conflicting nullable definitions`)
 			}
 			return [
 				sRelationColumn,
 				existingPrimitiveColumn
-			];
+			]
 		}
 
-		const existingRelationColumn = relationColumnMapByName[ownColumnReference];
+		const existingRelationColumn = relationColumnMapByName[ownColumnReference]
 		if (existingRelationColumn) {
 			if (manyToOne && isIdProperty) {
 				throw new Error(`@Id cannot be specified in more than one @ManyToOne relation.
 			A @Id column name can be defined on only one relation.
-			Column: '${entity.name}.${ownColumnReference}'`);
+			Column: '${entity.name}.${ownColumnReference}'`)
 			}
 			if (entityCannotReferenceOtherColumns) {
 				throw new Error(`@ManyToOne relation without @JoinColumn(s) 
-				cannot be placed on other columns.`);
+				cannot be placed on other columns.`)
 			}
 			if ((existingRelationColumn.notNull && !notNull)
 				|| (!existingRelationColumn.notNull && notNull)) {
-				throw new Error(`Column ${existingRelationColumn.name} has conflicting nullable definitions`);
+				throw new Error(`Column ${existingRelationColumn.name} has conflicting nullable definitions`)
 			}
-			existingRelationColumn.propertyRefs.push(propertyIndex);
+			existingRelationColumn.propertyRefs.push(propertyIndex)
 			return [
 				sRelationColumn,
 				existingRelationColumn
-			];
+			]
 		}
 
-		let idIndex = undefined;
+		let idIndex = undefined
 		if (isIdProperty) {
-			idIndex = this.getIdColumnIndex(entity, ownColumnReference);
+			idIndex = this.getIdColumnIndex(entity, ownColumnReference)
 		}
 		const column: SColumn = {
 			idIndex,
@@ -915,13 +915,13 @@ class ${entity.name}
 			notNull,
 			propertyRefs: [propertyIndex],
 			type: undefined
-		};
-		relationColumnMapByName[ownColumnReference] = column;
+		}
+		relationColumnMapByName[ownColumnReference] = column
 
 		return [
 			sRelationColumn,
 			column
-		];
+		]
 	}
 
 	/*
@@ -976,46 +976,46 @@ export function entityExtendsOrIsAirEntity( //
 	entityCandidate: EntityCandidate //
 ): [boolean, boolean] {
 	if (!entityCandidate) {
-		return [false, true];
+		return [false, true]
 	}
 	
 	if (entityCandidate.docEntry.name === dictionary.AirEntity.name
 		|| entityCandidate.docEntry.name === dictionary.InternalAirEntity.name) {
-		return [true, false];
+		return [true, false]
 	}
 	
-	return entityExtendsOrIsAirEntity(entityCandidate.parentEntity);
+	return entityExtendsOrIsAirEntity(entityCandidate.parentEntity)
 }
 
 export function entityExtendsOrIsAirEntityFieldsOrId( //
 	entityCandidate: EntityCandidate //
 ): [boolean, boolean] {
 	if (!entityCandidate) {
-		return [false, true];
+		return [false, true]
 	}
 
 	if (entityCandidate.docEntry.name === dictionary.AirEntityId.name
 		|| entityCandidate.docEntry.name === dictionary.AirEntityFields.name) {
-		return [true, false];
+		return [true, false]
 	}
 
-	return entityExtendsOrIsAirEntityFieldsOrId(entityCandidate.parentEntity);
+	return entityExtendsOrIsAirEntityFieldsOrId(entityCandidate.parentEntity)
 }
 
 export function isManyToOnePropertyNotNull(
 	aProperty: PropertyDocEntry
 ): boolean {
-	const manyToOneProperty = getManyToOneDecorator(aProperty);
+	const manyToOneProperty = getManyToOneDecorator(aProperty)
 	if (!manyToOneProperty) {
-		throw `Not a @ManyToOne property.`;
+		throw `Not a @ManyToOne property.`
 	}
-	const manyToOneDecoratorValues = manyToOneProperty.values;
+	const manyToOneDecoratorValues = manyToOneProperty.values
 
 	if (!manyToOneDecoratorValues.length) {
-		return false;
+		return false
 	}
 
-	return manyToOneDecoratorValues[0].optional === false;
+	return manyToOneDecoratorValues[0].optional === false
 }
 
 export function getManyToOneDecorator(
@@ -1024,11 +1024,11 @@ export function getManyToOneDecorator(
 	const manyToOneDecorators = aProperty.decorators.filter(
 		decorator =>
 			decorator.name === 'ManyToOne'
-	);
+	)
 
 	if (manyToOneDecorators.length) {
-		return manyToOneDecorators[0];
+		return manyToOneDecorators[0]
 	}
 
-	return null;
+	return null
 }

@@ -18,15 +18,12 @@ export class DdlApplicationCurrentVersion
 
     @Id()
     @ManyToOne()
-    @JoinColumn({ name: 'DB_APPLICATION_INDEX', referencedColumnName: 'DB_APPLICATION_INDEX', nullable: false })
+    @JoinColumn({ name: 'DB_APPLICATION_INDEX', nullable: false })
     application: DdlApplication;
 
     @Id()
     @ManyToOne()
-    @JoinColumn({
-        name: 'DB_APPLICATION_VERSION_LID',
-        referencedColumnName: 'DB_APPLICATION_VERSION_LID', nullable: false
-    })
+    @JoinColumn({ name: 'DB_APPLICATION_VERSION_LID', nullable: false })
     applicationVersion: DdlApplicationVersion;
 
 }

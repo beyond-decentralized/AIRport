@@ -20,18 +20,12 @@ export class RepositoryTerminal
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({
-		name: 'REPOSITORY_LID',
-		referencedColumnName: 'REPOSITORY_LID'
-	})
+	@JoinColumn({ name: 'REPOSITORY_LID' })
 	repository: Repository
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({
-		name: 'TERMINAL_LID',
-		referencedColumnName: 'TERMINAL_LID'
-	})
+	@JoinColumn({ name: 'TERMINAL_LID' })
 	terminal: Terminal
 
 }

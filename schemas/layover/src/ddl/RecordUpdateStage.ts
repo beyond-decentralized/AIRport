@@ -37,42 +37,27 @@ export class RecordUpdateStage
 	updatedValue: any
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'DB_APPLICATION_VERSION_LID',
-		referencedColumnName: 'DB_APPLICATION_VERSION_LID'
-	})
+	@JoinColumn({ name: 'DB_APPLICATION_VERSION_LID', nullable: false })
 	applicationVersion: DdlApplicationVersion
 
 	@ManyToOne()
 	// FIXME: verify that these records don't make it into serialized
 	// repository ledger (and hence, that using local ids is safe)
-	@JoinColumn({
-		name: 'DB_ENTITY_LID',
-		referencedColumnName: 'DB_ENTITY_LID'
-	})
+	@JoinColumn({ name: 'DB_ENTITY_LID' })
 	entity: DdlEntity
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'REPOSITORY_LID',
-		referencedColumnName: 'REPOSITORY_LID'
-	})
+	@JoinColumn({ name: 'REPOSITORY_LID' })
 	repository: Repository
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'ACTOR_LID',
-		referencedColumnName: 'ACTOR_LID'
-	})
+	@JoinColumn({ name: 'ACTOR_LID' })
 	actor: Actor
 
 	@ManyToOne()
 	// FIXME: verify that these records don't make it into serialized
 	// repository ledger (and hence, that using local ids is safe)
-	@JoinColumn({
-		name: 'DB_COLUMN_LID',
-		referencedColumnName: 'DB_COLUMN_LID'
-	})
+	@JoinColumn({ name: 'DB_COLUMN_LID' })
 	column: DdlColumn
 
 }

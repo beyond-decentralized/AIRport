@@ -1,4 +1,4 @@
-import { ImplementationFileBuilder } from './ImplementationFileBuilder';
+import { ImplementationFileBuilder } from './ImplementationFileBuilder'
 import { PathBuilder } from './PathBuilder'
 
 export class DvoBuilder
@@ -6,22 +6,22 @@ export class DvoBuilder
 
 	private classSuffix = 'Dvo'
 
-	private diSet;
+	private diSet
 
 	constructor(
 		applicationFullName: string,
 		pathBuilder: PathBuilder,
 	) {
-		super('baseDvos', pathBuilder);
+		super('baseDvos', pathBuilder)
 
-		this.diSet = applicationFullName + '_diSet';
+		this.diSet = applicationFullName + '_diSet'
 	}
 
 	build(): string {
-		this.entityNames.sort();
-		const baseClassDefinitions = this.buildBaseClassDefinitions();
+		this.entityNames.sort()
+		const baseClassDefinitions = this.buildBaseClassDefinitions()
 
-		const imports = this.buildImports();
+		const imports = this.buildImports()
 
 		return `/* eslint-disable */
 ${imports}
@@ -38,7 +38,7 @@ export class SQDI${this.classSuffix}<Entity, EntityVDescriptor>
 	}
 }
 
-${baseClassDefinitions}`;
+${baseClassDefinitions}`
 	}
 
 	protected addImports() {
@@ -46,24 +46,24 @@ ${baseClassDefinitions}`;
 			entityName => {
 				this.addImport([
 					`${entityName}`
-				], `${this.ddlPathMapByEntityName[entityName]}`);
+				], `${this.ddlPathMapByEntityName[entityName]}`)
 				this.addImport([
 					`${entityName}VDescriptor`
-				], `${this.pathBuilder.prefixToFileName(this.generatedPathMapByEntityName[entityName], '')}`);
-			});
+				], `${this.pathBuilder.prefixToFileName(this.generatedPathMapByEntityName[entityName], '')}`)
+			})
 		this.addImport([
 			`${this.classSuffix}`,
 			'IDvo'
-		], '@airbridge/validate');
+		], '@airbridge/validate')
 		this.addImport([
 			{
 				asName: 'DbEntityId',
 				sourceName: 'DbEntity_LocalId'
 			}
-		], '@airport/ground-control');
+		], '@airport/ground-control')
 		this.addImport([
 			`${this.diSet}`
-		], './qApplication');
+		], './qApplication')
 	}
 
 	protected buildBaseClassDefinitions(): string {
@@ -85,13 +85,13 @@ export class Base${entityName}${this.classSuffix}
 		super(${this.entityIdMapByName[entityName]})
 	}
 }
-`).join('\n');
+`).join('\n')
 	}
 
 	protected buildStaticProperties(
 		entityName: string
 	): string {
-		return '';
+		return ''
 	}
 
 }

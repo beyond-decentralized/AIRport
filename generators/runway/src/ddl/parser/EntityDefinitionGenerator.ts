@@ -13,7 +13,7 @@ import {
 	EntityCandidate,
 	Interface
 } from './EntityCandidate'
-import { EntityCandidateRegistry } from './EntityCandidateRegistry'
+import { EntityCandidateRegistry, GLOBAL_CANDIDATES } from './EntityCandidateRegistry'
 import {
 	EntityFile,
 	FileImports
@@ -29,23 +29,6 @@ import {
 /**
  * Created by Papa on 3/26/2016.
  */
-
-export class GlobalCandidates {
-
-	_registry: EntityCandidateRegistry
-	inheritanceMap: Map<string, string> = new Map<string, string>()
-
-	get registry(): EntityCandidateRegistry {
-		if (!this._registry) {
-			this._registry = new EntityCandidateRegistry()
-		}
-
-		return this._registry
-	}
-
-}
-
-export const GLOBAL_CANDIDATES = new GlobalCandidates()
 
 enum TsObjectType {
 	OBJECT_LITERAL = 'OBJECT_LITERAL',
@@ -118,7 +101,7 @@ ${path}
 		registerInterface(symbol, path)
 	} else if (node.kind === tsc.SyntaxKind.ModuleDeclaration) {
 		// This is a namespace, visit its children
-		// tsc.forEachChild(node, visit);
+		// tsc.forEachChild(node, visit)
 		throw new Error(`Namespaces are not supported in DDL.`)
 	} else if (node.kind === tsc.SyntaxKind.EnumDeclaration) {
 		if (file.hasEntityCandidate) {
@@ -483,42 +466,42 @@ function parseObjectProperty(
 				})
 				/*
 				TODO: rethink how we can import @WhereJoinTable code
-				const fileImports = [];
+				const fileImports = []
 				for (let filePath in currentFileImports.importMapByModulePath) {
-					const moduleImport = currentFileImports.importMapByModulePath[filePath];
+					const moduleImport = currentFileImports.importMapByModulePath[filePath]
 					if (moduleImport.isLocal) {
-						continue;
+						continue
 					}
-					let importsFromFile = [];
+					let importsFromFile = []
 					for (let asName in moduleImport.objectMapByAsName) {
-						const importedObject = moduleImport.objectMapByAsName[asName];
+						const importedObject = moduleImport.objectMapByAsName[asName]
 						if (importedObject.asName === importedObject.sourceName) {
-							importsFromFile.push(importedObject.asName);
+							importsFromFile.push(importedObject.asName)
 						} else {
-							importsFromFile.push(`${importedObject.sourceName} as ${importedObject.asName}`);
+							importsFromFile.push(`${importedObject.sourceName} as ${importedObject.asName}`)
 						}
 					}
-					const importsFragment = importsFromFile.join(', ');
-					const importStatement = `import { ${importsFragment} } from '${moduleImport.path}';`;
-					fileImports.push(importStatement);
+					const importsFragment = importsFromFile.join(', ')
+					const importStatement = `import { ${importsFragment} } from '${moduleImport.path}'`
+					fileImports.push(importStatement)
 				}
-				const globalImports = fileImports.join('\r\n');
+				const globalImports = fileImports.join('\r\n')
 
-				const typescriptDefinition = printer.printNode(ts.EmitHint.Expression, initializer, currentSourceFile);
+				const typescriptDefinition = printer.printNode(ts.EmitHint.Expression, initializer, currentSourceFile)
 				const whereJoinTableFunction =
-					`const WhereJoinTableFunction = (${typescriptDefinition});`;
+					`const WhereJoinTableFunction = (${typescriptDefinition})`
 
 				const tempFile = `${globalImports}
 
 ${whereJoinTableFunction}
-export default WhereJoinTableFunction`;
+export default WhereJoinTableFunction`
 
-				const compilerOptions = {module: ts.ModuleKind.CommonJS};
+				const compilerOptions = {module: ts.ModuleKind.CommonJS}
 				const transpilationResult = tsc.transpileModule(tempFile, {
 					compilerOptions: compilerOptions,
 					moduleName: "WhereJoinTableModule"
-				});
-				value = transpilationResult.outputText;
+				})
+				value = transpilationResult.outputText
 				*/
 
 				// For now allow only and, or & not functions and everything from
@@ -669,11 +652,11 @@ function serializeClass(
 						// documentation:
 						// tsc.displayPartsToString(symbol.getDocumentationComment(undefined)),
 						type
-					});
-					break;
+					})
+					break
 				default:
 					// skip
-					break;
+					break
 			}
 		} else if (member.declarations) {
 			// declaration (constructor, method)

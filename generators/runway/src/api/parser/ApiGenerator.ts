@@ -1,10 +1,10 @@
-import { IApiObject, IApplicationApi } from '@airport/air-traffic-control';
-import * as ts from 'typescript';
-import tsc from 'typescript';
-import { FileImports } from '../../ddl/parser/FileImports';
-import { ImportManager } from '../../ddl/parser/ImportManager';
-import { forEach } from '../../ParserUtils';
-import { normalizePath } from '../../resolve/pathResolver';
+import { IApiObject, IApplicationApi } from '@airport/air-traffic-control'
+import * as ts from 'typescript'
+import tsc from 'typescript'
+import { FileImports } from '../../ddl/parser/FileImports'
+import { ImportManager } from '../../ddl/parser/ImportManager'
+import { forEach } from '../../ParserUtils'
+import { normalizePath } from '../../resolve/pathResolver'
 
 export interface IApiSignature {
     isAsync: boolean
@@ -70,7 +70,7 @@ export function visitApiFile(
                 currentApplicationApi.apiObjectMap[className] = apiArtifacts.apiObject
                 fileObject.apiClasses.push(apiArtifacts.apiClass)
             }
-            break;
+            break
         case tsc.SyntaxKind.EnumDeclaration:
         case tsc.SyntaxKind.InterfaceDeclaration:
             fileObject.otherMemberDefinitions.push(printer.printNode(
@@ -111,7 +111,7 @@ function serializeClass(
         switch (member.valueDeclaration.kind) {
             case tsc.SyntaxKind.MethodDeclaration:
                 let methodDescriptor = serializeMethod(
-                    symbol, className, memberName, member);
+                    symbol, className, memberName, member)
                 if (methodDescriptor && methodDescriptor.isApiMethod) {
                     numApiMethods++
                     apiObject.operationMap[memberName] = {
@@ -129,11 +129,11 @@ function serializeClass(
                         returnType: methodDescriptor.returnType
                     })
                 }
-                break;
+                break
             default:
-                break;
+                break
         }
-    });
+    })
 
     return numApiMethods ? {
         apiClass,
@@ -182,18 +182,18 @@ function serializeMethod(
         switch (decoratorName) {
             case 'Api':
                 isApiMethod = true
-                break;
+                break
             default:
-                break;
+                break
         }
-    });
+    })
     if (!isApiMethod) {
         return
     }
 
-    // const name: string = member.escapedName as any;
+    // const name: string = member.escapedName as any
     const declaration = member.valueDeclaration as any
-    const parameters: string[] = [];
+    const parameters: string[] = []
     for (const parameter of declaration.parameters) {
         if (!parameter.type) {
             throw new Error(`Parameter type is not specified for:

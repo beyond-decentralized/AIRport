@@ -1,6 +1,5 @@
 import { IContext, Inject, Injected } from "@airport/direction-indicator";
-import { DatastructureUtils, IRepositoryReference, Repository_GUID, SyncRepositoryMessage } from "@airport/ground-control";
-import { Repository } from "@airport/holding-pattern";
+import { DatastructureUtils, IRepositoryReference, Repository_GUID, IRepositoryBlock, IRepository } from "@airport/ground-control";
 import { RepositoryDao, RepositoryReferenceDao } from "@airport/holding-pattern/dist/app/bundle";
 
 @Injected()
@@ -16,19 +15,19 @@ export class RepositoryReferenceCreator {
     repositoryReferenceDao: RepositoryReferenceDao
 
     async create(
-        messages: SyncRepositoryMessage[],
+        blocks: IRepositoryBlock[],
         context: IContext
     ): Promise<void> {
         let repositoryGUIDSetToLookUp: Set<Repository_GUID> = new Set()
 
-        for (const message of messages) {
-            const referencingRepository = message.data.history.repository
+        for (const block of blocks) {
+            const referencingRepository = block.repository
             if (typeof referencingRepository === 'string') {
                 repositoryGUIDSetToLookUp.add(referencingRepository)
             }
         }
 
-        const foundRepositoriesByGUIDMap: Map<Repository_GUID, Repository>
+        const foundRepositoriesByGUIDMap: Map<Repository_GUID, IRepository>
             = new Map()
         if (repositoryGUIDSetToLookUp.size) {
             const foundRepositories = await this.repositoryDao.findByGUIDs(
@@ -41,8 +40,8 @@ export class RepositoryReferenceCreator {
         const repositoryReferenceMapByGUIDs: Map<Repository_GUID,
             Map<Repository_GUID, IRepositoryReference>>
             = new Map()
-        for (const message of messages) {
-            let referencingRepository = message.data.history.repository
+        for (const block of blocks) {
+            let referencingRepository = block.repository
             let repositoryGUID: Repository_GUID
             if (typeof referencingRepository === 'string') {
                 repositoryGUID = referencingRepository
@@ -53,7 +52,7 @@ export class RepositoryReferenceCreator {
             const referencesOfRepositoryMap = this.datastructureUtils.ensureChildJsMap(
                 repositoryReferenceMapByGUIDs,
                 repositoryGUID)
-            for (const referencedRepository of message.data.referencedRepositories) {
+            for (const referencedRepository of block.data.referencedRepositories) {
                 if (referencesOfRepositoryMap.has(referencedRepository.GUID)) {
                     referencesOfRepositoryMap.set(
                         referencedRepository.GUID, {

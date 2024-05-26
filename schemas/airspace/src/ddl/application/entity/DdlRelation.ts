@@ -42,10 +42,7 @@ export class DdlRelation
 	index: DbRelation_Index
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'DB_PROPERTY_LID',
-		referencedColumnName: 'DB_PROPERTY_LID', nullable: false
-	})
+	@JoinColumn({ name: 'DB_PROPERTY_LID', nullable: false })
 	property: DdlProperty
 
 	@Json()
@@ -77,10 +74,7 @@ export class DdlRelation
 	// joinFunctionWithOperator: number;
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'DB_ENTITY_LID',
-		referencedColumnName: 'DB_ENTITY_LID', nullable: false
-	})
+	@JoinColumn({ name: 'DB_ENTITY_LID', nullable: false })
 	entity: DdlEntity
 
 	@ManyToOne()

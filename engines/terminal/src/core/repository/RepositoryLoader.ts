@@ -6,7 +6,7 @@ import {
     Inject,
     Injected
 } from '@airport/direction-indicator';
-import { IRepository, RepositoryTransactionHistory_GUID, Repository_GUID, SyncRepositoryMessage } from "@airport/ground-control";
+import { IRepository, Repository_GUID, IRepositoryBlock, RepositoryBlock_GUID } from "@airport/ground-control";
 import {
     ISyncTransactionContext,
     ISynchronizationAdapterLoader,
@@ -164,7 +164,7 @@ export class RepositoryLoader
         const synchronizationAdapter = await this.synchronizationAdapterLoader
             .load(repositoryGUID)
 
-        let messages: SyncRepositoryMessage[]
+        let blocks: IRepositoryBlock[]
         try {
             if (lastSyncTimestamp) {
                 // If it's been less than 10 seconds, don't retrieve the repository
@@ -173,31 +173,31 @@ export class RepositoryLoader
                 }
                 // Check 100 seconds back, in case there were update issues
                 lastSyncTimestamp -= 100000
-                messages = await synchronizationAdapter.getTransactionsForRepository(
+                blocks = await synchronizationAdapter.getBlocksForRepository(
                     repositoryGUID, lastSyncTimestamp)
             } else {
-                messages = await synchronizationAdapter.getTransactionsForRepository(
+                blocks = await synchronizationAdapter.getBlocksForRepository(
                     repositoryGUID)
             }
 
-            if (!messages.length) {
+            if (!blocks.length) {
                 return
             }
 
-            // TODO: Add a special message for repository for adding users
+            // TODO: Add a special block for repository for adding users
             // into the repository 
             // each user will have a public key that they will distribute
-            // each message is signed with the private key and the initial
-            // message for repository is CREATE_REPOSITORY with the public 
+            // each block is signed with the private key and the initial
+            // block for repository is CREATE_REPOSITORY with the public 
             // key of the owner user
 
-            const messageMapByGUID: Map<RepositoryTransactionHistory_GUID, SyncRepositoryMessage>
+            const blockMapByGUID: Map<RepositoryBlock_GUID, IRepositoryBlock>
                 = new Map()
-            for (const message of messages) {
-                messageMapByGUID.set(message.data.history.GUID, message)
+            for (const block of blocks) {
+                blockMapByGUID.set(block.GUID, block)
             }
 
-            await this.synchronizationInManager.receiveMessages(messageMapByGUID, context)
+            await this.synchronizationInManager.receiveBlocks(blockMapByGUID, context)
         } catch (e) {
             console.error(e)
         }

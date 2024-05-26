@@ -1,17 +1,17 @@
-import { IOC } from '@airport/direction-indicator';
-import { DatastructureUtils, IApplicationBuilder, ApplicationNameUtils } from '@airport/ground-control';
-import { ILinkingDictionary } from '@airport/ground-control';
+import { IOC } from '@airport/direction-indicator'
+import { DatastructureUtils, IApplicationBuilder, ApplicationNameUtils } from '@airport/ground-control'
+import { ILinkingDictionary } from '@airport/ground-control'
 import {
 	DbEntity,
 	JsonEntity,
-} from '@airport/ground-control';
+} from '@airport/ground-control'
 import {
 	DbColumn,
 	DbProperty,
 	DbRelation,
 	JsonColumn,
 	JsonRelation
-} from '@airport/ground-control';
+} from '@airport/ground-control'
 import {
 	ApplicationStatus,
 	IDomain,
@@ -20,7 +20,7 @@ import {
 	IApplicationReference,
 	IApplicationVersion,
 	JsonApplication,
-} from '@airport/ground-control';
+} from '@airport/ground-control'
 
 export class DdlApplicationBuilder
 	implements IApplicationBuilder {
@@ -32,16 +32,16 @@ export class DdlApplicationBuilder
 		allApplications: IApplication[],
 		dictionary: ILinkingDictionary,
 	): IApplication {
-		const entities = [];
-		const entityMapByName = {};
-		const references = [];
-		const referencedBy = [];
-		const referencedByMapByName = {};
-		const referencesMapByName = {};
+		const entities = []
+		const entityMapByName = {}
+		const references = []
+		const referencedBy = []
+		const referencedByMapByName = {}
+		const referencesMapByName = {}
 		// FIXME: when versioning is added process all application versions
-		const currentJsonApplicationVersion = jsonApplication.versions[0];
-		const versionString = currentJsonApplicationVersion.versionString;
-		const versionParts = versionString.split('.');
+		const currentJsonApplicationVersion = jsonApplication.versions[0]
+		const versionString = currentJsonApplicationVersion.versionString
+		const versionParts = versionString.split('.')
 
 		const dbApplicationVersion: IApplicationVersion = {
 			_localId: null,
@@ -59,7 +59,7 @@ export class DdlApplicationBuilder
 			application: undefined,
 			signature: currentJsonApplicationVersion.signature,
 			versionString,
-		};
+		}
 		const dbApplicationCurrentVersion: IApplicationCurrentVersion = {
 			application: null,
 			applicationVersion: dbApplicationVersion
@@ -68,7 +68,7 @@ export class DdlApplicationBuilder
 			applications: [],
 			_localId: undefined,
 			name: jsonApplication.domain,
-		};
+		}
 
 		const dbApplication: IApplication = {
 			currentVersion: [dbApplicationCurrentVersion],
@@ -81,20 +81,20 @@ export class DdlApplicationBuilder
 			publicSigningKey: jsonApplication.publicSigningKey,
 			status: ApplicationStatus.CURRENT,
 			versions: [dbApplicationVersion]
-		};
-		dbApplicationCurrentVersion.application = dbApplication;
-		dbApplicationVersion.application = dbApplication;
-		allApplications.push(dbApplication);
+		}
+		dbApplicationCurrentVersion.application = dbApplication
+		dbApplicationVersion.application = dbApplication
+		allApplications.push(dbApplication)
 
 		for (const jsonEntity of currentJsonApplicationVersion.entities) {
 			const dbEntity = this.buildDbEntity(
 				jsonApplication, jsonEntity, dictionary,
-				currentJsonApplicationVersion.referencedApplications, dbApplicationVersion);
-			entities[dbEntity.index] = dbEntity;
-			entityMapByName[dbEntity.name] = dbEntity;
+				currentJsonApplicationVersion.referencedApplications, dbApplicationVersion)
+			entities[dbEntity.index] = dbEntity
+			entityMapByName[dbEntity.name] = dbEntity
 		}
 
-		return dbApplication;
+		return dbApplication
 	}
 
 	/**
@@ -111,132 +111,132 @@ export class DdlApplicationBuilder
 	) {
 		// Map referenced applications
 		for (const domain in jsonApplicationMap) {
-			const domainMap: { [applicationName: string]: JsonApplication } = jsonApplicationMap[domain];
-			const dbDomainMap = applicationMap[domain];
+			const domainMap: { [applicationName: string]: JsonApplication } = jsonApplicationMap[domain]
+			const dbDomainMap = applicationMap[domain]
 			if (!dbDomainMap) {
 				if (failOnMissingMappings) {
-					throw new Error(`Domain '${domain}' is not yet available for relation linking.`);
+					throw new Error(`Domain '${domain}' is not yet available for relation linking.`)
 				}
-				continue;
+				continue
 			}
 			for (const applicationName in domainMap) {
-				const ownApplication = dbDomainMap[applicationName];
+				const ownApplication = dbDomainMap[applicationName]
 				if (!ownApplication) {
 					if (failOnMissingMappings) {
 						throw new Error(
-							`Application '${applicationName}' is not yet available for relation linking.`);
+							`Application '${applicationName}' is not yet available for relation linking.`)
 					}
-					continue;
+					continue
 				}
-				const jsonApplication: JsonApplication = domainMap[applicationName];
+				const jsonApplication: JsonApplication = domainMap[applicationName]
 
 				// FIXME: find a way to get the right application version once versioning is added
-				const jsonApplicationVersion = jsonApplication.versions[0];
+				const jsonApplicationVersion = jsonApplication.versions[0]
 				for (const index in jsonApplicationVersion.referencedApplications) {
-					const applicationReference = jsonApplicationVersion.referencedApplications[index];
-					const referencedApplication_Name = applicationReference.name;
-					const referencedDbDomain = applicationMap[applicationReference.domain];
+					const applicationReference = jsonApplicationVersion.referencedApplications[index]
+					const referencedApplication_Name = applicationReference.name
+					const referencedDbDomain = applicationMap[applicationReference.domain]
 					if (!referencedDbDomain) {
 						if (failOnMissingMappings) {
 							throw new Error(
-								`Domain '${applicationReference.domain}' is not yet available for relation linking.`);
+								`Domain '${applicationReference.domain}' is not yet available for relation linking.`)
 						}
-						continue;
+						continue
 					}
-					const referencedApplication = referencedDbDomain[referencedApplication_Name];
+					const referencedApplication = referencedDbDomain[referencedApplication_Name]
 					if (!referencedApplication) {
 						if (failOnMissingMappings) {
 							throw new Error(
-								`Application '${referencedApplication_Name}' is not yet available for relation linking.`);
+								`Application '${referencedApplication_Name}' is not yet available for relation linking.`)
 						}
-						continue;
+						continue
 					}
 					// FIXME: find a way to get the right application version once versioning is added
 					const ownApplicationVersion = ownApplication.currentVersion[0]
-						.applicationVersion;
+						.applicationVersion
 					const referencedApplicationVersion = referencedApplication.currentVersion[0]
-						.applicationVersion;
+						.applicationVersion
 					const dbApplicationReference: IApplicationReference = {
 						index: parseInt(index),
 						ownApplicationVersion,
 						referencedApplicationVersion,
 						sinceVersion: null
-					};
-					ownApplicationVersion.references[index] = dbApplicationReference;
-					referencedApplicationVersion.referencedBy.push(dbApplicationReference);
-					ownApplicationVersion.referencesMapByName[referencedApplication.fullName] = dbApplicationReference;
-					referencedApplicationVersion.referencedByMapByName[ownApplication.fullName] = dbApplicationReference;
+					}
+					ownApplicationVersion.references[index] = dbApplicationReference
+					referencedApplicationVersion.referencedBy.push(dbApplicationReference)
+					ownApplicationVersion.referencesMapByName[referencedApplication.fullName] = dbApplicationReference
+					referencedApplicationVersion.referencedByMapByName[ownApplication.fullName] = dbApplicationReference
 				}
 			}
 		}
 
 		// Map Column Relations
 		for (const domain in dictionary.dbColumnRelationMapByManySide) {
-			const domainMap = dictionary.dbColumnRelationMapByManySide[domain];
+			const domainMap = dictionary.dbColumnRelationMapByManySide[domain]
 			for (const applicationName in domainMap) {
-				const mapForApplication = domainMap[applicationName];
-				const manyApplication = applicationMap[applicationName];
+				const mapForApplication = domainMap[applicationName]
+				const manyApplication = applicationMap[applicationName]
 				if (!manyApplication) {
 					if (failOnMissingMappings) {
 						throw new Error(
-							`Application '${applicationName}' is not yet available for relation linking.`);
+							`Application '${applicationName}' is not yet available for relation linking.`)
 					}
-					continue;
+					continue
 				}
 				for (const entityIndex in mapForApplication) {
-					const mapForEntity = mapForApplication[entityIndex];
-					const manyEntity = manyApplication.entities[entityIndex];
+					const mapForEntity = mapForApplication[entityIndex]
+					const manyEntity = manyApplication.entities[entityIndex]
 					if (!applicationMap) {
 						throw new Error(
-							`Table '${applicationName}.${entityIndex}' is not defined.`);
+							`Table '${applicationName}.${entityIndex}' is not defined.`)
 					}
 					for (const relationIndex in mapForEntity) {
-						const mapForRelation = mapForEntity[relationIndex];
-						const manyRelation = manyEntity.relations[relationIndex];
+						const mapForRelation = mapForEntity[relationIndex]
+						const manyRelation = manyEntity.relations[relationIndex]
 						if (!manyRelation) {
 							throw new Error(
-								`Relation '${applicationName}.${manyEntity.name} - ${relationIndex}' is not defined.`);
+								`Relation '${applicationName}.${manyEntity.name} - ${relationIndex}' is not defined.`)
 						}
 						for (const columnIndex in mapForRelation) {
-							const relationColumnReference = mapForRelation[columnIndex];
-							const oneApplication = applicationMap[relationColumnReference.applicationName];
+							const relationColumnReference = mapForRelation[columnIndex]
+							const oneApplication = applicationMap[relationColumnReference.applicationName]
 							if (!oneApplication) {
 								if (failOnMissingMappings) {
 									throw new Error(
-										`Application '${relationColumnReference.applicationName}' is not yet available for relation linking.`);
+										`Application '${relationColumnReference.applicationName}' is not yet available for relation linking.`)
 								}
-								break;
+								break
 							}
-							const oneEntity = manyApplication.entities[relationColumnReference.entityIndex];
+							const oneEntity = manyApplication.entities[relationColumnReference.entityIndex]
 							if (!oneEntity) {
 								throw new Error(
-									`Table '${relationColumnReference.applicationName}.${relationColumnReference.entityIndex}' is not defined.`);
+									`Table '${relationColumnReference.applicationName}.${relationColumnReference.entityIndex}' is not defined.`)
 							}
-							const oneRelation = manyEntity.relations[relationColumnReference.relationIndex];
+							const oneRelation = manyEntity.relations[relationColumnReference.relationIndex]
 							if (!oneRelation) {
 								throw new Error(
-									`Relation '${relationColumnReference.applicationName}.${oneEntity.name} - ${relationColumnReference.relationIndex}' is not defined.`);
+									`Relation '${relationColumnReference.applicationName}.${oneEntity.name} - ${relationColumnReference.relationIndex}' is not defined.`)
 							}
-							const oneColumn = oneEntity.columns[relationColumnReference.columnIndex];
+							const oneColumn = oneEntity.columns[relationColumnReference.columnIndex]
 							if (!oneColumn) {
 								throw new Error(
-									`Column '${relationColumnReference.applicationName}.${oneEntity.name} - ${relationColumnReference.columnIndex}' is not defined.`);
+									`Column '${relationColumnReference.applicationName}.${oneEntity.name} - ${relationColumnReference.columnIndex}' is not defined.`)
 							}
-							const manyColumn = oneEntity.columns[columnIndex];
+							const manyColumn = oneEntity.columns[columnIndex]
 							if (!manyColumn) {
 								throw new Error(
-									`Column '${applicationName}.${oneEntity.name} - ${columnIndex}' is not defined.`);
+									`Column '${applicationName}.${oneEntity.name} - ${columnIndex}' is not defined.`)
 							}
 							const relationColumn = {
 								manyColumn,
 								oneColumn,
 								manyRelation,
 								oneRelation
-							};
-							manyColumn.manyRelationColumns.push(relationColumn);
-							manyRelation.manyRelationColumns.push(relationColumn);
-							oneColumn.oneRelationColumns.push(relationColumn);
-							oneRelation.oneRelationColumns.push(relationColumn);
+							}
+							manyColumn.manyRelationColumns.push(relationColumn)
+							manyRelation.manyRelationColumns.push(relationColumn)
+							oneColumn.oneRelationColumns.push(relationColumn)
+							oneRelation.oneRelationColumns.push(relationColumn)
 						}
 					}
 				}
@@ -251,13 +251,13 @@ export class DdlApplicationBuilder
 		referencedApplications: JsonApplication[],
 		applicationVersion: IApplicationVersion
 	): DbEntity {
-		const columnMap = {};
-		const columns: DbColumn[] = [];
-		const idColumns: DbColumn[] = [];
-		const idColumnMap = {};
-		const propertyMap = {};
-		const properties: DbProperty[] = [];
-		const relations: DbRelation[] = [];
+		const columnMap = {}
+		const columns: DbColumn[] = []
+		const idColumns: DbColumn[] = []
+		const idColumnMap = {}
+		const propertyMap = {}
+		const properties: DbProperty[] = []
+		const relations: DbRelation[] = []
 		const dbEntity: DbEntity = {
 			columnMap,
 			columns,
@@ -275,7 +275,7 @@ export class DdlApplicationBuilder
 			applicationVersion,
 			sinceVersion: applicationVersion,
 			tableConfig: jsonEntity.tableConfig
-		};
+		}
 
 		jsonEntity.properties.forEach((
 			jsonProperty,
@@ -290,38 +290,38 @@ export class DdlApplicationBuilder
 				name: jsonProperty.name,
 				relation: null,
 				sinceVersion: applicationVersion
-			};
-			propertyMap[jsonProperty.name] = property;
-			properties[index] = property;
-		});
+			}
+			propertyMap[jsonProperty.name] = property
+			properties[index] = property
+		})
 		jsonEntity.properties.sort((
 			a,
 			b
 		) =>
 			a.index < b.index ? -1 : 1
-		);
+		)
 		properties.sort((
 			a,
 			b
 		) =>
 			a.index < b.index ? -1 : 1
-		);
+		)
 
 		jsonEntity.relations.forEach((
 			queryRelation,
 			index
 		) => {
-			const dbProperty = properties[queryRelation.propertyRef.index];
+			const dbProperty = properties[queryRelation.propertyRef.index]
 			const dbRelation = this.buildDbRelation(
-				queryRelation, dbProperty, applicationVersion);
-			relations[index] = dbRelation;
-		});
+				queryRelation, dbProperty, applicationVersion)
+			relations[index] = dbRelation
+		})
 		relations.sort((
 			a,
 			b
 		) =>
 			a.index < b.index ? -1 : 1
-		);
+		)
 
 		jsonEntity.columns.forEach((
 			jsonColumn,
@@ -329,24 +329,24 @@ export class DdlApplicationBuilder
 		) => {
 			const dbColumn = this.buildDbColumn(
 				jsonApplication, jsonEntity, jsonColumn, properties,
-				dictionary, referencedApplications, applicationVersion, dbEntity);
-			columnMap[jsonColumn.name] = dbColumn;
-			columns[index] = dbColumn;
-		});
+				dictionary, referencedApplications, applicationVersion, dbEntity)
+			columnMap[jsonColumn.name] = dbColumn
+			columns[index] = dbColumn
+		})
 		jsonEntity.idColumnRefs.forEach((
 			idColumnRef,
 			index
 		) => {
-			idColumns[index] = columns[idColumnRef.index];
-		});
+			idColumns[index] = columns[idColumnRef.index]
+		})
 		columns.sort((
 			a,
 			b
 		) =>
 			a.index < b.index ? -1 : 1
-		);
+		)
 
-		return dbEntity;
+		return dbEntity
 	}
 
 	private buildDbRelation(
@@ -371,7 +371,7 @@ export class DdlApplicationBuilder
 			sinceVersion: applicationVersion
 			// addToJoinFunction: queryRelation.addToJoinFunction,
 			// joinFunctionWithOperator: queryRelation.joinFunctionWithOperator,
-		};
+		}
 		// if (dbRelation.addToJoinFunction) {
 		// 	dbRelation.whereJoinTable = {
 		// 		addToJoinFunction: new Function('return ' + dbRelation.addToJoinFunction)(),
@@ -379,9 +379,9 @@ export class DdlApplicationBuilder
 		// 			dbRelation.joinFunctionWithOperator === SqlOperator.AND ? and : or,
 		// 	}
 		// }
-		dbProperty.relation = [dbRelation];
+		dbProperty.relation = [dbRelation]
 
-		return dbRelation;
+		return dbRelation
 	}
 
 	/**
@@ -427,46 +427,46 @@ export class DdlApplicationBuilder
 			scale: jsonColumn.scale,
 			sinceVersion: applicationVersion,
 			type: jsonColumn.type
-		};
+		}
 		const propertyColumns = jsonColumn.propertyRefs.map(
 			propertyColumnRef => {
-				const propertyIndex = propertyColumnRef.index;
-				const property = properties[propertyIndex];
+				const propertyIndex = propertyColumnRef.index
+				const property = properties[propertyIndex]
 				return {
 					column: dbColumn,
 					property,
 					sinceVersion: applicationVersion,
-				};
+				}
 			}
-		);
-		dbColumn.propertyColumns = propertyColumns;
+		)
+		dbColumn.propertyColumns = propertyColumns
 
 		jsonColumn.manyRelationColumnRefs.map(
 			relationColumnRef => {
-				const manyIApplicationReference_Index = jsonApplication.index;
-				let manyApplication;
+				const manyIApplicationReference_Index = jsonApplication.index
+				let manyApplication
 				if (manyIApplicationReference_Index === null) {
-					manyApplication = jsonApplication;
+					manyApplication = jsonApplication
 				} else {
-					manyApplication = referencedApplications[manyIApplicationReference_Index];
+					manyApplication = referencedApplications[manyIApplicationReference_Index]
 				}
-				const manyTableIndex = jsonEntity.index;
-				const manyRelationIndex = relationColumnRef.manyRelationIndex;
-				const manyColumnIndex = dbColumn.index;
-				const oneIApplicationReference_Index = relationColumnRef.oneApplication_Index;
-				let oneApplication;
+				const manyTableIndex = jsonEntity.index
+				const manyRelationIndex = relationColumnRef.manyRelationIndex
+				const manyColumnIndex = dbColumn.index
+				const oneIApplicationReference_Index = relationColumnRef.oneApplication_Index
+				let oneApplication
 				if (oneIApplicationReference_Index === null) {
-					oneApplication = jsonApplication;
+					oneApplication = jsonApplication
 				} else {
-					oneApplication = referencedApplications[oneIApplicationReference_Index];
+					oneApplication = referencedApplications[oneIApplicationReference_Index]
 				}
 				if (!oneApplication) {
 					// FIXME: figure out if not having references to nested applications is OK
-					return;
+					return
 				}
-				const oneTableIndex = relationColumnRef.oneTableIndex;
-				const oneRelationIndex = relationColumnRef.oneRelationIndex;
-				const oneColumnIndex = relationColumnRef.oneColumnIndex;
+				const oneTableIndex = relationColumnRef.oneTableIndex
+				const oneRelationIndex = relationColumnRef.oneRelationIndex
+				const oneColumnIndex = relationColumnRef.oneColumnIndex
 
 				const manyRelationColumnMap = this.datastructureUtils.ensureChildMap(
 					this.datastructureUtils.ensureChildMap(
@@ -475,7 +475,7 @@ export class DdlApplicationBuilder
 								dictionary.dbColumnRelationMapByManySide, manyApplication.domain),
 							manyApplication.name),
 						manyTableIndex),
-					manyRelationIndex);
+					manyRelationIndex)
 
 				manyRelationColumnMap[manyColumnIndex] = {
 					domain: oneApplication.domain,
@@ -483,35 +483,35 @@ export class DdlApplicationBuilder
 					entityIndex: oneTableIndex,
 					relationIndex: oneRelationIndex,
 					columnIndex: oneColumnIndex,
-				};
-			});
+				}
+			})
 
 		for (const dbPropertyColumn of propertyColumns) {
-			const property = dbPropertyColumn.property;
+			const property = dbPropertyColumn.property
 			// if (property.relation) {
-			// 	dbColumn.relation = property.relation[0];
+			// 	dbColumn.relation = property.relation[0]
 			// }
 			if (property.isId) {
-				let idIndex;
+				let idIndex
 				jsonEntity.idColumnRefs.some((
 					idColumnRef,
 					index
 				) => {
 					if (idColumnRef.index == jsonColumn.index) {
-						idIndex = index;
-						return true;
+						idIndex = index
+						return true
 					}
-				});
+				})
 				if (!idIndex && idIndex !== 0) {
 					throw new Error(`Could not find column "${jsonColumn.name}" 
-					in @Id column references of entity "${jsonEntity.name}".`);
+					in @Id column references of entity "${jsonEntity.name}".`)
 				}
-				dbColumn.idIndex = idIndex;
+				dbColumn.idIndex = idIndex
 			}
 
-			property.propertyColumns.push(dbPropertyColumn);
+			property.propertyColumns.push(dbPropertyColumn)
 		}
 
-		return dbColumn;
+		return dbColumn
 	}
 }

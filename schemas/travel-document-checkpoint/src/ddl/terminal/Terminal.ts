@@ -46,7 +46,8 @@ export class Terminal
 	@ManyToOne()
 	@JoinColumn({
 		name: 'OWNER_USER_ACCOUNT_LID',
-		referencedColumnName: 'USER_ACCOUNT_LID', nullable: true
+		referencedColumnName: 'USER_ACCOUNT_LID',
+		nullable: true
 	})
 	owner: UserAccount
 
@@ -55,30 +56,18 @@ export class Terminal
 	isLocal: Terminal_IsLocal = false
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'CONTINENT_ID',
-		referencedColumnName: 'CONTINENT_ID', nullable: true
-	})
+	@JoinColumn({ name: 'CONTINENT_ID', nullable: true })
 	continent?: Continent
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'COUNTRY_ID',
-		referencedColumnName: 'COUNTRY_ID', nullable: true
-	})
+	@JoinColumn({ name: 'COUNTRY_ID', nullable: true })
 	country?: Country
 	@ManyToOne()
-	@JoinColumn({
-		name: 'STATE_ID',
-		referencedColumnName: 'STATE_ID', nullable: true
-	})
+	@JoinColumn({ name: 'STATE_ID', nullable: true })
 	state?: State
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'METRO_AREA_ID',
-		referencedColumnName: 'METRO_AREA_ID', nullable: true
-	})
+	@JoinColumn({ name: 'METRO_AREA_ID', nullable: true })
 	metroArea?: MetroArea
 
 	@OneToMany({ mappedBy: 'terminal' })

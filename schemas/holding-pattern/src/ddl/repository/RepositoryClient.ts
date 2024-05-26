@@ -20,18 +20,12 @@ export class RepositoryClient
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({
-		name: 'REPOSITORY_LID',
-		referencedColumnName: 'REPOSITORY_LID'
-	})
+	@JoinColumn({ name: 'REPOSITORY_LID' })
 	repository: Repository
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({
-		name: 'CLIENT_LID',
-		referencedColumnName: 'CLIENT_LID'
-	})
+	@JoinColumn({ name: 'CLIENT_LID' })
 	client: Client
 
 }

@@ -388,19 +388,16 @@ parent transactions.
 				)
 
 				if (!transaction.isRepositorySync) {
-					const {
-						historiesToSend,
-						messages
-					} = await this.synchronizationOutManager.getSynchronizationMessages(
-						transactionHistory.repositoryTransactionHistories, repositoryMapByLid, context
+					const blocks = await this.synchronizationOutManager.getSynchronizationBlocks(
+						transactionHistory.repositoryTransactionHistories, repositoryMapByLid,
+						context
 					)
 
 					await transaction.commit(null, context)
 
 					if (transactionHistory.allRecordHistory.length) {
-						await this.synchronizationOutManager.sendMessages(
-							historiesToSend,
-							messages,
+						await this.synchronizationOutManager.sendBlocks(
+							blocks,
 							context
 						)
 					}

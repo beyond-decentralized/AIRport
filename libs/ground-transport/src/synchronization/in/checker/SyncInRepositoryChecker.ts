@@ -6,7 +6,7 @@ import {
 import {
 	IRepositoryDao, RepositoryMemberDao
 } from '@airport/holding-pattern/dist/app/bundle'
-import { InMessageIndex, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Signature, RepositoryMember_Status, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, Repository_LocalId, UserAccount_Signature, Dictionary, IDatastructureUtils } from '@airport/ground-control';
+import { InMessageIndex, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, RepositoryMemberInvitation_PublicSigningKey, RepositoryMember_PublicSigningKey, RepositoryMember_Signature, RepositoryMember_Status, IRepositoryBlock, Repository_GUID, Repository_LocalId, UserAccount_Signature, Dictionary, IDatastructureUtils } from '@airport/ground-control';
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
 
 export interface IRepositoriesAndMembersCheckResult
@@ -32,7 +32,7 @@ export interface ISignatureCheck {
 export interface ISyncInRepositoryChecker {
 
 	checkRepositoriesAndMembers(
-		message: SyncRepositoryMessage,
+		block: IRepositoryBlock,
 		addedRepositoryMapByGUID: Map<Repository_GUID, IRepository>,
 		addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey: Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>>,
 		context: IContext
@@ -57,7 +57,7 @@ export class SyncInRepositoryChecker
 	repositoryMemberDao: RepositoryMemberDao
 
 	async checkRepositoriesAndMembers(
-		message: SyncRepositoryMessage,
+		block: any, // IRepositoryBlock,
 		addedRepositoryMapByGUID: Map<Repository_GUID, IRepository>,
 		addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey: Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>>,
 		context: IContext
@@ -72,25 +72,25 @@ export class SyncInRepositoryChecker
 		let repositoryGUID: Repository_GUID
 
 		try {
-			const data = message.data
+			const data = block.data
 			let repositoryGUIDs: Repository_GUID[] = []
-			let messageRepositoryIndexMap: Map<Repository_GUID, number> = new Map()
+			let blockRepositoryIndexMap: Map<Repository_GUID, number> = new Map()
 			for (let i = 0; i < data.referencedRepositories.length; i++) {
 				this.checkRepository(
 					data.referencedRepositories[i],
 					i,
 					repositoryGUIDs,
-					messageRepositoryIndexMap,
+					blockRepositoryIndexMap,
 					data
 				)
 			}
 			const history = data.history
 			if (typeof history !== 'object') {
-				throw new Error(`message.data.history is not an object`)
+				throw new Error(`block.data.history is not an object`)
 			}
 			let historyRepository = history.repository
-			const repositoryErrorPrefix = `Serialized SyncRepositoryData.history.repository should be`
-			const isRepositoryCreationEqualityErrorPrefix = `if SyncRepositoryData.history.isRepositoryCreation ===`
+			const repositoryErrorPrefix = `Serialized IRTHWithDependencies.history.repository should be`
+			const isRepositoryCreationEqualityErrorPrefix = `if IRTHWithDependencies.history.isRepositoryCreation ===`
 			if (history.isRepositoryCreation) {
 				if (typeof historyRepository !== 'object') {
 					throw new Error(`${repositoryErrorPrefix} an object
@@ -100,7 +100,7 @@ export class SyncInRepositoryChecker
 					historyRepository,
 					null,
 					repositoryGUIDs,
-					messageRepositoryIndexMap,
+					blockRepositoryIndexMap,
 					data
 				)
 				repositoryGUID = historyRepository.GUID
@@ -123,9 +123,9 @@ export class SyncInRepositoryChecker
 			const foundRepositories = await this.repositoryDao.findByGUIDs(
 				repositoryGUIDs, context)
 			for (const foundRepository of foundRepositories) {
-				const messageRepositoryIndex = messageRepositoryIndexMap.get(foundRepository.GUID)
-				if (messageRepositoryIndex || messageRepositoryIndex === 0) {
-					data.referencedRepositories[messageRepositoryIndex] = foundRepository
+				const blockRepositoryIndex = blockRepositoryIndexMap.get(foundRepository.GUID)
+				if (blockRepositoryIndex || blockRepositoryIndex === 0) {
+					data.referencedRepositories[blockRepositoryIndex] = foundRepository
 				} else {
 					if (history.isRepositoryCreation) {
 						if (foundRepository.GUID === historyRepository.GUID) {
@@ -156,9 +156,9 @@ export class SyncInRepositoryChecker
 			}
 
 			for (const [repositoryGUID, repository] of addedRepositoryMapByGUID) {
-				const messageRepositoryIndex = messageRepositoryIndexMap.get(repositoryGUID)
-				if (messageRepositoryIndex || messageRepositoryIndex === 0) {
-					data.referencedRepositories[messageRepositoryIndex] = repository
+				const blockRepositoryIndex = blockRepositoryIndexMap.get(repositoryGUID)
+				if (blockRepositoryIndex || blockRepositoryIndex === 0) {
+					data.referencedRepositories[blockRepositoryIndex] = repository
 				}
 			}
 
@@ -184,8 +184,8 @@ export class SyncInRepositoryChecker
 			if (typeof historyRepository !== 'object') {
 				throw new Error(`Repository with GUID ${historyRepository} is not
 	present and cannot be synced
-	This SyncRepositoryData is for an existing repository and that
-	repository must already be loaded in this database for this message to be
+	This IRTHWithDependencies is for an existing repository and that
+	repository must already be loaded in this database for this block to be
 	processed.`)
 			} else {
 				if (!repositoryAddedInAnEarlierIncomingMessage
@@ -198,7 +198,7 @@ export class SyncInRepositoryChecker
 				.ensureChildJsMap(addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey,
 					repositoryGUID)
 			addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey
-			const memberCheckResult = await this.checkRepositoryMembers(message,
+			const memberCheckResult = await this.checkRepositoryMembers(block,
 				historyRepository, repositoryAddedInAnEarlierIncomingMessage,
 				addedRepositoryMembersByPublicSigningKey, context)
 			signatureChecks = memberCheckResult.signatureChecks
@@ -228,7 +228,7 @@ export class SyncInRepositoryChecker
 	}
 
 	private async checkRepositoryMembers(
-		message: SyncRepositoryMessage,
+		block: any, // IRepositoryBlock,
 		historyRepository: IRepository,
 		repositoryAddedInAnEarlierIncomingMessage: boolean,
 		addedRepositoryMembersByPublicSigningKey: Map<RepositoryMember_PublicSigningKey, IRepositoryMember>,
@@ -239,7 +239,7 @@ export class SyncInRepositoryChecker
 		newRepositoryMemberInvitations: IRepositoryMemberInvitation[]
 		signatureChecks?: ISignatureCheck[]
 	}> {
-		const data = message.data
+		const data = block.data
 		const repositoryMemberInMessageIndexMap = this
 			.getRepositoryMemberInMessageIndexMap(data)
 
@@ -263,7 +263,7 @@ export class SyncInRepositoryChecker
 			!!newRepositoryMemberInvitations.length)
 
 		const signatureChecks = this.getPublicSigningKeysAndSignatureToCheck(
-			message, isNewRepositoryMemberAcceptanceMessage)
+			block, isNewRepositoryMemberAcceptanceMessage)
 
 		data.history.newRepositoryMembers = []
 		data.history.newRepositoryMemberAcceptances = []
@@ -281,7 +281,7 @@ export class SyncInRepositoryChecker
 	}
 
 	private async checkRepositoryMemberUserAccounts(
-		data: SyncRepositoryData,
+		data: any, // IRTHWithDependencies,
 		isNewRepositoryMemberAcceptanceMessage: boolean,
 		isNewRepositoryMemberInvitationMessage: boolean
 	): Promise<void> {
@@ -293,7 +293,7 @@ export class SyncInRepositoryChecker
 				const userAccount = data.userAccounts[repositoryMember.userAccount as any]
 				if (!userAccount) {
 					throw new Error(`UserAccount with index ${repositoryMember.userAccount} referenced in
-message.data.repositoryMembers[${i}].userAccount does not exist in the message`)
+block.data.repositoryMembers[${i}].userAccount does not exist in the block`)
 				}
 				repositoryMember.userAccount = userAccount
 			}
@@ -301,14 +301,14 @@ message.data.repositoryMembers[${i}].userAccount does not exist in the message`)
 
 		if (!history.member.userAccount) {
 			throw new Error(`UserAccount with index ${history.member.userAccount} referenced in
-message.data.history.member.userAccount does not exist in the message`)
+block.data.history.member.userAccount does not exist in the block`)
 		}
 
 		if (isNewRepositoryMemberInvitationMessage) {
 			for (let i = 0; i < history.newRepositoryMemberInvitations.length; i++) {
 				const newRepositoryMemberInvitation = history.newRepositoryMemberInvitations[i]
 				if (newRepositoryMemberInvitation.invitedRepositoryMember.userAccount) {
-					throw new Error(`message.data.history.newRepositoryMemberInvitations[${i}] has a specified
+					throw new Error(`block.data.history.newRepositoryMemberInvitations[${i}] has a specified
 specifies .invitedRepositoryMember.userAccount
 Invited repository members cannot have a UserAccount specified`)
 				}
@@ -317,14 +317,14 @@ Invited repository members cannot have a UserAccount specified`)
 
 		if (isNewRepositoryMemberAcceptanceMessage) {
 			if (!history.newRepositoryMemberAcceptances[0].acceptingRepositoryMember.userAccount) {
-				throw new Error(`message.data.history.newRepositoryMemberAcceptances[0] must have
+				throw new Error(`block.data.history.newRepositoryMemberAcceptances[0] must have
 a acceptingRepositoryMember.userAccount specified.`)
 			}
 		}
 	}
 
 	private isNewRepositoryMemberAcceptanceMessage(
-		data: SyncRepositoryData,
+		data: any, // IRTHWithDependencies,
 		repositoryMember: IRepositoryMember
 	): IRepositoryMemberAcceptance {
 		const history = data.history
@@ -392,7 +392,7 @@ a acceptingRepositoryMember.userAccount specified.`)
 	}
 
 	private getNewRepositoryMemberInvitations(
-		data: SyncRepositoryData,
+		data: any, // IRTHWithDependencies,
 		repositoryMember: IRepositoryMember,
 		newMembers: IRepositoryMember[]
 	): IRepositoryMemberInvitation[] {
@@ -434,8 +434,8 @@ a acceptingRepositoryMember.userAccount specified.`)
 			const invitedRepositoryMember = data.repositoryMembers[newRepositoryMemberInvitation.invitedRepositoryMember]
 
 			if (!invitedRepositoryMember) {
-				throw new Error(`Invited repository member with in-message index ${newRepositoryMemberInvitation.invitedRepositoryMember}
-is not present in the message.`)
+				throw new Error(`Invited repository member with in-block index ${newRepositoryMemberInvitation.invitedRepositoryMember}
+is not present in the block.`)
 			}
 
 			if (invitedRepositoryMember.memberPublicSigningKey === repositoryMember.memberPublicSigningKey) {
@@ -487,7 +487,7 @@ is not present in the message.`)
 	}
 
 	private getRepositoryMemberInMessageIndexMap(
-		data: SyncRepositoryData
+		data: any, // IRTHWithDependencies
 	): Map<RepositoryMember_PublicSigningKey, InMessageIndex> {
 		const repositoryMemberInMessageIndexMap:
 			Map<RepositoryMember_PublicSigningKey, InMessageIndex> = new Map()
@@ -528,7 +528,7 @@ is not present in the message.`)
 	}
 
 	private async getRepositoryMember(
-		data: SyncRepositoryData,
+		data: any, // IRTHWithDependencies,
 		historyRepository: IRepository,
 		repositoryAddedInAnEarlierIncomingMessage: boolean,
 		addedRepositoryMembersByPublicSigningKey:
@@ -547,11 +547,11 @@ is not present in the message.`)
 				if (!repositoryMemberAddedInAnEarlierIncomingMessage) {
 					if (typeof repositoryMember.userAccount === 'undefined') {
 						throw new Error(`Did not find are RepositoryMember
-in an earlier (currently) incoming message for a repository was added in an
-earlier incoming message`)
+in an earlier (currently) incoming block for a repository was added in an
+earlier incoming block`)
 					} else {
 						if (newRepositoryMember) {
-							throw new Error(`Only one member can be added per message`)
+							throw new Error(`Only one member can be added per block`)
 						}
 						newRepositoryMember = repositoryMember
 						addedRepositoryMembersByPublicSigningKey
@@ -569,7 +569,7 @@ earlier incoming message`)
 				.findByMemberPublicSigningKeys(memberPublicSigningKeys, context)
 		}
 
-		let messageRepositoryMember: IRepositoryMember
+		let blockRepositoryMember: IRepositoryMember
 		const history = data.history
 		if (history.isRepositoryCreation) {
 			if (exisingMessageRepositoryMembers.length) {
@@ -580,33 +580,33 @@ earlier incoming message`)
 			newRepositoryMember = data.repositoryMembers[history.member as any]
 			this.checkRepositoryMembershipFlags(newRepositoryMember,
 				`history.member`, false, historyRepository)
-			messageRepositoryMember = newRepositoryMember
+			blockRepositoryMember = newRepositoryMember
 			newMembers.push(newRepositoryMember)
 		} else {
-			messageRepositoryMember = exisingMessageRepositoryMembers[0]
+			blockRepositoryMember = exisingMessageRepositoryMembers[0]
 		}
 
 		const repositoryMemberInMessageIndex = repositoryMemberInMessageIndexMap.get(
-			messageRepositoryMember.memberPublicSigningKey)
+			blockRepositoryMember.memberPublicSigningKey)
 		if (history.member as any !== repositoryMemberInMessageIndex) {
 			throw new Error(`history.member does not already exist in the Repository`)
 		}
 
-		history.member = messageRepositoryMember
-		data.repositoryMembers[repositoryMemberInMessageIndex] = messageRepositoryMember
+		history.member = blockRepositoryMember
+		data.repositoryMembers[repositoryMemberInMessageIndex] = blockRepositoryMember
 		addedRepositoryMembersByPublicSigningKey
-			.set(messageRepositoryMember.memberPublicSigningKey, messageRepositoryMember)
+			.set(blockRepositoryMember.memberPublicSigningKey, blockRepositoryMember)
 
-		return messageRepositoryMember
+		return blockRepositoryMember
 	}
 
 	private getPublicSigningKeysAndSignatureToCheck(
-		message: SyncRepositoryMessage,
+		block: any, // IRepositoryBlock,
 		isNewRepositoryMemberAcceptanceMessage: boolean
 	): ISignatureCheck[] {
 		const signatureChecks: ISignatureCheck[] = []
 
-		const history = message.data.history
+		const history = block.data.history
 
 		// Operation history may not be present if its
 		// a RepositoryMember-only operation
@@ -618,21 +618,21 @@ earlier incoming message`)
 		signatureChecks.push({
 			publicSigningKey: history.member.memberPublicSigningKey,
 			signatureName: 'memberSignature',
-			signatureToCheck: message.memberSignature
+			signatureToCheck: block.memberSignature
 		})
 		if (isNewRepositoryMemberAcceptanceMessage) {
 			signatureChecks.push({
-				publicSigningKey: message.data.history
+				publicSigningKey: block.data.history
 					.newRepositoryMemberAcceptances[0].invitationPublicSigningKey,
 				signatureName: 'acceptanceSignature',
-				signatureToCheck: message.acceptanceSignature
+				signatureToCheck: block.acceptanceSignature
 			})
 		}
 		if (isNewRepositoryMemberAcceptanceMessage || history.isRepositoryCreation) {
 			signatureChecks.push({
 				publicSigningKey: history.member.userAccount.accountPublicSigningKey,
 				signatureName: 'userAccountSignature',
-				signatureToCheck: message.userAccountSignature
+				signatureToCheck: block.userAccountSignature
 			})
 		}
 
@@ -643,8 +643,8 @@ earlier incoming message`)
 		repository: IRepository,
 		repositoryIndex: number,
 		repositoryGUIDs: string[],
-		messageRepositoryIndexMap: Map<string, number>,
-		message: SyncRepositoryData
+		blockRepositoryIndexMap: Map<string, number>,
+		block: any // IRTHWithDependencies
 	): void {
 		if (typeof repository.ageSuitability !== 'number') {
 			throw new Error(`Invalid 'repository.ageSuitability'`)
@@ -669,7 +669,7 @@ earlier incoming message`)
 			throw new Error(`Invalid 'repository.GUID'`)
 		}
 		if (typeof repository.owner !== 'number') {
-			throw new Error(`Expecting "in-message index" (number)
+			throw new Error(`Expecting "in-block index" (number)
 				in 'repository.owner'`)
 		}
 		if (typeof repository.isPublic !== 'boolean') {
@@ -678,17 +678,17 @@ earlier incoming message`)
 		if (typeof repository.isLoaded !== 'undefined') {
 			throw new Error(`'repository.isLoaded' cannot be specified`)
 		}
-		const userAccount = message.userAccounts[repository.owner as any]
+		const userAccount = block.userAccounts[repository.owner as any]
 		if (!userAccount) {
 			throw new Error(
-				`Did not find repository.owner (UserAccount) with "in-message index" ${repository.owner}`);
+				`Did not find repository.owner (UserAccount) with "in-block index" ${repository.owner}`);
 		}
 		repository.isLoaded = true
 		repository.owner = userAccount
 
 		repositoryGUIDs.push(repository.GUID)
 		if (typeof repositoryIndex === 'number') {
-			messageRepositoryIndexMap.set(repository.GUID, repositoryIndex)
+			blockRepositoryIndexMap.set(repository.GUID, repositoryIndex)
 		}
 		// Make sure id field is not in the input
 		delete repository._localId

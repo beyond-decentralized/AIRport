@@ -1,14 +1,14 @@
 import {
 	SQLDialect,
 	SqlStoreDriver
-} from '@airport/fuel-hydrant-system';
-import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
-import { Query } from '@airport/ground-control';
+} from '@airport/fuel-hydrant-system'
+import { IFuelHydrantContext } from '@airport/fuel-hydrant-system'
+import { Query } from '@airport/ground-control'
 import {
 	IOperationContext,
 	ITransaction,
 	ITransactionContext
-} from '@airport/terminal-map';
+} from '@airport/terminal-map'
 
 export class NoOpSqlDriver
 	extends SqlStoreDriver {
@@ -17,7 +17,7 @@ export class NoOpSqlDriver
 		tableName: string,
 		context: IOperationContext
 	): string {
-		return '';
+		return ''
 	}
 
 	doesTableExist(
@@ -25,7 +25,7 @@ export class NoOpSqlDriver
 		tableName: string,
 		context: IOperationContext
 	): Promise<boolean> {
-		return Promise.resolve(false);
+		return Promise.resolve(false)
 	}
 
 	dropTable(
@@ -33,7 +33,7 @@ export class NoOpSqlDriver
 		tableName: string,
 		context: IOperationContext
 	): Promise<boolean> {
-		return Promise.resolve(false);
+		return Promise.resolve(false)
 	}
 
 	findNative(
@@ -41,14 +41,14 @@ export class NoOpSqlDriver
 		parameters: any[],
 		context: IOperationContext
 	): Promise<any[]> {
-		return Promise.resolve([]);
+		return Promise.resolve([])
 	}
 
 	initialize(
 		dbName: string,
 		context: IOperationContext
 	): Promise<any> {
-		return Promise.resolve(undefined);
+		return Promise.resolve(undefined)
 	}
 
 	isValueValid(
@@ -56,7 +56,7 @@ export class NoOpSqlDriver
 		sqlDataType,
 		context: IOperationContext
 	): boolean {
-		return false;
+		return false
 	}
 
 	query(
@@ -66,7 +66,7 @@ export class NoOpSqlDriver
 		context: IOperationContext,
 		saveTransaction?: boolean
 	): Promise<any> {
-		return Promise.resolve(undefined);
+		return Promise.resolve(undefined)
 	}
 
 	async startTransaction(
@@ -117,13 +117,13 @@ export class NoOpSqlDriver
 		parameters: any[],
 		context: IOperationContext
 	): Promise<number> {
-		return Promise.resolve(0);
+		return Promise.resolve(0)
 	}
 
 	protected getDialect(
 		context: IOperationContext
 	): SQLDialect {
-		return undefined;
+		return undefined
 	}
 
 }

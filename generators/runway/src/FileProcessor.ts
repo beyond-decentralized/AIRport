@@ -4,9 +4,11 @@ import { visitDaoFile } from './dao/parser/OperationGenerator'
 import { Configuration } from './ddl/options/Options'
 import { EntityCandidate } from './ddl/parser/EntityCandidate'
 import {
-	GLOBAL_CANDIDATES,
 	visitEntityFile
 } from './ddl/parser/EntityDefinitionGenerator'
+import {
+	GLOBAL_CANDIDATES
+} from './ddl/parser/EntityCandidateRegistry'
 import { getClassPath } from './ddl/parser/utils'
 import tsc from 'typescript'
 import { visitApiFile } from './api/parser/ApiGenerator'
@@ -73,7 +75,7 @@ export async function generateDefinitions(
 	}
 
 	// print out the doc
-	// fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4));
+	// fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4))
 
 	const entityCandidateMap = await GLOBAL_CANDIDATES.registry
 		.matchVerifiedEntities()

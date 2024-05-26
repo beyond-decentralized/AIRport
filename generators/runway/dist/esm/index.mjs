@@ -94,13 +94,13 @@ function verifyConfiguration(options) {
     if (!options.airport.ddlDir) {
         options.airport.ddlDir = 'src/ddl';
         // 	throw new Error(
-        // 	`"airport.ddlDir" configuration property must be specified in package.json.`);
+        // 	`"airport.ddlDir" configuration property must be specified in package.json.`)
     }
     options.airport.ddlDir = path.normalize(options.airport.ddlDir);
     if (!options.airport.generatedDir) {
         options.airport.generatedDir = 'src/generated';
         // 	throw new Error(
-        // 	`"airport.generatedDir" configuration property must be specified in package.json.`);
+        // 	`"airport.generatedDir" configuration property must be specified in package.json.`)
     }
     options.airport.generatedDir = path.normalize(options.airport.generatedDir);
     if (!options.airport.daoDir) {
@@ -120,9 +120,9 @@ function verifyConfiguration(options) {
         options.airport.node_modulesLinks = node_modulesLinks;
     }
     // if (!node_modulesLinks.pathToProject) {
-    // 	node_modulesLinks.pathToProject = options.airport.ddlDir;
+    // 	node_modulesLinks.pathToProject = options.airport.ddlDir
     // } else {
-    // 	node_modulesLinks.pathToProject = node_modulesLinks.pathToProject + '/' + options.airport.ddlDir;
+    // 	node_modulesLinks.pathToProject = node_modulesLinks.pathToProject + '/' + options.airport.ddlDir
     // }
 }
 
@@ -765,7 +765,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$o(decorators, target, key, desc) {
+function __decorate$n(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -796,7 +796,7 @@ let ContainerAccessor = class ContainerAccessor {
         return iocContainer;
     }
 };
-ContainerAccessor = __decorate$o([
+ContainerAccessor = __decorate$n([
     Injected()
 ], ContainerAccessor);
 
@@ -880,7 +880,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$n(decorators, target, key, desc) {
+function __decorate$m(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -998,6 +998,17 @@ let Dictionary = class Dictionary {
                         },
                         RepositoryMemberUpdate: {
                             name: 'RepositoryMemberUpdate'
+                        }
+                    }
+                },
+                LAYOVER: {
+                    name: '@airport/layover',
+                    entities: {
+                        EntityQuery: {
+                            name: 'EntityQuery',
+                            columns: {
+                                ID: 'ID'
+                            }
                         }
                     }
                 },
@@ -1194,7 +1205,7 @@ let Dictionary = class Dictionary {
             && dbEntity.name === entity.name;
     }
 };
-Dictionary = __decorate$n([
+Dictionary = __decorate$m([
     Injected()
 ], Dictionary);
 
@@ -1626,7 +1637,7 @@ let ApplicationNameUtils = class ApplicationNameUtils {
         return `${prefixedTableName}_${columnName}__SEQUENCE`;
     }
 };
-ApplicationNameUtils = __decorate$n([
+ApplicationNameUtils = __decorate$m([
     Injected()
 ], ApplicationNameUtils);
 
@@ -1896,7 +1907,7 @@ class AppTrackerUtils {
         return false;
     }
 }
-__decorate$n([
+__decorate$m([
     Inject()
 ], AppTrackerUtils.prototype, "dictionary", void 0);
 
@@ -1963,10 +1974,10 @@ From:
         }
     }
 };
-__decorate$n([
+__decorate$m([
     Inject()
 ], ApplicationReferenceUtils.prototype, "appTrackerUtils", void 0);
-ApplicationReferenceUtils = __decorate$n([
+ApplicationReferenceUtils = __decorate$m([
     Injected()
 ], ApplicationReferenceUtils);
 
@@ -2028,7 +2039,7 @@ let DatastructureUtils = class DatastructureUtils {
         return value === undefined ? null : value;
     }
 };
-DatastructureUtils = __decorate$n([
+DatastructureUtils = __decorate$m([
     Injected()
 ], DatastructureUtils);
 
@@ -2216,8 +2227,8 @@ function visitDaoFile(node, path) {
                 break;
             }
             // case tsc.SyntaxKind.ImplementsKeyword: {
-            // 	const interfaceName = (heritageClause.types[0].expression as any).escapedText;
-            // 	break;
+            // 	const interfaceName = (heritageClause.types[0].expression as any).escapedText
+            // 	break
             // }
         }
     }
@@ -2243,7 +2254,7 @@ function serializeClass$2(symbol, daoName, entityName) {
     // 	// No more directly explosed Dao methods, instead
     // 	// parameters of @API() methods will in the future be
     // 	// checked structurally
-    // 	return;
+    // 	return
     // }
     forEach$1(symbol.members, (memberName, member) => {
         if (!member.valueDeclaration) {
@@ -2251,11 +2262,11 @@ function serializeClass$2(symbol, daoName, entityName) {
         }
         switch (member.valueDeclaration.kind) {
             // case tsc.SyntaxKind.MethodDeclaration:
-            // 	serializeMethod(symbol, daoName, entityName, memberName, member, daoOperations);
-            // 	break;
+            // 	serializeMethod(symbol, daoName, entityName, memberName, member, daoOperations)
+            // 	break
             case tsc__default.SyntaxKind.PropertyDeclaration:
                 // NOTE: all queries are done in code, query serialization is no longer needed
-                // serializeProperty(symbol, daoName, entityName, memberName, member, daoOperations);
+                // serializeProperty(symbol, daoName, entityName, memberName, member, daoOperations)
                 break;
         }
     });
@@ -2795,7 +2806,7 @@ class DdlApplicationBuilder {
         for (const dbPropertyColumn of propertyColumns) {
             const property = dbPropertyColumn.property;
             // if (property.relation) {
-            // 	dbColumn.relation = property.relation[0];
+            // 	dbColumn.relation = property.relation[0]
             // }
             if (property.isId) {
                 let idIndex;
@@ -2872,7 +2883,7 @@ class ApplicationLoader {
         // this.configuration.airport.node_modulesLinks.pathsToReferencedApplications let
         // relatedApplicationProject if (pathsToReferencedApplications &&
         // pathsToReferencedApplications[projectName]) { let referencedApplicationRelativePath =
-        // '../../' + pathsToReferencedApplications[projectName] for (let i = 0; i < 10; i++) {
+        // '../../' + pathsToReferencedApplications[projectName] for (let i = 0 i < 10 i++) {
         // referencedApplicationRelativePath = '../' + referencedApplicationRelativePath let
         // pathToApplication             =
         // getFullPathFromRelativePath(referencedApplicationRelativePath, __filename) if
@@ -3068,6 +3079,18 @@ function startsWith(target, suffix) {
 /**
  * Created by Papa on 3/27/2016.
  */
+class GlobalCandidates {
+    constructor() {
+        this.inheritanceMap = new Map();
+    }
+    get registry() {
+        if (!this._registry) {
+            this._registry = new EntityCandidateRegistry();
+        }
+        return this._registry;
+    }
+}
+const GLOBAL_CANDIDATES = new GlobalCandidates();
 class EntityCandidateRegistry {
     constructor() {
         this.entityCandidateMap = new Map();
@@ -3219,7 +3242,7 @@ Non @Transient properties cannot be object maps.`);
                     const objectMapValueFragment = objectMapFragments[objectMapFragments.length - 1];
                     property.mapValueType = objectMapValueFragment
                         .replace('}', '')
-                        .replace(';', '')
+                        .replace('', '')
                         .trim();
                     type = property.mapValueType;
                     property.mapValueIsPrimitive = isPrimitive(type);
@@ -3330,7 +3353,7 @@ Did you forget to decorate it with @Entity()?`);
         let relatedMappedSuperclassesProject;
         // if (pathsToReferencedApplications && pathsToReferencedApplications[projectName]) {
         // 	let referencedApplicationRelativePath = '../../' +
-        // pathsToReferencedApplications[projectName] for (let i = 0; i < 10; i++) {
+        // pathsToReferencedApplications[projectName] for (let i = 0 i < 10 i++) {
         // referencedApplicationRelativePath = '../' + referencedApplicationRelativePath let
         // pathToMappedSuperclasses =
         // getFullPathFromRelativePath(referencedApplicationRelativePath, __filename) if
@@ -3486,18 +3509,6 @@ Entity file source rule violation:
 /**
  * Created by Papa on 3/26/2016.
  */
-class GlobalCandidates {
-    constructor() {
-        this.inheritanceMap = new Map();
-    }
-    get registry() {
-        if (!this._registry) {
-            this._registry = new EntityCandidateRegistry();
-        }
-        return this._registry;
-    }
-}
-const GLOBAL_CANDIDATES = new GlobalCandidates();
 var TsObjectType;
 (function (TsObjectType) {
     TsObjectType["OBJECT_LITERAL"] = "OBJECT_LITERAL";
@@ -3560,7 +3571,7 @@ ${path}
     }
     else if (node.kind === tsc__default.SyntaxKind.ModuleDeclaration) {
         // This is a namespace, visit its children
-        // tsc.forEachChild(node, visit);
+        // tsc.forEachChild(node, visit)
         throw new Error(`Namespaces are not supported in DDL.`);
     }
     else if (node.kind === tsc__default.SyntaxKind.EnumDeclaration) {
@@ -3884,42 +3895,42 @@ function parseObjectProperty(initializer, objectType, objectName) {
                 });
                 /*
                 TODO: rethink how we can import @WhereJoinTable code
-                const fileImports = [];
+                const fileImports = []
                 for (let filePath in currentFileImports.importMapByModulePath) {
-                    const moduleImport = currentFileImports.importMapByModulePath[filePath];
+                    const moduleImport = currentFileImports.importMapByModulePath[filePath]
                     if (moduleImport.isLocal) {
-                        continue;
+                        continue
                     }
-                    let importsFromFile = [];
+                    let importsFromFile = []
                     for (let asName in moduleImport.objectMapByAsName) {
-                        const importedObject = moduleImport.objectMapByAsName[asName];
+                        const importedObject = moduleImport.objectMapByAsName[asName]
                         if (importedObject.asName === importedObject.sourceName) {
-                            importsFromFile.push(importedObject.asName);
+                            importsFromFile.push(importedObject.asName)
                         } else {
-                            importsFromFile.push(`${importedObject.sourceName} as ${importedObject.asName}`);
+                            importsFromFile.push(`${importedObject.sourceName} as ${importedObject.asName}`)
                         }
                     }
-                    const importsFragment = importsFromFile.join(', ');
-                    const importStatement = `import { ${importsFragment} } from '${moduleImport.path}';`;
-                    fileImports.push(importStatement);
+                    const importsFragment = importsFromFile.join(', ')
+                    const importStatement = `import { ${importsFragment} } from '${moduleImport.path}'`
+                    fileImports.push(importStatement)
                 }
-                const globalImports = fileImports.join('\r\n');
+                const globalImports = fileImports.join('\r\n')
 
-                const typescriptDefinition = printer.printNode(ts.EmitHint.Expression, initializer, currentSourceFile);
+                const typescriptDefinition = printer.printNode(ts.EmitHint.Expression, initializer, currentSourceFile)
                 const whereJoinTableFunction =
-                    `const WhereJoinTableFunction = (${typescriptDefinition});`;
+                    `const WhereJoinTableFunction = (${typescriptDefinition})`
 
                 const tempFile = `${globalImports}
 
 ${whereJoinTableFunction}
-export default WhereJoinTableFunction`;
+export default WhereJoinTableFunction`
 
-                const compilerOptions = {module: ts.ModuleKind.CommonJS};
+                const compilerOptions = {module: ts.ModuleKind.CommonJS}
                 const transpilationResult = tsc.transpileModule(tempFile, {
                     compilerOptions: compilerOptions,
                     moduleName: "WhereJoinTableModule"
-                });
-                value = transpilationResult.outputText;
+                })
+                value = transpilationResult.outputText
                 */
                 // For now allow only and, or & not functions and everything from
                 // airport reference (and nothing else)
@@ -4223,7 +4234,7 @@ function serializeMethod(symbol, className, name, member) {
     if (!isApiMethod) {
         return;
     }
-    // const name: string = member.escapedName as any;
+    // const name: string = member.escapedName as any
     const declaration = member.valueDeclaration;
     const parameters = [];
     for (const parameter of declaration.parameters) {
@@ -4286,7 +4297,7 @@ async function generateDefinitions(fileNames, options, configuration, applicatio
         tsc__default.forEachChild(sourceFile, visit);
     }
     // print out the doc
-    // fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4));
+    // fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4))
     const entityCandidateMap = await GLOBAL_CANDIDATES.registry
         .matchVerifiedEntities();
     for (const additionalFileProcessor of additionalFileProcessors) {
@@ -4557,7 +4568,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$m(decorators, target, key, desc) {
+function __decorate$l(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -5491,16 +5502,16 @@ let QEntityUtils = QEntityUtils_1 = class QEntityUtils {
         return addToObject;
     }
 };
-__decorate$m([
+__decorate$l([
     Inject()
 ], QEntityUtils.prototype, "applicationUtils", void 0);
-__decorate$m([
+__decorate$l([
     Inject()
 ], QEntityUtils.prototype, "queryRelationManager", void 0);
-__decorate$m([
+__decorate$l([
     Inject()
 ], QEntityUtils.prototype, "queryUtils", void 0);
-QEntityUtils = QEntityUtils_1 = __decorate$m([
+QEntityUtils = QEntityUtils_1 = __decorate$l([
     Injected()
 ], QEntityUtils);
 
@@ -5556,24 +5567,6 @@ function convertMappedEntitySelect(customEntity, queryDefinition, view, selectPr
         }
     }
     return view;
-}
-/**
- * Sub-queries in SELECT clause
- * @param query
- * @returns {IQF}
- */
-function field(query) {
-    let queryDefinition;
-    if (query instanceof Function) {
-        queryDefinition = query();
-    }
-    else {
-        queryDefinition = query;
-    }
-    let customField = queryDefinition.SELECT;
-    customField = customField.addSubQuery(queryDefinition);
-    // Field query cannot be joined to any other query so don't have set the positional fields
-    return customField;
 }
 class JoinFields {
     constructor(joinFrom, joinTo) {
@@ -8364,7 +8357,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$l(decorators, target, key, desc) {
+function __decorate$k(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -8441,7 +8434,7 @@ let AirEntityUtils = class AirEntityUtils {
         airEntity._actorRecordId = airEntityId._actorRecordId;
     }
 };
-AirEntityUtils = __decorate$l([
+AirEntityUtils = __decorate$k([
     Injected()
 ], AirEntityUtils);
 
@@ -8508,20 +8501,20 @@ var SUBSCRIPTION_Message_Type;
 // Unique ID creation requires a high quality random # generator. In the browser we therefore
 // require the crypto API and do not support built-in fallback to lower quality random number
 // generators (like Math.random()).
-let getRandomValues$1;
-const rnds8$1 = new Uint8Array(16);
-function rng$1() {
+let getRandomValues$2;
+const rnds8$2 = new Uint8Array(16);
+function rng$2() {
   // lazy load so that environments that need to polyfill have a chance to do so
-  if (!getRandomValues$1) {
+  if (!getRandomValues$2) {
     // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
-    getRandomValues$1 = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
+    getRandomValues$2 = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
 
-    if (!getRandomValues$1) {
+    if (!getRandomValues$2) {
       throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
     }
   }
 
-  return getRandomValues$1(rnds8$1);
+  return getRandomValues$2(rnds8$2);
 }
 
 /**
@@ -8529,30 +8522,30 @@ function rng$1() {
  * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
  */
 
-const byteToHex$1 = [];
+const byteToHex$2 = [];
 
 for (let i = 0; i < 256; ++i) {
-  byteToHex$1.push((i + 0x100).toString(16).slice(1));
+  byteToHex$2.push((i + 0x100).toString(16).slice(1));
 }
 
-function unsafeStringify$1(arr, offset = 0) {
+function unsafeStringify$2(arr, offset = 0) {
   // Note: Be careful editing this code!  It's been tuned for performance
   // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
-  return (byteToHex$1[arr[offset + 0]] + byteToHex$1[arr[offset + 1]] + byteToHex$1[arr[offset + 2]] + byteToHex$1[arr[offset + 3]] + '-' + byteToHex$1[arr[offset + 4]] + byteToHex$1[arr[offset + 5]] + '-' + byteToHex$1[arr[offset + 6]] + byteToHex$1[arr[offset + 7]] + '-' + byteToHex$1[arr[offset + 8]] + byteToHex$1[arr[offset + 9]] + '-' + byteToHex$1[arr[offset + 10]] + byteToHex$1[arr[offset + 11]] + byteToHex$1[arr[offset + 12]] + byteToHex$1[arr[offset + 13]] + byteToHex$1[arr[offset + 14]] + byteToHex$1[arr[offset + 15]]).toLowerCase();
+  return (byteToHex$2[arr[offset + 0]] + byteToHex$2[arr[offset + 1]] + byteToHex$2[arr[offset + 2]] + byteToHex$2[arr[offset + 3]] + '-' + byteToHex$2[arr[offset + 4]] + byteToHex$2[arr[offset + 5]] + '-' + byteToHex$2[arr[offset + 6]] + byteToHex$2[arr[offset + 7]] + '-' + byteToHex$2[arr[offset + 8]] + byteToHex$2[arr[offset + 9]] + '-' + byteToHex$2[arr[offset + 10]] + byteToHex$2[arr[offset + 11]] + byteToHex$2[arr[offset + 12]] + byteToHex$2[arr[offset + 13]] + byteToHex$2[arr[offset + 14]] + byteToHex$2[arr[offset + 15]]).toLowerCase();
 }
 
-const randomUUID$1 = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
-var native$1 = {
-  randomUUID: randomUUID$1
+const randomUUID$2 = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+var native$2 = {
+  randomUUID: randomUUID$2
 };
 
-function v4$1(options, buf, offset) {
-  if (native$1.randomUUID && !buf && !options) {
-    return native$1.randomUUID();
+function v4$2(options, buf, offset) {
+  if (native$2.randomUUID && !buf && !options) {
+    return native$2.randomUUID();
   }
 
   options = options || {};
-  const rnds = options.random || (options.rng || rng$1)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+  const rnds = options.random || (options.rng || rng$2)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
 
   rnds[6] = rnds[6] & 0x0f | 0x40;
   rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
@@ -8567,7 +8560,7 @@ function v4$1(options, buf, offset) {
     return buf;
   }
 
-  return unsafeStringify$1(rnds);
+  return unsafeStringify$2(rnds);
 }
 
 let AirMessageUtils = class AirMessageUtils {
@@ -8670,7 +8663,7 @@ ${JSON.stringify(message, null, 2)}
     getInternalMessage(type, originType = Message_OriginOrDestination_Type.USER_INTERFACE) {
         return {
             direction: Message_Direction.REQUEST,
-            id: v4$1(),
+            id: v4$2(),
             isAIRportMessage: true,
             messageLeg: Message_Leg.TO_HUB,
             origin: {
@@ -8919,7 +8912,7 @@ Message:
             && domainName.length >= 3;
     }
 };
-AirMessageUtils = __decorate$l([
+AirMessageUtils = __decorate$k([
     Injected()
 ], AirMessageUtils);
 
@@ -8962,7 +8955,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$k(decorators, target, key, desc) {
+function __decorate$j(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -9037,13 +9030,13 @@ let Lookup = class Lookup {
         return query;
     }
 };
-__decorate$k([
+__decorate$j([
     Inject()
 ], Lookup.prototype, "entityUtils", void 0);
-__decorate$k([
+__decorate$j([
     Inject()
 ], Lookup.prototype, "queryFacade", void 0);
-Lookup = __decorate$k([
+Lookup = __decorate$j([
     Injected()
 ], Lookup);
 
@@ -9169,7 +9162,7 @@ let NonEntityFind = class NonEntityFind extends Lookup {
         return this.findInternal(rawNonEntityQuery, queryResultType, false, QueryClass, this.ensureContext(context));
     }
 };
-NonEntityFind = __decorate$k([
+NonEntityFind = __decorate$j([
     Injected()
 ], NonEntityFind);
 
@@ -9190,7 +9183,7 @@ let NonEntityFindOne = class NonEntityFindOne extends Lookup {
         return this.findInternal(rawNonEntityQuery, queryResultType, true, QueryClass, this.ensureContext(context));
     }
 };
-NonEntityFindOne = __decorate$k([
+NonEntityFindOne = __decorate$j([
     Injected()
 ], NonEntityFindOne);
 
@@ -9211,7 +9204,7 @@ let NonEntitySearch = class NonEntitySearch extends Lookup {
         return this.searchInternal(rawNonEntityQuery, queryResultType, false, QueryClass, this.ensureContext(context));
     }
 };
-NonEntitySearch = __decorate$k([
+NonEntitySearch = __decorate$j([
     Injected()
 ], NonEntitySearch);
 
@@ -9232,7 +9225,7 @@ let NonEntitySearchOne = class NonEntitySearchOne extends Lookup {
         return this.searchInternal(rawNonEntityQuery, queryResultType, true, QueryClass, this.ensureContext(context));
     }
 };
-NonEntitySearchOne = __decorate$k([
+NonEntitySearchOne = __decorate$j([
     Injected()
 ], NonEntitySearchOne);
 
@@ -9503,19 +9496,19 @@ let Dao = class Dao {
         return this.lookup.ensureContext(context);
     }
 };
-__decorate$k([
+__decorate$j([
     Inject()
 ], Dao.prototype, "databaseFacade", void 0);
-__decorate$k([
+__decorate$j([
     Inject()
 ], Dao.prototype, "entityStateManager", void 0);
-__decorate$k([
+__decorate$j([
     Inject()
 ], Dao.prototype, "lookup", void 0);
-__decorate$k([
+__decorate$j([
     Inject()
 ], Dao.prototype, "updateCacheManager", void 0);
-Dao = __decorate$k([
+Dao = __decorate$j([
     Injected()
 ], Dao);
 
@@ -9583,7 +9576,7 @@ let ObservableDao = class ObservableDao extends Dao {
         }, context);
     }
 };
-ObservableDao = __decorate$k([
+ObservableDao = __decorate$j([
     Injected()
 ], ObservableDao);
 
@@ -9643,7 +9636,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$j(decorators, target, key, desc) {
+function __decorate$i(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -9921,19 +9914,19 @@ let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
     }
 };
 ApplicationUtils.TEMP_ID = 0;
-__decorate$j([
+__decorate$i([
     Inject()
 ], ApplicationUtils.prototype, "airportDatabase", void 0);
-__decorate$j([
+__decorate$i([
     Inject()
 ], ApplicationUtils.prototype, "dictionary", void 0);
-__decorate$j([
+__decorate$i([
     Inject()
 ], ApplicationUtils.prototype, "entityStateManager", void 0);
-__decorate$j([
+__decorate$i([
     Inject()
 ], ApplicationUtils.prototype, "utils", void 0);
-ApplicationUtils = ApplicationUtils_1 = __decorate$j([
+ApplicationUtils = ApplicationUtils_1 = __decorate$i([
     Injected()
 ], ApplicationUtils);
 
@@ -10113,13 +10106,13 @@ It must be an Object with the id property.`);
         return qEntity instanceof QField;
     }
 };
-__decorate$j([
+__decorate$i([
     Inject()
 ], EntityUtils.prototype, "dictionary", void 0);
-__decorate$j([
+__decorate$i([
     Inject()
 ], EntityUtils.prototype, "utils", void 0);
-EntityUtils = __decorate$j([
+EntityUtils = __decorate$i([
     Injected()
 ], EntityUtils);
 ENTITY_UTILS.setClass(EntityUtils);
@@ -10130,10 +10123,10 @@ let FieldUtils = class FieldUtils {
         return subSelectQuery.toQuery(queryUtils, this, this.queryRelationManager);
     }
 };
-__decorate$j([
+__decorate$i([
     Inject()
 ], FieldUtils.prototype, "queryRelationManager", void 0);
-FieldUtils = __decorate$j([
+FieldUtils = __decorate$i([
     Injected()
 ], FieldUtils);
 
@@ -10242,10 +10235,10 @@ let QApplicationBuilderUtils = class QApplicationBuilderUtils {
         return false;
     }
 };
-__decorate$j([
+__decorate$i([
     Inject()
 ], QApplicationBuilderUtils.prototype, "qEntityUtils", void 0);
-QApplicationBuilderUtils = __decorate$j([
+QApplicationBuilderUtils = __decorate$i([
     Injected()
 ], QApplicationBuilderUtils);
 
@@ -10282,10 +10275,10 @@ let QMetadataUtils = class QMetadataUtils {
         return new entityConstructor();
     }
 };
-__decorate$j([
+__decorate$i([
     Inject()
 ], QMetadataUtils.prototype, "dictionary", void 0);
-QMetadataUtils = __decorate$j([
+QMetadataUtils = __decorate$i([
     Injected()
 ], QMetadataUtils);
 
@@ -10605,31 +10598,31 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
         }
     }
 };
-__decorate$j([
+__decorate$i([
     Inject()
 ], QueryUtils.prototype, "airEntityUtils", void 0);
-__decorate$j([
+__decorate$i([
     Inject()
 ], QueryUtils.prototype, "airportDatabase", void 0);
-__decorate$j([
+__decorate$i([
     Inject()
 ], QueryUtils.prototype, "applicationUtils", void 0);
-__decorate$j([
+__decorate$i([
     Inject()
 ], QueryUtils.prototype, "dictionary", void 0);
-__decorate$j([
+__decorate$i([
     Inject()
 ], QueryUtils.prototype, "entityUtils", void 0);
-__decorate$j([
+__decorate$i([
     Inject()
 ], QueryUtils.prototype, "fieldUtils", void 0);
-__decorate$j([
+__decorate$i([
     Inject()
 ], QueryUtils.prototype, "qEntityUtils", void 0);
-__decorate$j([
+__decorate$i([
     Inject()
 ], QueryUtils.prototype, "queryRelationManager", void 0);
-QueryUtils = __decorate$j([
+QueryUtils = __decorate$i([
     Injected()
 ], QueryUtils);
 
@@ -10699,7 +10692,7 @@ let DatabaseStore = class DatabaseStore {
         return this.databaseState.QM;
     }
 };
-DatabaseStore = __decorate$j([
+DatabaseStore = __decorate$i([
     Injected()
 ], DatabaseStore);
 
@@ -10728,13 +10721,13 @@ let QueryRelationManager = class QueryRelationManager {
         return nextChildJoinPosition;
     }
 };
-__decorate$j([
+__decorate$i([
     Inject()
 ], QueryRelationManager.prototype, "applicationUtils", void 0);
-__decorate$j([
+__decorate$i([
     Inject()
 ], QueryRelationManager.prototype, "queryUtils", void 0);
-QueryRelationManager = __decorate$j([
+QueryRelationManager = __decorate$i([
     Injected()
 ], QueryRelationManager);
 
@@ -10750,13 +10743,13 @@ let SystemWideOperationIdUtils = class SystemWideOperationIdUtils {
             .generateSequenceNumbersForColumn(airport.DOMAIN_NAME, airport.apps.AIRPORT_CODE.name, SystemWideOperationId.name, SystemWideOperationId.columns.SYSTEM_WIDE_OPERATION_LID, numSequencesNeeded);
     }
 };
-__decorate$j([
+__decorate$i([
     Inject()
 ], SystemWideOperationIdUtils.prototype, "dictionary", void 0);
-__decorate$j([
+__decorate$i([
     Inject()
 ], SystemWideOperationIdUtils.prototype, "sequenceGenerator", void 0);
-SystemWideOperationIdUtils = __decorate$j([
+SystemWideOperationIdUtils = __decorate$i([
     Injected()
 ], SystemWideOperationIdUtils);
 
@@ -10831,7 +10824,7 @@ let Utils = class Utils {
         return 0;
     }
 };
-Utils = __decorate$j([
+Utils = __decorate$i([
     Injected()
 ], Utils);
 
@@ -10955,11 +10948,6 @@ const JoinColumn = function (joinColumnConfiguration) {
         // No runtime logic required.
     };
 };
-const JoinColumns = function (joinColumnConfigurations) {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
 const Json = function () {
     return function (targetObject, propertyKey) {
         // No runtime logic required.
@@ -11051,7 +11039,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$i(decorators, target, key, desc) {
+function __decorate$h(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11060,30 +11048,30 @@ function __decorate$i(decorators, target, key, desc) {
 
 let Sequence = class Sequence {
 };
-__decorate$i([
+__decorate$h([
     Id(),
     Column(),
     DbNumber()
 ], Sequence.prototype, "applicationIndex", void 0);
-__decorate$i([
+__decorate$h([
     Id(),
     Column(),
     DbNumber()
 ], Sequence.prototype, "entityIndex", void 0);
-__decorate$i([
+__decorate$h([
     Id(),
     Column(),
     DbNumber()
 ], Sequence.prototype, "columnIndex", void 0);
-__decorate$i([
+__decorate$h([
     Column(),
     DbNumber()
 ], Sequence.prototype, "incrementBy", void 0);
-__decorate$i([
+__decorate$h([
     Column(),
     DbNumber()
 ], Sequence.prototype, "currentValue", void 0);
-Sequence = __decorate$i([
+Sequence = __decorate$h([
     Entity(),
     Table()
 ], Sequence);
@@ -11093,13 +11081,13 @@ Sequence = __decorate$i([
  */
 let SystemWideOperationId = class SystemWideOperationId {
 };
-__decorate$i([
+__decorate$h([
     Id(),
     Column(),
     DbNumber(),
     GeneratedValue()
 ], SystemWideOperationId.prototype, "_localId", void 0);
-SystemWideOperationId = __decorate$i([
+SystemWideOperationId = __decorate$h([
     Entity(),
     Table()
 ], SystemWideOperationId);
@@ -11109,32 +11097,32 @@ SystemWideOperationId = __decorate$i([
  */
 let TerminalRun = class TerminalRun {
 };
-__decorate$i([
+__decorate$h([
     Id(),
     GeneratedValue(),
     Column(),
     DbNumber()
 ], TerminalRun.prototype, "_localId", void 0);
-__decorate$i([
+__decorate$h([
     Column(),
     DbNumber()
 ], TerminalRun.prototype, "createTimestamp", void 0);
-__decorate$i([
+__decorate$h([
     Column(),
     DbNumber()
 ], TerminalRun.prototype, "randomNumber", void 0);
-TerminalRun = __decorate$i([
+TerminalRun = __decorate$h([
     Entity(),
     Table()
 ], TerminalRun);
 
-const __constructors__$6 = {
+const __constructors__$5 = {
     Sequence,
     SystemWideOperationId,
     TerminalRun
 };
 const Q_airport____at_airport_slash_airport_dash_code = {
-    __constructors__: __constructors__$6,
+    __constructors__: __constructors__$5,
     domain: 'airport',
     name: '@airport/airport-code'
 };
@@ -11146,12 +11134,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-let SQDIDao$6 = class SQDIDao extends ObservableDao {
+let SQDIDao$5 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_airport_dash_code);
     }
 };
-class BaseSequenceDao extends SQDIDao$6 {
+class BaseSequenceDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11166,7 +11154,7 @@ BaseSequenceDao.Find = new DaoQueryDecorators();
 BaseSequenceDao.FindOne = new DaoQueryDecorators();
 BaseSequenceDao.Search = new DaoQueryDecorators();
 BaseSequenceDao.SearchOne = new DaoQueryDecorators();
-class BaseSystemWideOperationIdDao extends SQDIDao$6 {
+class BaseSystemWideOperationIdDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11181,7 +11169,7 @@ BaseSystemWideOperationIdDao.Find = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.FindOne = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.Search = new DaoQueryDecorators();
 BaseSystemWideOperationIdDao.SearchOne = new DaoQueryDecorators();
-class BaseTerminalRunDao extends SQDIDao$6 {
+class BaseTerminalRunDao extends SQDIDao$5 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11199,7 +11187,7 @@ BaseTerminalRunDao.SearchOne = new DaoQueryDecorators();
 
 let TerminalRunDao = class TerminalRunDao extends BaseTerminalRunDao {
 };
-TerminalRunDao = __decorate$i([
+TerminalRunDao = __decorate$h([
     Injected()
 ], TerminalRunDao);
 
@@ -11227,7 +11215,7 @@ let SequenceDao = class SequenceDao extends BaseSequenceDao {
         }, context);
     }
 };
-SequenceDao = __decorate$i([
+SequenceDao = __decorate$h([
     Injected()
 ], SequenceDao);
 
@@ -11251,7 +11239,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$h(decorators, target, key, desc) {
+function __decorate$g(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11263,131 +11251,131 @@ let ApplicationApiClass = class ApplicationApiClass {
         this.operationMapByName = {};
     }
 };
-__decorate$h([
+__decorate$g([
     DbNumber(),
     Id(),
     SequenceGenerator$1(),
     Column()
 ], ApplicationApiClass.prototype, "_localId", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], ApplicationApiClass.prototype, "name", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], ApplicationApiClass.prototype, "applicationVersion", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], ApplicationApiClass.prototype, "operations", void 0);
-__decorate$h([
+__decorate$g([
     Transient()
 ], ApplicationApiClass.prototype, "operationMapByName", void 0);
-ApplicationApiClass = __decorate$h([
+ApplicationApiClass = __decorate$g([
     Entity(),
     Table()
 ], ApplicationApiClass);
 
 let ApplicationApiOperation = class ApplicationApiOperation {
 };
-__decorate$h([
+__decorate$g([
     DbNumber(),
     Id(),
     SequenceGenerator$1(),
     Column()
 ], ApplicationApiOperation.prototype, "_localId", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbBoolean()
 ], ApplicationApiOperation.prototype, "isAsync", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], ApplicationApiOperation.prototype, "name", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], ApplicationApiOperation.prototype, "apiClass", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], ApplicationApiOperation.prototype, "parameters", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], ApplicationApiOperation.prototype, "returnType", void 0);
-ApplicationApiOperation = __decorate$h([
+ApplicationApiOperation = __decorate$g([
     Entity(),
     Table()
 ], ApplicationApiOperation);
 
 let ApplicationApiParameter = class ApplicationApiParameter {
 };
-__decorate$h([
+__decorate$g([
     DbNumber(),
     Id(),
     SequenceGenerator$1(),
     Column()
 ], ApplicationApiParameter.prototype, "_localId", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbNumber()
 ], ApplicationApiParameter.prototype, "index", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbBoolean()
 ], ApplicationApiParameter.prototype, "isRest", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], ApplicationApiParameter.prototype, "operation", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], ApplicationApiParameter.prototype, "text", void 0);
-ApplicationApiParameter = __decorate$h([
+ApplicationApiParameter = __decorate$g([
     Entity(),
     Table()
 ], ApplicationApiParameter);
 
 let ApplicationApiReturnType = class ApplicationApiReturnType {
 };
-__decorate$h([
+__decorate$g([
     DbNumber(),
     Id(),
     SequenceGenerator$1(),
     Column()
 ], ApplicationApiReturnType.prototype, "_localId", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbBoolean()
 ], ApplicationApiReturnType.prototype, "isArray", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], ApplicationApiReturnType.prototype, "type", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], ApplicationApiReturnType.prototype, "operation", void 0);
-ApplicationApiReturnType = __decorate$h([
+ApplicationApiReturnType = __decorate$g([
     Entity(),
     Table()
 ], ApplicationApiReturnType);
 
 let DdlVersionedObject = class DdlVersionedObject {
 };
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlVersionedObject.prototype, "deprecatedSinceVersion", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlVersionedObject.prototype, "removedInVersion", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlVersionedObject.prototype, "sinceVersion", void 0);
-DdlVersionedObject = __decorate$h([
+DdlVersionedObject = __decorate$g([
     MappedSuperclass()
 ], DdlVersionedObject);
 
@@ -11400,64 +11388,64 @@ let DdlColumn = class DdlColumn extends DdlVersionedObject {
         this.propertyColumnMap = {};
     }
 };
-__decorate$h([
+__decorate$g([
     DbNumber(),
     Id(),
     Column()
 ], DdlColumn.prototype, "_localId", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbNumber()
 ], DdlColumn.prototype, "index", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbNumber()
 ], DdlColumn.prototype, "idIndex", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbBoolean()
 ], DdlColumn.prototype, "isGenerated", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbNumber()
 ], DdlColumn.prototype, "allocationSize", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], DdlColumn.prototype, "name", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbBoolean()
 ], DdlColumn.prototype, "notNull", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbNumber()
 ], DdlColumn.prototype, "precision", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbNumber()
 ], DdlColumn.prototype, "scale", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], DdlColumn.prototype, "type", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlColumn.prototype, "entity", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlColumn.prototype, "propertyColumns", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlColumn.prototype, "manyRelationColumns", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlColumn.prototype, "oneRelationColumns", void 0);
-__decorate$h([
+__decorate$g([
     Transient()
 ], DdlColumn.prototype, "propertyColumnMap", void 0);
-DdlColumn = __decorate$h([
+DdlColumn = __decorate$g([
     Entity(),
     Table()
 ], DdlColumn);
@@ -11489,60 +11477,60 @@ let DdlEntity = class DdlEntity extends DdlVersionedObject {
         this.propertyMap = {};
     }
 };
-__decorate$h([
+__decorate$g([
     DbNumber(),
     Id(),
     Column()
 ], DdlEntity.prototype, "_localId", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbNumber()
 ], DdlEntity.prototype, "index", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbBoolean()
 ], DdlEntity.prototype, "isLocal", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbBoolean()
 ], DdlEntity.prototype, "isAirEntity", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], DdlEntity.prototype, "name", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     Json()
 ], DdlEntity.prototype, "tableConfig", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlEntity.prototype, "applicationVersion", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlEntity.prototype, "columns", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlEntity.prototype, "properties", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlEntity.prototype, "relations", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlEntity.prototype, "relationReferences", void 0);
-__decorate$h([
+__decorate$g([
     Transient()
 ], DdlEntity.prototype, "columnMap", void 0);
-__decorate$h([
+__decorate$g([
     Transient()
 ], DdlEntity.prototype, "idColumns", void 0);
-__decorate$h([
+__decorate$g([
     Transient()
 ], DdlEntity.prototype, "idColumnMap", void 0);
-__decorate$h([
+__decorate$g([
     Transient()
 ], DdlEntity.prototype, "propertyMap", void 0);
-DdlEntity = __decorate$h([
+DdlEntity = __decorate$g([
     Entity(),
     Table()
 ], DdlEntity);
@@ -11554,34 +11542,34 @@ let DdlProperty = class DdlProperty extends DdlVersionedObject {
         this.relation = [];
     }
 };
-__decorate$h([
+__decorate$g([
     DbNumber(),
     Id(),
     Column()
 ], DdlProperty.prototype, "_localId", void 0);
-__decorate$h([
+__decorate$g([
     DbNumber(),
     Column()
 ], DdlProperty.prototype, "index", void 0);
-__decorate$h([
+__decorate$g([
     DbString(),
     Column()
 ], DdlProperty.prototype, "name", void 0);
-__decorate$h([
+__decorate$g([
     DbBoolean(),
     Column()
 ], DdlProperty.prototype, "isId", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlProperty.prototype, "entity", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlProperty.prototype, "propertyColumns", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlProperty.prototype, "relation", void 0);
-DdlProperty = __decorate$h([
+DdlProperty = __decorate$g([
     Entity(),
     Table()
 ], DdlProperty);
@@ -11591,17 +11579,17 @@ DdlProperty = __decorate$h([
  */
 let DdlPropertyColumn = class DdlPropertyColumn extends DdlVersionedObject {
 };
-__decorate$h([
+__decorate$g([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DdlPropertyColumn.prototype, "column", void 0);
-__decorate$h([
+__decorate$g([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DdlPropertyColumn.prototype, "property", void 0);
-DdlPropertyColumn = __decorate$h([
+DdlPropertyColumn = __decorate$g([
     Entity(),
     Table()
 ], DdlPropertyColumn);
@@ -11613,85 +11601,85 @@ let DdlRelation = class DdlRelation extends DdlVersionedObject {
         this.oneRelationColumns = [];
     }
 };
-__decorate$h([
+__decorate$g([
     DbNumber(),
     Id(),
     Column()
 ], DdlRelation.prototype, "_localId", void 0);
-__decorate$h([
+__decorate$g([
     DbNumber(),
     Column()
 ], DdlRelation.prototype, "index", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlRelation.prototype, "property", void 0);
-__decorate$h([
+__decorate$g([
     Json(),
     Column()
 ], DdlRelation.prototype, "foreignKey", void 0);
-__decorate$h([
+__decorate$g([
     Json(),
     Column()
 ], DdlRelation.prototype, "manyToOneElems", void 0);
-__decorate$h([
+__decorate$g([
     Json(),
     Column()
 ], DdlRelation.prototype, "oneToManyElems", void 0);
-__decorate$h([
+__decorate$g([
     DbString(),
     Column()
 ], DdlRelation.prototype, "relationType", void 0);
-__decorate$h([
+__decorate$g([
     Column()
 ], DdlRelation.prototype, "isId", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlRelation.prototype, "entity", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlRelation.prototype, "relationEntity", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlRelation.prototype, "manyRelationColumns", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlRelation.prototype, "oneRelationColumns", void 0);
-DdlRelation = __decorate$h([
+DdlRelation = __decorate$g([
     Entity(),
     Table()
 ], DdlRelation);
 
 let DdlRelationColumn = class DdlRelationColumn extends DdlVersionedObject {
 };
-__decorate$h([
+__decorate$g([
     Id(),
     Column(),
     DbNumber()
 ], DdlRelationColumn.prototype, "_localId", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlRelationColumn.prototype, "manyColumn", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlRelationColumn.prototype, "oneColumn", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlRelationColumn.prototype, "manyRelation", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlRelationColumn.prototype, "oneRelation", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlRelationColumn.prototype, "parentRelation", void 0);
-DdlRelationColumn = __decorate$h([
+DdlRelationColumn = __decorate$g([
     Entity(),
     Table()
 ], DdlRelationColumn);
@@ -11702,80 +11690,80 @@ let DdlApplication = class DdlApplication {
         this.currentVersion = [];
     }
 };
-__decorate$h([
+__decorate$g([
     Id(),
     DbNumber(),
     Column()
 ], DdlApplication.prototype, "index", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], DdlApplication.prototype, "scope", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], DdlApplication.prototype, "name", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], DdlApplication.prototype, "fullName", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], DdlApplication.prototype, "status", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], DdlApplication.prototype, "publicSigningKey", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlApplication.prototype, "domain", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlApplication.prototype, "versions", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlApplication.prototype, "currentVersion", void 0);
-DdlApplication = __decorate$h([
+DdlApplication = __decorate$g([
     Entity(),
     Table()
 ], DdlApplication);
 
 let DdlApplicationCurrentVersion = class DdlApplicationCurrentVersion {
 };
-__decorate$h([
+__decorate$g([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DdlApplicationCurrentVersion.prototype, "application", void 0);
-__decorate$h([
+__decorate$g([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DdlApplicationCurrentVersion.prototype, "applicationVersion", void 0);
-DdlApplicationCurrentVersion = __decorate$h([
+DdlApplicationCurrentVersion = __decorate$g([
     Entity(),
     Table()
 ], DdlApplicationCurrentVersion);
 
 let DdlApplicationReference = class DdlApplicationReference extends DdlVersionedObject {
 };
-__decorate$h([
+__decorate$g([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DdlApplicationReference.prototype, "ownApplicationVersion", void 0);
-__decorate$h([
+__decorate$g([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DdlApplicationReference.prototype, "referencedApplicationVersion", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbNumber()
 ], DdlApplicationReference.prototype, "index", void 0);
-DdlApplicationReference = __decorate$h([
+DdlApplicationReference = __decorate$g([
     Entity(),
     Table()
 ], DdlApplicationReference);
@@ -11792,93 +11780,93 @@ let DdlApplicationVersion = class DdlApplicationVersion {
         this.referencedByMapByName = {};
     }
 };
-__decorate$h([
+__decorate$g([
     DbNumber(),
     Id(),
     SequenceGenerator$1(),
     Column()
 ], DdlApplicationVersion.prototype, "_localId", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbNumber()
 ], DdlApplicationVersion.prototype, "integerVersion", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], DdlApplicationVersion.prototype, "versionString", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbNumber()
 ], DdlApplicationVersion.prototype, "majorVersion", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbNumber()
 ], DdlApplicationVersion.prototype, "minorVersion", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbNumber()
 ], DdlApplicationVersion.prototype, "patchVersion", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     Json()
 ], DdlApplicationVersion.prototype, "jsonApplication", void 0);
-__decorate$h([
+__decorate$g([
     Column(),
     DbString()
 ], DdlApplicationVersion.prototype, "signature", void 0);
-__decorate$h([
+__decorate$g([
     ManyToOne(),
     JoinColumn()
 ], DdlApplicationVersion.prototype, "application", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlApplicationVersion.prototype, "apiClasses", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlApplicationVersion.prototype, "entities", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlApplicationVersion.prototype, "references", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlApplicationVersion.prototype, "referencedBy", void 0);
-__decorate$h([
+__decorate$g([
     Transient()
 ], DdlApplicationVersion.prototype, "apiClassMapByName", void 0);
-__decorate$h([
+__decorate$g([
     Transient()
 ], DdlApplicationVersion.prototype, "entityMapByName", void 0);
-__decorate$h([
+__decorate$g([
     Transient()
 ], DdlApplicationVersion.prototype, "referencesMapByName", void 0);
-__decorate$h([
+__decorate$g([
     Transient()
 ], DdlApplicationVersion.prototype, "referencedByMapByName", void 0);
-DdlApplicationVersion = __decorate$h([
+DdlApplicationVersion = __decorate$g([
     Entity(),
     Table()
 ], DdlApplicationVersion);
 
 let DdlDomain = class DdlDomain {
 };
-__decorate$h([
+__decorate$g([
     Id(),
     DbNumber(),
     Column()
 ], DdlDomain.prototype, "_localId", void 0);
-__decorate$h([
+__decorate$g([
     DbString(),
     Column()
 ], DdlDomain.prototype, "name", void 0);
-__decorate$h([
+__decorate$g([
     OneToMany()
 ], DdlDomain.prototype, "applications", void 0);
-DdlDomain = __decorate$h([
+DdlDomain = __decorate$g([
     Entity(),
     Table()
 ], DdlDomain);
 
-const __constructors__$5 = {
+const __constructors__$4 = {
     ApplicationApiClass,
     ApplicationApiOperation,
     ApplicationApiParameter,
@@ -11897,7 +11885,7 @@ const __constructors__$5 = {
     DdlVersionedObject
 };
 const Q_airport____at_airport_slash_airspace = {
-    __constructors__: __constructors__$5,
+    __constructors__: __constructors__$4,
     domain: 'airport',
     name: '@airport/airspace'
 };
@@ -11909,12 +11897,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-let SQDIDao$5 = class SQDIDao extends ObservableDao {
+let SQDIDao$4 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_airspace);
     }
 };
-class BaseApplicationApiClassDao extends SQDIDao$5 {
+class BaseApplicationApiClassDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11929,7 +11917,7 @@ BaseApplicationApiClassDao.Find = new DaoQueryDecorators();
 BaseApplicationApiClassDao.FindOne = new DaoQueryDecorators();
 BaseApplicationApiClassDao.Search = new DaoQueryDecorators();
 BaseApplicationApiClassDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationApiOperationDao extends SQDIDao$5 {
+class BaseApplicationApiOperationDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11944,7 +11932,7 @@ BaseApplicationApiOperationDao.Find = new DaoQueryDecorators();
 BaseApplicationApiOperationDao.FindOne = new DaoQueryDecorators();
 BaseApplicationApiOperationDao.Search = new DaoQueryDecorators();
 BaseApplicationApiOperationDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationApiParameterDao extends SQDIDao$5 {
+class BaseApplicationApiParameterDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11959,7 +11947,7 @@ BaseApplicationApiParameterDao.Find = new DaoQueryDecorators();
 BaseApplicationApiParameterDao.FindOne = new DaoQueryDecorators();
 BaseApplicationApiParameterDao.Search = new DaoQueryDecorators();
 BaseApplicationApiParameterDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationApiReturnTypeDao extends SQDIDao$5 {
+class BaseApplicationApiReturnTypeDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11974,7 +11962,7 @@ BaseApplicationApiReturnTypeDao.Find = new DaoQueryDecorators();
 BaseApplicationApiReturnTypeDao.FindOne = new DaoQueryDecorators();
 BaseApplicationApiReturnTypeDao.Search = new DaoQueryDecorators();
 BaseApplicationApiReturnTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlApplicationDao extends SQDIDao$5 {
+class BaseDdlApplicationDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -11989,7 +11977,7 @@ BaseDdlApplicationDao.Find = new DaoQueryDecorators();
 BaseDdlApplicationDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlApplicationCurrentVersionDao extends SQDIDao$5 {
+class BaseDdlApplicationCurrentVersionDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12004,7 +11992,7 @@ BaseDdlApplicationCurrentVersionDao.Find = new DaoQueryDecorators();
 BaseDdlApplicationCurrentVersionDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationCurrentVersionDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationCurrentVersionDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlApplicationReferenceDao extends SQDIDao$5 {
+class BaseDdlApplicationReferenceDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12019,7 +12007,7 @@ BaseDdlApplicationReferenceDao.Find = new DaoQueryDecorators();
 BaseDdlApplicationReferenceDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationReferenceDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationReferenceDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlApplicationVersionDao extends SQDIDao$5 {
+class BaseDdlApplicationVersionDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12034,7 +12022,7 @@ BaseDdlApplicationVersionDao.Find = new DaoQueryDecorators();
 BaseDdlApplicationVersionDao.FindOne = new DaoQueryDecorators();
 BaseDdlApplicationVersionDao.Search = new DaoQueryDecorators();
 BaseDdlApplicationVersionDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlColumnDao extends SQDIDao$5 {
+class BaseDdlColumnDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12049,7 +12037,7 @@ BaseDdlColumnDao.Find = new DaoQueryDecorators();
 BaseDdlColumnDao.FindOne = new DaoQueryDecorators();
 BaseDdlColumnDao.Search = new DaoQueryDecorators();
 BaseDdlColumnDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlDomainDao extends SQDIDao$5 {
+class BaseDdlDomainDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12064,7 +12052,7 @@ BaseDdlDomainDao.Find = new DaoQueryDecorators();
 BaseDdlDomainDao.FindOne = new DaoQueryDecorators();
 BaseDdlDomainDao.Search = new DaoQueryDecorators();
 BaseDdlDomainDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlEntityDao extends SQDIDao$5 {
+class BaseDdlEntityDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12079,7 +12067,7 @@ BaseDdlEntityDao.Find = new DaoQueryDecorators();
 BaseDdlEntityDao.FindOne = new DaoQueryDecorators();
 BaseDdlEntityDao.Search = new DaoQueryDecorators();
 BaseDdlEntityDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlPropertyDao extends SQDIDao$5 {
+class BaseDdlPropertyDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12094,7 +12082,7 @@ BaseDdlPropertyDao.Find = new DaoQueryDecorators();
 BaseDdlPropertyDao.FindOne = new DaoQueryDecorators();
 BaseDdlPropertyDao.Search = new DaoQueryDecorators();
 BaseDdlPropertyDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlPropertyColumnDao extends SQDIDao$5 {
+class BaseDdlPropertyColumnDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12109,7 +12097,7 @@ BaseDdlPropertyColumnDao.Find = new DaoQueryDecorators();
 BaseDdlPropertyColumnDao.FindOne = new DaoQueryDecorators();
 BaseDdlPropertyColumnDao.Search = new DaoQueryDecorators();
 BaseDdlPropertyColumnDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlRelationDao extends SQDIDao$5 {
+class BaseDdlRelationDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12124,7 +12112,7 @@ BaseDdlRelationDao.Find = new DaoQueryDecorators();
 BaseDdlRelationDao.FindOne = new DaoQueryDecorators();
 BaseDdlRelationDao.Search = new DaoQueryDecorators();
 BaseDdlRelationDao.SearchOne = new DaoQueryDecorators();
-class BaseDdlRelationColumnDao extends SQDIDao$5 {
+class BaseDdlRelationColumnDao extends SQDIDao$4 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -12181,7 +12169,7 @@ let ApplicationApiClassDao = class ApplicationApiClassDao extends BaseApplicatio
         }, context);
     }
 };
-ApplicationApiClassDao = __decorate$h([
+ApplicationApiClassDao = __decorate$g([
     Injected()
 ], ApplicationApiClassDao);
 
@@ -12207,7 +12195,7 @@ let ApplicationApiOperationDao = class ApplicationApiOperationDao extends BaseAp
         }, context);
     }
 };
-ApplicationApiOperationDao = __decorate$h([
+ApplicationApiOperationDao = __decorate$g([
     Injected()
 ], ApplicationApiOperationDao);
 
@@ -12235,7 +12223,7 @@ let ApplicationApiParameterDao = class ApplicationApiParameterDao extends BaseAp
         }, context);
     }
 };
-ApplicationApiParameterDao = __decorate$h([
+ApplicationApiParameterDao = __decorate$g([
     Injected()
 ], ApplicationApiParameterDao);
 
@@ -12261,7 +12249,7 @@ let ApplicationApiReturnTypeDao = class ApplicationApiReturnTypeDao extends Base
         }, context);
     }
 };
-ApplicationApiReturnTypeDao = __decorate$h([
+ApplicationApiReturnTypeDao = __decorate$g([
     Injected()
 ], ApplicationApiReturnTypeDao);
 
@@ -12526,13 +12514,13 @@ let DdlApplicationDao = class DdlApplicationDao extends BaseDdlApplicationDao {
         }, context);
     }
 };
-__decorate$h([
+__decorate$g([
     Inject()
 ], DdlApplicationDao.prototype, "airportDatabase", void 0);
-__decorate$h([
+__decorate$g([
     Inject()
 ], DdlApplicationDao.prototype, "datastructureUtils", void 0);
-DdlApplicationDao = __decorate$h([
+DdlApplicationDao = __decorate$g([
     Injected()
 ], DdlApplicationDao);
 
@@ -12574,7 +12562,7 @@ let DdlApplicationReferenceDao = class DdlApplicationReferenceDao extends BaseDd
         }, context);
     }
 };
-DdlApplicationReferenceDao = __decorate$h([
+DdlApplicationReferenceDao = __decorate$g([
     Injected()
 ], DdlApplicationReferenceDao);
 
@@ -12745,7 +12733,7 @@ let DdlApplicationVersionDao = class DdlApplicationVersionDao extends BaseDdlApp
         }, context);
     }
 };
-DdlApplicationVersionDao = __decorate$h([
+DdlApplicationVersionDao = __decorate$g([
     Injected()
 ], DdlApplicationVersionDao);
 
@@ -12802,10 +12790,10 @@ let DdlColumnDao = class DdlColumnDao extends BaseDdlColumnDao {
         }, context);
     }
 };
-__decorate$h([
+__decorate$g([
     Inject()
 ], DdlColumnDao.prototype, "datastructureUtils", void 0);
-DdlColumnDao = __decorate$h([
+DdlColumnDao = __decorate$g([
     Injected()
 ], DdlColumnDao);
 
@@ -12852,7 +12840,7 @@ let DdlEntityDao = class DdlEntityDao extends BaseDdlEntityDao {
         }, context);
     }
 };
-DdlEntityDao = __decorate$h([
+DdlEntityDao = __decorate$g([
     Injected()
 ], DdlEntityDao);
 
@@ -12891,7 +12879,7 @@ let DdlPropertyColumnDao = class DdlPropertyColumnDao extends BaseDdlPropertyCol
         }, context);
     }
 };
-DdlPropertyColumnDao = __decorate$h([
+DdlPropertyColumnDao = __decorate$g([
     Injected()
 ], DdlPropertyColumnDao);
 
@@ -12935,7 +12923,7 @@ let DdlPropertyDao = class DdlPropertyDao extends BaseDdlPropertyDao {
         }, context);
     }
 };
-DdlPropertyDao = __decorate$h([
+DdlPropertyDao = __decorate$g([
     Injected()
 ], DdlPropertyDao);
 
@@ -12983,7 +12971,7 @@ let DdlRelationColumnDao = class DdlRelationColumnDao extends BaseDdlRelationCol
         }, context);
     }
 };
-DdlRelationColumnDao = __decorate$h([
+DdlRelationColumnDao = __decorate$g([
     Injected()
 ], DdlRelationColumnDao);
 
@@ -13063,10 +13051,10 @@ let DdlRelationDao = class DdlRelationDao extends BaseDdlRelationDao {
         }, context);
     }
 };
-__decorate$h([
+__decorate$g([
     Inject()
 ], DdlRelationDao.prototype, "datastructureUtils", void 0);
-DdlRelationDao = __decorate$h([
+DdlRelationDao = __decorate$g([
     Injected()
 ], DdlRelationDao);
 
@@ -13154,7 +13142,7 @@ let DdlDomainDao = class DdlDomainDao extends BaseDdlDomainDao {
         }, context);
     }
 };
-DdlDomainDao = __decorate$h([
+DdlDomainDao = __decorate$g([
     Injected()
 ], DdlDomainDao);
 
@@ -13212,7 +13200,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$g(decorators, target, key, desc) {
+function __decorate$f(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -13239,10 +13227,10 @@ let TerminalState = class TerminalState {
     }
 };
 TerminalState.sharedAcrossInjectionScopes = true;
-__decorate$g([
+__decorate$f([
     Inject()
 ], TerminalState.prototype, "appTrackerUtils", void 0);
-TerminalState = __decorate$g([
+TerminalState = __decorate$f([
     Injected()
 ], TerminalState);
 
@@ -13373,16 +13361,16 @@ let TerminalStore = class TerminalStore {
     }
 };
 TerminalStore.sharedAcrossInjectionScopes = true;
-__decorate$g([
+__decorate$f([
     Inject()
 ], TerminalStore.prototype, "datastructureUtils", void 0);
-__decorate$g([
+__decorate$f([
     Inject()
 ], TerminalStore.prototype, "selectorManager", void 0);
-__decorate$g([
+__decorate$f([
     Inject()
 ], TerminalStore.prototype, "terminalState", void 0);
-TerminalStore = __decorate$g([
+TerminalStore = __decorate$f([
     Injected()
 ], TerminalStore);
 
@@ -13468,7 +13456,7 @@ let UserState = class UserState {
         this.userState = internalUserState;
     }
 };
-UserState = __decorate$g([
+UserState = __decorate$f([
     Injected()
 ], UserState);
 
@@ -13482,13 +13470,13 @@ let UserStore = class UserStore {
         this.getSessionMapByAccountPublicSigningKey = this.selectorManager.createSelector(this.getUserState, userState => userState.sessionMapByAccountPublicSigningKey);
     }
 };
-__decorate$g([
+__decorate$f([
     Inject()
 ], UserStore.prototype, "selectorManager", void 0);
-__decorate$g([
+__decorate$f([
     Inject()
 ], UserStore.prototype, "userState", void 0);
-UserStore = __decorate$g([
+UserStore = __decorate$f([
     Injected()
 ], UserStore);
 
@@ -13527,7 +13515,7 @@ let SelectorManager = class SelectorManager {
         return selector;
     }
 };
-SelectorManager = __decorate$g([
+SelectorManager = __decorate$f([
     Injected()
 ], SelectorManager);
 
@@ -13555,16 +13543,16 @@ let AbstractApplicationLoader = class AbstractApplicationLoader {
         return this.application;
     }
 };
-__decorate$g([
+__decorate$f([
     Inject()
 ], AbstractApplicationLoader.prototype, "applicationInitializer", void 0);
-__decorate$g([
+__decorate$f([
     Inject()
 ], AbstractApplicationLoader.prototype, "terminalStore", void 0);
-__decorate$g([
+__decorate$f([
     Inject()
 ], AbstractApplicationLoader.prototype, "apiRegistry", void 0);
-AbstractApplicationLoader = __decorate$g([
+AbstractApplicationLoader = __decorate$f([
     Injected()
 ], AbstractApplicationLoader);
 
@@ -13637,7 +13625,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$f(decorators, target, key, desc) {
+function __decorate$e(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -13804,19 +13792,19 @@ let SqlSchemaBuilder = class SqlSchemaBuilder {
 			)`;
     }
 };
-__decorate$f([
+__decorate$e([
     Inject()
 ], SqlSchemaBuilder.prototype, "airportDatabase", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], SqlSchemaBuilder.prototype, "applicationReferenceUtils", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], SqlSchemaBuilder.prototype, "applicationNameUtils", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], SqlSchemaBuilder.prototype, "storeDriver", void 0);
-SqlSchemaBuilder = __decorate$f([
+SqlSchemaBuilder = __decorate$e([
     Injected()
 ], SqlSchemaBuilder);
 
@@ -13947,19 +13935,19 @@ let ApplicationChecker = class ApplicationChecker {
         return false;
     }
 };
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationChecker.prototype, "ddlApplicationDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationChecker.prototype, "datastructureUtils", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationChecker.prototype, "applicationNameUtils", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationChecker.prototype, "transactionManager", void 0);
-ApplicationChecker = __decorate$f([
+ApplicationChecker = __decorate$e([
     Injected()
 ], ApplicationChecker);
 
@@ -13986,10 +13974,10 @@ let ApplicationLocator = class ApplicationLocator {
             .get(fullApplication_Name);
     }
 };
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationLocator.prototype, "applicationNameUtils", void 0);
-ApplicationLocator = __decorate$f([
+ApplicationLocator = __decorate$e([
     Injected()
 ], ApplicationLocator);
 
@@ -14618,22 +14606,22 @@ let ApplicationComposer = class ApplicationComposer {
         applicationVersion.apiClasses = newApplicationApiClasses;
     }
 };
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationComposer.prototype, "applicationLocator", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationComposer.prototype, "datastructureUtils", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationComposer.prototype, "applicationNameUtils", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationComposer.prototype, "domainRetriever", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationComposer.prototype, "terminalStore", void 0);
-ApplicationComposer = __decorate$f([
+ApplicationComposer = __decorate$e([
     Injected()
 ], ApplicationComposer);
 
@@ -14702,52 +14690,52 @@ let ApplicationRecorder = class ApplicationRecorder {
         await dao.save(entities, context);
     }
 };
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "applicationApiClassDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "applicationApiOperationDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "applicationApiParameterDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "applicationApiReturnTypeDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "dbColumnDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "ddlApplicationDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "dbEntityDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "dbPropertyColumnDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "dbPropertyDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "ddlApplicationReferenceDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "dbRelationColumnDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "dbRelationDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "ddlApplicationVersionDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "ddlDomainDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationRecorder.prototype, "transactionManager", void 0);
-ApplicationRecorder = __decorate$f([
+ApplicationRecorder = __decorate$e([
     Injected()
 ], ApplicationRecorder);
 
@@ -14933,46 +14921,46 @@ let ApplicationInitializer = class ApplicationInitializer {
         }
     }
 };
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "airportDatabase", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "applicationChecker", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "applicationComposer", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "ddlApplicationDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "applicationLocator", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "applicationRecorder", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "appTrackerUtils", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "applicationNameUtils", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "queryObjectInitializer", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "schemaBuilder", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "sequenceGenerator", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "terminalStore", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], ApplicationInitializer.prototype, "transactionManager", void 0);
-ApplicationInitializer = __decorate$f([
+ApplicationInitializer = __decorate$e([
     Injected()
 ], ApplicationInitializer);
 
@@ -14985,7 +14973,7 @@ let AirportDatabasePopulator = class AirportDatabasePopulator {
         // this.airDb.qApplications
     }
 };
-AirportDatabasePopulator = __decorate$f([
+AirportDatabasePopulator = __decorate$e([
     Injected()
 ], AirportDatabasePopulator);
 
@@ -15153,10 +15141,10 @@ let DdlObjectLinker = class DdlObjectLinker {
         });
     }
 };
-__decorate$f([
+__decorate$e([
     Inject()
 ], DdlObjectLinker.prototype, "terminalStore", void 0);
-DdlObjectLinker = __decorate$f([
+DdlObjectLinker = __decorate$e([
     Injected()
 ], DdlObjectLinker);
 
@@ -15301,43 +15289,43 @@ let DdlObjectRetriever = class DdlObjectRetriever {
         };
     }
 };
-__decorate$f([
+__decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "applicationApiClassDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "dbColumnDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "ddlApplicationDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "dbEntityDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "dbPropertyColumnDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "dbPropertyDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "ddlApplicationReferenceDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "dbRelationColumnDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "dbRelationDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "ddlApplicationVersionDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "ddlDomainDao", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], DdlObjectRetriever.prototype, "terminalStore", void 0);
-DdlObjectRetriever = __decorate$f([
+DdlObjectRetriever = __decorate$e([
     Injected()
 ], DdlObjectRetriever);
 
@@ -15368,16 +15356,16 @@ let QueryEntityClassCreator = class QueryEntityClassCreator {
         return qApplication;
     }
 };
-__decorate$f([
+__decorate$e([
     Inject()
 ], QueryEntityClassCreator.prototype, "airportDatabase", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], QueryEntityClassCreator.prototype, "applicationUtils", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], QueryEntityClassCreator.prototype, "queryRelationManager", void 0);
-QueryEntityClassCreator = __decorate$f([
+QueryEntityClassCreator = __decorate$e([
     Injected()
 ], QueryEntityClassCreator);
 
@@ -15438,19 +15426,19 @@ let QueryObjectInitializer = class QueryObjectInitializer {
         return allDdlObjects;
     }
 };
-__decorate$f([
+__decorate$e([
     Inject()
 ], QueryObjectInitializer.prototype, "ddlObjectLinker", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], QueryObjectInitializer.prototype, "ddlObjectRetriever", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], QueryObjectInitializer.prototype, "queryEntityClassCreator", void 0);
-__decorate$f([
+__decorate$e([
     Inject()
 ], QueryObjectInitializer.prototype, "terminalStore", void 0);
-QueryObjectInitializer = __decorate$f([
+QueryObjectInitializer = __decorate$e([
     Injected()
 ], QueryObjectInitializer);
 
@@ -15552,20 +15540,20 @@ takeoff.setDependencies(SqlSchemaBuilder, {
 // Unique ID creation requires a high quality random # generator. In the browser we therefore
 // require the crypto API and do not support built-in fallback to lower quality random number
 // generators (like Math.random()).
-let getRandomValues;
-const rnds8 = new Uint8Array(16);
-function rng() {
+let getRandomValues$1;
+const rnds8$1 = new Uint8Array(16);
+function rng$1() {
   // lazy load so that environments that need to polyfill have a chance to do so
-  if (!getRandomValues) {
+  if (!getRandomValues$1) {
     // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
-    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
+    getRandomValues$1 = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
 
-    if (!getRandomValues) {
+    if (!getRandomValues$1) {
       throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
     }
   }
 
-  return getRandomValues(rnds8);
+  return getRandomValues$1(rnds8$1);
 }
 
 /**
@@ -15573,30 +15561,30 @@ function rng() {
  * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
  */
 
-const byteToHex = [];
+const byteToHex$1 = [];
 
 for (let i = 0; i < 256; ++i) {
-  byteToHex.push((i + 0x100).toString(16).slice(1));
+  byteToHex$1.push((i + 0x100).toString(16).slice(1));
 }
 
-function unsafeStringify(arr, offset = 0) {
+function unsafeStringify$1(arr, offset = 0) {
   // Note: Be careful editing this code!  It's been tuned for performance
   // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
-  return (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
+  return (byteToHex$1[arr[offset + 0]] + byteToHex$1[arr[offset + 1]] + byteToHex$1[arr[offset + 2]] + byteToHex$1[arr[offset + 3]] + '-' + byteToHex$1[arr[offset + 4]] + byteToHex$1[arr[offset + 5]] + '-' + byteToHex$1[arr[offset + 6]] + byteToHex$1[arr[offset + 7]] + '-' + byteToHex$1[arr[offset + 8]] + byteToHex$1[arr[offset + 9]] + '-' + byteToHex$1[arr[offset + 10]] + byteToHex$1[arr[offset + 11]] + byteToHex$1[arr[offset + 12]] + byteToHex$1[arr[offset + 13]] + byteToHex$1[arr[offset + 14]] + byteToHex$1[arr[offset + 15]]).toLowerCase();
 }
 
-const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
-var native = {
-  randomUUID
+const randomUUID$1 = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+var native$1 = {
+  randomUUID: randomUUID$1
 };
 
-function v4(options, buf, offset) {
-  if (native.randomUUID && !buf && !options) {
-    return native.randomUUID();
+function v4$1(options, buf, offset) {
+  if (native$1.randomUUID && !buf && !options) {
+    return native$1.randomUUID();
   }
 
   options = options || {};
-  const rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+  const rnds = options.random || (options.rng || rng$1)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
 
   rnds[6] = rnds[6] & 0x0f | 0x40;
   rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
@@ -15611,7 +15599,7 @@ function v4(options, buf, offset) {
     return buf;
   }
 
-  return unsafeStringify(rnds);
+  return unsafeStringify$1(rnds);
 }
 
 /******************************************************************************
@@ -15631,12 +15619,85 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$e(decorators, target, key, desc) {
+function __decorate$d(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 }
+
+/**
+ * Created by Papa on 5/20/2024.
+ */
+/**
+ * An entry in the repository blockchain.
+ */
+let RepositoryBlock = class RepositoryBlock {
+};
+__decorate$d([
+    GeneratedValue(),
+    Id(),
+    SequenceGenerator$1(),
+    Column(),
+    DbNumber()
+], RepositoryBlock.prototype, "_localId", void 0);
+__decorate$d([
+    Column(),
+    DbString()
+], RepositoryBlock.prototype, "GUID", void 0);
+__decorate$d([
+    Column(),
+    DbString()
+], RepositoryBlock.prototype, "hashSum", void 0);
+__decorate$d([
+    Column(),
+    DbAny()
+], RepositoryBlock.prototype, "packagedData", void 0);
+__decorate$d([
+    Column(),
+    DbNumber()
+], RepositoryBlock.prototype, "syncTimestamp", void 0);
+__decorate$d([
+    Column(),
+    DbString()
+], RepositoryBlock.prototype, "acceptanceSignature", void 0);
+__decorate$d([
+    Column(),
+    DbString()
+], RepositoryBlock.prototype, "memberSignature", void 0);
+__decorate$d([
+    Column(),
+    DbString()
+], RepositoryBlock.prototype, "userAccountSignature", void 0);
+__decorate$d([
+    OneToMany()
+], RepositoryBlock.prototype, "history", void 0);
+__decorate$d([
+    ManyToOne(),
+    JoinColumn()
+], RepositoryBlock.prototype, "previousBlock", void 0);
+__decorate$d([
+    ManyToOne(),
+    JoinColumn()
+], RepositoryBlock.prototype, "previousTrunkBlock", void 0);
+__decorate$d([
+    ManyToOne(),
+    JoinColumn()
+], RepositoryBlock.prototype, "repository", void 0);
+__decorate$d([
+    ManyToOne(),
+    JoinColumn()
+], RepositoryBlock.prototype, "terminal", void 0);
+__decorate$d([
+    OneToMany()
+], RepositoryBlock.prototype, "nextBlocks", void 0);
+__decorate$d([
+    Transient()
+], RepositoryBlock.prototype, "data", void 0);
+RepositoryBlock = __decorate$d([
+    Entity(),
+    Table()
+], RepositoryBlock);
 
 /**
  * Created by Papa on 4/17/2017.
@@ -15649,41 +15710,41 @@ let OperationHistory = class OperationHistory {
         this.recordHistory = [];
     }
 };
-__decorate$e([
+__decorate$d([
     GeneratedValue(),
     SequenceGenerator$1(),
     Id(),
     Column(),
     DbNumber()
 ], OperationHistory.prototype, "_localId", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbNumber()
 ], OperationHistory.prototype, "orderNumber", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbString()
 ], OperationHistory.prototype, "changeType", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbNumber()
 ], OperationHistory.prototype, "systemWideOperationId", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], OperationHistory.prototype, "actor", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], OperationHistory.prototype, "entity", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], OperationHistory.prototype, "repositoryTransactionHistory", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], OperationHistory.prototype, "recordHistory", void 0);
-OperationHistory = __decorate$e([
+OperationHistory = __decorate$d([
     Entity(),
     Table()
 ], OperationHistory);
@@ -15694,35 +15755,35 @@ let RecordHistory = class RecordHistory {
         this.oldValues = [];
     }
 };
-__decorate$e([
+__decorate$d([
     Id(),
     GeneratedValue(),
     SequenceGenerator$1(),
     Column(),
     DbNumber()
 ], RecordHistory.prototype, "_localId", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbNumber()
 ], RecordHistory.prototype, "_actorRecordId", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RecordHistory.prototype, "actor", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RecordHistory.prototype, "operationHistory", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], RecordHistory.prototype, "newValues", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], RecordHistory.prototype, "oldValues", void 0);
-__decorate$e([
+__decorate$d([
     Transient()
 ], RecordHistory.prototype, "tableColumnMap", void 0);
-RecordHistory = __decorate$e([
+RecordHistory = __decorate$d([
     Entity(),
     Table()
 ], RecordHistory);
@@ -15740,21 +15801,21 @@ RecordHistory = __decorate$e([
  */
 let RecordHistoryNewValue = class RecordHistoryNewValue {
 };
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RecordHistoryNewValue.prototype, "recordHistory", void 0);
-__decorate$e([
+__decorate$d([
     Id(),
     Column(),
     DbNumber()
 ], RecordHistoryNewValue.prototype, "columnIndex", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbAny()
 ], RecordHistoryNewValue.prototype, "newValue", void 0);
-RecordHistoryNewValue = __decorate$e([
+RecordHistoryNewValue = __decorate$d([
     Entity(),
     Table()
 ], RecordHistoryNewValue);
@@ -15772,21 +15833,21 @@ RecordHistoryNewValue = __decorate$e([
  */
 let RecordHistoryOldValue = class RecordHistoryOldValue {
 };
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RecordHistoryOldValue.prototype, "recordHistory", void 0);
-__decorate$e([
+__decorate$d([
     Id(),
     Column(),
     DbNumber()
 ], RecordHistoryOldValue.prototype, "columnIndex", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbAny()
 ], RecordHistoryOldValue.prototype, "oldValue", void 0);
-RecordHistoryOldValue = __decorate$e([
+RecordHistoryOldValue = __decorate$d([
     Entity(),
     Table()
 ], RecordHistoryOldValue);
@@ -15795,20 +15856,21 @@ RecordHistoryOldValue = __decorate$e([
  * Created by Papa on 9/15/2016.
  */
 /**
- * An entry in repository Transaction History/Log.
+ * An entry in the repository Transaction History/Log.
  * The main synchronization unit exchanged between terminals.
  */
 let RepositoryTransactionHistory = class RepositoryTransactionHistory {
     constructor(data) {
         this.repositoryTransactionType = RepositoryTransactionType.LOCAL;
+        this.followingRepositoryTransactionHistories = [];
         this.operationHistory = [];
         // Tracked only in the Terminal database where originally added, for the
         // purpose of sending out synchronization messages
-        // IS resent in SyncRepositoryMessage
+        // IS resent in IRepositoryBlock
         this.newRepositoryMemberInvitations = [];
         // Tracked only in the Terminal database where originally added, for the
         // purpose of sending out synchronization messages
-        // IS resent in SyncRepositoryMessage
+        // IS resent in IRepositoryBlock
         this.newRepositoryMemberAcceptances = [];
         // Tracked only in the Terminal database where originally added, for the
         // purpose of sending out synchronization messages
@@ -15816,7 +15878,7 @@ let RepositoryTransactionHistory = class RepositoryTransactionHistory {
         this.newRepositoryMemberUpdates = [];
         // Tracked only in the Terminal database where originally added, for the
         // purpose of sending out synchronization messages
-        // IS NOT resent in SyncRepositoryMessage
+        // IS NOT resent in IRepositoryBlock
         this.newRepositoryMembers = [];
         if (!data) {
             return;
@@ -15828,65 +15890,68 @@ let RepositoryTransactionHistory = class RepositoryTransactionHistory {
         this.operationHistory = data.operationHistory;
     }
 };
-__decorate$e([
+__decorate$d([
     GeneratedValue(),
     Id(),
     SequenceGenerator$1(),
     Column(),
     DbNumber()
 ], RepositoryTransactionHistory.prototype, "_localId", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbString()
 ], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbNumber()
 ], RepositoryTransactionHistory.prototype, "saveTimestamp", void 0);
-__decorate$e([
-    Column(),
-    DbNumber()
-], RepositoryTransactionHistory.prototype, "syncTimestamp", void 0);
-__decorate$e([
-    Column(),
-    DbString()
-], RepositoryTransactionHistory.prototype, "GUID", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbBoolean()
 ], RepositoryTransactionHistory.prototype, "isRepositoryCreation", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbString()
 ], RepositoryTransactionHistory.prototype, "invitationPrivateSigningKey", void 0);
-__decorate$e([
+__decorate$d([
+    ManyToOne(),
+    JoinColumn()
+], RepositoryTransactionHistory.prototype, "block", void 0);
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RepositoryTransactionHistory.prototype, "member", void 0);
-__decorate$e([
+__decorate$d([
+    ManyToOne(),
+    JoinColumn()
+], RepositoryTransactionHistory.prototype, "previousRepositoryTransactionHistory", void 0);
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RepositoryTransactionHistory.prototype, "repository", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RepositoryTransactionHistory.prototype, "transactionHistory", void 0);
-__decorate$e([
+__decorate$d([
+    OneToMany()
+], RepositoryTransactionHistory.prototype, "followingRepositoryTransactionHistories", void 0);
+__decorate$d([
     OneToMany()
 ], RepositoryTransactionHistory.prototype, "operationHistory", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], RepositoryTransactionHistory.prototype, "newRepositoryMemberInvitations", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], RepositoryTransactionHistory.prototype, "newRepositoryMemberAcceptances", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], RepositoryTransactionHistory.prototype, "newRepositoryMemberUpdates", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], RepositoryTransactionHistory.prototype, "newRepositoryMembers", void 0);
-RepositoryTransactionHistory = __decorate$e([
+RepositoryTransactionHistory = __decorate$d([
     Entity(),
     Table()
 ], RepositoryTransactionHistory);
@@ -15905,68 +15970,68 @@ let TransactionHistory = class TransactionHistory {
         this.allRecordHistoryOldValues = [];
     }
 };
-__decorate$e([
+__decorate$d([
     GeneratedValue(),
     Id(),
     SequenceGenerator$1(),
     Column(),
     DbNumber()
 ], TransactionHistory.prototype, "_localId", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbString()
 ], TransactionHistory.prototype, "transactionType", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], TransactionHistory.prototype, "repositoryTransactionHistories", void 0);
-__decorate$e([
+__decorate$d([
     Transient()
 ], TransactionHistory.prototype, "repositoryTransactionHistoryMap", void 0);
-__decorate$e([
+__decorate$d([
     Transient()
 ], TransactionHistory.prototype, "allModifiedColumnsMap", void 0);
-__decorate$e([
+__decorate$d([
     Transient()
 ], TransactionHistory.prototype, "allOperationHistory", void 0);
-__decorate$e([
+__decorate$d([
     Transient()
 ], TransactionHistory.prototype, "allRecordHistory", void 0);
-__decorate$e([
+__decorate$d([
     Transient()
 ], TransactionHistory.prototype, "allRecordHistoryNewValues", void 0);
-__decorate$e([
+__decorate$d([
     Transient()
 ], TransactionHistory.prototype, "allRecordHistoryOldValues", void 0);
-TransactionHistory = __decorate$e([
+TransactionHistory = __decorate$d([
     Entity(),
     Table()
 ], TransactionHistory);
 
 let Actor = class Actor {
 };
-__decorate$e([
+__decorate$d([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], Actor.prototype, "_localId", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbString()
 ], Actor.prototype, "GUID", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Actor.prototype, "userAccount", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Actor.prototype, "terminal", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Actor.prototype, "application", void 0);
-Actor = __decorate$e([
+Actor = __decorate$d([
     Entity()
 ], Actor);
 
@@ -15990,171 +16055,175 @@ let Repository = class Repository {
         this.repositoryTypes = [];
     }
 };
-__decorate$e([
+__decorate$d([
     Column(),
     GeneratedValue(),
     Id(),
     DbNumber()
 ], Repository.prototype, "_localId", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbNumber()
 ], Repository.prototype, "ageSuitability", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbDate()
 ], Repository.prototype, "createdAt", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbString()
 ], Repository.prototype, "fullApplicationName", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbString()
 ], Repository.prototype, "GUID", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbBoolean()
 ], Repository.prototype, "immutable", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbBoolean()
 ], Repository.prototype, "internal", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbBoolean()
 ], Repository.prototype, "isPublic", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbString()
 ], Repository.prototype, "name", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbString()
 ], Repository.prototype, "source", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbString()
 ], Repository.prototype, "uiEntryUri", void 0);
-__decorate$e([
+__decorate$d([
     Column()
 ], Repository.prototype, "isLoaded", void 0);
-__decorate$e([
+__decorate$d([
+    ManyToOne(),
+    JoinColumn()
+], Repository.prototype, "currentRepositoryTransactionHistory", void 0);
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Repository.prototype, "owner", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Repository.prototype, "continent", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Repository.prototype, "country", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Repository.prototype, "state", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], Repository.prototype, "metroArea", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], Repository.prototype, "referencedRepositories", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], Repository.prototype, "referencedInRepositories", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], Repository.prototype, "repositoryMembers", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], Repository.prototype, "repositoryApplications", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], Repository.prototype, "repositoryClients", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], Repository.prototype, "repositoryDatabases", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], Repository.prototype, "repositoryTerminals", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], Repository.prototype, "repositoryTypes", void 0);
-Repository = __decorate$e([
+Repository = __decorate$d([
     Entity(),
     Table()
 ], Repository);
 
 let RepositoryApplication = class RepositoryApplication {
 };
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryApplication.prototype, "application", void 0);
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryApplication.prototype, "repository", void 0);
-RepositoryApplication = __decorate$e([
+RepositoryApplication = __decorate$d([
     Entity(),
     Table()
 ], RepositoryApplication);
 
 let RepositoryClient = class RepositoryClient {
 };
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryClient.prototype, "repository", void 0);
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryClient.prototype, "client", void 0);
-RepositoryClient = __decorate$e([
+RepositoryClient = __decorate$d([
     Entity(),
     Table()
 ], RepositoryClient);
 
 let RepositoryDatabase = class RepositoryDatabase {
 };
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryDatabase.prototype, "repository", void 0);
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryDatabase.prototype, "database", void 0);
-RepositoryDatabase = __decorate$e([
+RepositoryDatabase = __decorate$d([
     Entity(),
     Table()
 ], RepositoryDatabase);
 
 let RepositoryReference = class RepositoryReference {
 };
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryReference.prototype, "referencingRepository", void 0);
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryReference.prototype, "referencedRepository", void 0);
-RepositoryReference = __decorate$e([
+RepositoryReference = __decorate$d([
     Entity(),
     Table()
 ], RepositoryReference);
@@ -16164,184 +16233,184 @@ let RepositoryMember = class RepositoryMember {
         this.updates = [];
     }
 };
-__decorate$e([
+__decorate$d([
     Id(),
     GeneratedValue(),
     Column(),
     DbNumber()
 ], RepositoryMember.prototype, "_localId", void 0);
-__decorate$e([
-    Column(),
-    DbString()
-], RepositoryMember.prototype, "memberPublicSigningKey", void 0);
-__decorate$e([
-    Column(),
-    DbBoolean()
-], RepositoryMember.prototype, "isOwner", void 0);
-__decorate$e([
-    Column(),
-    DbBoolean()
-], RepositoryMember.prototype, "isAdministrator", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbBoolean()
 ], RepositoryMember.prototype, "canWrite", void 0);
-__decorate$e([
+__decorate$d([
+    Column(),
+    DbBoolean()
+], RepositoryMember.prototype, "isAdministrator", void 0);
+__decorate$d([
+    Column(),
+    DbBoolean()
+], RepositoryMember.prototype, "isOwner", void 0);
+__decorate$d([
+    Column(),
+    DbString()
+], RepositoryMember.prototype, "memberPublicSigningKey", void 0);
+__decorate$d([
     Column(),
     DbNumber()
 ], RepositoryMember.prototype, "status", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMember.prototype, "repository", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMember.prototype, "userAccount", void 0);
-__decorate$e([
+__decorate$d([
+    OneToMany()
+], RepositoryMember.prototype, "acceptances", void 0);
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMember.prototype, "addedInRepositoryTransactionHistory", void 0);
-__decorate$e([
-    OneToMany()
-], RepositoryMember.prototype, "acceptances", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], RepositoryMember.prototype, "invitations", void 0);
-__decorate$e([
+__decorate$d([
     OneToMany()
 ], RepositoryMember.prototype, "updates", void 0);
-RepositoryMember = __decorate$e([
+RepositoryMember = __decorate$d([
     Entity(),
     Table()
 ], RepositoryMember);
 
 let RepositoryMemberAcceptance = class RepositoryMemberAcceptance {
 };
-__decorate$e([
+__decorate$d([
     Id(),
     GeneratedValue(),
     Column(),
     DbNumber()
 ], RepositoryMemberAcceptance.prototype, "_localId", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbDate()
 ], RepositoryMemberAcceptance.prototype, "createdAt", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbString()
 ], RepositoryMemberAcceptance.prototype, "invitationPublicSigningKey", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMemberAcceptance.prototype, "acceptingRepositoryMember", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMemberAcceptance.prototype, "addedInRepositoryTransactionHistory", void 0);
-RepositoryMemberAcceptance = __decorate$e([
+RepositoryMemberAcceptance = __decorate$d([
     Entity(),
     Table()
 ], RepositoryMemberAcceptance);
 
 let RepositoryMemberInvitation = class RepositoryMemberInvitation {
 };
-__decorate$e([
+__decorate$d([
     Id(),
     GeneratedValue(),
     Column(),
     DbNumber()
 ], RepositoryMemberInvitation.prototype, "_localId", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbDate()
 ], RepositoryMemberInvitation.prototype, "createdAt", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbString()
 ], RepositoryMemberInvitation.prototype, "invitationPublicSigningKey", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMemberInvitation.prototype, "invitedRepositoryMember", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMemberInvitation.prototype, "addedInRepositoryTransactionHistory", void 0);
-RepositoryMemberInvitation = __decorate$e([
+RepositoryMemberInvitation = __decorate$d([
     Entity(),
     Table()
 ], RepositoryMemberInvitation);
 
 let RepositoryMemberUpdate = class RepositoryMemberUpdate {
 };
-__decorate$e([
+__decorate$d([
     Id(),
     GeneratedValue(),
     Column(),
     DbNumber()
 ], RepositoryMemberUpdate.prototype, "_localId", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbNumber()
 ], RepositoryMemberUpdate.prototype, "createdAt", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbBoolean()
 ], RepositoryMemberUpdate.prototype, "isAdministrator", void 0);
-__decorate$e([
+__decorate$d([
     Column(),
     DbBoolean()
 ], RepositoryMemberUpdate.prototype, "canWrite", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMemberUpdate.prototype, "updatedRepositoryMember", void 0);
-__decorate$e([
+__decorate$d([
     ManyToOne(),
     JoinColumn()
 ], RepositoryMemberUpdate.prototype, "addedInRepositoryTransactionHistory", void 0);
-RepositoryMemberUpdate = __decorate$e([
+RepositoryMemberUpdate = __decorate$d([
     Entity(),
     Table()
 ], RepositoryMemberUpdate);
 
 let RepositoryTerminal = class RepositoryTerminal {
 };
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryTerminal.prototype, "repository", void 0);
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryTerminal.prototype, "terminal", void 0);
-RepositoryTerminal = __decorate$e([
+RepositoryTerminal = __decorate$d([
     Entity(),
     Table()
 ], RepositoryTerminal);
 
 let RepositoryType = class RepositoryType {
 };
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryType.prototype, "repository", void 0);
-__decorate$e([
+__decorate$d([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], RepositoryType.prototype, "type", void 0);
-RepositoryType = __decorate$e([
+RepositoryType = __decorate$d([
     Entity(),
     Table()
 ], RepositoryType);
 
-const __constructors__$4 = {
+const __constructors__$3 = {
     Actor,
     OperationHistory,
     RecordHistory,
@@ -16349,6 +16418,7 @@ const __constructors__$4 = {
     RecordHistoryOldValue,
     Repository,
     RepositoryApplication,
+    RepositoryBlock,
     RepositoryClient,
     RepositoryDatabase,
     RepositoryMember,
@@ -16362,7 +16432,7 @@ const __constructors__$4 = {
     TransactionHistory
 };
 const Q_airport____at_airport_slash_holding_dash_pattern = {
-    __constructors__: __constructors__$4,
+    __constructors__: __constructors__$3,
     domain: 'airport',
     name: '@airport/holding-pattern'
 };
@@ -16374,252 +16444,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-let SQDIDao$4 = class SQDIDao extends ObservableDao {
+let SQDIDao$3 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_holding_dash_pattern);
     }
 };
-class BaseActorDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(0);
-    }
-    constructor() {
-        super(0);
-    }
-}
-BaseActorDao.Find = new DaoQueryDecorators();
-BaseActorDao.FindOne = new DaoQueryDecorators();
-BaseActorDao.Search = new DaoQueryDecorators();
-BaseActorDao.SearchOne = new DaoQueryDecorators();
-class BaseOperationHistoryDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(17);
-    }
-    constructor() {
-        super(17);
-    }
-}
-BaseOperationHistoryDao.Find = new DaoQueryDecorators();
-BaseOperationHistoryDao.FindOne = new DaoQueryDecorators();
-BaseOperationHistoryDao.Search = new DaoQueryDecorators();
-BaseOperationHistoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRecordHistoryDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(3);
-    }
-    constructor() {
-        super(3);
-    }
-}
-BaseRecordHistoryDao.Find = new DaoQueryDecorators();
-BaseRecordHistoryDao.FindOne = new DaoQueryDecorators();
-BaseRecordHistoryDao.Search = new DaoQueryDecorators();
-BaseRecordHistoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRecordHistoryNewValueDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(1);
-    }
-    constructor() {
-        super(1);
-    }
-}
-BaseRecordHistoryNewValueDao.Find = new DaoQueryDecorators();
-BaseRecordHistoryNewValueDao.FindOne = new DaoQueryDecorators();
-BaseRecordHistoryNewValueDao.Search = new DaoQueryDecorators();
-BaseRecordHistoryNewValueDao.SearchOne = new DaoQueryDecorators();
-class BaseRecordHistoryOldValueDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(2);
-    }
-    constructor() {
-        super(2);
-    }
-}
-BaseRecordHistoryOldValueDao.Find = new DaoQueryDecorators();
-BaseRecordHistoryOldValueDao.FindOne = new DaoQueryDecorators();
-BaseRecordHistoryOldValueDao.Search = new DaoQueryDecorators();
-BaseRecordHistoryOldValueDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(10);
-    }
-    constructor() {
-        super(10);
-    }
-}
-BaseRepositoryDao.Find = new DaoQueryDecorators();
-BaseRepositoryDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryDao.Search = new DaoQueryDecorators();
-BaseRepositoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryApplicationDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(8);
-    }
-    constructor() {
-        super(8);
-    }
-}
-BaseRepositoryApplicationDao.Find = new DaoQueryDecorators();
-BaseRepositoryApplicationDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryApplicationDao.Search = new DaoQueryDecorators();
-BaseRepositoryApplicationDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryClientDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(6);
-    }
-    constructor() {
-        super(6);
-    }
-}
-BaseRepositoryClientDao.Find = new DaoQueryDecorators();
-BaseRepositoryClientDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryClientDao.Search = new DaoQueryDecorators();
-BaseRepositoryClientDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryDatabaseDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(5);
-    }
-    constructor() {
-        super(5);
-    }
-}
-BaseRepositoryDatabaseDao.Find = new DaoQueryDecorators();
-BaseRepositoryDatabaseDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryDatabaseDao.Search = new DaoQueryDecorators();
-BaseRepositoryDatabaseDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryMemberDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(14);
-    }
-    constructor() {
-        super(14);
-    }
-}
-BaseRepositoryMemberDao.Find = new DaoQueryDecorators();
-BaseRepositoryMemberDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryMemberDao.Search = new DaoQueryDecorators();
-BaseRepositoryMemberDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryMemberAcceptanceDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(11);
-    }
-    constructor() {
-        super(11);
-    }
-}
-BaseRepositoryMemberAcceptanceDao.Find = new DaoQueryDecorators();
-BaseRepositoryMemberAcceptanceDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryMemberAcceptanceDao.Search = new DaoQueryDecorators();
-BaseRepositoryMemberAcceptanceDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryMemberInvitationDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(12);
-    }
-    constructor() {
-        super(12);
-    }
-}
-BaseRepositoryMemberInvitationDao.Find = new DaoQueryDecorators();
-BaseRepositoryMemberInvitationDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryMemberInvitationDao.Search = new DaoQueryDecorators();
-BaseRepositoryMemberInvitationDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryMemberUpdateDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(13);
-    }
-    constructor() {
-        super(13);
-    }
-}
-BaseRepositoryMemberUpdateDao.Find = new DaoQueryDecorators();
-BaseRepositoryMemberUpdateDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryMemberUpdateDao.Search = new DaoQueryDecorators();
-BaseRepositoryMemberUpdateDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryReferenceDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(9);
-    }
-    constructor() {
-        super(9);
-    }
-}
-BaseRepositoryReferenceDao.Find = new DaoQueryDecorators();
-BaseRepositoryReferenceDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryReferenceDao.Search = new DaoQueryDecorators();
-BaseRepositoryReferenceDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryTerminalDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(7);
-    }
-    constructor() {
-        super(7);
-    }
-}
-BaseRepositoryTerminalDao.Find = new DaoQueryDecorators();
-BaseRepositoryTerminalDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryTerminalDao.Search = new DaoQueryDecorators();
-BaseRepositoryTerminalDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryTransactionHistoryDao extends SQDIDao$4 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_holding_dash_pattern_diSet(16);
-    }
-    constructor() {
-        super(16);
-    }
-}
-BaseRepositoryTransactionHistoryDao.Find = new DaoQueryDecorators();
-BaseRepositoryTransactionHistoryDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryTransactionHistoryDao.Search = new DaoQueryDecorators();
-BaseRepositoryTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryTypeDao extends SQDIDao$4 {
+class BaseActorDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16630,11 +16460,86 @@ class BaseRepositoryTypeDao extends SQDIDao$4 {
         super(4);
     }
 }
-BaseRepositoryTypeDao.Find = new DaoQueryDecorators();
-BaseRepositoryTypeDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryTypeDao.Search = new DaoQueryDecorators();
-BaseRepositoryTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseTransactionHistoryDao extends SQDIDao$4 {
+BaseActorDao.Find = new DaoQueryDecorators();
+BaseActorDao.FindOne = new DaoQueryDecorators();
+BaseActorDao.Search = new DaoQueryDecorators();
+BaseActorDao.SearchOne = new DaoQueryDecorators();
+class BaseOperationHistoryDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(8);
+    }
+    constructor() {
+        super(8);
+    }
+}
+BaseOperationHistoryDao.Find = new DaoQueryDecorators();
+BaseOperationHistoryDao.FindOne = new DaoQueryDecorators();
+BaseOperationHistoryDao.Search = new DaoQueryDecorators();
+BaseOperationHistoryDao.SearchOne = new DaoQueryDecorators();
+class BaseRecordHistoryDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(7);
+    }
+    constructor() {
+        super(7);
+    }
+}
+BaseRecordHistoryDao.Find = new DaoQueryDecorators();
+BaseRecordHistoryDao.FindOne = new DaoQueryDecorators();
+BaseRecordHistoryDao.Search = new DaoQueryDecorators();
+BaseRecordHistoryDao.SearchOne = new DaoQueryDecorators();
+class BaseRecordHistoryNewValueDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(5);
+    }
+    constructor() {
+        super(5);
+    }
+}
+BaseRecordHistoryNewValueDao.Find = new DaoQueryDecorators();
+BaseRecordHistoryNewValueDao.FindOne = new DaoQueryDecorators();
+BaseRecordHistoryNewValueDao.Search = new DaoQueryDecorators();
+BaseRecordHistoryNewValueDao.SearchOne = new DaoQueryDecorators();
+class BaseRecordHistoryOldValueDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(6);
+    }
+    constructor() {
+        super(6);
+    }
+}
+BaseRecordHistoryOldValueDao.Find = new DaoQueryDecorators();
+BaseRecordHistoryOldValueDao.FindOne = new DaoQueryDecorators();
+BaseRecordHistoryOldValueDao.Search = new DaoQueryDecorators();
+BaseRecordHistoryOldValueDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(17);
+    }
+    constructor() {
+        super(17);
+    }
+}
+BaseRepositoryDao.Find = new DaoQueryDecorators();
+BaseRepositoryDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryDao.Search = new DaoQueryDecorators();
+BaseRepositoryDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryApplicationDao extends SQDIDao$3 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -16645,10 +16550,241 @@ class BaseTransactionHistoryDao extends SQDIDao$4 {
         super(15);
     }
 }
+BaseRepositoryApplicationDao.Find = new DaoQueryDecorators();
+BaseRepositoryApplicationDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryApplicationDao.Search = new DaoQueryDecorators();
+BaseRepositoryApplicationDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryBlockDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(18);
+    }
+    constructor() {
+        super(18);
+    }
+}
+BaseRepositoryBlockDao.Find = new DaoQueryDecorators();
+BaseRepositoryBlockDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryBlockDao.Search = new DaoQueryDecorators();
+BaseRepositoryBlockDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryClientDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(13);
+    }
+    constructor() {
+        super(13);
+    }
+}
+BaseRepositoryClientDao.Find = new DaoQueryDecorators();
+BaseRepositoryClientDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryClientDao.Search = new DaoQueryDecorators();
+BaseRepositoryClientDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryDatabaseDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(12);
+    }
+    constructor() {
+        super(12);
+    }
+}
+BaseRepositoryDatabaseDao.Find = new DaoQueryDecorators();
+BaseRepositoryDatabaseDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryDatabaseDao.Search = new DaoQueryDecorators();
+BaseRepositoryDatabaseDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryMemberDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(3);
+    }
+    constructor() {
+        super(3);
+    }
+}
+BaseRepositoryMemberDao.Find = new DaoQueryDecorators();
+BaseRepositoryMemberDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryMemberDao.Search = new DaoQueryDecorators();
+BaseRepositoryMemberDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryMemberAcceptanceDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(0);
+    }
+    constructor() {
+        super(0);
+    }
+}
+BaseRepositoryMemberAcceptanceDao.Find = new DaoQueryDecorators();
+BaseRepositoryMemberAcceptanceDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryMemberAcceptanceDao.Search = new DaoQueryDecorators();
+BaseRepositoryMemberAcceptanceDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryMemberInvitationDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(1);
+    }
+    constructor() {
+        super(1);
+    }
+}
+BaseRepositoryMemberInvitationDao.Find = new DaoQueryDecorators();
+BaseRepositoryMemberInvitationDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryMemberInvitationDao.Search = new DaoQueryDecorators();
+BaseRepositoryMemberInvitationDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryMemberUpdateDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(2);
+    }
+    constructor() {
+        super(2);
+    }
+}
+BaseRepositoryMemberUpdateDao.Find = new DaoQueryDecorators();
+BaseRepositoryMemberUpdateDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryMemberUpdateDao.Search = new DaoQueryDecorators();
+BaseRepositoryMemberUpdateDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryReferenceDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(16);
+    }
+    constructor() {
+        super(16);
+    }
+}
+BaseRepositoryReferenceDao.Find = new DaoQueryDecorators();
+BaseRepositoryReferenceDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryReferenceDao.Search = new DaoQueryDecorators();
+BaseRepositoryReferenceDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryTerminalDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(14);
+    }
+    constructor() {
+        super(14);
+    }
+}
+BaseRepositoryTerminalDao.Find = new DaoQueryDecorators();
+BaseRepositoryTerminalDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryTerminalDao.Search = new DaoQueryDecorators();
+BaseRepositoryTerminalDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryTransactionHistoryDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(10);
+    }
+    constructor() {
+        super(10);
+    }
+}
+BaseRepositoryTransactionHistoryDao.Find = new DaoQueryDecorators();
+BaseRepositoryTransactionHistoryDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryTransactionHistoryDao.Search = new DaoQueryDecorators();
+BaseRepositoryTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryTypeDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(11);
+    }
+    constructor() {
+        super(11);
+    }
+}
+BaseRepositoryTypeDao.Find = new DaoQueryDecorators();
+BaseRepositoryTypeDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryTypeDao.Search = new DaoQueryDecorators();
+BaseRepositoryTypeDao.SearchOne = new DaoQueryDecorators();
+class BaseTransactionHistoryDao extends SQDIDao$3 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_holding_dash_pattern_diSet(9);
+    }
+    constructor() {
+        super(9);
+    }
+}
 BaseTransactionHistoryDao.Find = new DaoQueryDecorators();
 BaseTransactionHistoryDao.FindOne = new DaoQueryDecorators();
 BaseTransactionHistoryDao.Search = new DaoQueryDecorators();
 BaseTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
+
+let RepositoryBlockDao = class RepositoryBlockDao extends BaseRepositoryBlockDao {
+    async findWhereGUIDsIn(GUIDs, context) {
+        let rth;
+        return await this.db.find.tree({
+            SELECT: {
+                GUID: Y
+            },
+            FROM: [
+                rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryBlock
+            ],
+            WHERE: rth.GUID.IN(GUIDs)
+        }, context);
+    }
+    // async insert(
+    // 	blocks: IRepositoryBlock[],
+    // 	context: IContext
+    // ): Promise<void> {
+    //     let aac: QRepositoryBlock;
+    //     const VALUES = []
+    //     for (const block of blocks) {
+    //         VALUES.push([
+    //             block._localId,
+    //             block.name,
+    //             block.applicationVersion._localId,
+    //         ])
+    //     }
+    //     await this.db.insertValuesGenerateIds({
+    //         INSERT_INTO: aac = Q_airport____at_airport_slash_airspace.ApplicationApiClass,
+    //         columns: [
+    //             aac._localId,
+    //             aac.name,
+    //             aac.applicationVersion._localId
+    //         ],
+    //         VALUES
+    //     }, context)
+    // }
+    async updateSyncTimestamp(repositoryBlock, context) {
+        let rth;
+        await this.db.updateWhere({
+            UPDATE: rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryBlock,
+            SET: {
+                syncTimestamp: repositoryBlock.syncTimestamp
+            },
+            WHERE: rth._localId.equals(repositoryBlock._localId)
+        }, context);
+    }
+};
+RepositoryBlockDao = __decorate$d([
+    Injected()
+], RepositoryBlockDao);
 
 let RecordHistoryNewValueDao = class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
     async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds, context) {
@@ -16662,7 +16798,7 @@ let RecordHistoryNewValueDao = class RecordHistoryNewValueDao extends BaseRecord
         }, context);
     }
 };
-RecordHistoryNewValueDao = __decorate$e([
+RecordHistoryNewValueDao = __decorate$d([
     Injected()
 ], RecordHistoryNewValueDao);
 
@@ -16678,38 +16814,11 @@ let RecordHistoryOldValueDao = class RecordHistoryOldValueDao extends BaseRecord
         }, context);
     }
 };
-RecordHistoryOldValueDao = __decorate$e([
+RecordHistoryOldValueDao = __decorate$d([
     Injected()
 ], RecordHistoryOldValueDao);
 
 let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
-    /*
-    async clearContentsWhereIdsIn(
-        repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[],
-        context: IContext
-    ): Promise<void> {
-        const rtb: QRepositoryTransactionBlock = Q.QRepositoryTransactionBlock
-        await this.db.updateWhere({
-            UPDATE: rtb,
-            SET: {
-                contents: null
-            },
-            WHERE: rtb._localId.IN(repositoryTransactionBlockIds)
-        }, context)
-    }
-    */
-    async findWhereGUIDsIn(GUIDs, context) {
-        let rth;
-        return await this.db.find.tree({
-            SELECT: {
-                GUID: Y
-            },
-            FROM: [
-                rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory
-            ],
-            WHERE: rth.GUID.IN(GUIDs)
-        }, context);
-    }
     async findAllLocalChangesForRecordIds(changedRecordIds, context) {
         const repositoryTransactionHistoryMapByRepositoryLid = new Map();
         const rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory;
@@ -16793,21 +16902,11 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
         }
         return repositoryTransactionHistoryMapByRepositoryLid;
     }
-    async updateSyncTimestamp(repositoryTransactionHistory, context) {
-        let rth;
-        await this.db.updateWhere({
-            UPDATE: rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory,
-            SET: {
-                syncTimestamp: repositoryTransactionHistory.syncTimestamp
-            },
-            WHERE: rth._localId.equals(repositoryTransactionHistory._localId)
-        }, context);
-    }
 };
-__decorate$e([
+__decorate$d([
     Inject()
 ], RepositoryTransactionHistoryDao.prototype, "datastructureUtils", void 0);
-RepositoryTransactionHistoryDao = __decorate$e([
+RepositoryTransactionHistoryDao = __decorate$d([
     Injected()
 ], RepositoryTransactionHistoryDao);
 
@@ -16939,7 +17038,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
         }, context);
     }
 };
-ActorDao = __decorate$e([
+ActorDao = __decorate$d([
     Injected()
 ], ActorDao);
 
@@ -16982,7 +17081,7 @@ let RepositoryMemberAcceptanceDao = class RepositoryMemberAcceptanceDao extends 
         }, context);
     }
 };
-RepositoryMemberAcceptanceDao = __decorate$e([
+RepositoryMemberAcceptanceDao = __decorate$d([
     Injected()
 ], RepositoryMemberAcceptanceDao);
 
@@ -17111,7 +17210,7 @@ let RepositoryMemberDao = class RepositoryMemberDao extends BaseRepositoryMember
         }, context);
     }
 };
-RepositoryMemberDao = __decorate$e([
+RepositoryMemberDao = __decorate$d([
     Injected()
 ], RepositoryMemberDao);
 
@@ -17156,7 +17255,7 @@ let RepositoryMemberInvitationDao = class RepositoryMemberInvitationDao extends 
         }, context);
     }
 };
-RepositoryMemberInvitationDao = __decorate$e([
+RepositoryMemberInvitationDao = __decorate$d([
     Injected()
 ], RepositoryMemberInvitationDao);
 
@@ -17382,7 +17481,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
         }, context);
     }
 };
-RepositoryDao = __decorate$e([
+RepositoryDao = __decorate$d([
     Injected()
 ], RepositoryDao);
 
@@ -17464,10 +17563,10 @@ let OperationHistoryDuo = class OperationHistoryDuo {
         return recordHistory;
     }
 };
-__decorate$e([
+__decorate$d([
     Inject()
 ], OperationHistoryDuo.prototype, "recordHistoryDuo", void 0);
-OperationHistoryDuo = __decorate$e([
+OperationHistoryDuo = __decorate$d([
     Injected()
 ], OperationHistoryDuo);
 
@@ -17521,16 +17620,16 @@ let RecordHistoryDuo = class RecordHistoryDuo {
             .ensure(dbColumn.index);
     }
 };
-__decorate$e([
+__decorate$d([
     Inject()
 ], RecordHistoryDuo.prototype, "dictionary", void 0);
-__decorate$e([
+__decorate$d([
     Inject()
 ], RecordHistoryDuo.prototype, "recordHistoryNewValueDuo", void 0);
-__decorate$e([
+__decorate$d([
     Inject()
 ], RecordHistoryDuo.prototype, "recordHistoryOldValueDuo", void 0);
-RecordHistoryDuo = __decorate$e([
+RecordHistoryDuo = __decorate$d([
     Injected()
 ], RecordHistoryDuo);
 
@@ -17543,7 +17642,7 @@ let RecordHistoryNewValueDuo = class RecordHistoryNewValueDuo {
         return recordHistoryNewValue;
     }
 };
-RecordHistoryNewValueDuo = __decorate$e([
+RecordHistoryNewValueDuo = __decorate$d([
     Injected()
 ], RecordHistoryNewValueDuo);
 
@@ -17556,7 +17655,7 @@ let RecordHistoryOldValueDuo = class RecordHistoryOldValueDuo {
         return recordHistoryOldValue;
     }
 };
-RecordHistoryOldValueDuo = __decorate$e([
+RecordHistoryOldValueDuo = __decorate$d([
     Injected()
 ], RecordHistoryOldValueDuo);
 
@@ -17565,7 +17664,6 @@ let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo {
         let repositoryTransactionHistory = new RepositoryTransactionHistory();
         let saveTimestamp = new Date().getTime();
         repositoryTransactionHistory.saveTimestamp = saveTimestamp;
-        repositoryTransactionHistory.GUID = v4();
         repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation;
         repositoryTransactionHistory.repository = new Repository();
         repositoryTransactionHistory.repository._localId = repositoryLid;
@@ -17589,7 +17687,7 @@ let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo {
     }
     sortRepoTransHistories(repoTransHistories, actorMapById) {
         repoTransHistories.sort((repoTransHistory1, repoTransHistory2) => {
-            const syncTimeComparison = this.compareNumbers(repoTransHistory1.syncTimestamp, repoTransHistory2.syncTimestamp);
+            const syncTimeComparison = this.compareNumbers(repoTransHistory1.block?.syncTimestamp, repoTransHistory2.block?.syncTimestamp);
             if (syncTimeComparison) {
                 return syncTimeComparison;
             }
@@ -17622,10 +17720,10 @@ let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo {
         return 0;
     }
 };
-__decorate$e([
+__decorate$d([
     Inject()
 ], RepositoryTransactionHistoryDuo.prototype, "operationHistoryDuo", void 0);
-RepositoryTransactionHistoryDuo = __decorate$e([
+RepositoryTransactionHistoryDuo = __decorate$d([
     Injected()
 ], RepositoryTransactionHistoryDuo);
 
@@ -17646,10 +17744,10 @@ let TransactionHistoryDuo = class TransactionHistoryDuo {
         return repositoryTransactionHistory;
     }
 };
-__decorate$e([
+__decorate$d([
     Inject()
 ], TransactionHistoryDuo.prototype, "repositoryTransactionHistoryDuo", void 0);
-TransactionHistoryDuo = __decorate$e([
+TransactionHistoryDuo = __decorate$d([
     Injected()
 ], TransactionHistoryDuo);
 
@@ -17675,28 +17773,28 @@ let RepositoryApi = class RepositoryApi {
         await this.repositoryManager.setUiEntryUri(uiEntryUri, repository, arguments[2]);
     }
 };
-__decorate$e([
+__decorate$d([
     Inject()
 ], RepositoryApi.prototype, "repositoryDao", void 0);
-__decorate$e([
+__decorate$d([
     Inject()
 ], RepositoryApi.prototype, "repositoryMemberDao", void 0);
-__decorate$e([
+__decorate$d([
     Inject()
 ], RepositoryApi.prototype, "repositoryManager", void 0);
-__decorate$e([
+__decorate$d([
     Api()
 ], RepositoryApi.prototype, "searchRepositories", null);
-__decorate$e([
+__decorate$d([
     Api()
 ], RepositoryApi.prototype, "searchRepositoryMemberUserAccountsByGUID", null);
-__decorate$e([
+__decorate$d([
     Api()
 ], RepositoryApi.prototype, "create", null);
-__decorate$e([
+__decorate$d([
     Api()
 ], RepositoryApi.prototype, "setUiEntryUri", null);
-RepositoryApi = __decorate$e([
+RepositoryApi = __decorate$d([
     Injected()
 ], RepositoryApi);
 
@@ -17750,7 +17848,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$d(decorators, target, key, desc) {
+function __decorate$c(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -17766,13 +17864,13 @@ let UserAccountApi = class UserAccountApi {
         return null;
     }
 };
-__decorate$d([
+__decorate$c([
     Inject()
 ], UserAccountApi.prototype, "userAccountDao", void 0);
-__decorate$d([
+__decorate$c([
     Api()
 ], UserAccountApi.prototype, "findUserAccount", null);
-UserAccountApi = __decorate$d([
+UserAccountApi = __decorate$c([
     Injected()
 ], UserAccountApi);
 
@@ -17797,246 +17895,246 @@ let UserAccountManager = class UserAccountManager {
         };
     }
 };
-__decorate$d([
+__decorate$c([
     Inject()
 ], UserAccountManager.prototype, "userAccountDao", void 0);
-UserAccountManager = __decorate$d([
+UserAccountManager = __decorate$c([
     Injected()
 ], UserAccountManager);
 
 let Client$1 = class Client {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     DbNumber(),
     Column()
 ], Client$1.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$c([
     DbString(),
     Column()
 ], Client$1.prototype, "domain", void 0);
-__decorate$d([
+__decorate$c([
     DbString(),
     Column()
 ], Client$1.prototype, "GUID", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Client$1.prototype, "continent", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Client$1.prototype, "country", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Client$1.prototype, "state", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Client$1.prototype, "metroArea", void 0);
-__decorate$d([
+__decorate$c([
     OneToMany()
 ], Client$1.prototype, "clientTypes", void 0);
-Client$1 = __decorate$d([
+Client$1 = __decorate$c([
     Entity(),
     Table()
 ], Client$1);
 
 let ClientType = class ClientType {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], ClientType.prototype, "client", void 0);
-__decorate$d([
+__decorate$c([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], ClientType.prototype, "type", void 0);
-ClientType = __decorate$d([
+ClientType = __decorate$c([
     Entity(),
     Table()
 ], ClientType);
 
 let Database = class Database {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     DbNumber(),
     Column()
 ], Database.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$c([
     DbString(),
     Column()
 ], Database.prototype, "domain", void 0);
-__decorate$d([
+__decorate$c([
     DbString(),
     Column()
 ], Database.prototype, "GUID", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Database.prototype, "continent", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Database.prototype, "country", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Database.prototype, "state", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Database.prototype, "metroArea", void 0);
-__decorate$d([
+__decorate$c([
     OneToMany()
 ], Database.prototype, "databaseTypes", void 0);
-Database = __decorate$d([
+Database = __decorate$c([
     Entity(),
     Table()
 ], Database);
 
 let DatabaseType = class DatabaseType {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DatabaseType.prototype, "database", void 0);
-__decorate$d([
+__decorate$c([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DatabaseType.prototype, "type", void 0);
-DatabaseType = __decorate$d([
+DatabaseType = __decorate$c([
     Entity(),
     Table()
 ], DatabaseType);
 
 let Continent = class Continent {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     DbNumber(),
     Column()
 ], Continent.prototype, "id", void 0);
-__decorate$d([
+__decorate$c([
     DbString(),
     Column()
 ], Continent.prototype, "name", void 0);
-__decorate$d([
+__decorate$c([
     OneToMany()
 ], Continent.prototype, "countries", void 0);
-__decorate$d([
+__decorate$c([
     OneToMany()
 ], Continent.prototype, "userAccounts", void 0);
-Continent = __decorate$d([
+Continent = __decorate$c([
     Entity(),
     Table()
 ], Continent);
 
 let Country = class Country {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], Country.prototype, "id", void 0);
-__decorate$d([
+__decorate$c([
     DbString(),
     Column()
 ], Country.prototype, "abbreviation", void 0);
-__decorate$d([
+__decorate$c([
     DbString(),
     Column()
 ], Country.prototype, "name", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Country.prototype, "continent", void 0);
-__decorate$d([
+__decorate$c([
     OneToMany()
 ], Country.prototype, "states", void 0);
-__decorate$d([
+__decorate$c([
     OneToMany()
 ], Country.prototype, "userAccounts", void 0);
-Country = __decorate$d([
+Country = __decorate$c([
     Entity(),
     Table()
 ], Country);
 
 let MetroArea = class MetroArea {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], MetroArea.prototype, "id", void 0);
-__decorate$d([
+__decorate$c([
     DbString()
 ], MetroArea.prototype, "name", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], MetroArea.prototype, "country", void 0);
-__decorate$d([
+__decorate$c([
     OneToMany()
 ], MetroArea.prototype, "metroAreaStates", void 0);
-__decorate$d([
+__decorate$c([
     OneToMany()
 ], MetroArea.prototype, "userAccounts", void 0);
-MetroArea = __decorate$d([
+MetroArea = __decorate$c([
     Entity(),
     Table()
 ], MetroArea);
 
 let MetroAreaState = class MetroAreaState {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], MetroAreaState.prototype, "state", void 0);
-__decorate$d([
+__decorate$c([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], MetroAreaState.prototype, "metroArea", void 0);
-MetroAreaState = __decorate$d([
+MetroAreaState = __decorate$c([
     Entity(),
     Table()
 ], MetroAreaState);
 
 let State = class State {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], State.prototype, "id", void 0);
-__decorate$d([
+__decorate$c([
     DbString()
 ], State.prototype, "abbreviation", void 0);
-__decorate$d([
+__decorate$c([
     DbString()
 ], State.prototype, "name", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], State.prototype, "country", void 0);
-__decorate$d([
+__decorate$c([
     OneToMany()
 ], State.prototype, "metroAreaStates", void 0);
-__decorate$d([
+__decorate$c([
     OneToMany()
 ], State.prototype, "userAccounts", void 0);
-State = __decorate$d([
+State = __decorate$c([
     Entity(),
     Table()
 ], State);
@@ -18049,44 +18147,44 @@ let Terminal = class Terminal {
         this.isLocal = false;
     }
 };
-__decorate$d([
+__decorate$c([
     Id(),
     GeneratedValue(),
     Column(),
     DbNumber()
 ], Terminal.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$c([
     Column(),
     DbString()
 ], Terminal.prototype, "GUID", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "owner", void 0);
-__decorate$d([
+__decorate$c([
     Column(),
     DbBoolean()
 ], Terminal.prototype, "isLocal", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "continent", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "country", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "state", void 0);
-__decorate$d([
+__decorate$c([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "metroArea", void 0);
-__decorate$d([
+__decorate$c([
     OneToMany()
 ], Terminal.prototype, "terminalTypes", void 0);
-Terminal = __decorate$d([
+Terminal = __decorate$c([
     Entity(),
     Table()
 ], Terminal);
@@ -18096,17 +18194,17 @@ Terminal = __decorate$d([
  */
 let TerminalType = class TerminalType {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TerminalType.prototype, "terminal", void 0);
-__decorate$d([
+__decorate$c([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TerminalType.prototype, "type", void 0);
-TerminalType = __decorate$d([
+TerminalType = __decorate$c([
     Entity(),
     Table()
 ], TerminalType);
@@ -18116,16 +18214,16 @@ TerminalType = __decorate$d([
  */
 let Classification = class Classification {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     Column(),
     DbNumber()
 ], Classification.prototype, "id", void 0);
-__decorate$d([
+__decorate$c([
     Column(),
     DbString()
 ], Classification.prototype, "name", void 0);
-Classification = __decorate$d([
+Classification = __decorate$c([
     Entity(),
     Table()
 ], Classification);
@@ -18135,66 +18233,66 @@ Classification = __decorate$d([
  */
 let Type = class Type {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     Column(),
     DbNumber()
 ], Type.prototype, "id", void 0);
-__decorate$d([
+__decorate$c([
     Column(),
     DbString()
 ], Type.prototype, "name", void 0);
-__decorate$d([
+__decorate$c([
     OneToMany()
 ], Type.prototype, "typeClassifications", void 0);
-Type = __decorate$d([
+Type = __decorate$c([
     Entity(),
     Table()
 ], Type);
 
 let TypeClassification = class TypeClassification {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TypeClassification.prototype, "classification", void 0);
-__decorate$d([
+__decorate$c([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TypeClassification.prototype, "type", void 0);
-TypeClassification = __decorate$d([
+TypeClassification = __decorate$c([
     Entity(),
     Table()
 ], TypeClassification);
 
 let UserAccount = class UserAccount {
 };
-__decorate$d([
+__decorate$c([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], UserAccount.prototype, "_localId", void 0);
-__decorate$d([
+__decorate$c([
     Column(),
     DbString()
 ], UserAccount.prototype, "accountPublicSigningKey", void 0);
-__decorate$d([
+__decorate$c([
     Column(),
     DbString()
 ], UserAccount.prototype, "sha1sum", void 0);
-__decorate$d([
+__decorate$c([
     Column(),
     DbString()
 ], UserAccount.prototype, "username", void 0);
-UserAccount = __decorate$d([
+UserAccount = __decorate$c([
     Entity(),
     Table()
 ], UserAccount);
 
-const __constructors__$3 = {
+const __constructors__$2 = {
     Classification,
     Client: Client$1,
     ClientType,
@@ -18212,7 +18310,7 @@ const __constructors__$3 = {
     UserAccount
 };
 const Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint = {
-    __constructors__: __constructors__$3,
+    __constructors__: __constructors__$2,
     domain: 'airport',
     name: '@airport/travel-document-checkpoint'
 };
@@ -18224,12 +18322,12 @@ if (globalThis.airApi) {
 }
 
 // Application Q object Dependency Injection readiness detection Dao
-let SQDIDao$3 = class SQDIDao extends ObservableDao {
+let SQDIDao$2 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint);
     }
 };
-class BaseClassificationDao extends SQDIDao$3 {
+class BaseClassificationDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18244,7 +18342,7 @@ BaseClassificationDao.Find = new DaoQueryDecorators();
 BaseClassificationDao.FindOne = new DaoQueryDecorators();
 BaseClassificationDao.Search = new DaoQueryDecorators();
 BaseClassificationDao.SearchOne = new DaoQueryDecorators();
-class BaseClientDao extends SQDIDao$3 {
+class BaseClientDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18259,7 +18357,7 @@ BaseClientDao.Find = new DaoQueryDecorators();
 BaseClientDao.FindOne = new DaoQueryDecorators();
 BaseClientDao.Search = new DaoQueryDecorators();
 BaseClientDao.SearchOne = new DaoQueryDecorators();
-class BaseClientTypeDao extends SQDIDao$3 {
+class BaseClientTypeDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18274,7 +18372,7 @@ BaseClientTypeDao.Find = new DaoQueryDecorators();
 BaseClientTypeDao.FindOne = new DaoQueryDecorators();
 BaseClientTypeDao.Search = new DaoQueryDecorators();
 BaseClientTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseContinentDao extends SQDIDao$3 {
+class BaseContinentDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18289,7 +18387,7 @@ BaseContinentDao.Find = new DaoQueryDecorators();
 BaseContinentDao.FindOne = new DaoQueryDecorators();
 BaseContinentDao.Search = new DaoQueryDecorators();
 BaseContinentDao.SearchOne = new DaoQueryDecorators();
-class BaseCountryDao extends SQDIDao$3 {
+class BaseCountryDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18304,7 +18402,7 @@ BaseCountryDao.Find = new DaoQueryDecorators();
 BaseCountryDao.FindOne = new DaoQueryDecorators();
 BaseCountryDao.Search = new DaoQueryDecorators();
 BaseCountryDao.SearchOne = new DaoQueryDecorators();
-class BaseDatabaseDao extends SQDIDao$3 {
+class BaseDatabaseDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18319,7 +18417,7 @@ BaseDatabaseDao.Find = new DaoQueryDecorators();
 BaseDatabaseDao.FindOne = new DaoQueryDecorators();
 BaseDatabaseDao.Search = new DaoQueryDecorators();
 BaseDatabaseDao.SearchOne = new DaoQueryDecorators();
-class BaseDatabaseTypeDao extends SQDIDao$3 {
+class BaseDatabaseTypeDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18334,7 +18432,7 @@ BaseDatabaseTypeDao.Find = new DaoQueryDecorators();
 BaseDatabaseTypeDao.FindOne = new DaoQueryDecorators();
 BaseDatabaseTypeDao.Search = new DaoQueryDecorators();
 BaseDatabaseTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseMetroAreaDao extends SQDIDao$3 {
+class BaseMetroAreaDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18349,7 +18447,7 @@ BaseMetroAreaDao.Find = new DaoQueryDecorators();
 BaseMetroAreaDao.FindOne = new DaoQueryDecorators();
 BaseMetroAreaDao.Search = new DaoQueryDecorators();
 BaseMetroAreaDao.SearchOne = new DaoQueryDecorators();
-class BaseMetroAreaStateDao extends SQDIDao$3 {
+class BaseMetroAreaStateDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18364,7 +18462,7 @@ BaseMetroAreaStateDao.Find = new DaoQueryDecorators();
 BaseMetroAreaStateDao.FindOne = new DaoQueryDecorators();
 BaseMetroAreaStateDao.Search = new DaoQueryDecorators();
 BaseMetroAreaStateDao.SearchOne = new DaoQueryDecorators();
-class BaseStateDao extends SQDIDao$3 {
+class BaseStateDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18379,7 +18477,7 @@ BaseStateDao.Find = new DaoQueryDecorators();
 BaseStateDao.FindOne = new DaoQueryDecorators();
 BaseStateDao.Search = new DaoQueryDecorators();
 BaseStateDao.SearchOne = new DaoQueryDecorators();
-class BaseTerminalDao extends SQDIDao$3 {
+class BaseTerminalDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18394,7 +18492,7 @@ BaseTerminalDao.Find = new DaoQueryDecorators();
 BaseTerminalDao.FindOne = new DaoQueryDecorators();
 BaseTerminalDao.Search = new DaoQueryDecorators();
 BaseTerminalDao.SearchOne = new DaoQueryDecorators();
-class BaseTerminalTypeDao extends SQDIDao$3 {
+class BaseTerminalTypeDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18409,7 +18507,7 @@ BaseTerminalTypeDao.Find = new DaoQueryDecorators();
 BaseTerminalTypeDao.FindOne = new DaoQueryDecorators();
 BaseTerminalTypeDao.Search = new DaoQueryDecorators();
 BaseTerminalTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseTypeDao extends SQDIDao$3 {
+class BaseTypeDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18424,7 +18522,7 @@ BaseTypeDao.Find = new DaoQueryDecorators();
 BaseTypeDao.FindOne = new DaoQueryDecorators();
 BaseTypeDao.Search = new DaoQueryDecorators();
 BaseTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseTypeClassificationDao extends SQDIDao$3 {
+class BaseTypeClassificationDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18439,7 +18537,7 @@ BaseTypeClassificationDao.Find = new DaoQueryDecorators();
 BaseTypeClassificationDao.FindOne = new DaoQueryDecorators();
 BaseTypeClassificationDao.Search = new DaoQueryDecorators();
 BaseTypeClassificationDao.SearchOne = new DaoQueryDecorators();
-class BaseUserAccountDao extends SQDIDao$3 {
+class BaseUserAccountDao extends SQDIDao$2 {
     static Save(config) {
         return ObservableDao.BaseSave(config);
     }
@@ -18512,16 +18610,16 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
         terminal.owner = userAccount;
     }
 };
-__decorate$d([
+__decorate$c([
     Inject()
 ], TerminalDao.prototype, "airportDatabase", void 0);
-__decorate$d([
+__decorate$c([
     Inject()
 ], TerminalDao.prototype, "dictionary", void 0);
-__decorate$d([
+__decorate$c([
     Inject()
 ], TerminalDao.prototype, "sequenceGenerator", void 0);
-TerminalDao = __decorate$d([
+TerminalDao = __decorate$c([
     Injected()
 ], TerminalDao);
 
@@ -18582,13 +18680,13 @@ let UserAccountDao = class UserAccountDao extends BaseUserAccountDao {
         }
     }
 };
-__decorate$d([
+__decorate$c([
     Inject()
 ], UserAccountDao.prototype, "dictionary", void 0);
-__decorate$d([
+__decorate$c([
     Inject()
 ], UserAccountDao.prototype, "sequenceGenerator", void 0);
-UserAccountDao = __decorate$d([
+UserAccountDao = __decorate$c([
     Injected()
 ], UserAccountDao);
 
@@ -18619,7 +18717,7 @@ travelDocumentCheckpoint.setDependencies(UserAccountManager, {
 });
 
 /* eslint-disable */
-const APPLICATION$6 = {
+const APPLICATION$5 = {
     "domain": "airport",
     "index": null,
     "name": "@airport/airport-code",
@@ -18919,7 +19017,7 @@ const APPLICATION$6 = {
 };
 
 /* eslint-disable */
-const APPLICATION$5 = {
+const APPLICATION$4 = {
     "domain": "airport",
     "index": null,
     "name": "@airport/airspace",
@@ -22897,7 +22995,7 @@ const APPLICATION$5 = {
 };
 
 /* eslint-disable */
-const APPLICATION$4 = {
+const APPLICATION$3 = {
     "domain": "airport",
     "index": null,
     "name": "@airport/travel-document-checkpoint",
@@ -25242,7 +25340,7 @@ const APPLICATION$4 = {
 };
 
 /* eslint-disable */
-const APPLICATION$3 = {
+const APPLICATION$2 = {
     "domain": "airport",
     "index": null,
     "name": "@airport/holding-pattern",
@@ -25298,6 +25396,906 @@ const APPLICATION$3 = {
                 }
             },
             "entities": [
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "REPOSITORY_MEMBER_INVITATION_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "CREATED_AT",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "DATE"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "INVITATION_PUBLIC_SIGNING_KEY",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ACCEPTING_REPOSITORY_MEMBER_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 10,
+                                    "oneRelationIndex": 8,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 0,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "RepositoryMemberAcceptance",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "createdAt",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "invitationPublicSigningKey",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "acceptingRepositoryMember",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "addedInRepositoryTransactionHistory",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 3,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_MEMBER_ACCEPTANCES",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "REPOSITORY_MEMBER_INVITATION_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "CREATED_AT",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "DATE"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "INVITATION_PUBLIC_SIGNING_KEY",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "INVITED_REPOSITORY_MEMBER_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 10,
+                                    "oneRelationIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 1,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "RepositoryMemberInvitation",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "createdAt",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "invitationPublicSigningKey",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "invitedRepositoryMember",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "addedInRepositoryTransactionHistory",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 3,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_MEMBER_INVITATIONS",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "REPOSITORY_MEMBER_UPDATE_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "CREATED_AT",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "IS_ADMINISTRATOR",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "CAN_WRITE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "UPDATED_REPOSITORY_MEMBER_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 10,
+                                    "oneRelationIndex": 9,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 2,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "RepositoryMemberUpdate",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "createdAt",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "isAdministrator",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 3
+                            },
+                            "index": 3,
+                            "isId": false,
+                            "name": "canWrite",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "updatedRepositoryMember",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "name": "addedInRepositoryTransactionHistory",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 3,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 5
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_MEMBER_UPDATES",
+                        "columnIndexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "REPOSITORY_MEMBER_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "CAN_WRITE",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "IS_ADMINISTRATOR",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "IS_OWNER",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "MEMBER_PUBLIC_SIGNING_KEY",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "STATUS",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 17,
+                                    "oneRelationIndex": 8,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 7,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplication_Index": 0,
+                                    "oneTableIndex": 0,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "USER_ACCOUNT_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 7
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 8,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 3,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 10,
+                                    "oneRelationIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 9
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 3,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "RepositoryMember",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "canWrite",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "isAdministrator",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 3
+                            },
+                            "index": 3,
+                            "isId": false,
+                            "name": "isOwner",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 4
+                            },
+                            "index": 4,
+                            "isId": false,
+                            "name": "memberPublicSigningKey",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 5
+                            },
+                            "index": 5,
+                            "isId": false,
+                            "name": "status",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
+                            "isId": false,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 7,
+                            "isId": false,
+                            "name": "userAccount",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 8,
+                            "isId": false,
+                            "name": "acceptances",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 9,
+                            "isId": false,
+                            "name": "addedInRepositoryTransactionHistory",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 10,
+                            "isId": false,
+                            "name": "invitations",
+                            "relationRef": {
+                                "index": 4
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 11,
+                            "isId": false,
+                            "name": "updates",
+                            "relationRef": {
+                                "index": 5
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 6
+                            },
+                            "relationTableIndex": 17,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 7
+                            },
+                            "relationTableIndex": 0,
+                            "relationTableApplication_Index": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "repositoryMember"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 8
+                            },
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 9
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "repositoryMember"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 10
+                            },
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "repositoryMember"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 11
+                            },
+                            "relationTableIndex": 2,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_MEMBERS",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
                 {
                     "columns": [
                         {
@@ -25400,7 +26398,7 @@ const APPLICATION$3 = {
                             "index": 0
                         }
                     ],
-                    "index": 0,
+                    "index": 4,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "Actor",
@@ -25529,7 +26527,7 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 3,
+                                    "oneTableIndex": 7,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25554,7 +26552,7 @@ const APPLICATION$3 = {
                             "index": 2
                         }
                     ],
-                    "index": 1,
+                    "index": 5,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RecordHistoryNewValue",
@@ -25595,7 +26593,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 3,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         }
                     ],
@@ -25643,7 +26641,7 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 3,
+                                    "oneTableIndex": 7,
                                     "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25668,7 +26666,7 @@ const APPLICATION$3 = {
                             "index": 2
                         }
                     ],
-                    "index": 2,
+                    "index": 6,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RecordHistoryOldValue",
@@ -25709,7 +26707,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 3,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         }
                     ],
@@ -25758,7 +26756,7 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 0,
+                                    "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -25780,7 +26778,7 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 17,
+                                    "oneTableIndex": 8,
                                     "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -25802,7 +26800,7 @@ const APPLICATION$3 = {
                             "index": 0
                         }
                     ],
-                    "index": 3,
+                    "index": 7,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RecordHistory",
@@ -25870,7 +26868,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 4,
                             "sinceVersion": 1
                         },
                         {
@@ -25880,7 +26878,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 17,
+                            "relationTableIndex": 8,
                             "sinceVersion": 1
                         },
                         {
@@ -25893,7 +26891,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -25906,7 +26904,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 6,
                             "sinceVersion": 1
                         }
                     ],
@@ -25927,14 +26925,847 @@ const APPLICATION$3 = {
                 {
                     "columns": [
                         {
+                            "allocationSize": 600,
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "OPERATION_HISTORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ORDER_NUMBER",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "CHANGE_TYPE",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "SYSTEM_WIDE_OPERATION_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 4,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ACTOR_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplication_Index": 1,
+                                    "oneTableIndex": 5,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "DB_ENTITY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 10,
+                                    "oneRelationIndex": 6,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_TRANSACTION_HISTORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 8,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "OperationHistory",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "orderNumber",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "changeType",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 3
+                            },
+                            "index": 3,
+                            "isId": false,
+                            "name": "systemWideOperationId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "actor",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "name": "entity",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
+                            "isId": false,
+                            "name": "repositoryTransactionHistory",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 7,
+                            "isId": false,
+                            "name": "recordHistory",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 4,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 5
+                            },
+                            "relationTableIndex": 5,
+                            "relationTableApplication_Index": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 6
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "operationHistory"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 7
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_OPERATION_HISTORY",
+                        "columnIndexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "allocationSize": 100,
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "TRANSACTION_HISTORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "TRANSACTION_TYPE",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 9,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "TransactionHistory",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "transactionType",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "repositoryTransactionHistories",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "transactionHistory"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "TRANSACTION_HISTORY",
+                        "columnIndexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "allocationSize": 200,
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "REPOSITORY_TRANSACTION_HISTORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "REPOSITORY_TRANSACTION_TYPE",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "SAVE_TIMESTAMP",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "IS_REPOSITORY_CREATION",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "BOOLEAN"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "INVITATION_PRIVATE_SIGNING_KEY",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 18,
+                                    "oneRelationIndex": 0,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_BLOCK_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_MEMBER_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 7,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 10,
+                                    "oneRelationIndex": 5,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "PREVIOUS_REPOSITORY_TRANSACTION_HISTORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 7
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 8,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 3,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 17,
+                                    "oneRelationIndex": 9,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 8
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 9,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 4,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 9,
+                                    "oneRelationIndex": 0,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "TRANSACTION_HISTORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 9
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 10,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "RepositoryTransactionHistory",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "repositoryTransactionType",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "saveTimestamp",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 3
+                            },
+                            "index": 3,
+                            "isId": false,
+                            "name": "isRepositoryCreation",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 4
+                            },
+                            "index": 4,
+                            "isId": false,
+                            "name": "invitationPrivateSigningKey",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "name": "block",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
+                            "isId": false,
+                            "name": "member",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 7,
+                            "isId": false,
+                            "name": "previousRepositoryTransactionHistory",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 8,
+                            "isId": false,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 9,
+                            "isId": false,
+                            "name": "transactionHistory",
+                            "relationRef": {
+                                "index": 4
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 10,
+                            "isId": false,
+                            "name": "followingRepositoryTransactionHistories",
+                            "relationRef": {
+                                "index": 5
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 11,
+                            "isId": false,
+                            "name": "operationHistory",
+                            "relationRef": {
+                                "index": 6
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 12,
+                            "isId": false,
+                            "name": "newRepositoryMemberInvitations",
+                            "relationRef": {
+                                "index": 7
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 13,
+                            "isId": false,
+                            "name": "newRepositoryMemberAcceptances",
+                            "relationRef": {
+                                "index": 8
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 14,
+                            "isId": false,
+                            "name": "newRepositoryMemberUpdates",
+                            "relationRef": {
+                                "index": 9
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 15,
+                            "isId": false,
+                            "name": "newRepositoryMembers",
+                            "relationRef": {
+                                "index": 10
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 5
+                            },
+                            "relationTableIndex": 18,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 6
+                            },
+                            "relationTableIndex": 3,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 7
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 8
+                            },
+                            "relationTableIndex": 17,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 9
+                            },
+                            "relationTableIndex": 9,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 5,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "previousRepositoryTransactionHistory"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 10
+                            },
+                            "relationTableIndex": 10,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "repositoryTransactionHistory"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 11
+                            },
+                            "relationTableIndex": 8,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 7,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "addedInRepositoryTransactionHistory"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 12
+                            },
+                            "relationTableIndex": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 8,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "addedInRepositoryTransactionHistory"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 13
+                            },
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 9,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "addedInRepositoryTransactionHistory"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 14
+                            },
+                            "relationTableIndex": 2,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 10,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "addedInRepositoryTransactionHistory"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 15
+                            },
+                            "relationTableIndex": 3,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_TRANSACTION_HISTORY",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
                             "index": 0,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneRelationIndex": 13,
+                                    "oneTableIndex": 17,
+                                    "oneRelationIndex": 14,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -25980,7 +27811,7 @@ const APPLICATION$3 = {
                             "index": 1
                         }
                     ],
-                    "index": 4,
+                    "index": 11,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RepositoryType",
@@ -26012,7 +27843,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 17,
                             "sinceVersion": 1
                         },
                         {
@@ -26042,8 +27873,8 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneRelationIndex": 11,
+                                    "oneTableIndex": 17,
+                                    "oneRelationIndex": 12,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -26089,7 +27920,7 @@ const APPLICATION$3 = {
                             "index": 1
                         }
                     ],
-                    "index": 5,
+                    "index": 12,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RepositoryDatabase",
@@ -26121,7 +27952,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 17,
                             "sinceVersion": 1
                         },
                         {
@@ -26151,8 +27982,8 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneRelationIndex": 10,
+                                    "oneTableIndex": 17,
+                                    "oneRelationIndex": 11,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -26198,7 +28029,7 @@ const APPLICATION$3 = {
                             "index": 1
                         }
                     ],
-                    "index": 6,
+                    "index": 13,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RepositoryClient",
@@ -26230,7 +28061,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 17,
                             "sinceVersion": 1
                         },
                         {
@@ -26260,8 +28091,8 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneRelationIndex": 12,
+                                    "oneTableIndex": 17,
+                                    "oneRelationIndex": 13,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -26307,7 +28138,7 @@ const APPLICATION$3 = {
                             "index": 1
                         }
                     ],
-                    "index": 7,
+                    "index": 14,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RepositoryTerminal",
@@ -26339,7 +28170,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 17,
                             "sinceVersion": 1
                         },
                         {
@@ -26391,8 +28222,8 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneRelationIndex": 9,
+                                    "oneTableIndex": 17,
+                                    "oneRelationIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -26416,7 +28247,7 @@ const APPLICATION$3 = {
                             "index": 1
                         }
                     ],
-                    "index": 8,
+                    "index": 15,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RepositoryApplication",
@@ -26459,7 +28290,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 17,
                             "sinceVersion": 1
                         }
                     ],
@@ -26478,8 +28309,8 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneRelationIndex": 5,
+                                    "oneTableIndex": 17,
+                                    "oneRelationIndex": 6,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -26501,8 +28332,8 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneRelationIndex": 6,
+                                    "oneTableIndex": 17,
+                                    "oneRelationIndex": 7,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -26526,7 +28357,7 @@ const APPLICATION$3 = {
                             "index": 1
                         }
                     ],
-                    "index": 9,
+                    "index": 16,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RepositoryReference",
@@ -26558,7 +28389,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 17,
                             "sinceVersion": 1
                         },
                         {
@@ -26568,7 +28399,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 17,
                             "sinceVersion": 1
                         }
                     ],
@@ -26755,14 +28586,14 @@ const APPLICATION$3 = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplication_Index": 0,
-                                    "oneTableIndex": 0,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "OWNER_USER_ACCOUNT_LID",
-                            "notNull": true,
+                            "name": "CURRENT_REPOSITORY_TRANSACTION_HISTORY_LID",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 12
@@ -26778,13 +28609,13 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": 0,
-                                    "oneTableIndex": 5,
+                                    "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "CONTINENT_ID",
-                            "notNull": false,
+                            "name": "OWNER_USER_ACCOUNT_LID",
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 13
@@ -26800,12 +28631,12 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneApplication_Index": 0,
-                                    "oneTableIndex": 4,
+                                    "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "COUNTRY_ID",
+                            "name": "CONTINENT_ID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -26822,12 +28653,12 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 3,
                                     "oneApplication_Index": 0,
-                                    "oneTableIndex": 3,
+                                    "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "STATE_ID",
+                            "name": "COUNTRY_ID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -26844,6 +28675,28 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 4,
                                     "oneApplication_Index": 0,
+                                    "oneTableIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "STATE_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 16
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 17,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 5,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -26853,7 +28706,7 @@ const APPLICATION$3 = {
                             "notNull": false,
                             "propertyRefs": [
                                 {
-                                    "index": 16
+                                    "index": 17
                                 }
                             ],
                             "sinceVersion": 1,
@@ -26865,7 +28718,7 @@ const APPLICATION$3 = {
                             "index": 0
                         }
                     ],
-                    "index": 10,
+                    "index": 17,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "Repository",
@@ -26981,7 +28834,7 @@ const APPLICATION$3 = {
                         {
                             "index": 12,
                             "isId": false,
-                            "name": "owner",
+                            "name": "currentRepositoryTransactionHistory",
                             "relationRef": {
                                 "index": 0
                             },
@@ -26990,7 +28843,7 @@ const APPLICATION$3 = {
                         {
                             "index": 13,
                             "isId": false,
-                            "name": "continent",
+                            "name": "owner",
                             "relationRef": {
                                 "index": 1
                             },
@@ -26999,7 +28852,7 @@ const APPLICATION$3 = {
                         {
                             "index": 14,
                             "isId": false,
-                            "name": "country",
+                            "name": "continent",
                             "relationRef": {
                                 "index": 2
                             },
@@ -27008,7 +28861,7 @@ const APPLICATION$3 = {
                         {
                             "index": 15,
                             "isId": false,
-                            "name": "state",
+                            "name": "country",
                             "relationRef": {
                                 "index": 3
                             },
@@ -27017,7 +28870,7 @@ const APPLICATION$3 = {
                         {
                             "index": 16,
                             "isId": false,
-                            "name": "metroArea",
+                            "name": "state",
                             "relationRef": {
                                 "index": 4
                             },
@@ -27026,7 +28879,7 @@ const APPLICATION$3 = {
                         {
                             "index": 17,
                             "isId": false,
-                            "name": "referencedRepositories",
+                            "name": "metroArea",
                             "relationRef": {
                                 "index": 5
                             },
@@ -27035,7 +28888,7 @@ const APPLICATION$3 = {
                         {
                             "index": 18,
                             "isId": false,
-                            "name": "referencedInRepositories",
+                            "name": "referencedRepositories",
                             "relationRef": {
                                 "index": 6
                             },
@@ -27044,7 +28897,7 @@ const APPLICATION$3 = {
                         {
                             "index": 19,
                             "isId": false,
-                            "name": "repositoryMembers",
+                            "name": "referencedInRepositories",
                             "relationRef": {
                                 "index": 7
                             },
@@ -27053,7 +28906,7 @@ const APPLICATION$3 = {
                         {
                             "index": 20,
                             "isId": false,
-                            "name": "repositoryTransactionHistory",
+                            "name": "repositoryMembers",
                             "relationRef": {
                                 "index": 8
                             },
@@ -27062,7 +28915,7 @@ const APPLICATION$3 = {
                         {
                             "index": 21,
                             "isId": false,
-                            "name": "repositoryApplications",
+                            "name": "repositoryTransactionHistory",
                             "relationRef": {
                                 "index": 9
                             },
@@ -27071,7 +28924,7 @@ const APPLICATION$3 = {
                         {
                             "index": 22,
                             "isId": false,
-                            "name": "repositoryClients",
+                            "name": "repositoryApplications",
                             "relationRef": {
                                 "index": 10
                             },
@@ -27080,7 +28933,7 @@ const APPLICATION$3 = {
                         {
                             "index": 23,
                             "isId": false,
-                            "name": "repositoryDatabases",
+                            "name": "repositoryClients",
                             "relationRef": {
                                 "index": 11
                             },
@@ -27089,7 +28942,7 @@ const APPLICATION$3 = {
                         {
                             "index": 24,
                             "isId": false,
-                            "name": "repositoryTerminals",
+                            "name": "repositoryDatabases",
                             "relationRef": {
                                 "index": 12
                             },
@@ -27098,9 +28951,18 @@ const APPLICATION$3 = {
                         {
                             "index": 25,
                             "isId": false,
-                            "name": "repositoryTypes",
+                            "name": "repositoryTerminals",
                             "relationRef": {
                                 "index": 13
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 26,
+                            "isId": false,
+                            "name": "repositoryTypes",
+                            "relationRef": {
+                                "index": 14
                             },
                             "sinceVersion": 1
                         }
@@ -27113,8 +28975,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 12
                             },
-                            "relationTableIndex": 0,
-                            "relationTableApplication_Index": 0,
+                            "relationTableIndex": 10,
                             "sinceVersion": 1
                         },
                         {
@@ -27124,7 +28985,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 13
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 0,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -27135,7 +28996,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 14
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 5,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -27146,7 +29007,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 15
                             },
-                            "relationTableIndex": 3,
+                            "relationTableIndex": 4,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -27157,47 +29018,45 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 16
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 3,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
                             "index": 5,
                             "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "referencingRepository"
-                            },
-                            "relationType": "ONE_TO_MANY",
+                            "relationType": "MANY_TO_ONE",
                             "propertyRef": {
                                 "index": 17
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 1,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
                             "index": 6,
                             "isId": false,
                             "oneToManyElems": {
-                                "mappedBy": "referencedRepository"
+                                "mappedBy": "referencingRepository"
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
                                 "index": 18
                             },
-                            "relationTableIndex": 9,
+                            "relationTableIndex": 16,
                             "sinceVersion": 1
                         },
                         {
                             "index": 7,
                             "isId": false,
                             "oneToManyElems": {
-                                "mappedBy": "repository"
+                                "mappedBy": "referencedRepository"
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
                                 "index": 19
                             },
-                            "relationTableIndex": 14,
+                            "relationTableIndex": 16,
                             "sinceVersion": 1
                         },
                         {
@@ -27210,7 +29069,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 20
                             },
-                            "relationTableIndex": 16,
+                            "relationTableIndex": 3,
                             "sinceVersion": 1
                         },
                         {
@@ -27223,7 +29082,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 21
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 10,
                             "sinceVersion": 1
                         },
                         {
@@ -27236,7 +29095,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 22
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 15,
                             "sinceVersion": 1
                         },
                         {
@@ -27249,7 +29108,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 23
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 13,
                             "sinceVersion": 1
                         },
                         {
@@ -27262,7 +29121,7 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 24
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 12,
                             "sinceVersion": 1
                         },
                         {
@@ -27275,7 +29134,20 @@ const APPLICATION$3 = {
                             "propertyRef": {
                                 "index": 25
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 14,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 14,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "repository"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 26
+                            },
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         }
                     ],
@@ -27289,1002 +29161,11 @@ const APPLICATION$3 = {
                 {
                     "columns": [
                         {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_MEMBER_INVITATION_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "CREATED_AT",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "DATE"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "INVITATION_PUBLIC_SIGNING_KEY",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 14,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACCEPTING_REPOSITORY_MEMBER_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 16,
-                                    "oneRelationIndex": 5,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 11,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "RepositoryMemberAcceptance",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_localId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": false,
-                            "name": "createdAt",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "invitationPublicSigningKey",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "acceptingRepositoryMember",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "addedInRepositoryTransactionHistory",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 14,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 16,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "REPOSITORY_MEMBER_ACCEPTANCES",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_MEMBER_INVITATION_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "CREATED_AT",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "DATE"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "INVITATION_PUBLIC_SIGNING_KEY",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 14,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "INVITED_REPOSITORY_MEMBER_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 16,
-                                    "oneRelationIndex": 4,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 12,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "RepositoryMemberInvitation",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_localId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": false,
-                            "name": "createdAt",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "invitationPublicSigningKey",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "invitedRepositoryMember",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "addedInRepositoryTransactionHistory",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 14,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 16,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "REPOSITORY_MEMBER_INVITATIONS",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_MEMBER_UPDATE_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "CREATED_AT",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "IS_ADMINISTRATOR",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "BOOLEAN"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "CAN_WRITE",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "BOOLEAN"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 14,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "UPDATED_REPOSITORY_MEMBER_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 16,
-                                    "oneRelationIndex": 6,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 13,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "RepositoryMemberUpdate",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_localId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": false,
-                            "name": "createdAt",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "isAdministrator",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 3,
-                            "isId": false,
-                            "name": "canWrite",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "updatedRepositoryMember",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "name": "addedInRepositoryTransactionHistory",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 14,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 16,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "REPOSITORY_MEMBER_UPDATES",
-                        "columnIndexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_MEMBER_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "MEMBER_PUBLIC_SIGNING_KEY",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "IS_OWNER",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "BOOLEAN"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "IS_ADMINISTRATOR",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "BOOLEAN"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "CAN_WRITE",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "BOOLEAN"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "STATUS",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneRelationIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 7,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": 0,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "USER_ACCOUNT_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 8,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 16,
-                                    "oneRelationIndex": 7,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ADDED_IN_REPOSITORY_TRANSACTION_HISTORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 8
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 14,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "RepositoryMember",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_localId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": false,
-                            "name": "memberPublicSigningKey",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "isOwner",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 3,
-                            "isId": false,
-                            "name": "isAdministrator",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 4
-                            },
-                            "index": 4,
-                            "isId": false,
-                            "name": "canWrite",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 5
-                            },
-                            "index": 5,
-                            "isId": false,
-                            "name": "status",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 7,
-                            "isId": false,
-                            "name": "userAccount",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 8,
-                            "isId": false,
-                            "name": "addedInRepositoryTransactionHistory",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 9,
-                            "isId": false,
-                            "name": "acceptances",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 10,
-                            "isId": false,
-                            "name": "invitations",
-                            "relationRef": {
-                                "index": 4
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 11,
-                            "isId": false,
-                            "name": "updates",
-                            "relationRef": {
-                                "index": 5
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 6
-                            },
-                            "relationTableIndex": 10,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 7
-                            },
-                            "relationTableIndex": 0,
-                            "relationTableApplication_Index": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 8
-                            },
-                            "relationTableIndex": 16,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "repositoryMember"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 9
-                            },
-                            "relationTableIndex": 11,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "repositoryMember"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 10
-                            },
-                            "relationTableIndex": 12,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "repositoryMember"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 11
-                            },
-                            "relationTableIndex": 13,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "REPOSITORY_MEMBERS",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "allocationSize": 100,
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "TRANSACTION_HISTORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "TRANSACTION_TYPE",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 15,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "TransactionHistory",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_localId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": false,
-                            "name": "transactionType",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "name": "repositoryTransactionHistories",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "transactionHistory"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 16,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "TRANSACTION_HISTORY",
-                        "columnIndexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
                             "allocationSize": 200,
                             "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_TRANSACTION_HISTORY_LID",
+                            "name": "REPOSITORY_BLOCK_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -28296,79 +29177,79 @@ const APPLICATION$3 = {
                         },
                         {
                             "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_TRANSACTION_TYPE",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "SAVE_TIMESTAMP",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "SYNC_TIMESTAMP",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "GUID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 4
+                                    "index": 1
                                 }
                             ],
                             "sinceVersion": 1,
                             "type": "STRING"
                         },
                         {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "HASH_SUM",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "PACKAGED_DATA",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "ANY"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "SYNC_TIMESTAMP",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
                             "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "IS_REPOSITORY_CREATION",
-                            "notNull": true,
+                            "name": "ACCEPTANCE_SIGNATURE",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 5
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "BOOLEAN"
+                            "type": "STRING"
                         },
                         {
                             "index": 6,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "INVITATION_PRIVATE_SIGNING_KEY",
+                            "name": "MEMBER_SIGNATURE",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -28381,24 +29262,16 @@ const APPLICATION$3 = {
                         {
                             "index": 7,
                             "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 14,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_MEMBER_LID",
-                            "notNull": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "USER_ACCOUNT_SIGNATURE",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 7
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "NUMBER"
+                            "type": "STRING"
                         },
                         {
                             "index": 8,
@@ -28407,36 +29280,13 @@ const APPLICATION$3 = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": null,
-                                    "oneTableIndex": 10,
-                                    "oneRelationIndex": 8,
+                                    "oneTableIndex": 18,
+                                    "oneRelationIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 8
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 9,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 15,
-                                    "oneRelationIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "TRANSACTION_HISTORY_LID",
+                            "name": "PREVIOUS_BLOCK_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -28445,6 +29295,72 @@ const APPLICATION$3 = {
                             ],
                             "sinceVersion": 1,
                             "type": "NUMBER"
+                        },
+                        {
+                            "index": 9,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 18,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "PREVIOUS_TRUNK_BLOCK_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 10
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 10,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 3,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 17,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 11
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 11,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 4,
+                                    "oneApplication_Index": 0,
+                                    "oneTableIndex": 14,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "TERMINAL_LID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 12
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
                         }
                     ],
                     "idColumnRefs": [
@@ -28452,10 +29368,10 @@ const APPLICATION$3 = {
                             "index": 0
                         }
                     ],
-                    "index": 16,
+                    "index": 18,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "RepositoryTransactionHistory",
+                    "name": "RepositoryBlock",
                     "properties": [
                         {
                             "columnRef": {
@@ -28472,7 +29388,7 @@ const APPLICATION$3 = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "repositoryTransactionType",
+                            "name": "GUID",
                             "sinceVersion": 1
                         },
                         {
@@ -28481,7 +29397,7 @@ const APPLICATION$3 = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "saveTimestamp",
+                            "name": "hashSum",
                             "sinceVersion": 1
                         },
                         {
@@ -28490,7 +29406,7 @@ const APPLICATION$3 = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "syncTimestamp",
+                            "name": "packagedData",
                             "sinceVersion": 1
                         },
                         {
@@ -28499,7 +29415,7 @@ const APPLICATION$3 = {
                             },
                             "index": 4,
                             "isId": false,
-                            "name": "GUID",
+                            "name": "syncTimestamp",
                             "sinceVersion": 1
                         },
                         {
@@ -28508,7 +29424,7 @@ const APPLICATION$3 = {
                             },
                             "index": 5,
                             "isId": false,
-                            "name": "isRepositoryCreation",
+                            "name": "acceptanceSignature",
                             "sinceVersion": 1
                         },
                         {
@@ -28517,78 +29433,69 @@ const APPLICATION$3 = {
                             },
                             "index": 6,
                             "isId": false,
-                            "name": "invitationPrivateSigningKey",
+                            "name": "memberSignature",
                             "sinceVersion": 1
                         },
                         {
+                            "columnRef": {
+                                "index": 7
+                            },
                             "index": 7,
                             "isId": false,
-                            "name": "member",
+                            "name": "userAccountSignature",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 8,
+                            "isId": false,
+                            "name": "history",
                             "relationRef": {
                                 "index": 0
                             },
                             "sinceVersion": 1
                         },
                         {
-                            "index": 8,
+                            "index": 9,
                             "isId": false,
-                            "name": "repository",
+                            "name": "previousBlock",
                             "relationRef": {
                                 "index": 1
                             },
                             "sinceVersion": 1
                         },
                         {
-                            "index": 9,
+                            "index": 10,
                             "isId": false,
-                            "name": "transactionHistory",
+                            "name": "previousTrunkBlock",
                             "relationRef": {
                                 "index": 2
                             },
                             "sinceVersion": 1
                         },
                         {
-                            "index": 10,
+                            "index": 11,
                             "isId": false,
-                            "name": "operationHistory",
+                            "name": "repository",
                             "relationRef": {
                                 "index": 3
                             },
                             "sinceVersion": 1
                         },
                         {
-                            "index": 11,
+                            "index": 12,
                             "isId": false,
-                            "name": "newRepositoryMemberInvitations",
+                            "name": "terminal",
                             "relationRef": {
                                 "index": 4
                             },
                             "sinceVersion": 1
                         },
                         {
-                            "index": 12,
-                            "isId": false,
-                            "name": "newRepositoryMemberAcceptances",
-                            "relationRef": {
-                                "index": 5
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
                             "index": 13,
                             "isId": false,
-                            "name": "newRepositoryMemberUpdates",
+                            "name": "nextBlocks",
                             "relationRef": {
-                                "index": 6
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 14,
-                            "isId": false,
-                            "name": "newRepositoryMembers",
-                            "relationRef": {
-                                "index": 7
+                                "index": 5
                             },
                             "sinceVersion": 1
                         }
@@ -28597,17 +29504,10 @@ const APPLICATION$3 = {
                         {
                             "index": 0,
                             "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 7
+                            "oneToManyElems": {
+                                "mappedBy": "block"
                             },
-                            "relationTableIndex": 14,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
+                            "relationType": "ONE_TO_MANY",
                             "propertyRef": {
                                 "index": 8
                             },
@@ -28615,24 +29515,31 @@ const APPLICATION$3 = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 2,
+                            "index": 1,
                             "isId": false,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
                                 "index": 9
                             },
-                            "relationTableIndex": 15,
+                            "relationTableIndex": 18,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 10
+                            },
+                            "relationTableIndex": 18,
                             "sinceVersion": 1
                         },
                         {
                             "index": 3,
                             "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "repositoryTransactionHistory"
-                            },
-                            "relationType": "ONE_TO_MANY",
+                            "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 10
+                                "index": 11
                             },
                             "relationTableIndex": 17,
                             "sinceVersion": 1
@@ -28640,53 +29547,25 @@ const APPLICATION$3 = {
                         {
                             "index": 4,
                             "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "addedInRepositoryTransactionHistory"
-                            },
-                            "relationType": "ONE_TO_MANY",
+                            "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 11
+                                "index": 12
                             },
-                            "relationTableIndex": 12,
+                            "relationTableIndex": 14,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
                             "index": 5,
                             "isId": false,
                             "oneToManyElems": {
-                                "mappedBy": "addedInRepositoryTransactionHistory"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 12
-                            },
-                            "relationTableIndex": 11,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "addedInRepositoryTransactionHistory"
+                                "mappedBy": "previousBlock"
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
                                 "index": 13
                             },
-                            "relationTableIndex": 13,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 7,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "addedInRepositoryTransactionHistory"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 14
-                            },
-                            "relationTableIndex": 14,
+                            "relationTableIndex": 18,
                             "sinceVersion": 1
                         }
                     ],
@@ -28696,268 +29575,6 @@ const APPLICATION$3 = {
                         "columnIndexes": []
                     },
                     "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "allocationSize": 600,
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "OPERATION_HISTORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ORDER_NUMBER",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "CHANGE_TYPE",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "SYSTEM_WIDE_OPERATION_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 5,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "DB_ENTITY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 16,
-                                    "oneRelationIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_TRANSACTION_HISTORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 17,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "OperationHistory",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_localId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": false,
-                            "name": "orderNumber",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "changeType",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 3
-                            },
-                            "index": 3,
-                            "isId": false,
-                            "name": "systemWideOperationId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "actor",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "name": "entity",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "name": "repositoryTransactionHistory",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 7,
-                            "isId": false,
-                            "name": "recordHistory",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 5,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 6
-                            },
-                            "relationTableIndex": 16,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "operationHistory"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 7
-                            },
-                            "relationTableIndex": 3,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "REPOSITORY_OPERATION_HISTORY",
-                        "columnIndexes": []
-                    }
                 }
             ],
             "integerVersion": 1,
@@ -28982,1085 +29599,6 @@ const APPLICATION$3 = {
                     "domain": "airport",
                     "index": 1,
                     "name": "@airport/airspace",
-                    "publicSigningKey": null,
-                    "sinceVersion": 1,
-                    "versions": [
-                        {
-                            "entities": null,
-                            "integerVersion": 1,
-                            "referencedApplications": null,
-                            "signature": "FIXME: sign application versions",
-                            "versionString": "1.0.0"
-                        }
-                    ]
-                }
-            ],
-            "signature": "FIXME: sign application versions",
-            "versionString": "1.0.0"
-        }
-    ]
-};
-
-/* eslint-disable */
-const APPLICATION$2 = {
-    "domain": "airport",
-    "index": null,
-    "name": "@airport/layover",
-    "publicSigningKey": null,
-    "sinceVersion": 1,
-    "versions": [
-        {
-            "api": {
-                "apiObjectMap": {}
-            },
-            "entities": [
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "RECORD_UPDATE_STAGE_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ACTOR_RECORD_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "UPDATED_VALUE",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "ANY"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": 0,
-                                    "oneTableIndex": 11,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "DB_APPLICATION_VERSION_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": 0,
-                                    "oneTableIndex": 5,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "DB_ENTITY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 3,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 7,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 4,
-                                    "oneApplication_Index": 0,
-                                    "oneTableIndex": 4,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "DB_COLUMN_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 0,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "RecordUpdateStage",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_localId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": false,
-                            "name": "_actorRecordId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "updatedValue",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "applicationVersion",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "entity",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "name": "actor",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 7,
-                            "isId": false,
-                            "name": "column",
-                            "relationRef": {
-                                "index": 4
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 11,
-                            "relationTableApplication_Index": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 5,
-                            "relationTableApplication_Index": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 6
-                            },
-                            "relationTableIndex": 0,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 7
-                            },
-                            "relationTableIndex": 4,
-                            "relationTableApplication_Index": 0,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "RECORD_UPDATE_STAGE",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "COLUMNINDEX",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 2,
-                                    "oneRelationIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "SYNCHRONIZATION_CONFLICT_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        }
-                    ],
-                    "index": 1,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "SynchronizationConflictValues",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "synchronizationConflict",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 1,
-                            "isId": true,
-                            "name": "columnIndex",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 2,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SYNCHRONIZATION_CONFLICT_VALUES",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "SYNCHRONIZATION_CONFLICT_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "TYPE",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ACKNOWLEDGED",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "BOOLEAN"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "OVERWRITTEN_RECORD_HISTORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "OVERWRITING_RECORD_HISTORY_LID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 2,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "SynchronizationConflict",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_localId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 1,
-                            "isId": false,
-                            "name": "type",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "acknowledged",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "overwrittenRecordHistory",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 5,
-                            "isId": false,
-                            "name": "overwritingRecordHistory",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "name": "values",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 3,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 5
-                            },
-                            "relationTableIndex": 3,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "synchronizationConflict"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 6
-                            },
-                            "relationTableIndex": 1,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "SYNCHRONIZATION_CONFLICT",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 4,
-                                    "oneRelationIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COPY_ACTOR_RECORD_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 4,
-                                    "oneRelationIndex": 3,
-                                    "oneColumnIndex": 1,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COPY_ACTOR_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 4,
-                                    "oneRelationIndex": 3,
-                                    "oneColumnIndex": 2,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COPY_REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 4,
-                                    "oneRelationIndex": 3,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COPY_DB_ENTITY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COPYING_REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        },
-                        {
-                            "index": 2
-                        },
-                        {
-                            "index": 3
-                        },
-                        {
-                            "index": 4
-                        }
-                    ],
-                    "index": 3,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "CopiedEntityRecordRepository",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "copiedEntityRecord",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "name": "repositoryWithCopy",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 4,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "COPIED_ENTITY_RECORD_REPOSITORY",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "ACTOR_RECORD_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": 1,
-                                    "oneTableIndex": 10,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneApplication_Index": 0,
-                                    "oneTableIndex": 5,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COPY_DB_ENTITY_LID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 1
-                        },
-                        {
-                            "index": 2
-                        },
-                        {
-                            "index": 3
-                        }
-                    ],
-                    "index": 4,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "CopiedEntityRecord",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "_actorRecordId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "name": "actor",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": true,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": true,
-                            "name": "copyDdlEntity",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "copiedEntityRecordRepositories",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 0,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 10,
-                            "relationTableApplication_Index": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 5,
-                            "relationTableApplication_Index": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "oneToManyElems": {
-                                "mappedBy": "copiedEntityRecord"
-                            },
-                            "relationType": "ONE_TO_MANY",
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 3,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "COPIED_ENTITY_RECORD",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                }
-            ],
-            "integerVersion": 1,
-            "referencedApplications": [
-                {
-                    "domain": "airport",
-                    "index": 0,
-                    "name": "@airport/airspace",
-                    "publicSigningKey": null,
-                    "sinceVersion": 1,
-                    "versions": [
-                        {
-                            "entities": null,
-                            "integerVersion": 1,
-                            "referencedApplications": null,
-                            "signature": "FIXME: sign application versions",
-                            "versionString": "1.0.0"
-                        }
-                    ]
-                },
-                {
-                    "domain": "airport",
-                    "index": 1,
-                    "name": "@airport/holding-pattern",
                     "publicSigningKey": null,
                     "sinceVersion": 1,
                     "versions": [
@@ -30132,7 +29670,7 @@ const APPLICATION = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": 0,
-                                    "oneTableIndex": 10,
+                                    "oneTableIndex": 17,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -30154,7 +29692,7 @@ const APPLICATION = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": 0,
-                                    "oneTableIndex": 0,
+                                    "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -30475,7 +30013,7 @@ const APPLICATION = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 4,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -30486,7 +30024,7 @@ const APPLICATION = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 17,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -30517,7 +30055,7 @@ const APPLICATION = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplication_Index": 0,
-                                    "oneTableIndex": 10,
+                                    "oneTableIndex": 17,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -30539,7 +30077,7 @@ const APPLICATION = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": 0,
-                                    "oneTableIndex": 0,
+                                    "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -30745,7 +30283,7 @@ const APPLICATION = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 4,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -30756,7 +30294,7 @@ const APPLICATION = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 10,
+                            "relationTableIndex": 17,
                             "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
@@ -30808,11 +30346,11 @@ const APPLICATION = {
 };
 
 const BLUEPRINT = [
-    APPLICATION$6,
     APPLICATION$5,
     APPLICATION$4,
     APPLICATION$3,
     APPLICATION$2,
+    // LAYOVER,
     APPLICATION$1,
     APPLICATION
 ];
@@ -30839,655 +30377,7 @@ PERFORMANCE OF THIS SOFTWARE.
 /* global Reflect, Promise */
 
 
-function __decorate$c(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-/**
- * Created by Papa on 6/8/2024.
- */
-let AirEntityId = class AirEntityId {
-    constructor(entityId) {
-        // Currently TypeScript does not support optional getters/setters
-        // this is a workaround
-        delete this.id;
-        Object.defineProperty(this, 'id', {
-            get() {
-                return globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS).encodeId(this);
-            },
-            set(idString) {
-                globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS).setId(idString, this);
-            }
-        });
-        this.id = entityId;
-    }
-};
-__decorate$c([
-    Id(),
-    Column(),
-    GeneratedValue(),
-    DbNumber()
-], AirEntityId.prototype, "_actorRecordId", void 0);
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], AirEntityId.prototype, "actor", void 0);
-__decorate$c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], AirEntityId.prototype, "repository", void 0);
-__decorate$c([
-    Transient()
-], AirEntityId.prototype, "id", void 0);
-AirEntityId = __decorate$c([
-    MappedSuperclass()
-], AirEntityId);
-
-/**
- * Created by Papa on 6/8/2024.
- */
-let AirEntityFields = class AirEntityFields extends AirEntityId {
-    constructor(entityId) {
-        super(entityId);
-        this.createdAt = new Date();
-        /*
-         * Set at record creation time if a copy needs to be made (of a record
-         * in another repository)
-         */
-        this.toBeCopied = false;
-        delete this.isNew;
-        Object.defineProperty(this, 'isNew', {
-            get() {
-                return !!this._actorRecordId;
-            }
-        });
-        delete this.createdBy;
-        Object.defineProperty(this, 'createdBy', {
-            get() {
-                return this.actor.userAccount;
-            }
-        });
-    }
-};
-__decorate$c([
-    Column(),
-    DbDate()
-], AirEntityFields.prototype, "createdAt", void 0);
-__decorate$c([
-    Column(),
-    DbNumber()
-], AirEntityFields.prototype, "systemWideOperationId", void 0);
-__decorate$c([
-    Transient()
-], AirEntityFields.prototype, "toBeCopied", void 0);
-__decorate$c([
-    Transient()
-], AirEntityFields.prototype, "createdBy", void 0);
-__decorate$c([
-    Transient()
-], AirEntityFields.prototype, "isNew", void 0);
-AirEntityFields = __decorate$c([
-    MappedSuperclass()
-], AirEntityFields);
-
-/**
- * Created by Papa on 2/17/2017.
- */
-let AirEntity = class AirEntity extends AirEntityFields {
-};
-AirEntity = __decorate$c([
-    MappedSuperclass()
-], AirEntity);
-
-/**
- * Created by Papa on 2/17/2017.
- */
-// Used withint the framework because it imports from '@airport/travel-document-checkpoint/dist/app/bundle'
-let InternalAirEntity = class InternalAirEntity extends AirEntityFields {
-};
-InternalAirEntity = __decorate$c([
-    MappedSuperclass()
-], InternalAirEntity);
-
-let RepositoryContentFlag = class RepositoryContentFlag extends AirEntity {
-};
-__decorate$c([
-    Column(),
-    DbNumber()
-], RepositoryContentFlag.prototype, "flagType", void 0);
-RepositoryContentFlag = __decorate$c([
-    Entity(),
-    Table()
-], RepositoryContentFlag);
-
-var RepositoryContentFlagType;
-(function (RepositoryContentFlagType) {
-    RepositoryContentFlagType[RepositoryContentFlagType["CHILD_FRIENDLY"] = 0] = "CHILD_FRIENDLY";
-    RepositoryContentFlagType[RepositoryContentFlagType["CHINA_FRIENDLY"] = 1] = "CHINA_FRIENDLY";
-    RepositoryContentFlagType[RepositoryContentFlagType["ISLAM_FRIENDLY"] = 2] = "ISLAM_FRIENDLY";
-    RepositoryContentFlagType[RepositoryContentFlagType["ISLAM_PROHIBITED"] = 3] = "ISLAM_PROHIBITED";
-    RepositoryContentFlagType[RepositoryContentFlagType["CHINA_PROHIBITED"] = 4] = "CHINA_PROHIBITED";
-})(RepositoryContentFlagType || (RepositoryContentFlagType = {}));
-
-const __constructors__$2 = {
-    AirEntity,
-    AirEntityFields,
-    AirEntityId,
-    InternalAirEntity,
-    RepositoryContentFlag
-};
-const Q_airport____at_airport_slash_final_dash_approach = {
-    __constructors__: __constructors__$2,
-    domain: 'airport',
-    name: '@airport/final-approach'
-};
-function airport____at_airport_slash_final_dash_approach_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_final_dash_approach.__dbApplication__, dbEntityId);
-}
-if (globalThis.airApi) {
-    globalThis.airApi.setQApp(Q_airport____at_airport_slash_final_dash_approach);
-}
-
-// Application Q object Dependency Injection readiness detection Dao
-let SQDIDao$2 = class SQDIDao extends ObservableDao {
-    constructor(dbEntityId) {
-        super(dbEntityId, Q_airport____at_airport_slash_final_dash_approach);
-    }
-};
-class BaseRepositoryContentFlagDao extends SQDIDao$2 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_final_dash_approach_diSet(0);
-    }
-    constructor() {
-        super(0);
-    }
-}
-BaseRepositoryContentFlagDao.Find = new DaoQueryDecorators();
-BaseRepositoryContentFlagDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryContentFlagDao.Search = new DaoQueryDecorators();
-BaseRepositoryContentFlagDao.SearchOne = new DaoQueryDecorators();
-
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
 function __decorate$b(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-let SynchronizationConflict = class SynchronizationConflict {
-};
-__decorate$b([
-    GeneratedValue(),
-    Id(),
-    DbNumber(),
-    Column()
-], SynchronizationConflict.prototype, "_localId", void 0);
-__decorate$b([
-    Column(),
-    DbString()
-], SynchronizationConflict.prototype, "type", void 0);
-__decorate$b([
-    Column(),
-    DbBoolean()
-], SynchronizationConflict.prototype, "acknowledged", void 0);
-__decorate$b([
-    ManyToOne(),
-    JoinColumn()
-], SynchronizationConflict.prototype, "repository", void 0);
-__decorate$b([
-    ManyToOne(),
-    JoinColumn()
-], SynchronizationConflict.prototype, "overwrittenRecordHistory", void 0);
-__decorate$b([
-    ManyToOne(),
-    JoinColumn()
-], SynchronizationConflict.prototype, "overwritingRecordHistory", void 0);
-__decorate$b([
-    OneToMany()
-], SynchronizationConflict.prototype, "values", void 0);
-SynchronizationConflict = __decorate$b([
-    Entity(),
-    Table()
-], SynchronizationConflict);
-
-let SynchronizationConflictValues = class SynchronizationConflictValues {
-};
-__decorate$b([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], SynchronizationConflictValues.prototype, "synchronizationConflict", void 0);
-__decorate$b([
-    Id(),
-    DbNumber()
-], SynchronizationConflictValues.prototype, "columnIndex", void 0);
-SynchronizationConflictValues = __decorate$b([
-    Entity(),
-    Table()
-], SynchronizationConflictValues);
-
-/**
- * A record of all entities that are currently copied from other repositories
- * and those repositories are not loaded locally.
- */
-let CopiedEntityRecord = class CopiedEntityRecord extends AirEntityId {
-    constructor() {
-        super(...arguments);
-        this.copiedEntityRecordRepositories = [];
-    }
-};
-__decorate$b([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], CopiedEntityRecord.prototype, "copyDdlEntity", void 0);
-__decorate$b([
-    OneToMany()
-], CopiedEntityRecord.prototype, "copiedEntityRecordRepositories", void 0);
-CopiedEntityRecord = __decorate$b([
-    Entity(),
-    Table()
-], CopiedEntityRecord);
-
-/**
- * A record of which repository has a given CopiedEntityRecord in them.
- *
- * Will be needed once repository unloading is supported.  Once all repositories
- * with a given record copy are unloaded that record copy needs to be
- * removed as well.
- */
-let CopiedEntityRecordRepository = class CopiedEntityRecordRepository {
-};
-__decorate$b([
-    Id(),
-    ManyToOne(),
-    JoinColumns()
-], CopiedEntityRecordRepository.prototype, "copiedEntityRecord", void 0);
-__decorate$b([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], CopiedEntityRecordRepository.prototype, "repositoryWithCopy", void 0);
-CopiedEntityRecordRepository = __decorate$b([
-    Entity(),
-    Table()
-], CopiedEntityRecordRepository);
-
-var DataOrigin;
-(function (DataOrigin) {
-    DataOrigin["LOCAL"] = "LOCAL";
-    DataOrigin["REMOTE"] = "REMOTE";
-})(DataOrigin || (DataOrigin = {}));
-
-var ApplicationChangeStatus;
-(function (ApplicationChangeStatus) {
-    ApplicationChangeStatus["CHANGE_NEEDED"] = "CHANGE_NEEDED";
-    ApplicationChangeStatus["CHANGE_COMPLETED"] = "CHANGE_COMPLETED";
-})(ApplicationChangeStatus || (ApplicationChangeStatus = {}));
-
-/**
- * Used to temporarily store updates during application remotely synced updates
- * to the local terminal.  Values are deleted right after the remote sync updates
- * are applied.
- */
-let RecordUpdateStage = class RecordUpdateStage {
-};
-__decorate$b([
-    Id(),
-    GeneratedValue(),
-    Column(),
-    DbNumber()
-], RecordUpdateStage.prototype, "_localId", void 0);
-__decorate$b([
-    Column(),
-    DbNumber()
-], RecordUpdateStage.prototype, "_actorRecordId", void 0);
-__decorate$b([
-    Column()
-], RecordUpdateStage.prototype, "updatedValue", void 0);
-__decorate$b([
-    ManyToOne(),
-    JoinColumn()
-], RecordUpdateStage.prototype, "applicationVersion", void 0);
-__decorate$b([
-    ManyToOne()
-    // FIXME: verify that these records don't make it into serialized
-    // repository ledger (and hence, that using local ids is safe)
-    ,
-    JoinColumn()
-], RecordUpdateStage.prototype, "entity", void 0);
-__decorate$b([
-    ManyToOne(),
-    JoinColumn()
-], RecordUpdateStage.prototype, "repository", void 0);
-__decorate$b([
-    ManyToOne(),
-    JoinColumn()
-], RecordUpdateStage.prototype, "actor", void 0);
-__decorate$b([
-    ManyToOne()
-    // FIXME: verify that these records don't make it into serialized
-    // repository ledger (and hence, that using local ids is safe)
-    ,
-    JoinColumn()
-], RecordUpdateStage.prototype, "column", void 0);
-RecordUpdateStage = __decorate$b([
-    Entity(),
-    Table()
-], RecordUpdateStage);
-
-const __constructors__$1 = {
-    CopiedEntityRecord,
-    CopiedEntityRecordRepository,
-    RecordUpdateStage,
-    SynchronizationConflict,
-    SynchronizationConflictValues
-};
-const Q_airport____at_airport_slash_layover = {
-    __constructors__: __constructors__$1,
-    domain: 'airport',
-    name: '@airport/layover'
-};
-function airport____at_airport_slash_layover_diSet(dbEntityId) {
-    return globalThis.airApi.dS(Q_airport____at_airport_slash_layover.__dbApplication__, dbEntityId);
-}
-if (globalThis.airApi) {
-    globalThis.airApi.setQApp(Q_airport____at_airport_slash_layover);
-}
-
-// Application Q object Dependency Injection readiness detection Dao
-let SQDIDao$1 = class SQDIDao extends ObservableDao {
-    constructor(dbEntityId) {
-        super(dbEntityId, Q_airport____at_airport_slash_layover);
-    }
-};
-class BaseCopiedEntityRecordDao extends SQDIDao$1 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_layover_diSet(4);
-    }
-    constructor() {
-        super(4);
-    }
-}
-BaseCopiedEntityRecordDao.Find = new DaoQueryDecorators();
-BaseCopiedEntityRecordDao.FindOne = new DaoQueryDecorators();
-BaseCopiedEntityRecordDao.Search = new DaoQueryDecorators();
-BaseCopiedEntityRecordDao.SearchOne = new DaoQueryDecorators();
-class BaseCopiedEntityRecordRepositoryDao extends SQDIDao$1 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_layover_diSet(3);
-    }
-    constructor() {
-        super(3);
-    }
-}
-BaseCopiedEntityRecordRepositoryDao.Find = new DaoQueryDecorators();
-BaseCopiedEntityRecordRepositoryDao.FindOne = new DaoQueryDecorators();
-BaseCopiedEntityRecordRepositoryDao.Search = new DaoQueryDecorators();
-BaseCopiedEntityRecordRepositoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRecordUpdateStageDao extends SQDIDao$1 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_layover_diSet(0);
-    }
-    constructor() {
-        super(0);
-    }
-}
-BaseRecordUpdateStageDao.Find = new DaoQueryDecorators();
-BaseRecordUpdateStageDao.FindOne = new DaoQueryDecorators();
-BaseRecordUpdateStageDao.Search = new DaoQueryDecorators();
-BaseRecordUpdateStageDao.SearchOne = new DaoQueryDecorators();
-class BaseSynchronizationConflictDao extends SQDIDao$1 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_layover_diSet(2);
-    }
-    constructor() {
-        super(2);
-    }
-}
-BaseSynchronizationConflictDao.Find = new DaoQueryDecorators();
-BaseSynchronizationConflictDao.FindOne = new DaoQueryDecorators();
-BaseSynchronizationConflictDao.Search = new DaoQueryDecorators();
-BaseSynchronizationConflictDao.SearchOne = new DaoQueryDecorators();
-class BaseSynchronizationConflictValuesDao extends SQDIDao$1 {
-    static Save(config) {
-        return ObservableDao.BaseSave(config);
-    }
-    static diSet() {
-        return airport____at_airport_slash_layover_diSet(1);
-    }
-    constructor() {
-        super(1);
-    }
-}
-BaseSynchronizationConflictValuesDao.Find = new DaoQueryDecorators();
-BaseSynchronizationConflictValuesDao.FindOne = new DaoQueryDecorators();
-BaseSynchronizationConflictValuesDao.Search = new DaoQueryDecorators();
-BaseSynchronizationConflictValuesDao.SearchOne = new DaoQueryDecorators();
-
-let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSynchronizationConflictDao {
-    async insert(synchronizationConflicts, context) {
-        let sc;
-        const VALUES = [];
-        for (const synchronizationConflict of synchronizationConflicts) {
-            VALUES.push([
-                synchronizationConflict.type,
-                synchronizationConflict.acknowledged,
-                synchronizationConflict.repository._localId,
-                synchronizationConflict.overwrittenRecordHistory._localId,
-                synchronizationConflict.overwritingRecordHistory._localId
-            ]);
-        }
-        const ids = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sc = Q_airport____at_airport_slash_layover.SynchronizationConflict,
-            columns: [
-                sc.type,
-                sc.acknowledged,
-                sc.repository._localId,
-                sc.overwrittenRecordHistory._localId,
-                sc.overwritingRecordHistory._localId
-            ],
-            VALUES
-        }, context);
-        for (let i = 0; i < synchronizationConflicts.length; i++) {
-            let synchronizationConflict = synchronizationConflicts[i];
-            synchronizationConflict._localId = ids[i][0];
-        }
-    }
-};
-SynchronizationConflictDao = __decorate$b([
-    Injected()
-], SynchronizationConflictDao);
-
-let SynchronizationConflictValuesDao = class SynchronizationConflictValuesDao extends BaseSynchronizationConflictValuesDao {
-    async insert(synchronizationConflictValues, context) {
-        let scv;
-        const VALUES = [];
-        for (const synchronizationConflictValue of synchronizationConflictValues) {
-            VALUES.push([
-                synchronizationConflictValue.synchronizationConflict._localId,
-                synchronizationConflictValue.columnIndex
-            ]);
-        }
-        await this.db.insertValues({
-            INSERT_INTO: scv = Q_airport____at_airport_slash_layover.SynchronizationConflictValues,
-            columns: [
-                scv.synchronizationConflict._localId,
-                scv.columnIndex
-            ],
-            VALUES
-        }, context);
-    }
-};
-SynchronizationConflictValuesDao = __decorate$b([
-    Injected()
-], SynchronizationConflictValuesDao);
-
-let CopiedEntityRecordDao = class CopiedEntityRecordDao extends BaseCopiedEntityRecordDao {
-};
-CopiedEntityRecordDao = __decorate$b([
-    Injected()
-], CopiedEntityRecordDao);
-
-let CopiedEntityRecordRepositoryDao = class CopiedEntityRecordRepositoryDao extends BaseCopiedEntityRecordRepositoryDao {
-};
-CopiedEntityRecordRepositoryDao = __decorate$b([
-    Injected()
-], CopiedEntityRecordRepositoryDao);
-
-let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
-    async insertValues(values, context) {
-        const rus = Q_airport____at_airport_slash_layover.RecordUpdateStage;
-        const columns = [
-            rus.applicationVersion._localId,
-            rus.entity._localId,
-            rus.repository._localId,
-            rus.actor._localId,
-            rus._actorRecordId,
-            rus.column._localId,
-            rus.updatedValue
-        ];
-        return await this.db.insertValuesGenerateIds({
-            INSERT_INTO: rus,
-            columns,
-            VALUES: values
-        }, {
-            ...context,
-            generateOnSync: true
-        });
-    }
-    async updateEntityWhereIds(applicationIndex, applicationVersionId, entityIndex, idMap, updatedColumnIndexes, context) {
-        const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
-            .applicationVersion.entities[entityIndex];
-        const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name];
-        const repositoryEquals = [];
-        const AirEntityId = this.dictionary.AirEntityId;
-        for (const [repositoryLid, idsForRepository] of idMap) {
-            const actorEquals = [];
-            for (const [actorLid, idsForActor] of idsForRepository) {
-                actorEquals.push(AND(qEntity[AirEntityId.properties.actor]._localId.equals(actorLid), qEntity[AirEntityId.properties._actorRecordId].IN(Array.from(idsForActor))));
-            }
-            repositoryEquals.push(AND(qEntity[AirEntityId.properties.repository]._localId.equals(repositoryLid), OR(...actorEquals)));
-        }
-        const setClause = {};
-        for (const columnIndex of updatedColumnIndexes) {
-            const column = dbEntity.columns[columnIndex];
-            let columnRus = Q_airport____at_airport_slash_layover.RecordUpdateStage;
-            let columnSetClause = field({
-                FROM: [
-                    columnRus
-                ],
-                SELECT: columnRus.updatedValue,
-                WHERE: AND(columnRus.applicationVersion._localId.equals(applicationVersionId), columnRus.entity._localId.equals(dbEntity.index), columnRus.repository._localId.equals(qEntity.repository._localId), columnRus.actor._localId.equals(qEntity.actor._localId), columnRus._actorRecordId.equals(qEntity._actorRecordId), columnRus.column._localId.equals(column.index))
-            });
-            setClause[column.name] = columnSetClause;
-        }
-        await this.db.updateColumnsWhere({
-            UPDATE: qEntity,
-            SET: setClause,
-            WHERE: OR(...repositoryEquals)
-        }, context);
-    }
-    async delete(context) {
-        return await this.db.deleteWhere({
-            DELETE_FROM: Q_airport____at_airport_slash_layover.RecordUpdateStage
-        }, context);
-    }
-};
-__decorate$b([
-    Inject()
-], RecordUpdateStageDao.prototype, "airportDatabase", void 0);
-__decorate$b([
-    Inject()
-], RecordUpdateStageDao.prototype, "dictionary", void 0);
-RecordUpdateStageDao = __decorate$b([
-    Injected()
-], RecordUpdateStageDao);
-
-let CrossRepositoryRelationManager = class CrossRepositoryRelationManager {
-    addCopiedEntityRecord(copiedEntity, copyDdlEntity, repositoryWithCopy) {
-        const copiedEntityRecord = new CopiedEntityRecord();
-        copiedEntityRecord._actorRecordId = copiedEntity._actorRecordId;
-        copiedEntityRecord.actor = copiedEntityRecord.actor;
-        copiedEntityRecord.repository = copiedEntityRecord.repository;
-        copiedEntityRecord.copyDdlEntity = copyDdlEntity;
-        this.addCopiedEntityRecordRepository(copiedEntityRecord, repositoryWithCopy);
-        return copiedEntityRecord;
-    }
-    addCopiedEntityRecordRepository(copiedEntityRecord, repositoryWithCopy) {
-        const copiedEntityRecordRepository = new CopiedEntityRecordRepository();
-        copiedEntityRecordRepository.copiedEntityRecord = copiedEntityRecord;
-        copiedEntityRecordRepository.repositoryWithCopy = repositoryWithCopy;
-        copiedEntityRecord.copiedEntityRecordRepositories.push(copiedEntityRecordRepository);
-        return copiedEntityRecordRepository;
-    }
-};
-CrossRepositoryRelationManager = __decorate$b([
-    Injected()
-], CrossRepositoryRelationManager);
-
-const layover = lib('@airport/layover');
-layover.register(CopiedEntityRecordDao, CopiedEntityRecordRepositoryDao, CrossRepositoryRelationManager, RecordUpdateStageDao, SynchronizationConflictDao, SynchronizationConflictValuesDao);
-layover.setDependencies(RecordUpdateStageDao, {
-    airportDatabase: AIRPORT_DATABASE,
-    dictionary: Dictionary
-});
-
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-function __decorate$a(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -31509,17 +30399,17 @@ let Client = class Client {
                 console.error(response.error);
                 return [];
             }
-            return response.fragments;
+            return response.blocks;
         }
         catch (e) {
             console.error(e);
             return [];
         }
     }
-    async sendRepositoryTransactions(location, repositoryGUID, messages) {
+    async sendRepositoryTransactions(location, repositoryGUID, blocks) {
         try {
             const response = await this.sendMessage(location + '/write', {
-                messages,
+                blocks,
                 repositoryGUID
             });
             if (response.error) {
@@ -31559,7 +30449,7 @@ let Client = class Client {
         return response.json();
     }
 };
-Client = __decorate$a([
+Client = __decorate$b([
     Injected()
 ], Client);
 
@@ -31569,6 +30459,199 @@ Client = __decorate$a([
 // } from "string-cipher";
 const client = lib('client');
 client.register(Client);
+
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+
+function __decorate$a(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+/**
+ * Created by Papa on 6/8/2024.
+ */
+let AirEntityId = class AirEntityId {
+    constructor(entityId) {
+        // Currently TypeScript does not support optional getters/setters
+        // this is a workaround
+        delete this.id;
+        Object.defineProperty(this, 'id', {
+            get() {
+                return globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS).encodeId(this);
+            },
+            set(idString) {
+                globalThis.IOC.getSync(globalThis.AIR_ENTITY_UTILS).setId(idString, this);
+            }
+        });
+        this.id = entityId;
+    }
+};
+__decorate$a([
+    Id(),
+    Column(),
+    GeneratedValue(),
+    DbNumber()
+], AirEntityId.prototype, "_actorRecordId", void 0);
+__decorate$a([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], AirEntityId.prototype, "actor", void 0);
+__decorate$a([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], AirEntityId.prototype, "repository", void 0);
+__decorate$a([
+    Transient()
+], AirEntityId.prototype, "id", void 0);
+AirEntityId = __decorate$a([
+    MappedSuperclass()
+], AirEntityId);
+
+/**
+ * Created by Papa on 6/8/2024.
+ */
+let AirEntityFields = class AirEntityFields extends AirEntityId {
+    constructor(entityId) {
+        super(entityId);
+        this.createdAt = new Date();
+        /*
+         * Set at record creation time if a copy needs to be made (of a record
+         * in another repository)
+         */
+        this.toBeCopied = false;
+        delete this.isNew;
+        Object.defineProperty(this, 'isNew', {
+            get() {
+                return !!this._actorRecordId;
+            }
+        });
+        delete this.createdBy;
+        Object.defineProperty(this, 'createdBy', {
+            get() {
+                return this.actor.userAccount;
+            }
+        });
+    }
+};
+__decorate$a([
+    Column(),
+    DbDate()
+], AirEntityFields.prototype, "createdAt", void 0);
+__decorate$a([
+    Column(),
+    DbNumber()
+], AirEntityFields.prototype, "systemWideOperationId", void 0);
+__decorate$a([
+    Transient()
+], AirEntityFields.prototype, "toBeCopied", void 0);
+__decorate$a([
+    Transient()
+], AirEntityFields.prototype, "createdBy", void 0);
+__decorate$a([
+    Transient()
+], AirEntityFields.prototype, "isNew", void 0);
+AirEntityFields = __decorate$a([
+    MappedSuperclass()
+], AirEntityFields);
+
+/**
+ * Created by Papa on 2/17/2017.
+ */
+let AirEntity = class AirEntity extends AirEntityFields {
+};
+AirEntity = __decorate$a([
+    MappedSuperclass()
+], AirEntity);
+
+/**
+ * Created by Papa on 2/17/2017.
+ */
+// Used withint the framework because it imports from '@airport/travel-document-checkpoint/dist/app/bundle'
+let InternalAirEntity = class InternalAirEntity extends AirEntityFields {
+};
+InternalAirEntity = __decorate$a([
+    MappedSuperclass()
+], InternalAirEntity);
+
+let RepositoryContentFlag = class RepositoryContentFlag extends AirEntity {
+};
+__decorate$a([
+    Column(),
+    DbNumber()
+], RepositoryContentFlag.prototype, "flagType", void 0);
+RepositoryContentFlag = __decorate$a([
+    Entity(),
+    Table()
+], RepositoryContentFlag);
+
+var RepositoryContentFlagType;
+(function (RepositoryContentFlagType) {
+    RepositoryContentFlagType[RepositoryContentFlagType["CHILD_FRIENDLY"] = 0] = "CHILD_FRIENDLY";
+    RepositoryContentFlagType[RepositoryContentFlagType["CHINA_FRIENDLY"] = 1] = "CHINA_FRIENDLY";
+    RepositoryContentFlagType[RepositoryContentFlagType["ISLAM_FRIENDLY"] = 2] = "ISLAM_FRIENDLY";
+    RepositoryContentFlagType[RepositoryContentFlagType["ISLAM_PROHIBITED"] = 3] = "ISLAM_PROHIBITED";
+    RepositoryContentFlagType[RepositoryContentFlagType["CHINA_PROHIBITED"] = 4] = "CHINA_PROHIBITED";
+})(RepositoryContentFlagType || (RepositoryContentFlagType = {}));
+
+const __constructors__$1 = {
+    AirEntity,
+    AirEntityFields,
+    AirEntityId,
+    InternalAirEntity,
+    RepositoryContentFlag
+};
+const Q_airport____at_airport_slash_final_dash_approach = {
+    __constructors__: __constructors__$1,
+    domain: 'airport',
+    name: '@airport/final-approach'
+};
+function airport____at_airport_slash_final_dash_approach_diSet(dbEntityId) {
+    return globalThis.airApi.dS(Q_airport____at_airport_slash_final_dash_approach.__dbApplication__, dbEntityId);
+}
+if (globalThis.airApi) {
+    globalThis.airApi.setQApp(Q_airport____at_airport_slash_final_dash_approach);
+}
+
+// Application Q object Dependency Injection readiness detection Dao
+let SQDIDao$1 = class SQDIDao extends ObservableDao {
+    constructor(dbEntityId) {
+        super(dbEntityId, Q_airport____at_airport_slash_final_dash_approach);
+    }
+};
+class BaseRepositoryContentFlagDao extends SQDIDao$1 {
+    static Save(config) {
+        return ObservableDao.BaseSave(config);
+    }
+    static diSet() {
+        return airport____at_airport_slash_final_dash_approach_diSet(0);
+    }
+    constructor() {
+        super(0);
+    }
+}
+BaseRepositoryContentFlagDao.Find = new DaoQueryDecorators();
+BaseRepositoryContentFlagDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryContentFlagDao.Search = new DaoQueryDecorators();
+BaseRepositoryContentFlagDao.SearchOne = new DaoQueryDecorators();
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -31825,28 +30908,54 @@ KeyRingManager = __decorate$9([
     Injected()
 ], KeyRingManager);
 
-let MessageSigningManager = class MessageSigningManager {
-    async signMessages(historiesToSend, unsingedMessages, context) {
-        const keyRing = (await this.terminalSessionManager.getUserSession()).keyRing;
-        if (!keyRing) {
-            throw new Error(`No KeyRing is not set on UserSession.`);
+let BlockSigningManager = class BlockSigningManager {
+    async signBlocks(historiesToSend, unsingedBlocks, context) {
+        const { blocksToSign, repositoryGUIDSet } = this.getBlocksToSignData(historiesToSend, unsingedBlocks);
+        if (!blocksToSign.length) {
+            return;
         }
+        const { keyRing, repositoryKeysByRepositoryGUIDs } = await this.getRepositoryKeysByRepositoryGUIDs(repositoryGUIDSet, context);
+        for (const block of blocksToSign) {
+            const blockToStringify = {
+                data: block.data,
+                GUID: block.GUID,
+                previousBlock: {
+                    GUID: block.previousBlock.GUID,
+                    hashSum: block.previousBlock.hashSum
+                }
+            };
+            let stringifiedBlock = JSON.stringify(blockToStringify);
+            stringifiedBlock = await this.hashSumBlock(block, stringifiedBlock);
+            this.signBlock(block, stringifiedBlock, repositoryKeysByRepositoryGUIDs, keyRing);
+            // FIXME: apply PSON transformation to the stringifiedBlock
+            let packagedData = stringifiedBlock; // this.pson.encode(block)
+            block.packagedData = packagedData;
+        }
+    }
+    getBlocksToSignData(historiesToSend, unsingedBlocks) {
+        const blocksToSign = [];
         const repositoryGUIDSet = new Set();
-        const messagesToSign = [];
         for (let i = 0; i < historiesToSend.length; i++) {
             const history = historiesToSend[i];
-            const unsignedMessage = unsingedMessages[i];
+            const unsignedBlock = unsingedBlocks[i];
             // Operation history may not be present if its
             // a RepositoryMember-only operation
             const firstOperationHistory = history.operationHistory[0];
             if (firstOperationHistory && this.dictionary.isKeyringEntity(firstOperationHistory.entity)) {
                 continue;
             }
+            blocksToSign.push(unsignedBlock);
             repositoryGUIDSet.add(history.repository.GUID);
-            messagesToSign.push(unsignedMessage);
         }
-        if (!messagesToSign.length) {
-            return;
+        return {
+            blocksToSign,
+            repositoryGUIDSet
+        };
+    }
+    async getRepositoryKeysByRepositoryGUIDs(repositoryGUIDSet, context) {
+        const keyRing = (await this.terminalSessionManager.getUserSession()).keyRing;
+        if (!keyRing) {
+            throw new Error(`No KeyRing is not set on UserSession.`);
         }
         const repositoryKeys = await this.repositoryKeyDao
             .findByRepositoryGUIDs(keyRing.internalPrivateSigningKey, Array.from(repositoryGUIDSet), context);
@@ -31854,49 +30963,68 @@ let MessageSigningManager = class MessageSigningManager {
         for (const repositoryKey of repositoryKeys) {
             repositoryKeysByRepositoryGUIDs.set(repositoryKey.repositoryGUID, repositoryKey);
         }
-        for (const unsingedMessage of messagesToSign) {
-            const history = unsingedMessage.data.history;
-            let repositoryGUID;
-            if (typeof history.repository === 'string') {
-                repositoryGUID = history.repository;
-            }
-            else {
-                repositoryGUID = history.repository.GUID;
-            }
-            const repositoryKey = repositoryKeysByRepositoryGUIDs
-                .get(repositoryGUID);
-            const contents = JSON.stringify(unsingedMessage);
-            unsingedMessage.memberSignature = await this.keyUtils
-                .sign(contents, repositoryKey.privateSigningKey);
-            if (history.invitationPrivateSigningKey) {
-                unsingedMessage.acceptanceSignature = await this.keyUtils
-                    .sign(contents, history.invitationPrivateSigningKey);
-            }
-            if (history.invitationPrivateSigningKey || history.isRepositoryCreation) {
-                unsingedMessage.userAccountSignature = await this.keyUtils
-                    .sign(contents, keyRing.internalPrivateSigningKey, 521);
-            }
+        return {
+            keyRing,
+            repositoryKeysByRepositoryGUIDs
+        };
+    }
+    async hashSumBlock(unsignedBlock, stringifiedBlock) {
+        const previousBlock = unsignedBlock.previousBlock;
+        let previousBlockHashSum = '';
+        if (previousBlock) {
+            previousBlockHashSum = previousBlock.hashSum;
         }
+        const hashSum = await this.keyUtils.sha512(previousBlockHashSum + stringifiedBlock);
+        unsignedBlock.hashSum = hashSum;
+        return this.prependPropertyIntoSerializedJson(stringifiedBlock, "hashSum", hashSum);
+    }
+    async signBlock(unsignedBlock, stringifiedBlock, repositoryKeysByRepositoryGUIDs, keyRing) {
+        const history = unsignedBlock.data.history;
+        let repositoryGUID;
+        if (typeof history.repository === 'string') {
+            repositoryGUID = history.repository;
+        }
+        else {
+            repositoryGUID = history.repository.GUID;
+        }
+        const repositoryKey = repositoryKeysByRepositoryGUIDs
+            .get(repositoryGUID);
+        unsignedBlock.memberSignature = await this.keyUtils
+            .sign(stringifiedBlock, repositoryKey.privateSigningKey);
+        if (history.invitationPrivateSigningKey) {
+            unsignedBlock.acceptanceSignature = await this.keyUtils
+                .sign(stringifiedBlock, history.invitationPrivateSigningKey);
+        }
+        if (history.invitationPrivateSigningKey || history.isRepositoryCreation) {
+            unsignedBlock.userAccountSignature = await this.keyUtils
+                .sign(stringifiedBlock, keyRing.internalPrivateSigningKey, 521);
+        }
+    }
+    prependPropertyIntoSerializedJson(serializedJson, propertyName, propertyValue) {
+        if (typeof propertyValue === "string") {
+            propertyValue = `"${propertyValue}"`;
+        }
+        return serializedJson.substring(0, 1) + `"${propertyName}":${propertyValue},` + serializedJson.substring(1);
     }
 };
 __decorate$9([
     Inject()
-], MessageSigningManager.prototype, "dictionary", void 0);
+], BlockSigningManager.prototype, "dictionary", void 0);
 __decorate$9([
     Inject()
-], MessageSigningManager.prototype, "keyUtils", void 0);
+], BlockSigningManager.prototype, "keyUtils", void 0);
 __decorate$9([
     Inject()
-], MessageSigningManager.prototype, "repositoryKeyDao", void 0);
+], BlockSigningManager.prototype, "repositoryKeyDao", void 0);
 __decorate$9([
     Inject()
-], MessageSigningManager.prototype, "terminalSessionManager", void 0);
-MessageSigningManager = __decorate$9([
+], BlockSigningManager.prototype, "terminalSessionManager", void 0);
+BlockSigningManager = __decorate$9([
     Injected()
-], MessageSigningManager);
+], BlockSigningManager);
 
 const keyring = app(application);
-keyring.register(KeyRingDao, KeyRingManager, MessageSigningManager, RepositoryKeyDao);
+keyring.register(KeyRingDao, KeyRingManager, BlockSigningManager, RepositoryKeyDao);
 keyring.setDependencies(KeyRingManager, {
     applicationNameUtils: ApplicationNameUtils,
     keyRingDao: KeyRingDao,
@@ -31906,7 +31034,7 @@ keyring.setDependencies(KeyRingManager, {
     repositoryManager: REPOSITORY_MANAGER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER
 });
-keyring.setDependencies(MessageSigningManager, {
+keyring.setDependencies(BlockSigningManager, {
     dictionary: Dictionary,
     keyUtils: KeyUtils,
     repositoryKeyDao: RepositoryKeyDao,
@@ -31938,29 +31066,30 @@ function __decorate$8(decorators, target, key, desc) {
 }
 
 let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
-    async getTransactionsForRepository(repositoryGUID, sinceSyncTimestamp) {
+    async getBlocksForRepository(repositoryGUID, sinceSyncTimestamp) {
         const location = this.getLocation(repositoryGUID);
-        const response = await this.client.getRepositoryTransactions(location, repositoryGUID, sinceSyncTimestamp);
+        const response //: RepositoryBlocksReadResponseFragment[]
+         = await this.client.getRepositoryTransactions(location, repositoryGUID, sinceSyncTimestamp);
         const messages = [];
         // NOTE: syncTimestamp is populated here because file sharing mechanisms
         // (IPFS) won't be able to modify the messages themselves
         for (const fragment of response) {
-            if (fragment.repositoryGUID !== repositoryGUID) {
-                console.error(`Got a reponse fragment for repository ${fragment.repositoryGUID}.
-    Expecting message fragments for repository: ${repositoryGUID}`);
-                continue;
-            }
-            for (const message of fragment.messages) {
-                message.syncTimestamp = fragment.syncTimestamp;
-                messages.push(message);
-            }
+            //         if (fragment.repositoryGUID !== repositoryGUID) {
+            //             console.error(`Got a reponse fragment for repository ${fragment.repositoryGUID}.
+            // Expecting message fragments for repository: ${repositoryGUID}`)
+            //             continue
+            //         }
+            // for (const message of fragment.messages) {
+            //     message.syncTimestamp = fragment.syncTimestamp
+            //     messages.push(message)
+            // }
         }
         return messages;
     }
-    async sendTransactions(repositoryGUID, messagesForRepository) {
+    async sendBlocks(repositoryGUID, messagesForRepository) {
         let allSent = true;
         try {
-            if (!await this.sendTransactionsForRepository(repositoryGUID, messagesForRepository)) {
+            if (!await this.sendBlocksForRepository(repositoryGUID, messagesForRepository)) {
                 allSent = false;
             }
         }
@@ -31970,7 +31099,7 @@ let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
         }
         return allSent;
     }
-    async sendTransactionsForRepository(repositoryGUID, messages) {
+    async sendBlocksForRepository(repositoryGUID, messages) {
         if (!messages || !messages.length) {
             return false;
         }
@@ -32152,13 +31281,13 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
         }
         return applicationCheckMap;
     }
-    getNames(message) {
-        if (!message.applications || !(message.applications instanceof Array)) {
-            throw new Error(`Did not find applications in SyncRepositoryData.`);
+    getNames(block) {
+        if (!block.applications || !(block.applications instanceof Array)) {
+            throw new Error(`Did not find applications in IRepositoryBlockData.`);
         }
         const domainCheckMap = new Map();
         const applicationCheckMap = new Map();
-        for (let application of message.applications) {
+        for (let application of block.applications) {
             if (typeof application !== 'object') {
                 throw new Error(`Invalid ApplicationVersion.application`);
             }
@@ -32303,7 +31432,7 @@ let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
     getNames(data) {
         const inMessageApplicationVersions = data.applicationVersions;
         if (!inMessageApplicationVersions || !(inMessageApplicationVersions instanceof Array)) {
-            throw new Error(`Did not find applicationVersions in SyncRepositoryData.`);
+            throw new Error(`Did not find applicationVersions in IRepositoryBlockData.`);
         }
         const applicationVersionCheckMap = new Map();
         for (let applicationVersion of inMessageApplicationVersions) {
@@ -32361,11 +31490,14 @@ SyncInApplicationVersionChecker = __decorate$8([
 
 let SyncInChecker = class SyncInChecker {
     /**
-     * Check the message and load all required auxiliary entities.
+     * Check the block and load all required auxiliary entities.
      */
-    async checkMessage(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context) {
+    async checkBlock(block, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context) {
         // FIXME: replace as many DB lookups as possible with Terminal State lookups
-        let data = message.data;
+        let data = block.data;
+        if (typeof block.GUID !== 'string' || block.GUID.length !== 36) {
+            throw new Error(`Invalid IRepositoryBlock.GUID`);
+        }
         // Serialize before object starts to be interlinked
         let serializedData = JSON.stringify(data);
         const applicationCheck = await this.syncInApplicationChecker.ensureApplications(data, context);
@@ -32391,15 +31523,15 @@ let SyncInChecker = class SyncInChecker {
         if (!await this.syncInActorChecker.ensureActors(data, context)) {
             return invalidResult;
         }
-        const dataCheckResult = this.syncInDataChecker.checkData(message);
+        const dataCheckResult = this.syncInDataChecker.checkData(block);
         const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
-            .checkRepositoriesAndMembers(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context);
+            .checkRepositoriesAndMembers(block, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context);
         if (!repositoryAndMemberCheckResult.isValid) {
             return invalidResult;
         }
         for (const signatureCheck of repositoryAndMemberCheckResult.signatureChecks) {
             if (!this.keyUtils.verify(serializedData, signatureCheck.signatureToCheck, signatureCheck.publicSigningKey)) {
-                console.error(`message.${signatureCheck.signatureName} is not valid.`);
+                console.error(`block.${signatureCheck.signatureName} is not valid.`);
                 return invalidResult;
             }
         }
@@ -32428,21 +31560,21 @@ let SyncInChecker = class SyncInChecker {
                 throw new Error(`Invalid referencedApplicationRelations[${i}].entity`);
             }
             if (typeof referencedEntity.applicationVersion !== 'number') {
-                throw new Error(`Expecting "in-message index" (number)
+                throw new Error(`Expecting "in-block index" (number)
 					in 'referencedApplicationRelations[${i}].entity.applicationVersion'`);
             }
             if (typeof referencedEntity.index !== 'number') {
                 throw new Error(`Expecting "index" (number)
 					in 'referencedApplicationRelations[${i}].entity.index'`);
             }
-            const messageApplicationVersion = data
+            const blockApplicationVersion = data
                 .referencedApplicationVersions[referencedEntity.applicationVersion];
-            if (!messageApplicationVersion) {
-                throw new Error(`No Application Version with in-message index ${referencedEntity.applicationVersion}.
+            if (!blockApplicationVersion) {
+                throw new Error(`No Application Version with in-block index ${referencedEntity.applicationVersion}.
 Declared in 'referencedApplicationRelations[${i}].entity.applicationVersion'`);
             }
-            const applicationEntity = applicationEntityMap.get(messageApplicationVersion.application.domain.name)
-                .get(messageApplicationVersion.application.name).get(referencedEntity.index);
+            const applicationEntity = applicationEntityMap.get(blockApplicationVersion.application.domain.name)
+                .get(blockApplicationVersion.application.name).get(referencedEntity.index);
             if (!applicationEntity) {
                 throw new Error(`Invalid referencedApplicationRelations[${i}].entity.index: ${referencedEntity.index}`);
             }
@@ -32507,44 +31639,40 @@ let SyncInDataChecker = class SyncInDataChecker {
      * @param {IDataToTM[]} dataMessagesWithCompatibleApplications
      * @returns {DataCheckResults}
      */
-    checkData(message) {
-        const history = message.data.history;
+    checkData(block) {
+        const history = block.data.history;
         try {
             if (!history || typeof history !== 'object') {
-                throw new Error(`Invalid SyncRepositoryData.history`);
-            }
-            if (typeof history.GUID !== 'string' || history.GUID.length !== 36) {
-                throw new Error(`Invalid SyncRepositoryData.history.GUID`);
+                throw new Error(`Invalid IRepositoryBlockData.history`);
             }
             if (!history.operationHistory || !(history.operationHistory instanceof Array)) {
-                throw new Error(`Invalid SyncRepositoryData.history.operationHistory`);
+                throw new Error(`Invalid IRepositoryBlockData.history.operationHistory`);
             }
             if (!history.saveTimestamp || typeof history.saveTimestamp !== 'number') {
-                throw new Error(`Invalid SyncRepositoryData.history.saveTimestamp`);
+                throw new Error(`Invalid IRepositoryBlockData.history.saveTimestamp`);
             }
             if (history.transactionHistory) {
-                throw new Error(`SyncRepositoryData.history.transactionHistory cannot be specified`);
+                throw new Error(`IRepositoryBlockData.history.transactionHistory cannot be specified`);
             }
             if (history.repositoryTransactionType) {
-                throw new Error(`SyncRepositoryData.history.repositoryTransactionType cannot be specified`);
+                throw new Error(`IRepositoryBlockData.history.repositoryTransactionType cannot be specified`);
             }
-            if (history.syncTimestamp) {
-                throw new Error(`SyncRepositoryData.history.syncTimestamp cannot be specified`);
-            }
+            // if (history.syncTimestamp) {
+            // 	throw new Error(`IRepositoryBlockData.history.syncTimestamp cannot be specified`)
+            // }
             for (const operationHistory of history.operationHistory) {
-                const actor = message.data.actors[operationHistory.actor];
+                const actor = block.data.actors[operationHistory.actor];
                 if (!actor) {
-                    throw new Error(`Cannot find Actor for "in-message id"
-	SyncRepositoryData.history.operationHistory.actor`);
+                    throw new Error(`Cannot find Actor for "in-block id"
+	IRepositoryBlockData.history.operationHistory.actor`);
                 }
                 operationHistory.actor = actor;
             }
             // Repository is already set in SyncInRepositoryChecker
             history.repositoryTransactionType = RepositoryTransactionType.REMOTE;
-            history.syncTimestamp = message.syncTimestamp;
             delete history._localId;
-            const applicationEntityMap = this.populateApplicationEntityMap(message.data.applicationVersions);
-            this.checkOperationHistories(message.data, applicationEntityMap);
+            const applicationEntityMap = this.populateApplicationEntityMap(block.data.applicationVersions);
+            this.checkOperationHistories(block.data, applicationEntityMap);
         }
         catch (e) {
             console.error(e);
@@ -32556,11 +31684,11 @@ let SyncInDataChecker = class SyncInDataChecker {
             isValid: true
         };
     }
-    populateApplicationEntityMap(messageApplicationVersions) {
+    populateApplicationEntityMap(blockApplicationVersions) {
         const applicationVersionsByIds = this.terminalStore.getAllApplicationVersionsByIds();
         const applicationEntityMap = new Map();
-        for (const messageApplicationVersion of messageApplicationVersions) {
-            const applicationVersion = applicationVersionsByIds[messageApplicationVersion._localId];
+        for (const blockApplicationVersion of blockApplicationVersions) {
+            const applicationVersion = applicationVersionsByIds[blockApplicationVersion._localId];
             for (const applicationEntity of applicationVersion.entities) {
                 const entitiesForApplication = this.datastructureUtils.ensureChildJsMap(this.datastructureUtils.ensureChildJsMap(applicationEntityMap, applicationVersion.application.domain.name), applicationVersion.application.name);
                 entitiesForApplication.set(applicationEntity.index, applicationEntity);
@@ -32571,7 +31699,7 @@ let SyncInDataChecker = class SyncInDataChecker {
     checkOperationHistories(data, applicationEntityMap) {
         const history = data.history;
         if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
-            throw new Error(`Invalid SyncRepositoryData.history.operationHistory Array`);
+            throw new Error(`Invalid IRepositoryBlockData.history.operationHistory Array`);
         }
         const systemWideOperationIds = this.systemWideOperationIdUtils.getSysWideOpIds(history.operationHistory.length);
         let orderNumber = 0;
@@ -32581,7 +31709,7 @@ let SyncInDataChecker = class SyncInDataChecker {
                 throw new Error(`Invalid operationHistory[${i}]`);
             }
             if (operationHistory.orderNumber) {
-                throw new Error(`SyncRepositoryData.history -> operationHistory[${i}].orderNumber cannot be specified,
+                throw new Error(`IRepositoryBlockData.history -> operationHistory[${i}].orderNumber cannot be specified,
 the position of orderHistory record determines it's order`);
             }
             operationHistory.orderNumber = ++orderNumber;
@@ -32597,12 +31725,12 @@ the position of orderHistory record determines it's order`);
                 throw new Error(`Invalid operationHistory[${i}].entity`);
             }
             if (typeof operationHistory.entity.applicationVersion !== 'number') {
-                throw new Error(`Expecting "in-message index" (number)
+                throw new Error(`Expecting "in-block index" (number)
 					in 'operationHistory[${i}].entity.applicationVersion'`);
             }
             const applicationVersion = data.applicationVersions[operationHistory.entity.applicationVersion];
             if (!applicationVersion) {
-                throw new Error(`Invalid index into message.applicationVersions [${operationHistory.entity.applicationVersion}],
+                throw new Error(`Invalid index into block.applicationVersions [${operationHistory.entity.applicationVersion}],
 				in operationHistory[${i}].entity.applicationVersion`);
             }
             const applicationEntity = applicationEntityMap.get(applicationVersion.application.domain.name)
@@ -32612,11 +31740,11 @@ the position of orderHistory record determines it's order`);
             }
             operationHistory.entity = applicationEntity;
             if (operationHistory.repositoryTransactionHistory) {
-                throw new Error(`SyncRepositoryData.history -> operationHistory[${i}].repositoryTransactionHistory cannot be specified`);
+                throw new Error(`IRepositoryBlockData.history -> operationHistory[${i}].repositoryTransactionHistory cannot be specified`);
             }
             operationHistory.repositoryTransactionHistory = history;
             if (operationHistory.systemWideOperationId) {
-                throw new Error(`SyncRepositoryData.history -> operationHistory[${i}].systemWideOperationId cannot be specified`);
+                throw new Error(`IRepositoryBlockData.history -> operationHistory[${i}].systemWideOperationId cannot be specified`);
             }
             operationHistory.systemWideOperationId = systemWideOperationIds[i];
             delete operationHistory._localId;
@@ -32660,16 +31788,16 @@ the position of orderHistory record determines it's order`);
     checkRecordHistories(operationHistory, entityColumnMapsByIndex, data) {
         const recordHistories = operationHistory.recordHistory;
         if (!(recordHistories instanceof Array) || !recordHistories.length) {
-            throw new Error(`Inalid SyncRepositoryData.history -> operationHistory.recordHistory`);
+            throw new Error(`Inalid IRepositoryBlockData.history -> operationHistory.recordHistory`);
         }
         for (const recordHistory of recordHistories) {
             if (!recordHistory._actorRecordId || typeof recordHistory._actorRecordId !== 'number') {
-                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory._actorRecordId`);
+                throw new Error(`Invalid IRepositoryBlockData.history -> operationHistory.recordHistory._actorRecordId`);
             }
             switch (operationHistory.changeType) {
                 case ChangeType.INSERT_VALUES:
                     if (recordHistory.actor) {
-                        throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.actor
+                        throw new Error(`Cannot specify IRepositoryBlockData.history -> operationHistory.recordHistory.actor
 for ChangeType.INSERT_VALUES`);
                     }
                     recordHistory.actor = operationHistory.actor;
@@ -32683,7 +31811,7 @@ for ChangeType.INSERT_VALUES`);
                     else {
                         const actor = data.actors[recordHistory.actor];
                         if (!actor) {
-                            throw new Error(`Did find Actor for "in-message id" in SyncRepositoryData.history -> operationHistory.actor`);
+                            throw new Error(`Did find Actor for "in-block id" in IRepositoryBlockData.history -> operationHistory.actor`);
                         }
                         recordHistory.actor = actor;
                     }
@@ -32691,7 +31819,7 @@ for ChangeType.INSERT_VALUES`);
                 }
             }
             if (recordHistory.operationHistory) {
-                throw new Error(`SyncRepositoryData.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
+                throw new Error(`IRepositoryBlockData.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
             }
             this.checkNewValues(recordHistory, entityColumnMapsByIndex, operationHistory, data);
             this.checkOldValues(recordHistory, entityColumnMapsByIndex, operationHistory, data);
@@ -32703,28 +31831,28 @@ for ChangeType.INSERT_VALUES`);
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
                 if (recordHistory.newValues) {
-                    throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues
+                    throw new Error(`Cannot specify IRepositoryBlockData.history -> operationHistory.recordHistory.newValues
 for ChangeType.DELETE_ROWS`);
                 }
                 return;
             case ChangeType.INSERT_VALUES:
             case ChangeType.UPDATE_ROWS:
                 if (!(recordHistory.newValues instanceof Array) || !recordHistory.newValues.length) {
-                    throw new Error(`Must specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues
+                    throw new Error(`Must specify IRepositoryBlockData.history -> operationHistory.recordHistory.newValues
 for ChangeType.INSERT_VALUES|UPDATE_ROWS`);
                 }
                 break;
         }
         for (const newValue of recordHistory.newValues) {
             if (newValue.recordHistory) {
-                throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues.recordHistory`);
+                throw new Error(`Cannot specify IRepositoryBlockData.history -> operationHistory.recordHistory.newValues.recordHistory`);
             }
             newValue.recordHistory = recordHistory;
             if (typeof newValue.columnIndex !== 'number') {
-                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.columnIndex`);
+                throw new Error(`Invalid IRepositoryBlockData.history -> operationHistory.recordHistory.newValues.columnIndex`);
             }
             if (typeof newValue.newValue === undefined) {
-                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.newValue`);
+                throw new Error(`Invalid IRepositoryBlockData.history -> operationHistory.recordHistory.newValues.newValue`);
             }
         }
         for (const newValue of recordHistory.newValues) {
@@ -32740,27 +31868,27 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS`);
             case ChangeType.DELETE_ROWS:
             case ChangeType.INSERT_VALUES:
                 if (recordHistory.oldValues) {
-                    throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.oldValues
+                    throw new Error(`Cannot specify IRepositoryBlockData.history -> operationHistory.recordHistory.oldValues
 for ChangeType.DELETE_ROWS|INSERT_VALUES`);
                 }
                 return;
             case ChangeType.UPDATE_ROWS:
                 if (!(recordHistory.newValues instanceof Array) || !recordHistory.oldValues.length) {
-                    throw new Error(`Must specify SyncRepositoryData.history -> operationHistory.recordHistory.oldValues
+                    throw new Error(`Must specify IRepositoryBlockData.history -> operationHistory.recordHistory.oldValues
 for ChangeType.UPDATE_ROWS`);
                 }
                 break;
         }
         for (const oldValue of recordHistory.oldValues) {
             if (oldValue.recordHistory) {
-                throw new Error(`Cannot specify SyncRepositoryData.history -> operationHistory.recordHistory.newValues.recordHistory`);
+                throw new Error(`Cannot specify IRepositoryBlockData.history -> operationHistory.recordHistory.newValues.recordHistory`);
             }
             oldValue.recordHistory = recordHistory;
             if (typeof oldValue.columnIndex !== 'number') {
-                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.oldValues.columnIndex`);
+                throw new Error(`Invalid IRepositoryBlockData.history -> operationHistory.recordHistory.oldValues.columnIndex`);
             }
             if (typeof oldValue.oldValue === undefined) {
-                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.oldValues.oldValue`);
+                throw new Error(`Invalid IRepositoryBlockData.history -> operationHistory.recordHistory.oldValues.oldValue`);
             }
         }
         for (const oldValue of recordHistory.oldValues) {
@@ -32786,8 +31914,8 @@ for ChangeType.UPDATE_ROWS`);
             }
             const sourceEntity = entityArrayByInMessageIndex[value[valueColumnName]];
             if (!sourceEntity) {
-                throw new Error(`Invalid SyncRepositoryData.history -> operationHistory.recordHistory.newValues.newValue
-Value is for ${relationIdColumn.name} and could find SyncRepositoryData.${inMessageEntityArrayName}[${value[valueColumnName]}]`);
+                throw new Error(`Invalid IRepositoryBlockData.history -> operationHistory.recordHistory.newValues.newValue
+Value is for ${relationIdColumn.name} and could find IRepositoryBlockData.${inMessageEntityArrayName}[${value[valueColumnName]}]`);
             }
             if (!isRepositoryLidColumn) {
                 value[valueColumnName] = sourceEntity._localId;
@@ -32821,7 +31949,8 @@ SyncInDataChecker = __decorate$8([
 ], SyncInDataChecker);
 
 let SyncInRepositoryChecker = class SyncInRepositoryChecker {
-    async checkRepositoriesAndMembers(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context) {
+    async checkRepositoriesAndMembers(block, // IRepositoryBlock,
+    addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context) {
         const loadedRepositoryGUIDS = [];
         let missingRepositories = [];
         let newMembers = [];
@@ -32831,25 +31960,25 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
         let repositoryAddedInAnEarlierIncomingMessage = false;
         let repositoryGUID;
         try {
-            const data = message.data;
+            const data = block.data;
             let repositoryGUIDs = [];
-            let messageRepositoryIndexMap = new Map();
+            let blockRepositoryIndexMap = new Map();
             for (let i = 0; i < data.referencedRepositories.length; i++) {
-                this.checkRepository(data.referencedRepositories[i], i, repositoryGUIDs, messageRepositoryIndexMap, data);
+                this.checkRepository(data.referencedRepositories[i], i, repositoryGUIDs, blockRepositoryIndexMap, data);
             }
             const history = data.history;
             if (typeof history !== 'object') {
-                throw new Error(`message.data.history is not an object`);
+                throw new Error(`block.data.history is not an object`);
             }
             let historyRepository = history.repository;
-            const repositoryErrorPrefix = `Serialized SyncRepositoryData.history.repository should be`;
-            const isRepositoryCreationEqualityErrorPrefix = `if SyncRepositoryData.history.isRepositoryCreation ===`;
+            const repositoryErrorPrefix = `Serialized IRTHWithDependencies.history.repository should be`;
+            const isRepositoryCreationEqualityErrorPrefix = `if IRTHWithDependencies.history.isRepositoryCreation ===`;
             if (history.isRepositoryCreation) {
                 if (typeof historyRepository !== 'object') {
                     throw new Error(`${repositoryErrorPrefix} an object
 	${isRepositoryCreationEqualityErrorPrefix} === true`);
                 }
-                this.checkRepository(historyRepository, null, repositoryGUIDs, messageRepositoryIndexMap, data);
+                this.checkRepository(historyRepository, null, repositoryGUIDs, blockRepositoryIndexMap, data);
                 repositoryGUID = historyRepository.GUID;
                 addedRepositoryMapByGUID.set(repositoryGUID, historyRepository);
             }
@@ -32870,9 +31999,9 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
             }
             const foundRepositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs, context);
             for (const foundRepository of foundRepositories) {
-                const messageRepositoryIndex = messageRepositoryIndexMap.get(foundRepository.GUID);
-                if (messageRepositoryIndex || messageRepositoryIndex === 0) {
-                    data.referencedRepositories[messageRepositoryIndex] = foundRepository;
+                const blockRepositoryIndex = blockRepositoryIndexMap.get(foundRepository.GUID);
+                if (blockRepositoryIndex || blockRepositoryIndex === 0) {
+                    data.referencedRepositories[blockRepositoryIndex] = foundRepository;
                 }
                 else {
                     if (history.isRepositoryCreation) {
@@ -32904,9 +32033,9 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
                 }
             }
             for (const [repositoryGUID, repository] of addedRepositoryMapByGUID) {
-                const messageRepositoryIndex = messageRepositoryIndexMap.get(repositoryGUID);
-                if (messageRepositoryIndex || messageRepositoryIndex === 0) {
-                    data.referencedRepositories[messageRepositoryIndex] = repository;
+                const blockRepositoryIndex = blockRepositoryIndexMap.get(repositoryGUID);
+                if (blockRepositoryIndex || blockRepositoryIndex === 0) {
+                    data.referencedRepositories[blockRepositoryIndex] = repository;
                 }
             }
             missingRepositories = data.referencedRepositories
@@ -32929,8 +32058,8 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
             if (typeof historyRepository !== 'object') {
                 throw new Error(`Repository with GUID ${historyRepository} is not
 	present and cannot be synced
-	This SyncRepositoryData is for an existing repository and that
-	repository must already be loaded in this database for this message to be
+	This IRTHWithDependencies is for an existing repository and that
+	repository must already be loaded in this database for this block to be
 	processed.`);
             }
             else {
@@ -32942,7 +32071,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
             const addedRepositoryMembersByPublicSigningKey = this.datastructureUtils
                 .ensureChildJsMap(addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, repositoryGUID);
             addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey;
-            const memberCheckResult = await this.checkRepositoryMembers(message, historyRepository, repositoryAddedInAnEarlierIncomingMessage, addedRepositoryMembersByPublicSigningKey, context);
+            const memberCheckResult = await this.checkRepositoryMembers(block, historyRepository, repositoryAddedInAnEarlierIncomingMessage, addedRepositoryMembersByPublicSigningKey, context);
             signatureChecks = memberCheckResult.signatureChecks;
             newMembers = memberCheckResult.newMembers;
             if (memberCheckResult.newRepositoryMemberAcceptance) {
@@ -32968,8 +32097,9 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
             signatureChecks
         };
     }
-    async checkRepositoryMembers(message, historyRepository, repositoryAddedInAnEarlierIncomingMessage, addedRepositoryMembersByPublicSigningKey, context) {
-        const data = message.data;
+    async checkRepositoryMembers(block, // IRepositoryBlock,
+    historyRepository, repositoryAddedInAnEarlierIncomingMessage, addedRepositoryMembersByPublicSigningKey, context) {
+        const data = block.data;
         const repositoryMemberInMessageIndexMap = this
             .getRepositoryMemberInMessageIndexMap(data);
         const newMembers = [];
@@ -32980,7 +32110,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
         const newRepositoryMemberInvitations = this
             .getNewRepositoryMemberInvitations(data, repositoryMember, newMembers);
         await this.checkRepositoryMemberUserAccounts(data, isNewRepositoryMemberAcceptanceMessage, !!newRepositoryMemberInvitations.length);
-        const signatureChecks = this.getPublicSigningKeysAndSignatureToCheck(message, isNewRepositoryMemberAcceptanceMessage);
+        const signatureChecks = this.getPublicSigningKeysAndSignatureToCheck(block, isNewRepositoryMemberAcceptanceMessage);
         data.history.newRepositoryMembers = [];
         data.history.newRepositoryMemberAcceptances = [];
         data.history.newRepositoryMemberInvitations = [];
@@ -32993,7 +32123,8 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
             signatureChecks
         };
     }
-    async checkRepositoryMemberUserAccounts(data, isNewRepositoryMemberAcceptanceMessage, isNewRepositoryMemberInvitationMessage) {
+    async checkRepositoryMemberUserAccounts(data, // IRTHWithDependencies,
+    isNewRepositoryMemberAcceptanceMessage, isNewRepositoryMemberInvitationMessage) {
         const history = data.history;
         for (let i = 0; i < data.repositoryMembers.length; i++) {
             const repositoryMember = data.repositoryMembers[i];
@@ -33001,20 +32132,20 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
                 const userAccount = data.userAccounts[repositoryMember.userAccount];
                 if (!userAccount) {
                     throw new Error(`UserAccount with index ${repositoryMember.userAccount} referenced in
-message.data.repositoryMembers[${i}].userAccount does not exist in the message`);
+block.data.repositoryMembers[${i}].userAccount does not exist in the block`);
                 }
                 repositoryMember.userAccount = userAccount;
             }
         }
         if (!history.member.userAccount) {
             throw new Error(`UserAccount with index ${history.member.userAccount} referenced in
-message.data.history.member.userAccount does not exist in the message`);
+block.data.history.member.userAccount does not exist in the block`);
         }
         if (isNewRepositoryMemberInvitationMessage) {
             for (let i = 0; i < history.newRepositoryMemberInvitations.length; i++) {
                 const newRepositoryMemberInvitation = history.newRepositoryMemberInvitations[i];
                 if (newRepositoryMemberInvitation.invitedRepositoryMember.userAccount) {
-                    throw new Error(`message.data.history.newRepositoryMemberInvitations[${i}] has a specified
+                    throw new Error(`block.data.history.newRepositoryMemberInvitations[${i}] has a specified
 specifies .invitedRepositoryMember.userAccount
 Invited repository members cannot have a UserAccount specified`);
                 }
@@ -33022,12 +32153,13 @@ Invited repository members cannot have a UserAccount specified`);
         }
         if (isNewRepositoryMemberAcceptanceMessage) {
             if (!history.newRepositoryMemberAcceptances[0].acceptingRepositoryMember.userAccount) {
-                throw new Error(`message.data.history.newRepositoryMemberAcceptances[0] must have
+                throw new Error(`block.data.history.newRepositoryMemberAcceptances[0] must have
 a acceptingRepositoryMember.userAccount specified.`);
             }
         }
     }
-    isNewRepositoryMemberAcceptanceMessage(data, repositoryMember) {
+    isNewRepositoryMemberAcceptanceMessage(data, // IRTHWithDependencies,
+    repositoryMember) {
         const history = data.history;
         const newRepositoryMemberAcceptancesErrorPrefix = `history.newRepositoryMemberAcceptances`;
         const newRepositoryMemberAcceptances = history.newRepositoryMemberAcceptances;
@@ -33070,7 +32202,8 @@ a acceptingRepositoryMember.userAccount specified.`);
         delete newRepositoryMemberAcceptance._localId;
         return newRepositoryMemberAcceptance;
     }
-    getNewRepositoryMemberInvitations(data, repositoryMember, newMembers) {
+    getNewRepositoryMemberInvitations(data, // IRTHWithDependencies,
+    repositoryMember, newMembers) {
         const history = data.history;
         const newRepositoryMemberInvitationsErrorPrefix = `history.newRepositoryMemberInvitations`;
         const newRepositoryMemberInvitations = history.newRepositoryMemberInvitations;
@@ -33100,8 +32233,8 @@ a acceptingRepositoryMember.userAccount specified.`);
             }
             const invitedRepositoryMember = data.repositoryMembers[newRepositoryMemberInvitation.invitedRepositoryMember];
             if (!invitedRepositoryMember) {
-                throw new Error(`Invited repository member with in-message index ${newRepositoryMemberInvitation.invitedRepositoryMember}
-is not present in the message.`);
+                throw new Error(`Invited repository member with in-block index ${newRepositoryMemberInvitation.invitedRepositoryMember}
+is not present in the block.`);
             }
             if (invitedRepositoryMember.memberPublicSigningKey === repositoryMember.memberPublicSigningKey) {
                 throw new Error(`${newRepositoryMemberInvitationsErrorPrefix}[${i}] cannot be an existing RepositoryMember`);
@@ -33159,7 +32292,8 @@ is not present in the message.`);
             throw new Error(`${errorPrefix} does not have correct length`);
         }
     }
-    async getRepositoryMember(data, historyRepository, repositoryAddedInAnEarlierIncomingMessage, addedRepositoryMembersByPublicSigningKey, repositoryMemberInMessageIndexMap, newMembers, context) {
+    async getRepositoryMember(data, // IRTHWithDependencies,
+    historyRepository, repositoryAddedInAnEarlierIncomingMessage, addedRepositoryMembersByPublicSigningKey, repositoryMemberInMessageIndexMap, newMembers, context) {
         let exisingMessageRepositoryMembers = [];
         let newRepositoryMember;
         if (repositoryAddedInAnEarlierIncomingMessage) {
@@ -33168,12 +32302,12 @@ is not present in the message.`);
                 if (!repositoryMemberAddedInAnEarlierIncomingMessage) {
                     if (typeof repositoryMember.userAccount === 'undefined') {
                         throw new Error(`Did not find are RepositoryMember
-in an earlier (currently) incoming message for a repository was added in an
-earlier incoming message`);
+in an earlier (currently) incoming block for a repository was added in an
+earlier incoming block`);
                     }
                     else {
                         if (newRepositoryMember) {
-                            throw new Error(`Only one member can be added per message`);
+                            throw new Error(`Only one member can be added per block`);
                         }
                         newRepositoryMember = repositoryMember;
                         addedRepositoryMembersByPublicSigningKey
@@ -33191,7 +32325,7 @@ earlier incoming message`);
             exisingMessageRepositoryMembers = await this.repositoryMemberDao
                 .findByMemberPublicSigningKeys(memberPublicSigningKeys, context);
         }
-        let messageRepositoryMember;
+        let blockRepositoryMember;
         const history = data.history;
         if (history.isRepositoryCreation) {
             if (exisingMessageRepositoryMembers.length) {
@@ -33201,25 +32335,26 @@ earlier incoming message`);
         if (history.isRepositoryCreation || !exisingMessageRepositoryMembers.length) {
             newRepositoryMember = data.repositoryMembers[history.member];
             this.checkRepositoryMembershipFlags(newRepositoryMember, `history.member`, false, historyRepository);
-            messageRepositoryMember = newRepositoryMember;
+            blockRepositoryMember = newRepositoryMember;
             newMembers.push(newRepositoryMember);
         }
         else {
-            messageRepositoryMember = exisingMessageRepositoryMembers[0];
+            blockRepositoryMember = exisingMessageRepositoryMembers[0];
         }
-        const repositoryMemberInMessageIndex = repositoryMemberInMessageIndexMap.get(messageRepositoryMember.memberPublicSigningKey);
+        const repositoryMemberInMessageIndex = repositoryMemberInMessageIndexMap.get(blockRepositoryMember.memberPublicSigningKey);
         if (history.member !== repositoryMemberInMessageIndex) {
             throw new Error(`history.member does not already exist in the Repository`);
         }
-        history.member = messageRepositoryMember;
-        data.repositoryMembers[repositoryMemberInMessageIndex] = messageRepositoryMember;
+        history.member = blockRepositoryMember;
+        data.repositoryMembers[repositoryMemberInMessageIndex] = blockRepositoryMember;
         addedRepositoryMembersByPublicSigningKey
-            .set(messageRepositoryMember.memberPublicSigningKey, messageRepositoryMember);
-        return messageRepositoryMember;
+            .set(blockRepositoryMember.memberPublicSigningKey, blockRepositoryMember);
+        return blockRepositoryMember;
     }
-    getPublicSigningKeysAndSignatureToCheck(message, isNewRepositoryMemberAcceptanceMessage) {
+    getPublicSigningKeysAndSignatureToCheck(block, // IRepositoryBlock,
+    isNewRepositoryMemberAcceptanceMessage) {
         const signatureChecks = [];
-        const history = message.data.history;
+        const history = block.data.history;
         // Operation history may not be present if its
         // a RepositoryMember-only operation
         const firstOperationHistory = history.operationHistory[0];
@@ -33229,26 +32364,27 @@ earlier incoming message`);
         signatureChecks.push({
             publicSigningKey: history.member.memberPublicSigningKey,
             signatureName: 'memberSignature',
-            signatureToCheck: message.memberSignature
+            signatureToCheck: block.memberSignature
         });
         if (isNewRepositoryMemberAcceptanceMessage) {
             signatureChecks.push({
-                publicSigningKey: message.data.history
+                publicSigningKey: block.data.history
                     .newRepositoryMemberAcceptances[0].invitationPublicSigningKey,
                 signatureName: 'acceptanceSignature',
-                signatureToCheck: message.acceptanceSignature
+                signatureToCheck: block.acceptanceSignature
             });
         }
         if (isNewRepositoryMemberAcceptanceMessage || history.isRepositoryCreation) {
             signatureChecks.push({
                 publicSigningKey: history.member.userAccount.accountPublicSigningKey,
                 signatureName: 'userAccountSignature',
-                signatureToCheck: message.userAccountSignature
+                signatureToCheck: block.userAccountSignature
             });
         }
         return signatureChecks;
     }
-    checkRepository(repository, repositoryIndex, repositoryGUIDs, messageRepositoryIndexMap, message) {
+    checkRepository(repository, repositoryIndex, repositoryGUIDs, blockRepositoryIndexMap, block // IRTHWithDependencies
+    ) {
         if (typeof repository.ageSuitability !== 'number') {
             throw new Error(`Invalid 'repository.ageSuitability'`);
         }
@@ -33272,7 +32408,7 @@ earlier incoming message`);
             throw new Error(`Invalid 'repository.GUID'`);
         }
         if (typeof repository.owner !== 'number') {
-            throw new Error(`Expecting "in-message index" (number)
+            throw new Error(`Expecting "in-block index" (number)
 				in 'repository.owner'`);
         }
         if (typeof repository.isPublic !== 'boolean') {
@@ -33281,15 +32417,15 @@ earlier incoming message`);
         if (typeof repository.isLoaded !== 'undefined') {
             throw new Error(`'repository.isLoaded' cannot be specified`);
         }
-        const userAccount = message.userAccounts[repository.owner];
+        const userAccount = block.userAccounts[repository.owner];
         if (!userAccount) {
-            throw new Error(`Did not find repository.owner (UserAccount) with "in-message index" ${repository.owner}`);
+            throw new Error(`Did not find repository.owner (UserAccount) with "in-block index" ${repository.owner}`);
         }
         repository.isLoaded = true;
         repository.owner = userAccount;
         repositoryGUIDs.push(repository.GUID);
         if (typeof repositoryIndex === 'number') {
-            messageRepositoryIndexMap.set(repository.GUID, repositoryIndex);
+            blockRepositoryIndexMap.set(repository.GUID, repositoryIndex);
         }
         // Make sure id field is not in the input
         delete repository._localId;
@@ -33315,41 +32451,41 @@ let SyncInTerminalChecker = class SyncInTerminalChecker {
     async ensureTerminals(data, context) {
         try {
             let terminalGUIDs = [];
-            let messageTerminalIndexMap = new Map();
+            let blockTerminalIndexMap = new Map();
             for (let i = 0; i < data.terminals.length; i++) {
                 const terminal = data.terminals[i];
                 if (typeof terminal._localId !== 'undefined') {
                     throw new Error(`'terminal._localId' cannot be specified`);
                 }
                 if (typeof terminal.owner !== 'number') {
-                    throw new Error(`Expecting "in-message index" (number)
-					in 'terminal.owner' of SyncRepositoryData.terminals`);
+                    throw new Error(`Expecting "in-block index" (number)
+					in 'terminal.owner' of IRepositoryBlockData.terminals`);
                 }
                 if (typeof terminal.GUID !== 'string' || terminal.GUID.length !== 36) {
-                    throw new Error(`Invalid 'terminal.GUID' in SyncRepositoryData.terminals`);
+                    throw new Error(`Invalid 'terminal.GUID' in IRepositoryBlockData.terminals`);
                 }
                 if (terminal.isLocal !== undefined) {
-                    throw new Error(`'terminal.isLocal' cannot defined in SyncRepositoryData.terminals`);
+                    throw new Error(`'terminal.isLocal' cannot defined in IRepositoryBlockData.terminals`);
                 }
                 terminal.isLocal = false;
                 const owner = data.userAccounts[terminal.owner];
                 if (!owner) {
-                    throw new Error(`Did not find userAccount for terminal.owner with "in-message index" ${terminal.owner}
-						for SyncRepositoryData.terminals`);
+                    throw new Error(`Did not find userAccount for terminal.owner with "in-block index" ${terminal.owner}
+						for IRepositoryBlockData.terminals`);
                 }
                 terminal.owner = owner;
                 terminalGUIDs.push(terminal.GUID);
-                messageTerminalIndexMap.set(terminal.GUID, i);
+                blockTerminalIndexMap.set(terminal.GUID, i);
             }
             const terminals = await this.terminalDao.findByGUIDs(terminalGUIDs, context);
             const foundTerminalsByGUID = new Map();
             for (const terminal of terminals) {
                 foundTerminalsByGUID.set(terminal.GUID, terminal);
-                const messageTerminalIndex = messageTerminalIndexMap.get(terminal.GUID);
-                data.terminals[messageTerminalIndex] = terminal;
+                const blockTerminalIndex = blockTerminalIndexMap.get(terminal.GUID);
+                data.terminals[blockTerminalIndex] = terminal;
             }
             const missingTerminals = data.terminals
-                .filter(messageTerminal => !foundTerminalsByGUID.has(messageTerminal.GUID));
+                .filter(blockTerminal => !foundTerminalsByGUID.has(blockTerminal.GUID));
             if (missingTerminals.length) {
                 await this.addMissingTerminals(missingTerminals, context);
             }
@@ -33482,7 +32618,7 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
                     changedRecordsForRepo.firstChangeTime = repoTransHistory.saveTimestamp;
                 }
                 for (const operationHistory of repoTransHistory.operationHistory) {
-                    // Collect the Actor related localIds
+                    // Collect the Entity related localIds
                     const idsForEntity = this.datastructureUtils.ensureChildJsMap(changedRecordsForRepo.actorRecordIdsByLocalIds, operationHistory.entity._localId);
                     for (const recordHistory of operationHistory.recordHistory) {
                         // Collect the Actor related localIds
@@ -33584,7 +32720,7 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
                     for (const recordHistory of operationHistory.recordHistory) {
                         if (recordHistory.newValues.length) {
                             const systemWideOperationIdNewValue = new RecordHistoryNewValue();
-                            systemWideOperationIdNewValue.recordHistory = recordHistory;
+                            // systemWideOperationIdNewValue.recordHistory = recordHistory
                             systemWideOperationIdNewValue.columnIndex = sysWideOperationIdDbColumn.index;
                             systemWideOperationIdNewValue.newValue = operationHistory.systemWideOperationId;
                             recordHistory.newValues.push(systemWideOperationIdNewValue);
@@ -34046,6 +33182,7 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
     }
     async performUpdates(recordUpdates, applicationsByApplicationVersion_LocalIdMap, context) {
         const finalUpdateMap = new Map();
+        // const recordUpdateStage: RecordUpdateStageValues[] = []
         const recordUpdateStage = [];
         // Build the final update data structure
         for (const [applicationVersionId, applicationUpdateMap] of recordUpdates) {
@@ -34214,21 +33351,21 @@ Stage2SyncedInDataProcessor = __decorate$8([
  * Synchronization in Manager implementation.
  */
 let SynchronizationInManager = class SynchronizationInManager {
-    async receiveMessages(messageMapByRepositoryTransactionHistoryGUID, context, syncTimestamp = new Date().getTime()) {
-        if (!messageMapByRepositoryTransactionHistoryGUID.size) {
+    async receiveBlocks(blockMapByGUID, context, syncTimestamp = new Date().getTime()) {
+        if (!blockMapByGUID.size) {
             return;
         }
-        const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
-            .findWhereGUIDsIn([...messageMapByRepositoryTransactionHistoryGUID.keys()], context);
+        const existingRepositoryTransactionHistories = await this.repositoryBlockDao
+            .findWhereGUIDsIn([...blockMapByGUID.keys()], context);
         for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
-            messageMapByRepositoryTransactionHistoryGUID.delete(existingRepositoryTransactionHistory.GUID);
+            blockMapByGUID.delete(existingRepositoryTransactionHistory.GUID);
         }
-        if (!messageMapByRepositoryTransactionHistoryGUID.size) {
+        if (!blockMapByGUID.size) {
             return;
         }
-        const orderedMessages = this.timeOrderMessages(messageMapByRepositoryTransactionHistoryGUID);
-        const immediateProcessingMessages = [];
-        const delayedProcessingMessages = [];
+        const orderedBlocks = this.timeOrderBlocks(blockMapByGUID);
+        const immediateProcessingBlocks = [];
+        const delayedProcessingBlocks = [];
         const repositoryAndMemberInfo = {
             loadedRepositoryGUIDSet: new Set(),
             missingRepositoryMap: new Map(),
@@ -34238,65 +33375,65 @@ let SynchronizationInManager = class SynchronizationInManager {
         };
         const addedRepositoryMapByGUID = new Map();
         const addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey = new Map();
-        let areMessagesValid = [];
+        let areBlocksValid = [];
         let areAppsLoaded = true;
         let i = 0;
-        // Split up messages by type
-        for (; i < orderedMessages.length; i++) {
-            const message = orderedMessages[i];
-            if (!this.isValidLastChangeTime(syncTimestamp, message.syncTimestamp, 'Sync Timestamp')) {
+        // Split up blocks by type
+        for (; i < orderedBlocks.length; i++) {
+            const block = orderedBlocks[i];
+            if (!this.isValidLastChangeTime(syncTimestamp, block.syncTimestamp, 'Sync Timestamp')) {
                 continue;
             }
-            if (!this.isValidLastChangeTime(message.syncTimestamp, message.data.history.saveTimestamp, 'Sync Timestamp', 'Save Timestamp')) {
+            if (!this.isValidLastChangeTime(block.syncTimestamp, block.data.history.saveTimestamp, 'Sync Timestamp', 'Save Timestamp')) {
                 continue;
             }
-            // Each message may come from different source but some may not
+            // Each block may come from different source but some may not
             // be valid transaction on essential record creation separately
-            // for each message
+            // for each block
             // FIXME: right now this does not start a nested trasaction
             // - make it do so
             await this.transactionManager.transactInternal(async (transaction) => {
-                const messageCheckResult = await this.syncInChecker.checkMessage(message, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context);
-                areAppsLoaded = messageCheckResult.areAppsLoaded;
-                areMessagesValid[i] = messageCheckResult.isValid;
-                if (!messageCheckResult.isValid || !areAppsLoaded) {
+                const blockCheckResult = await this.syncInChecker.checkBlock(block, addedRepositoryMapByGUID, addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context);
+                areAppsLoaded = blockCheckResult.areAppsLoaded;
+                areBlocksValid[i] = blockCheckResult.isValid;
+                if (!blockCheckResult.isValid || !areAppsLoaded) {
                     transaction.rollback(null, context);
                     return;
                 }
-                this.aggregateRepositoryAndMemberInfo(messageCheckResult, repositoryAndMemberInfo);
+                this.aggregateRepositoryAndMemberInfo(blockCheckResult, repositoryAndMemberInfo);
             }, null, context);
             if (!areAppsLoaded) {
                 break;
             }
-            if (!areMessagesValid[i]) {
+            if (!areBlocksValid[i]) {
                 continue;
             }
-            immediateProcessingMessages.push({
-                ...message,
+            immediateProcessingBlocks.push({
+                ...block,
                 data: {
-                    ...message.data,
-                    history: message.data.history
+                    ...block.data,
+                    history: block.data.history
                 }
             });
         }
         if (!areAppsLoaded) {
-            if (!areMessagesValid[i]) {
+            if (!areBlocksValid[i]) {
                 i++;
             }
-            for (; i < orderedMessages.length; i++) {
-                delayedProcessingMessages.push(orderedMessages[i]);
+            for (; i < orderedBlocks.length; i++) {
+                delayedProcessingBlocks.push(orderedBlocks[i]);
             }
         }
-        if (immediateProcessingMessages.length) {
+        if (immediateProcessingBlocks.length) {
             await this.transactionManager.transactInternal(async (transaction, context) => {
                 transaction.isRepositorySync = true;
-                await this.twoStageSyncedInDataProcessor.syncMessages(immediateProcessingMessages, repositoryAndMemberInfo, transaction, context);
+                await this.twoStageSyncedInDataProcessor.syncBlocks(immediateProcessingBlocks, repositoryAndMemberInfo, transaction, context);
             }, null, context);
             if (!context.doNotLoadReferences) {
-                await this.loadReferencedRepositories(immediateProcessingMessages, context);
+                await this.loadReferencedRepositories(immediateProcessingBlocks, context);
             }
         }
-        await this.processDelayedMessages(delayedProcessingMessages, syncTimestamp, context);
+        await this.processDelayedBlocks(delayedProcessingBlocks, syncTimestamp, context);
     }
     aggregateRepositoryAndMemberInfo(dataCheckResult, repositoryAndMemberInfo) {
         for (const loadedRepositoryGUID of dataCheckResult.loadedRepositoryGUIDS) {
@@ -34320,17 +33457,17 @@ let SynchronizationInManager = class SynchronizationInManager {
                 .set(newRepositoryMemberInvitation.invitationPublicSigningKey, newRepositoryMemberInvitation);
         }
     }
-    timeOrderMessages(messageMapByGUID) {
-        const messages = [...messageMapByGUID.values()];
-        messages.sort((message1, message2) => {
-            if (message1.syncTimestamp < message2.syncTimestamp) {
+    timeOrderBlocks(blockMapByGUID) {
+        const blocks = [...blockMapByGUID.values()];
+        blocks.sort((block1, block2) => {
+            if (block1.syncTimestamp < block2.syncTimestamp) {
                 return -1;
             }
-            if (message1.syncTimestamp > message2.syncTimestamp) {
+            if (block1.syncTimestamp > block2.syncTimestamp) {
                 return 1;
             }
-            let history1 = message1.data.history;
-            let history2 = message2.data.history;
+            let history1 = block1.data.history;
+            let history2 = block2.data.history;
             if (history1.saveTimestamp < history2.saveTimestamp) {
                 return -1;
             }
@@ -34339,12 +33476,12 @@ let SynchronizationInManager = class SynchronizationInManager {
             }
             return 0;
         });
-        return messages;
+        return blocks;
     }
     isValidLastChangeTime(syncTimestamp, remoteTimestamp, remoteFieldName, syncFieldName = 'Reception Time:') {
         if (syncTimestamp < remoteTimestamp) {
-            console.error(`Message ${syncFieldName} is less than
-			the ${remoteFieldName} in received message:
+            console.error(`Block ${syncFieldName} is less than
+			the ${remoteFieldName} in received block:
 				${syncFieldName}:               ${syncTimestamp}
 				${remoteFieldName}:           ${remoteTimestamp}
 			`);
@@ -34352,30 +33489,30 @@ let SynchronizationInManager = class SynchronizationInManager {
         }
         return true;
     }
-    async processDelayedMessages(delayedProcessingMessages, syncTimestamp, context) {
-        const delayedProcessingMessagesWithValidApps = [];
-        for (const message of delayedProcessingMessages) {
-            const data = message.data;
+    async processDelayedBlocks(delayedProcessingBlocks, syncTimestamp, context) {
+        const delayedProcessingBlocksWithValidApps = [];
+        for (const block of delayedProcessingBlocks) {
+            const data = block.data;
             // Install new apps
             const appInstalledIfNeeded = await this.syncInApplicationVersionChecker
                 .installAndCheckApplications(data, context);
             if (appInstalledIfNeeded) {
                 this.syncInChecker.checkReferencedApplicationRelations(data);
-                delayedProcessingMessagesWithValidApps.push(message);
+                delayedProcessingBlocksWithValidApps.push(block);
             }
         }
-        const messageMapByRepositoryTransactionHistoryGUID = new Map();
-        for (const message of delayedProcessingMessagesWithValidApps) {
-            messageMapByRepositoryTransactionHistoryGUID
-                .set(message.data.history.GUID, message);
+        const blockMapByGUID = new Map();
+        for (const block of delayedProcessingBlocksWithValidApps) {
+            blockMapByGUID
+                .set(block.GUID, block);
         }
-        await this.receiveMessages(messageMapByRepositoryTransactionHistoryGUID, context, syncTimestamp);
+        await this.receiveBlocks(blockMapByGUID, context, syncTimestamp);
     }
-    async loadReferencedRepositories(messages, context) {
+    async loadReferencedRepositories(blocks, context) {
         const repositoryMapByGUID = new Map();
         const currentlyLoadedRepsitoryGUIDSet = context.currentlyLoadedRepsitoryGUIDSet;
-        for (const message of messages) {
-            for (const repository of message.data.referencedRepositories) {
+        for (const block of blocks) {
+            for (const repository of block.data.referencedRepositories) {
                 if (!repositoryMapByGUID.has(repository.GUID)
                     && (!currentlyLoadedRepsitoryGUIDSet || !currentlyLoadedRepsitoryGUIDSet
                         .has(repository.GUID))) {
@@ -34397,7 +33534,7 @@ __decorate$8([
 ], SynchronizationInManager.prototype, "repositoryLoader", void 0);
 __decorate$8([
     Inject()
-], SynchronizationInManager.prototype, "repositoryTransactionHistoryDao", void 0);
+], SynchronizationInManager.prototype, "repositoryBlockDao", void 0);
 __decorate$8([
     Inject()
 ], SynchronizationInManager.prototype, "syncInApplicationVersionChecker", void 0);
@@ -34443,24 +33580,24 @@ SyncInUtils = __decorate$8([
 
 let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
     /**
-     * Synchronize the data messages coming to Terminal (new data for this TM)
+     * Synchronize the data blocks coming to Terminal (new data for this TM)
      */
-    async syncMessages(messages, repositoryAndMemberInfo, transaction, context) {
-        await this.insertNewRepositoryInfo(messages, repositoryAndMemberInfo, context);
+    async syncBlocks(blocks, repositoryAndMemberInfo, transaction, context) {
+        await this.insertNewRepositoryInfo(blocks, repositoryAndMemberInfo, context);
         await this.markLoadedRepositories(repositoryAndMemberInfo, context);
-        this.aggregateHistoryRecords(messages, transaction);
-        const { actorMapByLid, repositoryTransactionHistoryMapByRepositoryLid, applicationsByApplicationVersion_LocalIdMap } = await this.getDataStructures(messages);
+        this.aggregateHistoryRecords(blocks, transaction);
+        const { actorMapByLid, repositoryTransactionHistoryMapByRepositoryLid, applicationsByApplicationVersion_LocalIdMap } = await this.getDataStructures(blocks);
         for (const newRepositoryMemberAcceptance of repositoryAndMemberInfo.newRepositoryMemberAcceptanceMap.values()) {
             await this.repositoryMemberDao.updatePublicSigningKey(newRepositoryMemberAcceptance.invitationPublicSigningKey, newRepositoryMemberAcceptance.acceptingRepositoryMember.memberPublicSigningKey, context);
         }
         await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryLid, actorMapByLid, applicationsByApplicationVersion_LocalIdMap, context);
     }
-    async insertNewRepositoryInfo(messages, repositoryAndMemberInfo, context) {
+    async insertNewRepositoryInfo(blocks, repositoryAndMemberInfo, context) {
         await this.repositoryDao.insert([...repositoryAndMemberInfo.missingRepositoryMap.values()], context);
         await this.repositoryMemberDao.insert([...repositoryAndMemberInfo.newMemberMap.values()], context);
         await this.repositoryMemberInvitationDao.insert([...repositoryAndMemberInfo.newRepositoryMemberInvitationMap.values()], context);
         await this.repositoryMemberAcceptanceDao.insert([...repositoryAndMemberInfo.newRepositoryMemberAcceptanceMap.values()], context);
-        await this.repositoryReferenceCreator.create(messages, context);
+        await this.repositoryReferenceCreator.create(blocks, context);
     }
     async markLoadedRepositories(repositoryAndMemberInfo, context) {
         const loadedRepositoryGUIDs = [...repositoryAndMemberInfo.loadedRepositoryGUIDSet];
@@ -34468,12 +33605,13 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
             await this.repositoryDao.markAsLoaded(loadedRepositoryGUIDs, context);
         }
     }
-    aggregateHistoryRecords(messages, transaction) {
+    aggregateHistoryRecords(blocks, // IRepositoryBlock[],
+    transaction) {
         const transactionHistory = transaction.transactionHistory;
         transactionHistory.transactionType = TransactionType.REMOTE_SYNC;
-        // split messages by repository and record actor information
-        for (const message of messages) {
-            const repositoryTransactionHistory = message.data.history;
+        // split blocks by repository and record actor information
+        for (const block of blocks) {
+            const repositoryTransactionHistory = block.data.history;
             repositoryTransactionHistory.transactionHistory = transactionHistory;
             this.repositoryTransactionHistoryDuo
                 .setModifiedRepository_LocalIdSet(repositoryTransactionHistory);
@@ -34500,7 +33638,7 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
                                     newValue.newValue = repositoryTransactionHistory.repository._localId;
                                 }
                                 else {
-                                    newValue.newValue = message.data
+                                    newValue.newValue = block.data
                                         .referencedRepositories[newValue.newValue]._localId;
                                 }
                             }
@@ -34517,7 +33655,7 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
                                     oldValue.oldValue = repositoryTransactionHistory.repository._localId;
                                 }
                                 else {
-                                    oldValue.oldValue = message.data
+                                    oldValue.oldValue = block.data
                                         .referencedRepositories[oldValue.oldValue]._localId;
                                 }
                             }
@@ -34528,12 +33666,13 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
             });
         }
     }
-    async getDataStructures(messages) {
+    async getDataStructures(blocks // IRepositoryBlock[]
+    ) {
         const repositoryTransactionHistoryMapByRepositoryLid = new Map();
         const applicationsByApplicationVersion_LocalIdMap = new Map();
         const actorMapByLid = new Map();
-        for (const message of messages) {
-            const data = message.data;
+        for (const block of blocks) {
+            const data = block.histories;
             const repoTransHistories = this.datastructureUtils.ensureChildArray(repositoryTransactionHistoryMapByRepositoryLid, data.history.repository._localId);
             repoTransHistories.push(data.history);
             for (const actor of data.actors) {
@@ -34620,6 +33759,71 @@ TwoStageSyncedInDataProcessor = __decorate$8([
     Injected()
 ], TwoStageSyncedInDataProcessor);
 
+// Unique ID creation requires a high quality random # generator. In the browser we therefore
+// require the crypto API and do not support built-in fallback to lower quality random number
+// generators (like Math.random()).
+let getRandomValues;
+const rnds8 = new Uint8Array(16);
+function rng() {
+  // lazy load so that environments that need to polyfill have a chance to do so
+  if (!getRandomValues) {
+    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
+    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
+
+    if (!getRandomValues) {
+      throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+    }
+  }
+
+  return getRandomValues(rnds8);
+}
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+
+const byteToHex = [];
+
+for (let i = 0; i < 256; ++i) {
+  byteToHex.push((i + 0x100).toString(16).slice(1));
+}
+
+function unsafeStringify(arr, offset = 0) {
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  return (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
+}
+
+const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+var native = {
+  randomUUID
+};
+
+function v4(options, buf, offset) {
+  if (native.randomUUID && !buf && !options) {
+    return native.randomUUID();
+  }
+
+  options = options || {};
+  const rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  if (buf) {
+    offset = offset || 0;
+
+    for (let i = 0; i < 16; ++i) {
+      buf[offset + i] = rnds[i];
+    }
+
+    return buf;
+  }
+
+  return unsafeStringify(rnds);
+}
+
 var IndexedEntityType;
 (function (IndexedEntityType) {
     IndexedEntityType[IndexedEntityType["APPLICATION"] = 0] = "APPLICATION";
@@ -34627,10 +33831,8 @@ var IndexedEntityType;
     IndexedEntityType[IndexedEntityType["TERMINAL"] = 2] = "TERMINAL";
     IndexedEntityType[IndexedEntityType["USER_ACCOUNT"] = 3] = "USER_ACCOUNT";
 })(IndexedEntityType || (IndexedEntityType = {}));
-let SyncOutDataSerializer = class SyncOutDataSerializer {
+let SyncOutDataPreparer = class SyncOutDataPreparer {
     constructor() {
-        // @Inject()
-        // repositoryDao: IRepositoryDao
         this.WITH_ID = {};
         this.USER_ACCOUNT_WITH_ID = {};
         this.TERMINAL_WITH_ID = {};
@@ -34638,114 +33840,116 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
         this.RECORD_HISTORY = {};
         this.WITH_INDEX = {};
     }
-    async serialize(repositoryTransactionHistories, repositoryMapById, context) {
+    async prepare(repositoryTransactionHistories, repositoryMapById, context) {
         let historiesToSend = [];
-        const messages = [];
+        const blocks = [];
         for (let i = 0; i < repositoryTransactionHistories.length; i++) {
             const repositoryTransactionHistory = repositoryTransactionHistories[i];
             if (repositoryTransactionHistory.repositoryTransactionType !== RepositoryTransactionType.LOCAL) {
                 continue;
             }
-            const message = await this.serializeMessage(repositoryTransactionHistory, repositoryMapById, context);
+            const block = await this.prepareBlock(repositoryTransactionHistory, repositoryMapById, context);
             historiesToSend.push(repositoryTransactionHistory);
-            messages.push(message);
+            blocks.push(block);
         }
         return {
             historiesToSend,
-            messages,
+            blocks,
         };
     }
-    getInMessageEntityLookup() {
+    getInBlockEntityLookup() {
         return {
-            inMessageIndexesById: new Map(),
-            lastInMessageIndex: -1
+            inBlockIndexesById: new Map(),
+            lastInBlockIndex: -1
         };
     }
-    async serializeMessage(repositoryTransactionHistory, repositoryMapById, context) {
+    async prepareBlock(repositoryTransactionHistory, repositoryMapById, context) {
         const lookups = {
-            actorInMessageIndexesById: new Map(),
-            applicationLookup: this.getInMessageEntityLookup(),
+            actorInBlockIndexesById: new Map(),
+            applicationLookup: this.getInBlockEntityLookup(),
             referencedApplicationRelationIndexesById: new Map(),
-            applicationVersionInMessageIndexesById: new Map(),
+            applicationVersionInBlockIndexesById: new Map(),
             applicationVersions: [],
-            lastInMessageActorIndex: -1,
-            lastInMessageReferencedApplicationRelationIndex: -1,
-            lastInMessageApplicationVersionIndex: -1,
-            lastInMessageReferencedApplicationRelation: -1,
-            lastInMessageReferencedApplicationVersionIndex: -1,
-            lastInMessageRepositoryIndex: -1,
-            messageRepository: repositoryTransactionHistory.repository,
-            referencedApplicationVersionInMessageIndexesById: new Map(),
+            lastInBlockActorIndex: -1,
+            lastInBlockReferencedApplicationRelationIndex: -1,
+            lastInBlockApplicationVersionIndex: -1,
+            lastInBlockReferencedApplicationRelation: -1,
+            lastInBlockReferencedApplicationVersionIndex: -1,
+            lastInBlockRepositoryIndex: -1,
+            blockRepository: repositoryTransactionHistory.repository,
+            referencedApplicationVersionInBlockIndexesById: new Map(),
             referencedApplicationVersions: [],
-            repositoryInMessageIndexesById: new Map(),
-            repositoryMemberLookup: this.getInMessageEntityLookup(),
-            terminalLookup: this.getInMessageEntityLookup(),
-            userAccountLookup: this.getInMessageEntityLookup()
+            repositoryInBlockIndexesById: new Map(),
+            repositoryMemberLookup: this.getInBlockEntityLookup(),
+            terminalLookup: this.getInBlockEntityLookup(),
+            userAccountLookup: this.getInBlockEntityLookup()
         };
-        const data = {
+        const blockData = {
             actors: [],
-            applicationVersions: [],
             applications: [],
-            history: null,
+            applicationVersions: [],
+            domains: [],
             // Repositories may reference records in other repositories
-            referencedApplicationVersions: [],
             referencedApplicationRelations: [],
+            referencedApplicationVersions: [],
             referencedRepositories: [],
+            terminals: [],
             repositoryMembers: [],
-            userAccounts: [],
-            terminals: []
+            userAccounts: []
         };
-        const message = {
-            data
-        };
-        data.history = this.serializeRepositoryTransactionHistory(repositoryTransactionHistory, message.data, lookups);
+        blockData.history = this.prepareRepositoryTransactionHistory(repositoryTransactionHistory, blockData, lookups);
         // TODO: replace db lookups with TerminalState lookups where possible
-        await this.serializeRepositories(repositoryTransactionHistory, data, lookups, repositoryMapById, context);
-        await this.serializeActorsUserAccountsAndTerminals(data, lookups, context);
-        await this.serializeApplicationsAndVersions(data, lookups.applicationLookup, lookups.applicationVersions, data.applicationVersions);
-        await this.serializeReferencedApplicationProperties(data, lookups, context);
-        await this.serializeApplicationsAndVersions(data, lookups.applicationLookup, lookups.referencedApplicationVersions, data.referencedApplicationVersions);
-        return message;
+        await this.prepareRepositories(repositoryTransactionHistory, blockData, lookups, repositoryMapById, context);
+        await this.prepareActorsUserAccountsAndTerminals(blockData, lookups, context);
+        this.prepareApplicationsAndVersions(blockData, lookups.applicationLookup, lookups.applicationVersions, blockData.applicationVersions);
+        await this.prepareReferencedApplicationProperties(blockData, lookups, context);
+        this.prepareApplicationsAndVersions(blockData, lookups.applicationLookup, lookups.referencedApplicationVersions, blockData.referencedApplicationVersions);
+        return {
+            data: blockData,
+            GUID: v4(),
+            history: [repositoryTransactionHistory],
+            repository: repositoryTransactionHistory.repository
+        };
     }
-    async serializeActorsUserAccountsAndTerminals(data, lookups, context) {
+    async prepareActorsUserAccountsAndTerminals(data, lookups, context) {
         let actorLidsToFindBy = [];
-        for (let actorLid of lookups.actorInMessageIndexesById.keys()) {
+        for (let actorLid of lookups.actorInBlockIndexesById.keys()) {
             actorLidsToFindBy.push(actorLid);
         }
         const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(actorLidsToFindBy, context);
-        await this.serializeUserAccounts(actors, data, lookups.userAccountLookup, context);
-        this.serializeActorTerminals(actors, data, lookups.terminalLookup, lookups.userAccountLookup);
+        await this.prepareUserAccounts(actors, data, lookups.userAccountLookup, context);
+        this.prepareActorTerminals(actors, data, lookups.terminalLookup, lookups.userAccountLookup);
         for (const actor of actors) {
-            const applicationInMessageIndex = this.serializeApplication(actor.application, lookups.applicationLookup, data);
-            const actorInMessageIndex = lookups.actorInMessageIndexesById.get(actor._localId);
-            data.actors[actorInMessageIndex] = {
+            const applicationInBlockIndex = this.prepareApplication(actor.application, lookups.applicationLookup, data);
+            const actorInBlockIndex = lookups.actorInBlockIndexesById.get(actor._localId);
+            data.actors[actorInBlockIndex] = {
                 ...this.WITH_ID,
-                application: applicationInMessageIndex,
-                terminal: lookups.terminalLookup.inMessageIndexesById.get(actor.terminal.GUID),
-                userAccount: lookups.userAccountLookup.inMessageIndexesById.get(actor.userAccount._localId),
+                application: applicationInBlockIndex,
+                terminal: lookups.terminalLookup.inBlockIndexesById.get(actor.terminal.GUID),
+                userAccount: lookups.userAccountLookup.inBlockIndexesById.get(actor.userAccount._localId),
                 GUID: actor.GUID
             };
         }
     }
-    serializeActorTerminals(actors, data, inMessageTerminalLookup, inMessageUserAccountLookup) {
+    prepareActorTerminals(actors, data, inBlockTerminalLookup, inBlockUserAccountLookup) {
         for (const actor of actors) {
-            this.addTerminalToMessage(actor.terminal, data, inMessageTerminalLookup, inMessageUserAccountLookup);
+            this.addTerminalToBlock(actor.terminal, data, inBlockTerminalLookup, inBlockUserAccountLookup);
         }
     }
-    async serializeUserAccounts(actors, data, inMessageUserAccountLookup, context) {
+    async prepareUserAccounts(actors, data, inBlockUserAccountLookup, context) {
         for (const actor of actors) {
-            this.registerUserAccountInMessage(actor.userAccount, inMessageUserAccountLookup);
-            this.registerUserAccountInMessage(actor.terminal.owner, inMessageUserAccountLookup);
+            this.registerUserAccountInBlock(actor.userAccount, inBlockUserAccountLookup);
+            this.registerUserAccountInBlock(actor.terminal.owner, inBlockUserAccountLookup);
         }
-        const userAccounts = await this.userAccountDao.findByLocalIds([...inMessageUserAccountLookup.inMessageIndexesById.keys()], context);
+        const userAccounts = await this.userAccountDao.findByLocalIds([...inBlockUserAccountLookup.inBlockIndexesById.keys()], context);
         for (let userAccount of userAccounts) {
-            const userAccountInMessageIndex = inMessageUserAccountLookup
-                .inMessageIndexesById.get(userAccount._localId);
-            this.addUserAccountToMessage(userAccount, userAccountInMessageIndex, data);
+            const userAccountInBlockIndex = inBlockUserAccountLookup
+                .inBlockIndexesById.get(userAccount._localId);
+            this.addUserAccountToBlock(userAccount, userAccountInBlockIndex, data);
         }
     }
-    addRepositoryMemberToMessage(repositoryMember, data, lookups, addFullRecord) {
-        const { entityAlreadyAdded, inMessageIndex } = this.getEntityInMessageIndex(repositoryMember, IndexedEntityType.REPOSITORY_MEMBER, lookups.repositoryMemberLookup);
+    addRepositoryMemberToBlock(repositoryMember, data, lookups, addFullRecord) {
+        const { entityAlreadyAdded, inBlockIndex } = this.getEntityInBlockIndex(repositoryMember, IndexedEntityType.REPOSITORY_MEMBER, lookups.repositoryMemberLookup);
         if (!entityAlreadyAdded) {
             let newRepositoryMember = {
                 ...this.WITH_ID,
@@ -34758,14 +33962,14 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
                     isAdministrator: repositoryMember.isAdministrator,
                     canWrite: repositoryMember.canWrite,
                     status: repositoryMember.status,
-                    userAccount: this.registerUserAccountInMessage(repositoryMember.userAccount, lookups.userAccountLookup)
+                    userAccount: this.registerUserAccountInBlock(repositoryMember.userAccount, lookups.userAccountLookup)
                 };
             }
-            data.repositoryMembers[inMessageIndex] = newRepositoryMember;
+            data.repositoryMembers[inBlockIndex] = newRepositoryMember;
         }
-        return inMessageIndex;
+        return inBlockIndex;
     }
-    getEntityInMessageIndex(entity, indexedEntityType, inMessageEntityLookup) {
+    getEntityInBlockIndex(entity, indexedEntityType, inBlockEntityLookup) {
         let id;
         switch (indexedEntityType) {
             case IndexedEntityType.APPLICATION:
@@ -34786,49 +33990,49 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
                 }
                 break;
         }
-        let inMessageIndex = inMessageEntityLookup
-            .inMessageIndexesById.get(id);
-        const entityAlreadyAdded = inMessageIndex !== undefined;
-        if (inMessageIndex === undefined) {
-            inMessageIndex = ++inMessageEntityLookup.lastInMessageIndex;
-            inMessageEntityLookup.inMessageIndexesById
-                .set(id, inMessageIndex);
+        let inBlockIndex = inBlockEntityLookup
+            .inBlockIndexesById.get(id);
+        const entityAlreadyAdded = inBlockIndex !== undefined;
+        if (inBlockIndex === undefined) {
+            inBlockIndex = ++inBlockEntityLookup.lastInBlockIndex;
+            inBlockEntityLookup.inBlockIndexesById
+                .set(id, inBlockIndex);
         }
         return {
             entityAlreadyAdded,
-            inMessageIndex
+            inBlockIndex
         };
     }
-    addUserAccountToMessage(userAccount, inMessageIndex, data) {
-        let serializedUserAccount = {
+    addUserAccountToBlock(userAccount, inBlockIndex, data) {
+        let preparedUserAccount = {
             ...this.USER_ACCOUNT_WITH_ID,
             accountPublicSigningKey: userAccount.accountPublicSigningKey,
             username: userAccount.username
         };
-        data.userAccounts[inMessageIndex] = serializedUserAccount;
+        data.userAccounts[inBlockIndex] = preparedUserAccount;
     }
-    registerUserAccountInMessage(userAccount, inMessageUserAccountLookup) {
+    registerUserAccountInBlock(userAccount, inBlockUserAccountLookup) {
         if (!userAccount) {
             return -1;
         }
-        const indexResults = this.getEntityInMessageIndex(userAccount, IndexedEntityType.USER_ACCOUNT, inMessageUserAccountLookup);
-        return indexResults.inMessageIndex;
+        const indexResults = this.getEntityInBlockIndex(userAccount, IndexedEntityType.USER_ACCOUNT, inBlockUserAccountLookup);
+        return indexResults.inBlockIndex;
     }
-    addTerminalToMessage(terminal, data, inMessageTerminalLookup, inMessageUserAccountLookup) {
-        const { entityAlreadyAdded, inMessageIndex } = this.getEntityInMessageIndex(terminal, IndexedEntityType.TERMINAL, inMessageTerminalLookup);
+    addTerminalToBlock(terminal, data, inBlockTerminalLookup, inBlockUserAccountLookup) {
+        const { entityAlreadyAdded, inBlockIndex } = this.getEntityInBlockIndex(terminal, IndexedEntityType.TERMINAL, inBlockTerminalLookup);
         if (!entityAlreadyAdded) {
-            data.terminals[inMessageIndex] = {
+            data.terminals[inBlockIndex] = {
                 ...this.TERMINAL_WITH_ID,
                 GUID: terminal.GUID,
-                owner: inMessageUserAccountLookup.inMessageIndexesById.get(terminal.owner._localId)
+                owner: inBlockUserAccountLookup.inBlockIndexesById.get(terminal.owner._localId)
             };
         }
-        return inMessageIndex;
+        return inBlockIndex;
     }
-    async serializeRepositories(repositoryTransactionHistory, data, lookups, repositoryMapById, context) {
+    async prepareRepositories(repositoryTransactionHistory, data, lookups, repositoryMapById, context) {
         let repositoryLidsToFindBy = [];
         let foundRepositories = [];
-        for (let repositoryLid of lookups.repositoryInMessageIndexesById.keys()) {
+        for (let repositoryLid of lookups.repositoryInBlockIndexesById.keys()) {
             const foundRepository = repositoryMapById.get(repositoryLid);
             if (foundRepository) {
                 foundRepositories.push(foundRepository);
@@ -34853,21 +34057,21 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             ...foundRepositories
         ];
         for (const repository of foundRepositories) {
-            const userAccountInMessageIndex = this.registerUserAccountInMessage(repository.owner, lookups.userAccountLookup);
-            if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
-                const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository._localId);
-                data.referencedRepositories[repositoryInMessageIndex] =
-                    this.serializeRepository(repository, userAccountInMessageIndex);
+            const userAccountInBlockIndex = this.registerUserAccountInBlock(repository.owner, lookups.userAccountLookup);
+            if (lookups.repositoryInBlockIndexesById.has(repository._localId)) {
+                const repositoryInBlockIndex = lookups.repositoryInBlockIndexesById.get(repository._localId);
+                data.referencedRepositories[repositoryInBlockIndex] =
+                    this.prepareRepository(repository, userAccountInBlockIndex);
             }
             else {
                 if (typeof data.history.repository !== 'string') {
-                    data.history.repository.owner = userAccountInMessageIndex;
+                    data.history.repository.owner = userAccountInBlockIndex;
                     data.history.repository._localId = repository._localId;
                 }
             }
         }
     }
-    async serializeReferencedApplicationProperties(data, lookups, context) {
+    async prepareReferencedApplicationProperties(data, lookups, context) {
         let applicationRelationIdsToFindBy = [];
         for (let applicationRelationLocalId of lookups.referencedApplicationRelationIndexesById.keys()) {
             applicationRelationIdsToFindBy.push(applicationRelationLocalId);
@@ -34879,19 +34083,19 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             .findAllByLocalIdsWithApplications(applicationRelationIdsToFindBy, context);
         for (const applicationRelation of applicationRelations) {
             const referencedApplicationVersion = applicationRelation.entity.applicationVersion;
-            let referencedApplicationVersionInMessageIndex;
-            if (lookups.referencedApplicationVersionInMessageIndexesById.has(referencedApplicationVersion._localId)) {
-                referencedApplicationVersionInMessageIndex = lookups.referencedApplicationVersionInMessageIndexesById.get(referencedApplicationVersion._localId);
+            let referencedApplicationVersionInBlockIndex;
+            if (lookups.referencedApplicationVersionInBlockIndexesById.has(referencedApplicationVersion._localId)) {
+                referencedApplicationVersionInBlockIndex = lookups.referencedApplicationVersionInBlockIndexesById.get(referencedApplicationVersion._localId);
             }
             else {
-                referencedApplicationVersionInMessageIndex = ++lookups.lastInMessageReferencedApplicationVersionIndex;
-                lookups.referencedApplicationVersionInMessageIndexesById.set(referencedApplicationVersion._localId, referencedApplicationVersionInMessageIndex);
+                referencedApplicationVersionInBlockIndex = ++lookups.lastInBlockReferencedApplicationVersionIndex;
+                lookups.referencedApplicationVersionInBlockIndexesById.set(referencedApplicationVersion._localId, referencedApplicationVersionInBlockIndex);
             }
-            lookups.referencedApplicationVersions[referencedApplicationVersionInMessageIndex] = referencedApplicationVersion;
+            lookups.referencedApplicationVersions[referencedApplicationVersionInBlockIndex] = referencedApplicationVersion;
             const entity = {
                 ...this.WITH_ID,
                 index: applicationRelation.entity.index,
-                applicationVersion: referencedApplicationVersionInMessageIndex
+                applicationVersion: referencedApplicationVersionInBlockIndex
             };
             const dbRelation = {
                 ...this.WITH_ID,
@@ -34901,21 +34105,21 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             data.referencedApplicationRelations.push(dbRelation);
         }
     }
-    serializeApplicationsAndVersions(data, applicationLookup, lookupVersions, finalApplicationVersions) {
+    prepareApplicationsAndVersions(data, applicationLookup, lookupVersions, finalApplicationVersions) {
         for (let i = 0; i < lookupVersions.length; i++) {
             const applicationVersion = lookupVersions[i];
-            const applicationInMessageIndex = this.serializeApplication(applicationVersion.application, applicationLookup, data);
+            const applicationInBlockIndex = this.prepareApplication(applicationVersion.application, applicationLookup, data);
             finalApplicationVersions[i] = {
                 ...this.WITH_ID,
-                application: applicationInMessageIndex,
+                application: applicationInBlockIndex,
                 integerVersion: applicationVersion.integerVersion
             };
         }
     }
-    serializeApplication(application, applicationLookup, data) {
-        const { entityAlreadyAdded, inMessageIndex } = this.getEntityInMessageIndex(application, IndexedEntityType.APPLICATION, applicationLookup);
+    prepareApplication(application, applicationLookup, data) {
+        const { entityAlreadyAdded, inBlockIndex } = this.getEntityInBlockIndex(application, IndexedEntityType.APPLICATION, applicationLookup);
         if (!entityAlreadyAdded) {
-            data.applications[inMessageIndex] = {
+            data.applications[inBlockIndex] = {
                 ...this.WITH_INDEX,
                 domain: {
                     ...this.WITH_ID,
@@ -34924,9 +34128,9 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
                 name: application.name
             };
         }
-        return inMessageIndex;
+        return inBlockIndex;
     }
-    serializeRepositoryTransactionHistory(repositoryTransactionHistory, data, lookups) {
+    prepareRepositoryTransactionHistory(repositoryTransactionHistory, data, lookups) {
         repositoryTransactionHistory.operationHistory.sort((operationHistory1, operationHistory2) => {
             if (operationHistory1.orderNumber < operationHistory2.orderNumber) {
                 return -1;
@@ -34936,35 +34140,34 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             }
             return 0;
         });
-        const serializedOperationHistory = [];
+        const preparedOperationHistory = [];
         for (const operationHistory of repositoryTransactionHistory.operationHistory) {
-            serializedOperationHistory.push(this.serializeOperationHistory(operationHistory, data, lookups));
+            preparedOperationHistory.push(this.prepareOperationHistory(operationHistory, data, lookups));
         }
-        this.serializeNewRepositoryMembers(repositoryTransactionHistory, data, lookups);
-        const member = this.addRepositoryMemberToMessage(repositoryTransactionHistory.member, data, lookups, repositoryTransactionHistory.isRepositoryCreation);
-        const serializedRepositoryTransactionHistory = {
+        this.prepareNewRepositoryMembers(repositoryTransactionHistory, data, lookups);
+        const member = this.addRepositoryMemberToBlock(repositoryTransactionHistory.member, data, lookups, repositoryTransactionHistory.isRepositoryCreation);
+        const preparedRepositoryTransactionHistory = {
             ...this.WITH_ID,
-            GUID: repositoryTransactionHistory.GUID,
             isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
             member,
-            repository: this.serializeHistoryRepository(repositoryTransactionHistory, lookups.userAccountLookup),
-            operationHistory: serializedOperationHistory,
+            repository: this.prepareHistoryRepository(repositoryTransactionHistory, lookups.userAccountLookup),
+            operationHistory: preparedOperationHistory,
             saveTimestamp: repositoryTransactionHistory.saveTimestamp,
-            newRepositoryMemberAcceptances: this.serializeRepositoryMemberAcceptances(repositoryTransactionHistory, data, lookups),
-            newRepositoryMemberInvitations: this.serializeRepositoryMemberInvitations(repositoryTransactionHistory, data, lookups),
+            newRepositoryMemberAcceptances: this.prepareRepositoryMemberAcceptances(repositoryTransactionHistory, data, lookups),
+            newRepositoryMemberInvitations: this.prepareRepositoryMemberInvitations(repositoryTransactionHistory, data, lookups),
             transactionHistory: null,
             repositoryTransactionType: RepositoryTransactionType.REMOTE
         };
-        // Not needed in serialized version of object that is shared
-        delete serializedRepositoryTransactionHistory.transactionHistory;
-        delete serializedRepositoryTransactionHistory.repositoryTransactionType;
-        return serializedRepositoryTransactionHistory;
+        // Not needed in prepared version of object that is shared
+        delete preparedRepositoryTransactionHistory.transactionHistory;
+        delete preparedRepositoryTransactionHistory.repositoryTransactionType;
+        return preparedRepositoryTransactionHistory;
     }
-    serializeHistoryRepository(repositoryTransactionHistory, inMessageUserAccountLookup) {
+    prepareHistoryRepository(repositoryTransactionHistory, inBlockUserAccountLookup) {
         if (repositoryTransactionHistory.isRepositoryCreation) {
             const repository = repositoryTransactionHistory.repository;
-            let userAccountInMessageIndex = this.registerUserAccountInMessage(repository.owner, inMessageUserAccountLookup);
-            return this.serializeRepository(repository, userAccountInMessageIndex);
+            let userAccountInBlockIndex = this.registerUserAccountInBlock(repository.owner, inBlockUserAccountLookup);
+            return this.prepareRepository(repository, userAccountInBlockIndex);
         }
         else {
             // When this repositoryTransactionHistory processed at sync-in 
@@ -34974,43 +34177,43 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             return repositoryTransactionHistory.repository.GUID;
         }
     }
-    serializeNewRepositoryMembers(repositoryTransactionHistory, data, lookups) {
+    prepareNewRepositoryMembers(repositoryTransactionHistory, data, lookups) {
         for (const newRepositoryMember of repositoryTransactionHistory
             .newRepositoryMembers) {
-            this.addRepositoryMemberToMessage(newRepositoryMember, data, lookups, true);
+            this.addRepositoryMemberToBlock(newRepositoryMember, data, lookups, true);
         }
     }
-    serializeRepositoryMemberAcceptances(repositoryTransactionHistory, data, lookups) {
-        const serializedRepositoryMemberAcceptances = [];
+    prepareRepositoryMemberAcceptances(repositoryTransactionHistory, data, lookups) {
+        const preparedRepositoryMemberAcceptances = [];
         for (const newRepositoryMemberAcceptance of repositoryTransactionHistory
             .newRepositoryMemberAcceptances) {
-            serializedRepositoryMemberAcceptances.push({
+            preparedRepositoryMemberAcceptances.push({
                 ...this.WITH_ID,
                 createdAt: newRepositoryMemberAcceptance.createdAt,
-                acceptingRepositoryMember: this.addRepositoryMemberToMessage(newRepositoryMemberAcceptance.acceptingRepositoryMember, data, lookups, false),
+                acceptingRepositoryMember: this.addRepositoryMemberToBlock(newRepositoryMemberAcceptance.acceptingRepositoryMember, data, lookups, false),
                 invitationPublicSigningKey: newRepositoryMemberAcceptance.invitationPublicSigningKey
             });
         }
-        return serializedRepositoryMemberAcceptances;
+        return preparedRepositoryMemberAcceptances;
     }
-    serializeRepositoryMemberInvitations(repositoryTransactionHistory, data, lookups) {
-        const serializedRepositoryMemberInvitations = [];
+    prepareRepositoryMemberInvitations(repositoryTransactionHistory, data, lookups) {
+        const preparedRepositoryMemberInvitations = [];
         for (const newRepositoryMemberInvitation of repositoryTransactionHistory
             .newRepositoryMemberInvitations) {
-            serializedRepositoryMemberInvitations.push({
+            preparedRepositoryMemberInvitations.push({
                 ...this.WITH_ID,
                 createdAt: newRepositoryMemberInvitation.createdAt,
                 invitationPublicSigningKey: newRepositoryMemberInvitation.invitationPublicSigningKey,
-                invitedRepositoryMember: this.addRepositoryMemberToMessage(newRepositoryMemberInvitation.invitedRepositoryMember, data, lookups, true)
+                invitedRepositoryMember: this.addRepositoryMemberToBlock(newRepositoryMemberInvitation.invitedRepositoryMember, data, lookups, true)
             });
         }
-        return serializedRepositoryMemberInvitations;
+        return preparedRepositoryMemberInvitations;
     }
-    serializeOperationHistory(operationHistory, data, lookups) {
+    prepareOperationHistory(operationHistory, data, lookups) {
         const dbEntity = operationHistory.entity;
-        const serializedRecordHistory = [];
+        const preparedRecordHistory = [];
         for (const recordHistory of operationHistory.recordHistory) {
-            serializedRecordHistory.push(this.serializeRecordHistory(recordHistory, dbEntity, data, lookups));
+            preparedRecordHistory.push(this.prepareRecordHistory(recordHistory, dbEntity, data, lookups));
         }
         const historyEntity = operationHistory.entity;
         // Should be populated - coming from TerminalStore
@@ -35028,35 +34231,35 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
         // if (typeof applicationVersion._localId !== 'number') {
         // 	throw new Error(`OperationHistory.entity.applicationVersion._localId must be present`)
         // }
-        let applicationVersionInMessageIndex;
-        if (lookups.applicationVersionInMessageIndexesById.has(applicationVersion._localId)) {
-            applicationVersionInMessageIndex = lookups.applicationVersionInMessageIndexesById.get(applicationVersion._localId);
+        let applicationVersionInBlockIndex;
+        if (lookups.applicationVersionInBlockIndexesById.has(applicationVersion._localId)) {
+            applicationVersionInBlockIndex = lookups.applicationVersionInBlockIndexesById.get(applicationVersion._localId);
         }
         else {
-            applicationVersionInMessageIndex = ++lookups.lastInMessageApplicationVersionIndex;
-            lookups.applicationVersionInMessageIndexesById.set(applicationVersion._localId, applicationVersionInMessageIndex);
+            applicationVersionInBlockIndex = ++lookups.lastInBlockApplicationVersionIndex;
+            lookups.applicationVersionInBlockIndexesById.set(applicationVersion._localId, applicationVersionInBlockIndex);
         }
-        lookups.applicationVersions[applicationVersionInMessageIndex] = applicationVersion;
+        lookups.applicationVersions[applicationVersionInBlockIndex] = applicationVersion;
         const entity = {
             ...this.WITH_ID,
-            applicationVersion: applicationVersionInMessageIndex,
+            applicationVersion: applicationVersionInBlockIndex,
             index: operationHistory.entity.index
         };
-        const serializedOperationHistory = {
+        const preparedOperationHistory = {
             ...this.WITH_ID,
-            actor: this.getActorInMessageIndex(operationHistory.actor, lookups),
+            actor: this.getActorInBlockIndex(operationHistory.actor, lookups),
             changeType: operationHistory.changeType,
             entity,
-            recordHistory: serializedRecordHistory,
+            recordHistory: preparedRecordHistory,
             orderNumber: null,
             repositoryTransactionHistory: null
         };
-        // Not needed in serialized version of object that is shared
-        delete serializedOperationHistory.orderNumber;
-        delete serializedOperationHistory.repositoryTransactionHistory;
-        return serializedOperationHistory;
+        // Not needed in prepared version of object that is shared
+        delete preparedOperationHistory.orderNumber;
+        delete preparedOperationHistory.repositoryTransactionHistory;
+        return preparedOperationHistory;
     }
-    serializeRecordHistory(recordHistory, dbEntity, data, lookups) {
+    prepareRecordHistory(recordHistory, dbEntity, data, lookups) {
         const dbColumMapByIndex = new Map();
         for (const dbColumn of dbEntity.columns) {
             dbColumMapByIndex.set(dbColumn.index, dbColumn);
@@ -35066,13 +34269,13 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             const dbColumn = dbColumMapByIndex.get(newValue.columnIndex);
             if (dbColumn.name !== this.dictionary.SystemWideOperationId
                 .columns.SYSTEM_WIDE_OPERATION_LID) {
-                newValues.push(this.serializeNewValue(newValue, dbColumn, data, lookups));
+                newValues.push(this.prepareNewValue(newValue, dbColumn, data, lookups));
             }
         }
         const oldValues = [];
         for (const oldValue of recordHistory.oldValues) {
             const dbColumn = dbColumMapByIndex.get(oldValue.columnIndex);
-            oldValues.push(this.serializeOldValue(oldValue, dbColumn, data, lookups));
+            oldValues.push(this.prepareOldValue(oldValue, dbColumn, data, lookups));
         }
         const actor = recordHistory.actor;
         // Actor may be null if it's the same actor as for RepositoryTransactionHistory
@@ -35083,7 +34286,7 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             ...this.RECORD_HISTORY,
         };
         if (actor._localId !== recordHistory.operationHistory.actor._localId) {
-            baseObject.actor = this.getActorInMessageIndex(actor, lookups);
+            baseObject.actor = this.getActorInBlockIndex(actor, lookups);
         }
         if (newValues.length) {
             baseObject.newValues = newValues;
@@ -35096,58 +34299,58 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             _actorRecordId: recordHistory._actorRecordId
         };
     }
-    getActorInMessageIndex(actor, lookups) {
+    getActorInBlockIndex(actor, lookups) {
         if (!actor) {
             return null;
         }
-        return this.getActorInMessageIndexById(actor._localId, lookups);
+        return this.getActorInBlockIndexById(actor._localId, lookups);
     }
-    getActorInMessageIndexById(actorLid, lookups) {
-        let actorInMessageIndex;
-        if (lookups.actorInMessageIndexesById.has(actorLid)) {
-            actorInMessageIndex = lookups.actorInMessageIndexesById.get(actorLid);
+    getActorInBlockIndexById(actorLid, lookups) {
+        let actorInBlockIndex;
+        if (lookups.actorInBlockIndexesById.has(actorLid)) {
+            actorInBlockIndex = lookups.actorInBlockIndexesById.get(actorLid);
         }
         else {
-            actorInMessageIndex = ++lookups.lastInMessageActorIndex;
-            lookups.actorInMessageIndexesById.set(actorLid, actorInMessageIndex);
+            actorInBlockIndex = ++lookups.lastInBlockActorIndex;
+            lookups.actorInBlockIndexesById.set(actorLid, actorInBlockIndex);
         }
-        return actorInMessageIndex;
+        return actorInBlockIndex;
     }
-    serializeNewValue(newValue, dbColumn, data, lookups) {
-        return this.serializeValue(newValue, dbColumn, data, lookups, 'newValue');
+    prepareNewValue(newValue, dbColumn, data, lookups) {
+        return this.prepareValue(newValue, dbColumn, data, lookups, 'newValue');
     }
-    serializeOldValue(oldValue, dbColumn, data, lookups) {
-        return this.serializeValue(oldValue, dbColumn, data, lookups, 'oldValue');
+    prepareOldValue(oldValue, dbColumn, data, lookups) {
+        return this.prepareValue(oldValue, dbColumn, data, lookups, 'oldValue');
     }
-    serializeValue(valueRecord, dbColumn, data, lookups, valueFieldName) {
+    prepareValue(valueRecord, dbColumn, data, lookups, valueFieldName) {
         let value = valueRecord[valueFieldName];
         let serailizedValue = value;
         if (this.applicationUtils.isManyRelationColumn(dbColumn)) {
             const oneSideDbEntity = this.applicationUtils
                 .getOneSideEntityOfManyRelationColumn(dbColumn);
             if (this.dictionary.isActor(oneSideDbEntity)) {
-                serailizedValue = this.getActorInMessageIndexById(value, lookups);
+                serailizedValue = this.getActorInBlockIndexById(value, lookups);
             }
             else if (this.dictionary.isRepository(oneSideDbEntity)) {
-                serailizedValue = this.getSerializedRepositoryId(value, lookups);
+                serailizedValue = this.getpreparedRepositoryId(value, lookups);
             }
             else if (this.dictionary.isTerminal(oneSideDbEntity)) {
-                const terminalInMessageIndex = this.addTerminalToMessage(value, data, lookups.terminalLookup, lookups.userAccountLookup);
-                serailizedValue = terminalInMessageIndex;
+                const terminalInBlockIndex = this.addTerminalToBlock(value, data, lookups.terminalLookup, lookups.userAccountLookup);
+                serailizedValue = terminalInBlockIndex;
             }
             else if (this.dictionary.isUserAccount(oneSideDbEntity)) {
-                const userAccountInMessageIndex = this.registerUserAccountInMessage(value, lookups.userAccountLookup);
-                serailizedValue = userAccountInMessageIndex;
+                const userAccountInBlockIndex = this.registerUserAccountInBlock(value, lookups.userAccountLookup);
+                serailizedValue = userAccountInBlockIndex;
             }
             else if (this.dictionary.isApplicationRelation(oneSideDbEntity)) {
-                serailizedValue = this.getSerializedReferencedApplicationRelationId(value, lookups);
+                serailizedValue = this.getpreparedReferencedApplicationRelationId(value, lookups);
             }
         }
         if (this.dictionary.isActorRelationColumn(dbColumn)) {
-            serailizedValue = this.getActorInMessageIndexById(value, lookups);
+            serailizedValue = this.getActorInBlockIndexById(value, lookups);
         }
         if (this.dictionary.isRepositoryRelationColumn(dbColumn)) {
-            serailizedValue = this.getSerializedRepositoryId(value, lookups);
+            serailizedValue = this.getpreparedRepositoryId(value, lookups);
         }
         return {
             ...this.WITH_RECORD_HISTORY,
@@ -35155,30 +34358,30 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             [valueFieldName]: serailizedValue
         };
     }
-    getSerializedRepositoryId(repositoryLocalId, lookups) {
-        if (repositoryLocalId === lookups.messageRepository._localId) {
+    getpreparedRepositoryId(repositoryLocalId, lookups) {
+        if (repositoryLocalId === lookups.blockRepository._localId) {
             return -1;
         }
-        let serailizedValue = lookups.repositoryInMessageIndexesById.get(repositoryLocalId);
+        let serailizedValue = lookups.repositoryInBlockIndexesById.get(repositoryLocalId);
         if (serailizedValue === undefined) {
-            lookups.lastInMessageRepositoryIndex++;
-            serailizedValue = lookups.lastInMessageRepositoryIndex;
-            lookups.repositoryInMessageIndexesById.set(repositoryLocalId, serailizedValue);
+            lookups.lastInBlockRepositoryIndex++;
+            serailizedValue = lookups.lastInBlockRepositoryIndex;
+            lookups.repositoryInBlockIndexesById.set(repositoryLocalId, serailizedValue);
         }
         return serailizedValue;
     }
-    getSerializedReferencedApplicationRelationId(applicationRelationLocalId, lookups) {
+    getpreparedReferencedApplicationRelationId(applicationRelationLocalId, lookups) {
         let serailizedValue = lookups.referencedApplicationRelationIndexesById
             .get(applicationRelationLocalId);
         if (serailizedValue === undefined) {
-            lookups.lastInMessageReferencedApplicationRelationIndex++;
-            serailizedValue = lookups.lastInMessageReferencedApplicationRelationIndex;
+            lookups.lastInBlockReferencedApplicationRelationIndex++;
+            serailizedValue = lookups.lastInBlockReferencedApplicationRelationIndex;
             lookups.referencedApplicationRelationIndexesById
                 .set(applicationRelationLocalId, serailizedValue);
         }
         return serailizedValue;
     }
-    serializeRepository(repository, owner) {
+    prepareRepository(repository, owner) {
         return {
             _localId: repository._localId,
             ageSuitability: repository.ageSuitability,
@@ -35197,69 +34400,62 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
 };
 __decorate$8([
     Inject()
-], SyncOutDataSerializer.prototype, "actorDao", void 0);
+], SyncOutDataPreparer.prototype, "actorDao", void 0);
 __decorate$8([
     Inject()
-], SyncOutDataSerializer.prototype, "applicationUtils", void 0);
+], SyncOutDataPreparer.prototype, "applicationUtils", void 0);
 __decorate$8([
     Inject()
-], SyncOutDataSerializer.prototype, "applicationNameUtils", void 0);
+], SyncOutDataPreparer.prototype, "applicationNameUtils", void 0);
 __decorate$8([
     Inject()
-], SyncOutDataSerializer.prototype, "dbRelationDao", void 0);
+], SyncOutDataPreparer.prototype, "dbRelationDao", void 0);
 __decorate$8([
     Inject()
-], SyncOutDataSerializer.prototype, "dictionary", void 0);
+], SyncOutDataPreparer.prototype, "dictionary", void 0);
 __decorate$8([
     Inject()
-], SyncOutDataSerializer.prototype, "repositoryDao", void 0);
+], SyncOutDataPreparer.prototype, "repositoryDao", void 0);
 __decorate$8([
     Inject()
-], SyncOutDataSerializer.prototype, "userAccountDao", void 0);
-SyncOutDataSerializer = __decorate$8([
+], SyncOutDataPreparer.prototype, "userAccountDao", void 0);
+SyncOutDataPreparer = __decorate$8([
     Injected()
-], SyncOutDataSerializer);
+], SyncOutDataPreparer);
 
 let SynchronizationOutManager = class SynchronizationOutManager {
-    async getSynchronizationMessages(repositoryTransactionHistories, repositoryMapByLid, context) {
-        const { historiesToSend, messages } = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories, repositoryMapByLid, context);
-        // await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
-        await this.messageSigningManager.signMessages(historiesToSend, messages, context);
-        await this.repositoryReferenceCreator.create(messages, context);
-        for (const message of messages) {
-            for (const referencedRepository of message.data.referencedRepositories) {
+    async getSynchronizationBlocks(repositoryTransactionHistories, repositoryMapByLid, context) {
+        const { historiesToSend, blocks } = await this.syncOutDataPreparer.prepare(repositoryTransactionHistories, repositoryMapByLid, context);
+        //  await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, blocks)
+        await this.blockSigningManager.signBlocks(historiesToSend, blocks, context);
+        await this.repositoryReferenceCreator.create(blocks, context);
+        for (const block of blocks) {
+            for (const referencedRepository of block.data.referencedRepositories) {
                 delete referencedRepository._localId;
             }
-            delete message.data.history.repository._localId;
+            delete block.data.history.repository._localId;
         }
-        return {
-            historiesToSend,
-            messages
-        };
+        return blocks;
     }
-    async sendMessages(historiesToSend, messages, context) {
-        const groupMessageMap = this.groupMessagesByRepository(messages, historiesToSend);
-        for (const [repositoryGUID, messagesForRepository] of groupMessageMap) {
+    async sendBlocks(blocks, context) {
+        const blockGroupMap = this.groupBlocksByRepository(blocks);
+        for (const [repositoryGUID, blocksForRepository] of blockGroupMap) {
             const synchronizationAdapter = await this.synchronizationAdapterLoader.load(repositoryGUID);
-            await synchronizationAdapter.sendTransactions(repositoryGUID, messagesForRepository);
+            await synchronizationAdapter.sendBlocks(repositoryGUID, blocksForRepository);
         }
-        await this.updateRepositoryTransactionHistories(messages, historiesToSend, context);
+        await this.updateRepositoryBlocks(blocks, context);
     }
-    groupMessagesByRepository(messages, historiesToSend) {
-        const groupMessageMap = new Map();
-        for (let i = 0; i < messages.length; i++) {
-            const repository = historiesToSend[i].repository;
-            this.datastructureUtils.ensureChildArray(groupMessageMap, repository.GUID).push(messages[i]);
+    groupBlocksByRepository(blocks) {
+        const blockGroupMap = new Map();
+        for (const block of blocks) {
+            this.datastructureUtils.ensureChildArray(blockGroupMap, block.repository.GUID).push(block);
         }
-        return groupMessageMap;
+        return blockGroupMap;
     }
-    async updateRepositoryTransactionHistories(messages, repositoryTransactionHistories, context) {
-        for (let i = 0; i < messages.length; i++) {
-            const message = messages[i];
-            const repositoryTransactionHistory = repositoryTransactionHistories[i];
-            if (message.syncTimestamp) {
-                repositoryTransactionHistory.syncTimestamp = message.syncTimestamp;
-                await this.repositoryTransactionHistoryDao.updateSyncTimestamp(repositoryTransactionHistory, context);
+    async updateRepositoryBlocks(blocks, context) {
+        for (const block of blocks) {
+            if (block.syncTimestamp) {
+                await this.repositoryBlockDao.updateSyncTimestamp(block, context);
             }
         }
     }
@@ -35269,28 +34465,28 @@ __decorate$8([
 ], SynchronizationOutManager.prototype, "datastructureUtils", void 0);
 __decorate$8([
     Inject()
-], SynchronizationOutManager.prototype, "messageSigningManager", void 0);
+], SynchronizationOutManager.prototype, "blockSigningManager", void 0);
 __decorate$8([
     Inject()
 ], SynchronizationOutManager.prototype, "repositoryReferenceCreator", void 0);
 __decorate$8([
     Inject()
-], SynchronizationOutManager.prototype, "repositoryTransactionHistoryDao", void 0);
+], SynchronizationOutManager.prototype, "repositoryBlockDao", void 0);
 __decorate$8([
     Inject()
 ], SynchronizationOutManager.prototype, "synchronizationAdapterLoader", void 0);
 __decorate$8([
     Inject()
-], SynchronizationOutManager.prototype, "syncOutDataSerializer", void 0);
+], SynchronizationOutManager.prototype, "syncOutDataPreparer", void 0);
 SynchronizationOutManager = __decorate$8([
     Injected()
 ], SynchronizationOutManager);
 
 let RepositoryReferenceCreator = class RepositoryReferenceCreator {
-    async create(messages, context) {
+    async create(blocks, context) {
         let repositoryGUIDSetToLookUp = new Set();
-        for (const message of messages) {
-            const referencingRepository = message.data.history.repository;
+        for (const block of blocks) {
+            const referencingRepository = block.repository;
             if (typeof referencingRepository === 'string') {
                 repositoryGUIDSetToLookUp.add(referencingRepository);
             }
@@ -35303,8 +34499,8 @@ let RepositoryReferenceCreator = class RepositoryReferenceCreator {
             }
         }
         const repositoryReferenceMapByGUIDs = new Map();
-        for (const message of messages) {
-            let referencingRepository = message.data.history.repository;
+        for (const block of blocks) {
+            let referencingRepository = block.repository;
             let repositoryGUID;
             if (typeof referencingRepository === 'string') {
                 repositoryGUID = referencingRepository;
@@ -35314,7 +34510,7 @@ let RepositoryReferenceCreator = class RepositoryReferenceCreator {
                 repositoryGUID = referencingRepository.GUID;
             }
             const referencesOfRepositoryMap = this.datastructureUtils.ensureChildJsMap(repositoryReferenceMapByGUIDs, repositoryGUID);
-            for (const referencedRepository of message.data.referencedRepositories) {
+            for (const referencedRepository of block.data.referencedRepositories) {
                 if (referencesOfRepositoryMap.has(referencedRepository.GUID)) {
                     referencesOfRepositoryMap.set(referencedRepository.GUID, {
                         referencingRepository: {
@@ -35362,7 +34558,7 @@ RepositoryReferenceCreator = __decorate$8([
 ], RepositoryReferenceCreator);
 
 const groundTransport = lib('ground-transport');
-groundTransport.register(RepositoryReferenceCreator, Stage1SyncedInDataProcessor, Stage2SyncedInDataProcessor, SyncInActorChecker, SyncInChecker, SyncInDataChecker, SyncInTerminalChecker, SyncInRepositoryChecker, SyncInApplicationChecker, SyncInApplicationVersionChecker, SyncInUserAccountChecker, SyncInUtils, SynchronizationInManager, SynchronizationOutManager, SyncOutDataSerializer, TwoStageSyncedInDataProcessor, DebugSynchronizationAdapter, SynchronizationAdapterLoader);
+groundTransport.register(RepositoryReferenceCreator, Stage1SyncedInDataProcessor, Stage2SyncedInDataProcessor, SyncInActorChecker, SyncInChecker, SyncInDataChecker, SyncInTerminalChecker, SyncInRepositoryChecker, SyncInApplicationChecker, SyncInApplicationVersionChecker, SyncInUserAccountChecker, SyncInUtils, SynchronizationInManager, SynchronizationOutManager, SyncOutDataPreparer, TwoStageSyncedInDataProcessor, DebugSynchronizationAdapter, SynchronizationAdapterLoader);
 groundTransport.setDependencies(DebugSynchronizationAdapter, {
     client: Client
 });
@@ -35387,7 +34583,7 @@ groundTransport.setDependencies(Stage2SyncedInDataProcessor, {
     databaseFacade: DATABASE_FACADE,
     datastructureUtils: DatastructureUtils,
     dictionary: Dictionary,
-    recordUpdateStageDao: RecordUpdateStageDao,
+    // recordUpdateStageDao: RecordUpdateStageDao,
     utils: Utils
 });
 groundTransport.setDependencies(SyncInActorChecker, {
@@ -35440,7 +34636,7 @@ groundTransport.setDependencies(SyncInUserAccountChecker, {
 groundTransport.setDependencies(SyncInUtils, {
     datastructureUtils: DatastructureUtils
 });
-groundTransport.setDependencies(SyncOutDataSerializer, {
+groundTransport.setDependencies(SyncOutDataPreparer, {
     actorDao: ActorDao,
     applicationUtils: APPLICATION_UTILS,
     applicationNameUtils: ApplicationNameUtils,
@@ -35454,7 +34650,7 @@ groundTransport.setDependencies(SynchronizationAdapterLoader, {
 });
 groundTransport.setDependencies(SynchronizationInManager, {
     repositoryLoader: REPOSITORY_LOADER,
-    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
+    repositoryBlockDao: RepositoryBlockDao,
     syncInApplicationVersionChecker: SyncInApplicationVersionChecker,
     syncInChecker: SyncInChecker,
     transactionManager: TRANSACTION_MANAGER,
@@ -35462,11 +34658,11 @@ groundTransport.setDependencies(SynchronizationInManager, {
 });
 groundTransport.setDependencies(SynchronizationOutManager, {
     datastructureUtils: DatastructureUtils,
-    messageSigningManager: MessageSigningManager,
+    messageSigningManager: BlockSigningManager,
     repositoryReferenceCreator: RepositoryReferenceCreator,
-    repositoryTransactionHistoryDao: RepositoryTransactionHistoryDao,
+    repositoryBlockDao: RepositoryBlockDao,
     synchronizationAdapterLoader: SynchronizationAdapterLoader,
-    syncOutDataSerializer: SyncOutDataSerializer
+    syncOutDataPreparer: SyncOutDataPreparer
 });
 groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
     datastructureUtils: DatastructureUtils,
@@ -35480,8 +34676,8 @@ groundTransport.setDependencies(TwoStageSyncedInDataProcessor, {
     repositoryTransactionHistoryDuo: RepositoryTransactionHistoryDuo,
     stage1SyncedInDataProcessor: Stage1SyncedInDataProcessor,
     stage2SyncedInDataProcessor: Stage2SyncedInDataProcessor,
-    synchronizationConflictDao: SynchronizationConflictDao,
-    synchronizationConflictValuesDao: SynchronizationConflictValuesDao
+    // synchronizationConflictDao: SynchronizationConflictDao,
+    // synchronizationConflictValuesDao: SynchronizationConflictValuesDao
 });
 
 class AbstractEntityOrderByParser {
@@ -39414,7 +38610,7 @@ let RepositoryLoader = class RepositoryLoader {
         const now = new Date().getTime();
         const synchronizationAdapter = await this.synchronizationAdapterLoader
             .load(repositoryGUID);
-        let messages;
+        let blocks;
         try {
             if (lastSyncTimestamp) {
                 // If it's been less than 10 seconds, don't retrieve the repository
@@ -39423,25 +38619,25 @@ let RepositoryLoader = class RepositoryLoader {
                 }
                 // Check 100 seconds back, in case there were update issues
                 lastSyncTimestamp -= 100000;
-                messages = await synchronizationAdapter.getTransactionsForRepository(repositoryGUID, lastSyncTimestamp);
+                blocks = await synchronizationAdapter.getBlocksForRepository(repositoryGUID, lastSyncTimestamp);
             }
             else {
-                messages = await synchronizationAdapter.getTransactionsForRepository(repositoryGUID);
+                blocks = await synchronizationAdapter.getBlocksForRepository(repositoryGUID);
             }
-            if (!messages.length) {
+            if (!blocks.length) {
                 return;
             }
-            // TODO: Add a special message for repository for adding users
+            // TODO: Add a special block for repository for adding users
             // into the repository 
             // each user will have a public key that they will distribute
-            // each message is signed with the private key and the initial
-            // message for repository is CREATE_REPOSITORY with the public 
+            // each block is signed with the private key and the initial
+            // block for repository is CREATE_REPOSITORY with the public 
             // key of the owner user
-            const messageMapByGUID = new Map();
-            for (const message of messages) {
-                messageMapByGUID.set(message.data.history.GUID, message);
+            const blockMapByGUID = new Map();
+            for (const block of blocks) {
+                blockMapByGUID.set(block.GUID, block);
             }
-            await this.synchronizationInManager.receiveMessages(messageMapByGUID, context);
+            await this.synchronizationInManager.receiveBlocks(blockMapByGUID, context);
         }
         catch (e) {
             console.error(e);
@@ -39479,7 +38675,7 @@ already contains a new repository.`);
             : userSession.userAccount;
         const repositoryGUID = context.newRepositoryGUID
             ? context.newRepositoryGUID
-            : 'DEVSERVR_' + v4();
+            : 'DEVSERVR_' + v4$1();
         let applicationFullName;
         if (haveUserSession) {
             applicationFullName = userSession.currentTransaction
@@ -39666,7 +38862,7 @@ let InternalRecordManager = class InternalRecordManager {
                     application: anApplication,
                     terminal: frameworkActor.terminal,
                     userAccount: userSession.userAccount,
-                    GUID: v4()
+                    GUID: v4$1()
                 };
                 await this.actorDao.save(actor, context);
                 actors = [actor];
@@ -39687,19 +38883,19 @@ let InternalRecordManager = class InternalRecordManager {
         await this.transactionManager.transactInternal(async (_transaction) => {
             const userAccount = new UserAccount();
             userAccount.username = "internalUserAccount";
-            const guid = v4();
+            const guid = v4$1();
             userAccount.accountPublicSigningKey = guid;
             userAccount.sha1sum = guid;
             const terminal = new Terminal();
             terminal.owner = userAccount;
             terminal.isLocal = true;
-            terminal.GUID = v4();
+            terminal.GUID = v4$1();
             const application = await this.ddlApplicationDao.findOneByDomain_NameAndApplication_Name(firstApp.domain, firstApp.name, context);
             const actor = new Actor();
             actor.application = application;
             actor.userAccount = userAccount;
             actor.terminal = terminal;
-            actor.GUID = v4();
+            actor.GUID = v4$1();
             const actorDao = await this.getactorDaoAsync();
             await actorDao.save(actor, context);
             const lastTerminalState = this.terminalStore.getTerminalState();
@@ -40355,7 +39551,7 @@ ${fullApplication_Name}
             actor = {
                 _localId: null,
                 application,
-                GUID: v4(),
+                GUID: v4$1(),
                 terminal: terminal,
                 userAccount: userSession.userAccount
             };
@@ -42081,10 +41277,10 @@ parent transactions.
                 && transactionHistory.repositoryTransactionHistories.length) {
                 await this.activeQueries.markQueriesToRerun(transactionHistory.allModifiedColumnsMap, transactionHistory.modifiedRepository_LocalIdSet, context);
                 if (!transaction.isRepositorySync) {
-                    const { historiesToSend, messages } = await this.synchronizationOutManager.getSynchronizationMessages(transactionHistory.repositoryTransactionHistories, repositoryMapByLid, context);
+                    const blocks = await this.synchronizationOutManager.getSynchronizationBlocks(transactionHistory.repositoryTransactionHistories, repositoryMapByLid, context);
                     await transaction.commit(null, context);
                     if (transactionHistory.allRecordHistory.length) {
-                        await this.synchronizationOutManager.sendMessages(historiesToSend, messages, context);
+                        await this.synchronizationOutManager.sendBlocks(blocks, context);
                     }
                 }
                 else {
@@ -43422,6 +42618,9 @@ OperationManager = __decorate$4([
     Injected()
 ], OperationManager);
 
+// import {
+// 	ICrossRepositoryRelationManager
+// } from '@airport/layover'
 let StructuralEntityValidator = class StructuralEntityValidator {
     validate(records, operatedOnEntityIndicator, topLevelObjectRepositories, context, depth = 1, fromOneToMany = false, parentRelationProperty = null, rootRelationRecord = null, parentRelationRecord = null, isAncestorRecordBeingCreated = false, isAncestorRecordBeingCopied = false, isParentRecordBeingCreated = false) {
         const dbEntity = context.dbEntity;
@@ -44098,7 +43297,7 @@ REPOSITORY_MANAGER.setDependencies({
 terminal.setDependencies(StructuralEntityValidator, {
     applicationNameUtils: ApplicationNameUtils,
     applicationUtils: APPLICATION_UTILS,
-    crossRepositoryRelationManager: CrossRepositoryRelationManager,
+    // crossRepositoryRelationManager: CrossRepositoryRelationManager,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
 });
@@ -44751,7 +43950,7 @@ class SubscriptionCountSubscriber extends SafeSubscriber {
 
 class ApiClientSubject extends SubscriptionCountSubject {
     constructor(args, requestFields, fullDIDescriptor, cache) {
-        super(v4(), requestFields, () => cache.subscribe(this), () => cache.unsubscribe(this));
+        super(v4$1(), requestFields, () => cache.subscribe(this), () => cache.unsubscribe(this));
         this.args = args;
         this.fullDIDescriptor = fullDIDescriptor;
         this.subscriptionCount = 0;
@@ -44781,7 +43980,7 @@ class ClientSubjectCache {
                 fullDIDescriptor: subject.fullDIDescriptor,
                 request: {
                     ...subject.requestFields,
-                    id: v4(),
+                    id: v4$1(),
                     type: SUBSCRIPTION_Message_Type.API_SUBSCRIBE,
                     typeGroup: Message_Type_Group.SUBSCRIPTION
                 }
@@ -44798,7 +43997,7 @@ class ClientSubjectCache {
                 fullDIDescriptor: subject.fullDIDescriptor,
                 request: {
                     ...subject.requestFields,
-                    id: v4(),
+                    id: v4$1(),
                     type: SUBSCRIPTION_Message_Type.API_UNSUBSCRIBE,
                     typeGroup: Message_Type_Group.SUBSCRIPTION
                 }
@@ -45012,7 +44211,7 @@ let LocalAPIClient = class LocalAPIClient {
                 type: Message_OriginOrDestination_Type.APPLICATION,
             },
             direction: Message_Direction.REQUEST,
-            id: v4(),
+            id: v4$1(),
             isAIRportMessage: true,
             messageLeg: Message_Leg.TO_HUB,
             methodName,
@@ -46845,7 +46044,7 @@ class ApplicationQueryGenerator {
                         // its a query
                         return true;
                 }
-                // dao[dao](...(new QQueryPreparationField() as Array<any>));
+                // dao[dao](...(new QQueryPreparationField() as Array<any>))
             }
         }
         return false;
@@ -46857,7 +46056,7 @@ class ApplicationQueryGenerator {
         const queryTypescript = queryDefinition.expression.getText();
         let queryJavascript = tsc__default.transpile(queryTypescript);
         const functionStartRegex = /\(\s*function \s*\(\s*[\w,\s]*\)\s*\{\s*/;
-        const functionEndRegex = /\s*\}\);\s*$/;
+        const functionEndRegex = /\s*\}\)\s*$/;
         queryJavascript = queryJavascript.replace(functionStartRegex, '');
         queryJavascript = queryJavascript.replace(functionEndRegex, '');
         const [airDb, applicationNameUtils] = await IOC.get(AIRPORT_DATABASE, ApplicationNameUtils);
@@ -47051,7 +46250,7 @@ class FileBuilder {
                     importedObjects.push(`${sourceName} as ${asName}`);
                 }
             }
-            imports += `import {\n\t${importedObjects.join(',\n\t')},\n} from '${filePath}';\n`;
+            imports += `import {\n\t${importedObjects.join(',\n\t')},\n} from '${filePath}'\n`;
         }
         return imports;
     }
@@ -47086,7 +46285,7 @@ class UtilityBuilder extends ImplementationFileBuilder {
         super('base' + fileNameSuffx + 's', pathBuilder);
         this.classSuffix = classSuffix;
         this.baseClassSuffix = baseClassSuffix;
-        // this.diSet = needsQEntity ? 'diSet' : 'duoDiSet';
+        // this.diSet = needsQEntity ? 'diSet' : 'duoDiSet'
         this.diSet = applicationFullName + '_diSet';
     }
     build() {
@@ -47199,14 +46398,14 @@ class DaoBuilder extends UtilityBuilder {
     buildStaticProperties(entityName) {
         return `
 	
-	static Find      = new DaoQueryDecorators<${entityName}ESelect>();
-	static FindOne   = new DaoQueryDecorators<${entityName}ESelect>();
-	static Search    = new DaoQueryDecorators<${entityName}ESelect>();
-	static SearchOne = new DaoQueryDecorators<${entityName}ESelect>();
+	static Find      = new DaoQueryDecorators<${entityName}ESelect>()
+	static FindOne   = new DaoQueryDecorators<${entityName}ESelect>()
+	static Search    = new DaoQueryDecorators<${entityName}ESelect>()
+	static SearchOne = new DaoQueryDecorators<${entityName}ESelect>()
 	static Save(
 		config: ${entityName}Graph
 	): PropertyDecorator {
-		return ObservableDao.BaseSave<${entityName}Graph>(config);
+		return ObservableDao.BaseSave<${entityName}Graph>(config)
   }`;
     }
 }
@@ -47395,7 +46594,7 @@ class ApplicationRelationResolver {
                             break;
                             // throw new Error(`Expecting one matching @OneToMany for
                             // ${anEntity.name}.${aProperty.name} and found
-                            // ${matchingRelatedOneToManys.length}`);
+                            // ${matchingRelatedOneToManys.length}`)
                         }
                         oneSideRelationIndex = matchingRelatedOneToManys[0].index;
                     }
@@ -47779,8 +46978,8 @@ class ${entityCandidate.docEntry.name}
         let manyToOne = undefined;
         let oneToMany = undefined;
         let isId = false;
-        // let repositoryJoin                       = false;
-        // let addToJoinFunction;
+        // let repositoryJoin                       = false
+        // let addToJoinFunction
         // let joinFunctionWithOperator = SqlOperator.AND
         let relationType;
         for (const decorator of aProperty.decorators) {
@@ -47793,7 +46992,7 @@ class ${entityCandidate.docEntry.name}
                 // 	if (!entity.isAirEntity) {
                 // 		throw new Error(`${entity.name}.${aProperty.name} cannot be @RJoinColumn `
                 // 		+ `- ${entity.name} does not extend AirEntity or
-                // LocalAirEntity.`); } repositoryJoin = true;
+                // LocalAirEntity.`) } repositoryJoin = true
                 case property.JOIN_COLUMN:
                     if (columnsDefined) {
                         throw new Error(`Columns are defined more than once 
@@ -47807,7 +47006,7 @@ class ${entityCandidate.docEntry.name}
                 // 	if (!entity.isAirEntity) {
                 // 		throw new Error(`${entity.name}.${aProperty.name} cannot be @RJoinColumns `
                 // 		+ `- ${entity.name} does not extend AirEntity or
-                // LocalAirEntity.`); } repositoryJoin = true;
+                // LocalAirEntity.`) } repositoryJoin = true
                 case property.JOIN_COLUMNS:
                     if (columnsDefined) {
                         throw new Error(`Columns are defined more than once 
@@ -47821,8 +47020,8 @@ class ${entityCandidate.docEntry.name}
                         throw new Error(`"${entity.name}.${aProperty.name} " is decorated with @JoinColumns decorator
 						which must be provided an array of column join definitions (and currently is provided
 						something other than an Array).`);
-                        // columnRelationDefs = columnRelationDefs.concat(decorator.values[0].value);
-                        // foreignKey = decorator.values[0].foreignKey;
+                        // columnRelationDefs = columnRelationDefs.concat(decorator.values[0].value)
+                        // foreignKey = decorator.values[0].foreignKey
                     }
                     break;
                 case property.MANY_TO_ONE:
@@ -47845,19 +47044,19 @@ class ${entityCandidate.docEntry.name}
                     relationType = EntityRelationType.ONE_TO_MANY;
                     break;
                 // case property.WHERE_JOIN_TABLE:
-                // 	addToJoinFunction = decorator.values[0];
+                // 	addToJoinFunction = decorator.values[0]
                 // 	if (decorator.values.length === 2) {
                 // 		switch (decorator.values[1]) {
                 // 			case 'var and':
-                // 				joinFunctionWithOperator = SqlOperator.AND;
+                // 				joinFunctionWithOperator = SqlOperator.AND
                 // 			case 'var or':
-                // 				joinFunctionWithOperator = SqlOperator.OR;
+                // 				joinFunctionWithOperator = SqlOperator.OR
                 // 			default:
                 // 				throw new Error(
-                // 				`Unsupported 'joinFunctionWithOperator' ${decorator.values[1]}`);
+                // 				`Unsupported 'joinFunctionWithOperator' ${decorator.values[1]}`)
                 // 		}
                 // 	}
-                // 	break;
+                // 	break
                 default:
                     throw new Error(`Unsupported cardinality decorator ${decorator.name}`);
             }
@@ -48509,6 +47708,61 @@ extends ${entityName}EId, ${entityName}EUpdateColumns {
     }
 }
 
+function getQPrimitiveFieldInterface(//
+primitive //
+) {
+    switch (primitive) {
+        case 'boolean':
+        case SQLDataType.BOOLEAN:
+            return 'IQBooleanField';
+        case 'Date':
+        case SQLDataType.DATE:
+            return 'IQDateField';
+        case 'number':
+        case SQLDataType.NUMBER:
+            return 'IQNumberField';
+        case 'string':
+        case SQLDataType.STRING:
+        case 'Json':
+        case SQLDataType.JSON:
+            return 'IQStringField';
+        case 'any':
+        case SQLDataType.ANY:
+            return 'IQUntypedField';
+        default:
+            throw new Error(`Unexpected primitive ${primitive}`);
+    }
+}
+function getQColumnFieldInterface(//
+sColumn //
+) {
+    return getQPrimitiveFieldInterface(sColumn.type);
+}
+function getQPropertyFieldInterface(//
+propertyDocEntry //
+) {
+    return getQPrimitiveFieldInterface(propertyDocEntry.primitive);
+}
+function getQPropertyFieldClass(//
+propertyDocEntry //
+) {
+    switch (propertyDocEntry.primitive) {
+        case 'boolean':
+            return 'QBooleanField';
+        case 'Date':
+            return 'QDateField';
+        case 'number':
+            return 'QNumberField';
+        case 'string':
+        case 'Json':
+            return 'QStringField';
+        case 'any':
+            return 'QUntypedField';
+        default:
+            throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`);
+    }
+}
+
 /**
  * Created by Papa on 4/25/2016.
  */
@@ -48519,7 +47773,7 @@ class QColumnBuilder {
     }
     buildDefinition() {
         let column = this.sColumn;
-        return `${this.ensureValidName(column.name)}: ${column.type};`;
+        return `${this.ensureValidName(column.name)}: ${column.type}`;
     }
     build() {
         throw new Error(`Not Implemented.`);
@@ -48535,7 +47789,7 @@ class QColumnBuilder {
         if (forInternalInterfaces) {
             operableFieldSuffix = ' | ' + getQColumnFieldInterface(column);
         }
-        return `${name}${optional ? '?' : ''}: ${type}${operableFieldSuffix};`;
+        return `${name}${optional ? '?' : ''}: ${type}${operableFieldSuffix}`;
     }
     ensureValidName(columnName) {
         if (/[0-9]/.test(columnName.substring(0, 1))) {
@@ -48557,7 +47811,7 @@ class QPropertyBuilder {
         let prop = this.propertyDocEntry;
         let name = prop.name;
         let fieldClass = getQPropertyFieldClass(prop);
-        return `${name}: I${fieldClass};`;
+        return `${name}: I${fieldClass}`;
     }
     build() {
         throw new Error(`Not Implemented.`);
@@ -48591,7 +47845,7 @@ class QPropertyBuilder {
                 propertyType = prop.type;
             }
         }
-        return `${name}${optional || prop.optional ? '?' : ''}: ${propertyType}${operableFieldSuffix};`;
+        return `${name}${optional || prop.optional ? '?' : ''}: ${propertyType}${operableFieldSuffix}`;
     }
 }
 
@@ -48599,9 +47853,90 @@ class QRelationBuilder {
     constructor(parentBuilder, entityProperty, entityMapByName, buildRelationInstance) {
         this.parentBuilder = parentBuilder;
         this.entityProperty = entityProperty;
+        this.entityMapByName = entityMapByName;
         this.buildRelationInstance = buildRelationInstance;
+        this.customInterfaceSource = '';
+    }
+    buildCustomInterface() {
+        if (!this.buildRelationInstance
+            // if its a @OneToMany
+            || this.entityProperty.isArray) {
+            return '';
+        }
+        let joinColumnDecorators = this.entityProperty.decorators.filter(decorator => {
+            return ['JoinColumn', 'JoinColumns'].indexOf(decorator.name) > -1;
+        });
+        if (joinColumnDecorators.length !== 1) {
+            return '';
+        }
+        const propertyDescritorMap = this.getPrimiteRelatedEntityPropertiesByColumnName();
+        const fieldDefinitions = [];
+        let allJoinColumnsPointToIdColumns = true;
+        let values = joinColumnDecorators[0].values;
+        if (values[0] instanceof Array) {
+            values = values[0];
+        }
+        for (const joinColumnValue of values) {
+            let propertyDescriptors = propertyDescritorMap[joinColumnValue.referencedColumnName];
+            if (!propertyDescriptors) {
+                propertyDescriptors = propertyDescritorMap[joinColumnValue.name];
+            }
+            if (!propertyDescriptors || !propertyDescriptors.length) {
+                throw new Error(`Did not find any properties for referenced column:
+In class:
+	${this.parentBuilder.entity.docEntry.name}
+For property:
+	${this.entityProperty.name}
+"referencedColumnName":
+    ${joinColumnValue.referencedColumnName}
+				`);
+            }
+            for (const propertyDescriptor of propertyDescriptors) {
+                if (!propertyDescriptor.isId) {
+                    allJoinColumnsPointToIdColumns = false;
+                }
+            }
+            const columnType = propertyDescriptors[0].columnType;
+            let qFieldName;
+            if (propertyDescriptors.length > 1) {
+                qFieldName = joinColumnValue.referencedColumnName;
+            }
+            else {
+                qFieldName = propertyDescriptors[0].propertyName;
+            }
+            const returnType = getQPrimitiveFieldInterface(columnType);
+            fieldDefinitions.push(`${qFieldName}: ${returnType}`);
+        }
+        if (allJoinColumnsPointToIdColumns) {
+            return '';
+        }
+        let entityType;
+        if (this.entityProperty.entity) {
+            entityType = this.entityProperty.entity.type;
+        }
+        else {
+            entityType = this.entityProperty.otherApplicationDbEntity.name;
+        }
+        entityType = entityType.replace('[]', '');
+        let type = `Q${entityType}`;
+        let ownClassName = this.parentBuilder.entity.type;
+        this.customInterfaceSource =
+            `export interface IQ${ownClassName}_${this.entityProperty.name}QRelation extends IQManyToOneEntityRelation<${entityType}, ${type}> {
+
+${fieldDefinitions.reduce((allDefinitions, fieldDefinition) => {
+                allDefinitions += `    ${fieldDefinition}\n`;
+                return allDefinitions;
+            }, '')}
+}
+
+`;
+        return this.customInterfaceSource;
     }
     buildDefinition() {
+        if (this.customInterfaceSource) {
+            let ownClassName = this.parentBuilder.entity.type;
+            return `${this.entityProperty.name}: IQ${ownClassName}_${this.entityProperty.name}QRelation`;
+        }
         let type;
         let entityType = this.entityProperty.type;
         if (this.entityProperty.entity) {
@@ -48623,7 +47958,7 @@ class QRelationBuilder {
                 type = `${interfaceName}<Q${entityType}>`;
             }
         }
-        return `${this.entityProperty.name}: ${type};`;
+        return `${this.entityProperty.name}: ${type}`;
     }
     build() {
         throw new Error(`Not implemented`);
@@ -48659,8 +47994,43 @@ class QRelationBuilder {
             }
         }
         const iType = type + typeSuffix;
-        const definition = `${this.entityProperty.name}${optional ? '?' : ''}: ${iType};`;
+        const definition = `${this.entityProperty.name}${optional ? '?' : ''}: ${iType}`;
         return definition;
+    }
+    getPrimiteRelatedEntityPropertiesByColumnName() {
+        let propertiesByColumn = {};
+        if (this.entityProperty.entity) {
+            const sIndexedEntity = this.parentBuilder.sIndexedApplication.entityMapByName[this.entityProperty.entity.type];
+            for (const sColumn of sIndexedEntity.columns) {
+                if (sColumn.propertyRefs.length > 1) {
+                    continue;
+                }
+                const sProperty = sIndexedEntity.entity.properties[sColumn.propertyRefs[0]];
+                this.addPropertyDescriptor(sColumn, sProperty, propertiesByColumn);
+            }
+        }
+        else {
+            const dbEntity = this.entityProperty.otherApplicationDbEntity;
+            for (const dbColumn of dbEntity.columns) {
+                for (const dbPropertyColumn of dbColumn.propertyColumns) {
+                    const dbProperty = dbPropertyColumn.property;
+                    this.addPropertyDescriptor(dbColumn, dbProperty, propertiesByColumn);
+                }
+            }
+        }
+        return propertiesByColumn;
+    }
+    addPropertyDescriptor(column, property, propertiesByColumn = {}) {
+        let propertyDescriptors = propertiesByColumn[column.name];
+        if (!propertyDescriptors) {
+            propertyDescriptors = [];
+            propertiesByColumn[column.name] = propertyDescriptors;
+        }
+        propertyDescriptors.push({
+            columnType: column.type,
+            isId: typeof column.idIndex === 'number',
+            propertyName: property.name
+        });
     }
 }
 
@@ -48681,25 +48051,26 @@ class QTransientBuilder {
                 addImportForType(prop.ownerEntity, type, this.parentBuilder.fileBuilder);
             }
         }
-        // let type = prop.type;
+        // let type = prop.type
         // if(prop.isMap && type.indexOf(']: ') > -1) {
-        // 		type = type.replace(/\]\: (?!.*\]\: )/, "]: I");
+        // 		type = type.replace(/\]\: (?!.*\]\: )/, "]: I")
         // } else {
         // 	type = `${type}`
         // }
         //
-        // return `${prop.name}?: ${type};`;
-        return `${prop.name}?: ${prop.type};`;
+        // return `${prop.name}?: ${type}`
+        return `${prop.name}?: ${prop.type}`;
     }
 }
 
 class QCoreEntityBuilder {
-    constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName) {
+    constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName, sIndexedApplication) {
         this.entity = entity;
         this.fullGenerationPath = fullGenerationPath;
         this.workingDirPath = workingDirPath;
         this.fileBuilder = fileBuilder;
         this.entityMapByName = entityMapByName;
+        this.sIndexedApplication = sIndexedApplication;
         this.constructorFields = {};
     }
     addImport(classNames, filePath) {
@@ -48729,8 +48100,10 @@ class QCoreEntityBuilder {
     buildRelationData(relationBuilders) {
         const relationData = {
             definitions: ``,
+            customInterfaces: ``
         };
         relationBuilders.forEach((builder) => {
+            relationData.customInterfaces += builder.buildCustomInterface();
             relationData.definitions += `	${builder.buildDefinition()}\n`;
         });
         return relationData;
@@ -48750,62 +48123,13 @@ class QCoreEntityBuilder {
         return relationBuilder;
     }
 }
-function getQPropertyFieldInterface(//
-propertyDocEntry //
-) {
-    return getQPrimitiveFieldInterface(propertyDocEntry.primitive);
-}
-function getQColumnFieldInterface(//
-sColumn //
-) {
-    return getQPrimitiveFieldInterface(sColumn.type);
-}
-function getQPrimitiveFieldInterface(//
-primitive //
-) {
-    switch (primitive) {
-        case 'boolean':
-            return 'IQBooleanField';
-        case 'Date':
-            return 'IQDateField';
-        case 'number':
-            return 'IQNumberField';
-        case 'string':
-        case 'Json':
-            return 'IQStringField';
-        case 'any':
-            return 'IQUntypedField';
-        default:
-            throw new Error(`Unexpected primitive ${primitive}`);
-    }
-}
-function getQPropertyFieldClass(//
-propertyDocEntry //
-) {
-    switch (propertyDocEntry.primitive) {
-        case 'boolean':
-            return 'QBooleanField';
-        case 'Date':
-            return 'QDateField';
-        case 'number':
-            return 'QNumberField';
-        case 'string':
-        case 'Json':
-            return 'QStringField';
-        case 'any':
-            return 'QUntypedField';
-        default:
-            throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`);
-    }
-}
 
 /**
  * Created by Papa on 4/25/2016.
  */
 class QEntityBuilder extends QCoreEntityBuilder {
-    constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName, sIndexedEntity) {
-        super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName);
-        this.sIndexedEntity = sIndexedEntity;
+    constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName, sIndexedEntity, sIndexedApplication) {
+        super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName, sIndexedApplication);
         let idColumns = [];
         if (sIndexedEntity) {
             idColumns = sIndexedEntity.idColumns;
@@ -48860,13 +48184,14 @@ ${nonIdPropertyData.definitions}
 ${nonIdRelationData.definitions}
 }
 `;
-        return classSource;
+        return idRelationData.customInterfaces
+            + nonIdRelationData.customInterfaces + classSource;
     }
 }
 
 class QEntityIdBuilder extends QCoreEntityBuilder {
-    constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName) {
-        super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName);
+    constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName, sIndexedApplication) {
+        super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName, sIndexedApplication);
         const idProperties = entity.getIdProperties();
         this.idPropertyBuilders = this.getQPropertyBuilders(idProperties);
         this.idRelationBuilders = this.getQRelationBuilders(idProperties, false);
@@ -48889,13 +48214,13 @@ ${idPropertyData.definitions}
 ${idRelationData.definitions}
 
 }`;
-        return classSource;
+        return `${idRelationData.customInterfaces}${classSource}`;
     }
 }
 
 class QEntityRelationBuilder extends QCoreEntityBuilder {
-    constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName) {
-        super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName);
+    constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName, sIndexedApplication) {
+        super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName, sIndexedApplication);
     }
     build() {
         let qName = `Q${this.entity.docEntry.name}`;
@@ -48905,12 +48230,19 @@ class QEntityRelationBuilder extends QCoreEntityBuilder {
         let genericType = '';
         let entity = this.entity.docEntry.name;
         let [isAirEntity, _] = entityExtendsOrIsAirEntity(this.entity);
+        let isAirEntityIdOrFields = false;
         if (!isAirEntity) {
-            isAirEntity = entityExtendsOrIsAirEntityFieldsOrId(this.entity)[0];
+            isAirEntityIdOrFields = entityExtendsOrIsAirEntityFieldsOrId(this.entity)[0];
+            isAirEntity = isAirEntityIdOrFields;
         }
         let parentInterfaceType = 'IQManyToOneInternalRelation';
         if (isAirEntity) {
-            parentInterfaceType = 'IQManyToOneAirEntityRelation';
+            if (isAirEntityIdOrFields) {
+                parentInterfaceType = 'IQManyToOneEntityRelation';
+            }
+            else {
+                parentInterfaceType = 'IQManyToOneAirEntityRelation';
+            }
         }
         let parentEntityQType = `${parentInterfaceType}<${qName}>`;
         if (isMappedSuperclass) {
@@ -48949,14 +48281,15 @@ export interface ${qName}QRelation${genericType}
  * Created by Papa on 4/26/2016.
  */
 class QEntityFileBuilder extends FileBuilder {
-    constructor(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, sIndexedEntity, entityPath) {
+    constructor(entity, fullGenerationPath, pathBuilder, entityMapByName, configuration, sIndexedApplication, entityName, entityPath) {
         super(entity, fullGenerationPath, pathBuilder, configuration);
         this.entityMapByName = entityMapByName;
         this.entityPath = entityPath;
         this.importMap = {};
-        this.qEntityBuilder = new QEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName, sIndexedEntity);
-        this.qEntityIdBuilder = new QEntityIdBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName);
-        this.qEntityRelationBuilder = new QEntityRelationBuilder(entity, this.fullGenerationPath, this.pathBuilder.workingDirPath, this, entityMapByName);
+        const sIndexedEntity = sIndexedApplication.entityMapByName[entityName];
+        this.qEntityBuilder = new QEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName, sIndexedEntity, sIndexedApplication);
+        this.qEntityIdBuilder = new QEntityIdBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName, sIndexedApplication);
+        this.qEntityRelationBuilder = new QEntityRelationBuilder(entity, this.fullGenerationPath, this.pathBuilder.workingDirPath, this, entityMapByName, sIndexedApplication);
         this.qEntityInterfaceBuilder = new IQEntityInterfaceBuilder(entity, this.qEntityBuilder);
         this.addImport([
             'IQEntityInternal',
@@ -48971,10 +48304,12 @@ class QEntityFileBuilder extends FileBuilder {
             'IQOneToManyRelation', 'IQStringField',
             'IQUntypedField',
             'IQEntity', 'IQManyToOneInternalRelation',
-            'IQAirEntityOneToManyRelation', 'IQManyToOneAirEntityRelation',
+            'IQAirEntityOneToManyRelation',
+            'IQManyToOneAirEntityRelation',
+            'IQManyToOneEntityRelation',
             'RawDelete', 'RawUpdate'
         ], '@airport/tarmaq-query');
-        // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);
+        // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path)
         if (entity.parentEntity) {
             let parentQEntityRelativePath;
             if (entity.parentEntity.project) {
@@ -49061,8 +48396,8 @@ ${relationClassSource}`;
         this.addRelationImports(this.qEntityBuilder.idRelationBuilders);
         this.addRelationImports(this.qEntityBuilder.nonIdRelationBuilders);
         // const entityImportRelativePath = resolveRelativePath(this.fullGenerationPath,
-        //   this.entityPath).replace('.ts', '');
-        // this.addImport([this.entity.docEntry.name], entityImportRelativePath, false);
+        //   this.entityPath).replace('.ts', '')
+        // this.addImport([this.entity.docEntry.name], entityImportRelativePath, false)
         const type = this.entity.docEntry.name;
         let entityRelativePath = resolveRelativePath(this.fullGenerationPath, this.entityMapByName[type].path);
         entityRelativePath = entityRelativePath.replace('.ts', '');
@@ -49087,18 +48422,18 @@ class EntityMappingBuilder {
         const imports = [];
         const entityDefinitions = this.entityMappings.map(entityMapping => {
             const entityImportRelativePath = resolveRelativePath(this.entityMappingsPath, entityMapping.relativePath).replace('.ts', '');
-            imports.push(`import { ${entityMapping.entityName} } from '${entityImportRelativePath}';`);
-            return `  accumulator.add(${entityMapping.entityName}, ${entityMapping.entityIndex});`;
+            imports.push(`import { ${entityMapping.entityName} } from '${entityImportRelativePath}'`);
+            return `  accumulator.add(${entityMapping.entityName}, ${entityMapping.entityIndex})`;
         }).join('\n');
         return `/* eslint-disable */
-import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
-import { IOC } from '@airport/direction-indicator';
+import { AIRPORT_DATABASE } from '@airport/air-traffic-control'
+import { IOC } from '@airport/direction-indicator'
 ${imports.join('\n')}
 
 IOC.get(AIRPORT_DATABASE).then(airDb => {
-  const accumulator = airDb.getAccumulator('${applicationDomain}', '${applicationName}');
+  const accumulator = airDb.getAccumulator('${applicationDomain}', '${applicationName}')
 ${entityDefinitions}
-});
+})
 `;
     }
 }
@@ -49116,7 +48451,7 @@ class GeneratedFileListingBuilder {
     }
     build() {
         this.generatedFilePaths.sort();
-        const exports = this.generatedFilePaths.map(filePath => `export * from '${filePath}';`)
+        const exports = this.generatedFilePaths.map(filePath => `export * from '${filePath}'`)
             .join('\n');
         return `${exports}
 `;
@@ -49144,7 +48479,7 @@ class PathBuilder {
     // 		- 1
     //
     // 	let outDirPrefix = '..'
-    // 	for (let i = 0; i < numDirsOut; i++) {
+    // 	for (let i = 0 i < numDirsOut i++) {
     // 		outDirPrefix += '/..'
     // 	}
     //
@@ -49251,39 +48586,39 @@ class QApplicationBuilder {
         this.generatedFilePaths.sort();
         const qApiDefinitions = this.entityNames
             .filter(entityName => !this.mappedSuperclassSet[entityName])
-            .map(entityName => `${entityName}: Q${entityName};`).join('\n\t');
+            .map(entityName => `${entityName}: Q${entityName}`).join('\n\t');
         // TODO: enable DVO and DAO injections into QApp, if needed
         // const dvoDefinitions = this.entityNames.map(
-        // 	entityName => `${entityName}: IBase${entityName}Dvo;`
-        // ).join('\n\t\t');
+        // 	entityName => `${entityName}: IBase${entityName}Dvo`
+        // ).join('\n\t\t')
         // const daoDefinitions = this.entityNames.map(
-        // 	entityName => `${entityName}: IBase${entityName}Dao;`
-        // ).join('\n\t\t');
+        // 	entityName => `${entityName}: IBase${entityName}Dao`
+        // ).join('\n\t\t')
         const constructorDefinitions = this.entityNames.map(entityName => `${entityName}`).join(',\n\t');
         const qEntityImports = this.entityNames.map(entityName => 
         // FIXME: this is a temporary hack to get Svelte to compile, revisit later
-        // `import { ${entityName} } from '${this.ddlPathMapByEntityName[entityName]}';
-        `import { Q${entityName} } from '${this.generatedPathMapByEntityName[entityName]}';`).join('\n');
+        // `import { ${entityName} } from '${this.ddlPathMapByEntityName[entityName]}'
+        `import { Q${entityName} } from '${this.generatedPathMapByEntityName[entityName]}'`).join('\n');
         // FIXME: this is a temporary hack to get Svelte to compile, revisit later
         let entityImports = '';
         if (this.entityNames.length) {
-            entityImports = 'import {\n' + this.entityNames.map(entityName => `  ${entityName}`).join(',\n') + `\n} from '../ddl/ddl';`;
+            entityImports = 'import {\n' + this.entityNames.map(entityName => `  ${entityName}`).join(',\n') + `\n} from '../ddl/ddl'`;
         }
         // const iDvoImports = this.entityNames.map(
         // 	entityName =>
         // 		`IBase${entityName}Dvo`
-        // ).join(',\n\t');
+        // ).join(',\n\t')
         // const iDaoImports = this.entityNames.map(
         // 	entityName =>
         // 		`IBase${entityName}Dao`
-        // ).join(',\n\t');
+        // ).join(',\n\t')
         // import {
         // 	${iDvoImports}
-        // } from './baseDvos';
+        // } from './baseDvos'
         //
         // import {
         // 	${iDaoImports}
-        // } from './baseDaos';
+        // } from './baseDaos'
         // dvo: {
         // 	${dvoDefinitions}
         // }
@@ -49296,13 +48631,13 @@ class QApplicationBuilder {
 } from '@airport/air-traffic-control'
 import {
     IApplication
-} from '@airport/ground-control';
+} from '@airport/ground-control'
 ${qEntityImports}
 ${entityImports}
 
 export interface ${this.applicationFullName}_LocalQApp extends QAppInternal {
 
-    db: IApplication;
+    db: IApplication
 
   ${qApiDefinitions}
 
@@ -49310,13 +48645,13 @@ export interface ${this.applicationFullName}_LocalQApp extends QAppInternal {
 
 const __constructors__ = {
 	${constructorDefinitions}
-};
+}
 
 export const Q_${this.applicationFullName}: ${this.applicationFullName}_LocalQApp = <any>{
 	__constructors__,
   domain: '${domainName}',
   name: '${applicationName}'
-};
+}
 export default Q_${this.applicationFullName}
 
 export function ${this.applicationFullName}_diSet(
@@ -49347,13 +48682,13 @@ class JsonApplicationBuilder {
             // const errorMessage = `Could not parse existing application, make sure file starts with with:
             // 	 "export const ${this.applicationVarName} = {"
             // 	 where "{" marks the start of the application definition, and ends with:
-            // 	 "};"
+            // 	 "}"
             // 	 where "}" marks the end of the application definition.`
             //
             // if (indexOfAssignment < 0) {
             // 	throw new Error(errorMessage)
             // }
-            // if (existingApplicationString.indexOf('};') !== existingApplicationString.length - 2) {
+            // if (existingApplicationString.indexOf('}') !== existingApplicationString.length - 2) {
             // 	throw new Error(errorMessage)
             // }
             //
@@ -49647,7 +48982,7 @@ class MappedSuperclassBuilder {
         }
         return `/* eslint-disable */
 export const ${this.mappedSuperclassVarName} = `
-            + JSON.stringify(mappedSuperclasses, null, '\t') + ';';
+            + JSON.stringify(mappedSuperclasses, null, '\t') + '';
     }
     buildEntity(entityCandidate) {
         if (!entityCandidate.docEntry.isMappedSuperclass) {
@@ -49905,6 +49240,31 @@ ${nonIdRelationsForEntityEProperties}
     }
 }
 
+function getVPropertyFieldInterface(//
+propertyDocEntry //
+) {
+    return getVPrimitiveFieldInterface(propertyDocEntry.primitive);
+}
+function getVPrimitiveFieldInterface(//
+primitive //
+) {
+    switch (primitive) {
+        case 'boolean':
+            return 'IVBooleanField';
+        case 'Date':
+            return 'IVDateField';
+        case 'number':
+            return 'IVNumberField';
+        case 'string':
+        case 'Json':
+            return 'IVStringField';
+        case 'any':
+            return 'IVUntypedField';
+        default:
+            throw new Error(`Unexpected primitive ${primitive}`);
+    }
+}
+
 /**
  * Created by Papa on 4/25/2016.
  */
@@ -49936,7 +49296,7 @@ class VPropertyBuilder {
             this.parentBuilder.addImport([moduleImport.objectMapByAsName[propertyType]], relativePathToImport);
         }
         let operableFieldSuffix = ' | ' + getVPropertyFieldInterface(prop);
-        return `${name}?: ${propertyType}${operableFieldSuffix};`;
+        return `${name}?: ${propertyType}${operableFieldSuffix}`;
     }
 }
 
@@ -49991,14 +49351,14 @@ class VTransientBuilder {
         else {
             builder = new VPropertyBuilder(this.parentBuilder, prop);
         }
-        // let type = prop.type;
+        // let type = prop.type
         // if(prop.isMap && type.indexOf(']: ') > -1) {
-        // 		type = type.replace(/\]\: (?!.*\]\: )/, "]: I");
+        // 		type = type.replace(/\]\: (?!.*\]\: )/, "]: I")
         // } else {
         // 	type = prop.primitive ? `${type}` : `I${type}`
         // }
         //
-        // return `${prop.name}?: ${type};`;
+        // return `${prop.name}?: ${type}`
         return builder.buildInterfaceDefinition();
     }
 }
@@ -50037,54 +49397,6 @@ class VCoreEntityBuilder {
             relationBuilder = new VRelationBuilder(this, property);
         }
         return relationBuilder;
-    }
-}
-function getVPropertyFieldInterface(//
-propertyDocEntry //
-) {
-    return getVPrimitiveFieldInterface(propertyDocEntry.primitive);
-}
-function getVColumnFieldInterface(//
-sColumn //
-) {
-    return getVPrimitiveFieldInterface(sColumn.type);
-}
-function getVPrimitiveFieldInterface(//
-primitive //
-) {
-    switch (primitive) {
-        case 'boolean':
-            return 'IVBooleanField';
-        case 'Date':
-            return 'IVDateField';
-        case 'number':
-            return 'IVNumberField';
-        case 'string':
-        case 'Json':
-            return 'IVStringField';
-        case 'any':
-            return 'IVUntypedField';
-        default:
-            throw new Error(`Unexpected primitive ${primitive}`);
-    }
-}
-function getVPropertyFieldClass(//
-propertyDocEntry //
-) {
-    switch (propertyDocEntry.primitive) {
-        case 'boolean':
-            return 'VBooleanField';
-        case 'Date':
-            return 'VDateField';
-        case 'number':
-            return 'VNumberField';
-        case 'string':
-        case 'Json':
-            return 'VStringField';
-        case 'any':
-            return 'VUntypedField';
-        default:
-            throw new Error(`Unexpected primitive ${propertyDocEntry.primitive}`);
     }
 }
 
@@ -50127,7 +49439,7 @@ class VEntityFileBuilder extends FileBuilder {
             'IVStringField',
             'IVUntypedField'
         ], '@airbridge/validate');
-        // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);
+        // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path)
         // console.log('Entity: ' + entity.path)
         if (entity.parentEntity) {
             let parentVEntityRelativePath;
@@ -50190,8 +49502,8 @@ ${interfaceSource}
         this.addRelationImports(this.vEntityBuilder.idRelationBuilders);
         this.addRelationImports(this.vEntityBuilder.nonIdRelationBuilders);
         // const entityImportRelativePath = resolveRelativePath(this.fullGenerationPath,
-        //   this.entityPath).replace('.ts', '');
-        // this.addImport([this.entity.docEntry.name], entityImportRelativePath, false); 
+        //   this.entityPath).replace('.ts', '')
+        // this.addImport([this.entity.docEntry.name], entityImportRelativePath, false) 
     }
 }
 
@@ -50281,15 +49593,15 @@ async function watchFiles(configuration, options, rootFileNames) {
     // 			) => {
     // 				// Check timestamp
     // 				if (+curr.mtime <= +prev.mtime) {
-    // 					return;
+    // 					return
     // 				}
     // 				// Update the version to signal a change in the file
-    // 				files[fileName].version++;
+    // 				files[fileName].version++
     // 				// process file
     // 				processFiles(
-    // 					[fileName], options, configuration).then();
-    // 			});
-    // 	});
+    // 					[fileName], options, configuration).then()
+    // 			})
+    // 	})
 }
 async function processFiles(rootFileNames, options, configuration) {
     currentApplicationApi.apiObjectMap = {};
@@ -50347,7 +49659,7 @@ function emitFiles(entityMapByName, configuration, applicationMapByProjectName) 
         const entity = entityMapByName[entityName];
         const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'Q', 'query');
         const fullVGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'V', 'validation');
-        const qEntityFileBuilder = new QEntityFileBuilder(entity, fullQGenerationPath, pathBuilder, entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
+        const qEntityFileBuilder = new QEntityFileBuilder(entity, fullQGenerationPath, pathBuilder, entityMapByName, configuration, indexedApplication, entityName, entity.path);
         const vEntityFileBuilder = new VEntityFileBuilder(entity, fullVGenerationPath, pathBuilder, entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
         entityQInterfaceListingBuilder.addFileNameAndPaths(fullQGenerationPath);
         entityVInterfaceListingBuilder.addFileNameAndPaths(fullVGenerationPath);
@@ -50386,7 +49698,7 @@ async function addOperations(jsonApplication, applicationPath, applicationSource
     applicationBuilder.addOperations(jsonApplication, entityOperationMap);
     const applicationJsonString = JSON.stringify(jsonApplication, null, '\t');
     const applicationSourceString = `export const APPLICATION = `
-        + applicationJsonString + ';';
+        + applicationJsonString + '';
     fs.writeFileSync(applicationPath, applicationJsonString);
     fs.writeFileSync(applicationSourcePath, '/* eslint-disable */\n' + applicationSourceString);
 }
@@ -50479,12 +49791,12 @@ class InjectionFileBuilder extends FileBuilder {
     }
     constructor(fileName, pathBuilder) {
         super(null, null, pathBuilder, null);
-        // this.daoListingFilePath = pathBuilder.fullGeneratedDirPath + `/${fileName}.ts`;
+        // this.daoListingFilePath = pathBuilder.fullGeneratedDirPath + `/${fileName}.ts`
     }
     addImports() {
         // this.addImport([
         //     'IQEntity'
-        // ], '@airport/air-traffic-control');
+        // ], '@airport/air-traffic-control')
     }
     build() {
         this.buildImports();
@@ -50622,5 +49934,5 @@ async function generate() {
     console.log('DONE AIRport generation');
 }
 
-export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DdlApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GlobalCandidates, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, InjectionFileBuilder, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpSchemaBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, dictionary, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityExtendsOrIsAirEntityFieldsOrId, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getQColumnFieldInterface, getQPrimitiveFieldInterface, getQPropertyFieldClass, getQPropertyFieldInterface, getRelationFieldType, getRelativePath, getVColumnFieldInterface, getVPrimitiveFieldInterface, getVPropertyFieldClass, getVPropertyFieldInterface, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
+export { ARGUMENT_FLAGS, ApiBuilder, ApiIndexBuilder, ApplicationLoader, ApplicationQueryGenerator, ApplicationRelationResolver, ArgumentType, DB_APPLICATION_LOADER, DaoBuilder, DdlApplicationBuilder, DvoBuilder, EntityCandidate, EntityCandidateRegistry, EntityMappingBuilder, FileBuilder, Flags, GLOBAL_CANDIDATES, GeneratedFileListingBuilder, GlobalCandidates, IQEntityInterfaceBuilder, IVEntityInterfaceBuilder, ImplementationFileBuilder, ImportManager, InjectionFileBuilder, Interface, JsonApplicationBuilder, Logger, MappedSuperclassBuilder, NoOpSchemaBuilder, NoOpSequenceGenerator, NoOpSqlDriver, PathBuilder, QApplicationBuilder, QColumnBuilder, QCoreEntityBuilder, QEntityBuilder, QEntityFileBuilder, QEntityIdBuilder, QEntityRelationBuilder, QPropertyBuilder, QQueryPreparationField, QRelationBuilder, QTransientBuilder, SApplicationBuilder, TempDatabase, UtilityBuilder, VCoreEntityBuilder, VEntityBuilder, VEntityFileBuilder, VPropertyBuilder, VRelationBuilder, VTransientBuilder, addFileProcessor, addImportForType, additionalFileProcessors, buildIndexedSApplication, canBeInterface, currentApiFileSignatureMap, currentApplicationApi, dictionary, endsWith, entityExtendsAirEntity, entityExtendsOrIsAirEntity, entityExtendsOrIsAirEntityFieldsOrId, entityOperationMap, entityOperationPaths, forEach$1 as forEach, generate, generateDefinitions, getClassPath, getExpectedPropertyIndexesFormatMessage, getFullPathFromRelativePath, getImplNameFromInterfaceName, getImplementedInterfaces, getManyToOneDecorator, getParentClassImport, getParentClassName, getPropertyFieldType, getPropertyJSONOperationInterface, getPropertyTypedOperationInterface, getRelationFieldType, getRelativePath, isDecoratedAsEntity, isManyToOnePropertyNotNull, isPrimitive, normalizePath, parseFlags, projectInterfaces, readConfiguration, resolveRelativeEntityPath, resolveRelativePath, startsWith, visitApiFile, visitDaoFile, visitEntityFile, visitInterfaceCandidateFile, watchFiles };
 //# sourceMappingURL=index.mjs.map

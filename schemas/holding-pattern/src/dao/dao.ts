@@ -1,3 +1,4 @@
+export * from './blockchain/RepositoryBlockDao'
 export * from './history/RecordHistoryNewValueDao'
 export * from './history/RecordHistoryOldValueDao'
 export * from './history/RepositoryTransactionHistoryDao'

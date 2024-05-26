@@ -1,4 +1,4 @@
-import { Inject, Injected } from '@airport/direction-indicator';
+import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	Actor_LocalId,
 	ChangeType,
@@ -10,11 +10,9 @@ import {
 	IRootTransaction,
 	ITransactionHistory,
 	RepositoryTransactionHistory_IsRepositoryCreation,
-	Repository_IsPublic,
 	Repository_LocalId,
 	SystemWideOperationId
 } from '@airport/ground-control'
-import { v4 as guidv4 } from "uuid";
 import {
 	Repository,
 	RepositoryTransactionHistory
@@ -27,7 +25,7 @@ export interface IRepositoryTransactionHistoryDuo {
 		repositoryLid: Repository_LocalId,
 		transactionHistory: ITransactionHistory,
 		isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation
-	): IRepositoryTransactionHistory;
+	): IRepositoryTransactionHistory
 
 	setModifiedRepository_LocalIdSet(
 		repositoryTransactionHistory: IRepositoryTransactionHistory
@@ -35,12 +33,12 @@ export interface IRepositoryTransactionHistoryDuo {
 
 	newRecord(
 		data?: IRepositoryTransactionHistory
-	): IRepositoryTransactionHistory;
+	): IRepositoryTransactionHistory
 
 	sortRepoTransHistories(
 		repoTransHistories: IRepositoryTransactionHistory[],
 		actorMapById: Map<Actor_LocalId, IActor>
-	): void;
+	): void
 
 	startOperation(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
@@ -49,7 +47,7 @@ export interface IRepositoryTransactionHistoryDuo {
 		dbEntity: DbEntity,
 		actor: IActor,
 		rootTransaction: IRootTransaction
-	): IOperationHistory;
+	): IOperationHistory
 
 }
 
@@ -70,7 +68,6 @@ export class RepositoryTransactionHistoryDuo
 		let saveTimestamp = new Date().getTime()
 
 		repositoryTransactionHistory.saveTimestamp = saveTimestamp
-		repositoryTransactionHistory.GUID = guidv4()
 		repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation
 		repositoryTransactionHistory.repository = new Repository() as IRepository
 		repositoryTransactionHistory.repository._localId = repositoryLid
@@ -111,7 +108,7 @@ export class RepositoryTransactionHistoryDuo
 			repoTransHistory2: IRepositoryTransactionHistory
 		) => {
 			const syncTimeComparison
-				= this.compareNumbers(repoTransHistory1.syncTimestamp, repoTransHistory2.syncTimestamp)
+				= this.compareNumbers(repoTransHistory1.block?.syncTimestamp, repoTransHistory2.block?.syncTimestamp)
 			if (syncTimeComparison) {
 				return syncTimeComparison
 			}
@@ -174,11 +171,11 @@ export class RepositoryTransactionHistoryDuo
 		): void {
 			if (operationHistory.endEntityHistoryIndexInTrans
 				=== operationHistory.startEntityHistoryIndexInTrans) {
-				for (let i = repositoryTransactionHistory.operationHistory.length - 1; i >= 0; i--) {
-					const currentOperationHistory = repositoryTransactionHistory.operationHistory[i];
+				for (let i = repositoryTransactionHistory.operationHistory.length - 1 i >= 0 i--) {
+					const currentOperationHistory = repositoryTransactionHistory.operationHistory[i]
 					if (currentOperationHistory === operationHistory) {
-						repositoryTransactionHistory.operationHistory.splice(i, 1);
-						break;
+						repositoryTransactionHistory.operationHistory.splice(i, 1)
+						break
 					}
 				}
 			}

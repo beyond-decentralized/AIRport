@@ -44,11 +44,11 @@ export class SqLiteSchemaBuilder
       primaryKeySuffix = ' NOT NULL'
     }
 
-    const suffix = primaryKeySuffix; // + autoincrementSuffix
+    const suffix = primaryKeySuffix // + autoincrementSuffix
 
     switch (jsonColumn.type) {
       case SQLDataType.ANY:
-        return suffix
+        return `BLOB ${suffix}`
       case SQLDataType.BOOLEAN:
         return `INTEGER ${suffix}`
       case SQLDataType.DATE:
@@ -90,7 +90,7 @@ export class SqLiteSchemaBuilder
     const sequenceDao = await this.getSequenceDao()
     await sequenceDao.save(allSequences, context)
 
-    return allSequences;
+    return allSequences
   }
 
   stageSequences(

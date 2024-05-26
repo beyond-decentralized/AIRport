@@ -1,5 +1,5 @@
 import {
-	IMessageSigningManager
+	IBlockSigningManager
 } from '@airbridge/keyring/dist/app/bundle'
 import {
 	IContext,
@@ -7,29 +7,25 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	IDatastructureUtils, IRepository, IRepositoryTransactionHistory, SyncRepositoryMessage, Repository_GUID, Repository_LocalId
+	IDatastructureUtils, IRepository, IRepositoryTransactionHistory, IRepositoryBlock, Repository_GUID, Repository_LocalId
 } from '@airport/ground-control'
 import {
-	IRepositoryTransactionHistoryDao
+	IRepositoryBlockDao
 } from '@airport/holding-pattern/dist/app/bundle'
 import { ISynchronizationAdapterLoader } from '../../adapters/SynchronizationAdapterLoader'
 import { RepositoryReferenceCreator } from '../RepositoryReferenceCreator'
-import { ISyncOutDataSerializer } from './converter/SyncOutDataSerializer'
+import { ISyncOutDataPreparer } from './converter/SyncOutDataPreparer'
 
 export interface ISynchronizationOutManager {
 
-	getSynchronizationMessages(
+	getSynchronizationBlocks(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[],
 		repositoryMapByLid: Map<Repository_LocalId, IRepository>,
 		context: IContext
-	): Promise<{
-		historiesToSend: IRepositoryTransactionHistory[],
-		messages: SyncRepositoryMessage[]
-	}>
+	): Promise<IRepositoryBlock[]>
 
-	sendMessages(
-		historiesToSend: IRepositoryTransactionHistory[],
-		messages: SyncRepositoryMessage[],
+	sendBlocks(
+		blocks: IRepositoryBlock[],
 		context: IContext
 	): Promise<void>
 
@@ -43,99 +39,85 @@ export class SynchronizationOutManager
 	datastructureUtils: IDatastructureUtils
 
 	@Inject()
-	messageSigningManager: IMessageSigningManager
+	blockSigningManager: IBlockSigningManager
 
 	@Inject()
 	repositoryReferenceCreator: RepositoryReferenceCreator
 
 	@Inject()
-	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
+	repositoryBlockDao: IRepositoryBlockDao
 
 	@Inject()
 	synchronizationAdapterLoader: ISynchronizationAdapterLoader
 
 	@Inject()
-	syncOutDataSerializer: ISyncOutDataSerializer
+	syncOutDataPreparer: ISyncOutDataPreparer
 
-	async getSynchronizationMessages(
+	async getSynchronizationBlocks(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[],
 		repositoryMapByLid: Map<Repository_LocalId, IRepository>,
 		context: IContext
-	): Promise<{
-		historiesToSend: IRepositoryTransactionHistory[],
-		messages: SyncRepositoryMessage[]
-	}> {
+	): Promise<IRepositoryBlock[]> {
 		const {
 			historiesToSend,
-			messages
-		} = await this.syncOutDataSerializer.serialize(
+			blocks
+		} = await this.syncOutDataPreparer.prepare(
 			repositoryTransactionHistories, repositoryMapByLid, context)
-		// await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
+		//  await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, blocks)
 
-		await this.messageSigningManager.signMessages(historiesToSend, messages, context)
+		await this.blockSigningManager.signBlocks(historiesToSend, blocks, context)
 
-		await this.repositoryReferenceCreator.create(messages, context)
+		await this.repositoryReferenceCreator.create(blocks, context)
 
-		for (const message of messages) {
-			for (const referencedRepository of message.data.referencedRepositories) {
+		for (const block of blocks) {
+			for (const referencedRepository of block.data.referencedRepositories) {
 				delete referencedRepository._localId
 			}
-			delete message.data.history.repository._localId
+			delete block.data.history.repository._localId
 		}
 
-		return {
-			historiesToSend,
-			messages
-		}
+		return blocks
 	}
 
-	async sendMessages(
-		historiesToSend: IRepositoryTransactionHistory[],
-		messages: SyncRepositoryMessage[],
+	async sendBlocks(
+		blocks: IRepositoryBlock[],
 		context: IContext
 	): Promise<void> {
-		const groupMessageMap = this.groupMessagesByRepository(
-			messages, historiesToSend)
+		const blockGroupMap = this.groupBlocksByRepository(blocks)
 
-		for (const [repositoryGUID, messagesForRepository] of groupMessageMap) {
+		for (const [repositoryGUID, blocksForRepository] of blockGroupMap) {
 			const synchronizationAdapter = await this.synchronizationAdapterLoader.load(
 				repositoryGUID)
-			await synchronizationAdapter.sendTransactions(repositoryGUID,
-				messagesForRepository)
+			await synchronizationAdapter.sendBlocks(repositoryGUID,
+				blocksForRepository)
 		}
 
-		await this.updateRepositoryTransactionHistories(
-			messages, historiesToSend, context)
+		await this.updateRepositoryBlocks(
+			blocks, context)
 	}
 
-	private groupMessagesByRepository(
-		messages: SyncRepositoryMessage[],
-		historiesToSend: IRepositoryTransactionHistory[]
-	): Map<Repository_GUID, SyncRepositoryMessage[]> {
-		const groupMessageMap: Map<Repository_GUID, SyncRepositoryMessage[]>
+	private groupBlocksByRepository(
+		blocks: IRepositoryBlock[]
+	): Map<Repository_GUID, IRepositoryBlock[]> {
+		const blockGroupMap: Map<Repository_GUID, IRepositoryBlock[]>
 			= new Map()
 
-		for (let i = 0; i < messages.length; i++) {
-			const repository = historiesToSend[i].repository
+		for (const block of blocks) {
 			this.datastructureUtils.ensureChildArray(
-				groupMessageMap, repository.GUID).push(messages[i])
+				blockGroupMap, block.repository.GUID).push(block)
 		}
 
-		return groupMessageMap
+		return blockGroupMap
 	}
 
-	private async updateRepositoryTransactionHistories(
-		messages: SyncRepositoryMessage[],
-		repositoryTransactionHistories: IRepositoryTransactionHistory[],
+	private async updateRepositoryBlocks(
+		blocks: IRepositoryBlock[],
 		context: IContext
 	): Promise<void> {
-		for (let i = 0; i < messages.length; i++) {
-			const message = messages[i]
-			const repositoryTransactionHistory = repositoryTransactionHistories[i]
-			if (message.syncTimestamp) {
-				repositoryTransactionHistory.syncTimestamp = message.syncTimestamp
-				await this.repositoryTransactionHistoryDao.updateSyncTimestamp(
-					repositoryTransactionHistory, context)
+		for (const block of blocks) {
+			if (block.syncTimestamp) {
+				await this.repositoryBlockDao.updateSyncTimestamp(
+					block, context)
 			}
 		}
 	}

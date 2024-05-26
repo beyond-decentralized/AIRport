@@ -1,4 +1,4 @@
-import { Application_Name, IDomain, IApplication, SyncRepositoryData, IApplicationNameUtils } from '@airport/ground-control';
+import { Application_Name, IDomain, IApplication, IRepositoryBlockData, IApplicationNameUtils } from '@airport/ground-control';
 import {
     IDdlApplicationDao
 } from "@airport/airspace/dist/app/bundle";
@@ -25,7 +25,7 @@ export interface IApplicationCheckRecord {
 export interface ISyncInApplicationChecker {
 
     ensureApplications(
-        data: SyncRepositoryData,
+        data: IRepositoryBlockData,
         context: IContext
     ): Promise<{
         isValid: boolean,
@@ -51,7 +51,7 @@ export class SyncInApplicationChecker
     terminalStore: ITerminalStore
 
     async ensureApplications(
-        data: SyncRepositoryData,
+        data: IRepositoryBlockData,
         context: IContext
     ): Promise<{
         isValid: boolean,
@@ -100,7 +100,7 @@ export class SyncInApplicationChecker
     }
 
     private async checkApplicationsAndDomains(
-        data: SyncRepositoryData,
+        data: IRepositoryBlockData,
         context: IContext
     ): Promise<Map<string, Map<string, IApplicationCheckRecord>>> {
         const { allApplication_Names, domainNames, applicationCheckMap }
@@ -126,21 +126,21 @@ export class SyncInApplicationChecker
     }
 
     private getNames(
-        message: SyncRepositoryData
+        block: IRepositoryBlockData
     ): {
         allApplication_Names: string[],
         domainCheckMap: Map<string, IDomainCheckRecord>,
         domainNames: string[],
         applicationCheckMap: Map<string, Map<string, IApplicationCheckRecord>>
     } {
-        if (!message.applications || !(message.applications instanceof Array)) {
-            throw new Error(`Did not find applications in SyncRepositoryData.`)
+        if (!block.applications || !(block.applications instanceof Array)) {
+            throw new Error(`Did not find applications in IRepositoryBlockData.`)
         }
 
         const domainCheckMap: Map<string, IDomainCheckRecord> = new Map()
         const applicationCheckMap: Map<string, Map<string, IApplicationCheckRecord>> = new Map()
 
-        for (let application of message.applications) {
+        for (let application of block.applications) {
             if (typeof application !== 'object') {
                 throw new Error(`Invalid ApplicationVersion.application`)
             }

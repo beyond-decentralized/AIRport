@@ -18,23 +18,23 @@ import {
 	Application_Index,
 	IApplicationReferenceByIndex,
 	DbEntity_TableIndex
-} from '@airport/ground-control';
-import { currentApplicationApi } from '../../../api/parser/ApiGenerator';
-import { getExpectedPropertyIndexesFormatMessage } from '../../../ParserUtils';
-import { Configuration } from '../../options/Options';
-import { EntityCandidate } from '../../parser/EntityCandidate';
-import { SEntity, SIndexedEntity } from './SEntity';
-import { SProperty, SRelation } from './SProperty';
+} from '@airport/ground-control'
+import { currentApplicationApi } from '../../../api/parser/ApiGenerator'
+import { getExpectedPropertyIndexesFormatMessage } from '../../../ParserUtils'
+import { Configuration } from '../../options/Options'
+import { EntityCandidate } from '../../parser/EntityCandidate'
+import { SEntity, SIndexedEntity } from './SEntity'
+import { SProperty, SRelation } from './SProperty'
 import {
 	SIndexedApplication,
 	SApplicationReference
-} from './SApplication';
-import { SApplicationBuilder } from './SApplicationBuilder';
-import { JsonApplicationWithApi } from '@airport/air-traffic-control';
+} from './SApplication'
+import { SApplicationBuilder } from './SApplicationBuilder'
+import { JsonApplicationWithApi } from '@airport/air-traffic-control'
 
 export class JsonApplicationBuilder {
 
-	existingApplication: JsonApplication;
+	existingApplication: JsonApplication
 
 	// applicationVarName = 'APPLICATION'
 
@@ -49,20 +49,20 @@ export class JsonApplicationBuilder {
 			// const errorMessage = `Could not parse existing application, make sure file starts with with:
 			// 	 "export const ${this.applicationVarName} = {"
 			// 	 where "{" marks the start of the application definition, and ends with:
-			// 	 "};"
+			// 	 "}"
 			// 	 where "}" marks the end of the application definition.`
 			//
 			// if (indexOfAssignment < 0) {
 			// 	throw new Error(errorMessage)
 			// }
-			// if (existingApplicationString.indexOf('};') !== existingApplicationString.length - 2) {
+			// if (existingApplicationString.indexOf('}') !== existingApplicationString.length - 2) {
 			// 	throw new Error(errorMessage)
 			// }
 			//
 			// existingApplicationString = existingApplicationString.substring(indexOfAssignment + 9,
 			// existingApplicationString.length - 1)
 
-			this.existingApplication = JSON.parse(existingApplicationString);
+			this.existingApplication = JSON.parse(existingApplicationString)
 		}
 	}
 
@@ -71,15 +71,15 @@ export class JsonApplicationBuilder {
 		applicationMapByProjectName: { [projectName: string]: IApplication },
 		entityOperationMap: { [entityName: string]: { [operationName: string]: JsonOperation } }
 	): [JsonApplicationWithApi, SIndexedApplication] {
-		const sApplicationBuilder = new SApplicationBuilder(this.config, this.entityMapByName);
+		const sApplicationBuilder = new SApplicationBuilder(this.config, this.entityMapByName)
 
-		const sIndexedApplication = sApplicationBuilder.build(applicationMapByProjectName);
+		const sIndexedApplication = sApplicationBuilder.build(applicationMapByProjectName)
 
-		const jsonApplication = this.convertSIndexedApplicationToJsonApplication(domain, sIndexedApplication);
+		const jsonApplication = this.convertSIndexedApplicationToJsonApplication(domain, sIndexedApplication)
 
 		// TODO: reset table and column and relation indexes based on existing application
 
-		return [jsonApplication, sIndexedApplication];
+		return [jsonApplication, sIndexedApplication]
 	}
 
 	addOperations(
@@ -87,12 +87,12 @@ export class JsonApplicationBuilder {
 		entityOperationMap: { [entityName: string]: { [operationName: string]: JsonOperation } }
 	) {
 		jsonApplication.versions[jsonApplication.versions.length - 1].entities.forEach(jsonEntity => {
-			let entityOperations = entityOperationMap[jsonEntity.name];
+			let entityOperations = entityOperationMap[jsonEntity.name]
 			if (!entityOperations) {
-				return;
+				return
 			}
-			jsonEntity.operations = entityOperations;
-		});
+			jsonEntity.operations = entityOperations
+		})
 	}
 
 	private convertSIndexedApplicationToJsonApplication(
@@ -101,7 +101,7 @@ export class JsonApplicationBuilder {
 	): JsonApplicationWithApi {
 		const jsonEntities: JsonEntity[] = sIndexedApplication.entities.map(
 			sIndexedEntity => {
-				const sEntity = sIndexedEntity.entity;
+				const sEntity = sIndexedEntity.entity
 				const columns: JsonColumn[] = sIndexedEntity.columns.map(
 					sColumn => {
 						const jsonColumn: JsonColumn = {
@@ -118,23 +118,23 @@ export class JsonApplicationBuilder {
 								})),
 							sinceVersion: 1,
 							type: getSqlDataType(sColumn),
-						};
+						}
 						if (sColumn.precision) {
-							jsonColumn.precision = sColumn.precision;
+							jsonColumn.precision = sColumn.precision
 						}
 						if (sColumn.scale) {
-							jsonColumn.scale = sColumn.scale;
+							jsonColumn.scale = sColumn.scale
 						}
-						return jsonColumn;
-					});
+						return jsonColumn
+					})
 				columns.sort((
 					a,
 					b
 				) =>
 					a.index < b.index ? -1 : 1
-				);
+				)
 
-				const [properties, relations] = this.getPropertiesAndRelations(sIndexedApplication, sIndexedEntity, columns);
+				const [properties, relations] = this.getPropertiesAndRelations(sIndexedApplication, sIndexedEntity, columns)
 
 				const tableConfig = this.convertTableConfig(sEntity)
 
@@ -149,8 +149,8 @@ export class JsonApplicationBuilder {
 					relations: relations,
 					sinceVersion: 1,
 					tableConfig,
-				};
-			});
+				}
+			})
 
 		// FIXME: add application versioning support
 		return {
@@ -184,7 +184,7 @@ export class JsonApplicationBuilder {
 				signature: 'FIXME: sign application versions',
 				versionString: '1.0.0'
 			}]
-		};
+		}
 	}
 
 	private convertTableConfig<DIC extends DbIndexConfiguration>(
@@ -209,7 +209,7 @@ export class JsonApplicationBuilder {
 		}
 
 		if (!rawPropertyIndexes.parameters || rawPropertyIndexes.parameters.length !== 1) {
-			throw new Error(`Unexpected number of parameters in 'indexes' arrow function.${getExpectedPropertyIndexesFormatMessage()}`);
+			throw new Error(`Unexpected number of parameters in 'indexes' arrow function.${getExpectedPropertyIndexesFormatMessage()}`)
 		}
 
 		const propertyMapByName: Map<string, SProperty> = new Map()
@@ -270,7 +270,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 		return sIndexedEntity.idColumns.map(
 			sColumn => ({
 				index: sColumn.index
-			}));
+			}))
 	}
 
 	private getPropertiesAndRelations(
@@ -278,42 +278,42 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 		sIndexedEntity: SIndexedEntity,
 		columns: JsonColumn[],
 	): [JsonProperty[], JsonRelation[]] {
-		const relations = [];
+		const relations = []
 		const properties = sIndexedEntity.entity.properties.map((
 			sProperty,
 			index
 		) => {
-			let columnRef;
-			let relationRef;
+			let columnRef
+			let relationRef
 
-			const sRelation = sProperty.relation;
+			const sRelation = sProperty.relation
 			if (!sRelation) {
-				const sColumn = sProperty.columns[0];
+				const sColumn = sProperty.columns[0]
 				columnRef = {
 					index: sColumn.index
-				};
+				}
 
 			} else {
-				let relationTableApplication_Index: number;
-				let relationApplication_Index: Application_Index;
-				let relationTableIndex: DbEntity_TableIndex;
-				let relatedIndexedEntity: SIndexedEntity | DbEntity;
+				let relationTableApplication_Index: number
+				let relationApplication_Index: Application_Index
+				let relationTableIndex: DbEntity_TableIndex
+				let relatedIndexedEntity: SIndexedEntity | DbEntity
 				if (sRelation.referencedApplication_Index || sRelation.referencedApplication_Index === 0) {
-					relationTableApplication_Index = sRelation.referencedApplication_Index;
-					const relatedIApplication = sIndexedApplication.application.referencedApplications[sRelation.referencedApplication_Index];
-					relationApplication_Index = relatedIApplication.index;
+					relationTableApplication_Index = sRelation.referencedApplication_Index
+					const relatedIApplication = sIndexedApplication.application.referencedApplications[sRelation.referencedApplication_Index]
+					relationApplication_Index = relatedIApplication.index
 					relatedIndexedEntity = relatedIApplication.dbApplication
-						.currentVersion[0].applicationVersion.entityMapByName[sRelation.entityName];
-					relationTableIndex = relatedIndexedEntity.index;
+						.currentVersion[0].applicationVersion.entityMapByName[sRelation.entityName]
+					relationTableIndex = relatedIndexedEntity.index
 				} else {
-					relatedIndexedEntity = sIndexedApplication.entityMapByName[sRelation.entityName];
-					relationApplication_Index = null;
-					relationTableIndex = relatedIndexedEntity.entity.entityIndex;
+					relatedIndexedEntity = sIndexedApplication.entityMapByName[sRelation.entityName]
+					relationApplication_Index = null
+					relationTableIndex = relatedIndexedEntity.entity.entityIndex
 				}
 
 				this.buildColumnRelations(
 					sIndexedEntity, sRelation, relatedIndexedEntity,
-					relationApplication_Index, relationTableIndex, columns);
+					relationApplication_Index, relationTableIndex, columns)
 
 				const relation: JsonRelation = {
 					// addToJoinFunction: sRelation.addToJoinFunction,
@@ -331,11 +331,11 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 					relationTableIndex,
 					relationTableApplication_Index,
 					sinceVersion: 1
-				};
-				relations[sRelation.index] = relation;
+				}
+				relations[sRelation.index] = relation
 				relationRef = {
 					index: sRelation.index
-				};
+				}
 			}
 
 			return {
@@ -345,10 +345,10 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 				name: sProperty.name,
 				relationRef,
 				sinceVersion: 1
-			};
-		});
+			}
+		})
 
-		return [properties, relations];
+		return [properties, relations]
 	}
 
 	private buildColumnRelations(
@@ -361,33 +361,33 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 	): void {
 		switch (sRelation.relationType) {
 			case EntityRelationType.MANY_TO_ONE:
-				break;
+				break
 			case EntityRelationType.ONE_TO_MANY:
 				// Currently only need to build manyRelationColumnRefs for ManyToOne relations.
-				return;
+				return
 			default:
-				throw new Error(`Unknown relation type: ${sRelation.relationType}.`);
+				throw new Error(`Unknown relation type: ${sRelation.relationType}.`)
 		}
 		sRelation.sRelationColumns.map(
 			sRelationColumn => {
 				if (!sRelationColumn.manyToOne) {
-					return;
+					return
 				}
-				let ownColumnIndex;
+				let ownColumnIndex
 				// if (sRelationColumn.ownColumnIdIndex) {
 				// 	ownColumnIndex = sIndexedEntity.idColumns[sRelationColumn.ownColumnIdIndex].index
 				// } else {
-				ownColumnIndex = sIndexedEntity.columnMap[sRelationColumn.ownColumnReference].index;
+				ownColumnIndex = sIndexedEntity.columnMap[sRelationColumn.ownColumnReference].index
 				// }
-				let relationColumnIndex;
+				let relationColumnIndex
 				// if (sRelationColumn.relationColumnIdIndex
 				// 	|| sRelationColumn.relationColumnIdIndex == 0) {
 				// 	relationColumnIndex =
 				// relatedIndexedEntity.idColumns[sRelationColumn.relationColumnIdIndex].index } else {
-				relationColumnIndex = relatedIndexedEntity.columnMap[sRelationColumn.relationColumnReference].index;
+				relationColumnIndex = relatedIndexedEntity.columnMap[sRelationColumn.relationColumnReference].index
 				// }
 
-				const column = columns[ownColumnIndex];
+				const column = columns[ownColumnIndex]
 
 				column.manyRelationColumnRefs.push({
 					manyRelationIndex: sRelation.index,
@@ -396,20 +396,20 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
 					oneRelationIndex: sRelationColumn.oneSideRelationIndex,
 					oneColumnIndex: relationColumnIndex,
 					sinceVersion: 1
-				});
+				})
 
-			});
+			})
 	}
 
 	private prepOneToManyElems(
 		elems: DbOneToManyElements
 	): DbOneToManyElements {
 		if (!elems) {
-			return elems;
+			return elems
 		}
 		return {
 			mappedBy: elems.mappedBy
-		};
+		}
 	}
 
 }

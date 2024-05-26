@@ -1,12 +1,11 @@
 import { Inject, Injected } from "@airport/direction-indicator"
 import { AirEntityId } from "@airport/final-approach"
 import { DdlEntity } from "@airport/airspace/dist/app/bundle"
-import { Repository } from "@airport/holding-pattern/dist/app/bundle"
 import { ActorRecordId, Actor_LocalId, DbEntity, DbEntity_LocalId, Dictionary, IAirEntity, IEntityRecordAdditionsForRepository, IDatastructureUtils, ISequenceGenerator, Repository_LocalId } from "@airport/ground-control"
 import { CopiedEntityQueryRecordDao } from "../dao/relation/EntityQueryRecordDao"
 import { EntityRecordDao } from "../dao/relation/EntityRecordDao"
-import { EntityRecordRepositoryReferenceDao } from "../dao/relation/EntityRecordRepositoryReferenceDao"
-import { EntityRecord, EntityRecordRepositoryReference } from "../ddl/ddl"
+import { CopiedEntityRecordReferenceDao } from "../dao/relation/CopiedEntityRecordReferenceDao"
+import { EntityRecord, CopiedEntityRecordReference } from "../ddl/ddl"
 import { EntityRelationRecord } from "../ddl/relation/EntityRelationRecord"
 
 export interface ICrossRepositoryRelationManager {
@@ -15,10 +14,10 @@ export interface ICrossRepositoryRelationManager {
         entityRecordAdditionsPerRepository: IEntityRecordAdditionsForRepository[]
     ): Promise<EntityRecord>
 
-    addEntityRecordRepositoryReference(
-        entityRelationRecord: EntityRelationRecord,
-        referencingRepository: Repository
-    ): EntityRecordRepositoryReference
+    addCopiedEntityRecordReference(
+        copiedEntityRelationRecord: EntityRelationRecord,
+        referencingEntityRecord: EntityRecord
+    ): CopiedEntityRecordReference
 
     getRecords(
         entities: IAirEntity[][],
@@ -38,7 +37,7 @@ export class CrossRepositoryRelationManager
     entityRecordDao: EntityRecordDao
 
     @Inject()
-    entityRecordRepositoryReferenceDao: EntityRecordRepositoryReferenceDao
+    copiedEntityRecordReferenceDao: CopiedEntityRecordReferenceDao
     
     @Inject()
     datastructureUtils: IDatastructureUtils
@@ -96,17 +95,18 @@ export class CrossRepositoryRelationManager
         return null
     }
 
-    addEntityRecordRepositoryReference(
-        entityRelationRecord: EntityRelationRecord,
-        referencingRepository: Repository
-    ): EntityRecordRepositoryReference {
-        const repositoryReference = new EntityRecordRepositoryReference()
-        repositoryReference.entityRelationRecord = entityRelationRecord
-        repositoryReference.referencingRepository = referencingRepository
+    addCopiedEntityRecordReference(
+        copiedEntityRelationRecord: EntityRelationRecord,
+        referencingEntityRecord: EntityRecord
+    ): CopiedEntityRecordReference {
+        const copiedEntityRecordReference = new CopiedEntityRecordReference()
+        copiedEntityRecordReference.copiedEntityRelationRecord = copiedEntityRelationRecord
+        copiedEntityRecordReference.referencingEntityRecord = referencingEntityRecord
 
-        entityRelationRecord.referencedRecord.repositoryReferences.push(repositoryReference)
+        copiedEntityRelationRecord.copiedEntityRecordReferences.push(copiedEntityRecordReference)
+        referencingEntityRecord.copiedRecordReferences.push(copiedEntityRecordReference)
 
-        return repositoryReference
+        return copiedEntityRecordReference
     }
 
     async getRecords(
@@ -148,19 +148,6 @@ export class CrossRepositoryRelationManager
         entityRecord.ddlEntity = copyDdlEntity
 
         return entityRecord
-    }
-
-    private getCopiedEntityRepositoryRecord(
-        entityRelationRecord: EntityRelationRecord,
-        repositoryWithCopy: Repository
-    ): EntityRecordRepositoryReference {
-        const entityRecordRepositoryReference = new EntityRecordRepositoryReference()
-        entityRecordRepositoryReference.entityRelationRecord = entityRelationRecord
-        entityRecordRepositoryReference.referencingRepository = repositoryWithCopy
-
-        entityRelationRecord.referencedRecord.repositoryReferences.push(entityRecordRepositoryReference)
-
-        return entityRecordRepositoryReference
     }
 
 }

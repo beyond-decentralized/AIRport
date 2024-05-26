@@ -1,8 +1,8 @@
-import { IApiClass, IApiFileForGeneration, IApiSignature } from "../parser/ApiGenerator";
-import { getFullPathFromRelativePath, resolveRelativePath } from "../../resolve/pathResolver";
-import { IBuilder } from "../../ddl/builder/Builder";
-import { FileBuilder } from "../../ddl/builder/entity/FileBuilder";
-import { PathBuilder } from "../../ddl/builder/PathBuilder";
+import { IApiClass, IApiFileForGeneration, IApiSignature } from "../parser/ApiGenerator"
+import { getFullPathFromRelativePath, resolveRelativePath } from "../../resolve/pathResolver"
+import { IBuilder } from "../../ddl/builder/Builder"
+import { FileBuilder } from "../../ddl/builder/entity/FileBuilder"
+import { PathBuilder } from "../../ddl/builder/PathBuilder"
 
 export class ApiBuilder
     extends FileBuilder
@@ -15,12 +15,12 @@ export class ApiBuilder
         private apiFile: IApiFileForGeneration,
         apiFilePath: string
     ) {
-        super(null, null, pathBuilder, null);
+        super(null, null, pathBuilder, null)
 
         const relativePathToApiFile = resolveRelativePath(
-            pathBuilder.apiDirPath, apiFilePath);
+            pathBuilder.apiDirPath, apiFilePath)
         this.fullGenerationPath = pathBuilder.fullGeneratedDirPath
-            + `/api/${relativePathToApiFile}`;
+            + `/api/${relativePathToApiFile}`
     }
 
     addImports() {
@@ -61,7 +61,7 @@ ${enumOrInterfaceCode}`
             apiClassDefinitionCode += this.buildClassDefinition(apiClass)
         }
 
-        const imports = this.buildImports();
+        const imports = this.buildImports()
 
         return `${imports}
 ${enumAndInterfaceDefinitionCode}

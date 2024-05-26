@@ -10,25 +10,25 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { DbEntity_LocalId, DbRelation_Index, DbRelation, IDatastructureUtils, KeyUtils, SyncRepositoryData, SyncRepositoryMessage, Repository_GUID, IRepository, RepositoryMember_PublicSigningKey, IRepositoryMember } from '@airport/ground-control';
+import { DbEntity_LocalId, DbRelation_Index, DbRelation, IDatastructureUtils, KeyUtils, IRepositoryBlockData, IRepositoryBlock, Repository_GUID, IRepository, RepositoryMember_PublicSigningKey, IRepositoryMember } from '@airport/ground-control';
 import { ITerminalStore } from '@airport/terminal-map';
 
 export interface ISyncInChecker {
 
-	checkMessage(
-		message: SyncRepositoryMessage,
+	checkBlock(
+		block: IRepositoryBlock,
 		addedRepositoryMapByGUID: Map<Repository_GUID, IRepository>,
 		addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey: Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>>,
 		context: IContext
-	): Promise<IMessageCheckResult>
+	): Promise<IBlockCheckResult>
 
 	checkReferencedApplicationRelations(
-		data: SyncRepositoryData
+		data: IRepositoryBlockData
 	): void
 
 }
 
-export interface IMessageCheckResult
+export interface IBlockCheckResult
 	extends IRepositoriesAndMembersCheckResult {
 	// Delay processing of ledger tables because it might require
 	// loading of additional Apps
@@ -70,16 +70,21 @@ export class SyncInChecker
 	terminalStore: ITerminalStore
 
 	/**
-	 * Check the message and load all required auxiliary entities.
+	 * Check the block and load all required auxiliary entities.
 	 */
-	async checkMessage(
-		message: SyncRepositoryMessage,
+	async checkBlock(
+		block: IRepositoryBlock,
 		addedRepositoryMapByGUID: Map<Repository_GUID, IRepository>,
 		addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey: Map<Repository_GUID, Map<RepositoryMember_PublicSigningKey, IRepositoryMember>>,
 		context: IContext
-	): Promise<IMessageCheckResult> {
+	): Promise<IBlockCheckResult> {
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
-		let data = message.data
+		let data = block.data
+
+
+		if (typeof block.GUID !== 'string' || block.GUID.length !== 36) {
+			throw new Error(`Invalid IRepositoryBlock.GUID`)
+		}
 
 		// Serialize before object starts to be interlinked
 		let serializedData = JSON.stringify(data)
@@ -112,10 +117,10 @@ export class SyncInChecker
 			return invalidResult
 		}
 
-		const dataCheckResult = this.syncInDataChecker.checkData(message)
+		const dataCheckResult = this.syncInDataChecker.checkData(block)
 
 		const repositoryAndMemberCheckResult = await this.syncInRepositoryChecker
-			.checkRepositoriesAndMembers(message, addedRepositoryMapByGUID,
+			.checkRepositoriesAndMembers(block, addedRepositoryMapByGUID,
 				addedRepositoryMembersByRepositoryGUIDAndPublicSigningKey, context)
 		if (!repositoryAndMemberCheckResult.isValid) {
 			return invalidResult
@@ -125,7 +130,7 @@ export class SyncInChecker
 			if (!this.keyUtils.verify(serializedData,
 				signatureCheck.signatureToCheck,
 				signatureCheck.publicSigningKey)) {
-				console.error(`message.${signatureCheck.signatureName} is not valid.`)
+				console.error(`block.${signatureCheck.signatureName} is not valid.`)
 				return invalidResult
 			}
 		}
@@ -138,7 +143,7 @@ export class SyncInChecker
 	}
 
 	checkReferencedApplicationRelations(
-		data: SyncRepositoryData
+		data: IRepositoryBlockData
 	): void {
 		// TODO: check referencedApplicationRelations
 		data.referencedApplicationVersions
@@ -161,7 +166,7 @@ export class SyncInChecker
 				throw new Error(`Invalid referencedApplicationRelations[${i}].entity`)
 			}
 			if (typeof referencedEntity.applicationVersion !== 'number') {
-				throw new Error(`Expecting "in-message index" (number)
+				throw new Error(`Expecting "in-block index" (number)
 					in 'referencedApplicationRelations[${i}].entity.applicationVersion'`)
 			}
 			if (typeof referencedEntity.index !== 'number') {
@@ -169,17 +174,17 @@ export class SyncInChecker
 					in 'referencedApplicationRelations[${i}].entity.index'`)
 			}
 
-			const messageApplicationVersion = data
+			const blockApplicationVersion = data
 				.referencedApplicationVersions[referencedEntity.applicationVersion as any]
-			if (!messageApplicationVersion) {
+			if (!blockApplicationVersion) {
 				throw new Error(
-					`No Application Version with in-message index ${referencedEntity.applicationVersion}.
+					`No Application Version with in-block index ${referencedEntity.applicationVersion}.
 Declared in 'referencedApplicationRelations[${i}].entity.applicationVersion'`
 				)
 			}
 
-			const applicationEntity = applicationEntityMap.get(messageApplicationVersion.application.domain.name)
-				.get(messageApplicationVersion.application.name).get(referencedEntity.index)
+			const applicationEntity = applicationEntityMap.get(blockApplicationVersion.application.domain.name)
+				.get(blockApplicationVersion.application.name).get(referencedEntity.index)
 			if (!applicationEntity) {
 				throw new Error(`Invalid referencedApplicationRelations[${i}].entity.index: ${referencedEntity.index}`)
 			}

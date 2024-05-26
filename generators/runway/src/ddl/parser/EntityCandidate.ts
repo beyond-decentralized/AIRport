@@ -65,7 +65,7 @@ export class EntityCandidate {
 	private getPropertiesOfType(
 		isId: boolean
 	): PropertyDocEntry[] {
-		let i = 0;
+		let i = 0
 		return this.docEntry.properties.filter((
 			property,
 			index

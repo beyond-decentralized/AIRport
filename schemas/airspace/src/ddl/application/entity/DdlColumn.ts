@@ -87,10 +87,7 @@ export class DdlColumn
 	type: SQLDataType;
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'DB_ENTITY_LID',
-		referencedColumnName: 'DB_ENTITY_LID', nullable: false
-	})
+	@JoinColumn({ name: 'DB_ENTITY_LID', nullable: false })
 	entity: DdlEntity;
 
 	@OneToMany({ mappedBy: 'column' })

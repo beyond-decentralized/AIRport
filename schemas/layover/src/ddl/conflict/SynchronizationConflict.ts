@@ -35,10 +35,7 @@ export class SynchronizationConflict
 	acknowledged: SynchronizationConflict_Acknowledged;
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'REPOSITORY_LID',
-		referencedColumnName: 'REPOSITORY_LID'
-	})
+	@JoinColumn({ name: 'REPOSITORY_LID' })
 	repository: Repository;
 
 	@ManyToOne()

@@ -8,11 +8,11 @@ export enum ArgumentType {
 
 export class Flags {
 
-	optionsFilePath:string;
+	optionsFilePath:string
 
 }
 
 export var ARGUMENT_FLAGS:{[optionFlag:string]:ArgumentType} = {
 	'--config': ArgumentType.CONFIG,
 	'-c': ArgumentType.CONFIG
-};
+}

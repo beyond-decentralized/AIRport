@@ -1,8 +1,8 @@
-import { IApiObject } from '@airport/air-traffic-control';
-import * as ts from 'typescript';
-import tsc from 'typescript';
-import { getRelativePath } from '../../resolve/pathResolver';
-import { projectInterfaces } from '../InterfaceRegistry';
+import { IApiObject } from '@airport/air-traffic-control'
+import * as ts from 'typescript'
+import tsc from 'typescript'
+import { getRelativePath } from '../../resolve/pathResolver'
+import { projectInterfaces } from '../InterfaceRegistry'
 
 /**
  * Detecting interfaces is not really needed as long as interfaces

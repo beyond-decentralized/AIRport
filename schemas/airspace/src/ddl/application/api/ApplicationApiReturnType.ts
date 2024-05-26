@@ -25,10 +25,7 @@ export class ApplicationApiReturnType
     type: AppApiReturnType_Type
 
     @ManyToOne()
-    @JoinColumn({
-        name: 'APPLICATION_API_OPERATION_LID',
-        referencedColumnName: 'APPLICATION_API_OPERATION_LID'
-    })
+    @JoinColumn({ name: 'APPLICATION_API_OPERATION_LID' })
     operation: ApplicationApiOperation
 
 }

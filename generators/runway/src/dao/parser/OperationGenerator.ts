@@ -7,11 +7,11 @@ import {
 	IQueryInput,
 	QueryInputKind,
 	QueryParameterType
-} from '@airport/ground-control';
-import * as ts from 'typescript';
-import tsc from 'typescript';
-import { DaoFile } from '../../ddl/parser/FileImports';
-import { forEach } from '../../ParserUtils';
+} from '@airport/ground-control'
+import * as ts from 'typescript'
+import tsc from 'typescript'
+import { DaoFile } from '../../ddl/parser/FileImports'
+import { forEach } from '../../ParserUtils'
 
 export interface JsonFormattedQueryWithExpression
 	extends JsonFormattedQuery {
@@ -22,14 +22,14 @@ export const entityOperationMap: {
 	[entityName: string]: {
 		[operationName: string]: JsonOperation
 	}
-} = {};
+} = {}
 export const entityOperationPaths: {
 	[entityName: string]: string
-} = {};
+} = {}
 
 // let currentFileImports
-const daoFileMap: { [classPath: string]: DaoFile } = {};
-const daoMap: { [name: string]: boolean } = {};
+const daoFileMap: { [classPath: string]: DaoFile } = {}
+const daoMap: { [name: string]: boolean } = {}
 
 // const fileImportsMapByFilePath: { [path: string]: FileImports } = {}
 
@@ -37,13 +37,13 @@ export function visitDaoFile(
 	node: ts.Node,
 	path: string
 ) {
-	let file = daoFileMap[path];
+	let file = daoFileMap[path]
 	if (!file) {
 		file = {
 			path,
 			hasDao: false
-		};
-		daoFileMap[path] = file;
+		}
+		daoFileMap[path] = file
 	}
 
 	// let fileImports = fileImportsMapByFilePath[path]
@@ -54,52 +54,52 @@ export function visitDaoFile(
 	// currentFileImports = fileImports
 
 	if (node.kind !== tsc.SyntaxKind.ClassDeclaration) {
-		return;
+		return
 	}
 
-	const classNode = <ts.ClassDeclaration>node;
+	const classNode = <ts.ClassDeclaration>node
 
 	// This is a top level class, get its symbol
 	let symbol = globalThis.checker
-		.getSymbolAtLocation(classNode.name);
+		.getSymbolAtLocation(classNode.name)
 
-	let daoName = classNode.name.escapedText as string;
-	let entityName: string;
-	let extendedBaseClass: string;
+	let daoName = classNode.name.escapedText as string
+	let entityName: string
+	let extendedBaseClass: string
 	for (const heritageClause of classNode.heritageClauses) {
 		switch (heritageClause.token) {
 			case tsc.SyntaxKind.ExtendsKeyword: {
-				extendedBaseClass = (heritageClause.types[0].expression as any).escapedText;
+				extendedBaseClass = (heritageClause.types[0].expression as any).escapedText
 				if (!extendedBaseClass.startsWith('Base') || !extendedBaseClass.endsWith('Dao')) {
-					throw new Error(`Dao ${daoName} must extends the Base{DbEntity_Name}Dao class.`);
+					throw new Error(`Dao ${daoName} must extends the Base{DbEntity_Name}Dao class.`)
 				}
-				entityName = extendedBaseClass.substring(4, extendedBaseClass.length - 3);
-				break;
+				entityName = extendedBaseClass.substring(4, extendedBaseClass.length - 3)
+				break
 			}
 			// case tsc.SyntaxKind.ImplementsKeyword: {
-			// 	const interfaceName = (heritageClause.types[0].expression as any).escapedText;
-			// 	break;
+			// 	const interfaceName = (heritageClause.types[0].expression as any).escapedText
+			// 	break
 			// }
 		}
 	}
 
 	if (!entityName) {
-		throw new Error(`The '${daoName}' Dao must extend the Base{DbEntity_Name}Dao class.`);
+		throw new Error(`The '${daoName}' Dao must extend the Base{DbEntity_Name}Dao class.`)
 	}
 
 	if (file.hasDao) {
 		throw new Error(`Cannot declare more than one DAO per file
-	(or have multiple class definitions per file).`);
+	(or have multiple class definitions per file).`)
 	}
-	file.hasDao = true;
+	file.hasDao = true
 
 	if (daoMap[daoName]) {
-		throw new Error(`Cannot declare multiple DAOs for the same entity ${entityName}.`);
+		throw new Error(`Cannot declare multiple DAOs for the same entity ${entityName}.`)
 	}
-	daoMap[daoName] = true;
+	daoMap[daoName] = true
 
-	entityOperationMap[entityName] = serializeClass(symbol, daoName, entityName);
-	entityOperationPaths[entityName] = path;
+	entityOperationMap[entityName] = serializeClass(symbol, daoName, entityName)
+	entityOperationPaths[entityName] = path
 }
 
 /** Serialize a class symbol information */
@@ -108,35 +108,35 @@ function serializeClass(
 	daoName: string,
 	entityName: string
 ): { [operationName: string]: JsonOperation } {
-	let daoOperations = {};
+	let daoOperations = {}
 
 	// if(true) {
 	// 	// No more directly explosed Dao methods, instead
 	// 	// parameters of @API() methods will in the future be
 	// 	// checked structurally
-	// 	return;
+	// 	return
 	// }
 	forEach(symbol.members, (
 		memberName,
 		member
 	) => {
 		if (!member.valueDeclaration) {
-			return;
+			return
 		}
 		switch (member.valueDeclaration.kind) {
 			// case tsc.SyntaxKind.MethodDeclaration:
-			// 	serializeMethod(symbol, daoName, entityName, memberName, member, daoOperations);
-			// 	break;
+			// 	serializeMethod(symbol, daoName, entityName, memberName, member, daoOperations)
+			// 	break
 			case tsc.SyntaxKind.PropertyDeclaration:
 				// NOTE: all queries are done in code, query serialization is no longer needed
-				// serializeProperty(symbol, daoName, entityName, memberName, member, daoOperations);
-				break;
+				// serializeProperty(symbol, daoName, entityName, memberName, member, daoOperations)
+				break
 			default:
-				break;
+				break
 		}
-	});
+	})
 
-	return daoOperations;
+	return daoOperations
 }
 
 function serializeMethod(
@@ -149,12 +149,12 @@ function serializeMethod(
 ) {
 	const decorators = tsc.getDecorators(member.valueDeclaration as any)
 	if (!decorators) {
-		return;
+		return
 	}
 	decorators.forEach(decorator => {
 		// decorator.expression.kind = 196 CallExpression
 		// decorator.expression.expression.kind = 75 Identifier
-	});
+	})
 }
 
 function serializeProperty(
@@ -168,15 +168,15 @@ function serializeProperty(
 
 	// Property assignment does not appear to be needed by the Typescript
 	// compiler in order for the class to adhere to the interface
-	// const expression: ts.PropertyAccessExpression = member.valueDeclaration.initializer;
+	// const expression: ts.PropertyAccessExpression = member.valueDeclaration.initializer
 	// if (expression.kind !== tsc.SyntaxKind.PropertyAccessExpression) {
-	// 	return;
+	// 	return
 	// }
 	// if (expression.expression.kind !== tsc.SyntaxKind.ThisKeyword) {
-	// 	return;
+	// 	return
 	// }
 
-	let operationFound = null;
+	let operationFound = null
 
 	const decorators = tsc.getDecorators(member.valueDeclaration)
 	if (!decorators) {
@@ -193,119 +193,119 @@ Following decorators are currently supported for ${daoName}:
   @${daoName}.Search.Tree
   @${daoName}.SearchOne.Graph
   @${daoName}.SearchOne.Tree
-			`);
+			`)
 	}
 
 	decorators.forEach(decorator => {
 		// decorator.expression.kind = 196 CallExpression
 		// decorator.expression.expression.kind = 75 Identifier
-		let decoratorNameExpression = (decorator.expression as any).expression;
-		const decoratorNameParts = [];
+		let decoratorNameExpression = (decorator.expression as any).expression
+		const decoratorNameParts = []
 		while (decoratorNameExpression) {
 			if (decoratorNameExpression.escapedText) {
-				decoratorNameParts.unshift(decoratorNameExpression.escapedText);
+				decoratorNameParts.unshift(decoratorNameExpression.escapedText)
 			} else if (decoratorNameExpression.name) {
-				decoratorNameParts.unshift(decoratorNameExpression.name.escapedText);
+				decoratorNameParts.unshift(decoratorNameExpression.name.escapedText)
 			}
-			decoratorNameExpression = decoratorNameExpression.expression;
+			decoratorNameExpression = decoratorNameExpression.expression
 		}
-		const decoratorName = decoratorNameParts.join('.');
+		const decoratorName = decoratorNameParts.join('.')
 		if (decoratorNameParts.length !== 2 && decoratorNameParts.length !== 3) {
-			throwUnsupportedDecorator(daoName, decoratorName);
+			throwUnsupportedDecorator(daoName, decoratorName)
 		}
 		if (decoratorNameParts[0] !== daoName) {
-			throwUnsupportedDecorator(daoName, decoratorName);
+			throwUnsupportedDecorator(daoName, decoratorName)
 		}
 		switch (decoratorNameParts[1]) {
 			// case 'Delete':
 			case 'Save':
 				if (decoratorNameParts.length !== 2) {
-					throwUnsupportedDecorator(daoName, decoratorName);
+					throwUnsupportedDecorator(daoName, decoratorName)
 				}
 				if (operationFound) {
-					throwMultipleOperationDecorators(daoName, operationFound, decoratorName);
+					throwMultipleOperationDecorators(daoName, operationFound, decoratorName)
 				}
-				operationFound = decoratorName;
-				break;
+				operationFound = decoratorName
+				break
 			case 'Find':
 			case 'FindOne':
 			case 'Search':
 			case 'SearchOne':
 				if (decoratorNameParts.length !== 3) {
-					throwUnsupportedDecorator(daoName, decoratorName);
+					throwUnsupportedDecorator(daoName, decoratorName)
 				}
 				switch (decoratorNameParts[2]) {
 					case 'Graph':
 					case 'Tree':
-						break;
+						break
 					default:
-						throwUnsupportedDecorator(daoName, decoratorName);
+						throwUnsupportedDecorator(daoName, decoratorName)
 				}
 				if (operationFound) {
-					throwMultipleOperationDecorators(daoName, operationFound, decoratorName);
+					throwMultipleOperationDecorators(daoName, operationFound, decoratorName)
 				}
-				operationFound = decoratorName;
-				break;
+				operationFound = decoratorName
+				break
 			default:
 
 		}
 		switch (decoratorNameParts[1]) {
 			// case 'Delete':
-			// 	serializeDelete(daoName, daoOperations, decorator, entityName, memberName);
-			// 	break;
+			// 	serializeDelete(daoName, daoOperations, decorator, entityName, memberName)
+			// 	break
 			case 'Save':
-				serializeSave(daoName, daoOperations, decorator, entityName, memberName);
-				break;
+				serializeSave(daoName, daoOperations, decorator, entityName, memberName)
+				break
 			case 'Find':
 				switch (decoratorNameParts[2]) {
 					case 'Graph':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, DbOperationType.FIND_GRAPH);
-						break;
+							entityName, memberName, DbOperationType.FIND_GRAPH)
+						break
 					case 'Tree':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, DbOperationType.FIND_TREE);
-						break;
+							entityName, memberName, DbOperationType.FIND_TREE)
+						break
 				}
-				break;
+				break
 			case 'FindOne':
 				switch (decoratorNameParts[2]) {
 					case 'Graph':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, DbOperationType.FIND_ONE_GRAPH);
-						break;
+							entityName, memberName, DbOperationType.FIND_ONE_GRAPH)
+						break
 					case 'Tree':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, DbOperationType.FIND_ONE_TREE);
-						break;
+							entityName, memberName, DbOperationType.FIND_ONE_TREE)
+						break
 				}
-				break;
+				break
 			case 'Search':
 				switch (decoratorNameParts[2]) {
 					case 'Graph':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, DbOperationType.SEARCH_GRAPH);
-						break;
+							entityName, memberName, DbOperationType.SEARCH_GRAPH)
+						break
 					case 'Tree':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, DbOperationType.SEARCH_TREE);
-						break;
+							entityName, memberName, DbOperationType.SEARCH_TREE)
+						break
 				}
-				break;
+				break
 			case 'SearchOne':
 				switch (decoratorNameParts[2]) {
 					case 'Graph':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, DbOperationType.SEARCH_ONE_GRAPH);
-						break;
+							entityName, memberName, DbOperationType.SEARCH_ONE_GRAPH)
+						break
 					case 'Tree':
 						serializeQuery(daoName, daoOperations, decorator, decoratorName,
-							entityName, memberName, DbOperationType.SEARCH_ONE_TREE);
-						break;
+							entityName, memberName, DbOperationType.SEARCH_ONE_TREE)
+						break
 				}
-				break;
+				break
 		}
-	});
+	})
 }
 
 function throwUnsupportedDecorator(
@@ -327,7 +327,7 @@ Following decorators are currently supported for ${daoName}:
   @${daoName}.Search.Tree
   @${daoName}.SearchOne.Graph
   @${daoName}.SearchOne.Tree
-`);
+`)
 }
 
 function throwMultipleOperationDecorators(
@@ -340,23 +340,23 @@ More than one operation decorator found on the same property:
   @${decoratorName1}
   @${decoratorName2}
 Only one operation is supported per property.
-`);
+`)
 }
 
 function serializeRules(
 	objectLiteralExpression: ts.ObjectLiteralExpression,
 	parentRule: JsonOperationRule
 ) {
-	parentRule.subRules = {};
+	parentRule.subRules = {}
 	objectLiteralExpression.properties.forEach((
 		property: ts.PropertyAssignment,
 		index
 	) => {
-		const rule = serializeRule(property.initializer as any, {});
-		let name = property.name as ts.Identifier;
+		const rule = serializeRule(property.initializer as any, {})
+		let name = property.name as ts.Identifier
 		parentRule.subRules[name.escapedText as string]
-			= rule;
-	});
+			= rule
+	})
 }
 
 function serializeRule(
@@ -366,36 +366,36 @@ function serializeRule(
 	rule: JsonOperationRule
 ): JsonOperationRule {
 	if (initializer.kind === tsc.SyntaxKind.BinaryExpression) {
-		const operatorKind = initializer.operatorToken.kind;
+		const operatorKind = initializer.operatorToken.kind
 		if (operatorKind === tsc.SyntaxKind.BarBarToken) {
-			rule.operator = '|';
+			rule.operator = '|'
 		} else {
 			throw new Error('Unsupported BinaryExpression.operatorToken.kind in @Persist rule: '
-				+ operatorKind);
+				+ operatorKind)
 		}
 		rule.subRules = {
 			left: serializeRule(initializer.left as any, {}),
 			right: serializeRule(initializer.right as any, {}),
-		};
+		}
 	} else if (initializer.kind === tsc.SyntaxKind.Identifier
 		&& initializer.escapedText === 'Y') {
-		rule.anyValue = true;
+		rule.anyValue = true
 	} else if (initializer.kind === tsc.SyntaxKind.NullKeyword) {
-		rule.isNull = true;
+		rule.isNull = true
 	} else if (initializer.kind === tsc.SyntaxKind.NumericLiteral) {
-		rule.numericValue = parseInt(initializer.text);
+		rule.numericValue = parseInt(initializer.text)
 	} else if (initializer.kind === tsc.SyntaxKind.ObjectLiteralExpression) {
-		serializeRules(initializer, rule);
+		serializeRules(initializer, rule)
 	} else if (initializer.kind === tsc.SyntaxKind.ArrayLiteralExpression) {
-		rule.isArray = true;
+		rule.isArray = true
 		// serializeRules(initializer, rule)
-		rule.subRules = [];
+		rule.subRules = []
 		initializer.elements.forEach((
 			subInitializer
 		) => {
 			const subRule = serializeRule(subInitializer as any, {});
-			(rule.subRules as JsonOperationRule[]).push(subRule);
-		});
+			(rule.subRules as JsonOperationRule[]).push(subRule)
+		})
 	} else if (initializer.kind === tsc.SyntaxKind.CallExpression
 		&& (initializer.expression as ts.Identifier).escapedText === 'ANOTHER') {
 		if (initializer.arguments.length === 1) {
@@ -404,7 +404,7 @@ function serializeRule(
 				parameters: [
 					getNumericFunctionCallArgument(initializer.arguments[0], 'ANOTHER')
 				]
-			};
+			}
 		} else if (initializer.arguments.length === 2) {
 			rule.functionCall = {
 				functionName: 'ANOTHER',
@@ -412,17 +412,17 @@ function serializeRule(
 					getNumericFunctionCallArgument(initializer.arguments[0], 'ANOTHER'),
 					getNumericFunctionCallArgument(initializer.arguments[1], 'ANOTHER')
 				]
-			};
+			}
 		} else {
 			throw new Error(`Unsupported number of arguments in ANOTHER(X, Y?) call (in @Persist rule).
 			Expecting either ANOTHER(X) or ANOTHER(X, Y).
-			`);
+			`)
 		}
 	} else {
-		throw new Error('Unsupported syntax in @Persist rule');
+		throw new Error('Unsupported syntax in @Persist rule')
 	}
 
-	return rule;
+	return rule
 }
 
 function serializeSave(
@@ -432,7 +432,7 @@ function serializeSave(
 	entityName: string,
 	memberName: string,
 ) {
-	const typeArguments = decorator.expression.typeArguments;
+	const typeArguments = decorator.expression.typeArguments
 
 	// if (!typeArguments || typeArguments[0].typeName.escapedText !== `${entityName}Graph`) {
 	// 	throw new Error(`@Persist decorator in "${daoName}" must be passed a generic parameter "${entityName}Graph":
@@ -440,17 +440,17 @@ function serializeSave(
 	// 				...
 	// 			})
 	// 			${memberName} = ...
-	// 			`);
+	// 			`)
 	// }
 
 	// decorator.expression.arguments[0].kind = 193 ObjectLiteralExpression
-	const rules: ts.ObjectLiteralExpression = decorator.expression.arguments[0];
+	const rules: ts.ObjectLiteralExpression = decorator.expression.arguments[0]
 	const operationRule: JsonPersistRule = {
 		type: DbOperationType.SAVE
-	};
-	serializeRules(rules, operationRule);
+	}
+	serializeRules(rules, operationRule)
 
-	daoOperations[memberName] = operationRule;
+	daoOperations[memberName] = operationRule
 }
 
 function serializeQuery(
@@ -465,7 +465,7 @@ function serializeQuery(
 		| DbOperationType.SEARCH_GRAPH | DbOperationType.SEARCH_TREE
 		| DbOperationType.SEARCH_ONE_GRAPH | DbOperationType.SEARCH_ONE_TREE
 ) {
-	const expression = decorator.expression.arguments[0];
+	const expression = decorator.expression.arguments[0]
 
 	if (expression.kind !== tsc.SyntaxKind.ArrowFunction) {
 		throwInvalidQuery(daoName, decoratorName, memberName,
@@ -476,73 +476,73 @@ function serializeQuery(
 			  ...
 			}),
 			it cannot be a regular (old style) function callback.
-							`);
+							`)
 	}
 
 	if (!expression) {
 		throwInvalidQuery(daoName, decoratorName, memberName,
-			'No callback input parameter provided');
+			'No callback input parameter provided')
 	}
 
-	const queryInputs = [];
-	expression.locals.forEach(value => queryInputs.push(value));
+	const queryInputs = []
+	expression.locals.forEach(value => queryInputs.push(value))
 
 	queryInputs.sort((
 		a,
 		b
 	) => {
 		if (a.valueDeclaration.pos < b.valueDeclaration.pos) {
-			return -1;
+			return -1
 		}
 		if (a.valueDeclaration.pos > b.valueDeclaration.pos) {
-			return 1;
+			return 1
 		}
-		return 0;
-	});
+		return 0
+	})
 
 	const inputs: IQueryInput[] = queryInputs.map((
 		input,
 		index: number
 	) => {
-		let name = input.escapedName;
+		let name = input.escapedName
 		if (!input.valueDeclaration.type) {
 			throwInvalidQuery(daoName, decoratorName, memberName,
 				`input ${index + 1} is of an unknown kind and is not a boolean|Date|number|string||QObject
 							
 							${name}: ?
 							
-							`);
+							`)
 		}
 		const typeInfo = getTypeInfo(
-			input.valueDeclaration.type, daoName, decoratorName, memberName, index, name);
+			input.valueDeclaration.type, daoName, decoratorName, memberName, index, name)
 		switch (typeInfo.type) {
 			case QueryInputKind.PARAMETER:
 				return {
 					...typeInfo,
 					name,
-				};
+				}
 			case QueryInputKind.Q:
 				return {
 					...typeInfo,
 					name,
-				};
+				}
 			case QueryInputKind.QENTITY:
 				return {
 					...typeInfo,
 					name,
-				};
+				}
 			default:
-				throw new Error('Unsupported QueryInputKind in IQueryInput.type: ' + typeInfo.type);
+				throw new Error('Unsupported QueryInputKind in IQueryInput.type: ' + typeInfo.type)
 		}
-	});
+	})
 
-	let stage = QueryInputKind.PARAMETER;
+	let stage = QueryInputKind.PARAMETER
 	inputs.forEach((
 		queryInput,
 		index
 	) => {
 		if (queryInput.type === stage) {
-			return;
+			return
 		}
 		switch (stage) {
 			case QueryInputKind.PARAMETER: {
@@ -552,10 +552,10 @@ function serializeQuery(
 							
 							${queryInput.name}: ${queryInput.clazz}
 							
-							`);
+							`)
 				}
-				stage = QueryInputKind.QENTITY;
-				break;
+				stage = QueryInputKind.QENTITY
+				break
 			}
 			default: {
 				throwInvalidQuery(daoName, decoratorName, memberName,
@@ -563,10 +563,10 @@ function serializeQuery(
 							
 							${queryInput.name}: ${queryInput.clazz}
 							
-							`);
+							`)
 			}
 		}
-	});
+	})
 
 	if (expression.body.kind !== tsc.SyntaxKind.ParenthesizedExpression) {
 		throwInvalidQuery(daoName, decoratorName, memberName,
@@ -575,7 +575,7 @@ function serializeQuery(
 			  ...
 			}),
 			it cannot be a block.
-							`);
+							`)
 	}
 
 	const operationRule: JsonFormattedQueryWithExpression = {
@@ -583,9 +583,9 @@ function serializeQuery(
 		inputs,
 		query: null,
 		type
-	};
+	}
 
-	daoOperations[memberName] = operationRule;
+	daoOperations[memberName] = operationRule
 }
 
 function throwInvalidQuery(
@@ -646,7 +646,7 @@ Where:
 
 The body of the function should only contain the query definition and no other
 statements.
-`);
+`)
 }
 
 function serializeDelete(
@@ -656,16 +656,16 @@ function serializeDelete(
 	entityName: string,
 	memberName: string,
 ) {
-	// const typeArguments = decorator.expression.typeArguments;
+	// const typeArguments = decorator.expression.typeArguments
 
 	// decorator.expression.arguments[0].kind = 193 ObjectLiteralExpression
-	const rules: ts.ObjectLiteralExpression = decorator.expression.arguments[0];
+	const rules: ts.ObjectLiteralExpression = decorator.expression.arguments[0]
 	const operationRule: JsonPersistRule = {
 		type: DbOperationType.DELETE
-	};
-	serializeRules(rules, operationRule);
+	}
+	serializeRules(rules, operationRule)
 
-	daoOperations[memberName] = operationRule;
+	daoOperations[memberName] = operationRule
 }
 
 function getNumericFunctionCallArgument(
@@ -673,9 +673,9 @@ function getNumericFunctionCallArgument(
 	functionName: string
 ) {
 	if (argument.kind !== tsc.SyntaxKind.NumericLiteral) {
-		throw new Error(`Expecting only Numeric Literals as parameters to "${functionName}" function call.`);
+		throw new Error(`Expecting only Numeric Literals as parameters to "${functionName}" function call.`)
 	}
-	return parseInt(argument.text);
+	return parseInt(argument.text)
 }
 
 function getTypeInfo(
@@ -697,30 +697,30 @@ function getTypeInfo(
 		isArray: false,
 		parameterType: null,
 		type: null
-	};
+	}
 	switch (typeRef.kind) {
 		case tsc.SyntaxKind.BooleanKeyword: {
-			returnType.clazz = 'boolean';
-			returnType.type = QueryInputKind.PARAMETER;
-			returnType.parameterType = QueryParameterType.BOOLEAN;
-			break;
+			returnType.clazz = 'boolean'
+			returnType.type = QueryInputKind.PARAMETER
+			returnType.parameterType = QueryParameterType.BOOLEAN
+			break
 		}
 		case tsc.SyntaxKind.NumberKeyword: {
-			returnType.clazz = 'number';
-			returnType.type = QueryInputKind.PARAMETER;
-			returnType.parameterType = QueryParameterType.NUMBER;
-			break;
+			returnType.clazz = 'number'
+			returnType.type = QueryInputKind.PARAMETER
+			returnType.parameterType = QueryParameterType.NUMBER
+			break
 		}
 		case tsc.SyntaxKind.StringKeyword: {
-			returnType.clazz = 'string';
-			returnType.type = QueryInputKind.PARAMETER;
-			returnType.parameterType = QueryParameterType.STRING;
-			break;
+			returnType.clazz = 'string'
+			returnType.type = QueryInputKind.PARAMETER
+			returnType.parameterType = QueryParameterType.STRING
+			break
 		}
 		case tsc.SyntaxKind.TypeReference: {
 			getTypeReferenceInfo(
-				typeRef, daoName, decoratorName, memberName, index, name, returnType);
-			break;
+				typeRef, daoName, decoratorName, memberName, index, name, returnType)
+			break
 		}
 		case tsc.SyntaxKind.ArrayType: {
 			if (!allowArrays) {
@@ -730,12 +730,12 @@ function getTypeInfo(
 							
 							${name}: ?
 							
-							`);
+							`)
 			}
 			returnType = getTypeInfo(
-				typeRef.elementType, daoName, decoratorName, memberName, index, name, false);
-			returnType.isArray = true;
-			break;
+				typeRef.elementType, daoName, decoratorName, memberName, index, name, false)
+			returnType.isArray = true
+			break
 		}
 		case tsc.SyntaxKind.Parameter:
 		default: {
@@ -746,12 +746,12 @@ function getTypeInfo(
 							
 							${name}: ?
 							
-							`);
-			break;
+							`)
+			break
 		}
 	}
 
-	return returnType;
+	return returnType
 }
 
 function getTypeReferenceInfo(
@@ -767,14 +767,14 @@ function getTypeReferenceInfo(
 		parameterType: QueryParameterType
 	}
 ): void {
-	typeInfo.clazz = typeRef.typeName.escapedText;
+	typeInfo.clazz = typeRef.typeName.escapedText
 	if (typeInfo.clazz === 'Date') {
-		typeInfo.type = QueryInputKind.PARAMETER;
-		typeInfo.parameterType = QueryParameterType.DATE;
+		typeInfo.type = QueryInputKind.PARAMETER
+		typeInfo.parameterType = QueryParameterType.DATE
 	} else if (typeInfo.clazz === 'LocalQApp') {
-		typeInfo.type = QueryInputKind.Q;
+		typeInfo.type = QueryInputKind.Q
 	} else {
-		typeInfo.type = QueryInputKind.QENTITY;
+		typeInfo.type = QueryInputKind.QENTITY
 		if (!typeInfo.clazz.startsWith('Q')) {
 			throwInvalidQuery(daoName, decoratorName, memberName,
 				`input ${index + 1} is a non Date|QEntity class and does not start with a Q
@@ -782,7 +782,7 @@ function getTypeReferenceInfo(
 							
 							${name}: ${typeInfo.clazz}
 							
-							`);
+							`)
 		}
 	}
 }

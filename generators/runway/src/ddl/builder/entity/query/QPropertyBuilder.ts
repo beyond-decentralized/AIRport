@@ -7,7 +7,7 @@ import {
 import {
 	IBuilder
 }                         from '../../Builder'
-import { getQPropertyFieldClass, getQPropertyFieldInterface, IQCoreEntityBuilder } from './QCoreEntityBuilder'
+import { getQPropertyFieldClass, getQPropertyFieldInterface, IQCoreEntityBuilder } from './common'
 
 /**
  * Created by Papa on 4/25/2016.
@@ -27,7 +27,7 @@ export class QPropertyBuilder
 		let name       = prop.name
 		let fieldClass = getQPropertyFieldClass(prop)
 
-		return `${name}: I${fieldClass};`
+		return `${name}: I${fieldClass}`
 	}
 
 	build(): string {
@@ -68,7 +68,7 @@ export class QPropertyBuilder
 			}
 		}
 
-		return `${name}${optional || prop.optional ? '?' : ''}: ${propertyType}${operableFieldSuffix};`
+		return `${name}${optional || prop.optional ? '?' : ''}: ${propertyType}${operableFieldSuffix}`
 	}
 
 }

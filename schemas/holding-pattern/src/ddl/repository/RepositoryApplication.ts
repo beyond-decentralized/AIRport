@@ -18,20 +18,12 @@ export class RepositoryApplication
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({
-		name: "DB_APPLICATION_INDEX",
-		referencedColumnName: "DB_APPLICATION_INDEX",
-		nullable: false
-	})
+	@JoinColumn({ name: "DB_APPLICATION_INDEX", nullable: false })
 	application: DdlApplication;
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({
-		name: 'REPOSITORY_LID',
-		referencedColumnName: 'REPOSITORY_LID',
-		nullable: false
-	})
+	@JoinColumn({ name: 'REPOSITORY_LID', nullable: false })
 	repository: Repository;
 
 }

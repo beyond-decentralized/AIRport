@@ -10,14 +10,14 @@ export class QQueryPreparationField {
 				thisArg,
 				argumentsList
 			) {
-				return new QQueryPreparationField();
+				return new QQueryPreparationField()
 			},
 			get: function(
 				target,
 				prop,
 				receiver
 			) {
-				return new QQueryPreparationField();
+				return new QQueryPreparationField()
 			},
 			set: function(
 				obj,
@@ -25,8 +25,8 @@ export class QQueryPreparationField {
 				value
 			) {
 				// Nothing to do
-				return true;
+				return true
 			}
-		});
+		})
 	}
 }

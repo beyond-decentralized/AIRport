@@ -10,25 +10,21 @@ export class CopiedEntityQueryRecordDao
 
 
     async insert(
-        copiedEntityQueryRecords: EntityQueryRecord[],
+        entityQueryRecords: EntityQueryRecord[],
         context: IContext
     ): Promise<void> {
         let ceqr: QEntityQueryRecord;
         const VALUES = []
-        for (const copiedEntityQueryRecord of copiedEntityQueryRecords) {
+        for (const entityQueryRecord of entityQueryRecords) {
             VALUES.push([
-                copiedEntityQueryRecord.entityRecord._actorRecordId,
-                copiedEntityQueryRecord.entityRecord.actor._localId,
-                copiedEntityQueryRecord.entityRecord.repository._localId,
-                copiedEntityQueryRecord.queryNumber
+                entityQueryRecord.entityRecord.integerId,
+                entityQueryRecord.queryNumber
             ])
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: ceqr = Q_airport____at_airport_slash_layover.CopiedEntityQueryRecord,
+            INSERT_INTO: ceqr = Q_airport____at_airport_slash_layover.EntityQueryRecord,
             columns: [
-                ceqr.entityRecord._actorRecordId,
-                ceqr.entityRecord.actor._localId,
-                ceqr.entityRecord.repository._localId,
+                ceqr.entityRecord.integerId,
                 ceqr.queryNumber
             ],
             VALUES

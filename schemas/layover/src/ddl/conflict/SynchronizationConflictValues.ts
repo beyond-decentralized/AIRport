@@ -16,10 +16,7 @@ export class SynchronizationConflictValues
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({
-		name: 'SYNCHRONIZATION_CONFLICT_LID',
-		referencedColumnName: 'SYNCHRONIZATION_CONFLICT_LID'
-	})
+	@JoinColumn({ name: 'SYNCHRONIZATION_CONFLICT_LID' })
 	synchronizationConflict: SynchronizationConflict
 
 	@Id()

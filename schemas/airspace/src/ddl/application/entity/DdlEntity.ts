@@ -76,10 +76,7 @@ export class DdlEntity
 	//
 
 	@ManyToOne()
-	@JoinColumn({
-		name: 'DB_APPLICATION_VERSION_LID',
-		referencedColumnName: 'DB_APPLICATION_VERSION_LID', nullable: false
-	})
+	@JoinColumn({ name: 'DB_APPLICATION_VERSION_LID', nullable: false })
 	applicationVersion: DdlApplicationVersion
 
 	//

@@ -22,9 +22,9 @@ import {
 	IStructuralEntityValidator,
 	ITransactionContext
 } from '@airport/terminal-map'
-import {
-	ICrossRepositoryRelationManager
-} from '@airport/layover'
+// import {
+// 	ICrossRepositoryRelationManager
+// } from '@airport/layover'
 
 @Injected()
 export class StructuralEntityValidator
@@ -37,7 +37,7 @@ export class StructuralEntityValidator
 	applicationUtils: IApplicationUtils
 
 	@Inject()
-	crossRepositoryRelationManager: ICrossRepositoryRelationManager
+	crossRepositoryRelationManager: any // ICrossRepositoryRelationManager
 
 	@Inject()
 	dictionary: Dictionary

@@ -1,7 +1,7 @@
-import { resolveRelativePath } from "../../resolve/pathResolver";
-import { IBuilder } from "../../ddl/builder/Builder";
-import { FileBuilder } from "../../ddl/builder/entity/FileBuilder";
-import { PathBuilder } from "../../ddl/builder/PathBuilder";
+import { resolveRelativePath } from "../../resolve/pathResolver"
+import { IBuilder } from "../../ddl/builder/Builder"
+import { FileBuilder } from "../../ddl/builder/entity/FileBuilder"
+import { PathBuilder } from "../../ddl/builder/PathBuilder"
 
 export class ApiIndexBuilder
     extends FileBuilder
@@ -12,9 +12,9 @@ export class ApiIndexBuilder
     constructor(
         pathBuilder: PathBuilder
     ) {
-        super(null, null, pathBuilder, null);
+        super(null, null, pathBuilder, null)
         this.fullGenerationPath = pathBuilder.fullGeneratedDirPath
-            + `/api/api.ts`;
+            + `/api/api.ts`
     }
 
     addApiFilePath(

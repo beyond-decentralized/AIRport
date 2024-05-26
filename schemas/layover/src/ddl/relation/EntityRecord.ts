@@ -2,7 +2,7 @@ import { DdlEntity } from "@airport/airspace/dist/app/bundle"
 import { AirEntityId } from "@airport/final-approach/dist/app/bundle"
 import { EntityRecord_IntegerdId, EntityRecord_IsACopy, IEntityRecord } from "@airport/ground-control"
 import { Column, DbBoolean, DbNumber, Entity, GeneratedValue, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/tarmaq-entity"
-import { EntityRecordRepositoryReference } from "./EntityRecordRepositoryReference"
+import { CopiedEntityRecordReference } from "./CopiedEntityRecordReference"
 import { EntityQueryRecord } from "./EntityQueryRecord"
 import { EntityRelationRecord } from "./EntityRelationRecord"
 
@@ -26,11 +26,7 @@ export class EntityRecord
     isACopy: EntityRecord_IsACopy
 
     @ManyToOne()
-    @JoinColumn({
-        name: 'DB_ENTITY_LID',
-        referencedColumnName: 'DB_ENTITY_LID',
-        nullable: false
-    })
+    @JoinColumn({ name: 'DB_ENTITY_LID', nullable: false })
     ddlEntity: DdlEntity
 
     @OneToMany({ mappedBy: 'referencedRecord' })
@@ -39,8 +35,8 @@ export class EntityRecord
     @OneToMany({ mappedBy: 'referencingRecord' })
     referencingRecordRelations: EntityRelationRecord[]
 
-    @OneToMany({ mappedBy: 'entityRecord' })
-    repositoryReferences: EntityRecordRepositoryReference[] = []
+    @OneToMany({ mappedBy: 'referencingEntityRecord' })
+    copiedRecordReferences: CopiedEntityRecordReference[] = []
 
     @OneToMany({ mappedBy: 'entityRecord' })
     entityRecordQueries: EntityQueryRecord[] = []

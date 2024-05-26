@@ -64,7 +64,15 @@ export interface IQManyToOneInternalRelation<IQ extends IQEntity>
 }
 
 /**
- * A ORM relation on a AirEntity
+ * A ORM relation on an Entity
+ */
+export interface IQEntityRelation<Entity, IQ extends IQEntity>
+	extends IQRelation<IQ> {
+
+}
+
+/**
+ * A ORM relation on an AirEntity
  */
 export interface IQAirEntityRelation<Entity, IQ extends IQEntity>
 	extends IQRelation<IQ> {
@@ -72,7 +80,23 @@ export interface IQAirEntityRelation<Entity, IQ extends IQEntity>
 }
 
 /**
- * A Many-to-One ORM relation on a AirEntity
+ * A Many-to-One ORM relation on an Entity
+ */
+export interface IQManyToOneEntityRelation<Entity, IQ extends IQEntity>
+	extends IQEntityRelation<Entity, IQ> {
+
+	equals(
+		entity: Entity | string | number
+	): QueryLogicalOperation
+
+	IN(
+		entitiesOrIds: (Entity | string | number)[]
+	): QueryLogicalOperation
+
+}
+
+/**
+ * A Many-to-One ORM relation on an AirEntity
  */
 export interface IQManyToOneAirEntityRelation<Entity, IQ extends IQEntity>
 	extends IQAirEntityRelation<Entity, IQ> {

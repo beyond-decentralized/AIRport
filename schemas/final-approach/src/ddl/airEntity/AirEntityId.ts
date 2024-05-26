@@ -27,20 +27,12 @@ export abstract class AirEntityId {
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({
-		name: 'ACTOR_LID',
-		referencedColumnName: 'ACTOR_LID',
-		nullable: false
-	})
+	@JoinColumn({ name: 'ACTOR_LID', nullable: false })
 	actor?: Actor
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({
-		name: 'REPOSITORY_LID',
-		referencedColumnName: 'REPOSITORY_LID',
-		nullable: false
-	})
+	@JoinColumn({ name: 'REPOSITORY_LID', nullable: false })
 	repository: Repository
 
 	/**

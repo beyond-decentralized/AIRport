@@ -10,6 +10,7 @@ import { QPropertyBuilder } from "./QPropertyBuilder";
 import { QRelationBuilder } from "./QRelationBuilder";
 import { QTransientBuilder } from "./QTransientBuilder";
 import { QCoreEntityBuilder } from "./QCoreEntityBuilder";
+import { SIndexedApplication } from "../../application/SApplication";
 
 /**
  * Created by Papa on 4/25/2016.
@@ -30,9 +31,10 @@ export class QEntityBuilder extends QCoreEntityBuilder {
 		workingDirPath: string,
 		fileBuilder: FileBuilder,
 		entityMapByName: { [entityName: string]: EntityCandidate },
-		public sIndexedEntity: SIndexedEntity
+		sIndexedEntity: SIndexedEntity,
+		sIndexedApplication: SIndexedApplication
 	) {
-		super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName);
+		super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName, sIndexedApplication);
 
 		let idColumns = [];
 		if (sIndexedEntity) {
@@ -68,9 +70,9 @@ export class QEntityBuilder extends QCoreEntityBuilder {
 			= this.buildPropertyData(this.idPropertyBuilders);
 		const nonIdPropertyData: MemberData
 			= this.buildPropertyData(this.nonIdPropertyBuilders);
-		const nonIdRelationData: MemberData
+		const nonIdRelationData
 			= this.buildRelationData(this.nonIdRelationBuilders);
-		const idRelationData: MemberData
+		const idRelationData
 			= this.buildRelationData(this.idRelationBuilders);
 
 		let parentEntityQType = 'IQEntity';
@@ -103,6 +105,7 @@ ${nonIdRelationData.definitions}
 }
 `;
 
-		return classSource;
+		return idRelationData.customInterfaces
+		+ nonIdRelationData.customInterfaces + classSource;
 	}
 }

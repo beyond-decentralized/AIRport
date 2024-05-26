@@ -1,17 +1,18 @@
-import { IEntityRecordRepositoryReference } from "@airport/ground-control"
-import { Repository } from "@airport/holding-pattern/dist/app/bundle"
+import { ICopiedEntityRecordReference } from "@airport/ground-control"
 import { Entity, Id, JoinColumn, ManyToOne, Table } from "@airport/tarmaq-entity"
 import { EntityRelationRecord } from "./EntityRelationRecord"
+import { EntityRecord } from "./EntityRecord"
 
 /**
- * A record of which repository has a a referece to a given Entity.
+ * A record of which repository record has a a referece to a given
+ * Copied Entity.
  * 
- * This applies to all records that can be referenced from the records
- * in a given repository, even if they are nested (at any level).
+ * This applies to all records that can be Copied records that
+ * referenced from the records in a given repository, even if they are
+ * nested (at any level).
  * 
- * These referces can exist on external records copied into a
- * repository or on records of repositories that are loaded into the
- * local database.
+ * These referces can exist only on external records copied into a
+ * repository.
  * 
  * When a repository that previously (locally) can copy records is
  * loaded, this entries in this table are checked for nested records
@@ -30,22 +31,22 @@ import { EntityRelationRecord } from "./EntityRelationRecord"
  * new record (if any) and update the relations.
  */
 @Entity()
-@Table({ name: 'ENTITY_RECORD_REPOSITORY_REFERENCES' })
-export class EntityRecordRepositoryReference
-    implements IEntityRecordRepositoryReference {
+@Table({ name: 'COPIED_ENTITY_RECORD_REFERENCES' })
+export class CopiedEntityRecordReference
+    implements ICopiedEntityRecordReference {
 
     @Id()
     @ManyToOne()
-    @JoinColumn({ name: 'ENTITY_RELATION_INTEGER_LID', referencedColumnName: 'INTEGER_LID', nullable: false })
-    entityRelationRecord: EntityRelationRecord
+    @JoinColumn({ name: 'COPIED_ENTITY_RELATION_INTEGER_LID', referencedColumnName: 'INTEGER_LID', nullable: false })
+    copiedEntityRelationRecord: EntityRelationRecord
 
     @Id()
     @ManyToOne()
     @JoinColumn({
-        name: 'REFERENCING_REPOSITORY_LID',
-        referencedColumnName: 'REPOSITORY_LID',
+        name: 'REFERENCING_ENTITY_INTEGER_LID',
+        referencedColumnName: 'INTEGER_LID',
         nullable: false
     })
-    referencingRepository: Repository
+    referencingEntityRecord: EntityRecord
 
 }

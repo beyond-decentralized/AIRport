@@ -6,12 +6,12 @@ import {
 import {
 	ITerminalDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
-import { ITerminal, SyncRepositoryData, Terminal_GUID } from '@airport/ground-control'
+import { IRepositoryBlockData, ITerminal, Terminal_GUID } from '@airport/ground-control'
 
 export interface ISyncInTerminalChecker {
 
 	ensureTerminals(
-		data: SyncRepositoryData,
+		data: IRepositoryBlockData,
 		context: IContext
 	): Promise<boolean>
 
@@ -25,49 +25,49 @@ export class SyncInTerminalChecker
 	terminalDao: ITerminalDao
 
 	async ensureTerminals(
-		data: SyncRepositoryData,
+		data: IRepositoryBlockData,
 		context: IContext
 	): Promise<boolean> {
 		try {
 			let terminalGUIDs: string[] = []
-			let messageTerminalIndexMap: Map<string, number> = new Map()
+			let blockTerminalIndexMap: Map<string, number> = new Map()
 			for (let i = 0; i < data.terminals.length; i++) {
 				const terminal = data.terminals[i]
 				if (typeof terminal._localId !== 'undefined') {
 					throw new Error(`'terminal._localId' cannot be specified`)
 				}
 				if (typeof terminal.owner !== 'number') {
-					throw new Error(`Expecting "in-message index" (number)
-					in 'terminal.owner' of SyncRepositoryData.terminals`)
+					throw new Error(`Expecting "in-block index" (number)
+					in 'terminal.owner' of IRepositoryBlockData.terminals`)
 				}
 				if (typeof terminal.GUID !== 'string' || terminal.GUID.length !== 36) {
-					throw new Error(`Invalid 'terminal.GUID' in SyncRepositoryData.terminals`)
+					throw new Error(`Invalid 'terminal.GUID' in IRepositoryBlockData.terminals`)
 				}
 				if (terminal.isLocal !== undefined) {
-					throw new Error(`'terminal.isLocal' cannot defined in SyncRepositoryData.terminals`)
+					throw new Error(`'terminal.isLocal' cannot defined in IRepositoryBlockData.terminals`)
 				}
 				terminal.isLocal = false
 				const owner = data.userAccounts[terminal.owner as any]
 				if (!owner) {
 					throw new Error(
-						`Did not find userAccount for terminal.owner with "in-message index" ${terminal.owner}
-						for SyncRepositoryData.terminals`);
+						`Did not find userAccount for terminal.owner with "in-block index" ${terminal.owner}
+						for IRepositoryBlockData.terminals`);
 				}
 				terminal.owner = owner
 				terminalGUIDs.push(terminal.GUID)
-				messageTerminalIndexMap.set(terminal.GUID, i)
+				blockTerminalIndexMap.set(terminal.GUID, i)
 			}
 
 			const terminals = await this.terminalDao.findByGUIDs(terminalGUIDs, context)
 			const foundTerminalsByGUID: Map<Terminal_GUID, ITerminal> = new Map()
 			for (const terminal of terminals) {
 				foundTerminalsByGUID.set(terminal.GUID, terminal)
-				const messageTerminalIndex = messageTerminalIndexMap.get(terminal.GUID)
-				data.terminals[messageTerminalIndex] = terminal
+				const blockTerminalIndex = blockTerminalIndexMap.get(terminal.GUID)
+				data.terminals[blockTerminalIndex] = terminal
 			}
 
 			const missingTerminals = data.terminals
-				.filter(messageTerminal => !foundTerminalsByGUID.has(messageTerminal.GUID))
+				.filter(blockTerminal => !foundTerminalsByGUID.has(blockTerminal.GUID))
 
 			if (missingTerminals.length) {
 				await this.addMissingTerminals(missingTerminals, context)

@@ -55,7 +55,7 @@ export class DdlApplication
 	publicSigningKey: Application_PublicSigningKey
 
 	@ManyToOne()
-	@JoinColumn({ name: 'DB_DOMAIN_LID', referencedColumnName: 'DB_DOMAIN_LID', nullable: false })
+	@JoinColumn({ name: 'DB_DOMAIN_LID', nullable: false })
 	domain: DdlDomain;
 
 	@OneToMany({ mappedBy: 'application' })

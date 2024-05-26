@@ -2,7 +2,7 @@ import {
 	IBuilder,
 } from '../../Builder'
 import { SColumn } from '../../application/SProperty'
-import { getQColumnFieldInterface, IQCoreEntityBuilder } from './QCoreEntityBuilder'
+import { getQColumnFieldInterface, IQCoreEntityBuilder } from './common'
 
 /**
  * Created by Papa on 4/25/2016.
@@ -20,7 +20,7 @@ export class QColumnBuilder
 	buildDefinition(): string {
 		let column = this.sColumn
 
-		return `${this.ensureValidName(column.name)}: ${column.type};`
+		return `${this.ensureValidName(column.name)}: ${column.type}`
 	}
 
 	build(): string {
@@ -41,7 +41,7 @@ export class QColumnBuilder
 		if (forInternalInterfaces) {
 			operableFieldSuffix = ' | ' + getQColumnFieldInterface(column)
 		}
-		return `${name}${optional ? '?' : ''}: ${type}${operableFieldSuffix};`
+		return `${name}${optional ? '?' : ''}: ${type}${operableFieldSuffix}`
 
 	}
 

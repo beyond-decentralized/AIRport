@@ -1,9 +1,9 @@
-import {DbObjectConfiguration} from "@airport/ground-control";
+import {DbObjectConfiguration} from "@airport/ground-control"
 import {
 	SColumn,
 	SProperty,
 	SRelation
-}                                    from "./SProperty";
+}                                    from "./SProperty"
 
 /**
  * An entity in a application.
@@ -14,47 +14,47 @@ export interface SEntity {
 	/*
 	 * Is this entity local-only (does not extend AirEntity)
 	 */
-	isLocal: boolean;
+	isLocal: boolean
 
 	/**
 	 * Does this entity extend AirEntity or LocalAirEntity
 	 */
-	isAirEntity: boolean;
+	isAirEntity: boolean
 
 	/**
 	 * Name of the entity.
 	 */
-	name: string;
+	name: string
 
 	/**
 	 * Number of columns in the entity.
 	 */
-	numColumns: number;
+	numColumns: number
 
 	/**
 	 * Number of id columns in the entity.
 	 */
-	numIdColumns: number;
+	numIdColumns: number
 
 	/**
 	 * Number of relations in the entity.
 	 */
-	numRelations: number;
+	numRelations: number
 
 	/**
 	 * Properties of the entity (parent properties included).
 	 */
-	properties: SProperty[];
+	properties: SProperty[]
 
 	/**
 	 * Table configuration object.
 	 */
-	table: DbObjectConfiguration<any>;
+	table: DbObjectConfiguration<any>
 
 	/**
 	 * Application specific index of the table represented by the entity.
 	 */
-	entityIndex: number;
+	entityIndex: number
 
 }
 
@@ -67,36 +67,36 @@ export interface SIndexedEntity {
 	/**
 	 * Map of all columns in the entity by name.
 	 */
-	columnMap: { [name: string]: SColumn };
+	columnMap: { [name: string]: SColumn }
 
 	/**
 	 * Columns by their column indexes.
 	 */
-	columns: SColumn[];
+	columns: SColumn[]
 
 	/**
 	 * Application entity definition.
 	 */
-	entity: SEntity;
+	entity: SEntity
 
 	/**
 	 * Id columns by their Id indexes.
 	 */
-	idColumns: SColumn[];
+	idColumns: SColumn[]
 
 	/**
 	 * Map of all properties in the entity by name.
 	 */
-	propertyMap: { [name: string]: SProperty };
+	propertyMap: { [name: string]: SProperty }
 
 	/**
 	 * Map of all relations in the entity by property name.
 	 */
-	relationMap: { [name: string]: SRelation };
+	relationMap: { [name: string]: SRelation }
 
 	/**
 	 * Relations, by their indexes.
 	 */
-	relations: SRelation[];
+	relations: SRelation[]
 
 }

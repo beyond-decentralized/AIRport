@@ -4,7 +4,7 @@ import {
 } from '@airport/direction-indicator'
 import { IClient } from "@airway/client";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
-import { SyncRepositoryMessage, SyncRepositoryReadResponseFragment, Repository_GUID } from '@airport/ground-control';
+import { IRepositoryBlock, Repository_GUID } from '@airport/ground-control';
 
 @Injected()
 export class DebugSynchronizationAdapter
@@ -13,41 +13,41 @@ export class DebugSynchronizationAdapter
     @Inject()
     client: IClient
 
-    async getTransactionsForRepository(
+    async getBlocksForRepository(
         repositoryGUID: Repository_GUID,
         sinceSyncTimestamp?: number
-    ): Promise<SyncRepositoryMessage[]> {
+    ): Promise<IRepositoryBlock[]> {
         const location = this.getLocation(repositoryGUID)
-        const response: SyncRepositoryReadResponseFragment[]
+        const response //: RepositoryBlocksReadResponseFragment[]
             = await this.client.getRepositoryTransactions(
                 location, repositoryGUID, sinceSyncTimestamp)
 
-        const messages: SyncRepositoryMessage[] = []
+        const messages: IRepositoryBlock[] = []
 
         // NOTE: syncTimestamp is populated here because file sharing mechanisms
         // (IPFS) won't be able to modify the messages themselves
         for (const fragment of response) {
-            if (fragment.repositoryGUID !== repositoryGUID) {
-                console.error(`Got a reponse fragment for repository ${fragment.repositoryGUID}.
-    Expecting message fragments for repository: ${repositoryGUID}`)
-                continue
-            }
-            for (const message of fragment.messages) {
-                message.syncTimestamp = fragment.syncTimestamp
-                messages.push(message)
-            }
+    //         if (fragment.repositoryGUID !== repositoryGUID) {
+    //             console.error(`Got a reponse fragment for repository ${fragment.repositoryGUID}.
+    // Expecting message fragments for repository: ${repositoryGUID}`)
+    //             continue
+    //         }
+            // for (const message of fragment.messages) {
+            //     message.syncTimestamp = fragment.syncTimestamp
+            //     messages.push(message)
+            // }
         }
 
         return messages
     }
 
-    async sendTransactions(
+    async sendBlocks(
         repositoryGUID: Repository_GUID,
-        messagesForRepository: SyncRepositoryMessage[]
+        messagesForRepository: IRepositoryBlock[]
     ): Promise<boolean> {
         let allSent = true
         try {
-            if (!await this.sendTransactionsForRepository(repositoryGUID, messagesForRepository)) {
+            if (!await this.sendBlocksForRepository(repositoryGUID, messagesForRepository)) {
                 allSent = false
             }
         } catch (e) {
@@ -58,9 +58,9 @@ export class DebugSynchronizationAdapter
         return allSent
     }
 
-    async sendTransactionsForRepository(
+    async sendBlocksForRepository(
         repositoryGUID: Repository_GUID,
-        messages: SyncRepositoryMessage[]
+        messages: IRepositoryBlock[]
     ): Promise<boolean> {
         if (!messages || !messages.length) {
             return false

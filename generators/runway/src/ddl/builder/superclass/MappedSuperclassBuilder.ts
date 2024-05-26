@@ -1,9 +1,9 @@
-import { Configuration }   from '../../options/Options';
-import { EntityCandidate } from '../../parser/EntityCandidate';
+import { Configuration }   from '../../options/Options'
+import { EntityCandidate } from '../../parser/EntityCandidate'
 
 export class MappedSuperclassBuilder {
 
-	mappedSuperclassVarName = 'MAPPED_SUPERCLASS';
+	mappedSuperclassVarName = 'MAPPED_SUPERCLASS'
 
 	constructor(
 		private config: Configuration,
@@ -12,34 +12,34 @@ export class MappedSuperclassBuilder {
 	}
 
 	build(): string {
-		const mappedSuperclasses = [];
+		const mappedSuperclasses = []
 
 		for (const entityName in this.entityMapByName) {
-			const entityCandidate: EntityCandidate = this.entityMapByName[entityName];
-			const entity                           = this.buildEntity(entityCandidate);
+			const entityCandidate: EntityCandidate = this.entityMapByName[entityName]
+			const entity                           = this.buildEntity(entityCandidate)
 			if (entity) {
-				mappedSuperclasses.push(entity);
+				mappedSuperclasses.push(entity)
 			}
 		}
 
 		return `/* eslint-disable */
 export const ${this.mappedSuperclassVarName} = `
-			+ JSON.stringify(mappedSuperclasses, null, '\t') + ';';
+			+ JSON.stringify(mappedSuperclasses, null, '\t') + ''
 	}
 
 	private buildEntity(
 		entityCandidate: EntityCandidate
 	): EntityCandidate {
 		if (!entityCandidate.docEntry.isMappedSuperclass) {
-			return null;
+			return null
 		}
 
-		const objectSet = new Set();
-		objectSet.add(entityCandidate);
-		this.dropCircularDependencies(entityCandidate, new Set(), entityCandidate);
-		entityCandidate.project = this.config.name;
+		const objectSet = new Set()
+		objectSet.add(entityCandidate)
+		this.dropCircularDependencies(entityCandidate, new Set(), entityCandidate)
+		entityCandidate.project = this.config.name
 
-		return entityCandidate;
+		return entityCandidate
 	}
 
 	private dropCircularDependencies(
@@ -50,20 +50,20 @@ export const ${this.mappedSuperclassVarName} = `
 		if (currentObject instanceof Array) {
 			currentObject.forEach(
 				childObject => {
-					this.dropCircularDependencies(rootObject, objectSet, childObject);
-				});
+					this.dropCircularDependencies(rootObject, objectSet, childObject)
+				})
 		} else if (currentObject instanceof Object) {
-			objectSet.add(currentObject);
+			objectSet.add(currentObject)
 			for (const key in currentObject) {
-				let childObject = currentObject[key];
+				let childObject = currentObject[key]
 				if (
 					// rootObject === childObject
 					// ||
 					objectSet.has(childObject)
 				) {
-					currentObject[key] = null;
+					currentObject[key] = null
 				} else {
-					this.dropCircularDependencies(rootObject, objectSet, childObject);
+					this.dropCircularDependencies(rootObject, objectSet, childObject)
 				}
 			}
 		}

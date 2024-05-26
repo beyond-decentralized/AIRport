@@ -6,7 +6,7 @@ import {
 	EntityRelationType,
 	DbProperty_Index,
 	IApplicationReferenceByIndex
-} from '@airport/ground-control';
+} from '@airport/ground-control'
 
 /**
  * A property of an object in a application.
@@ -16,32 +16,32 @@ export interface SProperty {
 	/**
 	 * All columns that the property is represented by.
 	 */
-	columns: SColumn[];
+	columns: SColumn[]
 
 	/**
 	 * Index of the the property for the entity (parent properties included).
 	 */
-	index: number;
+	index: number
 
 	/**
 	 * Is this property annotated with @Id
 	 */
-	isId: boolean;
+	isId: boolean
 
 	/**
 	 * Name of the property.
 	 */
-	name: string;
+	name: string
 
 	/**
 	 * Is the property optional (does it have the ? character next to it's name)
 	 */
-	optional: boolean;
+	optional: boolean
 
 	/**
 	 * Relation (if any) represented by the property.
 	 */
-	relation?: SRelation | undefined;
+	relation?: SRelation | undefined
 
 }
 
@@ -53,63 +53,63 @@ export interface SRelation {
 	/**
 	 * Name of the entity behind the relation.
 	 */
-	entityName: string;
+	entityName: string
 
 	/**
 	 * Index of the application of the related entity (if not local).
 	 */
-	referencedApplication_Index?: number;
+	referencedApplication_Index?: number
 
 	/**
 	 * Explicitly defined foreign key (if any)
 	 */
-	foreignKey?: DbForeignKey;
+	foreignKey?: DbForeignKey
 
 	/**
 	 * Relation index.
 	 */
-	index: number;
+	index: number
 
 	/**
 	 * Many-to-One configuration object (or 'true' if @ManyToOne but no object is present).
 	 */
-	manyToOne?: DbManyToOneElements;
+	manyToOne?: DbManyToOneElements
 
 	/**
 	 * One-to-Many configuration object (if @OneToMany)
 	 */
-	oneToMany?: DbOneToManyElements;
+	oneToMany?: DbOneToManyElements
 
 	/**
 	 * Type of the relation (Many-to-One or One-to-Many)
 	 */
-	relationType: EntityRelationType;
+	relationType: EntityRelationType
 
 	/**
 	 * For @ManyToOne's not annotated with (R)JoinColumn(s)
 	 */
-	relationMustBeSingleIdEntity: boolean;
+	relationMustBeSingleIdEntity: boolean
 
 	/**
 	 * Does this join automatically join REPOSITORY_LID?
 	 * Not needed - all joins to and from Repository entities are automatically repository joins
 	 */
-	// repositoryJoin: boolean;
+	// repositoryJoin: boolean
 
 	/**
 	 * Intermediate representation of relation columns
 	 */
-	sRelationColumns: SRelationColumn[];
+	sRelationColumns: SRelationColumn[]
 
 	/**
 	 * Serialized function to add to the join
 	 * Not currently needed
 	 */
-	// addToJoinFunction?: string;
+	// addToJoinFunction?: string
 	/*
 	 * How to add the function to the join
 	 */
-	// joinFunctionWithOperator?: number;
+	// joinFunctionWithOperator?: number
 
 }
 
@@ -122,65 +122,65 @@ export interface SColumn
 	/**
 	 * How many _localIds to allocate for a sequence at a time.
 	 */
-	allocationSize?: number;
+	allocationSize?: number
 
 	/**
 	 * Verbatim DDL for the column (after the name of the column)
 	 */
-	columnDefinition?: string;
+	columnDefinition?: string
 
 	/**
 	 * Id Index of the column (if any).
 	 */
-	idIndex?: number;
+	idIndex?: number
 
 	/**
 	 * Is the value for this column generated?
 	 */
-	isGenerated?: boolean;
+	isGenerated?: boolean
 
 	/**
 	 * One-to-Many relations that are mapped to this column.
 	 */
-	// manyRelationColumnRefs: IdKeysByIdColumnIndex[];
+	// manyRelationColumnRefs: IdKeysByIdColumnIndex[]
 
 	/**
 	 * Name of the column.
 	 */
-	name: string;
+	name: string
 
-	notNull: boolean;
+	notNull: boolean
 
 	// The precision of a decimal (total digits)
-	precision?: number;
+	precision?: number
 
 	/**
 	 * Properties that are mapped to this column.
 	 */
-	propertyRefs: DbProperty_Index[];
+	propertyRefs: DbProperty_Index[]
 
 	// The scale of a decimal (digits after the floating point)
-	scale?: number;
+	scale?: number
 
 	/**
 	 * Columns related to this one (needed for type assignment only).
 	 */
-	tempColumnTypeLinks?: SColumn[];
+	tempColumnTypeLinks?: SColumn[]
 	//
 	// /**
 	//  * In which ManyToOne relations is this column present.
 	//  */
-	// manyRelationColumns?: DbRelationColumn[];
+	// manyRelationColumns?: DbRelationColumn[]
 	//
 	// /**
 	//  * In which OneToMany relations is this column present.
 	//  */
-	// oneRelationColumns?: DbRelationColumn[];
+	// oneRelationColumns?: DbRelationColumn[]
 
 	/**
 	 * Column data type.
 	 */
-	type: 'any' | 'boolean' | 'Date' | 'number' | 'string' | 'Json';
+	type: 'any' | 'boolean' | 'Date' | 'number' | 'string' | 'Json'
 }
 
 export interface SRelationColumn {
@@ -188,28 +188,28 @@ export interface SRelationColumn {
 	/**
 	 * This this relation column for the Many-To-One side
 	 */
-	manyToOne: boolean;
+	manyToOne: boolean
 
-	oneSideRelationIndex: number;
+	oneSideRelationIndex: number
 
 	/**
 	 * Id index in own table (if available)
 	 */
-	// ownColumnIdIndex: number;
+	// ownColumnIdIndex: number
 	/**
 	 * Name of the column in own table (if available), or id index encoded definition
 	 */
 
-	ownColumnReference: string;
+	ownColumnReference: string
 
 	/**
 	 * Id index in related table (if available)
 	 */
-	// relationColumnIdIndex: number;
+	// relationColumnIdIndex: number
 
 	/**
 	 * Name of the column in related table (if available), or id index encoded definition
 	 */
-	relationColumnReference: string;
+	relationColumnReference: string
 
 }

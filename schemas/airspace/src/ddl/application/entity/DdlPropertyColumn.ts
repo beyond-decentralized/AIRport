@@ -23,18 +23,12 @@ export class DdlPropertyColumn
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({
-		name: 'DB_COLUMN_LID',
-		referencedColumnName: 'DB_COLUMN_LID', nullable: false
-	})
+	@JoinColumn({ name: 'DB_COLUMN_LID', nullable: false })
 	column: DdlColumn
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({
-		name: 'DB_PROPERTY_LID',
-		referencedColumnName: 'DB_PROPERTY_LID', nullable: false
-	})
+	@JoinColumn({ name: 'DB_PROPERTY_LID', nullable: false })
 	property: DdlProperty
 
 }

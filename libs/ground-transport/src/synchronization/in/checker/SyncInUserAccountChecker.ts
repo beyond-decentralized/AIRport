@@ -7,12 +7,12 @@ import {
 	IUserAccountDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
-import { IKeyUtils, IUserAccount, SyncRepositoryData } from '@airport/ground-control';
+import { IKeyUtils, IUserAccount, IRepositoryBlockData } from '@airport/ground-control';
 
 export interface ISyncInUserAccountChecker {
 
 	ensureUserAccounts(
-		datas: SyncRepositoryData,
+		datas: IRepositoryBlockData,
 		context: IContext
 	): Promise<boolean>;
 
@@ -29,7 +29,7 @@ export class SyncInUserAccountChecker
 	userAccountDao: IUserAccountDao
 
 	async ensureUserAccounts(
-		data: SyncRepositoryData,
+		data: IRepositoryBlockData,
 		context: IContext
 	): Promise<boolean> {
 		try {

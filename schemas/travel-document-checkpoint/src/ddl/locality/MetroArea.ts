@@ -30,10 +30,7 @@ export class MetroArea
     name: MetroArea_Name
 
     @ManyToOne()
-    @JoinColumn({
-        name: 'COUNTRY_ID',
-        referencedColumnName: 'COUNTRY_ID'
-    })
+    @JoinColumn({ name: 'COUNTRY_ID' })
     country: Country
 
     @OneToMany({ mappedBy: 'metroArea' })
