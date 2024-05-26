@@ -25,7 +25,7 @@
     "@airport/taxiway": "workspace:../../generators/taxiway",
     "rollup": "workspace:../../../node_modules/rollup"
   },
-  "main": "dist/esm/final-approach.index.mjs",
+  "main": "dist/cjs/final-approach.index.mjs",
   "module": "dist/esm/final-approach.index.mjs",
   "browser": "dist/esm/final-approach.index.mjs",
   "app": "dist/app/bundle.mjs",

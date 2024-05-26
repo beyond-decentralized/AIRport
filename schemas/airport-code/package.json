@@ -21,7 +21,7 @@
     "@airport/taxiway": "workspace:../../generators/taxiway",
     "rollup": "workspace:../../../node_modules/rollup"
   },
-  "main": "dist/esm/airport-code.index.mjs",
+  "main": "dist/cjs/airport-code.index.mjs",
   "module": "dist/esm/airport-code.index.mjs",
   "browser": "dist/esm/airport-code.index.mjs",
   "files": [
