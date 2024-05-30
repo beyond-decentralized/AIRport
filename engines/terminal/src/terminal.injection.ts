@@ -77,6 +77,7 @@ import { RepositoryManager } from './core/repository/RepositoryManager'
 import { IdGenerator } from '@airport/fuel-hydrant-system'
 import { ActiveQueries, ObservableQueryAdapter } from '@airport/flight-number'
 import { RepositoryMaintenanceManager } from '@airbridge/sso'
+import { CurrentValueMappingDao } from '@airport/holding-pattern/dist/app/bundle'
 
 const terminal = lib('terminal')
 
@@ -290,6 +291,7 @@ TRANSACTIONAL_SERVER.setDependencies({
 
 terminal.setDependencies(UpdateManager, {
     airportDatabase: AIRPORT_DATABASE,
+    currentValueMappingDao: CurrentValueMappingDao,
     datastructureUtils: DatastructureUtils,
     dictionary: Dictionary,
     fieldUtils: FieldUtils,

@@ -866,8 +866,9 @@ export class SyncOutDataPreparer
 		data: IRepositoryBlockData,
 		lookups: InBlockLookupStructures
 	): IRecordHistoryOldValue {
-		return this.prepareValue(
-			oldValue, dbColumn, data, lookups, 'oldValue')
+		return null
+		// return this.prepareValue(
+		// 	oldValue, dbColumn, data, lookups, 'oldValue')
 	}
 
 	private prepareValue(

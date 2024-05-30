@@ -4,6 +4,7 @@ import { IQManyToOneAirEntityRelation } from './IQRelation'
 import { QueryLogicalOperation } from '../operation/ILogicalOperation'
 import { IQNumberEntityField } from '../../../implementation/core/field/QNumberField'
 import { IQEntityInternal } from './IQEntityDriver'
+import { IQNumberField } from '../field/IQNumberField'
 
 /**
  * Marker interface for a collection of only Entity @Id Properties.
@@ -152,12 +153,19 @@ export interface IQEntity<IQE extends IQEntity<any> = any> {
 
 }
 
+export interface IQActorQId {
+	_localId: IQNumberField
+}
+interface IQRepositoryQId {
+    _localId: IQNumberField;
+}
+
 export interface IQAirEntity<IQE extends IQEntity<any> = any>
 	extends IQEntity<IQE> {
 
 	_actorRecordId: IQNumberEntityField
-	actor: IQManyToOneAirEntityRelation<any, any>
-	repository: IQManyToOneAirEntityRelation<any, any>
+	actor: IQManyToOneAirEntityRelation<any, any> & IQActorQId
+	repository: IQManyToOneAirEntityRelation<any, any> & IQRepositoryQId
 
 }
 

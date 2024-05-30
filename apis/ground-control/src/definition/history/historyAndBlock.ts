@@ -1,11 +1,11 @@
 import { SyncAllModifiedColumnsMap } from "../../implementation/sync/SyncAllModifiedColumnsMap"
 import { SyncColumnMap } from "../../implementation/sync/SyncColumnMap"
 import { IApplication, IApplicationVersion, IDomain } from "../application/IApplication"
-import { DbEntity } from "../application/DbEntity"
+import { DbEntity, DbEntity_LocalId } from "../application/DbEntity"
 import { DbColumn_Index, DbColumn, DbRelation } from "../application/DbProperty"
 import { ChangeType } from "../data/ChangeType"
 import { RepositoryTransactionType, TransactionType } from "../data/sync/TransactionType"
-import { ActorRecordId, IActor, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, IRepositoryMemberUpdate, ITerminal, IUserAccount, RepositoryMemberAcceptance_Signature, RepositoryMemberInvitation_PrivateSigningKey, RepositoryMember_Signature, Repository_LocalId, SystemWideOperationId, UserAccount_Signature } from "../core/types"
+import { ActorRecordId, Actor_LocalId, IActor, IRepository, IRepositoryMember, IRepositoryMemberAcceptance, IRepositoryMemberInvitation, IRepositoryMemberUpdate, ITerminal, IUserAccount, RepositoryMemberAcceptance_Signature, RepositoryMemberInvitation_PrivateSigningKey, RepositoryMember_Signature, Repository_LocalId, SystemWideOperationId, UserAccount_Signature } from "../core/types"
 
 export type InMessageIndex = number
 
@@ -109,13 +109,18 @@ export interface IRecordHistoryNewValue {
 
 }
 
+export interface ICurrentValueMapping {
+
+    value: IRecordHistoryNewValue
+
+}
+
 export type RecordHistoryOldValue_ColumnIndex = number
-export type RecordHistoryOldValue_OldValue = any
 export interface IRecordHistoryOldValue {
 
     recordHistory: IRecordHistory
     columnIndex: RecordHistoryOldValue_ColumnIndex
-    oldValue?: RecordHistoryOldValue_OldValue
+    oldValue: IRecordHistoryNewValue
 
 }
 
@@ -215,6 +220,13 @@ export interface IRepositoryBlockData
     referencedApplicationRelations: DbRelation[]
     referencedApplicationVersions: IApplicationVersion[]
     referencedRepositories: IRepository[]
+
+    // For updates and deletes these specifies the records that were
+    // updated or deleted and are referenced in IRecordHistoryNewValue(s)
+    referencedBlockGUIDs?: RepositoryBlock_GUID[]
+    referencedOperationHistories?: IOperationHistory[]
+    referencedRecordHistories?: IRecordHistory[]
+
     terminals: ITerminal[]
     repositoryMembers: IRepositoryMember[]
     userAccounts: IUserAccount[]

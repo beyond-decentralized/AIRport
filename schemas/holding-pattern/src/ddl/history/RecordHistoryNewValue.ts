@@ -7,9 +7,11 @@ import {
 	Id,
 	JoinColumn,
 	ManyToOne,
+	OneToMany,
 	Table
 } from "@airport/tarmaq-entity";
 import { RecordHistory } from './RecordHistory'
+import { CurrentValueMapping } from "./CurrentValueMapping";
 
 /**
  * Created by Papa on 9/15/2016.
@@ -25,11 +27,7 @@ import { RecordHistory } from './RecordHistory'
  */
 @Entity()
 @Table({
-	name: "REPOSITORY_RECORD_HISTORY_NEW_VALUES",
-	// primaryKey: [
-	// 	"REPOSITORY_RECORD_HISTORY_LID",
-	// 	"COLUMN_INDEX"
-	// ]
+	name: "REPOSITORY_RECORD_HISTORY_NEW_VALUES"
 })
 export class RecordHistoryNewValue
 	implements IRecordHistoryNewValue {
@@ -40,15 +38,18 @@ export class RecordHistoryNewValue
 		name: "REPOSITORY_RECORD_HISTORY_LID",
 		referencedColumnName: "RECORD_HISTORY_LID", nullable: false
 	})
-	recordHistory: RecordHistory;
+	recordHistory: RecordHistory
 
 	@Id()
 	@Column({ name: "COLUMN_INDEX", nullable: false })
 	@DbNumber()
-	columnIndex: RecordHistoryNewValue_ColumnIndex;
+	columnIndex: RecordHistoryNewValue_ColumnIndex
 
 	@Column({ name: "NEW_VALUE" })
 	@DbAny()
-	newValue?: RecordHistoryNewValue_NewValue;
+	newValue?: RecordHistoryNewValue_NewValue
+
+	@OneToMany({ mappedBy: 'value'})
+	currentValueMappings: CurrentValueMapping[]
 
 }

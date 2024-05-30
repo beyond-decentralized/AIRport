@@ -38,6 +38,7 @@ import {
 } from '@airport/terminal-map'
 import { IQueryFacade } from '@airport/tarmaq-dao'
 import {
+	CurrentValueMappingDao,
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
 	IRepositoryTransactionHistoryDuo
@@ -49,6 +50,9 @@ export class UpdateManager
 
 	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
+	currentValueMappingDao: CurrentValueMappingDao
 
 	@Inject()
 	datastructureUtils: IDatastructureUtils
@@ -109,10 +113,6 @@ export class UpdateManager
 
 			// TODO: For entity queries an additional query really shouldn't be needed
 			// Specifically for entity queries, we got the new values, just record them
-			// This will require an additional operation on the first update
-			// where the original values of the record are saved
-			// This eats up more disk space but saves on operations that need
-			// to be performed (one less query)
 			[recordHistoryMap, repositorySheetSelectInfo]
 				= await this.addUpdateHistory(
 					portableQuery, actor, systemWideOperationId, errorPrefix,

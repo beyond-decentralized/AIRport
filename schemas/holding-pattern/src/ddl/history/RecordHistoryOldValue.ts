@@ -1,15 +1,16 @@
-import { IRecordHistoryOldValue, RecordHistoryOldValue_ColumnIndex, RecordHistoryOldValue_OldValue } from "@airport/ground-control";
+import { IRecordHistoryOldValue, RecordHistoryOldValue_ColumnIndex } from "@airport/ground-control";
 import {
 	Column,
-	DbAny,
 	DbNumber,
 	Entity,
 	Id,
 	JoinColumn,
+	JoinColumns,
 	ManyToOne,
 	Table
 } from "@airport/tarmaq-entity";
 import { RecordHistory } from './RecordHistory'
+import { RecordHistoryNewValue } from "./RecordHistoryNewValue";
 
 /**
  * Created by Papa on 9/15/2016.
@@ -40,15 +41,21 @@ export class RecordHistoryOldValue
 		name: "REPOSITORY_RECORD_HISTORY_LID",
 		referencedColumnName: "RECORD_HISTORY_LID", nullable: false
 	})
-	recordHistory: RecordHistory;
+	recordHistory: RecordHistory
 
 	@Id()
 	@Column({ name: "COLUMN_INDEX", nullable: false })
 	@DbNumber()
-	columnIndex: RecordHistoryOldValue_ColumnIndex;
+	columnIndex: RecordHistoryOldValue_ColumnIndex
 
-	@Column({ name: "OLD_VALUE" })
-	@DbAny()
-	oldValue?: RecordHistoryOldValue_OldValue;
+	@ManyToOne()
+	@JoinColumns([{
+		name: "OLD_VALUE_REPOSITORY_RECORD_HISTORY_LID",
+		referencedColumnName: "REPOSITORY_RECORD_HISTORY_LID",
+		nullable: false
+	}, {
+		name: "COLUMN_INDEX", nullable: false
+	}])
+	oldValue: RecordHistoryNewValue
 
 }
