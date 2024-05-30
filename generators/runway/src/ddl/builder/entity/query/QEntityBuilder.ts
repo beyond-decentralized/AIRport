@@ -89,10 +89,17 @@ export class QEntityBuilder extends QCoreEntityBuilder {
 		// 	interfaceGenericAndExtends = ` extends ${parentEntityQType}`
 		// }
 
+		let entityGeneric = ''
+		let extendsGeneric = `<${qName}>`
+		if (this.entity.docEntry.isMappedSuperclass) {
+			entityGeneric = `<IQE extends ${qName} = any>`
+			extendsGeneric = `<IQE | ${qName}>`
+		}
+
 		let classSource = `/**
  * Query Entity Query Definition (used for Q.DbEntity_Name).
  */
-export interface ${qName}<IQE extends ${qName} = any>${interfaceGenericAndExtends}<IQE | ${qName}>
+export interface ${qName}${entityGeneric}${interfaceGenericAndExtends}${extendsGeneric}
 {
 	// Id Fields
 ${idPropertyData.definitions}
