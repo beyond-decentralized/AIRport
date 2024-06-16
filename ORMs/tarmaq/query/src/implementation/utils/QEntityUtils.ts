@@ -21,6 +21,7 @@ import { QStringField } from "../core/field/QStringField";
 import { QUntypedField } from "../core/field/QUntypedField";
 import { IQEntityInternal } from "../../definition/core/entity/IQEntityDriver";
 import { IQueryUtils } from "../../definition/utils/IQueryUtils";
+import { QENTITY_UTILS } from "../../tarmaq.query.tokens";
 
 @Injected()
 export class QEntityUtils implements IQEntityUtils {
@@ -104,7 +105,7 @@ export class QEntityUtils implements IQEntityUtils {
                 this, entity, applicationUtils, queryRelationManager,
                 nextChildJoinPosition, dbRelation, joinType)
 
-            const qEntityUtils = IOC.getSync(QEntityUtils)
+            const qEntityUtils = IOC.getSync(QENTITY_UTILS)
 
             entity.properties.forEach((
                 property: DbProperty
@@ -170,7 +171,7 @@ export class QEntityUtils implements IQEntityUtils {
                 this, relation, qEntity, appliationUtils,
                 queryRelationManager, queryUtils)
 
-            const qEntityUtils = IOC.getSync(QEntityUtils)
+            const qEntityUtils = IOC.getSync(QENTITY_UTILS)
 
             qEntityUtils.getQEntityIdFields(this, entity, qEntity, relation.property)
 

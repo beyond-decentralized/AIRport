@@ -19,5 +19,5 @@ export interface QueryUpdate<IEUC extends QueryUpdateColumns>
 	/**
 	 * SET
 	 */
-	SELECT: IEUC;
+	SET: IEUC;
 }

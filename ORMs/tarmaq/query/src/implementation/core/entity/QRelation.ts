@@ -11,9 +11,9 @@ import { IQAirEntity } from '../../../definition/core/entity/IQEntity'
 import { IQEntityInternal } from '../../../definition/core/entity/IQEntityDriver'
 import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'
 import { QueryLogicalOperation } from '../../../definition/core/operation/ILogicalOperation'
-import { IQueryUtils } from '../../../tarmaq.query.index'
-import { QUERY_UTILS } from '../../../tarmaq.query.injection'
-import { QEntityUtils } from '../../utils/QEntityUtils'
+import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
+import { QUERY_UTILS } from '../../../tarmaq.query.tokens'
+import { QENTITY_UTILS } from '../../../tarmaq.query.tokens'
 import { AND, OR } from '../operation/LogicalOperation'
 
 /**
@@ -67,7 +67,7 @@ QRelation.prototype.nullOrNot = function (
 	isNull: boolean
 ): QueryBaseOperation {
 	const dbRelation: DbRelation = this.dbRelation
-	const qEntityUtils = IOC.getSync(QEntityUtils)
+	const qEntityUtils = IOC.getSync(QENTITY_UTILS)
 
 	const operations = []
 	for (const propertyColumn of dbRelation.property.propertyColumns) {

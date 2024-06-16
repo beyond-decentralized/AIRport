@@ -10,7 +10,7 @@ import {
 } from '@airport/ground-control'
 import {
 	ENTITY_UTILS,
-	QEntityUtils,
+	QENTITY_UTILS,
 	QUERY_RELATION_MANAGER,
 	QUERY_UTILS
 } from '@airport/tarmaq-query'
@@ -69,7 +69,7 @@ APPLICATION_UTILS.setDependencies({
 	airportDatabase: AIRPORT_DATABASE,
 	dictionary: Dictionary,
 	entityStateManager: ENTITY_STATE_MANAGER,
-	qEntityUtils: QEntityUtils,
+	qEntityUtils: QENTITY_UTILS,
 	utils: Utils
 })
 DATABASE_FACADE.setDependencies({
@@ -86,7 +86,7 @@ airTrafficControl.setDependencies(Lookup, {
 	queryFacade: QUERY_FACADE
 })
 airTrafficControl.setDependencies(QApplicationBuilderUtils, {
-	qEntityUtils: QEntityUtils
+	qEntityUtils: QENTITY_UTILS
 })
 airTrafficControl.setDependencies(QMetadataUtils, {
 	dictionary: Dictionary
@@ -104,7 +104,7 @@ QUERY_UTILS.setDependencies({
 	dictionary: Dictionary,
 	entityUtils: ENTITY_UTILS,
 	fieldUtils: FieldUtils,
-	qEntityUtils: QEntityUtils,
+	qEntityUtils: QENTITY_UTILS,
 	queryRelationManager: QUERY_RELATION_MANAGER,
 })
 QUERY_RELATION_MANAGER.setClass(QueryRelationManager)

@@ -6,7 +6,7 @@ import {
 	Application_Index,
 	IApplicationUtils
 } from '@airport/ground-control'
-import { IQueryRelationManager, QEntityUtils } from '@airport/tarmaq-query'
+import { IQueryRelationManager, IQEntityUtils } from '@airport/tarmaq-query'
 import { QAppInternal } from '../../definition/IAirportDatabase'
 import { IApplicationDependency, IApplicationWithDependencies, IQApplicationBuilderUtils } from '../../definition/utils/IQApplicationBuilderUtils'
 
@@ -16,7 +16,7 @@ export class QApplicationBuilderUtils
 	implements IQApplicationBuilderUtils {
 
 	@Inject()
-	qEntityUtils: QEntityUtils
+	qEntityUtils: IQEntityUtils
 
 	setQAppEntities(
 		application: IApplication,

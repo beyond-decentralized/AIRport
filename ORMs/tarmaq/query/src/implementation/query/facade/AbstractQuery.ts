@@ -24,7 +24,7 @@ import { RawNonEntityQuery } from '../../../definition/query/facade/RawNonEntity
 import { RawTreeQuery } from '../../../definition/query/facade/RawTreeQuery'
 import { EntityAliases, } from '../../core/entity/Aliases'
 import { FieldInOrderBy } from '../../core/field/FieldInOrderBy'
-import { ENTITY_UTILS } from '../../../tarmaq.query.injection'
+import { ENTITY_UTILS } from '../../../tarmaq.query.tokens'
 import { IQueryUtils } from '../../../definition/utils/IQueryUtils'
 import { IFieldUtils } from '../../../definition/utils/IFieldUtils'
 import { IQueryRelationManager } from '../../../definition/core/entity/IQueryRelationManager'

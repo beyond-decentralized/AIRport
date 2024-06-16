@@ -89,4 +89,5 @@ export * from './implementation/query/facade/UpdateColumns';
 export * from './implementation/query/facade/UpdateProperties';
 export * from './implementation/query/QueryContextLoader';
 export * from './implementation/utils/QEntityUtils';
+export * from './tarmaq.query.tokens';
 export * from './tarmaq.query.injection';

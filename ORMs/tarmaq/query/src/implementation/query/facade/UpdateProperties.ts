@@ -48,7 +48,7 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 					this.columnAliases,
 					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 					queryUtils, fieldUtils, queryRelationManager),
-			SELECT: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, queryRelationManager),
+			SET: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, queryRelationManager),
 			WHERE: queryUtils.whereClauseToQueryOperation(
 				this.rawUpdate.WHERE, this.columnAliases,
 				this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)

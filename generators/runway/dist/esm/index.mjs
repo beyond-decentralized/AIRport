@@ -4482,6 +4482,238 @@ QEntity.prototype.in = function (entities) {
         .in(entities, this);
 };
 
+const tarmaqQuery = lib('tarmaq-query');
+const ENTITY_UTILS = tarmaqQuery.token('EntityUtils');
+const QENTITY_UTILS = tarmaqQuery.token('QEntityUtils');
+const QUERY_RELATION_MANAGER = tarmaqQuery.token('QueryRelationManager');
+const QUERY_UTILS = tarmaqQuery.token('QueryUtils');
+globalThis.ENTITY_UTILS = ENTITY_UTILS;
+globalThis.QENTITY_UTILS = QENTITY_UTILS;
+globalThis.QUERY_UTILS = QUERY_UTILS;
+
+/**
+ * Created by Papa on 10/25/2016.
+ */
+function tree(query) {
+    let queryDefinition;
+    if (query instanceof Function) {
+        queryDefinition = query();
+    }
+    else {
+        queryDefinition = query;
+    }
+    let view = IOC.getSync(ENTITY_UTILS).getQTree([], queryDefinition);
+    let customEntity = queryDefinition.SELECT;
+    view = convertMappedEntitySelect(customEntity, queryDefinition, view, view, 'f');
+    return view;
+}
+function convertMappedEntitySelect(customEntity, queryDefinition, view, selectProxy, fieldPrefix) {
+    let fieldIndex = 0;
+    for (let property in customEntity) {
+        let alias = `${fieldPrefix}${++fieldIndex}`;
+        let value = customEntity[property];
+        if (IOC.getSync(ENTITY_UTILS).isQField(value)) {
+            let field = value.getInstance(view);
+            field.alias = alias;
+            field.q = view;
+            selectProxy[property] = field;
+        }
+        else {
+            if (value instanceof Object && !(value instanceof Date)) {
+                selectProxy[value] = convertMappedEntitySelect(value, queryDefinition, view, {}, `${alias}_`);
+            }
+            else {
+                throw new Error(`All SELECT clause entries of a Mapped query must be Fields or Functions`);
+            }
+        }
+    }
+    return view;
+}
+class JoinFields {
+    constructor(joinFrom, joinTo) {
+        this.joinFrom = joinFrom;
+        this.joinTo = joinTo;
+        if (!(IOC.getSync(ENTITY_UTILS).isQEntity(this.joinTo))) {
+            throw new Error(`Right value in join must be a View or an Entity`);
+        }
+    }
+    ON(joinOperation) {
+        let joinChild = this.joinFrom;
+        joinChild.__driver__.joinWhereClause = joinOperation(this.joinFrom, this.joinTo);
+        return this.joinFrom;
+    }
+}
+
+class QEntityDriver {
+    constructor(dbEntity, queryUtils, queryRelationManager, fromClausePosition = [], dbRelation = null, joinType = null, qEntity) {
+        this.dbEntity = dbEntity;
+        this.queryUtils = queryUtils;
+        this.queryRelationManager = queryRelationManager;
+        this.fromClausePosition = fromClausePosition;
+        this.dbRelation = dbRelation;
+        this.joinType = joinType;
+        this.qEntity = qEntity;
+        this.childQEntities = [];
+        this.entityRelations = [];
+        this.idColumns = [];
+        this.allColumns = [];
+        this.relations = [];
+        this.currentChildIndex = -1;
+    }
+    getInstance() {
+        const qEntityConstructor = this.queryUtils
+            .getQEntityConstructor(this.dbEntity);
+        let instance = new qEntityConstructor(this.dbEntity, this.queryUtils, this.queryRelationManager, this.fromClausePosition, this.dbRelation, this.joinType);
+        instance.__driver__.currentChildIndex = this.currentChildIndex;
+        instance.__driver__.joinWhereClause = this.joinWhereClause;
+        instance.__driver__.entityRelations = this.entityRelations;
+        return instance;
+    }
+    getQueryRelation(columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
+        // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
+        // see IDdlApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
+        let QueryRelation = {
+            currentChildIndex: this.currentChildIndex,
+            entityIndex: this.dbEntity.index,
+            fromClausePosition: this.fromClausePosition,
+            joinType: this.joinType,
+            relationType: null,
+            rootEntityPrefix: columnAliases.entityAliases.getNextAlias(this.getRootJoinEntity()),
+            applicationIndex: this.dbEntity.applicationVersion.application.index
+        };
+        if (this.joinWhereClause) {
+            this.getJoinRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
+        }
+        else if (this.dbRelation) {
+            this.getEntityRelationQuery(QueryRelation);
+        }
+        else {
+            this.getRootRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
+        }
+        return QueryRelation;
+    }
+    getJoinRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
+        QueryRelation.relationType = QueryRelationType.ENTITY_JOIN_ON;
+        QueryRelation.joinWhereClause = queryUtils.whereClauseToQueryOperation(this.joinWhereClause, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
+        return QueryRelation;
+    }
+    getEntityRelationQuery(QueryRelation) {
+        QueryRelation.relationType = QueryRelationType.ENTITY_APPLICATION_RELATION;
+        QueryRelation.relationIndex = this.dbRelation.index;
+        // if (!this.dbRelation.whereJoinTable) {
+        return QueryRelation;
+        // }
+        // let otmQEntity;
+        // let mtoQEntity;
+        // switch (this.dbRelation.relationType) {
+        // 	case EntityRelationType.ONE_TO_MANY:
+        // 		mtoQEntity = this.qEntity;
+        // 		otmQEntity = this.parentJoinEntity;
+        // 		break;
+        // 	case EntityRelationType.MANY_TO_ONE:
+        // 		otmQEntity = this.qEntity;
+        // 		mtoQEntity = this.parentJoinEntity;
+        // 		break;
+        // 	default:
+        // 		throw new Error(`Unknown EntityRelationType: ${this.dbRelation.relationType}`);
+        // }
+        //
+        // let joinWhereClause = this.dbRelation.whereJoinTable.addToJoinFunction(otmQEntity,
+        // mtoQEntity, this.airportDb, this.airportDb.FROM); QueryRelation.joinWhereClause    =
+        // this.utils.Query.whereClauseToQueryOperation(joinWhereClause, columnAliases);
+        // QueryRelation.joinWhereClauseOperator   = this.dbRelation.joinFunctionWithOperator;  return
+        // QueryRelation;
+    }
+    getRootRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
+        QueryRelation.relationType = globalThis.IOC
+            .getSync(globalThis.ENTITY_UTILS)
+            // Removes circular dependency at code initialization time 
+            .isQTree(this) ? QueryRelationType.SUB_QUERY_ROOT : QueryRelationType.ENTITY_ROOT;
+        return QueryRelation;
+    }
+    getQ() {
+        return this.qEntity;
+    }
+    join(right, joinType) {
+        let joinChild = right
+            .__driver__.getInstance();
+        joinChild.__driver__.currentChildIndex = 0;
+        let nextChildPosition = this.queryRelationManager.getNextChildJoinPosition(this);
+        joinChild.__driver__.fromClausePosition = nextChildPosition;
+        joinChild.__driver__.joinType = joinType;
+        joinChild.__driver__.parentJoinEntity = this.qEntity;
+        this.qEntity.__driver__.childQEntities.push(joinChild);
+        return new JoinFields(this.qEntity, joinChild);
+    }
+    isRootEntity() {
+        return !this.parentJoinEntity;
+    }
+    getRootJoinEntity() {
+        let rootEntity = this.qEntity;
+        while (rootEntity.__driver__.parentJoinEntity) {
+            rootEntity = rootEntity.__driver__.parentJoinEntity;
+        }
+        return rootEntity;
+    }
+}
+globalThis.QEntityDriver = QEntityDriver;
+
+/**
+ * Created by Papa on 10/18/2016.
+ */
+class JoinTreeNode {
+    constructor(queryRelation, childNodes, parentNode) {
+        this.queryRelation = queryRelation;
+        this.childNodes = childNodes;
+        this.parentNode = parentNode;
+    }
+    addChildNode(joinTreeNode) {
+        let childFromClausePositionArray = joinTreeNode.queryRelation.fromClausePosition;
+        let childPosition = childFromClausePositionArray[childFromClausePositionArray.length - 1];
+        this.childNodes[childPosition] = joinTreeNode;
+    }
+    getEntityRelationChildNode(dbRelation) {
+        return this.getEntityRelationChildNodeByIndexes(dbRelation.property.entity.applicationVersion._localId, dbRelation.property.entity.index, dbRelation.index);
+    }
+    getEntityRelationChildNodeByIndexes(applicationIndex, entityIndex, relationIndex) {
+        let matchingNodes = this.childNodes.filter((childNode) => {
+            return childNode.queryRelation.relationIndex === relationIndex;
+        });
+        switch (matchingNodes.length) {
+            case 0:
+                break;
+            case 1:
+                return matchingNodes[0];
+            default:
+                throw new Error(`More than one child node matched relation property index '${relationIndex}'`);
+        }
+        // No node matched, this must be reference to a sub-entity in SELECT clause (in a Entity
+        // query)
+        let childPosition = this.queryRelation.fromClausePosition.slice();
+        childPosition.push(this.childNodes.length);
+        let rootEntityPrefix;
+        if (this.parentNode) {
+            rootEntityPrefix = this.parentNode.queryRelation.rootEntityPrefix;
+        }
+        else {
+            rootEntityPrefix = this.queryRelation.rootEntityPrefix;
+        }
+        let queryEntityRelation = {
+            currentChildIndex: 0,
+            fromClausePosition: childPosition,
+            entityIndex: entityIndex,
+            joinType: JoinType.LEFT_JOIN,
+            relationType: QueryRelationType.ENTITY_APPLICATION_RELATION,
+            rootEntityPrefix: rootEntityPrefix,
+            relationIndex: relationIndex,
+            applicationIndex: applicationIndex
+        };
+        let childTreeNode = new JoinTreeNode(queryEntityRelation, [], this);
+        this.addChildNode(childTreeNode);
+        return childTreeNode;
+    }
+}
+
 /**
  * Created by Papa on 4/21/2016.
  */
@@ -4570,7 +4802,7 @@ QRelation.prototype.IS_NOT_NULL = function () {
 };
 QRelation.prototype.nullOrNot = function (isNull) {
     const dbRelation = this.dbRelation;
-    const qEntityUtils = IOC.getSync(QEntityUtils);
+    const qEntityUtils = IOC.getSync(QENTITY_UTILS);
     const operations = [];
     for (const propertyColumn of dbRelation.property.propertyColumns) {
         const columnField = qEntityUtils.getColumnQField(dbRelation.entity, dbRelation.property, this.parentQ, propertyColumn.column);
@@ -4653,6 +4885,46 @@ yourMethodName: function() {},
 */
 };
 extend(QAirEntityRelation, QAirEntityOneToManyRelation, qAirEntityOneToManyRelationMethods);
+
+function QTree(fromClausePosition = [], subQuery) {
+    QTree.base.constructor.call(this, null, fromClausePosition, null, null, QTreeDriver);
+    this.__driver__.subQuery = subQuery;
+}
+const qTreeMethods = {
+/*
+yourMethodName: function() {},
+*/
+};
+globalThis.extend(QEntity, QTree, qTreeMethods);
+class QTreeDriver extends QEntityDriver {
+    getInstance() {
+        let instance = super.getInstance();
+        instance.__driver__
+            .subQuery = this.subQuery;
+        return instance;
+    }
+    // getRelationPropertyName(): string {
+    // 	throw new Error(`not implemented`);
+    // }
+    getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
+        queryRelation = super.getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
+        queryRelation.relationType = QueryRelationType.SUB_QUERY_JOIN_ON;
+        queryRelation.subQuery =
+            // Removes circular dependency at code initialization time 
+            globalThis.IOC.getSync(globalThis.ENTITY_UTILS).getTreeQuery(this.subQuery, columnAliases.entityAliases)
+                .toQuery(queryUtils, fieldUtils, queryRelationManager);
+        return queryRelation;
+    }
+    getRootRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
+        queryRelation = super.getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
+        queryRelation.relationType = QueryRelationType.SUB_QUERY_ROOT;
+        queryRelation.subQuery =
+            // Removes circular dependency at code initialization time 
+            globalThis.IOC.getSync(globalThis.ENTITY_UTILS).getTreeQuery(this.subQuery, columnAliases.entityAliases)
+                .toQuery(queryUtils, fieldUtils, queryRelationManager);
+        return queryRelation;
+    }
+}
 
 class ValueOperation extends Operation {
     constructor(category) {
@@ -5205,489 +5477,6 @@ class QStringArrayFunction extends QStringFunction {
 }
 
 /**
- * Created by papa on 7/13/17.
- */
-class UntypedOperation extends ValueOperation {
-    constructor() {
-        super(OperationCategory.UNTYPED);
-    }
-    LIKE(lValue, rValue
-    // TODO: implement ReqExp
-    //| RegExp
-    ) {
-        return {
-            operationCategory: this.category,
-            leftSideValue: lValue,
-            operator: SqlOperator.LIKE,
-            rightSideValue: rValue
-        };
-    }
-}
-
-class QUntypedField extends QOperableField {
-    constructor(dbColumn, dbProperty, q, objectType = QueryClauseObjectType.FIELD) {
-        super(dbColumn, dbProperty, q, objectType, new UntypedOperation());
-    }
-    getInstance(qEntity = this.q) {
-        return this.copyFunctions(new QUntypedField(this.dbColumn, this.dbProperty, qEntity, this.objectType));
-    }
-    like(value) {
-        if (value instanceof Function) {
-            value = value();
-        }
-        return this.operation.LIKE(this, value);
-    }
-}
-
-class QEntityUtils {
-    getColumnQField(entity, property, q, column) {
-        switch (column.type) {
-            case SQLDataType.ANY:
-                return new QUntypedField(column, property, q);
-            case SQLDataType.BOOLEAN:
-                return new QBooleanField(column, property, q);
-            case SQLDataType.DATE:
-                return new QDateField(column, property, q);
-            case SQLDataType.NUMBER:
-                return new QNumberField(column, property, q);
-            case SQLDataType.JSON:
-            case SQLDataType.STRING:
-                return new QStringField(column, property, q);
-            default:
-                throw new Error(`Unsupported data type for property ${entity.applicationVersion.application.name}.${entity.name}.${property.name}`);
-        }
-    }
-    getQRelation(entity, property, q, allQApps) {
-        const relation = property.relation[0];
-        switch (relation.relationType) {
-            case EntityRelationType.MANY_TO_ONE:
-                const relationEntity = relation.relationEntity;
-                const relationApplication = relationEntity.applicationVersion.application;
-                const qIdRelationConstructor = allQApps[relationApplication.index]
-                    .__qIdRelationConstructors__[relationEntity.index];
-                return new qIdRelationConstructor(relation.relationEntity, relation, q, this.applicationUtils, this.queryRelationManager, this.queryUtils);
-            case EntityRelationType.ONE_TO_MANY:
-                if (entity.isAirEntity) {
-                    return new QAirEntityOneToManyRelation(relation, q, this.applicationUtils, this.queryRelationManager, this.queryUtils);
-                }
-                else {
-                    return new QOneToManyRelation(relation, q, this.applicationUtils, this.queryRelationManager, this.queryUtils);
-                }
-            default:
-                throw new Error(`Unknown EntityRelationType: ${relation.relationType}.`);
-        }
-    }
-    getQEntityConstructor(allQApps) {
-        // ChildQEntity refers to the constructor
-        var ChildQEntity = function (entity, applicationUtils, queryRelationManager, nextChildJoinPosition, dbRelation, joinType) {
-            ChildQEntity.base.constructor.call(this, entity, applicationUtils, queryRelationManager, nextChildJoinPosition, dbRelation, joinType);
-            const qEntityUtils = IOC.getSync(QEntityUtils);
-            entity.properties.forEach((property) => {
-                let qFieldOrRelation;
-                if (property.relation && property.relation.length) {
-                    qFieldOrRelation = qEntityUtils.getQRelation(entity, property, this, allQApps);
-                    for (const propertyColumn of property.propertyColumns) {
-                        qEntityUtils.addColumnQField(entity, property, this, propertyColumn.column);
-                    }
-                }
-                else {
-                    qFieldOrRelation = qEntityUtils.addColumnQField(entity, property, this, property.propertyColumns[0].column);
-                }
-                this[property.name] = qFieldOrRelation;
-            });
-            // entity.__qConstructor__ = ChildQEntity
-        };
-        const childQEntityMethods = {
-        /*
-        yourMethodName: function() {},
-        */
-        };
-        extend(QEntity, ChildQEntity, childQEntityMethods);
-        return ChildQEntity;
-    }
-    addColumnQField(entity, property, q, column) {
-        const qFieldOrRelation = this.getColumnQField(entity, property, q, column);
-        q.__driver__.allColumns[column.index]
-            = qFieldOrRelation;
-        if (column.idIndex || column.idIndex === 0) {
-            q.__driver__.idColumns[column.idIndex]
-                = qFieldOrRelation;
-        }
-        return qFieldOrRelation;
-    }
-    getQEntityIdRelationConstructor(dbEntity) {
-        function QEntityIdRelation(entity, relation, qEntity, appliationUtils, queryRelationManager, queryUtils) {
-            QEntityIdRelation.base.constructor.call(this, relation, qEntity, appliationUtils, queryRelationManager, queryUtils);
-            const qEntityUtils = IOC.getSync(QEntityUtils);
-            qEntityUtils.getQEntityIdFields(this, entity, qEntity, relation.property);
-            // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
-        }
-        const qEntityIdRelationMethods = {
-        /*
-        yourMethodName: function() {},
-        */
-        };
-        if (dbEntity.isAirEntity) {
-            extend(QManyToOneAirEntityRelation, QEntityIdRelation, qEntityIdRelationMethods);
-        }
-        else {
-            extend(QManyToOneInternalRelation, QEntityIdRelation, qEntityIdRelationMethods);
-        }
-        return QEntityIdRelation;
-    }
-    /**
-     * Set all fields behind an id relation.  For example
-     *
-     * QA.id
-     *
-     * or
-     *
-     * QA.rel1.id
-     *
-     * or
-     *
-     * QA.rel2.otherRel.id
-     * QA.rel2.id
-     *
-     * @param addToObject  Object to add to (Ex: QA | QA.rel1 | QA.rel2.otherRel
-     * @param relationEntity  Entity to which the fields belong (Ex: QA, QRel1, QRel2, QOtherRel)
-     * @param utils
-     * @param parentProperty  The parent property from which the current property was
-     *    navigated to
-     * @param relationColumnMap  DbColumn map for the current path of properties
-     *  (QA.rel2.otherRel), keyed by the column from the One side of the relation
-     */
-    getQEntityIdFields(addToObject, relationEntity, qEntity, parentProperty, relationColumnMap) {
-        if (!relationColumnMap) {
-            const parentRelation = parentProperty.relation[0];
-            const relationColumns = parentRelation.manyRelationColumns;
-            relationColumnMap = new Map();
-            for (const relationColumn of relationColumns) {
-                relationColumnMap.set(relationColumn.oneColumn, relationColumn.manyColumn);
-            }
-        }
-        relationEntity.properties.forEach((property) => {
-            if (!property.isId && relationEntity.isAirEntity) {
-                // Internal (non-AIR entity) relations may join by non-@Id()
-                // Fields.  For example RepositoryReference join across 
-                // repositories on GUIDs.
-                return;
-            }
-            let qFieldOrRelation;
-            // If it's a relation property (and therefore has backing columns)
-            if (property.relation && property.relation.length) {
-                const relation = property.relation[0];
-                const relationColumns = relation.manyRelationColumns;
-                let hasMatchingColumns = false;
-                for (const relationColumn of relationColumns) {
-                    if (relationColumnMap.has(relationColumn.manyColumn)) {
-                        hasMatchingColumns = true;
-                        const originalColumn = relationColumnMap.get(relationColumn.manyColumn);
-                        // Remove the mapping of the parent relation
-                        relationColumnMap.delete(relationColumn.manyColumn);
-                        // And replace it with the nested relation
-                        relationColumnMap.set(relationColumn.oneColumn, originalColumn);
-                    }
-                }
-                if (!hasMatchingColumns) {
-                    return;
-                }
-                qFieldOrRelation = this.getQEntityIdFields({}, relation.relationEntity, qEntity, parentProperty, relationColumnMap);
-            }
-            else {
-                if (!relationColumnMap.has(property.propertyColumns[0].column)) {
-                    // Only happens in internal (non-AIR entity) relations that do not
-                    // rely on @Id() fields
-                    return;
-                }
-                const originalColumn = relationColumnMap.get(property.propertyColumns[0].column);
-                qFieldOrRelation = this.getColumnQField(relationEntity, parentProperty, qEntity, originalColumn);
-            }
-            addToObject[property.name] = qFieldOrRelation;
-        });
-        return addToObject;
-    }
-}
-
-const tarmaqQuery = lib('tarmaq-query');
-// Separating core-tokens from tokens removes circular dependencies
-// at code initialization time
-tarmaqQuery.register(QEntityUtils);
-const ENTITY_UTILS = tarmaqQuery.token('EntityUtils');
-const QUERY_RELATION_MANAGER = tarmaqQuery.token('QueryRelationManager');
-const QUERY_UTILS = tarmaqQuery.token('QueryUtils');
-tarmaqQuery.setDependencies(QEntityUtils, {
-    applicationUtils: APPLICATION_UTILS,
-    queryRelationManager: QUERY_RELATION_MANAGER,
-    queryUtils: QUERY_UTILS
-});
-globalThis.ENTITY_UTILS = ENTITY_UTILS;
-globalThis.QUERY_UTILS = QUERY_UTILS;
-
-/**
- * Created by Papa on 10/25/2016.
- */
-function tree(query) {
-    let queryDefinition;
-    if (query instanceof Function) {
-        queryDefinition = query();
-    }
-    else {
-        queryDefinition = query;
-    }
-    let view = IOC.getSync(ENTITY_UTILS).getQTree([], queryDefinition);
-    let customEntity = queryDefinition.SELECT;
-    view = convertMappedEntitySelect(customEntity, queryDefinition, view, view, 'f');
-    return view;
-}
-function convertMappedEntitySelect(customEntity, queryDefinition, view, selectProxy, fieldPrefix) {
-    let fieldIndex = 0;
-    for (let property in customEntity) {
-        let alias = `${fieldPrefix}${++fieldIndex}`;
-        let value = customEntity[property];
-        if (IOC.getSync(ENTITY_UTILS).isQField(value)) {
-            let field = value.getInstance(view);
-            field.alias = alias;
-            field.q = view;
-            selectProxy[property] = field;
-        }
-        else {
-            if (value instanceof Object && !(value instanceof Date)) {
-                selectProxy[value] = convertMappedEntitySelect(value, queryDefinition, view, {}, `${alias}_`);
-            }
-            else {
-                throw new Error(`All SELECT clause entries of a Mapped query must be Fields or Functions`);
-            }
-        }
-    }
-    return view;
-}
-class JoinFields {
-    constructor(joinFrom, joinTo) {
-        this.joinFrom = joinFrom;
-        this.joinTo = joinTo;
-        if (!(IOC.getSync(ENTITY_UTILS).isQEntity(this.joinTo))) {
-            throw new Error(`Right value in join must be a View or an Entity`);
-        }
-    }
-    ON(joinOperation) {
-        let joinChild = this.joinFrom;
-        joinChild.__driver__.joinWhereClause = joinOperation(this.joinFrom, this.joinTo);
-        return this.joinFrom;
-    }
-}
-
-class QEntityDriver {
-    constructor(dbEntity, queryUtils, queryRelationManager, fromClausePosition = [], dbRelation = null, joinType = null, qEntity) {
-        this.dbEntity = dbEntity;
-        this.queryUtils = queryUtils;
-        this.queryRelationManager = queryRelationManager;
-        this.fromClausePosition = fromClausePosition;
-        this.dbRelation = dbRelation;
-        this.joinType = joinType;
-        this.qEntity = qEntity;
-        this.childQEntities = [];
-        this.entityRelations = [];
-        this.idColumns = [];
-        this.allColumns = [];
-        this.relations = [];
-        this.currentChildIndex = -1;
-    }
-    getInstance() {
-        const qEntityConstructor = this.queryUtils
-            .getQEntityConstructor(this.dbEntity);
-        let instance = new qEntityConstructor(this.dbEntity, this.queryUtils, this.queryRelationManager, this.fromClausePosition, this.dbRelation, this.joinType);
-        instance.__driver__.currentChildIndex = this.currentChildIndex;
-        instance.__driver__.joinWhereClause = this.joinWhereClause;
-        instance.__driver__.entityRelations = this.entityRelations;
-        return instance;
-    }
-    getQueryRelation(columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
-        // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
-        // see IDdlApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
-        let QueryRelation = {
-            currentChildIndex: this.currentChildIndex,
-            entityIndex: this.dbEntity.index,
-            fromClausePosition: this.fromClausePosition,
-            joinType: this.joinType,
-            relationType: null,
-            rootEntityPrefix: columnAliases.entityAliases.getNextAlias(this.getRootJoinEntity()),
-            applicationIndex: this.dbEntity.applicationVersion.application.index
-        };
-        if (this.joinWhereClause) {
-            this.getJoinRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
-        }
-        else if (this.dbRelation) {
-            this.getEntityRelationQuery(QueryRelation);
-        }
-        else {
-            this.getRootRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
-        }
-        return QueryRelation;
-    }
-    getJoinRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
-        QueryRelation.relationType = QueryRelationType.ENTITY_JOIN_ON;
-        QueryRelation.joinWhereClause = queryUtils.whereClauseToQueryOperation(this.joinWhereClause, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet);
-        return QueryRelation;
-    }
-    getEntityRelationQuery(QueryRelation) {
-        QueryRelation.relationType = QueryRelationType.ENTITY_APPLICATION_RELATION;
-        QueryRelation.relationIndex = this.dbRelation.index;
-        // if (!this.dbRelation.whereJoinTable) {
-        return QueryRelation;
-        // }
-        // let otmQEntity;
-        // let mtoQEntity;
-        // switch (this.dbRelation.relationType) {
-        // 	case EntityRelationType.ONE_TO_MANY:
-        // 		mtoQEntity = this.qEntity;
-        // 		otmQEntity = this.parentJoinEntity;
-        // 		break;
-        // 	case EntityRelationType.MANY_TO_ONE:
-        // 		otmQEntity = this.qEntity;
-        // 		mtoQEntity = this.parentJoinEntity;
-        // 		break;
-        // 	default:
-        // 		throw new Error(`Unknown EntityRelationType: ${this.dbRelation.relationType}`);
-        // }
-        //
-        // let joinWhereClause = this.dbRelation.whereJoinTable.addToJoinFunction(otmQEntity,
-        // mtoQEntity, this.airportDb, this.airportDb.FROM); QueryRelation.joinWhereClause    =
-        // this.utils.Query.whereClauseToQueryOperation(joinWhereClause, columnAliases);
-        // QueryRelation.joinWhereClauseOperator   = this.dbRelation.joinFunctionWithOperator;  return
-        // QueryRelation;
-    }
-    getRootRelationQuery(QueryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
-        QueryRelation.relationType = globalThis.IOC
-            .getSync(globalThis.ENTITY_UTILS)
-            // Removes circular dependency at code initialization time 
-            .isQTree(this) ? QueryRelationType.SUB_QUERY_ROOT : QueryRelationType.ENTITY_ROOT;
-        return QueryRelation;
-    }
-    getQ() {
-        return this.qEntity;
-    }
-    join(right, joinType) {
-        let joinChild = right
-            .__driver__.getInstance();
-        joinChild.__driver__.currentChildIndex = 0;
-        let nextChildPosition = this.queryRelationManager.getNextChildJoinPosition(this);
-        joinChild.__driver__.fromClausePosition = nextChildPosition;
-        joinChild.__driver__.joinType = joinType;
-        joinChild.__driver__.parentJoinEntity = this.qEntity;
-        this.qEntity.__driver__.childQEntities.push(joinChild);
-        return new JoinFields(this.qEntity, joinChild);
-    }
-    isRootEntity() {
-        return !this.parentJoinEntity;
-    }
-    getRootJoinEntity() {
-        let rootEntity = this.qEntity;
-        while (rootEntity.__driver__.parentJoinEntity) {
-            rootEntity = rootEntity.__driver__.parentJoinEntity;
-        }
-        return rootEntity;
-    }
-}
-globalThis.QEntityDriver = QEntityDriver;
-
-/**
- * Created by Papa on 10/18/2016.
- */
-class JoinTreeNode {
-    constructor(queryRelation, childNodes, parentNode) {
-        this.queryRelation = queryRelation;
-        this.childNodes = childNodes;
-        this.parentNode = parentNode;
-    }
-    addChildNode(joinTreeNode) {
-        let childFromClausePositionArray = joinTreeNode.queryRelation.fromClausePosition;
-        let childPosition = childFromClausePositionArray[childFromClausePositionArray.length - 1];
-        this.childNodes[childPosition] = joinTreeNode;
-    }
-    getEntityRelationChildNode(dbRelation) {
-        return this.getEntityRelationChildNodeByIndexes(dbRelation.property.entity.applicationVersion._localId, dbRelation.property.entity.index, dbRelation.index);
-    }
-    getEntityRelationChildNodeByIndexes(applicationIndex, entityIndex, relationIndex) {
-        let matchingNodes = this.childNodes.filter((childNode) => {
-            return childNode.queryRelation.relationIndex === relationIndex;
-        });
-        switch (matchingNodes.length) {
-            case 0:
-                break;
-            case 1:
-                return matchingNodes[0];
-            default:
-                throw new Error(`More than one child node matched relation property index '${relationIndex}'`);
-        }
-        // No node matched, this must be reference to a sub-entity in SELECT clause (in a Entity
-        // query)
-        let childPosition = this.queryRelation.fromClausePosition.slice();
-        childPosition.push(this.childNodes.length);
-        let rootEntityPrefix;
-        if (this.parentNode) {
-            rootEntityPrefix = this.parentNode.queryRelation.rootEntityPrefix;
-        }
-        else {
-            rootEntityPrefix = this.queryRelation.rootEntityPrefix;
-        }
-        let queryEntityRelation = {
-            currentChildIndex: 0,
-            fromClausePosition: childPosition,
-            entityIndex: entityIndex,
-            joinType: JoinType.LEFT_JOIN,
-            relationType: QueryRelationType.ENTITY_APPLICATION_RELATION,
-            rootEntityPrefix: rootEntityPrefix,
-            relationIndex: relationIndex,
-            applicationIndex: applicationIndex
-        };
-        let childTreeNode = new JoinTreeNode(queryEntityRelation, [], this);
-        this.addChildNode(childTreeNode);
-        return childTreeNode;
-    }
-}
-
-function QTree(fromClausePosition = [], subQuery) {
-    QTree.base.constructor.call(this, null, fromClausePosition, null, null, QTreeDriver);
-    this.__driver__.subQuery = subQuery;
-}
-const qTreeMethods = {
-/*
-yourMethodName: function() {},
-*/
-};
-globalThis.extend(QEntity, QTree, qTreeMethods);
-class QTreeDriver extends QEntityDriver {
-    getInstance() {
-        let instance = super.getInstance();
-        instance.__driver__
-            .subQuery = this.subQuery;
-        return instance;
-    }
-    // getRelationPropertyName(): string {
-    // 	throw new Error(`not implemented`);
-    // }
-    getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
-        queryRelation = super.getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
-        queryRelation.relationType = QueryRelationType.SUB_QUERY_JOIN_ON;
-        queryRelation.subQuery =
-            // Removes circular dependency at code initialization time 
-            globalThis.IOC.getSync(globalThis.ENTITY_UTILS).getTreeQuery(this.subQuery, columnAliases.entityAliases)
-                .toQuery(queryUtils, fieldUtils, queryRelationManager);
-        return queryRelation;
-    }
-    getRootRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager) {
-        queryRelation = super.getJoinRelationQuery(queryRelation, columnAliases, trackedRepoGUIDSet, trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager);
-        queryRelation.relationType = QueryRelationType.SUB_QUERY_ROOT;
-        queryRelation.subQuery =
-            // Removes circular dependency at code initialization time 
-            globalThis.IOC.getSync(globalThis.ENTITY_UTILS).getTreeQuery(this.subQuery, columnAliases.entityAliases)
-                .toQuery(queryUtils, fieldUtils, queryRelationManager);
-        return queryRelation;
-    }
-}
-
-/**
  * Created by Papa on 11/29/2016.
  */
 class QNullFunction extends QField {
@@ -6211,6 +6000,41 @@ const EXCEPT = function (...rawQueries) {
 const MINUS = EXCEPT;
 
 /**
+ * Created by papa on 7/13/17.
+ */
+class UntypedOperation extends ValueOperation {
+    constructor() {
+        super(OperationCategory.UNTYPED);
+    }
+    LIKE(lValue, rValue
+    // TODO: implement ReqExp
+    //| RegExp
+    ) {
+        return {
+            operationCategory: this.category,
+            leftSideValue: lValue,
+            operator: SqlOperator.LIKE,
+            rightSideValue: rValue
+        };
+    }
+}
+
+class QUntypedField extends QOperableField {
+    constructor(dbColumn, dbProperty, q, objectType = QueryClauseObjectType.FIELD) {
+        super(dbColumn, dbProperty, q, objectType, new UntypedOperation());
+    }
+    getInstance(qEntity = this.q) {
+        return this.copyFunctions(new QUntypedField(this.dbColumn, this.dbProperty, qEntity, this.objectType));
+    }
+    like(value) {
+        if (value instanceof Function) {
+            value = value();
+        }
+        return this.operation.LIKE(this, value);
+    }
+}
+
+/**
  * Created by Papa on 10/27/2016.
  */
 class AbstractQuery {
@@ -6347,7 +6171,7 @@ class AbstractUpdate extends AbstractQuery {
         return {
             UPDATE: this.rawUpdate.UPDATE
                 .__driver__.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager),
-            SELECT: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, queryRelationManager),
+            SET: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, queryRelationManager),
             WHERE: queryUtils.whereClauseToQueryOperation(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
         };
     }
@@ -6715,7 +6539,7 @@ class UpdateProperties extends AbstractUpdate {
         return {
             UPDATE: this.rawUpdate.UPDATE
                 .__driver__.getQueryRelation(this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet, queryUtils, fieldUtils, queryRelationManager),
-            SELECT: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, queryRelationManager),
+            SET: this.rawToQuerySetClause(this.rawUpdate.SET, queryUtils, fieldUtils, queryRelationManager),
             WHERE: queryUtils.whereClauseToQueryOperation(this.rawUpdate.WHERE, this.columnAliases, this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet)
         };
     }
@@ -6888,6 +6712,183 @@ ${lastPrefix}}`;
 ${ending}`;
     }
 }
+
+class QEntityUtils {
+    getColumnQField(entity, property, q, column) {
+        switch (column.type) {
+            case SQLDataType.ANY:
+                return new QUntypedField(column, property, q);
+            case SQLDataType.BOOLEAN:
+                return new QBooleanField(column, property, q);
+            case SQLDataType.DATE:
+                return new QDateField(column, property, q);
+            case SQLDataType.NUMBER:
+                return new QNumberField(column, property, q);
+            case SQLDataType.JSON:
+            case SQLDataType.STRING:
+                return new QStringField(column, property, q);
+            default:
+                throw new Error(`Unsupported data type for property ${entity.applicationVersion.application.name}.${entity.name}.${property.name}`);
+        }
+    }
+    getQRelation(entity, property, q, allQApps) {
+        const relation = property.relation[0];
+        switch (relation.relationType) {
+            case EntityRelationType.MANY_TO_ONE:
+                const relationEntity = relation.relationEntity;
+                const relationApplication = relationEntity.applicationVersion.application;
+                const qIdRelationConstructor = allQApps[relationApplication.index]
+                    .__qIdRelationConstructors__[relationEntity.index];
+                return new qIdRelationConstructor(relation.relationEntity, relation, q, this.applicationUtils, this.queryRelationManager, this.queryUtils);
+            case EntityRelationType.ONE_TO_MANY:
+                if (entity.isAirEntity) {
+                    return new QAirEntityOneToManyRelation(relation, q, this.applicationUtils, this.queryRelationManager, this.queryUtils);
+                }
+                else {
+                    return new QOneToManyRelation(relation, q, this.applicationUtils, this.queryRelationManager, this.queryUtils);
+                }
+            default:
+                throw new Error(`Unknown EntityRelationType: ${relation.relationType}.`);
+        }
+    }
+    getQEntityConstructor(allQApps) {
+        // ChildQEntity refers to the constructor
+        var ChildQEntity = function (entity, applicationUtils, queryRelationManager, nextChildJoinPosition, dbRelation, joinType) {
+            ChildQEntity.base.constructor.call(this, entity, applicationUtils, queryRelationManager, nextChildJoinPosition, dbRelation, joinType);
+            const qEntityUtils = IOC.getSync(QENTITY_UTILS);
+            entity.properties.forEach((property) => {
+                let qFieldOrRelation;
+                if (property.relation && property.relation.length) {
+                    qFieldOrRelation = qEntityUtils.getQRelation(entity, property, this, allQApps);
+                    for (const propertyColumn of property.propertyColumns) {
+                        qEntityUtils.addColumnQField(entity, property, this, propertyColumn.column);
+                    }
+                }
+                else {
+                    qFieldOrRelation = qEntityUtils.addColumnQField(entity, property, this, property.propertyColumns[0].column);
+                }
+                this[property.name] = qFieldOrRelation;
+            });
+            // entity.__qConstructor__ = ChildQEntity
+        };
+        const childQEntityMethods = {
+        /*
+        yourMethodName: function() {},
+        */
+        };
+        extend(QEntity, ChildQEntity, childQEntityMethods);
+        return ChildQEntity;
+    }
+    addColumnQField(entity, property, q, column) {
+        const qFieldOrRelation = this.getColumnQField(entity, property, q, column);
+        q.__driver__.allColumns[column.index]
+            = qFieldOrRelation;
+        if (column.idIndex || column.idIndex === 0) {
+            q.__driver__.idColumns[column.idIndex]
+                = qFieldOrRelation;
+        }
+        return qFieldOrRelation;
+    }
+    getQEntityIdRelationConstructor(dbEntity) {
+        function QEntityIdRelation(entity, relation, qEntity, appliationUtils, queryRelationManager, queryUtils) {
+            QEntityIdRelation.base.constructor.call(this, relation, qEntity, appliationUtils, queryRelationManager, queryUtils);
+            const qEntityUtils = IOC.getSync(QENTITY_UTILS);
+            qEntityUtils.getQEntityIdFields(this, entity, qEntity, relation.property);
+            // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
+        }
+        const qEntityIdRelationMethods = {
+        /*
+        yourMethodName: function() {},
+        */
+        };
+        if (dbEntity.isAirEntity) {
+            extend(QManyToOneAirEntityRelation, QEntityIdRelation, qEntityIdRelationMethods);
+        }
+        else {
+            extend(QManyToOneInternalRelation, QEntityIdRelation, qEntityIdRelationMethods);
+        }
+        return QEntityIdRelation;
+    }
+    /**
+     * Set all fields behind an id relation.  For example
+     *
+     * QA.id
+     *
+     * or
+     *
+     * QA.rel1.id
+     *
+     * or
+     *
+     * QA.rel2.otherRel.id
+     * QA.rel2.id
+     *
+     * @param addToObject  Object to add to (Ex: QA | QA.rel1 | QA.rel2.otherRel
+     * @param relationEntity  Entity to which the fields belong (Ex: QA, QRel1, QRel2, QOtherRel)
+     * @param utils
+     * @param parentProperty  The parent property from which the current property was
+     *    navigated to
+     * @param relationColumnMap  DbColumn map for the current path of properties
+     *  (QA.rel2.otherRel), keyed by the column from the One side of the relation
+     */
+    getQEntityIdFields(addToObject, relationEntity, qEntity, parentProperty, relationColumnMap) {
+        if (!relationColumnMap) {
+            const parentRelation = parentProperty.relation[0];
+            const relationColumns = parentRelation.manyRelationColumns;
+            relationColumnMap = new Map();
+            for (const relationColumn of relationColumns) {
+                relationColumnMap.set(relationColumn.oneColumn, relationColumn.manyColumn);
+            }
+        }
+        relationEntity.properties.forEach((property) => {
+            if (!property.isId && relationEntity.isAirEntity) {
+                // Internal (non-AIR entity) relations may join by non-@Id()
+                // Fields.  For example RepositoryReference join across 
+                // repositories on GUIDs.
+                return;
+            }
+            let qFieldOrRelation;
+            // If it's a relation property (and therefore has backing columns)
+            if (property.relation && property.relation.length) {
+                const relation = property.relation[0];
+                const relationColumns = relation.manyRelationColumns;
+                let hasMatchingColumns = false;
+                for (const relationColumn of relationColumns) {
+                    if (relationColumnMap.has(relationColumn.manyColumn)) {
+                        hasMatchingColumns = true;
+                        const originalColumn = relationColumnMap.get(relationColumn.manyColumn);
+                        // Remove the mapping of the parent relation
+                        relationColumnMap.delete(relationColumn.manyColumn);
+                        // And replace it with the nested relation
+                        relationColumnMap.set(relationColumn.oneColumn, originalColumn);
+                    }
+                }
+                if (!hasMatchingColumns) {
+                    return;
+                }
+                qFieldOrRelation = this.getQEntityIdFields({}, relation.relationEntity, qEntity, parentProperty, relationColumnMap);
+            }
+            else {
+                if (!relationColumnMap.has(property.propertyColumns[0].column)) {
+                    // Only happens in internal (non-AIR entity) relations that do not
+                    // rely on @Id() fields
+                    return;
+                }
+                const originalColumn = relationColumnMap.get(property.propertyColumns[0].column);
+                qFieldOrRelation = this.getColumnQField(relationEntity, parentProperty, qEntity, originalColumn);
+            }
+            addToObject[property.name] = qFieldOrRelation;
+        });
+        return addToObject;
+    }
+}
+
+QENTITY_UTILS.setClass(QEntityUtils);
+QENTITY_UTILS.setDependencies({
+    applicationUtils: APPLICATION_UTILS,
+    queryRelationManager: QUERY_RELATION_MANAGER,
+    queryUtils: QUERY_UTILS
+});
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -10541,7 +10542,7 @@ APPLICATION_UTILS.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     dictionary: Dictionary,
     entityStateManager: ENTITY_STATE_MANAGER,
-    qEntityUtils: QEntityUtils,
+    qEntityUtils: QENTITY_UTILS,
     utils: Utils
 });
 DATABASE_FACADE.setDependencies({
@@ -10558,7 +10559,7 @@ airTrafficControl.setDependencies(Lookup, {
     queryFacade: QUERY_FACADE
 });
 airTrafficControl.setDependencies(QApplicationBuilderUtils, {
-    qEntityUtils: QEntityUtils
+    qEntityUtils: QENTITY_UTILS
 });
 airTrafficControl.setDependencies(QMetadataUtils, {
     dictionary: Dictionary
@@ -10576,7 +10577,7 @@ QUERY_UTILS.setDependencies({
     dictionary: Dictionary,
     entityUtils: ENTITY_UTILS,
     fieldUtils: FieldUtils,
-    qEntityUtils: QEntityUtils,
+    qEntityUtils: QENTITY_UTILS,
     queryRelationManager: QUERY_RELATION_MANAGER,
 });
 QUERY_RELATION_MANAGER.setClass(QueryRelationManager);
@@ -14203,6 +14204,11 @@ function v4$1(options, buf, offset) {
 class RepositoryBlock {
 }
 
+/**
+ * The values that are currently in the Application tables.
+ *
+ * ?Need only on the Block Trunk creation nodes?
+ */
 class CurrentValueMapping {
 }
 
@@ -14241,14 +14247,6 @@ class RecordHistoryNewValue {
 
 /**
  * Created by Papa on 9/15/2016.
- */
-/**
- * Currently, syncing databases are always SqLite dbs.  This means
- * we don't need to store types for values.  If a need arises type
- * specific FieldChange classes can always be added.  Having
- * VARCHAR and NUMBER should suffice for other db implementations.
- * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
- * also be required.
  */
 class RecordHistoryOldValue {
 }
@@ -15573,7 +15571,7 @@ class RecordHistoryDuo {
             return null;
         }
         const recordHistoryOldValue = this.recordHistoryOldValueDuo
-            .getRecordHistoryOldValue(recordHistory, dbColumn, oldValue);
+            .getRecordHistoryOldValue(recordHistory, oldValue);
         recordHistory.oldValues.push(recordHistoryOldValue);
         this.ensureModifiedRepositoryLocalIdSet(recordHistory, dbColumn, oldValue);
         recordHistory.operationHistory.repositoryTransactionHistory
@@ -15606,9 +15604,8 @@ class RecordHistoryNewValueDuo {
 }
 
 class RecordHistoryOldValueDuo {
-    getRecordHistoryOldValue(recordHistory, dbColumn, oldValue) {
+    getRecordHistoryOldValue(recordHistory, oldValue) {
         const recordHistoryOldValue = new RecordHistoryOldValue();
-        recordHistoryOldValue.columnIndex = dbColumn.index;
         recordHistoryOldValue.recordHistory = recordHistory;
         recordHistoryOldValue.oldValue = oldValue;
         return recordHistoryOldValue;
@@ -24254,28 +24251,6 @@ const APPLICATION$3 = {
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
-                                    "manyRelationIndex": 1,
-                                    "oneApplication_Index": null,
-                                    "oneTableIndex": 6,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "COLUMN_INDEX",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
                                     "manyRelationIndex": 0,
                                     "oneApplication_Index": null,
                                     "oneTableIndex": 8,
@@ -24295,7 +24270,7 @@ const APPLICATION$3 = {
                             "type": "NUMBER"
                         },
                         {
-                            "index": 2,
+                            "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -24310,7 +24285,29 @@ const APPLICATION$3 = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 2
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 6,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "COLUMN_INDEX",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
                                 }
                             ],
                             "sinceVersion": 1,
@@ -24323,6 +24320,9 @@ const APPLICATION$3 = {
                         },
                         {
                             "index": 1
+                        },
+                        {
+                            "index": 2
                         }
                     ],
                     "index": 7,
@@ -24340,17 +24340,8 @@ const APPLICATION$3 = {
                             "sinceVersion": 1
                         },
                         {
-                            "columnRef": {
-                                "index": 0
-                            },
                             "index": 1,
                             "isId": true,
-                            "name": "columnIndex",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
                             "name": "oldValue",
                             "relationRef": {
                                 "index": 1
@@ -24371,10 +24362,10 @@ const APPLICATION$3 = {
                         },
                         {
                             "index": 1,
-                            "isId": false,
+                            "isId": true,
                             "relationType": "MANY_TO_ONE",
                             "propertyRef": {
-                                "index": 2
+                                "index": 1
                             },
                             "relationTableIndex": 6,
                             "sinceVersion": 1
@@ -33042,8 +33033,7 @@ class SyncOutDataPreparer {
         }
         const oldValues = [];
         for (const oldValue of recordHistory.oldValues) {
-            const dbColumn = dbColumMapByIndex.get(oldValue.columnIndex);
-            oldValues.push(this.prepareOldValue(oldValue, dbColumn, data, lookups));
+            oldValues.push(this.prepareOldValue(oldValue, data, lookups));
         }
         const actor = recordHistory.actor;
         // Actor may be null if it's the same actor as for RepositoryTransactionHistory
@@ -33087,7 +33077,7 @@ class SyncOutDataPreparer {
     prepareNewValue(newValue, dbColumn, data, lookups) {
         return this.prepareValue(newValue, dbColumn, data, lookups, 'newValue');
     }
-    prepareOldValue(oldValue, dbColumn, data, lookups) {
+    prepareOldValue(oldValue, data, lookups) {
         return null;
         // return this.prepareValue(
         // 	oldValue, dbColumn, data, lookups, 'oldValue')
@@ -33102,7 +33092,7 @@ class SyncOutDataPreparer {
                 serailizedValue = this.getActorInBlockIndexById(value, lookups);
             }
             else if (this.dictionary.isRepository(oneSideDbEntity)) {
-                serailizedValue = this.getpreparedRepositoryId(value, lookups);
+                serailizedValue = this.getPreparedRepositoryId(value, lookups);
             }
             else if (this.dictionary.isTerminal(oneSideDbEntity)) {
                 const terminalInBlockIndex = this.addTerminalToBlock(value, data, lookups.terminalLookup, lookups.userAccountLookup);
@@ -33120,7 +33110,7 @@ class SyncOutDataPreparer {
             serailizedValue = this.getActorInBlockIndexById(value, lookups);
         }
         if (this.dictionary.isRepositoryRelationColumn(dbColumn)) {
-            serailizedValue = this.getpreparedRepositoryId(value, lookups);
+            serailizedValue = this.getPreparedRepositoryId(value, lookups);
         }
         return {
             ...this.WITH_RECORD_HISTORY,
@@ -33128,7 +33118,7 @@ class SyncOutDataPreparer {
             [valueFieldName]: serailizedValue
         };
     }
-    getpreparedRepositoryId(repositoryLocalId, lookups) {
+    getPreparedRepositoryId(repositoryLocalId, lookups) {
         if (repositoryLocalId === lookups.blockRepository._localId) {
             return -1;
         }
@@ -39714,7 +39704,7 @@ class UpdateManager {
         const qEntity = this.airportDatabase
             .qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
         const queryUpdate = portableQuery.query;
-        const getSheetSelectFromSetClauseResult = this.queryUtils.getSheetSelectFromSetClause(context.dbEntity, qEntity, queryUpdate.SELECT, errorPrefix);
+        const getSheetSelectFromSetClauseResult = this.queryUtils.getSheetSelectFromSetClause(context.dbEntity, qEntity, queryUpdate.SET, errorPrefix);
         const sheetQuery = new SheetQuery(null);
         const querySelectClause = sheetQuery.rawToQueryNonDistinctSelectClause(getSheetSelectFromSetClauseResult.selectClause, this.queryUtils, this.fieldUtils, this.queryRelationManager);
         const querySheet = {
@@ -39791,7 +39781,7 @@ class UpdateManager {
                 const actorLid = updatedRecord[resultSetIndexByColumnIndex.get(repositorySheetSelectInfo.actorLidColumnIndex)];
                 const _actorRecordId = updatedRecord[resultSetIndexByColumnIndex.get(repositorySheetSelectInfo.actorRecordIdColumnIndex)];
                 const recordHistory = recordHistoryMapByRecordId[repositoryLid][actorLid][_actorRecordId];
-                for (const columnName in queryUpdate.SELECT) {
+                for (const columnName in queryUpdate.SET) {
                     const dbColumn = context.dbEntity.columnMap[columnName];
                     const value = updatedRecord[resultSetIndexByColumnIndex.get(dbColumn.index)];
                     if (value === undefined) {

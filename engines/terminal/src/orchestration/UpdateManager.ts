@@ -170,7 +170,7 @@ export class UpdateManager
 			.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 		const queryUpdate: QueryUpdate<any> = <QueryUpdate<any>>portableQuery.query
 		const getSheetSelectFromSetClauseResult = this.queryUtils.getSheetSelectFromSetClause(
-			context.dbEntity, qEntity, queryUpdate.SELECT, errorPrefix)
+			context.dbEntity, qEntity, queryUpdate.SET, errorPrefix)
 
 		const sheetQuery = new SheetQuery(null)
 
@@ -298,7 +298,7 @@ export class UpdateManager
 					repositorySheetSelectInfo.actorRecordIdColumnIndex)]
 				const recordHistory = recordHistoryMapByRecordId
 				[repositoryLid][actorLid][_actorRecordId]
-				for (const columnName in queryUpdate.SELECT) {
+				for (const columnName in queryUpdate.SET) {
 					const dbColumn = context.dbEntity.columnMap[columnName]
 					const value = updatedRecord[resultSetIndexByColumnIndex.get(dbColumn.index)]
 

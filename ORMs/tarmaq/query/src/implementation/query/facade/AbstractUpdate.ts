@@ -36,7 +36,7 @@ export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractR
 				.__driver__.getQueryRelation(this.columnAliases,
 					this.trackedRepoGUIDSet, this.trackedRepoLocalIdSet,
 					queryUtils, fieldUtils, queryRelationManager),
-			SELECT: this.rawToQuerySetClause(this.rawUpdate.SET,
+			SET: this.rawToQuerySetClause(this.rawUpdate.SET,
 				queryUtils, fieldUtils, queryRelationManager),
 			WHERE: queryUtils.whereClauseToQueryOperation(
 				this.rawUpdate.WHERE, this.columnAliases,
