@@ -94,7 +94,7 @@ export class RecordHistoryDuo
 			return null
 		}
 		const recordHistoryOldValue = this.recordHistoryOldValueDuo
-			.getRecordHistoryOldValue(recordHistory, dbColumn, oldValue)
+			.getRecordHistoryOldValue(recordHistory, oldValue)
 
 		recordHistory.oldValues.push(recordHistoryOldValue)
 

@@ -2,6 +2,12 @@ import { Entity, Id, JoinColumns, ManyToOne, Table } from '@airport/tarmaq-entit
 import { RecordHistoryNewValue } from './RecordHistoryNewValue';
 import { ICurrentValueMapping } from '@airport/ground-control';
 
+/**
+ * The values that are currently in the Application tables.
+ * 
+ * Should not be need on non-(Repository-Blockchain-)Trunk
+ * creating nodes.
+ */
 @Entity()
 @Table({ name: "CURRENT_VALUE_MAPPINGS" })
 export class CurrentValueMapping
