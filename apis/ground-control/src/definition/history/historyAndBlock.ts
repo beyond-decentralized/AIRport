@@ -119,7 +119,6 @@ export type RecordHistoryOldValue_ColumnIndex = number
 export interface IRecordHistoryOldValue {
 
     recordHistory: IRecordHistory
-    columnIndex: RecordHistoryOldValue_ColumnIndex
     oldValue: IRecordHistoryNewValue
 
 }
@@ -221,8 +220,9 @@ export interface IRepositoryBlockData
     referencedApplicationVersions: IApplicationVersion[]
     referencedRepositories: IRepository[]
 
-    // For updates and deletes these specifies the records that were
-    // updated or deleted and are referenced in IRecordHistoryNewValue(s)
+    // For updates and deletes these specify the blocks, as well as
+    // the operation and record histories for the old values that were
+    // updated or deleted and are referenced in RecordHistoryOldValue.oldValue
     referencedBlockGUIDs?: RepositoryBlock_GUID[]
     referencedOperationHistories?: IOperationHistory[]
     referencedRecordHistories?: IRecordHistory[]
