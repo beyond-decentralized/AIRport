@@ -13,7 +13,7 @@ export interface IIdGeneratorContext
     di: {
         sequenceGenerator: ISequenceGenerator,
     }
-    isServer: boolean
+    isSyncNode: boolean
 }
 export interface ISequenceGenerator {
 

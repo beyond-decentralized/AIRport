@@ -77,7 +77,7 @@ export interface ITerminalStore<FM extends IFieldMapped = IFieldMapped> {
 
 	getInternalConnector: IMemoizedSelector<InternalConnectorState, ITerminalState>
 
-	getIsServer: IMemoizedSelector<boolean, ITerminalState>
+	getIsSyncNode: IMemoizedSelector<boolean, ITerminalState>
 
 	getLastIds: IMemoizedSelector<ILastIds, ITerminalState>
 
@@ -158,7 +158,7 @@ export class TerminalStore<FM extends IFieldMapped = IFieldMapped>
 
 	getInternalConnector: IMemoizedSelector<InternalConnectorState, ITerminalState>
 
-	getIsServer: IMemoizedSelector<boolean, ITerminalState>
+	getIsSyncNode: IMemoizedSelector<boolean, ITerminalState>
 
 	getLastIds: IMemoizedSelector<ILastIds, ITerminalState>
 
@@ -227,8 +227,8 @@ export class TerminalStore<FM extends IFieldMapped = IFieldMapped>
 			terminal => terminal.frameworkActor)
 		this.getInternalConnector = this.selectorManager.createSelector(this.getTerminalState,
 			terminalState => terminalState.internalConnector)
-		this.getIsServer = this.selectorManager.createSelector(this.getTerminalState,
-			terminalState => terminalState.isServer)
+		this.getIsSyncNode = this.selectorManager.createSelector(this.getTerminalState,
+			terminalState => terminalState.isSyncNode)
 		this.getLastIds = this.selectorManager.createSelector(this.getTerminalState,
 			terminalState => terminalState.lastIds)
 		this.getLatestApplicationVersionMapByNames = this.selectorManager.createSelector(this.getDomains,

@@ -14,7 +14,7 @@ export class TerminalSessionManager
 
     async getUserSession(): Promise<IUserSession> {
         let session: IUserSession
-        if (this.terminalStore.getIsServer()) {
+        if (this.terminalStore.getIsSyncNode()) {
             throw new Error(`Implement`)
         } else {
             const allSessions = this.userStore.getAllSessions()

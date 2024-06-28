@@ -101,10 +101,10 @@ export class TransactionManager
 			.transactionInProgressMap.get(transactionId)
 	}
 
-	isServer(
+	isSyncNode(
 		context?: ITransactionContext
 	) {
-		return this.terminalStore.getIsServer();
+		return this.terminalStore.getIsSyncNode();
 	}
 
 	async transactInternal(
@@ -224,7 +224,7 @@ throw new Error(`
 initialized multiple transactions at the same time.
 Only one concurrent transaction is allowed per application.`)
 			*/
-			if (!this.isServer(context)
+			if (!this.isSyncNode(context)
 				&& transactionManagerStore.transactionInProgressMap.size > 0) {
 				// Delay the start of the transaction
 				return new Promise((resolve, reject) => {
