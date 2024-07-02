@@ -75,7 +75,7 @@ export class SQLUpdate
 			throw new Error(`Expecting exactly one table in UPDATE clause`)
 		}
 		let tableFragment = this.getFromFragment(this.updateQuery.UPDATE, context)
-		let setFragment = this.getSetFragment(this.updateQuery.SELECT, context)
+		let setFragment = this.getSetFragment(this.updateQuery.SET, context)
 		if (internalFragments.SET && internalFragments.SET.length) {
 			setFragment += ',' + internalFragments.SET.map(
 				internalSetFragment => {
