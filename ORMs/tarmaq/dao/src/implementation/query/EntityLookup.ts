@@ -38,7 +38,7 @@ export interface IEntityLookupInternal<Child,
 	setNoCache(
 		ChildClass: new (
 			dbEntity: DbEntity,
-			dao: IDao<any, any, any, any, any, any, any, any>,
+			dao: IDao<any, any, any, any, any, any, any, any, any>,
 			mapResults: boolean
 		) => Child
 	): Child
@@ -54,7 +54,7 @@ export abstract class EntityLookup<Child,
 
 	constructor(
 		protected dbEntity: DbEntity,
-		dao: IDao<any, any, any, any, any, any, any, any>,
+		dao: IDao<any, any, any, any, any, any, any, any, any>,
 		protected mapResults = EntityLookup.mapResults,
 	) {
 		super(dao)
@@ -63,7 +63,7 @@ export abstract class EntityLookup<Child,
 	setNoCache(
 		ChildClass: new (
 			dbEntity: DbEntity,
-			dao: IDao<any, any, any, any, any, any, any, any>,
+			dao: IDao<any, any, any, any, any, any, any, any, any>,
 			mapResults: boolean
 		) => Child
 	): Child {

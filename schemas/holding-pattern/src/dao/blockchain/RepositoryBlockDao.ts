@@ -1,7 +1,6 @@
 import {
 	IRepositoryBlock
 } from '@airport/ground-control'
-import Q from '../../generated/qApplication'
 import { IContext, Injected } from '@airport/direction-indicator'
 import { BaseRepositoryBlockDao } from '../../generated/baseDaos'
 import { QRepositoryBlock } from '../../generated/qInterfaces'
@@ -41,7 +40,7 @@ export class RepositoryBlockDao
 				GUID: Y
 			},
 			FROM: [
-				rth = Q.RepositoryBlock
+				rth = this.qSchema.RepositoryBlock
 			],
 			WHERE: rth.GUID.IN(GUIDs)
 		}, context)
@@ -78,7 +77,7 @@ export class RepositoryBlockDao
 		let rth: QRepositoryBlock
 
 		await this.db.updateWhere({
-			UPDATE: rth = Q.RepositoryBlock,
+			UPDATE: rth = this.qSchema.RepositoryBlock,
 			SET: {
 				syncTimestamp: repositoryBlock.syncTimestamp
 			},

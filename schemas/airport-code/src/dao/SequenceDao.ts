@@ -31,7 +31,7 @@ export class SequenceDao
 	async incrementCurrentValues(
 		context: IContext
 	): Promise<void> {
-		const s = Q.Sequence
+		const s =this.qSchema.Sequence
 		await this.db.updateWhere({
 			UPDATE: s,
 			SET: {
@@ -43,7 +43,7 @@ export class SequenceDao
 	async incrementSequence(
 		context: IContext
 	): Promise<void> {
-		const s = Q.Sequence
+		const s = this.qSchema.Sequence
 		await this.db.updateWhere({
 			UPDATE: s,
 			SET: {

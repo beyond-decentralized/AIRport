@@ -11,6 +11,7 @@ import {
     IQEntity
 } from '@airport/tarmaq-query';
 import { IEntitySearch, IEntitySearchOne } from '../tarmaq.dao.index';
+import { QApp } from '@airport/aviation-communication';
 
 /**
  * Facade for all DB operations related to a particular Entity.
@@ -22,7 +23,8 @@ export interface IEntityDatabaseFacade<IEntity,
     EntityUpdateProperties extends IEntityUpdateProperties,
     DbEntity_LocalId extends IEntityIdProperties,
     EntityCascadeGraph extends IEntityCascadeGraph,
-    IQ extends IQEntity>
+    IQ extends IQEntity,
+    QSchema extends QApp>
     extends IEntityQueryDatabaseFacade<IEntity,
     EntitySelect,
     EntityCreateProperties,
@@ -30,7 +32,8 @@ export interface IEntityDatabaseFacade<IEntity,
     EntityUpdateProperties,
     DbEntity_LocalId,
     EntityCascadeGraph,
-    IQ> {
+    IQ,
+    QSchema> {
 
     /**
      * The Promise based API for all Entity 'find' (find many) queries.

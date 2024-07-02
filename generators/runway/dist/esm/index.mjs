@@ -9053,9 +9053,9 @@ class NonEntitySearchOne extends Lookup {
  * Created by Papa on 12/11/2016.
  */
 class EntityDatabaseFacade {
-    constructor(dbEntity, Q, dao) {
+    constructor(dbEntity, QSchema, dao) {
         this.dbEntity = dbEntity;
-        this.Q = Q;
+        this.QSchema = QSchema;
         this.dao = dao;
         this.find = new EntityFind(this.dbEntity, dao);
         this.findOne = new EntityFindOne(this.dbEntity, dao);
@@ -9063,7 +9063,7 @@ class EntityDatabaseFacade {
         this.searchOne = new EntitySearchOne(this.dbEntity, dao);
     }
     get FROM() {
-        return this.Q[this.dbEntity.name];
+        return this.QSchema[this.dbEntity.name];
     }
     async insertColumnValues(rawInsertColumnValues, context) {
         return await this.withDbEntity(context, async (databaseFacade, context) => {
@@ -9171,12 +9171,12 @@ class Dao {
             // No runtime logic required.
         };
     }
-    constructor(dbEntityId, Q, internal = false) {
+    constructor(dbEntityId, qSchema, internal = false) {
         this.internal = internal;
-        const dbEntity = Q.__dbApplication__.currentVersion[0]
+        const dbEntity = qSchema.__dbApplication__.currentVersion[0]
             .applicationVersion.entities[dbEntityId];
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
-        this.db = new EntityDatabaseFacade(dbEntity, Q, this);
+        this.db = new EntityDatabaseFacade(dbEntity, qSchema, this);
         this.SELECT = new FieldsSelect(dbEntity);
     }
     mapById(entities) {
@@ -10637,6 +10637,9 @@ let SQDIDao$5 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_airport_dash_code);
     }
+    get qSchema() {
+        return Q_airport____at_airport_slash_airport_dash_code;
+    }
 };
 class BaseSequenceDao extends SQDIDao$5 {
     static Save(config) {
@@ -10693,7 +10696,7 @@ class SequenceDao extends BaseSequenceDao {
             .applicationVersion.entities[0];
     }
     async incrementCurrentValues(context) {
-        const s = Q_airport____at_airport_slash_airport_dash_code.Sequence;
+        const s = this.qSchema.Sequence;
         await this.db.updateWhere({
             UPDATE: s,
             SET: {
@@ -10702,7 +10705,7 @@ class SequenceDao extends BaseSequenceDao {
         }, context);
     }
     async incrementSequence(context) {
-        const s = Q_airport____at_airport_slash_airport_dash_code.Sequence;
+        const s = this.qSchema.Sequence;
         await this.db.updateWhere({
             UPDATE: s,
             SET: {
@@ -10859,6 +10862,9 @@ if (globalThis.airApi) {
 let SQDIDao$4 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_airspace);
+    }
+    get qSchema() {
+        return Q_airport____at_airport_slash_airspace;
     }
 };
 class BaseApplicationApiClassDao extends SQDIDao$4 {
@@ -11511,7 +11517,7 @@ class DdlApplicationVersionDao extends BaseDdlApplicationVersionDao {
 
         return await this.db.find.tree({
             FROM: [
-                sv = Q.IApplicationVersion
+                sv = this.qSchema.IApplicationVersion
             ],
             SELECT: {},
             WHERE: AND(
@@ -11525,7 +11531,7 @@ class DdlApplicationVersionDao extends BaseDdlApplicationVersionDao {
         let av, a;
         return await this.db.find.tree({
             FROM: [
-                av = Q_airport____at_airport_slash_airspace.DdlApplicationVersion,
+                av = this.qSchema.DdlApplicationVersion,
                 a = av.application.INNER_JOIN()
             ],
             SELECT: {},
@@ -11552,7 +11558,7 @@ class DdlApplicationVersionDao extends BaseDdlApplicationVersionDao {
                 }
             },
             FROM: [
-                av = Q_airport____at_airport_slash_airspace.DdlApplicationVersion,
+                av = this.qSchema.DdlApplicationVersion,
                 a = av.application.INNER_JOIN(),
                 d = a.domain.INNER_JOIN()
             ],
@@ -11594,7 +11600,7 @@ class DdlApplicationVersionDao extends BaseDdlApplicationVersionDao {
                 _localId: Y
             },
             FROM: [
-                sv = Q.IApplicationVersion,
+                sv = this.qSchema.IApplicationVersion,
                 s = sv.application.INNER_JOIN(),
                 d = s.domain.INNER_JOIN()
             ],
@@ -11626,7 +11632,7 @@ class DdlApplicationVersionDao extends BaseDdlApplicationVersionDao {
             FROM: [
                 svMax = tree({
                     FROM: [
-                        sv2 = Q.IApplicationVersion
+                        sv2 = this.qSchema.IApplicationVersion
                     ],
                     SELECT: DISTINCT({
                         integerVersion: max(sv2.integerVersion),
@@ -11652,7 +11658,7 @@ class DdlApplicationVersionDao extends BaseDdlApplicationVersionDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sv = Q_airport____at_airport_slash_airspace.DdlApplicationVersion,
+            INSERT_INTO: sv = this.qSchema.DdlApplicationVersion,
             columns: [
                 sv._localId,
                 sv.integerVersion,
@@ -12142,7 +12148,7 @@ class TerminalStore {
         });
         this.getFrameworkActor = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.frameworkActor);
         this.getInternalConnector = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.internalConnector);
-        this.getIsServer = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.isServer);
+        this.getIsSyncNode = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.isSyncNode);
         this.getLastIds = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.lastIds);
         this.getLatestApplicationVersionMapByNames = this.selectorManager.createSelector(this.getDomains, domains => {
             const latestApplicationVersionMapByNames = new Map();
@@ -12262,7 +12268,7 @@ globalThis.internalTerminalState = new BehaviorSubject({
         },
         serverUrl: ''
     },
-    isServer: false,
+    isSyncNode: false,
     lastIds: {
         apiClasses: 0,
         apiOperations: 0,
@@ -14207,7 +14213,8 @@ class RepositoryBlock {
 /**
  * The values that are currently in the Application tables.
  *
- * ?Need only on the Block Trunk creation nodes?
+ * Should not be need on non-(Repository-Blockchain-)Trunk
+ * creating nodes.
  */
 class CurrentValueMapping {
 }
@@ -14400,6 +14407,9 @@ if (globalThis.airApi) {
 let SQDIDao$3 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_holding_dash_pattern);
+    }
+    get qSchema() {
+        return Q_airport____at_airport_slash_holding_dash_pattern;
     }
 };
 class BaseActorDao extends SQDIDao$3 {
@@ -14711,7 +14721,7 @@ class RepositoryBlockDao extends BaseRepositoryBlockDao {
                 GUID: Y
             },
             FROM: [
-                rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryBlock
+                rth = this.qSchema.RepositoryBlock
             ],
             WHERE: rth.GUID.IN(GUIDs)
         }, context);
@@ -14742,7 +14752,7 @@ class RepositoryBlockDao extends BaseRepositoryBlockDao {
     async updateSyncTimestamp(repositoryBlock, context) {
         let rth;
         await this.db.updateWhere({
-            UPDATE: rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryBlock,
+            UPDATE: rth = this.qSchema.RepositoryBlock,
             SET: {
                 syncTimestamp: repositoryBlock.syncTimestamp
             },
@@ -14752,8 +14762,38 @@ class RepositoryBlockDao extends BaseRepositoryBlockDao {
 }
 
 class CurrentValueMappingDao extends BaseCurrentValueMappingDao {
-    async find() {
-        return null;
+    async findUpdatedValues(dbEntity, columnIndexes, updateStatement) {
+        const q = updateStatement.UPDATE;
+        let cvm, rhnv, rh, oh, rth;
+        return await this.db.find.tree({
+            SELECT: {
+                value: {
+                    columnIndex: Y,
+                    recordHistory: {
+                        _actorRecordId: Y,
+                        actor: {
+                            _localId: Y,
+                        },
+                        operationHistory: {
+                            repositoryTransactionHistory: {
+                                repository: {
+                                    _localId: Y
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            FROM: [
+                cvm = this.qSchema.CurrentValueMapping,
+                rhnv = cvm.value.INNER_JOIN(),
+                rh = rhnv.recordHistory.INNER_JOIN(),
+                oh = rh.operationHistory.INNER_JOIN(),
+                rth = oh.repositoryTransactionHistory.INNER_JOIN(),
+                updateStatement.UPDATE
+            ],
+            WHERE: AND(updateStatement.WHERE, AND(rth.repository._localId.IN(q.repository._localId), oh.entity._localId.equals(dbEntity._localId), rhnv.columnIndex.IN(columnIndexes), rh._actorRecordId.equals(q._actorRecordId), rh.actor._localId.equals(q.actor._localId)))
+        });
     }
 }
 
@@ -14763,16 +14803,17 @@ class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                rhnv = Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryNewValue
+                rhnv = this.qSchema.RecordHistoryNewValue
             ],
             WHERE: rhnv.recordHistory._localId.IN(RecordHistory_LocalIds)
         }, context);
     }
     async findOldValues(dbEntity, qEntity, whereClause, context) {
+        const Q = this.qSchema;
         let rhnv;
-        let rh = Q_airport____at_airport_slash_holding_dash_pattern.RecordHistory;
-        let oh = Q_airport____at_airport_slash_holding_dash_pattern.OperationHistory;
-        let rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory;
+        let rh = Q.RecordHistory;
+        let oh = Q.OperationHistory;
+        let rth = Q.RepositoryTransactionHistory;
         let cvm;
         return await this.db.find.tree({
             SELECT: {
@@ -14793,7 +14834,7 @@ class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
             },
             FROM: [
                 qEntity,
-                cvm = Q_airport____at_airport_slash_holding_dash_pattern.CurrentValueMapping,
+                cvm = Q.CurrentValueMapping,
                 rhnv = cvm.value.INNER_JOIN(),
                 rhnv.INNER_JOIN(rh).ON((rhnvOn, rhOn) => AND(rhnvOn.recordHistory._localId.equals(rhOn._localId), rhOn._actorRecordId.equals(qEntity._actorRecordId), rhOn.actor._localId.equals(qEntity.actor._localId))),
                 rh.INNER_JOIN(oh).ON((rhOn, ohOn) => AND(rhOn.operationHistory._localId.equals(ohOn._localId), ohOn.entity._localId.equals(dbEntity._localId))),
@@ -14810,7 +14851,7 @@ class RecordHistoryOldValueDao extends BaseRecordHistoryOldValueDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                rhov = Q_airport____at_airport_slash_holding_dash_pattern.RecordHistoryOldValue
+                rhov = this.qSchema.RecordHistoryOldValue
             ],
             WHERE: rhov.recordHistory._localId.IN(RecordHistory_LocalIds)
         }, context);
@@ -14820,7 +14861,7 @@ class RecordHistoryOldValueDao extends BaseRecordHistoryOldValueDao {
 class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
     async findAllLocalChangesForRecordIds(changedRecordIds, context) {
         const repositoryTransactionHistoryMapByRepositoryLid = new Map();
-        const rth = Q_airport____at_airport_slash_holding_dash_pattern.RepositoryTransactionHistory;
+        const rth = this.qSchema.RepositoryTransactionHistory;
         const th = rth.transactionHistory.INNER_JOIN();
         const oh = rth.operationHistory.LEFT_JOIN();
         const ae = oh.entity.LEFT_JOIN();
@@ -14929,7 +14970,7 @@ class ActorDao extends BaseActorDao {
                 GUID: Y
             },
             FROM: [
-                act = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
+                act = this.qSchema.Actor,
                 application = act.application.LEFT_JOIN(),
                 domain = application.domain.LEFT_JOIN(),
                 terminal = act.terminal.LEFT_JOIN(),
@@ -14943,7 +14984,7 @@ class ActorDao extends BaseActorDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                a = Q_airport____at_airport_slash_holding_dash_pattern.Actor
+                a = this.qSchema.Actor
             ],
             WHERE: a.GUID.IN(actorGUIDs)
         }, context);
@@ -14959,7 +15000,7 @@ class ActorDao extends BaseActorDao {
                 }
             },
             FROM: [
-                a = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
+                a = this.qSchema.Actor,
                 a.userAccount.LEFT_JOIN()
             ],
             WHERE: a._localId.IN(actor_localIds)
@@ -14975,7 +15016,7 @@ class ActorDao extends BaseActorDao {
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: a = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
+            INSERT_INTO: a = this.qSchema.Actor,
             columns: [
                 a.GUID,
                 a.application.index,
@@ -14992,7 +15033,7 @@ class ActorDao extends BaseActorDao {
     async updateUserAccount(userAccount, actor, context) {
         let a;
         await this.db.updateColumnsWhere({
-            UPDATE: a = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
+            UPDATE: a = this.qSchema.Actor,
             SET: {
                 USER_ACCOUNT_LID: userAccount._localId
             },
@@ -15020,7 +15061,7 @@ class ActorDao extends BaseActorDao {
                 }
             },
             FROM: [
-                a = Q_airport____at_airport_slash_holding_dash_pattern.Actor,
+                a = this.qSchema.Actor,
                 ap = a.application.LEFT_JOIN(),
                 ap.domain.LEFT_JOIN(),
                 t = a.terminal.LEFT_JOIN(),
@@ -15249,7 +15290,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 owner: {}
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r = this.qSchema.Repository,
                 r.owner.INNER_JOIN()
             ],
             WHERE: r.internal.equals(false)
@@ -15261,7 +15302,7 @@ class RepositoryDao extends BaseRepositoryDao {
         const repository = await this._findOne({
             SELECT: {},
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository
+                r = this.qSchema.Repository
             ],
             WHERE: r._localId.equals(repositoryLid)
         }, context);
@@ -15275,7 +15316,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 owner: {}
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r = this.qSchema.Repository,
                 r.owner.INNER_JOIN()
             ],
             WHERE: r.GUID.equals(repositoryGUID)
@@ -15296,7 +15337,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 }
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r = this.qSchema.Repository,
                 r.owner.LEFT_JOIN(),
                 rir = r.referencedInRepositories.LEFT_JOIN(),
                 rir.referencingRepository.LEFT_JOIN(),
@@ -15316,7 +15357,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 }
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r = this.qSchema.Repository,
                 r.repositoryTransactionHistory.INNER_JOIN()
             ]
         }, context);
@@ -15333,7 +15374,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 }
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r = this.qSchema.Repository,
                 rth = r.repositoryTransactionHistory.INNER_JOIN(),
                 th = rth.transactionHistory.INNER_JOIN()
             ],
@@ -15348,7 +15389,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 owner: {}
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r = this.qSchema.Repository,
                 r.owner.INNER_JOIN()
             ],
             WHERE: r._localId.IN(repositoryLids)
@@ -15362,7 +15403,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 owner: {}
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r = this.qSchema.Repository,
                 r.owner.INNER_JOIN()
             ],
             WHERE: r._localId.IN(repositoryLids)
@@ -15376,7 +15417,7 @@ class RepositoryDao extends BaseRepositoryDao {
                 owner: {}
             },
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+                r = this.qSchema.Repository,
                 r.owner.INNER_JOIN()
             ],
             WHERE: r._localId.IN(repository_localIds)
@@ -15387,7 +15428,7 @@ class RepositoryDao extends BaseRepositoryDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository
+                r = this.qSchema.Repository
             ],
             WHERE: r.GUID.IN(repositoryGUIDs)
         }, context);
@@ -15397,7 +15438,7 @@ class RepositoryDao extends BaseRepositoryDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                r = Q_airport____at_airport_slash_holding_dash_pattern.Repository
+                r = this.qSchema.Repository
             ],
             WHERE: OR(r.GUID.IN(repositoryGUIDs), r._localId.IN(repositoryLocalIds))
         }, context);
@@ -15416,7 +15457,7 @@ class RepositoryDao extends BaseRepositoryDao {
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+            INSERT_INTO: r = this.qSchema.Repository,
             columns: [
                 r.ageSuitability,
                 r.createdAt,
@@ -15444,7 +15485,7 @@ class RepositoryDao extends BaseRepositoryDao {
     async updateUiEntityUri(repositoryGuid, uiEntityUri, context) {
         let r;
         await this.db.updateColumnsWhere({
-            UPDATE: r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+            UPDATE: r = this.qSchema.Repository,
             SET: {
                 UI_ENTRY_URI: uiEntityUri
             },
@@ -15454,7 +15495,7 @@ class RepositoryDao extends BaseRepositoryDao {
     async markAsLoaded(repositoryGuids, context) {
         let r;
         await this.db.updateColumnsWhere({
-            UPDATE: r = Q_airport____at_airport_slash_holding_dash_pattern.Repository,
+            UPDATE: r = this.qSchema.Repository,
             SET: {
                 IS_LOADED: true
             },
@@ -15874,6 +15915,9 @@ let SQDIDao$2 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint);
     }
+    get qSchema() {
+        return Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint;
+    }
 };
 class BaseClassificationDao extends SQDIDao$2 {
     static Save(config) {
@@ -16107,7 +16151,7 @@ class TerminalDao extends BaseTerminalDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                t = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.Terminal,
+                t = this.qSchema.Terminal,
                 ua = t.owner.LEFT_JOIN()
             ],
             WHERE: AND(ua.accountPublicSigningKey.IN(accountPublicSigningKeys), t.GUID.IN(GUIDs))
@@ -16118,7 +16162,7 @@ class TerminalDao extends BaseTerminalDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                t = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.Terminal
+                t = this.qSchema.Terminal
             ],
             WHERE: t.GUID.IN(GUIDs)
         }, context);
@@ -16133,7 +16177,7 @@ class TerminalDao extends BaseTerminalDao {
         }
         let t;
         const ids = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: t = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.Terminal,
+            INSERT_INTO: t = this.qSchema.Terminal,
             columns: [
                 t.GUID,
                 t.owner._localId,
@@ -16149,7 +16193,7 @@ class TerminalDao extends BaseTerminalDao {
     async updateOwner(terminal, userAccount, context) {
         let t;
         await this.db.updateColumnsWhere({
-            UPDATE: t = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.Terminal,
+            UPDATE: t = this.qSchema.Terminal,
             SET: {
                 OWNER_USER_ACCOUNT_LID: userAccount._localId
             },
@@ -16165,7 +16209,7 @@ class UserAccountDao extends BaseUserAccountDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                u = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.UserAccount
+                u = this.qSchema.UserAccount
             ],
             WHERE: u.username.IN(usernames)
         }, context);
@@ -16175,7 +16219,7 @@ class UserAccountDao extends BaseUserAccountDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                u = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.UserAccount
+                u = this.qSchema.UserAccount
             ],
             WHERE: u.accountPublicSigningKey.IN(accountPublicSingingKeys)
         }, context);
@@ -16185,7 +16229,7 @@ class UserAccountDao extends BaseUserAccountDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                u = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.UserAccount
+                u = this.qSchema.UserAccount
             ],
             WHERE: u._localId.IN(localIds)
         }, context);
@@ -16202,7 +16246,7 @@ class UserAccountDao extends BaseUserAccountDao {
         }
         let u;
         const ids = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: u = Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.UserAccount,
+            INSERT_INTO: u = this.qSchema.UserAccount,
             columns: [
                 u.accountPublicSigningKey,
                 u.username,
@@ -29627,6 +29671,9 @@ let SQDIDao$1 = class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airport____at_airport_slash_final_dash_approach);
     }
+    get qSchema() {
+        return Q_airport____at_airport_slash_final_dash_approach;
+    }
 };
 class BaseRepositoryContentFlagDao extends SQDIDao$1 {
     static Save(config) {
@@ -29792,6 +29839,9 @@ class SQDIDao extends ObservableDao {
     constructor(dbEntityId) {
         super(dbEntityId, Q_airbridge____at_airbridge_slash_keyring);
     }
+    get qSchema() {
+        return Q_airbridge____at_airbridge_slash_keyring;
+    }
 }
 class BaseKeyRingDao extends SQDIDao {
     static Save(config) {
@@ -29826,12 +29876,11 @@ BaseRepositoryKeyDao.SearchOne = new DaoQueryDecorators();
 
 let KeyRingDao = class KeyRingDao extends BaseKeyRingDao {
     async findKeyRing(externalPrivateKey, context) {
-        let Q = Q_airbridge____at_airbridge_slash_keyring;
         let kr;
         return this._findOne({
             SELECT: {},
             FROM: [
-                kr = Q.KeyRing
+                kr = this.qSchema.KeyRing
             ],
             WHERE: kr.externalPrivateKey.equals(externalPrivateKey)
         }, context);
@@ -31301,9 +31350,9 @@ for ChangeType.UPDATE_ROWS`);
                 throw new Error(`Cannot specify IRepositoryBlockData.history -> operationHistory.recordHistory.newValues.recordHistory`);
             }
             oldValue.recordHistory = recordHistory;
-            if (typeof oldValue.columnIndex !== 'number') {
-                throw new Error(`Invalid IRepositoryBlockData.history -> operationHistory.recordHistory.oldValues.columnIndex`);
-            }
+            // if (typeof oldValue.columnIndex !== 'number') {
+            // 	throw new Error(`Invalid IRepositoryBlockData.history -> operationHistory.recordHistory.oldValues.columnIndex`)
+            // }
             if (typeof oldValue.oldValue === undefined) {
                 throw new Error(`Invalid IRepositoryBlockData.history -> operationHistory.recordHistory.oldValues.oldValue`);
             }
@@ -31323,21 +31372,6 @@ for ChangeType.UPDATE_ROWS`);
         this.checkRelatedObject(oldValue, 'oldValue', entityIdColumnMapByIndex, entityArrayByInMessageIndex, isRepositoryLidColumn, inMessageEntityArrayName);
     }
     checkRelatedObject(value, valueColumnName, entityIdColumnMapByIndex, entityArrayByInMessageIndex, isRepositoryLidColumn, inMessageEntityArrayName) {
-        const relationIdColumn = entityIdColumnMapByIndex.get(value.columnIndex);
-        if (relationIdColumn) {
-            let columnValue = value[valueColumnName];
-            if (isRepositoryLidColumn && columnValue === -1) {
-                return;
-            }
-            const sourceEntity = entityArrayByInMessageIndex[value[valueColumnName]];
-            if (!sourceEntity) {
-                throw new Error(`Invalid IRepositoryBlockData.history -> operationHistory.recordHistory.newValues.newValue
-Value is for ${relationIdColumn.name} and could find IRepositoryBlockData.${inMessageEntityArrayName}[${value[valueColumnName]}]`);
-            }
-            if (!isRepositoryLidColumn) {
-                value[valueColumnName] = sourceEntity._localId;
-            }
-        }
     }
 }
 
@@ -34941,7 +34975,7 @@ class SQLUpdate extends SQLNoJoinQuery {
             throw new Error(`Expecting exactly one table in UPDATE clause`);
         }
         let tableFragment = this.getFromFragment(this.updateQuery.UPDATE, context);
-        let setFragment = this.getSetFragment(this.updateQuery.SELECT, context);
+        let setFragment = this.getSetFragment(this.updateQuery.SET, context);
         if (internalFragments.SET && internalFragments.SET.length) {
             setFragment += ',' + internalFragments.SET.map(internalSetFragment => {
                 return `
@@ -36904,7 +36938,7 @@ RepositoryMaintenanceManager = __decorate([
 
 let SSOManager = class SSOManager {
     async signUp(userAccountInfo, context) {
-        if (this.terminalStore.getIsServer()) {
+        if (this.terminalStore.getIsSyncNode()) {
             throw new Error('Implement');
         }
         const allSessions = this.userStore.getAllSessions();
@@ -37261,7 +37295,7 @@ already contains a new repository.`);
 class TerminalSessionManager {
     async getUserSession() {
         let session;
-        if (this.terminalStore.getIsServer()) {
+        if (this.terminalStore.getIsSyncNode()) {
             throw new Error(`Implement`);
         }
         else {
@@ -39250,8 +39284,8 @@ class TransactionManager extends AbstractMutationManager {
         return this.terminalStore.getTransactionManager()
             .transactionInProgressMap.get(transactionId);
     }
-    isServer(context) {
-        return this.terminalStore.getIsServer();
+    isSyncNode(context) {
+        return this.terminalStore.getIsSyncNode();
     }
     async transactInternal(transactionalCallback, credentials, context) {
         if (!credentials) {
@@ -39339,7 +39373,7 @@ throw new Error(`
 initialized multiple transactions at the same time.
 Only one concurrent transaction is allowed per application.`)
             */
-            if (!this.isServer(context)
+            if (!this.isSyncNode(context)
                 && transactionManagerStore.transactionInProgressMap.size > 0) {
                 // Delay the start of the transaction
                 return new Promise((resolve, reject) => {
@@ -43659,6 +43693,7 @@ class ImplementationFileBuilder extends FileBuilder {
 class UtilityBuilder extends ImplementationFileBuilder {
     constructor(applicationFullName, pathBuilder, classSuffix, baseClassSuffix = classSuffix, fileNameSuffx = classSuffix) {
         super('base' + fileNameSuffx + 's', pathBuilder);
+        this.applicationFullName = applicationFullName;
         this.classSuffix = classSuffix;
         this.baseClassSuffix = baseClassSuffix;
         // this.diSet = needsQEntity ? 'diSet' : 'duoDiSet'
@@ -43670,7 +43705,6 @@ class UtilityBuilder extends ImplementationFileBuilder {
         const imports = this.buildImports();
         return `/* eslint-disable */
 ${imports}
-import Q from './qApplication'
 
 // Application Q object Dependency Injection readiness detection ${this.classSuffix}
 export class SQDI${this.classSuffix}<Entity,
@@ -43680,7 +43714,8 @@ export class SQDI${this.classSuffix}<Entity,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	DbEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
-	IQE extends IQEntity>
+	IQE extends IQEntity,
+	LocalQApp extends QApp>
 	extends ${this.baseClassSuffix}<Entity,
 		EntitySelect,
 		EntityCreate,
@@ -43688,12 +43723,17 @@ export class SQDI${this.classSuffix}<Entity,
 		EntityUpdateProperties,
 		DbEntity_LocalId,
 		EntityCascadeGraph,
-		IQE> {
+		IQE,
+		LocalQApp> {
 
 	constructor(
 		dbEntityId: DbEntityId
 	) {
-		super(dbEntityId, Q)
+		super(dbEntityId, Q_${this.applicationFullName} as any)
+	}
+
+	get qSchema(): LocalQApp {
+		return Q_${this.applicationFullName} as any
 	}
 }
 
@@ -43716,6 +43756,9 @@ ${baseClassDefinitions}`;
             ], `${this.generatedPathMapByEntityName[entityName]}`);
         });
         this.addImport([
+            'QApp'
+        ], '@airport/aviation-communication');
+        this.addImport([
             'IEntityCascadeGraph',
             'IEntityCreateProperties',
             'IEntityIdProperties',
@@ -43731,17 +43774,21 @@ ${baseClassDefinitions}`;
             }
         ], '@airport/ground-control');
         this.addImport([
+            `Q_${this.applicationFullName}`,
+            `${this.applicationFullName}_LocalQApp`,
             `${this.diSet}`
         ], './qApplication');
     }
     buildBaseClassDefinitions() {
         return this.entityNames.map(entityName => `
 export interface IBase${entityName}${this.classSuffix}
-  extends I${this.baseClassSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}> {
+  extends I${this.baseClassSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}, 
+	${this.applicationFullName}_LocalQApp> {
 }
 
 export class Base${entityName}${this.classSuffix}
-  extends SQDI${this.classSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}>
+  extends SQDI${this.classSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}, 
+	${this.applicationFullName}_LocalQApp>
 	implements IBase${entityName}${this.classSuffix} {${this.buildStaticProperties(entityName)}
 
 	static diSet(): boolean {
@@ -43789,6 +43836,7 @@ class DaoBuilder extends UtilityBuilder {
 class DvoBuilder extends ImplementationFileBuilder {
     constructor(applicationFullName, pathBuilder) {
         super('baseDvos', pathBuilder);
+        this.applicationFullName = applicationFullName;
         this.classSuffix = 'Dvo';
         this.diSet = applicationFullName + '_diSet';
     }
@@ -43798,16 +43846,15 @@ class DvoBuilder extends ImplementationFileBuilder {
         const imports = this.buildImports();
         return `/* eslint-disable */
 ${imports}
-import Q from './qApplication'
 
 // Application Q object Dependency Injection readiness detection ${this.classSuffix}
 export class SQDI${this.classSuffix}<Entity, EntityVDescriptor>
-	extends ${this.classSuffix}<Entity, EntityVDescriptor> {
+	extends ${this.classSuffix}<Entity, EntityVDescriptor, ${this.applicationFullName}_LocalQApp> {
 
 	constructor(
 		dbEntityId: DbEntityId
 	) {
-		super(dbEntityId, Q)
+		super(dbEntityId, Q_${this.applicationFullName})
 	}
 }
 
@@ -43833,13 +43880,15 @@ ${baseClassDefinitions}`;
             }
         ], '@airport/ground-control');
         this.addImport([
+            `Q_${this.applicationFullName}`,
+            `${this.applicationFullName}_LocalQApp`,
             `${this.diSet}`
         ], './qApplication');
     }
     buildBaseClassDefinitions() {
         return this.entityNames.map(entityName => `
 export interface IBase${entityName}${this.classSuffix}
-  extends I${this.classSuffix}<${entityName}, ${entityName}VDescriptor<${entityName}>> {
+  extends I${this.classSuffix}<${entityName}, ${entityName}VDescriptor<${entityName}>, ${this.applicationFullName}_LocalQApp> {
 }
 
 export class Base${entityName}${this.classSuffix}

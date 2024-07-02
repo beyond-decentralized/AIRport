@@ -432,8 +432,7 @@ export class OperationManager
 					update, null, context)
 
 				await this.updateManager.updateValues(
-					portableQuery, actor, transaction, rootTransaction, context);
-
+					portableQuery, actor, transaction, rootTransaction, context)
 			}
 		}
 	}

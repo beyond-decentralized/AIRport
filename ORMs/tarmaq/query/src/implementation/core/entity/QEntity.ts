@@ -1,4 +1,4 @@
-import { AirEntityId } from '@airport/aviation-communication'
+import { AirEntityId, QApp } from '@airport/aviation-communication'
 import { IDependencyInjectionToken, InversionOfControl } from '@airport/direction-indicator'
 import {
 	DbEntity,
@@ -40,12 +40,12 @@ export interface IQEntityInternalConstructor {
 
 export declare namespace QEntity {
 
-	function db<IEntity>(
+	function db<IEntity, QSchema extends QApp>(
 		databaseName?: string
 	): IEntityQueryDatabaseFacade<IEntity, IEntitySelectProperties,
 		IEntityCreateProperties, IEntityUpdateProperties,
 		IEntityUpdateColumns, IEntityIdProperties,
-		IEntityCascadeGraph, IQEntity>;
+		IEntityCascadeGraph, IQEntity, QSchema>;
 
 }
 

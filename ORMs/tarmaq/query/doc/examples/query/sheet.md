@@ -21,7 +21,7 @@ class TaskDao extends BaseTaskDao {
         let t: QTask
         return await this.airDb.find.sheet({
             FROM: [
-                t = Q.Task
+                t = this.qSchema.Task
             ],
             SELECT: [
                 t.name,

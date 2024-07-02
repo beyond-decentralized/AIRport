@@ -48,10 +48,11 @@ export abstract class Dao<Entity,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	DbEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
-	QE extends IQEntity>
+	QE extends IQEntity,
+	QSchema extends QApp>
 	implements IDao<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, DbEntity_LocalId,
-		EntityCascadeGraph, QE> {
+		EntityCascadeGraph, QE, QSchema> {
 
 	static BaseSave<EntitySelect extends IEntitySelectProperties>(
 		config: EntitySelect
@@ -78,25 +79,27 @@ export abstract class Dao<Entity,
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, DbEntity_LocalId,
-		EntityCascadeGraph, QE>
+		EntityCascadeGraph, QE, QSchema>
 
 	SELECT: IFieldsSelect<EntitySelect>
 
 	constructor(
 		dbEntityId: DbEntityId,
-		Q: QApp,
+		qSchema: QSchema,
 		private internal = false
 	) {
-		const dbEntity = Q.__dbApplication__.currentVersion[0]
+		const dbEntity = qSchema.__dbApplication__.currentVersion[0]
 			.applicationVersion.entities[dbEntityId];
 		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
 		this.db = new EntityDatabaseFacade<Entity,
 			EntitySelect, EntityCreate,
 			EntityUpdateColumns, EntityUpdateProperties, DbEntity_LocalId,
-			EntityCascadeGraph, QE>(
-				dbEntity, Q, this)
+			EntityCascadeGraph, QE, QSchema>(
+				dbEntity, qSchema, this)
 		this.SELECT = new FieldsSelect(dbEntity)
 	}
+
+	abstract qSchema: QSchema;
 
 	mapById(
 		entities: (Entity & IAirEntity)[]

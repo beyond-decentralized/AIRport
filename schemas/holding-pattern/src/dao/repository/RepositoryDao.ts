@@ -5,7 +5,6 @@ import {
 } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import { IRepository, Repository_GUID, Repository_LocalId, Repository_UiEntryUri, TransactionType } from '@airport/ground-control'
-import Q from '../../generated/qApplication'
 import { BaseRepositoryDao, IBaseRepositoryDao } from '../../generated/baseDaos'
 import { QRepository, QRepositoryReference, QRepositoryTransactionHistory, QTransactionHistory } from '../../generated/qInterfaces'
 import { Observable } from 'rxjs'
@@ -96,7 +95,7 @@ export class RepositoryDao
 				owner: {}
 			},
 			FROM: [
-				r = Q.Repository,
+				r = this.qSchema.Repository,
 				r.owner.INNER_JOIN()
 			],
 			WHERE: r.internal.equals(false)
@@ -114,7 +113,7 @@ export class RepositoryDao
 		const repository = await this._findOne({
 			SELECT: {},
 			FROM: [
-				r = Q.Repository
+				r = this.qSchema.Repository
 			],
 			WHERE: r._localId.equals(repositoryLid)
 		}, context)
@@ -134,7 +133,7 @@ export class RepositoryDao
 				owner: {}
 			},
 			FROM: [
-				r = Q.Repository,
+				r = this.qSchema.Repository,
 				r.owner.INNER_JOIN()
 			],
 			WHERE: r.GUID.equals(repositoryGUID)
@@ -163,7 +162,7 @@ export class RepositoryDao
 				}
 			},
 			FROM: [
-				r = Q.Repository,
+				r = this.qSchema.Repository,
 				r.owner.LEFT_JOIN(),
 				rir = r.referencedInRepositories.LEFT_JOIN(),
 				rir.referencingRepository.LEFT_JOIN(),
@@ -187,7 +186,7 @@ export class RepositoryDao
 				}
 			},
 			FROM: [
-				r = Q.Repository,
+				r = this.qSchema.Repository,
 				r.repositoryTransactionHistory.INNER_JOIN()
 			]
 		}, context)
@@ -209,7 +208,7 @@ export class RepositoryDao
 				}
 			},
 			FROM: [
-				r = Q.Repository,
+				r = this.qSchema.Repository,
 				rth = r.repositoryTransactionHistory.INNER_JOIN(),
 				th = rth.transactionHistory.INNER_JOIN()
 			],
@@ -232,7 +231,7 @@ export class RepositoryDao
 				owner: {}
 			},
 			FROM: [
-				r = Q.Repository,
+				r = this.qSchema.Repository,
 				r.owner.INNER_JOIN()
 			],
 			WHERE: r._localId.IN(repositoryLids)
@@ -251,7 +250,7 @@ export class RepositoryDao
 				owner: {}
 			},
 			FROM: [
-				r = Q.Repository,
+				r = this.qSchema.Repository,
 				r.owner.INNER_JOIN()
 			],
 			WHERE:
@@ -271,7 +270,7 @@ export class RepositoryDao
 				owner: {}
 			},
 			FROM: [
-				r = Q.Repository,
+				r = this.qSchema.Repository,
 				r.owner.INNER_JOIN()
 			],
 			WHERE:
@@ -288,7 +287,7 @@ export class RepositoryDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				r = Q.Repository
+				r = this.qSchema.Repository
 			],
 			WHERE: r.GUID.IN(repositoryGUIDs)
 		}, context)
@@ -304,7 +303,7 @@ export class RepositoryDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				r = Q.Repository
+				r = this.qSchema.Repository
 			],
 			WHERE: OR(
 				r.GUID.IN(repositoryGUIDs),
@@ -330,7 +329,7 @@ export class RepositoryDao
 			])
 		}
 		const _localIds = await this.db.insertValuesGenerateIds({
-			INSERT_INTO: r = Q.Repository,
+			INSERT_INTO: r = this.qSchema.Repository,
 			columns: [
 				r.ageSuitability,
 				r.createdAt,
@@ -364,7 +363,7 @@ export class RepositoryDao
 		let r: QRepository;
 
 		await this.db.updateColumnsWhere({
-			UPDATE: r = Q.Repository,
+			UPDATE: r = this.qSchema.Repository,
 			SET: {
 				UI_ENTRY_URI: uiEntityUri
 			},
@@ -379,7 +378,7 @@ export class RepositoryDao
 		let r: QRepository;
 
 		await this.db.updateColumnsWhere({
-			UPDATE: r = Q.Repository,
+			UPDATE: r = this.qSchema.Repository,
 			SET: {
 				IS_LOADED: true
 			},

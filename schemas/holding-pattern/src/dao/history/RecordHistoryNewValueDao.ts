@@ -1,11 +1,10 @@
-import { IContext, Injected } from '@airport/direction-indicator';
-import { DbEntity, IRecordHistoryNewValue, RecordHistory_LocalId } from '@airport/ground-control';
-import { BaseRecordHistoryNewValueDao, IBaseRecordHistoryNewValueDao } from '../../generated/baseDaos';
+import { IContext, Injected } from '@airport/direction-indicator'
+import { DbEntity, IRecordHistoryNewValue, RecordHistory_LocalId } from '@airport/ground-control'
+import { BaseRecordHistoryNewValueDao, IBaseRecordHistoryNewValueDao } from '../../generated/baseDaos'
 
-import Q from '../../generated/qApplication'
-import { QOperationHistory, QRecordHistory, QRecordHistoryNewValue, QRepositoryTransactionHistory } from '../../generated/qInterfaces';
-import { AND, IQAirEntity, Y } from '@airport/tarmaq-query';
-import { QCurrentValueMapping } from '../../generated/query/history/QCurrentValueMapping';
+import { QOperationHistory, QRecordHistory, QRecordHistoryNewValue, QRepositoryTransactionHistory } from '../../generated/qInterfaces'
+import { AND, IQAirEntity, Y } from '@airport/tarmaq-query'
+import { QCurrentValueMapping } from '../../generated/query/history/QCurrentValueMapping'
 
 export interface IRecordHistoryNewValueDao
 	extends IBaseRecordHistoryNewValueDao {
@@ -13,7 +12,7 @@ export interface IRecordHistoryNewValueDao
 	findByRecordHistory_LocalIdIn(
 		RecordHistory_LocalIds: RecordHistory_LocalId[],
 		context: IContext
-	): Promise<IRecordHistoryNewValue[]>;
+	): Promise<IRecordHistoryNewValue[]>
 
 }
 
@@ -31,7 +30,7 @@ export class RecordHistoryNewValueDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				rhnv = Q.RecordHistoryNewValue
+				rhnv = this.qSchema.RecordHistoryNewValue
 			],
 			WHERE: rhnv.recordHistory._localId.IN(RecordHistory_LocalIds)
 		}, context)
@@ -44,6 +43,7 @@ export class RecordHistoryNewValueDao
 		whereClause,
 		context: IContext
 	) {
+		const Q = this.qSchema
 		let rhnv: QRecordHistoryNewValue
 		let rh: QRecordHistory = Q.RecordHistory
 		let oh: QOperationHistory = Q.OperationHistory

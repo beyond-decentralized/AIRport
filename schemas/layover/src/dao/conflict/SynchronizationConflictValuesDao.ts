@@ -1,8 +1,7 @@
-import { IContext, Injected } from '@airport/direction-indicator';
-import { ISynchronizationConflictValues } from '@airport/ground-control';
-import Q from '../../generated/qApplication'
-import { BaseSynchronizationConflictValuesDao, IBaseSynchronizationConflictValuesDao } from '../../generated/baseDaos';
-import { QSynchronizationConflictValues } from '../../generated/qInterfaces';
+import { IContext, Injected } from '@airport/direction-indicator'
+import { ISynchronizationConflictValues } from '@airport/ground-control'
+import { BaseSynchronizationConflictValuesDao, IBaseSynchronizationConflictValuesDao } from '../../generated/baseDaos'
+import { QSynchronizationConflictValues } from '../../generated/qInterfaces'
 
 export interface ISynchronizationConflictValuesDao
 	extends IBaseSynchronizationConflictValuesDao {
@@ -32,7 +31,7 @@ export class SynchronizationConflictValuesDao
 			])
 		}
 		await this.db.insertValues({
-			INSERT_INTO: scv = Q.SynchronizationConflictValues,
+			INSERT_INTO: scv = this.qSchema.SynchronizationConflictValues,
 			columns: [
 				scv.synchronizationConflict._localId,
 				scv.columnIndex

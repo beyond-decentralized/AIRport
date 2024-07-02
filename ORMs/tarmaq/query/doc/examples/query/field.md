@@ -29,7 +29,7 @@ class TaskDao extends BaseTaskDao {
 		let t: QTask
 		return await this.airDb.findOne.field({
   			FROM: [
-				t = Q.Task
+				t = this.qSchema.Task
 				],
   			SELECT: count(t.taskId)
 		});
@@ -59,7 +59,7 @@ class TaskDao extends BaseTaskDao {
 		let t: QTask,
 			t2: QTask
 		return await this.db.updateWhere({
-  			UPDATE: t = Q.Task,
+  			UPDATE: t = this.qSchema.Task,
 			SET: {
 				name: newName
 			},
@@ -68,7 +68,7 @@ class TaskDao extends BaseTaskDao {
 				// TODO: come up with a realistic example
    				t.taskId.equals(field({
       				FROM: [
-						t2 = Q.Task
+						t2 = this.qSchema.Task
 					],
       				SELECT: t2.taskId,
       				WHERE: t2.taskId.equals(t.taskId)
@@ -97,11 +97,11 @@ class TaskDao extends BaseTaskDao {
 		let t: QTask
 			t2: QTask
 		return await this.db.updateWhere({
-			UPDATE: t = Q.Task,
+			UPDATE: t = this.qSchema.Task,
 			SET: {
 				name: field({
       				FROM: [
-						t2 = Q.Task
+						t2 = this.qSchema.Task
 					],
       				SELECT: t2.name,
       				WHERE: t2.taskId.equals(anotherTaskId)

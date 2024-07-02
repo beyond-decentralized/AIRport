@@ -9,7 +9,6 @@ import {
 	Application_Name,
 	Domain_Name,
 	IActor,
-	IDatastructureUtils,
 	IUserAccount,
 	QueryBaseOperation,
 	Terminal_GUID,
@@ -22,8 +21,7 @@ import {
 	QTerminal,
 	QUserAccount,
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
-import Q from '../../generated/qApplication'
-import { IContext, Inject, Injected } from '@airport/direction-indicator'
+import { IContext, Injected } from '@airport/direction-indicator'
 import { UserAccount_PublicSigningKey } from '@airport/aviation-communication'
 import { BaseActorDao, IBaseActorDao } from '../../generated/baseDaos'
 import { QActor } from '../../generated/qInterfaces'
@@ -109,7 +107,7 @@ export class ActorDao
 				GUID: Y
 			},
 			FROM: [
-				act = Q.Actor,
+				act = this.qSchema.Actor,
 				application = act.application.LEFT_JOIN(),
 				domain = application.domain.LEFT_JOIN(),
 				terminal = act.terminal.LEFT_JOIN(),
@@ -132,7 +130,7 @@ export class ActorDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				a = Q.Actor
+				a = this.qSchema.Actor
 			],
 			WHERE: a.GUID.IN(actorGUIDs)
 		}, context)
@@ -153,7 +151,7 @@ export class ActorDao
 				}
 			},
 			FROM: [
-				a = Q.Actor,
+				a = this.qSchema.Actor,
 				u = a.userAccount.LEFT_JOIN()
 			],
 
@@ -174,7 +172,7 @@ export class ActorDao
 			])
 		}
 		const _localIds = await this.db.insertValuesGenerateIds({
-			INSERT_INTO: a = Q.Actor,
+			INSERT_INTO: a = this.qSchema.Actor,
 			columns: [
 				a.GUID,
 				a.application.index,
@@ -196,7 +194,7 @@ export class ActorDao
 	): Promise<void> {
 		let a: QActor;
 		await this.db.updateColumnsWhere({
-			UPDATE: a = Q.Actor,
+			UPDATE: a = this.qSchema.Actor,
 			SET: {
 				USER_ACCOUNT_LID: userAccount._localId
 			},
@@ -230,7 +228,7 @@ export class ActorDao
 				}
 			},
 			FROM: [
-				a = Q.Actor,
+				a = this.qSchema.Actor,
 				ap = a.application.LEFT_JOIN(),
 				ap.domain.LEFT_JOIN(),
 				t = a.terminal.LEFT_JOIN(),

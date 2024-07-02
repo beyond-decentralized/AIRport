@@ -10,6 +10,7 @@
     "@airport/air-traffic-control": "workspace:../../apis/air-traffic-control",
     "@airport/airgate": "workspace:../../libs/airgate",
     "@airport/autopilot": "workspace:../../libs/autopilot",
+    "@airport/aviation-communication": "workspace:../../apis/aviation-communication",
     "@airport/direction-indicator": "workspace:../../libs/direction-indicator",
     "@airport/ground-control": "workspace:../../apis/ground-control",
     "@airport/tarmaq-dao": "workspace:../../ORMs/tarmaq/dao",

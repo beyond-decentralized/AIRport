@@ -17,7 +17,6 @@ import {
 import {
 	OperationHistory,
 } from '../../ddl/ddl'
-import Q from '../../generated/qApplication'
 import { QDdlEntity, QDdlApplicationVersion } from '@airport/airspace/dist/app/bundle'
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import { BaseRepositoryTransactionHistoryDao } from '../../generated/baseDaos'
@@ -52,7 +51,7 @@ export class RepositoryTransactionHistoryDao
 		const repositoryTransactionHistoryMapByRepositoryLid: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
 			= new Map()
 
-		const rth: QRepositoryTransactionHistory = Q.RepositoryTransactionHistory
+		const rth: QRepositoryTransactionHistory = this.qSchema.RepositoryTransactionHistory
 		const th: QTransactionHistory = rth.transactionHistory.INNER_JOIN()
 		const oh: QOperationHistory = rth.operationHistory.LEFT_JOIN()
 		const ae: QDdlEntity = oh.entity.LEFT_JOIN()

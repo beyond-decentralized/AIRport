@@ -25,7 +25,7 @@ class TaskDao extends BaseTaskDao {
 		return await this._find({
 			SELECT: {},
 			FROM: [
-				t = Q.Task
+				t = this.qSchema.Task
 			]
 		});
 	}
@@ -53,13 +53,13 @@ class TaskDao extends BaseTaskDao {
 		return await this._find({
 			SELECT: {},
 			FROM: [
-				t = Q.Task
+				t = this.qSchema.Task
 				],
 			WHERE: AND(
 				ucase(t.name).LIKE(`%${likeValue}%`),
 				t.taskId.equals(field({
 					FROM: [
-						t2 = Q.Task
+						t2 = this.qSchema.Task
 					],
 					SELECT:
 						t2.taskId,
@@ -91,7 +91,7 @@ class GoalDao extends BaseGoalDao {
 		return this._searchOne({
 			SELECT: {},
 			FROM: [
-				g = Q.Goal
+				g = this.qSchema.Goal
 			],
 			WHERE:
 				g.equals(id)
@@ -123,7 +123,7 @@ class GoalDao extends BaseGoalDao {
 				tasks: {}
 			},
 			FROM: [
-				g = Q.Goal,
+				g = this.qSchema.Goal,
 				t = g.tasks.LEFT_JOIN()
 			],
 			WHERE: g.goalId.equals(goalId),

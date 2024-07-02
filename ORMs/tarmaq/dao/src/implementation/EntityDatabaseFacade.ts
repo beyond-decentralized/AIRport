@@ -41,11 +41,12 @@ export class EntityDatabaseFacade<Entity,
   EntityUpdateProperties extends IEntityUpdateProperties,
   DbEntity_LocalId extends IEntityIdProperties,
   EntityCascadeGraph extends IEntityCascadeGraph,
-  IQ extends IQEntity>
+  IQ extends IQEntity,
+  QSchema extends QApp>
   implements IEntityDatabaseFacade<Entity, EntitySelect,
     EntityCreate, EntityUpdateColumns,
     EntityUpdateProperties, DbEntity_LocalId,
-    EntityCascadeGraph, IQ> {
+    EntityCascadeGraph, IQ, QSchema> {
 
   find: IEntityFind<Entity, Array<Entity>, EntitySelect>;
 
@@ -57,11 +58,11 @@ export class EntityDatabaseFacade<Entity,
 
   constructor(
     public dbEntity: DbEntity,
-    private Q: QApp,
+    public QSchema: QSchema,
     protected dao: IDao<Entity, EntitySelect,
       EntityCreate, EntityUpdateColumns,
       EntityUpdateProperties, DbEntity_LocalId,
-      EntityCascadeGraph, IQ>
+      EntityCascadeGraph, IQ, QSchema>
   ) {
     this.find = new EntityFind<Entity, Array<Entity>, EntitySelect>(
       this.dbEntity, dao);
@@ -73,7 +74,7 @@ export class EntityDatabaseFacade<Entity,
   }
 
   get FROM(): IQ {
-    return this.Q[this.dbEntity.name];
+    return this.QSchema[this.dbEntity.name];
   }
 
   async insertColumnValues<IQE extends IQEntity>(

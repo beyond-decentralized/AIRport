@@ -9,7 +9,7 @@ export class DvoBuilder
 	private diSet
 
 	constructor(
-		applicationFullName: string,
+		private applicationFullName: string,
 		pathBuilder: PathBuilder,
 	) {
 		super('baseDvos', pathBuilder)
@@ -25,16 +25,15 @@ export class DvoBuilder
 
 		return `/* eslint-disable */
 ${imports}
-import Q from './qApplication'
 
 // Application Q object Dependency Injection readiness detection ${this.classSuffix}
 export class SQDI${this.classSuffix}<Entity, EntityVDescriptor>
-	extends ${this.classSuffix}<Entity, EntityVDescriptor> {
+	extends ${this.classSuffix}<Entity, EntityVDescriptor, ${this.applicationFullName}_LocalQApp> {
 
 	constructor(
 		dbEntityId: DbEntityId
 	) {
-		super(dbEntityId, Q)
+		super(dbEntityId, Q_${this.applicationFullName})
 	}
 }
 
@@ -62,6 +61,8 @@ ${baseClassDefinitions}`
 			}
 		], '@airport/ground-control')
 		this.addImport([
+			`Q_${this.applicationFullName}`,
+			`${this.applicationFullName}_LocalQApp`,
 			`${this.diSet}`
 		], './qApplication')
 	}
@@ -70,7 +71,7 @@ ${baseClassDefinitions}`
 		return this.entityNames.map(
 			entityName => `
 export interface IBase${entityName}${this.classSuffix}
-  extends I${this.classSuffix}<${entityName}, ${entityName}VDescriptor<${entityName}>> {
+  extends I${this.classSuffix}<${entityName}, ${entityName}VDescriptor<${entityName}>, ${this.applicationFullName}_LocalQApp> {
 }
 
 export class Base${entityName}${this.classSuffix}

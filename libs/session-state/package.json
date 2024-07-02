@@ -10,6 +10,7 @@
     "@airport/air-traffic-control": "workspace:../../apis/air-traffic-control",
     "@airport/airgate": "workspace:../airgate",
     "@airport/autopilot": "workspace:../autopilot",
+    "@airport/aviation-communication": "workspace:../../apis/aviation-communication",
     "@airport/direction-indicator": "workspace:../../libs/direction-indicator",
     "@airport/flight-number": "workspace:../flight-number",
     "@airport/ground-control": "workspace:../../apis/ground-control",

@@ -16,6 +16,7 @@ import {
     IEntityUpdateProperties,
     IQEntity
 } from './entity/IQEntity'
+import { QApp } from '@airport/aviation-communication';
 
 /**
  * Facade for all DB operations related to a particular Entity.
@@ -27,7 +28,10 @@ export interface IEntityQueryDatabaseFacade<IEntity,
     EntityUpdateProperties extends IEntityUpdateProperties,
     DbEntity_LocalId extends IEntityIdProperties,
     EntityCascadeGraph extends IEntityCascadeGraph,
-    IQ extends IQEntity> {
+    IQ extends IQEntity,
+    QSchema extends QApp> {
+
+    QSchema: QSchema
 
     dbEntity: DbEntity;
 

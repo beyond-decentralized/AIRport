@@ -19,7 +19,7 @@ export class IdeaDao
                 reasons: {}
             },
             from: [
-                i = Q.Idea,
+                i = this.qSchema.Idea,
                 i.reasons.leftJoin()
             ],
             where: and(
@@ -34,7 +34,7 @@ export class IdeaDao
     ): Promise<void> {
         const i: QIdea
         await this._updateWhere({
-            update: i = Q.Idea,
+            update: i = this.qSchema.Idea,
             set: {
                 agreementShareTotal: plus(i.agreementShareTotal, delta.totalDelta)
             },

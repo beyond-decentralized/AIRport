@@ -1,5 +1,5 @@
 import { IContext, Injected } from "@airport/direction-indicator";
-import { AirEntityId } from "@airport/aviation-communication"
+import { AirEntityId, QApp } from "@airport/aviation-communication"
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, Y } from "@airport/tarmaq-query";
 import { Observable } from "rxjs";
 import { Dao } from "./Dao";
@@ -12,10 +12,11 @@ export abstract class ObservableDao<Entity,
     EntityUpdateProperties extends IEntityUpdateProperties,
     DbEntity_LocalId extends IEntityIdProperties,
     EntityCascadeGraph extends IEntityCascadeGraph,
-    QE extends IQEntity>
+    QE extends IQEntity,
+    QSchema extends QApp>
     extends Dao<Entity, EntitySelect, EntityCreate,
         EntityUpdateColumns, EntityUpdateProperties, DbEntity_LocalId,
-        EntityCascadeGraph, QE> {
+        EntityCascadeGraph, QE, QSchema> {
 
     searchAll(
         entityIds?: DbEntity_LocalId[],

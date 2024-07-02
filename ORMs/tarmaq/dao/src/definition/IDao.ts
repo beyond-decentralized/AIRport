@@ -1,4 +1,4 @@
-import { AirEntityId } from '@airport/aviation-communication'
+import { AirEntityId, QApp } from '@airport/aviation-communication'
 import { IContext } from '@airport/direction-indicator'
 import { IEntityStateManager, IAirEntity, ISaveResult, DbEntity } from '@airport/ground-control'
 import {
@@ -27,7 +27,8 @@ export interface IDao<Entity,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	DbEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
-	IQE extends IQEntity> {
+	IQE extends IQEntity,
+	QSchema extends QApp> {
 
 	databaseFacade: IDatabaseFacade
 	entityStateManager: IEntityStateManager
@@ -40,8 +41,9 @@ export interface IDao<Entity,
 	}
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
-		EntityUpdateColumns, EntityUpdateProperties, DbEntity_LocalId, EntityCascadeGraph, IQE>
+		EntityUpdateColumns, EntityUpdateProperties, DbEntity_LocalId, EntityCascadeGraph, IQE, QSchema>
 
+	qSchema: QSchema
 
 	SELECT: IFieldsSelect<EntitySelect>
 

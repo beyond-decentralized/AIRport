@@ -1,11 +1,10 @@
 import { AND } from '@airport/tarmaq-query'
-import { IContext, Inject, Injected } from '@airport/direction-indicator';
-import Q from '../generated/qApplication'
-import { IAirportDatabase } from '@airport/air-traffic-control';
-import { Dictionary, ISequenceGenerator, ITerminal, IUserAccount, Terminal_GUID } from '@airport/ground-control';
-import { UserAccount_PublicSigningKey } from '@airport/aviation-communication';
-import { BaseTerminalDao, IBaseTerminalDao } from '../generated/baseDaos';
-import { QTerminal, QUserAccount } from '../generated/qInterfaces';
+import { IContext, Inject, Injected } from '@airport/direction-indicator'
+import { IAirportDatabase } from '@airport/air-traffic-control'
+import { Dictionary, ISequenceGenerator, ITerminal, IUserAccount, Terminal_GUID } from '@airport/ground-control'
+import { UserAccount_PublicSigningKey } from '@airport/aviation-communication'
+import { BaseTerminalDao, IBaseTerminalDao } from '../generated/baseDaos'
+import { QTerminal, QUserAccount } from '../generated/qInterfaces'
 
 export interface ITerminalDao
 	extends IBaseTerminalDao {
@@ -14,12 +13,12 @@ export interface ITerminalDao
 		accountPublicSigningKeys: UserAccount_PublicSigningKey[],
 		GUIDs: Terminal_GUID[],
 		context: IContext
-	): Promise<ITerminal[]>;
+	): Promise<ITerminal[]>
 
 	findByGUIDs(
 		GUIDs: Terminal_GUID[],
 		context: IContext
-	): Promise<ITerminal[]>;
+	): Promise<ITerminal[]>
 
 	insert(
 		terminals: ITerminal[],
@@ -58,7 +57,7 @@ export class TerminalDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				t = Q.Terminal,
+				t = this.qSchema.Terminal,
 				ua = t.owner.LEFT_JOIN()
 			],
 			WHERE: AND(
@@ -76,7 +75,7 @@ export class TerminalDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				t = Q.Terminal
+				t = this.qSchema.Terminal
 			],
 			WHERE: t.GUID.IN(GUIDs)
 		}, context)
@@ -94,10 +93,10 @@ export class TerminalDao
 			])
 		}
 
-		let t: QTerminal;
+		let t: QTerminal
 
 		const ids = await this.db.insertValuesGenerateIds({
-			INSERT_INTO: t = Q.Terminal,
+			INSERT_INTO: t = this.qSchema.Terminal,
 			columns: [
 				t.GUID,
 				t.owner._localId,
@@ -119,7 +118,7 @@ export class TerminalDao
 	): Promise<void> {
 		let t: QTerminal;
 		await this.db.updateColumnsWhere({
-			UPDATE: t = Q.Terminal,
+			UPDATE: t = this.qSchema.Terminal,
 			SET: {
 				OWNER_USER_ACCOUNT_LID: userAccount._localId
 			},

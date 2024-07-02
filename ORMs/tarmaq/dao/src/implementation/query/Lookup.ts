@@ -25,7 +25,7 @@ export class LookupProxy
 	}
 
 	constructor(
-		protected dao: IDao<any, any, any, any, any, any, any, any>
+		protected dao: IDao<any, any, any, any, any, any, any, any, any>
 	) {
 	}
 

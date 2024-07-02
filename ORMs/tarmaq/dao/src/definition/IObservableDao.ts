@@ -1,5 +1,5 @@
-import { IContext, Injected } from "@airport/direction-indicator";
-import { AirEntityId } from "@airport/aviation-communication"
+import { IContext } from "@airport/direction-indicator";
+import { AirEntityId, QApp } from "@airport/aviation-communication"
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, Y } from "@airport/tarmaq-query";
 import { Observable } from "rxjs";
 import { IDao } from "./IDao";
@@ -11,7 +11,8 @@ export interface IObservableDao<Entity,
     EntityUpdateProperties extends IEntityUpdateProperties,
     DbEntity_LocalId extends IEntityIdProperties,
     EntityCascadeGraph extends IEntityCascadeGraph,
-    IQE extends IQEntity>
+    IQE extends IQEntity,
+    QSchema extends QApp>
     extends IDao<Entity,
         EntitySelect,
         EntityCreate,
@@ -19,7 +20,8 @@ export interface IObservableDao<Entity,
         EntityUpdateProperties,
         DbEntity_LocalId,
         EntityCascadeGraph,
-        IQE> {
+        IQE,
+        QSchema> {
 
     searchAll(
         entityIds?: DbEntity_LocalId[],

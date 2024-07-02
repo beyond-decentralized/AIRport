@@ -3,7 +3,6 @@ import { IContext, Injected } from '@airport/direction-indicator'
 import { Application_Name, IApplicationVersion, Domain_Name } from '@airport/ground-control'
 import { BaseDdlApplicationVersionDao, IBaseDdlApplicationVersionDao } from '../../generated/baseDaos'
 import { QDdlApplication, QDdlApplicationVersion, QDdlDomain } from '../../generated/qInterfaces'
-import Q_airport____at_airport_slash_airspace from '../../generated/qApplication'
 
 export interface IDdlApplicationVersionDao
 	extends IBaseDdlApplicationVersionDao {
@@ -39,7 +38,7 @@ export class DdlApplicationVersionDao
 
 		return await this.db.find.tree({
 			FROM: [
-				sv = Q.IApplicationVersion
+				sv = this.qSchema.IApplicationVersion
 			],
 			SELECT: {},
 			WHERE: AND(
@@ -58,7 +57,7 @@ export class DdlApplicationVersionDao
 
 		return await this.db.find.tree({
 			FROM: [
-				av = Q_airport____at_airport_slash_airspace.DdlApplicationVersion,
+				av = this.qSchema.DdlApplicationVersion,
 				a = av.application.INNER_JOIN()
 			],
 			SELECT: {},
@@ -91,7 +90,7 @@ export class DdlApplicationVersionDao
 				}
 			},
 			FROM: [
-				av = Q_airport____at_airport_slash_airspace.DdlApplicationVersion,
+				av = this.qSchema.DdlApplicationVersion,
 				a = av.application.INNER_JOIN(),
 				d = a.domain.INNER_JOIN()
 			],
@@ -137,7 +136,7 @@ export class DdlApplicationVersionDao
 				_localId: Y
 			},
 			FROM: [
-				sv = Q.IApplicationVersion,
+				sv = this.qSchema.IApplicationVersion,
 				s = sv.application.INNER_JOIN(),
 				d = s.domain.INNER_JOIN()
 			],
@@ -169,7 +168,7 @@ export class DdlApplicationVersionDao
 			FROM: [
 				svMax = tree({
 					FROM: [
-						sv2 = Q.IApplicationVersion
+						sv2 = this.qSchema.IApplicationVersion
 					],
 					SELECT: DISTINCT({
 						integerVersion: max(sv2.integerVersion),
@@ -198,7 +197,7 @@ export class DdlApplicationVersionDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			INSERT_INTO: sv = Q_airport____at_airport_slash_airspace.DdlApplicationVersion,
+			INSERT_INTO: sv = this.qSchema.DdlApplicationVersion,
 			columns: [
 				sv._localId,
 				sv.integerVersion,

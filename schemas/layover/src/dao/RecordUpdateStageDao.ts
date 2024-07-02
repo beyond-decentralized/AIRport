@@ -18,7 +18,6 @@ import {
 	field,
 	OR,
 } from '@airport/tarmaq-query'
-import Q from '../generated/qApplication'
 import { BaseRecordUpdateStageDao, IBaseRecordUpdateStageDao } from '../generated/baseDaos';
 import { QRecordUpdateStage } from '../generated/qInterfaces';
 
@@ -73,7 +72,7 @@ export class RecordUpdateStageDao
 		context: IContext
 	): Promise<number[][]> {
 
-		const rus: QRecordUpdateStage = Q.RecordUpdateStage
+		const rus: QRecordUpdateStage = this.qSchema.RecordUpdateStage
 
 		const columns = [
 			rus.applicationVersion._localId,
@@ -127,7 +126,7 @@ export class RecordUpdateStageDao
 		const setClause = {}
 		for (const columnIndex of updatedColumnIndexes) {
 			const column = dbEntity.columns[columnIndex]
-			let columnRus = Q.RecordUpdateStage
+			let columnRus = this.qSchema.RecordUpdateStage
 			let columnSetClause = field({
 				FROM: [
 					columnRus
@@ -157,7 +156,7 @@ export class RecordUpdateStageDao
 		context: IContext
 	): Promise<number> {
 		return await this.db.deleteWhere({
-			DELETE_FROM: Q.RecordUpdateStage
+			DELETE_FROM: this.qSchema.RecordUpdateStage
 		}, context)
 	}
 

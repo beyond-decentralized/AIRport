@@ -7,7 +7,7 @@ export abstract class UtilityBuilder
 	private diSet
 
 	constructor(
-		applicationFullName: string,
+		private applicationFullName: string,
 		pathBuilder: PathBuilder,
 		private classSuffix: string,
 		private baseClassSuffix: string = classSuffix,
@@ -27,7 +27,6 @@ export abstract class UtilityBuilder
 
 		return `/* eslint-disable */
 ${imports}
-import Q from './qApplication'
 
 // Application Q object Dependency Injection readiness detection ${this.classSuffix}
 export class SQDI${this.classSuffix}<Entity,
@@ -37,7 +36,8 @@ export class SQDI${this.classSuffix}<Entity,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	DbEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
-	IQE extends IQEntity>
+	IQE extends IQEntity,
+	LocalQApp extends QApp>
 	extends ${this.baseClassSuffix}<Entity,
 		EntitySelect,
 		EntityCreate,
@@ -45,12 +45,17 @@ export class SQDI${this.classSuffix}<Entity,
 		EntityUpdateProperties,
 		DbEntity_LocalId,
 		EntityCascadeGraph,
-		IQE> {
+		IQE,
+		LocalQApp> {
 
 	constructor(
 		dbEntityId: DbEntityId
 	) {
-		super(dbEntityId, Q)
+		super(dbEntityId, Q_${this.applicationFullName} as any)
+	}
+
+	get qSchema(): LocalQApp {
+		return Q_${this.applicationFullName} as any
 	}
 }
 
@@ -74,7 +79,9 @@ ${baseClassDefinitions}`
 					`Q${entityName}`
 				], `${this.generatedPathMapByEntityName[entityName]}`)
 			})
-
+		this.addImport([
+			'QApp'
+		], '@airport/aviation-communication')
 		this.addImport([
 			'IEntityCascadeGraph',
 			'IEntityCreateProperties',
@@ -91,6 +98,8 @@ ${baseClassDefinitions}`
 			}
 		], '@airport/ground-control')
 		this.addImport([
+			`Q_${this.applicationFullName}`,
+			`${this.applicationFullName}_LocalQApp`,
 			`${this.diSet}`
 		], './qApplication')
 	}
@@ -99,11 +108,13 @@ ${baseClassDefinitions}`
 		return this.entityNames.map(
 			entityName => `
 export interface IBase${entityName}${this.classSuffix}
-  extends I${this.baseClassSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}> {
+  extends I${this.baseClassSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}, 
+	${this.applicationFullName}_LocalQApp> {
 }
 
 export class Base${entityName}${this.classSuffix}
-  extends SQDI${this.classSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}>
+  extends SQDI${this.classSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}, 
+	${this.applicationFullName}_LocalQApp>
 	implements IBase${entityName}${this.classSuffix} {${this.buildStaticProperties(entityName)}
 
 	static diSet(): boolean {

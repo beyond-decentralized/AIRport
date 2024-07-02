@@ -71,7 +71,7 @@ export class ParentDao
       	  children: {}
         },
         FROM: [
-          p = Q.Parent,
+          p = this.qSchema.Parent,
           c  = p.children.LEFT_JOIN()
         ],
         WHERE: p.equals(parentUuId)
@@ -83,7 +83,7 @@ export class ParentDao
     ): Promise<void> {
         const p: QParent
         await this._updateWhere({
-            UPDATE: p = Q.Parent,
+            UPDATE: p = this.qSchema.Parent,
             SET: {
                 total: PLUS(p.total, 1)
             },

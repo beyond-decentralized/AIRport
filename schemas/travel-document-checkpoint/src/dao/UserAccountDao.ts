@@ -2,7 +2,6 @@ import { UserAccount_LocalId, UserAccount_PublicSigningKey, UserAccount_Username
 import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import { Dictionary, ISequenceGenerator, IUserAccount } from '@airport/ground-control'
 import { BaseUserAccountDao, IBaseUserAccountDao } from '../generated/baseDaos'
-import Q from '../generated/qApplication'
 import { QUserAccount } from '../generated/qInterfaces'
 
 export interface IUserAccountDao
@@ -49,7 +48,7 @@ export class UserAccountDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				u = Q.UserAccount
+				u = this.qSchema.UserAccount
 			],
 			WHERE: u.username.IN(usernames)
 		}, context)
@@ -63,7 +62,7 @@ export class UserAccountDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				u = Q.UserAccount
+				u = this.qSchema.UserAccount
 			],
 			WHERE: u.accountPublicSigningKey.IN(accountPublicSingingKeys)
 		}, context)
@@ -78,7 +77,7 @@ export class UserAccountDao
 		return await this.db.find.tree({
 			SELECT: {},
 			FROM: [
-				u = Q.UserAccount
+				u = this.qSchema.UserAccount
 			],
 			WHERE: u._localId.IN(localIds)
 		}, context)
@@ -100,7 +99,7 @@ export class UserAccountDao
 
 		let u: QUserAccount
 		const ids = await this.db.insertValuesGenerateIds({
-			INSERT_INTO: u = Q.UserAccount,
+			INSERT_INTO: u = this.qSchema.UserAccount,
 			columns: [
 				u.accountPublicSigningKey,
 				u.username,
