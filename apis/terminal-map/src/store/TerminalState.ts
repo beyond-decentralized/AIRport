@@ -66,6 +66,7 @@ export interface ITerminalState<FM extends IFieldMapped = IFieldMapped> {
 	domains: IDomain[]
 	frameworkActor: IActor
 	internalConnector: InternalConnectorState
+	isServer: boolean
 	isSyncNode: boolean
 	lastIds: ILastIds
 	queries: Map<SerializedJSONQuery, CachedSQLQuery<FM>>

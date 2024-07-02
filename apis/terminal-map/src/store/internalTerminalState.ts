@@ -29,6 +29,7 @@ globalThis.internalTerminalState = new BehaviorSubject<ITerminalState>({
         },
         serverUrl: ''
     },
+    isServer: false,
     isSyncNode: false,
     lastIds: {
         apiClasses: 0,

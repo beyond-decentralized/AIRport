@@ -32,7 +32,7 @@ export interface ITransactionManager {
 		context: IContext,
 	): Promise<void>;
 
-	isSyncNode(
+	isServer(
 		context?: IContext
 	): boolean;
 
